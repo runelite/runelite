@@ -1,66 +1,81 @@
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cl")
+@ObfuscatedName("cs")
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
-   @ObfuscatedName("s")
+   @ObfuscatedName("oz")
    @ObfuscatedGetter(
-      intValue = 2021592303
+      intValue = 898317951
+   )
+   static int field1425;
+   @ObfuscatedName("ah")
+   static int[] field1422;
+   @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "Lia;"
+   )
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 977706959
    )
    @Export("id")
    int id;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1018148769
+      intValue = -468508935
    )
    @Export("type")
    int type;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1594855673
+      intValue = -1768872327
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -943516309
+      intValue = -143561081
    )
    @Export("level")
    int level;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 103638107
+      intValue = -2085338663
    )
    @Export("sceneX")
    int sceneX;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1234520923
+      intValue = -808855453
    )
    @Export("sceneY")
    int sceneY;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lje;"
+      signature = "Ljo;"
    )
-   Sequence field1436;
-   @ObfuscatedName("d")
+   Sequence field1419;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1177637985
+      intValue = -1199830183
    )
-   int field1430;
-   @ObfuscatedName("z")
+   int field1423;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 817165579
+      intValue = 897719287
    )
-   int field1438;
+   int field1421;
 
    @ObfuscatedSignature(
-      signature = "(IIIIIIIZLeh;)V"
+      signature = "(IIIIIIIZLes;)V"
    )
    DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
       this.id = var1;
@@ -70,59 +85,59 @@ public class DynamicObject extends Renderable {
       this.sceneX = var5;
       this.sceneY = var6;
       if(var7 != -1) {
-         this.field1436 = FileRequest.getAnimation(var7);
-         this.field1430 = 0;
-         this.field1438 = Client.gameCycle - 1;
-         if(this.field1436.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
+         this.field1419 = Occluder.getAnimation(var7);
+         this.field1423 = 0;
+         this.field1421 = Client.gameCycle - 1;
+         if(this.field1419.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
             DynamicObject var10 = (DynamicObject)var9;
-            if(var10.field1436 == this.field1436) {
-               this.field1430 = var10.field1430;
-               this.field1438 = var10.field1438;
+            if(var10.field1419 == this.field1419) {
+               this.field1423 = var10.field1423;
+               this.field1421 = var10.field1421;
                return;
             }
          }
 
-         if(var8 && this.field1436.frameStep != -1) {
-            this.field1430 = (int)(Math.random() * (double)this.field1436.frameIDs.length);
-            this.field1438 -= (int)(Math.random() * (double)this.field1436.frameLenghts[this.field1430]);
+         if(var8 && this.field1419.frameStep != -1) {
+            this.field1423 = (int)(Math.random() * (double)this.field1419.frameIDs.length);
+            this.field1421 -= (int)(Math.random() * (double)this.field1419.frameLenghts[this.field1423]);
          }
       }
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Les;",
-      garbageValue = "-25440425"
+      signature = "(I)Lee;",
+      garbageValue = "582025400"
    )
    protected final Model getModel() {
-      if(this.field1436 != null) {
-         int var1 = Client.gameCycle - this.field1438;
-         if(var1 > 100 && this.field1436.frameStep > 0) {
+      if(this.field1419 != null) {
+         int var1 = Client.gameCycle - this.field1421;
+         if(var1 > 100 && this.field1419.frameStep > 0) {
             var1 = 100;
          }
 
-         label55: {
+         label56: {
             do {
                do {
-                  if(var1 <= this.field1436.frameLenghts[this.field1430]) {
-                     break label55;
+                  if(var1 <= this.field1419.frameLenghts[this.field1423]) {
+                     break label56;
                   }
 
-                  var1 -= this.field1436.frameLenghts[this.field1430];
-                  ++this.field1430;
-               } while(this.field1430 < this.field1436.frameIDs.length);
+                  var1 -= this.field1419.frameLenghts[this.field1423];
+                  ++this.field1423;
+               } while(this.field1423 < this.field1419.frameIDs.length);
 
-               this.field1430 -= this.field1436.frameStep;
-            } while(this.field1430 >= 0 && this.field1430 < this.field1436.frameIDs.length);
+               this.field1423 -= this.field1419.frameStep;
+            } while(this.field1423 >= 0 && this.field1423 < this.field1419.frameIDs.length);
 
-            this.field1436 = null;
+            this.field1419 = null;
          }
 
-         this.field1438 = Client.gameCycle - var1;
+         this.field1421 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = class219.getObjectDefinition(this.id);
+      ObjectComposition var12 = Preferences.getObjectDefinition(this.id);
       if(var12.impostorIds != null) {
          var12 = var12.getImpostor();
       }
@@ -144,51 +159,189 @@ public class DynamicObject extends Renderable {
          int var5 = (var2 + 1 >> 1) + this.sceneX;
          int var6 = (var3 >> 1) + this.sceneY;
          int var7 = (var3 + 1 >> 1) + this.sceneY;
-         int[][] var8 = class62.tileHeights[this.level];
+         int[][] var8 = class61.tileHeights[this.level];
          int var9 = var8[var5][var7] + var8[var5][var6] + var8[var4][var6] + var8[var4][var7] >> 2;
          int var10 = (this.sceneX << 7) + (var2 << 6);
          int var11 = (this.sceneY << 7) + (var3 << 6);
-         return var12.method4940(this.type, this.orientation, var8, var10, var9, var11, this.field1436, this.field1430);
+         return var12.method4958(this.type, this.orientation, var8, var10, var9, var11, this.field1419, this.field1423);
+      }
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(ILiu;S)I",
+      garbageValue = "2577"
+   )
+   public static int method2013(int var0, class239 var1) {
+      return (var0 + 40000 << 8) + var1.field2917;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Lia;IIIBZI)V",
+      garbageValue = "672852909"
+   )
+   @Export("requestNetFile")
+   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      FileRequest var8 = (FileRequest)class258.NetCache_pendingPriorityWrites.get(var6);
+      if(var8 == null) {
+         var8 = (FileRequest)class258.NetCache_pendingPriorityResponses.get(var6);
+         if(var8 == null) {
+            var8 = (FileRequest)class258.NetCache_pendingWrites.get(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.unlinkDual();
+                  class258.NetCache_pendingPriorityWrites.put(var8, var6);
+                  --class258.NetCache_pendingWritesCount;
+                  ++class258.NetCache_pendingPriorityWritesCount;
+               }
+
+            } else {
+               if(!var5) {
+                  var8 = (FileRequest)class258.NetCache_pendingResponses.get(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
+               if(var5) {
+                  class258.NetCache_pendingPriorityWrites.put(var8, var6);
+                  ++class258.NetCache_pendingPriorityWritesCount;
+               } else {
+                  class258.NetCache_pendingWritesQueue.push(var8);
+                  class258.NetCache_pendingWrites.put(var8, var6);
+                  ++class258.NetCache_pendingWritesCount;
+               }
+
+            }
+         }
       }
    }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1223595857"
+      signature = "(ILca;ZI)I",
+      garbageValue = "-1885914111"
    )
-   static final void method2026() {
-      if(!class131.Viewport_false0) {
-         int var0 = Region.pitchSin;
-         int var1 = Region.pitchCos;
-         int var2 = Region.yawSin;
-         int var3 = Region.yawCos;
-         byte var4 = 50;
-         short var5 = 3500;
-         int var6 = (class131.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var7 = (class131.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var8 = (class131.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var9 = (class131.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var10 = Graphics3D.method2839(var7, var4, var1, var0);
-         int var11 = Graphics3D.method2853(var7, var4, var1, var0);
-         var7 = var10;
-         var10 = Graphics3D.method2839(var9, var5, var1, var0);
-         int var12 = Graphics3D.method2853(var9, var5, var1, var0);
-         var9 = var10;
-         var10 = Graphics3D.method2837(var6, var11, var3, var2);
-         var11 = Graphics3D.method2838(var6, var11, var3, var2);
-         var6 = var10;
-         var10 = Graphics3D.method2837(var8, var12, var3, var2);
-         var12 = Graphics3D.method2838(var8, var12, var3, var2);
-         class33.field445 = (var10 + var6) / 2;
-         AbstractByteBuffer.field2530 = (var9 + var7) / 2;
-         class5.field28 = (var11 + var12) / 2;
-         class131.field1881 = (var10 - var6) / 2;
-         class222.field2709 = (var9 - var7) / 2;
-         class31.field425 = (var12 - var11) / 2;
-         class218.field2692 = Math.abs(class131.field1881);
-         AttackOption.field1316 = Math.abs(class222.field2709);
-         class36.field482 = Math.abs(class31.field425);
+   static int method2009(int var0, Script var1, boolean var2) {
+      Widget var3 = NetWriter.getWidget(class80.intStack[--class80.intStackSize]);
+      if(var0 == 2800) {
+         class80.intStack[++class80.intStackSize - 1] = class89.method1879(class230.getWidgetConfig(var3));
+         return 1;
+      } else if(var0 != 2801) {
+         if(var0 == 2802) {
+            if(var3.name == null) {
+               class80.scriptStringStack[++class43.scriptStringStackSize - 1] = "";
+            } else {
+               class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var4 = class80.intStack[--class80.intStackSize];
+         --var4;
+         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
+            class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var3.actions[var4];
+         } else {
+            class80.scriptStringStack[++class43.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
       }
+   }
+
+   @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "(Lff;IIB)Ldw;",
+      garbageValue = "0"
+   )
+   public static final AbstractSoundSystem method2015(Signlink var0, int var1, int var2) {
+      if(AbstractSoundSystem.sampleRate == 0) {
+         throw new IllegalStateException();
+      } else if(var1 >= 0 && var1 < 2) {
+         if(var2 < 256) {
+            var2 = 256;
+         }
+
+         try {
+            AbstractSoundSystem var3 = AbstractSoundSystem.soundTaskDataProvider.taskData();
+            var3.samples = new int[(Frames.audioHighMemory?2:1) * 256];
+            var3.field1519 = var2;
+            var3.vmethod2209();
+            var3.offset = (var2 & -1024) + 1024;
+            if(var3.offset > 16384) {
+               var3.offset = 16384;
+            }
+
+            var3.create(var3.offset);
+            if(BoundingBox.priority > 0 && BoundingBox2D.task == null) {
+               BoundingBox2D.task = new SoundTask();
+               class40.field505 = Executors.newScheduledThreadPool(1);
+               class40.field505.scheduleAtFixedRate(BoundingBox2D.task, 0L, 10L, TimeUnit.MILLISECONDS);
+            }
+
+            if(BoundingBox2D.task != null) {
+               if(BoundingBox2D.task.systems[var1] != null) {
+                  throw new IllegalArgumentException();
+               }
+
+               BoundingBox2D.task.systems[var1] = var3;
+            }
+
+            return var3;
+         } catch (Throwable var4) {
+            return new AbstractSoundSystem();
+         }
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
+
+   @ObfuscatedName("je")
+   @ObfuscatedSignature(
+      signature = "(Lim;I)Lim;",
+      garbageValue = "-850550064"
+   )
+   static Widget method2012(Widget var0) {
+      Widget var2 = var0;
+      int var4 = class230.getWidgetConfig(var0);
+      int var3 = var4 >> 17 & 7;
+      int var5 = var3;
+      Widget var1;
+      if(var3 == 0) {
+         var1 = null;
+      } else {
+         int var6 = 0;
+
+         while(true) {
+            if(var6 >= var5) {
+               var1 = var2;
+               break;
+            }
+
+            var2 = NetWriter.getWidget(var2.parentId);
+            if(var2 == null) {
+               var1 = null;
+               break;
+            }
+
+            ++var6;
+         }
+      }
+
+      Widget var7 = var1;
+      if(var1 == null) {
+         var7 = var0.dragParent;
+      }
+
+      return var7;
    }
 }

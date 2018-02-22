@@ -1,27 +1,45 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("m")
 @Implements("UnitPriceComparator")
 final class UnitPriceComparator implements Comparator {
-   @ObfuscatedName("w")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lki;"
+      signature = "Lie;"
    )
-   static SpritePixels field307;
-   @ObfuscatedName("lu")
+   @Export("varbit_ref")
+   public static IndexDataBase varbit_ref;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1117451845
+      intValue = 1143716735
    )
-   static int field308;
-
-   @ObfuscatedName("s")
+   static int field294;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 973582091
+   )
+   public static int field297;
+   @ObfuscatedName("ft")
    @ObfuscatedSignature(
-      signature = "(Lq;Lq;I)I",
-      garbageValue = "795102094"
+      signature = "Llm;"
+   )
+   @Export("compass")
+   static SpritePixels compass;
+   @ObfuscatedName("ha")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   static Widget field298;
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Ls;Ls;I)I",
+      garbageValue = "271582275"
    )
    int method123(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.price < var2.grandExchangeOffer.price?-1:(var2.grandExchangeOffer.price == var1.grandExchangeOffer.price?0:1);
@@ -35,55 +53,12 @@ final class UnitPriceComparator implements Comparator {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIZI)Ljava/lang/String;",
-      garbageValue = "1250090185"
+      signature = "(II)Z",
+      garbageValue = "768659427"
    )
-   static String method133(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var2 && var0 >= 0) {
-            int var3 = 2;
-
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
-
-            char[] var5 = new char[var3];
-            var5[0] = '+';
-
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
-               } else {
-                  var5[var6] = (char)(var8 + 48);
-               }
-            }
-
-            return new String(var5);
-         } else {
-            return Integer.toString(var0, var1);
-         }
-      } else {
-         throw new IllegalArgumentException("");
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "103"
-   )
-   public static void method132(int var0) {
-      class214.field2617 = 1;
-      class214.field2614 = null;
-      class293.field3798 = -1;
-      class23.field342 = -1;
-      IndexFile.field2192 = 0;
-      class33.field446 = false;
-      class214.field2616 = var0;
+   public static boolean method134(int var0) {
+      return (var0 >> 20 & 1) != 0;
    }
 }

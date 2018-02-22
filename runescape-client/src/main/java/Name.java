@@ -3,13 +3,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ja")
+@ObfuscatedName("kp")
 @Implements("Name")
 public class Name implements Comparable {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("name")
    String name;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @Export("cleanName")
    String cleanName;
 
@@ -22,41 +22,104 @@ public class Name implements Comparable {
       if(var1 == null) {
          var4 = null;
       } else {
-         int var5 = 0;
+         label133: {
+            int var5 = 0;
 
-         int var6;
-         for(var6 = var1.length(); var5 < var6; ++var5) {
-            char var8 = var1.charAt(var5);
-            boolean var7 = var8 == 160 || var8 == ' ' || var8 == '_' || var8 == '-';
-            if(!var7) {
-               break;
-            }
-         }
-
-         while(var6 > var5 && UrlRequest.method3163(var1.charAt(var6 - 1))) {
-            --var6;
-         }
-
-         int var13 = var6 - var5;
-         if(var13 >= 1 && var13 <= class216.method4246(var2)) {
-            StringBuilder var12 = new StringBuilder(var13);
-
-            for(int var9 = var5; var9 < var6; ++var9) {
-               char var10 = var1.charAt(var9);
-               if(BaseVarType.method11(var10)) {
-                  char var11 = BoundingBox.method47(var10);
-                  if(var11 != 0) {
-                     var12.append(var11);
-                  }
+            int var6;
+            boolean var7;
+            char var8;
+            for(var6 = var1.length(); var5 < var6; ++var5) {
+               var8 = var1.charAt(var5);
+               var7 = var8 == 160 || var8 == ' ' || var8 == '_' || var8 == '-';
+               if(!var7) {
+                  break;
                }
             }
 
-            if(var12.length() == 0) {
-               var4 = null;
-            } else {
-               var4 = var12.toString();
+            while(var6 > var5) {
+               var8 = var1.charAt(var6 - 1);
+               var7 = var8 == 160 || var8 == ' ' || var8 == '_' || var8 == '-';
+               if(!var7) {
+                  break;
+               }
+
+               --var6;
             }
-         } else {
+
+            int var17 = var6 - var5;
+            if(var17 >= 1) {
+               byte var9;
+               if(var2 == null) {
+                  var9 = 12;
+               } else {
+                  switch(var2.field3982) {
+                  case 6:
+                     var9 = 20;
+                     break;
+                  default:
+                     var9 = 12;
+                  }
+               }
+
+               if(var17 <= var9) {
+                  StringBuilder var15 = new StringBuilder(var17);
+
+                  for(int var18 = var5; var18 < var6; ++var18) {
+                     char var10 = var1.charAt(var18);
+                     boolean var11;
+                     if(Character.isISOControl(var10)) {
+                        var11 = false;
+                     } else if(class269.method4849(var10)) {
+                        var11 = true;
+                     } else {
+                        char[] var16 = class301.field3790;
+                        int var13 = 0;
+
+                        label86:
+                        while(true) {
+                           char var14;
+                           if(var13 >= var16.length) {
+                              var16 = class301.field3791;
+
+                              for(var13 = 0; var13 < var16.length; ++var13) {
+                                 var14 = var16[var13];
+                                 if(var10 == var14) {
+                                    var11 = true;
+                                    break label86;
+                                 }
+                              }
+
+                              var11 = false;
+                              break;
+                           }
+
+                           var14 = var16[var13];
+                           if(var14 == var10) {
+                              var11 = true;
+                              break;
+                           }
+
+                           ++var13;
+                        }
+                     }
+
+                     if(var11) {
+                        char var12 = class27.method240(var10);
+                        if(var12 != 0) {
+                           var15.append(var12);
+                        }
+                     }
+                  }
+
+                  if(var15.length() == 0) {
+                     var4 = null;
+                  } else {
+                     var4 = var15.toString();
+                  }
+                  break label133;
+               }
+            }
+
             var4 = null;
          }
       }
@@ -64,31 +127,31 @@ public class Name implements Comparable {
       this.cleanName = var4;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-2000941969"
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "27"
    )
    @Export("getName")
    public String getName() {
       return this.name;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1568757499"
+      garbageValue = "255479225"
    )
-   public boolean method5276() {
+   public boolean method5359() {
       return this.cleanName != null;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lja;S)I",
-      garbageValue = "-6770"
+      signature = "(Lkp;B)I",
+      garbageValue = "-77"
    )
-   int method5278(Name var1) {
+   public int method5360(Name var1) {
       return this.cleanName == null?(var1.cleanName == null?0:1):(var1.cleanName == null?-1:this.cleanName.compareTo(var1.cleanName));
    }
 
@@ -105,25 +168,11 @@ public class Name implements Comparable {
       return this.cleanName == null?0:this.cleanName.hashCode();
    }
 
+   public int compareTo(Object var1) {
+      return this.method5360((Name)var1);
+   }
+
    public String toString() {
       return this.getName();
-   }
-
-   public int compareTo(Object var1) {
-      return this.method5278((Name)var1);
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "62"
-   )
-   public static void method5282() {
-      class219.field2698 = null;
-      class263.offsetsY = null;
-      class60.field708 = null;
-      class310.field3911 = null;
-      class289.field3786 = null;
-      class310.spritePixels = null;
    }
 }

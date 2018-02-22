@@ -1,129 +1,169 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("c")
 @Implements("BoundingBox")
 public abstract class BoundingBox extends Node {
-   @ObfuscatedName("ot")
-   @ObfuscatedSignature(
-      signature = "Ldf;"
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 689125175
    )
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("d")
-   @Export("colorsToReplace")
-   public static short[][] colorsToReplace;
-   @ObfuscatedName("eu")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
-   )
-   @Export("fonts")
-   static Fonts fonts;
+   @Export("priority")
+   static int priority;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1287124829"
+      garbageValue = "2133791811"
    )
-   @Export("draw")
-   abstract void draw();
+   public abstract void vmethod48();
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "7"
+      signature = "(Lgu;II)Z",
+      garbageValue = "1446447976"
    )
-   public static char method47(char var0) {
-      switch(var0) {
-      case ' ':
-      case '-':
-      case '_':
-      case ' ':
-         return '_';
-      case '#':
-      case '[':
-      case ']':
-         return var0;
-      case 'À':
-      case 'Á':
-      case 'Â':
-      case 'Ã':
-      case 'Ä':
-      case 'à':
-      case 'á':
-      case 'â':
-      case 'ã':
-      case 'ä':
-         return 'a';
-      case 'Ç':
-      case 'ç':
-         return 'c';
-      case 'È':
-      case 'É':
-      case 'Ê':
-      case 'Ë':
-      case 'è':
-      case 'é':
-      case 'ê':
-      case 'ë':
-         return 'e';
-      case 'Í':
-      case 'Î':
-      case 'Ï':
-      case 'í':
-      case 'î':
-      case 'ï':
-         return 'i';
-      case 'Ñ':
-      case 'ñ':
-         return 'n';
-      case 'Ò':
-      case 'Ó':
-      case 'Ô':
-      case 'Õ':
-      case 'Ö':
-      case 'ò':
-      case 'ó':
-      case 'ô':
-      case 'õ':
-      case 'ö':
-         return 'o';
-      case 'Ù':
-      case 'Ú':
-      case 'Û':
-      case 'Ü':
-      case 'ù':
-      case 'ú':
-      case 'û':
-      case 'ü':
-         return 'u';
-      case 'ß':
-         return 'b';
-      case 'ÿ':
-      case 'Ÿ':
-         return 'y';
-      default:
-         return Character.toLowerCase(var0);
+   @Export("decodeRegionHash")
+   static boolean decodeRegionHash(PacketBuffer var0, int var1) {
+      int var2 = var0.getBits(2);
+      int var3;
+      int var4;
+      int var7;
+      int var8;
+      int var9;
+      int var10;
+      if(var2 == 0) {
+         if(var0.getBits(1) != 0) {
+            decodeRegionHash(var0, var1);
+         }
+
+         var3 = var0.getBits(13);
+         var4 = var0.getBits(13);
+         boolean var12 = var0.getBits(1) == 1;
+         if(var12) {
+            class92.field1370[++class92.field1382 - 1] = var1;
+         }
+
+         if(Client.cachedPlayers[var1] != null) {
+            throw new RuntimeException();
+         } else {
+            Player var6 = Client.cachedPlayers[var1] = new Player();
+            var6.field808 = var1;
+            if(class92.field1374[var1] != null) {
+               var6.decodeApperance(class92.field1374[var1]);
+            }
+
+            var6.orientation = class92.Players_orientations[var1];
+            var6.interacting = class92.Players_targetIndices[var1];
+            var7 = class92.Players_regions[var1];
+            var8 = var7 >> 28;
+            var9 = var7 >> 14 & 255;
+            var10 = var7 & 255;
+            var6.pathTraversed[0] = class92.field1378[var1];
+            var6.field802 = (byte)var8;
+            var6.method1191((var9 << 13) + var3 - ScriptState.baseX, (var10 << 13) + var4 - WorldMapType1.baseY);
+            var6.field806 = false;
+            return true;
+         }
+      } else if(var2 == 1) {
+         var3 = var0.getBits(2);
+         var4 = class92.Players_regions[var1];
+         class92.Players_regions[var1] = (var4 & 268435455) + (((var4 >> 28) + var3 & 3) << 28);
+         return false;
+      } else {
+         int var5;
+         int var11;
+         if(var2 == 2) {
+            var3 = var0.getBits(5);
+            var4 = var3 >> 3;
+            var5 = var3 & 7;
+            var11 = class92.Players_regions[var1];
+            var7 = (var11 >> 28) + var4 & 3;
+            var8 = var11 >> 14 & 255;
+            var9 = var11 & 255;
+            if(var5 == 0) {
+               --var8;
+               --var9;
+            }
+
+            if(var5 == 1) {
+               --var9;
+            }
+
+            if(var5 == 2) {
+               ++var8;
+               --var9;
+            }
+
+            if(var5 == 3) {
+               --var8;
+            }
+
+            if(var5 == 4) {
+               ++var8;
+            }
+
+            if(var5 == 5) {
+               --var8;
+               ++var9;
+            }
+
+            if(var5 == 6) {
+               ++var9;
+            }
+
+            if(var5 == 7) {
+               ++var8;
+               ++var9;
+            }
+
+            class92.Players_regions[var1] = (var8 << 14) + var9 + (var7 << 28);
+            return false;
+         } else {
+            var3 = var0.getBits(18);
+            var4 = var3 >> 16;
+            var5 = var3 >> 8 & 255;
+            var11 = var3 & 255;
+            var7 = class92.Players_regions[var1];
+            var8 = (var7 >> 28) + var4 & 3;
+            var9 = var5 + (var7 >> 14) & 255;
+            var10 = var11 + var7 & 255;
+            class92.Players_regions[var1] = (var9 << 14) + var10 + (var8 << 28);
+            return false;
+         }
       }
    }
 
-   @ObfuscatedName("gd")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1007746728"
+      signature = "(ILca;ZI)I",
+      garbageValue = "1288885138"
    )
-   static int method40() {
-      return Client.isResized?2:1;
-   }
-
-   @ObfuscatedName("ks")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1321677653"
-   )
-   public static boolean method46() {
-      return Client.rights >= 2;
+   static int method45(int var0, Script var1, boolean var2) {
+      Widget var3 = NetWriter.getWidget(class80.intStack[--class80.intStackSize]);
+      if(var0 == 2500) {
+         class80.intStack[++class80.intStackSize - 1] = var3.relativeX;
+         return 1;
+      } else if(var0 == 2501) {
+         class80.intStack[++class80.intStackSize - 1] = var3.relativeY;
+         return 1;
+      } else if(var0 == 2502) {
+         class80.intStack[++class80.intStackSize - 1] = var3.width;
+         return 1;
+      } else if(var0 == 2503) {
+         class80.intStack[++class80.intStackSize - 1] = var3.height;
+         return 1;
+      } else if(var0 == 2504) {
+         class80.intStack[++class80.intStackSize - 1] = var3.isHidden?1:0;
+         return 1;
+      } else if(var0 == 2505) {
+         class80.intStack[++class80.intStackSize - 1] = var3.parentId;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 }

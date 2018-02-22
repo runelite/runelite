@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("au")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Las;I)V",
-      garbageValue = "-1901809840"
+      signature = "(Lai;B)V",
+      garbageValue = "59"
    )
-   void vmethod681(WorldMapData var1);
+   void vmethod736(WorldMapData var1);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIIB)Z",
-      garbageValue = "-76"
+      signature = "(IIII)Z",
+      garbageValue = "2052357031"
    )
-   boolean vmethod682(int var1, int var2, int var3);
+   boolean vmethod737(int var1, int var2, int var3);
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "1516873803"
+      signature = "(IIB)Z",
+      garbageValue = "1"
    )
-   boolean vmethod683(int var1, int var2);
+   boolean vmethod745(int var1, int var2);
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "-1022148607"
+   )
+   int[] vmethod738(int var1, int var2, int var3);
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(III)Lhp;",
+      garbageValue = "-1642348517"
+   )
+   Coordinates vmethod739(int var1, int var2);
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "-28346373"
+      signature = "(Lgn;I)V",
+      garbageValue = "1338328003"
    )
-   int[] vmethod684(int var1, int var2, int var3);
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IIB)Lhv;",
-      garbageValue = "-92"
-   )
-   Coordinates vmethod700(int var1, int var2);
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "1352125466"
-   )
-   void vmethod686(Buffer var1);
+   void vmethod741(Buffer var1);
 }

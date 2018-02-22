@@ -1,4 +1,4 @@
-import java.awt.Component;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
@@ -8,38 +8,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bg")
+@ObfuscatedName("bv")
 @Implements("Preferences")
 public class Preferences {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 101153337
+      intValue = -885144123
    )
-   static int field1198;
-   @ObfuscatedName("m")
+   static int field1187;
+   @ObfuscatedName("o")
    @Export("hideRoofs")
    boolean hideRoofs;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @Export("muted")
    boolean muted;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1494594889
+      intValue = 360156671
    )
    @Export("screenType")
    int screenType;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @Export("rememberedUsername")
    String rememberedUsername;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @Export("hideUsername")
    boolean hideUsername;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @Export("preferences")
    LinkedHashMap preferences;
 
    static {
-      field1198 = 6;
+      field1187 = 6;
    }
 
    Preferences() {
@@ -47,11 +47,11 @@ public class Preferences {
       this.rememberedUsername = null;
       this.hideUsername = false;
       this.preferences = new LinkedHashMap();
-      this.method1679(true);
+      this.method1692(true);
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgy;)V"
+      signature = "(Lgn;)V"
    )
    Preferences(Buffer var1) {
       this.screenType = 1;
@@ -60,7 +60,7 @@ public class Preferences {
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field1198) {
+         if(var2 >= 0 && var2 <= field1187) {
             if(var1.readUnsignedByte() == 1) {
                this.hideRoofs = true;
             }
@@ -88,34 +88,34 @@ public class Preferences {
             }
 
             if(var2 > 5) {
-               this.hideUsername = var1.method3515();
+               this.hideUsername = var1.method3554();
             }
          } else {
-            this.method1679(true);
+            this.method1692(true);
          }
       } else {
-         this.method1679(true);
+         this.method1692(true);
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "-2131025764"
+      garbageValue = "2066473357"
    )
-   void method1679(boolean var1) {
+   void method1692(boolean var1) {
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)Lgy;",
-      garbageValue = "55"
+      signature = "(I)Lgn;",
+      garbageValue = "2104606408"
    )
    @Export("serialize")
    Buffer serialize() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field1198);
+      var1.putByte(field1187);
       var1.putByte(this.hideRoofs?1:0);
       var1.putByte(this.muted?1:0);
       var1.putByte(this.screenType);
@@ -133,132 +133,81 @@ public class Preferences {
       return var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;S)V",
-      garbageValue = "7099"
+      signature = "(II)Ljb;",
+      garbageValue = "-1302898840"
    )
-   static void method1678(Component var0) {
-      var0.setFocusTraversalKeysEnabled(false);
-      var0.addKeyListener(KeyFocusListener.keyboard);
-      var0.addFocusListener(KeyFocusListener.keyboard);
+   @Export("getObjectDefinition")
+   public static ObjectComposition getObjectDefinition(int var0) {
+      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = SoundTask.objects_ref.getConfigData(6, var0);
+         var1 = new ObjectComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         var1.post();
+         if(var1.isHollow) {
+            var1.clipType = 0;
+            var1.blocksProjectile = false;
+         }
+
+         ObjectComposition.objects.put(var1, (long)var0);
+         return var1;
+      }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-541973365"
+      signature = "(I)Z",
+      garbageValue = "1442819963"
    )
-   static final void method1667(String var0) {
-      PacketNode var1 = Script.method2025(ClientPacket.field2406, Client.field937.field1454);
-      var1.packetBuffer.putByte(FrameMap.getLength(var0));
-      var1.packetBuffer.putString(var0);
-      Client.field937.method2044(var1);
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(World.listFetcher == null) {
+            World.listFetcher = class46.urlRequester.request(new URL(class31.field407));
+         } else if(World.listFetcher.isDone()) {
+            byte[] var0 = World.listFetcher.getResponse();
+            Buffer var1 = new Buffer(var0);
+            var1.readInt();
+            World.worldCount = var1.readUnsignedShort();
+            World.worldList = new World[World.worldCount];
+
+            World var3;
+            for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
+               var3 = World.worldList[var2] = new World();
+               var3.id = var1.readUnsignedShort();
+               var3.mask = var1.readInt();
+               var3.address = var1.readString();
+               var3.activity = var1.readString();
+               var3.location = var1.readUnsignedByte();
+               var3.playerCount = var1.readShort();
+            }
+
+            BoundingBox3DDrawMode.method52(World.worldList, 0, World.worldList.length - 1, World.field1166, World.field1168);
+            World.listFetcher = null;
+            return true;
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         World.listFetcher = null;
+      }
+
+      return false;
    }
 
-   @ObfuscatedName("gn")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lbe;I)V",
-      garbageValue = "-2051518779"
+      signature = "(Lie;III)Llv;",
+      garbageValue = "-47419494"
    )
-   static final void method1666(Actor var0) {
-      var0.field1117 = false;
-      Sequence var1;
-      if(var0.poseAnimation != -1) {
-         var1 = FileRequest.getAnimation(var0.poseAnimation);
-         if(var1 != null && var1.frameIDs != null) {
-            ++var0.field1145;
-            if(var0.poseFrame < var1.frameIDs.length && var0.field1145 > var1.frameLenghts[var0.poseFrame]) {
-               var0.field1145 = 1;
-               ++var0.poseFrame;
-               ScriptVarType.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
-            }
-
-            if(var0.poseFrame >= var1.frameIDs.length) {
-               var0.field1145 = 0;
-               var0.poseFrame = 0;
-               ScriptVarType.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
-            }
-         } else {
-            var0.poseAnimation = -1;
-         }
-      }
-
-      if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
-         if(var0.field1152 < 0) {
-            var0.field1152 = 0;
-         }
-
-         int var3 = CollisionData.getSpotAnimType(var0.graphic).field3404;
-         if(var3 != -1) {
-            Sequence var2 = FileRequest.getAnimation(var3);
-            if(var2 != null && var2.frameIDs != null) {
-               ++var0.field1153;
-               if(var0.field1152 < var2.frameIDs.length && var0.field1153 > var2.frameLenghts[var0.field1152]) {
-                  var0.field1153 = 1;
-                  ++var0.field1152;
-                  ScriptVarType.queueAnimationSound(var2, var0.field1152, var0.x, var0.y);
-               }
-
-               if(var0.field1152 >= var2.frameIDs.length && (var0.field1152 < 0 || var0.field1152 >= var2.frameIDs.length)) {
-                  var0.graphic = -1;
-               }
-            } else {
-               var0.graphic = -1;
-            }
-         } else {
-            var0.graphic = -1;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
-         var1 = FileRequest.getAnimation(var0.animation);
-         if(var1.precedenceAnimating == 1 && var0.field1161 > 0 && var0.field1160 <= Client.gameCycle && var0.field1149 < Client.gameCycle) {
-            var0.actionAnimationDisable = 1;
-            return;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-         var1 = FileRequest.getAnimation(var0.animation);
-         if(var1 != null && var1.frameIDs != null) {
-            ++var0.field1140;
-            if(var0.actionFrame < var1.frameIDs.length && var0.field1140 > var1.frameLenghts[var0.actionFrame]) {
-               var0.field1140 = 1;
-               ++var0.actionFrame;
-               ScriptVarType.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
-            }
-
-            if(var0.actionFrame >= var1.frameIDs.length) {
-               var0.actionFrame -= var1.frameStep;
-               ++var0.field1150;
-               if(var0.field1150 >= var1.maxLoops) {
-                  var0.animation = -1;
-               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
-                  ScriptVarType.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
-               } else {
-                  var0.animation = -1;
-               }
-            }
-
-            var0.field1117 = var1.stretches;
-         } else {
-            var0.animation = -1;
-         }
-      }
-
-      if(var0.actionAnimationDisable > 0) {
-         --var0.actionAnimationDisable;
-      }
-
-   }
-
-   @ObfuscatedName("il")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "559819191"
-   )
-   static final String method1680(int var0) {
-      return var0 < 999999999?Integer.toString(var0):"*";
+   static IndexedSprite method1693(IndexDataBase var0, int var1, int var2) {
+      return !class258.method4705(var0, var1, var2)?null:NameableContainer.method5288();
    }
 }

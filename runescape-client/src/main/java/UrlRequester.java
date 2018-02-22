@@ -10,16 +10,22 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ey")
+@ObfuscatedName("eo")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-   @ObfuscatedName("s")
+   @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   @Export("rssocket")
+   static class168 rssocket;
+   @ObfuscatedName("b")
    @Export("thread")
    final Thread thread;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @Export("isClosed")
    volatile boolean isClosed;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @Export("requests")
    Queue requests;
 
@@ -30,10 +36,10 @@ public class UrlRequester implements Runnable {
       this.thread.start();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;B)Lea;",
-      garbageValue = "-2"
+      signature = "(Ljava/net/URL;B)Lec;",
+      garbageValue = "52"
    )
    @Export("request")
    public UrlRequest request(URL var1) {
@@ -45,10 +51,10 @@ public class UrlRequester implements Runnable {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1748468462"
+      signature = "(B)V",
+      garbageValue = "26"
    )
    @Export("close")
    public void close() {
@@ -113,25 +119,8 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            GrandExchangeEvent.method78((String)null, var17);
+            class37.method519((String)null, var17);
          }
-      }
-
-   }
-
-   @ObfuscatedName("fq")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-125"
-   )
-   static final void method3145() {
-      if(GrandExchangeEvent.field282) {
-         if(class22.clanMemberManager != null) {
-            class22.clanMemberManager.method5180();
-         }
-
-         class179.method3471();
-         GrandExchangeEvent.field282 = false;
       }
 
    }

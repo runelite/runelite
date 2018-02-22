@@ -1,19 +1,28 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kf")
-public class class294 {
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lir;"
-   )
-   static IndexDataBase field3803;
-   @ObfuscatedName("k")
+@ObfuscatedName("kn")
+public class class294 extends class216 {
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1930359643
+      intValue = 1249656305
    )
-   @Export("scriptStringStackSize")
-   static int scriptStringStackSize;
+   public int field3748;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lkp;"
+   )
+   public Name field3747;
+   @ObfuscatedName("a")
+   public short field3749;
+
+   @ObfuscatedSignature(
+      signature = "(Lkp;I)V"
+   )
+   class294(Name var1, int var2) {
+      this.field3748 = (int)(class188.method3511() / 1000L);
+      this.field3747 = var1;
+      this.field3749 = (short)var2;
+   }
 }

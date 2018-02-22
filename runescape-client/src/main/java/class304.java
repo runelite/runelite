@@ -1,17 +1,11 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kq")
-public class class304 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgi;"
+@ObfuscatedName("ke")
+public final class class304 {
+   @ObfuscatedName("pr")
+   @ObfuscatedGetter(
+      intValue = -1756642893
    )
-   @Export("classInfos")
-   public static CombatInfoList classInfos;
-
-   static {
-      classInfos = new CombatInfoList();
-   }
+   static int field3804;
 }

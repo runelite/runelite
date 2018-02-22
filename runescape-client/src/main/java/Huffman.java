@@ -1,24 +1,23 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("gq")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("dq")
-   @ObfuscatedGetter(
-      intValue = 1858001445
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lie;"
    )
-   static int field2452;
-   @ObfuscatedName("s")
+   public static IndexDataBase field2471;
+   @ObfuscatedName("b")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @Export("keys")
    int[] keys;
 
@@ -47,7 +46,7 @@ public class Huffman {
 
                for(var10 = var6 - 1; var10 >= 1; --var10) {
                   var11 = var3[var10];
-                  if(var8 != var11) {
+                  if(var11 != var8) {
                      break;
                   }
 
@@ -105,10 +104,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "([BII[BIB)I",
-      garbageValue = "96"
+      garbageValue = "107"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -156,10 +155,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "1707215461"
+      garbageValue = "-426527948"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -298,5 +297,15 @@ public class Huffman {
 
          return var7 + 1 - var2;
       }
+   }
+
+   @ObfuscatedName("fg")
+   @ObfuscatedSignature(
+      signature = "(Lia;Ljava/lang/String;I)V",
+      garbageValue = "2037701064"
+   )
+   static void method3462(IndexData var0, String var1) {
+      class63 var2 = new class63(var0, var1);
+      Client.field932.add(var2);
    }
 }

@@ -3,63 +3,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("al")
 public class class35 {
-   @ObfuscatedName("pk")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lcw;"
+      signature = "Lal;"
    )
-   @Export("friendManager")
-   public static FriendManager friendManager;
-   @ObfuscatedName("s")
+   static final class35 field461;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Law;"
+      signature = "Lal;"
    )
-   static final class35 field477;
-   @ObfuscatedName("g")
+   static final class35 field453;
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Law;"
+      signature = "Lie;"
    )
-   static final class35 field476;
-   @ObfuscatedName("d")
-   @Export("isMembersWorld")
-   public static boolean isMembersWorld;
-   @ObfuscatedName("z")
+   static IndexDataBase field457;
+   @ObfuscatedName("bp")
    @ObfuscatedSignature(
-      signature = "[Lkh;"
+      signature = "Lii;"
    )
-   @Export("titlemuteSprite")
-   static IndexedSprite[] titlemuteSprite;
-   @ObfuscatedName("y")
-   @Export("osNameLC")
-   public static String osNameLC;
-   @ObfuscatedName("m")
+   static JagexGame field456;
+   @ObfuscatedName("fq")
+   @ObfuscatedSignature(
+      signature = "[Llm;"
+   )
+   @Export("mapMarkers")
+   static SpritePixels[] mapMarkers;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1058422263
+      intValue = -1117646373
    )
-   final int field470;
+   final int field455;
 
    static {
-      field477 = new class35(0);
-      field476 = new class35(1);
+      field461 = new class35(0);
+      field453 = new class35(1);
    }
 
    class35(int var1) {
-      this.field470 = var1;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Lir;III)Z",
-      garbageValue = "1314691064"
-   )
-   public static boolean method484(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         class3.decodeSprite(var3);
-         return true;
-      }
+      this.field455 = var1;
    }
 }

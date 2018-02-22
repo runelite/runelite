@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
@@ -5,57 +7,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("dk")
 @Implements("TextureProvider")
 public class TextureProvider implements ITextureLoader {
-   @ObfuscatedName("er")
-   @ObfuscatedSignature(
-      signature = "Lkp;"
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -745914891
    )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("s")
+   public static int field1658;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "[Ldi;"
+      signature = "[Lda;"
    )
    @Export("textures")
    Texture[] textures;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgw;"
+      signature = "Lhh;"
    )
    @Export("deque")
    Deque deque;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1830088627
+      intValue = 1307691331
    )
    @Export("maxSize")
    int maxSize;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2071579283
+      intValue = -1073873597
    )
    @Export("size")
    int size;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("brightness")
    double brightness;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 362040901
+      intValue = 1597641741
    )
    @Export("width")
    int width;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lie;"
    )
    @Export("sprites")
    IndexDataBase sprites;
 
    @ObfuscatedSignature(
-      signature = "(Lir;Lir;IDI)V"
+      signature = "(Lie;Lie;IDI)V"
    )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.deque = new Deque();
@@ -78,12 +79,12 @@ public class TextureProvider implements ITextureLoader {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "917816256"
+      signature = "(B)I",
+      garbageValue = "1"
    )
-   public int method2595() {
+   public int method2574() {
       int var1 = 0;
       int var2 = 0;
       Texture[] var3 = this.textures;
@@ -96,7 +97,7 @@ public class TextureProvider implements ITextureLoader {
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                int var8 = var6[var7];
-               if(this.sprites.method4587(var8)) {
+               if(this.sprites.method4541(var8)) {
                   ++var2;
                }
             }
@@ -110,17 +111,17 @@ public class TextureProvider implements ITextureLoader {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @Export("brightness")
    public void brightness(double var1) {
       this.brightness = var1;
       this.reset();
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "-802368556"
+      garbageValue = "-1038419006"
    )
    @Export("load")
    public int[] load(int var1) {
@@ -132,7 +133,7 @@ public class TextureProvider implements ITextureLoader {
             return var2.pixels;
          }
 
-         boolean var3 = var2.method2701(this.brightness, this.width, this.sprites);
+         boolean var3 = var2.method2692(this.brightness, this.width, this.sprites);
          if(var3) {
             if(this.size == 0) {
                Texture var4 = (Texture)this.deque.popTail();
@@ -150,38 +151,38 @@ public class TextureProvider implements ITextureLoader {
       return null;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "975899805"
+      garbageValue = "-1120814065"
    )
    @Export("getAverageTextureRGB")
    public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null?this.textures[var1].field1759:0;
+      return this.textures[var1] != null?this.textures[var1].field1754:0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1297239195"
+      signature = "(IB)Z",
+      garbageValue = "-120"
    )
-   public boolean vmethod3127(int var1) {
+   public boolean vmethod3058(int var1) {
       return this.textures[var1].field1756;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "68"
+      signature = "(II)Z",
+      garbageValue = "146160731"
    )
-   public boolean vmethod3136(int var1) {
+   public boolean vmethod3059(int var1) {
       return this.width == 64;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1270116220"
+      garbageValue = "1269074617"
    )
    @Export("reset")
    public void reset() {
@@ -195,10 +196,10 @@ public class TextureProvider implements ITextureLoader {
       this.size = this.maxSize;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-834098053"
+      signature = "(IB)V",
+      garbageValue = "47"
    )
    @Hook(
       value = "drawAboveOverheads",
@@ -208,11 +209,138 @@ public class TextureProvider implements ITextureLoader {
    public void checkTextures(int var1) {
       for(int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
-         if(var3 != null && var3.field1765 != 0 && var3.loaded) {
-            var3.method2703(var1);
+         if(var3 != null && var3.field1762 != 0 && var3.loaded) {
+            var3.method2688(var1);
             var3.loaded = false;
          }
       }
 
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)Ljava/io/File;",
+      garbageValue = "-43053108"
+   )
+   public static File method2596(String var0) {
+      if(!class169.field2185) {
+         throw new RuntimeException("");
+      } else {
+         File var1 = (File)class169.field2183.get(var0);
+         if(var1 != null) {
+            return var1;
+         } else {
+            File var2 = new File(class169.field2182, var0);
+            RandomAccessFile var3 = null;
+
+            try {
+               File var4 = new File(var2.getParent());
+               if(!var4.exists()) {
+                  throw new RuntimeException("");
+               } else {
+                  var3 = new RandomAccessFile(var2, "rw");
+                  int var5 = var3.read();
+                  var3.seek(0L);
+                  var3.write(var5);
+                  var3.seek(0L);
+                  var3.close();
+                  class169.field2183.put(var0, var2);
+                  return var2;
+               }
+            } catch (Exception var8) {
+               try {
+                  if(var3 != null) {
+                     var3.close();
+                     var3 = null;
+                  }
+               } catch (Exception var7) {
+                  ;
+               }
+
+               throw new RuntimeException();
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("gq")
+   @ObfuscatedSignature(
+      signature = "(Lbq;I)V",
+      garbageValue = "461591561"
+   )
+   static final void method2584(Actor var0) {
+      if(var0.field1147 != 0) {
+         if(var0.interacting != -1) {
+            Object var1 = null;
+            if(var0.interacting < 32768) {
+               var1 = Client.cachedNPCs[var0.interacting];
+            } else if(var0.interacting >= 32768) {
+               var1 = Client.cachedPlayers[var0.interacting - 32768];
+            }
+
+            if(var1 != null) {
+               int var2 = var0.x - ((Actor)var1).x;
+               int var3 = var0.y - ((Actor)var1).y;
+               if(var2 != 0 || var3 != 0) {
+                  var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
+               }
+            } else if(var0.field1121) {
+               var0.interacting = -1;
+               var0.field1121 = false;
+            }
+         }
+
+         if(var0.field1122 != -1 && (var0.queueSize == 0 || var0.field1128 > 0)) {
+            var0.orientation = var0.field1122;
+            var0.field1122 = -1;
+         }
+
+         int var4 = var0.orientation - var0.angle & 2047;
+         if(var4 == 0 && var0.field1121) {
+            var0.interacting = -1;
+            var0.field1121 = false;
+         }
+
+         if(var4 != 0) {
+            ++var0.field1120;
+            boolean var6;
+            if(var4 > 1024) {
+               var0.angle -= var0.field1147;
+               var6 = true;
+               if(var4 < var0.field1147 || var4 > 2048 - var0.field1147) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1120 > 25 || var6)) {
+                  if(var0.field1100 != -1) {
+                     var0.poseAnimation = var0.field1100;
+                  } else {
+                     var0.poseAnimation = var0.field1102;
+                  }
+               }
+            } else {
+               var0.angle += var0.field1147;
+               var6 = true;
+               if(var4 < var0.field1147 || var4 > 2048 - var0.field1147) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1120 > 25 || var6)) {
+                  if(var0.field1101 != -1) {
+                     var0.poseAnimation = var0.field1101;
+                  } else {
+                     var0.poseAnimation = var0.field1102;
+                  }
+               }
+            }
+
+            var0.angle &= 2047;
+         } else {
+            var0.field1120 = 0;
+         }
+
+      }
    }
 }

@@ -1,47 +1,91 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
+@ObfuscatedName("i")
 public class class25 {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   public static class215 field356;
-   @ObfuscatedName("s")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1782488247
+      intValue = -440707557
    )
-   int field355;
-   @ObfuscatedName("g")
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("fm")
    @ObfuscatedSignature(
-      signature = "Lhv;"
+      signature = "[Llm;"
    )
-   Coordinates field353;
+   @Export("crossSprites")
+   static SpritePixels[] crossSprites;
+   @ObfuscatedName("ho")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   static Widget field348;
+   @ObfuscatedName("jg")
+   @ObfuscatedGetter(
+      intValue = 239558237
+   )
+   @Export("menuX")
+   static int menuX;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 753914887
+   )
+   int field347;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhp;"
+   )
+   Coordinates field342;
 
    @ObfuscatedSignature(
-      signature = "(ILhv;)V"
+      signature = "(ILhp;)V"
    )
    class25(int var1, Coordinates var2) {
-      this.field355 = var1;
-      this.field353 = var2;
+      this.field347 = var1;
+      this.field342 = var2;
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ldb;I)V",
-      garbageValue = "1799719292"
+      signature = "([BIII)I",
+      garbageValue = "-137367787"
    )
-   static final void method184(TaskDataNode var0) {
-      var0.field1628 = false;
-      if(var0.data != null) {
-         var0.data.int1 = 0;
+   static int method201(byte[] var0, int var1, int var2) {
+      int var3 = -1;
+
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
       }
 
-      for(TaskDataNode var1 = var0.vmethod4311(); var1 != null; var1 = var0.vmethod4312()) {
-         method184(var1);
+      var3 = ~var3;
+      return var3;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "1508172841"
+   )
+   static void method202(boolean var0) {
+      class89.loginMessage1 = "";
+      class89.loginMessage2 = "Enter your username/email & password.";
+      class89.loginMessage3 = "";
+      class89.loginIndex = 2;
+      if(var0) {
+         class89.password = "";
       }
 
+      if(class89.username == null || class89.username.length() <= 0) {
+         if(Client.preferences.rememberedUsername != null) {
+            class89.username = Client.preferences.rememberedUsername;
+            class89.Login_isUsernameRemembered = true;
+         } else {
+            class89.Login_isUsernameRemembered = false;
+         }
+      }
+
+      NPC.method1846();
    }
 }

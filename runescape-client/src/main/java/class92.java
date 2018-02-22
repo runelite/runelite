@@ -3,138 +3,175 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("ct")
 public class class92 {
-   @ObfuscatedName("m")
-   static byte[] field1389;
-   @ObfuscatedName("h")
-   static byte[] field1390;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
+   static byte[] field1372;
+   @ObfuscatedName("p")
+   static byte[] field1378;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lgy;"
+      signature = "[Lgn;"
    )
-   static Buffer[] field1398;
-   @ObfuscatedName("w")
+   static Buffer[] field1374;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1692034155
+      intValue = 2069777345
    )
    @Export("playerIndexesCount")
    static int playerIndexesCount;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @Export("playerIndices")
    static int[] playerIndices;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1438656957
+      intValue = -779761021
    )
-   static int field1394;
-   @ObfuscatedName("z")
-   static int[] field1402;
-   @ObfuscatedName("k")
+   static int field1377;
+   @ObfuscatedName("g")
+   static int[] field1383;
+   @ObfuscatedName("c")
    @Export("Players_regions")
    static int[] Players_regions;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @Export("Players_orientations")
    static int[] Players_orientations;
-   @ObfuscatedName("o")
+   @ObfuscatedName("r")
    @Export("Players_targetIndices")
    static int[] Players_targetIndices;
-   @ObfuscatedName("l")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1504212801
+      intValue = -951802553
    )
-   static int field1399;
-   @ObfuscatedName("f")
-   static int[] field1400;
-   @ObfuscatedName("q")
+   static int field1382;
+   @ObfuscatedName("v")
+   static int[] field1370;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgy;"
+      signature = "Lgn;"
    )
-   static Buffer field1401;
-   @ObfuscatedName("cg")
-   @ObfuscatedSignature(
-      signature = "Led;"
-   )
-   @Export("socket")
-   static Task socket;
+   static Buffer field1384;
 
    static {
-      field1389 = new byte[2048];
-      field1390 = new byte[2048];
-      field1398 = new Buffer[2048];
+      field1372 = new byte[2048];
+      field1378 = new byte[2048];
+      field1374 = new Buffer[2048];
       playerIndexesCount = 0;
       playerIndices = new int[2048];
-      field1394 = 0;
-      field1402 = new int[2048];
+      field1377 = 0;
+      field1383 = new int[2048];
       Players_regions = new int[2048];
       Players_orientations = new int[2048];
       Players_targetIndices = new int[2048];
-      field1399 = 0;
-      field1400 = new int[2048];
-      field1401 = new Buffer(new byte[5000]);
+      field1382 = 0;
+      field1370 = new int[2048];
+      field1384 = new Buffer(new byte[5000]);
    }
 
-   @ObfuscatedName("it")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lby;IIIB)V",
-      garbageValue = "106"
+      signature = "([BS)Ljava/lang/String;",
+      garbageValue = "13023"
    )
-   static final void method1968(Player var0, int var1, int var2, int var3) {
-      if(GroundObject.localPlayer != var0) {
-         if(Client.menuOptionCount < 400) {
-            String var4;
-            if(var0.totalLevel == 0) {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + Tile.method2711(var0.combatLevel, GroundObject.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+   public static String method1936(byte[] var0) {
+      int var2 = var0.length;
+      StringBuilder var3 = new StringBuilder();
+
+      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
+         int var5 = var0[var4] & 255;
+         var3.append(class303.field3799[var5 >>> 2]);
+         if(var4 < var2 - 1) {
+            int var6 = var0[var4 + 1] & 255;
+            var3.append(class303.field3799[(var5 & 3) << 4 | var6 >>> 4]);
+            if(var4 < var2 - 2) {
+               int var7 = var0[var4 + 2] & 255;
+               var3.append(class303.field3799[(var6 & 15) << 2 | var7 >>> 6]).append(class303.field3799[var7 & 63]);
             } else {
-               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
+               var3.append(class303.field3799[(var6 & 15) << 2]).append("=");
             }
-
-            int var5;
-            if(Client.itemSelectionState == 1) {
-               NPCComposition.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class70.getColTags(16777215) + var4, 14, var1, var2, var3);
-            } else if(Client.spellSelected) {
-               if((Occluder.field2038 & 8) == 8) {
-                  NPCComposition.addMenuEntry(Client.field854, Client.field995 + " " + "->" + " " + class70.getColTags(16777215) + var4, 15, var1, var2, var3);
-               }
-            } else {
-               for(var5 = 7; var5 >= 0; --var5) {
-                  if(Client.playerOptions[var5] != null) {
-                     short var6 = 0;
-                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
-                        if(Client.playerAttackOption == AttackOption.AttackOption_hidden) {
-                           continue;
-                        }
-
-                        if(AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || Client.playerAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > GroundObject.localPlayer.combatLevel) {
-                           var6 = 2000;
-                        }
-
-                        if(GroundObject.localPlayer.team != 0 && var0.team != 0) {
-                           if(var0.team == GroundObject.localPlayer.team) {
-                              var6 = 2000;
-                           } else {
-                              var6 = 0;
-                           }
-                        }
-                     } else if(Client.playerOptionsPriorities[var5]) {
-                        var6 = 2000;
-                     }
-
-                     boolean var7 = false;
-                     int var8 = Client.playerMenuTypes[var5] + var6;
-                     NPCComposition.addMenuEntry(Client.playerOptions[var5], class70.getColTags(16777215) + var4, var8, var1, var2, var3);
-                  }
-               }
-            }
-
-            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
-               if(Client.menuTypes[var5] == 23) {
-                  Client.menuTargets[var5] = class70.getColTags(16777215) + var4;
-                  break;
-               }
-            }
-
+         } else {
+            var3.append(class303.field3799[(var5 & 3) << 4]).append("==");
          }
+      }
+
+      String var1 = var3.toString();
+      return var1;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Lbs;Lbs;IZB)I",
+      garbageValue = "-115"
+   )
+   static int method1926(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
+
+            if(var5 == -1) {
+               var5 = 2001;
+            }
+         }
+
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1663()?(var1.method1663()?0:1):(var1.method1663()?-1:0)):(var2 == 5?(var0.method1675()?(var1.method1675()?0:1):(var1.method1675()?-1:0)):(var2 == 6?(var0.method1645()?(var1.method1645()?0:1):(var1.method1645()?-1:0)):(var2 == 7?(var0.method1643()?(var1.method1643()?0:1):(var1.method1643()?-1:0)):var0.id - var1.id)))));
+      }
+   }
+
+   @ObfuscatedName("iv")
+   @ObfuscatedSignature(
+      signature = "([Lim;IIIZI)V",
+      garbageValue = "-1693396739"
+   )
+   static void method1939(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var6.parentId == var1) {
+            class227.method4318(var6, var2, var3, var4);
+            WorldComparator.method55(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
+
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
+
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               GrandExchangeOffer.method119(var0, var6, var4);
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("jd")
+   @ObfuscatedSignature(
+      signature = "(Lim;IIII)V",
+      garbageValue = "1782643369"
+   )
+   static final void method1940(Widget var0, int var1, int var2, int var3) {
+      class230 var4 = var0.method4429(false);
+      if(var4 != null) {
+         if(Client.field834 < 3) {
+            UnitPriceComparator.compass.method5821(var1, var2, var4.field2732, var4.field2730, 25, 25, Client.mapAngle, 256, var4.field2733, var4.field2731);
+         } else {
+            Rasterizer2D.method5689(var1, var2, 0, var4.field2733, var4.field2731);
+         }
+
       }
    }
 }

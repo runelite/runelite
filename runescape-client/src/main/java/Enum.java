@@ -4,61 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jg")
+@ObfuscatedName("jh")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("oh")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Ldf;"
-   )
-   @Export("soundSystem1")
-   static AbstractSoundSystem soundSystem1;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lie;"
    )
    @Export("EnumDefinition_indexCache")
-   public static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("g")
+   static IndexDataBase EnumDefinition_indexCache;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lhj;"
    )
    @Export("EnumDefinition_cached")
    static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("fr")
-   @ObfuscatedSignature(
-      signature = "[Lki;"
-   )
-   @Export("crossSprites")
-   static SpritePixels[] crossSprites;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1330365559
+      intValue = -1050615061
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1953497599
+      intValue = 315108431
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("k")
+   @ObfuscatedName("c")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -71,10 +59,10 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lgy;B)V",
-      garbageValue = "3"
+      signature = "(Lgn;I)V",
+      garbageValue = "458163131"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -88,10 +76,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lgy;IB)V",
-      garbageValue = "0"
+      signature = "(Lgn;II)V",
+      garbageValue = "860536387"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -128,32 +116,31 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-919829593"
+      garbageValue = "-933959885"
    )
-   public int method4868() {
+   public int method4904() {
       return this.size;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lir;Lir;I)V",
-      garbageValue = "-1347217661"
+      signature = "(I[BLfn;B)V",
+      garbageValue = "14"
    )
-   public static void method4880(IndexDataBase var0, IndexDataBase var1) {
-      KitDefinition.identKit_ref = var0;
-      KitDefinition.field3441 = var1;
-      KitDefinition.field3431 = KitDefinition.identKit_ref.fileCount(3);
-   }
+   static void method4913(int var0, byte[] var1, IndexFile var2) {
+      FileSystem var3 = new FileSystem();
+      var3.type = 0;
+      var3.hash = (long)var0;
+      var3.field3316 = var1;
+      var3.index = var2;
+      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
+      }
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lgy;B)Ljava/lang/String;",
-      garbageValue = "20"
-   )
-   public static String method4881(Buffer var0) {
-      return Timer.method3296(var0, 32767);
+      class231.method4370();
    }
 }

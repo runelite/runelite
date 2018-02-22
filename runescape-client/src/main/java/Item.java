@@ -4,79 +4,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("co")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("fy")
-   @Export("mapRegions")
-   static int[] mapRegions;
-   @ObfuscatedName("s")
+   @ObfuscatedName("qo")
    @ObfuscatedGetter(
-      intValue = -600593349
+      intValue = 2002299293
+   )
+   static int field1367;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lie;"
+   )
+   public static IndexDataBase field1362;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Ldo;"
+   )
+   static class109 field1366;
+   @ObfuscatedName("ae")
+   @ObfuscatedGetter(
+      intValue = 233042525
+   )
+   static int field1365;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1862304201
    )
    @Export("id")
    int id;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 395978261
+      intValue = -688193375
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(I)Les;",
-      garbageValue = "-25440425"
-   )
-   protected final Model getModel() {
-      return ItemContainer.getItemDefinition(this.id).getModel(this.quantity);
-   }
-
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "16"
+      signature = "(I)Lee;",
+      garbageValue = "582025400"
    )
-   static int method1955() {
-      return 11;
+   protected final Model getModel() {
+      return ContextMenuRow.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(ILcf;ZB)I",
-      garbageValue = "-65"
+      signature = "(IS)Ljp;",
+      garbageValue = "-5552"
    )
-   static int method1959(int var0, Script var1, boolean var2) {
-      Widget var3 = class216.getWidget(class80.intStack[--class80.intStackSize]);
-      if(var0 == 2800) {
-         int[] var4 = class80.intStack;
-         int var5 = ++class80.intStackSize - 1;
-         int var7 = WorldComparator.getWidgetConfig(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
-         return 1;
-      } else if(var0 != 2801) {
-         if(var0 == 2802) {
-            if(var3.name == null) {
-               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = "";
-            } else {
-               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
+   @Export("getUnderlayDefinition")
+   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         int var8 = class80.intStack[--class80.intStackSize];
-         --var8;
-         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class80.scriptStringStack[++class294.scriptStringStackSize - 1] = var3.actions[var8];
-         } else {
-            class80.scriptStringStack[++class294.scriptStringStackSize - 1] = "";
+         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
          }
 
-         return 1;
+         var1.post();
+         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
+         return var1;
       }
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lie;Lie;I)V",
+      garbageValue = "398074452"
+   )
+   public static void method1919(IndexDataBase var0, IndexDataBase var1) {
+      Spotanim.SpotAnimationDefinition_indexCache = var0;
+      Spotanim.SpotAnimationDefinition_modelIndexCache = var1;
+   }
+
+   @ObfuscatedName("jn")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
+      garbageValue = "53926507"
+   )
+   @Export("prependIndices")
+   static final String[] prependIndices(String[] var0) {
+      String[] var1 = new String[5];
+
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && var0[var2] != null) {
+            var1[var2] = var1[var2] + var0[var2];
+         }
+      }
+
+      return var1;
    }
 }

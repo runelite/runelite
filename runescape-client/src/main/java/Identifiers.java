@@ -2,10 +2,10 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("ga")
 @Implements("Identifiers")
 public class Identifiers {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("table")
    int[] table;
 
@@ -33,7 +33,7 @@ public class Identifiers {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("getFile")
    public int getFile(int var1) {
       int var2 = (this.table.length >> 1) - 1;

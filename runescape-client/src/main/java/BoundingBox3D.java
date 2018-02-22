@@ -1,60 +1,69 @@
-import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("u")
 @Implements("BoundingBox3D")
 public final class BoundingBox3D extends BoundingBox {
-   @ObfuscatedName("f")
-   static int[] field247;
-   @ObfuscatedName("s")
+   @ObfuscatedName("qx")
+   @ObfuscatedSignature(
+      signature = "Lll;"
+   )
+   @Export("renderOverview")
+   static RenderOverview renderOverview;
+   @ObfuscatedName("bg")
+   @ObfuscatedSignature(
+      signature = "[Llv;"
+   )
+   @Export("slStarSprites")
+   static IndexedSprite[] slStarSprites;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -255779647
+      intValue = -1861114873
    )
    @Export("int1")
    final int int1;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1127537095
+      intValue = -2012900661
    )
    @Export("int2")
    final int int2;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1926367543
+      intValue = 281041455
    )
    @Export("int3")
    final int int3;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -651297591
+      intValue = 788713727
    )
    @Export("int4")
    final int int4;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -2006714047
+      intValue = 520475771
    )
    @Export("int5")
    final int int5;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1566286361
+      intValue = -410584357
    )
    @Export("int6")
    final int int6;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -420532453
+      intValue = -1149564663
    )
    @Export("color")
    final int color;
 
    @ObfuscatedSignature(
-      signature = "(Les;IIII)V"
+      signature = "(Lee;IIII)V"
    )
    BoundingBox3D(Model var1, int var2, int var3, int var4, int var5) {
       this.int1 = var2 + var1.centerX - var1.extremeX;
@@ -66,74 +75,38 @@ public final class BoundingBox3D extends BoundingBox {
       this.color = var5;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1287124829"
+      garbageValue = "2133791811"
    )
-   final void draw() {
+   public final void vmethod48() {
       for(int var4 = 0; var4 < 8; ++var4) {
          int var1 = (var4 & 1) == 0?this.int1:this.int4;
          int var2 = (var4 & 2) == 0?this.int2:this.int5;
          int var3 = (var4 & 4) == 0?this.int3:this.int6;
          if((var4 & 1) == 0) {
-            TotalQuantityComparator.method98(var1, var2, var3, this.int4, var2, var3, this.color);
+            class234.method4415(var1, var2, var3, this.int4, var2, var3, this.color);
          }
 
          if((var4 & 2) == 0) {
-            TotalQuantityComparator.method98(var1, var2, var3, var1, this.int5, var3, this.color);
+            class234.method4415(var1, var2, var3, var1, this.int5, var3, this.color);
          }
 
          if((var4 & 4) == 0) {
-            TotalQuantityComparator.method98(var1, var2, var3, var1, var2, this.int6, this.color);
+            class234.method4415(var1, var2, var3, var1, var2, this.int6, this.color);
          }
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "770980956"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-2059698736"
    )
-   static void method53(Component var0) {
-      var0.addMouseListener(MouseInput.mouse);
-      var0.addMouseMotionListener(MouseInput.mouse);
-      var0.addFocusListener(MouseInput.mouse);
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)V",
-      garbageValue = "-62"
-   )
-   static final void method49(String var0) {
-      SoundTaskDataProvider.sendGameMessage(30, "", var0);
-   }
-
-   @ObfuscatedName("hc")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "127"
-   )
-   static final void method52(int var0) {
-      if(var0 >= 0) {
-         int var1 = Client.menuActionParams0[var0];
-         int var2 = Client.menuActionParams1[var0];
-         int var3 = Client.menuTypes[var0];
-         int var4 = Client.menuIdentifiers[var0];
-         String var5 = Client.menuOptions[var0];
-         String var6 = Client.menuTargets[var0];
-         Client.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.mouseLastPressedX, MouseInput.mouseLastPressedY);
-      }
-   }
-
-   @ObfuscatedName("ig")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1118012612"
-   )
-   static final int method51() {
-      return Client.menuOptionCount - 1;
+   @Export("getColTags")
+   static String getColTags(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
    }
 }

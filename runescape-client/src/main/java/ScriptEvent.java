@@ -1,242 +1,188 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("ba")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("ge")
+   @ObfuscatedName("de")
    @ObfuscatedGetter(
-      intValue = -817434855
+      intValue = -64726671
    )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("jk")
-   @ObfuscatedGetter(
-      intValue = 475850421
-   )
-   static int field772;
-   @ObfuscatedName("s")
+   @Export("myWorldPort")
+   static int myWorldPort;
+   @ObfuscatedName("b")
    @Export("objs")
    Object[] objs;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @Export("boolean1")
    boolean boolean1;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhs;"
+      signature = "Lim;"
    )
    @Export("widget")
    Widget widget;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1545435759
+   )
+   int field744;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -24982637
+   )
+   int field745;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -2084659539
+      intValue = 192971083
    )
-   int field774;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -518996007
-   )
-   int field775;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1985978545
-   )
-   int field781;
-   @ObfuscatedName("t")
+   int field753;
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lhs;"
+      signature = "Lim;"
    )
-   Widget field777;
-   @ObfuscatedName("d")
+   Widget field747;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1013702635
+      intValue = 1684983799
    )
-   int field784;
-   @ObfuscatedName("z")
+   int field754;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 523443273
+      intValue = -209247861
    )
-   int field779;
-   @ObfuscatedName("k")
+   int field749;
+   @ObfuscatedName("c")
    @Export("string")
    String string;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 409340381
+      intValue = -135392509
    )
-   int field771;
-   @ObfuscatedName("o")
+   int field751;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Liu;"
    )
-   class230 field782;
+   class239 field752;
 
    public ScriptEvent() {
-      this.field782 = class230.field2901;
+      this.field752 = class239.field2925;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "([Ljava/lang/Object;I)V",
-      garbageValue = "1383527630"
+      garbageValue = "613815162"
    )
-   public void method1065(Object[] var1) {
+   public void method1134(Object[] var1) {
       this.objs = var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lhj;I)V",
-      garbageValue = "1647906984"
+      signature = "(Liu;B)V",
+      garbageValue = "-81"
    )
-   public void method1066(class230 var1) {
-      this.field782 = var1;
+   public void method1130(class239 var1) {
+      this.field752 = var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lir;IIB)Lki;",
-      garbageValue = "-96"
+      signature = "(I)[Lfw;",
+      garbageValue = "778828253"
    )
-   public static SpritePixels method1074(IndexDataBase var0, int var1, int var2) {
-      if(!class35.method484(var0, var1, var2)) {
-         return null;
-      } else {
-         SpritePixels var4 = new SpritePixels();
-         var4.maxWidth = class310.field3908;
-         var4.maxHeight = class310.field3910;
-         var4.offsetX = class219.field2698[0];
-         var4.offsetY = class263.offsetsY[0];
-         var4.width = class60.field708[0];
-         var4.height = class310.field3911[0];
-         int var5 = var4.width * var4.height;
-         byte[] var6 = class310.spritePixels[0];
-         var4.pixels = new int[var5];
-
-         for(int var7 = 0; var7 < var5; ++var7) {
-            var4.pixels[var7] = class289.field3786[var6[var7] & 255];
-         }
-
-         Name.method5282();
-         return var4;
-      }
+   public static ServerPacket[] method1137() {
+      return new ServerPacket[]{ServerPacket.field2289, ServerPacket.field2256, ServerPacket.field2257, ServerPacket.field2258, ServerPacket.field2263, ServerPacket.field2260, ServerPacket.field2319, ServerPacket.field2300, ServerPacket.field2337, ServerPacket.field2317, ServerPacket.field2265, ServerPacket.field2266, ServerPacket.field2267, ServerPacket.field2268, ServerPacket.field2269, ServerPacket.field2279, ServerPacket.field2271, ServerPacket.field2272, ServerPacket.field2273, ServerPacket.field2290, ServerPacket.field2277, ServerPacket.field2276, ServerPacket.field2259, ServerPacket.field2278, ServerPacket.field2262, ServerPacket.field2280, ServerPacket.field2275, ServerPacket.field2282, ServerPacket.field2283, ServerPacket.field2284, ServerPacket.field2285, ServerPacket.field2286, ServerPacket.field2287, ServerPacket.field2288, ServerPacket.field2261, ServerPacket.field2270, ServerPacket.field2291, ServerPacket.field2292, ServerPacket.field2331, ServerPacket.field2294, ServerPacket.field2295, ServerPacket.field2296, ServerPacket.field2281, ServerPacket.field2298, ServerPacket.field2299, ServerPacket.field2333, ServerPacket.field2301, ServerPacket.field2302, ServerPacket.field2303, ServerPacket.field2329, ServerPacket.field2305, ServerPacket.field2306, ServerPacket.field2307, ServerPacket.field2308, ServerPacket.field2309, ServerPacket.field2310, ServerPacket.field2320, ServerPacket.field2312, ServerPacket.field2313, ServerPacket.field2314, ServerPacket.field2315, ServerPacket.field2316, ServerPacket.field2304, ServerPacket.field2322, ServerPacket.field2293, ServerPacket.field2297, ServerPacket.field2321, ServerPacket.field2334, ServerPacket.field2323, ServerPacket.field2324, ServerPacket.field2311, ServerPacket.field2326, ServerPacket.field2327, ServerPacket.field2328, ServerPacket.field2325, ServerPacket.field2330, ServerPacket.field2264, ServerPacket.field2332, ServerPacket.field2274, ServerPacket.field2318, ServerPacket.field2335};
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("jt")
    @ObfuscatedSignature(
-      signature = "(ILcf;ZI)I",
-      garbageValue = "788985924"
+      signature = "([Lim;IB)V",
+      garbageValue = "-93"
    )
-   static int method1073(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class216.getWidget(class80.intStack[--class80.intStackSize]);
-      } else {
-         var3 = var2?class94.field1418:ItemLayer.field1668;
-      }
-
-      if(var0 == 1927) {
-         if(class80.field1250 >= 10) {
-            throw new RuntimeException();
-         } else if(var3.field2812 == null) {
-            return 0;
-         } else {
-            ScriptEvent var4 = new ScriptEvent();
-            var4.widget = var3;
-            var4.objs = var3.field2812;
-            var4.field771 = class80.field1250 + 1;
-            Client.field1023.addFront(var4);
-            return 1;
-         }
-      } else {
-         return 2;
-      }
-   }
-
-   @ObfuscatedName("hu")
-   @ObfuscatedSignature(
-      signature = "(ZLgt;I)V",
-      garbageValue = "1644506536"
-   )
-   @Hook("onNpcUpdate")
-   @Export("updateNpcs")
-   static final void updateNpcs(boolean var0, PacketBuffer var1) {
-      while(true) {
-         if(var1.bitsAvail(Client.field937.packetLength) >= 27) {
-            int var2 = var1.getBits(15);
-            if(var2 != 32767) {
-               boolean var3 = false;
-               if(Client.cachedNPCs[var2] == null) {
-                  Client.cachedNPCs[var2] = new NPC();
-                  var3 = true;
+   static final void method1138(Widget[] var0, int var1) {
+      for(int var2 = 0; var2 < var0.length; ++var2) {
+         Widget var3 = var0[var2];
+         if(var3 != null) {
+            if(var3.type == 0) {
+               if(var3.children != null) {
+                  method1138(var3.children, var1);
                }
 
-               NPC var4 = Client.cachedNPCs[var2];
-               Client.npcIndices[++Client.npcIndexesCount - 1] = var2;
-               var4.npcCycle = Client.gameCycle;
-               int var5 = var1.getBits(1);
-               if(var5 == 1) {
-                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var2;
+               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
+               if(var4 != null) {
+                  FrameMap.method2881(var4.id, var1);
                }
+            }
 
-               int var6 = var1.getBits(1);
-               int var7;
-               if(var0) {
-                  var7 = var1.getBits(8);
-                  if(var7 > 127) {
-                     var7 -= 256;
-                  }
-               } else {
-                  var7 = var1.getBits(5);
-                  if(var7 > 15) {
-                     var7 -= 32;
+            ScriptEvent var5;
+            if(var1 == 0 && var3.field2884 != null) {
+               var5 = new ScriptEvent();
+               var5.widget = var3;
+               var5.objs = var3.field2884;
+               class194.method3791(var5);
+            }
+
+            if(var1 == 1 && var3.field2900 != null) {
+               if(var3.index >= 0) {
+                  Widget var6 = NetWriter.getWidget(var3.id);
+                  if(var6 == null || var6.children == null || var3.index >= var6.children.length || var3 != var6.children[var3.index]) {
+                     continue;
                   }
                }
 
-               var4.composition = Spotanim.getNpcDefinition(var1.getBits(14));
-               int var8;
-               if(var0) {
-                  var8 = var1.getBits(8);
-                  if(var8 > 127) {
-                     var8 -= 256;
-                  }
-               } else {
-                  var8 = var1.getBits(5);
-                  if(var8 > 15) {
-                     var8 -= 32;
-                  }
-               }
-
-               int var9 = Client.field952[var1.getBits(3)];
-               if(var3) {
-                  var4.orientation = var4.angle = var9;
-               }
-
-               var4.field1127 = var4.composition.field3633;
-               var4.field1167 = var4.composition.field3634;
-               if(var4.field1167 == 0) {
-                  var4.angle = 0;
-               }
-
-               var4.field1156 = var4.composition.field3627;
-               var4.field1123 = var4.composition.field3640;
-               var4.field1124 = var4.composition.field3645;
-               var4.field1125 = var4.composition.field3642;
-               var4.idlePoseAnimation = var4.composition.field3636;
-               var4.field1120 = var4.composition.field3637;
-               var4.field1121 = var4.composition.field3639;
-               var4.method1852(GroundObject.localPlayer.pathX[0] + var8, GroundObject.localPlayer.pathY[0] + var7, var6 == 1);
-               continue;
+               var5 = new ScriptEvent();
+               var5.widget = var3;
+               var5.objs = var3.field2900;
+               class194.method3791(var5);
             }
          }
-
-         var1.byteAccess();
-         return;
       }
+
+   }
+
+   @ObfuscatedName("jk")
+   @ObfuscatedSignature(
+      signature = "(Lim;B)V",
+      garbageValue = "88"
+   )
+   static void method1132(Widget var0) {
+      if(var0.loopCycle == Client.field877) {
+         Client.field979[var0.boundsIndex] = true;
+      }
+
+   }
+
+   @ObfuscatedName("kb")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+      garbageValue = "-2030511551"
+   )
+   static String method1136(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.socketType == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.socketType == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.socketType == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.socketType == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.socketType == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(class45.sessionToken != null) {
+         var3 = "/p=" + class45.sessionToken;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class41.field512 + var3 + "/";
    }
 }

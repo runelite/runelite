@@ -6,52 +6,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
+@ObfuscatedName("fn")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("ni")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   static class301 field2185;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1307186807
-   )
-   public static int field2192;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 2045136949
-   )
-   @Export("canvasHeight")
-   protected static int canvasHeight;
-   @ObfuscatedName("bv")
-   @Export("sessionToken")
-   static String sessionToken;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lcy;"
+      signature = "Lde;"
    )
    @Export("dataFile")
    CacheFile dataFile;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lcy;"
+      signature = "Lde;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1580633103
+      intValue = -1906406729
    )
    @Export("index")
    int index;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1166502847
+      intValue = 520658687
    )
    @Export("maxSize")
    int maxSize;
@@ -61,7 +42,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILcy;Lcy;I)V"
+      signature = "(ILde;Lde;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -73,10 +54,10 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "-774740927"
+      garbageValue = "-2086222028"
    )
    @Export("read")
    public byte[] read(int var1) {
@@ -149,10 +130,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I[BIB)Z",
-      garbageValue = "-28"
+      signature = "(I[BII)Z",
+      garbageValue = "317110943"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -171,10 +152,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I[BIZI)Z",
-      garbageValue = "933004585"
+      garbageValue = "175165616"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -216,7 +197,7 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label143: {
+                  label146: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
@@ -225,7 +206,7 @@ public final class IndexFile {
                         try {
                            this.dataFile.read(IndexStore_buffer, 0, 8);
                         } catch (EOFException var16) {
-                           break label143;
+                           break label146;
                         }
 
                         var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
@@ -250,7 +231,7 @@ public final class IndexFile {
                            ++var9;
                         }
 
-                        if(var9 == var6) {
+                        if(var6 == var9) {
                            ++var9;
                         }
                      }
@@ -291,42 +272,50 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)Ljp;",
-      garbageValue = "-1913986945"
+      signature = "(III)I",
+      garbageValue = "-1056750927"
    )
-   public static Varbit method3336(int var0) {
-      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
+   static int method3358(int var0, int var1) {
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var2 == null) {
+         return 0;
+      } else if(var1 == -1) {
+         return 0;
+      } else {
+         int var3 = 0;
+
+         for(int var4 = 0; var4 < var2.stackSizes.length; ++var4) {
+            if(var2.itemIds[var4] == var1) {
+               var3 += var2.stackSizes[var4];
+            }
+         }
+
+         return var3;
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(II)Ljk;",
+      garbageValue = "1788136272"
+   )
+   @Export("getSpotAnimType")
+   public static Spotanim getSpotAnimType(int var0) {
+      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Varbit.varbit_ref.getConfigData(14, var0);
-         var1 = new Varbit();
+         byte[] var2 = Spotanim.SpotAnimationDefinition_indexCache.getConfigData(13, var0);
+         var1 = new Spotanim();
+         var1.id = var0;
          if(var2 != null) {
             var1.decode(new Buffer(var2));
          }
 
-         Varbit.varbits.put(var1, (long)var0);
+         Spotanim.spotanims.put(var1, (long)var0);
          return var1;
       }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(ILhj;I)I",
-      garbageValue = "-1091030470"
-   )
-   public static int method3329(int var0, class230 var1) {
-      return (var0 << 8) + var1.field2899;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1921783371"
-   )
-   public static int method3332() {
-      return ++MouseInput.mouseIdleTicks - 1;
    }
 }

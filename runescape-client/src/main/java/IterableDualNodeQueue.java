@@ -4,12 +4,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hk")
+@ObfuscatedName("ha")
 @Implements("IterableDualNodeQueue")
 public class IterableDualNodeQueue implements Iterable {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgv;"
+      signature = "Lht;"
    )
    @Export("sentinel")
    public CacheableNode sentinel;
@@ -20,7 +20,7 @@ public class IterableDualNodeQueue implements Iterable {
       this.sentinel.next = this.sentinel;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("clear")
    public void clear() {
       while(this.sentinel.previous != this.sentinel) {
@@ -29,9 +29,9 @@ public class IterableDualNodeQueue implements Iterable {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgv;)V"
+      signature = "(Lht;)V"
    )
    @Export("add")
    public void add(CacheableNode var1) {
@@ -46,6 +46,6 @@ public class IterableDualNodeQueue implements Iterable {
    }
 
    public Iterator iterator() {
-      return new class211(this);
+      return new class220(this);
    }
 }

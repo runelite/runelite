@@ -4,12 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("es")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("cx")
+   @ObfuscatedName("cr")
    @ObfuscatedGetter(
-      intValue = 1613868595
+      intValue = -1452474481
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -18,17 +18,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Les;",
-      garbageValue = "-25440425"
+      signature = "(I)Lee;",
+      garbageValue = "582025400"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cx")
+   @ObfuscatedName("ct")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -39,55 +39,47 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "155785843"
+      signature = "(Lim;B)Z",
+      garbageValue = "68"
    )
-   public static void method3110(int var0, int var1) {
-      Varbit var2 = IndexFile.method3336(var0);
-      int var3 = var2.configId;
-      int var4 = var2.leastSignificantBit;
-      int var5 = var2.mostSignificantBit;
-      int var6 = class222.varpsMasks[var5 - var4];
-      if(var1 < 0 || var1 > var6) {
-         var1 = 0;
-      }
+   static final boolean method3049(Widget var0) {
+      if(var0.tableActions == null) {
+         return false;
+      } else {
+         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
+            int var2 = ScriptState.method1104(var0, var1);
+            int var3 = var0.field2891[var1];
+            if(var0.tableActions[var1] == 2) {
+               if(var2 >= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 3) {
+               if(var2 <= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 4) {
+               if(var3 == var2) {
+                  return false;
+               }
+            } else if(var3 != var2) {
+               return false;
+            }
+         }
 
-      var6 <<= var4;
-      class222.widgetSettings[var3] = class222.widgetSettings[var3] & ~var6 | var1 << var4 & var6;
+         return true;
+      }
    }
 
-   @ObfuscatedName("ak")
+   @ObfuscatedName("jm")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "214890999"
+      signature = "(IS)V",
+      garbageValue = "-26429"
    )
-   @Export("decodeContainer")
-   static final byte[] decodeContainer(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.readInt();
-      if(var3 < 0 || IndexDataBase.field3320 != 0 && var3 > IndexDataBase.field3320) {
-         throw new RuntimeException();
-      } else if(var2 == 0) {
-         byte[] var4 = new byte[var3];
-         var1.readBytes(var4, 0, var3);
-         return var4;
-      } else {
-         int var6 = var1.readInt();
-         if(var6 >= 0 && (IndexDataBase.field3320 == 0 || var6 <= IndexDataBase.field3320)) {
-            byte[] var5 = new byte[var6];
-            if(var2 == 1) {
-               class178.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
-            } else {
-               IndexDataBase.gzip.decompress(var1, var5);
-            }
-
-            return var5;
-         } else {
-            throw new RuntimeException();
-         }
+   static final void method3050(int var0) {
+      if(class2.loadWidget(var0)) {
+         class87.method1862(Widget.widgets[var0], -1);
       }
    }
 }

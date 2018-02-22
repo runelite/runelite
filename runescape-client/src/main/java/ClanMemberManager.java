@@ -4,140 +4,160 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ji")
+@ObfuscatedName("kg")
 @Implements("ClanMemberManager")
 public class ClanMemberManager extends NameableContainer {
    @ObfuscatedName("ea")
-   @ObfuscatedGetter(
-      intValue = -1481587515
+   @ObfuscatedSignature(
+      signature = "Lkt;"
    )
-   @Export("baseX")
-   static int baseX;
-   @ObfuscatedName("g")
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lld;"
    )
-   final JagexLoginType field3729;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   final class277 field3730;
-   @ObfuscatedName("z")
-   public String field3731;
-   @ObfuscatedName("k")
-   public String field3732;
-   @ObfuscatedName("c")
-   public byte field3737;
+   final JagexLoginType field3741;
    @ObfuscatedName("o")
-   public byte field3733;
+   @ObfuscatedSignature(
+      signature = "Lkb;"
+   )
+   final class288 field3740;
+   @ObfuscatedName("c")
+   public String field3745;
+   @ObfuscatedName("u")
+   public String field3742;
+   @ObfuscatedName("r")
+   public byte field3739;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1465634901
+   )
+   public int field3744;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 2014947155
+   )
+   int field3743;
 
    @ObfuscatedSignature(
-      signature = "(Lld;Ljz;)V"
+      signature = "(Lld;Lkb;)V"
    )
-   public ClanMemberManager(JagexLoginType var1, class277 var2) {
+   public ClanMemberManager(JagexLoginType var1, class288 var2) {
       super(100);
-      this.field3731 = null;
-      this.field3732 = null;
-      this.field3729 = var1;
-      this.field3730 = var2;
+      this.field3745 = null;
+      this.field3742 = null;
+      this.field3743 = 1;
+      this.field3741 = var1;
+      this.field3740 = var2;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)Ljq;",
-      garbageValue = "-1161467535"
+      signature = "(I)Ljw;",
+      garbageValue = "-258832734"
    )
-   Nameable vmethod5308() {
+   Nameable vmethod5393() {
       return new ClanMember();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)[Ljq;",
-      garbageValue = "-1191416525"
+      signature = "(IB)[Ljw;",
+      garbageValue = "-1"
    )
-   Nameable[] vmethod5331(int var1) {
+   Nameable[] vmethod5396(int var1) {
       return new ClanMember[var1];
    }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)V",
-      garbageValue = "3"
-   )
-   final void method5305(String var1) {
-      this.field3731 = class288.method5457(var1);
-   }
-
-   @ObfuscatedName("cx")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
-      garbageValue = "469186545"
+      garbageValue = "1582324497"
    )
-   final void method5334(String var1) {
-      this.field3732 = class288.method5457(var1);
+   final void method5417(String var1) {
+      String var3 = class47.method728(GameObject.method3072(var1));
+      if(var3 == null) {
+         var3 = "";
+      }
+
+      this.field3745 = var3;
    }
 
-   @ObfuscatedName("ck")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lgy;B)V",
-      garbageValue = "58"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-427567209"
    )
-   public final void method5307(Buffer var1) {
-      this.method5334(var1.readString());
+   final void method5406(String var1) {
+      String var3 = class47.method728(GameObject.method3072(var1));
+      if(var3 == null) {
+         var3 = "";
+      }
+
+      this.field3742 = var3;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Lgn;I)V",
+      garbageValue = "247650279"
+   )
+   public final void method5397(Buffer var1) {
+      this.method5406(var1.readString());
       long var2 = var1.readLong();
       long var5 = var2;
       String var4;
       int var7;
       if(var2 > 0L && var2 < 6582952005840035281L) {
-         if(var2 % 37L == 0L) {
+         if(0L == var2 % 37L) {
             var4 = null;
          } else {
             var7 = 0;
 
-            for(long var13 = var2; var13 != 0L; var13 /= 37L) {
+            for(long var13 = var2; 0L != var13; var13 /= 37L) {
                ++var7;
             }
 
-            StringBuilder var10 = new StringBuilder(var7);
+            StringBuilder var15 = new StringBuilder(var7);
 
-            while(0L != var5) {
+            while(var5 != 0L) {
                long var11 = var5;
                var5 /= 37L;
-               var10.append(class291.field3791[(int)(var11 - 37L * var5)]);
+               var15.append(class302.field3794[(int)(var11 - var5 * 37L)]);
             }
 
-            var4 = var10.reverse().toString();
+            var4 = var15.reverse().toString();
          }
       } else {
          var4 = null;
       }
 
-      this.method5305(var4);
-      this.field3737 = var1.readByte();
+      this.method5417(var4);
+      this.field3739 = var1.readByte();
       var7 = var1.readUnsignedByte();
       if(var7 != 255) {
-         this.method5245();
+         this.method5230();
 
          for(int var8 = 0; var8 < var7; ++var8) {
-            ClanMember var9 = (ClanMember)this.method5177(new Name(var1.readString(), this.field3729));
-            var9.world = var1.readUnsignedShort();
-            var9.rank = var1.readByte();
+            ClanMember var9 = (ClanMember)this.method5269(new Name(var1.readString(), this.field3741));
+            int var10 = var1.readUnsignedShort();
+            var9.method5332(var10, ++this.field3743 - 1);
+            var9.field3719 = var1.readByte();
             var1.readString();
-            this.method5311(var9);
+            this.method5400(var9);
          }
 
       }
    }
 
-   @ObfuscatedName("cb")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "-1658303149"
+      signature = "(Lgn;I)V",
+      garbageValue = "-796074079"
    )
-   public final void method5306(Buffer var1) {
-      Name var2 = new Name(var1.readString(), this.field3729);
+   public final void method5424(Buffer var1) {
+      Name var2 = new Name(var1.readString(), this.field3741);
       int var3 = var1.readUnsignedShort();
       byte var4 = var1.readByte();
       boolean var5 = false;
@@ -151,60 +171,60 @@ public class ClanMemberManager extends NameableContainer {
             return;
          }
 
-         var6 = (ClanMember)this.method5173(var2);
-         if(var6 != null && var3 == var6.world) {
-            this.method5176(var6);
+         var6 = (ClanMember)this.method5235(var2);
+         if(var6 != null && var6.method5336() == var3) {
+            this.method5238(var6);
          }
       } else {
          var1.readString();
-         var6 = (ClanMember)this.method5171(var2);
+         var6 = (ClanMember)this.method5307(var2);
          if(var6 == null) {
-            if(this.getCount() > super.field3707) {
+            if(this.getCount() > super.field3709) {
                return;
             }
 
-            var6 = (ClanMember)this.method5177(var2);
+            var6 = (ClanMember)this.method5269(var2);
          }
 
-         var6.world = var3;
-         var6.rank = var4;
-         this.method5311(var6);
+         var6.method5332(var3, ++this.field3743 - 1);
+         var6.field3719 = var4;
+         this.method5400(var6);
       }
 
    }
 
-   @ObfuscatedName("cm")
+   @ObfuscatedName("ck")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2018736750"
+      garbageValue = "-1180374089"
    )
-   public final void method5309() {
+   public final void method5407() {
       for(int var1 = 0; var1 < this.getCount(); ++var1) {
-         ((ClanMember)this.get(var1)).method5117();
+         ((ClanMember)this.get(var1)).method5162();
       }
 
    }
 
-   @ObfuscatedName("cu")
+   @ObfuscatedName("ci")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "6"
+      signature = "(I)V",
+      garbageValue = "-1452453104"
    )
-   public final void method5303() {
+   public final void method5399() {
       for(int var1 = 0; var1 < this.getCount(); ++var1) {
-         ((ClanMember)this.get(var1)).method5115();
+         ((ClanMember)this.get(var1)).method5165();
       }
 
    }
 
-   @ObfuscatedName("cf")
+   @ObfuscatedName("ch")
    @ObfuscatedSignature(
-      signature = "(Ljn;B)V",
-      garbageValue = "99"
+      signature = "(Ljc;I)V",
+      garbageValue = "-2135770863"
    )
-   final void method5311(ClanMember var1) {
-      if(var1.method5136().equals(this.field3730.vmethod5253())) {
-         this.field3733 = var1.rank;
+   final void method5400(ClanMember var1) {
+      if(var1.method5183().equals(this.field3740.vmethod5341())) {
+         this.field3744 = var1.field3719;
       }
 
    }

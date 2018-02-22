@@ -4,171 +4,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jw")
+@ObfuscatedName("ku")
 @Implements("Friend")
 public class Friend extends Nameable {
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1955832607
+      intValue = 1841793549
    )
    @Export("world")
    public int world;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -91873395
-   )
-   int field3738;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -297051129
-   )
-   public int field3740;
    @ObfuscatedName("h")
-   boolean field3741;
-   @ObfuscatedName("t")
-   boolean field3742;
+   @ObfuscatedGetter(
+      intValue = 1220319169
+   )
+   public int field3718;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1934693531
+   )
+   public int field3719;
 
    Friend() {
       this.world = -1;
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Ljw;I)I",
-      garbageValue = "-596745836"
-   )
-   int method5343(Friend var1) {
-      return this.world == Client.world && Client.world != var1.world?-1:(Client.world == var1.world && this.world != Client.world?1:(this.world != 0 && var1.world == 0?-1:(var1.world != 0 && this.world == 0?1:(this.field3741 && !var1.field3741?-1:(!this.field3741 && var1.field3741?1:(this.field3742 && !var1.field3742?-1:(!this.field3742 && var1.field3742?1:(this.world != 0?this.field3738 - var1.field3738:var1.field3738 - this.field3738))))))));
-   }
-
    @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(Ljq;I)I",
-      garbageValue = "-1632311756"
+      signature = "(III)V",
+      garbageValue = "-1183667192"
    )
-   int vmethod5337(Nameable var1) {
-      return this.method5343((Friend)var1);
+   void method5332(int var1, int var2) {
+      this.world = var1;
+      this.field3718 = var2;
    }
 
-   public int compareTo(Object var1) {
-      return this.method5343((Friend)var1);
-   }
-
-   @ObfuscatedName("a")
+   @ObfuscatedName("ab")
    @ObfuscatedSignature(
-      signature = "(ILcf;ZI)I",
-      garbageValue = "2064187249"
+      signature = "(I)I",
+      garbageValue = "-1371551857"
    )
-   static int method5348(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 4200) {
-         var3 = class80.intStack[--class80.intStackSize];
-         class80.scriptStringStack[++class294.scriptStringStackSize - 1] = ItemContainer.getItemDefinition(var3).name;
-         return 1;
-      } else {
-         int var4;
-         ItemComposition var5;
-         if(var0 == 4201) {
-            class80.intStackSize -= 2;
-            var3 = class80.intStack[class80.intStackSize];
-            var4 = class80.intStack[class80.intStackSize + 1];
-            var5 = ItemContainer.getItemDefinition(var3);
-            if(var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = var5.groundActions[var4 - 1];
-            } else {
-               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = "";
-            }
+   public int method5336() {
+      return this.world;
+   }
 
-            return 1;
-         } else if(var0 == 4202) {
-            class80.intStackSize -= 2;
-            var3 = class80.intStack[class80.intStackSize];
-            var4 = class80.intStack[class80.intStackSize + 1];
-            var5 = ItemContainer.getItemDefinition(var3);
-            if(var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = var5.inventoryActions[var4 - 1];
-            } else {
-               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = "";
-            }
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1052098241"
+   )
+   @Export("djb2Hash")
+   public static int djb2Hash(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
 
-            return 1;
-         } else if(var0 == 4203) {
-            var3 = class80.intStack[--class80.intStackSize];
-            class80.intStack[++class80.intStackSize - 1] = ItemContainer.getItemDefinition(var3).price;
-            return 1;
-         } else if(var0 == 4204) {
-            var3 = class80.intStack[--class80.intStackSize];
-            class80.intStack[++class80.intStackSize - 1] = ItemContainer.getItemDefinition(var3).isStackable == 1?1:0;
-            return 1;
-         } else {
-            ItemComposition var6;
-            if(var0 == 4205) {
-               var3 = class80.intStack[--class80.intStackSize];
-               var6 = ItemContainer.getItemDefinition(var3);
-               if(var6.notedTemplate == -1 && var6.note >= 0) {
-                  class80.intStack[++class80.intStackSize - 1] = var6.note;
-               } else {
-                  class80.intStack[++class80.intStackSize - 1] = var3;
-               }
-
-               return 1;
-            } else if(var0 == 4206) {
-               var3 = class80.intStack[--class80.intStackSize];
-               var6 = ItemContainer.getItemDefinition(var3);
-               if(var6.notedTemplate >= 0 && var6.note >= 0) {
-                  class80.intStack[++class80.intStackSize - 1] = var6.note;
-               } else {
-                  class80.intStack[++class80.intStackSize - 1] = var3;
-               }
-
-               return 1;
-            } else if(var0 == 4207) {
-               var3 = class80.intStack[--class80.intStackSize];
-               class80.intStack[++class80.intStackSize - 1] = ItemContainer.getItemDefinition(var3).isMembers?1:0;
-               return 1;
-            } else if(var0 == 4208) {
-               var3 = class80.intStack[--class80.intStackSize];
-               var6 = ItemContainer.getItemDefinition(var3);
-               if(var6.int3 == -1 && var6.int2 >= 0) {
-                  class80.intStack[++class80.intStackSize - 1] = var6.int2;
-               } else {
-                  class80.intStack[++class80.intStackSize - 1] = var3;
-               }
-
-               return 1;
-            } else if(var0 == 4209) {
-               var3 = class80.intStack[--class80.intStackSize];
-               var6 = ItemContainer.getItemDefinition(var3);
-               if(var6.int3 >= 0 && var6.int2 >= 0) {
-                  class80.intStack[++class80.intStackSize - 1] = var6.int2;
-               } else {
-                  class80.intStack[++class80.intStackSize - 1] = var3;
-               }
-
-               return 1;
-            } else if(var0 == 4210) {
-               String var7 = class80.scriptStringStack[--class294.scriptStringStackSize];
-               var4 = class80.intStack[--class80.intStackSize];
-               class214.method4122(var7, var4 == 1);
-               class80.intStack[++class80.intStackSize - 1] = OwnWorldComparator.field836;
-               return 1;
-            } else if(var0 != 4211) {
-               if(var0 == 4212) {
-                  class157.field2152 = 0;
-                  return 1;
-               } else {
-                  return 2;
-               }
-            } else {
-               if(class27.field382 != null && class157.field2152 < OwnWorldComparator.field836) {
-                  class80.intStack[++class80.intStackSize - 1] = class27.field382[++class157.field2152 - 1] & '\uffff';
-               } else {
-                  class80.intStack[++class80.intStackSize - 1] = -1;
-               }
-
-               return 1;
-            }
-         }
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class27.charToByteCp1252(var0.charAt(var3));
       }
+
+      return var2;
    }
 }

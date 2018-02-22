@@ -3,26 +3,24 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("ej")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("cl")
+   @ObfuscatedName("h")
+   @Export("audioHighMemory")
+   protected static boolean audioHighMemory;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lij;"
-   )
-   @Export("configsIndex")
-   static IndexData configsIndex;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "[Ldu;"
+      signature = "[Ldz;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lir;Lir;IZ)V"
+      signature = "(Lie;Lie;IZ)V",
+      garbageValue = "0"
    )
-   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -41,13 +39,7 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13;
-            if(var4) {
-               var13 = var2.getChild(0, var11);
-            } else {
-               var13 = var2.getChild(var11, 0);
-            }
-
+            byte[] var13 = var2.getChild(var11, 0);
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -57,51 +49,21 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "34"
+      signature = "(II)Z",
+      garbageValue = "1613270607"
    )
-   public boolean method3117(int var1) {
+   public boolean method3053(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(ILcf;ZI)I",
-      garbageValue = "-1909405820"
+      signature = "(Lie;B)V",
+      garbageValue = "-121"
    )
-   static int method3124(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 5504) {
-         class80.intStackSize -= 2;
-         var3 = class80.intStack[class80.intStackSize];
-         int var4 = class80.intStack[class80.intStackSize + 1];
-         if(!Client.field1068) {
-            Client.field907 = var3;
-            Client.mapAngle = var4;
-         }
-
-         return 1;
-      } else if(var0 == 5505) {
-         class80.intStack[++class80.intStackSize - 1] = Client.field907;
-         return 1;
-      } else if(var0 == 5506) {
-         class80.intStack[++class80.intStackSize - 1] = Client.mapAngle;
-         return 1;
-      } else if(var0 == 5530) {
-         var3 = class80.intStack[--class80.intStackSize];
-         if(var3 < 0) {
-            var3 = 0;
-         }
-
-         Client.field1061 = var3;
-         return 1;
-      } else if(var0 == 5531) {
-         class80.intStack[++class80.intStackSize - 1] = Client.field1061;
-         return 1;
-      } else {
-         return 2;
-      }
+   public static void method3055(IndexDataBase var0) {
+      class272.field3481 = var0;
    }
 }

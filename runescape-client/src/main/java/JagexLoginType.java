@@ -7,74 +7,74 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ld")
 @Implements("JagexLoginType")
 public class JagexLoginType {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lld;"
    )
-   public static final JagexLoginType field3966;
-   @ObfuscatedName("g")
+   public static final JagexLoginType field3973;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lld;"
    )
-   static final JagexLoginType field3973;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lld;"
-   )
-   static final JagexLoginType field3968;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lld;"
-   )
-   static final JagexLoginType field3967;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lld;"
-   )
-   static final JagexLoginType field3970;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lld;"
-   )
-   static final JagexLoginType field3971;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lld;"
-   )
-   static final JagexLoginType field3969;
-   @ObfuscatedName("d")
+   static final JagexLoginType field3974;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lld;"
    )
    static final JagexLoginType field3975;
-   @ObfuscatedName("z")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lld;"
    )
-   public static final JagexLoginType field3974;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1080136857
+   static final JagexLoginType field3976;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lld;"
    )
-   public final int field3972;
+   static final JagexLoginType field3981;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lld;"
+   )
+   static final JagexLoginType field3978;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lld;"
+   )
+   static final JagexLoginType field3979;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lld;"
+   )
+   static final JagexLoginType field3980;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lld;"
+   )
+   public static final JagexLoginType field3977;
    @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1685086039
+   )
+   public final int field3982;
+   @ObfuscatedName("u")
    @Export("identifier")
    final String identifier;
 
    static {
-      field3966 = new JagexLoginType(0, 0, "", "");
-      field3973 = new JagexLoginType(6, 1, "", "");
-      field3968 = new JagexLoginType(5, 2, "", "");
-      field3967 = new JagexLoginType(8, 3, "", "");
-      field3970 = new JagexLoginType(7, 4, "", "");
-      field3971 = new JagexLoginType(2, 5, "", "");
-      field3969 = new JagexLoginType(1, 6, "", "");
-      field3975 = new JagexLoginType(4, 7, "", "");
-      field3974 = new JagexLoginType(3, -1, "", "", true, new JagexLoginType[]{field3966, field3973, field3968, field3970, field3967});
+      field3973 = new JagexLoginType(4, 0, "", "");
+      field3974 = new JagexLoginType(0, 1, "", "");
+      field3975 = new JagexLoginType(2, 2, "", "");
+      field3976 = new JagexLoginType(7, 3, "", "");
+      field3981 = new JagexLoginType(8, 4, "", "");
+      field3978 = new JagexLoginType(6, 5, "", "");
+      field3979 = new JagexLoginType(5, 6, "", "");
+      field3980 = new JagexLoginType(3, 7, "", "");
+      field3977 = new JagexLoginType(1, -1, "", "", true, new JagexLoginType[]{field3973, field3974, field3975, field3981, field3976});
    }
 
    JagexLoginType(int var1, int var2, String var3, String var4) {
-      this.field3972 = var1;
+      this.field3982 = var1;
       this.identifier = var4;
    }
 
@@ -82,7 +82,7 @@ public class JagexLoginType {
       signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lld;)V"
    )
    JagexLoginType(int var1, int var2, String var3, String var4, boolean var5, JagexLoginType[] var6) {
-      this.field3972 = var1;
+      this.field3982 = var1;
       this.identifier = var4;
    }
 

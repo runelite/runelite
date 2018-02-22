@@ -1,31 +1,33 @@
-import java.io.File;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
-public class class150 implements class149 {
-   @ObfuscatedName("i")
-   static File field2091;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lir;"
-   )
-   @Export("ItemDefinition_modelIndexCache")
-   public static IndexDataBase ItemDefinition_modelIndexCache;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lgy;"
-   )
-   @Export("NetCache_reference")
-   static Buffer NetCache_reference;
+@ObfuscatedName("ez")
+public class class150 extends class283 {
+   @ObfuscatedName("b")
+   final boolean field2081;
 
-   @ObfuscatedName("s")
+   public class150(boolean var1) {
+      this.field2081 = var1;
+   }
+
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1198470794"
+      signature = "(Lku;Lku;I)I",
+      garbageValue = "-581264504"
    )
-   static int method3167() {
-      return ++class94.field1414 - 1;
+   int method3117(Friend var1, Friend var2) {
+      if(Client.world == var1.world) {
+         if(var2.world != Client.world) {
+            return this.field2081?-1:1;
+         }
+      } else if(var2.world == Client.world) {
+         return this.field2081?1:-1;
+      }
+
+      return this.method5214(var1, var2);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method3117((Friend)var1, (Friend)var2);
    }
 }

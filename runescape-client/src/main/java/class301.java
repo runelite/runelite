@@ -1,37 +1,14 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kl")
+@ObfuscatedName("kq")
 public class class301 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   public static final class301 field3855;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   public static final class301 field3854;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   public static final class301 field3853;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -2119556553
-   )
-   public final int field3856;
+   @ObfuscatedName("o")
+   public static final char[] field3790;
+   @ObfuscatedName("p")
+   public static final char[] field3791;
 
    static {
-      field3855 = new class301(0);
-      field3854 = new class301(1);
-      field3853 = new class301(2);
-   }
-
-   class301(int var1) {
-      this.field3856 = var1;
+      field3790 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
+      field3791 = new char[]{'[', ']', '#'};
    }
 }

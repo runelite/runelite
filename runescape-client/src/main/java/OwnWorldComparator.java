@@ -5,31 +5,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bm")
 @Implements("OwnWorldComparator")
 public class OwnWorldComparator implements Comparator {
-   @ObfuscatedName("qw")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1017944601
+      intValue = -1587098067
    )
-   static int field836;
-   @ObfuscatedName("aq")
-   static int[] field834;
-   @ObfuscatedName("ar")
-   static int[] field838;
-   @ObfuscatedName("s")
-   boolean field835;
-
-   @ObfuscatedName("s")
+   static int field813;
+   @ObfuscatedName("iu")
    @ObfuscatedSignature(
-      signature = "(Lq;Lq;I)I",
-      garbageValue = "-604455481"
+      signature = "Lbl;"
    )
-   int method1167(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   @Export("localPlayer")
+   static Player localPlayer;
+   @ObfuscatedName("b")
+   boolean field818;
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Ls;Ls;I)I",
+      garbageValue = "-1465648909"
+   )
+   int method1220(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       if(var2.world == var1.world) {
          return 0;
       } else {
-         if(this.field835) {
+         if(this.field818) {
             if(Client.world == var1.world) {
                return -1;
             }
@@ -43,50 +45,28 @@ public class OwnWorldComparator implements Comparator {
       }
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method1167((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
-   }
-
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)Lil;",
-      garbageValue = "1765404914"
-   )
-   @Export("getUnderlayDefinition")
-   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
-         var1 = new FloorUnderlayDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
-         }
-
-         var1.post();
-         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
-         return var1;
-      }
+   public int compare(Object var1, Object var2) {
+      return this.method1220((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("hb")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-662011368"
+      garbageValue = "828575971"
    )
-   public static final void method1166() {
-      while(true) {
-         BoundingBox var0 = (BoundingBox)class7.boundingBoxes.removeLast();
-         if(var0 == null) {
-            return;
+   static final void method1221() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints == -1) {
+            var0.delay = 0;
+            NPCComposition.method5107(var0);
+         } else {
+            var0.unlink();
          }
-
-         var0.draw();
       }
+
    }
 }

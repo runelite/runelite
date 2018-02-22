@@ -4,57 +4,108 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bw")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("qo")
-   @ObfuscatedGetter(
-      longValue = 8153442694785265883L
-   )
-   static long field766;
-   @ObfuscatedName("fc")
+   @ObfuscatedName("bb")
+   static String field740;
+   @ObfuscatedName("fv")
    @ObfuscatedSignature(
-      signature = "[Lki;"
+      signature = "[Llm;"
    )
-   @Export("mapDots")
-   static SpritePixels[] mapDots;
-   @ObfuscatedName("s")
+   @Export("headIconsPk")
+   static SpritePixels[] headIconsPk;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -947214667
+      intValue = 113647491
    )
    @Export("id")
    int id;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -2076820327
+      intValue = -930357889
    )
    @Export("owner")
    int owner;
-   @ObfuscatedName("m")
-   boolean field768;
+   @ObfuscatedName("o")
+   boolean field739;
 
    WidgetNode() {
-      this.field768 = false;
+      this.field739 = false;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(ZZI)Lkh;",
-      garbageValue = "767486344"
+      signature = "(III)V",
+      garbageValue = "-148329697"
    )
-   static IndexedSprite method1062(boolean var0, boolean var1) {
-      return var0?(var1?BaseVarType.field16:class89.field1321):(var1?class85.field1292:Size.field350);
+   public static final void method1124(int var0, int var1) {
+      class131.Viewport_mouseX = var0;
+      class131.Viewport_mouseY = var1;
+      class131.Viewport_containsMouse = true;
+      class131.Viewport_entityCountAtMouse = 0;
+      class131.Viewport_false0 = false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-196869128"
+      signature = "(I)[Lif;",
+      garbageValue = "-1773736646"
    )
-   static void method1063(int var0) {
-      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var1 != null) {
-         var1.unlink();
+   static class259[] method1127() {
+      return new class259[]{class259.field3376, class259.field3377, class259.field3380};
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "-43"
+   )
+   public static boolean method1125(char var0) {
+      return var0 >= '0' && var0 <= '9';
+   }
+
+   @ObfuscatedName("ff")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "16"
+   )
+   static void method1126() {
+      Client.field863.method2031();
+      Client.field863.packetBuffer.offset = 0;
+      Client.field863.serverPacket = null;
+      Client.field863.field1441 = null;
+      Client.field863.field1442 = null;
+      Client.field863.field1443 = null;
+      Client.field863.packetLength = 0;
+      Client.field863.field1439 = 0;
+      Client.field836 = 0;
+      class272.method4902();
+      Client.field834 = 0;
+      Client.destinationX = 0;
+
+      int var0;
+      for(var0 = 0; var0 < 2048; ++var0) {
+         Client.cachedPlayers[var0] = null;
       }
+
+      OwnWorldComparator.localPlayer = null;
+
+      for(var0 = 0; var0 < Client.cachedNPCs.length; ++var0) {
+         NPC var1 = Client.cachedNPCs[var0];
+         if(var1 != null) {
+            var1.interacting = -1;
+            var1.field1121 = false;
+         }
+      }
+
+      ItemContainer.itemContainers = new HashTable(32);
+      WorldMapType1.setGameState(30);
+
+      for(var0 = 0; var0 < 100; ++var0) {
+         Client.field979[var0] = true;
+      }
+
+      Resampler.method2310();
    }
 }

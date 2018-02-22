@@ -4,42 +4,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("iv")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Liv;"
    )
    @Export("RC")
-   static final BuildType RC;
-   @ObfuscatedName("g")
+   public static final BuildType RC;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Liv;"
    )
    @Export("WIP")
-   static final BuildType WIP;
-   @ObfuscatedName("m")
+   public static final BuildType WIP;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Liv;"
    )
    @Export("LIVE")
-   static final BuildType LIVE;
-   @ObfuscatedName("h")
+   public static final BuildType LIVE;
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Liv;"
    )
    @Export("BUILD_LIVE")
-   static final BuildType BUILD_LIVE;
-   @ObfuscatedName("i")
+   public static final BuildType BUILD_LIVE;
+   @ObfuscatedName("dx")
+   @ObfuscatedGetter(
+      intValue = -1852900619
+   )
+   static int field3303;
+   @ObfuscatedName("a")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1872728409
+      intValue = 1455559149
    )
    @Export("ordinal")
-   final int ordinal;
+   public final int ordinal;
 
    static {
       RC = new BuildType("LIVE", 0);
@@ -53,38 +58,17 @@ public class BuildType {
       this.ordinal = var2;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("hm")
    @ObfuscatedSignature(
-      signature = "([BILjava/lang/CharSequence;I)I",
-      garbageValue = "-1025439051"
+      signature = "(IIIII)V",
+      garbageValue = "-1487750203"
    )
-   public static int method4487(byte[] var0, int var1, CharSequence var2) {
-      int var3 = var2.length();
-      int var4 = var1;
-
-      for(int var5 = 0; var5 < var3; ++var5) {
-         char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
-            var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
-            var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & '?');
-         } else {
-            var0[var4++] = (byte)(224 | var6 >> '\f');
-            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & '?');
+   static final void method4528(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field979[var4] = true;
          }
       }
 
-      return var4 - var1;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Lir;II)Lkh;",
-      garbageValue = "-404771081"
-   )
-   public static IndexedSprite method4491(IndexDataBase var0, int var1) {
-      return !class274.method5158(var0, var1)?null:class89.method1909();
    }
 }

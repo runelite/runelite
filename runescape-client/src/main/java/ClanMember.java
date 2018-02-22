@@ -1,96 +1,100 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jn")
+@ObfuscatedName("jc")
 @Implements("ClanMember")
-public class ClanMember extends Nameable {
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -567079295
-   )
-   @Export("world")
-   public int world;
-   @ObfuscatedName("g")
-   @Export("rank")
-   public byte rank;
-   @ObfuscatedName("m")
+public class ClanMember extends Friend {
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Ljy;"
+      signature = "Lkd;"
    )
-   class278 field3695;
-   @ObfuscatedName("h")
+   class289 field3699;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ljy;"
+      signature = "Lkd;"
    )
-   class278 field3697;
+   class289 field3698;
 
    ClanMember() {
-      this.field3695 = class278.field3716;
-      this.field3697 = class278.field3716;
+      this.field3699 = class289.field3723;
+      this.field3698 = class289.field3723;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "8388607"
+      garbageValue = "16577949"
    )
-   void method5117() {
-      this.field3695 = class278.field3716;
+   void method5162() {
+      this.field3699 = class289.field3723;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-872565154"
+      signature = "(B)Z",
+      garbageValue = "-31"
    )
-   public final boolean method5119() {
-      if(this.field3695 == class278.field3716) {
-         this.method5114();
+   public final boolean method5167() {
+      if(this.field3699 == class289.field3723) {
+         this.method5164();
       }
 
-      return this.field3695 == class278.field3718;
+      return this.field3699 == class289.field3722;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "111"
+   )
+   void method5164() {
+      this.field3699 = ContextMenuRow.friendManager.field1194.isMember(super.name)?class289.field3722:class289.field3726;
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-408145727"
+      garbageValue = "1910755418"
    )
-   void method5114() {
-      this.field3695 = class35.friendManager.field1211.isMember(super.name)?class278.field3718:class278.field3717;
+   void method5165() {
+      this.field3698 = class289.field3723;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1761870379"
+   )
+   public final boolean method5166() {
+      if(this.field3698 == class289.field3723) {
+         this.method5169();
+      }
+
+      return this.field3698 == class289.field3722;
    }
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2095618386"
+      garbageValue = "1080984782"
    )
-   void method5115() {
-      this.field3697 = class278.field3716;
+   void method5169() {
+      this.field3698 = ContextMenuRow.friendManager.field1193.isMember(super.name)?class289.field3722:class289.field3726;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-79"
+      signature = "(Lgn;J)V"
    )
-   public final boolean method5113() {
-      if(this.field3697 == class278.field3716) {
-         this.method5116();
+   static void method5163(Buffer var0, long var1) {
+      var1 /= 10L;
+      if(var1 < 0L) {
+         var1 = 0L;
+      } else if(var1 > 65535L) {
+         var1 = 65535L;
       }
 
-      return this.field3697 == class278.field3718;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-258417254"
-   )
-   void method5116() {
-      this.field3697 = class35.friendManager.field1212.isMember(super.name)?class278.field3718:class278.field3717;
+      var0.putShort((int)var1);
    }
 }

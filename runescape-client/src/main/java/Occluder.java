@@ -4,172 +4,163 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("et")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("kt")
+   @ObfuscatedName("e")
+   @Export("userHome")
+   public static String userHome;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -586779583
-   )
-   static int field2038;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 719869027
+      intValue = -1825108045
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1482029957
+      intValue = -522456183
    )
    @Export("maxTIleX")
    int maxTIleX;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -263188917
+      intValue = -1787592147
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1424196835
+      intValue = 139363643
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -149501771
+      intValue = -1294809135
    )
    @Export("type")
    int type;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -2028328181
+      intValue = -2060308147
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1431353305
+      intValue = 1461944691
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -561126815
+      intValue = -769188835
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -2022742569
+      intValue = -1174650487
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("k")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1199875495
+      intValue = 1928026031
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 397961125
+      intValue = -1034637679
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("o")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 975475243
+      intValue = -1093880599
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("l")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -657434259
+      intValue = -2045093277
    )
-   int field2025;
-   @ObfuscatedName("f")
+   int field2034;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1218470777
+      intValue = -144694769
    )
-   int field2037;
-   @ObfuscatedName("q")
+   int field2021;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 916250069
+      intValue = -1797779067
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("r")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 914960063
+      intValue = -1469918773
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -733141735
+      intValue = -156880351
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 730095369
+      intValue = -516533993
    )
    @Export("maxNormalY")
    int maxNormalY;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "697969039"
+      signature = "(IB)Ljo;",
+      garbageValue = "14"
    )
-   public static final boolean method3140() {
-      KeyFocusListener var0 = KeyFocusListener.keyboard;
-      synchronized(KeyFocusListener.keyboard) {
-         if(KeyFocusListener.field618 == KeyFocusListener.field622) {
-            return false;
-         } else {
-            KeyFocusListener.field608 = KeyFocusListener.field603[KeyFocusListener.field622];
-            class237.field3235 = KeyFocusListener.field612[KeyFocusListener.field622];
-            KeyFocusListener.field622 = KeyFocusListener.field622 + 1 & 127;
-            return true;
+   @Export("getAnimation")
+   public static Sequence getAnimation(int var0) {
+      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Sequence.seq_ref.getConfigData(12, var0);
+         var1 = new Sequence();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
+
+         var1.post();
+         Sequence.sequences.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "-8"
+      signature = "(II)Z",
+      garbageValue = "-479018673"
    )
-   static void method3139(boolean var0) {
-      class89.loginMessage1 = "";
-      class89.loginMessage2 = "Enter your username/email & password.";
-      class89.loginMessage3 = "";
-      class89.loginIndex = 2;
-      if(var0) {
-         class89.password = "";
-      }
-
-      if(class89.username == null || class89.username.length() <= 0) {
-         if(WorldComparator.preferences.rememberedUsername != null) {
-            class89.username = WorldComparator.preferences.rememberedUsername;
-            class89.Login_isUsernameRemembered = true;
-         } else {
-            class89.Login_isUsernameRemembered = false;
-         }
-      }
-
-      class1.method0();
+   public static boolean method3070(int var0) {
+      return (var0 >> 21 & 1) != 0;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-2112925998"
+      signature = "(Lie;IB)Z",
+      garbageValue = "-24"
    )
-   public static int method3141(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
+   static boolean method3068(IndexDataBase var0, int var1) {
+      byte[] var2 = var0.takeRecordFlat(var1);
+      if(var2 == null) {
+         return false;
+      } else {
+         FloorUnderlayDefinition.decodeSprite(var2);
+         return true;
+      }
    }
 }

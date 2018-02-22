@@ -4,28 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("jt")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("lf")
-   @ObfuscatedGetter(
-      intValue = 915443269
-   )
-   static int field3363;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lie;"
    )
-   public static IndexDataBase field3366;
-   @ObfuscatedName("g")
+   public static IndexDataBase field3384;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lhj;"
    )
    @Export("inventoryCache")
    public static NodeCache inventoryCache;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1472057091
+      intValue = 136387717
    )
    @Export("size")
    public int size;
@@ -38,10 +33,10 @@ public class InvType extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "-2090494221"
+      signature = "(Lgn;I)V",
+      garbageValue = "46918789"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -51,16 +46,16 @@ public class InvType extends CacheableNode {
             return;
          }
 
-         this.method4658(var1, var2);
+         this.method4717(var1, var2);
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgy;II)V",
-      garbageValue = "-2147337409"
+      signature = "(Lgn;II)V",
+      garbageValue = "-996965432"
    )
-   void method4658(Buffer var1, int var2) {
+   void method4717(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }

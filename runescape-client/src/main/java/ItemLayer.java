@@ -1,80 +1,125 @@
+import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dm")
+@ObfuscatedName("dg")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhs;"
-   )
-   static Widget field1668;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 977221795
+      intValue = 1365854585
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 2046703061
+      intValue = 679370021
    )
    @Export("x")
    int x;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1413699169
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Les;"
+   )
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Les;"
    )
    @Export("middle")
    Renderable middle;
    @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -556157669
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Leh;"
-   )
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Les;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 509129771
+      intValue = 38103929
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 16299375
+      intValue = -1218489225
    )
    @Export("height")
    int height;
 
-   @ObfuscatedName("jy")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lhs;IIII)V",
-      garbageValue = "-1532370272"
+      signature = "(I)V",
+      garbageValue = "-1673944033"
    )
-   static final void method2618(Widget var0, int var1, int var2, int var3) {
-      class221 var4 = var0.method4421(false);
-      if(var4 != null) {
-         if(Client.field978 < 3) {
-            GameEngine.compass.method5695(var1, var2, var4.field2708, var4.field2703, 25, 25, Client.mapAngle, 256, var4.field2704, var4.field2702);
-         } else {
-            Rasterizer2D.method5598(var1, var2, 0, var4.field2704, var4.field2702);
+   static void method2599() {
+      for(class79 var0 = (class79)class79.field1210.getFront(); var0 != null; var0 = (class79)class79.field1210.getNext()) {
+         if(var0.field1214 != null) {
+            var0.method1750();
          }
-
       }
+
+   }
+
+   @ObfuscatedName("iu")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "-30179"
+   )
+   static void method2598() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         int var2 = Client.menuTypes[var0];
+         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
+         if(var1) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
+                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
+                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
+                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
+                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
+                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
+                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
+                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
+               }
+            }
+
+            --Client.menuOptionCount;
+         }
+      }
+
+   }
+
+   @ObfuscatedName("jc")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1564652228"
+   )
+   static final void method2600() {
+      for(int var0 = 0; var0 < class92.playerIndexesCount; ++var0) {
+         Player var1 = Client.cachedPlayers[class92.playerIndices[var0]];
+         var1.method1214();
+      }
+
+      Iterator var2 = class94.messages.iterator();
+
+      while(var2.hasNext()) {
+         MessageNode var3 = (MessageNode)var2.next();
+         var3.method1149();
+      }
+
+      if(class2.clanMemberManager != null) {
+         class2.clanMemberManager.method5407();
+      }
+
    }
 }

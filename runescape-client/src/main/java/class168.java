@@ -1,66 +1,71 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fi")
 public abstract class class168 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Ldh;"
+      signature = "Lis;"
    )
-   public static class111 field2232;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1190901335
+   @Export("currentRequest")
+   public static FileRequest currentRequest;
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-118954090"
    )
-   static int field2235;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 152209809
+   public abstract boolean vmethod3341(int var1) throws IOException;
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "26"
    )
-   public int field2229;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -204526229
+   public abstract int vmethod3346() throws IOException;
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1770569252"
    )
-   public int field2228;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -662880617
+   public abstract int vmethod3318() throws IOException;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "([BIII)I",
+      garbageValue = "1399740149"
    )
-   public int field2233;
+   public abstract int vmethod3321(byte[] var1, int var2, int var3) throws IOException;
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "-2027539026"
+   )
+   public abstract void vmethod3323(byte[] var1, int var2, int var3) throws IOException;
+
    @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 392644993
-   )
-   public int field2231;
-
-   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIILfb;I)Z",
-      garbageValue = "1240062680"
+      signature = "(B)V",
+      garbageValue = "32"
    )
-   protected abstract boolean vmethod3396(int var1, int var2, int var3, CollisionData var4);
+   public abstract void vmethod3317();
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([I[II)V",
-      garbageValue = "-1010129331"
+      signature = "(CIB)I",
+      garbageValue = "-30"
    )
-   public static void method3399(int[] var0, int[] var1) {
-      if(var0 != null && var1 != null) {
-         FileOnDisk.field1475 = var0;
-         TotalQuantityComparator.field287 = new int[var0.length];
-         class225.field2731 = new byte[var0.length][][];
-
-         for(int var2 = 0; var2 < FileOnDisk.field1475.length; ++var2) {
-            class225.field2731[var2] = new byte[var1[var2]][];
-         }
-
-      } else {
-         FileOnDisk.field1475 = null;
-         TotalQuantityComparator.field287 = null;
-         class225.field2731 = null;
+   public static int method3281(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = (var0 << 4) + 1;
       }
+
+      return var2;
    }
 }

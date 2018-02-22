@@ -1,28 +1,31 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("ei")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1632251331
+      intValue = -1325188357
    )
    @Export("id")
    int id;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1468796155
+      intValue = 1510425619
    )
    @Export("count")
    int count;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @Export("types")
    int[] types;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @Export("list")
    int[][] list;
 
@@ -50,46 +53,47 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "850726769"
+      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
+      garbageValue = "-985057531"
    )
-   static void method2902() {
-      ItemContainer.itemContainers = new HashTable(32);
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "-1100348974"
-   )
-   @Export("getLength")
-   public static int getLength(String var0) {
-      return var0.length() + 1;
-   }
-
-   @ObfuscatedName("an")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-63"
-   )
-   static void method2900(int var0) {
-      if(var0 != -1) {
-         if(ServerPacket.loadWidget(var0)) {
-            Widget[] var1 = ScriptState.widgets[var0];
-
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2743 != null) {
-                  ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.objs = var3.field2743;
-                  ScriptState.runScript(var4, 2000000);
-               }
+   static void method2880(String var0, boolean var1, String var2, boolean var3) {
+      if(var1) {
+         if(!var3 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var5) {
+               ;
             }
-
          }
+
+         if(class56.field616.startsWith("win") && !var3) {
+            class19.method147(var0, 0);
+            return;
+         }
+
+         if(class56.field616.startsWith("mac")) {
+            KitDefinition.method4832(var0, 1, var2);
+            return;
+         }
+
+         class19.method147(var0, 2);
+      } else {
+         class19.method147(var0, 3);
+      }
+
+   }
+
+   @ObfuscatedName("if")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "17"
+   )
+   static final void method2881(int var0, int var1) {
+      if(class2.loadWidget(var0)) {
+         ScriptEvent.method1138(Widget.widgets[var0], var1);
       }
    }
 }

@@ -4,36 +4,36 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("js")
+@ObfuscatedName("kx")
 @Implements("Fonts")
 public class Fonts {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lie;"
    )
-   IndexDataBase field3758;
-   @ObfuscatedName("g")
+   IndexDataBase field3760;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lir;"
+      signature = "Lie;"
    )
-   IndexDataBase field3757;
-   @ObfuscatedName("m")
+   IndexDataBase field3761;
+   @ObfuscatedName("o")
    @Export("map")
    HashMap map;
 
    @ObfuscatedSignature(
-      signature = "(Lir;Lir;)V"
+      signature = "(Lie;Lie;)V"
    )
    public Fonts(IndexDataBase var1, IndexDataBase var2) {
-      this.field3758 = var1;
-      this.field3757 = var2;
+      this.field3760 = var1;
+      this.field3761 = var2;
       this.map = new HashMap();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "([Ljx;B)Ljava/util/HashMap;",
-      garbageValue = "-34"
+      signature = "([Lki;I)Ljava/util/HashMap;",
+      garbageValue = "-557428408"
    )
    @Export("createMap")
    public HashMap createMap(FontName[] var1) {
@@ -45,31 +45,15 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            IndexDataBase var7 = this.field3758;
-            IndexDataBase var8 = this.field3757;
-            String var9 = var5.field3749;
+            IndexDataBase var7 = this.field3760;
+            IndexDataBase var8 = this.field3761;
+            String var9 = var5.field3759;
             int var10 = var7.getFile(var9);
             int var11 = var7.getChild(var10, "");
-            Font var12;
-            if(!class35.method484(var7, var10, var11)) {
-               var12 = null;
-            } else {
-               byte[] var14 = var8.getConfigData(var10, var11);
-               Font var13;
-               if(var14 == null) {
-                  var13 = null;
-               } else {
-                  Font var15 = new Font(var14, class219.field2698, class263.offsetsY, class60.field708, class310.field3911, class289.field3786, class310.spritePixels);
-                  Name.method5282();
-                  var13 = var15;
-               }
-
-               var12 = var13;
-            }
-
-            if(var12 != null) {
-               this.map.put(var5, var12);
-               var2.put(var5, var12);
+            Font var6 = GameSocket.method3379(var7, var8, var10, var11);
+            if(var6 != null) {
+               this.map.put(var5, var6);
+               var2.put(var5, var6);
             }
          }
       }

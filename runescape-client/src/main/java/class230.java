@@ -1,117 +1,111 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hj")
-public class class230 implements class229 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2892;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2893;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2894;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2895;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2896;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2897;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2898;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2902;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   static final class230 field2900;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   public static final class230 field2901;
-   @ObfuscatedName("c")
+@ObfuscatedName("hq")
+public class class230 extends CacheableNode {
+   @ObfuscatedName("im")
    @ObfuscatedGetter(
-      intValue = 1668077241
+      intValue = 1352067349
    )
-   public final int field2899;
-
-   static {
-      field2892 = new class230("", 10);
-      field2893 = new class230("", 11);
-      field2894 = new class230("", 12);
-      field2895 = new class230("", 13);
-      field2896 = new class230("", 14);
-      field2897 = new class230("", 15, new ScriptVarType[]{ScriptVarType.field200, ScriptVarType.field200}, (ScriptVarType[])null);
-      field2898 = new class230("", 16, new ScriptVarType[]{ScriptVarType.field200, ScriptVarType.field200}, (ScriptVarType[])null);
-      field2902 = new class230("", 17, new ScriptVarType[]{ScriptVarType.field200, ScriptVarType.field200}, (ScriptVarType[])null);
-      field2900 = new class230("", 73, true, true);
-      field2901 = new class230("", 76, true, false);
-   }
-
-   class230(String var1, int var2) {
-      this(var1, var2, false, (ScriptVarType[])null, false, (ScriptVarType[])null);
-   }
-
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IZ[Lt;Z[Lt;)V"
+   @Export("plane")
+   static int plane;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 821556905
    )
-   class230(String var1, int var2, boolean var3, ScriptVarType[] var4, boolean var5, ScriptVarType[] var6) {
-      this.field2899 = var2;
-   }
-
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I[Lt;[Lt;)V"
+   public final int field2732;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1453549347
    )
-   class230(String var1, int var2, ScriptVarType[] var3, ScriptVarType[] var4) {
-      this(var1, var2, var3 != null, var3, var4 != null, var4);
-   }
-
-   class230(String var1, int var2, boolean var3, boolean var4) {
-      this(var1, var2, var3, (ScriptVarType[])null, var4, (ScriptVarType[])null);
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "744101166"
-   )
-   public int rsOrdinal() {
-      return this.field2899;
-   }
-
+   public final int field2730;
    @ObfuscatedName("o")
+   public final int[] field2731;
+   @ObfuscatedName("p")
+   public final int[] field2733;
+
+   class230(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2732 = var1;
+      this.field2730 = var2;
+      this.field2731 = var3;
+      this.field2733 = var4;
+   }
+
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1215432455"
+      signature = "(III)Z",
+      garbageValue = "-2023244014"
    )
-   @Export("getItemStackAmountText")
-   static final String getItemStackAmountText(int var0) {
-      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
+   public boolean method4362(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2733.length) {
+         int var3 = this.field2733[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2731[var2]) {
+            return true;
+         }
+      }
+
+      return false;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(ZB)V",
+      garbageValue = "18"
+   )
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
+      if(class258.NetCache_socket != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class258.NetCache_socket.vmethod3323(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class258.NetCache_socket.vmethod3317();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class258.field3374;
+            class258.NetCache_socket = null;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IB)Lji;",
+      garbageValue = "-31"
+   )
+   public static class263 method4363(int var0) {
+      class263 var1 = (class263)class263.field3411.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class263.field3412.getConfigData(19, var0);
+         var1 = new class263();
+         if(var2 != null) {
+            var1.method4765(new Buffer(var2));
+         }
+
+         class263.field3411.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("ja")
+   @ObfuscatedSignature(
+      signature = "(Lim;I)I",
+      garbageValue = "1188663159"
+   )
+   @Export("getWidgetConfig")
+   static int getWidgetConfig(Widget var0) {
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get(((long)var0.id << 32) + (long)var0.index);
+      return var1 != null?var1.value:var0.config;
    }
 }

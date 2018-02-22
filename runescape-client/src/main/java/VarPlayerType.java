@@ -4,33 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("jg")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("oo")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Lie;"
    )
-   static Resampler field3370;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -852222751
-   )
-   public static int field3373;
-   @ObfuscatedName("m")
+   @Export("varplayer_ref")
+   static IndexDataBase varplayer_ref;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lhj;"
    )
    @Export("varplayers")
    static NodeCache varplayers;
-   @ObfuscatedName("i")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -2125748181
-   )
-   static int field3371;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -975800741
+      intValue = 1487086871
    )
    @Export("configType")
    public int configType;
@@ -43,10 +34,10 @@ public class VarPlayerType extends CacheableNode {
       this.configType = 0;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lgy;B)V",
-      garbageValue = "45"
+      signature = "(Lgn;I)V",
+      garbageValue = "-592925851"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -60,10 +51,10 @@ public class VarPlayerType extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lgy;II)V",
-      garbageValue = "-393283973"
+      signature = "(Lgn;II)V",
+      garbageValue = "1329605689"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -73,39 +64,94 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("hf")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "48"
+      signature = "(ZLgu;S)V",
+      garbageValue = "-22263"
    )
-   static void method4667() {
-      if(class188.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-         KeyFocusListener.KeyHandler_keyCodes[186] = 57;
-         KeyFocusListener.KeyHandler_keyCodes[187] = 27;
-         KeyFocusListener.KeyHandler_keyCodes[188] = 71;
-         KeyFocusListener.KeyHandler_keyCodes[189] = 26;
-         KeyFocusListener.KeyHandler_keyCodes[190] = 72;
-         KeyFocusListener.KeyHandler_keyCodes[191] = 73;
-         KeyFocusListener.KeyHandler_keyCodes[192] = 58;
-         KeyFocusListener.KeyHandler_keyCodes[219] = 42;
-         KeyFocusListener.KeyHandler_keyCodes[220] = 74;
-         KeyFocusListener.KeyHandler_keyCodes[221] = 43;
-         KeyFocusListener.KeyHandler_keyCodes[222] = 59;
-         KeyFocusListener.KeyHandler_keyCodes[223] = 28;
-      } else {
-         KeyFocusListener.KeyHandler_keyCodes[44] = 71;
-         KeyFocusListener.KeyHandler_keyCodes[45] = 26;
-         KeyFocusListener.KeyHandler_keyCodes[46] = 72;
-         KeyFocusListener.KeyHandler_keyCodes[47] = 73;
-         KeyFocusListener.KeyHandler_keyCodes[59] = 57;
-         KeyFocusListener.KeyHandler_keyCodes[61] = 27;
-         KeyFocusListener.KeyHandler_keyCodes[91] = 42;
-         KeyFocusListener.KeyHandler_keyCodes[92] = 74;
-         KeyFocusListener.KeyHandler_keyCodes[93] = 43;
-         KeyFocusListener.KeyHandler_keyCodes[192] = 28;
-         KeyFocusListener.KeyHandler_keyCodes[222] = 58;
-         KeyFocusListener.KeyHandler_keyCodes[520] = 59;
+   static final void method4722(boolean var0, PacketBuffer var1) {
+      Client.field926 = 0;
+      Client.pendingNpcFlagsCount = 0;
+      PacketBuffer var2 = Client.field863.packetBuffer;
+      var2.bitAccess();
+      int var3 = var2.getBits(8);
+      int var4;
+      if(var3 < Client.npcIndexesCount) {
+         for(var4 = var3; var4 < Client.npcIndexesCount; ++var4) {
+            Client.field892[++Client.field926 - 1] = Client.npcIndices[var4];
+         }
       }
 
+      if(var3 > Client.npcIndexesCount) {
+         throw new RuntimeException("");
+      } else {
+         Client.npcIndexesCount = 0;
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            int var5 = Client.npcIndices[var4];
+            NPC var6 = Client.cachedNPCs[var5];
+            int var7 = var2.getBits(1);
+            if(var7 == 0) {
+               Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+               var6.npcCycle = Client.gameCycle;
+            } else {
+               int var8 = var2.getBits(2);
+               if(var8 == 0) {
+                  Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+                  var6.npcCycle = Client.gameCycle;
+                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var5;
+               } else {
+                  int var9;
+                  int var10;
+                  if(var8 == 1) {
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+                     var6.npcCycle = Client.gameCycle;
+                     var9 = var2.getBits(3);
+                     var6.method1834(var9, (byte)1);
+                     var10 = var2.getBits(1);
+                     if(var10 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var5;
+                     }
+                  } else if(var8 == 2) {
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+                     var6.npcCycle = Client.gameCycle;
+                     var9 = var2.getBits(3);
+                     var6.method1834(var9, (byte)2);
+                     var10 = var2.getBits(3);
+                     var6.method1834(var10, (byte)2);
+                     int var11 = var2.getBits(1);
+                     if(var11 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var5;
+                     }
+                  } else if(var8 == 3) {
+                     Client.field892[++Client.field926 - 1] = var5;
+                  }
+               }
+            }
+         }
+
+         class33.updateNpcs(var0, var1);
+         class54.method809(var1);
+
+         int var12;
+         for(var12 = 0; var12 < Client.field926; ++var12) {
+            var3 = Client.field892[var12];
+            if(Client.cachedNPCs[var3].npcCycle != Client.gameCycle) {
+               Client.cachedNPCs[var3].composition = null;
+               Client.cachedNPCs[var3] = null;
+            }
+         }
+
+         if(var1.offset != Client.field863.packetLength) {
+            throw new RuntimeException(var1.offset + "," + Client.field863.packetLength);
+         } else {
+            for(var12 = 0; var12 < Client.npcIndexesCount; ++var12) {
+               if(Client.cachedNPCs[Client.npcIndices[var12]] == null) {
+                  throw new RuntimeException(var12 + "," + Client.npcIndexesCount);
+               }
+            }
+
+         }
+      }
    }
 }

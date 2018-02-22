@@ -4,60 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("eh")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1494362839
+      intValue = -1026439337
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -924497153
+      intValue = 250389927
    )
    @Export("x")
    int x;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1956085931
+      intValue = -1224481941
    )
    @Export("y")
    int y;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1819518455
+      intValue = -42744479
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1911940063
+      intValue = -1583577277
    )
    @Export("orientationB")
    int orientationB;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Les;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Les;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1481520401
+      intValue = -1451217133
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 871293961
+      intValue = 2102429845
    )
    @Export("config")
    int config;
@@ -65,16 +65,5 @@ public final class WallObject {
    WallObject() {
       this.hash = 0;
       this.config = 0;
-   }
-
-   @ObfuscatedName("in")
-   @ObfuscatedSignature(
-      signature = "(IIIZI)V",
-      garbageValue = "1981166062"
-   )
-   static final void method3112(int var0, int var1, int var2, boolean var3) {
-      if(ServerPacket.loadWidget(var0)) {
-         class65.method1057(ScriptState.widgets[var0], -1, var1, var2, var3);
-      }
    }
 }

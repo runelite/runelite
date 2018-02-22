@@ -3,41 +3,33 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.SyncFailedException;
-import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("dx")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("t")
-   static int[] field1475;
-   @ObfuscatedName("hm")
-   @ObfuscatedSignature(
-      signature = "Ldp;"
-   )
-   static TextureProvider field1471;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      longValue = 2631415697410758815L
+      longValue = -6742893712493759687L
    )
    @Export("length")
    long length;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      longValue = 7424973308644706877L
+      longValue = -4825115898848314719L
    )
    @Export("position")
    long position;
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(var3 == -1L) {
+      if(-1L == var3) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -57,17 +49,17 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "120"
+      signature = "([BIII)V",
+      garbageValue = "2137247924"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
@@ -81,20 +73,20 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "814627225"
+      garbageValue = "554219193"
    )
    @Export("close")
    public final void close() throws IOException {
       this.closeSync(false);
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(ZB)V",
-      garbageValue = "-14"
+      garbageValue = "4"
    )
    @Export("closeSync")
    public final void closeSync(boolean var1) throws IOException {
@@ -113,20 +105,20 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)J",
-      garbageValue = "229133798"
+      garbageValue = "150134282"
    )
    @Export("length")
    public final long length() throws IOException {
       return this.file.length();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "([BIIB)I",
-      garbageValue = "-97"
+      signature = "([BIII)I",
+      garbageValue = "1577774805"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -146,16 +138,12 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("s")
-   public static String method2097(long var0) {
-      class193.field2553.setTime(new Date(var0));
-      int var2 = class193.field2553.get(7);
-      int var3 = class193.field2553.get(5);
-      int var4 = class193.field2553.get(2);
-      int var5 = class193.field2553.get(1);
-      int var6 = class193.field2553.get(11);
-      int var7 = class193.field2553.get(12);
-      int var8 = class193.field2553.get(13);
-      return class193.field2554[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class193.field2555[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
+   @ObfuscatedName("hy")
+   @ObfuscatedSignature(
+      signature = "(Lcl;III)V",
+      garbageValue = "-338174166"
+   )
+   static final void method2572(ContextMenuRow var0, int var1, int var2) {
+      class47.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
    }
 }

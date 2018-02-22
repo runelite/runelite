@@ -4,97 +4,220 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("ca")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgc;"
+   @ObfuscatedName("ov")
+   @ObfuscatedGetter(
+      intValue = 1658723895
    )
-   static NodeCache field1424;
-   @ObfuscatedName("g")
+   static int field1412;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   static NodeCache field1406;
+   @ObfuscatedName("cz")
+   @ObfuscatedSignature(
+      signature = "Lia;"
+   )
+   @Export("indexMaps")
+   static IndexData indexMaps;
+   @ObfuscatedName("q")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -558375573
+      intValue = -1197460281
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1652720491
+      intValue = -2091636655
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("t")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 939866111
+      intValue = 1712413665
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -967531463
+      intValue = 1637077519
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "[Lgz;"
+      signature = "[Lgv;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1424 = new NodeCache(128);
+      field1406 = new NodeCache(128);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)[Lgz;",
-      garbageValue = "-860849918"
+      signature = "(II)[Lgv;",
+      garbageValue = "-937982235"
    )
-   IterableHashTable[] method2016(int var1) {
+   IterableHashTable[] method1999(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfm;Lgo;I)Lfv;",
-      garbageValue = "869289622"
+      signature = "(ILca;ZB)I",
+      garbageValue = "24"
    )
-   public static PacketNode method2025(ClientPacket var0, ISAACCipher var1) {
-      PacketNode var2;
-      if(PacketNode.field2441 == 0) {
-         var2 = new PacketNode();
-      } else {
-         var2 = PacketNode.packetBufferNodes[--PacketNode.field2441];
-      }
+   static int method2008(int var0, Script var1, boolean var2) {
+      if(var0 == 3200) {
+         class80.intStackSize -= 3;
+         int var3 = class80.intStack[class80.intStackSize];
+         int var4 = class80.intStack[class80.intStackSize + 1];
+         int var5 = class80.intStack[class80.intStackSize + 2];
+         if(Client.field1040 != 0 && var4 != 0 && Client.queuedSoundEffectCount < 50) {
+            Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var3;
+            Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var4;
+            Client.unknownSoundValues2[Client.queuedSoundEffectCount] = var5;
+            Client.audioEffects[Client.queuedSoundEffectCount] = null;
+            Client.soundLocations[Client.queuedSoundEffectCount] = 0;
+            ++Client.queuedSoundEffectCount;
+         }
 
-      var2.clientPacket = var0;
-      var2.field2442 = var0.packetLength;
-      if(var2.field2442 == -1) {
-         var2.packetBuffer = new PacketBuffer(260);
-      } else if(var2.field2442 == -2) {
-         var2.packetBuffer = new PacketBuffer(10000);
-      } else if(var2.field2442 <= 18) {
-         var2.packetBuffer = new PacketBuffer(20);
-      } else if(var2.field2442 <= 98) {
-         var2.packetBuffer = new PacketBuffer(100);
+         return 1;
+      } else if(var0 == 3201) {
+         class20.method168(class80.intStack[--class80.intStackSize]);
+         return 1;
+      } else if(var0 == 3202) {
+         class80.intStackSize -= 2;
+         class5.method12(class80.intStack[class80.intStackSize], class80.intStack[class80.intStackSize + 1]);
+         return 1;
       } else {
-         var2.packetBuffer = new PacketBuffer(260);
+         return 2;
       }
+   }
 
-      var2.packetBuffer.setIsaacCipher(var1);
-      var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
-      var2.field2437 = 0;
-      return var2;
+   @ObfuscatedName("gd")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "861022745"
+   )
+   static final int method2007() {
+      if(Client.preferences.hideRoofs) {
+         return class230.plane;
+      } else {
+         int var0 = 3;
+         if(DecorativeObject.cameraPitch < 310) {
+            int var1 = class39.cameraX >> 7;
+            int var2 = CombatInfo1.cameraY >> 7;
+            int var3 = OwnWorldComparator.localPlayer.x >> 7;
+            int var4 = OwnWorldComparator.localPlayer.y >> 7;
+            if(var1 < 0 || var2 < 0 || var1 >= 104 || var2 >= 104) {
+               return class230.plane;
+            }
+
+            if((class61.tileSettings[class230.plane][var1][var2] & 4) != 0) {
+               var0 = class230.plane;
+            }
+
+            int var5;
+            if(var3 > var1) {
+               var5 = var3 - var1;
+            } else {
+               var5 = var1 - var3;
+            }
+
+            int var6;
+            if(var4 > var2) {
+               var6 = var4 - var2;
+            } else {
+               var6 = var2 - var4;
+            }
+
+            int var7;
+            int var8;
+            if(var5 > var6) {
+               var7 = var6 * 65536 / var5;
+               var8 = 32768;
+
+               while(var3 != var1) {
+                  if(var1 < var3) {
+                     ++var1;
+                  } else if(var1 > var3) {
+                     --var1;
+                  }
+
+                  if((class61.tileSettings[class230.plane][var1][var2] & 4) != 0) {
+                     var0 = class230.plane;
+                  }
+
+                  var8 += var7;
+                  if(var8 >= 65536) {
+                     var8 -= 65536;
+                     if(var2 < var4) {
+                        ++var2;
+                     } else if(var2 > var4) {
+                        --var2;
+                     }
+
+                     if((class61.tileSettings[class230.plane][var1][var2] & 4) != 0) {
+                        var0 = class230.plane;
+                     }
+                  }
+               }
+            } else {
+               var7 = var5 * 65536 / var6;
+               var8 = 32768;
+
+               while(var2 != var4) {
+                  if(var2 < var4) {
+                     ++var2;
+                  } else if(var2 > var4) {
+                     --var2;
+                  }
+
+                  if((class61.tileSettings[class230.plane][var1][var2] & 4) != 0) {
+                     var0 = class230.plane;
+                  }
+
+                  var8 += var7;
+                  if(var8 >= 65536) {
+                     var8 -= 65536;
+                     if(var1 < var3) {
+                        ++var1;
+                     } else if(var1 > var3) {
+                        --var1;
+                     }
+
+                     if((class61.tileSettings[class230.plane][var1][var2] & 4) != 0) {
+                        var0 = class230.plane;
+                     }
+                  }
+               }
+            }
+         }
+
+         if(OwnWorldComparator.localPlayer.x >= 0 && OwnWorldComparator.localPlayer.y >= 0 && OwnWorldComparator.localPlayer.x < 13312 && OwnWorldComparator.localPlayer.y < 13312) {
+            if((class61.tileSettings[class230.plane][OwnWorldComparator.localPlayer.x >> 7][OwnWorldComparator.localPlayer.y >> 7] & 4) != 0) {
+               var0 = class230.plane;
+            }
+
+            return var0;
+         } else {
+            return class230.plane;
+         }
+      }
    }
 }
