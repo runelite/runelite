@@ -26,43 +26,37 @@ package net.runelite.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@AllArgsConstructor
+@Getter
 public enum ClanMemberRank
 {
-	UNRANKED((byte) -1),
-	FRIEND((byte) 0),
-	RECRUIT((byte) 1),
-	CORPORAL((byte) 2),
-	SERGEANT((byte) 3),
-	LIEUTENANT((byte) 4),
-	CAPTAIN((byte) 5),
-	GENERAL((byte) 6),
-	OWNER((byte) 7);
+	UNRANKED(-1),
+	FRIEND(0),
+	RECRUIT(1),
+	CORPORAL(2),
+	SERGEANT(3),
+	LIEUTENANT(4),
+	CAPTAIN(5),
+	GENERAL(6),
+	OWNER(7);
 
-	private static final Map<Byte, ClanMemberRank> BYTE_TO_RANK = new HashMap<>();
+	private static final Map<Integer, ClanMemberRank> RANKS = new HashMap<>();
 
 	static
 	{
 		for (final ClanMemberRank clanMemberRank : ClanMemberRank.values())
 		{
-			BYTE_TO_RANK.put(clanMemberRank.value, clanMemberRank);
+			RANKS.put(clanMemberRank.value, clanMemberRank);
 		}
 	}
 
-	public static ClanMemberRank valueOf(byte rank)
+	public static ClanMemberRank valueOf(int rank)
 	{
-		return BYTE_TO_RANK.get(rank);
+		return RANKS.get(rank);
 	}
 
-	private final byte value;
-
-	ClanMemberRank(final byte value)
-	{
-		this.value = value;
-	}
-
-	public byte getValue()
-	{
-		return value;
-	}
+	private final int value;
 }
