@@ -152,7 +152,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
          mouseIdleTicks = 0;
          MouseHandler_lastPressedX = var1.getX();
          MouseHandler_lastPressedY = var1.getY();
-         MouseHandler_lastPressedTimeMillis = class188.method3511();
+         MouseHandler_lastPressedTimeMillis = class188.currentTimeMs();
          MouseHandler_lastButton = this.method1009(var1);
          if(MouseHandler_lastButton != 0) {
             MouseHandler_currentButton = MouseHandler_lastButton;

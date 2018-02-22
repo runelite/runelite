@@ -41,7 +41,7 @@ public class MilliTimer extends Timer {
       this.field2127 = 256;
       this.sleepTime = 1;
       this.field2130 = 0;
-      this.field2129 = class188.method3511();
+      this.field2129 = class188.currentTimeMs();
 
       for(int var1 = 0; var1 < 10; ++var1) {
          this.field2126[var1] = this.field2129;
@@ -71,7 +71,7 @@ public class MilliTimer extends Timer {
       int var4 = this.sleepTime;
       this.field2127 = 300;
       this.sleepTime = 1;
-      this.field2129 = class188.method3511();
+      this.field2129 = class188.currentTimeMs();
       if(this.field2126[this.field2131] == 0L) {
          this.field2127 = var3;
          this.sleepTime = var4;

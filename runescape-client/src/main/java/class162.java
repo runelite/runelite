@@ -557,7 +557,7 @@ public class class162 implements Runnable {
                } else if(var0 == 3923) {
                   var3 = class80.intStack[--class80.intStackSize];
                   var11 = (GrandExchangeEvent)class1.grandExchangeEvents.events.get(var3);
-                  long var5 = class188.method3511() - class1.field0 - var11.field269;
+                  long var5 = class188.currentTimeMs() - class1.field0 - var11.field269;
                   int var7 = (int)(var5 / 3600000L);
                   int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
                   int var9 = (int)((var5 - (long)(var7 * 3600000) - (long)(var8 * 60000)) / 1000L);

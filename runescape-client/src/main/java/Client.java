@@ -1397,7 +1397,7 @@ public final class Client extends GameEngine implements class288 {
       garbageValue = "1654758683"
    )
    protected final void vmethod1242() {
-      field1017 = class188.method3511() + 500L;
+      field1017 = class188.currentTimeMs() + 500L;
       this.method1243();
       if(widgetRoot != -1) {
          this.method1491(true);
@@ -2008,7 +2008,7 @@ public final class Client extends GameEngine implements class288 {
       }
 
       int var3;
-      if((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field1017 && class188.method3511() > field1017) {
+      if((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field1017 && class188.currentTimeMs() > field1017) {
          var3 = isResized?2:1;
          field1017 = 0L;
          if(var3 >= 2) {
@@ -2488,7 +2488,7 @@ public final class Client extends GameEngine implements class288 {
    @Export("processJS5Connection")
    void processJS5Connection() {
       if(gameState != 1000) {
-         long var2 = class188.method3511();
+         long var2 = class188.currentTimeMs();
          int var4 = (int)(var2 - class258.field3358);
          class258.field3358 = var2;
          if(var4 > 200) {
@@ -2757,7 +2757,7 @@ public final class Client extends GameEngine implements class288 {
                   var5.putInt(164);
                   UrlRequester.rssocket.vmethod3323(var5.payload, 0, 5);
                   ++js5State;
-                  class23.field314 = class188.method3511();
+                  class23.field314 = class188.currentTimeMs();
                }
 
                if(js5State == 3) {
@@ -2769,7 +2769,7 @@ public final class Client extends GameEngine implements class288 {
                      }
 
                      ++js5State;
-                  } else if(class188.method3511() - class23.field314 > 30000L) {
+                  } else if(class188.currentTimeMs() - class23.field314 > 30000L) {
                      this.error(-2);
                      return;
                   }
@@ -3386,7 +3386,7 @@ public final class Client extends GameEngine implements class288 {
                      var14 = class61.method1076(ClientPacket.field2387, field863.field1434);
                      var14.packetBuffer.putShort(0);
                      var15 = var14.packetBuffer.offset;
-                     long var19 = class188.method3511();
+                     long var19 = class188.currentTimeMs();
 
                      for(var5 = 0; var5 < KeyFocusListener.field593; ++var5) {
                         long var21 = var19 - field909;
@@ -4251,7 +4251,7 @@ public final class Client extends GameEngine implements class288 {
                   if(var55.length() == 0) {
                      var64 = var64 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
                   } else {
-                     var64 = var64 + "; Expires=" + class166.method3258(class188.method3511() + 94608000000L) + "; Max-Age=" + 94608000L;
+                     var64 = var64 + "; Expires=" + class166.method3258(class188.currentTimeMs() + 94608000000L) + "; Max-Age=" + 94608000L;
                   }
 
                   Client var91 = RenderOverview.clientInstance;
@@ -4741,7 +4741,7 @@ public final class Client extends GameEngine implements class288 {
             if(ServerPacket.field2311 == var1.serverPacket) {
                var92 = var3.readUnsignedByte() == 1;
                if(var92) {
-                  class1.field0 = class188.method3511() - var3.readLong();
+                  class1.field0 = class188.currentTimeMs() - var3.readLong();
                   class1.grandExchangeEvents = new GrandExchangeEvents(var3, true);
                } else {
                   class1.grandExchangeEvents = null;

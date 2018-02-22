@@ -530,7 +530,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       }
 
       this.field649 = false;
-      this.field626 = class188.method3511();
+      this.field626 = class188.currentTimeMs();
    }
 
    @ObfuscatedName("z")
@@ -571,7 +571,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       garbageValue = "1258380665"
    )
    void method861() {
-      long var1 = class188.method3511();
+      long var1 = class188.currentTimeMs();
       long var3 = field634[ScriptState.field706];
       field634[ScriptState.field706] = var1;
       ScriptState.field706 = ScriptState.field706 + 1 & 31;
@@ -593,7 +593,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    void method877() {
       Container var1 = this.container();
-      long var2 = class188.method3511();
+      long var2 = class188.currentTimeMs();
       long var4 = field639[class87.field1290];
       field639[class87.field1290] = var2;
       class87.field1290 = class87.field1290 + 1 & 31;
@@ -856,7 +856,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    public final synchronized void paint(Graphics var1) {
       if(this == shell && !field654) {
          this.field645 = true;
-         if(class188.method3511() - this.field626 > 1000L) {
+         if(class188.currentTimeMs() - this.field626 > 1000L) {
             Rectangle var2 = var1.getClipBounds();
             if(var2 == null || var2.width >= class1.canvasWidth && var2.height >= class25.canvasHeight) {
                this.field649 = true;
@@ -868,7 +868,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
    public final void destroy() {
       if(this == shell && !field654) {
-         field625 = class188.method3511();
+         field625 = class188.currentTimeMs();
          class19.method152(5000L);
          this.method880();
       }
@@ -885,7 +885,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
    public final void stop() {
       if(this == shell && !field654) {
-         field625 = class188.method3511() + 4000L;
+         field625 = class188.currentTimeMs() + 4000L;
       }
    }
 
@@ -956,7 +956,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          timer = (Timer)var9;
 
-         while(field625 == 0L || class188.method3511() < field625) {
+         while(field625 == 0L || class188.currentTimeMs() < field625) {
             field624 = timer.vmethod3306(field629, field633);
 
             for(int var6 = 0; var6 < field624; ++var6) {

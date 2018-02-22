@@ -219,7 +219,7 @@ public class Varcs {
       }
 
       this.changed = false;
-      this.field1393 = class188.method3511();
+      this.field1393 = class188.currentTimeMs();
    }
 
    @ObfuscatedName("y")
@@ -295,7 +295,7 @@ public class Varcs {
    )
    @Export("process")
    void process() {
-      if(this.changed && this.field1393 < class188.method3511() - 60000L) {
+      if(this.changed && this.field1393 < class188.currentTimeMs() - 60000L) {
          this.serialize();
       }
 

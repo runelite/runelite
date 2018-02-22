@@ -20,14 +20,15 @@ public class class188 {
       signature = "(B)J",
       garbageValue = "-16"
    )
-   public static synchronized long method3511() {
+   @Export("currentTimeMs")
+   public static synchronized long currentTimeMs() {
       long var0 = System.currentTimeMillis();
-      if(var0 < WorldComparator.field257) {
-         class195.field2554 += WorldComparator.field257 - var0;
+      if(var0 < WorldComparator.currentTimeMsLast) {
+         class195.currentTimeMsOffset += WorldComparator.currentTimeMsLast - var0;
       }
 
-      WorldComparator.field257 = var0;
-      return class195.field2554 + var0;
+      WorldComparator.currentTimeMsLast = var0;
+      return class195.currentTimeMsOffset + var0;
    }
 
    @ObfuscatedName("p")

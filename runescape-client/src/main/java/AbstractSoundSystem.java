@@ -103,7 +103,7 @@ public class AbstractSoundSystem {
 
    protected AbstractSoundSystem() {
       this.field1515 = 32;
-      this.field1516 = class188.method3511();
+      this.field1516 = class188.currentTimeMs();
       this.field1528 = 0L;
       this.field1521 = 0;
       this.field1529 = 0;
@@ -177,7 +177,7 @@ public class AbstractSoundSystem {
    )
    public final synchronized void method2203() {
       if(this.samples != null) {
-         long var1 = class188.method3511();
+         long var1 = class188.currentTimeMs();
 
          try {
             if(this.field1528 != 0L) {
@@ -284,7 +284,7 @@ public class AbstractSoundSystem {
          this.flush();
       } catch (Exception var2) {
          this.close();
-         this.field1528 = class188.method3511() + 2000L;
+         this.field1528 = class188.currentTimeMs() + 2000L;
       }
 
    }
@@ -447,7 +447,7 @@ public class AbstractSoundSystem {
          this.field1514.vmethod4344(var1, 0, var2);
       }
 
-      this.field1516 = class188.method3511();
+      this.field1516 = class188.currentTimeMs();
    }
 
    @ObfuscatedName("ad")

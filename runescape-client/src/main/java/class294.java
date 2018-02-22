@@ -21,7 +21,7 @@ public class class294 extends class216 {
       signature = "(Lkp;I)V"
    )
    class294(Name var1, int var2) {
-      this.field3748 = (int)(class188.method3511() / 1000L);
+      this.field3748 = (int)(class188.currentTimeMs() / 1000L);
       this.field3747 = var1;
       this.field3749 = (short)var2;
    }

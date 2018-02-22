@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -7,7 +8,8 @@ public class class195 {
    @ObfuscatedGetter(
       longValue = 5577057677170790977L
    )
-   static long field2554;
+   @Export("currentTimeMsOffset")
+   static long currentTimeMsOffset;
    @ObfuscatedName("iz")
    @ObfuscatedGetter(
       intValue = 715009929

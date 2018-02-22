@@ -117,7 +117,7 @@ public final class class29 {
       }
 
       if(class33.field430 != null) {
-         long var9 = class188.method3511();
+         long var9 = class188.currentTimeMs();
          long var3 = class33.field430.getCollectionTime();
          if(-1L != GameEngine.garbageCollectorLastCollectionTime) {
             long var5 = var3 - GameEngine.garbageCollectorLastCollectionTime;

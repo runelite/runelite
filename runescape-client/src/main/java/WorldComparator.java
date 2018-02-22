@@ -14,7 +14,8 @@ final class WorldComparator implements Comparator {
    @ObfuscatedGetter(
       longValue = -1242510738399371395L
    )
-   static long field257;
+   @Export("currentTimeMsLast")
+   static long currentTimeMsLast;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Llv;"

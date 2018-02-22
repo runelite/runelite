@@ -186,10 +186,10 @@ public class LoginPacket implements class178 {
 
          if(Client.gameState != 5) {
             if(class89.field1332 == -1L) {
-               class89.field1332 = class188.method3511() + 1000L;
+               class89.field1332 = class188.currentTimeMs() + 1000L;
             }
 
-            long var13 = class188.method3511();
+            long var13 = class188.currentTimeMs();
             boolean var17;
             if(Client.field932 != null && Client.field1075 < Client.field932.size()) {
                while(true) {

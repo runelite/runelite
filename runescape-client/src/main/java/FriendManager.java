@@ -82,7 +82,7 @@ public class FriendManager {
    )
    final void method1699() {
       for(class294 var1 = (class294)this.field1194.field3732.method4083(); var1 != null; var1 = (class294)this.field1194.field3732.method4084()) {
-         if((long)var1.field3748 < class188.method3511() / 1000L - 5L) {
+         if((long)var1.field3748 < class188.currentTimeMs() / 1000L - 5L) {
             if(var1.field3749 > 0) {
                class149.sendGameMessage(5, "", var1.field3747 + " has logged in.");
             }

@@ -187,7 +187,7 @@ public class Resampler {
                   }
 
                   class258.field3373 = 0;
-                  class258.field3358 = class188.method3511();
+                  class258.field3358 = class188.currentTimeMs();
                   return;
                }
 

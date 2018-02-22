@@ -71,7 +71,7 @@ public class class310 {
       garbageValue = "-24"
    )
    public void method5603() {
-      this.field3847 = class188.method3511();
+      this.field3847 = class188.currentTimeMs();
    }
 
    @ObfuscatedName("q")
@@ -81,7 +81,7 @@ public class class310 {
    )
    public void method5599() {
       if(-1L != this.field3847) {
-         this.field3845 = class188.method3511() - this.field3847;
+         this.field3845 = class188.currentTimeMs() - this.field3847;
          this.field3847 = -1L;
       }
 
@@ -93,7 +93,7 @@ public class class310 {
       garbageValue = "-1553628994"
    )
    public void method5600(int var1) {
-      this.field3841 = class188.method3511();
+      this.field3841 = class188.currentTimeMs();
       this.field3848 = var1;
    }
 
@@ -104,7 +104,7 @@ public class class310 {
    )
    public void method5601() {
       if(this.field3841 != -1L) {
-         this.field3844 = class188.method3511() - this.field3841;
+         this.field3844 = class188.currentTimeMs() - this.field3841;
          this.field3841 = -1L;
       }
 
