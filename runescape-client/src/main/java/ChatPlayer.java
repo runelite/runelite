@@ -22,7 +22,8 @@ public class ChatPlayer extends Nameable {
    @ObfuscatedGetter(
       intValue = 1934693531
    )
-   public int field3719;
+   @Export("rank")
+   public int rank;
 
    ChatPlayer() {
       this.world = -1;

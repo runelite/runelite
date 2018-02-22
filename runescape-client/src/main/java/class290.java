@@ -121,7 +121,7 @@ public class class290 extends NameableContainer {
                   var11.world = var6;
                }
 
-               var11.field3719 = var7;
+               var11.rank = var7;
                var11.field3736 = var9;
                var11.field3737 = var10;
                continue;

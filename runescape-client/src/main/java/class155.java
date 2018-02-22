@@ -35,7 +35,7 @@ public class class155 extends class283 {
       garbageValue = "-2140606897"
    )
    int method3149(ChatPlayer var1, ChatPlayer var2) {
-      return var2.field3719 != var1.field3719?(this.field2102?var1.field3719 - var2.field3719:var2.field3719 - var1.field3719):this.method5214(var1, var2);
+      return var2.rank != var1.rank ?(this.field2102?var1.rank - var2.rank :var2.rank - var1.rank):this.method5214(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {

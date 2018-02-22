@@ -143,7 +143,7 @@ public class ClanMemberManager extends NameableContainer {
             ClanMember var9 = (ClanMember)this.method5269(new Name(var1.readString(), this.field3741));
             int var10 = var1.readUnsignedShort();
             var9.method5332(var10, ++this.field3743 - 1);
-            var9.field3719 = var1.readByte();
+            var9.rank = var1.readByte();
             var1.readString();
             this.method5400(var9);
          }
@@ -187,7 +187,7 @@ public class ClanMemberManager extends NameableContainer {
          }
 
          var6.method5332(var3, ++this.field3743 - 1);
-         var6.field3719 = var4;
+         var6.rank = var4;
          this.method5400(var6);
       }
 
@@ -224,7 +224,7 @@ public class ClanMemberManager extends NameableContainer {
    )
    final void method5400(ClanMember var1) {
       if(var1.method5183().equals(this.field3740.vmethod5341())) {
-         this.field3744 = var1.field3719;
+         this.field3744 = var1.rank;
       }
 
    }
