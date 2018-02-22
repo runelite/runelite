@@ -45,6 +45,7 @@ public class NavigationButton extends JButton
 	public NavigationButton(String name, Image icon, Supplier<PluginPanel> panelSupplier)
 	{
 		super();
+		setName(name);
 		setToolTipText(name);
 		setIcon(new ImageIcon(icon));
 		this.panelSupplier = panelSupplier;
