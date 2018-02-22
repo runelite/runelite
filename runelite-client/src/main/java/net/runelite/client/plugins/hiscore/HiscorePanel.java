@@ -129,7 +129,6 @@ public class HiscorePanel extends PluginPanel
 
 		input = new IconTextField();
 		input.setIcon(search);
-		input.setFont(labelFont);
 		input.addActionListener(e -> executor.execute(this::lookup));
 		inputPanel.add(input, BorderLayout.CENTER);
 
