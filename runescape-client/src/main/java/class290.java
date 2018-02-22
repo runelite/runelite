@@ -36,7 +36,7 @@ public class class290 extends NameableContainer {
       garbageValue = "-258832734"
    )
    Nameable vmethod5393() {
-      return new class292();
+      return new Friend();
    }
 
    @ObfuscatedName("q")
@@ -45,7 +45,7 @@ public class class290 extends NameableContainer {
       garbageValue = "-1"
    )
    Nameable[] vmethod5396(int var1) {
-      return new class292[var1];
+      return new Friend[var1];
    }
 
    @ObfuscatedName("o")
@@ -54,7 +54,7 @@ public class class290 extends NameableContainer {
       garbageValue = "-743740671"
    )
    public boolean method5346(Name var1, boolean var2) {
-      class292 var3 = (class292)this.method5307(var1);
+      Friend var3 = (Friend)this.method5307(var1);
       return var3 == null?false:!var2 || var3.world != 0;
    }
 
@@ -82,7 +82,7 @@ public class class290 extends NameableContainer {
 
             var1.readString();
             if(var4 != null && var4.method5359()) {
-               class292 var11 = (class292)this.method5235(var3?var5:var4);
+               Friend var11 = (Friend)this.method5235(var3?var5:var4);
                if(var11 != null) {
                   this.method5243(var11, var4, var5);
                   if(var6 != var11.world) {
@@ -109,7 +109,7 @@ public class class290 extends NameableContainer {
                      continue;
                   }
 
-                  var11 = (class292)this.method5240(var4, var5);
+                  var11 = (Friend)this.method5240(var4, var5);
                }
 
                if(var6 != var11.world) {

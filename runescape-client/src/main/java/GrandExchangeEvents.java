@@ -130,7 +130,7 @@ public class GrandExchangeEvents {
          if(var0 == 3601) {
             var3 = class80.intStack[--class80.intStackSize];
             if(ContextMenuRow.friendManager.method1695() && var3 >= 0 && var3 < ContextMenuRow.friendManager.field1194.getCount()) {
-               class292 var9 = (class292)ContextMenuRow.friendManager.field1194.get(var3);
+               Friend var9 = (Friend)ContextMenuRow.friendManager.field1194.get(var3);
                class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var9.method5184();
                class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var9.method5182();
             } else {
