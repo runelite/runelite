@@ -1,6 +1,6 @@
 
 import java.io.IOException;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Main extends JFrame
 {
@@ -23,6 +23,7 @@ public class Main extends JFrame
 
 		client.init();
 		client.start();
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
 
