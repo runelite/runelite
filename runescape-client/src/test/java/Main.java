@@ -1,6 +1,7 @@
 
 import java.io.IOException;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 public class Main extends JFrame
 {
