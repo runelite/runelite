@@ -32,10 +32,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.service.worlds.WorldsService;
 import org.slf4j.Logger;
@@ -51,7 +53,6 @@ public class UpdateCheckService
 	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckService.class);
 
 	private static final int PORT = 43594;
-	private static final int WORLD_OFFSET = 300;
 	private static final byte HANDSHAKE_TYPE = 15;
 
 	private static final int RESPONSE_OK = 0;
@@ -74,8 +75,8 @@ public class UpdateCheckService
 
 	private boolean checkUpdate()
 	{
-		int nextWorld = randomWorld();
-		if (nextWorld == -1)
+		World nextWorld = randomWorld();
+		if (nextWorld == null)
 		{
 			return false;
 		}
@@ -83,7 +84,7 @@ public class UpdateCheckService
 		InetAddress address;
 		try
 		{
-			String url = "oldschool" + nextWorld + ".runescape.com";
+			String url = nextWorld.getAddress();
 			address = InetAddress.getByName(url);
 		}
 		catch (UnknownHostException ex)
@@ -122,20 +123,19 @@ public class UpdateCheckService
 		return false; // no update
 	}
 
-	private int randomWorld()
+	private World randomWorld()
 	{
 		try
 		{
-			WorldResult worlds = worldsService.listWorlds();
-			int size = worlds.getWorlds().size();
+			WorldResult worldResult = worldsService.listWorlds();
+			List<World> worlds = worldResult.getWorlds();
 			Random rand = new Random();
-			int worldNumber = worlds.getWorlds().get(rand.nextInt(size)).getId();
-			return worldNumber - WORLD_OFFSET;
+			return worlds.get(rand.nextInt(worlds.size()));
 		}
 		catch (IOException ex)
 		{
 			logger.warn(null, ex);
-			return -1;
+			return null;
 		}
 	}
 }
