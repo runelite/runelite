@@ -52,7 +52,7 @@ public interface BoostsConfig extends Config
 	)
 	default boolean colorText()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
