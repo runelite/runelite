@@ -18,12 +18,12 @@ public class class156 extends class283 {
       signature = "(Lku;Lku;I)I",
       garbageValue = "1162625146"
    )
-   int method3156(Friend var1, Friend var2) {
+   int method3156(ChatPlayer var1, ChatPlayer var2) {
       return var1.world != 0 && var2.world != 0?(this.field2110?var1.method5183().method5360(var2.method5183()):var2.method5183().method5360(var1.method5183())):this.method5214(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3156((Friend)var1, (Friend)var2);
+      return this.method3156((ChatPlayer)var1, (ChatPlayer)var2);
    }
 
    @ObfuscatedName("o")

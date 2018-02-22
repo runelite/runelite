@@ -33,11 +33,11 @@ public class class151 extends class283 {
       signature = "(Lku;Lku;B)I",
       garbageValue = "-67"
    )
-   int method3121(Friend var1, Friend var2) {
+   int method3121(ChatPlayer var1, ChatPlayer var2) {
       return Client.world == var1.world && var2.world == Client.world?(this.field2088?var1.field3718 - var2.field3718:var2.field3718 - var1.field3718):this.method5214(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3121((Friend)var1, (Friend)var2);
+      return this.method3121((ChatPlayer)var1, (ChatPlayer)var2);
    }
 }

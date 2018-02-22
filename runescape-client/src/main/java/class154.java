@@ -27,12 +27,12 @@ public class class154 extends class283 {
       signature = "(Lku;Lku;I)I",
       garbageValue = "2102532668"
    )
-   int method3146(Friend var1, Friend var2) {
+   int method3146(ChatPlayer var1, ChatPlayer var2) {
       return var2.world != var1.world?(this.field2097?var1.world - var2.world:var2.world - var1.world):this.method5214(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3146((Friend)var1, (Friend)var2);
+      return this.method3146((ChatPlayer)var1, (ChatPlayer)var2);
    }
 
    @ObfuscatedName("b")

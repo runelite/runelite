@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ku")
-@Implements("Friend")
-public class Friend extends Nameable {
+@Implements("ChatPlayer")
+public class ChatPlayer extends Nameable {
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1841793549
@@ -24,7 +24,7 @@ public class Friend extends Nameable {
    )
    public int field3719;
 
-   Friend() {
+   ChatPlayer() {
       this.world = -1;
    }
 

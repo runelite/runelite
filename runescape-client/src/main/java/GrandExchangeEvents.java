@@ -142,7 +142,7 @@ public class GrandExchangeEvents {
          } else if(var0 == 3602) {
             var3 = class80.intStack[--class80.intStackSize];
             if(ContextMenuRow.friendManager.method1695() && var3 >= 0 && var3 < ContextMenuRow.friendManager.field1194.getCount()) {
-               class80.intStack[++class80.intStackSize - 1] = ((Friend)ContextMenuRow.friendManager.field1194.get(var3)).world;
+               class80.intStack[++class80.intStackSize - 1] = ((ChatPlayer)ContextMenuRow.friendManager.field1194.get(var3)).world;
             } else {
                class80.intStack[++class80.intStackSize - 1] = 0;
             }
@@ -151,7 +151,7 @@ public class GrandExchangeEvents {
          } else if(var0 == 3603) {
             var3 = class80.intStack[--class80.intStackSize];
             if(ContextMenuRow.friendManager.method1695() && var3 >= 0 && var3 < ContextMenuRow.friendManager.field1194.getCount()) {
-               class80.intStack[++class80.intStackSize - 1] = ((Friend)ContextMenuRow.friendManager.field1194.get(var3)).field3719;
+               class80.intStack[++class80.intStackSize - 1] = ((ChatPlayer)ContextMenuRow.friendManager.field1194.get(var3)).field3719;
             } else {
                class80.intStack[++class80.intStackSize - 1] = 0;
             }
@@ -213,7 +213,7 @@ public class GrandExchangeEvents {
             } else if(var0 == 3614) {
                var3 = class80.intStack[--class80.intStackSize];
                if(class2.clanMemberManager != null && var3 < class2.clanMemberManager.getCount()) {
-                  class80.intStack[++class80.intStackSize - 1] = ((Friend)class2.clanMemberManager.get(var3)).method5336();
+                  class80.intStack[++class80.intStackSize - 1] = ((ChatPlayer)class2.clanMemberManager.get(var3)).method5336();
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
                }
@@ -222,7 +222,7 @@ public class GrandExchangeEvents {
             } else if(var0 == 3615) {
                var3 = class80.intStack[--class80.intStackSize];
                if(class2.clanMemberManager != null && var3 < class2.clanMemberManager.getCount()) {
-                  class80.intStack[++class80.intStackSize - 1] = ((Friend)class2.clanMemberManager.get(var3)).field3719;
+                  class80.intStack[++class80.intStackSize - 1] = ((ChatPlayer)class2.clanMemberManager.get(var3)).field3719;
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
                }

@@ -4,7 +4,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jc")
 @Implements("ClanMember")
-public class ClanMember extends Friend {
+public class ClanMember extends ChatPlayer
+{
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lkd;"

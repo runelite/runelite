@@ -30,7 +30,7 @@ public class class153 extends class283 {
       signature = "(Lku;Lku;I)I",
       garbageValue = "-2127766052"
    )
-   int method3135(Friend var1, Friend var2) {
+   int method3135(ChatPlayer var1, ChatPlayer var2) {
       if(var1.world != 0) {
          if(var2.world == 0) {
             return this.field2094?-1:1;
@@ -43,7 +43,7 @@ public class class153 extends class283 {
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3135((Friend)var1, (Friend)var2);
+      return this.method3135((ChatPlayer)var1, (ChatPlayer)var2);
    }
 
    @ObfuscatedName("b")

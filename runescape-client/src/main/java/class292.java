@@ -2,7 +2,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("km")
-public class class292 extends Friend {
+public class class292 extends ChatPlayer
+{
    @ObfuscatedName("b")
    boolean field3736;
    @ObfuscatedName("q")
