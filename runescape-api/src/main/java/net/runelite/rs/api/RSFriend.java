@@ -24,10 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.mapping.Import;
-
-public interface RSFriend extends RSNameable
+public interface RSFriend extends RSChatPlayer
 {
-	@Import("world")
-	int getWorld();
 }
