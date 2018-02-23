@@ -142,8 +142,8 @@ public class PuzzleSolverOverlay extends Overlay
 				{
 					boolean foundPosition = false;
 
-					// Find the current state by looking at the current step and then the next 3 steps
-					for (int i = 0; i < 4; i++)
+					// Find the current state by looking at the current step and then the next 5 steps
+					for (int i = 0; i < 6; i++)
 					{
 						int j = solver.getPosition() + i;
 
@@ -152,10 +152,10 @@ public class PuzzleSolverOverlay extends Overlay
 							break;
 						}
 
-						Integer currentState = solver.getStep(j);
+						PuzzleState currentState = solver.getStep(j);
 
 						// If this is false, player has moved the empty tile
-						if (currentState != null && itemIds[currentState] == BLANK_TILE_VALUE)
+						if (currentState != null && currentState.hasPieces(itemIds))
 						{
 							foundPosition = true;
 							solver.setPosition(j);
@@ -168,10 +168,10 @@ public class PuzzleSolverOverlay extends Overlay
 					}
 
 					// If looking at the next steps didn't find the current state,
-					// see if we can find the current state in the 3 previous steps
+					// see if we can find the current state in the 5 previous steps
 					if (!foundPosition)
 					{
-						for (int i = 1; i < 4; i++)
+						for (int i = 1; i < 6; i++)
 						{
 							int j = solver.getPosition() - i;
 
@@ -180,9 +180,9 @@ public class PuzzleSolverOverlay extends Overlay
 								break;
 							}
 
-							Integer currentState = solver.getStep(j);
+							PuzzleState currentState = solver.getStep(j);
 
-							if (currentState != null && itemIds[currentState] == BLANK_TILE_VALUE)
+							if (currentState != null && currentState.hasPieces(itemIds))
 							{
 								foundPosition = true;
 								shouldCache = true;
@@ -218,15 +218,15 @@ public class PuzzleSolverOverlay extends Overlay
 								// Display the next 4 steps
 								for (int j = 1; j < 5; j++)
 								{
-									Integer futureMove = solver.getStep(solver.getPosition() + j);
+									PuzzleState futureMove = solver.getStep(solver.getPosition() + j);
 
 									if (futureMove == null)
 									{
 										break;
 									}
 
-									int blankX = futureMove % DIMENSION;
-									int blankY = futureMove / DIMENSION;
+									int blankX = futureMove.getEmptyPiece() % DIMENSION;
+									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
 									int markerSize = DOT_MARKER_SIZE - j * 3;
 
@@ -242,23 +242,23 @@ public class PuzzleSolverOverlay extends Overlay
 							else
 							{
 								// Find the current blank tile position
-								Integer currentMove = solver.getStep(solver.getPosition());
+								PuzzleState currentMove = solver.getStep(solver.getPosition());
 
-								int lastBlankX = currentMove % DIMENSION;
-								int lastBlankY = currentMove / DIMENSION;
+								int lastBlankX = currentMove.getEmptyPiece() % DIMENSION;
+								int lastBlankY = currentMove.getEmptyPiece() / DIMENSION;
 
 								// Display the next 3 steps
 								for (int j = 1; j < 4; j++)
 								{
-									Integer futureMove = solver.getStep(solver.getPosition() + j);
+									PuzzleState futureMove = solver.getStep(solver.getPosition() + j);
 
 									if (futureMove == null)
 									{
 										break;
 									}
 
-									int blankX = futureMove % DIMENSION;
-									int blankY = futureMove / DIMENSION;
+									int blankX = futureMove.getEmptyPiece() % DIMENSION;
+									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
 									int xDelta = blankX - lastBlankX;
 									int yDelta = blankY - lastBlankY;
@@ -353,27 +353,7 @@ public class PuzzleSolverOverlay extends Overlay
 			itemIds[items.length] = BLANK_TILE_VALUE;
 		}
 
-		return itemIds;
-	}
-
-	private void cacheItems(int[] items)
-	{
-		cachedItems = new int[items.length];
-		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
-	}
-
-	private void solve(int[] items)
-	{
-		if (solverFuture != null)
-		{
-			solverFuture.cancel(true);
-		}
-
-		int[] puzzleItems = convertToSolverFormat(items);
-		PuzzleState puzzleState = new PuzzleState(puzzleItems);
-
-		solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
-		solverFuture = executorService.submit(solver);
+		return convertToSolverFormat(itemIds);
 	}
 
 	/**
@@ -411,6 +391,25 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		return convertedItems;
+	}
+
+	private void cacheItems(int[] items)
+	{
+		cachedItems = new int[items.length];
+		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
+	}
+
+	private void solve(int[] items)
+	{
+		if (solverFuture != null)
+		{
+			solverFuture.cancel(true);
+		}
+
+		PuzzleState puzzleState = new PuzzleState(items);
+
+		solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		solverFuture = executorService.submit(solver);
 	}
 
 	private BufferedImage getDownArrow()

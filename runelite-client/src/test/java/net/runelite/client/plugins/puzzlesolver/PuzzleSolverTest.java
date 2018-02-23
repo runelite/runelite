@@ -25,15 +25,12 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
-import java.util.List;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
 import org.junit.Test;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PuzzleSolverTest
@@ -97,27 +94,8 @@ public class PuzzleSolverTest
 			solver.run();
 
 			assertTrue(solver.hasSolution());
-
-			for (int i = 0; i < solver.getStepCount(); i++)
-			{
-				int futureMove = solver.getStep(i);
-
-				List<PuzzleState> moves = state.computeMoves();
-
-				for (PuzzleState move : moves)
-				{
-					if (move.getEmptyPiece() == futureMove)
-					{
-						state = move;
-						break;
-					}
-				}
-			}
-
-			for (int i = 0; i < FINISHED_STATE.length; i++)
-			{
-				assertEquals(state.getPiece(i % DIMENSION, i / DIMENSION), FINISHED_STATE[i]);
-			}
+			assertFalse(solver.hasFailed());
+			assertTrue(solver.getStep(solver.getStepCount() - 1).hasPieces(FINISHED_STATE));
 		}
 	}
 }

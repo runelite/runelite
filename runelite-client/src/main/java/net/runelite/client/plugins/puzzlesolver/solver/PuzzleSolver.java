@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.puzzlesolver.solver;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
 
 public class PuzzleSolver implements Runnable
@@ -36,7 +35,7 @@ public class PuzzleSolver implements Runnable
 	private Pathfinder pathfinder;
 	private PuzzleState startState;
 
-	private List<Integer> solution;
+	private List<PuzzleState> solution;
 	private int position;
 	private boolean failed = false;
 
@@ -46,7 +45,7 @@ public class PuzzleSolver implements Runnable
 		this.startState = startState;
 	}
 
-	public Integer getStep(int stepIdx)
+	public PuzzleState getStep(int stepIdx)
 	{
 		if (stepIdx < 0 || stepIdx >= solution.size())
 		{
@@ -84,17 +83,7 @@ public class PuzzleSolver implements Runnable
 	@Override
 	public void run()
 	{
-		List<PuzzleState> solution = pathfinder.computePath(startState);
-
-		if (solution != null)
-		{
-			this.solution = solution.stream()
-					.map(PuzzleState::getEmptyPiece)
-					.collect(Collectors.toList());
-		}
-		else
-		{
-			failed = true;
-		}
+		solution = pathfinder.computePath(startState);
+		failed = solution == null;
 	}
 }
