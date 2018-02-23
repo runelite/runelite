@@ -55,4 +55,14 @@ public interface PuzzleSolverConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "drawDots",
+		name = "Draw dots instead of arrows",
+		description = "Draw dots increasing in size instead of arrows for the solution"
+	)
+	default boolean drawDots()
+	{
+		return false;
+	}
 }
