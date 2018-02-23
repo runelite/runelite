@@ -83,8 +83,10 @@ public class ClientUI extends JFrame
 	private final RuneLiteProperties properties;
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
+	private JPanel container;
 	private PluginPanel pluginPanel;
-	private Dimension clientSize;
+	private boolean isPluginPanelShown = false;
+	private boolean isSideBarShown = true;
 
 	@Getter
 	private TitleToolbar titleToolbar;
@@ -351,7 +353,7 @@ public class ClientUI extends JFrame
 			}
 		});
 
-		final JPanel container = new JPanel();
+		container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 		container.add(new ClientPanel(client));
 
@@ -365,6 +367,25 @@ public class ClientUI extends JFrame
 		container.add(pluginToolbar);
 
 		titleToolbar = new TitleToolbar(properties);
+		titleToolbar.getSideBarButton().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (!isSideBarShown)
+				{
+					expandSideBar();
+				}
+				else
+				{
+					contractSideBar();
+				}
+			}
+		});
+		if (isSideBarShown)
+		{
+			titleToolbar.flipArrowIcon();
+		}
 
 		add(container);
 	}
@@ -377,20 +398,20 @@ public class ClientUI extends JFrame
 
 	void expand(PluginPanel panel)
 	{
-		if (pluginPanel != null)
+		pluginPanel = panel;
+
+		if (navContainer.getComponents().length > 0)
 		{
 			navContainer.remove(0);
 		}
 		else
 		{
-			clientSize = this.getSize();
 			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
 			{
 				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
 			}
 		}
 
-		pluginPanel = panel;
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
@@ -404,9 +425,10 @@ public class ClientUI extends JFrame
 
 		wrappedPanel.repaint();
 		revalidateMinimumSize();
+		isPluginPanelShown = true;
 	}
 
-	void contract()
+	void contract(boolean discardPluginPanel)
 	{
 		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
 		pluginPanel.onDeactivate();
@@ -422,16 +444,68 @@ public class ClientUI extends JFrame
 		}
 		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
 		{
-			this.setSize(clientSize);
+			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
 		}
-
-		pluginPanel = null;
+		if (discardPluginPanel)
+		{
+			pluginPanel = null;
+		}
+		isPluginPanelShown = false;
 	}
 
 	private boolean isInScreenBounds(int x, int y)
 	{
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		return x >= 0 && x <= size.getWidth() && y >= 0 && y <= size.getHeight();
+	}
+
+	void expandSideBar()
+	{
+		if (!isSideBarShown)
+		{
+			container.add(pluginToolbar);
+			revalidateMinimumSize();
+			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PluginToolbar.TOOLBAR_WIDTH, (int) getLocationOnScreen().getY()) && getMinimumSize().width != getWidth())
+			{
+				this.setSize(getWidth() + PluginToolbar.TOOLBAR_WIDTH, getHeight());
+			}
+			if (pluginPanel != null && !isPluginPanelShown)
+			{
+				expand(pluginPanel);
+			}
+			revalidate();
+			titleToolbar.flipArrowIcon();
+			isSideBarShown = true;
+		}
+	}
+
+	void contractSideBar()
+	{
+		if (isSideBarShown)
+		{
+			boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+			container.remove(pluginToolbar);
+			if (pluginPanel != null && isPluginPanelShown)
+			{
+				contract(false);
+			}
+			else
+			{
+				revalidateMinimumSize();
+			}
+			if (wasMinimumWidth)
+			{
+				this.setSize((int) this.getMinimumSize().getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight());
+			}
+			else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+			{
+				this.setSize(new Dimension(getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight()));
+			}
+			revalidate();
+			titleToolbar.flipArrowIcon();
+			isSideBarShown = false;
+			System.out.println(getSize());
+		}
 	}
 
 	private void checkExit()

@@ -32,6 +32,8 @@ import java.awt.Image;
 import java.awt.LayoutManager2;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -40,6 +42,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -49,9 +53,17 @@ public class TitleToolbar extends JPanel
 {
 	private static final int TITLEBAR_SIZE = 23;
 	private static final int ITEM_PADDING = 4;
+	private static final int ICON_SIZE = TITLEBAR_SIZE - 6;
+
+	private static BufferedImage sideBarIcon;
+	private static BufferedImage invertedIcon;
+
+	@Getter
+	private JButton sideBarButton;
 
 	public TitleToolbar(RuneLiteProperties properties)
 	{
+
 		// The only other layout manager that would manage it's preferred size without padding
 		// was the GroupLayout manager, which doesn't work with dynamic layouts like this one.
 		// Primarily, it would not remove components unless it was immediately repainted.
@@ -112,8 +124,10 @@ public class TitleToolbar extends JPanel
 			public void layoutContainer(Container parent)
 			{
 				int x = 0;
-				for (Component c : parent.getComponents())
+				//place the icons from right to left
+				for (int i = parent.getComponents().length - 1; i >= 0; i--)
 				{
+					Component c = parent.getComponents()[i];
 					x += ITEM_PADDING;
 					int height = c.getPreferredSize().height;
 					if (height > TITLEBAR_SIZE)
@@ -125,6 +139,22 @@ public class TitleToolbar extends JPanel
 				}
 			}
 		});
+
+		try
+		{
+			sideBarIcon = ImageIO.read(ClientUI.class.getResourceAsStream("arrow.png"));
+			invertedIcon = ImageIO.read(ClientUI.class.getResourceAsStream("arrow_inverted.png"));
+
+			sideBarButton = new JButton();
+			sideBarButton.setName("sideBarButton");
+			sideBarButton.setToolTipText("Hide SideBar");
+
+			addButton(sideBarButton, sideBarIcon, invertedIcon);
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to load sideBar button", ex);
+		}
 
 		try
 		{
@@ -160,9 +190,8 @@ public class TitleToolbar extends JPanel
 
 	public void addButton(JButton button, Image iconImage, Image invertedIconImage)
 	{
-		final int iconSize = TITLEBAR_SIZE - 6;
-		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
-		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
+		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
+		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
 
 		button.setIcon(icon);
 		button.setRolloverIcon(invertedIcon);
@@ -178,5 +207,25 @@ public class TitleToolbar extends JPanel
 	{
 		super.remove(c);
 		revalidate();
+	}
+
+	public static BufferedImage horizontalFlipImage(BufferedImage image)
+	{
+		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+		tx.translate(-image.getWidth(null), 0);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		image = op.filter(image, null);
+		return image;
+	}
+
+	void flipArrowIcon()
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			sideBarIcon = horizontalFlipImage(sideBarIcon);
+			invertedIcon = horizontalFlipImage(invertedIcon);
+			sideBarButton.setIcon(new ImageIcon(sideBarIcon.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH)));
+			sideBarButton.setRolloverIcon(new ImageIcon(invertedIcon.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH)));
+		});
 	}
 }
