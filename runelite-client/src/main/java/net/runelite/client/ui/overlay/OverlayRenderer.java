@@ -264,7 +264,7 @@ public class OverlayRenderer
 				final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
 				if (dimension.width == 0 && dimension.height == 0)
 				{
-					return;
+					continue;
 				}
 
 				final BufferedImage clippedImage = surface.getSubimage(0, 0, dimension.width, dimension.height);
