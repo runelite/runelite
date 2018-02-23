@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.puzzlesolver;
 
 import com.google.inject.Provides;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -38,6 +39,9 @@ public class PuzzleSolverPlugin extends Plugin
 {
 	@Inject
 	private PuzzleSolverOverlay puzzleSolverOverlay;
+
+	@Inject
+	private ScheduledExecutorService executorService;
 
 	@Provides
 	PuzzleSolverConfig provideConfig(ConfigManager configManager)
