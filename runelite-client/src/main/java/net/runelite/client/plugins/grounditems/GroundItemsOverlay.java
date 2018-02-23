@@ -157,8 +157,8 @@ public class GroundItemsOverlay extends Overlay
 
 					Integer currentQuantity = items.get(itemId);
 
-					String itemName = itemDefinition.getName().toLowerCase();
-					if (config.showHighlightedOnly() ? highlightedItems.contains(itemName) : !hiddenItems.contains(itemName))
+					String itemName = itemDefinition.getName();
+					if (config.showHighlightedOnly() ? listContains(highlightedItems, itemName) : !listContains(hiddenItems, itemName))
 					{
 						if (itemDefinition.getNote() != -1)
 						{
@@ -183,7 +183,7 @@ public class GroundItemsOverlay extends Overlay
 							gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
 							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 						}
-						if (highlightedItems.contains(itemDefinition.getName().toLowerCase()) ||
+						if (listContains(highlightedItems, itemName) ||
 							gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
 							(alchPrice >= config.getHideUnderHAValue())))
 						{
@@ -270,7 +270,7 @@ public class GroundItemsOverlay extends Overlay
 							.append(" gp)");
 					}
 
-					if (highlightedItems.contains(item.getName().toLowerCase()))
+					if (listContains(highlightedItems, item.getName()))
 					{
 						textColor = config.highlightedColor();
 					}
@@ -291,5 +291,30 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private boolean listContains(List<String> list, String itemName)
+	{
+		itemName = itemName.toLowerCase();
+
+		for (String item : list)
+		{
+			int wildcardIndex = item.indexOf("*");
+
+			if (wildcardIndex == -1)
+			{
+				if (itemName.equalsIgnoreCase(item))
+					return true;
+				else
+					continue;
+			}
+
+			String matchString = item.replaceAll("\\*", "").toLowerCase();
+
+			if (wildcardIndex == 0 && itemName.endsWith(matchString) || itemName.startsWith(matchString))
+				return true;
+		}
+
+		return false;
 	}
 }
