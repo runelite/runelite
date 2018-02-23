@@ -27,37 +27,26 @@ package net.runelite.client.plugins.poh;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import static net.runelite.client.plugins.poh.PohIcons.ALTAR;
-import static net.runelite.client.plugins.poh.PohIcons.ANNAKARL;
-import static net.runelite.client.plugins.poh.PohIcons.ARDOUGNE;
-import static net.runelite.client.plugins.poh.PohIcons.CAMELOT;
-import static net.runelite.client.plugins.poh.PohIcons.EXITPORTAL;
-import static net.runelite.client.plugins.poh.PohIcons.FALADOR;
-import static net.runelite.client.plugins.poh.PohIcons.FISHINGGUILD;
-import static net.runelite.client.plugins.poh.PohIcons.GLORY;
-import static net.runelite.client.plugins.poh.PohIcons.KHARYLL;
-import static net.runelite.client.plugins.poh.PohIcons.KOUREND;
-import static net.runelite.client.plugins.poh.PohIcons.LUMBRIDGE;
-import static net.runelite.client.plugins.poh.PohIcons.LUNARISLE;
-import static net.runelite.client.plugins.poh.PohIcons.MARIM;
-import static net.runelite.client.plugins.poh.PohIcons.POOLS;
-import static net.runelite.client.plugins.poh.PohIcons.REPAIR;
-import static net.runelite.client.plugins.poh.PohIcons.SENNTISTEN;
-import static net.runelite.client.plugins.poh.PohIcons.VARROCK;
-import static net.runelite.client.plugins.poh.PohIcons.WATERBIRTH;
-import static net.runelite.client.plugins.poh.PohIcons.YANILLE;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class PohOverlay extends Overlay
 {
+	private static final PohIcons[] PORTALS = new PohIcons[]
+	{
+		PohIcons.LUMBRIDGE, PohIcons.FALADOR, PohIcons.VARROCK, PohIcons.CAMELOT, PohIcons.ARDOUGNE,
+		PohIcons.YANILLE, PohIcons.LUNARISLE, PohIcons.WATERBIRTH, PohIcons.FISHINGGUILD,
+		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM
+	};
+
 	private static final int MAX_DISTANCE = 2350;
 
 	@Getter
@@ -106,81 +95,29 @@ public class PohOverlay extends Overlay
 	public void updateConfig()
 	{
 		iconList.clear();
-		if (config.showLumbridge())
+		if (config.showPortals())
 		{
-			iconList.add(LUMBRIDGE);
-		}
-		if (config.showFalador())
-		{
-			iconList.add(FALADOR);
-		}
-		if (config.showVarrock())
-		{
-			iconList.add(VARROCK);
-		}
-		if (config.showCamelot())
-		{
-			iconList.add(CAMELOT);
-		}
-		if (config.showArdougne())
-		{
-			iconList.add(ARDOUGNE);
-		}
-		if (config.showYanille())
-		{
-			iconList.add(YANILLE);
-		}
-		if (config.showLunarIsle())
-		{
-			iconList.add(LUNARISLE);
-		}
-		if (config.showWaterBirth())
-		{
-			iconList.add(WATERBIRTH);
-		}
-		if (config.showFishingGuild())
-		{
-			iconList.add(FISHINGGUILD);
-		}
-		if (config.showSenntisten())
-		{
-			iconList.add(SENNTISTEN);
-		}
-		if (config.showKharyll())
-		{
-			iconList.add(KHARYLL);
-		}
-		if (config.showAnnakarl())
-		{
-			iconList.add(ANNAKARL);
-		}
-		if (config.showKourend())
-		{
-			iconList.add(KOUREND);
-		}
-		if (config.showMarim())
-		{
-			iconList.add(MARIM);
+			Collections.addAll(iconList, PORTALS);
 		}
 		if (config.showAltar())
 		{
-			iconList.add(ALTAR);
+			iconList.add(PohIcons.ALTAR);
 		}
 		if (config.showGlory())
 		{
-			iconList.add(GLORY);
+			iconList.add(PohIcons.GLORY);
 		}
 		if (config.showRepairStand())
 		{
-			iconList.add(REPAIR);
+			iconList.add(PohIcons.REPAIR);
 		}
 		if (config.showPools())
 		{
-			iconList.add(POOLS);
+			iconList.add(PohIcons.POOLS);
 		}
 		if (config.showExitPortal())
 		{
-			iconList.add(EXITPORTAL);
+			iconList.add(PohIcons.EXITPORTAL);
 		}
 	}
 }
