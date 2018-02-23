@@ -153,6 +153,11 @@ public class PuzzleState
 		return parent;
 	}
 
+	public boolean hasPieces(int[] pieces)
+	{
+		return Arrays.equals(pieces, this.pieces);
+	}
+
 	public int getPiece(int x, int y)
 	{
 		return pieces[y * DIMENSION + x];
