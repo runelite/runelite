@@ -160,9 +160,9 @@ public class XteaService
 		try (Connection con = sql2o.open())
 		{
 			List<XteaEntry> entries = con.createQuery(
-				"select t1.region, t1.time, t1.rev, t1.key1, t1.key2, t1.key3, t1.key4 from xtea t1 "
-				+ "inner join ( select region,max(time) as time from xtea group by region ) t2 "
-				+ "on t1.region = t2.region and t1.time = t2.time")
+				"select t1.region, t1.time, t2.rev, t2.key1, t2.key2, t2.key3, t2.key4 from " +
+					"(select region,max(time) as time from xtea group by region) t1 " +
+					"join xtea t2 on t1.region = t2.region and t1.time = t2.time")
 				.executeAndFetch(XteaEntry.class);
 
 			return entries.stream()
