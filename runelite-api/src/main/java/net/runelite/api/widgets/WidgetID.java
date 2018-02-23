@@ -68,6 +68,7 @@ public class WidgetID
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
 	public static final int BLAST_FURNACE_GROUP_ID = 474;
 	public static final int WORLD_MAP = 595;
+	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 
 	static class WorldMap
 	{
