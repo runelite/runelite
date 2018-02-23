@@ -40,11 +40,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Slf4j
 public class PlayerIndicatorsOverlay extends Overlay
 {
-	private static final Color CYAN = new Color(0, 184, 212);
-	private static final Color GREEN = new Color(0, 200, 83);
-	private static final Color PURPLE = new Color(170, 0, 255);
-	private static final Color RED = new Color(255, 0, 0);
-
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
@@ -78,20 +73,20 @@ public class PlayerIndicatorsOverlay extends Overlay
 			{
 				if (config.drawOwnName())
 				{
-					renderPlayerOverlay(graphics, player, CYAN);
+					renderPlayerOverlay(graphics, player, config.getOwnNameColor());
 				}
 			}
 			else if (config.drawFriendNames() && player.isFriend())
 			{
-				renderPlayerOverlay(graphics, player, GREEN);
+				renderPlayerOverlay(graphics, player, config.getFriendNameColor());
 			}
 			else if (config.drawClanMemberNames() && isClanMember)
 			{
-				renderPlayerOverlay(graphics, player, PURPLE);
+				renderPlayerOverlay(graphics, player, config.getClanMemberColor());
 			}
 			else if (config.drawNonClanMemberNames() && !isClanMember)
 			{
-				renderPlayerOverlay(graphics, player, RED);
+				renderPlayerOverlay(graphics, player, config.getNonClanMemberColor());
 			}
 		}
 
