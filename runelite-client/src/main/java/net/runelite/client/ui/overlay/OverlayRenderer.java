@@ -199,7 +199,7 @@ public class OverlayRenderer
 
 		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
 		final Rectangle chatboxBounds = chatbox != null
-				? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
+			? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
 
 		OverlayUtil.setGraphicProperties(graphics);
 		final Point topLeftPoint = new Point();
@@ -220,76 +220,79 @@ public class OverlayRenderer
 			bottomLeftPoint.y += chatboxBounds.height;
 		}
 
-		overlays.stream()
-			.filter(overlay -> overlay.getLayer() == layer)
-			.forEach(overlay ->
+		for (Overlay overlay : overlays)
+		{
+			if (overlay.getLayer() != layer)
 			{
-				OverlayPosition overlayPosition = overlay.getPosition();
-				if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !client.isResized())
+				continue;
+			}
+
+			OverlayPosition overlayPosition = overlay.getPosition();
+			if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !client.isResized())
+			{
+				// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
+				// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
+				// drawing over each other.
+				overlayPosition = OverlayPosition.BOTTOM_RIGHT;
+			}
+			final Point subPosition = new Point();
+			switch (overlayPosition)
+			{
+				case BOTTOM_LEFT:
+					subPosition.setLocation(bottomLeftPoint);
+					break;
+				case BOTTOM_RIGHT:
+					subPosition.setLocation(bottomRightPoint);
+					break;
+				case TOP_LEFT:
+					subPosition.setLocation(topLeftPoint);
+					break;
+				case TOP_RIGHT:
+					subPosition.setLocation(topRightPoint);
+					break;
+				case ABOVE_CHATBOX_RIGHT:
+					subPosition.setLocation(rightChatboxPoint);
+					break;
+			}
+
+			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
+			{
+				safeRender(overlay, graphics, new Point());
+			}
+			else
+			{
+				final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
+				if (dimension.width == 0 && dimension.height == 0)
 				{
-					// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
-					// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
-					// drawing over each other.
-					overlayPosition = OverlayPosition.BOTTOM_RIGHT;
+					return;
 				}
-				final Point subPosition = new Point();
+
+				final BufferedImage clippedImage = surface.getSubimage(0, 0, dimension.width, dimension.height);
+
 				switch (overlayPosition)
 				{
 					case BOTTOM_LEFT:
-						subPosition.setLocation(bottomLeftPoint);
+						bottomLeftPoint.x += dimension.width + (dimension.width == 0 ? 0 : PADDING);
 						break;
 					case BOTTOM_RIGHT:
-						subPosition.setLocation(bottomRightPoint);
+						bottomRightPoint.x -= dimension.width + (dimension.width == 0 ? 0 : PADDING);
 						break;
 					case TOP_LEFT:
-						subPosition.setLocation(topLeftPoint);
+						topLeftPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
 						break;
 					case TOP_RIGHT:
-						subPosition.setLocation(topRightPoint);
+						topRightPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
 						break;
 					case ABOVE_CHATBOX_RIGHT:
-						subPosition.setLocation(rightChatboxPoint);
+						rightChatboxPoint.y -= dimension.height + (dimension.height == 0 ? 0 : PADDING);
 						break;
 				}
 
-				if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
-				{
-					safeRender(overlay, graphics, new Point());
-				}
-				else
-				{
-					final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
-					if (dimension.width == 0 && dimension.height == 0)
-					{
-						return;
-					}
-
-					final BufferedImage clippedImage = surface.getSubimage(0, 0, dimension.width, dimension.height);
-
-					switch (overlayPosition)
-					{
-						case BOTTOM_LEFT:
-							bottomLeftPoint.x += dimension.width + (dimension.width == 0 ? 0 : PADDING);
-							break;
-						case BOTTOM_RIGHT:
-							bottomRightPoint.x -= dimension.width + (dimension.width == 0 ? 0 : PADDING);
-							break;
-						case TOP_LEFT:
-							topLeftPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
-							break;
-						case TOP_RIGHT:
-							topRightPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
-							break;
-						case ABOVE_CHATBOX_RIGHT:
-							rightChatboxPoint.y -= dimension.height + (dimension.height == 0 ? 0 : PADDING);
-							break;
-					}
-
-					final Point transformed = OverlayUtil.transformPosition(overlayPosition, dimension);
-					graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
-					surfaceGraphics.clearRect(0, 0, (int) dimension.getWidth(), (int) dimension.getHeight());
-				}
-			});
+				final Point transformed = OverlayUtil.transformPosition(overlayPosition, dimension);
+				graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
+				surfaceGraphics.clearRect(0, 0, (int) dimension.getWidth(), (int) dimension.getHeight());
+			}
+		}
 	}
 
 	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
