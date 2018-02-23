@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Henke <https://github.com/henke96>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,9 +36,9 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,10 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.client.plugins.puzzlesolver.PuzzleSolver.BLANK_TILE_VALUE;
+import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
+import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
+import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
+import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -60,10 +64,10 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 @Slf4j
 public class PuzzleSolverOverlay extends Overlay
 {
-	private static final int MOVES_LEFT_WIDTH = 100;
-	private static final int MOVES_LEFT_OFFSET_Y = 50;
-	private static final int MOVES_LEFT_TOP_BORDER = 2;
-	private static final int MOVES_LEFT_BOTTOM_BORDER = 2;
+	private static final int INFO_BOX_WIDTH = 100;
+	private static final int INFO_BOX_OFFSET_Y = 50;
+	private static final int INFO_BOX_TOP_BORDER = 2;
+	private static final int INFO_BOX_BOTTOM_BORDER = 2;
 
 	private static final int PUZZLE_TILE_SIZE = 39;
 
@@ -72,9 +76,10 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private final Client client;
 	private final PuzzleSolverConfig config;
+	private final ScheduledExecutorService executorService;
 
 	private PuzzleSolver solver;
-	private Deque<Integer> nextMoves;
+	private Future<?> solverFuture;
 	private int[] cachedItems;
 
 	private BufferedImage downArrow;
@@ -83,13 +88,14 @@ public class PuzzleSolverOverlay extends Overlay
 	private BufferedImage rightArrow;
 
 	@Inject
-	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config)
+	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.config = config;
+		this.executorService = executorService;
 	}
 
 	@Override
@@ -115,117 +121,177 @@ public class PuzzleSolverOverlay extends Overlay
 			return null;
 		}
 
+		net.runelite.api.Point puzzleBoxLocation = puzzleBox.getCanvasLocation();
+
+		String infoString = "Solving..";
+
 		int[] itemIds = getItemIds(container);
 		boolean shouldCache = false;
 
-		if (nextMoves != null)
+		if (solver != null)
 		{
-			Integer nextMove = nextMoves.peek();
-
-			// If this is true, nextMove is actually the current state (player has moved the empty tile),
-			// so let's throw away this step and try to find the actual next move.
-			while (nextMove != null && itemIds[nextMove] == BLANK_TILE_VALUE)
+			if (solver.hasFailed())
 			{
-				nextMoves.pop(); // pop the current move
-				nextMove = nextMoves.peek();
-				shouldCache = true;
+				infoString = "The puzzle could not be solved";
 			}
-
-			// If nextMove is null, the puzzle is either finished
-			// or the player has not followed the instructions.
-			if (nextMove != null)
+			else
 			{
-				net.runelite.api.Point puzzleBoxLocation = puzzleBox.getCanvasLocation();
-
-				if (config.displayRemainingMoves())
+				if (solver.hasSolution())
 				{
-					int x = puzzleBoxLocation.getX() + puzzleBox.getWidth() / 2 - MOVES_LEFT_WIDTH / 2;
-					int y = puzzleBoxLocation.getY() - MOVES_LEFT_OFFSET_Y;
+					boolean foundPosition = false;
 
-					String movesLeftString = "Moves left: " + nextMoves.size();
-
-					FontMetrics fm = graphics.getFontMetrics();
-					int height = MOVES_LEFT_TOP_BORDER + fm.getHeight() + MOVES_LEFT_BOTTOM_BORDER;
-
-					BackgroundComponent backgroundComponent = new BackgroundComponent();
-					backgroundComponent.setRectangle(new Rectangle(x, y, MOVES_LEFT_WIDTH, height));
-					backgroundComponent.render(graphics, parent);
-
-					int textOffsetX = (MOVES_LEFT_WIDTH - fm.stringWidth(movesLeftString)) / 2;
-					int textOffsetY = fm.getHeight();
-
-					TextComponent textComponent = new TextComponent();
-					textComponent.setPosition(new Point(x + textOffsetX, y + textOffsetY));
-					textComponent.setText(movesLeftString);
-					textComponent.render(graphics, parent);
-				}
-
-				if (config.displaySolution())
-				{
-					int i = 0;
-					int lastBlankX = 0;
-					int lastBlankY = 0;
-
-					// First find the current blank tile position
-					for (int j = 0; j < itemIds.length; j++)
+					// Find the current state by looking at the current step and then the next 3 steps
+					for (int i = 0; i < 4; i++)
 					{
-						if (itemIds[j] == BLANK_TILE_VALUE)
+						int j = solver.getPosition() + i;
+
+						if (j == solver.getStepCount())
 						{
-							lastBlankX = j % PuzzleSolver.DIMENSION;
-							lastBlankY = j / PuzzleSolver.DIMENSION;
+							break;
+						}
+
+						Integer currentState = solver.getStep(j);
+
+						// If this is false, player has moved the empty tile
+						if (currentState != null && itemIds[currentState] == BLANK_TILE_VALUE)
+						{
+							foundPosition = true;
+							solver.setPosition(j);
+							if (i > 0)
+							{
+								shouldCache = true;
+							}
 							break;
 						}
 					}
 
-					for (Integer futureMove : nextMoves)
+					// If looking at the next steps didn't find the current state,
+					// see if we can find the current state in the 3 previous steps
+					if (!foundPosition)
 					{
-						int blankX = futureMove % PuzzleSolver.DIMENSION;
-						int blankY = futureMove / PuzzleSolver.DIMENSION;
+						for (int i = 1; i < 4; i++)
+						{
+							int j = solver.getPosition() - i;
 
-						int xDelta = blankX - lastBlankX;
-						int yDelta = blankY - lastBlankY;
+							if (j < 0)
+							{
+								break;
+							}
 
-						BufferedImage arrow;
-						if (xDelta > 0)
-						{
-							arrow = getRightArrow();
+							Integer currentState = solver.getStep(j);
+
+							if (currentState != null && itemIds[currentState] == BLANK_TILE_VALUE)
+							{
+								foundPosition = true;
+								shouldCache = true;
+								solver.setPosition(j);
+								break;
+							}
 						}
-						else if (xDelta < 0)
+					}
+
+					if (foundPosition)
+					{
+						int stepsLeft = solver.getStepCount() - solver.getPosition() - 1;
+
+						if (stepsLeft == 0)
 						{
-							arrow = getLeftArrow();
+							infoString = "Solved!";
 						}
-						else if (yDelta > 0)
+						else if (config.displayRemainingMoves())
 						{
-							arrow = getDownArrow();
+							infoString = "Moves left: " + stepsLeft;
 						}
 						else
 						{
-							arrow = getUpArrow();
+							infoString = null;
 						}
 
-						int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-								+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
-
-						int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-								+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
-
-						OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
-
-						lastBlankX = blankX;
-						lastBlankY = blankY;
-
-						if (++i == 3)
+						if (config.displaySolution())
 						{
-							break;
+							// Find the current blank tile position
+							Integer currentMove = solver.getStep(solver.getPosition());
+
+							int lastBlankX = currentMove % DIMENSION;
+							int lastBlankY = currentMove / DIMENSION;
+
+							// Display the next 3 steps
+							for (int j = 1; j < 4; j++)
+							{
+								Integer futureMove = solver.getStep(solver.getPosition() + j);
+
+								if (futureMove == null)
+								{
+									break;
+								}
+
+								int blankX = futureMove % DIMENSION;
+								int blankY = futureMove / DIMENSION;
+
+								int xDelta = blankX - lastBlankX;
+								int yDelta = blankY - lastBlankY;
+
+								BufferedImage arrow;
+								if (xDelta > 0)
+								{
+									arrow = getRightArrow();
+								}
+								else if (xDelta < 0)
+								{
+									arrow = getLeftArrow();
+								}
+								else if (yDelta > 0)
+								{
+									arrow = getDownArrow();
+								}
+								else
+								{
+									arrow = getUpArrow();
+								}
+
+								int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
+										+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
+
+								int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
+										+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
+
+								OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
+
+								lastBlankX = blankX;
+								lastBlankY = blankY;
+							}
 						}
 					}
 				}
 			}
 		}
 
+		// Draw info box
+		if (infoString != null)
+		{
+			int x = puzzleBoxLocation.getX() + puzzleBox.getWidth() / 2 - INFO_BOX_WIDTH / 2;
+			int y = puzzleBoxLocation.getY() - INFO_BOX_OFFSET_Y;
+
+			FontMetrics fm = graphics.getFontMetrics();
+			int height = INFO_BOX_TOP_BORDER + fm.getHeight() + INFO_BOX_BOTTOM_BORDER;
+
+			BackgroundComponent backgroundComponent = new BackgroundComponent();
+			backgroundComponent.setRectangle(new Rectangle(x, y, INFO_BOX_WIDTH, height));
+			backgroundComponent.render(graphics, parent);
+
+			int textOffsetX = (INFO_BOX_WIDTH - fm.stringWidth(infoString)) / 2;
+			int textOffsetY = fm.getHeight();
+
+			TextComponent textComponent = new TextComponent();
+			textComponent.setPosition(new Point(x + textOffsetX, y + textOffsetY));
+			textComponent.setText(infoString);
+			textComponent.render(graphics, parent);
+		}
+
+		// Solve the puzzle if we don't have an up to date solution
 		if (solver == null || cachedItems == null || (!shouldCache && !Arrays.equals(cachedItems, itemIds)))
 		{
-			nextMoves = solve(itemIds);
+			solve(itemIds);
 			shouldCache = true;
 		}
 
@@ -263,19 +329,18 @@ public class PuzzleSolverOverlay extends Overlay
 		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
 	}
 
-	private Deque<Integer> solve(int[] items)
+	private void solve(int[] items)
 	{
-		Deque<Integer> steps = new ArrayDeque<>();
-
-		solver = new PuzzleSolver(convertToSolverFormat(items));
-
-		while (solver.hasNext())
+		if (solverFuture != null)
 		{
-			solver.next();
-			steps.add(solver.getBlankX() + solver.getBlankY() * PuzzleSolver.DIMENSION);
+			solverFuture.cancel(true);
 		}
 
-		return steps;
+		int[] puzzleItems = convertToSolverFormat(items);
+		PuzzleState puzzleState = new PuzzleState(puzzleItems);
+
+		solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		solverFuture = executorService.submit(solver);
 	}
 
 	/**
