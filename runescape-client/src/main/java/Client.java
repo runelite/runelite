@@ -5259,14 +5259,14 @@ public final class Client extends GameEngine implements class288 {
                   var8 = var25 - class159.cameraZ;
                   var9 = var5 - CombatInfo1.cameraY;
                   var29 = (int)Math.sqrt((double)(var9 * var9 + var26 * var26));
-                  DecorativeObject.cameraPitch = (int)(Math.atan2((double)var8, (double)var29) * 325.949D) & 2047;
+                  DecorativeObject.cameraPitchCopy = (int)(Math.atan2((double)var8, (double)var29) * 325.949D) & 2047;
                   class60.cameraYaw = (int)(Math.atan2((double)var26, (double)var9) * -325.949D) & 2047;
-                  if(DecorativeObject.cameraPitch < 128) {
-                     DecorativeObject.cameraPitch = 128;
+                  if(DecorativeObject.cameraPitchCopy < 128) {
+                     DecorativeObject.cameraPitchCopy = 128;
                   }
 
-                  if(DecorativeObject.cameraPitch > 383) {
-                     DecorativeObject.cameraPitch = 383;
+                  if(DecorativeObject.cameraPitchCopy > 383) {
+                     DecorativeObject.cameraPitchCopy = 383;
                   }
                }
 

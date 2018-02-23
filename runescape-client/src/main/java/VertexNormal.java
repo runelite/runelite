@@ -408,7 +408,7 @@ public class VertexNormal {
                            class39.cameraX = var25 - var31;
                            class159.cameraZ = var26 - var32;
                            CombatInfo1.cameraY = var27 - var33;
-                           DecorativeObject.cameraPitch = var23;
+                           DecorativeObject.cameraPitchCopy = var23;
                            class60.cameraYaw = var49;
                         }
 
@@ -421,7 +421,7 @@ public class VertexNormal {
                         var49 = class39.cameraX;
                         var25 = class159.cameraZ;
                         var26 = CombatInfo1.cameraY;
-                        var27 = DecorativeObject.cameraPitch;
+                        var27 = DecorativeObject.cameraPitchCopy;
                         var28 = class60.cameraYaw;
 
                         for(var29 = 0; var29 < 5; ++var29) {
@@ -444,13 +444,13 @@ public class VertexNormal {
                               }
 
                               if(var29 == 4) {
-                                 DecorativeObject.cameraPitch += var30;
-                                 if(DecorativeObject.cameraPitch < 128) {
-                                    DecorativeObject.cameraPitch = 128;
+                                 DecorativeObject.cameraPitchCopy += var30;
+                                 if(DecorativeObject.cameraPitchCopy < 128) {
+                                    DecorativeObject.cameraPitchCopy = 128;
                                  }
 
-                                 if(DecorativeObject.cameraPitch > 383) {
-                                    DecorativeObject.cameraPitch = 383;
+                                 if(DecorativeObject.cameraPitchCopy > 383) {
+                                    DecorativeObject.cameraPitchCopy = 383;
                                  }
                               }
                            }
@@ -475,7 +475,7 @@ public class VertexNormal {
                         class45.method681();
                         var31 = Graphics3D.Rasterizer3D_zoom;
                         Graphics3D.Rasterizer3D_zoom = Client.scale;
-                        GameObject.region.draw(class39.cameraX, class159.cameraZ, CombatInfo1.cameraY, DecorativeObject.cameraPitch, class60.cameraYaw, var23);
+                        GameObject.region.draw(class39.cameraX, class159.cameraZ, CombatInfo1.cameraY, DecorativeObject.cameraPitchCopy, class60.cameraYaw, var23);
 
                         while(true) {
                            BoundingBox var50 = (BoundingBox)class7.boundingBoxes.removeLast();
@@ -638,7 +638,7 @@ public class VertexNormal {
                               class39.cameraX = var49;
                               class159.cameraZ = var25;
                               CombatInfo1.cameraY = var26;
-                              DecorativeObject.cameraPitch = var27;
+                              DecorativeObject.cameraPitchCopy = var27;
                               class60.cameraYaw = var28;
                               if(Client.field828 && LoginPacket.method3437(true, false) == 0) {
                                  Client.field828 = false;
