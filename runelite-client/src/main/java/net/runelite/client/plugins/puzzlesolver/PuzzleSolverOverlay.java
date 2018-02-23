@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -70,6 +71,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private static final int INFO_BOX_BOTTOM_BORDER = 2;
 
 	private static final int PUZZLE_TILE_SIZE = 39;
+	private static final int DOT_MARKER_SIZE = 16;
 
 	private static final int BLANK_TILE_VALUE = -1;
 	private static final int DIMENSION = 5;
@@ -209,56 +211,87 @@ public class PuzzleSolverOverlay extends Overlay
 
 						if (config.displaySolution())
 						{
-							// Find the current blank tile position
-							Integer currentMove = solver.getStep(solver.getPosition());
-
-							int lastBlankX = currentMove % DIMENSION;
-							int lastBlankY = currentMove / DIMENSION;
-
-							// Display the next 3 steps
-							for (int j = 1; j < 4; j++)
+							if (config.drawDots())
 							{
-								Integer futureMove = solver.getStep(solver.getPosition() + j);
+								graphics.setColor(Color.YELLOW);
 
-								if (futureMove == null)
+								// Display the next 4 steps
+								for (int j = 1; j < 5; j++)
 								{
-									break;
+									Integer futureMove = solver.getStep(solver.getPosition() + j);
+
+									if (futureMove == null)
+									{
+										break;
+									}
+
+									int blankX = futureMove % DIMENSION;
+									int blankY = futureMove / DIMENSION;
+
+									int markerSize = DOT_MARKER_SIZE - j * 3;
+
+									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
+											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+
+									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
+											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+
+									graphics.fillOval(x, y, markerSize, markerSize);
 								}
+							}
+							else
+							{
+								// Find the current blank tile position
+								Integer currentMove = solver.getStep(solver.getPosition());
 
-								int blankX = futureMove % DIMENSION;
-								int blankY = futureMove / DIMENSION;
+								int lastBlankX = currentMove % DIMENSION;
+								int lastBlankY = currentMove / DIMENSION;
 
-								int xDelta = blankX - lastBlankX;
-								int yDelta = blankY - lastBlankY;
-
-								BufferedImage arrow;
-								if (xDelta > 0)
+								// Display the next 3 steps
+								for (int j = 1; j < 4; j++)
 								{
-									arrow = getRightArrow();
-								}
-								else if (xDelta < 0)
-								{
-									arrow = getLeftArrow();
-								}
-								else if (yDelta > 0)
-								{
-									arrow = getDownArrow();
-								}
-								else
-								{
-									arrow = getUpArrow();
-								}
+									Integer futureMove = solver.getStep(solver.getPosition() + j);
 
-								int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-										+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
+									if (futureMove == null)
+									{
+										break;
+									}
 
-								int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-										+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
+									int blankX = futureMove % DIMENSION;
+									int blankY = futureMove / DIMENSION;
 
-								OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
+									int xDelta = blankX - lastBlankX;
+									int yDelta = blankY - lastBlankY;
 
-								lastBlankX = blankX;
-								lastBlankY = blankY;
+									BufferedImage arrow;
+									if (xDelta > 0)
+									{
+										arrow = getRightArrow();
+									}
+									else if (xDelta < 0)
+									{
+										arrow = getLeftArrow();
+									}
+									else if (yDelta > 0)
+									{
+										arrow = getDownArrow();
+									}
+									else
+									{
+										arrow = getUpArrow();
+									}
+
+									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
+											+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
+
+									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
+											+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
+
+									OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
+
+									lastBlankX = blankX;
+									lastBlankY = blankY;
+								}
 							}
 						}
 					}
