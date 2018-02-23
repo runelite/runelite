@@ -57,6 +57,9 @@ import net.runelite.http.api.item.ItemPrice;
 public class GroundItemsOverlay extends Overlay
 {
 	private static final int REGION_SIZE = 104;
+	// We must offset the text on the z-axis such that
+	// it doesn't obscure the ground items below it.
+	private static final int OFFSET_Z = 20;
 	// The game won't send anything higher than this value to the plugin -
 	// so we replace any item quantity higher with "Lots" instead.
 	private static final int MAX_QUANTITY = 65535;
@@ -197,7 +200,7 @@ public class GroundItemsOverlay extends Overlay
 
 				for (int i = 0; i < itemIds.size(); ++i)
 				{
-					Point point = itemLayer.getCanvasLocation(itemLayer.getHeight());
+					Point point = itemLayer.getCanvasLocation(itemLayer.getHeight() + OFFSET_Z);
 					// if the item is offscreen, don't bother drawing it
 					if (point == null)
 					{
