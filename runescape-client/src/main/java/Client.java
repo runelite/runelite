@@ -658,7 +658,8 @@ public final class Client extends GameEngine implements class288 {
    @ObfuscatedGetter(
       intValue = -2142302445
    )
-   static int field885;
+   @Export("cameraPitch")
+   static int cameraPitch;
    @ObfuscatedName("gl")
    @ObfuscatedGetter(
       intValue = -289845751
@@ -1198,7 +1199,7 @@ public final class Client extends GameEngine implements class288 {
       field1035 = 7759444;
       field883 = false;
       field855 = 0;
-      field885 = 128;
+      cameraPitch = 128;
       mapAngle = 0;
       field964 = 0;
       field944 = 0;
@@ -3415,7 +3416,7 @@ public final class Client extends GameEngine implements class288 {
                      field927 = 20;
                      field893 = false;
                      var14 = class61.method1076(ClientPacket.field2340, field863.field1434);
-                     var14.packetBuffer.putShort(field885);
+                     var14.packetBuffer.putShort(cameraPitch);
                      var14.packetBuffer.method3641(mapAngle);
                      field863.method2039(var14);
                   }
@@ -3739,13 +3740,13 @@ public final class Client extends GameEngine implements class288 {
                                              }
 
                                              mapAngle = field964 / 2 + mapAngle & 2047;
-                                             field885 += field944 / 2;
-                                             if(field885 < 128) {
-                                                field885 = 128;
+                                             cameraPitch += field944 / 2;
+                                             if(cameraPitch < 128) {
+                                                cameraPitch = 128;
                                              }
 
-                                             if(field885 > 383) {
-                                                field885 = 383;
+                                             if(cameraPitch > 383) {
+                                                cameraPitch = 383;
                                              }
 
                                              var6 = AbstractByteBuffer.field2564 >> 7;
