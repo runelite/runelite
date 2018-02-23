@@ -67,6 +67,9 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private static final int PUZZLE_TILE_SIZE = 39;
 
+	private static final int BLANK_TILE_VALUE = -1;
+	private static final int DIMENSION = 5;
+
 	private final Client client;
 	private final PuzzleSolverConfig config;
 
@@ -236,10 +239,22 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private int[] getItemIds(ItemContainer container)
 	{
-		return Arrays
-				.stream(container.getItems())
-				.mapToInt(Item::getId)
-				.toArray();
+		int[] itemIds = new int[DIMENSION * DIMENSION];
+
+		Item[] items = container.getItems();
+
+		for (int i = 0; i < items.length; i++)
+		{
+			itemIds[i] = items[i].getId();
+		}
+
+		// If blank is in the last position, items doesn't contain it, so let's add it manually
+		if (itemIds.length > items.length)
+		{
+			itemIds[items.length] = BLANK_TILE_VALUE;
+		}
+
+		return itemIds;
 	}
 
 	private void cacheItems(int[] items)
