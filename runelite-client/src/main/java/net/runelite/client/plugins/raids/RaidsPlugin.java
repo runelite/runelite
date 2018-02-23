@@ -61,7 +61,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Raids Plugin"
+	name = "Raids"
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -126,6 +126,9 @@ public class RaidsPlugin extends Plugin
 			inRaidChambers = client.getSetting(Varbits.IN_RAID) == 1;
 			updateInfoBoxState();
 		}
+
+		if (config.pointsMessage())
+			cacheColors();
 
 		updateBlacklist();
 	}
@@ -266,7 +269,7 @@ public class RaidsPlugin extends Plugin
 	private void updateBlacklist()
 	{
 		blacklist.clear();
-		blacklist.addAll(Arrays.asList(config.blacklistedRooms().toLowerCase().split(", ")));
+		blacklist.addAll(Arrays.asList(config.blacklistedRooms().toLowerCase().split("\\s*,\\s*")));
 	}
 
 	private void cacheColors()
