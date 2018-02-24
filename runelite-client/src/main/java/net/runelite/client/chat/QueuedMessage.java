@@ -35,6 +35,6 @@ public class QueuedMessage
 	private final ChatMessageType type;
 	private final String value;
 	private String name;
-	private String sender;
+	private String clan;
 	private String runeLiteFormattedMessage;
 }
