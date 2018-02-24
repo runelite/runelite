@@ -90,7 +90,7 @@ public class ChatHistoryPlugin extends Plugin
 			final QueuedMessage queuedMessage = QueuedMessage.builder()
 				.type(message.getType())
 				.name(message.getName())
-				.sender(message.getClan())
+				.clan(message.getClan())
 				.value(nbsp(message.getValue()))
 				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
 				.build();
