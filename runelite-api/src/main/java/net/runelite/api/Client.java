@@ -288,4 +288,6 @@ public interface Client extends GameEngine
 	Preferences getPreferences();
 
 	void setCameraPitchRelaxerEnabled(boolean enabled);
+
+	RenderOverview getRenderOverview();
 }
