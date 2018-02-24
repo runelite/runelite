@@ -59,6 +59,9 @@ public abstract class RSTileMixin implements RSTile
 	private static RSClient client;
 
 	@Inject
+	private static GameObject lastGameObject;
+
+	@Inject
 	private WallObject previousWallObject;
 
 	@Inject
@@ -208,11 +211,24 @@ public abstract class RSTileMixin implements RSTile
 
 		// Previous game object
 		GameObject previous = previousGameObjects[idx];
+
 		// GameObject that was changed.
 		RSGameObject current = (RSGameObject) getGameObjects()[idx];
 
+		// Last game object
+		GameObject last = lastGameObject;
+
+		// Update last game object
+		lastGameObject = current;
+
 		// Update previous object to current
 		previousGameObjects[idx] = current;
+
+		// Duplicate event, return
+		if (current != null && current.equals(last))
+		{
+			return;
+		}
 
 		// Characters seem to generate a constant stream of new GameObjects
 		if (current == null || !(current.getRenderable() instanceof Actor))
