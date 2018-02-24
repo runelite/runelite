@@ -27,7 +27,6 @@ package net.runelite.client.plugins.hunter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,19 +39,18 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.api.queries.PlayerQuery;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
@@ -73,6 +71,12 @@ public class HunterPlugin extends Plugin
 
 	@Inject
 	private CatchrateOverlay catchrateOverlay;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private HunterConfig config;
 
 	@Getter
 	private final Set<HunterTrap> traps = new HashSet<>();
@@ -96,6 +100,12 @@ public class HunterPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp()
+	{
+		trapOverlay.updateConfig();
+	}
+
+	@Override
 	protected void shutDown() throws Exception
 	{
 		catchAtempts = 0;
@@ -108,18 +118,30 @@ public class HunterPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-
 		HunterTrap myTrap = getTrapFromCollection(gameObject);
-
 		Player localPlayer = client.getLocalPlayer();
 
 		switch (gameObject.getId())
 		{
+			/*
+			 * ------------------------------------------------------------------------------
+			 * Placing traps
+			 * ------------------------------------------------------------------------------
+			 */
 			case ObjectID.DEADFALL: //Deadfall trap placed
 				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
 					&& localPlayer.getAnimation() == AnimationID.HUNTER_LAY_DEADFALLTRAP)
 				{
 					log.debug("Deadfall trap placed by \"{}\" on {}", localPlayer.getName(), gameObject.getWorldLocation());
+					traps.add(new HunterTrap(gameObject));
+					lastActionTime = Instant.now();
+				}
+				break;
+			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
+				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) < 2)
+				{
+					log.debug("Maniacal monkey trap placed by \"{}\" on {} of {}", localPlayer.getName(),
+						gameObject.getWorldLocation(), gameObject);
 					traps.add(new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
@@ -155,6 +177,11 @@ public class HunterPlugin extends Plugin
 
 				}
 				break;
+			/*
+			 * ------------------------------------------------------------------------------
+			 * Catching stuff
+			 * ------------------------------------------------------------------------------
+			 */
 			case ObjectID.MAGIC_BOX_19226: // Imp caught
 			case ObjectID.SHAKING_BOX: //Black chinchompa caught
 			case ObjectID.SHAKING_BOX_9382: // Grey chinchompa caught
@@ -172,16 +199,27 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8986: //Red sally caught
 			case ObjectID.NET_TRAP_8734: //Orange sally caught
 			case ObjectID.NET_TRAP_8996: //Black sally caught
+			case ObjectID.LARGE_BOULDER_28830: // Maniacal monkey tail obtained
+			case ObjectID.LARGE_BOULDER_28831: // Maniacal monkey tail obtained
 				if (myTrap != null)
 				{
 					log.debug("Yay, you caught something");
 					myTrap.setState(HunterTrap.State.FULL);
 					catchAtempts++;
 					catchSuccess++;
-
 					lastActionTime = Instant.now();
+
+					if (config.maniacalMonkeyNotify() && myTrap.getGameObject().getId() == ObjectID.MONKEY_TRAP)
+					{
+						notifier.notify("You've caught part of a monkey's tail.");
+					}
 				}
 				break;
+			/*
+			 * ------------------------------------------------------------------------------
+			 * Failed catch
+			 * ------------------------------------------------------------------------------
+			 */
 			case ObjectID.MAGIC_BOX_FAILED: //Empty imp box
 			case ObjectID.BOX_TRAP_9385: //Empty box trap
 			case ObjectID.BIRD_SNARE: //Empty box trap
@@ -195,6 +233,11 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
+			/*
+			 * ------------------------------------------------------------------------------
+			 * Transitions
+			 * ------------------------------------------------------------------------------
+			 */
 			// Imp entering box
 			case ObjectID.MAGIC_BOX_19225:
 
@@ -241,6 +284,10 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8987:
 			case ObjectID.NET_TRAP_8993:
 			case ObjectID.NET_TRAP_8997:
+
+			// Maniacal monkey boulder trap
+			case ObjectID.MONKEY_TRAP_28828:
+			case ObjectID.MONKEY_TRAP_28829:
 				if (myTrap != null)
 				{
 					myTrap.setState(HunterTrap.State.TRANSITION);
@@ -249,34 +296,13 @@ public class HunterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
-	{
-		if (event.getGameState().equals(GameState.LOGIN_SCREEN))
-		{
-			trapOverlay.updateConfig();
-		}
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("hunterplugin"))
-		{
-			trapOverlay.updateConfig();
-		}
-	}
-
 	/**
 	 * Iterates over all the traps that were placed by the local player and
 	 * checks if the trap is still there. If the trap is gone, it removes
 	 * the trap from the local players trap collection.
 	 */
-	@Schedule(
-		period = 500,
-		unit = ChronoUnit.MILLIS
-	)
-	public void updateTraps()
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
 		//Check if all traps are still there, and remove the ones that are not.
 		//TODO: use despawn events
@@ -296,16 +322,31 @@ public class HunterPlugin extends Plugin
 			}
 			else //For traps like deadfalls. This is different because when the trap is gone, there is still a GameObject (boulder)
 			{
-				goQuery = goQuery
-					.idEquals(ObjectID.BOULDER_19215); //Deadfalls are the only ones (that i can test) that have this behaviour. I think maniacal monkeys have this too.
+				goQuery = goQuery.idEquals(ObjectID.BOULDER_19215, ObjectID.LARGE_BOULDER);
 				if (queryRunner.runQuery(goQuery).length != 0)
 				{
 					it.remove();
 					log.debug("Special trap removed from personal trap collection, {} left", traps.size());
+
+					// Case we have notifications enabled and the action was not manual, throw notification
+					if (config.maniacalMonkeyNotify() && trap.getGameObject().getId() == ObjectID.MONKEY_TRAP &&
+						!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
+					{
+						notifier.notify("The monkey escaped.");
+					}
 				}
 			}
 		}
 
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("hunterplugin"))
+		{
+			trapOverlay.updateConfig();
+		}
 	}
 
 	/**

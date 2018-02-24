@@ -134,7 +134,7 @@ class HunterTrap
 	public int hashCode()
 	{
 		int hash = 7;
-		hash = 97 * hash + Objects.hashCode(this.gameObject);
+		hash = 97 * hash + Objects.hashCode(this.gameObject.getWorldLocation());
 		return hash;
 	}
 }

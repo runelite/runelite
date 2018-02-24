@@ -46,6 +46,7 @@ public final class AnimationID
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
 	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
 	public static final int HUNTER_LAY_NETTRAP = 5215; //setting up net trap
+	public static final int HUNTER_LAY_MANIACAL_MONKEY_BOULDER_TRAP = 7259; // setting up maniacal monkey boulder trap
 	public static final int HUNTER_CHECK_BIRD_SNARE = 5207;
 	public static final int HUNTER_CHECK_BOX_TRAP = 5212;
 	public static final int HERBLORE_MAKE_TAR = 5249;
