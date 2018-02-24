@@ -25,12 +25,15 @@
 package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -54,8 +57,17 @@ public class HiscorePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Inject
+	private HiscoreConfig config;
+
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
+
+	@Provides
+	HiscoreConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(HiscoreConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -68,7 +80,10 @@ public class HiscorePlugin extends Plugin
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
-		menuManager.addPlayerMenuItem(LOOKUP);
+		if (config.playerOption())
+		{
+			menuManager.addPlayerMenuItem(LOOKUP);
+		}
 	}
 
 	@Override
@@ -77,6 +92,20 @@ public class HiscorePlugin extends Plugin
 		ui.getPluginToolbar().removeNavigation(navButton);
 
 		menuManager.removePlayerMenuItem(LOOKUP);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("hiscore"))
+		{
+			menuManager.removePlayerMenuItem(LOOKUP);
+
+			if (config.playerOption())
+			{
+				menuManager.addPlayerMenuItem(LOOKUP);
+			}
+		}
 	}
 
 	@Subscribe
