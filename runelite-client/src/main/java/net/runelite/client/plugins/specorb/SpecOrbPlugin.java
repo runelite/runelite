@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.specorb;
 
+import com.google.inject.Provides;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -45,6 +48,12 @@ public class SpecOrbPlugin extends Plugin
 	@Inject
 	private SpecOrbOverlay overlay;
 
+	@Provides
+	SpecOrbConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SpecOrbConfig.class);
+	}
+
 	@Override
 	public Overlay getOverlay()
 	{
@@ -54,6 +63,7 @@ public class SpecOrbPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlay.updateConfig();
 		minimapOrbBackground = ImageIO.read(getClass().getResourceAsStream("minimap_orb_background.png"));
 		specialAttackIcon = ImageIO.read(getClass().getResourceAsStream("special_orb_icon.png"));
 	}
@@ -68,6 +78,15 @@ public class SpecOrbPlugin extends Plugin
 	public void onTick(GameTick event)
 	{
 		overlay.onTick(event);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("specOrb"))
+		{
+			overlay.updateConfig();
+		}
 	}
 
 	public Image getMinimapOrbBackground()

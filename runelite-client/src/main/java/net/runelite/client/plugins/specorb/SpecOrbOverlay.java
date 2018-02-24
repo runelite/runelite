@@ -56,21 +56,23 @@ public class SpecOrbOverlay extends Overlay
 	private static final int RUN_ORB_X_RESIZABLE = 12;
 	private static final int RUN_ORB_Y_RESIZABLE = 103;
 
-	private static final Color SPECIAL_ORB_BACKGROUND_COLOR = new Color(51, 102, 255);
-	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
+	private static Color SPECIAL_ORB_BACKGROUND_COLOR;
+	private static Color SPECIAL_ORB_RECHARGE_COLOR;
 
 	private final Client client;
 	private final SpecOrbPlugin plugin;
+	private final SpecOrbConfig config;
 	private int lastSpecialPercent = 0;
 	private int tickCounter = 0;
 
 	@Inject
-	public SpecOrbOverlay(Client client, SpecOrbPlugin plugin)
+	public SpecOrbOverlay(Client client, SpecOrbPlugin plugin, SpecOrbConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
@@ -141,6 +143,12 @@ public class SpecOrbOverlay extends Overlay
 			(int) (specialPercent * 100), specialAttackEnabled);
 
 		return null;
+	}
+
+	public void updateConfig()
+	{
+		SPECIAL_ORB_BACKGROUND_COLOR = config.getBackgroundColor();
+		SPECIAL_ORB_RECHARGE_COLOR = new Color(config.getRechargeColor().getRed(), config.getRechargeColor().getGreen(), config.getRechargeColor().getBlue(), config.getRechargeOpacity()<=255?config.getRechargeOpacity():255);
 	}
 
 	public void onVarbitChanged(VarbitChanged event)
