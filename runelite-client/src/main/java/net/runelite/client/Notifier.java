@@ -39,8 +39,10 @@ public class Notifier
 	private enum OSType
 	{
 		Windows, MacOS, Linux, Other
-	};
+	}
 
+	// Default timeout of notification in milliseconds
+	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
 	private static final Escaper SHELL_ESCAPE;
 	private static final OSType DETECTED_OS;
@@ -141,6 +143,8 @@ public class Notifier
 		commands.add(message);
 		commands.add("-u");
 		commands.add(toUrgency(type));
+		commands.add("-t");
+		commands.add(String.valueOf(DEFAULT_TIMEOUT));
 		sendCommand(commands);
 	}
 
