@@ -24,13 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import net.runelite.api.TextureProvider;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.SetMessage;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Graphics;
@@ -45,6 +38,17 @@ import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
+import net.runelite.api.RenderOverview;
+import net.runelite.api.TextureProvider;
+import net.runelite.api.WorldMapManager;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.SetMessage;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.DeathChecker;
@@ -96,10 +100,43 @@ public class Hooks
 			infoBoxManager.cull();
 
 			chatMessageManager.process();
+
+			checkWorldMap();
 		}
 		catch (Exception ex)
 		{
 			log.warn("error during main loop tasks", ex);
+		}
+	}
+
+	/**
+	 * When the world map opens it loads about ~100mb of data into memory, which
+	 * represents about half of the total memory allocated by the client.
+	 * This gets cached and never released, which causes GC pressure which can affect
+	 * performance. This method reinitailzies the world map cache, which allows the
+	 * data to be garbage collecged, and causes the map data from disk each time
+	 * is it opened.
+	 */
+	private static void checkWorldMap()
+	{
+		Widget widget = client.getWidget(WORLD_MAP, 0);
+		if (widget != null)
+		{
+			return;
+		}
+
+		RenderOverview renderOverview = client.getRenderOverview();
+		if (renderOverview == null)
+		{
+			return;
+		}
+
+		WorldMapManager manager = renderOverview.getWorldMapManager();
+
+		if (manager != null && manager.isLoaded())
+		{
+			log.debug("World map was closed, reinitializing");
+			renderOverview.initializeWorldMap(renderOverview.getWorldMapData());
 		}
 	}
 
