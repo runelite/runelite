@@ -40,12 +40,12 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
+import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 
 @Singleton
 @Slf4j
@@ -148,6 +148,19 @@ public class MenuManager
 		addPlayerMenuItem(playerMenuIndex, menuText);
 	}
 
+	public void removePlayerMenuItem(String menuText)
+	{
+		Preconditions.checkNotNull(menuText);
+		for (Map.Entry<Integer, String> entry : playerMenuIndexMap.entrySet())
+		{
+			if (entry.getValue().equalsIgnoreCase(menuText))
+			{
+				removePlayerMenuItem(entry.getKey());
+				break;
+			}
+		}
+	}
+
 	@Subscribe
 	public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
 	{
@@ -217,6 +230,15 @@ public class MenuManager
 		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE.getId();
 
 		playerMenuIndexMap.put(playerOptionIndex, menuText);
+	}
+
+	private void removePlayerMenuItem(int playerOptionIndex)
+	{
+		Client client = clientProvider.get();
+
+		client.getPlayerOptions()[playerOptionIndex] = null;
+
+		playerMenuIndexMap.remove(playerOptionIndex);
 	}
 
 	/**
