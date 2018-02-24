@@ -269,16 +269,19 @@ public class ClientUI extends JFrame
 
 		Dimension size = new Dimension(width, height);
 
-		client.setSize(size);
-		client.setPreferredSize(size);
-
-		client.getParent().setPreferredSize(size);
-		client.getParent().setSize(size);
-
-		if (isVisible())
+		SwingUtilities.invokeLater(() ->
 		{
-			pack();
-		}
+			client.setSize(size);
+			client.setPreferredSize(size);
+
+			client.getParent().setPreferredSize(size);
+			client.getParent().setSize(size);
+
+			if (isVisible())
+			{
+				pack();
+			}
+		});
 	}
 
 	private static void setUIFont(FontUIResource f)
