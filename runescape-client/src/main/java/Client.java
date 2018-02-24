@@ -1606,7 +1606,7 @@ public final class Client extends GameEngine implements class288 {
                         var5 = 10;
                      }
 
-                     var46 &= class41.method610(var3, var4, var5);
+                     var46 &= WorldMapManager.method610(var3, var4, var5);
                   }
                }
 
@@ -1915,7 +1915,7 @@ public final class Client extends GameEngine implements class288 {
                   class47.flush(true);
                   class184.method3455();
                   class45.method681();
-                  class41.method611(GameObject.region, collisionMaps);
+                  WorldMapManager.method611(GameObject.region, collisionMaps);
                   class47.flush(true);
                   var34 = class61.field686;
                   if(var34 > class230.plane) {
@@ -2221,7 +2221,7 @@ public final class Client extends GameEngine implements class288 {
                   }
                   break;
                case 5:
-                  class41.field512 = Integer.parseInt(var5);
+                  WorldMapManager.field512 = Integer.parseInt(var5);
                   break;
                case 6:
                   languageId = Integer.parseInt(var5);
@@ -2729,28 +2729,28 @@ public final class Client extends GameEngine implements class288 {
          if(--field849 + 1 <= 0) {
             try {
                if(js5State == 0) {
-                  class41.socket = GameEngine.taskManager.createSocket(class40.host, ScriptEvent.myWorldPort);
+                  WorldMapManager.socket = GameEngine.taskManager.createSocket(class40.host, ScriptEvent.myWorldPort);
                   ++js5State;
                }
 
                if(js5State == 1) {
-                  if(class41.socket.status == 2) {
+                  if(WorldMapManager.socket.status == 2) {
                      this.error(-1);
                      return;
                   }
 
-                  if(class41.socket.status == 1) {
+                  if(WorldMapManager.socket.status == 1) {
                      ++js5State;
                   }
                }
 
                if(js5State == 2) {
                   if(field866) {
-                     Socket var2 = (Socket)class41.socket.value;
+                     Socket var2 = (Socket) WorldMapManager.socket.value;
                      class170 var1 = new class170(var2, 40000, 5000);
                      UrlRequester.rssocket = var1;
                   } else {
-                     UrlRequester.rssocket = new class172((Socket)class41.socket.value, GameEngine.taskManager, 5000);
+                     UrlRequester.rssocket = new class172((Socket) WorldMapManager.socket.value, GameEngine.taskManager, 5000);
                   }
 
                   Buffer var5 = new Buffer(5);
@@ -2778,7 +2778,7 @@ public final class Client extends GameEngine implements class288 {
 
                if(js5State == 4) {
                   Resampler.method2306(UrlRequester.rssocket, gameState > 20);
-                  class41.socket = null;
+                  WorldMapManager.socket = null;
                   UrlRequester.rssocket = null;
                   js5State = 0;
                   field946 = 0;
@@ -2798,7 +2798,7 @@ public final class Client extends GameEngine implements class288 {
    )
    @Export("error")
    void error(int var1) {
-      class41.socket = null;
+      WorldMapManager.socket = null;
       UrlRequester.rssocket = null;
       js5State = 0;
       if(ScriptEvent.myWorldPort == class79.port1) {
@@ -2997,7 +2997,7 @@ public final class Client extends GameEngine implements class288 {
             }
 
             var5.packetBuffer.putString(class45.sessionToken);
-            var5.packetBuffer.putInt(class41.field512);
+            var5.packetBuffer.putInt(WorldMapManager.field512);
             Buffer var25 = new Buffer(class63.platformInfo.method6155());
             class63.platformInfo.method6154(var25);
             var5.packetBuffer.putBytes(var25.payload, 0, var25.payload.length);
@@ -3132,7 +3132,7 @@ public final class Client extends GameEngine implements class288 {
                   ((class168)var1).vmethod3321(var2.payload, 0, field863.packetLength);
                   field912.method5601();
                   class39.method557();
-                  class41.initializeGPI(var2);
+                  WorldMapManager.initializeGPI(var2);
                   class152.field2090 = -1;
                   MouseRecorder.xteaChanged(false, var2);
                   field863.serverPacket = null;
@@ -3175,7 +3175,7 @@ public final class Client extends GameEngine implements class288 {
                      var26 = field863.packetLength;
                      field912.method5620();
                      WidgetNode.method1126();
-                     class41.initializeGPI(var2);
+                     WorldMapManager.initializeGPI(var2);
                      if(var26 != var2.offset) {
                         throw new RuntimeException();
                      }

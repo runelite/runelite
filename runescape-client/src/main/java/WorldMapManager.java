@@ -4,12 +4,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
-public final class class41 {
+@Implements("WorldMapManager")
+public final class WorldMapManager
+{
    @ObfuscatedName("bu")
    @ObfuscatedGetter(
       intValue = 1273795509
@@ -22,9 +25,11 @@ public final class class41 {
    @Export("socket")
    static Task socket;
    @ObfuscatedName("b")
-   boolean field519;
+   @Export("loaded")
+   boolean loaded;
    @ObfuscatedName("q")
-   boolean field508;
+   @Export("loading")
+   boolean loading;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lay;"
@@ -75,9 +80,9 @@ public final class class41 {
    @ObfuscatedSignature(
       signature = "([Llv;Ljava/util/HashMap;)V"
    )
-   public class41(IndexedSprite[] var1, HashMap var2) {
-      this.field519 = false;
-      this.field508 = false;
+   public WorldMapManager(IndexedSprite[] var1, HashMap var2) {
+      this.loaded = false;
+      this.loading = false;
       this.field513 = new HashMap();
       this.field523 = var1;
       this.field515 = var2;
@@ -88,10 +93,11 @@ public final class class41 {
       signature = "(Lie;Ljava/lang/String;ZI)V",
       garbageValue = "-1036709306"
    )
-   public void method574(IndexDataBase var1, String var2, boolean var3) {
-      if(!this.field508) {
-         this.field519 = false;
-         this.field508 = true;
+   @Export("load")
+   public void load(IndexDataBase var1, String var2, boolean var3) {
+      if(!this.loading) {
+         this.loaded = false;
+         this.loading = true;
          System.nanoTime();
          int var4 = var1.getFile(class40.field497.field502);
          int var5 = var1.getChild(var4, var2);
@@ -149,7 +155,7 @@ public final class class41 {
          }
 
          System.nanoTime();
-         this.field519 = true;
+         this.loaded = true;
       }
    }
 
@@ -312,7 +318,7 @@ public final class class41 {
    )
    public List method583(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       LinkedList var11 = new LinkedList();
-      if(!this.field519) {
+      if(!this.loaded) {
          return var11;
       } else {
          class29 var12 = this.method571(var1, var2, var3, var4);
@@ -382,7 +388,7 @@ public final class class41 {
       garbageValue = "-967937484"
    )
    public boolean method572() {
-      return this.field519;
+      return this.loaded;
    }
 
    @ObfuscatedName("c")

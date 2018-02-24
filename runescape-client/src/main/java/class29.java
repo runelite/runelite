@@ -34,12 +34,12 @@ public final class class29 {
    @ObfuscatedSignature(
       signature = "Lag;"
    )
-   final class41 this$0;
+   final WorldMapManager this$0;
 
    @ObfuscatedSignature(
       signature = "(Lag;)V"
    )
-   class29(class41 var1) {
+   class29(WorldMapManager var1) {
       this.this$0 = var1;
    }
 

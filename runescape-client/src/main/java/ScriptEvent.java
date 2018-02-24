@@ -183,6 +183,6 @@ public class ScriptEvent extends Node {
       }
 
       String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class41.field512 + var3 + "/";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + WorldMapManager.field512 + var3 + "/";
    }
 }
