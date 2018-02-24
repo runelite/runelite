@@ -256,7 +256,7 @@ public class class43 {
                      class80.intStack[++class80.intStackSize - 1] = var29.id;
                      class80.intStack[++class80.intStackSize - 1] = var29.tick;
                      class80.scriptStringStack[++scriptStringStackSize - 1] = var29.name != null?var29.name:"";
-                     class80.scriptStringStack[++scriptStringStackSize - 1] = var29.sender != null?var29.sender:"";
+                     class80.scriptStringStack[++scriptStringStackSize - 1] = var29.clan != null?var29.clan:"";
                      class80.scriptStringStack[++scriptStringStackSize - 1] = var29.value != null?var29.value:"";
                      class80.intStack[++class80.intStackSize - 1] = var29.method1154()?1:(var29.method1172()?2:0);
                   } else {
