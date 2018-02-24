@@ -148,7 +148,7 @@ public class SpecOrbOverlay extends Overlay
 	public void updateConfig()
 	{
 		SPECIAL_ORB_BACKGROUND_COLOR = config.getBackgroundColor();
-		SPECIAL_ORB_RECHARGE_COLOR = new Color(config.getRechargeColor().getRed(), config.getRechargeColor().getGreen(), config.getRechargeColor().getBlue(), config.getRechargeOpacity()<=255?config.getRechargeOpacity():255);
+		SPECIAL_ORB_RECHARGE_COLOR = new Color(config.getRechargeColor().getRed(), config.getRechargeColor().getGreen(), config.getRechargeColor().getBlue(), config.getRechargeOpacity() <= 255 ? config.getRechargeOpacity() : 255);
 	}
 
 	public void onVarbitChanged(VarbitChanged event)

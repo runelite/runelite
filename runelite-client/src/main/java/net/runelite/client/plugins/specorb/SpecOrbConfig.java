@@ -30,42 +30,42 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-        keyName = "specOrb",
-        name = "Special attack orb",
-        description = "Configuration for the special attack orb"
+	keyName = "specOrb",
+	name = "Special attack orb",
+	description = "Configuration for the special attack orb"
 )
 public interface SpecOrbConfig extends Config
 {
-    @ConfigItem(
-            position = 1,
-            keyName = "hexColorBackground",
-            name = "Background",
-            description = "Orb background color"
-    )
-    default Color getBackgroundColor()
-    {
-        return Color.decode("#3366ff");
-    }
+	@ConfigItem(
+		position = 1,
+		keyName = "hexColorBackground",
+		name = "Background",
+		description = "Orb background color"
+	)
+	default Color getBackgroundColor()
+	{
+		return Color.decode("#3366ff");
+	}
 
-    @ConfigItem(
-            position = 2,
-            keyName = "hexColorRecharge",
-            name = "Recharge",
-            description = "Orb recharge bar color"
-    )
-    default Color getRechargeColor()
-    {
-        return Color.decode("#99ccff");
-    }
+	@ConfigItem(
+		position = 2,
+		keyName = "hexColorRecharge",
+		name = "Recharge",
+		description = "Orb recharge bar color"
+	)
+	default Color getRechargeColor()
+	{
+		return Color.decode("#99ccff");
+	}
 
-    @ConfigItem(
-            position = 3,
-            keyName = "rechargeOpacity",
-            name = "Opacity",
-            description = "Recharge bar opacity"
-    )
-    default int getRechargeOpacity()
-    {
-        return 50;
-    }
+	@ConfigItem(
+		position = 3,
+		keyName = "rechargeOpacity",
+		name = "Opacity",
+		description = "Recharge bar opacity"
+	)
+	default int getRechargeOpacity()
+	{
+		return 50;
+	}
 }
