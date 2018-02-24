@@ -30,6 +30,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -106,5 +107,23 @@ public class ZoomPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void startUp()
+	{
+		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		client.setCameraPitchRelaxerEnabled(false);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged ev)
+	{
+		client.setCameraPitchRelaxerEnabled(zoomConfig.relaxCameraPitch());
 	}
 }

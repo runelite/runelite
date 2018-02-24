@@ -2420,7 +2420,8 @@ public class Region {
    }
 
    @ObfuscatedName("au")
-   public static void method2995(int[] var0, int var1, int var2, int var3, int var4) {
+   @Export("buildVisibilityMaps")
+   public static void buildVisibilityMaps(int[] var0, int var1, int var2, int var3, int var4) {
       field1990 = 0;
       field1991 = 0;
       field1992 = var3;

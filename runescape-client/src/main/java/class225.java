@@ -135,8 +135,8 @@ public class class225 extends Node {
          var0 -= class39.cameraX;
          var3 -= class159.cameraZ;
          var1 -= CombatInfo1.cameraY;
-         int var4 = Graphics3D.SINE[DecorativeObject.cameraPitch];
-         int var5 = Graphics3D.COSINE[DecorativeObject.cameraPitch];
+         int var4 = Graphics3D.SINE[DecorativeObject.cameraPitchCopy];
+         int var5 = Graphics3D.COSINE[DecorativeObject.cameraPitchCopy];
          int var6 = Graphics3D.SINE[class60.cameraYaw];
          int var7 = Graphics3D.COSINE[class60.cameraYaw];
          int var8 = var6 * var1 + var0 * var7 >> 16;

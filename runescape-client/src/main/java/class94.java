@@ -470,7 +470,7 @@ public class class94 {
                var21[var1] = var4 * var3 >> 16;
             }
 
-            Region.method2995(var21, 500, 800, 512, 334);
+            Region.buildVisibilityMaps(var21, 500, 800, 512, 334);
             class89.loadingText = "Prepared visibility map";
             class89.loadingBarPercentage = 10;
             Client.loadingStage = 30;

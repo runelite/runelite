@@ -545,7 +545,7 @@ final class class19 implements Comparator {
             var14[var10] = var12 * var13 >> 16;
          }
 
-         Region.method2995(var14, 500, 800, var2, var3);
+         Region.buildVisibilityMaps(var14, 500, 800, var2, var3);
       }
 
       Client.Viewport_xOffset = var0;
