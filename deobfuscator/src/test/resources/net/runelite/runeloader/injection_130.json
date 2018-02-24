@@ -923,7 +923,7 @@
 		}, {
 			"className": "s",
 			"getterMethodDesc": "()Ljava/lang/String;",
-			"getterName": "getSender",
+			"getterName": "getClan",
 			"getterClassName": "s",
 			"getterFieldName": "c",
 			"staticField": false
