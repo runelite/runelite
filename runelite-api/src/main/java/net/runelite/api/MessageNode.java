@@ -32,9 +32,9 @@ public interface MessageNode
 
 	void setName(String name);
 
-	String getSender();
+	String getClan();
 
-	void setSender(String sender);
+	void setClan(String clan);
 
 	String getValue();
 
