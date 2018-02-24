@@ -54,4 +54,14 @@ public interface ZoomConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "relaxCameraPitch",
+		name = "Vertical camera",
+		description = "Relax the camera's upper pitch limit"
+	)
+	default boolean relaxCameraPitch()
+	{
+		return false;
+	}
 }
