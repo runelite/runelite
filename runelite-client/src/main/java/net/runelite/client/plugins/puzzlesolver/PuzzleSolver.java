@@ -34,6 +34,7 @@ public class PuzzleSolver implements Runnable
 
 	private static final int MAX_DEPTH = 64;
 
+	private static final int NONE = -1;
 	private static final int RIGHT = 0;
 	private static final int LEFT = 1;
 	private static final int DOWN = 2;
@@ -67,19 +68,20 @@ public class PuzzleSolver implements Runnable
 	{
 		int manhattanDistance = 0;
 		int emptyIndex = -1;
-		//Calculate initial manhattanDistance
-		for (int i = 0; i < SIZE; ++i)
+
+		for (int y = 0, i = 0; y < DIMENSION; ++y)
 		{
-			if (tiles[i] == BLANK_TILE_VALUE)
+			for (int x = 0; x < DIMENSION; ++x, ++i)
 			{
-				emptyIndex = i;
-				continue;
+				if (tiles[i] == BLANK_TILE_VALUE)
+				{
+					emptyIndex = i;
+					continue;
+				}
+				int destX = tiles[i] % DIMENSION;
+				int destY = tiles[i] / DIMENSION;
+				manhattanDistance += Math.abs(destX - x) + Math.abs(destY - y);
 			}
-			int destX = tiles[i] % DIMENSION;
-			int destY = tiles[i] / DIMENSION;
-			int srcX = i % DIMENSION;
-			int srcY = i / DIMENSION;
-			manhattanDistance += Math.abs(destX - srcX) + Math.abs(destY - srcY);
 		}
 
 		if (emptyIndex == -1)
@@ -92,31 +94,7 @@ public class PuzzleSolver implements Runnable
 		for (searchDepth = manhattanDistance; searchDepth <= MAX_DEPTH; ++searchDepth)
 		{
 			if (shouldStop) break;
-			solution = findSolution(RIGHT, emptyIndex, 1, manhattanDistance);
-			if (solution != null)
-			{
-				solution[0] = emptyIndex;
-				break;
-			}
-
-			if (shouldStop) break;
-			solution = findSolution(LEFT, emptyIndex, 1, manhattanDistance);
-			if (solution != null)
-			{
-				solution[0] = emptyIndex;
-				break;
-			}
-
-			if (shouldStop) break;
-			solution = findSolution(DOWN, emptyIndex, 1, manhattanDistance);
-			if (solution != null)
-			{
-				solution[0] = emptyIndex;
-				break;
-			}
-
-			if (shouldStop) break;
-			solution = findSolution(UP, emptyIndex, 1, manhattanDistance);
+			solution = findSolution(NONE, emptyIndex, 0, manhattanDistance);
 			if (solution != null)
 			{
 				solution[0] = emptyIndex;
@@ -126,107 +104,95 @@ public class PuzzleSolver implements Runnable
 		this.solution = solution;
 	}
 
-	private int[] findSolution(int direction, int emptyIndex, int depth, int manhattanDistance)
+	private int[] findSolution(int prevDirection, int emptyIndex, int depth, int manhattanDistance)
 	{
-		//Update manhattanDistance and prepare tile movement
-		int newEmptyIndex;
-		switch (direction)
-		{
-			case RIGHT:
-			{
-				int prevEmptyX = emptyIndex % DIMENSION;
-				if (prevEmptyX == DIMENSION - 1) return null;
-
-				newEmptyIndex = emptyIndex + 1;
-				int movedTileDestX = tiles[newEmptyIndex] % DIMENSION;
-				if (prevEmptyX < movedTileDestX) ++manhattanDistance;
-				else --manhattanDistance;
-				break;
-			}
-			case LEFT:
-			{
-				int prevEmptyX = emptyIndex % DIMENSION;
-				if (prevEmptyX == 0) return null;
-
-				newEmptyIndex = emptyIndex - 1;
-				int movedTileDestX = tiles[newEmptyIndex] % DIMENSION;
-				if (prevEmptyX > movedTileDestX) ++manhattanDistance;
-				else --manhattanDistance;
-				break;
-			}
-			case DOWN:
-			{
-				int prevEmptyY = emptyIndex / DIMENSION;
-				if (prevEmptyY == DIMENSION - 1) return null;
-
-				newEmptyIndex = emptyIndex + DIMENSION;
-				int movedTileDestY = tiles[newEmptyIndex] / DIMENSION;
-				if (prevEmptyY < movedTileDestY) ++manhattanDistance;
-				else --manhattanDistance;
-				break;
-			}
-			default: // UP
-			{
-				int prevEmptyY = emptyIndex / DIMENSION;
-				if (prevEmptyY == 0) return null;
-
-				newEmptyIndex = emptyIndex - DIMENSION;
-				int movedTileDestY = tiles[newEmptyIndex] / DIMENSION;
-				if (prevEmptyY > movedTileDestY) ++manhattanDistance;
-				else --manhattanDistance;
-			}
-		}
-		//Check if done or if it's impossible to finish within searchDepth
 		if (manhattanDistance == 0)
 		{
 			int[] solution = new int[depth + 1];
-			solution[depth] = newEmptyIndex;
+			solution[depth] = emptyIndex;
 			return solution;
 		}
 		else if (depth + manhattanDistance > searchDepth) return null;
 
-		//Perform tile movement
-		tiles[emptyIndex] = tiles[newEmptyIndex];
+		int emptyX = emptyIndex % DIMENSION;
+		if (prevDirection != LEFT)
+		{
+			if (emptyX < DIMENSION - 1)
+			{
+				int newEmptyIndex = emptyIndex + 1;
+				int movedTileDestX = tiles[newEmptyIndex] % DIMENSION;
+				int newManhattanDistance = (emptyX < movedTileDestX) ? manhattanDistance + 1 : manhattanDistance - 1;
 
-		//Continue searching in all directions except for the one that returns directly
-		if (direction != RIGHT)
-		{
-			int[] solution = findSolution(LEFT, newEmptyIndex, depth + 1, manhattanDistance);
-			if (solution != null)
-			{
-				solution[depth] = newEmptyIndex;
-				return solution;
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(RIGHT, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
+				{
+					solution[depth] = emptyIndex;
+					return solution;
+				}
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
 		}
-		if (direction != LEFT)
+		if (prevDirection != RIGHT)
 		{
-			int[] solution = findSolution(RIGHT, newEmptyIndex, depth + 1, manhattanDistance);
-			if (solution != null)
+			if (emptyX > 0)
 			{
-				solution[depth] = newEmptyIndex;
-				return solution;
+				int newEmptyIndex = emptyIndex - 1;
+				int movedTileDestX = tiles[newEmptyIndex] % DIMENSION;
+				int newManhattanDistance = (emptyX > movedTileDestX) ? manhattanDistance + 1 : manhattanDistance - 1;
+
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(LEFT, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
+				{
+					solution[depth] = emptyIndex;
+					return solution;
+				}
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
 		}
-		if (direction != DOWN)
+
+		int emptyY = emptyIndex / DIMENSION;
+		if (prevDirection != UP)
 		{
-			int[] solution = findSolution(UP, newEmptyIndex, depth + 1, manhattanDistance);
-			if (solution != null)
+			if (emptyY < DIMENSION - 1)
 			{
-				solution[depth] = newEmptyIndex;
-				return solution;
+				int newEmptyIndex = emptyIndex + DIMENSION;
+				int movedTileDestY = tiles[newEmptyIndex] / DIMENSION;
+				int newManhattanDistance = (emptyY < movedTileDestY) ? manhattanDistance + 1 : manhattanDistance - 1;
+
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(DOWN, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
+				{
+					solution[depth] = emptyIndex;
+					return solution;
+				}
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
 		}
-		if (direction != UP)
+		if (prevDirection != DOWN)
 		{
-			int[] solution = findSolution(DOWN, newEmptyIndex, depth + 1, manhattanDistance);
-			if (solution != null)
+			if (emptyY > 0)
 			{
-				solution[depth] = newEmptyIndex;
-				return solution;
+				int newEmptyIndex = emptyIndex - DIMENSION;
+				int movedTileDestY = tiles[newEmptyIndex] / DIMENSION;
+				int newManhattanDistance = (emptyY > movedTileDestY) ? manhattanDistance + 1 : manhattanDistance - 1;
+
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(UP, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
+				{
+					solution[depth] = emptyIndex;
+					return solution;
+				}
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
 		}
-		//Revert tile movement
-		tiles[newEmptyIndex] = tiles[emptyIndex];
 		return null;
 	}
 }

@@ -25,11 +25,7 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -190,18 +186,6 @@ public class PuzzleSolverOverlay extends Overlay
 				}
 			}
 		}
-
-		if (solver == null || cachedItems == null || (!shouldCache && !Arrays.equals(cachedItems, itemIds)))
-		{
-			nextMoves = solve(itemIds);
-			shouldCache = true;
-		}
-
-		if (shouldCache)
-		{
-			cacheItems(itemIds);
-		}
-
 		return null;
 	}
 
@@ -214,29 +198,13 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private void updateSolutionPosition(int[] currentTiles)
 	{
-		int[] prevTilesCopy = new int[prevTiles.length];
-		System.arraycopy(prevTiles, 0, prevTilesCopy, 0, prevTiles.length);
 		//Search forward 5 steps
-		for (int i = solutionIndex + 1; i < Math.min(solutionIndex + 6, solution.length); ++i)
-		{
+		int endIndex = Math.min(solutionIndex + 6, solution.length);
+		for (int i = solutionIndex + 1; i < endIndex; ++i) {
 			int newEmptyIndex = solution[i];
-			prevTilesCopy[solution[i - 1]] = prevTilesCopy[newEmptyIndex];
-			prevTilesCopy[newEmptyIndex] = BLANK_TILE_VALUE;
-			if (Arrays.equals(prevTilesCopy, currentTiles))
-			{
-				solutionIndex = i;
-				prevTiles = currentTiles;
-				return;
-			}
-		}
-		//Search backwards 5 steps
-		for (int i = solutionIndex - 1;  i >= Math.max(solutionIndex - 5, 0); --i)
-		{
-			int newEmptyIndex = solution[i];
-			prevTiles[solution[i + 1]] = prevTiles[newEmptyIndex];
+			prevTiles[solution[i - 1]] = prevTiles[newEmptyIndex];
 			prevTiles[newEmptyIndex] = BLANK_TILE_VALUE;
-			if (Arrays.equals(prevTiles, currentTiles))
-			{
+			if (Arrays.equals(prevTiles, currentTiles)) {
 				solutionIndex = i;
 				prevTiles = currentTiles;
 				return;
@@ -288,7 +256,7 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		//If blank is in last position, items doesn't contain it. So we add it manually.
-		if (items.length == PuzzleSolver.SIZE - 1)
+		if (items.length < PuzzleSolver.SIZE)
 		{
 			convertedItems[items.length] = BLANK_TILE_VALUE;
 		}
