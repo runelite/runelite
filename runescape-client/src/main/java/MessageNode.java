@@ -59,8 +59,8 @@ public class MessageNode extends CacheableNode {
    )
    class289 field770;
    @ObfuscatedName("y")
-   @Export("sender")
-   String sender;
+   @Export("clan")
+   String clan;
    @ObfuscatedName("g")
    @Export("value")
    String value;
@@ -77,7 +77,7 @@ public class MessageNode extends CacheableNode {
       this.type = var1;
       this.name = var2;
       this.method1155();
-      this.sender = var3;
+      this.clan = var3;
       this.value = var4;
    }
 
@@ -97,7 +97,7 @@ public class MessageNode extends CacheableNode {
       this.type = var1;
       this.name = var2;
       this.method1155();
-      this.sender = var3;
+      this.clan = var3;
       this.value = var4;
    }
 
