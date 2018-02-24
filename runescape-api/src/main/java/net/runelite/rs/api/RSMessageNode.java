@@ -40,13 +40,13 @@ public interface RSMessageNode extends MessageNode
 	@Override
 	void setName(String name);
 
-	@Import("sender")
+	@Import("clan")
 	@Override
-	String getSender();
+	String getClan();
 
-	@Import("sender")
+	@Import("clan")
 	@Override
-	void setSender(String sender);
+	void setClan(String clan);
 
 	@Import("value")
 	@Override
