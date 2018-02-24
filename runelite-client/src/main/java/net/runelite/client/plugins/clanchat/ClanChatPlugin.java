@@ -240,7 +240,7 @@ public class ClanChatPlugin extends Plugin
 		{
 			int iconNumber = getIconNumber(rank);
 			message.getMessageNode()
-				.setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
+				.setClan(message.getMessageNode().getClan() + " <img=" + iconNumber + ">");
 			client.refreshChat();
 		}
 	}
