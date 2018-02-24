@@ -203,7 +203,7 @@ public class Hooks
 		eventBus.post(menuEntry);
 	}
 
-	public static void addChatMessage(int type, String name, String message, String sender)
+	public static void addChatMessage(int type, String name, String message, String clan)
 	{
 		if (log.isDebugEnabled())
 		{
@@ -211,7 +211,7 @@ public class Hooks
 		}
 
 		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
+		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, clan);
 
 		eventBus.post(chatMessage);
 	}
@@ -237,13 +237,13 @@ public class Hooks
 		eventBus.post(projectileMoved);
 	}
 
-	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
+	public static void setMessage(MessageNode messageNode, int type, String name, String clan, String value)
 	{
 		SetMessage setMessage = new SetMessage();
 		setMessage.setMessageNode(messageNode);
 		setMessage.setType(ChatMessageType.of(type));
 		setMessage.setName(name);
-		setMessage.setSender(sender);
+		setMessage.setClan(clan);
 		setMessage.setValue(value);
 
 		eventBus.post(setMessage);
