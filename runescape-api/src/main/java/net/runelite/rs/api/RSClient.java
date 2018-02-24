@@ -475,4 +475,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("cameraPitch")
 	void setCameraPitch(int pitch);
+
+	@Import("renderOverview")
+	RSRenderOverview getRenderOverview();
 }
