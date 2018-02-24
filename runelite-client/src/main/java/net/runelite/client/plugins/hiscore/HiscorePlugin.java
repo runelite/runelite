@@ -75,6 +75,8 @@ public class HiscorePlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		ui.getPluginToolbar().removeNavigation(navButton);
+
+		menuManager.removePlayerMenuItem(LOOKUP);
 	}
 
 	@Subscribe
