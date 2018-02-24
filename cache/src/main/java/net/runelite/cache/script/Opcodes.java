@@ -372,5 +372,6 @@ public class Opcodes
 	public static final int GET_NEXT_WORLD = 6502;
 	public static final int GET_WORLD_BY_ID = 6506;
 	public static final int GET_WORLD_BY_INDEX = 6511;
+	public static final int GET_IS_MOBILE = 6518;
 	public static final int GET_AREA_NAME = 6693;
 }
