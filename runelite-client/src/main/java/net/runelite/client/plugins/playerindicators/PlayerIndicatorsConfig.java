@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,6 +37,7 @@ import net.runelite.client.config.ConfigItem;
 public interface PlayerIndicatorsConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
 		keyName = "drawOwnName",
 		name = "Draw own name",
 		description = "Configures whether or not own name should be drawn"
@@ -46,6 +48,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "ownNameColor",
+		name = "Own name color",
+		description = "Color of your own name"
+	)
+	default Color getOwnNameColor()
+	{
+		return new Color(0, 184, 212);
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "drawFriendNames",
 		name = "Draw friend names",
 		description = "Configures whether or not names of player friends should be drawn"
@@ -56,6 +70,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "friendNameColor",
+		name = "Friend name color",
+		description = "Color of friend names"
+	)
+	default Color getFriendNameColor()
+	{
+		return new Color(0, 200, 83);
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "drawClanMemberNames",
 		name = "Draw clan member names",
 		description = "Configures whether or not names of player's clan members should be drawn"
@@ -66,6 +92,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 5,
+		keyName = "clanMemberColor",
+		name = "Clan member color",
+		description = "Color of clan member names"
+	)
+	default Color getClanMemberColor()
+	{
+		return new Color(170, 0, 255);
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "drawNonClanMemberNames",
 		name = "Draw non-clan member names",
 		description = "Configures whether or not names of non-clan members should be drawn"
@@ -76,6 +114,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 7,
+		keyName = "nonClanMemberColor",
+		name = "Non-clan member color",
+		description = "Color of non-clan member names"
+	)
+	default Color getNonClanMemberColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles",
 		description = "Configures whether or not tiles under players with rendered names should be drawn"
