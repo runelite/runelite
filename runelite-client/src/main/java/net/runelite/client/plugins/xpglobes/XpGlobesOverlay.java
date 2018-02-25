@@ -165,7 +165,7 @@ public class XpGlobesOverlay extends Overlay
 	{
 		graphics.setRenderingHint(RenderingHints.  KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		Stroke stroke = graphics.getStroke();
-		graphics.setStroke(new BasicStroke(strokeWidth));
+		graphics.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		graphics.setColor(color);
 		Arc2D arc = new Arc2D.Double(
 			x, y,
