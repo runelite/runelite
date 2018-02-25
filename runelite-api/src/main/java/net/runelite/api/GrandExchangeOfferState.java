@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.mapping.Import;
+package net.runelite.api;
 
-public interface RSGrandExchangeOffer extends GrandExchangeOffer
+/**
+ * Describes the state of a Grand Exchange offer
+ */
+public enum GrandExchangeOfferState
 {
-	@Import("quantitySold")
-	@Override
-	int getQuantitySold();
-
-	@Import("itemId")
-	@Override
-	int getItemId();
-
-	@Import("totalQuantity")
-	@Override
-	int getTotalQuantity();
-
-	@Import("price")
-	@Override
-	int getPrice();
-
-	@Import("spent")
-	@Override
-	int getSpent();
-
-	@Import("state")
-	byte getRSState();
-
-
+	/**
+	 * An empty slot.
+	 */
+	EMPTY,
+	/**
+	 * Any offer that's been cancelled
+	 */
+	CANCELLED,
+	/**
+	 * A buy offer that is currently in progress.
+	 */
+	BUYING,
+	/**
+	 * A buy offer that has completed.
+	 */
+	BOUGHT,
+	/**
+	 * A sell offer that is currently in progress.
+	 */
+	SELLING,
+	/**
+	 * A sell offer that has completed.
+	 */
+	SOLD;
 }
