@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import net.runelite.api.Client;
@@ -65,13 +66,13 @@ public class InfoBoxOverlay extends Overlay
 	private int boxSize;
 
 	@Inject
-	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider, RuneLiteConfig config)
+	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider, Provider<RuneLiteConfig> config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.clientProvider = clientProvider;
-		this.config = config;
+		this.config = config.get();
 	}
 
 	@Override

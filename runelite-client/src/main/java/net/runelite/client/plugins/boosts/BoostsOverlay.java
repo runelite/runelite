@@ -61,6 +61,7 @@ class BoostsOverlay extends Overlay
 	private Instant startTime;
 	private Skill sampleSkill;
 	private int lastSampleSkillLevel = 0;
+	private int activeBoostCount = 0;
 
 	@Inject
 	private BoostsPlugin plugin;
@@ -99,7 +100,7 @@ class BoostsOverlay extends Overlay
 			if (Arrays.asList(plugin.getShownSkills()).contains(sampleSkill))
 			{
 				int skillLevel = client.getBoostedSkillLevel(sampleSkill);
-				if (skillLevel == lastSampleSkillLevel - 1)
+				if (skillLevel == lastSampleSkillLevel - 1 || skillLevel - 1 == lastSampleSkillLevel)
 				{
 					startTime = Instant.now();
 				}
@@ -110,7 +111,7 @@ class BoostsOverlay extends Overlay
 				sampleSkill = null;
 			}
 		}
-		if (startTime != null)
+		if (startTime != null && activeBoostCount > 0)
 		{
 			int nextChange = 60 - (int)Duration.between(startTime, Instant.now()).getSeconds();
 			nextChange = nextChange <= 0 ? 0 : nextChange;
@@ -121,6 +122,7 @@ class BoostsOverlay extends Overlay
 				Color.white
 			));
 		}
+		activeBoostCount = 0;
 		for (Skill skill : plugin.getShownSkills())
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
@@ -138,7 +140,7 @@ class BoostsOverlay extends Overlay
 				continue;
 			}
 
-			if (boosted > base && sampleSkill == null)
+			if (sampleSkill == null)
 			{
 				sampleSkill = skill;
 				lastSampleSkillLevel = boosted;
@@ -189,6 +191,7 @@ class BoostsOverlay extends Overlay
 					strColor
 				));
 			}
+			activeBoostCount++;
 		}
 
 		return config.displayIndicators() ? null : panelComponent.render(graphics, parent);
