@@ -38,7 +38,7 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 @AllArgsConstructor
 public class BackgroundComponent implements RenderableEntity
 {
-	public static final Color DEFAULT_BACKGROUND_COLOR = new Color(70, 61, 50, 156);
+	public static final Color DEFAULT_BACKGROUND_COLOR = new Color(77, 77, 77, 150);
 
 	private static final int BORDER_OFFSET = 2;
 

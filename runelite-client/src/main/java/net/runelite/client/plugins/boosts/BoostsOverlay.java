@@ -26,14 +26,19 @@ package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -46,9 +51,16 @@ class BoostsOverlay extends Overlay
 	@Getter
 	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
 
+	private static final int SMALL_WIDTH = 120;
+	private static final int NORMAL_WIDTH = 140;
+
 	private final Client client;
 	private final BoostsConfig config;
 	private final InfoBoxManager infoBoxManager;
+
+	private Instant startTime;
+	private Skill sampleSkill;
+	private int lastSampleSkillLevel = 0;
 
 	@Inject
 	private BoostsPlugin plugin;
@@ -56,7 +68,11 @@ class BoostsOverlay extends Overlay
 	@Inject
 	private SkillIconManager iconManager;
 
-	private PanelComponent panelComponent;
+	public enum FontType
+	{
+		NORMAL,
+		SMALL
+	}
 
 	@Inject
 	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
@@ -71,8 +87,40 @@ class BoostsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		panelComponent = new PanelComponent();
+		final PanelComponent panelComponent = new PanelComponent();
+		final Font font = config.type() == FontType.SMALL ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont();
+		panelComponent.setFont(font);
+		int width = config.type() == FontType.SMALL ? SMALL_WIDTH : NORMAL_WIDTH;
+		width = config.useRelativeBoost() ? width - 20 : width;
+		panelComponent.setWidth(width);
 
+		if (sampleSkill != null)
+		{
+			if (Arrays.asList(plugin.getShownSkills()).contains(sampleSkill))
+			{
+				int skillLevel = client.getBoostedSkillLevel(sampleSkill);
+				if (skillLevel == lastSampleSkillLevel - 1)
+				{
+					startTime = Instant.now();
+				}
+				lastSampleSkillLevel = skillLevel;
+			}
+			else
+			{
+				sampleSkill = null;
+			}
+		}
+		if (startTime != null)
+		{
+			int nextChange = 60 - (int)Duration.between(startTime, Instant.now()).getSeconds();
+			nextChange = nextChange <= 0 ? 0 : nextChange;
+			panelComponent.getLines().add(new PanelComponent.Line(
+				"Next change in",
+				Color.white,
+				String.valueOf(nextChange),
+				Color.white
+			));
+		}
 		for (Skill skill : plugin.getShownSkills())
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
@@ -90,11 +138,18 @@ class BoostsOverlay extends Overlay
 				continue;
 			}
 
+			if (boosted > base && sampleSkill == null)
+			{
+				sampleSkill = skill;
+				lastSampleSkillLevel = boosted;
+				startTime = Instant.now();
+			}
+
 			if (config.displayIndicators())
 			{
 				if (indicator == null)
 				{
-					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
+					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config, this);
 					indicators[skill.ordinal()] = indicator;
 				}
 
@@ -120,6 +175,7 @@ class BoostsOverlay extends Overlay
 				else
 				{
 					str = String.valueOf(boost);
+					strColor = getTextColor(base, boosted);
 					if (boost > 0)
 					{
 						str = "+" + str;
@@ -138,14 +194,28 @@ class BoostsOverlay extends Overlay
 		return config.displayIndicators() ? null : panelComponent.render(graphics, parent);
 	}
 
-	private Color getTextColor(int boost)
+	public Color getTextColor(int base, int boosted)
 	{
-		if (boost > 0)
+		if (base > 0)
 		{
-			return Color.GREEN;
+			float boostPercentage = (boosted - base) / (5 + .15f * base) * 100;
+			if (boosted > base)
+			{
+				if (boostPercentage > config.medBoostPercentage())
+				{
+					return config.highBoost();
+				}
+				else if (boostPercentage > config.lowBoostPercentage())
+				{
+					return config.medBoost();
+				}
+				else
+				{
+					return config.lowBoost();
+				}
+			}
 		}
 
-		return new Color(238, 51, 51);
-
+		return new Color(255, 0, 0);
 	}
 }

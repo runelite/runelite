@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,11 +33,15 @@ import java.util.List;
 import java.util.function.Predicate;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.RuneLiteConfig;
 
 @Singleton
 @Slf4j
 public class InfoBoxManager
 {
+	@Inject
+	public RuneLiteConfig runeliteConfig;
+
 	private final List<InfoBox> infoBoxes = new ArrayList<>();
 
 	public void addInfoBox(InfoBox infoBox)
