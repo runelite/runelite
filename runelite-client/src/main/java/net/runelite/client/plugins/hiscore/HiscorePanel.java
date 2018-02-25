@@ -101,7 +101,6 @@ public class HiscorePanel extends PluginPanel
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
 		Border subPanelBorder = BorderFactory.createLineBorder(this.getBackground().brighter(), 2);
-		Font labelFont = UIManager.getFont("Label.font");
 
 		// Create GBL to arrange sub items
 		GridBagLayout gridBag = new GridBagLayout();
@@ -129,7 +128,6 @@ public class HiscorePanel extends PluginPanel
 
 		input = new IconTextField();
 		input.setIcon(search);
-		input.setFont(labelFont.deriveFont(Font.BOLD));
 		input.addActionListener(e -> executor.execute(this::lookup));
 		inputPanel.add(input, BorderLayout.CENTER);
 
@@ -195,7 +193,6 @@ public class HiscorePanel extends PluginPanel
 		details.setCursor(null);
 		details.setOpaque(false);
 		details.setFocusable(false);
-		details.setFont(labelFont);
 		details.setWrapStyleWord(true);
 		details.setLineWrap(true);
 		details.setMargin(new Insets(2, 4, 4, 4));
