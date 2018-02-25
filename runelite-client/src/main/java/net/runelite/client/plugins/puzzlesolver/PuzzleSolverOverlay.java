@@ -25,11 +25,7 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -37,8 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -71,13 +65,11 @@ public class PuzzleSolverOverlay extends Overlay
 	private final PuzzleSolverConfig config;
 
 	private PuzzleSolver solver;
-	private Deque<Integer> nextMoves;
-	private int[] cachedItems;
 
-	private BufferedImage downArrow;
-	private BufferedImage upArrow;
-	private BufferedImage leftArrow;
-	private BufferedImage rightArrow;
+	private int[] prevTiles;
+
+	private int[] solution;
+	private int solutionIndex;
 
 	@Inject
 	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config)
@@ -113,24 +105,39 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		int[] itemIds = getItemIds(container);
-		boolean shouldCache = false;
+		int[] tiles = convertToSolverFormat(itemIds);
 
-		if (nextMoves != null)
+		if (solution == null)
 		{
-			Integer nextMove = nextMoves.peek();
-
-			// If this is true, nextMove is actually the current state (player has moved the empty tile),
-			// so let's throw away this step and try to find the actual next move.
-			while (nextMove != null && itemIds[nextMove] == BLANK_TILE_VALUE)
+			if (solver == null)
 			{
-				nextMoves.pop(); // pop the current move
-				nextMove = nextMoves.peek();
-				shouldCache = true;
+				startSolver(tiles);
+			}
+			else if (!Arrays.equals(prevTiles, tiles))
+			{
+				//Puzzle has changed since we started solving, restart
+				solver.stop();
+				startSolver(tiles);
+			}
+			else
+			{
+				solution = solver.getSolution();
+				if (solution != null)
+				{
+					solutionIndex = 0;
+					solver = null;
+				}
+			}
+		}
+		else
+		{
+			if (!Arrays.equals(prevTiles, tiles))
+			{
+				//Puzzle has changed, try to find new position in solution
+				updateSolutionPosition(tiles);
 			}
 
-			// If nextMove is null, the puzzle is either finished
-			// or the player has not followed the instructions.
-			if (nextMove != null)
+			if (solution != null)
 			{
 				net.runelite.api.Point puzzleBoxLocation = puzzleBox.getCanvasLocation();
 
@@ -139,7 +146,7 @@ public class PuzzleSolverOverlay extends Overlay
 					int x = puzzleBoxLocation.getX() + puzzleBox.getWidth() / 2 - MOVES_LEFT_WIDTH / 2;
 					int y = puzzleBoxLocation.getY() - MOVES_LEFT_OFFSET_Y;
 
-					String movesLeftString = "Moves left: " + nextMoves.size();
+					String movesLeftString = "Moves left: " + (solution.length - 1 - solutionIndex);
 
 					FontMetrics fm = graphics.getFontMetrics();
 					int height = MOVES_LEFT_TOP_BORDER + fm.getHeight() + MOVES_LEFT_BOTTOM_BORDER;
@@ -159,79 +166,51 @@ public class PuzzleSolverOverlay extends Overlay
 
 				if (config.displaySolution())
 				{
-					int i = 0;
-					int lastBlankX = 0;
-					int lastBlankY = 0;
+					int markerSize = 16;
 
-					// First find the current blank tile position
-					for (int j = 0; j < itemIds.length; j++)
+					int endIndex = Math.min(solutionIndex + 5, solution.length);
+					for (int i = solutionIndex + 1; i < endIndex; ++i)
 					{
-						if (itemIds[j] == BLANK_TILE_VALUE)
-						{
-							lastBlankX = j % PuzzleSolver.DIMENSION;
-							lastBlankY = j / PuzzleSolver.DIMENSION;
-							break;
-						}
-					}
-
-					for (Integer futureMove : nextMoves)
-					{
-						int blankX = futureMove % PuzzleSolver.DIMENSION;
-						int blankY = futureMove / PuzzleSolver.DIMENSION;
-
-						int xDelta = blankX - lastBlankX;
-						int yDelta = blankY - lastBlankY;
-
-						BufferedImage arrow;
-						if (xDelta > 0)
-						{
-							arrow = getRightArrow();
-						}
-						else if (xDelta < 0)
-						{
-							arrow = getLeftArrow();
-						}
-						else if (yDelta > 0)
-						{
-							arrow = getDownArrow();
-						}
-						else
-						{
-							arrow = getUpArrow();
-						}
+						int blankX = solution[i] % PuzzleSolver.DIMENSION;
+						int blankY = solution[i] / PuzzleSolver.DIMENSION;
 
 						int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-								+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
+								+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
 						int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-								+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
-
-						OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
-
-						lastBlankX = blankX;
-						lastBlankY = blankY;
-
-						if (++i == 3)
-						{
-							break;
-						}
+								+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+						graphics.setColor(Color.YELLOW);
+						graphics.fillOval(x, y, markerSize, markerSize);
+						markerSize -= 3;
 					}
 				}
 			}
 		}
-
-		if (solver == null || cachedItems == null || (!shouldCache && !Arrays.equals(cachedItems, itemIds)))
-		{
-			nextMoves = solve(itemIds);
-			shouldCache = true;
-		}
-
-		if (shouldCache)
-		{
-			cacheItems(itemIds);
-		}
-
 		return null;
+	}
+
+	private void startSolver(int[] tiles)
+	{
+		solver = new PuzzleSolver(tiles);
+		new Thread(solver).start();
+		prevTiles = tiles;
+	}
+
+	private void updateSolutionPosition(int[] currentTiles)
+	{
+		//Search forward 5 steps
+		int endIndex = Math.min(solutionIndex + 6, solution.length);
+		for (int i = solutionIndex + 1; i < endIndex; ++i) {
+			int newEmptyIndex = solution[i];
+			prevTiles[solution[i - 1]] = prevTiles[newEmptyIndex];
+			prevTiles[newEmptyIndex] = BLANK_TILE_VALUE;
+			if (Arrays.equals(prevTiles, currentTiles)) {
+				solutionIndex = i;
+				prevTiles = currentTiles;
+				return;
+			}
+		}
+		solution = null;
 	}
 
 	private int[] getItemIds(ItemContainer container)
@@ -242,27 +221,6 @@ public class PuzzleSolverOverlay extends Overlay
 				.toArray();
 	}
 
-	private void cacheItems(int[] items)
-	{
-		cachedItems = new int[items.length];
-		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
-	}
-
-	private Deque<Integer> solve(int[] items)
-	{
-		Deque<Integer> steps = new ArrayDeque<>();
-
-		solver = new PuzzleSolver(convertToSolverFormat(items));
-
-		while (solver.hasNext())
-		{
-			solver.next();
-			steps.add(solver.getBlankX() + solver.getBlankY() * PuzzleSolver.DIMENSION);
-		}
-
-		return steps;
-	}
-
 	/**
 	 * This depends on there being no gaps in between item ids in puzzles.
 	 */
@@ -270,7 +228,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		int lowestId = Integer.MAX_VALUE;
 
-		int[] convertedItems = new int[items.length];
+		int[] convertedItems = new int[PuzzleSolver.SIZE];
 
 		for (int id : items)
 		{
@@ -297,58 +255,12 @@ public class PuzzleSolverOverlay extends Overlay
 			}
 		}
 
+		//If blank is in last position, items doesn't contain it. So we add it manually.
+		if (items.length < PuzzleSolver.SIZE)
+		{
+			convertedItems[items.length] = BLANK_TILE_VALUE;
+		}
+
 		return convertedItems;
-	}
-
-	private BufferedImage getDownArrow()
-	{
-		if (downArrow == null)
-		{
-			try
-			{
-				InputStream in = PuzzleSolverOverlay.class.getResourceAsStream("arrow.png");
-				downArrow = ImageIO.read(in);
-			}
-			catch (IOException e)
-			{
-				log.warn("Error loading image", e);
-			}
-		}
-		return downArrow;
-	}
-
-	private BufferedImage getUpArrow()
-	{
-		if (upArrow == null)
-		{
-			upArrow = getRotatedImage(getDownArrow(), Math.PI);
-		}
-		return upArrow;
-	}
-
-	private BufferedImage getLeftArrow()
-	{
-		if (leftArrow == null)
-		{
-			leftArrow = getRotatedImage(getDownArrow(), Math.PI / 2);
-		}
-		return leftArrow;
-	}
-
-	private BufferedImage getRightArrow()
-	{
-		if (rightArrow == null)
-		{
-			rightArrow = getRotatedImage(getDownArrow(), 3 * Math.PI / 2);
-		}
-		return rightArrow;
-	}
-
-	private BufferedImage getRotatedImage(BufferedImage image, double theta)
-	{
-		AffineTransform transform = new AffineTransform();
-		transform.rotate(theta, image.getWidth() / 2, image.getHeight() / 2);
-		AffineTransformOp transformOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-		return transformOp.filter(image, null);
 	}
 }

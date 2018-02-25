@@ -30,24 +30,37 @@ import org.junit.Test;
 
 public class PuzzleSolverTest
 {
-	private static final int[] TEST_STATE = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 15, 8, 23, 22, 16, -1, 19, 12, 17, 14, 9, 11, 10, 18, 21, 13, 20};
-	private static final int[] FINISHED_STATE = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
+	private static final int[] TEST_STATE = new int[]{0, 11, 1, 3, 4, 5, 12, 2, 7, 9, 6, 20, 18, 16, 8, 15, 22, 10, 14, 13, 21, -1, 17, 23, 19};
+	private static final int[] FINISHED_STATE = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, -1};
 
 	@Test
 	public void testSolver()
 	{
+		int[] tiles = new int[TEST_STATE.length];
+		System.arraycopy(TEST_STATE, 0, tiles, 0, TEST_STATE.length);
 		PuzzleSolver solver = new PuzzleSolver(TEST_STATE);
+		solver.run();
+		int[] solution = solver.getSolution();
 
-		assertEquals(solver.hasNext(), true);
+		assertEquals(solution != null, true);
 
-		while (solver.hasNext())
-		{
-			solver.next();
+		if (solution != null) {
+
+			performSolution(solution, tiles);
+
+			for (int i = 0; i < FINISHED_STATE.length; i++) {
+				assertEquals(tiles[i], FINISHED_STATE[i]);
+			}
 		}
+	}
 
-		for (int i = 0; i < FINISHED_STATE.length; i++)
+	private void performSolution(int[] solution, int[] tiles)
+	{
+		for (int i = 0; i < solution.length - 1; ++i)
 		{
-			assertEquals(solver.getTiles()[i], FINISHED_STATE[i]);
+			int newEmptyIndex = solution[i + 1];
+			tiles[solution[i]] = tiles[newEmptyIndex];
+			tiles[newEmptyIndex] = -1;
 		}
 	}
 }

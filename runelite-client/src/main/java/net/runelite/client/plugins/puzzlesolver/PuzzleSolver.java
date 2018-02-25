@@ -1,17 +1,5 @@
 /*
- * This code file is a derivative of code by Jaap Scherphuis <https://www.jaapsch.net/puzzles/fifteen.htm>.
- * The original code can be found in the page source of https://www.jaapsch.net/puzzles/javascript/fifteenj.htm.
- *
- * Quote copied verbatim from the creator's grant to use this code in RuneLite:
- *
- * "You have my permission to incorporate, adapt, and distribute any part
- * of my 15-puzzle javascript code as part of your free, open source project"
- *
- *
- * The adaptions made to Jaap Scherphuis' code is copyrighted and licensed according to:
- *
- *
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Henke <https://github.com/henke96>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,312 +23,176 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.puzzlesolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * This 5x5 sliding puzzle solver algorithm is based on https://www.jaapsch.net/puzzles/fifteen.htm.
- */
-public class PuzzleSolver
+public class PuzzleSolver implements Runnable
 {
 	public static final int BLANK_TILE_VALUE = -1;
 	public static final int DIMENSION = 5;
-	private static final int SIZE = DIMENSION * DIMENSION - 1;
+	public static final int SIZE = DIMENSION * DIMENSION;
 
-	private int[] tiles = new int[SIZE + DIMENSION];
-	private List<Integer> seq = new ArrayList<>();
+	private static final int MAX_DEPTH = 64;
 
-	private int blankX;
-	private int blankY;
+	private static final int NONE = -1;
+	private static final int RIGHT = 0;
+	private static final int LEFT = 1;
+	private static final int DOWN = 2;
+	private static final int UP = 3;
 
-	private int mode;
+	private int[] tiles;
+	private int searchDepth;
+	private int[] solution;
 
-	public PuzzleSolver(int[] arr)
+	private volatile boolean shouldStop;
+
+	public PuzzleSolver(int[] tiles)
 	{
-		System.arraycopy(arr, 0, tiles, 0, arr.length);
+		this.tiles = new int[tiles.length];
+		System.arraycopy(tiles, 0, this.tiles, 0, tiles.length);
+		shouldStop = false;
+	}
 
-		for (int i = 0; i < arr.length; i++)
+	public void stop()
+	{
+		shouldStop = true;
+	}
+
+	public int[] getSolution()
+	{
+		return solution;
+	}
+
+	@Override
+	public void run()
+	{
+		int manhattanDistance = 0;
+		int emptyIndex = -1;
+
+		for (int y = 0, i = 0; y < DIMENSION; ++y)
 		{
-			if (arr[i] == BLANK_TILE_VALUE)
+			for (int x = 0; x < DIMENSION; ++x, ++i)
 			{
-				blankX = i % DIMENSION;
-				blankY = i / DIMENSION;
+				if (tiles[i] == BLANK_TILE_VALUE)
+				{
+					emptyIndex = i;
+					continue;
+				}
+				int destX = tiles[i] % DIMENSION;
+				int destY = tiles[i] / DIMENSION;
+				manhattanDistance += Math.abs(destX - x) + Math.abs(destY - y);
+			}
+		}
+
+		if (emptyIndex == -1)
+		{
+			return;
+		}
+
+		int[] solution = null;
+
+		for (searchDepth = manhattanDistance; searchDepth <= MAX_DEPTH; ++searchDepth)
+		{
+			if (shouldStop) break;
+			solution = findSolution(NONE, emptyIndex, 0, manhattanDistance);
+			if (solution != null)
+			{
+				solution[0] = emptyIndex;
 				break;
 			}
 		}
+		this.solution = solution;
 	}
 
-	public boolean hasNext()
+	private int[] findSolution(int prevDirection, int emptyIndex, int depth, int manhattanDistance)
 	{
-		for (int i = SIZE; i >= 0; i--)
+		if (manhattanDistance == 0)
 		{
-			if (tiles[i] != i)
-			{
-				return true;
-			}
+			int[] solution = new int[depth + 1];
+			solution[depth] = emptyIndex;
+			return solution;
 		}
-		return false;
-	}
+		else if (depth + manhattanDistance > searchDepth) return null;
 
-	public void next()
-	{
-		if (mode == 0)
+		int emptyX = emptyIndex % DIMENSION;
+		if (prevDirection != LEFT)
 		{
-			mode = 3;
-			seq.clear();
-
-			int[] oldTiles = new int[tiles.length];
-			System.arraycopy(tiles, 0, oldTiles, 0, tiles.length);
-			int oldBlankX = blankX;
-			int oldBlankY = blankY;
-
-			//restore top rows
-			int rr = 0;
-			for (int r = 0; r < DIMENSION - 2; r++)
+			if (emptyX < DIMENSION - 1)
 			{
-				for (int c = 0; c < DIMENSION; c++)
+				int newEmptyIndex = emptyIndex + 1;
+				int movedTileDestX = tiles[newEmptyIndex] % DIMENSION;
+				int newManhattanDistance = (emptyX < movedTileDestX) ? manhattanDistance + 1 : manhattanDistance - 1;
+
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(RIGHT, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
 				{
-					movePiece(rr + c, r, c);
+					solution[depth] = emptyIndex;
+					return solution;
 				}
-				rr += DIMENSION;
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
-
-			//restore left columns
-			for (int c = 0; c < DIMENSION - 2; c++)
+		}
+		if (prevDirection != RIGHT)
+		{
+			if (emptyX > 0)
 			{
-				//restore top tile of column.
-				movePiece(rr, DIMENSION - 2, c);
-				//restore bottom tile of column
-				if (blankX == c) push(3);  //fill destination spot
-				if (tiles[rr + DIMENSION] != rr + DIMENSION)
+				int newEmptyIndex = emptyIndex - 1;
+				int movedTileDestX = tiles[newEmptyIndex] % DIMENSION;
+				int newManhattanDistance = (emptyX > movedTileDestX) ? manhattanDistance + 1 : manhattanDistance - 1;
+
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(LEFT, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
 				{
-					movePiece(rr + DIMENSION, DIMENSION - 1, c + 1);
-					if (blankY != DIMENSION - 1)
-					{    //0=right, 1=down, 2=up, 3=left
-						//A.X or AX.
-						//XBX    XBX
-						if (blankX == c + 1) push(3);
-						push(2);
-					}
-					//AXX
-					//XB.
-					while (blankX > c + 2)
-					{
-						push(0);
-					}
-					push(0, 0, 1, 3, 2, 3, 1, 0, 0, 2, 3);
+					solution[depth] = emptyIndex;
+					return solution;
 				}
-				rr++;
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
-
-			//last 2x2 square
-			if (blankX < DIMENSION - 1) push(3);
-			if (blankY < DIMENSION - 1) push(2);
-			rr = SIZE - DIMENSION - 1;
-			if (tiles[rr] == rr + 1) push(1, 0, 2, 3);
-			if (tiles[rr] == rr + DIMENSION) push(0, 1, 3, 2);
-
-			//restore pieces;
-			System.arraycopy(oldTiles, 0, tiles, 0, tiles.length);
-			blankX = oldBlankX;
-			blankY = oldBlankY;
 		}
 
-		if (mode >= 3)
+		int emptyY = emptyIndex / DIMENSION;
+		if (prevDirection != UP)
 		{
-			if (!seq.isEmpty())
+			if (emptyY < DIMENSION - 1)
 			{
-				Integer c = seq.get(0);
-				for (int i = 1; i < seq.size(); i++)
+				int newEmptyIndex = emptyIndex + DIMENSION;
+				int movedTileDestY = tiles[newEmptyIndex] / DIMENSION;
+				int newManhattanDistance = (emptyY < movedTileDestY) ? manhattanDistance + 1 : manhattanDistance - 1;
+
+				tiles[emptyIndex] = tiles[newEmptyIndex];
+
+				int[] solution = findSolution(DOWN, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
 				{
-					seq.set(i - 1, seq.get(i));
+					solution[depth] = emptyIndex;
+					return solution;
 				}
-				seq.remove(seq.size() - 1);
-				doMove(c);
-			}
-
-			if (seq.isEmpty())
-			{
-				mode = 0;
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
 		}
-	}
+		if (prevDirection != DOWN)
+		{
+			if (emptyY > 0)
+			{
+				int newEmptyIndex = emptyIndex - DIMENSION;
+				int movedTileDestY = tiles[newEmptyIndex] / DIMENSION;
+				int newManhattanDistance = (emptyY > movedTileDestY) ? manhattanDistance + 1 : manhattanDistance - 1;
 
-	private void movePiece(int p, int y, int x)
-	{
-		//moves piece p to position y,x without disturbing previously placed pieces.
-		int c = -1;
-		int i = 0;
-		int j = 0;
-		for (; i < DIMENSION; i++)
-		{
-			for (j = 0; j < DIMENSION; j++)
-			{
-				c++;
-				if (tiles[c] == p) break;
-			}
-			if (tiles[c] == p) break;
-		}
+				tiles[emptyIndex] = tiles[newEmptyIndex];
 
-		//Move piece to same column         //0=right, 1=down, 2=up, 3=left
-		if (j < x && blankY == y) push(2);    // move blank down if it might disturb solved pieces.
-		while (j > x)
-		{
-			//move piece to left
-			//First move blank to left hand side of it
-			if (blankY == i && blankX > j)
-			{    //if blank on wrong side of piece
-				if (i == DIMENSION - 1) push(1);
-				else push(2); //then move it to other row
-			}
-			while (blankX >= j) push(0);    // move blank to column left of piece
-			while (blankX < j - 1) push(3);
-			while (blankY < i) push(2);     // move blank to same row as piece
-			while (blankY > i) push(1);
-			push(3);                    // move piece to left.
-			j--;
-		}
-		while (j < x)
-		{
-			//move piece to right
-			//First move blank to right hand side of it
-			if (blankY == i && blankX < j)
-			{
-				if (i == DIMENSION - 1) push(1);
-				else push(2);
-			}
-			while (blankX <= j) push(3);
-			while (blankX > j + 1) push(0);
-			while (blankY < i) push(2);
-			while (blankY > i) push(1);
-			push(0);
-			j++;
-		}
-
-		//Move piece up to same row         //0=right, 1=down, 2=up, 3=left
-		while (i > y)
-		{
-			if (y < i - 1)
-			{
-				while (blankY < i - 1) push(2);
-				if (blankX == j) push(j == DIMENSION - 1 ? 0 : 3);
-				while (blankY > i - 1) push(1);
-				while (blankX < j) push(3);
-				while (blankX > j) push(0);
-				push(2);
-			}
-			else
-			{
-				if (j != DIMENSION - 1)
+				int[] solution = findSolution(UP, newEmptyIndex, depth + 1, newManhattanDistance);
+				if (solution != null)
 				{
-					if (blankY == i) push(2);
-					while (blankX < j + 1) push(3);
-					while (blankX > j + 1) push(0);
-					while (blankY > i - 1) push(1);
-					while (blankY < i - 1) push(2);
-					push(0, 2);
+					solution[depth] = emptyIndex;
+					return solution;
 				}
-				else
-				{
-					if (blankY < i && blankX == j)
-					{
-						while (blankY < i) push(2);
-					}
-					else
-					{
-						while (blankY > i + 1) push(1);
-						while (blankY < i + 1) push(2);
-						while (blankX < j) push(3);
-						while (blankX > j) push(0);
-						push(1, 1, 0, 2, 3, 2, 0, 1, 1, 3, 2);
-					}
-				}
+				tiles[newEmptyIndex] = tiles[emptyIndex];
 			}
-			i--;
 		}
-		while (i < y)
-		{
-			//move piece downwards
-			//First move blank below tile
-			if (blankX == j && blankY < i)
-			{
-				if (j == DIMENSION - 1) push(0);
-				else push(3);
-			}
-			while (blankY > i + 1) push(1);
-			while (blankY < i + 1) push(2);
-			while (blankX < j) push(3);
-			while (blankX > j) push(0);
-			push(1);
-			i++;
-		}
-	}
-
-	private void push(int... moves)
-	{
-		for (int c : moves)
-		{
-			if (!seq.isEmpty() && seq.get(seq.size() - 1) + c == 3)
-			{
-				seq.remove(seq.size() - 1);
-			}
-			else
-			{
-				seq.add(c);
-			}
-
-			doMove(c);
-		}
-	}
-
-	private void doMove(int m)
-	{
-		int d = blankX + blankY * DIMENSION;
-
-		if (m == 0)
-		{
-			// RIGHT
-			tiles[d] = tiles[d - 1];
-			tiles[d - 1] = SIZE;
-			blankX--;
-		}
-		else if (m == 1)
-		{
-			// DOWN
-			tiles[d] = tiles[d - DIMENSION];
-			tiles[d - DIMENSION] = SIZE;
-			blankY--;
-		}
-		else if (m == 2)
-		{
-			// UP
-			tiles[d] = tiles[d + DIMENSION];
-			tiles[d + DIMENSION] = SIZE;
-			blankY++;
-		}
-		else if (m == 3)
-		{
-			// LEFT
-			tiles[d] = tiles[d + 1];
-			tiles[d + 1] = SIZE;
-			blankX++;
-		}
-	}
-
-	public int[] getTiles()
-	{
-		return tiles;
-	}
-
-	public int getBlankX()
-	{
-		return blankX;
-	}
-
-	public int getBlankY()
-	{
-		return blankY;
+		return null;
 	}
 }
