@@ -41,14 +41,18 @@ public class Raid
 	public void updateLayout(Layout layout)
 	{
 		if (layout == null)
+		{
 			return;
+		}
 
 		this.layout = layout;
 
 		for (int i = 0; i < rooms.length; i++)
 		{
 			if (layout.getRoomAt(i) == null)
+			{
 				continue;
+			}
 
 			RaidRoom room = rooms[i];
 
@@ -58,10 +62,14 @@ public class Raid
 				room = new RaidRoom(null, type);
 
 				if (type == RaidRoom.Type.COMBAT)
+				{
 					room.setBoss(RaidRoom.Boss.UNKNOWN);
+				}
 
 				if (type == RaidRoom.Type.PUZZLE)
+				{
 					room.setPuzzle(RaidRoom.Puzzle.UNKNOWN);
+				}
 
 				setRoom(room, i);
 			}
@@ -76,7 +84,9 @@ public class Raid
 	public void setRoom(RaidRoom room, int position)
 	{
 		if (position < rooms.length)
+		{
 			rooms[position] = room;
+		}
 	}
 
 	public RaidRoom[] getCombatRooms()
@@ -86,10 +96,14 @@ public class Raid
 		for (Room room : layout.getRooms())
 		{
 			if (room == null)
+			{
 				continue;
+			}
 
 			if (rooms[room.getPosition()].getType() == RaidRoom.Type.COMBAT)
+			{
 				combatRooms.add(rooms[room.getPosition()]);
+			}
 		}
 
 		return combatRooms.toArray(new RaidRoom[combatRooms.size()]);
@@ -102,9 +116,13 @@ public class Raid
 		for (RaidRoom room : rooms)
 		{
 			if (room != null)
+			{
 				builder.append(room.getType().getCode());
+			}
 			else
+			{
 				builder.append(" ");
+			}
 		}
 
 		return builder.toString();

@@ -128,7 +128,9 @@ public class RaidsPlugin extends Plugin
 		}
 
 		if (config.pointsMessage())
+		{
 			cacheColors();
+		}
 
 		updateBlacklist();
 	}
@@ -137,20 +139,28 @@ public class RaidsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		if (timer != null)
+		{
 			infoBoxManager.removeInfoBox(timer);
+		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (config.pointsMessage())
+		{
 			cacheColors();
+		}
 
 		if (event.getKey().equals("raidsTimer"))
+		{
 			updateInfoBoxState();
+		}
 
 		if (event.getKey().equals("blacklistedRooms"))
+		{
 			updateBlacklist();
+		}
 	}
 
 	@Subscribe
@@ -215,7 +225,9 @@ public class RaidsPlugin extends Plugin
 			if (message.startsWith(RAID_COMPLETE_MESSAGE))
 			{
 				if (timer != null)
+				{
 					timer.setStopped(true);
+				}
 
 				if (config.pointsMessage())
 				{
@@ -257,12 +269,18 @@ public class RaidsPlugin extends Plugin
 		if (timer != null)
 		{
 			if (inRaidChambers && config.raidsTimer())
+			{
 				infoBoxManager.addInfoBox(timer);
+			}
 			else
+			{
 				infoBoxManager.removeInfoBox(timer);
+			}
 
 			if (!inRaidChambers)
+			{
 				timer = null;
+			}
 		}
 	}
 
@@ -290,10 +308,14 @@ public class RaidsPlugin extends Plugin
 			for (int y = 0; y < SCENE_SIZE; y++)
 			{
 				if (tiles[x][y] == null || tiles[x][y].getWallObject() == null)
+				{
 					continue;
+				}
 
 				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
+				{
 					return tiles[x][y].getRegionLocation();
+				}
 			}
 		}
 
@@ -305,7 +327,9 @@ public class RaidsPlugin extends Plugin
 		Point gridBase = findLobbyBase();
 
 		if (gridBase == null)
+		{
 			return null;
+		}
 
 		Raid raid = new Raid();
 		Tile[][] tiles;
@@ -317,9 +341,13 @@ public class RaidsPlugin extends Plugin
 			tiles = client.getRegion().getTiles()[plane];
 
 			if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
+			{
 				position = 1;
+			}
 			else
+			{
 				position = 0;
+			}
 
 			for (int i = 1; i > -2; i--)
 			{
@@ -331,10 +359,14 @@ public class RaidsPlugin extends Plugin
 					offsetX = 0;
 
 					if (x > SCENE_SIZE && position > 1 && position < 4)
+					{
 						position++;
+					}
 
 					if (x < 0)
+					{
 						offsetX = Math.abs(x) + 1; //add 1 because the tile at x=0 will always be null
+					}
 
 					if (x < SCENE_SIZE && y >= 0 && y < SCENE_SIZE)
 					{
@@ -350,7 +382,9 @@ public class RaidsPlugin extends Plugin
 						}
 
 						if (position == 0 && startX != j)
+						{
 							startX = j;
+						}
 
 						Tile base = tiles[offsetX > 0 ? 1 : x][y];
 						RaidRoom room = determineRoom(base);
@@ -371,7 +405,9 @@ public class RaidsPlugin extends Plugin
 		InstanceTemplates template = InstanceTemplates.findMatch(chunkData);
 
 		if (template == null)
+		{
 			return room;
+		}
 
 		switch (template)
 		{
@@ -461,7 +497,9 @@ public class RaidsPlugin extends Plugin
 	private BufferedImage getRaidsIcon()
 	{
 		if (raidsIcon != null)
+		{
 			return raidsIcon;
+		}
 
 		InputStream in = RaidsPlugin.class.getResourceAsStream("raids_icon.png");
 
