@@ -55,7 +55,9 @@ public class RaidRoom
 			for (Type type : Type.values())
 			{
 				if (type.getCode().equalsIgnoreCase(String.valueOf(code)))
+				{
 					return type;
+				}
 			}
 
 			return Type.EMPTY;
@@ -83,7 +85,9 @@ public class RaidRoom
 			for (Boss boss : Boss.values())
 			{
 				if (boss.getName().equalsIgnoreCase(name))
+				{
 					return boss;
+				}
 			}
 
 			return null;
@@ -107,7 +111,9 @@ public class RaidRoom
 			for (Puzzle puzzle : Puzzle.values())
 			{
 				if (puzzle.getName().equalsIgnoreCase(name))
+				{
 					return puzzle;
+				}
 			}
 
 			return null;

@@ -119,9 +119,11 @@ public class LayoutSolver
 		}
 
 		if (matches == 1)
+		{
 			return solution;
-		else
-			return null;
+		}
+
+		return null;
 	}
 
 	private int calcStart(String directions)
@@ -173,7 +175,9 @@ public class LayoutSolver
 			Matcher match = regex.matcher(code);
 
 			if (!match.find())
+			{
 				continue;
+			}
 
 			String symbols, directions;
 			int position = calcStart(match.group(3));
