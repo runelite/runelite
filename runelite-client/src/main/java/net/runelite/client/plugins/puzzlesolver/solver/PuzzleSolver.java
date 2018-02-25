@@ -47,11 +47,6 @@ public class PuzzleSolver implements Runnable
 
 	public PuzzleState getStep(int stepIdx)
 	{
-		if (stepIdx < 0 || stepIdx >= solution.size())
-		{
-			return null;
-		}
-
 		return solution.get(stepIdx);
 	}
 
