@@ -43,7 +43,9 @@ public class Layout
 		for (Room room : rooms)
 		{
 			if (room.getPosition() == position)
+			{
 				return room;
+			}
 		}
 
 		return null;

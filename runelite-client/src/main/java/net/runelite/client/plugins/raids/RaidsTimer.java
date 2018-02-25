@@ -52,7 +52,9 @@ public class RaidsTimer extends InfoBox
 	public String getText()
 	{
 		if (startTime == null)
+		{
 			return "";
+		}
 
 		if (!stopped)
 		{
@@ -61,7 +63,9 @@ public class RaidsTimer extends InfoBox
 		}
 
 		if (time.getHour() > 0)
+		{
 			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
 
 		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
 	}
@@ -70,7 +74,9 @@ public class RaidsTimer extends InfoBox
 	public Color getTextColor()
 	{
 		if (stopped)
+		{
 			return Color.GREEN;
+		}
 
 		return Color.WHITE;
 	}
