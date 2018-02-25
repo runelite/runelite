@@ -55,14 +55,16 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AbyssOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
-	private static final Dimension IMAGE_SIZE = new Dimension(15, 14);
+	private static final Dimension MINIMAP_IMAGE_SIZE = new Dimension(15, 14);
 
 	private final Set<AbyssRifts> rifts = new HashSet<>();
-	private final Map<AbyssRifts, BufferedImage> abyssIcons = new HashMap<>();
+	private final Map<AbyssRifts, BufferedImage> abyssMinimapIcons = new HashMap<>();
+	private final Map<AbyssRifts, BufferedImage> abyssOverlayIcons = new HashMap<>();
 
 	private final Client client;
 	private final RunecraftPlugin plugin;
@@ -84,11 +86,6 @@ class AbyssOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.showRifts())
-		{
-			return null;
-		}
-
 		Point localLocation = client.getLocalPlayer().getLocalLocation();
 		for (DecorativeObject object : plugin.getAbyssObjects())
 		{
@@ -128,22 +125,48 @@ class AbyssOverlay extends Overlay
 				graphics.draw(objectClickbox);
 				graphics.setColor(new Color(255, 0, 255, 20));
 				graphics.fill(objectClickbox);
+				BufferedImage overlayImage = getOverlayImage(rift);
+
+				if (config.showOverlayRifts())
+				{
+					OverlayUtil.renderClickboxOverlayImage(graphics, objectClickbox, overlayImage);
+				}
 			}
 		}
 
 		//Draw minimap
-		BufferedImage image = getImage(rift);
-		Point miniMapImage = Perspective.getMiniMapImageLocation(client, object.getLocalLocation(), image);
+
+		if (!config.showMinimapRifts())
+		{
+			return;
+		}
+
+		BufferedImage minimapImage = getMinimapImage(rift);
+		Point miniMapImage = Perspective.getMiniMapImageLocation(client, object.getLocalLocation(), minimapImage);
 
 		if (miniMapImage != null)
 		{
-			graphics.drawImage(image, miniMapImage.getX(), miniMapImage.getY(), null);
+			graphics.drawImage(minimapImage, miniMapImage.getX(), miniMapImage.getY(), null);
 		}
 	}
 
-	public BufferedImage getImage(AbyssRifts rift)
+	public BufferedImage getOverlayImage(AbyssRifts rift)
 	{
-		BufferedImage image = abyssIcons.get(rift);
+		BufferedImage image = abyssOverlayIcons.get(rift);
+		if (image != null)
+		{
+			return image;
+		}
+
+		image = itemManager.getImage(rift.getItemId());
+
+		abyssOverlayIcons.put(rift, image);
+		return image;
+	}
+
+	public BufferedImage getMinimapImage(AbyssRifts rift)
+	{
+		BufferedImage image = abyssMinimapIcons.get(rift);
 		if (image != null)
 		{
 			return image;
@@ -151,12 +174,12 @@ class AbyssOverlay extends Overlay
 
 		// Since item image is too big, we must resize it first.
 		image = itemManager.getImage(rift.getItemId());
-		BufferedImage resizedImage = new BufferedImage(IMAGE_SIZE.width, IMAGE_SIZE.height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage resizedImage = new BufferedImage(MINIMAP_IMAGE_SIZE.width, MINIMAP_IMAGE_SIZE.height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(image, 0, 0, IMAGE_SIZE.width, IMAGE_SIZE.height, null);
+		g.drawImage(image, 0, 0, MINIMAP_IMAGE_SIZE.width, MINIMAP_IMAGE_SIZE.height, null);
 		g.dispose();
 
-		abyssIcons.put(rift, resizedImage);
+		abyssMinimapIcons.put(rift, resizedImage);
 		return resizedImage;
 	}
 
