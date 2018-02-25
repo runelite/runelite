@@ -216,9 +216,16 @@ public class PuzzleSolverOverlay extends Overlay
 								graphics.setColor(Color.YELLOW);
 
 								// Display the next 4 steps
-								for (int j = 1; j < 5; j++)
+								for (int i = 1; i < 5; i++)
 								{
-									PuzzleState futureMove = solver.getStep(solver.getPosition() + j);
+									int j = solver.getPosition() + i;
+
+									if (j >= solver.getStepCount())
+									{
+										break;
+									}
+
+									PuzzleState futureMove = solver.getStep(j);
 
 									if (futureMove == null)
 									{
@@ -228,7 +235,7 @@ public class PuzzleSolverOverlay extends Overlay
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
 									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
-									int markerSize = DOT_MARKER_SIZE - j * 3;
+									int markerSize = DOT_MARKER_SIZE - i * 3;
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
@@ -248,9 +255,16 @@ public class PuzzleSolverOverlay extends Overlay
 								int lastBlankY = currentMove.getEmptyPiece() / DIMENSION;
 
 								// Display the next 3 steps
-								for (int j = 1; j < 4; j++)
+								for (int i = 1; i < 4; i++)
 								{
-									PuzzleState futureMove = solver.getStep(solver.getPosition() + j);
+									int j = solver.getPosition() + i;
+
+									if (j >= solver.getStepCount())
+									{
+										break;
+									}
+
+									PuzzleState futureMove = solver.getStep(j);
 
 									if (futureMove == null)
 									{
