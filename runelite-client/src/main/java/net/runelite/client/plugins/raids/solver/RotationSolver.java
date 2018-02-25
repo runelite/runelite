@@ -43,7 +43,9 @@ public class RotationSolver
 		public E get(int index)
 		{
 			if (index < 0)
+			{
 				index = index + size();
+			}
 
 			return super.get(index % size());
 		}
@@ -59,8 +61,10 @@ public class RotationSolver
 
 	public static boolean solve(RaidRoom[] rooms)
 	{
-		if (rooms ==  null)
+		if (rooms == null)
+		{
 			return false;
+		}
 
 		Rotation<Boss> match = null;
 		Integer start = null;
@@ -70,19 +74,27 @@ public class RotationSolver
 		for (int i = 0; i < rooms.length; i++)
 		{
 			if (rooms[i] == null || rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
+			{
 				continue;
+			}
 
 			if (start == null)
+			{
 				start = i;
+			}
 
 			known++;
 		}
 
 		if (known < 2)
+		{
 			return false;
+		}
 
 		if (known == rooms.length)
+		{
 			return true;
+		}
 
 		for (Rotation rotation : ROTATIONS)
 		{
@@ -94,14 +106,20 @@ public class RotationSolver
 					for (int j = start + 1; j < rooms.length; j++)
 					{
 						if (rooms[j].getBoss() == null || rooms[j].getBoss() == Boss.UNKNOWN)
+						{
 							continue;
+						}
 
 						if (rooms[j].getBoss() != rotation.get(i + j - start))
+						{
 							break COMPARE;
+						}
 					}
 
 					if (match != null && match != rotation)
+					{
 						return false;
+					}
 
 					index = i - start;
 					match = rotation;
@@ -110,15 +128,21 @@ public class RotationSolver
 		}
 
 		if (match == null)
+		{
 			return false;
+		}
 
 		for (int i = 0; i < rooms.length; i++)
 		{
 			if (rooms[i] == null)
+			{
 				continue;
+			}
 
 			if (rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
+			{
 				rooms[i].setBoss(match.get(index + i));
+			}
 		}
 
 		return true;
