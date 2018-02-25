@@ -138,6 +138,8 @@ public interface Client extends GameEngine
 
 	HashTable getComponentTable();
 
+	GrandExchangeOffer[] getGrandExchangeOffers();
+
 	boolean isPrayerActive(Prayer prayer);
 
 	int getSkillExperience(Skill skill);
