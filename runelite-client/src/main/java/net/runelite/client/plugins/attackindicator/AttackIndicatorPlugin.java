@@ -103,7 +103,15 @@ public class AttackIndicatorPlugin extends Plugin
 				client.getSetting(Setting.ATTACK_STYLE),
 				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
+			processWidgets();
 		}
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		hideWarnedStyles(false);
+		processWidgets();
 	}
 
 	public AttackStyle getAttackStyle()
@@ -129,6 +137,14 @@ public class AttackIndicatorPlugin extends Plugin
 			return;
 		}
 
+		processWidgets();
+	}
+
+	/**
+	 * Hide or unhide widgets depending on widgetsToHide
+	 */
+	private void processWidgets()
+	{
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 
 		if (widgetsToHide.containsRow(equippedWeaponType))
@@ -214,6 +230,7 @@ public class AttackIndicatorPlugin extends Plugin
 					break;
 				case "removeWarnedStyles":
 					hideWarnedStyles(enabled);
+					processWidgets();
 					break;
 			}
 		}
@@ -240,7 +257,6 @@ public class AttackIndicatorPlugin extends Plugin
 	{
 		if (enabled)
 		{
-			warnedSkills.remove(skill);
 			warnedSkills.add(skill);
 		}
 		else
