@@ -37,5 +37,6 @@ public enum JewelleryType
 	BURNING,
 	PASSAGE,
 	RETURNING,
-	TCRYSTAL
+	TCRYSTAL,
+	PHARAO
 }
