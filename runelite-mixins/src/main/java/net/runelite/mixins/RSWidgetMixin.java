@@ -117,7 +117,23 @@ public abstract class RSWidgetMixin implements RSWidget
 	public boolean isHidden()
 	{
 		Widget parent = getParent();
-		return (parent != null && parent.isHidden()) || isRSHidden();
+
+		if (parent == null)
+		{
+			if (TO_GROUP(getId()) != client.getWidgetRoot())
+			{
+				// Widget has no parent and is not the root widget (which is always visible),
+				// so it's not visible.
+				return true;
+			}
+		}
+		else if (parent.isHidden())
+		{
+			// If the parent is hidden, this widget is also hidden.
+			return true;
+		}
+
+		return isRSHidden();
 	}
 
 	@Inject
