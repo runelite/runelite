@@ -29,6 +29,7 @@ public class WidgetID
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
 	public static final int BANK_INVENTORY_GROUP_ID = 15;
+	public static final int GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int EQUIPMENT_GROUP_ID = 387;
@@ -125,6 +126,11 @@ public class WidgetID
 	{
 		static final int ITEM_CONTAINER = 12;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
+	}
+
+	static class GrandExchange
+	{
+		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
 	static class DepositBox
