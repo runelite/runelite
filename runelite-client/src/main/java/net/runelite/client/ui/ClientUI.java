@@ -81,7 +81,7 @@ public class ClientUI extends JFrame
 	private final RuneLite runelite;
 	private final Applet client;
 	private final RuneLiteProperties properties;
-	private JPanel navContainer;
+	private JPanel innerNavContainer, outerNavContainer, activeNavContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 	private Dimension clientSize;
@@ -355,14 +355,21 @@ public class ClientUI extends JFrame
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 		container.add(new ClientPanel(client));
 
-		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0, 0));
-		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
-		container.add(navContainer);
+		innerNavContainer = new JPanel();
+		innerNavContainer.setLayout(new BorderLayout(0, 0));
+		innerNavContainer.setMinimumSize(new Dimension(0, 0));
+		innerNavContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		container.add(innerNavContainer);
 
 		pluginToolbar = new PluginToolbar(this);
 		container.add(pluginToolbar);
+
+		outerNavContainer = new JPanel();
+		outerNavContainer.setLayout(new BorderLayout(0, 0));
+		outerNavContainer.setMinimumSize(new Dimension(0, 0));
+		outerNavContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		container.add(outerNavContainer);
+
 
 		titleToolbar = new TitleToolbar(properties);
 
@@ -379,24 +386,29 @@ public class ClientUI extends JFrame
 	{
 		if (pluginPanel != null)
 		{
-			navContainer.remove(0);
+			activeNavContainer.remove(0);
 		}
 		else
 		{
 			clientSize = this.getSize();
 			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
 			{
+				activeNavContainer = outerNavContainer;
 				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+			}
+			else
+			{
+				activeNavContainer = innerNavContainer;
 			}
 		}
 
 		pluginPanel = panel;
-		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
-		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
+		activeNavContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
+		activeNavContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
 		final JPanel wrappedPanel = panel.getWrappedPanel();
-		navContainer.add(wrappedPanel);
-		navContainer.revalidate();
+		activeNavContainer.add(wrappedPanel);
+		activeNavContainer.revalidate();
 
 		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
 		giveClientFocus();
@@ -410,10 +422,10 @@ public class ClientUI extends JFrame
 	{
 		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
 		pluginPanel.onDeactivate();
-		navContainer.remove(0);
-		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
-		navContainer.revalidate();
+		activeNavContainer.remove(0);
+		activeNavContainer.setMinimumSize(new Dimension(0, 0));
+		activeNavContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		activeNavContainer.revalidate();
 		giveClientFocus();
 		revalidateMinimumSize();
 		if (wasMinimumWidth)
