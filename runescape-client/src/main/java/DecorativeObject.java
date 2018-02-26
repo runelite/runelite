@@ -11,8 +11,8 @@ public final class DecorativeObject {
    @ObfuscatedGetter(
       intValue = -1827351905
    )
-   @Export("cameraPitchCopy")
-   static int cameraPitchCopy;
+   @Export("cameraPitch")
+   static int cameraPitch;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1133145525
