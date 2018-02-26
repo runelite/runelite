@@ -214,7 +214,12 @@ public enum Varbits
 	 * Pyramid plunder
 	 */
 	PYRAMID_PLUNDER_TIMER(2375),
-	PYRAMID_PLUNDER_ROOM(2377);
+	PYRAMID_PLUNDER_ROOM(2377),
+
+	/**
+	 * Multicombat area
+	 */
+	MULTICOMBAT_AREA(4605);
 
 	/**
 	 * varbit id
