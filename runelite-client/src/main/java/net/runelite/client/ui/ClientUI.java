@@ -73,6 +73,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 public class ClientUI extends JFrame
 {
 	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
+	private static final Dimension PANEL_MINIMIZED_DIMENSION = new Dimension(0, 0);
+	private static final Dimension PANEL_EXPANDED_DIMENSION = new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE);
 	private static final BufferedImage ICON;
 
 	@Getter
@@ -81,7 +83,9 @@ public class ClientUI extends JFrame
 	private final RuneLite runelite;
 	private final Applet client;
 	private final RuneLiteProperties properties;
-	private JPanel innerNavContainer, outerNavContainer, activeNavContainer;
+	private JPanel innerNavContainer;
+	private JPanel outerNavContainer;
+	private JPanel activeNavContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
@@ -356,8 +360,7 @@ public class ClientUI extends JFrame
 
 		innerNavContainer = new JPanel();
 		innerNavContainer.setLayout(new BorderLayout(0, 0));
-		innerNavContainer.setMinimumSize(new Dimension(0, 0));
-		innerNavContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		innerNavContainer.setMaximumSize(PANEL_EXPANDED_DIMENSION);
 		container.add(innerNavContainer);
 
 		pluginToolbar = new PluginToolbar(this);
@@ -365,10 +368,8 @@ public class ClientUI extends JFrame
 
 		outerNavContainer = new JPanel();
 		outerNavContainer.setLayout(new BorderLayout(0, 0));
-		outerNavContainer.setMinimumSize(new Dimension(0, 0));
-		outerNavContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		outerNavContainer.setMaximumSize(PANEL_EXPANDED_DIMENSION);
 		container.add(outerNavContainer);
-
 
 		titleToolbar = new TitleToolbar(properties);
 
@@ -385,7 +386,7 @@ public class ClientUI extends JFrame
 	{
 		if (pluginPanel != null)
 		{
-			activeNavContainer.remove(0);
+			activeNavContainer.remove(pluginPanel.getWrappedPanel());
 		}
 		else
 		{
@@ -401,10 +402,9 @@ public class ClientUI extends JFrame
 		}
 
 		pluginPanel = panel;
-		activeNavContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
-		activeNavContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
 		final JPanel wrappedPanel = panel.getWrappedPanel();
+		activeNavContainer.setMinimumSize(PANEL_EXPANDED_DIMENSION);
 		activeNavContainer.add(wrappedPanel);
 		activeNavContainer.revalidate();
 
@@ -420,9 +420,8 @@ public class ClientUI extends JFrame
 	{
 		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
 		pluginPanel.onDeactivate();
-		activeNavContainer.remove(0);
-		activeNavContainer.setMinimumSize(new Dimension(0, 0));
-		activeNavContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		activeNavContainer.setMinimumSize(PANEL_MINIMIZED_DIMENSION);
+		activeNavContainer.remove(pluginPanel.getWrappedPanel());
 		activeNavContainer.revalidate();
 		giveClientFocus();
 		revalidateMinimumSize();
@@ -430,7 +429,7 @@ public class ClientUI extends JFrame
 		{
 			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
 		}
-		else if (activeNavContainer == outerNavContainer)
+		else if (activeNavContainer == outerNavContainer && getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
 		{
 			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
 		}
