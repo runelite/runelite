@@ -38,6 +38,7 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -48,8 +49,8 @@ class OpponentInfoOverlay extends Overlay
 {
 	private static final int WIDTH = 140;
 
-	private static final int TOP_BORDER = 2;
-	private static final int BOTTOM_BORDER = 2;
+	private static final int TOP_BORDER = 3;
+	private static final int BOTTOM_BORDER = 3;
 
 	private static final int BAR_WIDTH = 124;
 	private static final int BAR_HEIGHT = 16;
@@ -64,6 +65,7 @@ class OpponentInfoOverlay extends Overlay
 	private float lastRatio = 0;
 	private Instant lastTime = Instant.now();
 	private String opponentName;
+	private String opponentsOpponentName;
 	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	@Inject
@@ -96,6 +98,17 @@ class OpponentInfoOverlay extends Overlay
 			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
 			opponentName = opponent.getName().replaceAll("<[^>]*>", "");
 			lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
+
+			Actor opponentsOpponent = opponent.getInteracting();
+			if (opponentsOpponent != null
+					&& (opponentsOpponent != client.getLocalPlayer() || client.getSetting(Varbits.MULTICOMBAT_AREA) == 1))
+			{
+				opponentsOpponentName = opponentsOpponent.getName();
+			}
+			else
+			{
+				opponentsOpponentName = null;
+			}
 		}
 
 		if (Duration.between(Instant.now(), lastTime).abs().compareTo(WAIT) > 0)
@@ -108,32 +121,41 @@ class OpponentInfoOverlay extends Overlay
 		int height = TOP_BORDER + fm.getHeight(); // opponent name
 		if (lastRatio >= 0)
 		{
-			height += 12 // between name and hp bar
-				+ BAR_HEIGHT; // bar
+			height += BAR_HEIGHT + 6;
 		}
-
+		if (opponentsOpponentName != null)
+		{
+			height += fm.getHeight() + 3;
+		}
+		height += 3;
 		height += BOTTOM_BORDER;
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(0, 0, WIDTH, height));
 		backgroundComponent.render(graphics, parent);
 
-		int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
-		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(x, fm.getHeight() + TOP_BORDER));
-		textComponent.setText(opponentName);
-		textComponent.render(graphics, parent);
+		int y = TOP_BORDER + fm.getHeight();
+
+		{
+			int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setPosition(new Point(x, y));
+			textComponent.setText(opponentName);
+			textComponent.render(graphics, parent);
+
+			y += 3;
+		}
 
 		if (lastRatio >= 0)
 		{
 			int barWidth = (int) (lastRatio * (float) BAR_WIDTH);
-			int barY = TOP_BORDER + fm.getHeight() + 6;
+			y += 3;
 
 			graphics.setColor(HP_GREEN);
-			graphics.fillRect((WIDTH - BAR_WIDTH) / 2, barY, barWidth, BAR_HEIGHT);
+			graphics.fillRect((WIDTH - BAR_WIDTH) / 2, y, barWidth, BAR_HEIGHT);
 
 			graphics.setColor(HP_RED);
-			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth, barY, BAR_WIDTH - barWidth, BAR_HEIGHT);
+			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth, y, BAR_WIDTH - barWidth, BAR_HEIGHT);
 
 			String str;
 
@@ -147,10 +169,25 @@ class OpponentInfoOverlay extends Overlay
 				str = df.format(lastRatio * 100) + "%";
 			}
 
+			y += BAR_HEIGHT;
+
 			final TextComponent textComponent1 = new TextComponent();
 			textComponent1.setText(str);
-			textComponent1.setPosition(new Point((WIDTH - fm.stringWidth(str)) / 2, barY + fm.getHeight()));
+			textComponent1.setPosition(new Point((WIDTH - fm.stringWidth(str)) / 2, y));
 			textComponent1.render(graphics, parent);
+
+			y += 3;
+		}
+
+		if (opponentsOpponentName != null)
+		{
+			y += fm.getHeight();
+
+			int x = (WIDTH - fm.stringWidth(opponentsOpponentName)) / 2;
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setPosition(new Point(x, y));
+			textComponent.setText(opponentsOpponentName);
+			textComponent.render(graphics, parent);
 		}
 
 		return new Dimension(WIDTH, height);
