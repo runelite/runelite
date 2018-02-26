@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class InfoBoxOverlay extends Overlay
 {
-	private static final int BOXSIZE_SMALL = 30;
+	private static final int BOXSIZE_SMALL = 32;
 	private static final int BOXSIZE = 35;
 	private static final int SEPARATOR = 2;
 

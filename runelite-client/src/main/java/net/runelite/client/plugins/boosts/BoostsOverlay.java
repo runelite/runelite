@@ -97,14 +97,15 @@ class BoostsOverlay extends Overlay
 
 		if (sampleSkill != null)
 		{
-			if (Arrays.asList(plugin.getShownSkills()).contains(sampleSkill))
+			if (Arrays.stream(plugin.getShownSkills()).anyMatch((skill -> client.getBoostedSkillLevel(skill) != client.getRealSkillLevel(skill) && skill == sampleSkill)))
 			{
-				int skillLevel = client.getBoostedSkillLevel(sampleSkill);
-				if (skillLevel == lastSampleSkillLevel - 1 || skillLevel - 1 == lastSampleSkillLevel)
+				int boosted = client.getBoostedSkillLevel(sampleSkill);
+				int base = client.getRealSkillLevel(sampleSkill);
+				if (((boosted > base) && (boosted == lastSampleSkillLevel - 1)) || ((boosted < base) && (boosted == lastSampleSkillLevel + 1)))
 				{
 					startTime = Instant.now();
 				}
-				lastSampleSkillLevel = skillLevel;
+				lastSampleSkillLevel = boosted;
 			}
 			else
 			{
