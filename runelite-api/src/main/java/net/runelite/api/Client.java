@@ -58,6 +58,9 @@ public interface Client extends GameEngine
 
 	int getCameraZ();
 
+	/**
+	 * This returns the actual pitch of the camera in JAUs
+	 */
 	int getCameraPitch();
 
 	int getCameraYaw();

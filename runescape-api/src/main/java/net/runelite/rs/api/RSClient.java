@@ -473,8 +473,19 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSPreferences getPreferences();
 
-	@Import("cameraPitch")
-	void setCameraPitch(int pitch);
+	/**
+	 * This is the pitch the user has set the camera to.
+	 * It should be between 128 and (pitchUnlimiter?512:383) JAUs(1).
+	 * The difference between this and cameraPitch is that cameraPitch has a lower limit, imposed by the surrounding
+	 * terrain.
+	 *
+	 * (1) JAU - Jagex Angle Unit; 1/1024 of a revolution
+	 */
+	@Import("cameraPitchTarget")
+	int getCameraPitchTarget();
+
+	@Import("cameraPitchTarget")
+	void setCameraPitchTarget(int pitch);
 
 	@Import("renderOverview")
 	RSRenderOverview getRenderOverview();
