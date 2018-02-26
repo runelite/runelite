@@ -29,6 +29,7 @@ import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
+import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -44,6 +45,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
@@ -481,6 +483,28 @@ public abstract class RSClientMixin implements RSClient
 		GameStateChanged gameStateChange = new GameStateChanged();
 		gameStateChange.setGameState(client.getGameState());
 		eventBus.post(gameStateChange);
+	}
+
+	@Inject
+	@FieldHook("grandExchangeOffers")
+	public static void onGrandExchangeOffersChanged(int idx)
+	{
+		if (idx == -1)
+		{
+			return;
+		}
+
+		GrandExchangeOffer internalOffer = client.getGrandExchangeOffers()[idx];
+
+		if (internalOffer == null)
+		{
+			return;
+		}
+
+		GrandExchangeOfferChanged offerChangedEvent = new GrandExchangeOfferChanged();
+		offerChangedEvent.setOffer(internalOffer);
+		offerChangedEvent.setSlot(idx);
+		eventBus.post(offerChangedEvent);
 	}
 
 	@FieldHook("settings")
