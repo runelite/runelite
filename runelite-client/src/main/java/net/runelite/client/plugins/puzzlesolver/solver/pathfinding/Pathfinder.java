@@ -23,35 +23,25 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.puzzlesolver;
+package net.runelite.client.plugins.puzzlesolver.solver.pathfinding;
 
-import com.google.inject.Provides;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import java.util.List;
+import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
+import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
-@PluginDescriptor(
-	name = "Puzzle solver"
-)
-public class PuzzleSolverPlugin extends Plugin
+public abstract class Pathfinder
 {
-	@Inject
-	private PuzzleSolverOverlay puzzleSolverOverlay;
+	private Heuristic heuristic;
 
-	@Inject
-	private ScheduledExecutorService executorService;
-
-	@Provides
-	PuzzleSolverConfig provideConfig(ConfigManager configManager)
+	Pathfinder(Heuristic heuristic)
 	{
-		return configManager.getConfig(PuzzleSolverConfig.class);
+		this.heuristic = heuristic;
 	}
 
-	@Override
-	public PuzzleSolverOverlay getOverlay()
+	Heuristic getHeuristic()
 	{
-		return puzzleSolverOverlay;
+		return heuristic;
 	}
+
+	public abstract List<PuzzleState> computePath(PuzzleState start);
 }
