@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.LayoutManager;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -83,6 +84,7 @@ public class ClientUI extends JFrame
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+	private Dimension clientSize;
 
 	@Getter
 	private TitleToolbar titleToolbar;
@@ -379,6 +381,14 @@ public class ClientUI extends JFrame
 		{
 			navContainer.remove(0);
 		}
+		else
+		{
+			clientSize = this.getSize();
+			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
+			{
+				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+			}
+		}
 
 		pluginPanel = panel;
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
@@ -410,7 +420,18 @@ public class ClientUI extends JFrame
 		{
 			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
 		}
+		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			this.setSize(clientSize);
+		}
+
 		pluginPanel = null;
+	}
+
+	private boolean isInScreenBounds(int x, int y)
+	{
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		return x >= 0 && x <= size.getWidth() && y >= 0 && y <= size.getHeight();
 	}
 
 	private void checkExit()
