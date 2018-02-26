@@ -129,7 +129,7 @@ public class PanelComponent implements RenderableEntity
 			leftLineComponent.render(graphics, parent);
 
 			final TextComponent rightLineComponent = new TextComponent();
-			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(line.getRight()), y));
+			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), y));
 			rightLineComponent.setText(line.getRight());
 			rightLineComponent.setColor(line.getRightColor());
 			rightLineComponent.render(graphics, parent);
