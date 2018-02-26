@@ -33,6 +33,7 @@ import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -43,6 +44,8 @@ import java.io.InputStream;
 @Slf4j
 public class FightCaveOverlay extends Overlay
 {
+	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
+
 	private final Client client;
 	private final FightCavePlugin plugin;
 
@@ -62,14 +65,18 @@ public class FightCaveOverlay extends Overlay
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		JadAttack attack = plugin.getAttack();
-		if (attack == null || client.isPrayerActive(attack.getPrayer()))
+		if (attack == null)
 		{
 			return null;
 		}
 		BufferedImage prayerImage = getPrayerImage(attack);
 		ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
-		imagePanelComponent.setTitle("Switch!");
+		imagePanelComponent.setTitle("TzTok-Jad");
 		imagePanelComponent.getImages().add(prayerImage);
+		if (!client.isPrayerActive(attack.getPrayer()))
+		{
+			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
+		}
 		return imagePanelComponent.render(graphics, parent);
 	}
 
