@@ -111,16 +111,14 @@ class BoostsOverlay extends Overlay
 				}
 
 				String str;
-				Color strColor = Color.WHITE;
+				int boost = boosted - base;
 				if (!config.useRelativeBoost())
 				{
 					str = boosted + "/" + base;
 				}
 				else
 				{
-					int boost = boosted - base;
 					str = String.valueOf(boost);
-					strColor = getTextColor(boost);
 					if (boost > 0)
 					{
 						str = "+" + str;
@@ -131,7 +129,7 @@ class BoostsOverlay extends Overlay
 					skill.getName(),
 					Color.WHITE,
 					str,
-					strColor
+					getTextColor(boost)
 				));
 			}
 		}
@@ -141,6 +139,9 @@ class BoostsOverlay extends Overlay
 
 	private Color getTextColor(int boost)
 	{
+		if (!config.colorText())
+			return Color.WHITE;
+
 		if (boost > 0)
 		{
 			return Color.GREEN;

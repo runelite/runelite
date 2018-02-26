@@ -46,6 +46,16 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "colorText",
+		name = "Recolour text",
+		description = "Recolour the boosted text to green/red for positive/negative"
+	)
+	default boolean colorText()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "relativeBoost",
 		name = "Use Relative Boosts",
 		description = "Configures whether or not relative boost is used"
