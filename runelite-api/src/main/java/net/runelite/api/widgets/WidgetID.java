@@ -33,6 +33,7 @@ public class WidgetID
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int EQUIPMENT_GROUP_ID = 387;
+	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
 	public static final int PESTRCONTROL_GROUP_ID = 408;
@@ -165,6 +166,7 @@ public class WidgetID
 		static final int BOOTS = 14;
 		static final int RING = 15;
 		static final int AMMO = 16;
+		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
 	static class Cluescroll
