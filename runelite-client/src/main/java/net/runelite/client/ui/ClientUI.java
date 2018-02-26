@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -36,6 +37,8 @@ import java.awt.Frame;
 import java.awt.LayoutManager;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -44,19 +47,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Enumeration;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
+import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
-import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -77,15 +79,17 @@ public class ClientUI extends JFrame
 	@Getter
 	private TrayIcon trayIcon;
 
-	private final RuneLite runelite;
-	private final Applet client;
-	private final RuneLiteProperties properties;
-	private JPanel navContainer;
-	private PluginToolbar pluginToolbar;
-	private PluginPanel pluginPanel;
+	@Getter
+	private final PluginToolbar pluginToolbar = new PluginToolbar(this);
 
 	@Getter
 	private TitleToolbar titleToolbar;
+
+	private final RuneLite runelite;
+	private final Applet client;
+	private final RuneLiteProperties properties;
+	private final JSplitPane main = new JSplitPane();
+	private boolean panelOpen = false;
 
 	static
 	{
@@ -140,6 +144,7 @@ public class ClientUI extends JFrame
 		this.properties = properties;
 		this.client = client;
 		this.trayIcon = setupTrayIcon();
+		this.titleToolbar = new TitleToolbar(properties);
 
 		init();
 		setTitle(properties.getTitle());
@@ -158,13 +163,13 @@ public class ClientUI extends JFrame
 		{
 			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-			JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(this);
+			final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(this);
 			titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
 			titleBar.add(titleToolbar);
 
 			// Substance's default layout manager for the title bar only lays out substance's components
 			// This wraps the default manager and lays out the TitleToolbar as well.
-			LayoutManager delegate = titleBar.getLayout();
+			final LayoutManager delegate = titleBar.getLayout();
 			titleBar.setLayout(new LayoutManager()
 			{
 				@Override
@@ -202,9 +207,8 @@ public class ClientUI extends JFrame
 		}
 
 		pack();
-		revalidateMinimumSize();
+		resizeSplit();
 		setLocationRelativeTo(getOwner());
-
 		setVisible(true);
 		toFront();
 		requestFocus();
@@ -250,7 +254,7 @@ public class ClientUI extends JFrame
 			return;
 		}
 
-		String[] splitStr = event.getNewValue().split("x");
+		final String[] splitStr = event.getNewValue().split("x");
 		int width = Integer.parseInt(splitStr[0]);
 		int height = Integer.parseInt(splitStr[1]);
 
@@ -267,7 +271,7 @@ public class ClientUI extends JFrame
 			height = 2160;
 		}
 
-		Dimension size = new Dimension(width, height);
+		final Dimension size = new Dimension(width, height);
 
 		SwingUtilities.invokeLater(() ->
 		{
@@ -337,101 +341,70 @@ public class ClientUI extends JFrame
 
 	private void init()
 	{
-		assert SwingUtilities.isEventDispatchThread();
-
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				checkExit();
+				int result = JOptionPane.OK_OPTION;
+
+				// only ask if not logged out
+				if (client != null && client instanceof Client && ((Client) client).getGameState() != GameState.LOGIN_SCREEN)
+				{
+					result = JOptionPane.showConfirmDialog(ClientUI.this,
+						"Are you sure you want to exit?", "Exit",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				}
+
+				if (result == JOptionPane.OK_OPTION)
+				{
+					runelite.shutdown();
+					System.exit(0);
+				}
 			}
 		});
 
+		addComponentListener(new ComponentAdapter()
+		{
+			@Override
+			public void componentResized(ComponentEvent e)
+			{
+				super.componentResized(e);
+				resizeSplit();
+			}
+		});
+
+		main.setDividerSize(0);
+		main.setLeftComponent(new ClientPanel(client));
+
 		final JPanel container = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-		container.add(new ClientPanel(client));
-
-		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0, 0));
-		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
-		container.add(navContainer);
-
-		pluginToolbar = new PluginToolbar(this);
-		container.add(pluginToolbar);
-
-		titleToolbar = new TitleToolbar(properties);
-
+		container.setLayout(new BorderLayout());
+		container.add(main, BorderLayout.CENTER);
+		container.add(pluginToolbar, BorderLayout.EAST);
 		add(container);
-	}
-
-	private void revalidateMinimumSize()
-	{
-		// The JFrame only respects minimumSize if it was set by setMinimumSize, for some reason. (atleast on windows/native)
-		this.setMinimumSize(this.getLayout().minimumLayoutSize(this));
 	}
 
 	void expand(PluginPanel panel)
 	{
-		if (pluginPanel != null)
-		{
-			navContainer.remove(0);
-		}
-
-		pluginPanel = panel;
-		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
-		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
-
 		final JPanel wrappedPanel = panel.getWrappedPanel();
-		navContainer.add(wrappedPanel);
-		navContainer.revalidate();
-
-		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
+		main.setRightComponent(wrappedPanel);
+		panelOpen = true;
+		resizeSplit();
 		giveClientFocus();
 		panel.onActivate();
-
-		wrappedPanel.repaint();
-		revalidateMinimumSize();
 	}
 
-	void contract()
+	void contract(PluginPanel pluginPanel)
 	{
-		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		panelOpen = false;
+		resizeSplit();
 		pluginPanel.onDeactivate();
-		navContainer.remove(0);
-		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
-		navContainer.revalidate();
 		giveClientFocus();
-		revalidateMinimumSize();
-		if (wasMinimumWidth)
-		{
-			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
-		}
-		pluginPanel = null;
 	}
 
-	private void checkExit()
+	private void resizeSplit()
 	{
-		int result = JOptionPane.OK_OPTION;
-
-		// only ask if not logged out
-		if (client != null && client instanceof Client && ((Client) client).getGameState() != GameState.LOGIN_SCREEN)
-		{
-			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-		}
-
-		if (result == JOptionPane.OK_OPTION)
-		{
-			runelite.shutdown();
-			System.exit(0);
-		}
-	}
-
-	public PluginToolbar getPluginToolbar()
-	{
-		return pluginToolbar;
+		main.setDividerLocation(main.getLocation().x + main.getSize().width - (panelOpen ? PANEL_EXPANDED_WIDTH : 0));
 	}
 }
