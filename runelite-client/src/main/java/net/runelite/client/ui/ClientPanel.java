@@ -36,9 +36,9 @@ import net.runelite.api.Client;
 @Slf4j
 final class ClientPanel extends JPanel
 {
-	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
+	private static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
 
-	public ClientPanel(@Nullable Applet client)
+	ClientPanel(@Nullable Applet client)
 	{
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));

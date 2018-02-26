@@ -35,23 +35,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PluginToolbar extends JToolBar
 {
-	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
+	private static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
 
 	private final ClientUI ui;
 	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(Component::getName));
 
 	private NavigationButton current;
 
-	public PluginToolbar(ClientUI ui)
+	PluginToolbar(ClientUI ui)
 	{
 		super(JToolBar.VERTICAL);
+		setFloatable(false);
+		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
 		this.ui = ui;
-
-		super.setFloatable(false);
-		super.setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		super.setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		super.setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		super.setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
 	}
 
 	public void addNavigation(NavigationButton button)
@@ -93,17 +92,17 @@ public class PluginToolbar extends JToolBar
 			current.setSelected(false);
 		}
 
+		final PluginPanel pluginPanel = panelSupplier.get();
+
 		if (current == button)
 		{
-			ui.contract();
+			ui.contract(pluginPanel);
 			current = null;
 		}
 		else
 		{
 			current = button;
 			current.setSelected(true);
-
-			PluginPanel pluginPanel = panelSupplier.get();
 			ui.expand(pluginPanel);
 		}
 	}
