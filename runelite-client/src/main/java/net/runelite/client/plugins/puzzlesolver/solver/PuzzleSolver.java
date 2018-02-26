@@ -23,35 +23,62 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.puzzlesolver;
+package net.runelite.client.plugins.puzzlesolver.solver;
 
-import com.google.inject.Provides;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import java.util.List;
+import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
 
-@PluginDescriptor(
-	name = "Puzzle solver"
-)
-public class PuzzleSolverPlugin extends Plugin
+public class PuzzleSolver implements Runnable
 {
-	@Inject
-	private PuzzleSolverOverlay puzzleSolverOverlay;
+	public static final int DIMENSION = 5;
 
-	@Inject
-	private ScheduledExecutorService executorService;
+	private Pathfinder pathfinder;
+	private PuzzleState startState;
 
-	@Provides
-	PuzzleSolverConfig provideConfig(ConfigManager configManager)
+	private List<PuzzleState> solution;
+	private int position;
+	private boolean failed = false;
+
+	public PuzzleSolver(Pathfinder pathfinder, PuzzleState startState)
 	{
-		return configManager.getConfig(PuzzleSolverConfig.class);
+		this.pathfinder = pathfinder;
+		this.startState = startState;
+	}
+
+	public PuzzleState getStep(int stepIdx)
+	{
+		return solution.get(stepIdx);
+	}
+
+	public int getStepCount()
+	{
+		return solution.size();
+	}
+
+	public boolean hasSolution()
+	{
+		return solution != null;
+	}
+
+	public int getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition(int position)
+	{
+		this.position = position;
+	}
+
+	public boolean hasFailed()
+	{
+		return failed;
 	}
 
 	@Override
-	public PuzzleSolverOverlay getOverlay()
+	public void run()
 	{
-		return puzzleSolverOverlay;
+		solution = pathfinder.computePath(startState);
+		failed = solution == null;
 	}
 }
