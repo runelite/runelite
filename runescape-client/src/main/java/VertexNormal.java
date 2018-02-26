@@ -370,7 +370,7 @@ public class VertexNormal {
                         Rasterizer2D.setDrawRegion(var19, var20, var21 + var19, var20 + var22);
                         Graphics3D.Rasterizer3D_method1();
                         if(!Client.field983) {
-                           var23 = Client.cameraPitch;
+                           var23 = Client.cameraPitchTarget;
                            if(Client.field894 / 256 > var23) {
                               var23 = Client.field894 / 256;
                            }

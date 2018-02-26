@@ -906,13 +906,13 @@ public class WorldMapType2 implements WorldMapSectionBase {
                                                                                                          var19 = class80.intStack[class80.intStackSize];
                                                                                                          var29 = class80.intStack[class80.intStackSize + 1];
                                                                                                          if(!Client.field983) {
-                                                                                                            Client.cameraPitch = var19;
+                                                                                                            Client.cameraPitchTarget = var19;
                                                                                                             Client.mapAngle = var29;
                                                                                                          }
 
                                                                                                          var33 = 1;
                                                                                                       } else if(var9 == 5505) {
-                                                                                                         class80.intStack[++class80.intStackSize - 1] = Client.cameraPitch;
+                                                                                                         class80.intStack[++class80.intStackSize - 1] = Client.cameraPitchTarget;
                                                                                                          var33 = 1;
                                                                                                       } else if(var9 == 5506) {
                                                                                                          class80.intStack[++class80.intStackSize - 1] = Client.mapAngle;

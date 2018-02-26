@@ -67,11 +67,11 @@ public abstract class CameraMixin implements RSClient
 		}
 	}
 
-	@FieldHook("cameraPitch")
+	@FieldHook("cameraPitchTarget")
 	@Inject
 	static void onCameraPitchChanged(int idx)
 	{
-		int newPitch = client.getCameraPitch();
+		int newPitch = client.getCameraPitchTarget();
 		int pitch = newPitch;
 		if (pitchRelaxEnabled)
 		{
@@ -83,7 +83,7 @@ public abstract class CameraMixin implements RSClient
 				{
 					pitch = NEW_PITCH_MAX;
 				}
-				client.setCameraPitch(pitch);
+				client.setCameraPitchTarget(pitch);
 			}
 		}
 		lastPitch = pitch;
@@ -99,10 +99,10 @@ public abstract class CameraMixin implements RSClient
 		pitchRelaxEnabled = enabled;
 		if (!enabled)
 		{
-			int pitch = client.getCameraPitch();
+			int pitch = client.getCameraPitchTarget();
 			if (pitch > STANDARD_PITCH_MAX)
 			{
-				client.setCameraPitch(STANDARD_PITCH_MAX);
+				client.setCameraPitchTarget(STANDARD_PITCH_MAX);
 			}
 		}
 	}

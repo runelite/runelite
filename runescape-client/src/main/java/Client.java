@@ -658,8 +658,8 @@ public final class Client extends GameEngine implements class288 {
    @ObfuscatedGetter(
       intValue = -2142302445
    )
-   @Export("cameraPitch")
-   static int cameraPitch;
+   @Export("cameraPitchTarget")
+   static int cameraPitchTarget;
    @ObfuscatedName("gl")
    @ObfuscatedGetter(
       intValue = -289845751
@@ -1199,7 +1199,7 @@ public final class Client extends GameEngine implements class288 {
       field1035 = 7759444;
       field883 = false;
       field855 = 0;
-      cameraPitch = 128;
+      cameraPitchTarget = 128;
       mapAngle = 0;
       field964 = 0;
       field944 = 0;
@@ -3416,7 +3416,7 @@ public final class Client extends GameEngine implements class288 {
                      field927 = 20;
                      field893 = false;
                      var14 = class61.method1076(ClientPacket.field2340, field863.field1434);
-                     var14.packetBuffer.putShort(cameraPitch);
+                     var14.packetBuffer.putShort(cameraPitchTarget);
                      var14.packetBuffer.method3641(mapAngle);
                      field863.method2039(var14);
                   }
@@ -3740,13 +3740,13 @@ public final class Client extends GameEngine implements class288 {
                                              }
 
                                              mapAngle = field964 / 2 + mapAngle & 2047;
-                                             cameraPitch += field944 / 2;
-                                             if(cameraPitch < 128) {
-                                                cameraPitch = 128;
+                                             cameraPitchTarget += field944 / 2;
+                                             if(cameraPitchTarget < 128) {
+                                                cameraPitchTarget = 128;
                                              }
 
-                                             if(cameraPitch > 383) {
-                                                cameraPitch = 383;
+                                             if(cameraPitchTarget > 383) {
+                                                cameraPitchTarget = 383;
                                              }
 
                                              var6 = AbstractByteBuffer.field2564 >> 7;
