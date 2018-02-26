@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, SomeoneWithAnInternetConnection
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
+package net.runelite.client.plugins.grandexchange;
+
+import java.awt.image.BufferedImage;
+import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
-import net.runelite.mapping.Import;
+import net.runelite.client.game.ItemManager;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * ItemComposition is an interface that represents the various properties of an
- * item. Imports several values from runescape-client/ItemComposition, and allows
- * direct access to them by calling these methods.
- */
-public interface RSItemComposition extends ItemComposition
+@RunWith(MockitoJUnitRunner.class)
+public class GrandExchangeOfferSlotTest
 {
-	@Import("name")
-	@Override
-	String getName();
+	@Mock
+	private ItemManager itemManager;
 
-	@Import("id")
-	@Override
-	int getId();
+	@Mock
+	private GrandExchangeOffer offer;
 
-	@Import("notedTemplate")
-	@Override
-	int getNote();
+	@Test
+	public void testUpdateOffer()
+	{
+		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
+		when(itemManager.getImage(anyInt(), anyInt(), anyBoolean())).thenReturn(mock(BufferedImage.class));
+		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED);
 
-	@Import("note")
-	@Override
-	int getLinkedNoteId();
+		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot(itemManager);
+		offerSlot.updateOffer(offer);
+	}
 
-	@Import("price")
-	@Override
-	int getPrice();
-
-	@Import("isMembers")
-	@Override
-	boolean isMembers();
-
-	/**
-	 * You probably want {@link #isStackable}
-	 * <p>
-	 * This is the <b>{@code int}</b> that client code uses internally to represent this true/false value. It appears to only ever be set to 1 or 0
-	 * @return 0 when this type of item isn't stackable, 1 otherwise
-	 */
-	@Import("isStackable")
-	int getIsStackable();
-
-	@Import("maleModel")
-	int getMaleModel();
 }

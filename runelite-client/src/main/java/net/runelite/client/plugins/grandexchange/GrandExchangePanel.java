@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, SomeoneWithAnInternetConnection
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.api.ItemComposition;
-import net.runelite.mapping.Import;
+package net.runelite.client.plugins.grandexchange;
 
-/**
- * ItemComposition is an interface that represents the various properties of an
- * item. Imports several values from runescape-client/ItemComposition, and allows
- * direct access to them by calling these methods.
- */
-public interface RSItemComposition extends ItemComposition
+import javax.inject.Inject;
+import javax.swing.BoxLayout;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.GrandExchangeOffer;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.PluginPanel;
+
+@Slf4j
+class GrandExchangePanel extends PluginPanel
 {
-	@Import("name")
-	@Override
-	String getName();
+	private static final int MAX_OFFERS = 8;
 
-	@Import("id")
-	@Override
-	int getId();
+	private GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
 
-	@Import("notedTemplate")
-	@Override
-	int getNote();
+	@Inject
+	GrandExchangePanel(ItemManager itemManager)
+	{
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	@Import("note")
-	@Override
-	int getLinkedNoteId();
+		for (int i = 0; i < offerSlotPanels.length; ++i)
+		{
+			offerSlotPanels[i] = new GrandExchangeOfferSlot(itemManager);
+			add(offerSlotPanels[i]);
+		}
 
-	@Import("price")
-	@Override
-	int getPrice();
+		setVisible(true);
+	}
 
-	@Import("isMembers")
-	@Override
-	boolean isMembers();
+	void updateOffer(GrandExchangeOffer newOffer, int slot)
+	{
+		offerSlotPanels[slot].updateOffer(newOffer);
+	}
 
-	/**
-	 * You probably want {@link #isStackable}
-	 * <p>
-	 * This is the <b>{@code int}</b> that client code uses internally to represent this true/false value. It appears to only ever be set to 1 or 0
-	 * @return 0 when this type of item isn't stackable, 1 otherwise
-	 */
-	@Import("isStackable")
-	int getIsStackable();
-
-	@Import("maleModel")
-	int getMaleModel();
 }
