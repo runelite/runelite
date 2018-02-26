@@ -29,11 +29,16 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class TextComponent implements RenderableEntity
 {
+	private static final String COL_TAG_REGEX = "(<col=([0-9a-fA-F]){2,6}>)";
+	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("(?=" + COL_TAG_REGEX + ")");
+	private static final Pattern COL_TAG_PATTERN = Pattern.compile(COL_TAG_REGEX);
+
 	@Setter
 	private String text;
 
@@ -43,18 +48,47 @@ public class TextComponent implements RenderableEntity
 	@Setter
 	private Color color = Color.WHITE;
 
+	public static String textWithoutColTags(String text)
+	{
+		return COL_TAG_PATTERN.matcher(text).replaceAll("");
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		// Draw shadow
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, position.x + 1, position.y + 1);
-
-		// Draw actual text
-		graphics.setColor(color);
-		graphics.drawString(text, position.x, position.y);
-
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
+
+		if (COL_TAG_PATTERN.matcher(text).find())
+		{
+			String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
+			int x = position.x;
+			for (int i = 0; i < parts.length; i++)
+			{
+				String textSplitOnCol = parts[i];
+				String textWithoutCol = textWithoutColTags(textSplitOnCol);
+				String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
+
+				// shadow
+				graphics.setColor(Color.BLACK);
+				graphics.drawString(textWithoutCol, x + 1, position.y + 1);
+
+				// actual text
+				graphics.setColor(Color.decode("#" + colColor));
+				graphics.drawString(textWithoutCol, x, position.y);
+
+				x += fontMetrics.stringWidth(textWithoutCol);
+			}
+		}
+		else
+		{
+			// shadow
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(text, position.x + 1, position.y + 1);
+
+			// actual text
+			graphics.setColor(color);
+			graphics.drawString(text, position.x, position.y);
+		}
 		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
 	}
 }
