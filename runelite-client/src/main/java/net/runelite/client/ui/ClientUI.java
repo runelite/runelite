@@ -84,7 +84,6 @@ public class ClientUI extends JFrame
 	private JPanel innerNavContainer, outerNavContainer, activeNavContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
-	private Dimension clientSize;
 
 	@Getter
 	private TitleToolbar titleToolbar;
@@ -390,7 +389,6 @@ public class ClientUI extends JFrame
 		}
 		else
 		{
-			clientSize = this.getSize();
 			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
 			{
 				activeNavContainer = outerNavContainer;
@@ -432,9 +430,9 @@ public class ClientUI extends JFrame
 		{
 			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
 		}
-		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		else if (activeNavContainer == outerNavContainer)
 		{
-			this.setSize(clientSize);
+			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
 		}
 
 		pluginPanel = null;
