@@ -116,17 +116,17 @@ public class class33 {
          var7 = 383;
       }
 
-      if(DecorativeObject.cameraPitchCopy < var7) {
-         DecorativeObject.cameraPitchCopy = (var7 - DecorativeObject.cameraPitchCopy) * MouseRecorder.field759 / 1000 + DecorativeObject.cameraPitchCopy + field435;
-         if(DecorativeObject.cameraPitchCopy > var7) {
-            DecorativeObject.cameraPitchCopy = var7;
+      if(DecorativeObject.cameraPitch < var7) {
+         DecorativeObject.cameraPitch = (var7 - DecorativeObject.cameraPitch) * MouseRecorder.field759 / 1000 + DecorativeObject.cameraPitch + field435;
+         if(DecorativeObject.cameraPitch > var7) {
+            DecorativeObject.cameraPitch = var7;
          }
       }
 
-      if(DecorativeObject.cameraPitchCopy > var7) {
-         DecorativeObject.cameraPitchCopy -= MouseRecorder.field759 * (DecorativeObject.cameraPitchCopy - var7) / 1000 + field435;
-         if(DecorativeObject.cameraPitchCopy < var7) {
-            DecorativeObject.cameraPitchCopy = var7;
+      if(DecorativeObject.cameraPitch > var7) {
+         DecorativeObject.cameraPitch -= MouseRecorder.field759 * (DecorativeObject.cameraPitch - var7) / 1000 + field435;
+         if(DecorativeObject.cameraPitch < var7) {
+            DecorativeObject.cameraPitch = var7;
          }
       }
 
