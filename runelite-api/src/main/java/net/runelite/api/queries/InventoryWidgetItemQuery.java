@@ -42,6 +42,7 @@ public class InventoryWidgetItemQuery extends WidgetItemQuery
 		WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
 		WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER,
 		WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.GUIDE_PRICES_INVENTORY_ITEMS_CONTAINER,
 		WidgetInfo.INVENTORY
 	};
 

@@ -46,6 +46,8 @@ public class WidgetID
 	public static final int PRAYER_GROUP_ID = 541;
 	public static final int SHOP_GROUP_ID = 300;
 	public static final int SHOP_INVENTORY_GROUP_ID = 301;
+	public static final int GUIDE_PRICES_GROUP_ID = 464;
+	public static final int GUIDE_PRICES_INVENTORY_GROUP_ID = 238;
 	public static final int COMBAT_GROUP_ID = 593;
 	public static final int DIALOG_NPC_GROUP_ID = 231;
 	public static final int SLAYER_REWARDS_GROUP_ID = 426;
@@ -141,6 +143,12 @@ public class WidgetID
 	static class Shop
 	{
 		static final int ITEMS_CONTAINER = 2;
+		static final int INVENTORY_ITEM_CONTAINER = 0;
+	}
+
+	static class GuidePrices
+	{
+		static final int ITEM_CONTAINER = 2;
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
