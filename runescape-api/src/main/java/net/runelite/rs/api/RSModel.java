@@ -29,6 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface RSModel extends RSRenderable, Model
 {
+	@Import("verticesCount")
+	int getVerticesCount();
+
 	@Import("verticesX")
 	int[] getVerticesX();
 
@@ -37,6 +40,9 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("verticesZ")
 	int[] getVerticesZ();
+
+	@Import("indicesCount")
+	int getTrianglesCount();
 
 	@Import("indices1")
 	int[] getTrianglesX();
