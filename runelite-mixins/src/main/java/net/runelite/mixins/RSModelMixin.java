@@ -45,7 +45,7 @@ public abstract class RSModelMixin implements RSModel
 
 		List<Vertex> vertices = new ArrayList<Vertex>();
 
-		for (int i = 0; i < verticesX.length; ++i)
+		for (int i = 0; i < getVerticesCount(); ++i)
 		{
 			Vertex v = new Vertex(
 				verticesX[i],
@@ -67,9 +67,9 @@ public abstract class RSModelMixin implements RSModel
 		int[] trianglesZ = getTrianglesZ();
 
 		List<Vertex> vertices = getVertices();
-		List<Triangle> triangles = new ArrayList<Triangle>(trianglesX.length);
+		List<Triangle> triangles = new ArrayList<Triangle>(getTrianglesCount());
 
-		for (int i = 0; i < trianglesX.length; ++i)
+		for (int i = 0; i < getTrianglesCount(); ++i)
 		{
 			int triangleX = trianglesX[i];
 			int triangleY = trianglesY[i];
