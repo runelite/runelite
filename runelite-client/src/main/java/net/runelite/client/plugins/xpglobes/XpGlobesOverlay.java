@@ -55,13 +55,6 @@ public class XpGlobesOverlay extends Overlay
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
 
-	public enum CENTER_ORBS
-	{
-		MIDDLE_CANVAS,
-		MIDDLE_VIEWPORT,
-		DYNAMIC
-	}
-
 	@Inject
 	private SkillIconManager iconManager;
 
@@ -115,6 +108,7 @@ public class XpGlobesOverlay extends Overlay
 		{
 			return null;
 		}
+		
 		int queueSize = plugin.getXpGlobesSize();
 		if (queueSize > 0)
 		{
@@ -138,6 +132,10 @@ public class XpGlobesOverlay extends Overlay
 		double radiusToGoalXp = 360; //draw a circle
 
 		Ellipse2D backgroundCircle = drawEllipse(graphics, x, y);
+
+		Object renderHint = graphics.getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
+		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
 		drawProgressArc(
 			graphics,
 			x, y,
@@ -153,6 +151,9 @@ public class XpGlobesOverlay extends Overlay
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			config.progressArcStrokeWidth(),
 			config.progressArcColor());
+
+		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
+
 		drawSkillImage(graphics, skillToDraw, x, y);
 
 		if (config.enableTooltips())
@@ -163,16 +164,14 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawProgressArc(Graphics2D graphics, int x, int y, int w, int h, double radiusStart, double radiusEnd, int strokeWidth, Color color)
 	{
-		graphics.setRenderingHint(RenderingHints.  KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		Stroke stroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		graphics.setColor(color);
-		Arc2D arc = new Arc2D.Double(
+		graphics.draw(new Arc2D.Double(
 			x, y,
 			w, h,
 			radiusStart, radiusEnd,
-			Arc2D.OPEN);
-		graphics.draw(arc);
+			Arc2D.OPEN));
 		graphics.setStroke(stroke);
 	}
 

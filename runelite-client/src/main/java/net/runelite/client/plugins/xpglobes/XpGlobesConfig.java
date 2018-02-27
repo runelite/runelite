@@ -77,7 +77,7 @@ public interface XpGlobesConfig extends Config
 	)
 	default Color progressOrbBackgroundColor()
 	{
-		return new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
+		return new Color(128, 128, 128, 127);
 	}
 
 	@ConfigItem(
@@ -88,7 +88,7 @@ public interface XpGlobesConfig extends Config
 	)
 	default int progressArcStrokeWidth()
 	{
-		return 4;
+		return 2;
 	}
 
 	@ConfigItem(
@@ -108,8 +108,8 @@ public interface XpGlobesConfig extends Config
 		description = "Where to center the xp orbs around",
 		position = 6
 	)
-	default XpGlobesOverlay.CENTER_ORBS centerOrbs()
+	default OrbCentering centerOrbs()
 	{
-		return XpGlobesOverlay.CENTER_ORBS.DYNAMIC;
+		return OrbCentering.DYNAMIC;
 	}
 }
