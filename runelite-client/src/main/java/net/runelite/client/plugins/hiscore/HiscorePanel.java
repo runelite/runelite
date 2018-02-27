@@ -351,12 +351,11 @@ public class HiscorePanel extends PluginPanel
 			log.warn(null, ex);
 		}
 
-		// Show skill details on click
+		// Show skill details on hover
 		label.addMouseListener(new MouseInputAdapter()
 		{
-			// mouseReleased feels better than mouseClick UX-wise
 			@Override
-			public void mouseReleased(MouseEvent e)
+			public void mouseEntered(MouseEvent e)
 			{
 				JLabel source = (JLabel) e.getSource();
 				String skillName = (String) source.getClientProperty(SKILL_NAME);
