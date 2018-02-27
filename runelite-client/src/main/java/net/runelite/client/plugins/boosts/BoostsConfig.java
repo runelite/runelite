@@ -123,7 +123,7 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "fontType",
-		name = "fontType",
+		name = "Boosts font size",
 		description = "Set the type of font, this will also impact size of the overlay component",
 		position = 1
 	)

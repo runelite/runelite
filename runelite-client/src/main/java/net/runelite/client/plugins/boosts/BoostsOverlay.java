@@ -170,7 +170,7 @@ class BoostsOverlay extends Overlay
 
 				String str;
 				int boost = boosted - base;
-				Color strColor = getTextColor(boost);
+				Color strColor = getTextColor(base, boosted);
 				if (!config.useRelativeBoost())
 				{
 					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
@@ -178,7 +178,6 @@ class BoostsOverlay extends Overlay
 				else
 				{
 					str = String.valueOf(boost);
-					strColor = getTextColor(base, boosted);
 					if (boost > 0)
 					{
 						str = "+" + str;
