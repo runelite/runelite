@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -38,10 +39,77 @@ public interface XpGlobesConfig extends Config
 	@ConfigItem(
 		keyName = "enableTooltips",
 		name = "Enable Tooltips",
-		description = "Configures whether or not to show tooltips"
+		description = "Configures whether or not to show tooltips",
+		position = 0
 	)
 	default boolean enableTooltips()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "Progress arc color",
+		name = "Progress arc color",
+		description = "Change the color of the progress arc in the xp orb",
+		position = 1
+	)
+	default Color progressArcColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+		keyName = "Progress orb outline color",
+		name = "Progress orb outline color",
+		description = "Change the color of the progress orb outline",
+		position = 2
+	)
+	default Color progressOrbOutLineColor()
+	{
+		return Color.BLACK;
+	}
+
+	@ConfigItem(
+		keyName = "Progress orb background color",
+		name = "Progress orb background color",
+		description = "Change the color of the progress orb background",
+		position = 3
+	)
+	default Color progressOrbBackgroundColor()
+	{
+		return new Color(128, 128, 128, 127);
+	}
+
+	@ConfigItem(
+		keyName = "Progress arc width",
+		name = "Progress arc width",
+		description = "Change the stroke width of the progress arc",
+		position = 4
+	)
+	default int progressArcStrokeWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		keyName = "Orb size",
+		name = "Size of orbs",
+		description = "Change the size of the xp orbs",
+		position = 5
+	)
+	default int xpOrbSize()
+	{
+		return 40;
+	}
+
+	@ConfigItem(
+		keyName = "Center orbs",
+		name = "Center orbs",
+		description = "Where to center the xp orbs around",
+		position = 6
+	)
+	default OrbCentering centerOrbs()
+	{
+		return OrbCentering.DYNAMIC;
 	}
 }
