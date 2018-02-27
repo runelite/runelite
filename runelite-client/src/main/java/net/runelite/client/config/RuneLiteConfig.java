@@ -75,4 +75,14 @@ public interface RuneLiteConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "notificationSound",
+		name = "Enable sound on notifications",
+		description = "Enables the playing of a beep sound when notifications are displayed"
+	)
+	default boolean enableNotificationSound()
+	{
+		return true;
+	}
 }
