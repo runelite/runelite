@@ -36,7 +36,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
@@ -117,9 +116,9 @@ public class HunterPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
-		HunterTrap myTrap = getTrapFromCollection(gameObject);
-		Player localPlayer = client.getLocalPlayer();
+		final GameObject gameObject = event.getGameObject();
+		final HunterTrap myTrap = getTrapFromCollection(gameObject);
+		final Player localPlayer = client.getLocalPlayer();
 
 		switch (gameObject.getId())
 		{
@@ -128,54 +127,36 @@ public class HunterPlugin extends Plugin
 			 * Placing traps
 			 * ------------------------------------------------------------------------------
 			 */
-			case ObjectID.DEADFALL: //Deadfall trap placed
-				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-					&& localPlayer.getAnimation() == AnimationID.HUNTER_LAY_DEADFALLTRAP)
-				{
-					log.debug("Deadfall trap placed by \"{}\" on {}", localPlayer.getName(), gameObject.getWorldLocation());
-					traps.add(new HunterTrap(gameObject));
-					lastActionTime = Instant.now();
-				}
-				break;
+			case ObjectID.DEADFALL: // Deadfall trap placed
 			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
-				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) < 2)
+				// If player is right next to "object" trap assume that player placed the trap
+				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 1)
 				{
-					log.debug("Maniacal monkey trap placed by \"{}\" on {} of {}", localPlayer.getName(),
-						gameObject.getWorldLocation(), gameObject);
+					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), gameObject.getWorldLocation());
 					traps.add(new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
+
 				break;
 			case ObjectID.MAGIC_BOX: // Imp box placed
-			case ObjectID.BOX_TRAP_9380: //Box trap placed
-			case ObjectID.BIRD_SNARE_9345: //Bird snare placed
-			case ObjectID.NET_TRAP_9343: //Net trap placed at green sallys
-			case ObjectID.NET_TRAP: //Net trap placed at orange sallys
-			case ObjectID.NET_TRAP_8992: //Net trap placed at red sallys
-			case ObjectID.NET_TRAP_9002: //Net trap placed at black sallys
-				//Look for players that are on the same tile
-				PlayerQuery playerQuery = new PlayerQuery().atLocalLocation(gameObject.getLocalLocation());
-				List<Player> possiblePlayers = Arrays.asList(queryRunner.runQuery(playerQuery));
+			case ObjectID.BOX_TRAP_9380: // Box trap placed
+			case ObjectID.BIRD_SNARE_9345: // Bird snare placed
+			case ObjectID.NET_TRAP_9343: // Net trap placed at green sallys
+			case ObjectID.NET_TRAP: // Net trap placed at orange sallys
+			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
+			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
+				// Look for players that are on the same tile
+				final PlayerQuery playerQuery = new PlayerQuery().atLocalLocation(gameObject.getLocalLocation());
+				final List<Player> possiblePlayers = Arrays.asList(queryRunner.runQuery(playerQuery));
 
-				/* If the player is on that tile, and it has the correct animation, assume he is the one that placed the trap
-                                 * Special case: if you herb+tar, then move and place the trap, it does not detect laying the trap. It does work
-                                 * if you herb+tar en then place the trap.
-				 */
+				// If the player is on that tile, assume he is the one that placed the trap
 				if (possiblePlayers.contains(localPlayer))
 				{
-					switch (localPlayer.getAnimation())
-					{
-						case AnimationID.HUNTER_LAY_BOXTRAP_BIRDSNARE:
-						case AnimationID.HUNTER_LAY_NETTRAP:
-						case AnimationID.HERBLORE_MAKE_TAR: // When 3 ticking
-							log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
-							traps.add(new HunterTrap(gameObject));
-
-							lastActionTime = Instant.now();
-							break;
-					}
-
+					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
+					traps.add(new HunterTrap(gameObject));
+					lastActionTime = Instant.now();
 				}
+
 				break;
 			/*
 			 * ------------------------------------------------------------------------------
@@ -183,27 +164,26 @@ public class HunterPlugin extends Plugin
 			 * ------------------------------------------------------------------------------
 			 */
 			case ObjectID.MAGIC_BOX_19226: // Imp caught
-			case ObjectID.SHAKING_BOX: //Black chinchompa caught
+			case ObjectID.SHAKING_BOX: // Black chinchompa caught
 			case ObjectID.SHAKING_BOX_9382: // Grey chinchompa caught
-			case ObjectID.SHAKING_BOX_9383: //Red chinchompa caught
-			case ObjectID.BOULDER_20648: //Prickly kebbit caught
-			case ObjectID.BOULDER_20649: //Sabre-tooth kebbit caught
-			case ObjectID.BOULDER_20650: //Barb-tailed kebbit caught
-			case ObjectID.BOULDER_20651: //Wild kebbit caught
-			case ObjectID.BIRD_SNARE_9373: //Crimson swift caught
-			case ObjectID.BIRD_SNARE_9375: //Cerulean twitch caught
-			case ObjectID.BIRD_SNARE_9377: //Golden warbler caught
-			case ObjectID.BIRD_SNARE_9379: //Copper longtail caught
-			case ObjectID.BIRD_SNARE_9348: //Tropical wagtail caught
-			case ObjectID.NET_TRAP_9004: //Green sally caught
-			case ObjectID.NET_TRAP_8986: //Red sally caught
-			case ObjectID.NET_TRAP_8734: //Orange sally caught
-			case ObjectID.NET_TRAP_8996: //Black sally caught
+			case ObjectID.SHAKING_BOX_9383: // Red chinchompa caught
+			case ObjectID.BOULDER_20648: // Prickly kebbit caught
+			case ObjectID.BOULDER_20649: // Sabre-tooth kebbit caught
+			case ObjectID.BOULDER_20650: // Barb-tailed kebbit caught
+			case ObjectID.BOULDER_20651: // Wild kebbit caught
+			case ObjectID.BIRD_SNARE_9373: // Crimson swift caught
+			case ObjectID.BIRD_SNARE_9375: // Cerulean twitch caught
+			case ObjectID.BIRD_SNARE_9377: // Golden warbler caught
+			case ObjectID.BIRD_SNARE_9379: // Copper longtail caught
+			case ObjectID.BIRD_SNARE_9348: // Tropical wagtail caught
+			case ObjectID.NET_TRAP_9004: // Green sally caught
+			case ObjectID.NET_TRAP_8986: // Red sally caught
+			case ObjectID.NET_TRAP_8734: // Orange sally caught
+			case ObjectID.NET_TRAP_8996: // Black sally caught
 			case ObjectID.LARGE_BOULDER_28830: // Maniacal monkey tail obtained
 			case ObjectID.LARGE_BOULDER_28831: // Maniacal monkey tail obtained
 				if (myTrap != null)
 				{
-					log.debug("Yay, you caught something");
 					myTrap.setState(HunterTrap.State.FULL);
 					catchAtempts++;
 					catchSuccess++;
@@ -214,6 +194,7 @@ public class HunterPlugin extends Plugin
 						notifier.notify("You've caught part of a monkey's tail.");
 					}
 				}
+
 				break;
 			/*
 			 * ------------------------------------------------------------------------------
@@ -225,13 +206,13 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BIRD_SNARE: //Empty box trap
 				if (myTrap != null)
 				{
-					log.debug("Your trap didn't catch anything");
 					myTrap.setState(HunterTrap.State.EMPTY);
 					myTrap.resetTimer();
 					catchAtempts++;
 
 					lastActionTime = Instant.now();
 				}
+
 				break;
 			/*
 			 * ------------------------------------------------------------------------------
@@ -241,25 +222,25 @@ public class HunterPlugin extends Plugin
 			// Imp entering box
 			case ObjectID.MAGIC_BOX_19225:
 
-			//Black chin shaking box
+			// Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
 			case ObjectID.BOX_TRAP_2029:
 
-			//Red chin shaking box
+			// Red chin shaking box
 			case ObjectID.BOX_TRAP_9381:
 			case ObjectID.BOX_TRAP_9390:
 			case ObjectID.BOX_TRAP_9391:
 			case ObjectID.BOX_TRAP_9392:
 			case ObjectID.BOX_TRAP_9393:
 
-			//Grey chin shaking box
+			// Grey chin shaking box
 			case ObjectID.BOX_TRAP_9386:
 			case ObjectID.BOX_TRAP_9387:
 			case ObjectID.BOX_TRAP_9388:
 
-			//Bird traps
+			// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
 			case ObjectID.BIRD_SNARE_9347:
 			case ObjectID.BIRD_SNARE_9349:
@@ -267,7 +248,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BIRD_SNARE_9376:
 			case ObjectID.BIRD_SNARE_9378:
 
-			//Deadfall trap
+			// Deadfall trap
 			case ObjectID.DEADFALL_19218:
 			case ObjectID.DEADFALL_19851:
 			case ObjectID.DEADFALL_20128:
@@ -275,7 +256,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL_20130:
 			case ObjectID.DEADFALL_20131:
 
-			//Net trap
+			// Net trap
 			case ObjectID.NET_TRAP_9003:
 			case ObjectID.NET_TRAP_9005:
 			case ObjectID.NET_TRAP_8972:
@@ -304,23 +285,23 @@ public class HunterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		//Check if all traps are still there, and remove the ones that are not.
-		//TODO: use despawn events
+		// Check if all traps are still there, and remove the ones that are not.
+		// TODO: use despawn events
 		Iterator<HunterTrap> it = traps.iterator();
 		while (it.hasNext())
 		{
 			HunterTrap trap = it.next();
 
-			//Look for gameobjects that are on the same location as the trap
+			// Look for gameobjects that are on the same location as the trap
 			GameObjectQuery goQuery = new GameObjectQuery()
 				.atWorldLocation(trap.getGameObject().getWorldLocation());
-			//This is for placeable traps like box traps. There are no gameobjects on that location if the trap collapsed
+			// This is for placeable traps like box traps. There are no gameobjects on that location if the trap collapsed
 			if (queryRunner.runQuery(goQuery).length == 0)
 			{
 				it.remove();
 				log.debug("Trap removed from personal trap collection, {} left", traps.size());
 			}
-			else //For traps like deadfalls. This is different because when the trap is gone, there is still a GameObject (boulder)
+			else // For traps like deadfalls. This is different because when the trap is gone, there is still a GameObject (boulder)
 			{
 				goQuery = goQuery.idEquals(ObjectID.BOULDER_19215, ObjectID.LARGE_BOULDER);
 				if (queryRunner.runQuery(goQuery).length != 0)
@@ -353,13 +334,14 @@ public class HunterPlugin extends Plugin
 	 * Looks for a trap in the local players trap collection, on the same
 	 * place as the given GameObject.
 	 *
-	 * @param gameObject
+	 * @param gameObject game object
 	 * @return A HunterTrap object if the player has a trap on the same
 	 * location as the GameObject. Otherwise it returns null.
 	 */
 	private HunterTrap getTrapFromCollection(GameObject gameObject)
 	{
-		Point gameObjectLocation = gameObject.getWorldLocation();
+		final Point gameObjectLocation = gameObject.getWorldLocation();
+
 		for (HunterTrap trap : traps)
 		{
 			if (gameObjectLocation.equals(trap.getGameObject().getWorldLocation()))
@@ -367,6 +349,7 @@ public class HunterPlugin extends Plugin
 				return trap;
 			}
 		}
+
 		return null;
 	}
 
