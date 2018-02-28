@@ -74,6 +74,18 @@ public class RaidsOverlay extends Overlay
 		panelComponent.setTitleColor(Color.WHITE);
 		panelComponent.setTitle("Raid scouter");
 
+		Color color = Color.WHITE;
+		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+
+		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
+		{
+			color = Color.RED;
+		}
+
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"Layout", Color.WHITE, layout, color
+		));
+
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
@@ -84,7 +96,7 @@ public class RaidsOverlay extends Overlay
 				continue;
 			}
 
-			Color color = Color.WHITE;
+			color = Color.WHITE;
 
 			switch (room.getType())
 			{

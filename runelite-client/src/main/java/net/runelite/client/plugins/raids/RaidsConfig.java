@@ -36,6 +36,7 @@ import net.runelite.client.config.ConfigItem;
 public interface RaidsConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
 		keyName = "raidsTimer",
 		name = "Display elapsed raid time",
 		description = "Display elapsed raid time"
@@ -46,6 +47,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
 		keyName = "pointsMessage",
 		name = "Display points in chatbox after raid",
 		description = "Display a message with total points, individual points and percentage at the end of a raid"
@@ -56,6 +58,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "scoutOverlay",
 		name = "Show scout overlay",
 		description = "Display an overlay that shows the current raid layout (when entering lobby)"
@@ -66,6 +69,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "scoutOverlayAtBank",
 		name = "Show scout overlay outside lobby",
 		description = "Keep the overlay active while at the raids area"
@@ -76,11 +80,34 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "blacklistedRooms",
 		name = "Blacklisted rooms",
 		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
 	)
 	default String blacklistedRooms()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "enableLayoutWhitelist",
+		name = "Enable layout whitelist",
+		description = "Enable the layout whitelist"
+	)
+	default boolean enableLayoutWhitelist()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "whitelistedLayouts",
+		name = "Whitelisted layouts",
+		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
+	)
+	default String whitelistedLayouts()
 	{
 		return "";
 	}
