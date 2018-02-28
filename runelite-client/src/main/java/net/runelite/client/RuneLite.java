@@ -162,7 +162,7 @@ public class RuneLite
 		eventBus.register(pluginManager);
 
 		// Setup the notifier
-		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon());
+		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon(), runeliteConfig);
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
