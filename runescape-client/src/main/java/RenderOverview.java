@@ -611,7 +611,7 @@ public class RenderOverview {
                var10 = true;
             }
 
-            this.worldMapManager.method565(this.field3927 - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.field3927, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4, this.field3928, this.field3934, this.field3958, this.field3954, var10);
+            this.worldMapManager.drawMapIcons(this.field3927 - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.field3927, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4, this.field3928, this.field3934, this.field3958, this.field3954, var10);
          }
 
          var10 = Client.rights >= 2;

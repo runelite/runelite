@@ -218,7 +218,8 @@ public final class WorldMapManager
       signature = "(IIIIIIIILjava/util/HashSet;Ljava/util/HashSet;IIZI)V",
       garbageValue = "706420435"
    )
-   public final void method565(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
+   @Export("drawMapIcons")
+   public final void drawMapIcons(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
       class29 var14 = this.method571(var1, var2, var3, var4);
       float var15 = this.method575(var7 - var5, var3 - var1);
       int var16 = (int)(var15 * 64.0F);
