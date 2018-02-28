@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -53,5 +54,25 @@ public interface CannonConfig extends Config
 	default boolean showAmountOnScreen()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showDoubleHitSpot",
+		name = "Show double hit spots",
+		description = "Configures whether to show the NPC double hit spot"
+	)
+	default boolean showDoubleHitSpot()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highlightDoubleHitColor",
+		name = "Color of double hit spots",
+		description = "Configures the highlight color of double hit spots"
+	)
+	default Color highlightDoubleHitColor()
+	{
+		return Color.RED;
 	}
 }
