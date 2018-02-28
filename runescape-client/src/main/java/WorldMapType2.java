@@ -151,7 +151,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       int var24;
       if(var4) {
          class299.field3788 = (MapIconReference)var2[0];
-         Area var6 = class330.mapAreaType[class299.field3788.field556];
+         Area var6 = class330.mapAreaType[class299.field3788.areaId];
          class239 var8 = var0.field752;
          var9 = var6.id;
          var10 = var6.field3397;

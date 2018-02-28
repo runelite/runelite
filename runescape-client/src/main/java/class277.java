@@ -394,7 +394,7 @@ public enum class277 implements Enumerated {
 
                                     return 1;
                                  } else if(var0 == 6697) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.field556;
+                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.areaId;
                                     return 1;
                                  } else if(var0 == 6698) {
                                     class80.intStack[++class80.intStackSize - 1] = class299.field3788.field554.bitpack();
