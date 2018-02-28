@@ -81,6 +81,17 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "whitelistedRooms",
+		name = "Whitelisted rooms",
+		description = "Display whitelisted rooms in green on the overlay. Separate with comma (full name)"
+	)
+	default String whitelistedRooms()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "blacklistedRooms",
 		name = "Blacklisted rooms",
 		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
@@ -91,7 +102,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "enableLayoutWhitelist",
 		name = "Enable layout whitelist",
 		description = "Enable the layout whitelist"
@@ -102,7 +113,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "whitelistedLayouts",
 		name = "Whitelisted layouts",
 		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"

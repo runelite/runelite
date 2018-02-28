@@ -101,7 +101,11 @@ public class RaidsOverlay extends Overlay
 			switch (room.getType())
 			{
 				case COMBAT:
-					if (plugin.getBlacklist().contains(room.getBoss().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
+					{
+						color = Color.GREEN;
+					}
+					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase()))
 					{
 						color = Color.RED;
 					}
@@ -112,7 +116,11 @@ public class RaidsOverlay extends Overlay
 					break;
 
 				case PUZZLE:
-					if (plugin.getBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getPuzzle().getName().toLowerCase()))
+					{
+						color = Color.GREEN;
+					}
+					else if (plugin.getRoomBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
 					{
 						color = Color.RED;
 					}
