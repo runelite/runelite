@@ -173,7 +173,8 @@ public final class WorldMapManager
       signature = "(IIIIIIIII)V",
       garbageValue = "1565216278"
    )
-   public final void method564(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   @Export("drawMapRegion")
+   public final void drawMapRegion(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int[] var9 = Rasterizer2D.graphicsPixels;
       int var10 = Rasterizer2D.graphicsPixelsWidth;
       int var11 = Rasterizer2D.graphicsPixelsHeight;

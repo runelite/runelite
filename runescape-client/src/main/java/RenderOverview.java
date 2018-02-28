@@ -602,7 +602,7 @@ public class RenderOverview {
 
          int var8 = (int)Math.ceil((double)((float)var3 / this.field3947));
          int var9 = (int)Math.ceil((double)((float)var4 / this.field3947));
-         this.worldMapManager.method564(this.field3927 - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.field3927, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4);
+         this.worldMapManager.drawMapRegion(this.field3927 - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.field3927, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4);
          boolean var10;
          if(!this.field3965) {
             var10 = false;
