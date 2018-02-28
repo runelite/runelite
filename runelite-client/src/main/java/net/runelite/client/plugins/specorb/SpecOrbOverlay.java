@@ -56,8 +56,8 @@ public class SpecOrbOverlay extends Overlay
 	private static final int RUN_ORB_X_RESIZABLE = 12;
 	private static final int RUN_ORB_Y_RESIZABLE = 103;
 
-	private Color OrbBackgroundColor;
-	private Color OrbRechargeColor;
+	private Color orbBackgroundColor;
+	private Color orbRechargeColor;
 
 	private final Client client;
 	private final SpecOrbPlugin plugin;
@@ -125,7 +125,7 @@ public class SpecOrbOverlay extends Overlay
 			}
 		}
 
-		graphics.setColor(OrbBackgroundColor);
+		graphics.setColor(orbBackgroundColor);
 
 		boolean specialAttackEnabled = client.getSetting(Setting.SPECIAL_ATTACK_ENABLED) == 1;
 
@@ -138,7 +138,7 @@ public class SpecOrbOverlay extends Overlay
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
 
 		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent,
-			OrbRechargeColor, specialRechargePercent,
+			orbRechargeColor, specialRechargePercent,
 			plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(),
 			(int) (specialPercent * 100), specialAttackEnabled);
 
@@ -147,8 +147,8 @@ public class SpecOrbOverlay extends Overlay
 
 	public void updateConfig()
 	{
-		OrbBackgroundColor = config.getBackgroundColor();
-		OrbRechargeColor = new Color(config.getRechargeColor().getRed(),
+		orbBackgroundColor = config.getBackgroundColor();
+		orbRechargeColor = new Color(config.getRechargeColor().getRed(),
 				config.getRechargeColor().getGreen(),
 				config.getRechargeColor().getBlue(),
 				config.getRechargeOpacity() <= 255 ? config.getRechargeOpacity() : 255);
