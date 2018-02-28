@@ -33,49 +33,22 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.util.OSType;
 
 @Slf4j
 public class Notifier
 {
-	private enum OSType
-	{
-		Windows, MacOS, Linux, Other
-	}
 
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
 	private static final Escaper SHELL_ESCAPE;
-	private static final OSType DETECTED_OS;
 
 	static
 	{
 		final Escapers.Builder builder = Escapers.builder();
 		builder.addEscape('"', "'");
 		SHELL_ESCAPE = builder.build();
-
-		final String OS = System
-			.getProperty("os.name", "generic")
-			.toLowerCase();
-
-		if ((OS.contains("mac")) || (OS.contains("darwin")))
-		{
-			DETECTED_OS = OSType.MacOS;
-		}
-		else if (OS.contains("win"))
-		{
-			DETECTED_OS = OSType.Windows;
-		}
-		else if (OS.contains("nux"))
-		{
-			DETECTED_OS = OSType.Linux;
-		}
-		else
-		{
-			DETECTED_OS = OSType.Other;
-		}
-
-		log.debug("Detect OS: {}", DETECTED_OS);
 	}
 
 	private final String appName;
@@ -114,7 +87,7 @@ public class Notifier
 		final String escapedMessage = SHELL_ESCAPE.escape(message);
 		final String escapedSubtitle = subtitle != null ? SHELL_ESCAPE.escape(subtitle) : null;
 
-		switch (DETECTED_OS)
+		switch (OSType.getOSType())
 		{
 			case Linux:
 				sendLinuxNotification(escapedTitle, escapedMessage, type);
