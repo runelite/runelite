@@ -926,7 +926,7 @@ public class class34 {
       signature = "(II)Laq;",
       garbageValue = "133726924"
    )
-   class33 method412(int var1) {
+	 MapLabel method412(int var1) {
       Area var2 = class330.mapAreaType[var1];
       return this.method448(var2);
    }
@@ -936,7 +936,7 @@ public class class34 {
       signature = "(Ljz;B)Laq;",
       garbageValue = "1"
    )
-   class33 method448(Area var1) {
+	 MapLabel method448(Area var1) {
       if(var1.name != null && this.field450 != null && this.field450.get(Size.field336) != null) {
          Size var2 = Size.method193(var1.field3399);
          if(var2 == null) {
@@ -961,7 +961,7 @@ public class class34 {
                   }
                }
 
-               return new class33(var1.name, var7, var6, var2);
+               return new MapLabel(var1.name, var7, var6, var2);
             }
          }
       } else {

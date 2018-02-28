@@ -3785,7 +3785,7 @@ public final class Client extends GameEngine implements class288 {
                                              }
 
                                              if(field983) {
-                                                class33.method375();
+                                                MapLabel.method375();
                                              }
 
                                              for(var4 = 0; var4 < 5; ++var4) {
@@ -5250,7 +5250,7 @@ public final class Client extends GameEngine implements class288 {
                class131.field1879 = var3.readUnsignedByte();
                class304.field3804 = var3.readUnsignedByte();
                AbstractSoundSystem.field1524 = var3.readUnsignedShort();
-               class33.field435 = var3.readUnsignedByte();
+               MapLabel.field435 = var3.readUnsignedByte();
                MouseRecorder.field759 = var3.readUnsignedByte();
                if(MouseRecorder.field759 >= 100) {
                   var23 = class131.field1879 * 128 + 64;

@@ -86,8 +86,8 @@ public class class31 {
             IndexStoreActionHandler.slFlagSprites = DState.getIndexedSprites(MessageNode.indexSprites, "sl_flags", "");
          }
 
-         if(class33.slArrowSprites == null) {
-            class33.slArrowSprites = DState.getIndexedSprites(MessageNode.indexSprites, "sl_arrows", "");
+         if(MapLabel.slArrowSprites == null) {
+            MapLabel.slArrowSprites = DState.getIndexedSprites(MessageNode.indexSprites, "sl_arrows", "");
          }
 
          if(BoundingBox3D.slStarSprites == null) {
@@ -106,60 +106,60 @@ public class class31 {
          }
 
          int var30;
-         if(class33.slArrowSprites != null) {
+         if(MapLabel.slArrowSprites != null) {
             var27 = class89.field1324 + 280;
             if(World.field1166[0] == 0 && World.field1168[0] == 0) {
-               class33.slArrowSprites[2].method5783(var27, 4);
+               MapLabel.slArrowSprites[2].method5783(var27, 4);
             } else {
-               class33.slArrowSprites[0].method5783(var27, 4);
+               MapLabel.slArrowSprites[0].method5783(var27, 4);
             }
 
             if(World.field1166[0] == 0 && World.field1168[0] == 1) {
-               class33.slArrowSprites[3].method5783(var27 + 15, 4);
+               MapLabel.slArrowSprites[3].method5783(var27 + 15, 4);
             } else {
-               class33.slArrowSprites[1].method5783(var27 + 15, 4);
+               MapLabel.slArrowSprites[1].method5783(var27 + 15, 4);
             }
 
             var0.method5451("World", var27 + 32, 17, 16777215, -1);
             var5 = class89.field1324 + 390;
             if(World.field1166[0] == 1 && World.field1168[0] == 0) {
-               class33.slArrowSprites[2].method5783(var5, 4);
+               MapLabel.slArrowSprites[2].method5783(var5, 4);
             } else {
-               class33.slArrowSprites[0].method5783(var5, 4);
+               MapLabel.slArrowSprites[0].method5783(var5, 4);
             }
 
             if(World.field1166[0] == 1 && World.field1168[0] == 1) {
-               class33.slArrowSprites[3].method5783(var5 + 15, 4);
+               MapLabel.slArrowSprites[3].method5783(var5 + 15, 4);
             } else {
-               class33.slArrowSprites[1].method5783(var5 + 15, 4);
+               MapLabel.slArrowSprites[1].method5783(var5 + 15, 4);
             }
 
             var0.method5451("Players", var5 + 32, 17, 16777215, -1);
             var29 = class89.field1324 + 500;
             if(World.field1166[0] == 2 && World.field1168[0] == 0) {
-               class33.slArrowSprites[2].method5783(var29, 4);
+               MapLabel.slArrowSprites[2].method5783(var29, 4);
             } else {
-               class33.slArrowSprites[0].method5783(var29, 4);
+               MapLabel.slArrowSprites[0].method5783(var29, 4);
             }
 
             if(World.field1166[0] == 2 && World.field1168[0] == 1) {
-               class33.slArrowSprites[3].method5783(var29 + 15, 4);
+               MapLabel.slArrowSprites[3].method5783(var29 + 15, 4);
             } else {
-               class33.slArrowSprites[1].method5783(var29 + 15, 4);
+               MapLabel.slArrowSprites[1].method5783(var29 + 15, 4);
             }
 
             var0.method5451("Location", var29 + 32, 17, 16777215, -1);
             var30 = class89.field1324 + 610;
             if(World.field1166[0] == 3 && World.field1168[0] == 0) {
-               class33.slArrowSprites[2].method5783(var30, 4);
+               MapLabel.slArrowSprites[2].method5783(var30, 4);
             } else {
-               class33.slArrowSprites[0].method5783(var30, 4);
+               MapLabel.slArrowSprites[0].method5783(var30, 4);
             }
 
             if(World.field1166[0] == 3 && World.field1168[0] == 1) {
-               class33.slArrowSprites[3].method5783(var30 + 15, 4);
+               MapLabel.slArrowSprites[3].method5783(var30 + 15, 4);
             } else {
-               class33.slArrowSprites[1].method5783(var30 + 15, 4);
+               MapLabel.slArrowSprites[1].method5783(var30 + 15, 4);
             }
 
             var0.method5451("Type", var30 + 32, 17, 16777215, -1);

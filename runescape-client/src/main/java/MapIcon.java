@@ -43,7 +43,7 @@ public class MapIcon {
    @ObfuscatedSignature(
       signature = "Laq;"
    )
-   final class33 field493;
+   final MapLabel field493;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1351679715
@@ -58,7 +58,7 @@ public class MapIcon {
    @ObfuscatedSignature(
       signature = "(ILhp;Lhp;Laq;)V"
    )
-   MapIcon(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+   MapIcon(int var1, Coordinates var2, Coordinates var3, MapLabel var4) {
       this.areaId = var1;
       this.field491 = var2;
       this.field490 = var3;

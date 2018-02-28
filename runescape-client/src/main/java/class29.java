@@ -99,14 +99,14 @@ public final class class29 {
    )
    protected static int method272() {
       int var0 = 0;
-      if(class33.field430 == null || !class33.field430.isValid()) {
+      if(MapLabel.field430 == null || !MapLabel.field430.isValid()) {
          try {
             Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
 
             while(var1.hasNext()) {
                GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
                if(var2.isValid()) {
-                  class33.field430 = var2;
+                  MapLabel.field430 = var2;
                   GameEngine.garbageCollectorLastCheckTimeMs = -1L;
                   GameEngine.garbageCollectorLastCollectionTime = -1L;
                }
@@ -116,9 +116,9 @@ public final class class29 {
          }
       }
 
-      if(class33.field430 != null) {
+      if(MapLabel.field430 != null) {
          long var9 = class188.currentTimeMs();
-         long var3 = class33.field430.getCollectionTime();
+         long var3 = MapLabel.field430.getCollectionTime();
          if(-1L != GameEngine.garbageCollectorLastCollectionTime) {
             long var5 = var3 - GameEngine.garbageCollectorLastCollectionTime;
             long var7 = var9 - GameEngine.garbageCollectorLastCheckTimeMs;

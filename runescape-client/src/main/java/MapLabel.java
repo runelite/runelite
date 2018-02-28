@@ -1,12 +1,14 @@
 import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aq")
-public class class33 {
+@Implements("MapLabel")
+public class MapLabel {
    @ObfuscatedName("pp")
    @ObfuscatedGetter(
       intValue = -579582923
@@ -41,7 +43,7 @@ public class class33 {
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IILn;)V"
    )
-   class33(String var1, int var2, int var3, Size var4) {
+   MapLabel(String var1, int var2, int var3, Size var4) {
       this.field431 = var1;
       this.field436 = var2;
       this.field432 = var3;
