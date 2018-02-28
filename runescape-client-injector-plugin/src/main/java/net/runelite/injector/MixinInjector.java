@@ -334,6 +334,10 @@ public class MixinInjector
 			String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
 			Signature obMethodSignature = DeobAnnotations.getObfuscatedSignature(deobMethod);
 
+			if (obMethodName == null)
+			{
+				obMethodName = deobMethod.getName();
+			}
 			if (obMethodSignature == null)
 			{
 				obMethodSignature = deobMethod.getDescriptor();
@@ -506,6 +510,10 @@ public class MixinInjector
 				Signature obMethodSignature = DeobAnnotations.getObfuscatedSignature(deobMethod);
 
 				// Deob signature is the same as ob signature
+				if (obMethodName == null)
+				{
+					obMethodName = deobMethod.getName();
+				}
 				if (obMethodSignature == null)
 				{
 					obMethodSignature = deobMethod.getDescriptor();
