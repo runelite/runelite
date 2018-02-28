@@ -38,7 +38,6 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -50,9 +49,6 @@ public class NightmareZonePlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
-
-	@Inject
-	private ClientUI gui;
 
 	@Inject
 	private Client client;
@@ -117,7 +113,7 @@ public class NightmareZonePlugin extends Plugin
 		String msg = event.getMessage().replaceAll("<[^>]*>", " "); //remove color and linebreaks
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
-			sendNotification("Your overload has worn off");
+			notifier.notify("Your overload has worn off");
 		}
 	}
 
@@ -129,7 +125,7 @@ public class NightmareZonePlugin extends Plugin
 		{
 			if (absorptionPoints < config.absorptionThreshold())
 			{
-				sendNotification("Absorption points below: " + config.absorptionThreshold());
+				notifier.notify("Absorption points below: " + config.absorptionThreshold());
 				absorptionNotificationSend = true;
 			}
 		}
@@ -145,17 +141,5 @@ public class NightmareZonePlugin extends Plugin
 	public boolean isInNightmareZone()
 	{
 		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
-	}
-
-	private void sendNotification(String message)
-	{
-		if (!gui.isFocused() && config.requestFocus())
-		{
-			gui.requestFocus();
-		}
-		if (config.sendTrayNotification())
-		{
-			notifier.notify(message);
-		}
 	}
 }
