@@ -103,6 +103,28 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
+		keyName = "enableRotationWhitelist",
+		name = "Enable rotation whitelist",
+		description = "Enable the rotation whitelist"
+	)
+	default boolean enableRotationWhitelist()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "whitelistedRotations",
+		name = "Whitelisted rotations",
+		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like [tekton, muttadile, guardians]"
+	)
+	default String whitelistedRotations()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "enableLayoutWhitelist",
 		name = "Enable layout whitelist",
 		description = "Enable the layout whitelist"
@@ -113,7 +135,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "whitelistedLayouts",
 		name = "Whitelisted layouts",
 		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
