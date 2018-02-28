@@ -53,7 +53,7 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class CannonPlugin extends Plugin
 {
-	private static final Pattern LOAD_CANNON_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
 
 	int cballsLeft = 0;
@@ -149,7 +149,7 @@ public class CannonPlugin extends Plugin
 
 		if (event.getMessage().startsWith("You load the cannon with"))
 		{
-			Matcher m = LOAD_CANNON_PATTERN.matcher(event.getMessage());
+			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
 				int amt = Integer.valueOf(m.group());
@@ -178,6 +178,25 @@ public class CannonPlugin extends Plugin
 			if (config.showEmptyCannonNotification())
 			{
 				notifier.notify("Your cannon is out of ammo!");
+			}
+		}
+
+		if (event.getMessage().contains("You unload your cannon and receive Cannonball"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
+			if (m.find())
+			{
+				int unload = Integer.valueOf(m.group());
+
+				// make sure cballs doesn't go below 0
+				if (cballsLeft - unload < 0)
+				{
+					cballsLeft = 0;
+				}
+				else
+				{
+					cballsLeft -= unload;
+				}
 			}
 		}
 	}
