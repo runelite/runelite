@@ -35,11 +35,21 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.InstanceTemplates;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Point;
+import net.runelite.api.Setting;
+import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -72,6 +82,7 @@ public class RaidsPlugin extends Plugin
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
@@ -103,6 +114,9 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private ArrayList<String> roomBlacklist = new ArrayList<>();
+
+	@Getter
+	private ArrayList<String> rotationWhitelist = new ArrayList<>();
 
 	@Getter
 	private ArrayList<String> layoutWhitelist = new ArrayList<>();
@@ -172,6 +186,11 @@ public class RaidsPlugin extends Plugin
 		if (event.getKey().equals("blacklistedRooms"))
 		{
 			updateList(roomBlacklist, config.blacklistedRooms());
+		}
+
+		if (event.getKey().equals("whitelistedRotations"))
+		{
+			updateList(rotationWhitelist, config.whitelistedRotations());
 		}
 
 		if (event.getKey().equals("whitelistedLayouts"))
@@ -305,13 +324,31 @@ public class RaidsPlugin extends Plugin
 	{
 		updateList(roomWhitelist, config.blacklistedRooms());
 		updateList(roomBlacklist, config.blacklistedRooms());
+		updateList(rotationWhitelist, config.whitelistedRotations());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
 	}
 
 	private void updateList(ArrayList<String> list, String input)
 	{
 		list.clear();
-		list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+
+		if (list == rotationWhitelist)
+		{
+			Matcher m = ROTATION_REGEX.matcher(input);
+			while (m.find())
+			{
+				String rotation = m.group(1);
+
+				if (!list.contains(rotation))
+				{
+					list.add(rotation);
+				}
+			}
+		}
+		else
+		{
+			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+		}
 	}
 
 	private void cacheColors()
@@ -321,6 +358,43 @@ public class RaidsPlugin extends Plugin
 				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
 				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
 				.refreshAll();
+	}
+
+	public int getRotationMatches()
+	{
+		String rotation = raid.getRotationString().toLowerCase();
+		String[] bosses = rotation.split(SPLIT_REGEX);
+
+		if (rotationWhitelist.contains(rotation))
+		{
+			return bosses.length;
+		}
+
+		for (String whitelisted : rotationWhitelist)
+		{
+			int matches = 0;
+			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
+
+			for (int i = 0; i < whitelistedBosses.length; i++)
+			{
+				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
+				{
+					matches++;
+				}
+				else
+				{
+					matches = 0;
+					break;
+				}
+			}
+
+			if (matches >= 2)
+			{
+				return matches;
+			}
+		}
+
+		return 0;
 	}
 
 	private Point findLobbyBase()

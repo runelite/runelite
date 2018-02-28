@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.base.Joiner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
@@ -107,6 +109,11 @@ public class Raid
 		}
 
 		return combatRooms.toArray(new RaidRoom[combatRooms.size()]);
+	}
+
+	public String getRotationString()
+	{
+		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
 	}
 
 	public String toCode()
