@@ -47,7 +47,8 @@ public class RenderOverview {
    )
    Font field3959;
    @ObfuscatedName("r")
-   HashMap field3935;
+   @Export("mapFonts")
+   HashMap mapFonts;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "[Llv;"
@@ -86,12 +87,14 @@ public class RenderOverview {
    @ObfuscatedGetter(
       intValue = 842223287
    )
-   int field3927;
+   @Export("worldMapX")
+   int worldMapX;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1635518129
    )
-   int field3944;
+   @Export("worldMapY")
+   int worldMapY;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -2136082273
@@ -103,9 +106,11 @@ public class RenderOverview {
    )
    int field3946;
    @ObfuscatedName("k")
-   float field3947;
+   @Export("worldMapZoom")
+   float worldMapZoom;
    @ObfuscatedName("n")
-   float field3948;
+   @Export("worldMapZoomTarget")
+   float worldMapZoomTarget;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -80031077
@@ -230,10 +235,10 @@ public class RenderOverview {
       this.field3936 = var4;
       this.field3930 = var1;
       this.field3959 = var2;
-      this.field3935 = new HashMap();
-      this.field3935.put(Size.field336, var3.get(fontNameVerdana11));
-      this.field3935.put(Size.field325, var3.get(fontNameVerdana13));
-      this.field3935.put(Size.field326, var3.get(fontNameVerdana15));
+      this.mapFonts = new HashMap();
+      this.mapFonts.put(Size.field336, var3.get(fontNameVerdana11));
+      this.mapFonts.put(Size.field325, var3.get(fontNameVerdana13));
+      this.mapFonts.put(Size.field326, var3.get(fontNameVerdana15));
       this.field3942 = new class324(var1);
       int var5 = this.field3930.getFile(class40.field497.field502);
       int[] var6 = this.field3930.getChilds(var5);
@@ -272,20 +277,20 @@ public class RenderOverview {
          this.method5968();
          this.method5969();
          if(var3) {
-            int var8 = (int)Math.ceil((double)((float)var6 / this.field3947));
-            int var9 = (int)Math.ceil((double)((float)var7 / this.field3947));
-            List var10 = this.worldMapManager.method583(this.field3927 - var8 / 2 - 1, this.field3944 - var9 / 2 - 1, var8 / 2 + this.field3927 + 1, var9 / 2 + this.field3944 + 1, var4, var5, var6, var7, var1, var2);
+            int var8 = (int)Math.ceil((double)((float)var6 / this.worldMapZoom));
+            int var9 = (int)Math.ceil((double)((float)var7 / this.worldMapZoom));
+            List var10 = this.worldMapManager.method583(this.worldMapX - var8 / 2 - 1, this.worldMapY - var9 / 2 - 1, var8 / 2 + this.worldMapX + 1, var9 / 2 + this.worldMapY + 1, var4, var5, var6, var7, var1, var2);
             HashSet var11 = new HashSet();
 
             Iterator var12;
-            class39 var13;
+            MapIcon var13;
             ScriptEvent var14;
-            class47 var15;
+            MapIconReference var15;
             for(var12 = var10.iterator(); var12.hasNext(); class194.method3791(var14)) {
-               var13 = (class39)var12.next();
+               var13 = (MapIcon)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
-               var15 = new class47(var13.field488, var13.field491, var13.field490);
+               var15 = new MapIconReference(var13.areaId, var13.field491, var13.field490);
                var14.method1134(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                if(this.field3945.contains(var13)) {
                   var14.method1130(class239.field2922);
@@ -297,10 +302,10 @@ public class RenderOverview {
             var12 = this.field3945.iterator();
 
             while(var12.hasNext()) {
-               var13 = (class39)var12.next();
+               var13 = (MapIcon)var12.next();
                if(!var11.contains(var13)) {
                   var14 = new ScriptEvent();
-                  var15 = new class47(var13.field488, var13.field491, var13.field490);
+                  var15 = new MapIconReference(var13.areaId, var13.field491, var13.field490);
                   var14.method1134(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                   var14.method1130(class239.field2921);
                   class194.method3791(var14);
@@ -332,8 +337,8 @@ public class RenderOverview {
       this.field3956 = var1;
       this.field3932 = var2;
       if(var3 && !this.method6053()) {
-         this.field3927 -= (int)((float)var5 / this.field3948);
-         this.field3944 += (int)((float)var6 / this.field3948);
+         this.worldMapX -= (int)((float)var5 / this.worldMapZoomTarget);
+         this.worldMapY += (int)((float)var6 / this.worldMapZoomTarget);
       }
 
    }
@@ -347,8 +352,8 @@ public class RenderOverview {
       boolean var4 = Client.rights >= 2;
       if(var4) {
          if(this.worldMapData != null) {
-            int var5 = (int)((float)this.field3927 + ((float)(var1 - this.field3967) - (float)this.method5996() * this.field3947 / 2.0F) / this.field3947);
-            int var6 = (int)((float)this.field3944 - ((float)(var2 - this.field3952) - (float)this.method5981() * this.field3947 / 2.0F) / this.field3947);
+            int var5 = (int)((float)this.worldMapX + ((float)(var1 - this.field3967) - (float)this.method5996() * this.worldMapZoom / 2.0F) / this.worldMapZoom);
+            int var6 = (int)((float)this.worldMapY - ((float)(var2 - this.field3952) - (float)this.method5981() * this.worldMapZoom / 2.0F) / this.worldMapZoom);
             this.field3971 = this.worldMapData.method310(var5 + this.worldMapData.method318() * 64, var6 + this.worldMapData.method355() * 64);
             if(this.field3971 != null && var3 && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81] && var3) {
                int var7 = this.field3971.worldX;
@@ -373,12 +378,12 @@ public class RenderOverview {
       garbageValue = "-62"
    )
    void method5968() {
-      if(this.field3947 < this.field3948) {
-         this.field3947 = Math.min(this.field3948, this.field3947 / 30.0F + this.field3947);
+      if(this.worldMapZoom < this.worldMapZoomTarget) {
+         this.worldMapZoom = Math.min(this.worldMapZoomTarget, this.worldMapZoom / 30.0F + this.worldMapZoom);
       }
 
-      if(this.field3947 > this.field3948) {
-         this.field3947 = Math.max(this.field3948, this.field3947 - this.field3947 / 30.0F);
+      if(this.worldMapZoom > this.worldMapZoomTarget) {
+         this.worldMapZoom = Math.max(this.worldMapZoomTarget, this.worldMapZoom - this.worldMapZoom / 30.0F);
       }
 
    }
@@ -390,8 +395,8 @@ public class RenderOverview {
    )
    void method5969() {
       if(this.method6053()) {
-         int var1 = this.field3960 - this.field3927;
-         int var2 = this.field3946 - this.field3944;
+         int var1 = this.field3960 - this.worldMapX;
+         int var2 = this.field3946 - this.worldMapY;
          if(var1 != 0) {
             var1 /= Math.min(8, Math.abs(var1));
          }
@@ -400,9 +405,9 @@ public class RenderOverview {
             var2 /= Math.min(8, Math.abs(var2));
          }
 
-         this.field3927 += var1;
-         this.field3944 += var2;
-         if(this.field3960 == this.field3927 && this.field3946 == this.field3944) {
+         this.worldMapX += var1;
+         this.worldMapY += var2;
+         if(this.field3960 == this.worldMapX && this.field3946 == this.worldMapY) {
             this.field3960 = -1;
             this.field3946 = -1;
          }
@@ -518,7 +523,7 @@ public class RenderOverview {
    @Export("initializeWorldMap")
    void initializeWorldMap(WorldMapData var1) {
       this.worldMapData = var1;
-      this.worldMapManager = new WorldMapManager(this.field3936, this.field3935);
+      this.worldMapManager = new WorldMapManager(this.field3936, this.mapFonts);
       this.field3942.method5949(this.worldMapData.method314());
    }
 
@@ -554,12 +559,12 @@ public class RenderOverview {
             var4 = this.worldMapData.method329(this.worldMapData.method323(), this.worldMapData.method322(), this.worldMapData.method368());
          }
 
-         this.field3927 = var4[0] - this.worldMapData.method318() * 64;
-         this.field3944 = var4[1] - this.worldMapData.method355() * 64;
+         this.worldMapX = var4[0] - this.worldMapData.method318() * 64;
+         this.worldMapY = var4[1] - this.worldMapData.method355() * 64;
          this.field3960 = -1;
          this.field3946 = -1;
-         this.field3947 = this.method5984(this.worldMapData.method317());
-         this.field3948 = this.field3947;
+         this.worldMapZoom = this.method5984(this.worldMapData.method317());
+         this.worldMapZoomTarget = this.worldMapZoom;
          this.field3968 = null;
          this.field3969 = null;
          this.worldMapManager.method566();
@@ -600,9 +605,9 @@ public class RenderOverview {
             }
          }
 
-         int var8 = (int)Math.ceil((double)((float)var3 / this.field3947));
-         int var9 = (int)Math.ceil((double)((float)var4 / this.field3947));
-         this.worldMapManager.method564(this.field3927 - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.field3927, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4);
+         int var8 = (int)Math.ceil((double)((float)var3 / this.worldMapZoom));
+         int var9 = (int)Math.ceil((double)((float)var4 / this.worldMapZoom));
+         this.worldMapManager.drawMapRegion(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, var1, var2, var3 + var1, var2 + var4);
          boolean var10;
          if(!this.field3965) {
             var10 = false;
@@ -611,7 +616,7 @@ public class RenderOverview {
                var10 = true;
             }
 
-            this.worldMapManager.method565(this.field3927 - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.field3927, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4, this.field3928, this.field3934, this.field3958, this.field3954, var10);
+            this.worldMapManager.drawMapIcons(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, var1, var2, var3 + var1, var2 + var4, this.field3928, this.field3934, this.field3958, this.field3954, var10);
          }
 
          var10 = Client.rights >= 2;
@@ -652,7 +657,7 @@ public class RenderOverview {
       garbageValue = "1205"
    )
    public void method5982(int var1) {
-      this.field3948 = this.method5984(var1);
+      this.worldMapZoomTarget = this.method5984(var1);
    }
 
    @ObfuscatedName("ao")
@@ -685,7 +690,7 @@ public class RenderOverview {
       garbageValue = "41291512"
    )
    public int method5985() {
-      return 1.0D == (double)this.field3948?25:((double)this.field3948 == 1.5D?37:((double)this.field3948 == 2.0D?50:(3.0D == (double)this.field3948?75:((double)this.field3948 == 4.0D?100:200))));
+      return 1.0D == (double)this.worldMapZoomTarget ?25:((double)this.worldMapZoomTarget == 1.5D?37:((double)this.worldMapZoomTarget == 2.0D?50:(3.0D == (double)this.worldMapZoomTarget ?75:((double)this.worldMapZoomTarget == 4.0D?100:200))));
    }
 
    @ObfuscatedName("ah")
@@ -745,8 +750,8 @@ public class RenderOverview {
    )
    public void method6023(int var1, int var2) {
       if(this.worldMapData != null) {
-         this.field3927 = var1 - this.worldMapData.method318() * 64;
-         this.field3944 = var2 - this.worldMapData.method355() * 64;
+         this.worldMapX = var1 - this.worldMapData.method318() * 64;
+         this.worldMapY = var2 - this.worldMapData.method355() * 64;
          this.field3960 = -1;
          this.field3946 = -1;
       }
@@ -788,7 +793,7 @@ public class RenderOverview {
       garbageValue = "-2092606107"
    )
    public int method5993() {
-      return this.worldMapData == null?-1:this.field3927 + this.worldMapData.method318() * 64;
+      return this.worldMapData == null?-1:this.worldMapX + this.worldMapData.method318() * 64;
    }
 
    @ObfuscatedName("ax")
@@ -797,7 +802,7 @@ public class RenderOverview {
       garbageValue = "1029972457"
    )
    public int method6124() {
-      return this.worldMapData == null?-1:this.field3944 + this.worldMapData.method355() * 64;
+      return this.worldMapData == null?-1:this.worldMapY + this.worldMapData.method355() * 64;
    }
 
    @ObfuscatedName("ad")
@@ -902,7 +907,7 @@ public class RenderOverview {
 
       for(int var2 = 0; var2 < class330.mapAreaType.length; ++var2) {
          if(class330.mapAreaType[var2] != null && class330.mapAreaType[var2].field3397 == var1) {
-            this.field3934.add(Integer.valueOf(class330.mapAreaType[var2].field3406));
+            this.field3934.add(Integer.valueOf(class330.mapAreaType[var2].id));
          }
       }
 
@@ -955,7 +960,7 @@ public class RenderOverview {
 
       for(int var3 = 0; var3 < class330.mapAreaType.length; ++var3) {
          if(class330.mapAreaType[var3] != null && class330.mapAreaType[var3].field3397 == var1) {
-            int var4 = class330.mapAreaType[var3].field3406;
+            int var4 = class330.mapAreaType[var3].id;
             if(!var2) {
                this.field3940.add(Integer.valueOf(var4));
             } else {
@@ -1012,9 +1017,9 @@ public class RenderOverview {
    )
    public void method6013(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(this.field3942.method5958()) {
-         int var7 = (int)Math.ceil((double)((float)var3 / this.field3947));
-         int var8 = (int)Math.ceil((double)((float)var4 / this.field3947));
-         List var9 = this.worldMapManager.method583(this.field3927 - var7 / 2 - 1, this.field3944 - var8 / 2 - 1, var7 / 2 + this.field3927 + 1, var8 / 2 + this.field3944 + 1, var1, var2, var3, var4, var5, var6);
+         int var7 = (int)Math.ceil((double)((float)var3 / this.worldMapZoom));
+         int var8 = (int)Math.ceil((double)((float)var4 / this.worldMapZoom));
+         List var9 = this.worldMapManager.method583(this.worldMapX - var7 / 2 - 1, this.worldMapY - var8 / 2 - 1, var7 / 2 + this.worldMapX + 1, var8 / 2 + this.worldMapY + 1, var1, var2, var3, var4, var5, var6);
          if(!var9.isEmpty()) {
             Iterator var10 = var9.iterator();
 
@@ -1024,13 +1029,13 @@ public class RenderOverview {
                   return;
                }
 
-               class39 var11 = (class39)var10.next();
-               Area var12 = class330.mapAreaType[var11.field488];
+               MapIcon var11 = (MapIcon)var10.next();
+               Area var12 = class330.mapAreaType[var11.areaId];
                var13 = false;
 
                for(int var14 = this.field3937.length - 1; var14 >= 0; --var14) {
                   if(var12.field3389[var14] != null) {
-                     class21.addMenuEntry(var12.field3389[var14], var12.field3400, this.field3937[var14], var11.field488, var11.field491.method4375(), var11.field490.method4375());
+                     class21.addMenuEntry(var12.field3389[var14], var12.field3400, this.field3937[var14], var11.areaId, var11.field491.bitpack(), var11.field490.bitpack());
                      var13 = true;
                   }
                }
@@ -1056,19 +1061,19 @@ public class RenderOverview {
          HashMap var3 = this.worldMapManager.method579();
          List var4 = (List)var3.get(Integer.valueOf(var1));
          if(var4 != null && !var4.isEmpty()) {
-            class39 var5 = null;
+            MapIcon var5 = null;
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
             while(true) {
-               class39 var8;
+               MapIcon var8;
                int var11;
                do {
                   if(!var7.hasNext()) {
                      return var5.field490;
                   }
 
-                  var8 = (class39)var7.next();
+                  var8 = (MapIcon)var7.next();
                   int var9 = var8.field490.worldX - var2.worldX;
                   int var10 = var8.field490.worldY - var2.worldY;
                   var11 = var9 * var9 + var10 * var10;
@@ -1093,7 +1098,7 @@ public class RenderOverview {
    )
    public void method6015(int var1, int var2, Coordinates var3, Coordinates var4) {
       ScriptEvent var5 = new ScriptEvent();
-      class47 var6 = new class47(var2, var3, var4);
+      MapIconReference var6 = new MapIconReference(var2, var3, var4);
       var5.method1134(new Object[]{var6});
       switch(var1) {
       case 1008:
@@ -1120,7 +1125,7 @@ public class RenderOverview {
       signature = "(I)Lad;",
       garbageValue = "781761940"
    )
-   public class39 method6016() {
+   public MapIcon method6016() {
       if(!this.field3942.method5958()) {
          return null;
       } else if(!this.worldMapManager.method572()) {
@@ -1145,7 +1150,7 @@ public class RenderOverview {
       signature = "(I)Lad;",
       garbageValue = "-1967218353"
    )
-   public class39 method6027() {
-      return this.field3969 == null?null:(!this.field3969.hasNext()?null:(class39)this.field3969.next());
+   public MapIcon method6027() {
+      return this.field3969 == null?null:(!this.field3969.hasNext()?null:(MapIcon)this.field3969.next());
    }
 }

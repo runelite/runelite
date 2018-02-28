@@ -114,7 +114,7 @@ public enum class277 implements Enumerated {
                   if(var17 == null) {
                      class80.intStack[++class80.intStackSize - 1] = 0;
                   } else {
-                     class80.intStack[++class80.intStackSize - 1] = var17.method320().method4375();
+                     class80.intStack[++class80.intStackSize - 1] = var17.method320().bitpack();
                   }
 
                   return 1;
@@ -203,7 +203,7 @@ public enum class277 implements Enumerated {
                         if(var11 == null) {
                            class80.intStack[++class80.intStackSize - 1] = -1;
                         } else {
-                           class80.intStack[++class80.intStackSize - 1] = var11.method4375();
+                           class80.intStack[++class80.intStackSize - 1] = var11.bitpack();
                         }
 
                         return 1;
@@ -328,20 +328,20 @@ public enum class277 implements Enumerated {
                               if(var11 == null) {
                                  class80.intStack[++class80.intStackSize - 1] = -1;
                               } else {
-                                 class80.intStack[++class80.intStackSize - 1] = var11.method4375();
+                                 class80.intStack[++class80.intStackSize - 1] = var11.bitpack();
                               }
 
                               return 1;
                            } else {
-                              class39 var12;
+                              MapIcon var12;
                               if(var0 == 6639) {
                                  var12 = World.method1681().method6016();
                                  if(var12 == null) {
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                  } else {
-                                    class80.intStack[++class80.intStackSize - 1] = var12.field488;
-                                    class80.intStack[++class80.intStackSize - 1] = var12.field490.method4375();
+                                    class80.intStack[++class80.intStackSize - 1] = var12.areaId;
+                                    class80.intStack[++class80.intStackSize - 1] = var12.field490.bitpack();
                                  }
 
                                  return 1;
@@ -351,8 +351,8 @@ public enum class277 implements Enumerated {
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                  } else {
-                                    class80.intStack[++class80.intStackSize - 1] = var12.field488;
-                                    class80.intStack[++class80.intStackSize - 1] = var12.field490.method4375();
+                                    class80.intStack[++class80.intStackSize - 1] = var12.areaId;
+                                    class80.intStack[++class80.intStackSize - 1] = var12.field490.bitpack();
                                  }
 
                                  return 1;
@@ -394,13 +394,13 @@ public enum class277 implements Enumerated {
 
                                     return 1;
                                  } else if(var0 == 6697) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.field556;
+                                    class80.intStack[++class80.intStackSize - 1] = class299.scriptMapIconReference.areaId;
                                     return 1;
                                  } else if(var0 == 6698) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.field554.method4375();
+                                    class80.intStack[++class80.intStackSize - 1] = class299.scriptMapIconReference.field554.bitpack();
                                     return 1;
                                  } else if(var0 == 6699) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.field553.method4375();
+                                    class80.intStack[++class80.intStackSize - 1] = class299.scriptMapIconReference.field553.bitpack();
                                     return 1;
                                  } else {
                                     return 2;

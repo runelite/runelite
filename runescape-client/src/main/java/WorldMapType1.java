@@ -232,7 +232,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
                class89.field1302 = null;
                class54.field605 = null;
                IndexStoreActionHandler.slFlagSprites = null;
-               class33.slArrowSprites = null;
+               MapLabel.slArrowSprites = null;
                BoundingBox3D.slStarSprites = null;
                field406 = null;
                class28.field385 = null;

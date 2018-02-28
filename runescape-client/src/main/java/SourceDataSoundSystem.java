@@ -52,7 +52,7 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
          this.source.start();
          this.size = var1;
       } catch (LineUnavailableException var3) {
-         if(class44.method648(var1) != 1) {
+         if(class44.popcnt(var1) != 1) {
             this.create(class156.nextPowerOfTwo(var1));
          } else {
             this.source = null;

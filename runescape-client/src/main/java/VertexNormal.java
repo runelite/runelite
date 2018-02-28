@@ -345,7 +345,7 @@ public class VertexNormal {
                         }
 
                         class5.method13(false);
-                        class39.method560();
+                        MapIcon.method560();
 
                         for(GraphicsObject var71 = (GraphicsObject)Client.graphicsObjectDeque.getFront(); var71 != null; var71 = (GraphicsObject)Client.graphicsObjectDeque.getNext()) {
                            if(var71.level == class230.plane && !var71.finished) {
@@ -405,7 +405,7 @@ public class VertexNormal {
                               var31 = var36;
                            }
 
-                           class39.cameraX = var25 - var31;
+                           MapIcon.cameraX = var25 - var31;
                            class159.cameraZ = var26 - var32;
                            CombatInfo1.cameraY = var27 - var33;
                            DecorativeObject.cameraPitch = var23;
@@ -418,7 +418,7 @@ public class VertexNormal {
                            var23 = class176.method3421();
                         }
 
-                        var49 = class39.cameraX;
+                        var49 = MapIcon.cameraX;
                         var25 = class159.cameraZ;
                         var26 = CombatInfo1.cameraY;
                         var27 = DecorativeObject.cameraPitch;
@@ -428,7 +428,7 @@ public class VertexNormal {
                            if(Client.field1050[var29]) {
                               var30 = (int)(Math.random() * (double)(Client.field1051[var29] * 2 + 1) - (double)Client.field1051[var29] + Math.sin((double)Client.field889[var29] / 100.0D * (double)Client.field1054[var29]) * (double)Client.field1052[var29]);
                               if(var29 == 0) {
-                                 class39.cameraX += var30;
+                                 MapIcon.cameraX += var30;
                               }
 
                               if(var29 == 1) {
@@ -475,7 +475,7 @@ public class VertexNormal {
                         class45.method681();
                         var31 = Graphics3D.Rasterizer3D_zoom;
                         Graphics3D.Rasterizer3D_zoom = Client.scale;
-                        GameObject.region.draw(class39.cameraX, class159.cameraZ, CombatInfo1.cameraY, DecorativeObject.cameraPitch, class60.cameraYaw, var23);
+                        GameObject.region.draw(MapIcon.cameraX, class159.cameraZ, CombatInfo1.cameraY, DecorativeObject.cameraPitch, class60.cameraYaw, var23);
 
                         while(true) {
                            BoundingBox var50 = (BoundingBox)class7.boundingBoxes.removeLast();
@@ -635,7 +635,7 @@ public class VertexNormal {
                               class271.method4881(var19, var20);
                               ((TextureProvider)Graphics3D.textureLoader).checkTextures(Client.field878);
                               WorldComparator.method66(var19, var20, var21, var22);
-                              class39.cameraX = var49;
+                              MapIcon.cameraX = var49;
                               class159.cameraZ = var25;
                               CombatInfo1.cameraY = var26;
                               DecorativeObject.cameraPitch = var27;
@@ -659,7 +659,7 @@ public class VertexNormal {
                      }
 
                      if(var10.contentType == 1338) {
-                        class47.method734(var10, var12, var13, var11);
+                        MapIconReference.method734(var10, var12, var13, var11);
                         Rasterizer2D.setDrawRegion(var2, var3, var4, var5);
                         continue;
                      }
@@ -941,7 +941,7 @@ public class VertexNormal {
                                  }
 
                                  if(!var10.hasScript) {
-                                    var75 = class47.method733(var75, var10);
+                                    var75 = MapIconReference.method733(var75, var10);
                                  }
 
                                  var66.method5455(var75, var12, var13, var10.width, var10.height, var20, var10.textShadowed?0:-1, var10.field2779, var10.field2847, var10.field2839);
@@ -1121,7 +1121,7 @@ public class VertexNormal {
                                     Font var54 = ClanMemberManager.font_p12full;
                                     String var55 = var10.text;
 
-                                    for(var55 = class47.method733(var55, var10); var55.length() > 0; var20 = var20 + var54.verticalSpace + 1) {
+                                    for(var55 = MapIconReference.method733(var55, var10); var55.length() > 0; var20 = var20 + var54.verticalSpace + 1) {
                                        var49 = var55.indexOf("<br>");
                                        if(var49 != -1) {
                                           var68 = var55.substring(0, var49);
@@ -1158,7 +1158,7 @@ public class VertexNormal {
                                     var55 = var10.text;
                                     var26 = var25 + var54.verticalSpace + 2;
 
-                                    for(var55 = class47.method733(var55, var10); var55.length() > 0; var26 = var26 + var54.verticalSpace + 1) {
+                                    for(var55 = MapIconReference.method733(var55, var10); var55.length() > 0; var26 = var26 + var54.verticalSpace + 1) {
                                        var27 = var55.indexOf("<br>");
                                        if(var27 != -1) {
                                           var68 = var55.substring(0, var27);

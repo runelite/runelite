@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ad")
-public class class39 {
+@Implements("MapIcon")
+public class MapIcon {
    @ObfuscatedName("gj")
    @ObfuscatedGetter(
       intValue = -532701509
@@ -15,7 +17,8 @@ public class class39 {
    @ObfuscatedGetter(
       intValue = 1731237697
    )
-   public final int field488;
+   @Export("areaId")
+   public final int areaId;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lhp;"
@@ -40,7 +43,7 @@ public class class39 {
    @ObfuscatedSignature(
       signature = "Laq;"
    )
-   final class33 field493;
+   final MapLabel field493;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1351679715
@@ -55,12 +58,12 @@ public class class39 {
    @ObfuscatedSignature(
       signature = "(ILhp;Lhp;Laq;)V"
    )
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
-      this.field488 = var1;
+   MapIcon(int var1, Coordinates var2, Coordinates var3, MapLabel var4) {
+      this.areaId = var1;
       this.field491 = var2;
       this.field490 = var3;
       this.field493 = var4;
-      Area var5 = class330.mapAreaType[this.field488];
+      Area var5 = class330.mapAreaType[this.areaId];
       SpritePixels var6 = var5.getMapIcon(false);
       if(var6 != null) {
          this.field496 = var6.width;
@@ -87,7 +90,7 @@ public class class39 {
       garbageValue = "2083885645"
    )
    boolean method549(int var1, int var2) {
-      Area var3 = class330.mapAreaType[this.field488];
+      Area var3 = class330.mapAreaType[this.areaId];
       switch(var3.field3390.field3623) {
       case 0:
          if(var1 > this.field494 - this.field496 && var1 <= this.field494) {

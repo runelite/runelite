@@ -1,12 +1,14 @@
 import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aq")
-public class class33 {
+@Implements("MapLabel")
+public class MapLabel {
    @ObfuscatedName("pp")
    @ObfuscatedGetter(
       intValue = -579582923
@@ -21,7 +23,8 @@ public class class33 {
    @Export("slArrowSprites")
    static IndexedSprite[] slArrowSprites;
    @ObfuscatedName("b")
-   String field431;
+   @Export("text")
+   String text;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -574925645
@@ -36,16 +39,17 @@ public class class33 {
    @ObfuscatedSignature(
       signature = "Ln;"
    )
-   Size field433;
+   @Export("fontSize")
+   Size fontSize;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IILn;)V"
    )
-   class33(String var1, int var2, int var3, Size var4) {
-      this.field431 = var1;
+   MapLabel(String var1, int var2, int var3, Size var4) {
+      this.text = var1;
       this.field436 = var2;
       this.field432 = var3;
-      this.field433 = var4;
+      this.fontSize = var4;
    }
 
    @ObfuscatedName("fe")
@@ -57,17 +61,17 @@ public class class33 {
       int var0 = class157.field2116 * 128 + 64;
       int var1 = Client.field1038 * 128 + 64;
       int var2 = WorldMapType1.getTileHeight(var0, var1, class230.plane) - class224.field2650;
-      if(class39.cameraX < var0) {
-         class39.cameraX = (var0 - class39.cameraX) * DynamicObject.field1425 / 1000 + class39.cameraX + Script.field1412;
-         if(class39.cameraX > var0) {
-            class39.cameraX = var0;
+      if(MapIcon.cameraX < var0) {
+         MapIcon.cameraX = (var0 - MapIcon.cameraX) * DynamicObject.field1425 / 1000 + MapIcon.cameraX + Script.field1412;
+         if(MapIcon.cameraX > var0) {
+            MapIcon.cameraX = var0;
          }
       }
 
-      if(class39.cameraX > var0) {
-         class39.cameraX -= DynamicObject.field1425 * (class39.cameraX - var0) / 1000 + Script.field1412;
-         if(class39.cameraX < var0) {
-            class39.cameraX = var0;
+      if(MapIcon.cameraX > var0) {
+         MapIcon.cameraX -= DynamicObject.field1425 * (MapIcon.cameraX - var0) / 1000 + Script.field1412;
+         if(MapIcon.cameraX < var0) {
+            MapIcon.cameraX = var0;
          }
       }
 
@@ -102,7 +106,7 @@ public class class33 {
       var0 = class131.field1879 * 128 + 64;
       var1 = class304.field3804 * 128 + 64;
       var2 = WorldMapType1.getTileHeight(var0, var1, class230.plane) - AbstractSoundSystem.field1524;
-      int var3 = var0 - class39.cameraX;
+      int var3 = var0 - MapIcon.cameraX;
       int var4 = var2 - class159.cameraZ;
       int var5 = var1 - CombatInfo1.cameraY;
       int var6 = (int)Math.sqrt((double)(var3 * var3 + var5 * var5));

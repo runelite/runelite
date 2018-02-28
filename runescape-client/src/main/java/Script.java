@@ -120,7 +120,7 @@ public class Script extends CacheableNode {
       } else {
          int var0 = 3;
          if(DecorativeObject.cameraPitch < 310) {
-            int var1 = class39.cameraX >> 7;
+            int var1 = MapIcon.cameraX >> 7;
             int var2 = CombatInfo1.cameraY >> 7;
             int var3 = OwnWorldComparator.localPlayer.x >> 7;
             int var4 = OwnWorldComparator.localPlayer.y >> 7;

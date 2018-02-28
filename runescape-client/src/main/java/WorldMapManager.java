@@ -55,7 +55,8 @@ public final class WorldMapManager
    )
    IndexedSprite[] field523;
    @ObfuscatedName("g")
-   final HashMap field515;
+   @Export("mapFonts")
+   final HashMap mapFonts;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1050454945
@@ -85,7 +86,7 @@ public final class WorldMapManager
       this.loading = false;
       this.field513 = new HashMap();
       this.field523 = var1;
-      this.field515 = var2;
+      this.mapFonts = var2;
    }
 
    @ObfuscatedName("b")
@@ -134,14 +135,14 @@ public final class WorldMapManager
             int var14 = var12.field373;
             int var15 = var13 - this.field509.method318();
             int var16 = var14 - this.field509.method355();
-            this.field514[var15][var16] = new class34(var13, var14, this.field509.method309(), this.field515);
+            this.field514[var15][var16] = new class34(var13, var14, this.field509.method309(), this.mapFonts);
             this.field514[var15][var16].method379(var12, this.field509.field534);
          }
 
          for(int var18 = 0; var18 < var17; ++var18) {
             for(int var19 = 0; var19 < var10; ++var19) {
                if(this.field514[var18][var19] == null) {
-                  this.field514[var18][var19] = new class34(this.field509.method318() + var18, this.field509.method355() + var19, this.field509.method309(), this.field515);
+                  this.field514[var18][var19] = new class34(this.field509.method318() + var18, this.field509.method355() + var19, this.field509.method309(), this.mapFonts);
                   this.field514[var18][var19].method494(this.field509.field535, this.field509.field534);
                }
             }
@@ -173,7 +174,8 @@ public final class WorldMapManager
       signature = "(IIIIIIIII)V",
       garbageValue = "1565216278"
    )
-   public final void method564(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   @Export("drawMapRegion")
+   public final void drawMapRegion(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int[] var9 = Rasterizer2D.graphicsPixels;
       int var10 = Rasterizer2D.graphicsPixelsWidth;
       int var11 = Rasterizer2D.graphicsPixelsHeight;
@@ -218,7 +220,8 @@ public final class WorldMapManager
       signature = "(IIIIIIIILjava/util/HashSet;Ljava/util/HashSet;IIZI)V",
       garbageValue = "706420435"
    )
-   public final void method565(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
+   @Export("drawMapIcons")
+   public final void drawMapIcons(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
       class29 var14 = this.method571(var1, var2, var3, var4);
       float var15 = this.method575(var7 - var5, var3 - var1);
       int var16 = (int)(var15 * 64.0F);
@@ -240,7 +243,7 @@ public final class WorldMapManager
       if(var10 != null && var11 > 0) {
          for(var19 = var14.field389; var19 < var14.field389 + var14.field391; ++var19) {
             for(var20 = var14.field388; var20 < var14.field390 + var14.field388; ++var20) {
-               this.field514[var19][var20].method385(var10, var11, var12);
+               this.field514[var19][var20].drawFlashingMapIcons(var10, var11, var12);
             }
          }
       }
@@ -301,7 +304,7 @@ public final class WorldMapManager
                Iterator var11 = var10.iterator();
 
                while(var11.hasNext()) {
-                  class39 var12 = (class39)var11.next();
+                  MapIcon var12 = (MapIcon)var11.next();
                   int var13 = var3 * (var12.field490.worldX - this.field516) / this.field518;
                   int var14 = var4 - (var12.field490.worldY - this.field517) * var4 / this.field507;
                   Rasterizer2D.method5672(var13 + var1, var14 + var2, 2, 16776960, 256);
@@ -419,13 +422,13 @@ public final class WorldMapManager
             Iterator var4 = var3.iterator();
 
             while(var4.hasNext()) {
-               class39 var5 = (class39)var4.next();
-               if(!this.field511.containsKey(Integer.valueOf(var5.field488))) {
+               MapIcon var5 = (MapIcon)var4.next();
+               if(!this.field511.containsKey(Integer.valueOf(var5.areaId))) {
                   LinkedList var6 = new LinkedList();
                   var6.add(var5);
-                  this.field511.put(Integer.valueOf(var5.field488), var6);
+                  this.field511.put(Integer.valueOf(var5.areaId), var6);
                } else {
-                  List var7 = (List)this.field511.get(Integer.valueOf(var5.field488));
+                  List var7 = (List)this.field511.get(Integer.valueOf(var5.areaId));
                   var7.add(var5);
                }
             }

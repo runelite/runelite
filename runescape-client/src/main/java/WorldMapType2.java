@@ -150,10 +150,10 @@ public class WorldMapType2 implements WorldMapSectionBase {
       int var12;
       int var24;
       if(var4) {
-         class299.field3788 = (class47)var2[0];
-         Area var6 = class330.mapAreaType[class299.field3788.field556];
+         class299.scriptMapIconReference = (MapIconReference)var2[0];
+         Area var6 = class330.mapAreaType[class299.scriptMapIconReference.areaId];
          class239 var8 = var0.field752;
-         var9 = var6.field3406;
+         var9 = var6.id;
          var10 = var6.field3397;
          var11 = (var9 << 8) + var8.field2917;
          Script var13 = class2.getScriptByFile(var11, var8);

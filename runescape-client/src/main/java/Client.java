@@ -1565,7 +1565,7 @@ public final class Client extends GameEngine implements class288 {
             LoginPacket.method3436(this);
             this.method1240();
          } else if(gameState == 25) {
-            class47.flush(false);
+            MapIconReference.flush(false);
             field862 = 0;
             boolean var46 = true;
 
@@ -1666,7 +1666,7 @@ public final class Client extends GameEngine implements class288 {
                   }
 
                   class79.field1210.clear();
-                  class47.flush(true);
+                  MapIconReference.flush(true);
                   int var10;
                   int var11;
                   int var12;
@@ -1701,7 +1701,7 @@ public final class Client extends GameEngine implements class288 {
                         }
                      }
 
-                     class47.flush(true);
+                     MapIconReference.flush(true);
 
                      for(var34 = 0; var34 < var33; ++var34) {
                         byte[] var35 = KeyFocusListener.field589[var34];
@@ -1775,7 +1775,7 @@ public final class Client extends GameEngine implements class288 {
                               }
                            }
 
-                           class47.flush(true);
+                           MapIconReference.flush(true);
                            var34 = 0;
 
                            while(true) {
@@ -1912,11 +1912,11 @@ public final class Client extends GameEngine implements class288 {
                      }
                   }
 
-                  class47.flush(true);
+                  MapIconReference.flush(true);
                   class184.method3455();
                   class45.method681();
                   WorldMapManager.method611(GameObject.region, collisionMaps);
-                  class47.flush(true);
+                  MapIconReference.flush(true);
                   var34 = class61.field686;
                   if(var34 > class230.plane) {
                      var34 = class230.plane;
@@ -2366,7 +2366,7 @@ public final class Client extends GameEngine implements class288 {
 
                   if(var37 != null) {
                      var45 = new File(var37, "test.dat");
-                     if(!class47.method730(var45, true)) {
+                     if(!MapIconReference.method730(var45, true)) {
                         var37 = null;
                      }
                   }
@@ -2377,7 +2377,7 @@ public final class Client extends GameEngine implements class288 {
                   for(int var23 = 0; var23 < class156.field2108.length; ++var23) {
                      for(var10 = 0; var10 < GrandExchangeEvents.cacheLocations.length; ++var10) {
                         File var41 = new File(GrandExchangeEvents.cacheLocations[var10] + class156.field2108[var23] + File.separatorChar + "oldschool" + File.separatorChar);
-                        if(var41.exists() && class47.method730(new File(var41, "test.dat"), true)) {
+                        if(var41.exists() && MapIconReference.method730(new File(var41, "test.dat"), true)) {
                            var37 = var41.toString();
                            var20 = true;
                            break label245;
@@ -2448,7 +2448,7 @@ public final class Client extends GameEngine implements class288 {
 
                   for(var7 = 0; var7 < var44.length; ++var7) {
                      File var38 = var44[var7];
-                     if(!class47.method730(var38, false)) {
+                     if(!MapIconReference.method730(var38, false)) {
                         ++var3;
                         continue label270;
                      }
@@ -3131,7 +3131,7 @@ public final class Client extends GameEngine implements class288 {
                   var2.offset = 0;
                   ((class168)var1).vmethod3321(var2.payload, 0, field863.packetLength);
                   field912.method5601();
-                  class39.method557();
+                  MapIcon.method557();
                   WorldMapManager.initializeGPI(var2);
                   class152.field2090 = -1;
                   MouseRecorder.xteaChanged(false, var2);
@@ -3785,7 +3785,7 @@ public final class Client extends GameEngine implements class288 {
                                              }
 
                                              if(field983) {
-                                                class33.method375();
+                                                MapLabel.method375();
                                              }
 
                                              for(var4 = 0; var4 < 5; ++var4) {
@@ -4767,9 +4767,9 @@ public final class Client extends GameEngine implements class288 {
                Script.field1412 = var3.readUnsignedByte();
                DynamicObject.field1425 = var3.readUnsignedByte();
                if(DynamicObject.field1425 >= 100) {
-                  class39.cameraX = class157.field2116 * 128 + 64;
+                  MapIcon.cameraX = class157.field2116 * 128 + 64;
                   CombatInfo1.cameraY = field1038 * 128 + 64;
-                  class159.cameraZ = WorldMapType1.getTileHeight(class39.cameraX, CombatInfo1.cameraY, class230.plane) - class224.field2650;
+                  class159.cameraZ = WorldMapType1.getTileHeight(MapIcon.cameraX, CombatInfo1.cameraY, class230.plane) - class224.field2650;
                }
 
                var1.serverPacket = null;
@@ -5250,13 +5250,13 @@ public final class Client extends GameEngine implements class288 {
                class131.field1879 = var3.readUnsignedByte();
                class304.field3804 = var3.readUnsignedByte();
                AbstractSoundSystem.field1524 = var3.readUnsignedShort();
-               class33.field435 = var3.readUnsignedByte();
+               MapLabel.field435 = var3.readUnsignedByte();
                MouseRecorder.field759 = var3.readUnsignedByte();
                if(MouseRecorder.field759 >= 100) {
                   var23 = class131.field1879 * 128 + 64;
                   var5 = class304.field3804 * 128 + 64;
                   var25 = WorldMapType1.getTileHeight(var23, var5, class230.plane) - AbstractSoundSystem.field1524;
-                  var26 = var23 - class39.cameraX;
+                  var26 = var23 - MapIcon.cameraX;
                   var8 = var25 - class159.cameraZ;
                   var9 = var5 - CombatInfo1.cameraY;
                   var29 = (int)Math.sqrt((double)(var9 * var9 + var26 * var26));
@@ -5406,9 +5406,9 @@ public final class Client extends GameEngine implements class288 {
                   if(var11.field3293 != -1) {
                      var42 = var11.field3293;
                      var16 = "<img=" + var42 + ">";
-                     class48.addChatMessage(9, var16 + var55, var34, class47.method728(var35));
+                     class48.addChatMessage(9, var16 + var55, var34, MapIconReference.method728(var35));
                   } else {
-                     class48.addChatMessage(9, var55, var34, class47.method728(var35));
+                     class48.addChatMessage(9, var55, var34, MapIconReference.method728(var35));
                   }
                }
 

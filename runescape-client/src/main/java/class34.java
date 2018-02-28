@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -54,7 +55,8 @@ public class class34 {
    @ObfuscatedName("d")
    HashMap field449;
    @ObfuscatedName("v")
-   final HashMap field450;
+   @Export("mapFonts")
+   final HashMap mapFonts;
 
    static {
       field451 = new Coordinates();
@@ -67,7 +69,7 @@ public class class34 {
       this.field440 = new LinkedList();
       this.field449 = new HashMap();
       this.field444 = var3 | -16777216;
-      this.field450 = var4;
+      this.mapFonts = var4;
    }
 
    @ObfuscatedName("b")
@@ -147,7 +149,7 @@ public class class34 {
                            var16 = new Coordinates(var9 + var17.field384, var17.field383 * 64 + var6 + var17.method661() * 8, var7 + var17.field373 * 64 + var17.method662() * 8);
                         }
 
-                        class39 var18 = new class39(var14.field3406, var16, var15, this.method448(var14));
+                        MapIcon var18 = new MapIcon(var14.id, var16, var15, this.method448(var14));
                         this.field449.put(var8, var18);
                         continue label57;
                      }
@@ -170,7 +172,7 @@ public class class34 {
       while(var2.hasNext()) {
          class25 var3 = (class25)var2.next();
          if(var3.field342.worldX >> 6 == this.field447 && var3.field342.worldY >> 6 == this.field437) {
-            class39 var4 = new class39(var3.field347, var3.field342, var3.field342, this.method412(var3.field347));
+            MapIcon var4 = new MapIcon(var3.field347, var3.field342, var3.field342, this.method412(var3.field347));
             this.field440.add(var4);
          }
       }
@@ -210,8 +212,8 @@ public class class34 {
          var4 = new HashSet();
       }
 
-      this.method402(var1, var2, var4, var3);
-      this.method406(var1, var2, var4, var3);
+      this.drawNonLinkMapIcons(var1, var2, var4, var3);
+      this.drawMapLinks(var1, var2, var4, var3);
    }
 
    @ObfuscatedName("y")
@@ -219,13 +221,14 @@ public class class34 {
       signature = "(Ljava/util/HashSet;III)V",
       garbageValue = "926231148"
    )
-   void method385(HashSet var1, int var2, int var3) {
+   @Export("drawFlashingMapIcons")
+   void drawFlashingMapIcons(HashSet var1, int var2, int var3) {
       Iterator var4 = this.field449.values().iterator();
 
       while(var4.hasNext()) {
-         class39 var5 = (class39)var4.next();
-         if(var1.contains(Integer.valueOf(var5.field488))) {
-            Area var6 = class330.mapAreaType[var5.field488];
+         MapIcon var5 = (MapIcon)var4.next();
+         if(var1.contains(Integer.valueOf(var5.areaId))) {
+            Area var6 = class330.mapAreaType[var5.areaId];
             this.method425(var6, var5.field494, var5.field495, var2, var3);
          }
       }
@@ -660,7 +663,8 @@ public class class34 {
       signature = "(IILjava/util/HashSet;II)V",
       garbageValue = "-1044872651"
    )
-   void method402(int var1, int var2, HashSet var3, int var4) {
+   @Export("drawNonLinkMapIcons")
+   void drawNonLinkMapIcons(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       float var6 = var5 / 2.0F;
       Iterator var7 = this.field449.entrySet().iterator();
@@ -670,11 +674,11 @@ public class class34 {
          Coordinates var9 = (Coordinates)var8.getKey();
          int var10 = (int)((float)var1 + var5 * (float)var9.worldX - var6);
          int var11 = (int)((float)(var2 + var4) - (float)var9.worldY * var5 - var6);
-         class39 var12 = (class39)var8.getValue();
+         MapIcon var12 = (MapIcon)var8.getValue();
          if(var12 != null) {
             var12.field494 = var10;
             var12.field495 = var11;
-            Area var13 = class330.mapAreaType[var12.field488];
+            Area var13 = class330.mapAreaType[var12.areaId];
             if(!var3.contains(Integer.valueOf(var13.method4741()))) {
                this.method403(var12, var10, var11, var5);
             }
@@ -692,8 +696,8 @@ public class class34 {
       Iterator var4 = this.field440.iterator();
 
       while(var4.hasNext()) {
-         class39 var5 = (class39)var4.next();
-         Area var6 = class330.mapAreaType[var5.field488];
+         MapIcon var5 = (MapIcon)var4.next();
+         Area var6 = class330.mapAreaType[var5.areaId];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4741()))) {
             this.method425(var6, var5.field494, var5.field495, var2, var3);
          }
@@ -723,8 +727,8 @@ public class class34 {
       signature = "(Lad;IIFI)V",
       garbageValue = "2130030632"
    )
-   void method403(class39 var1, int var2, int var3, float var4) {
-      Area var5 = class330.mapAreaType[var1.field488];
+   void method403(MapIcon var1, int var2, int var3, float var4) {
+      Area var5 = class330.mapAreaType[var1.areaId];
       this.method404(var5, var2, var3);
       this.method405(var1, var5, var2, var3, var4);
    }
@@ -749,11 +753,11 @@ public class class34 {
       signature = "(Lad;Ljz;IIFI)V",
       garbageValue = "868818062"
    )
-   void method405(class39 var1, Area var2, int var3, int var4, float var5) {
+   void method405(MapIcon var1, Area var2, int var3, int var4, float var5) {
       if(var1.field493 != null) {
-         if(var1.field493.field433.method192(var5)) {
-            Font var6 = (Font)this.field450.get(var1.field493.field433);
-            var6.method5455(var1.field493.field431, var3 - var1.field493.field436 / 2, var4, var1.field493.field436, var1.field493.field432, -16777216 | var2.field3396, 0, 1, 0, var6.verticalSpace / 2);
+         if(var1.field493.fontSize.method192(var5)) {
+            Font var6 = (Font)this.mapFonts.get(var1.field493.fontSize);
+            var6.method5455(var1.field493.text, var3 - var1.field493.field436 / 2, var4, var1.field493.field436, var1.field493.field432, -16777216 | var2.field3396, 0, 1, 0, var6.verticalSpace / 2);
          }
       }
    }
@@ -763,17 +767,18 @@ public class class34 {
       signature = "(IILjava/util/HashSet;II)V",
       garbageValue = "-1967729716"
    )
-   void method406(int var1, int var2, HashSet var3, int var4) {
+   @Export("drawMapLinks")
+   void drawMapLinks(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       Iterator var6 = this.field440.iterator();
 
       while(var6.hasNext()) {
-         class39 var7 = (class39)var6.next();
+         MapIcon var7 = (MapIcon)var6.next();
          int var8 = var7.field490.worldX % 64;
          int var9 = var7.field490.worldY % 64;
          var7.field494 = (int)((float)var1 + var5 * (float)var8);
          var7.field495 = (int)(var5 * (float)(63 - var9) + (float)var2);
-         if(!var3.contains(Integer.valueOf(var7.field488))) {
+         if(!var3.contains(Integer.valueOf(var7.areaId))) {
             this.method403(var7, var7.field494, var7.field495, var5);
          }
       }
@@ -825,10 +830,10 @@ public class class34 {
                class31 var8 = var6[var7];
                Area var9 = this.method435(var8.field412);
                if(var9 != null) {
-                  class39 var10 = (class39)this.field449.get(field451);
+                  MapIcon var10 = (MapIcon)this.field449.get(field451);
                   if(var10 != null) {
-                     if(var9.field3406 != var10.field488) {
-                        class39 var16 = new class39(var9.field3406, var10.field491, var10.field490, this.method448(var9));
+                     if(var9.id != var10.areaId) {
+                        MapIcon var16 = new MapIcon(var9.id, var10.field491, var10.field490, this.method448(var9));
                         this.field449.put(new Coordinates(field451), var16);
                         var10 = var16;
                      }
@@ -856,7 +861,7 @@ public class class34 {
                   }
 
                   if(var12 != null) {
-                     var10 = new class39(var9.field3406, var12, var11, this.method448(var9));
+                     var10 = new MapIcon(var9.id, var12, var11, this.method448(var9));
                      this.field449.put(new Coordinates(field451), var10);
                      return;
                   }
@@ -922,7 +927,7 @@ public class class34 {
       signature = "(II)Laq;",
       garbageValue = "133726924"
    )
-   class33 method412(int var1) {
+	 MapLabel method412(int var1) {
       Area var2 = class330.mapAreaType[var1];
       return this.method448(var2);
    }
@@ -932,13 +937,13 @@ public class class34 {
       signature = "(Ljz;B)Laq;",
       garbageValue = "1"
    )
-   class33 method448(Area var1) {
-      if(var1.name != null && this.field450 != null && this.field450.get(Size.field336) != null) {
+	 MapLabel method448(Area var1) {
+      if(var1.name != null && this.mapFonts != null && this.mapFonts.get(Size.field336) != null) {
          Size var2 = Size.method193(var1.field3399);
          if(var2 == null) {
             return null;
          } else {
-            Font var3 = (Font)this.field450.get(var2);
+            Font var3 = (Font)this.mapFonts.get(var2);
             if(var3 == null) {
                return null;
             } else {
@@ -957,7 +962,7 @@ public class class34 {
                   }
                }
 
-               return new class33(var1.name, var7, var6, var2);
+               return new MapLabel(var1.name, var7, var6, var2);
             }
          }
       } else {
@@ -976,9 +981,9 @@ public class class34 {
          if(var4 < var3 + var1 && var5 < var3 + var2) {
             Iterator var7 = this.field449.values().iterator();
 
-            class39 var8;
+            MapIcon var8;
             while(var7.hasNext()) {
-               var8 = (class39)var7.next();
+               var8 = (MapIcon)var7.next();
                if(var8.method558(var4, var5)) {
                   var6.add(var8);
                }
@@ -987,7 +992,7 @@ public class class34 {
             var7 = this.field440.iterator();
 
             while(var7.hasNext()) {
-               var8 = (class39)var7.next();
+               var8 = (MapIcon)var7.next();
                if(var8.method558(var4, var5)) {
                   var6.add(var8);
                }

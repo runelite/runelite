@@ -130,7 +130,7 @@ public class VarPlayerType extends CacheableNode {
             }
          }
 
-         class33.updateNpcs(var0, var1);
+         MapLabel.updateNpcs(var0, var1);
          class54.method809(var1);
 
          int var12;

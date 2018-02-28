@@ -3,17 +3,20 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aw")
-public class class47 {
+@Implements("MapIconReference")
+public class MapIconReference {
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1163775563
    )
-   public int field556;
+   @Export("areaId")
+   public int areaId;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lhp;"
@@ -28,8 +31,8 @@ public class class47 {
    @ObfuscatedSignature(
       signature = "(ILhp;Lhp;)V"
    )
-   public class47(int var1, Coordinates var2, Coordinates var3) {
-      this.field556 = var1;
+   public MapIconReference(int var1, Coordinates var2, Coordinates var3) {
+      this.areaId = var1;
       this.field554 = var2;
       this.field553 = var3;
    }
