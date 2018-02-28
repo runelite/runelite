@@ -212,7 +212,7 @@ public class class34 {
       }
 
       this.method402(var1, var2, var4, var3);
-      this.method406(var1, var2, var4, var3);
+      this.drawMapLinks(var1, var2, var4, var3);
    }
 
    @ObfuscatedName("y")
@@ -765,7 +765,8 @@ public class class34 {
       signature = "(IILjava/util/HashSet;II)V",
       garbageValue = "-1967729716"
    )
-   void method406(int var1, int var2, HashSet var3, int var4) {
+   @Export("drawMapLinks")
+   void drawMapLinks(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       Iterator var6 = this.field440.iterator();
 
