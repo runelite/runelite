@@ -422,12 +422,12 @@ public final class WorldMapManager
 
             while(var4.hasNext()) {
                MapIcon var5 = (MapIcon)var4.next();
-               if(!this.field511.containsKey(Integer.valueOf(var5.field488))) {
+               if(!this.field511.containsKey(Integer.valueOf(var5.areaId))) {
                   LinkedList var6 = new LinkedList();
                   var6.add(var5);
-                  this.field511.put(Integer.valueOf(var5.field488), var6);
+                  this.field511.put(Integer.valueOf(var5.areaId), var6);
                } else {
-                  List var7 = (List)this.field511.get(Integer.valueOf(var5.field488));
+                  List var7 = (List)this.field511.get(Integer.valueOf(var5.areaId));
                   var7.add(var5);
                }
             }

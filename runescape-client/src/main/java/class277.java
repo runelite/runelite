@@ -340,7 +340,7 @@ public enum class277 implements Enumerated {
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                  } else {
-                                    class80.intStack[++class80.intStackSize - 1] = var12.field488;
+                                    class80.intStack[++class80.intStackSize - 1] = var12.areaId;
                                     class80.intStack[++class80.intStackSize - 1] = var12.field490.bitpack();
                                  }
 
@@ -351,7 +351,7 @@ public enum class277 implements Enumerated {
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                     class80.intStack[++class80.intStackSize - 1] = -1;
                                  } else {
-                                    class80.intStack[++class80.intStackSize - 1] = var12.field488;
+                                    class80.intStack[++class80.intStackSize - 1] = var12.areaId;
                                     class80.intStack[++class80.intStackSize - 1] = var12.field490.bitpack();
                                  }
 

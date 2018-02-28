@@ -289,7 +289,7 @@ public class RenderOverview {
                var13 = (MapIcon)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
-               var15 = new MapIconReference(var13.field488, var13.field491, var13.field490);
+               var15 = new MapIconReference(var13.areaId, var13.field491, var13.field490);
                var14.method1134(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                if(this.field3945.contains(var13)) {
                   var14.method1130(class239.field2922);
@@ -304,7 +304,7 @@ public class RenderOverview {
                var13 = (MapIcon)var12.next();
                if(!var11.contains(var13)) {
                   var14 = new ScriptEvent();
-                  var15 = new MapIconReference(var13.field488, var13.field491, var13.field490);
+                  var15 = new MapIconReference(var13.areaId, var13.field491, var13.field490);
                   var14.method1134(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                   var14.method1130(class239.field2921);
                   class194.method3791(var14);
@@ -1029,12 +1029,12 @@ public class RenderOverview {
                }
 
                MapIcon var11 = (MapIcon)var10.next();
-               Area var12 = class330.mapAreaType[var11.field488];
+               Area var12 = class330.mapAreaType[var11.areaId];
                var13 = false;
 
                for(int var14 = this.field3937.length - 1; var14 >= 0; --var14) {
                   if(var12.field3389[var14] != null) {
-                     class21.addMenuEntry(var12.field3389[var14], var12.field3400, this.field3937[var14], var11.field488, var11.field491.bitpack(), var11.field490.bitpack());
+                     class21.addMenuEntry(var12.field3389[var14], var12.field3400, this.field3937[var14], var11.areaId, var11.field491.bitpack(), var11.field490.bitpack());
                      var13 = true;
                   }
                }

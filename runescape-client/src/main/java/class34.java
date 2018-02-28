@@ -226,8 +226,8 @@ public class class34 {
 
       while(var4.hasNext()) {
          MapIcon var5 = (MapIcon)var4.next();
-         if(var1.contains(Integer.valueOf(var5.field488))) {
-            Area var6 = class330.mapAreaType[var5.field488];
+         if(var1.contains(Integer.valueOf(var5.areaId))) {
+            Area var6 = class330.mapAreaType[var5.areaId];
             this.method425(var6, var5.field494, var5.field495, var2, var3);
          }
       }
@@ -677,7 +677,7 @@ public class class34 {
          if(var12 != null) {
             var12.field494 = var10;
             var12.field495 = var11;
-            Area var13 = class330.mapAreaType[var12.field488];
+            Area var13 = class330.mapAreaType[var12.areaId];
             if(!var3.contains(Integer.valueOf(var13.method4741()))) {
                this.method403(var12, var10, var11, var5);
             }
@@ -696,7 +696,7 @@ public class class34 {
 
       while(var4.hasNext()) {
          MapIcon var5 = (MapIcon)var4.next();
-         Area var6 = class330.mapAreaType[var5.field488];
+         Area var6 = class330.mapAreaType[var5.areaId];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4741()))) {
             this.method425(var6, var5.field494, var5.field495, var2, var3);
          }
@@ -727,7 +727,7 @@ public class class34 {
       garbageValue = "2130030632"
    )
    void method403(MapIcon var1, int var2, int var3, float var4) {
-      Area var5 = class330.mapAreaType[var1.field488];
+      Area var5 = class330.mapAreaType[var1.areaId];
       this.method404(var5, var2, var3);
       this.method405(var1, var5, var2, var3, var4);
    }
@@ -777,7 +777,7 @@ public class class34 {
          int var9 = var7.field490.worldY % 64;
          var7.field494 = (int)((float)var1 + var5 * (float)var8);
          var7.field495 = (int)(var5 * (float)(63 - var9) + (float)var2);
-         if(!var3.contains(Integer.valueOf(var7.field488))) {
+         if(!var3.contains(Integer.valueOf(var7.areaId))) {
             this.method403(var7, var7.field494, var7.field495, var5);
          }
       }
@@ -831,7 +831,7 @@ public class class34 {
                if(var9 != null) {
                   MapIcon var10 = (MapIcon)this.field449.get(field451);
                   if(var10 != null) {
-                     if(var9.id != var10.field488) {
+                     if(var9.id != var10.areaId) {
                         MapIcon var16 = new MapIcon(var9.id, var10.field491, var10.field490, this.method448(var9));
                         this.field449.put(new Coordinates(field451), var16);
                         var10 = var16;
