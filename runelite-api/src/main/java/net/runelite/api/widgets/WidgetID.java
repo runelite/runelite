@@ -33,6 +33,7 @@ public class WidgetID
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int EQUIPMENT_GROUP_ID = 387;
+	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
 	public static final int PESTRCONTROL_GROUP_ID = 408;
@@ -46,6 +47,8 @@ public class WidgetID
 	public static final int PRAYER_GROUP_ID = 541;
 	public static final int SHOP_GROUP_ID = 300;
 	public static final int SHOP_INVENTORY_GROUP_ID = 301;
+	public static final int GUIDE_PRICES_GROUP_ID = 464;
+	public static final int GUIDE_PRICES_INVENTORY_GROUP_ID = 238;
 	public static final int COMBAT_GROUP_ID = 593;
 	public static final int DIALOG_NPC_GROUP_ID = 231;
 	public static final int SLAYER_REWARDS_GROUP_ID = 426;
@@ -144,6 +147,12 @@ public class WidgetID
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
+	static class GuidePrices
+	{
+		static final int ITEM_CONTAINER = 2;
+		static final int INVENTORY_ITEM_CONTAINER = 0;
+	}
+
 	static class Equipment
 	{
 		static final int HELMET = 6;
@@ -157,6 +166,7 @@ public class WidgetID
 		static final int BOOTS = 14;
 		static final int RING = 15;
 		static final int AMMO = 16;
+		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
 	static class Cluescroll
