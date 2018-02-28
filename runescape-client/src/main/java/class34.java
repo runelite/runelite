@@ -754,8 +754,8 @@ public class class34 {
    )
    void method405(MapIcon var1, Area var2, int var3, int var4, float var5) {
       if(var1.field493 != null) {
-         if(var1.field493.field433.method192(var5)) {
-            Font var6 = (Font)this.field450.get(var1.field493.field433);
+         if(var1.field493.fontSize.method192(var5)) {
+            Font var6 = (Font)this.field450.get(var1.field493.fontSize);
             var6.method5455(var1.field493.field431, var3 - var1.field493.field436 / 2, var4, var1.field493.field436, var1.field493.field432, -16777216 | var2.field3396, 0, 1, 0, var6.verticalSpace / 2);
          }
       }

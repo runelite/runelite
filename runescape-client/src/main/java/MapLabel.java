@@ -38,7 +38,8 @@ public class MapLabel {
    @ObfuscatedSignature(
       signature = "Ln;"
    )
-   Size field433;
+   @Export("fontSize")
+   Size fontSize;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IILn;)V"
@@ -47,7 +48,7 @@ public class MapLabel {
       this.field431 = var1;
       this.field436 = var2;
       this.field432 = var3;
-      this.field433 = var4;
+      this.fontSize = var4;
    }
 
    @ObfuscatedName("fe")
