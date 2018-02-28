@@ -27,6 +27,8 @@ package net.runelite.client.plugins.cannon;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -77,6 +79,9 @@ public class CannonPlugin extends Plugin
 	private CannonOverlay cannonOverlay;
 
 	@Inject
+	private CannonUiOverlay cannonUiOverlay;
+
+	@Inject
 	private CannonConfig config;
 
 	@Inject
@@ -89,9 +94,9 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return cannonOverlay;
+		return Arrays.asList(cannonOverlay, cannonUiOverlay);
 	}
 
 	@Override
