@@ -144,6 +144,11 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (!event.getMenuOption().equals("Examine"))
+		{
+			return;
+		}
+
 		ExamineType type;
 		int id;
 		switch (event.getMenuAction())
