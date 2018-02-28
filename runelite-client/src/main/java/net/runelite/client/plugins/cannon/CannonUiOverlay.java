@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,47 @@
  */
 package net.runelite.client.plugins.cannon;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-@ConfigGroup(
-	keyName = "cannon",
-	name = "Cannon",
-	description = "Configuration for the Cannon plugin"
-)
-public interface CannonConfig extends Config
+class CannonUiOverlay extends Overlay
 {
-	@ConfigItem(
-		keyName = "showEmptyCannonNotification",
-		name = "Empty cannon notification",
-		description = "Configures whether to notify you that the cannon is empty"
-	)
-	default boolean showEmptyCannonNotification()
+	private static final int COMPONENT_WIDTH = 40;
+	
+	private final CannonConfig config;
+	private final CannonPlugin plugin;
+	private final PanelComponent panelComponent = new PanelComponent();
+
+	@Inject
+	CannonUiOverlay(CannonConfig config, CannonPlugin plugin)
 	{
-		return true;
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		this.config = config;
+		this.plugin = plugin;
 	}
 
-	@ConfigItem(
-		keyName = "showOverlay",
-		name = "Show the cannonballs left overlay",
-		description = "Configures whether to show the cannonballs in an overlay"
-	)
-	default boolean showAmountOnScreen()
+	@Override
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		return false;
+		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
+		{
+			return null;
+		}
+
+		if (!config.showAmountOnScreen())
+		{
+			return null;
+		}
+
+		panelComponent.setTitleColor(plugin.getStateColor());
+		panelComponent.setTitle(String.valueOf(plugin.getCballsLeft()));
+		panelComponent.setWidth(COMPONENT_WIDTH);
+
+		return panelComponent.render(graphics, parent);
 	}
 }
