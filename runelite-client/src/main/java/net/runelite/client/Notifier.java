@@ -30,14 +30,19 @@ import com.google.inject.Inject;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.util.OSType;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.OSType;
 
 @Singleton
 @Slf4j
@@ -53,14 +58,23 @@ public class Notifier
 	private final String appName;
 	private final RuneLiteConfig runeLiteConfig;
 	private final Provider<ClientUI> clientUI;
+	private final ScheduledExecutorService executorService;
+	private final Path notifyIconPath;
 
 	@Inject
-	private Notifier(final Provider<ClientUI> clientUI, final RuneLiteConfig runeliteConfig, final RuneLiteProperties
-		runeLiteProperties)
+	private Notifier(
+			final Provider<ClientUI> clientUI,
+			final RuneLiteConfig runeliteConfig,
+			final RuneLiteProperties runeLiteProperties,
+			final ScheduledExecutorService executorService)
 	{
 		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
+		this.executorService = executorService;
+
+		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
+		storeIcon();
 	}
 
 	public void notify(String message)
@@ -150,11 +164,24 @@ public class Notifier
 		commands.add("notify-send");
 		commands.add(title);
 		commands.add(message);
+		commands.add("-i");
+		commands.add(SHELL_ESCAPE.escape(notifyIconPath.toAbsolutePath().toString()));
 		commands.add("-u");
 		commands.add(toUrgency(type));
 		commands.add("-t");
 		commands.add(String.valueOf(DEFAULT_TIMEOUT));
-		sendCommand(commands);
+
+		executorService.submit(() ->
+		{
+			final boolean success = sendCommand(commands)
+					.map(process -> process.exitValue() == 0)
+					.orElse(false);
+
+			if (!success)
+			{
+				sendTrayNotification(title, message, type);
+			}
+		});
 	}
 
 	private void sendMacNotification(
@@ -189,17 +216,34 @@ public class Notifier
 		sendCommand(commands);
 	}
 
-	private void sendCommand(final List<String> commands)
+	private Optional<Process> sendCommand(final List<String> commands)
 	{
 		try
 		{
-			new ProcessBuilder(commands.toArray(new String[commands.size()]))
+			return Optional.of(new ProcessBuilder(commands.toArray(new String[commands.size()]))
 				.redirectErrorStream(true)
-				.start();
+				.start());
 		}
 		catch (IOException ex)
 		{
 			log.warn(null, ex);
+		}
+
+		return Optional.empty();
+	}
+
+	private void storeIcon()
+	{
+		if (OSType.getOSType() == OSType.Linux && !Files.exists(notifyIconPath))
+		{
+			try (InputStream stream = Notifier.class.getResourceAsStream("/runelite.png"))
+			{
+				Files.copy(stream, notifyIconPath);
+			}
+			catch (IOException ex)
+			{
+				log.warn(null, ex);
+			}
 		}
 	}
 
