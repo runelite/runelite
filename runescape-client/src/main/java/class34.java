@@ -55,7 +55,8 @@ public class class34 {
    @ObfuscatedName("d")
    HashMap field449;
    @ObfuscatedName("v")
-   final HashMap field450;
+   @Export("mapFonts")
+   final HashMap mapFonts;
 
    static {
       field451 = new Coordinates();
@@ -68,7 +69,7 @@ public class class34 {
       this.field440 = new LinkedList();
       this.field449 = new HashMap();
       this.field444 = var3 | -16777216;
-      this.field450 = var4;
+      this.mapFonts = var4;
    }
 
    @ObfuscatedName("b")
@@ -755,7 +756,7 @@ public class class34 {
    void method405(MapIcon var1, Area var2, int var3, int var4, float var5) {
       if(var1.field493 != null) {
          if(var1.field493.fontSize.method192(var5)) {
-            Font var6 = (Font)this.field450.get(var1.field493.fontSize);
+            Font var6 = (Font)this.mapFonts.get(var1.field493.fontSize);
             var6.method5455(var1.field493.field431, var3 - var1.field493.field436 / 2, var4, var1.field493.field436, var1.field493.field432, -16777216 | var2.field3396, 0, 1, 0, var6.verticalSpace / 2);
          }
       }
@@ -937,12 +938,12 @@ public class class34 {
       garbageValue = "1"
    )
 	 MapLabel method448(Area var1) {
-      if(var1.name != null && this.field450 != null && this.field450.get(Size.field336) != null) {
+      if(var1.name != null && this.mapFonts != null && this.mapFonts.get(Size.field336) != null) {
          Size var2 = Size.method193(var1.field3399);
          if(var2 == null) {
             return null;
          } else {
-            Font var3 = (Font)this.field450.get(var2);
+            Font var3 = (Font)this.mapFonts.get(var2);
             if(var3 == null) {
                return null;
             } else {
