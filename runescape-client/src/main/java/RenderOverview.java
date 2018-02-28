@@ -108,7 +108,8 @@ public class RenderOverview {
    @Export("worldMapZoom")
    float worldMapZoom;
    @ObfuscatedName("n")
-   float field3948;
+   @Export("worldMapZoomTarget")
+   float worldMapZoomTarget;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -80031077
@@ -335,8 +336,8 @@ public class RenderOverview {
       this.field3956 = var1;
       this.field3932 = var2;
       if(var3 && !this.method6053()) {
-         this.worldMapX -= (int)((float)var5 / this.field3948);
-         this.worldMapY += (int)((float)var6 / this.field3948);
+         this.worldMapX -= (int)((float)var5 / this.worldMapZoomTarget);
+         this.worldMapY += (int)((float)var6 / this.worldMapZoomTarget);
       }
 
    }
@@ -376,12 +377,12 @@ public class RenderOverview {
       garbageValue = "-62"
    )
    void method5968() {
-      if(this.worldMapZoom < this.field3948) {
-         this.worldMapZoom = Math.min(this.field3948, this.worldMapZoom / 30.0F + this.worldMapZoom);
+      if(this.worldMapZoom < this.worldMapZoomTarget) {
+         this.worldMapZoom = Math.min(this.worldMapZoomTarget, this.worldMapZoom / 30.0F + this.worldMapZoom);
       }
 
-      if(this.worldMapZoom > this.field3948) {
-         this.worldMapZoom = Math.max(this.field3948, this.worldMapZoom - this.worldMapZoom / 30.0F);
+      if(this.worldMapZoom > this.worldMapZoomTarget) {
+         this.worldMapZoom = Math.max(this.worldMapZoomTarget, this.worldMapZoom - this.worldMapZoom / 30.0F);
       }
 
    }
@@ -562,7 +563,7 @@ public class RenderOverview {
          this.field3960 = -1;
          this.field3946 = -1;
          this.worldMapZoom = this.method5984(this.worldMapData.method317());
-         this.field3948 = this.worldMapZoom;
+         this.worldMapZoomTarget = this.worldMapZoom;
          this.field3968 = null;
          this.field3969 = null;
          this.worldMapManager.method566();
@@ -655,7 +656,7 @@ public class RenderOverview {
       garbageValue = "1205"
    )
    public void method5982(int var1) {
-      this.field3948 = this.method5984(var1);
+      this.worldMapZoomTarget = this.method5984(var1);
    }
 
    @ObfuscatedName("ao")
@@ -688,7 +689,7 @@ public class RenderOverview {
       garbageValue = "41291512"
    )
    public int method5985() {
-      return 1.0D == (double)this.field3948?25:((double)this.field3948 == 1.5D?37:((double)this.field3948 == 2.0D?50:(3.0D == (double)this.field3948?75:((double)this.field3948 == 4.0D?100:200))));
+      return 1.0D == (double)this.worldMapZoomTarget ?25:((double)this.worldMapZoomTarget == 1.5D?37:((double)this.worldMapZoomTarget == 2.0D?50:(3.0D == (double)this.worldMapZoomTarget ?75:((double)this.worldMapZoomTarget == 4.0D?100:200))));
    }
 
    @ObfuscatedName("ah")
