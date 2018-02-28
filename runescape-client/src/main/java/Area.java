@@ -27,7 +27,8 @@ public class Area extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1686133665
    )
-   public final int field3406;
+   @Export("id")
+   public final int id;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 199304021
@@ -114,7 +115,7 @@ public class Area extends CacheableNode {
       this.field3390 = class277.field3627;
       this.field3407 = class259.field3380;
       this.field3397 = -1;
-      this.field3406 = var1;
+      this.id = var1;
    }
 
    @ObfuscatedName("q")
@@ -286,6 +287,6 @@ public class Area extends CacheableNode {
       garbageValue = "60916316"
    )
    public int method4741() {
-      return this.field3406;
+      return this.id;
    }
 }

@@ -906,7 +906,7 @@ public class RenderOverview {
 
       for(int var2 = 0; var2 < class330.mapAreaType.length; ++var2) {
          if(class330.mapAreaType[var2] != null && class330.mapAreaType[var2].field3397 == var1) {
-            this.field3934.add(Integer.valueOf(class330.mapAreaType[var2].field3406));
+            this.field3934.add(Integer.valueOf(class330.mapAreaType[var2].id));
          }
       }
 
@@ -959,7 +959,7 @@ public class RenderOverview {
 
       for(int var3 = 0; var3 < class330.mapAreaType.length; ++var3) {
          if(class330.mapAreaType[var3] != null && class330.mapAreaType[var3].field3397 == var1) {
-            int var4 = class330.mapAreaType[var3].field3406;
+            int var4 = class330.mapAreaType[var3].id;
             if(!var2) {
                this.field3940.add(Integer.valueOf(var4));
             } else {

@@ -153,7 +153,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
          class299.field3788 = (MapIconReference)var2[0];
          Area var6 = class330.mapAreaType[class299.field3788.field556];
          class239 var8 = var0.field752;
-         var9 = var6.field3406;
+         var9 = var6.id;
          var10 = var6.field3397;
          var11 = (var9 << 8) + var8.field2917;
          Script var13 = class2.getScriptByFile(var11, var8);

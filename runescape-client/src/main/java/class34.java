@@ -148,7 +148,7 @@ public class class34 {
                            var16 = new Coordinates(var9 + var17.field384, var17.field383 * 64 + var6 + var17.method661() * 8, var7 + var17.field373 * 64 + var17.method662() * 8);
                         }
 
-                        MapIcon var18 = new MapIcon(var14.field3406, var16, var15, this.method448(var14));
+                        MapIcon var18 = new MapIcon(var14.id, var16, var15, this.method448(var14));
                         this.field449.put(var8, var18);
                         continue label57;
                      }
@@ -831,8 +831,8 @@ public class class34 {
                if(var9 != null) {
                   MapIcon var10 = (MapIcon)this.field449.get(field451);
                   if(var10 != null) {
-                     if(var9.field3406 != var10.field488) {
-                        MapIcon var16 = new MapIcon(var9.field3406, var10.field491, var10.field490, this.method448(var9));
+                     if(var9.id != var10.field488) {
+                        MapIcon var16 = new MapIcon(var9.id, var10.field491, var10.field490, this.method448(var9));
                         this.field449.put(new Coordinates(field451), var16);
                         var10 = var16;
                      }
@@ -860,7 +860,7 @@ public class class34 {
                   }
 
                   if(var12 != null) {
-                     var10 = new MapIcon(var9.field3406, var12, var11, this.method448(var9));
+                     var10 = new MapIcon(var9.id, var12, var11, this.method448(var9));
                      this.field449.put(new Coordinates(field451), var10);
                      return;
                   }
