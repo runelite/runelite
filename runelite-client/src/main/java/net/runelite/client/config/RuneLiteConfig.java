@@ -85,4 +85,22 @@ public interface RuneLiteConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "isSideBarShown",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default boolean isSideBarShown()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "isSideBarShown",
+		name = "",
+		description = ""
+	)
+	void isSideBarShown(boolean value);
 }

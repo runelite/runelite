@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -37,6 +38,8 @@ import java.awt.LayoutManager;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -57,7 +60,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
-import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -65,6 +67,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.config.RuneLiteConfig;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
@@ -78,16 +81,18 @@ public class ClientUI extends JFrame
 	@Getter
 	private TrayIcon trayIcon;
 
+	@Getter
+	private TitleToolbar titleToolbar;
+
+	private final RuneLiteConfig runeLiteConfig;
 	private final RuneLite runelite;
 	private final Applet client;
 	private final RuneLiteProperties properties;
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
+	private JPanel container;
 	private PluginPanel pluginPanel;
-	private Dimension clientSize;
-
-	@Getter
-	private TitleToolbar titleToolbar;
+	private boolean isPluginPanelShown = false;
 
 	static
 	{
@@ -105,7 +110,7 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client)
+	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client, RuneLiteConfig runeLiteConfig)
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
@@ -133,15 +138,16 @@ public class ClientUI extends JFrame
 		// Use custom UI font
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 
-		return new ClientUI(runelite, properties, client);
+		return new ClientUI(runelite, properties, client, runeLiteConfig);
 	}
 
-	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client)
+	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client, RuneLiteConfig runeLiteConfig)
 	{
 		this.runelite = runelite;
 		this.properties = properties;
 		this.client = client;
 		this.trayIcon = setupTrayIcon();
+		this.runeLiteConfig = runeLiteConfig;
 
 		init();
 		setTitle(properties.getTitle());
@@ -150,6 +156,16 @@ public class ClientUI extends JFrame
 		getLayeredPane().setCursor(Cursor.getDefaultCursor());
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
+		addComponentListener(new ComponentAdapter()
+		{
+			@Override
+			public void componentResized(ComponentEvent e)
+			{
+				revalidateMinimumSize();
+				revalidate();
+				super.componentResized(e);
+			}
+		});
 	}
 
 	public void showWithChrome(boolean customChrome)
@@ -202,6 +218,11 @@ public class ClientUI extends JFrame
 				}
 			});
 		}
+		else
+		{
+			//force sidebar open
+			runeLiteConfig.isSideBarShown(true);
+		}
 
 		pack();
 		revalidateMinimumSize();
@@ -211,6 +232,16 @@ public class ClientUI extends JFrame
 		toFront();
 		requestFocus();
 		giveClientFocus();
+
+		if (runeLiteConfig.isSideBarShown())
+		{
+			expandSideBar(false);
+		}
+		else
+		{
+			contractSideBar();
+			titleToolbar.flipArrowIcon(); //contract flips it but it was already in the correct orientation so flip it back
+		}
 	}
 
 	private void giveClientFocus()
@@ -351,7 +382,7 @@ public class ClientUI extends JFrame
 			}
 		});
 
-		final JPanel container = new JPanel();
+		container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 		container.add(new ClientPanel(client));
 
@@ -362,9 +393,23 @@ public class ClientUI extends JFrame
 		container.add(navContainer);
 
 		pluginToolbar = new PluginToolbar(this);
-		container.add(pluginToolbar);
 
 		titleToolbar = new TitleToolbar(properties);
+		titleToolbar.getSideBarButton().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (!runeLiteConfig.isSideBarShown())
+				{
+					expandSideBar(true);
+				}
+				else
+				{
+					contractSideBar();
+				}
+			}
+		});
 
 		add(container);
 	}
@@ -377,20 +422,17 @@ public class ClientUI extends JFrame
 
 	void expand(PluginPanel panel)
 	{
-		if (pluginPanel != null)
+		pluginPanel = panel;
+
+		if (navContainer.getComponents().length > 0)
 		{
 			navContainer.remove(0);
 		}
-		else
+		else if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
 		{
-			clientSize = this.getSize();
-			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
-			{
-				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
-			}
+			this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
 		}
 
-		pluginPanel = panel;
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
@@ -404,9 +446,10 @@ public class ClientUI extends JFrame
 
 		wrappedPanel.repaint();
 		revalidateMinimumSize();
+		isPluginPanelShown = true;
 	}
 
-	void contract()
+	void contract(boolean discardPluginPanel)
 	{
 		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
 		pluginPanel.onDeactivate();
@@ -416,22 +459,85 @@ public class ClientUI extends JFrame
 		navContainer.revalidate();
 		giveClientFocus();
 		revalidateMinimumSize();
+
 		if (wasMinimumWidth)
 		{
 			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
 		}
 		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
 		{
-			this.setSize(clientSize);
+			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
 		}
 
-		pluginPanel = null;
+		if (discardPluginPanel)
+		{
+			pluginPanel = null;
+		}
+
+		isPluginPanelShown = false;
 	}
 
 	private boolean isInScreenBounds(int x, int y)
 	{
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		return x >= 0 && x <= size.getWidth() && y >= 0 && y <= size.getHeight();
+	}
+
+	void expandSideBar(boolean discardIfExpanded)
+	{
+		if (discardIfExpanded == runeLiteConfig.isSideBarShown())
+		{
+			return;
+		}
+
+		container.add(pluginToolbar);
+
+		if (pluginPanel != null && !isPluginPanelShown)
+		{
+			expand(pluginPanel);
+		}
+		else
+		{
+			revalidateMinimumSize();
+		}
+
+		if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PluginToolbar.TOOLBAR_WIDTH, (int) getLocationOnScreen().getY()) && getMinimumSize().width != getWidth())
+		{
+			this.setSize(getWidth() + PluginToolbar.TOOLBAR_WIDTH, getHeight());
+		}
+
+		titleToolbar.flipArrowIcon();
+		runeLiteConfig.isSideBarShown(true);
+		revalidate();
+	}
+
+	void contractSideBar()
+	{
+		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		container.remove(pluginToolbar);
+
+		if (pluginPanel != null && isPluginPanelShown)
+		{
+			contract(false);
+		}
+		else
+		{
+			revalidateMinimumSize();
+		}
+
+		if (wasMinimumWidth)
+		{
+			this.setSize((int) this.getMinimumSize().getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight());
+		}
+		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			this.setSize(new Dimension(getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight()));
+		}
+
+		titleToolbar.flipArrowIcon();
+
+		runeLiteConfig.isSideBarShown(false);
+		revalidate();
 	}
 
 	private void checkExit()

@@ -26,8 +26,9 @@ package net.runelite.client.plugins.info;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import java.awt.Font;
 import com.google.inject.Inject;
+import java.awt.Component;
+import java.awt.Font;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
@@ -188,6 +189,15 @@ public class InfoPanel extends PluginPanel
 				SwingUtilities.invokeAndWait(() ->
 				{
 					JPanel toolbar = clientUI.getTitleToolbar();
+					Component[] components = toolbar.getComponents();
+					for (Component c : components)
+					{
+						if (c.getName().equals("sideBarButton"))
+						{
+							toolbar.remove(c);
+							break;
+						}
+					}
 					layout.replace(toolbarPanelPlaceholder, toolbar);
 					toolbar.revalidate();
 				});
