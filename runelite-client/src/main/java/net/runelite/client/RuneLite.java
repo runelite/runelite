@@ -98,7 +98,6 @@ public class RuneLite
 
 	Client client;
 	ClientUI gui;
-	Notifier notifier;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -161,9 +160,6 @@ public class RuneLite
 		eventBus.register(gui);
 		eventBus.register(pluginManager);
 
-		// Setup the notifier
-		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon(), runeliteConfig);
-
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
 
@@ -217,12 +213,6 @@ public class RuneLite
 	public void setClient(Client client)
 	{
 		this.client = client;
-	}
-
-	@VisibleForTesting
-	public void setNotifier(Notifier notifier)
-	{
-		this.notifier = notifier;
 	}
 
 	public static Injector getInjector()

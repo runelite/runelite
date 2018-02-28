@@ -26,39 +26,40 @@ package net.runelite.client;
 
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
+import com.google.inject.Inject;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.util.OSType;
+import net.runelite.client.ui.ClientUI;
 
+@Singleton
 @Slf4j
 public class Notifier
 {
-
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
-	private static final Escaper SHELL_ESCAPE;
-
-	static
-	{
-		final Escapers.Builder builder = Escapers.builder();
-		builder.addEscape('"', "'");
-		SHELL_ESCAPE = builder.build();
-	}
+	private static final Escaper SHELL_ESCAPE = Escapers.builder()
+		.addEscape('"', "'")
+		.build();
 
 	private final String appName;
-	private final TrayIcon trayIcon;
 	private final RuneLiteConfig runeLiteConfig;
+	private final Provider<ClientUI> clientUI;
 
-	Notifier(final String appName, final TrayIcon trayIcon, final RuneLiteConfig runeliteConfig)
+	@Inject
+	private Notifier(final Provider<ClientUI> clientUI, final RuneLiteConfig runeliteConfig, final RuneLiteProperties
+		runeLiteProperties)
 	{
-		this.appName = appName;
-		this.trayIcon = trayIcon;
+		this.appName = runeLiteProperties.getTitle();
+		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 	}
 
@@ -69,6 +70,28 @@ public class Notifier
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
+		if (!runeLiteConfig.enableTrayNotifications())
+		{
+			return;
+		}
+
+		final ClientUI clientUI = this.clientUI.get();
+
+		if (clientUI == null)
+		{
+			return;
+		}
+
+		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
+		{
+			return;
+		}
+
+		if (runeLiteConfig.requestFocusOnNotification())
+		{
+			clientUI.requestFocus();
+		}
+
 		sendNotification(appName, message, type, null);
 
 		if (runeLiteConfig.enableNotificationSound())
@@ -105,9 +128,16 @@ public class Notifier
 		final String message,
 		final TrayIcon.MessageType type)
 	{
-		if (trayIcon != null)
+		final ClientUI clientUI = this.clientUI.get();
+
+		if (clientUI == null)
 		{
-			trayIcon.displayMessage(title, message, type);
+			return;
+		}
+
+		if (clientUI.getTrayIcon() != null)
+		{
+			clientUI.getTrayIcon().displayMessage(title, message, type);
 		}
 	}
 

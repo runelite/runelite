@@ -74,12 +74,6 @@ public class RuneLiteModule extends AbstractModule
 	}
 
 	@Provides
-	Notifier provideNotifier(RuneLite runeLite)
-	{
-		return runeLite.notifier;
-	}
-
-	@Provides
 	@Singleton
 	RuneLiteConfig provideConfig(ConfigManager configManager)
 	{
