@@ -14,5 +14,6 @@ public class class299 {
    @ObfuscatedSignature(
       signature = "Law;"
    )
-   static MapIconReference field3788;
+   @Export("scriptMapIconReference")
+   static MapIconReference scriptMapIconReference;
 }

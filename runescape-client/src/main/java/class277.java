@@ -394,13 +394,13 @@ public enum class277 implements Enumerated {
 
                                     return 1;
                                  } else if(var0 == 6697) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.areaId;
+                                    class80.intStack[++class80.intStackSize - 1] = class299.scriptMapIconReference.areaId;
                                     return 1;
                                  } else if(var0 == 6698) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.field554.bitpack();
+                                    class80.intStack[++class80.intStackSize - 1] = class299.scriptMapIconReference.field554.bitpack();
                                     return 1;
                                  } else if(var0 == 6699) {
-                                    class80.intStack[++class80.intStackSize - 1] = class299.field3788.field553.bitpack();
+                                    class80.intStack[++class80.intStackSize - 1] = class299.scriptMapIconReference.field553.bitpack();
                                     return 1;
                                  } else {
                                     return 2;
