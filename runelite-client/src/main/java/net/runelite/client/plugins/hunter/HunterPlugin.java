@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -50,7 +49,6 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @Slf4j
@@ -66,10 +64,8 @@ public class HunterPlugin extends Plugin
 	private QueryRunner queryRunner;
 
 	@Inject
-	private TrapOverlay trapOverlay;
-
-	@Inject
-	private CatchrateOverlay catchrateOverlay;
+	@Getter
+	private TrapOverlay overlay;
 
 	@Inject
 	private Notifier notifier;
@@ -79,9 +75,6 @@ public class HunterPlugin extends Plugin
 
 	@Getter
 	private final Set<HunterTrap> traps = new HashSet<>();
-
-	private double catchAtempts = 0;
-	private double catchSuccess = 0;
 
 	@Getter
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
@@ -93,22 +86,14 @@ public class HunterPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(trapOverlay, catchrateOverlay);
-	}
-
-	@Override
 	protected void startUp()
 	{
-		trapOverlay.updateConfig();
+		overlay.updateConfig();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		catchAtempts = 0;
-		catchSuccess = 0;
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
 	}
@@ -185,8 +170,6 @@ public class HunterPlugin extends Plugin
 				if (myTrap != null)
 				{
 					myTrap.setState(HunterTrap.State.FULL);
-					catchAtempts++;
-					catchSuccess++;
 					lastActionTime = Instant.now();
 
 					if (config.maniacalMonkeyNotify() && myTrap.getGameObject().getId() == ObjectID.MONKEY_TRAP)
@@ -208,8 +191,6 @@ public class HunterPlugin extends Plugin
 				{
 					myTrap.setState(HunterTrap.State.EMPTY);
 					myTrap.resetTimer();
-					catchAtempts++;
-
 					lastActionTime = Instant.now();
 				}
 
@@ -326,7 +307,7 @@ public class HunterPlugin extends Plugin
 	{
 		if (event.getGroup().equals("hunterplugin"))
 		{
-			trapOverlay.updateConfig();
+			overlay.updateConfig();
 		}
 	}
 
@@ -352,16 +333,4 @@ public class HunterPlugin extends Plugin
 
 		return null;
 	}
-
-	/**
-	 * Calculates the catch rate, i.e. the attempts to catch something
-	 * compared to the times you succeed.
-	 *
-	 * @return Value between 0 (none) and 1 (all).
-	 */
-	public double getCatchRate()
-	{
-		return catchAtempts != 0 ? catchSuccess / catchAtempts : 0;
-	}
-
 }
