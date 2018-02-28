@@ -24,16 +24,20 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 class CannonOverlay extends Overlay
@@ -93,6 +97,50 @@ class CannonOverlay extends Overlay
 			textComponent.render(graphics, parent);
 		}
 
+		if (config.showDoubleHitSpot())
+		{
+			Color color = config.highlightDoubleHitColor();
+			drawDoubleHitSpots(graphics, plugin.getCannon().getLocalLocation(), color);
+		}
+
 		return null;
+	}
+
+
+	/**
+	 * Draw the double hit spots on a 6 by 6 grid around the cannon
+	 * @param startTile The position of the cannon
+	 */
+	private void drawDoubleHitSpots(Graphics2D graphics, net.runelite.api.Point startTile, Color color)
+	{
+		for (int x = -3; x <= 3; x++)
+		{
+			for (int y = -3; y <= 3; y++)
+			{
+				if (y != 1 && x != 1 && y != -1 && x != -1)
+				{
+					continue;
+				}
+
+				//Ignore center square
+				if (y >= -1 && y <= 1 && x >= -1 && x <= 1)
+				{
+					continue;
+				}
+
+				int xPos = startTile.getX() - (x * LOCAL_TILE_SIZE);
+				int yPos = startTile.getY() - (y * LOCAL_TILE_SIZE);
+
+				net.runelite.api.Point marker = new net.runelite.api.Point(xPos, yPos);
+				Polygon poly = Perspective.getCanvasTilePoly(client, marker);
+
+				if (poly == null)
+				{
+					continue;
+				}
+
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
 	}
 }
