@@ -127,8 +127,8 @@ public interface BoostsConfig extends Config
 		description = "Set the type of font, this will also impact size of the overlay component",
 		position = 1
 	)
-	default BoostsOverlay.FontType type()
+	default OverlayComponentSize type()
 	{
-		return BoostsOverlay.FontType.SMALL;
+		return OverlayComponentSize.SMALL;
 	}
 }

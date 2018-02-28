@@ -25,7 +25,7 @@
 package net.runelite.client.config;
 
 import java.awt.Dimension;
-import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import net.runelite.client.plugins.boosts.OverlayComponentSize;
 
 @ConfigGroup(
 	keyName = "runelite",
@@ -92,8 +92,8 @@ public interface RuneLiteConfig extends Config
 		name = "Indicator size",
 		description = "Change the indicator size"
 	)
-	default InfoBoxOverlay.InfoBoxSetting infoBoxSetting()
+	default OverlayComponentSize infoBoxSetting()
 	{
-		return InfoBoxOverlay.InfoBoxSetting.SMALL;
+		return OverlayComponentSize.SMALL;
 	}
 }

@@ -69,12 +69,6 @@ class BoostsOverlay extends Overlay
 	@Inject
 	private SkillIconManager iconManager;
 
-	public enum FontType
-	{
-		NORMAL,
-		SMALL
-	}
-
 	@Inject
 	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
 	{
@@ -89,9 +83,9 @@ class BoostsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		final PanelComponent panelComponent = new PanelComponent();
-		final Font font = config.type() == FontType.SMALL ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont();
+		final Font font = config.type() == OverlayComponentSize.SMALL ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont();
 		panelComponent.setFont(font);
-		int width = config.type() == FontType.SMALL ? SMALL_WIDTH : NORMAL_WIDTH;
+		int width = config.type() == OverlayComponentSize.SMALL ? SMALL_WIDTH : NORMAL_WIDTH;
 		width = config.useRelativeBoost() ? width - 20 : width;
 		panelComponent.setWidth(width);
 
