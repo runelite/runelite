@@ -92,7 +92,8 @@ public class RenderOverview {
    @ObfuscatedGetter(
       intValue = 1635518129
    )
-   int field3944;
+   @Export("worldMapY")
+   int worldMapY;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -2136082273
@@ -275,7 +276,7 @@ public class RenderOverview {
          if(var3) {
             int var8 = (int)Math.ceil((double)((float)var6 / this.field3947));
             int var9 = (int)Math.ceil((double)((float)var7 / this.field3947));
-            List var10 = this.worldMapManager.method583(this.worldMapX - var8 / 2 - 1, this.field3944 - var9 / 2 - 1, var8 / 2 + this.worldMapX + 1, var9 / 2 + this.field3944 + 1, var4, var5, var6, var7, var1, var2);
+            List var10 = this.worldMapManager.method583(this.worldMapX - var8 / 2 - 1, this.worldMapY - var9 / 2 - 1, var8 / 2 + this.worldMapX + 1, var9 / 2 + this.worldMapY + 1, var4, var5, var6, var7, var1, var2);
             HashSet var11 = new HashSet();
 
             Iterator var12;
@@ -334,7 +335,7 @@ public class RenderOverview {
       this.field3932 = var2;
       if(var3 && !this.method6053()) {
          this.worldMapX -= (int)((float)var5 / this.field3948);
-         this.field3944 += (int)((float)var6 / this.field3948);
+         this.worldMapY += (int)((float)var6 / this.field3948);
       }
 
    }
@@ -349,7 +350,7 @@ public class RenderOverview {
       if(var4) {
          if(this.worldMapData != null) {
             int var5 = (int)((float)this.worldMapX + ((float)(var1 - this.field3967) - (float)this.method5996() * this.field3947 / 2.0F) / this.field3947);
-            int var6 = (int)((float)this.field3944 - ((float)(var2 - this.field3952) - (float)this.method5981() * this.field3947 / 2.0F) / this.field3947);
+            int var6 = (int)((float)this.worldMapY - ((float)(var2 - this.field3952) - (float)this.method5981() * this.field3947 / 2.0F) / this.field3947);
             this.field3971 = this.worldMapData.method310(var5 + this.worldMapData.method318() * 64, var6 + this.worldMapData.method355() * 64);
             if(this.field3971 != null && var3 && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81] && var3) {
                int var7 = this.field3971.worldX;
@@ -392,7 +393,7 @@ public class RenderOverview {
    void method5969() {
       if(this.method6053()) {
          int var1 = this.field3960 - this.worldMapX;
-         int var2 = this.field3946 - this.field3944;
+         int var2 = this.field3946 - this.worldMapY;
          if(var1 != 0) {
             var1 /= Math.min(8, Math.abs(var1));
          }
@@ -402,8 +403,8 @@ public class RenderOverview {
          }
 
          this.worldMapX += var1;
-         this.field3944 += var2;
-         if(this.field3960 == this.worldMapX && this.field3946 == this.field3944) {
+         this.worldMapY += var2;
+         if(this.field3960 == this.worldMapX && this.field3946 == this.worldMapY) {
             this.field3960 = -1;
             this.field3946 = -1;
          }
@@ -556,7 +557,7 @@ public class RenderOverview {
          }
 
          this.worldMapX = var4[0] - this.worldMapData.method318() * 64;
-         this.field3944 = var4[1] - this.worldMapData.method355() * 64;
+         this.worldMapY = var4[1] - this.worldMapData.method355() * 64;
          this.field3960 = -1;
          this.field3946 = -1;
          this.field3947 = this.method5984(this.worldMapData.method317());
@@ -603,7 +604,7 @@ public class RenderOverview {
 
          int var8 = (int)Math.ceil((double)((float)var3 / this.field3947));
          int var9 = (int)Math.ceil((double)((float)var4 / this.field3947));
-         this.worldMapManager.drawMapRegion(this.worldMapX - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4);
+         this.worldMapManager.drawMapRegion(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, var1, var2, var3 + var1, var2 + var4);
          boolean var10;
          if(!this.field3965) {
             var10 = false;
@@ -612,7 +613,7 @@ public class RenderOverview {
                var10 = true;
             }
 
-            this.worldMapManager.drawMapIcons(this.worldMapX - var8 / 2, this.field3944 - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.field3944, var1, var2, var3 + var1, var2 + var4, this.field3928, this.field3934, this.field3958, this.field3954, var10);
+            this.worldMapManager.drawMapIcons(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, var1, var2, var3 + var1, var2 + var4, this.field3928, this.field3934, this.field3958, this.field3954, var10);
          }
 
          var10 = Client.rights >= 2;
@@ -747,7 +748,7 @@ public class RenderOverview {
    public void method6023(int var1, int var2) {
       if(this.worldMapData != null) {
          this.worldMapX = var1 - this.worldMapData.method318() * 64;
-         this.field3944 = var2 - this.worldMapData.method355() * 64;
+         this.worldMapY = var2 - this.worldMapData.method355() * 64;
          this.field3960 = -1;
          this.field3946 = -1;
       }
@@ -798,7 +799,7 @@ public class RenderOverview {
       garbageValue = "1029972457"
    )
    public int method6124() {
-      return this.worldMapData == null?-1:this.field3944 + this.worldMapData.method355() * 64;
+      return this.worldMapData == null?-1:this.worldMapY + this.worldMapData.method355() * 64;
    }
 
    @ObfuscatedName("ad")
@@ -1015,7 +1016,7 @@ public class RenderOverview {
       if(this.field3942.method5958()) {
          int var7 = (int)Math.ceil((double)((float)var3 / this.field3947));
          int var8 = (int)Math.ceil((double)((float)var4 / this.field3947));
-         List var9 = this.worldMapManager.method583(this.worldMapX - var7 / 2 - 1, this.field3944 - var8 / 2 - 1, var7 / 2 + this.worldMapX + 1, var8 / 2 + this.field3944 + 1, var1, var2, var3, var4, var5, var6);
+         List var9 = this.worldMapManager.method583(this.worldMapX - var7 / 2 - 1, this.worldMapY - var8 / 2 - 1, var7 / 2 + this.worldMapX + 1, var8 / 2 + this.worldMapY + 1, var1, var2, var3, var4, var5, var6);
          if(!var9.isEmpty()) {
             Iterator var10 = var9.iterator();
 
