@@ -99,7 +99,10 @@ public class RaidsPlugin extends Plugin
 	private Raid raid;
 
 	@Getter
-	private ArrayList<String> blacklist = new ArrayList<>();
+	private ArrayList<String> roomWhitelist = new ArrayList<>();
+
+	@Getter
+	private ArrayList<String> roomBlacklist = new ArrayList<>();
 
 	@Getter
 	private ArrayList<String> layoutWhitelist = new ArrayList<>();
@@ -161,9 +164,14 @@ public class RaidsPlugin extends Plugin
 			updateInfoBoxState();
 		}
 
+		if (event.getKey().equals("whitelistedRooms"))
+		{
+			updateList(roomWhitelist, config.whitelistedRooms());
+		}
+
 		if (event.getKey().equals("blacklistedRooms"))
 		{
-			updateList(blacklist, config.blacklistedRooms());
+			updateList(roomBlacklist, config.blacklistedRooms());
 		}
 
 		if (event.getKey().equals("whitelistedLayouts"))
@@ -295,7 +303,8 @@ public class RaidsPlugin extends Plugin
 
 	private void updateLists()
 	{
-		updateList(blacklist, config.blacklistedRooms());
+		updateList(roomWhitelist, config.blacklistedRooms());
+		updateList(roomBlacklist, config.blacklistedRooms());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
 	}
 
