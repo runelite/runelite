@@ -23,7 +23,8 @@ public class MapLabel {
    @Export("slArrowSprites")
    static IndexedSprite[] slArrowSprites;
    @ObfuscatedName("b")
-   String field431;
+   @Export("text")
+   String text;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -574925645
@@ -45,7 +46,7 @@ public class MapLabel {
       signature = "(Ljava/lang/String;IILn;)V"
    )
    MapLabel(String var1, int var2, int var3, Size var4) {
-      this.field431 = var1;
+      this.text = var1;
       this.field436 = var2;
       this.field432 = var3;
       this.fontSize = var4;
