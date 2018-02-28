@@ -71,6 +71,7 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+	private static final String SPLIT_REGEX = "\\s*,\\s*";
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
@@ -99,6 +100,9 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private ArrayList<String> blacklist = new ArrayList<>();
+
+	@Getter
+	private ArrayList<String> layoutWhitelist = new ArrayList<>();
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -132,7 +136,7 @@ public class RaidsPlugin extends Plugin
 			cacheColors();
 		}
 
-		updateBlacklist();
+		updateLists();
 	}
 
 	@Override
@@ -159,7 +163,12 @@ public class RaidsPlugin extends Plugin
 
 		if (event.getKey().equals("blacklistedRooms"))
 		{
-			updateBlacklist();
+			updateList(blacklist, config.blacklistedRooms());
+		}
+
+		if (event.getKey().equals("whitelistedLayouts"))
+		{
+			updateList(layoutWhitelist, config.whitelistedLayouts());
 		}
 	}
 
@@ -284,10 +293,16 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateBlacklist()
+	private void updateLists()
 	{
-		blacklist.clear();
-		blacklist.addAll(Arrays.asList(config.blacklistedRooms().toLowerCase().split("\\s*,\\s*")));
+		updateList(blacklist, config.blacklistedRooms());
+		updateList(layoutWhitelist, config.whitelistedLayouts());
+	}
+
+	private void updateList(ArrayList<String> list, String input)
+	{
+		list.clear();
+		list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
 	}
 
 	private void cacheColors()
