@@ -37,6 +37,8 @@ import java.awt.LayoutManager;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -152,6 +154,16 @@ public class ClientUI extends JFrame
 		getLayeredPane().setCursor(Cursor.getDefaultCursor());
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
+		addComponentListener(new ComponentAdapter()
+		{
+			@Override
+			public void componentResized(ComponentEvent e)
+			{
+				revalidateMinimumSize();
+				revalidate();
+				super.componentResized(e);
+			}
+		});
 	}
 
 	public void showWithChrome(boolean customChrome)
