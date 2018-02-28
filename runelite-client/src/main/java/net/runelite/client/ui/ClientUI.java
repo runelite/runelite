@@ -37,12 +37,14 @@ import java.awt.LayoutManager;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -65,6 +67,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.util.OSType;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
@@ -133,7 +136,9 @@ public class ClientUI extends JFrame
 		// Use custom UI font
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 
-		return new ClientUI(runelite, properties, client);
+		ClientUI gui = new ClientUI(runelite, properties, client);
+		tryEnableOSXFullscreen(gui);
+		return gui;
 	}
 
 	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client)
@@ -454,5 +459,28 @@ public class ClientUI extends JFrame
 	public PluginToolbar getPluginToolbar()
 	{
 		return pluginToolbar;
+	}
+
+	/**
+	 * Enables the osx native fullscreen if running on a mac.
+	 *
+	 * @param gui The gui to enable the fullscreen on.
+	 */
+	private static void tryEnableOSXFullscreen(ClientUI gui)
+	{
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			try
+			{
+				Class.forName("com.apple.eawt.FullScreenUtilities")
+					.getMethod("setWindowCanFullScreen", Window.class, boolean.class)
+					.invoke(null, gui, true);
+				log.debug("macOS fullscreen enabled");
+			}
+			catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored)
+			{
+				// not running macOS, ignore
+			}
+		}
 	}
 }
