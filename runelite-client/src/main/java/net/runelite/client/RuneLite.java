@@ -146,7 +146,7 @@ public class RuneLite
 		}
 
 		// Load swing UI
-		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(this, properties, client)));
+		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(this, properties, client, runeliteConfig)));
 
 		// Initialize Discord service
 		discordService.init();

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -59,7 +60,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
-import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -67,6 +67,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.config.RuneLiteConfig;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
@@ -80,6 +81,10 @@ public class ClientUI extends JFrame
 	@Getter
 	private TrayIcon trayIcon;
 
+	@Getter
+	private TitleToolbar titleToolbar;
+
+	private final RuneLiteConfig runeLiteConfig;
 	private final RuneLite runelite;
 	private final Applet client;
 	private final RuneLiteProperties properties;
@@ -88,10 +93,6 @@ public class ClientUI extends JFrame
 	private JPanel container;
 	private PluginPanel pluginPanel;
 	private boolean isPluginPanelShown = false;
-	private boolean isSideBarShown = true;
-
-	@Getter
-	private TitleToolbar titleToolbar;
 
 	static
 	{
@@ -109,7 +110,7 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client)
+	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client, RuneLiteConfig runeLiteConfig)
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
@@ -137,15 +138,16 @@ public class ClientUI extends JFrame
 		// Use custom UI font
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 
-		return new ClientUI(runelite, properties, client);
+		return new ClientUI(runelite, properties, client, runeLiteConfig);
 	}
 
-	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client)
+	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client, RuneLiteConfig runeLiteConfig)
 	{
 		this.runelite = runelite;
 		this.properties = properties;
 		this.client = client;
 		this.trayIcon = setupTrayIcon();
+		this.runeLiteConfig = runeLiteConfig;
 
 		init();
 		setTitle(properties.getTitle());
@@ -216,6 +218,11 @@ public class ClientUI extends JFrame
 				}
 			});
 		}
+		else
+		{
+			//force sidebar open
+			runeLiteConfig.isSideBarShown(true);
+		}
 
 		pack();
 		revalidateMinimumSize();
@@ -225,6 +232,16 @@ public class ClientUI extends JFrame
 		toFront();
 		requestFocus();
 		giveClientFocus();
+
+		if (runeLiteConfig.isSideBarShown())
+		{
+			expandSideBar(false);
+		}
+		else
+		{
+			contractSideBar();
+			titleToolbar.flipArrowIcon(); //contract flips it but it was already in the correct orientation so flip it back
+		}
 	}
 
 	private void giveClientFocus()
@@ -376,7 +393,6 @@ public class ClientUI extends JFrame
 		container.add(navContainer);
 
 		pluginToolbar = new PluginToolbar(this);
-		container.add(pluginToolbar);
 
 		titleToolbar = new TitleToolbar(properties);
 		titleToolbar.getSideBarButton().addMouseListener(new MouseAdapter()
@@ -384,9 +400,9 @@ public class ClientUI extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (!isSideBarShown)
+				if (!runeLiteConfig.isSideBarShown())
 				{
-					expandSideBar();
+					expandSideBar(true);
 				}
 				else
 				{
@@ -394,10 +410,6 @@ public class ClientUI extends JFrame
 				}
 			}
 		});
-		if (isSideBarShown)
-		{
-			titleToolbar.flipArrowIcon();
-		}
 
 		add(container);
 	}
@@ -416,12 +428,9 @@ public class ClientUI extends JFrame
 		{
 			navContainer.remove(0);
 		}
-		else
+		else if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
 		{
-			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
-			{
-				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
-			}
+			this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
 		}
 
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
@@ -450,6 +459,7 @@ public class ClientUI extends JFrame
 		navContainer.revalidate();
 		giveClientFocus();
 		revalidateMinimumSize();
+
 		if (wasMinimumWidth)
 		{
 			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
@@ -458,10 +468,12 @@ public class ClientUI extends JFrame
 		{
 			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
 		}
+
 		if (discardPluginPanel)
 		{
 			pluginPanel = null;
 		}
+
 		isPluginPanelShown = false;
 	}
 
@@ -471,53 +483,61 @@ public class ClientUI extends JFrame
 		return x >= 0 && x <= size.getWidth() && y >= 0 && y <= size.getHeight();
 	}
 
-	void expandSideBar()
+	void expandSideBar(boolean discardIfExpanded)
 	{
-		if (!isSideBarShown)
+		if (discardIfExpanded == runeLiteConfig.isSideBarShown())
 		{
-			container.add(pluginToolbar);
-			revalidateMinimumSize();
-			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PluginToolbar.TOOLBAR_WIDTH, (int) getLocationOnScreen().getY()) && getMinimumSize().width != getWidth())
-			{
-				this.setSize(getWidth() + PluginToolbar.TOOLBAR_WIDTH, getHeight());
-			}
-			if (pluginPanel != null && !isPluginPanelShown)
-			{
-				expand(pluginPanel);
-			}
-			revalidate();
-			titleToolbar.flipArrowIcon();
-			isSideBarShown = true;
+			return;
 		}
+
+		container.add(pluginToolbar);
+
+		if (pluginPanel != null && !isPluginPanelShown)
+		{
+			expand(pluginPanel);
+		}
+		else
+		{
+			revalidateMinimumSize();
+		}
+
+		if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PluginToolbar.TOOLBAR_WIDTH, (int) getLocationOnScreen().getY()) && getMinimumSize().width != getWidth())
+		{
+			this.setSize(getWidth() + PluginToolbar.TOOLBAR_WIDTH, getHeight());
+		}
+
+		titleToolbar.flipArrowIcon();
+		runeLiteConfig.isSideBarShown(true);
+		revalidate();
 	}
 
 	void contractSideBar()
 	{
-		if (isSideBarShown)
+		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		container.remove(pluginToolbar);
+
+		if (pluginPanel != null && isPluginPanelShown)
 		{
-			boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
-			container.remove(pluginToolbar);
-			if (pluginPanel != null && isPluginPanelShown)
-			{
-				contract(false);
-			}
-			else
-			{
-				revalidateMinimumSize();
-			}
-			if (wasMinimumWidth)
-			{
-				this.setSize((int) this.getMinimumSize().getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight());
-			}
-			else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-			{
-				this.setSize(new Dimension(getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight()));
-			}
-			revalidate();
-			titleToolbar.flipArrowIcon();
-			isSideBarShown = false;
-			System.out.println(getSize());
+			contract(false);
 		}
+		else
+		{
+			revalidateMinimumSize();
+		}
+
+		if (wasMinimumWidth)
+		{
+			this.setSize((int) this.getMinimumSize().getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight());
+		}
+		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			this.setSize(new Dimension(getWidth() - PluginToolbar.TOOLBAR_WIDTH, getHeight()));
+		}
+
+		titleToolbar.flipArrowIcon();
+
+		runeLiteConfig.isSideBarShown(false);
+		revalidate();
 	}
 
 	private void checkExit()

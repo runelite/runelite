@@ -55,8 +55,8 @@ public class TitleToolbar extends JPanel
 	private static final int ITEM_PADDING = 4;
 	private static final int ICON_SIZE = TITLEBAR_SIZE - 6;
 
-	private static BufferedImage sideBarIcon;
-	private static BufferedImage invertedIcon;
+	private BufferedImage sideBarIcon;
+	private BufferedImage invertedIcon;
 
 	@Getter
 	private JButton sideBarButton;

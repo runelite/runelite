@@ -195,6 +195,7 @@ public class InfoPanel extends PluginPanel
 						if (c.getName().equals("sideBarButton"))
 						{
 							toolbar.remove(c);
+							break;
 						}
 					}
 					layout.replace(toolbarPanelPlaceholder, toolbar);

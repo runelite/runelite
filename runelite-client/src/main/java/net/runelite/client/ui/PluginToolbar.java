@@ -104,7 +104,7 @@ public class PluginToolbar extends JToolBar
 			current.setSelected(true);
 
 			PluginPanel pluginPanel = panelSupplier.get();
-			ui.expandSideBar();
+			ui.expandSideBar(true);
 			ui.expand(pluginPanel);
 		}
 	}
