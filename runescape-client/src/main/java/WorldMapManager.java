@@ -242,7 +242,7 @@ public final class WorldMapManager
       if(var10 != null && var11 > 0) {
          for(var19 = var14.field389; var19 < var14.field389 + var14.field391; ++var19) {
             for(var20 = var14.field388; var20 < var14.field390 + var14.field388; ++var20) {
-               this.field514[var19][var20].method385(var10, var11, var12);
+               this.field514[var19][var20].drawFlashingMapIcons(var10, var11, var12);
             }
          }
       }

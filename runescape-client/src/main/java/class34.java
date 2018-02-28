@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -219,7 +220,8 @@ public class class34 {
       signature = "(Ljava/util/HashSet;III)V",
       garbageValue = "926231148"
    )
-   void method385(HashSet var1, int var2, int var3) {
+   @Export("drawFlashingMapIcons")
+   void drawFlashingMapIcons(HashSet var1, int var2, int var3) {
       Iterator var4 = this.field449.values().iterator();
 
       while(var4.hasNext()) {
