@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.RuneLiteConfig;
 
 @Slf4j
 public class Notifier
@@ -79,13 +80,14 @@ public class Notifier
 
 	private final String appName;
 	private final TrayIcon trayIcon;
+	private final RuneLiteConfig runeLiteConfig;
 
-	Notifier(final String appName, final TrayIcon trayIcon)
+	Notifier(final String appName, final TrayIcon trayIcon, final RuneLiteConfig runeliteConfig)
 	{
 		this.appName = appName;
 		this.trayIcon = trayIcon;
+		this.runeLiteConfig = runeliteConfig;
 	}
-
 
 	public void notify(String message)
 	{
@@ -95,7 +97,11 @@ public class Notifier
 	public void notify(String message, TrayIcon.MessageType type)
 	{
 		sendNotification(appName, message, type, null);
-		Toolkit.getDefaultToolkit().beep();
+
+		if (runeLiteConfig.enableNotificationSound())
+		{
+			Toolkit.getDefaultToolkit().beep();
+		}
 	}
 
 	private void sendNotification(
