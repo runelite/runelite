@@ -22,77 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.mixins;
 
-import com.google.common.eventbus.EventBus;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import org.slf4j.Logger;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
+import net.runelite.client.callback.Hooks;
+import net.runelite.rs.api.RSMouseWheelHandler;
 
-/**
- * Dummy class to make the mixins to compile.
- *
- * @author Adam
- */
-public class Hooks
+@Mixin(RSMouseWheelHandler.class)
+public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
 {
-	public static Logger log;
+	@Copy("mouseWheelMoved")
+	abstract void rs$mouseWheelMoved(MouseWheelEvent event);
 
-	public static EventBus eventBus;
-
-	public static MouseEvent mousePressed(MouseEvent mouseEvent)
+	@Override
+	@Replace("mouseWheelMoved")
+	public void mouseWheelMoved(MouseWheelEvent event)
 	{
-		throw new RuntimeException();
-	}
-
-	public static MouseEvent mouseReleased(MouseEvent mouseEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static MouseEvent mouseClicked(MouseEvent mouseEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static MouseEvent mouseEntered(MouseEvent mouseEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static MouseEvent mouseExited(MouseEvent mouseEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static MouseEvent mouseDragged(MouseEvent mouseEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static MouseEvent mouseMoved(MouseEvent mouseEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void mouseWheelMoved(MouseWheelEvent event)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void keyPressed(KeyEvent keyEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void keyReleased(KeyEvent keyEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void keyTyped(KeyEvent keyEvent)
-	{
-		throw new RuntimeException();
+		Hooks.mouseWheelMoved(event);
+		if (!event.isConsumed())
+		{
+			rs$mouseWheelMoved(event);
+		}
 	}
 }

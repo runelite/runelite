@@ -28,6 +28,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -52,6 +55,8 @@ import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.DeathChecker;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -73,6 +78,8 @@ public class Hooks
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
+	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
+	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
 
@@ -138,6 +145,61 @@ public class Hooks
 			log.debug("World map was closed, reinitializing");
 			renderOverview.initializeWorldMap(renderOverview.getWorldMapData());
 		}
+	}
+
+	public static MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMousePressed(mouseEvent);
+	}
+
+	public static MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseReleased(mouseEvent);
+	}
+
+	public static MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseClicked(mouseEvent);
+	}
+
+	public static MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseEntered(mouseEvent);
+	}
+
+	public static MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseExited(mouseEvent);
+	}
+
+	public static MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseDragged(mouseEvent);
+	}
+
+	public static MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseMoved(mouseEvent);
+	}
+
+	public static void mouseWheelMoved(MouseWheelEvent event)
+	{
+		mouseManager.processMouseWheelMoved(event);
+	}
+
+	public static void keyPressed(KeyEvent keyEvent)
+	{
+		keyManager.processKeyPressed(keyEvent);
+	}
+
+	public static void keyReleased(KeyEvent keyEvent)
+	{
+		keyManager.processKeyReleased(keyEvent);
+	}
+
+	public static void keyTyped(KeyEvent keyEvent)
+	{
+		keyManager.processKeyTyped(keyEvent);
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)

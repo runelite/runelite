@@ -22,77 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.client.input;
 
-import com.google.common.eventbus.EventBus;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import org.slf4j.Logger;
 
-/**
- * Dummy class to make the mixins to compile.
- *
- * @author Adam
- */
-public class Hooks
+public abstract class MouseListener
 {
-	public static Logger log;
-
-	public static EventBus eventBus;
-
-	public static MouseEvent mousePressed(MouseEvent mouseEvent)
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 
-	public static MouseEvent mouseReleased(MouseEvent mouseEvent)
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 
-	public static MouseEvent mouseClicked(MouseEvent mouseEvent)
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 
-	public static MouseEvent mouseEntered(MouseEvent mouseEvent)
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 
-	public static MouseEvent mouseExited(MouseEvent mouseEvent)
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 
-	public static MouseEvent mouseDragged(MouseEvent mouseEvent)
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 
-	public static MouseEvent mouseMoved(MouseEvent mouseEvent)
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
-		throw new RuntimeException();
-	}
-
-	public static void mouseWheelMoved(MouseWheelEvent event)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void keyPressed(KeyEvent keyEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void keyReleased(KeyEvent keyEvent)
-	{
-		throw new RuntimeException();
-	}
-
-	public static void keyTyped(KeyEvent keyEvent)
-	{
-		throw new RuntimeException();
+		return mouseEvent;
 	}
 }
