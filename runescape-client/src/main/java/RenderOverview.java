@@ -1034,7 +1034,7 @@ public class RenderOverview {
 
                for(int var14 = this.field3937.length - 1; var14 >= 0; --var14) {
                   if(var12.field3389[var14] != null) {
-                     class21.addMenuEntry(var12.field3389[var14], var12.field3400, this.field3937[var14], var11.field488, var11.field491.method4375(), var11.field490.method4375());
+                     class21.addMenuEntry(var12.field3389[var14], var12.field3400, this.field3937[var14], var11.field488, var11.field491.bitpack(), var11.field490.bitpack());
                      var13 = true;
                   }
                }

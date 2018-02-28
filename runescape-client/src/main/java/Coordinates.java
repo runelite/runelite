@@ -73,7 +73,8 @@ public class Coordinates {
       signature = "(B)I",
       garbageValue = "0"
    )
-   public int method4375() {
+   @Export("bitpack")
+   public int bitpack() {
       return this.plane << 28 | this.worldX << 14 | this.worldY;
    }
 
@@ -91,7 +92,7 @@ public class Coordinates {
    }
 
    public int hashCode() {
-      return this.method4375();
+      return this.bitpack();
    }
 
    public String toString() {
