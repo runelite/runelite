@@ -106,9 +106,15 @@ public class MinimapPlugin extends Plugin
 		originalDotSprites = Arrays.copyOf(originalDots, originalDots.length);
 	}
 
-	public void restoreOriginalDots()
+	private void restoreOriginalDots()
 	{
 		SpritePixels[] mapDots = client.getMapDots();
+
+		if (originalDotSprites == null || mapDots == null)
+		{
+			return;
+		}
+
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
 	}
 
