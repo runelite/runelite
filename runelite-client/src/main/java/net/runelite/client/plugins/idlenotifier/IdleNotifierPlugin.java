@@ -25,6 +25,12 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
+import javax.inject.Inject;
+import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
@@ -90,12 +96,6 @@ import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -107,7 +107,6 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
 	name = "Idle notifier"
@@ -119,9 +118,6 @@ public class IdleNotifierPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
-
-	@Inject
-	private ClientUI gui;
 
 	@Inject
 	private Client client;
@@ -283,32 +279,32 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkIdleLogout())
 		{
-			sendNotification("[" + local.getName() + "] is about to log out from idling too long!");
+			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
 		}
 
 		if (check6hrLogout())
 		{
-			sendNotification("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
 		if (checkAnimationIdle(waitDuration, local))
 		{
-			sendNotification("[" + local.getName() + "] is now idle!");
+			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
 		if (checkOutOfCombat(waitDuration, local))
 		{
-			sendNotification("[" + local.getName() + "] is now out of combat!");
+			notifier.notify("[" + local.getName() + "] is now out of combat!");
 		}
 
 		if (checkLowHitpoints(waitDuration))
 		{
-			sendNotification("[" + local.getName() + "] has low hitpoints!");
+			notifier.notify("[" + local.getName() + "] has low hitpoints!");
 		}
 
 		if (checkLowPrayer(waitDuration))
 		{
-			sendNotification("[" + local.getName() + "] has low prayer!");
+			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
 	}
 
@@ -450,22 +446,6 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		return false;
-	}
-
-	private void sendNotification(String message)
-	{
-		if (!config.alertWhenFocused() && gui.isFocused())
-		{
-			return;
-		}
-		if (config.requestFocus())
-		{
-			gui.requestFocus();
-		}
-		if (config.sendTrayNotification())
-		{
-			notifier.notify(message);
-		}
 	}
 
 	private void resetTimers()
