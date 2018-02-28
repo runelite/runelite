@@ -47,7 +47,8 @@ public class RenderOverview {
    )
    Font field3959;
    @ObfuscatedName("r")
-   HashMap field3935;
+   @Export("mapFonts")
+   HashMap mapFonts;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "[Llv;"
@@ -234,10 +235,10 @@ public class RenderOverview {
       this.field3936 = var4;
       this.field3930 = var1;
       this.field3959 = var2;
-      this.field3935 = new HashMap();
-      this.field3935.put(Size.field336, var3.get(fontNameVerdana11));
-      this.field3935.put(Size.field325, var3.get(fontNameVerdana13));
-      this.field3935.put(Size.field326, var3.get(fontNameVerdana15));
+      this.mapFonts = new HashMap();
+      this.mapFonts.put(Size.field336, var3.get(fontNameVerdana11));
+      this.mapFonts.put(Size.field325, var3.get(fontNameVerdana13));
+      this.mapFonts.put(Size.field326, var3.get(fontNameVerdana15));
       this.field3942 = new class324(var1);
       int var5 = this.field3930.getFile(class40.field497.field502);
       int[] var6 = this.field3930.getChilds(var5);
@@ -522,7 +523,7 @@ public class RenderOverview {
    @Export("initializeWorldMap")
    void initializeWorldMap(WorldMapData var1) {
       this.worldMapData = var1;
-      this.worldMapManager = new WorldMapManager(this.field3936, this.field3935);
+      this.worldMapManager = new WorldMapManager(this.field3936, this.mapFonts);
       this.field3942.method5949(this.worldMapData.method314());
    }
 
