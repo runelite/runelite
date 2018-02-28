@@ -211,7 +211,7 @@ public class class34 {
          var4 = new HashSet();
       }
 
-      this.method402(var1, var2, var4, var3);
+      this.drawNonLinkMapIcons(var1, var2, var4, var3);
       this.drawMapLinks(var1, var2, var4, var3);
    }
 
@@ -662,7 +662,8 @@ public class class34 {
       signature = "(IILjava/util/HashSet;II)V",
       garbageValue = "-1044872651"
    )
-   void method402(int var1, int var2, HashSet var3, int var4) {
+   @Export("drawNonLinkMapIcons")
+   void drawNonLinkMapIcons(int var1, int var2, HashSet var3, int var4) {
       float var5 = (float)var4 / 64.0F;
       float var6 = var5 / 2.0F;
       Iterator var7 = this.field449.entrySet().iterator();
