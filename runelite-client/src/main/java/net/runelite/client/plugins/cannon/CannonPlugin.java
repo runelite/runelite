@@ -26,9 +26,11 @@ package net.runelite.client.plugins.cannon;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -56,11 +58,17 @@ public class CannonPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
 
-	int cballsLeft = 0;
+	@Getter
+	private int cballsLeft;
 
-	boolean cannonPlaced = false;
+	@Getter
+	private boolean cannonPlaced;
 
-	net.runelite.api.Point myCannon;
+	@Getter
+	private net.runelite.api.Point cannonPosition;
+
+	@Getter
+	private GameObject cannon;
 
 	@Inject
 	private Notifier notifier;
@@ -90,7 +98,7 @@ public class CannonPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		cannonPlaced = false;
-		myCannon = null;
+		cannonPosition = null;
 		cballsLeft = 0;
 	}
 
@@ -105,7 +113,8 @@ public class CannonPlugin extends Plugin
 			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
 				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 			{
-				myCannon = gameObject.getWorldLocation();
+				cannonPosition = gameObject.getWorldLocation();
+				cannon = gameObject;
 			}
 		}
 	}
@@ -115,12 +124,12 @@ public class CannonPlugin extends Plugin
 	{
 		Projectile projectile = event.getProjectile();
 
-		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && myCannon != null)
+		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null)
 		{
 			net.runelite.api.Point projectileLoc = Perspective.localToWorld(client, new net.runelite.api.Point(projectile.getX1(), projectile.getY1()));
 
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(myCannon) && projectile.getX() == 0 && projectile.getY() == 0)
+			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
 			{
 				cballsLeft--;
 			}
@@ -199,5 +208,19 @@ public class CannonPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	Color getStateColor()
+	{
+		if (cballsLeft > 15)
+		{
+			return Color.green;
+		}
+		else if (cballsLeft > 5)
+		{
+			return Color.orange;
+		}
+
+		return Color.red;
 	}
 }

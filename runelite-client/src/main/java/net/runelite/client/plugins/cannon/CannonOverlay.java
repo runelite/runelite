@@ -24,9 +24,6 @@
  */
 package net.runelite.client.plugins.cannon;
 
-import static java.awt.Color.GREEN;
-import static java.awt.Color.ORANGE;
-import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -59,41 +56,40 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!plugin.cannonPlaced || plugin.myCannon == null)
+		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
 		{
 			return null;
 		}
 
-		if (!Perspective.isWorldInScene(client, plugin.myCannon))
+		if (!Perspective.isWorldInScene(client, plugin.getCannonPosition()))
+		{
+			return null;
+		}
+
+		net.runelite.api.Point cannonPoint = Perspective.worldToLocal(client, plugin.getCannonPosition());
+
+		if (cannonPoint == null)
 		{
 			return null;
 		}
 
 		net.runelite.api.Point cannonLoc = Perspective.getCanvasTextLocation(client,
 			graphics,
-			Perspective.worldToLocal(client, plugin.myCannon),
-			String.valueOf(plugin.cballsLeft), 200);
+			cannonPoint,
+			String.valueOf(plugin.getCballsLeft()), 200);
 
 		Widget viewport = client.getViewportWidget();
 
-		if (viewport != null && cannonLoc != null && viewport.contains(cannonLoc))
+		if (viewport == null)
 		{
-			textComponent.setText(String.valueOf(plugin.cballsLeft));
+			return null;
+		}
+
+		if (cannonLoc != null && viewport.contains(cannonLoc))
+		{
+			textComponent.setText(String.valueOf(plugin.getCballsLeft()));
 			textComponent.setPosition(new Point(cannonLoc.getX(), cannonLoc.getY()));
-
-			if (plugin.cballsLeft > 15)
-			{
-				textComponent.setColor(GREEN);;
-			}
-			else if (plugin.cballsLeft > 5)
-			{
-				textComponent.setColor(ORANGE);
-			}
-			else
-			{
-				textComponent.setColor(RED);
-			}
-
+			textComponent.setColor(plugin.getStateColor());
 			textComponent.render(graphics, parent);
 		}
 
