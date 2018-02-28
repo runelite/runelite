@@ -284,12 +284,12 @@ public class RenderOverview {
             Iterator var12;
             MapIcon var13;
             ScriptEvent var14;
-            class47 var15;
+            MapIconReference var15;
             for(var12 = var10.iterator(); var12.hasNext(); class194.method3791(var14)) {
                var13 = (MapIcon)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
-               var15 = new class47(var13.field488, var13.field491, var13.field490);
+               var15 = new MapIconReference(var13.field488, var13.field491, var13.field490);
                var14.method1134(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                if(this.field3945.contains(var13)) {
                   var14.method1130(class239.field2922);
@@ -304,7 +304,7 @@ public class RenderOverview {
                var13 = (MapIcon)var12.next();
                if(!var11.contains(var13)) {
                   var14 = new ScriptEvent();
-                  var15 = new class47(var13.field488, var13.field491, var13.field490);
+                  var15 = new MapIconReference(var13.field488, var13.field491, var13.field490);
                   var14.method1134(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                   var14.method1130(class239.field2921);
                   class194.method3791(var14);
@@ -1097,7 +1097,7 @@ public class RenderOverview {
    )
    public void method6015(int var1, int var2, Coordinates var3, Coordinates var4) {
       ScriptEvent var5 = new ScriptEvent();
-      class47 var6 = new class47(var2, var3, var4);
+      MapIconReference var6 = new MapIconReference(var2, var3, var4);
       var5.method1134(new Object[]{var6});
       switch(var1) {
       case 1008:

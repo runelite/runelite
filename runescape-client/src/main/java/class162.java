@@ -267,7 +267,7 @@ public class class162 implements Runnable {
             } else {
                var6 = var0.getBits(1);
                if(var6 == 0) {
-                  var3 = class47.method731(var0);
+                  var3 = MapIconReference.method731(var0);
                   class92.field1372[var5] = (byte)(class92.field1372[var5] | 2);
                } else {
                   WorldMapData.decodeMovement(var0, var5);
@@ -291,7 +291,7 @@ public class class162 implements Runnable {
                } else {
                   var6 = var0.getBits(1);
                   if(var6 == 0) {
-                     var3 = class47.method731(var0);
+                     var3 = MapIconReference.method731(var0);
                      class92.field1372[var5] = (byte)(class92.field1372[var5] | 2);
                   } else {
                      WorldMapData.decodeMovement(var0, var5);
@@ -315,7 +315,7 @@ public class class162 implements Runnable {
                   } else {
                      var6 = var0.getBits(1);
                      if(var6 == 0) {
-                        var3 = class47.method731(var0);
+                        var3 = MapIconReference.method731(var0);
                         class92.field1372[var5] = (byte)(class92.field1372[var5] | 2);
                      } else if(BoundingBox.decodeRegionHash(var0, var5)) {
                         class92.field1372[var5] = (byte)(class92.field1372[var5] | 2);
@@ -339,7 +339,7 @@ public class class162 implements Runnable {
                      } else {
                         var6 = var0.getBits(1);
                         if(var6 == 0) {
-                           var3 = class47.method731(var0);
+                           var3 = MapIconReference.method731(var0);
                            class92.field1372[var5] = (byte)(class92.field1372[var5] | 2);
                         } else if(BoundingBox.decodeRegionHash(var0, var5)) {
                            class92.field1372[var5] = (byte)(class92.field1372[var5] | 2);

@@ -659,7 +659,7 @@ public class VertexNormal {
                      }
 
                      if(var10.contentType == 1338) {
-                        class47.method734(var10, var12, var13, var11);
+                        MapIconReference.method734(var10, var12, var13, var11);
                         Rasterizer2D.setDrawRegion(var2, var3, var4, var5);
                         continue;
                      }
@@ -941,7 +941,7 @@ public class VertexNormal {
                                  }
 
                                  if(!var10.hasScript) {
-                                    var75 = class47.method733(var75, var10);
+                                    var75 = MapIconReference.method733(var75, var10);
                                  }
 
                                  var66.method5455(var75, var12, var13, var10.width, var10.height, var20, var10.textShadowed?0:-1, var10.field2779, var10.field2847, var10.field2839);
@@ -1121,7 +1121,7 @@ public class VertexNormal {
                                     Font var54 = ClanMemberManager.font_p12full;
                                     String var55 = var10.text;
 
-                                    for(var55 = class47.method733(var55, var10); var55.length() > 0; var20 = var20 + var54.verticalSpace + 1) {
+                                    for(var55 = MapIconReference.method733(var55, var10); var55.length() > 0; var20 = var20 + var54.verticalSpace + 1) {
                                        var49 = var55.indexOf("<br>");
                                        if(var49 != -1) {
                                           var68 = var55.substring(0, var49);
@@ -1158,7 +1158,7 @@ public class VertexNormal {
                                     var55 = var10.text;
                                     var26 = var25 + var54.verticalSpace + 2;
 
-                                    for(var55 = class47.method733(var55, var10); var55.length() > 0; var26 = var26 + var54.verticalSpace + 1) {
+                                    for(var55 = MapIconReference.method733(var55, var10); var55.length() > 0; var26 = var26 + var54.verticalSpace + 1) {
                                        var27 = var55.indexOf("<br>");
                                        if(var27 != -1) {
                                           var68 = var55.substring(0, var27);

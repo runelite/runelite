@@ -144,6 +144,6 @@ public final class FileOnDisk {
       garbageValue = "-338174166"
    )
    static final void method2572(ContextMenuRow var0, int var1, int var2) {
-      class47.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
+      MapIconReference.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
    }
 }

@@ -1565,7 +1565,7 @@ public final class Client extends GameEngine implements class288 {
             LoginPacket.method3436(this);
             this.method1240();
          } else if(gameState == 25) {
-            class47.flush(false);
+            MapIconReference.flush(false);
             field862 = 0;
             boolean var46 = true;
 
@@ -1666,7 +1666,7 @@ public final class Client extends GameEngine implements class288 {
                   }
 
                   class79.field1210.clear();
-                  class47.flush(true);
+                  MapIconReference.flush(true);
                   int var10;
                   int var11;
                   int var12;
@@ -1701,7 +1701,7 @@ public final class Client extends GameEngine implements class288 {
                         }
                      }
 
-                     class47.flush(true);
+                     MapIconReference.flush(true);
 
                      for(var34 = 0; var34 < var33; ++var34) {
                         byte[] var35 = KeyFocusListener.field589[var34];
@@ -1775,7 +1775,7 @@ public final class Client extends GameEngine implements class288 {
                               }
                            }
 
-                           class47.flush(true);
+                           MapIconReference.flush(true);
                            var34 = 0;
 
                            while(true) {
@@ -1912,11 +1912,11 @@ public final class Client extends GameEngine implements class288 {
                      }
                   }
 
-                  class47.flush(true);
+                  MapIconReference.flush(true);
                   class184.method3455();
                   class45.method681();
                   WorldMapManager.method611(GameObject.region, collisionMaps);
-                  class47.flush(true);
+                  MapIconReference.flush(true);
                   var34 = class61.field686;
                   if(var34 > class230.plane) {
                      var34 = class230.plane;
@@ -2366,7 +2366,7 @@ public final class Client extends GameEngine implements class288 {
 
                   if(var37 != null) {
                      var45 = new File(var37, "test.dat");
-                     if(!class47.method730(var45, true)) {
+                     if(!MapIconReference.method730(var45, true)) {
                         var37 = null;
                      }
                   }
@@ -2377,7 +2377,7 @@ public final class Client extends GameEngine implements class288 {
                   for(int var23 = 0; var23 < class156.field2108.length; ++var23) {
                      for(var10 = 0; var10 < GrandExchangeEvents.cacheLocations.length; ++var10) {
                         File var41 = new File(GrandExchangeEvents.cacheLocations[var10] + class156.field2108[var23] + File.separatorChar + "oldschool" + File.separatorChar);
-                        if(var41.exists() && class47.method730(new File(var41, "test.dat"), true)) {
+                        if(var41.exists() && MapIconReference.method730(new File(var41, "test.dat"), true)) {
                            var37 = var41.toString();
                            var20 = true;
                            break label245;
@@ -2448,7 +2448,7 @@ public final class Client extends GameEngine implements class288 {
 
                   for(var7 = 0; var7 < var44.length; ++var7) {
                      File var38 = var44[var7];
-                     if(!class47.method730(var38, false)) {
+                     if(!MapIconReference.method730(var38, false)) {
                         ++var3;
                         continue label270;
                      }
@@ -5406,9 +5406,9 @@ public final class Client extends GameEngine implements class288 {
                   if(var11.field3293 != -1) {
                      var42 = var11.field3293;
                      var16 = "<img=" + var42 + ">";
-                     class48.addChatMessage(9, var16 + var55, var34, class47.method728(var35));
+                     class48.addChatMessage(9, var16 + var55, var34, MapIconReference.method728(var35));
                   } else {
-                     class48.addChatMessage(9, var55, var34, class47.method728(var35));
+                     class48.addChatMessage(9, var55, var34, MapIconReference.method728(var35));
                   }
                }
 

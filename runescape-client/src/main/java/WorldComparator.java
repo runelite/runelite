@@ -117,7 +117,7 @@ final class WorldComparator implements Comparator {
          int var4 = Client.menuIdentifiers[var0];
          String var5 = Client.menuOptions[var0];
          String var6 = Client.menuTargets[var0];
-         class47.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.mouseLastPressedX, MouseInput.mouseLastPressedY);
+         MapIconReference.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.mouseLastPressedX, MouseInput.mouseLastPressedY);
       }
    }
 

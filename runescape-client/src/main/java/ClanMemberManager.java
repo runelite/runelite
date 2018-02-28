@@ -76,7 +76,7 @@ public class ClanMemberManager extends NameableContainer {
       garbageValue = "1582324497"
    )
    final void method5417(String var1) {
-      String var3 = class47.method728(GameObject.method3072(var1));
+      String var3 = MapIconReference.method728(GameObject.method3072(var1));
       if(var3 == null) {
          var3 = "";
       }
@@ -90,7 +90,7 @@ public class ClanMemberManager extends NameableContainer {
       garbageValue = "-427567209"
    )
    final void method5406(String var1) {
-      String var3 = class47.method728(GameObject.method3072(var1));
+      String var3 = MapIconReference.method728(GameObject.method3072(var1));
       if(var3 == null) {
          var3 = "";
       }

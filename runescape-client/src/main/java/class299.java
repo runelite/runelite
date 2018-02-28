@@ -14,5 +14,5 @@ public class class299 {
    @ObfuscatedSignature(
       signature = "Law;"
    )
-   static class47 field3788;
+   static MapIconReference field3788;
 }
