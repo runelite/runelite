@@ -3131,7 +3131,7 @@ public final class Client extends GameEngine implements class288 {
                   var2.offset = 0;
                   ((class168)var1).vmethod3321(var2.payload, 0, field863.packetLength);
                   field912.method5601();
-                  class39.method557();
+                  MapIcon.method557();
                   WorldMapManager.initializeGPI(var2);
                   class152.field2090 = -1;
                   MouseRecorder.xteaChanged(false, var2);
@@ -4767,9 +4767,9 @@ public final class Client extends GameEngine implements class288 {
                Script.field1412 = var3.readUnsignedByte();
                DynamicObject.field1425 = var3.readUnsignedByte();
                if(DynamicObject.field1425 >= 100) {
-                  class39.cameraX = class157.field2116 * 128 + 64;
+                  MapIcon.cameraX = class157.field2116 * 128 + 64;
                   CombatInfo1.cameraY = field1038 * 128 + 64;
-                  class159.cameraZ = WorldMapType1.getTileHeight(class39.cameraX, CombatInfo1.cameraY, class230.plane) - class224.field2650;
+                  class159.cameraZ = WorldMapType1.getTileHeight(MapIcon.cameraX, CombatInfo1.cameraY, class230.plane) - class224.field2650;
                }
 
                var1.serverPacket = null;
@@ -5256,7 +5256,7 @@ public final class Client extends GameEngine implements class288 {
                   var23 = class131.field1879 * 128 + 64;
                   var5 = class304.field3804 * 128 + 64;
                   var25 = WorldMapType1.getTileHeight(var23, var5, class230.plane) - AbstractSoundSystem.field1524;
-                  var26 = var23 - class39.cameraX;
+                  var26 = var23 - MapIcon.cameraX;
                   var8 = var25 - class159.cameraZ;
                   var9 = var5 - CombatInfo1.cameraY;
                   var29 = (int)Math.sqrt((double)(var9 * var9 + var26 * var26));

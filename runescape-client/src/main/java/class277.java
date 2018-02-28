@@ -333,7 +333,7 @@ public enum class277 implements Enumerated {
 
                               return 1;
                            } else {
-                              class39 var12;
+                              MapIcon var12;
                               if(var0 == 6639) {
                                  var12 = World.method1681().method6016();
                                  if(var12 == null) {

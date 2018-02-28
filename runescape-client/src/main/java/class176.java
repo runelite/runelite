@@ -91,8 +91,8 @@ public class class176 {
       if(Client.preferences.hideRoofs) {
          return class230.plane;
       } else {
-         int var0 = WorldMapType1.getTileHeight(class39.cameraX, CombatInfo1.cameraY, class230.plane);
-         return var0 - class159.cameraZ < 800 && (class61.tileSettings[class230.plane][class39.cameraX >> 7][CombatInfo1.cameraY >> 7] & 4) != 0?class230.plane:3;
+         int var0 = WorldMapType1.getTileHeight(MapIcon.cameraX, CombatInfo1.cameraY, class230.plane);
+         return var0 - class159.cameraZ < 800 && (class61.tileSettings[class230.plane][MapIcon.cameraX >> 7][CombatInfo1.cameraY >> 7] & 4) != 0?class230.plane:3;
       }
    }
 }

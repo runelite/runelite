@@ -132,7 +132,7 @@ public class class225 extends Node {
    static final void worldToScreen(int var0, int var1, int var2) {
       if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
          int var3 = WorldMapType1.getTileHeight(var0, var1, class230.plane) - var2;
-         var0 -= class39.cameraX;
+         var0 -= MapIcon.cameraX;
          var3 -= class159.cameraZ;
          var1 -= CombatInfo1.cameraY;
          int var4 = Graphics3D.SINE[DecorativeObject.cameraPitch];

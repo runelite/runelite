@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ad")
-public class class39 {
+@Implements("MapIcon")
+public class MapIcon {
    @ObfuscatedName("gj")
    @ObfuscatedGetter(
       intValue = -532701509
@@ -55,7 +57,7 @@ public class class39 {
    @ObfuscatedSignature(
       signature = "(ILhp;Lhp;Laq;)V"
    )
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+   MapIcon(int var1, Coordinates var2, Coordinates var3, class33 var4) {
       this.field488 = var1;
       this.field491 = var2;
       this.field490 = var3;

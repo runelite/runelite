@@ -282,11 +282,11 @@ public class RenderOverview {
             HashSet var11 = new HashSet();
 
             Iterator var12;
-            class39 var13;
+            MapIcon var13;
             ScriptEvent var14;
             class47 var15;
             for(var12 = var10.iterator(); var12.hasNext(); class194.method3791(var14)) {
-               var13 = (class39)var12.next();
+               var13 = (MapIcon)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
                var15 = new class47(var13.field488, var13.field491, var13.field490);
@@ -301,7 +301,7 @@ public class RenderOverview {
             var12 = this.field3945.iterator();
 
             while(var12.hasNext()) {
-               var13 = (class39)var12.next();
+               var13 = (MapIcon)var12.next();
                if(!var11.contains(var13)) {
                   var14 = new ScriptEvent();
                   var15 = new class47(var13.field488, var13.field491, var13.field490);
@@ -1028,7 +1028,7 @@ public class RenderOverview {
                   return;
                }
 
-               class39 var11 = (class39)var10.next();
+               MapIcon var11 = (MapIcon)var10.next();
                Area var12 = class330.mapAreaType[var11.field488];
                var13 = false;
 
@@ -1060,19 +1060,19 @@ public class RenderOverview {
          HashMap var3 = this.worldMapManager.method579();
          List var4 = (List)var3.get(Integer.valueOf(var1));
          if(var4 != null && !var4.isEmpty()) {
-            class39 var5 = null;
+            MapIcon var5 = null;
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
             while(true) {
-               class39 var8;
+               MapIcon var8;
                int var11;
                do {
                   if(!var7.hasNext()) {
                      return var5.field490;
                   }
 
-                  var8 = (class39)var7.next();
+                  var8 = (MapIcon)var7.next();
                   int var9 = var8.field490.worldX - var2.worldX;
                   int var10 = var8.field490.worldY - var2.worldY;
                   var11 = var9 * var9 + var10 * var10;
@@ -1124,7 +1124,7 @@ public class RenderOverview {
       signature = "(I)Lad;",
       garbageValue = "781761940"
    )
-   public class39 method6016() {
+   public MapIcon method6016() {
       if(!this.field3942.method5958()) {
          return null;
       } else if(!this.worldMapManager.method572()) {
@@ -1149,7 +1149,7 @@ public class RenderOverview {
       signature = "(I)Lad;",
       garbageValue = "-1967218353"
    )
-   public class39 method6027() {
-      return this.field3969 == null?null:(!this.field3969.hasNext()?null:(class39)this.field3969.next());
+   public MapIcon method6027() {
+      return this.field3969 == null?null:(!this.field3969.hasNext()?null:(MapIcon)this.field3969.next());
    }
 }

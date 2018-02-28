@@ -303,7 +303,7 @@ public final class WorldMapManager
                Iterator var11 = var10.iterator();
 
                while(var11.hasNext()) {
-                  class39 var12 = (class39)var11.next();
+                  MapIcon var12 = (MapIcon)var11.next();
                   int var13 = var3 * (var12.field490.worldX - this.field516) / this.field518;
                   int var14 = var4 - (var12.field490.worldY - this.field517) * var4 / this.field507;
                   Rasterizer2D.method5672(var13 + var1, var14 + var2, 2, 16776960, 256);
@@ -421,7 +421,7 @@ public final class WorldMapManager
             Iterator var4 = var3.iterator();
 
             while(var4.hasNext()) {
-               class39 var5 = (class39)var4.next();
+               MapIcon var5 = (MapIcon)var4.next();
                if(!this.field511.containsKey(Integer.valueOf(var5.field488))) {
                   LinkedList var6 = new LinkedList();
                   var6.add(var5);

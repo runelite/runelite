@@ -233,7 +233,7 @@ public class GrandExchangeEvents {
                return 1;
             } else if(var0 == 3617) {
                var5 = class80.scriptStringStack[--class43.scriptStringStackSize];
-               class39.method547(var5);
+               MapIcon.method547(var5);
                return 1;
             } else if(var0 == 3618) {
                class80.intStack[++class80.intStackSize - 1] = class2.clanMemberManager != null?class2.clanMemberManager.field3744:0;

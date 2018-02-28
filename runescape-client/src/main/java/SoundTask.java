@@ -151,11 +151,11 @@ public class SoundTask implements Runnable {
       for(var5 = 1; var5 < 103; ++var5) {
          for(var6 = 1; var6 < 103; ++var6) {
             if((class61.tileSettings[var0][var6][var5] & 24) == 0) {
-               class39.method551(var0, var6, var5, var3, var4);
+               MapIcon.method551(var0, var6, var5, var3, var4);
             }
 
             if(var0 < 3 && (class61.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
-               class39.method551(var0 + 1, var6, var5, var3, var4);
+               MapIcon.method551(var0 + 1, var6, var5, var3, var4);
             }
          }
       }

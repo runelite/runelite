@@ -129,27 +129,27 @@ public class LoginPacket implements class178 {
          if(MouseInput.mouseLastButton == 1 || !Size.middleMouseMovesCamera && MouseInput.mouseLastButton == 4) {
             int var1 = class89.field1324 + 280;
             if(MouseInput.mouseLastPressedX >= var1 && MouseInput.mouseLastPressedX <= var1 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-               class39.method559(0, 0);
+               MapIcon.method559(0, 0);
             } else if(MouseInput.mouseLastPressedX >= var1 + 15 && MouseInput.mouseLastPressedX <= var1 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-               class39.method559(0, 1);
+               MapIcon.method559(0, 1);
             } else {
                var2 = class89.field1324 + 390;
                if(MouseInput.mouseLastPressedX >= var2 && MouseInput.mouseLastPressedX <= var2 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-                  class39.method559(1, 0);
+                  MapIcon.method559(1, 0);
                } else if(MouseInput.mouseLastPressedX >= var2 + 15 && MouseInput.mouseLastPressedX <= var2 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-                  class39.method559(1, 1);
+                  MapIcon.method559(1, 1);
                } else {
                   var3 = class89.field1324 + 500;
                   if(MouseInput.mouseLastPressedX >= var3 && MouseInput.mouseLastPressedX <= var3 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-                     class39.method559(2, 0);
+                     MapIcon.method559(2, 0);
                   } else if(MouseInput.mouseLastPressedX >= var3 + 15 && MouseInput.mouseLastPressedX <= var3 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-                     class39.method559(2, 1);
+                     MapIcon.method559(2, 1);
                   } else {
                      var4 = class89.field1324 + 610;
                      if(MouseInput.mouseLastPressedX >= var4 && MouseInput.mouseLastPressedX <= var4 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-                        class39.method559(3, 0);
+                        MapIcon.method559(3, 0);
                      } else if(MouseInput.mouseLastPressedX >= var4 + 15 && MouseInput.mouseLastPressedX <= var4 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
-                        class39.method559(3, 1);
+                        MapIcon.method559(3, 1);
                      } else if(MouseInput.mouseLastPressedX >= class89.field1324 + 708 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedX <= class89.field1324 + 708 + 50 && MouseInput.mouseLastPressedY <= 20) {
                         class89.worldSelectShown = false;
                         class234.field2759.method5809(class89.field1324, 0);

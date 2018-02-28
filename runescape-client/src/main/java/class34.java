@@ -148,7 +148,7 @@ public class class34 {
                            var16 = new Coordinates(var9 + var17.field384, var17.field383 * 64 + var6 + var17.method661() * 8, var7 + var17.field373 * 64 + var17.method662() * 8);
                         }
 
-                        class39 var18 = new class39(var14.field3406, var16, var15, this.method448(var14));
+                        MapIcon var18 = new MapIcon(var14.field3406, var16, var15, this.method448(var14));
                         this.field449.put(var8, var18);
                         continue label57;
                      }
@@ -171,7 +171,7 @@ public class class34 {
       while(var2.hasNext()) {
          class25 var3 = (class25)var2.next();
          if(var3.field342.worldX >> 6 == this.field447 && var3.field342.worldY >> 6 == this.field437) {
-            class39 var4 = new class39(var3.field347, var3.field342, var3.field342, this.method412(var3.field347));
+            MapIcon var4 = new MapIcon(var3.field347, var3.field342, var3.field342, this.method412(var3.field347));
             this.field440.add(var4);
          }
       }
@@ -225,7 +225,7 @@ public class class34 {
       Iterator var4 = this.field449.values().iterator();
 
       while(var4.hasNext()) {
-         class39 var5 = (class39)var4.next();
+         MapIcon var5 = (MapIcon)var4.next();
          if(var1.contains(Integer.valueOf(var5.field488))) {
             Area var6 = class330.mapAreaType[var5.field488];
             this.method425(var6, var5.field494, var5.field495, var2, var3);
@@ -673,7 +673,7 @@ public class class34 {
          Coordinates var9 = (Coordinates)var8.getKey();
          int var10 = (int)((float)var1 + var5 * (float)var9.worldX - var6);
          int var11 = (int)((float)(var2 + var4) - (float)var9.worldY * var5 - var6);
-         class39 var12 = (class39)var8.getValue();
+         MapIcon var12 = (MapIcon)var8.getValue();
          if(var12 != null) {
             var12.field494 = var10;
             var12.field495 = var11;
@@ -695,7 +695,7 @@ public class class34 {
       Iterator var4 = this.field440.iterator();
 
       while(var4.hasNext()) {
-         class39 var5 = (class39)var4.next();
+         MapIcon var5 = (MapIcon)var4.next();
          Area var6 = class330.mapAreaType[var5.field488];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4741()))) {
             this.method425(var6, var5.field494, var5.field495, var2, var3);
@@ -726,7 +726,7 @@ public class class34 {
       signature = "(Lad;IIFI)V",
       garbageValue = "2130030632"
    )
-   void method403(class39 var1, int var2, int var3, float var4) {
+   void method403(MapIcon var1, int var2, int var3, float var4) {
       Area var5 = class330.mapAreaType[var1.field488];
       this.method404(var5, var2, var3);
       this.method405(var1, var5, var2, var3, var4);
@@ -752,7 +752,7 @@ public class class34 {
       signature = "(Lad;Ljz;IIFI)V",
       garbageValue = "868818062"
    )
-   void method405(class39 var1, Area var2, int var3, int var4, float var5) {
+   void method405(MapIcon var1, Area var2, int var3, int var4, float var5) {
       if(var1.field493 != null) {
          if(var1.field493.field433.method192(var5)) {
             Font var6 = (Font)this.field450.get(var1.field493.field433);
@@ -772,7 +772,7 @@ public class class34 {
       Iterator var6 = this.field440.iterator();
 
       while(var6.hasNext()) {
-         class39 var7 = (class39)var6.next();
+         MapIcon var7 = (MapIcon)var6.next();
          int var8 = var7.field490.worldX % 64;
          int var9 = var7.field490.worldY % 64;
          var7.field494 = (int)((float)var1 + var5 * (float)var8);
@@ -829,10 +829,10 @@ public class class34 {
                class31 var8 = var6[var7];
                Area var9 = this.method435(var8.field412);
                if(var9 != null) {
-                  class39 var10 = (class39)this.field449.get(field451);
+                  MapIcon var10 = (MapIcon)this.field449.get(field451);
                   if(var10 != null) {
                      if(var9.field3406 != var10.field488) {
-                        class39 var16 = new class39(var9.field3406, var10.field491, var10.field490, this.method448(var9));
+                        MapIcon var16 = new MapIcon(var9.field3406, var10.field491, var10.field490, this.method448(var9));
                         this.field449.put(new Coordinates(field451), var16);
                         var10 = var16;
                      }
@@ -860,7 +860,7 @@ public class class34 {
                   }
 
                   if(var12 != null) {
-                     var10 = new class39(var9.field3406, var12, var11, this.method448(var9));
+                     var10 = new MapIcon(var9.field3406, var12, var11, this.method448(var9));
                      this.field449.put(new Coordinates(field451), var10);
                      return;
                   }
@@ -980,9 +980,9 @@ public class class34 {
          if(var4 < var3 + var1 && var5 < var3 + var2) {
             Iterator var7 = this.field449.values().iterator();
 
-            class39 var8;
+            MapIcon var8;
             while(var7.hasNext()) {
-               var8 = (class39)var7.next();
+               var8 = (MapIcon)var7.next();
                if(var8.method558(var4, var5)) {
                   var6.add(var8);
                }
@@ -991,7 +991,7 @@ public class class34 {
             var7 = this.field440.iterator();
 
             while(var7.hasNext()) {
-               var8 = (class39)var7.next();
+               var8 = (MapIcon)var7.next();
                if(var8.method558(var4, var5)) {
                   var6.add(var8);
                }
