@@ -76,7 +76,7 @@ class SkillXPInfo
 
 	int getLevelActionsRemaining()
 	{
-		if(actionExp == 0)
+		if (actionExp == 0)
 		{
 			return 0;
 		}
@@ -98,7 +98,7 @@ class SkillXPInfo
 
 	int getGoalActionsRemaining()
 	{
-		if(actionExp == 0)
+		if (actionExp == 0)
 		{
 			return 0;
 		}
@@ -107,11 +107,11 @@ class SkillXPInfo
 
 	int getGoalProgress()
 	{
-		if(goalXp == -1)
+		if (goalXp == -1)
 		{
 			return 0;
 		}
-		if((startXp + xpGained) >= goalXp)
+		if ((startXp + xpGained) >= goalXp)
 		{
 			return 100;
 		}

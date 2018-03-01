@@ -29,29 +29,29 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-    keyName = "xptracker",
-    name = "XP Tracker",
-    description = "Configuration for the XP tracker plugin"
+	keyName = "xptracker",
+	name = "XP Tracker",
+	description = "Configuration for the XP tracker plugin"
 )
 public interface XpTrackerConfig extends Config
 {
-    @ConfigItem(
-        keyName = "resetOnGoal",
-        name = "Clear goal when reached",
-        description = "Automatically clear skill goals when goal reached"
-    )
-    default boolean clearOnGoal()
-    {
-        return false;
-    }
+	@ConfigItem(
+		keyName = "resetOnGoal",
+		name = "Clear goal when reached",
+		description = "Automatically clear skill goals when goal reached"
+	)
+	default boolean clearOnGoal()
+	{
+		return false;
+	}
 
-    @ConfigItem(
-            keyName = "showLevelProgress",
-            name = "Show level progress with goal",
-            description = "Second progress bar in tracker shows level progress"
-    )
-    default boolean showLevelProgress()
-    {
-        return true;
-    }
+	@ConfigItem(
+			keyName = "showLevelProgress",
+			name = "Show level progress with goal",
+			description = "Second progress bar in tracker shows level progress"
+	)
+	default boolean showLevelProgress()
+	{
+		return true;
+	}
 }

@@ -200,7 +200,8 @@ class XpInfoBox extends JPanel
 			// second progress bar only visible when goal set
 			lvlProgressBar.setVisible(goalSet && config.showLevelProgress());
 
-			if(goalSet) {
+			if (goalSet)
+			{
 				// when goal is set, first bar shows goal, second bar shows level
 				progressBar.setToolTipText("<html>"
 						+ XpPanel.formatLine(xpInfo.getGoalXpRemaining(), "xp to goal")
@@ -230,7 +231,7 @@ class XpInfoBox extends JPanel
 
 			final int startXp = xpInfo.getStartXp();
 			final int goalXp = xpInfo.getGoalXp();
-			if(startXp > 0 && goalXp > 0)
+			if (startXp > 0 && goalXp > 0)
 			{
 				setToolTipText("<html>"
 						+ "start: " + NumberFormat.getInstance().format(Experience.getLevelForXp(startXp)) + " (" + NumberFormat.getInstance().format(startXp) + " xp)"

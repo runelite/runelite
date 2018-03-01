@@ -29,12 +29,15 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -132,7 +135,7 @@ class XpPanel extends PluginPanel
 		};
 		Object[] skillstrs = new String[skills.length];
 		Map<String, Skill> skillMap = new HashMap<>();
-		for(int i = 0; i < skills.length; ++i)
+		for (int i = 0; i < skills.length; ++i)
 		{
 			skillstrs[i] = skills[i].getName();
 			skillMap.put(skills[i].getName(), skills[i]);
@@ -146,7 +149,7 @@ class XpPanel extends PluginPanel
 				skillstrs,
 				skills[0].getName()
 		);
-		if(skillstr == null)
+		if (skillstr == null)
 		{
 			return;
 		}
@@ -159,7 +162,7 @@ class XpPanel extends PluginPanel
 				null,
 				99
 		);
-		if(goalstr == null)
+		if (goalstr == null)
 		{
 			return;
 		}
@@ -169,11 +172,11 @@ class XpPanel extends PluginPanel
 		{
 			goal = Integer.parseInt(goalstr);
 		}
-		catch(NumberFormatException e)
+		catch (NumberFormatException e)
 		{
 			return;
 		}
-		if(goal < 1 || goal > Experience.MAX_VIRT_LEVEL)
+		if (goal < 1 || goal > Experience.MAX_VIRT_LEVEL)
 		{
 			JOptionPane.showMessageDialog(this, "Invalid goal level");
 			return;
