@@ -35,5 +35,5 @@ public class ChatMessage
 	private ChatMessageType type;
 	private String name;
 	private String message;
-	private String sender;
+	private String clan;
 }

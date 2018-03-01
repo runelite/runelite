@@ -15,6 +15,6 @@ public class SetMessage
 	private MessageNode messageNode;
 	private ChatMessageType type;
 	private String name;
-	private String sender;
+	private String clan;
 	private String value;
 }

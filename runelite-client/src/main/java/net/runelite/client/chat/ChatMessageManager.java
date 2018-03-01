@@ -123,7 +123,7 @@ public class ChatMessageManager
 				message.getType(),
 				MoreObjects.firstNonNull(message.getName(), ""),
 				MoreObjects.firstNonNull(message.getValue(), message.getRuneLiteFormattedMessage()),
-				message.getSender());
+				message.getClan());
 
 		// Get last message from line buffer (the one we just added)
 		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(message.getType().getType());
