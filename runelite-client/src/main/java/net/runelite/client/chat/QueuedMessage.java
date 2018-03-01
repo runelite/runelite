@@ -37,4 +37,9 @@ public class QueuedMessage
 	private String name;
 	private String sender;
 	private String runeLiteFormattedMessage;
+
+	public ChatMessageType getType()
+	{
+		return type;
+	}
 }

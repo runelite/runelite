@@ -42,14 +42,20 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class ChatHistoryPlugin extends Plugin
 {
 	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
-	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
-		ChatMessageType.PUBLIC,
-		ChatMessageType.CLANCHAT,
-		ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
-		ChatMessageType.PRIVATE_MESSAGE_SENT,
-		ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
-		ChatMessageType.GAME
-	);
+    private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
+            ChatMessageType.PUBLIC,
+            ChatMessageType.CLANCHAT,
+            ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
+            ChatMessageType.PRIVATE_MESSAGE_SENT,
+            ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
+            ChatMessageType.GAME
+    );
+
+    private static final Set<ChatMessageType> PRIVATE_MESSAGE_TYPE = Sets.newHashSet(
+            ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
+            ChatMessageType.PRIVATE_MESSAGE_SENT,
+            ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD
+    );
 
 	private Queue<QueuedMessage> messageQueue;
 
@@ -77,7 +83,7 @@ public class ChatHistoryPlugin extends Plugin
 			return;
 		}
 
-		messageQueue.clear();
+        messageQueue.removeIf(e -> PRIVATE_MESSAGE_TYPE.contains(e.getType()));
 	}
 
 	@Subscribe
