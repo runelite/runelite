@@ -85,4 +85,25 @@ public interface RuneLiteConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "enableDefaultWorld",
+			name = "Enable default world",
+			description = "Enables the default world selector"
+	)
+	default boolean enableDefaultWorld()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "defaultWorld",
+			name = "Default world",
+			description = "Set the default world to load"
+	)
+	default int defaultWorld()
+	{
+		//TODO data source, https://api.runelite.net/runelite-*/worlds
+		return 11;
+	}
 }

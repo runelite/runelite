@@ -125,10 +125,13 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
+		// Load user configuration
+		configManager.load();
+
 		// Load RuneLite or Vanilla client
 		final boolean hasRs = !getOptions().has("no-rs");
 		final Optional<Applet> optionalClient = hasRs
-			? new ClientLoader().loadRs()
+			? new ClientLoader(runeliteConfig).loadRs()
 			: Optional.empty();
 
 		if (!optionalClient.isPresent() && hasRs)
@@ -150,9 +153,6 @@ public class RuneLite
 
 		// Initialize Discord service
 		discordService.init();
-
-		// Load user configuration
-		configManager.load();
 
 		// Register event listeners
 		eventBus.register(overlayRenderer);

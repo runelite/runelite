@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -36,20 +37,60 @@ import okhttp3.Response;
 
 public class ConfigLoader
 {
+	private static final String CONFIG_WORLD_URL = "http://oldschool%s.runescape.com/jav_config.ws";
 	private static final HttpUrl CONFIG_URL = HttpUrl.parse("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
 
 	public static final String CODEBASE = "codebase";
 	public static final String INITIAL_JAR = "initial_jar";
 	public static final String INITIAL_CLASS = "initial_class";
 
+	private RuneLiteConfig config;
+
+	public ConfigLoader()
+	{
+
+	}
+
+	public ConfigLoader(RuneLiteConfig config)
+	{
+		this.config = config;
+	}
+
 	private final Map<String, String> properties = new HashMap<>(),
 		appletProperties = new HashMap<>();
 
 	public void fetch() throws IOException
 	{
+		HttpUrl url = CONFIG_URL;
+
+		if (config != null && config.enableDefaultWorld())
+		{
+			int world = config.defaultWorld();
+			url = HttpUrl.parse(String.format(CONFIG_WORLD_URL, world));
+
+			try
+			{
+				//Fetch custom world
+				fetch(url);
+			}
+			catch (IOException e)
+			{
+				//Fallback on default world picker, which can trow a exception
+				fetch(CONFIG_URL);
+			}
+		}
+		else
+		{
+			//Fallback on default world picker, which can trow a exception
+			fetch(url);
+		}
+	}
+
+	private void fetch(HttpUrl url)  throws IOException
+	{
 		Request request = new Request.Builder()
-			.url(CONFIG_URL)
-			.build();
+				.url(url)
+				.build();
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute();
 			BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
