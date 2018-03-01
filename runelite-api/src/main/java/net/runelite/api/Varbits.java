@@ -179,6 +179,8 @@ public enum Varbits
 	 * Raids
 	 */
 	IN_RAID(5432),
+	TOTAL_POINTS(5431),
+	PERSONAL_POINTS(5422),
 
 	/**
 	 * Nightmare Zone
