@@ -32,9 +32,6 @@ public interface RSActor extends RSRenderable, Actor
 	@Import("interacting")
 	int getRSInteracting();
 
-	@Import("inSequence")
-	boolean inSequence();
-
 	@Import("overhead")
 	String getOverhead();
 
