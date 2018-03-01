@@ -33,6 +33,7 @@ import static net.runelite.api.AnimationID.FISHING_CAGE;
 import static net.runelite.api.AnimationID.FISHING_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_KARAMBWAN;
 import static net.runelite.api.AnimationID.FISHING_NET;
+import static net.runelite.api.AnimationID.FISHING_OILY_ROD;
 import static net.runelite.api.AnimationID.FISHING_POLE_CAST;
 import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
 import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_LONGBOW;
@@ -212,6 +213,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
+			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
