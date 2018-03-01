@@ -1,55 +1,147 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("y")
 final class class5 implements class0 {
-   @ObfuscatedName("b")
-   static boolean field30;
-   @ObfuscatedName("cc")
-   public static char field29;
-
-   @ObfuscatedName("fq")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1077956065"
+      signature = "Lip;"
    )
-   static void method12(int var0, int var1) {
-      if(Client.field971 != 0 && var0 != -1) {
-         class152.method3129(GrandExchangeOffer.indexTrack2, var0, 0, Client.field971, false);
-         Client.field1039 = true;
-      }
+   static Track1 field36;
+   @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "Ljs;"
+   )
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
 
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2028812366"
+   )
+   static int method17() {
+      return ++class95.field1434 - 1;
    }
 
-   @ObfuscatedName("gm")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-569514110"
+      signature = "(II)Liw;",
+      garbageValue = "-809382862"
    )
-   static final void method13(boolean var0) {
-      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
-         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method5075()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field1098 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field1057[var4][var5] == Client.field868) {
-                     continue;
-                  }
+   @Export("getWidget")
+   public static Widget getWidget(int var0) {
+      int var1 = var0 >> 16;
+      int var2 = var0 & 65535;
+      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
+         boolean var3 = class18.loadWidget(var1);
+         if(!var3) {
+            return null;
+         }
+      }
 
-                  Client.field1057[var4][var5] = Client.field868;
+      return Widget.widgets[var1][var2];
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljk;I)V",
+      garbageValue = "1764329639"
+   )
+   public static void method21(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2041370268"
+   )
+   static void method16() {
+      for(class80 var0 = (class80)class80.field1253.getFront(); var0 != null; var0 = (class80)class80.field1253.getNext()) {
+         if(var0.field1247 != null) {
+            class29.field431.method2129(var0.field1247);
+            var0.field1247 = null;
+         }
+
+         if(var0.field1252 != null) {
+            class29.field431.method2129(var0.field1252);
+            var0.field1252 = null;
+         }
+      }
+
+      class80.field1253.clear();
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1686815758"
+   )
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = Size.method185(var0 - 1, var1 - 1) + Size.method185(var0 + 1, var1 - 1) + Size.method185(var0 - 1, 1 + var1) + Size.method185(1 + var0, 1 + var1);
+      int var3 = Size.method185(var0 - 1, var1) + Size.method185(var0 + 1, var1) + Size.method185(var0, var1 - 1) + Size.method185(var0, var1 + 1);
+      int var4 = Size.method185(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
+   }
+
+   @ObfuscatedName("gi")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-122"
+   )
+   static final void method18() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints > 0) {
+            --var0.hitpoints;
+         }
+
+         if(var0.hitpoints == 0) {
+            if(var0.field1128 < 0 || class57.method833(var0.field1128, var0.field1135)) {
+               class93.method1987(var0.level, var0.type, var0.x, var0.y, var0.field1128, var0.field1129, var0.field1135);
+               var0.unlink();
+            }
+         } else {
+            if(var0.delay > 0) {
+               --var0.delay;
+            }
+
+            if(var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || class57.method833(var0.id, var0.field1125))) {
+               class93.method1987(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field1125);
+               var0.delay = -1;
+               if(var0.field1128 == var0.id && var0.field1128 == -1) {
+                  var0.unlink();
+               } else if(var0.field1128 == var0.id && var0.field1129 == var0.orientation && var0.field1125 == var0.field1135) {
+                  var0.unlink();
                }
-
-               if(!var2.composition.field3660) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               GameObject.region.method2930(class230.plane, var2.x, var2.y, WorldMapType1.getTileHeight(var2.field1098 * 64 - 64 + var2.x, var2.field1098 * 64 - 64 + var2.y, class230.plane), var2.field1098 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1097);
             }
          }
       }
 
+   }
+
+   @ObfuscatedName("il")
+   @ObfuscatedSignature(
+      signature = "(Liw;IIB)V",
+      garbageValue = "-56"
+   )
+   static final void method20(Widget var0, int var1, int var2) {
+      if(Client.field1021 == null && !Client.isMenuOpen) {
+         if(var0 != null && Player.method1146(var0) != null) {
+            Client.field1021 = var0;
+            Client.field1022 = Player.method1146(var0);
+            Client.field1023 = var1;
+            Client.field1056 = var2;
+            class31.field449 = 0;
+            Client.field1032 = false;
+            int var3 = Client.menuOptionCount - 1;
+            if(var3 != -1) {
+               WorldMapType1.method264(var3);
+            }
+
+         }
+      }
    }
 }

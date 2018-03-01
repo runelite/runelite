@@ -4,132 +4,137 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("ew")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("b")
+   @ObfuscatedName("pq")
    @ObfuscatedGetter(
-      intValue = -472173089
+      intValue = -130247403
+   )
+   static int field1832;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -933014925
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -853454743
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 981160403
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -99640513
+      intValue = 372148033
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -259436571
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -2024927675
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Leu;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Ldr;"
+      signature = "Ldz;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Ley;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lew;"
+      signature = "Leq;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Ldd;"
+      signature = "Ldv;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Ldj;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1018806865
+      intValue = -1278960999
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("r")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "[Leq;"
+      signature = "[Lep;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 605210429
+      intValue = -503006599
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("s")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1161757145
+      intValue = 848908507
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("t")
+   @ObfuscatedName("q")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("f")
+   @ObfuscatedName("v")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("x")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 159963173
+      intValue = -794908549
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("w")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1624082665
+      intValue = -461980623
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 496207615
+      intValue = -23689347
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 219923401
+      intValue = 1744785451
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("e")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lds;"
+      signature = "Lew;"
    )
    @Export("bridge")
    Tile bridge;
@@ -143,76 +148,114 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgn;Lgv;I)Lgv;",
-      garbageValue = "-1519230824"
+      signature = "([Lbq;II[I[II)V",
+      garbageValue = "1964219701"
    )
-   @Export("readStringIntParameters")
-   static final IterableHashTable readStringIntParameters(Buffer var0, IterableHashTable var1) {
-      int var2 = var0.readUnsignedByte();
-      int var3;
-      if(var1 == null) {
-         var3 = class156.nextPowerOfTwo(var2);
-         var1 = new IterableHashTable(var3);
-      }
+   static void method2753(World[] var0, int var1, int var2, int[] var3, int[] var4) {
+      if(var1 < var2) {
+         int var5 = var1 - 1;
+         int var6 = var2 + 1;
+         int var7 = (var2 + var1) / 2;
+         World var8 = var0[var7];
+         var0[var7] = var0[var1];
+         var0[var1] = var8;
 
-      for(var3 = 0; var3 < var2; ++var3) {
-         boolean var4 = var0.readUnsignedByte() == 1;
-         int var5 = var0.read24BitInt();
-         Object var6;
-         if(var4) {
-            var6 = new ObjectNode(var0.readString());
-         } else {
-            var6 = new IntegerNode(var0.readInt());
+         while(var5 < var6) {
+            boolean var9 = true;
+
+            int var10;
+            int var11;
+            int var12;
+            do {
+               --var6;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var6].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var6].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var6].method1653()?1:0;
+                     var12 = var8.method1653()?1:0;
+                  } else {
+                     var11 = var0[var6].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var12 != var11) {
+                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            var9 = true;
+
+            do {
+               ++var5;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var5].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var5].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var5].method1653()?1:0;
+                     var12 = var8.method1653()?1:0;
+                  } else {
+                     var11 = var0[var5].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var12 != var11) {
+                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            if(var5 < var6) {
+               World var13 = var0[var5];
+               var0[var5] = var0[var6];
+               var0[var6] = var13;
+            }
          }
 
-         var1.put((Node)var6, (long)var5);
+         method2753(var0, var1, var6, var3, var4);
+         method2753(var0, var6 + 1, var2, var3, var4);
       }
 
-      return var1;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "([Lgd;IB)Lgd;",
-      garbageValue = "121"
-   )
-   @Export("forOrdinal")
-   public static Enumerated forOrdinal(Enumerated[] var0, int var1) {
-      Enumerated[] var2 = var0;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         Enumerated var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
-            return var4;
-         }
-      }
-
-      return null;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)Ljd;",
-      garbageValue = "204857634"
-   )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = NPCComposition.NpcDefinition_indexCache.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         NPCComposition.npcs.put(var1, (long)var0);
-         return var1;
-      }
    }
 }

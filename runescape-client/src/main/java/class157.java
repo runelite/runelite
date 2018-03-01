@@ -1,81 +1,67 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
-public enum class157 implements Enumerated {
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lfl;"
-   )
-   field2117(2, 0),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lfl;"
-   )
-   field2115(1, 1),
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lfl;"
-   )
-   field2119(0, 2),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lfl;"
-   )
-   field2113(3, 3);
+@ObfuscatedName("fq")
+public class class157 extends class297 {
+   @ObfuscatedName("d")
+   final boolean field2138;
 
-   @ObfuscatedName("or")
-   @ObfuscatedGetter(
-      intValue = 1096410111
-   )
-   static int field2116;
-   @ObfuscatedName("fg")
-   static byte[][] field2120;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1812021069
-   )
-   public final int field2114;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -291439357
-   )
-   final int field2118;
-
-   class157(int var3, int var4) {
-      this.field2114 = var3;
-      this.field2118 = var4;
+   public class157(boolean var1) {
+      this.field2138 = var1;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1578971771"
+      signature = "(Lkz;Lkz;S)I",
+      garbageValue = "-18534"
    )
-   public int rsOrdinal() {
-      return this.field2118;
+   int method3240(ChatPlayer var1, ChatPlayer var2) {
+      return var1.world != 0 && var2.world != 0?(this.field2138?var1.method5385().method5536(var2.method5385()):var2.method5385().method5536(var1.method5385())):this.method5387(var1, var2);
    }
 
-   @ObfuscatedName("q")
+   public int compare(Object var1, Object var2) {
+      return this.method3240((ChatPlayer)var1, (ChatPlayer)var2);
+   }
+
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(II)Ljr;",
-      garbageValue = "1628560269"
+      signature = "(B)V",
+      garbageValue = "34"
    )
-   public static class271 method3163(int var0) {
-      class271 var1 = (class271)class271.field3474.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class271.field3476.getConfigData(11, var0);
-         var1 = new class271();
-         if(var2 != null) {
-            var1.method4861(new Buffer(var2));
+   public static void method3245() {
+      KeyFocusListener var0 = KeyFocusListener.keyboard;
+      synchronized(KeyFocusListener.keyboard) {
+         ++KeyFocusListener.keyboardIdleTicks;
+         KeyFocusListener.field640 = KeyFocusListener.field642;
+         KeyFocusListener.field639 = 0;
+         int var1;
+         if(KeyFocusListener.field637 < 0) {
+            for(var1 = 0; var1 < 112; ++var1) {
+               KeyFocusListener.keyPressed[var1] = false;
+            }
+
+            KeyFocusListener.field637 = KeyFocusListener.field634;
+         } else {
+            while(KeyFocusListener.field634 != KeyFocusListener.field637) {
+               var1 = KeyFocusListener.field632[KeyFocusListener.field634];
+               KeyFocusListener.field634 = KeyFocusListener.field634 + 1 & 127;
+               if(var1 < 0) {
+                  KeyFocusListener.keyPressed[~var1] = false;
+               } else {
+                  if(!KeyFocusListener.keyPressed[var1] && KeyFocusListener.field639 < KeyFocusListener.field638.length - 1) {
+                     KeyFocusListener.field638[++KeyFocusListener.field639 - 1] = var1;
+                  }
+
+                  KeyFocusListener.keyPressed[var1] = true;
+               }
+            }
          }
 
-         var1.method4862();
-         class271.field3474.put(var1, (long)var0);
-         return var1;
+         if(KeyFocusListener.field639 > 0) {
+            KeyFocusListener.keyboardIdleTicks = 0;
+         }
+
+         KeyFocusListener.field642 = KeyFocusListener.field641;
       }
    }
 }

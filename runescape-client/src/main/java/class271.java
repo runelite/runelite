@@ -1,102 +1,63 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jr")
+@ObfuscatedName("ju")
 public class class271 extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lie;"
+      signature = "Ljk;"
    )
-   static IndexDataBase field3476;
-   @ObfuscatedName("q")
+   public static IndexDataBase field3475;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Lhp;"
    )
-   public static NodeCache field3474;
-   @ObfuscatedName("o")
-   char field3478;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1124298085
-   )
-   public int field3477;
-   @ObfuscatedName("a")
-   public String field3475;
-   @ObfuscatedName("h")
-   boolean field3479;
+   static NodeCache field3476;
+   @ObfuscatedName("n")
+   public boolean field3477;
 
    static {
-      field3474 = new NodeCache(64);
+      field3476 = new NodeCache(64);
    }
 
    class271() {
-      this.field3479 = true;
+      this.field3477 = false;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-119"
+      signature = "(Lgy;I)V",
+      garbageValue = "1884093876"
    )
-   void method4862() {
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Lgn;B)V",
-      garbageValue = "64"
-   )
-   void method4861(Buffer var1) {
+   void method4920(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4864(var1, var2);
+         this.method4921(var1, var2);
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgn;IB)V",
-      garbageValue = "-11"
+      signature = "(Lgy;II)V",
+      garbageValue = "1825558500"
    )
-   void method4864(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.field3478 = class137.method3041(var1.readByte());
-      } else if(var2 == 2) {
-         this.field3477 = var1.readInt();
-      } else if(var2 == 4) {
-         this.field3479 = false;
-      } else if(var2 == 5) {
-         this.field3475 = var1.readString();
+   void method4921(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3477 = true;
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1612334919"
+      signature = "(Ljk;IB)Llv;",
+      garbageValue = "-76"
    )
-   public boolean method4877() {
-      return this.field3478 == 's';
-   }
-
-   @ObfuscatedName("go")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "476355983"
-   )
-   static final void method4881(int var0, int var1) {
-      if(Client.hintArrowTargetType == 2) {
-         class225.worldToScreen((Client.hintArrowX - ScriptState.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - WorldMapType1.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
-         if(Client.screenX > -1 && Client.gameCycle % 20 < 10) {
-            FaceNormal.headIconsHint[0].drawAt(var0 + Client.screenX - 12, Client.screenY + var1 - 28);
-         }
-
-      }
+   public static IndexedSprite method4927(IndexDataBase var0, int var1) {
+      return !GraphicsObject.method1846(var0, var1)?null:class19.method140();
    }
 }

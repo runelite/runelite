@@ -4,47 +4,51 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("eu")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("nk")
-   static boolean field1924;
-   @ObfuscatedName("b")
+   @ObfuscatedName("fp")
+   @ObfuscatedSignature(
+      signature = "[Lly;"
+   )
+   @Export("headIconsHint")
+   static SpritePixels[] headIconsHint;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -768024325
+      intValue = -285937701
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 274996345
+      intValue = -1423085943
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -465437921
+      intValue = -169512049
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1538420145
+      intValue = 861076061
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1774275935
+      intValue = -1458760645
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 753608039
+      intValue = 1176862301
    )
    @Export("rgb")
    int rgb;
@@ -60,29 +64,12 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(ILca;ZI)I",
-      garbageValue = "2099731363"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "782107841"
    )
-   static int method2879(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class223.field2643:class80.field1228;
-      if(var0 == 1700) {
-         class80.intStack[++class80.intStackSize - 1] = var3.itemId;
-         return 1;
-      } else if(var0 == 1701) {
-         if(var3.itemId != -1) {
-            class80.intStack[++class80.intStackSize - 1] = var3.itemQuantity;
-         } else {
-            class80.intStack[++class80.intStackSize - 1] = 0;
-         }
-
-         return 1;
-      } else if(var0 == 1702) {
-         class80.intStack[++class80.intStackSize - 1] = var3.index;
-         return 1;
-      } else {
-         return 2;
-      }
+   static final void method2930(String var0) {
+      class243.method4617(var0 + " is already on your ignore list");
    }
 }

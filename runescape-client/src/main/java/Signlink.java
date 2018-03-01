@@ -1,39 +1,42 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
-import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fv")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("javaVendor")
    public static String javaVendor;
-   @ObfuscatedName("o")
+   @ObfuscatedName("z")
+   @Export("javaVersion")
+   public static String javaVersion;
+   @ObfuscatedName("lt")
    @ObfuscatedSignature(
-      signature = "Lfk;"
+      signature = "[Liw;"
+   )
+   static Widget[] field2184;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lfa;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lfk;"
+      signature = "Lfa;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @Export("closed")
    boolean closed;
 
@@ -42,11 +45,11 @@ public class Signlink implements Runnable {
       this.cachedTask = null;
       this.closed = false;
       javaVendor = "Unknown";
-      class21.javaVersion = "1.6";
+      javaVersion = "1.6";
 
       try {
          javaVendor = System.getProperty("java.vendor");
-         class21.javaVersion = System.getProperty("java.version");
+         javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
          ;
       }
@@ -58,10 +61,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1687765368"
+      signature = "(B)V",
+      garbageValue = "-71"
    )
    @Export("join")
    public final void join() {
@@ -78,10 +81,10 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;I)Lfk;",
-      garbageValue = "-1152163308"
+      signature = "(IIILjava/lang/Object;B)Lfa;",
+      garbageValue = "-88"
    )
    @Export("newTask")
    final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -102,20 +105,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lfk;",
-      garbageValue = "-873563611"
+      signature = "(Ljava/lang/String;II)Lfa;",
+      garbageValue = "1337306570"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.newTask(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;IB)Lfk;",
-      garbageValue = "-1"
+      signature = "(Ljava/lang/Runnable;II)Lfa;",
+      garbageValue = "1524352613"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
@@ -171,45 +174,28 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "([BI)Llm;",
-      garbageValue = "-492596146"
+      signature = "(Lgy;J)V"
    )
-   public static final SpritePixels method3249(byte[] var0) {
-      BufferedImage var1 = null;
-
-      try {
-         var1 = ImageIO.read(new ByteArrayInputStream(var0));
-         int var2 = var1.getWidth();
-         int var3 = var1.getHeight();
-         int[] var4 = new int[var2 * var3];
-         PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
-         var5.grabPixels();
-         return new SpritePixels(var4, var2, var3);
-      } catch (IOException var7) {
-         ;
-      } catch (InterruptedException var8) {
-         ;
+   static void method3299(Buffer var0, long var1) {
+      var1 /= 10L;
+      if(var1 < 0L) {
+         var1 = 0L;
+      } else if(var1 > 65535L) {
+         var1 = 65535L;
       }
 
-      return new SpritePixels(0, 0);
+      var0.putShort((int)var1);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("et")
    @ObfuscatedSignature(
-      signature = "(Lia;IB)V",
-      garbageValue = "-56"
+      signature = "(Ljs;Ljava/lang/String;B)V",
+      garbageValue = "111"
    )
-   static void method3246(IndexData var0, int var1) {
-      if(FontName.NetCache_reference != null) {
-         FontName.NetCache_reference.offset = var1 * 8 + 5;
-         int var2 = FontName.NetCache_reference.readInt();
-         int var3 = FontName.NetCache_reference.readInt();
-         var0.setInformation(var2, var3);
-      } else {
-         DynamicObject.requestNetFile((IndexData)null, 255, 255, 0, (byte)0, true);
-         class258.NetCache_indexCaches[var1] = var0;
-      }
+   static void method3303(IndexData var0, String var1) {
+      class64 var2 = new class64(var0, var1);
+      Client.field1117.add(var2);
    }
 }

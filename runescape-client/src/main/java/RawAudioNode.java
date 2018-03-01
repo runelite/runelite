@@ -3,23 +3,23 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("db")
+@ObfuscatedName("dd")
 @Implements("RawAudioNode")
 public class RawAudioNode extends AbstractIntegerNode0 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("sampleRate")
    public int sampleRate;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @Export("audioBuffer")
    public byte[] audioBuffer;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @Export("startPosition")
    public int startPosition;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("endPosition")
    int endPosition;
-   @ObfuscatedName("a")
-   public boolean field1497;
+   @ObfuscatedName("e")
+   public boolean field1535;
 
    RawAudioNode(int var1, byte[] var2, int var3, int var4) {
       this.sampleRate = var1;
@@ -33,22 +33,22 @@ public class RawAudioNode extends AbstractIntegerNode0 {
       this.audioBuffer = var2;
       this.startPosition = var3;
       this.endPosition = var4;
-      this.field1497 = var5;
+      this.field1535 = var5;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ldl;)Ldb;"
+      signature = "(Ldn;)Ldd;"
    )
    @Export("applyResampler")
    public RawAudioNode applyResampler(Resampler var1) {
       this.audioBuffer = var1.resampleIfNecessary(this.audioBuffer);
-      this.sampleRate = var1.method2297(this.sampleRate);
+      this.sampleRate = var1.method2350(this.sampleRate);
       if(this.startPosition == this.endPosition) {
-         this.startPosition = this.endPosition = var1.method2294(this.startPosition);
+         this.startPosition = this.endPosition = var1.method2351(this.startPosition);
       } else {
-         this.startPosition = var1.method2294(this.startPosition);
-         this.endPosition = var1.method2294(this.endPosition);
+         this.startPosition = var1.method2351(this.startPosition);
+         this.endPosition = var1.method2351(this.endPosition);
          if(this.startPosition == this.endPosition) {
             --this.startPosition;
          }

@@ -4,102 +4,96 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ep")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("fr")
+   @ObfuscatedName("qe")
    @ObfuscatedSignature(
-      signature = "Lev;"
+      signature = "Li;"
    )
-   @Export("region")
-   static Region region;
-   @ObfuscatedName("ja")
+   @Export("grandExchangeEvents")
+   static GrandExchangeEvents grandExchangeEvents;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1897588441
-   )
-   @Export("selectedItemIndex")
-   static int selectedItemIndex;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1598726543
+      intValue = -415524067
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1208124807
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 5448397
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1739711847
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("a")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Leb;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1873257555
+      intValue = 2015304177
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1875135455
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1107775953
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1002981227
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1909062177
+      intValue = -898980511
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -356856951
+      intValue = 654730907
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -2099769969
+      intValue = -1827831145
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 130844357
+      intValue = -1974564541
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1256245897
+      intValue = -365421721
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("r")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 18264501
+      intValue = 1769629895
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1098471211
+      intValue = 1467533485
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1923712533
+      intValue = -66541605
    )
    @Export("flags")
    int flags;
@@ -109,35 +103,20 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)J",
-      garbageValue = "-1363565571"
+      signature = "(Ljs;IB)V",
+      garbageValue = "75"
    )
-   public static long method3072(CharSequence var0) {
-      long var1 = 0L;
-      int var3 = var0.length();
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1 *= 37L;
-         char var5 = var0.charAt(var4);
-         if(var5 >= 'A' && var5 <= 'Z') {
-            var1 += (long)(var5 + 1 - 65);
-         } else if(var5 >= 'a' && var5 <= 'z') {
-            var1 += (long)(var5 + 1 - 97);
-         } else if(var5 >= '0' && var5 <= '9') {
-            var1 += (long)(var5 + 27 - 48);
-         }
-
-         if(var1 >= 177917621779460413L) {
-            break;
-         }
+   static void method3166(IndexData var0, int var1) {
+      if(class20.NetCache_reference != null) {
+         class20.NetCache_reference.offset = var1 * 8 + 5;
+         int var2 = class20.NetCache_reference.readInt();
+         int var3 = class20.NetCache_reference.readInt();
+         var0.setInformation(var2, var3);
+      } else {
+         class229.requestNetFile((IndexData)null, 255, 255, 0, (byte)0, true);
+         class264.NetCache_indexCaches[var1] = var0;
       }
-
-      while(var1 % 37L == 0L && 0L != var1) {
-         var1 /= 37L;
-      }
-
-      return var1;
    }
 }

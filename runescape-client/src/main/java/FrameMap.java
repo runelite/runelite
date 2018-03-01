@@ -1,31 +1,39 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.net.URI;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("ej")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("b")
+   @ObfuscatedName("de")
    @ObfuscatedGetter(
-      intValue = -1325188357
+      intValue = -979696289
+   )
+   static int field1960;
+   @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "Lly;"
+   )
+   @Export("compass")
+   static SpritePixels compass;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1871317659
    )
    @Export("id")
    int id;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1510425619
+      intValue = 160060337
    )
    @Export("count")
    int count;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @Export("types")
    int[] types;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("list")
    int[][] list;
 
@@ -51,49 +59,5 @@ public class FrameMap extends Node {
          }
       }
 
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
-      garbageValue = "-985057531"
-   )
-   static void method2880(String var0, boolean var1, String var2, boolean var3) {
-      if(var1) {
-         if(!var3 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
-            try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var5) {
-               ;
-            }
-         }
-
-         if(class56.field616.startsWith("win") && !var3) {
-            class19.method147(var0, 0);
-            return;
-         }
-
-         if(class56.field616.startsWith("mac")) {
-            KitDefinition.method4832(var0, 1, var2);
-            return;
-         }
-
-         class19.method147(var0, 2);
-      } else {
-         class19.method147(var0, 3);
-      }
-
-   }
-
-   @ObfuscatedName("if")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "17"
-   )
-   static final void method2881(int var0, int var1) {
-      if(class2.loadWidget(var0)) {
-         ScriptEvent.method1138(Widget.widgets[var0], var1);
-      }
    }
 }

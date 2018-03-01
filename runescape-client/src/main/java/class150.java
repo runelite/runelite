@@ -1,33 +1,30 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
-public class class150 extends class283 {
-   @ObfuscatedName("b")
-   final boolean field2081;
+@ObfuscatedName("ek")
+public class class150 extends class297 {
+   @ObfuscatedName("bs")
+   @ObfuscatedSignature(
+      signature = "Liq;"
+   )
+   static JagexGame field2118;
+   @ObfuscatedName("d")
+   final boolean field2115;
 
    public class150(boolean var1) {
-      this.field2081 = var1;
+      this.field2115 = var1;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lku;Lku;I)I",
-      garbageValue = "-581264504"
+      signature = "(Lkz;Lkz;I)I",
+      garbageValue = "-2129961198"
    )
-   int method3117(ChatPlayer var1, ChatPlayer var2) {
-      if(Client.world == var1.world) {
-         if(var2.world != Client.world) {
-            return this.field2081?-1:1;
-         }
-      } else if(var2.world == Client.world) {
-         return this.field2081?1:-1;
-      }
-
-      return this.method5214(var1, var2);
+   int method3195(ChatPlayer var1, ChatPlayer var2) {
+      return Client.world == var1.world && var2.world == Client.world?(this.field2115?var1.method5385().method5536(var2.method5385()):var2.method5385().method5536(var1.method5385())):this.method5387(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3117((ChatPlayer)var1, (ChatPlayer)var2);
+      return this.method3195((ChatPlayer)var1, (ChatPlayer)var2);
    }
 }

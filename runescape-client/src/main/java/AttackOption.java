@@ -4,37 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cm")
+@ObfuscatedName("cj")
 @Implements("AttackOption")
 public enum AttackOption implements Enumerated {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lcm;"
+      signature = "Lcj;"
    )
    @Export("AttackOption_dependsOnCombatLevels")
    AttackOption_dependsOnCombatLevels(0),
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lcm;"
+      signature = "Lcj;"
    )
    @Export("AttackOption_alwaysRightClick")
    AttackOption_alwaysRightClick(1),
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lcm;"
+      signature = "Lcj;"
    )
    @Export("AttackOption_leftClickWhereAvailable")
    AttackOption_leftClickWhereAvailable(2),
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lcm;"
+      signature = "Lcj;"
    )
    @Export("AttackOption_hidden")
    AttackOption_hidden(3);
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("rv")
    @ObfuscatedGetter(
-      intValue = 884900237
+      intValue = 1160041041
+   )
+   static int field1333;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -790784423
+   )
+   public static int field1331;
+   @ObfuscatedName("g")
+   @Export("userHome")
+   public static String userHome;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -2029305209
    )
    @Export("id")
    final int id;
@@ -43,10 +56,10 @@ public enum AttackOption implements Enumerated {
       this.id = var3;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1578971771"
+      garbageValue = "846888120"
    )
    public int rsOrdinal() {
       return this.id;

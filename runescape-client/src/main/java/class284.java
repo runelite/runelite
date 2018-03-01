@@ -1,72 +1,59 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jq")
-public class class284 extends NameableContainer {
-   @ObfuscatedName("o")
+@ObfuscatedName("jz")
+public enum class284 implements Enumerated {
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lld;"
+      signature = "Ljz;"
    )
-   final JagexLoginType field3707;
+   field3700(2, 0),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   field3696(1, 1),
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   field3695(0, 2);
 
+   @ObfuscatedName("om")
    @ObfuscatedSignature(
-      signature = "(Lld;)V"
+      signature = "Ldg;"
    )
-   public class284(JagexLoginType var1) {
-      super(400);
-      this.field3707 = var1;
+   @Export("soundSystem0")
+   static AbstractSoundSystem soundSystem0;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 774622127
+   )
+   public static int field3699;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1113098479
+   )
+   public final int field3698;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 670969701
+   )
+   final int field3697;
+
+   class284(int var3, int var4) {
+      this.field3698 = var3;
+      this.field3697 = var4;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)Ljw;",
-      garbageValue = "-258832734"
+      signature = "(I)I",
+      garbageValue = "846888120"
    )
-   Nameable vmethod5393() {
-      return new Ignore();
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IB)[Ljw;",
-      garbageValue = "-1"
-   )
-   Nameable[] vmethod5396(int var1) {
-      return new Ignore[var1];
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lgn;II)V",
-      garbageValue = "198941939"
-   )
-   public void method5227(Buffer var1, int var2) {
-      while(true) {
-         if(var1.offset < var2) {
-            int var3 = var1.readUnsignedByte();
-            boolean var4 = (var3 & 1) == 1;
-            Name var5 = new Name(var1.readString(), this.field3707);
-            Name var6 = new Name(var1.readString(), this.field3707);
-            var1.readString();
-            if(var5 != null && var5.method5359()) {
-               Ignore var7 = (Ignore)this.method5235(var4?var6:var5);
-               if(var7 != null) {
-                  this.method5243(var7, var5, var6);
-                  continue;
-               }
-
-               if(this.getCount() < 400) {
-                  int var8 = this.getCount();
-                  var7 = (Ignore)this.method5240(var5, var6);
-                  var7.field3716 = var8;
-               }
-               continue;
-            }
-
-            throw new IllegalStateException();
-         }
-
-         return;
-      }
+   public int rsOrdinal() {
+      return this.field3697;
    }
 }

@@ -4,101 +4,101 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fh")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
-   @ObfuscatedName("b")
-   long[] field2126;
-   @ObfuscatedName("q")
+   @ObfuscatedName("d")
+   long[] field2155;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -153836789
+      intValue = 1663700145
    )
-   int field2127;
-   @ObfuscatedName("o")
+   int field2152;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 37314301
+      intValue = 1278153391
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      longValue = -855193651498569643L
+      longValue = -1938064053323512205L
    )
-   long field2129;
-   @ObfuscatedName("a")
+   long field2153;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -112423379
+      intValue = -855840629
    )
-   int field2130;
-   @ObfuscatedName("h")
+   int field2156;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1222353729
+      intValue = -241654783
    )
-   int field2131;
+   int field2157;
 
    public MilliTimer() {
-      this.field2126 = new long[10];
-      this.field2127 = 256;
+      this.field2155 = new long[10];
+      this.field2152 = 256;
       this.sleepTime = 1;
-      this.field2130 = 0;
-      this.field2129 = class188.currentTimeMs();
+      this.field2156 = 0;
+      this.field2153 = PendingSpawn.currentTimeMs();
 
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2126[var1] = this.field2129;
+         this.field2155[var1] = this.field2153;
       }
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "16776960"
+      garbageValue = "2072405029"
    )
-   public void vmethod3305() {
+   public void vmethod3369() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2126[var1] = 0L;
+         this.field2155[var1] = 0L;
       }
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-13"
+      signature = "(III)I",
+      garbageValue = "-2142133773"
    )
-   public int vmethod3306(int var1, int var2) {
-      int var3 = this.field2127;
+   public int vmethod3370(int var1, int var2) {
+      int var3 = this.field2152;
       int var4 = this.sleepTime;
-      this.field2127 = 300;
+      this.field2152 = 300;
       this.sleepTime = 1;
-      this.field2129 = class188.currentTimeMs();
-      if(this.field2126[this.field2131] == 0L) {
-         this.field2127 = var3;
+      this.field2153 = PendingSpawn.currentTimeMs();
+      if(this.field2155[this.field2157] == 0L) {
+         this.field2152 = var3;
          this.sleepTime = var4;
-      } else if(this.field2129 > this.field2126[this.field2131]) {
-         this.field2127 = (int)((long)(var1 * 2560) / (this.field2129 - this.field2126[this.field2131]));
+      } else if(this.field2153 > this.field2155[this.field2157]) {
+         this.field2152 = (int)((long)(var1 * 2560) / (this.field2153 - this.field2155[this.field2157]));
       }
 
-      if(this.field2127 < 25) {
-         this.field2127 = 25;
+      if(this.field2152 < 25) {
+         this.field2152 = 25;
       }
 
-      if(this.field2127 > 256) {
-         this.field2127 = 256;
-         this.sleepTime = (int)((long)var1 - (this.field2129 - this.field2126[this.field2131]) / 10L);
+      if(this.field2152 > 256) {
+         this.field2152 = 256;
+         this.sleepTime = (int)((long)var1 - (this.field2153 - this.field2155[this.field2157]) / 10L);
       }
 
       if(this.sleepTime > var1) {
          this.sleepTime = var1;
       }
 
-      this.field2126[this.field2131] = this.field2129;
-      this.field2131 = (this.field2131 + 1) % 10;
+      this.field2155[this.field2157] = this.field2153;
+      this.field2157 = (this.field2157 + 1) % 10;
       int var5;
       if(this.sleepTime > 1) {
          for(var5 = 0; var5 < 10; ++var5) {
-            if(0L != this.field2126[var5]) {
-               this.field2126[var5] += (long)this.sleepTime;
+            if(0L != this.field2155[var5]) {
+               this.field2155[var5] += (long)this.sleepTime;
             }
          }
       }
@@ -107,35 +107,22 @@ public class MilliTimer extends Timer {
          this.sleepTime = var2;
       }
 
-      class19.method152((long)this.sleepTime);
+      PacketBuffer.method3907((long)this.sleepTime);
 
-      for(var5 = 0; this.field2130 < 256; this.field2130 += this.field2127) {
+      for(var5 = 0; this.field2156 < 256; this.field2156 += this.field2152) {
          ++var5;
       }
 
-      this.field2130 &= 255;
+      this.field2156 &= 255;
       return var5;
    }
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1726629905"
+      signature = "(Ljk;I)V",
+      garbageValue = "1603173507"
    )
-   static final void method3192() {
-      PacketNode var0 = class61.method1076(ClientPacket.field2396, Client.field863.field1434);
-      Client.field863.method2039(var0);
-
-      for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {
-         if(var1.owner == 0 || var1.owner == 3) {
-            AbstractByteBuffer.method3808(var1, true);
-         }
-      }
-
-      if(Client.field930 != null) {
-         ScriptEvent.method1132(Client.field930);
-         Client.field930 = null;
-      }
-
+   public static void method3263(IndexDataBase var0) {
+      class279.field3550 = var0;
    }
 }

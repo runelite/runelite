@@ -4,30 +4,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jm")
+@ObfuscatedName("jf")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("q")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Ljk;"
+   )
+   @Export("varbit_ref")
+   public static IndexDataBase varbit_ref;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lhp;"
    )
    @Export("varbits")
    public static NodeCache varbits;
-   @ObfuscatedName("o")
+   @ObfuscatedName("y")
+   static int[] field3539;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 902554677
+      intValue = 732450525
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1912850407
+      intValue = -1047522595
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 221548713
+      intValue = -1143733535
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -36,10 +44,10 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lgn;I)V",
-      garbageValue = "-1311099820"
+      signature = "(Lgy;I)V",
+      garbageValue = "1332412318"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -53,10 +61,10 @@ public class Varbit extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgn;II)V",
-      garbageValue = "1618829731"
+      signature = "(Lgy;II)V",
+      garbageValue = "377744748"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -66,14 +74,5 @@ public class Varbit extends CacheableNode {
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(ZZI)Llv;",
-      garbageValue = "-1126100091"
-   )
-   static IndexedSprite method4859(boolean var0, boolean var1) {
-      return var0?(var1?Nameable.field3702:class89.field1302):(var1?class40.field504:WorldComparator.field259);
    }
 }

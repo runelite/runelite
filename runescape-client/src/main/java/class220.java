@@ -1,54 +1,67 @@
-import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hn")
-public class class220 implements Iterator {
-   @ObfuscatedName("b")
+@ObfuscatedName("hh")
+public class class220 {
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lha;"
    )
-   IterableDualNodeQueue field2628;
-   @ObfuscatedName("q")
+   class221 field2661;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lht;"
+      signature = "Lha;"
    )
-   CacheableNode field2629;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lht;"
-   )
-   CacheableNode field2627;
+   class221 field2662;
 
+   public class220() {
+      this.field2661 = new class221();
+      this.field2661.field2664 = this.field2661;
+      this.field2661.field2663 = this.field2661;
+   }
+
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(Lha;)V"
    )
-   class220(IterableDualNodeQueue var1) {
-      this.field2627 = null;
-      this.field2628 = var1;
-      this.field2629 = this.field2628.sentinel.previous;
-      this.field2627 = null;
-   }
-
-   public boolean hasNext() {
-      return this.field2628.sentinel != this.field2629;
-   }
-
-   public void remove() {
-      this.field2627.unlinkDual();
-      this.field2627 = null;
-   }
-
-   public Object next() {
-      CacheableNode var1 = this.field2629;
-      if(var1 == this.field2628.sentinel) {
-         var1 = null;
-         this.field2629 = null;
-      } else {
-         this.field2629 = var1.previous;
+   public void method4175(class221 var1) {
+      if(var1.field2663 != null) {
+         var1.method4183();
       }
 
-      this.field2627 = var1;
-      return var1;
+      var1.field2663 = this.field2661.field2663;
+      var1.field2664 = this.field2661;
+      var1.field2663.field2664 = var1;
+      var1.field2664.field2663 = var1;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "()Lha;"
+   )
+   public class221 method4174() {
+      class221 var1 = this.field2661.field2664;
+      if(var1 == this.field2661) {
+         this.field2662 = null;
+         return null;
+      } else {
+         this.field2662 = var1.field2664;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "()Lha;"
+   )
+   public class221 method4180() {
+      class221 var1 = this.field2662;
+      if(var1 == this.field2661) {
+         this.field2662 = null;
+         return null;
+      } else {
+         this.field2662 = var1.field2664;
+         return var1;
+      }
    }
 }
