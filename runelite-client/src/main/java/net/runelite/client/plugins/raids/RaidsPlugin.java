@@ -78,6 +78,7 @@ public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
+	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
@@ -258,10 +259,16 @@ public class RaidsPlugin extends Plugin
 				infoBoxManager.addInfoBox(timer);
 			}
 
+			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
+			{
+				timer.timeFloor();
+			}
+
 			if (message.startsWith(RAID_COMPLETE_MESSAGE))
 			{
 				if (timer != null)
 				{
+					timer.timeFloor();
 					timer.setStopped(true);
 				}
 

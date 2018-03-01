@@ -36,7 +36,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBox;
 public class RaidsTimer extends InfoBox
 {
 	private final Instant startTime;
+	private Instant floorTime;
 	private LocalTime time;
+	private LocalTime firstFloorTime;
+	private LocalTime secondFloorTime;
+	private LocalTime olmTime;
 
 	@Setter
 	private boolean stopped;
@@ -45,7 +49,28 @@ public class RaidsTimer extends InfoBox
 	{
 		super(image);
 		this.startTime = startTime;
+		floorTime = startTime;
 		stopped = false;
+	}
+
+	public void timeFloor()
+	{
+		Duration elapsed = Duration.between(floorTime, Instant.now());
+
+		if (firstFloorTime == null)
+		{
+			firstFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+		}
+		else if (secondFloorTime == null)
+		{
+			secondFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+		}
+		else if (olmTime == null)
+		{
+			olmTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+		}
+
+		floorTime = Instant.now();
 	}
 
 	@Override
@@ -84,6 +109,28 @@ public class RaidsTimer extends InfoBox
 	@Override
 	public String getTooltip()
 	{
-		return "Elapsed raid time: " + time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		StringBuilder builder = new StringBuilder();
+		builder.append("Elapsed raid time: ");
+		builder.append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+		if (firstFloorTime != null)
+		{
+			builder.append("</br>First floor: ");
+			builder.append(firstFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+		}
+
+		if (secondFloorTime != null)
+		{
+			builder.append("</br>Second floor: ");
+			builder.append(secondFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+		}
+
+		if (olmTime != null)
+		{
+			builder.append("</br>Olm: ");
+			builder.append(olmTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+		}
+
+		return builder.toString();
 	}
 }
