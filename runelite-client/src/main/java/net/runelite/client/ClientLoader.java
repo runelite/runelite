@@ -30,11 +30,19 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.http.api.updatecheck.UpdateCheckClient;
 
 @Slf4j
 public class ClientLoader
 {
+	private RuneLiteConfig runeLiteConfig;
+
+	public ClientLoader(RuneLiteConfig config)
+	{
+		this.runeLiteConfig = config;
+	}
+
 	public Optional<Applet> loadRs()
 	{
 		final UpdateCheckClient updateCheck = new UpdateCheckClient();
@@ -67,7 +75,7 @@ public class ClientLoader
 
 	private Applet loadRuneLite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
 	{
-		ConfigLoader config = new ConfigLoader();
+		ConfigLoader config = new ConfigLoader(runeLiteConfig);
 
 		config.fetch();
 
@@ -84,7 +92,7 @@ public class ClientLoader
 
 	private Applet loadVanilla() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		ConfigLoader config = new ConfigLoader();
+		ConfigLoader config = new ConfigLoader(runeLiteConfig);
 
 		config.fetch();
 

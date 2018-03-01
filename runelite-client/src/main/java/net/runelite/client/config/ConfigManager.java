@@ -390,6 +390,7 @@ public class ConfigManager
 			int height = Integer.parseInt(splitStr[1]);
 			return new Dimension(width, height);
 		}
+
 		if (type.isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
