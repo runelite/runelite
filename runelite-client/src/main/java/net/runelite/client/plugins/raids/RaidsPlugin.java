@@ -54,8 +54,6 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -80,8 +78,8 @@ public class RaidsPlugin extends Plugin
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
-	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
@@ -274,10 +272,8 @@ public class RaidsPlugin extends Plugin
 
 				if (config.pointsMessage())
 				{
-					Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
-					String[] raidPoints = raidsWidget.getText().split("<br>");
-					int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS].replace(",", ""));
-					int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS].replace(",", ""));
+					int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
+					int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
@@ -285,11 +281,11 @@ public class RaidsPlugin extends Plugin
 							.append(ChatColorType.NORMAL)
 							.append("Total points: ")
 							.append(ChatColorType.HIGHLIGHT)
-							.append(raidPoints[TOTAL_POINTS])
+							.append(POINTS_FORMAT.format(totalPoints))
 							.append(ChatColorType.NORMAL)
 							.append(", Personal points: ")
 							.append(ChatColorType.HIGHLIGHT)
-							.append(raidPoints[PERSONAL_POINTS])
+							.append(POINTS_FORMAT.format(personalPoints))
 							.append(ChatColorType.NORMAL)
 							.append(" (")
 							.append(ChatColorType.HIGHLIGHT)
