@@ -33,16 +33,18 @@ import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 public class BoostIndicator extends InfoBox
 {
+	private final BoostsOverlay overlay;
 	private final BoostsConfig config;
 	private final Client client;
 
 	@Getter
 	private final Skill skill;
 
-	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config)
+	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config, BoostsOverlay overlay)
 	{
 		super(image);
 		this.config = config;
+		this.overlay = overlay;
 		this.client = client;
 		this.skill = skill;
 		setTooltip(skill.getName() + " boost");
@@ -72,11 +74,6 @@ public class BoostIndicator extends InfoBox
 		int boosted = client.getBoostedSkillLevel(skill),
 			base = client.getRealSkillLevel(skill);
 
-		if (boosted > base)
-		{
-			return Color.GREEN;
-		}
-
-		return new Color(238, 51, 51);
+		return overlay.getTextColor(base, boosted);
 	}
 }

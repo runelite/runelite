@@ -25,6 +25,7 @@
 package net.runelite.client.config;
 
 import java.awt.Dimension;
+import net.runelite.client.plugins.boosts.OverlayComponentSize;
 
 @ConfigGroup(
 	keyName = "runelite",
@@ -84,5 +85,15 @@ public interface RuneLiteConfig extends Config
 	default boolean enableNotificationSound()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "indicatorSize",
+		name = "Indicator size",
+		description = "Change the indicator size"
+	)
+	default OverlayComponentSize infoBoxSetting()
+	{
+		return OverlayComponentSize.SMALL;
 	}
 }

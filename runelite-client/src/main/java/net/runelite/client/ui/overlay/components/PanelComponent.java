@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay.components;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -39,15 +40,16 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class PanelComponent implements RenderableEntity
 {
 	private static final int TOP_BORDER = 3;
-	private static final int LEFT_BORDER = 6;
-	private static final int RIGHT_BORDER = 6;
-	private static final int BOTTOM_BORDER = 6;
-	private static final int SEPARATOR = 2;
+	private static final int LEFT_BORDER = 5;
+	private static final int RIGHT_BORDER = 5;
+	private static final int BOTTOM_BORDER = 3;
+	private static final int SEPARATOR = 1;
 
 	@Data
 	@AllArgsConstructor
@@ -62,6 +64,9 @@ public class PanelComponent implements RenderableEntity
 
 	@Setter
 	private String title;
+
+	@Setter
+	private Font font = FontManager.getRunescapeFont();
 
 	@Setter
 	private Color titleColor = Color.WHITE;
@@ -85,6 +90,7 @@ public class PanelComponent implements RenderableEntity
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		final Dimension dimension = new Dimension();
+		graphics.setFont(font);
 		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size() + (Objects.isNull(progressBar) ? 0 : 1);
 		int height = elementNumber == 0 ? 0 :
 			TOP_BORDER + (graphics.getFontMetrics().getHeight() * elementNumber)

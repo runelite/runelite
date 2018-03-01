@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.boosts;
 
+import java.awt.Color;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Config;
@@ -37,7 +38,7 @@ public interface BoostsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
+		name = "Enable non-combat Skill Boosts",
 		description = "Configures whether or not to display skill boost information"
 	)
 	default boolean enableSkill()
@@ -63,5 +64,71 @@ public interface BoostsConfig extends Config
 	default boolean displayIndicators()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highBoost",
+		name = "High boost color",
+		description = "Configures color for high boost",
+		position = 3
+	)
+	default Color highBoost()
+	{
+		return Color.green;
+	}
+
+	@ConfigItem(
+		keyName = "medBoost",
+		name = "Medium boost color",
+		description = "Configures color for medium boost",
+		position = 4
+	)
+	default Color medBoost()
+	{
+		return Color.yellow;
+	}
+
+	@ConfigItem(
+		keyName = "medBoostPercentage",
+		name = "Med boost percentage of level",
+		description = "Configures at which percentage of the boost it should be colored medium",
+		position = 5
+	)
+	default int medBoostPercentage()
+	{
+		return 63;
+	}
+
+	@ConfigItem(
+		keyName = "lowBoost",
+		name = "Low boost color",
+		description = "Configures color for low boost",
+		position = 6
+	)
+	default Color lowBoost()
+	{
+		return Color.decode("#FF9900");
+	}
+
+	@ConfigItem(
+		keyName = "lowBoostPercentage",
+		name = "Low boost percentage of level",
+		description = "Configures at which percentage of the boost it should be colored low",
+		position = 7
+	)
+	default int lowBoostPercentage()
+	{
+		return 47;
+	}
+
+	@ConfigItem(
+		keyName = "fontType",
+		name = "Boosts font size",
+		description = "Set the type of font, this will also impact size of the overlay component",
+		position = 1
+	)
+	default OverlayComponentSize type()
+	{
+		return OverlayComponentSize.SMALL;
 	}
 }

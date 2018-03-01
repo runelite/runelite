@@ -26,14 +26,19 @@ package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -46,17 +51,23 @@ class BoostsOverlay extends Overlay
 	@Getter
 	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
 
+	private static final int SMALL_WIDTH = 120;
+	private static final int NORMAL_WIDTH = 140;
+
 	private final Client client;
 	private final BoostsConfig config;
 	private final InfoBoxManager infoBoxManager;
+
+	private Instant startTime;
+	private Skill sampleSkill;
+	private int lastSampleSkillLevel = 0;
+	private int activeBoostCount = 0;
 
 	@Inject
 	private BoostsPlugin plugin;
 
 	@Inject
 	private SkillIconManager iconManager;
-
-	private PanelComponent panelComponent;
 
 	@Inject
 	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
@@ -71,8 +82,42 @@ class BoostsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		panelComponent = new PanelComponent();
+		final PanelComponent panelComponent = new PanelComponent();
+		final Font font = config.type() == OverlayComponentSize.SMALL ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont();
+		panelComponent.setFont(font);
+		int width = config.type() == OverlayComponentSize.SMALL ? SMALL_WIDTH : NORMAL_WIDTH;
+		width = config.useRelativeBoost() ? width - 20 : width;
+		panelComponent.setWidth(width);
 
+		if (sampleSkill != null)
+		{
+			if (Arrays.stream(plugin.getShownSkills()).anyMatch((skill -> client.getBoostedSkillLevel(skill) != client.getRealSkillLevel(skill) && skill == sampleSkill)))
+			{
+				int boosted = client.getBoostedSkillLevel(sampleSkill);
+				int base = client.getRealSkillLevel(sampleSkill);
+				if (((boosted > base) && (boosted == lastSampleSkillLevel - 1)) || ((boosted < base) && (boosted == lastSampleSkillLevel + 1)))
+				{
+					startTime = Instant.now();
+				}
+				lastSampleSkillLevel = boosted;
+			}
+			else
+			{
+				sampleSkill = null;
+			}
+		}
+		if (startTime != null && activeBoostCount > 0)
+		{
+			int nextChange = 60 - (int)Duration.between(startTime, Instant.now()).getSeconds();
+			nextChange = nextChange <= 0 ? 0 : nextChange;
+			panelComponent.getLines().add(new PanelComponent.Line(
+				"Next change in",
+				Color.white,
+				String.valueOf(nextChange),
+				Color.white
+			));
+		}
+		activeBoostCount = 0;
 		for (Skill skill : plugin.getShownSkills())
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
@@ -90,11 +135,18 @@ class BoostsOverlay extends Overlay
 				continue;
 			}
 
+			if (sampleSkill == null)
+			{
+				sampleSkill = skill;
+				lastSampleSkillLevel = boosted;
+				startTime = Instant.now();
+			}
+
 			if (config.displayIndicators())
 			{
 				if (indicator == null)
 				{
-					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
+					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config, this);
 					indicators[skill.ordinal()] = indicator;
 				}
 
@@ -112,7 +164,7 @@ class BoostsOverlay extends Overlay
 
 				String str;
 				int boost = boosted - base;
-				Color strColor = getTextColor(boost);
+				Color strColor = getTextColor(base, boosted);
 				if (!config.useRelativeBoost())
 				{
 					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
@@ -133,19 +185,34 @@ class BoostsOverlay extends Overlay
 					strColor
 				));
 			}
+			activeBoostCount++;
 		}
 
 		return config.displayIndicators() ? null : panelComponent.render(graphics, parent);
 	}
 
-	private Color getTextColor(int boost)
+	public Color getTextColor(int base, int boosted)
 	{
-		if (boost > 0)
+		if (base > 0)
 		{
-			return Color.GREEN;
+			float boostPercentage = (boosted - base) / (5 + .15f * base) * 100;
+			if (boosted > base)
+			{
+				if (boostPercentage > config.medBoostPercentage())
+				{
+					return config.highBoost();
+				}
+				else if (boostPercentage > config.lowBoostPercentage())
+				{
+					return config.medBoost();
+				}
+				else
+				{
+					return config.lowBoost();
+				}
+			}
 		}
 
-		return new Color(238, 51, 51);
-
+		return new Color(255, 0, 0);
 	}
 }

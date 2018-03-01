@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Strings;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -34,6 +35,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -43,25 +46,50 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class InfoBoxOverlay extends Overlay
 {
+	private static final int BOXSIZE_SMALL = 32;
 	private static final int BOXSIZE = 35;
 	private static final int SEPARATOR = 2;
 
+	public enum InfoBoxSetting
+	{
+		NORMAL,
+		SMALL
+	}
+
+	private final RuneLiteConfig config;
 	private final InfoBoxManager infoboxManager;
 	private final TooltipManager tooltipManager;
 	private final Provider<Client> clientProvider;
 
+	private Font font;
+	private int boxSize;
+
 	@Inject
-	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider)
+	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider, Provider<RuneLiteConfig> config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.clientProvider = clientProvider;
+		this.config = config.get();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		switch (config.infoBoxSetting())
+		{
+			case SMALL:
+				font = FontManager.getRunescapeSmallFont();
+				boxSize = BOXSIZE_SMALL;
+				break;
+			case NORMAL:
+			default:
+				font = FontManager.getRunescapeFont();
+				boxSize = BOXSIZE;
+				break;
+		}
+
 		List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
 
 		if (infoBoxes.isEmpty())
@@ -69,7 +97,7 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
-		int width = infoBoxes.size() * (BOXSIZE + SEPARATOR);
+		int width = infoBoxes.size() * (boxSize + SEPARATOR);
 		int x = 0;
 
 		for (InfoBox box : infoBoxes)
@@ -79,8 +107,8 @@ public class InfoBoxOverlay extends Overlay
 				continue;
 			}
 
-
-			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
+			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent(boxSize, SEPARATOR);
+			infoBoxComponent.setFont(font);
 			infoBoxComponent.setColor(box.getTextColor());
 			infoBoxComponent.setImage(box.getImage());
 			infoBoxComponent.setText(box.getText());
@@ -104,9 +132,9 @@ public class InfoBoxOverlay extends Overlay
 				}
 			}
 
-			x += BOXSIZE + SEPARATOR;
+			x += boxSize + SEPARATOR;
 		}
 
-		return new Dimension(width, BOXSIZE);
+		return new Dimension(width, boxSize);
 	}
 }

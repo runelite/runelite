@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.slayer;
 
 import static net.runelite.api.ChatMessageType.SERVER;
+import net.runelite.client.config.RuneLiteConfig;
 import static org.junit.Assert.assertEquals;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -53,6 +54,10 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	RuneLiteConfig runeLiteConfig;
 
 	@Mock
 	@Bind

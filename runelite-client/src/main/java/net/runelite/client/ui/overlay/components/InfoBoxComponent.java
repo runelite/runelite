@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -34,12 +35,19 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 import javax.annotation.Nullable;
 import lombok.Setter;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class InfoBoxComponent implements RenderableEntity
 {
-	private static final int BOX_SIZE = 35;
-	private static final int SEPARATOR = 2;
+	private final int boxSize;
+	private final int separator;
+
+	public InfoBoxComponent(int boxSize, int separator)
+	{
+		this.boxSize = boxSize;
+		this.separator = separator;
+	}
 
 	@Setter
 	private String text;
@@ -57,11 +65,15 @@ public class InfoBoxComponent implements RenderableEntity
 	@Nullable
 	private BufferedImage image;
 
+	@Setter
+	private Font font = FontManager.getRunescapeFont();
+
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		graphics.setFont(font);
 		final FontMetrics metrics = graphics.getFontMetrics();
-		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
+		final Rectangle bounds = new Rectangle(position.x, position.y, boxSize, boxSize);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(bounds);
@@ -69,18 +81,25 @@ public class InfoBoxComponent implements RenderableEntity
 
 		if (Objects.nonNull(image))
 		{
-			graphics.drawImage(image,
-				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				(BOX_SIZE - image.getHeight()) / 2, null);
+			if (image.getWidth() > boxSize || image.getHeight() > boxSize)
+			{
+				float scale = image.getWidth() > image.getHeight() ? boxSize / (float)image.getWidth() : boxSize / (float)image.getHeight();
+				graphics.drawImage(image, position.x + (boxSize - (int)(image.getWidth() * scale)) / 2, (boxSize - (int)(image.getHeight() * scale)) / 2, (int)(image.getWidth() * scale), (int)(image.getHeight() * scale), null);
+			}
+			else
+			{
+				graphics.drawImage(image, position.x + (boxSize - image.getWidth()) / 2, (boxSize - image.getHeight()) / 2, null);
+			}
 		}
 
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setColor(color);
 		textComponent.setText(text);
 		textComponent.setPosition(new Point(
-			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
-			BOX_SIZE - SEPARATOR));
+			position.x + (boxSize - metrics.stringWidth(text) - separator),
+			boxSize - separator
+		));
 		textComponent.render(graphics, parent);
-		return new Dimension(BOX_SIZE, BOX_SIZE);
+		return new Dimension(boxSize, boxSize);
 	}
 }
