@@ -48,7 +48,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.config.RuneLiteConfig;
 
 @Slf4j
 @Singleton
@@ -57,16 +56,14 @@ public class ChatMessageManager
 	private final Map<ChatMessageType, Set<ChatColor>> colorCache = new HashMap<>();
 	private final Provider<Client> clientProvider;
 	private final ScheduledExecutorService executor;
-	private final RuneLiteConfig config;
 	private int transparancyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	public ChatMessageManager(Provider<Client> clientProvider, ScheduledExecutorService executor, RuneLiteConfig config)
+	public ChatMessageManager(Provider<Client> clientProvider, ScheduledExecutorService executor)
 	{
 		this.clientProvider = clientProvider;
 		this.executor = executor;
-		this.config = config;
 	}
 
 	@Subscribe
@@ -146,8 +143,8 @@ public class ChatMessageManager
 		final boolean transparent = client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0;
 		final Set<ChatColor> chatColors = colorCache.get(target.getType());
 
-		// If we do not have any colors cached or recoloring is disabled, simply set clean message
-		if (!config.chatCommandsRecolorEnabled() || chatColors == null || chatColors.isEmpty())
+		// If we do not have any colors cached, simply set clean message
+		if (chatColors == null || chatColors.isEmpty())
 		{
 			target.setValue(target.getRuneLiteFormatMessage());
 			return;

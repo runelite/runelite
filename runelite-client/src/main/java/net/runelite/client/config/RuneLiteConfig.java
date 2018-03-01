@@ -44,16 +44,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "chatCommandsRecolorEnabled",
-		name = "Enable chat commands recolor",
-		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
-	)
-	default boolean chatCommandsRecolorEnabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use Runelite's custom window title and borders.",
