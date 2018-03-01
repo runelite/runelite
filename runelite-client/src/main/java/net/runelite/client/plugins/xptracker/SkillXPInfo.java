@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,12 +38,15 @@ class SkillXPInfo
 {
 	private final Skill skill;
 	private Instant skillTimeStart = null;
-	private int startXp = -1;
-	private int xpGained = 0;
-	private int actions = 0;
-	private int actionExp = 0;
-	private int nextLevelExp = 0;
-	private int startLevelExp = 0;
+
+	private int startXp = -1; 		// total exp at start
+	private int goalXp = -1;		// total exp at goal
+	private int xpGained = 0; 		// exp gained since start
+	private int actions = 0; 		// number of actions since start
+	private int actionExp = 0; 		// exp of last action
+
+	private int startLevelXp = 0;	// current level start total exp
+	private int nextLevelXp = -1;	// next level start total exp
 
 	int getXpHr()
 	{
@@ -65,23 +69,55 @@ class SkillXPInfo
 		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
 	}
 
-	int getXpRemaining()
+	int getLevelXpRemaining()
 	{
-		return nextLevelExp - (startXp + xpGained);
+		return nextLevelXp - (startXp + xpGained);
 	}
 
-	int getActionsRemaining()
+	int getLevelActionsRemaining()
 	{
-		return getXpRemaining() / actionExp;
+		if(actionExp == 0)
+		{
+			return 0;
+		}
+		return getLevelXpRemaining() / actionExp;
 	}
 
-	int getSkillProgress()
+	int getLevelProgress()
 	{
-		int currentXp = startXp + xpGained;
+		final int currentXp = startXp + xpGained;
+		final double goalProgress = currentXp - startLevelXp;
+		final double goalTotal = nextLevelXp - startLevelXp;
+		return (int) ((goalProgress / goalTotal) * 100);
+	}
 
-		double xpGained = currentXp - startLevelExp;
-		double xpGoal = nextLevelExp - startLevelExp;
-		return (int) ((xpGained / xpGoal) * 100);
+	int getGoalXpRemaining()
+	{
+		return goalXp - (startXp + xpGained);
+	}
+
+	int getGoalActionsRemaining()
+	{
+		if(actionExp == 0)
+		{
+			return 0;
+		}
+		return getGoalXpRemaining() / actionExp;
+	}
+
+	int getGoalProgress()
+	{
+		if(goalXp == -1)
+		{
+			return 0;
+		}
+		if((startXp + xpGained) >= goalXp)
+		{
+			return 100;
+		}
+		final double goalProgress = xpGained;
+		final double goalTotal = goalXp - startXp;
+		return (int) ((goalProgress / goalTotal) * 100);
 	}
 
 	void reset(int currentXp)
@@ -91,6 +127,7 @@ class SkillXPInfo
 			startXp = currentXp;
 		}
 
+		goalXp = -1;
 		xpGained = 0;
 		actions = 0;
 		skillTimeStart = null;
@@ -113,10 +150,8 @@ class SkillXPInfo
 		actionExp = currentXp - originalXp;
 		actions++;
 		xpGained = currentXp - startXp;
-		startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
 
-		int currentLevel = Experience.getLevelForXp(currentXp);
-		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+		updateXp(currentXp);
 
 		if (skillTimeStart == null)
 		{
@@ -124,5 +159,12 @@ class SkillXPInfo
 		}
 
 		return true;
+	}
+
+	void updateXp(int currentXp)
+	{
+		final int currentLevel = Experience.getLevelForXp(currentXp);
+		startLevelXp = Experience.getXpForLevel(currentLevel);
+		nextLevelXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 	}
 }

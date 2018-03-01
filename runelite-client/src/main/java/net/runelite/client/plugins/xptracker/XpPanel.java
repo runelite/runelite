@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,16 +29,16 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.PluginPanel;
@@ -49,7 +50,7 @@ class XpPanel extends PluginPanel
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, XpTrackerConfig config, SkillIconManager iconManager)
 	{
 		super();
 
@@ -62,11 +63,13 @@ class XpPanel extends PluginPanel
 		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
 
 		final JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new GridLayout(3, 1));
+		infoPanel.setLayout(new GridLayout(4, 1));
 		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
 		final JButton resetButton = new JButton("Reset All");
 		resetButton.addActionListener(e -> resetAllInfoBoxes());
+		final JButton setGoalButton = new JButton("Set Goal...");
+		setGoalButton.addActionListener(e -> onSetGoal());
 
 		totalXpGained.setText(formatLine(0, "total xp gained"));
 		totalXpHr.setText(formatLine(0, "total xp/hr"));
@@ -74,6 +77,7 @@ class XpPanel extends PluginPanel
 		infoPanel.add(totalXpGained);
 		infoPanel.add(totalXpHr);
 		infoPanel.add(resetButton);
+		infoPanel.add(setGoalButton);
 		totalPanel.add(infoPanel, BorderLayout.CENTER);
 		layoutPanel.add(totalPanel, BorderLayout.NORTH);
 
@@ -90,13 +94,93 @@ class XpPanel extends PluginPanel
 					break;
 				}
 
-				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, xpTrackerPlugin.getSkillXpInfo(skill), iconManager));
+				infoBoxes.put(skill, new XpInfoBox(client, config, infoBoxPanel, xpTrackerPlugin.getSkillXpInfo(skill), iconManager));
 			}
 		}
 		catch (IOException e)
 		{
 			log.warn(null, e);
 		}
+	}
+
+	void onSetGoal()
+	{
+		Skill[] skills = {
+				Skill.AGILITY,
+				Skill.ATTACK,
+				Skill.CONSTRUCTION,
+				Skill.COOKING,
+				Skill.CRAFTING,
+				Skill.DEFENCE,
+				Skill.FARMING,
+				Skill.FIREMAKING,
+				Skill.FISHING,
+				Skill.FLETCHING,
+				Skill.HERBLORE,
+				Skill.HITPOINTS,
+				Skill.HUNTER,
+				Skill.MAGIC,
+				Skill.MINING,
+				Skill.PRAYER,
+				Skill.RANGED,
+				Skill.RUNECRAFT,
+				Skill.SLAYER,
+				Skill.SMITHING,
+				Skill.STRENGTH,
+				Skill.THIEVING,
+				Skill.WOODCUTTING,
+		};
+		Object[] skillstrs = new String[skills.length];
+		Map<String, Skill> skillMap = new HashMap<>();
+		for(int i = 0; i < skills.length; ++i)
+		{
+			skillstrs[i] = skills[i].getName();
+			skillMap.put(skills[i].getName(), skills[i]);
+		}
+
+		String skillstr = (String) JOptionPane.showInputDialog(this,
+				"Select skill:",
+				"Set Goal",
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				skillstrs,
+				skills[0].getName()
+		);
+		if(skillstr == null)
+		{
+			return;
+		}
+
+		String goalstr = (String) JOptionPane.showInputDialog(this,
+				"Enter goal level:",
+				"Set Goal",
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				null,
+				99
+		);
+		if(goalstr == null)
+		{
+			return;
+		}
+
+		int goal;
+		try
+		{
+			goal = Integer.parseInt(goalstr);
+		}
+		catch(NumberFormatException e)
+		{
+			return;
+		}
+		if(goal < 1 || goal > Experience.MAX_VIRT_LEVEL)
+		{
+			JOptionPane.showMessageDialog(this, "Invalid goal level");
+			return;
+		}
+
+		Skill skill = skillMap.get(skillstr);
+		infoBoxes.get(skill).setGoal(goal);
 	}
 
 	void resetAllInfoBoxes()
@@ -139,7 +223,6 @@ class XpPanel extends PluginPanel
 
 	static String formatLine(double number, String description)
 	{
-
 		return NumberFormat.getInstance().format(number) + " " + description;
 	}
 }
