@@ -103,7 +103,7 @@ class OpponentInfoOverlay extends Overlay
 			if (opponentsOpponent != null
 					&& (opponentsOpponent != client.getLocalPlayer() || client.getSetting(Varbits.MULTICOMBAT_AREA) == 1))
 			{
-				opponentsOpponentName = opponentsOpponent.getName();
+				opponentsOpponentName = opponentsOpponent.getName().replaceAll("<[^>]*>", "");
 			}
 			else
 			{
