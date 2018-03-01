@@ -24,19 +24,20 @@
  */
 package net.runelite.client.plugins.cannon;
 
-import static java.awt.Color.GREEN;
-import static java.awt.Color.ORANGE;
-import static java.awt.Color.RED;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 class CannonOverlay extends Overlay
@@ -59,44 +60,87 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!plugin.cannonPlaced || plugin.myCannon == null)
+		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
 		{
 			return null;
 		}
 
-		if (!Perspective.isWorldInScene(client, plugin.myCannon))
+		if (!Perspective.isWorldInScene(client, plugin.getCannonPosition()))
+		{
+			return null;
+		}
+
+		net.runelite.api.Point cannonPoint = Perspective.worldToLocal(client, plugin.getCannonPosition());
+
+		if (cannonPoint == null)
 		{
 			return null;
 		}
 
 		net.runelite.api.Point cannonLoc = Perspective.getCanvasTextLocation(client,
 			graphics,
-			Perspective.worldToLocal(client, plugin.myCannon),
-			String.valueOf(plugin.cballsLeft), 200);
+			cannonPoint,
+			String.valueOf(plugin.getCballsLeft()), 200);
 
 		Widget viewport = client.getViewportWidget();
 
-		if (viewport != null && cannonLoc != null && viewport.contains(cannonLoc))
+		if (viewport == null)
 		{
-			textComponent.setText(String.valueOf(plugin.cballsLeft));
+			return null;
+		}
+
+		if (cannonLoc != null && viewport.contains(cannonLoc))
+		{
+			textComponent.setText(String.valueOf(plugin.getCballsLeft()));
 			textComponent.setPosition(new Point(cannonLoc.getX(), cannonLoc.getY()));
-
-			if (plugin.cballsLeft > 15)
-			{
-				textComponent.setColor(GREEN);;
-			}
-			else if (plugin.cballsLeft > 5)
-			{
-				textComponent.setColor(ORANGE);
-			}
-			else
-			{
-				textComponent.setColor(RED);
-			}
-
+			textComponent.setColor(plugin.getStateColor());
 			textComponent.render(graphics, parent);
 		}
 
+		if (config.showDoubleHitSpot())
+		{
+			Color color = config.highlightDoubleHitColor();
+			drawDoubleHitSpots(graphics, plugin.getCannon().getLocalLocation(), color);
+		}
+
 		return null;
+	}
+
+
+	/**
+	 * Draw the double hit spots on a 6 by 6 grid around the cannon
+	 * @param startTile The position of the cannon
+	 */
+	private void drawDoubleHitSpots(Graphics2D graphics, net.runelite.api.Point startTile, Color color)
+	{
+		for (int x = -3; x <= 3; x++)
+		{
+			for (int y = -3; y <= 3; y++)
+			{
+				if (y != 1 && x != 1 && y != -1 && x != -1)
+				{
+					continue;
+				}
+
+				//Ignore center square
+				if (y >= -1 && y <= 1 && x >= -1 && x <= 1)
+				{
+					continue;
+				}
+
+				int xPos = startTile.getX() - (x * LOCAL_TILE_SIZE);
+				int yPos = startTile.getY() - (y * LOCAL_TILE_SIZE);
+
+				net.runelite.api.Point marker = new net.runelite.api.Point(xPos, yPos);
+				Polygon poly = Perspective.getCanvasTilePoly(client, marker);
+
+				if (poly == null)
+				{
+					continue;
+				}
+
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
 	}
 }
