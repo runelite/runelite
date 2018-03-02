@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,11 +29,16 @@ import java.awt.Canvas;
 import java.awt.event.FocusListener;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGameCanvas;
 
 @Mixin(RSGameCanvas.class)
 public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	// This is inverted because it is false initialized.
 	@Inject
 	private static boolean shouldNotHaveFocus;
@@ -54,6 +60,34 @@ public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 		if (!shouldNotHaveFocus)
 		{
 			this.requestFocusInWindow();
+		}
+	}
+
+	@Inject
+	@Override
+	public void setSize(int width, int height)
+	{
+		if (!client.isResized() && client.isStretchedEnabled())
+		{
+			super.setSize(getParent().getWidth(), getParent().getHeight());
+		}
+		else
+		{
+			super.setSize(width, height);
+		}
+	}
+
+	@Inject
+	@Override
+	public void setLocation(int x, int y)
+	{
+		if (!client.isResized() && client.isStretchedEnabled())
+		{
+			super.setLocation(0, 0);
+		}
+		else
+		{
+			super.setLocation(x, y);
 		}
 	}
 }
