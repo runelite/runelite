@@ -14,8 +14,8 @@ public class AudioInstrument {
    @Export("NOISE")
    static int[] NOISE;
    @ObfuscatedName("c")
-   @Export("SINE")
-   static int[] SINE;
+   @Export("AUDIO_SINE")
+   static int[] AUDIO_SINE;
    @ObfuscatedName("l")
    @Export("phases")
    static int[] phases;
@@ -121,10 +121,10 @@ public class AudioInstrument {
          NOISE[var1] = (var0.nextInt() & 2) - 1;
       }
 
-      SINE = new int['耀'];
+      AUDIO_SINE = new int['耀'];
 
       for(var1 = 0; var1 < 32768; ++var1) {
-         SINE[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
+         AUDIO_SINE[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
       }
 
       samples = new int[220500];
@@ -351,7 +351,7 @@ public class AudioInstrument {
    @ObfuscatedName("z")
    @Export("evaluateWave")
    final int evaluateWave(int var1, int var2, int var3) {
-      return var3 == 1?((var1 & 32767) < 16384?var2:-var2):(var3 == 2?SINE[var1 & 32767] * var2 >> 14:(var3 == 3?(var2 * (var1 & 32767) >> 14) - var2:(var3 == 4?var2 * NOISE[var1 / 2607 & 32767]:0)));
+      return var3 == 1?((var1 & 32767) < 16384?var2:-var2):(var3 == 2? AUDIO_SINE[var1 & 32767] * var2 >> 14:(var3 == 3?(var2 * (var1 & 32767) >> 14) - var2:(var3 == 4?var2 * NOISE[var1 / 2607 & 32767]:0)));
    }
 
    @ObfuscatedName("n")

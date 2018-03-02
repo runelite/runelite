@@ -1043,12 +1043,12 @@ public class Region {
    }
 
    @ObfuscatedName("ab")
-   @Export("draw")
+   @Export("drawRegion")
    @Hook(
       value = "drawRegion",
       end = true
    )
-   public void draw(int var1, int var2, int var3, int var4, int var5, int var6) {
+   public void drawRegion(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 < 0) {
          var1 = 0;
       } else if(var1 >= this.maxX * 128) {

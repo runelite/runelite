@@ -389,7 +389,7 @@ final class WorldComparator implements Comparator {
                         Huffman.method3510();
                         var31 = Graphics3D.Rasterizer3D_zoom;
                         Graphics3D.Rasterizer3D_zoom = Client.scale;
-                        class86.region.draw(Resampler.cameraX, class49.cameraZ, class31.cameraY, GameCanvas.cameraPitch, IndexDataBase.cameraYaw, var23);
+                        class86.region.drawRegion(Resampler.cameraX, class49.cameraZ, class31.cameraY, GameCanvas.cameraPitch, IndexDataBase.cameraYaw, var23);
 
                         while(true) {
                            BoundingBox var54 = (BoundingBox)class7.boundingBoxes.removeLast();
