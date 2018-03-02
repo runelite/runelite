@@ -25,19 +25,13 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -53,6 +47,39 @@ class XpPanel extends PluginPanel
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
 
+	private final JPanel goalPanel = new JPanel();
+	private boolean isShowGoal = false;
+
+	private static final Skill[] skillList = {
+			Skill.AGILITY,
+			Skill.ATTACK,
+			Skill.CONSTRUCTION,
+			Skill.COOKING,
+			Skill.CRAFTING,
+			Skill.DEFENCE,
+			Skill.FARMING,
+			Skill.FIREMAKING,
+			Skill.FISHING,
+			Skill.FLETCHING,
+			Skill.HERBLORE,
+			Skill.HITPOINTS,
+			Skill.HUNTER,
+			Skill.MAGIC,
+			Skill.MINING,
+			Skill.PRAYER,
+			Skill.RANGED,
+			Skill.RUNECRAFT,
+			Skill.SLAYER,
+			Skill.SMITHING,
+			Skill.STRENGTH,
+			Skill.THIEVING,
+			Skill.WOODCUTTING,
+	};
+	private final JComboBox<Skill> skillDropdown = new JComboBox<>(skillList);
+	private static final String[] goalTypeList = { "Level", "XP" };
+	private final JComboBox<String> goalDropdown = new JComboBox<>(goalTypeList);
+	private final JTextField goalField = new JTextField();
+
 	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, XpTrackerConfig config, SkillIconManager iconManager)
 	{
 		super();
@@ -66,23 +93,62 @@ class XpPanel extends PluginPanel
 		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
 
 		final JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new GridLayout(4, 1));
+		infoPanel.setLayout(new GridBagLayout());
 		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
 		final JButton resetButton = new JButton("Reset All");
 		resetButton.addActionListener(e -> resetAllInfoBoxes());
 		final JButton setGoalButton = new JButton("Set Goal...");
-		setGoalButton.addActionListener(e -> onSetGoal());
+		setGoalButton.addActionListener(e -> showSetGoal());
 
 		totalXpGained.setText(formatLine(0, "total xp gained"));
 		totalXpHr.setText(formatLine(0, "total xp/hr"));
 
-		infoPanel.add(totalXpGained);
-		infoPanel.add(totalXpHr);
-		infoPanel.add(resetButton);
-		infoPanel.add(setGoalButton);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = c.weighty = 0.5;
+		c.ipadx = c.ipady = 1;
+		c.gridx = c.gridy = 0;
+		infoPanel.add(totalXpGained, c);
+		c.gridy = 1;
+		infoPanel.add(totalXpHr, c);
+		c.gridy = 2;
+		infoPanel.add(resetButton, c);
+		c.gridx = 2;
+		infoPanel.add(setGoalButton, c);
 		totalPanel.add(infoPanel, BorderLayout.CENTER);
-		layoutPanel.add(totalPanel, BorderLayout.NORTH);
+
+		Object[] skillstrs = new String[skillList.length];
+		Map<String, Skill> skillMap = new HashMap<>();
+		for (int i = 0; i < skillList.length; ++i)
+		{
+			skillstrs[i] = skillList[i].getName();
+			skillMap.put(skillList[i].getName(), skillList[i]);
+		}
+
+		final JButton goalOK = new JButton("OK");
+		goalOK.addActionListener(e -> onSetGoal());
+
+		final JPanel goalConfPanel = new JPanel();
+		goalConfPanel.setLayout(new GridLayout(4,1, 0, 1));
+		goalConfPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+		goalConfPanel.add(skillDropdown);
+		goalConfPanel.add(goalDropdown);
+		goalConfPanel.add(goalField);
+		goalConfPanel.add(goalOK);
+
+		goalPanel.setLayout(new BorderLayout());
+		goalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
+		goalPanel.add(goalConfPanel);
+		goalPanel.setVisible(false);
+
+		final JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
+		topPanel.add(totalPanel);
+		topPanel.add(Box.createRigidArea(new Dimension(0, 3)));
+		topPanel.add(goalPanel);
+
+		layoutPanel.add(topPanel, BorderLayout.NORTH);
 
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new GridLayout(0, 1, 0, 3));
@@ -106,66 +172,20 @@ class XpPanel extends PluginPanel
 		}
 	}
 
+	void showSetGoal()
+	{
+		isShowGoal = !isShowGoal;
+		goalPanel.setVisible(isShowGoal);
+	}
+
 	void onSetGoal()
 	{
-		Skill[] skills = {
-				Skill.AGILITY,
-				Skill.ATTACK,
-				Skill.CONSTRUCTION,
-				Skill.COOKING,
-				Skill.CRAFTING,
-				Skill.DEFENCE,
-				Skill.FARMING,
-				Skill.FIREMAKING,
-				Skill.FISHING,
-				Skill.FLETCHING,
-				Skill.HERBLORE,
-				Skill.HITPOINTS,
-				Skill.HUNTER,
-				Skill.MAGIC,
-				Skill.MINING,
-				Skill.PRAYER,
-				Skill.RANGED,
-				Skill.RUNECRAFT,
-				Skill.SLAYER,
-				Skill.SMITHING,
-				Skill.STRENGTH,
-				Skill.THIEVING,
-				Skill.WOODCUTTING,
-		};
-		Object[] skillstrs = new String[skills.length];
-		Map<String, Skill> skillMap = new HashMap<>();
-		for (int i = 0; i < skills.length; ++i)
-		{
-			skillstrs[i] = skills[i].getName();
-			skillMap.put(skills[i].getName(), skills[i]);
-		}
 
-		String skillstr = (String) JOptionPane.showInputDialog(this,
-				"Select skill:",
-				"Set Goal",
-				JOptionPane.QUESTION_MESSAGE,
-				null,
-				skillstrs,
-				skills[0].getName()
-		);
-		if (skillstr == null)
-		{
-			return;
-		}
 
-		String goalstr = (String) JOptionPane.showInputDialog(this,
-				"Enter goal level:",
-				"Set Goal",
-				JOptionPane.QUESTION_MESSAGE,
-				null,
-				null,
-				99
-		);
-		if (goalstr == null)
-		{
-			return;
-		}
+		int skillsel = skillDropdown.getSelectedIndex();
+		Skill skill = skillList[skillsel];
+		int goaltypesel = goalDropdown.getSelectedIndex();
+		String goalstr = goalField.getText();
 
 		int goal;
 		try
@@ -176,13 +196,25 @@ class XpPanel extends PluginPanel
 		{
 			return;
 		}
-		if (goal < 1 || goal > Experience.MAX_VIRT_LEVEL)
+
+		if (goaltypesel == 0)
 		{
-			JOptionPane.showMessageDialog(this, "Invalid goal level");
-			return;
+			if (goal < 1 || goal > Experience.MAX_VIRT_LEVEL)
+			{
+				JOptionPane.showMessageDialog(this, "Invalid goal level");
+				return;
+			}
+			goal = Experience.getXpForLevel(goal);
+		}
+		else
+		{
+			if (goal < 1 || goal > 200000000l)
+			{
+				return;
+			}
 		}
 
-		Skill skill = skillMap.get(skillstr);
+		showSetGoal();
 		infoBoxes.get(skill).setGoal(goal);
 	}
 

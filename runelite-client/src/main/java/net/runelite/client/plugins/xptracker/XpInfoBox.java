@@ -148,10 +148,10 @@ class XpInfoBox extends JPanel
 		xpInfo.setStartXp(currentXp);
 	}
 
-	void setGoal(int level)
+	void setGoal(int exp)
 	{
 		goalSet = true;
-		xpInfo.setGoalXp(Experience.getXpForLevel(level));
+		xpInfo.setGoalXp(exp);
 		// update the current xp so the level bar is immediately accurate
 		xpInfo.updateXp(client.getSkillExperience(xpInfo.getSkill()));
 		// force a refresh so the skill is added to the panel
