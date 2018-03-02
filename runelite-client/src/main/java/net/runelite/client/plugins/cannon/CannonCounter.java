@@ -24,47 +24,29 @@
  */
 package net.runelite.client.plugins.cannon;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-class CannonUiOverlay extends Overlay
+public class CannonCounter extends Counter
 {
-	private static final int COMPONENT_WIDTH = 40;
-	
-	private final CannonConfig config;
 	private final CannonPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
 
-	@Inject
-	CannonUiOverlay(CannonConfig config, CannonPlugin plugin)
+	public CannonCounter(BufferedImage img, CannonPlugin plugin)
 	{
-		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
-		this.config = config;
+		super(img, String.valueOf(plugin.getCballsLeft()));
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public String getText()
 	{
-		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
-		{
-			return null;
-		}
+		return String.valueOf(plugin.getCballsLeft());
+	}
 
-		if (!config.showAmountOnScreen())
-		{
-			return null;
-		}
-
-		panelComponent.setTitleColor(plugin.getStateColor());
-		panelComponent.setTitle(String.valueOf(plugin.getCballsLeft()));
-		panelComponent.setWidth(COMPONENT_WIDTH);
-
-		return panelComponent.render(graphics, parent);
+	@Override
+	public Color getTextColor()
+	{
+		return plugin.getStateColor();
 	}
 }
