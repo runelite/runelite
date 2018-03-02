@@ -78,7 +78,8 @@ class FishingOverlay extends Overlay
 		}
 
 		panelComponent.getLines().clear();
-		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName().equals(FISHING_SPOT))
+		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
+			.contains(FISHING_SPOT))
 		{
 			panelComponent.setTitle("You are fishing");
 			panelComponent.setTitleColor(Color.GREEN);
