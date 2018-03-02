@@ -28,12 +28,24 @@
 package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.Point;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -48,8 +60,25 @@ public class GrandExchangePlugin extends Plugin
 
 	private GrandExchangePanel panel;
 
+	private MouseListener itemClick;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private Client client;
+
 	@Inject
 	private	ClientUI ui;
+
+	@Inject
+	private GrandExchangeConfig config;
+
+	@Provides
+	GrandExchangeConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(GrandExchangeConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws IOException
@@ -58,12 +87,82 @@ public class GrandExchangePlugin extends Plugin
 		BufferedImage icon = ImageIO.read(getClass().getResourceAsStream("ge_icon.png"));
 		button = new NavigationButton("GE Offers", icon, () -> panel);
 		ui.getPluginToolbar().addNavigation(button);
+
+		itemClick = new MouseListener()
+		{
+			@Override
+			public MouseEvent mouseClicked(MouseEvent e)
+			{
+				// Check if left click + alt
+				if (e.getButton() == MouseEvent.BUTTON1 && e.isAltDown())
+				{
+					Point mousePosition = client.getMouseCanvasPosition();
+					Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+					if (inventoryWidget != null && !inventoryWidget.isHidden())
+					{
+						for (WidgetItem item : inventoryWidget.getWidgetItems())
+						{
+							if (item.getCanvasBounds().contains(mousePosition.getX(), mousePosition.getY()))
+							{
+								ItemComposition itemComp = client.getItemDefinition(item.getId());
+								if (itemComp != null)
+								{
+									e.consume();
+
+									SwingUtilities.invokeLater(() ->
+									{
+										panel.showSearch();
+
+										if (!button.isSelected())
+										{
+											button.doClick();
+										}
+
+										panel.getSearchPanel().priceLookup(itemComp.getName());
+									});
+								}
+
+								break;
+							}
+						}
+					}
+				}
+
+				return super.mouseClicked(e);
+			}
+		};
+
+		if (config.quickLookup())
+		{
+			mouseManager.registerMouseListener(itemClick);
+		}
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		ui.getPluginToolbar().removeNavigation(button);
+
+		mouseManager.unregisterMouseListener(itemClick);
+	}
+
+	@Subscribe
+	public void onConfigChange(ConfigChanged event)
+	{
+		if (event.getGroup().equals("grandexchange"))
+		{
+			if (event.getKey().equals("quickLookup"))
+			{
+				if (config.quickLookup())
+				{
+					mouseManager.registerMouseListener(itemClick);
+				}
+				else
+				{
+					mouseManager.unregisterMouseListener(itemClick);
+				}
+			}
+		}
 	}
 
 	@Subscribe
