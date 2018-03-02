@@ -340,7 +340,7 @@ public class RaidsPlugin extends Plugin
 			Matcher m = ROTATION_REGEX.matcher(input);
 			while (m.find())
 			{
-				String rotation = m.group(1);
+				String rotation = m.group(1).toLowerCase();
 
 				if (!list.contains(rotation))
 				{
