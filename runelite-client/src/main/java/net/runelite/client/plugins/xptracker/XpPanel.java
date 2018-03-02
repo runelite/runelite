@@ -25,13 +25,17 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.swing.*;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -39,6 +43,16 @@ import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.PluginPanel;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 @Slf4j
 class XpPanel extends PluginPanel
@@ -48,6 +62,7 @@ class XpPanel extends PluginPanel
 	private final JLabel totalXpHr = new JLabel();
 
 	private final JPanel goalPanel = new JPanel();
+	private final Component goalPanelPad = Box.createRigidArea(new Dimension(0, 3));
 	private boolean isShowGoal = false;
 
 	private static final Skill[] skillList = {
@@ -75,39 +90,39 @@ class XpPanel extends PluginPanel
 			Skill.THIEVING,
 			Skill.WOODCUTTING,
 	};
-	private final JComboBox<Skill> skillDropdown = new JComboBox<>(skillList);
+	private static String[] skillStrList = new String[skillList.length];
+	private final JComboBox<String> skillDropdown = new JComboBox<>(skillStrList);
 	private static final String[] goalTypeList = { "Level", "XP" };
 	private final JComboBox<String> goalDropdown = new JComboBox<>(goalTypeList);
 	private final JTextField goalField = new JTextField();
+
+	static {
+		for (int i = 0; i < skillList.length; ++i)
+		{
+			skillStrList[i] = skillList[i].getName();
+		}
+	}
 
 	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, XpTrackerConfig config, SkillIconManager iconManager)
 	{
 		super();
 
-		final JPanel layoutPanel = new JPanel();
-		layoutPanel.setLayout(new BorderLayout(0, 3));
-		add(layoutPanel);
-
-		final JPanel totalPanel = new JPanel();
-		totalPanel.setLayout(new BorderLayout());
-		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
-
-		final JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new GridBagLayout());
-		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-
+		// info panel buttons
 		final JButton resetButton = new JButton("Reset All");
 		resetButton.addActionListener(e -> resetAllInfoBoxes());
 		final JButton setGoalButton = new JButton("Set Goal...");
-		setGoalButton.addActionListener(e -> showSetGoal());
+		setGoalButton.addActionListener(e -> toggleGoalPanel());
 
 		totalXpGained.setText(formatLine(0, "total xp gained"));
 		totalXpHr.setText(formatLine(0, "total xp/hr"));
 
+		// create info panel layout
+		final JPanel infoPanel = new JPanel();
+		infoPanel.setLayout(new GridBagLayout());
+		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = c.weighty = 0.5;
-		c.ipadx = c.ipady = 1;
 		c.gridx = c.gridy = 0;
 		infoPanel.add(totalXpGained, c);
 		c.gridy = 1;
@@ -116,44 +131,57 @@ class XpPanel extends PluginPanel
 		infoPanel.add(resetButton, c);
 		c.gridx = 2;
 		infoPanel.add(setGoalButton, c);
-		totalPanel.add(infoPanel, BorderLayout.CENTER);
 
-		Object[] skillstrs = new String[skillList.length];
-		Map<String, Skill> skillMap = new HashMap<>();
-		for (int i = 0; i < skillList.length; ++i)
-		{
-			skillstrs[i] = skillList[i].getName();
-			skillMap.put(skillList[i].getName(), skillList[i]);
-		}
+		// create info panel wrapper
+		final JPanel totalPanel = new JPanel();
+		totalPanel.setLayout(new BorderLayout());
+		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
+		totalPanel.add(infoPanel, BorderLayout.CENTER);
 
 		final JButton goalOK = new JButton("OK");
 		goalOK.addActionListener(e -> onSetGoal());
 
+		// create goal panel layout
 		final JPanel goalConfPanel = new JPanel();
-		goalConfPanel.setLayout(new GridLayout(4,1, 0, 1));
+		goalConfPanel.setLayout(new GridBagLayout());
 		goalConfPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		goalConfPanel.add(skillDropdown);
-		goalConfPanel.add(goalDropdown);
-		goalConfPanel.add(goalField);
-		goalConfPanel.add(goalOK);
+		c.gridx = c.gridy = 0;
+		goalConfPanel.add(skillDropdown, c);
+		c.gridx = 1;
+		goalConfPanel.add(goalDropdown, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		goalConfPanel.add(goalField, c);
+		c.gridy = 2;
+		goalConfPanel.add(goalOK, c);
 
+		// create goal panel wrapper
 		goalPanel.setLayout(new BorderLayout());
 		goalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
 		goalPanel.add(goalConfPanel);
 		goalPanel.setVisible(false);
+		goalPanelPad.setVisible(false);
 
+		// create info and goal panel wrapper
 		final JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
 		topPanel.add(totalPanel);
-		topPanel.add(Box.createRigidArea(new Dimension(0, 3)));
+		topPanel.add(goalPanelPad);
 		topPanel.add(goalPanel);
 
-		layoutPanel.add(topPanel, BorderLayout.NORTH);
-
+		// create panel for xp trackers
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new GridLayout(0, 1, 0, 3));
-		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 
+		// complete plugin panel layout
+		final JPanel layoutPanel = new JPanel();
+		layoutPanel.setLayout(new BorderLayout(0, 3));
+		layoutPanel.add(topPanel, BorderLayout.NORTH);
+		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
+		add(layoutPanel);
+
+		// create skill tracker boxes
 		try
 		{
 			for (Skill skill : Skill.values())
@@ -172,16 +200,15 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void showSetGoal()
+	void toggleGoalPanel()
 	{
 		isShowGoal = !isShowGoal;
 		goalPanel.setVisible(isShowGoal);
+		goalPanelPad.setVisible(isShowGoal);
 	}
 
 	void onSetGoal()
 	{
-
-
 		int skillsel = skillDropdown.getSelectedIndex();
 		Skill skill = skillList[skillsel];
 		int goaltypesel = goalDropdown.getSelectedIndex();
@@ -194,6 +221,7 @@ class XpPanel extends PluginPanel
 		}
 		catch (NumberFormatException e)
 		{
+			// not a number, just do nothing
 			return;
 		}
 
@@ -201,7 +229,7 @@ class XpPanel extends PluginPanel
 		{
 			if (goal < 1 || goal > Experience.MAX_VIRT_LEVEL)
 			{
-				JOptionPane.showMessageDialog(this, "Invalid goal level");
+				// invalid goal level, just do nothing
 				return;
 			}
 			goal = Experience.getXpForLevel(goal);
@@ -210,11 +238,12 @@ class XpPanel extends PluginPanel
 		{
 			if (goal < 1 || goal > 200000000l)
 			{
+				// invalid goal xp, just do nothing
 				return;
 			}
 		}
 
-		showSetGoal();
+		toggleGoalPanel();
 		infoBoxes.get(skill).setGoal(goal);
 	}
 
