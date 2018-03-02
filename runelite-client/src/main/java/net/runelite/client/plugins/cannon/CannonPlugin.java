@@ -27,8 +27,6 @@ package net.runelite.client.plugins.cannon;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -37,6 +35,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -44,13 +43,16 @@ import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Cannon"
@@ -59,6 +61,8 @@ public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
+
+	private CannonCounter counter;
 
 	@Getter
 	private int cballsLeft;
@@ -73,13 +77,16 @@ public class CannonPlugin extends Plugin
 	private GameObject cannon;
 
 	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
 	private Notifier notifier;
 
 	@Inject
 	private CannonOverlay cannonOverlay;
-
-	@Inject
-	private CannonUiOverlay cannonUiOverlay;
 
 	@Inject
 	private CannonConfig config;
@@ -94,9 +101,9 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	public Overlay getOverlay()
 	{
-		return Arrays.asList(cannonOverlay, cannonUiOverlay);
+		return cannonOverlay;
 	}
 
 	@Override
@@ -105,6 +112,27 @@ public class CannonPlugin extends Plugin
 		cannonPlaced = false;
 		cannonPosition = null;
 		cballsLeft = 0;
+		removeCounter();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("cannon"))
+		{
+			if (!config.showInfobox())
+			{
+				removeCounter();
+			}
+			else
+			{
+				if (cannonPlaced)
+				{
+					addCounter();
+				}
+			}
+		}
+
 	}
 
 	@Subscribe
@@ -152,6 +180,7 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().equals("You add the furnace."))
 		{
 			cannonPlaced = true;
+			addCounter();
 			cballsLeft = 0;
 		}
 
@@ -159,6 +188,7 @@ public class CannonPlugin extends Plugin
 		{
 			cannonPlaced = false;
 			cballsLeft = 0;
+			removeCounter();
 		}
 
 		if (event.getMessage().startsWith("You load the cannon with"))
@@ -227,5 +257,29 @@ public class CannonPlugin extends Plugin
 		}
 
 		return Color.red;
+	}
+
+	private void addCounter()
+	{
+		if (!config.showInfobox() || counter != null)
+		{
+			return;
+		}
+
+		counter = new CannonCounter(itemManager.getImage(ItemID.CANNONBALL), this);
+		counter.setTooltip("Cannonballs");
+
+		infoBoxManager.addInfoBox(counter);
+	}
+
+	private void removeCounter()
+	{
+		if (counter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(counter);
+		counter = null;
 	}
 }
