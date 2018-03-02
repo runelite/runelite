@@ -25,9 +25,11 @@
 package net.runelite.http.api.item;
 
 import com.google.gson.JsonParseException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import javax.imageio.ImageIO;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -67,6 +69,34 @@ public class ItemClient
 		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
+		}
+	}
+
+	public BufferedImage getIcon(int itemId) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("item")
+			.addPathSegment("" + itemId)
+			.addPathSegment("icon")
+			.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error grabbing icon {}: {}", itemId, response.message());
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			BufferedImage imageIcon = ImageIO.read(in);
+			return imageIcon;
 		}
 	}
 
