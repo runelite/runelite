@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Canvas;
+import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.widgets.Widget;
@@ -295,4 +296,16 @@ public interface Client extends GameEngine
 	void setCameraPitchRelaxerEnabled(boolean enabled);
 
 	RenderOverview getRenderOverview();
+
+	boolean isStretchedEnabled();
+
+	void setStretchedEnabled(boolean state);
+
+	boolean isStretchedFast();
+
+	void setStretchedFast(boolean state);
+
+	void setStretchedKeepAspectRatio(boolean state);
+
+	Dimension getStretchedDimensions();
 }
