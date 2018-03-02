@@ -272,21 +272,18 @@ public class ConfigPanel extends PluginPanel
 
 	private void onSearchBarChanged()
 	{
-		children.forEach((key, value) ->
+		final String text = searchBar.getText();
+
+		children.values().forEach(this::remove);
+
+		if (text.isEmpty())
 		{
-			final String text = searchBar.getText().toLowerCase();
-			final String labelToSearch = key.toLowerCase();
+			children.values().forEach(this::add);
+			revalidate();
+			return;
+		}
 
-			if (text.isEmpty() || labelToSearch.contains(text))
-			{
-				add(value);
-			}
-			else
-			{
-				remove(value);
-			}
-		});
-
+		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> add(children.get(k)));
 		revalidate();
 	}
 
