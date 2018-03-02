@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.Perspective;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -39,33 +40,34 @@ public abstract class CameraMixin implements RSClient
 	@Shadow("clientInstance")
 	static RSClient client;
 
+	@Shadow("isDrawingRegion")
+	static boolean isDrawingRegion;
+
 	@Inject
 	static boolean pitchRelaxEnabled = false;
-
-	@Shadow("visibilityMaps")
-	static boolean[][][][] visibilityMaps;
 
 	@Inject
 	static int lastPitch = 128;
 
-	static
+
+	@Inject
+	public void setCameraPitchRelaxerEnabled(boolean enabled)
 	{
-		// The first index is pitch. In the default client it is 9, here it is 13 because we increase the pitch limit
-		visibilityMaps = new boolean[13][35][53][53];
-		for (boolean[][][] z : visibilityMaps)
+		if (pitchRelaxEnabled == enabled)
 		{
-			for (boolean[][] y : z)
+			return;
+		}
+		pitchRelaxEnabled = enabled;
+		if (!enabled)
+		{
+			int pitch = client.getCameraPitchTarget();
+			if (pitch > STANDARD_PITCH_MAX)
 			{
-				for (boolean[] x : y)
-				{
-					for (int i = 0; i < x.length; i++)
-					{
-						x[i] = true;
-					}
-				}
+				client.setCameraPitchTarget(STANDARD_PITCH_MAX);
 			}
 		}
 	}
+
 
 	@FieldHook("cameraPitchTarget")
 	@Inject
@@ -89,21 +91,26 @@ public abstract class CameraMixin implements RSClient
 		lastPitch = pitch;
 	}
 
+	// All of this is to bypass a check in Region.drawRegion
+
+	@FieldHook("pitchSin")
 	@Inject
-	public void setCameraPitchRelaxerEnabled(boolean enabled)
+	static void onPitchSinChanged(int idx)
 	{
-		if (pitchRelaxEnabled == enabled)
+		if (pitchRelaxEnabled && isDrawingRegion)
 		{
-			return;
+			client.setPitchSin(Perspective.SINE[client.getCameraPitch()]);
 		}
-		pitchRelaxEnabled = enabled;
-		if (!enabled)
+	}
+
+
+	@FieldHook("pitchCos")
+	@Inject
+	static void onPitchCosChanged(int idx)
+	{
+		if (pitchRelaxEnabled && isDrawingRegion)
 		{
-			int pitch = client.getCameraPitchTarget();
-			if (pitch > STANDARD_PITCH_MAX)
-			{
-				client.setCameraPitchTarget(STANDARD_PITCH_MAX);
-			}
+			client.setPitchCos(Perspective.COSINE[client.getCameraPitch()]);
 		}
 	}
 }
