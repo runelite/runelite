@@ -44,6 +44,12 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	private static boolean stretchedKeepAspectRatio;
 
 	@Inject
+	private static Dimension cachedStretchedDimensions;
+
+	@Inject
+	private static Dimension lastCanvasDimensions;
+
+	@Inject
 	@Override
 	public boolean isStretchedEnabled()
 	{
@@ -76,6 +82,7 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	public void setStretchedKeepAspectRatio(boolean state)
 	{
 		stretchedKeepAspectRatio = state;
+		cachedStretchedDimensions = null;
 	}
 
 	@Inject
@@ -84,23 +91,29 @@ public abstract class StretchedFixedModeMixin implements RSClient
 	{
 		Canvas canvas = getCanvas();
 
-		int newWidth = canvas.getWidth();
-		int newHeight = canvas.getHeight();
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
 
-		if (stretchedKeepAspectRatio)
+		if (cachedStretchedDimensions == null || width != lastCanvasDimensions.width || height != lastCanvasDimensions.height)
 		{
-			int tempNewWidth = (int) (newHeight * Constants.GAME_FIXED_ASPECT_RATIO);
+			if (stretchedKeepAspectRatio)
+			{
+				int tempNewWidth = (int) (height * Constants.GAME_FIXED_ASPECT_RATIO);
 
-			if (tempNewWidth > canvas.getWidth())
-			{
-				newHeight = (int) (newWidth / Constants.GAME_FIXED_ASPECT_RATIO);
+				if (tempNewWidth > canvas.getWidth())
+				{
+					height = (int) (width / Constants.GAME_FIXED_ASPECT_RATIO);
+				}
+				else
+				{
+					width = tempNewWidth;
+				}
 			}
-			else
-			{
-				newWidth = tempNewWidth;
-			}
+
+			cachedStretchedDimensions = new Dimension(width, height);
+			lastCanvasDimensions = new Dimension(width, height);
 		}
 
-		return new Dimension(newWidth, newHeight);
+		return cachedStretchedDimensions;
 	}
 }
