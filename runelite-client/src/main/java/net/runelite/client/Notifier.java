@@ -84,11 +84,6 @@ public class Notifier
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		if (!runeLiteConfig.enableTrayNotifications())
-		{
-			return;
-		}
-
 		final ClientUI clientUI = this.clientUI.get();
 
 		if (clientUI == null)
@@ -106,7 +101,10 @@ public class Notifier
 			clientUI.requestFocus();
 		}
 
-		sendNotification(appName, message, type, null);
+		if (runeLiteConfig.enableTrayNotifications())
+		{
+			sendNotification(appName, message, type, null);
+		}
 
 		if (runeLiteConfig.enableNotificationSound())
 		{
