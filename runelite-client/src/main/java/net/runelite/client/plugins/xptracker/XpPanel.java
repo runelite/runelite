@@ -96,7 +96,8 @@ class XpPanel extends PluginPanel
 	private final JComboBox<String> goalDropdown = new JComboBox<>(goalTypeList);
 	private final JTextField goalField = new JTextField();
 
-	static {
+	static
+	{
 		for (int i = 0; i < skillList.length; ++i)
 		{
 			skillStrList[i] = skillList[i].getName();
