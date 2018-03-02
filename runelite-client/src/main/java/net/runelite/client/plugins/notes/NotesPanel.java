@@ -60,7 +60,7 @@ public class NotesPanel extends PluginPanel
 		if (config.persistNotes())
 		{
 			// load note text
-			String data = unEscapeNote(config.notesData());
+			String data = config.notesData();
 			notesEditor.setText(data);
 
 			notesEditor.getDocument().addDocumentListener(new DocumentListener()
@@ -88,7 +88,7 @@ public class NotesPanel extends PluginPanel
 					try
 					{
 						// get document text and save to config whenever editor is changed
-						String data = escapeNote(doc.getText(0, doc.getLength()));
+						String data = doc.getText(0, doc.getLength());
 						log.debug("Save Notes: " + data.length());
 						config.notesData(data);
 					}
@@ -100,15 +100,5 @@ public class NotesPanel extends PluginPanel
 			});
 		}
 		add(notesEditor, BorderLayout.CENTER);
-	}
-
-	private String escapeNote(String s)
-	{
-		return s.replaceAll("\n", "\\\n");
-	}
-
-	private String unEscapeNote(String s)
-	{
-		return s.replaceAll("\\\n", "\n");
 	}
 }
