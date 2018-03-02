@@ -95,6 +95,9 @@ public class RuneLite
 
 	@Inject
 	private DiscordService discordService;
+	
+	@Inject
+	private ClientSessionManager clientSessionManager;
 
 	Client client;
 	ClientUI gui;
@@ -173,6 +176,9 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
+		
+		// Start client session
+		clientSessionManager.start();
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
@@ -201,6 +207,7 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		clientSessionManager.shutdown();
 		discordService.close();
 	}
 
