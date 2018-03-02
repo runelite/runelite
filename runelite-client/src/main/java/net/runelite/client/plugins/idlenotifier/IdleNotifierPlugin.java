@@ -129,8 +129,6 @@ public class IdleNotifierPlugin extends Plugin
 	private Actor lastOpponent;
 	private Instant lastAnimating;
 	private Instant lastInteracting;
-	private Instant lastHitpoints;
-	private Instant lastPrayer;
 	private boolean notifyIdle = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
@@ -299,24 +297,24 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is now out of combat!");
 		}
 
-		if (checkLowHitpoints(waitDuration))
+		if (checkLowHitpoints())
 		{
 			notifier.notify("[" + local.getName() + "] has low hitpoints!");
 		}
 
-		if (checkLowPrayer(waitDuration))
+		if (checkLowPrayer())
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
 	}
 
-	private boolean checkLowHitpoints(Duration waitDuration)
+	private boolean checkLowHitpoints()
 	{
 		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
 			{
-				if (!notifyHitpoints && Instant.now().compareTo(lastHitpoints.plus(waitDuration)) >= 0)
+				if (!notifyHitpoints)
 				{
 					notifyHitpoints = true;
 					return true;
@@ -324,7 +322,6 @@ public class IdleNotifierPlugin extends Plugin
 			}
 			else
 			{
-				lastHitpoints = Instant.now();
 				notifyHitpoints = false;
 			}
 		}
@@ -332,13 +329,13 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
-	private boolean checkLowPrayer(Duration waitDuration)
+	private boolean checkLowPrayer()
 	{
 		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
 			{
-				if (!notifyPrayer && Instant.now().compareTo(lastPrayer.plus(waitDuration)) >= 0)
+				if (!notifyPrayer)
 				{
 					notifyPrayer = true;
 					return true;
@@ -346,7 +343,6 @@ public class IdleNotifierPlugin extends Plugin
 			}
 			else
 			{
-				lastPrayer = Instant.now();
 				notifyPrayer = false;
 			}
 		}
