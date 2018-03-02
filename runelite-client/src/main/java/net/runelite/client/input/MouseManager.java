@@ -125,11 +125,12 @@ public class MouseManager
 		return mouseEvent;
 	}
 
-	public void processMouseWheelMoved(MouseWheelEvent mouseWheelEvent)
+	public MouseWheelEvent processMouseWheelMoved(MouseWheelEvent mouseWheelEvent)
 	{
 		for (MouseWheelListener mouseWheelListener : mouseWheelListeners)
 		{
-			mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
+			mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
 		}
+		return mouseWheelEvent;
 	}
 }

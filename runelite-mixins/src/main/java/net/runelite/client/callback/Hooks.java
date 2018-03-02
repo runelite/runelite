@@ -83,7 +83,7 @@ public class Hooks
 		throw new RuntimeException();
 	}
 
-	public static void mouseWheelMoved(MouseWheelEvent event)
+	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
 		throw new RuntimeException();
 	}

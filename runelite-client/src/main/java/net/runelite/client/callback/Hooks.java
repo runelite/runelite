@@ -188,9 +188,9 @@ public class Hooks
 		return mouseManager.processMouseMoved(mouseEvent);
 	}
 
-	public static void mouseWheelMoved(MouseWheelEvent event)
+	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		mouseManager.processMouseWheelMoved(event);
+		return mouseManager.processMouseWheelMoved(event);
 	}
 
 	public static void keyPressed(KeyEvent keyEvent)
