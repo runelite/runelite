@@ -36,39 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
-		keyName = "tray",
-		name = "Send Tray Notification",
-		description = "Toggles tray notifications",
-		position = 2
-	)
-	default boolean sendTrayNotification()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "focused",
-		name = "Notify When Focused",
-		description = "Toggles idle notifications for when the client is focused",
-		position = 3
-	)
-	default boolean alertWhenFocused()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "request",
-		name = "Request Window Focus",
-		description = "Toggles window focus request",
-		position = 4
-	)
-	default boolean requestFocus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "timeout",
 		name = "Idle Timeout (ms)",
 		description = "The notification delay after the player is idle",
