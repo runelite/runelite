@@ -35,17 +35,25 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.InstanceTemplates;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Point;
+import net.runelite.api.Setting;
+import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -68,9 +76,12 @@ public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
+	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
-	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	private static final String SPLIT_REGEX = "\\s*,\\s*";
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
@@ -98,7 +109,16 @@ public class RaidsPlugin extends Plugin
 	private Raid raid;
 
 	@Getter
-	private ArrayList<String> blacklist = new ArrayList<>();
+	private ArrayList<String> roomWhitelist = new ArrayList<>();
+
+	@Getter
+	private ArrayList<String> roomBlacklist = new ArrayList<>();
+
+	@Getter
+	private ArrayList<String> rotationWhitelist = new ArrayList<>();
+
+	@Getter
+	private ArrayList<String> layoutWhitelist = new ArrayList<>();
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -132,7 +152,7 @@ public class RaidsPlugin extends Plugin
 			cacheColors();
 		}
 
-		updateBlacklist();
+		updateLists();
 	}
 
 	@Override
@@ -157,9 +177,24 @@ public class RaidsPlugin extends Plugin
 			updateInfoBoxState();
 		}
 
+		if (event.getKey().equals("whitelistedRooms"))
+		{
+			updateList(roomWhitelist, config.whitelistedRooms());
+		}
+
 		if (event.getKey().equals("blacklistedRooms"))
 		{
-			updateBlacklist();
+			updateList(roomBlacklist, config.blacklistedRooms());
+		}
+
+		if (event.getKey().equals("whitelistedRotations"))
+		{
+			updateList(rotationWhitelist, config.whitelistedRotations());
+		}
+
+		if (event.getKey().equals("whitelistedLayouts"))
+		{
+			updateList(layoutWhitelist, config.whitelistedLayouts());
 		}
 	}
 
@@ -222,19 +257,23 @@ public class RaidsPlugin extends Plugin
 				infoBoxManager.addInfoBox(timer);
 			}
 
+			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
+			{
+				timer.timeFloor();
+			}
+
 			if (message.startsWith(RAID_COMPLETE_MESSAGE))
 			{
 				if (timer != null)
 				{
+					timer.timeFloor();
 					timer.setStopped(true);
 				}
 
 				if (config.pointsMessage())
 				{
-					Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
-					String[] raidPoints = raidsWidget.getText().split("<br>");
-					int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS].replace(",", ""));
-					int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS].replace(",", ""));
+					int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
+					int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
@@ -242,11 +281,11 @@ public class RaidsPlugin extends Plugin
 							.append(ChatColorType.NORMAL)
 							.append("Total points: ")
 							.append(ChatColorType.HIGHLIGHT)
-							.append(raidPoints[TOTAL_POINTS])
+							.append(POINTS_FORMAT.format(totalPoints))
 							.append(ChatColorType.NORMAL)
 							.append(", Personal points: ")
 							.append(ChatColorType.HIGHLIGHT)
-							.append(raidPoints[PERSONAL_POINTS])
+							.append(POINTS_FORMAT.format(personalPoints))
 							.append(ChatColorType.NORMAL)
 							.append(" (")
 							.append(ChatColorType.HIGHLIGHT)
@@ -284,10 +323,35 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateBlacklist()
+	private void updateLists()
 	{
-		blacklist.clear();
-		blacklist.addAll(Arrays.asList(config.blacklistedRooms().toLowerCase().split("\\s*,\\s*")));
+		updateList(roomWhitelist, config.blacklistedRooms());
+		updateList(roomBlacklist, config.blacklistedRooms());
+		updateList(rotationWhitelist, config.whitelistedRotations());
+		updateList(layoutWhitelist, config.whitelistedLayouts());
+	}
+
+	private void updateList(ArrayList<String> list, String input)
+	{
+		list.clear();
+
+		if (list == rotationWhitelist)
+		{
+			Matcher m = ROTATION_REGEX.matcher(input);
+			while (m.find())
+			{
+				String rotation = m.group(1);
+
+				if (!list.contains(rotation))
+				{
+					list.add(rotation);
+				}
+			}
+		}
+		else
+		{
+			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+		}
 	}
 
 	private void cacheColors()
@@ -297,6 +361,43 @@ public class RaidsPlugin extends Plugin
 				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
 				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
 				.refreshAll();
+	}
+
+	public int getRotationMatches()
+	{
+		String rotation = raid.getRotationString().toLowerCase();
+		String[] bosses = rotation.split(SPLIT_REGEX);
+
+		if (rotationWhitelist.contains(rotation))
+		{
+			return bosses.length;
+		}
+
+		for (String whitelisted : rotationWhitelist)
+		{
+			int matches = 0;
+			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
+
+			for (int i = 0; i < whitelistedBosses.length; i++)
+			{
+				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
+				{
+					matches++;
+				}
+				else
+				{
+					matches = 0;
+					break;
+				}
+			}
+
+			if (matches >= 2)
+			{
+				return matches;
+			}
+		}
+
+		return 0;
 	}
 
 	private Point findLobbyBase()

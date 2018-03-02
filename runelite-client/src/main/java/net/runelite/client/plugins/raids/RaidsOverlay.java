@@ -74,6 +74,26 @@ public class RaidsOverlay extends Overlay
 		panelComponent.setTitleColor(Color.WHITE);
 		panelComponent.setTitle("Raid scouter");
 
+		Color color = Color.WHITE;
+		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+
+		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
+		{
+			color = Color.RED;
+		}
+
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"Layout", Color.WHITE, layout, color
+		));
+
+		int bossMatches = 0;
+		int bossCount = 0;
+
+		if (config.enableRotationWhitelist())
+		{
+			bossMatches = plugin.getRotationMatches();
+		}
+
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
 			int position = layoutRoom.getPosition();
@@ -84,12 +104,18 @@ public class RaidsOverlay extends Overlay
 				continue;
 			}
 
-			Color color = Color.WHITE;
+			color = Color.WHITE;
 
 			switch (room.getType())
 			{
 				case COMBAT:
-					if (plugin.getBlacklist().contains(room.getBoss().getName().toLowerCase()))
+					bossCount++;
+					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
+					{
+						color = Color.GREEN;
+					}
+					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
+							|| config.enableRotationWhitelist() && bossCount > bossMatches)
 					{
 						color = Color.RED;
 					}
@@ -100,7 +126,11 @@ public class RaidsOverlay extends Overlay
 					break;
 
 				case PUZZLE:
-					if (plugin.getBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getPuzzle().getName().toLowerCase()))
+					{
+						color = Color.GREEN;
+					}
+					else if (plugin.getRoomBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
 					{
 						color = Color.RED;
 					}
