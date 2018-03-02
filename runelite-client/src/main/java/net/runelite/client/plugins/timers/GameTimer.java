@@ -66,7 +66,7 @@ public enum GameTimer
 	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
 	SANFEW("sanfew", "Sanfew serum", 6, ChronoUnit.MINUTES),
 	OVERLOAD_RAID("overloadraid", "Overload", 5, ChronoUnit.MINUTES),
-	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 5, ChronoUnit.MINUTES);
+	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 290, ChronoUnit.SECONDS);
 
 	@Getter
 	private final String imageResource;
