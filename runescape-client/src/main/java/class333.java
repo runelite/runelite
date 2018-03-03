@@ -51,7 +51,7 @@ public class class333 {
    )
    int method6054() {
       if(this.field3998 < 25) {
-         if(!this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.field541.field542, this.field4000)) {
+         if(!this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.field542, this.field4000)) {
             return this.field3998;
          }
 

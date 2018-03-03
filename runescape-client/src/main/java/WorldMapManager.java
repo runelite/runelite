@@ -102,7 +102,7 @@ public final class WorldMapManager {
          int var4 = var1.getFile(MapCacheArchiveNames.DETAILS.field542);
          int var5 = var1.getChild(var4, var2);
          Buffer var6 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.DETAILS.field542, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.field541.field542, var2));
+         Buffer var7 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.field542, var2));
          Buffer var8 = new Buffer(var1.takeRecordByNames(var2, MapCacheArchiveNames.field544.field542));
          System.nanoTime();
          System.nanoTime();
