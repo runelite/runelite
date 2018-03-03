@@ -27,14 +27,11 @@ package net.runelite.client.account;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -45,6 +42,7 @@ import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
@@ -60,19 +58,18 @@ public class SessionManager
 	private AccountSession accountSession;
 
 	private final EventBus eventBus;
-
-	@Inject
 	private ConfigManager configManager;
-
-	@Inject
 	private ScheduledExecutorService executor;
-
+	private final LinkBrowser browser;
 	private final AccountClient loginClient = new AccountClient();
 
 	@Inject
-	public SessionManager(EventBus eventBus)
+	public SessionManager(ConfigManager configManager, EventBus eventBus, ScheduledExecutorService executor, LinkBrowser browser)
 	{
+		this.configManager = configManager;
 		this.eventBus = eventBus;
+		this.executor = executor;
+		this.browser = browser;
 		eventBus.register(this);
 	}
 
@@ -109,7 +106,7 @@ public class SessionManager
 		openSession(session);
 	}
 
-	public void saveSession()
+	private void saveSession()
 	{
 		if (accountSession == null)
 		{
@@ -128,7 +125,7 @@ public class SessionManager
 		}
 	}
 
-	public void deleteSession()
+	private void deleteSession()
 	{
 		SESSION_FILE.delete();
 	}
@@ -137,9 +134,9 @@ public class SessionManager
 	 * Set the given session as the active session and open a socket to the
 	 * server with the given session
 	 *
-	 * @param session
+	 * @param session session
 	 */
-	public void openSession(AccountSession session)
+	private void openSession(AccountSession session)
 	{
 		// If the ws session already exists, don't need to do anything
 		if (wsclient == null || !wsclient.checkSession(session))
@@ -165,7 +162,7 @@ public class SessionManager
 		eventBus.post(new SessionOpen());
 	}
 
-	public void closeSession()
+	private void closeSession()
 	{
 		if (wsclient != null)
 		{
@@ -200,7 +197,7 @@ public class SessionManager
 
 	public void login()
 	{
-		OAuthResponse login;
+		final OAuthResponse login;
 
 		try
 		{
@@ -215,29 +212,8 @@ public class SessionManager
 		// Create new session
 		openSession(new AccountSession(login.getUid(), Instant.now()));
 
-		if (!Desktop.isDesktopSupported())
-		{
-			log.info("Desktop is not supported. Visit {}", login.getOauthUrl());
-			return;
-		}
-
-		Desktop desktop = Desktop.getDesktop();
-		if (!desktop.isSupported(Desktop.Action.BROWSE))
-		{
-			log.info("Desktop browser is not supported. Visit {}", login.getOauthUrl());
-			return;
-		}
-
-		try
-		{
-			desktop.browse(new URI(login.getOauthUrl()));
-
-			log.debug("Opened browser to {}", login.getOauthUrl());
-		}
-		catch (IOException | URISyntaxException ex)
-		{
-			log.warn("Unable to open login page", ex);
-		}
+		// Navigate to login link
+		browser.browse(login.getOauthUrl());
 	}
 
 	@Subscribe
