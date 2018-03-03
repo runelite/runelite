@@ -32,12 +32,13 @@ public class class31 {
    @ObfuscatedGetter(
       intValue = 865753871
    )
-   final int field452;
+   @Export("rotation")
+   final int rotation;
 
    class31(int var1, int var2, int var3) {
       this.objectDefinitionId = var1;
       this.decoration = var2;
-      this.field452 = var3;
+      this.rotation = var3;
    }
 
    @ObfuscatedName("d")

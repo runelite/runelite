@@ -572,34 +572,34 @@ public class class35 {
                   ObjectComposition var11 = class169.getObjectDefinition(var8.objectDefinitionId);
                   int var12 = var11.int1 != 0?-3407872:-3355444;
                   if(var8.decoration == WorldMapDecorationType.field2986.rsOrdinal) {
-                     this.method408(var1, var2, var8.field452, var12);
+                     this.method408(var1, var2, var8.rotation, var12);
                   }
 
                   if(var8.decoration == WorldMapDecorationType.field2985.rsOrdinal) {
-                     this.method408(var1, var2, var8.field452, -3355444);
-                     this.method408(var1, var2, var8.field452 + 1, var12);
+                     this.method408(var1, var2, var8.rotation, -3355444);
+                     this.method408(var1, var2, var8.rotation + 1, var12);
                   }
 
                   if(var8.decoration == WorldMapDecorationType.field2982.rsOrdinal) {
-                     if(var8.field452 == 0) {
+                     if(var8.rotation == 0) {
                         Rasterizer2D.method5814(this.field486 * var1, this.field486 * (63 - var2), 1, var12);
                      }
 
-                     if(var8.field452 == 1) {
+                     if(var8.rotation == 1) {
                         Rasterizer2D.method5814(this.field486 + this.field486 * var1 - 1, this.field486 * (63 - var2), 1, var12);
                      }
 
-                     if(var8.field452 == 2) {
+                     if(var8.rotation == 2) {
                         Rasterizer2D.method5814(this.field486 + this.field486 * var1 - 1, this.field486 * (63 - var2) + this.field486 - 1, 1, var12);
                      }
 
-                     if(var8.field452 == 3) {
+                     if(var8.rotation == 3) {
                         Rasterizer2D.method5814(this.field486 * var1, this.field486 * (63 - var2) + this.field486 - 1, 1, var12);
                      }
                   }
 
                   if(var8.decoration == WorldMapDecorationType.field3006.rsOrdinal) {
-                     int var13 = var8.field452 % 2;
+                     int var13 = var8.rotation % 2;
                      int var14;
                      if(var13 == 0) {
                         for(var14 = 0; var14 < this.field486; ++var14) {
