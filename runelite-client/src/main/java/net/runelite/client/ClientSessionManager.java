@@ -68,6 +68,19 @@ public class ClientSessionManager
 
 	public void shutdown()
 	{
+		if (sessionId != null)
+		{
+			try
+			{
+				sessionClient.delete(sessionId);
+			}
+			catch (IOException ex)
+			{
+				log.warn(null, ex);
+			}
+			sessionId = null;
+		}
+		
 		scheduledFuture.cancel(true);
 	}
 
