@@ -536,7 +536,7 @@ public class class35 {
             for(int var8 = 0; var8 < var7.length; ++var8) {
                class31 var9 = var7[var8];
                int var11 = var9.field446;
-               boolean var10 = var11 >= class247.field3004.field3005 && var11 <= class247.field3003.field3005;
+               boolean var10 = var11 >= class247.field3004.rsOrdinal && var11 <= class247.field3003.rsOrdinal;
                if(var10 || class22.method161(var9.field446)) {
                   ObjectComposition var12 = class169.getObjectDefinition(var9.field450);
                   if(var12.mapSceneId != -1) {
@@ -567,20 +567,20 @@ public class class35 {
             for(int var7 = 0; var7 < var6.length; ++var7) {
                class31 var8 = var6[var7];
                int var10 = var8.field446;
-               boolean var9 = var10 >= class247.field2986.field3005 && var10 <= class247.field2982.field3005 || var10 == class247.field3006.field3005;
+               boolean var9 = var10 >= class247.field2986.rsOrdinal && var10 <= class247.field2982.rsOrdinal || var10 == class247.field3006.rsOrdinal;
                if(var9) {
                   ObjectComposition var11 = class169.getObjectDefinition(var8.field450);
                   int var12 = var11.int1 != 0?-3407872:-3355444;
-                  if(var8.field446 == class247.field2986.field3005) {
+                  if(var8.field446 == class247.field2986.rsOrdinal) {
                      this.method408(var1, var2, var8.field452, var12);
                   }
 
-                  if(var8.field446 == class247.field2985.field3005) {
+                  if(var8.field446 == class247.field2985.rsOrdinal) {
                      this.method408(var1, var2, var8.field452, -3355444);
                      this.method408(var1, var2, var8.field452 + 1, var12);
                   }
 
-                  if(var8.field446 == class247.field2982.field3005) {
+                  if(var8.field446 == class247.field2982.rsOrdinal) {
                      if(var8.field452 == 0) {
                         Rasterizer2D.method5814(this.field486 * var1, this.field486 * (63 - var2), 1, var12);
                      }
@@ -598,7 +598,7 @@ public class class35 {
                      }
                   }
 
-                  if(var8.field446 == class247.field3006.field3005) {
+                  if(var8.field446 == class247.field3006.rsOrdinal) {
                      int var13 = var8.field452 % 2;
                      int var14;
                      if(var13 == 0) {

@@ -131,14 +131,15 @@ public enum class247 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -1701301799
    )
-   public final int field3005;
+   @Export("rsOrdinal")
+   public final int rsOrdinal;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
    class247(int var3, int var4) {
-      this.field3005 = var3;
+      this.rsOrdinal = var3;
    }
 
    @ObfuscatedName("d")
@@ -147,6 +148,6 @@ public enum class247 implements Enumerated {
       garbageValue = "846888120"
    )
    public int rsOrdinal() {
-      return this.field3005;
+      return this.rsOrdinal;
    }
 }

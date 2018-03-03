@@ -67,7 +67,7 @@ public class class22 extends class28 {
       garbageValue = "-1185923333"
    )
    public static boolean method161(int var0) {
-      return var0 == class247.field2990.field3005;
+      return var0 == class247.field2990.rsOrdinal;
    }
 
    @ObfuscatedName("hx")
