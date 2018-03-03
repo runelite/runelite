@@ -320,7 +320,7 @@ public class RenderOverview {
       garbageValue = "-596708677"
    )
    public int method6086() {
-      return this.field4058.tryLoadRecordByNames(this.field4020.method296(), MapCacheArchiveNames.field544.field542)?100:this.field4058.archiveLoadPercentByName(this.field4020.method296());
+      return this.field4058.tryLoadRecordByNames(this.field4020.method296(), MapCacheArchiveNames.AREA.field542)?100:this.field4058.archiveLoadPercentByName(this.field4020.method296());
    }
 
    @ObfuscatedName("n")

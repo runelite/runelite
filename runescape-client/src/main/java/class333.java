@@ -59,7 +59,7 @@ public class class333 {
       }
 
       if(this.field3998 == 25) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.field544.field542)) {
+         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.AREA.field542)) {
             return 25 + this.field4001.archiveLoadPercentByName(this.field4000) * 25 / 100;
          }
 
