@@ -149,7 +149,7 @@ public class class35 {
 
                   for(int var12 = 0; var12 < var11.length; ++var12) {
                      class31 var13 = var11[var12];
-                     Area var14 = this.method464(var13.field450);
+                     Area var14 = this.method464(var13.objectDefinitionId);
                      if(var14 != null) {
                         Coordinates var15 = new Coordinates(var9, this.field494 * 64 + var6, this.field488 * 64 + var7);
                         Coordinates var16 = null;
@@ -538,7 +538,7 @@ public class class35 {
                int var11 = var9.field446;
                boolean var10 = var11 >= class247.field3004.rsOrdinal && var11 <= class247.field3003.rsOrdinal;
                if(var10 || class22.method161(var9.field446)) {
-                  ObjectComposition var12 = class169.getObjectDefinition(var9.field450);
+                  ObjectComposition var12 = class169.getObjectDefinition(var9.objectDefinitionId);
                   if(var12.mapSceneId != -1) {
                      if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
                         var4[var12.mapSceneId].method5894(this.field486 * var1, this.field486 * (63 - var2), this.field486 * 2, this.field486 * 2);
@@ -569,7 +569,7 @@ public class class35 {
                int var10 = var8.field446;
                boolean var9 = var10 >= class247.field2986.rsOrdinal && var10 <= class247.field2982.rsOrdinal || var10 == class247.field3006.rsOrdinal;
                if(var9) {
-                  ObjectComposition var11 = class169.getObjectDefinition(var8.field450);
+                  ObjectComposition var11 = class169.getObjectDefinition(var8.objectDefinitionId);
                   int var12 = var11.int1 != 0?-3407872:-3355444;
                   if(var8.field446 == class247.field2986.rsOrdinal) {
                      this.method408(var1, var2, var8.field452, var12);
@@ -788,7 +788,7 @@ public class class35 {
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                class31 var8 = var6[var7];
-               Area var9 = this.method464(var8.field450);
+               Area var9 = this.method464(var8.objectDefinitionId);
                if(var9 != null) {
                   MapIcon var10 = (MapIcon)this.field489.get(field496);
                   if(var10 != null) {
