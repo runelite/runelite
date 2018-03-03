@@ -31,7 +31,8 @@ public final class class29 {
    @ObfuscatedGetter(
       intValue = 656939217
    )
-   int field429;
+   @Export("worldMapRegionX")
+   int worldMapRegionX;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 975977773

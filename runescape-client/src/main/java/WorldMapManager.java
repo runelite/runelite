@@ -198,7 +198,7 @@ public final class WorldMapManager {
 
       int var17;
       int var18;
-      for(var17 = var13.field429; var17 < var13.field429 + var13.field432; ++var17) {
+      for(var17 = var13.worldMapRegionX; var17 < var13.worldMapRegionX + var13.field432; ++var17) {
          for(var18 = var13.field426; var18 < var13.field427 + var13.field426; ++var18) {
             this.method567(var17, var18, var22);
             this.field554[var17][var18].method463(var15, (class47)this.field551.get(Integer.valueOf(var15)), var22, this.field564);
@@ -211,7 +211,7 @@ public final class WorldMapManager {
       var18 = this.field562 + var1;
       int var19 = var2 + this.field559;
 
-      for(int var20 = var13.field429; var20 < var13.field429 + var13.field432; ++var20) {
+      for(int var20 = var13.worldMapRegionX; var20 < var13.worldMapRegionX + var13.field432; ++var20) {
          for(int var21 = var13.field426; var21 < var13.field426 + var13.field427; ++var21) {
             this.field554[var20][var21].method371(var5 + var17 * (this.field554[var20][var21].field494 * 64 - var18) / 64, var8 - var17 * (this.field554[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
          }
@@ -234,7 +234,7 @@ public final class WorldMapManager {
 
       int var19;
       int var20;
-      for(var19 = var14.field429; var19 < var14.field429 + var14.field432; ++var19) {
+      for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionX + var14.field432; ++var19) {
          for(var20 = var14.field426; var20 < var14.field426 + var14.field427; ++var20) {
             if(var13) {
                this.field554[var19][var20].method399();
@@ -245,7 +245,7 @@ public final class WorldMapManager {
       }
 
       if(var10 != null && var11 > 0) {
-         for(var19 = var14.field429; var19 < var14.field432 + var14.field429; ++var19) {
+         for(var19 = var14.worldMapRegionX; var19 < var14.field432 + var14.worldMapRegionX; ++var19) {
             for(var20 = var14.field426; var20 < var14.field426 + var14.field427; ++var20) {
                this.field554[var19][var20].drawFlashingMapIcons(var10, var11, var12);
             }
@@ -334,7 +334,7 @@ public final class WorldMapManager {
          int var15 = this.field562 + var1;
          int var16 = var2 + this.field559;
 
-         for(int var17 = var12.field429; var17 < var12.field432 + var12.field429; ++var17) {
+         for(int var17 = var12.worldMapRegionX; var17 < var12.field432 + var12.worldMapRegionX; ++var17) {
             for(int var18 = var12.field426; var18 < var12.field426 + var12.field427; ++var18) {
                List var19 = this.field554[var17][var18].method413(var5 + var14 * (this.field554[var17][var18].field494 * 64 - var15) / 64, var8 + var6 - var14 * (this.field554[var17][var18].field488 * 64 - var16 + 64) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
@@ -364,15 +364,15 @@ public final class WorldMapManager {
       int var13 = var9 / 64;
       var5.field432 = var12 - var10 + 1;
       var5.field427 = var13 - var11 + 1;
-      var5.field429 = var10 - this.field550.method312();
+      var5.worldMapRegionX = var10 - this.field550.method312();
       var5.field426 = var11 - this.field550.method302();
-      if(var5.field429 < 0) {
-         var5.field432 += var5.field429;
-         var5.field429 = 0;
+      if(var5.worldMapRegionX < 0) {
+         var5.field432 += var5.worldMapRegionX;
+         var5.worldMapRegionX = 0;
       }
 
-      if(var5.field429 > this.field554.length - var5.field432) {
-         var5.field432 = this.field554.length - var5.field429;
+      if(var5.worldMapRegionX > this.field554.length - var5.field432) {
+         var5.field432 = this.field554.length - var5.worldMapRegionX;
       }
 
       if(var5.field426 < 0) {
