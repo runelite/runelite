@@ -421,8 +421,8 @@ public abstract class Timer {
                   }
                } else if(Client.loadingStage == 140) {
                   class90.loadingBarPercentage = 100;
-                  if(!ServerPacket.indexWorldMap.tryLoadArchiveByName(MapCacheArchiveNames.DETAILS.field542)) {
-                     class90.loadingText = "Loading world map - " + ServerPacket.indexWorldMap.archiveLoadPercentByName(MapCacheArchiveNames.DETAILS.field542) / 10 + "%";
+                  if(!ServerPacket.indexWorldMap.tryLoadArchiveByName(MapCacheArchiveNames.DETAILS.name)) {
+                     class90.loadingText = "Loading world map - " + ServerPacket.indexWorldMap.archiveLoadPercentByName(MapCacheArchiveNames.DETAILS.name) / 10 + "%";
                   } else {
                      if(class248.renderOverview == null) {
                         class248.renderOverview = new RenderOverview();

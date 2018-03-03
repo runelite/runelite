@@ -44,7 +44,8 @@ public class MapCacheArchiveNames
    @Export("fontPlain11")
    static Font fontPlain11;
    @ObfuscatedName("y")
-   public final String field542;
+   @Export("name")
+   public final String name;
 
    static {
       DETAILS = new MapCacheArchiveNames("details");
@@ -55,7 +56,7 @@ public class MapCacheArchiveNames
    }
 
    MapCacheArchiveNames(String var1) {
-      this.field542 = var1;
+      this.name = var1;
    }
 
    @ObfuscatedName("ev")

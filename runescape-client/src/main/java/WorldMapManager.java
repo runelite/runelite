@@ -99,11 +99,11 @@ public final class WorldMapManager {
          this.loaded = false;
          this.loading = true;
          System.nanoTime();
-         int var4 = var1.getFile(MapCacheArchiveNames.DETAILS.field542);
+         int var4 = var1.getFile(MapCacheArchiveNames.DETAILS.name);
          int var5 = var1.getChild(var4, var2);
-         Buffer var6 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.DETAILS.field542, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.field542, var2));
-         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, MapCacheArchiveNames.AREA.field542));
+         Buffer var6 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.DETAILS.name, var2));
+         Buffer var7 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, var2));
+         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, MapCacheArchiveNames.AREA.name));
          System.nanoTime();
          System.nanoTime();
          this.field550 = new class45();
@@ -151,8 +151,8 @@ public final class WorldMapManager {
 
          System.nanoTime();
          System.nanoTime();
-         if(var1.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, var2)) {
-            byte[] var21 = var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, var2);
+         if(var1.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, var2)) {
+            byte[] var21 = var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, var2);
             this.field552 = KeyFocusListener.method774(var21);
          }
 

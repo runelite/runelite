@@ -51,7 +51,7 @@ public class class333 {
    )
    int method6054() {
       if(this.field3998 < 25) {
-         if(!this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.field542, this.field4000)) {
+         if(!this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, this.field4000)) {
             return this.field3998;
          }
 
@@ -59,7 +59,7 @@ public class class333 {
       }
 
       if(this.field3998 == 25) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.AREA.field542)) {
+         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.AREA.name)) {
             return 25 + this.field4001.archiveLoadPercentByName(this.field4000) * 25 / 100;
          }
 
@@ -67,7 +67,7 @@ public class class333 {
       }
 
       if(this.field3998 == 50) {
-         if(this.field4001.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, this.field4000) && !this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, this.field4000)) {
+         if(this.field4001.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4000) && !this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4000)) {
             return 50;
          }
 
@@ -75,7 +75,7 @@ public class class333 {
       }
 
       if(this.field3998 == 75) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.LABELS.field542)) {
+         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.LABELS.name)) {
             return 75;
          }
 
