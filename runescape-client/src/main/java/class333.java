@@ -67,7 +67,7 @@ public class class333 {
       }
 
       if(this.field3998 == 50) {
-         if(this.field4001.method4689(MapCacheArchiveNames.field548.field542, this.field4000) && !this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.field548.field542, this.field4000)) {
+         if(this.field4001.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, this.field4000) && !this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, this.field4000)) {
             return 50;
          }
 

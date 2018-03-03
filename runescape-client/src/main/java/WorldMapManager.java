@@ -151,8 +151,8 @@ public final class WorldMapManager {
 
          System.nanoTime();
          System.nanoTime();
-         if(var1.method4689(MapCacheArchiveNames.field548.field542, var2)) {
-            byte[] var21 = var1.takeRecordByNames(MapCacheArchiveNames.field548.field542, var2);
+         if(var1.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, var2)) {
+            byte[] var21 = var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.field542, var2);
             this.field552 = KeyFocusListener.method774(var21);
          }
 
