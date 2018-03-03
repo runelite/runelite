@@ -43,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.OSType;
+import net.runelite.client.util.OSXUtil;
 
 @Singleton
 @Slf4j
@@ -98,7 +99,14 @@ public class Notifier
 
 		if (runeLiteConfig.requestFocusOnNotification())
 		{
-			clientUI.requestFocus();
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				OSXUtil.requestFocus();
+			}
+			else
+			{
+				clientUI.requestFocus();
+			}
 		}
 
 		if (runeLiteConfig.enableTrayNotifications())

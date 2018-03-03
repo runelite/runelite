@@ -130,6 +130,12 @@
 			<artifactId>discord</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>orange-extensions</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
