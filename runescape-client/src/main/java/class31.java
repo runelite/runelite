@@ -26,7 +26,8 @@ public class class31 {
    @ObfuscatedGetter(
       intValue = 890007061
    )
-   final int field446;
+   @Export("decoration")
+   final int decoration;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 865753871
@@ -35,7 +36,7 @@ public class class31 {
 
    class31(int var1, int var2, int var3) {
       this.objectDefinitionId = var1;
-      this.field446 = var2;
+      this.decoration = var2;
       this.field452 = var3;
    }
 
