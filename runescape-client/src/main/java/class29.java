@@ -38,7 +38,8 @@ public final class class29 {
    @ObfuscatedGetter(
       intValue = 975977773
    )
-   int field426;
+   @Export("worldMapRegionY")
+   int worldMapRegionY;
    // $FF: synthetic field
    @ObfuscatedSignature(
       signature = "Lag;"
