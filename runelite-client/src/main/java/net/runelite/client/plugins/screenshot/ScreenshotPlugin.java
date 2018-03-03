@@ -65,6 +65,7 @@ import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
@@ -105,6 +106,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer clueNumber;
 
 	private Integer barrowsNumber;
+
+	private Integer raidsNumber;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -190,32 +193,36 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("Treasure"))
-		{
-			String chatMessage = event.getMessage().replaceAll("<col=3300ff>", "");
+		String chatMessage = event.getMessage();
 
-			if (chatMessage.startsWith("You have completed"))
+		if (chatMessage.contains("You have completed") && chatMessage.contains("Treasure"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			if (m.find())
 			{
-				Matcher m = NUMBER_PATTERN.matcher(chatMessage);
-				if (m.find())
-				{
-					clueNumber = Integer.valueOf(m.group());
-					clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
-				}
+				clueNumber = Integer.valueOf(m.group());
+				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
+				return;
 			}
 		}
 
-		if (event.getMessage().contains("Barrows"))
+		if (chatMessage.startsWith("Your Barrows chest count is"))
 		{
-			String chatMessage = event.getMessage().replaceAll("<col=ff0000>", "");
-
-			if (chatMessage.startsWith("Your Barrows chest count is"))
+			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			if (m.find())
 			{
-				Matcher m = NUMBER_PATTERN.matcher(chatMessage);
-				if (m.find())
-				{
-					barrowsNumber = Integer.valueOf(m.group());
-				}
+				barrowsNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
+		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			if (m.find())
+			{
+				raidsNumber = Integer.valueOf(m.group());
+				return;
 			}
 		}
 	}
@@ -241,6 +248,7 @@ public class ScreenshotPlugin extends Plugin
 			case QUEST_COMPLETED_GROUP_ID:
 			case CLUE_SCROLL_REWARD_GROUP_ID:
 			case BARROWS_REWARD_GROUP_ID:
+			case RAIDS_REWARD_GROUP_ID:
 				if (!config.screenshotRewards())
 				{
 					return;
@@ -298,6 +306,17 @@ public class ScreenshotPlugin extends Plugin
 
 				fileName = "Barrows(" + barrowsNumber + ")";
 				barrowsNumber = null;
+				break;
+			}
+			case RAIDS_REWARD_GROUP_ID:
+			{
+				if (raidsNumber == null)
+				{
+					return;
+				}
+
+				fileName = "Raids(" + raidsNumber + ")";
+				raidsNumber = null;
 				break;
 			}
 			default:
@@ -483,20 +502,26 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	public int getClueNumber()
+	int getClueNumber()
 	{
 		return clueNumber;
 	}
 
 	@VisibleForTesting
-	public String getClueType()
+	String getClueType()
 	{
 		return clueType;
 	}
 
 	@VisibleForTesting
-	public int getBarrowsNumber()
+	int getBarrowsNumber()
 	{
 		return barrowsNumber;
+	}
+
+	@VisibleForTesting
+	int getRaidsNumber()
+	{
+		return raidsNumber;
 	}
 }
