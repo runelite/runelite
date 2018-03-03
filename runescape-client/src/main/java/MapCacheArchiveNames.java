@@ -11,7 +11,8 @@ public class MapCacheArchiveNames
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final MapCacheArchiveNames field546;
+   @Export("DETAILS")
+   public static final MapCacheArchiveNames DETAILS;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lat;"
@@ -42,7 +43,7 @@ public class MapCacheArchiveNames
    public final String field542;
 
    static {
-      field546 = new MapCacheArchiveNames("details");
+      DETAILS = new MapCacheArchiveNames("details");
       field541 = new MapCacheArchiveNames("compositemap");
       field548 = new MapCacheArchiveNames("compositetexture");
       field544 = new MapCacheArchiveNames("area");

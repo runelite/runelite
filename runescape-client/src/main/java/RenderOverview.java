@@ -296,7 +296,7 @@ public class RenderOverview {
       this.mapFonts.put(Size.field368, var3.get(fontNameVerdana13));
       this.mapFonts.put(Size.field364, var3.get(fontNameVerdana15));
       this.field4019 = new class333(var1);
-      int var5 = this.field4058.getFile(MapCacheArchiveNames.field546.field542);
+      int var5 = this.field4058.getFile(MapCacheArchiveNames.DETAILS.field542);
       int[] var6 = this.field4058.getChilds(var5);
       this.field4014 = new HashMap(var6.length);
 
