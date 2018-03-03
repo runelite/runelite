@@ -1452,7 +1452,7 @@ public final class Client extends GameEngine implements class302 {
       CollisionData.method3441(new int[]{20, 260, 10000}, new int[]{1000, 100, 500});
       class233.port1 = socketType == 0?43594:world + 40000;
       class44.port2 = socketType == 0?443:world + 50000;
-      class247.myWorldPort = class233.port1;
+      WorldMapDecorationType.myWorldPort = class233.port1;
       GrandExchangeOffer.colorsToFind = class240.field2807;
       class236.colorsToReplace = class240.field2802;
       class71.field821 = class240.field2803;
@@ -2632,7 +2632,7 @@ public final class Client extends GameEngine implements class302 {
          if(--field873 + 1 <= 0) {
             try {
                if(js5State == 0) {
-                  OwnWorldComparator.socket = GameEngine.taskManager.createSocket(BoundingBox.host, class247.myWorldPort);
+                  OwnWorldComparator.socket = GameEngine.taskManager.createSocket(BoundingBox.host, WorldMapDecorationType.myWorldPort);
                   ++js5State;
                }
 
@@ -2763,10 +2763,10 @@ public final class Client extends GameEngine implements class302 {
       OwnWorldComparator.socket = null;
       Size.rssocket = null;
       js5State = 0;
-      if(class247.myWorldPort == class233.port1) {
-         class247.myWorldPort = class44.port2;
+      if(WorldMapDecorationType.myWorldPort == class233.port1) {
+         WorldMapDecorationType.myWorldPort = class44.port2;
       } else {
-         class247.myWorldPort = class233.port1;
+         WorldMapDecorationType.myWorldPort = class233.port1;
       }
 
       ++field887;
@@ -2815,7 +2815,7 @@ public final class Client extends GameEngine implements class302 {
 
          if(loginState == 1) {
             if(class7.field233 == null) {
-               class7.field233 = GameEngine.taskManager.createSocket(BoundingBox.host, class247.myWorldPort);
+               class7.field233 = GameEngine.taskManager.createSocket(BoundingBox.host, WorldMapDecorationType.myWorldPort);
             }
 
             if(class7.field233.status == 2) {
@@ -3243,10 +3243,10 @@ public final class Client extends GameEngine implements class302 {
                   ++field1076;
                   if(field1076 > 2000) {
                      if(field890 < 1) {
-                        if(class247.myWorldPort == class233.port1) {
-                           class247.myWorldPort = class44.port2;
+                        if(WorldMapDecorationType.myWorldPort == class233.port1) {
+                           WorldMapDecorationType.myWorldPort = class44.port2;
                         } else {
-                           class247.myWorldPort = class233.port1;
+                           WorldMapDecorationType.myWorldPort = class233.port1;
                         }
 
                         ++field890;
@@ -3320,10 +3320,10 @@ public final class Client extends GameEngine implements class302 {
          }
       } catch (IOException var17) {
          if(field890 < 1) {
-            if(class247.myWorldPort == class233.port1) {
-               class247.myWorldPort = class44.port2;
+            if(WorldMapDecorationType.myWorldPort == class233.port1) {
+               WorldMapDecorationType.myWorldPort = class44.port2;
             } else {
-               class247.myWorldPort = class233.port1;
+               WorldMapDecorationType.myWorldPort = class233.port1;
             }
 
             ++field890;

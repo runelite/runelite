@@ -100,6 +100,6 @@ final class TotalQuantityComparator implements Comparator {
       Client.flags = world.mask;
       class233.port1 = Client.socketType == 0?43594:world.id + 40000;
       class44.port2 = Client.socketType == 0?443:world.id + 50000;
-      class247.myWorldPort = class233.port1;
+      WorldMapDecorationType.myWorldPort = class233.port1;
    }
 }
