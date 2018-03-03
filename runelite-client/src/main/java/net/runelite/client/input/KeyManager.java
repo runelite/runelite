@@ -36,7 +36,10 @@ public class KeyManager
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
-		keyListeners.add(keyListener);
+		if (!keyListeners.contains(keyListener))
+		{
+			keyListeners.add(keyListener);
+		}
 	}
 
 	public void unregisterKeyListener(KeyListener keyListener)
