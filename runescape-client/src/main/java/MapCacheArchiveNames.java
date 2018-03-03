@@ -35,7 +35,8 @@ public class MapCacheArchiveNames
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final MapCacheArchiveNames field545;
+   @Export("LABELS")
+   public static final MapCacheArchiveNames LABELS;
    @ObfuscatedName("em")
    @ObfuscatedSignature(
       signature = "Lkw;"
@@ -50,7 +51,7 @@ public class MapCacheArchiveNames
       COMPOSITE_MAP = new MapCacheArchiveNames("compositemap");
       COMPOSITE_TEXTURE = new MapCacheArchiveNames("compositetexture");
       AREA = new MapCacheArchiveNames("area");
-      field545 = new MapCacheArchiveNames("labels");
+      LABELS = new MapCacheArchiveNames("labels");
    }
 
    MapCacheArchiveNames(String var1) {

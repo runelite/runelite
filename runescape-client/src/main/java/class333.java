@@ -75,7 +75,7 @@ public class class333 {
       }
 
       if(this.field3998 == 75) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.field545.field542)) {
+         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.LABELS.field542)) {
             return 75;
          }
 
