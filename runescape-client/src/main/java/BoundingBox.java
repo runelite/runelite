@@ -1364,7 +1364,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                         var33 = 1;
                                                                                                                      } else if(var7 == 3619) {
                                                                                                                         var55 = class81.scriptStringStack[--UrlRequester.scriptStringStackSize];
-                                                                                                                        class41.method560(var55);
+                                                                                                                        MapCacheArchiveNames.method560(var55);
                                                                                                                         var33 = 1;
                                                                                                                      } else if(var7 == 3620) {
                                                                                                                         PacketNode var64 = class31.method285(ClientPacket.field2375, Client.field899.field1470);

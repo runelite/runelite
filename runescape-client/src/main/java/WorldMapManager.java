@@ -99,11 +99,11 @@ public final class WorldMapManager {
          this.loaded = false;
          this.loading = true;
          System.nanoTime();
-         int var4 = var1.getFile(class41.field546.field542);
+         int var4 = var1.getFile(MapCacheArchiveNames.field546.field542);
          int var5 = var1.getChild(var4, var2);
-         Buffer var6 = new Buffer(var1.takeRecordByNames(class41.field546.field542, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(class41.field541.field542, var2));
-         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, class41.field544.field542));
+         Buffer var6 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.field546.field542, var2));
+         Buffer var7 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.field541.field542, var2));
+         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, MapCacheArchiveNames.field544.field542));
          System.nanoTime();
          System.nanoTime();
          this.field550 = new class45();
@@ -151,8 +151,8 @@ public final class WorldMapManager {
 
          System.nanoTime();
          System.nanoTime();
-         if(var1.method4689(class41.field548.field542, var2)) {
-            byte[] var21 = var1.takeRecordByNames(class41.field548.field542, var2);
+         if(var1.method4689(MapCacheArchiveNames.field548.field542, var2)) {
+            byte[] var21 = var1.takeRecordByNames(MapCacheArchiveNames.field548.field542, var2);
             this.field552 = KeyFocusListener.method774(var21);
          }
 

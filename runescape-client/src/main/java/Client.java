@@ -2046,10 +2046,10 @@ public final class Client extends GameEngine implements class302 {
       if(gameState == 0) {
          this.drawLoadingScreen(class90.loadingBarPercentage, class90.loadingText, var1);
       } else if(gameState == 5) {
-         PacketBuffer.drawLoginScreen(DecorativeObject.fontBold12, class41.fontPlain11, SoundTaskDataProvider.font_p12full, var1);
+         PacketBuffer.drawLoginScreen(DecorativeObject.fontBold12, MapCacheArchiveNames.fontPlain11, SoundTaskDataProvider.font_p12full, var1);
       } else if(gameState != 10 && gameState != 11) {
          if(gameState == 20) {
-            PacketBuffer.drawLoginScreen(DecorativeObject.fontBold12, class41.fontPlain11, SoundTaskDataProvider.font_p12full, var1);
+            PacketBuffer.drawLoginScreen(DecorativeObject.fontBold12, MapCacheArchiveNames.fontPlain11, SoundTaskDataProvider.font_p12full, var1);
          } else if(gameState == 25) {
             if(field909 == 1) {
                if(field1105 > field906) {
@@ -2076,7 +2076,7 @@ public final class Client extends GameEngine implements class302 {
             SoundTaskDataProvider.method783("Please wait...", false);
          }
       } else {
-         PacketBuffer.drawLoginScreen(DecorativeObject.fontBold12, class41.fontPlain11, SoundTaskDataProvider.font_p12full, var1);
+         PacketBuffer.drawLoginScreen(DecorativeObject.fontBold12, MapCacheArchiveNames.fontPlain11, SoundTaskDataProvider.font_p12full, var1);
       }
 
       if(gameState == 30 && gameDrawingMode == 0 && !var1 && !isResized) {

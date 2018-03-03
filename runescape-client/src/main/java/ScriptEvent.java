@@ -506,17 +506,17 @@ public class ScriptEvent extends Node {
 
                      Font var86 = var91.method5088();
                      if(var86 == null) {
-                        var86 = class41.fontPlain11;
+                        var86 = MapCacheArchiveNames.fontPlain11;
                      }
 
                      Font var44;
                      if(var81 != null) {
                         var44 = var81.method5088();
                         if(var44 == null) {
-                           var44 = class41.fontPlain11;
+                           var44 = MapCacheArchiveNames.fontPlain11;
                         }
                      } else {
-                        var44 = class41.fontPlain11;
+                        var44 = MapCacheArchiveNames.fontPlain11;
                      }
 
                      String var45 = null;

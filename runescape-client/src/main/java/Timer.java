@@ -184,7 +184,7 @@ public abstract class Timer {
                      class90.loadingText = "Loading fonts - " + Client.fontsMap.size() * 100 / var1 + "%";
                      class90.loadingBarPercentage = 40;
                   } else {
-                     class41.fontPlain11 = (Font)Client.fontsMap.get(FontName.FontName_plain11);
+                     MapCacheArchiveNames.fontPlain11 = (Font)Client.fontsMap.get(FontName.FontName_plain11);
                      SoundTaskDataProvider.font_p12full = (Font)Client.fontsMap.get(FontName.FontName_plain12);
                      DecorativeObject.fontBold12 = (Font)Client.fontsMap.get(FontName.FontName_bold12);
                      class21.platformInfo = new MachineInfo(true);
@@ -230,7 +230,7 @@ public abstract class Timer {
                      IndexData var7 = BoundingBox2D.configsIndex;
                      IndexData var8 = Client.indexModels;
                      boolean var9 = Client.isMembers;
-                     Font var10 = class41.fontPlain11;
+                     Font var10 = MapCacheArchiveNames.fontPlain11;
                      WorldComparator.item_ref = var7;
                      class288.ItemDefinition_modelIndexCache = var8;
                      ItemComposition.isMembersWorld = var9;
@@ -421,8 +421,8 @@ public abstract class Timer {
                   }
                } else if(Client.loadingStage == 140) {
                   class90.loadingBarPercentage = 100;
-                  if(!ServerPacket.indexWorldMap.tryLoadArchiveByName(class41.field546.field542)) {
-                     class90.loadingText = "Loading world map - " + ServerPacket.indexWorldMap.archiveLoadPercentByName(class41.field546.field542) / 10 + "%";
+                  if(!ServerPacket.indexWorldMap.tryLoadArchiveByName(MapCacheArchiveNames.field546.field542)) {
+                     class90.loadingText = "Loading world map - " + ServerPacket.indexWorldMap.archiveLoadPercentByName(MapCacheArchiveNames.field546.field542) / 10 + "%";
                   } else {
                      if(class248.renderOverview == null) {
                         class248.renderOverview = new RenderOverview();

@@ -1,34 +1,37 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("at")
-public class class41 {
+@Implements("MapCacheArchiveNames")
+public class MapCacheArchiveNames
+{
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field546;
+   public static final MapCacheArchiveNames field546;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field541;
+   public static final MapCacheArchiveNames field541;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field548;
+   public static final MapCacheArchiveNames field548;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field544;
+   public static final MapCacheArchiveNames field544;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field545;
+   public static final MapCacheArchiveNames field545;
    @ObfuscatedName("em")
    @ObfuscatedSignature(
       signature = "Lkw;"
@@ -39,14 +42,14 @@ public class class41 {
    public final String field542;
 
    static {
-      field546 = new class41("details");
-      field541 = new class41("compositemap");
-      field548 = new class41("compositetexture");
-      field544 = new class41("area");
-      field545 = new class41("labels");
+      field546 = new MapCacheArchiveNames("details");
+      field541 = new MapCacheArchiveNames("compositemap");
+      field548 = new MapCacheArchiveNames("compositetexture");
+      field544 = new MapCacheArchiveNames("area");
+      field545 = new MapCacheArchiveNames("labels");
    }
 
-   class41(String var1) {
+   MapCacheArchiveNames(String var1) {
       this.field542 = var1;
    }
 

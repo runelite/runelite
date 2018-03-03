@@ -112,13 +112,13 @@ public class class45 extends WorldMapData {
             if(var0.poseFrame < var1.frameIDs.length && var0.field1170 > var1.frameLenghts[var0.poseFrame]) {
                var0.field1170 = 1;
                ++var0.poseFrame;
-               class41.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
+               MapCacheArchiveNames.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
             }
 
             if(var0.poseFrame >= var1.frameIDs.length) {
                var0.field1170 = 0;
                var0.poseFrame = 0;
-               class41.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
+               MapCacheArchiveNames.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
             }
          } else {
             var0.poseAnimation = -1;
@@ -138,7 +138,7 @@ public class class45 extends WorldMapData {
                if(var0.field1177 < var2.frameIDs.length && var0.field1178 > var2.frameLenghts[var0.field1177]) {
                   var0.field1178 = 1;
                   ++var0.field1177;
-                  class41.queueAnimationSound(var2, var0.field1177, var0.x, var0.y);
+                  MapCacheArchiveNames.queueAnimationSound(var2, var0.field1177, var0.x, var0.y);
                }
 
                if(var0.field1177 >= var2.frameIDs.length && (var0.field1177 < 0 || var0.field1177 >= var2.frameIDs.length)) {
@@ -167,7 +167,7 @@ public class class45 extends WorldMapData {
             if(var0.actionFrame < var1.frameIDs.length && var0.field1173 > var1.frameLenghts[var0.actionFrame]) {
                var0.field1173 = 1;
                ++var0.actionFrame;
-               class41.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
+               MapCacheArchiveNames.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
             }
 
             if(var0.actionFrame >= var1.frameIDs.length) {
@@ -176,7 +176,7 @@ public class class45 extends WorldMapData {
                if(var0.field1175 >= var1.maxLoops) {
                   var0.animation = -1;
                } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
-                  class41.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
+                  MapCacheArchiveNames.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
                } else {
                   var0.animation = -1;
                }

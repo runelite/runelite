@@ -51,7 +51,7 @@ public class class333 {
    )
    int method6054() {
       if(this.field3998 < 25) {
-         if(!this.field4001.tryLoadRecordByNames(class41.field541.field542, this.field4000)) {
+         if(!this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.field541.field542, this.field4000)) {
             return this.field3998;
          }
 
@@ -59,7 +59,7 @@ public class class333 {
       }
 
       if(this.field3998 == 25) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, class41.field544.field542)) {
+         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.field544.field542)) {
             return 25 + this.field4001.archiveLoadPercentByName(this.field4000) * 25 / 100;
          }
 
@@ -67,7 +67,7 @@ public class class333 {
       }
 
       if(this.field3998 == 50) {
-         if(this.field4001.method4689(class41.field548.field542, this.field4000) && !this.field4001.tryLoadRecordByNames(class41.field548.field542, this.field4000)) {
+         if(this.field4001.method4689(MapCacheArchiveNames.field548.field542, this.field4000) && !this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.field548.field542, this.field4000)) {
             return 50;
          }
 
@@ -75,7 +75,7 @@ public class class333 {
       }
 
       if(this.field3998 == 75) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, class41.field545.field542)) {
+         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.field545.field542)) {
             return 75;
          }
 
