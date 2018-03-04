@@ -42,6 +42,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.feed.FeedClient;
 import net.runelite.http.api.feed.FeedResult;
 
@@ -60,6 +61,9 @@ public class FeedPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executorService;
+
+	@Inject
+	private LinkBrowser linkBrowser;
 
 	private FeedPanel feedPanel;
 	private NavigationButton navButton;
@@ -81,7 +85,7 @@ public class FeedPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		feedPanel = new FeedPanel(config, feedSupplier);
+		feedPanel = new FeedPanel(config, feedSupplier, linkBrowser);
 
 		navButton = new NavigationButton(
 			"News Feed",
