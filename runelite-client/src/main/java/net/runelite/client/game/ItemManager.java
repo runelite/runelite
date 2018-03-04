@@ -186,27 +186,6 @@ public class ItemManager
 	}
 
 	/**
-	 * Convert a quantity to stack size
-	 *
-	 * @param quantity
-	 * @return
-	 */
-	public static String quantityToStackSize(int quantity)
-	{
-		if (quantity >= 10_000_000)
-		{
-			return quantity / 1_000_000 + "M";
-		}
-
-		if (quantity >= 100_000)
-		{
-			return quantity / 1_000 + "K";
-		}
-
-		return "" + quantity;
-	}
-
-	/**
 	 * Loads item sprite from game, makes transparent, and generates image
 	 *
 	 * @param itemId
