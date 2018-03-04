@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.LinkBrowser;
 
 @Slf4j
 class GrandExchangePanel extends PluginPanel
@@ -53,7 +54,7 @@ class GrandExchangePanel extends PluginPanel
 	private JTabbedPane tabbedPane = new JTabbedPane();
 
 	@Inject
-	GrandExchangePanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangePanel(Client client, ItemManager itemManager, ScheduledExecutorService executor, LinkBrowser linkBrowser)
 	{
 		setLayout(new BorderLayout());
 		add(tabbedPane, BorderLayout.NORTH);
@@ -67,7 +68,7 @@ class GrandExchangePanel extends PluginPanel
 		}
 
 		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(client, itemManager, executor);
+		searchPanel = new GrandExchangeSearchPanel(client, itemManager, executor, linkBrowser);
 
 		tabbedPane.addTab("Offers", offerPanel);
 		tabbedPane.addTab("Search", searchPanel);
