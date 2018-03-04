@@ -121,7 +121,7 @@ public interface GroundItemsConfig extends Config
 			description = "Configures the color for default, non-highlighted items",
 			position = 8
 	)
-    default Color defaultColor()
+	default Color defaultColor()
 	{
 		return Color.WHITE;
 	}

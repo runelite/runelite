@@ -28,20 +28,15 @@ package net.runelite.client.plugins.cluescrolls;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -86,9 +81,9 @@ public class ClueScrollPlugin extends Plugin
 			WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 			for (WidgetItem item : inventoryWidgetItems)
 			{
-			    if (client.getItemDefinition(item.getId()).getName().startsWith("Clue scroll"))
-			    {
-			    	return;
+				if (client.getItemDefinition(item.getId()).getName().startsWith("Clue scroll"))
+				{
+					return;
 				}
 			}
 
