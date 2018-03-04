@@ -47,15 +47,18 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if (!plugin.isMapShown())
-		{
-			return;
-		}
-
 		if (event.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
-			plugin.closeMap();
-			event.consume();
+			if (plugin.isMapShown())
+			{
+				plugin.closeMap();
+				event.consume();
+			}
+			else if (event.isShiftDown())
+			{
+				plugin.showMap();
+				event.consume();
+			}
 		}
 	}
 
