@@ -31,6 +31,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -72,6 +73,7 @@ import net.runelite.http.api.item.ItemPrice;
 public class ExaminePlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
 	private final ExamineClient examineClient = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
@@ -333,7 +335,7 @@ public class ExaminePlugin extends Plugin
 			if (quantity > 1)
 			{
 				message
-					.append(String.format("%,d", quantity))
+					.append(NUMBER_FORMATTER.format(quantity))
 					.append(" x ");
 			}
 
@@ -348,7 +350,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", gePrice * quantity));
+					.append(NUMBER_FORMATTER.format(gePrice * quantity));
 			}
 
 			if (quantity > 1)
@@ -357,7 +359,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" (")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(Integer.toString(gePrice))
+					.append(NUMBER_FORMATTER.format(gePrice))
 					.append(ChatColorType.NORMAL)
 					.append("ea)");
 			}
@@ -368,7 +370,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", alchPrice * quantity));
+					.append(NUMBER_FORMATTER.format(alchPrice * quantity));
 			}
 
 			if (quantity > 1)
@@ -377,7 +379,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" (")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(Integer.toString(alchPrice))
+					.append(NUMBER_FORMATTER.format(alchPrice))
 					.append(ChatColorType.NORMAL)
 					.append("ea)");
 			}
