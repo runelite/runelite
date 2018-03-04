@@ -23,4 +23,9 @@ public class RunException extends RuntimeException {
    String field2171;
    @ObfuscatedName("e")
    Throwable field2169;
+
+   RunException(Throwable var1, String var2) {
+      this.field2171 = var2;
+      this.field2169 = var1;
+   }
 }

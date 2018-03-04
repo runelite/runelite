@@ -1,5 +1,10 @@
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Random;
@@ -67,7 +72,88 @@ public final class ItemLayer {
       garbageValue = "1384374911"
    )
    public static void method2658(String var0, Throwable var1) {
-      var1.printStackTrace();
+      if(var1 != null) {
+         var1.printStackTrace();
+      } else {
+         try {
+            String var2 = "";
+            if(var1 != null) {
+               Throwable var4 = var1;
+               String var5;
+               if(var1 instanceof RunException) {
+                  RunException var6 = (RunException)var1;
+                  var5 = var6.field2171 + " | ";
+                  var4 = var6.field2169;
+               } else {
+                  var5 = "";
+               }
+
+               StringWriter var18 = new StringWriter();
+               PrintWriter var7 = new PrintWriter(var18);
+               var4.printStackTrace(var7);
+               var7.close();
+               String var8 = var18.toString();
+               BufferedReader var9 = new BufferedReader(new StringReader(var8));
+               String var10 = var9.readLine();
+
+               label62:
+               while(true) {
+                  while(true) {
+                     String var11 = var9.readLine();
+                     if(var11 == null) {
+                        var5 = var5 + "| " + var10;
+                        var2 = var5;
+                        break label62;
+                     }
+
+                     int var12 = var11.indexOf(40);
+                     int var13 = var11.indexOf(41, var12 + 1);
+                     if(var12 >= 0 && var13 >= 0) {
+                        String var14 = var11.substring(var12 + 1, var13);
+                        int var15 = var14.indexOf(".java:");
+                        if(var15 >= 0) {
+                           var14 = var14.substring(0, var15) + var14.substring(var15 + 5);
+                           var5 = var5 + var14 + ' ';
+                           continue;
+                        }
+
+                        var11 = var11.substring(0, var12);
+                     }
+
+                     var11 = var11.trim();
+                     var11 = var11.substring(var11.lastIndexOf(32) + 1);
+                     var11 = var11.substring(var11.lastIndexOf(9) + 1);
+                     var5 = var5 + var11 + ' ';
+                  }
+               }
+            }
+
+            if(var0 != null) {
+               if(var1 != null) {
+                  var2 = var2 + " | ";
+               }
+
+               var2 = var2 + var0;
+            }
+
+            System.out.println("Error: " + var2);
+            var2 = var2.replace(':', '.');
+            var2 = var2.replace('@', '_');
+            var2 = var2.replace('&', '_');
+            var2 = var2.replace('#', '_');
+            if(class199.field2604 == null) {
+               return;
+            }
+
+            URL var3 = new URL(class199.field2604.getCodeBase(), "clienterror.ws?c=" + RunException.revision + "&u=" + RunException.field2172 + "&v1=" + Signlink.javaVendor + "&v2=" + Signlink.javaVersion + "&e=" + var2);
+            DataInputStream var17 = new DataInputStream(var3.openStream());
+            var17.read();
+            var17.close();
+         } catch (Exception var16) {
+            ;
+         }
+
+      }
    }
 
    @ObfuscatedName("z")

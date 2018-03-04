@@ -2183,204 +2183,208 @@ public final class Client extends GameEngine implements class302 {
    @Export("init")
    @ObfuscatedName("init")
    public final void init() {
-      if(this.isValidHost()) {
-         Parameters[] var1 = new Parameters[]{Parameters.field3809, Parameters.field3803, Parameters.field3799, Parameters.field3801, Parameters.field3796, Parameters.field3794, Parameters.field3806, Parameters.field3800, Parameters.field3797, Parameters.field3798, Parameters.field3810, Parameters.field3795, Parameters.field3808, Parameters.field3807, Parameters.field3802, Parameters.field3804};
-         Parameters[] var2 = var1;
+      try {
+         if(this.isValidHost()) {
+            Parameters[] var1 = new Parameters[]{Parameters.field3809, Parameters.field3803, Parameters.field3799, Parameters.field3801, Parameters.field3796, Parameters.field3794, Parameters.field3806, Parameters.field3800, Parameters.field3797, Parameters.field3798, Parameters.field3810, Parameters.field3795, Parameters.field3808, Parameters.field3807, Parameters.field3802, Parameters.field3804};
+            Parameters[] var2 = var1;
 
-         int var3;
-         for(var3 = 0; var3 < var2.length; ++var3) {
-            Parameters var4 = var2[var3];
-            String var5 = this.getParameter(var4.key);
-            if(var5 != null) {
-               switch(Integer.parseInt(var4.key)) {
-               case 1:
-                  if(var5.equalsIgnoreCase("true")) {
-                     ;
+            int var3;
+            for(var3 = 0; var3 < var2.length; ++var3) {
+               Parameters var4 = var2[var3];
+               String var5 = this.getParameter(var4.key);
+               if(var5 != null) {
+                  switch(Integer.parseInt(var4.key)) {
+                  case 1:
+                     if(var5.equalsIgnoreCase("true")) {
+                        ;
+                     }
+                     break;
+                  case 2:
+                     ScriptState.field759 = Integer.parseInt(var5);
+                     break;
+                  case 3:
+                     flags = Integer.parseInt(var5);
+                     break;
+                  case 4:
+                     languageId = Integer.parseInt(var5);
+                     break;
+                  case 5:
+                     class150.field2118 = (JagexGame)MapIcon.forOrdinal(class37.method505(), Integer.parseInt(var5));
+                     if(class150.field2118 == JagexGame.field3352) {
+                        class21.loginType = JagexLoginType.field4066;
+                     } else {
+                        class21.loginType = JagexLoginType.field4070;
+                     }
+                     break;
+                  case 6:
+                     if(var5.equalsIgnoreCase("true")) {
+                        isMembers = true;
+                     } else {
+                        isMembers = false;
+                     }
+                     break;
+                  case 7:
+                     field902 = Integer.parseInt(var5) != 0;
+                     break;
+                  case 8:
+                     WorldMapManager.field563 = class251.method4636(Integer.parseInt(var5));
+                     break;
+                  case 9:
+                     AbstractByteBuffer.field2602 = Integer.parseInt(var5);
+                  case 10:
+                  case 12:
+                  default:
+                     break;
+                  case 11:
+                     class25.sessionToken = var5;
+                     break;
+                  case 13:
+                     class49.field613 = var5;
+                     break;
+                  case 14:
+                     socketType = Integer.parseInt(var5);
+                     break;
+                  case 15:
+                     world = Integer.parseInt(var5);
                   }
-                  break;
-               case 2:
-                  ScriptState.field759 = Integer.parseInt(var5);
-                  break;
-               case 3:
-                  flags = Integer.parseInt(var5);
-                  break;
-               case 4:
-                  languageId = Integer.parseInt(var5);
-                  break;
-               case 5:
-                  class150.field2118 = (JagexGame)MapIcon.forOrdinal(class37.method505(), Integer.parseInt(var5));
-                  if(class150.field2118 == JagexGame.field3352) {
-                     class21.loginType = JagexLoginType.field4066;
-                  } else {
-                     class21.loginType = JagexLoginType.field4070;
-                  }
-                  break;
-               case 6:
-                  if(var5.equalsIgnoreCase("true")) {
-                     isMembers = true;
-                  } else {
-                     isMembers = false;
-                  }
-                  break;
-               case 7:
-                  field902 = Integer.parseInt(var5) != 0;
-                  break;
-               case 8:
-                  WorldMapManager.field563 = class251.method4636(Integer.parseInt(var5));
-                  break;
-               case 9:
-                  AbstractByteBuffer.field2602 = Integer.parseInt(var5);
-               case 10:
-               case 12:
-               default:
-                  break;
-               case 11:
-                  class25.sessionToken = var5;
-                  break;
-               case 13:
-                  class49.field613 = var5;
-                  break;
-               case 14:
-                  socketType = Integer.parseInt(var5);
-                  break;
-               case 15:
-                  world = Integer.parseInt(var5);
                }
             }
-         }
 
-         Region.regionLowMemory = false;
-         lowMemory = false;
-         BoundingBox.host = this.getCodeBase().getHost();
-         String var17 = WorldMapManager.field563.identifier;
-         byte var8 = 0;
-
-         try {
-            class167.idxCount = 17;
-            GameCanvas.field655 = var8;
+            Region.regionLowMemory = false;
+            lowMemory = false;
+            BoundingBox.host = this.getCodeBase().getHost();
+            String var18 = WorldMapManager.field563.identifier;
+            byte var8 = 0;
 
             try {
-               PendingSpawn.osName = System.getProperty("os.name");
-            } catch (Exception var14) {
-               PendingSpawn.osName = "Unknown";
-            }
+               class167.idxCount = 17;
+               GameCanvas.field655 = var8;
 
-            class167.osNameLC = PendingSpawn.osName.toLowerCase();
-
-            try {
-               AttackOption.userHome = System.getProperty("user.home");
-               if(AttackOption.userHome != null) {
-                  AttackOption.userHome = AttackOption.userHome + "/";
+               try {
+                  PendingSpawn.osName = System.getProperty("os.name");
+               } catch (Exception var14) {
+                  PendingSpawn.osName = "Unknown";
                }
-            } catch (Exception var13) {
-               ;
-            }
 
-            try {
-               if(class167.osNameLC.startsWith("win")) {
-                  if(AttackOption.userHome == null) {
-                     AttackOption.userHome = System.getenv("USERPROFILE");
+               class167.osNameLC = PendingSpawn.osName.toLowerCase();
+
+               try {
+                  AttackOption.userHome = System.getProperty("user.home");
+                  if(AttackOption.userHome != null) {
+                     AttackOption.userHome = AttackOption.userHome + "/";
                   }
-               } else if(AttackOption.userHome == null) {
-                  AttackOption.userHome = System.getenv("HOME");
+               } catch (Exception var13) {
+                  ;
                }
 
-               if(AttackOption.userHome != null) {
-                  AttackOption.userHome = AttackOption.userHome + "/";
-               }
-            } catch (Exception var12) {
-               ;
-            }
-
-            if(AttackOption.userHome == null) {
-               AttackOption.userHome = "~/";
-            }
-
-            class167.cacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", AttackOption.userHome, "/tmp/", ""};
-            class167.field2194 = new String[]{".jagex_cache_" + GameCanvas.field655, ".file_store_" + GameCanvas.field655};
-
-            int var6;
-            File var7;
-            label164:
-            for(var3 = 0; var3 < 4; ++var3) {
-               class167.field2197 = WallObject.method3131("oldschool", var17, var3);
-               if(!class167.field2197.exists()) {
-                  class167.field2197.mkdirs();
-               }
-
-               File[] var18 = class167.field2197.listFiles();
-               if(var18 == null) {
-                  break;
-               }
-
-               File[] var20 = var18;
-               var6 = 0;
-
-               while(true) {
-                  if(var6 >= var20.length) {
-                     break label164;
+               try {
+                  if(class167.osNameLC.startsWith("win")) {
+                     if(AttackOption.userHome == null) {
+                        AttackOption.userHome = System.getenv("USERPROFILE");
+                     }
+                  } else if(AttackOption.userHome == null) {
+                     AttackOption.userHome = System.getenv("HOME");
                   }
 
-                  var7 = var20[var6];
-                  if(!class27.method221(var7, false)) {
+                  if(AttackOption.userHome != null) {
+                     AttackOption.userHome = AttackOption.userHome + "/";
+                  }
+               } catch (Exception var12) {
+                  ;
+               }
+
+               if(AttackOption.userHome == null) {
+                  AttackOption.userHome = "~/";
+               }
+
+               class167.cacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", AttackOption.userHome, "/tmp/", ""};
+               class167.field2194 = new String[]{".jagex_cache_" + GameCanvas.field655, ".file_store_" + GameCanvas.field655};
+
+               int var6;
+               File var7;
+               label166:
+               for(var3 = 0; var3 < 4; ++var3) {
+                  class167.field2197 = WallObject.method3131("oldschool", var18, var3);
+                  if(!class167.field2197.exists()) {
+                     class167.field2197.mkdirs();
+                  }
+
+                  File[] var19 = class167.field2197.listFiles();
+                  if(var19 == null) {
                      break;
                   }
 
-                  ++var6;
-               }
-            }
+                  File[] var21 = var19;
+                  var6 = 0;
 
-            File var9 = class167.field2197;
-            class170.field2212 = var9;
-            if(!class170.field2212.exists()) {
-               throw new RuntimeException("");
-            }
-
-            class170.field2214 = true;
-
-            try {
-               File var19 = new File(AttackOption.userHome, "random.dat");
-               if(var19.exists()) {
-                  class167.randomDat = new CacheFile(new FileOnDisk(var19, "rw", 25L), 24, 0);
-               } else {
-                  label142:
-                  for(int var10 = 0; var10 < class167.field2194.length; ++var10) {
-                     for(var6 = 0; var6 < class167.cacheLocations.length; ++var6) {
-                        var7 = new File(class167.cacheLocations[var6] + class167.field2194[var10] + File.separatorChar + "random.dat");
-                        if(var7.exists()) {
-                           class167.randomDat = new CacheFile(new FileOnDisk(var7, "rw", 25L), 24, 0);
-                           break label142;
-                        }
+                  while(true) {
+                     if(var6 >= var21.length) {
+                        break label166;
                      }
+
+                     var7 = var21[var6];
+                     if(!class27.method221(var7, false)) {
+                        break;
+                     }
+
+                     ++var6;
                   }
                }
 
-               if(class167.randomDat == null) {
-                  RandomAccessFile var21 = new RandomAccessFile(var19, "rw");
-                  var6 = var21.read();
-                  var21.seek(0L);
-                  var21.write(var6);
-                  var21.seek(0L);
-                  var21.close();
-                  class167.randomDat = new CacheFile(new FileOnDisk(var19, "rw", 25L), 24, 0);
+               File var9 = class167.field2197;
+               class170.field2212 = var9;
+               if(!class170.field2212.exists()) {
+                  throw new RuntimeException("");
                }
-            } catch (IOException var15) {
-               ;
+
+               class170.field2214 = true;
+
+               try {
+                  File var20 = new File(AttackOption.userHome, "random.dat");
+                  if(var20.exists()) {
+                     class167.randomDat = new CacheFile(new FileOnDisk(var20, "rw", 25L), 24, 0);
+                  } else {
+                     label144:
+                     for(int var10 = 0; var10 < class167.field2194.length; ++var10) {
+                        for(var6 = 0; var6 < class167.cacheLocations.length; ++var6) {
+                           var7 = new File(class167.cacheLocations[var6] + class167.field2194[var10] + File.separatorChar + "random.dat");
+                           if(var7.exists()) {
+                              class167.randomDat = new CacheFile(new FileOnDisk(var7, "rw", 25L), 24, 0);
+                              break label144;
+                           }
+                        }
+                     }
+                  }
+
+                  if(class167.randomDat == null) {
+                     RandomAccessFile var22 = new RandomAccessFile(var20, "rw");
+                     var6 = var22.read();
+                     var22.seek(0L);
+                     var22.write(var6);
+                     var22.seek(0L);
+                     var22.close();
+                     class167.randomDat = new CacheFile(new FileOnDisk(var20, "rw", 25L), 24, 0);
+                  }
+               } catch (IOException var15) {
+                  ;
+               }
+
+               class167.dat2File = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
+               class167.idx255File = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
+               SoundTaskDataProvider.idxFiles = new CacheFile[class167.idxCount];
+
+               for(int var11 = 0; var11 < class167.idxCount; ++var11) {
+                  SoundTaskDataProvider.idxFiles[var11] = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
+               }
+            } catch (Exception var16) {
+               ItemLayer.method2658((String)null, var16);
             }
 
-            class167.dat2File = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
-            class167.idx255File = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-            SoundTaskDataProvider.idxFiles = new CacheFile[class167.idxCount];
-
-            for(int var11 = 0; var11 < class167.idxCount; ++var11) {
-               SoundTaskDataProvider.idxFiles[var11] = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
-            }
-         } catch (Exception var16) {
-            ItemLayer.method2658((String)null, var16);
+            class23.clientInstance = this;
+            this.initialize(765, 503, 165);
          }
-
-         class23.clientInstance = this;
-         this.initialize(765, 503, 165);
+      } catch (RuntimeException var17) {
+         throw class237.method4484(var17, "client.init(" + ')');
       }
    }
 
