@@ -125,12 +125,14 @@ class XpPanel extends PluginPanel
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = c.weighty = 0.5;
 		c.gridx = c.gridy = 0;
+		c.gridwidth = 2;
 		infoPanel.add(totalXpGained, c);
 		c.gridy = 1;
 		infoPanel.add(totalXpHr, c);
 		c.gridy = 2;
+		c.gridwidth = 1;
 		infoPanel.add(resetButton, c);
-		c.gridx = 2;
+		c.gridx = 1;
 		infoPanel.add(setGoalButton, c);
 
 		// create info panel wrapper
