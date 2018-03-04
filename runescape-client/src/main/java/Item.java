@@ -1,103 +1,78 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cp")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("qo")
-   @ObfuscatedGetter(
-      intValue = 2002299293
-   )
-   static int field1367;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lie;"
-   )
-   public static IndexDataBase field1362;
+   @ObfuscatedName("s")
+   static int[] field1396;
    @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Ldo;"
-   )
-   static class109 field1366;
-   @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = 233042525
-   )
-   static int field1365;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1862304201
+      intValue = -2144305877
    )
    @Export("id")
    int id;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -688193375
+      intValue = 246000509
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)Lee;",
-      garbageValue = "582025400"
+      signature = "(I)Lel;",
+      garbageValue = "2099798459"
    )
    protected final Model getModel() {
-      return ContextMenuRow.getItemDefinition(this.id).getModel(this.quantity);
+      return class251.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IS)Ljp;",
-      garbageValue = "-5552"
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZB)Ldi;",
+      garbageValue = "41"
    )
-   @Export("getUnderlayDefinition")
-   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
-         var1 = new FloorUnderlayDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
-         }
-
-         var1.post();
-         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Lie;Lie;I)V",
-      garbageValue = "398074452"
-   )
-   public static void method1919(IndexDataBase var0, IndexDataBase var1) {
-      Spotanim.SpotAnimationDefinition_indexCache = var0;
-      Spotanim.SpotAnimationDefinition_modelIndexCache = var1;
-   }
-
-   @ObfuscatedName("jn")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
-      garbageValue = "53926507"
-   )
-   @Export("prependIndices")
-   static final String[] prependIndices(String[] var0) {
-      String[] var1 = new String[5];
-
-      for(int var2 = 0; var2 < 5; ++var2) {
-         var1[var2] = var2 + ": ";
-         if(var0 != null && var0[var2] != null) {
-            var1[var2] = var1[var2] + var0[var2];
+   @Export("getPreferencesFile")
+   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
+      File var3 = new File(class167.field2197, "preferences" + var0 + ".dat");
+      if(var3.exists()) {
+         try {
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
+            ;
          }
       }
 
-      return var1;
+      String var4 = "";
+      if(GameCanvas.field655 == 33) {
+         var4 = "_rc";
+      } else if(GameCanvas.field655 == 34) {
+         var4 = "_wip";
+      }
+
+      File var5 = new File(AttackOption.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      FileOnDisk var6;
+      if(!var2 && var5.exists()) {
+         try {
+            var6 = new FileOnDisk(var5, "rw", 10000L);
+            return var6;
+         } catch (IOException var8) {
+            ;
+         }
+      }
+
+      try {
+         var6 = new FileOnDisk(var3, "rw", 10000L);
+         return var6;
+      } catch (IOException var7) {
+         throw new RuntimeException();
+      }
    }
 }

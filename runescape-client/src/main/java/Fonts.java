@@ -1,39 +1,45 @@
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kx")
+@ObfuscatedName("kp")
 @Implements("Fonts")
 public class Fonts {
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lie;"
+   @ObfuscatedName("jn")
+   @ObfuscatedGetter(
+      intValue = 1469563003
    )
-   IndexDataBase field3760;
-   @ObfuscatedName("q")
+   static int field3877;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lie;"
+      signature = "Ljk;"
    )
-   IndexDataBase field3761;
-   @ObfuscatedName("o")
+   IndexDataBase field3876;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
+   )
+   IndexDataBase field3879;
+   @ObfuscatedName("n")
    @Export("map")
    HashMap map;
 
    @ObfuscatedSignature(
-      signature = "(Lie;Lie;)V"
+      signature = "(Ljk;Ljk;)V"
    )
    public Fonts(IndexDataBase var1, IndexDataBase var2) {
-      this.field3760 = var1;
-      this.field3761 = var2;
+      this.field3876 = var1;
+      this.field3879 = var2;
       this.map = new HashMap();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([Lki;I)Ljava/util/HashMap;",
-      garbageValue = "-557428408"
+      signature = "([Lkr;I)Ljava/util/HashMap;",
+      garbageValue = "-1581519954"
    )
    @Export("createMap")
    public HashMap createMap(FontName[] var1) {
@@ -45,12 +51,12 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            IndexDataBase var7 = this.field3760;
-            IndexDataBase var8 = this.field3761;
-            String var9 = var5.field3759;
+            IndexDataBase var7 = this.field3876;
+            IndexDataBase var8 = this.field3879;
+            String var9 = var5.field3874;
             int var10 = var7.getFile(var9);
             int var11 = var7.getChild(var10, "");
-            Font var6 = GameSocket.method3379(var7, var8, var10, var11);
+            Font var6 = WallObject.method3133(var7, var8, var10, var11);
             if(var6 != null) {
                this.map.put(var5, var6);
                var2.put(var5, var6);

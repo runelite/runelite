@@ -47,11 +47,11 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOverlay",
-		name = "Show the cannonballs left overlay",
-		description = "Configures whether to show the cannonballs in an overlay"
+		keyName = "showInfobox",
+		name = "Show Cannonball infobox",
+		description = "Configures whether to show the cannonballs in an infobox"
 	)
-	default boolean showAmountOnScreen()
+	default boolean showInfobox()
 	{
 		return false;
 	}

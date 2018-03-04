@@ -4,78 +4,78 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("eq")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("gs")
-   @ObfuscatedGetter(
-      intValue = -1827351905
+   @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Lkw;"
    )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("b")
+   @Export("fontBold12")
+   static Font fontBold12;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1133145525
+      intValue = 561761587
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -68836251
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -934692401
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 966345835
+      intValue = -1347282307
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1763567835
+      intValue = 1782602161
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -400467123
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -925425775
    )
    @Export("rotation")
    int rotation;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 306936149
+      intValue = -2111990655
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -470928395
+      intValue = -49176267
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Leb;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Leb;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 17347691
+      intValue = -1836374149
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 666771189
+      intValue = 1678700317
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
@@ -85,12 +85,52 @@ public final class DecorativeObject {
       this.renderInfoBitPacked = 0;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)[Liz;",
+      garbageValue = "657959905"
+   )
+   static BuildType[] method3165() {
+      return new BuildType[]{BuildType.LIVE, BuildType.WIP, BuildType.RC, BuildType.BUILD_LIVE};
+   }
+
+   @ObfuscatedName("fb")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1294638615"
+      garbageValue = "2118680182"
    )
-   public static void method3071() {
-      class317.classInfos = new CombatInfoList();
+   static final void method3164() {
+      for(Projectile var0 = (Projectile)Client.projectiles.getFront(); var0 != null; var0 = (Projectile)Client.projectiles.getNext()) {
+         if(var0.floor == class36.plane && Client.gameCycle <= var0.endCycle) {
+            if(Client.gameCycle >= var0.startMovementCycle) {
+               if(var0.interacting > 0) {
+                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
+                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                     var0.moveProjectile(var1.x, var1.y, class35.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               if(var0.interacting < 0) {
+                  int var2 = -var0.interacting - 1;
+                  Player var3;
+                  if(var2 == Client.localInteractingIndex) {
+                     var3 = TotalQuantityComparator.localPlayer;
+                  } else {
+                     var3 = Client.cachedPlayers[var2];
+                  }
+
+                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+                     var0.moveProjectile(var3.x, var3.y, class35.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               var0.update(Client.field914);
+               class86.region.method3026(class36.plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.rotationX, -1, false);
+            }
+         } else {
+            var0.unlink();
+         }
+      }
+
    }
 }

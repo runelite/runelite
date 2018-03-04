@@ -1,30 +1,43 @@
+import java.awt.FontMetrics;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("s")
 public class class7 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("drawBoundingBoxes3D")
    public static boolean drawBoundingBoxes3D;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @Export("drawBoundingBoxes2D")
    public static boolean drawBoundingBoxes2D;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @Export("drawObjectGeometry2D")
    public static boolean drawObjectGeometry2D;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lr;"
+      signature = "Lh;"
    )
    @Export("boundingBox3DDrawMode")
    public static BoundingBox3DDrawMode boundingBox3DDrawMode;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhl;"
+      signature = "Lhs;"
    )
    @Export("boundingBoxes")
    public static CombatInfoList boundingBoxes;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Llv;"
+   )
+   static IndexedSprite field235;
+   @ObfuscatedName("as")
+   static FontMetrics field231;
+   @ObfuscatedName("eh")
+   @ObfuscatedSignature(
+      signature = "Lfa;"
+   )
+   static Task field233;
 
    static {
       drawBoundingBoxes3D = false;
@@ -34,29 +47,47 @@ public class class7 {
       boundingBoxes = new CombatInfoList();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-752998375"
+      signature = "([BILjava/lang/CharSequence;S)I",
+      garbageValue = "-5767"
    )
-   static final int method29(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+   public static int method34(byte[] var0, int var1, CharSequence var2) {
+      int var3 = var2.length();
+      int var4 = var1;
+
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var2.charAt(var5);
+         if(var6 <= 127) {
+            var0[var4++] = (byte)var6;
+         } else if(var6 <= 2047) {
+            var0[var4++] = (byte)(192 | var6 >> 6);
+            var0[var4++] = (byte)(128 | var6 & '?');
+         } else {
+            var0[var4++] = (byte)(224 | var6 >> '\f');
+            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+            var0[var4++] = (byte)(128 | var6 & '?');
+         }
       }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
+      return var4 - var1;
+   }
 
-      if(var2 > 217) {
-         var1 /= 2;
-      }
+   @ObfuscatedName("hw")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "1923823975"
+   )
+   static final boolean method35(int var0) {
+      if(var0 < 0) {
+         return false;
+      } else {
+         int var1 = Client.menuTypes[var0];
+         if(var1 >= 2000) {
+            var1 -= 2000;
+         }
 
-      if(var2 > 243) {
-         var1 /= 2;
+         return var1 == 1007;
       }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
    }
 }

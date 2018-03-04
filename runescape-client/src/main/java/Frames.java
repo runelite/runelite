@@ -3,21 +3,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ei")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("h")
-   @Export("audioHighMemory")
-   protected static boolean audioHighMemory;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Ldz;"
+      signature = "[Ldy;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lie;Lie;IZ)V",
+      signature = "(Ljk;Ljk;IZ)V",
       garbageValue = "0"
    )
    public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
@@ -49,21 +46,51 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1613270607"
+      signature = "(IB)Z",
+      garbageValue = "-4"
    )
-   public boolean method3053(int var1) {
+   public boolean method3141(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lie;B)V",
-      garbageValue = "-121"
+      signature = "(ILct;ZB)I",
+      garbageValue = "1"
    )
-   public static void method3055(IndexDataBase var0) {
-      class272.field3481 = var0;
+   static int method3142(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class20.field338:class81.field1267;
+      if(var0 == 1800) {
+         int[] var4 = class81.intStack;
+         int var5 = ++class81.intStackSize - 1;
+         int var7 = class85.getWidgetConfig(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = "";
+            } else {
+               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var8 = class81.intStack[--class81.intStackSize];
+         --var8;
+         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var3.actions[var8];
+         } else {
+            class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
    }
 }

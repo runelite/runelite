@@ -3,21 +3,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("go")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lie;"
-   )
-   public static IndexDataBase field2471;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @Export("keys")
    int[] keys;
 
@@ -104,10 +99,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([BII[BIB)I",
-      garbageValue = "107"
+      signature = "([BII[BII)I",
+      garbageValue = "1774865429"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -155,10 +150,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "-426527948"
+      garbageValue = "-2019985610"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -299,13 +294,78 @@ public class Huffman {
       }
    }
 
-   @ObfuscatedName("fg")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lia;Ljava/lang/String;I)V",
-      garbageValue = "2037701064"
+      signature = "(Lhd;ILjava/lang/String;I)Ljava/lang/String;",
+      garbageValue = "-2128271047"
    )
-   static void method3462(IndexData var0, String var1) {
-      class63 var2 = new class63(var0, var1);
-      Client.field932.add(var2);
+   static String method3512(IterableHashTable var0, int var1, String var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
+         return var3 == null?var2:(String)var3.value;
+      }
+   }
+
+   @ObfuscatedName("ee")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-453723388"
+   )
+   static final void method3510() {
+      if(ChatLineBuffer.soundSystem1 != null) {
+         ChatLineBuffer.soundSystem1.method2249();
+      }
+
+      if(class284.soundSystem0 != null) {
+         class284.soundSystem0.method2249();
+      }
+
+   }
+
+   @ObfuscatedName("ip")
+   @ObfuscatedSignature(
+      signature = "(Liw;IIZI)V",
+      garbageValue = "65536"
+   )
+   static void method3509(Widget var0, int var1, int var2, boolean var3) {
+      int var4 = var0.width;
+      int var5 = var0.height;
+      if(var0.dynamicWidth == 0) {
+         var0.width = var0.originalWidth;
+      } else if(var0.dynamicWidth == 1) {
+         var0.width = var1 - var0.originalWidth;
+      } else if(var0.dynamicWidth == 2) {
+         var0.width = var0.originalWidth * var1 >> 14;
+      }
+
+      if(var0.buttonType == 0) {
+         var0.height = var0.originalHeight;
+      } else if(var0.buttonType == 1) {
+         var0.height = var2 - var0.originalHeight;
+      } else if(var0.buttonType == 2) {
+         var0.height = var2 * var0.originalHeight >> 14;
+      }
+
+      if(var0.dynamicWidth == 4) {
+         var0.width = var0.field2842 * var0.height / var0.field2843;
+      }
+
+      if(var0.buttonType == 4) {
+         var0.height = var0.width * var0.field2843 / var0.field2842;
+      }
+
+      if(var0.contentType == 1337) {
+         Client.field1020 = var0;
+      }
+
+      if(var3 && var0.field2934 != null && (var4 != var0.width || var5 != var0.height)) {
+         ScriptEvent var6 = new ScriptEvent();
+         var6.widget = var0;
+         var6.objs = var0.field2934;
+         Client.field1047.addFront(var6);
+      }
+
    }
 }

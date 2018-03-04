@@ -1,35 +1,42 @@
-import java.io.File;
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aj")
+@ObfuscatedName("aw")
 public final class class29 {
-   @ObfuscatedName("a")
-   public static File field387;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1431190667
+   @ObfuscatedName("ol")
+   @ObfuscatedSignature(
+      signature = "Lcy;"
    )
-   int field391;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 249268257
+   static class100 field431;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Ljk;"
    )
-   int field390;
-   @ObfuscatedName("o")
+   public static IndexDataBase field428;
+   @ObfuscatedName("t")
+   static int[] field430;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1698213149
+      intValue = 361414627
    )
-   int field389;
-   @ObfuscatedName("p")
+   int field432;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1204053455
+      intValue = -1251520857
    )
-   int field388;
+   int field427;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 656939217
+   )
+   int field429;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 975977773
+   )
+   int field426;
    // $FF: synthetic field
    @ObfuscatedSignature(
       signature = "Lag;"
@@ -43,106 +50,34 @@ public final class class29 {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lie;I)V",
-      garbageValue = "336003518"
+      signature = "(Ljava/lang/String;B)I",
+      garbageValue = "-1"
    )
-   public static void method269(IndexDataBase var0) {
-      class271.field3476 = var0;
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
    }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1918960041"
-   )
-   static final void method273() {
-      if(!class131.Viewport_false0) {
-         int var0 = Region.pitchSin;
-         int var1 = Region.pitchCos;
-         int var2 = Region.yawSin;
-         int var3 = Region.yawCos;
-         byte var4 = 50;
-         short var5 = 3500;
-         int var6 = (class131.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var7 = (class131.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var8 = (class131.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var9 = (class131.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var10 = Graphics3D.method2874(var7, var4, var1, var0);
-         int var11 = Graphics3D.method2828(var7, var4, var1, var0);
-         var7 = var10;
-         var10 = Graphics3D.method2874(var9, var5, var1, var0);
-         int var12 = Graphics3D.method2828(var9, var5, var1, var0);
-         var9 = var10;
-         var10 = Graphics3D.method2825(var6, var11, var3, var2);
-         var11 = Graphics3D.method2873(var6, var11, var3, var2);
-         var6 = var10;
-         var10 = Graphics3D.method2825(var8, var12, var3, var2);
-         var12 = Graphics3D.method2873(var8, var12, var3, var2);
-         class177.field2251 = (var6 + var10) / 2;
-         class153.field2091 = (var9 + var7) / 2;
-         UnitPriceComparator.field294 = (var11 + var12) / 2;
-         class131.field1875 = (var10 - var6) / 2;
-         SoundTaskDataProvider.field599 = (var9 - var7) / 2;
-         class131.field1872 = (var12 - var11) / 2;
-         OwnWorldComparator.field813 = Math.abs(class131.field1875);
-         class18.field300 = Math.abs(SoundTaskDataProvider.field599);
-         GrandExchangeEvent.field274 = Math.abs(class131.field1872);
-      }
-   }
-
-   @ObfuscatedName("at")
+   @ObfuscatedName("fa")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "172004586"
+      garbageValue = "76676029"
    )
-   protected static int method272() {
-      int var0 = 0;
-      if(MapLabel.field430 == null || !MapLabel.field430.isValid()) {
-         try {
-            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
-
-            while(var1.hasNext()) {
-               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-               if(var2.isValid()) {
-                  MapLabel.field430 = var2;
-                  GameEngine.garbageCollectorLastCheckTimeMs = -1L;
-                  GameEngine.garbageCollectorLastCollectionTime = -1L;
-               }
-            }
-         } catch (Throwable var11) {
-            ;
-         }
-      }
-
-      if(MapLabel.field430 != null) {
-         long var9 = class188.currentTimeMs();
-         long var3 = MapLabel.field430.getCollectionTime();
-         if(-1L != GameEngine.garbageCollectorLastCollectionTime) {
-            long var5 = var3 - GameEngine.garbageCollectorLastCollectionTime;
-            long var7 = var9 - GameEngine.garbageCollectorLastCheckTimeMs;
-            if(0L != var7) {
-               var0 = (int)(100L * var5 / var7);
-            }
-         }
-
-         GameEngine.garbageCollectorLastCollectionTime = var3;
-         GameEngine.garbageCollectorLastCheckTimeMs = var9;
-      }
-
-      return var0;
+   static int method249() {
+      return Client.isResized?2:1;
    }
 
-   @ObfuscatedName("gp")
+   @ObfuscatedName("gl")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1545575090"
+      garbageValue = "1372938560"
    )
-   static final void method270() {
+   static final void method252() {
       Client.myPlayerIndex = 0;
-      int var0 = (OwnWorldComparator.localPlayer.x >> 7) + ScriptState.baseX;
-      int var1 = (OwnWorldComparator.localPlayer.y >> 7) + WorldMapType1.baseY;
+      int var0 = (TotalQuantityComparator.localPlayer.x >> 7) + WorldMapType1.baseX;
+      int var1 = (TotalQuantityComparator.localPlayer.y >> 7) + Enum.baseY;
       if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
          Client.myPlayerIndex = 1;
       }
@@ -157,47 +92,45 @@ public final class class29 {
 
    }
 
-   @ObfuscatedName("jx")
+   @ObfuscatedName("iv")
    @ObfuscatedSignature(
-      signature = "(Lim;I)Z",
-      garbageValue = "-720001973"
+      signature = "(II)V",
+      garbageValue = "1387955860"
    )
-   static final boolean method271(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 205) {
-         Client.field864 = 250;
-         return true;
-      } else {
-         int var2;
-         int var3;
-         if(var1 >= 300 && var1 <= 313) {
-            var2 = (var1 - 300) / 2;
-            var3 = var1 & 1;
-            Client.field1068.method4393(var2, var3 == 1);
+   static final void method253(int var0) {
+      if(class18.loadWidget(var0)) {
+         Widget[] var1 = Widget.widgets[var0];
+
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(var3 != null) {
+               var3.field2947 = 0;
+               var3.field2948 = 0;
+            }
          }
 
-         if(var1 >= 314 && var1 <= 323) {
-            var2 = (var1 - 314) / 2;
-            var3 = var1 & 1;
-            Client.field1068.method4401(var2, var3 == 1);
-         }
+      }
+   }
 
-         if(var1 == 324) {
-            Client.field1068.method4414(false);
-         }
+   @ObfuscatedName("iz")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-55"
+   )
+   static final void method250() {
+      PacketNode var0 = class31.method285(ClientPacket.field2431, Client.field899.field1470);
+      Client.field899.method2082(var0);
 
-         if(var1 == 325) {
-            Client.field1068.method4414(true);
-         }
-
-         if(var1 == 326) {
-            PacketNode var4 = class61.method1076(ClientPacket.field2398, Client.field863.field1434);
-            Client.field1068.method4396(var4.packetBuffer);
-            Client.field863.method2039(var4);
-            return true;
-         } else {
-            return false;
+      for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {
+         if(var1.owner == 0 || var1.owner == 3) {
+            class254.method4639(var1, true);
          }
       }
+
+      if(Client.field1014 != null) {
+         class171.method3363(Client.field1014);
+         Client.field1014 = null;
+      }
+
    }
 }

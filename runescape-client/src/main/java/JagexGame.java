@@ -4,46 +4,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("iq")
 @Implements("JagexGame")
 public enum JagexGame implements Enumerated {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Liq;"
    )
-   field3309("runescape", "RuneScape", 0),
-   @ObfuscatedName("q")
+   field3357("runescape", "RuneScape", 0),
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Liq;"
    )
-   field3305("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("o")
+   field3351("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Liq;"
    )
-   field3308("game3", "Game 3", 2),
-   @ObfuscatedName("p")
+   field3350("game3", "Game 3", 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Liq;"
    )
-   field3307("game4", "Game 4", 3),
-   @ObfuscatedName("a")
+   field3355("game4", "Game 4", 3),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Liq;"
    )
-   field3304("game5", "Game 5", 4),
-   @ObfuscatedName("h")
+   field3354("game5", "Game 5", 4),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Liq;"
    )
-   field3306("oldscape", "RuneScape 2007", 5);
+   field3352("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @Export("name")
    public final String name;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 192316533
+      intValue = 1937627611
    )
    @Export("id")
    final int id;
@@ -53,10 +53,10 @@ public enum JagexGame implements Enumerated {
       this.id = var5;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1578971771"
+      garbageValue = "846888120"
    )
    public int rsOrdinal() {
       return this.id;

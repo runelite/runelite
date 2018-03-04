@@ -1,57 +1,53 @@
-import java.applet.Applet;
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
 @ObfuscatedName("je")
 @Implements("KitDefinition")
 public class KitDefinition extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lie;"
+      signature = "Ljk;"
    )
-   @Export("identKit_ref")
-   public static IndexDataBase identKit_ref;
-   @ObfuscatedName("o")
+   public static IndexDataBase field3510;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -135745275
+      intValue = -2072311613
    )
-   public static int field3443;
-   @ObfuscatedName("p")
+   public static int field3508;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Lhp;"
    )
    @Export("identKits")
    static NodeCache identKits;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -24020041
+      intValue = 1355847479
    )
    @Export("bodyPartId")
    public int bodyPartId;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @Export("modelIds")
    int[] modelIds;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @Export("recolorToFind")
    short[] recolorToFind;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("recolorToReplace")
    short[] recolorToReplace;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @Export("retextureToFind")
    short[] retextureToFind;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @Export("retextureToReplace")
    short[] retextureToReplace;
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @Export("models")
    int[] models;
-   @ObfuscatedName("r")
+   @ObfuscatedName("h")
    @Export("nonSelectable")
    public boolean nonSelectable;
 
@@ -65,10 +61,10 @@ public class KitDefinition extends CacheableNode {
       this.nonSelectable = false;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lgn;B)V",
-      garbageValue = "0"
+      signature = "(Lgy;I)V",
+      garbageValue = "-1823122987"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -82,10 +78,10 @@ public class KitDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgn;II)V",
-      garbageValue = "568062511"
+      signature = "(Lgy;IB)V",
+      garbageValue = "0"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -128,10 +124,10 @@ public class KitDefinition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "104"
+      garbageValue = "6"
    )
    @Export("ready")
    public boolean ready() {
@@ -141,7 +137,7 @@ public class KitDefinition extends CacheableNode {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
-            if(!class166.field2167.tryLoadRecord(this.modelIds[var2], 0)) {
+            if(!field3510.tryLoadRecord(this.modelIds[var2], 0)) {
                var1 = false;
             }
          }
@@ -150,10 +146,10 @@ public class KitDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Ldy;",
-      garbageValue = "-2042443495"
+      signature = "(I)Ldf;",
+      garbageValue = "888777327"
    )
    @Export("getModelData")
    public ModelData getModelData() {
@@ -163,7 +159,7 @@ public class KitDefinition extends CacheableNode {
          ModelData[] var1 = new ModelData[this.modelIds.length];
 
          for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
-            var1[var2] = ModelData.method2601(class166.field2167, this.modelIds[var2], 0);
+            var1[var2] = ModelData.method2660(field3510, this.modelIds[var2], 0);
          }
 
          ModelData var4;
@@ -182,7 +178,7 @@ public class KitDefinition extends CacheableNode {
 
          if(this.retextureToFind != null) {
             for(var3 = 0; var3 < this.retextureToFind.length; ++var3) {
-               var4.method2614(this.retextureToFind[var3], this.retextureToReplace[var3]);
+               var4.method2674(this.retextureToFind[var3], this.retextureToReplace[var3]);
             }
          }
 
@@ -190,16 +186,16 @@ public class KitDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2082880639"
+      signature = "(B)Z",
+      garbageValue = "-25"
    )
-   public boolean method4827() {
+   public boolean method4979() {
       boolean var1 = true;
 
       for(int var2 = 0; var2 < 5; ++var2) {
-         if(this.models[var2] != -1 && !class166.field2167.tryLoadRecord(this.models[var2], 0)) {
+         if(this.models[var2] != -1 && !field3510.tryLoadRecord(this.models[var2], 0)) {
             var1 = false;
          }
       }
@@ -207,18 +203,18 @@ public class KitDefinition extends CacheableNode {
       return var1;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)Ldy;",
-      garbageValue = "882752458"
+      signature = "(I)Ldf;",
+      garbageValue = "-1408395706"
    )
-   public ModelData method4815() {
+   public ModelData method4972() {
       ModelData[] var1 = new ModelData[5];
       int var2 = 0;
 
       for(int var3 = 0; var3 < 5; ++var3) {
          if(this.models[var3] != -1) {
-            var1[var2++] = ModelData.method2601(class166.field2167, this.models[var3], 0);
+            var1[var2++] = ModelData.method2660(field3510, this.models[var3], 0);
          }
       }
 
@@ -232,70 +228,68 @@ public class KitDefinition extends CacheableNode {
 
       if(this.retextureToFind != null) {
          for(var4 = 0; var4 < this.retextureToFind.length; ++var4) {
-            var5.method2614(this.retextureToFind[var4], this.retextureToReplace[var4]);
+            var5.method2674(this.retextureToFind[var4], this.retextureToReplace[var4]);
          }
       }
 
       return var5;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-      garbageValue = "-2062633293"
+      signature = "(IIIIIII)I",
+      garbageValue = "-651144691"
    )
-   static boolean method4832(String var0, int var1, String var2) {
-      if(var1 == 0) {
-         try {
-            if(!class56.field616.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+   public static int method4974(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
+      }
 
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var11.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
-                  }
-               }
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
 
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
-            }
-         } catch (Throwable var5) {
-            return false;
-         }
-      } else if(var1 == 1) {
-         try {
-            Object var10 = class52.method802(class56.field612, var2, new Object[]{(new URL(class56.field612.getCodeBase(), var0)).toString()});
-            return var10 != null;
-         } catch (Throwable var6) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class56.field612.getAppletContext().showDocument(new URL(class56.field612.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var7) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            Applet var3 = class56.field612;
-            JSObject.getWindow(var3).call("loggedout", (Object[])null);
-         } catch (Throwable var9) {
-            ;
-         }
-
-         try {
-            class56.field612.getAppletContext().showDocument(new URL(class56.field612.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var8) {
-            return false;
-         }
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2136749875"
+   )
+   static void method4991() {
+      class90.username = class90.username.trim();
+      if(class90.username.length() == 0) {
+         KeyFocusListener.method770("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         throw new IllegalArgumentException();
+         long var1 = class28.method237();
+         int var0;
+         if(0L == var1) {
+            var0 = 5;
+         } else {
+            var0 = ItemLayer.method2657(var1, class90.username);
+         }
+
+         switch(var0) {
+         case 2:
+            KeyFocusListener.method770("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class90.loginIndex = 6;
+            break;
+         case 3:
+            KeyFocusListener.method770("", "Error connecting to server.", "");
+            break;
+         case 4:
+            KeyFocusListener.method770("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            KeyFocusListener.method770("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            KeyFocusListener.method770("", "Error connecting to server.", "");
+            break;
+         case 7:
+            KeyFocusListener.method770("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         }
+
       }
    }
 }

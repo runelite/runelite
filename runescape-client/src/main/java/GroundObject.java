@@ -4,70 +4,124 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dv")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("l")
-   static int[] field1751;
-   @ObfuscatedName("b")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1770782577
+      intValue = 317210155
+   )
+   static int field1781;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1760689955
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -785254195
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -132681551
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("p")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Leb;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1572616039
+      intValue = 201130473
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1325890519
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1637945327
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 870625945
+      intValue = -1127107045
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)Llm;",
-      garbageValue = "-2020140536"
+      signature = "(III)V",
+      garbageValue = "-1749006899"
    )
-   static SpritePixels method2684() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class323.field3913;
-      var0.maxHeight = class323.field3915;
-      var0.offsetX = TotalQuantityComparator.field281[0];
-      var0.offsetY = FileSystem.offsetsY[0];
-      var0.width = BaseVarType.field28[0];
-      var0.height = field1751[0];
-      int var1 = var0.width * var0.height;
-      byte[] var2 = class323.spritePixels[0];
-      var0.pixels = new int[var1];
+   static void method2738(int var0, int var1) {
+      int[] var2 = new int[4];
+      int[] var3 = new int[4];
+      var2[0] = var0;
+      var3[0] = var1;
+      int var4 = 1;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.pixels[var3] = class323.field3912[var2[var3] & 255];
+      for(int var5 = 0; var5 < 4; ++var5) {
+         if(World.field1209[var5] != var0) {
+            var2[var4] = World.field1209[var5];
+            var3[var4] = World.field1211[var5];
+            ++var4;
+         }
       }
 
-      class152.method3133();
-      return var0;
+      World.field1209 = var2;
+      World.field1211 = var3;
+      Tile.method2753(World.worldList, 0, World.worldList.length - 1, World.field1209, World.field1211);
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "-73"
+   )
+   static final void method2739(String var0) {
+      class243.method4617(var0 + " is already on your friend list");
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(ILct;ZB)I",
+      garbageValue = "86"
+   )
+   static int method2737(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class5.getWidget(class81.intStack[--class81.intStackSize]);
+      } else {
+         var3 = var2?class20.field338:class81.field1267;
+      }
+
+      if(var0 == 1927) {
+         if(class81.field1270 >= 10) {
+            throw new RuntimeException();
+         } else if(var3.field2934 == null) {
+            return 0;
+         } else {
+            ScriptEvent var4 = new ScriptEvent();
+            var4.widget = var3;
+            var4.objs = var3.field2934;
+            var4.field797 = class81.field1270 + 1;
+            Client.field1047.addFront(var4);
+            return 1;
+         }
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "-1769584333"
+   )
+   static final int method2736(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return (var3 * (var0 & 16711935) + (var1 & 16711935) * var2 & -16711936) + ((var0 & 65280) * var3 + (var1 & 65280) * var2 & 16711680) >> 8;
    }
 }

@@ -1,11 +1,12 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ks")
-public final class class302 {
-   @ObfuscatedName("b")
-   public static final char[] field3794;
-
-   static {
-      field3794 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-   }
+@ObfuscatedName("kf")
+public interface class302 {
+   @ObfuscatedName("jn")
+   @ObfuscatedSignature(
+      signature = "(S)Lko;",
+      garbageValue = "-11323"
+   )
+   Name vmethod5510();
 }

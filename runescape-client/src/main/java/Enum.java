@@ -4,49 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jh")
+@ObfuscatedName("jn")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lie;"
+      signature = "Ljk;"
    )
    @Export("EnumDefinition_indexCache")
-   static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("q")
+   public static IndexDataBase EnumDefinition_indexCache;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Lhp;"
    )
    @Export("EnumDefinition_cached")
    static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("o")
+   @ObfuscatedName("cu")
+   @Export("middleMouseMovesCamera")
+   static boolean middleMouseMovesCamera;
+   @ObfuscatedName("ez")
+   @ObfuscatedGetter(
+      intValue = -302781069
+   )
+   @Export("baseY")
+   static int baseY;
+   @ObfuscatedName("n")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1050615061
+      intValue = 1317294819
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 315108431
+      intValue = -911443503
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -59,10 +68,10 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lgn;I)V",
-      garbageValue = "458163131"
+      signature = "(Lgy;I)V",
+      garbageValue = "1268131080"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -76,10 +85,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgn;II)V",
-      garbageValue = "860536387"
+      signature = "(Lgy;II)V",
+      garbageValue = "700797113"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -116,31 +125,63 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-933959885"
+      garbageValue = "-1668405568"
    )
-   public int method4904() {
+   public int method5067() {
       return this.size;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("eb")
    @ObfuscatedSignature(
-      signature = "(I[BLfn;B)V",
-      garbageValue = "14"
+      signature = "(IB)V",
+      garbageValue = "1"
    )
-   static void method4913(int var0, byte[] var1, IndexFile var2) {
-      FileSystem var3 = new FileSystem();
-      var3.type = 0;
-      var3.hash = (long)var0;
-      var3.field3316 = var1;
-      var3.index = var2;
-      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
-      }
+   @Export("setGameState")
+   static void setGameState(int var0) {
+      if(var0 != Client.gameState) {
+         if(Client.gameState == 0) {
+            class23.clientInstance.method883();
+         }
 
-      class231.method4370();
+         if(var0 == 20 || var0 == 40 || var0 == 45) {
+            Client.loginState = 0;
+            Client.field1076 = 0;
+            Client.field890 = 0;
+            Client.field1077.method5319(var0);
+            if(var0 != 20) {
+               BaseVarType.method14(false);
+            }
+         }
+
+         if(var0 != 20 && var0 != 40 && VertexNormal.field1912 != null) {
+            VertexNormal.field1912.vmethod3379();
+            VertexNormal.field1912 = null;
+         }
+
+         if(Client.gameState == 25) {
+            Client.field909 = 0;
+            Client.field1105 = 0;
+            Client.field906 = 1;
+            Client.field907 = 0;
+            Client.field908 = 1;
+         }
+
+         if(var0 != 5 && var0 != 10) {
+            if(var0 == 20) {
+               class2.method7(GrandExchangeOffer.indexCache10, Renderable.indexSprites, true, Client.gameState == 11?4:0);
+            } else if(var0 == 11) {
+               class2.method7(GrandExchangeOffer.indexCache10, Renderable.indexSprites, false, 4);
+            } else {
+               World.method1656();
+            }
+         } else {
+            class2.method7(GrandExchangeOffer.indexCache10, Renderable.indexSprites, true, 0);
+         }
+
+         Client.gameState = var0;
+      }
    }
 }

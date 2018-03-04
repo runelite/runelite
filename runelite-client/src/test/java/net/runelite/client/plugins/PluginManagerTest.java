@@ -43,7 +43,6 @@ import java.util.Objects;
 import java.util.Set;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
-import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.ui.ClientUI;
@@ -74,9 +73,6 @@ public class PluginManagerTest
 	@Mock
 	Client client;
 
-	@Mock
-	Notifier notifier;
-
 	@Before
 	public void before() throws IOException
 	{
@@ -88,7 +84,6 @@ public class PluginManagerTest
 
 		runelite = injector.getInstance(RuneLite.class);
 		runelite.setGui(clientUi);
-		runelite.setNotifier(notifier);
 
 		// Find plugins we expect to have
 		pluginClasses = new HashSet<>();

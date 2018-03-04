@@ -4,12 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("eb")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("cr")
+   @ObfuscatedName("cm")
+   @ObfuscatedSignature(
+      signature = "Ljs;"
+   )
+   @Export("indexSprites")
+   static IndexData indexSprites;
+   @ObfuscatedName("cw")
    @ObfuscatedGetter(
-      intValue = -1452474481
+      intValue = -1254448269
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -18,17 +24,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)Lee;",
-      garbageValue = "582025400"
+      signature = "(I)Lel;",
+      garbageValue = "2099798459"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("ct")
+   @ObfuscatedName("cc")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -39,47 +45,82 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("is")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lim;B)Z",
-      garbageValue = "68"
+      signature = "(CB)C",
+      garbageValue = "-86"
    )
-   static final boolean method3049(Widget var0) {
-      if(var0.tableActions == null) {
-         return false;
-      } else {
-         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
-            int var2 = ScriptState.method1104(var0, var1);
-            int var3 = var0.field2891[var1];
-            if(var0.tableActions[var1] == 2) {
-               if(var2 >= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 3) {
-               if(var2 <= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 4) {
-               if(var3 == var2) {
-                  return false;
-               }
-            } else if(var3 != var2) {
-               return false;
-            }
-         }
-
-         return true;
-      }
-   }
-
-   @ObfuscatedName("jm")
-   @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "-26429"
-   )
-   static final void method3050(int var0) {
-      if(class2.loadWidget(var0)) {
-         class87.method1862(Widget.widgets[var0], -1);
+   public static char method3121(char var0) {
+      switch(var0) {
+      case ' ':
+      case '-':
+      case '_':
+      case ' ':
+         return '_';
+      case '#':
+      case '[':
+      case ']':
+         return var0;
+      case 'À':
+      case 'Á':
+      case 'Â':
+      case 'Ã':
+      case 'Ä':
+      case 'à':
+      case 'á':
+      case 'â':
+      case 'ã':
+      case 'ä':
+         return 'a';
+      case 'Ç':
+      case 'ç':
+         return 'c';
+      case 'È':
+      case 'É':
+      case 'Ê':
+      case 'Ë':
+      case 'è':
+      case 'é':
+      case 'ê':
+      case 'ë':
+         return 'e';
+      case 'Í':
+      case 'Î':
+      case 'Ï':
+      case 'í':
+      case 'î':
+      case 'ï':
+         return 'i';
+      case 'Ñ':
+      case 'ñ':
+         return 'n';
+      case 'Ò':
+      case 'Ó':
+      case 'Ô':
+      case 'Õ':
+      case 'Ö':
+      case 'ò':
+      case 'ó':
+      case 'ô':
+      case 'õ':
+      case 'ö':
+         return 'o';
+      case 'Ù':
+      case 'Ú':
+      case 'Û':
+      case 'Ü':
+      case 'ù':
+      case 'ú':
+      case 'û':
+      case 'ü':
+         return 'u';
+      case 'ß':
+         return 'b';
+      case 'ÿ':
+      case 'Ÿ':
+         return 'y';
+      default:
+         return Character.toLowerCase(var0);
       }
    }
 }

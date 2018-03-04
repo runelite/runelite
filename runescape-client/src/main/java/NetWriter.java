@@ -5,262 +5,224 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cb")
 @Implements("NetWriter")
 public class NetWriter {
-   @ObfuscatedName("qs")
-   static short[] field1432;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lfi;"
    )
    @Export("rssocket")
-   class168 rssocket;
-   @ObfuscatedName("q")
+   class169 rssocket;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lhl;"
+      signature = "Lhs;"
    )
    @Export("packetBufferNodes")
    CombatInfoList packetBufferNodes;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1718806989
+      intValue = -151967213
    )
-   int field1430;
-   @ObfuscatedName("p")
+   int field1467;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgy;"
    )
    @Export("buffer")
    Buffer buffer;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lgc;"
    )
-   public ISAACCipher field1434;
-   @ObfuscatedName("h")
+   public ISAACCipher field1470;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lgb;"
    )
    @Export("packetBuffer")
    PacketBuffer packetBuffer;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lfw;"
+      signature = "Lfk;"
    )
    @Export("serverPacket")
    ServerPacket serverPacket;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1151940223
+      intValue = -1177131903
    )
    @Export("packetLength")
    int packetLength;
-   @ObfuscatedName("g")
-   boolean field1444;
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
+   boolean field1474;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 641572529
+      intValue = -1569809817
    )
-   int field1439;
-   @ObfuscatedName("u")
+   int field1476;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 2039230831
+      intValue = -807941381
    )
-   int field1440;
-   @ObfuscatedName("r")
+   int field1477;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lfw;"
+      signature = "Lfk;"
    )
-   ServerPacket field1441;
-   @ObfuscatedName("d")
+   ServerPacket field1478;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfw;"
+      signature = "Lfk;"
    )
-   ServerPacket field1442;
-   @ObfuscatedName("v")
+   ServerPacket field1479;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lfw;"
+      signature = "Lfk;"
    )
-   ServerPacket field1443;
+   ServerPacket field1480;
 
    NetWriter() {
       this.packetBufferNodes = new CombatInfoList();
-      this.field1430 = 0;
+      this.field1467 = 0;
       this.buffer = new Buffer(5000);
       this.packetBuffer = new PacketBuffer(40000);
       this.serverPacket = null;
       this.packetLength = 0;
-      this.field1444 = true;
-      this.field1439 = 0;
-      this.field1440 = 0;
+      this.field1474 = true;
+      this.field1476 = 0;
+      this.field1477 = 0;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1077611787"
+      garbageValue = "1542560894"
    )
-   final void method2031() {
-      this.packetBufferNodes.method4003();
-      this.field1430 = 0;
+   final void method2079() {
+      this.packetBufferNodes.method4083();
+      this.field1467 = 0;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1188683806"
+      signature = "(B)V",
+      garbageValue = "-42"
    )
-   final void method2057() throws IOException {
-      if(this.rssocket != null && this.field1430 > 0) {
+   final void method2080() throws IOException {
+      if(this.rssocket != null && this.field1467 > 0) {
          this.buffer.offset = 0;
 
          while(true) {
             PacketNode var1 = (PacketNode)this.packetBufferNodes.last();
-            if(var1 == null || var1.field2460 > this.buffer.payload.length - this.buffer.offset) {
-               this.rssocket.vmethod3323(this.buffer.payload, 0, this.buffer.offset);
-               this.field1440 = 0;
+            if(var1 == null || var1.field2495 > this.buffer.payload.length - this.buffer.offset) {
+               this.rssocket.vmethod3387(this.buffer.payload, 0, this.buffer.offset);
+               this.field1477 = 0;
                break;
             }
 
-            this.buffer.putBytes(var1.packetBuffer.payload, 0, var1.field2460);
-            this.field1430 -= var1.field2460;
+            this.buffer.putBytes(var1.packetBuffer.payload, 0, var1.field2495);
+            this.field1467 -= var1.field2495;
             var1.unlink();
-            var1.packetBuffer.method3531();
-            var1.method3447();
+            var1.packetBuffer.method3741();
+            var1.method3485();
          }
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgc;S)V",
-      garbageValue = "-419"
+      signature = "(Lgl;I)V",
+      garbageValue = "-1318313998"
    )
-   public final void method2039(PacketNode var1) {
+   public final void method2082(PacketNode var1) {
       this.packetBufferNodes.addFirst(var1);
-      var1.field2460 = var1.packetBuffer.offset;
+      var1.field2495 = var1.packetBuffer.offset;
       var1.packetBuffer.offset = 0;
-      this.field1430 += var1.field2460;
+      this.field1467 += var1.field2495;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(Lfi;I)V",
-      garbageValue = "-2128391715"
+      garbageValue = "-1501656265"
    )
    @Export("setSocket")
-   void setSocket(class168 var1) {
+   void setSocket(class169 var1) {
       this.rssocket = var1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-54001453"
+      garbageValue = "-14975246"
    )
    @Export("close")
    void close() {
       if(this.rssocket != null) {
-         this.rssocket.vmethod3317();
+         this.rssocket.vmethod3379();
          this.rssocket = null;
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1113085271"
+      signature = "(B)V",
+      garbageValue = "-68"
    )
-   void method2035() {
+   void method2083() {
       this.rssocket = null;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)Lfi;",
-      garbageValue = "1846731600"
+      garbageValue = "348970197"
    )
    @Export("getSocket")
-   class168 getSocket() {
+   class169 getSocket() {
       return this.rssocket;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lie;S)V",
-      garbageValue = "128"
+      signature = "(CII)I",
+      garbageValue = "-787038517"
    )
-   public static void method2062(IndexDataBase var0) {
-      Enum.EnumDefinition_indexCache = var0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IB)Lim;",
-      garbageValue = "-49"
-   )
-   @Export("getWidget")
-   public static Widget getWidget(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & 65535;
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = class2.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
+   static int method2100(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = (var0 << 4) + 1;
       }
 
-      return Widget.widgets[var1][var2];
+      return var2;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("ja")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-313623451"
+      signature = "(IIIILly;Lik;I)V",
+      garbageValue = "-1947154127"
    )
-   public static String method2061(CharSequence var0) {
-      int var2 = var0.length();
-      char[] var3 = new char[var2];
-
-      for(int var4 = 0; var4 < var2; ++var4) {
-         var3[var4] = '*';
-      }
-
-      String var1 = new String(var3);
-      return var1;
-   }
-
-   @ObfuscatedName("jp")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "12"
-   )
-   static void method2041() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.first(); var0 != null; var0 = (WidgetNode)Client.componentTable.next()) {
-         int var1 = var0.id;
-         if(class2.loadWidget(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
-
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(var3[var4] != null) {
-                  var2 = var3[var4].hasScript;
-                  break;
-               }
-            }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = getWidget(var4);
-               if(var5 != null) {
-                  ScriptEvent.method1132(var5);
-               }
-            }
-         }
+   @Export("worldToMinimap")
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapAngle & 2047;
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var3 * var9 - var8 * var2 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = var5.field2777 / 2 - 25;
+         int var15 = (int)(Math.sin(var12) * (double)var14);
+         int var16 = (int)(Math.cos(var12) * (double)var14);
+         byte var17 = 20;
+         class169.mapedge.method5939(var15 + (var0 + var5.field2777 / 2 - var17 / 2), var5.field2775 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+      } else {
+         PendingSpawn.drawDot(var0, var1, var2, var3, var4, var5);
       }
 
    }

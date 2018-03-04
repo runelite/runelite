@@ -37,23 +37,12 @@ import net.runelite.client.config.ConfigItem;
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(
-		keyName = "tray",
-		name = "Send Tray Notification",
-		description = "Toggles tray notifications",
+		keyName = "moveoverlay",
+		name = "Override NMZ overlay",
+		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
 		position = 1
 	)
-	default boolean sendTrayNotification()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "request",
-		name = "Request Window Focus",
-		description = "Toggles window focus request",
-		position = 2
-	)
-	default boolean requestFocus()
+	default boolean moveOverlay()
 	{
 		return true;
 	}
@@ -62,20 +51,9 @@ public interface NightmareZoneConfig extends Config
 		keyName = "overloadnotification",
 		name = "Overload notification",
 		description = "Toggles notifications when your overload runs out",
-		position = 3
+		position = 2
 	)
 	default boolean overloadNotification()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "moveoverlay",
-		name = "Override NMZ overlay",
-		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
-		position = 4
-	)
-	default boolean moveOverlay()
 	{
 		return true;
 	}
@@ -84,7 +62,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 5
+		position = 3
 	)
 	default boolean absorptionNotification()
 	{
@@ -95,7 +73,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 6
+		position = 4
 	)
 	default int absorptionThreshold()
 	{
@@ -106,7 +84,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 7
+		position = 5
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -117,7 +95,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 8
+		position = 6
 	)
 	default Color absorptionColorBelowThreshold()
 	{

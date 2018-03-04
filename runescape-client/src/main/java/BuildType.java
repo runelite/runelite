@@ -4,47 +4,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iv")
+@ObfuscatedName("iz")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Liv;"
+      signature = "Liz;"
    )
    @Export("RC")
-   public static final BuildType RC;
-   @ObfuscatedName("q")
+   static final BuildType RC;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Liv;"
+      signature = "Liz;"
    )
    @Export("WIP")
-   public static final BuildType WIP;
-   @ObfuscatedName("o")
+   static final BuildType WIP;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Liv;"
+      signature = "Liz;"
    )
    @Export("LIVE")
-   public static final BuildType LIVE;
-   @ObfuscatedName("p")
+   static final BuildType LIVE;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Liv;"
+      signature = "Liz;"
    )
    @Export("BUILD_LIVE")
-   public static final BuildType BUILD_LIVE;
-   @ObfuscatedName("dx")
-   @ObfuscatedGetter(
-      intValue = -1852900619
+   static final BuildType BUILD_LIVE;
+   @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "Ljs;"
    )
-   static int field3303;
-   @ObfuscatedName("a")
+   @Export("indexMaps")
+   static IndexData indexMaps;
+   @ObfuscatedName("e")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1455559149
+      intValue = -1658668017
    )
-   @Export("ordinal")
-   public final int ordinal;
+   final int field3348;
 
    static {
       RC = new BuildType("LIVE", 0);
@@ -55,20 +55,6 @@ public class BuildType {
 
    BuildType(String var1, int var2) {
       this.identifier = var1;
-      this.ordinal = var2;
-   }
-
-   @ObfuscatedName("hm")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1487750203"
-   )
-   static final void method4528(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
-         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field979[var4] = true;
-         }
-      }
-
+      this.field3348 = var2;
    }
 }

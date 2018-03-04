@@ -1,104 +1,144 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("ae")
 public class class37 {
-   @ObfuscatedName("fy")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Llm;"
+      signature = "Lae;"
    )
-   @Export("mapedge")
-   static SpritePixels mapedge;
+   static final class37 field509;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lae;"
+   )
+   static final class37 field505;
+   @ObfuscatedName("m")
+   public static boolean field506;
+   @ObfuscatedName("aa")
+   @ObfuscatedGetter(
+      intValue = 1433244755
+   )
+   static int field512;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 682502291
+   )
+   final int field507;
 
-   @ObfuscatedName("b")
+   static {
+      field509 = new class37(0);
+      field505 = new class37(1);
+   }
+
+   class37(int var1) {
+      this.field507 = var1;
+   }
+
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
-      garbageValue = "27"
+      signature = "(Ljava/lang/CharSequence;S)Ljava/lang/String;",
+      garbageValue = "17347"
    )
-   public static void method519(String var0, Throwable var1) {
-      var1.printStackTrace();
+   public static String method507(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
+            if(var4 == ' ') {
+               var2.append('+');
+            } else {
+               byte var5 = Client.charToByteCp1252(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+            }
+         } else {
+            var2.append(var4);
+         }
+      }
+
+      return var2.toString();
    }
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(ILca;ZI)I",
-      garbageValue = "-540773889"
+      signature = "(IIIII)V",
+      garbageValue = "1792957764"
    )
-   static int method520(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      int var6;
-      if(var0 == 3400) {
-         class80.intStackSize -= 2;
-         var3 = class80.intStack[class80.intStackSize];
-         var4 = class80.intStack[class80.intStackSize + 1];
-         Enum var5 = VertexNormal.method2804(var3);
-         if(var5.valType != 's') {
-            ;
-         }
-
-         for(var6 = 0; var6 < var5.size; ++var6) {
-            if(var4 == var5.keys[var6]) {
-               class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var5.stringVals[var6];
-               var5 = null;
-               break;
-            }
-         }
-
-         if(var5 != null) {
-            class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var5.defaultString;
-         }
-
-         return 1;
-      } else if(var0 != 3408) {
-         if(var0 == 3411) {
-            var3 = class80.intStack[--class80.intStackSize];
-            Enum var10 = VertexNormal.method2804(var3);
-            class80.intStack[++class80.intStackSize - 1] = var10.method4904();
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         class80.intStackSize -= 4;
-         var3 = class80.intStack[class80.intStackSize];
-         var4 = class80.intStack[class80.intStackSize + 1];
-         int var9 = class80.intStack[class80.intStackSize + 2];
-         var6 = class80.intStack[class80.intStackSize + 3];
-         Enum var7 = VertexNormal.method2804(var9);
-         if(var3 == var7.keyType && var4 == var7.valType) {
-            for(int var8 = 0; var8 < var7.size; ++var8) {
-               if(var6 == var7.keys[var8]) {
-                  if(var4 == 115) {
-                     class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var7.stringVals[var8];
-                  } else {
-                     class80.intStack[++class80.intStackSize - 1] = var7.intVals[var8];
-                  }
-
-                  var7 = null;
-                  break;
-               }
-            }
-
-            if(var7 != null) {
-               if(var4 == 115) {
-                  class80.scriptStringStack[++class43.scriptStringStackSize - 1] = var7.defaultString;
-               } else {
-                  class80.intStack[++class80.intStackSize - 1] = var7.defaultInt;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class80.scriptStringStack[++class43.scriptStringStackSize - 1] = "null";
-            } else {
-               class80.intStack[++class80.intStackSize - 1] = 0;
-            }
-
-            return 1;
-         }
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var4 == null) {
+         var4 = new ItemContainer();
+         ItemContainer.itemContainers.put(var4, (long)var0);
       }
+
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[var1 + 1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(I)[Liq;",
+      garbageValue = "-2023228195"
+   )
+   public static JagexGame[] method505() {
+      return new JagexGame[]{JagexGame.field3351, JagexGame.field3352, JagexGame.field3357, JagexGame.field3350, JagexGame.field3355, JagexGame.field3354};
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(CB)C",
+      garbageValue = "-65"
+   )
+   static char method504(char var0) {
+      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1641663795"
+   )
+   static void method503() {
+      if(GrandExchangeEvents.loadWorlds()) {
+         class90.worldSelectShown = true;
+      }
+
    }
 }

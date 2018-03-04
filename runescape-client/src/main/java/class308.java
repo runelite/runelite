@@ -1,15 +1,30 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kf")
-public class class308 {
-   @ObfuscatedName("jl")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1119828399"
+@ObfuscatedName("kx")
+public class class308 extends class221 {
+   @ObfuscatedName("as")
+   static int[] field3866;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 2124611625
    )
-   static void method5596(int var0, int var1) {
-      FileOnDisk.method2572(class20.topContextMenuRow, var0, var1);
-      class20.topContextMenuRow = null;
+   public int field3865;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lko;"
+   )
+   public Name field3863;
+   @ObfuscatedName("e")
+   public short field3864;
+
+   @ObfuscatedSignature(
+      signature = "(Lko;I)V"
+   )
+   class308(Name var1, int var2) {
+      this.field3865 = (int)(PendingSpawn.currentTimeMs() / 1000L);
+      this.field3863 = var1;
+      this.field3864 = (short)var2;
    }
 }

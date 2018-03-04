@@ -4,23 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ku")
+@ObfuscatedName("kz")
 @Implements("ChatPlayer")
 public class ChatPlayer extends Nameable {
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1841793549
+      intValue = -1600722583
    )
    @Export("world")
    public int world;
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1220319169
+      intValue = 210445581
    )
-   public int field3718;
-   @ObfuscatedName("l")
+   public int field3840;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1934693531
+      intValue = -2088235327
    )
    @Export("rank")
    public int rank;
@@ -29,39 +29,31 @@ public class ChatPlayer extends Nameable {
       this.world = -1;
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-1183667192"
+      garbageValue = "-1744300386"
    )
-   void method5332(int var1, int var2) {
+   void method5508(int var1, int var2) {
       this.world = var1;
-      this.field3718 = var2;
+      this.field3840 = var2;
    }
 
-   @ObfuscatedName("ab")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1371551857"
+      garbageValue = "-1828832037"
    )
-   public int method5336() {
+   public int method5502() {
       return this.world;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("aj")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "1052098241"
+      signature = "(B)Z",
+      garbageValue = "14"
    )
-   @Export("djb2Hash")
-   public static int djb2Hash(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + class27.charToByteCp1252(var0.charAt(var3));
-      }
-
-      return var2;
+   public boolean method5503() {
+      return this.world > 0;
    }
 }

@@ -4,87 +4,89 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("j")
 public class class20 {
-   @ObfuscatedName("jv")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lcl;"
+      signature = "Liw;"
    )
-   @Export("topContextMenuRow")
-   static ContextMenuRow topContextMenuRow;
-
-   @ObfuscatedName("q")
+   static Widget field338;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "10033992"
+      signature = "Lgy;"
    )
-   static void method166(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   @Export("NetCache_reference")
+   public static Buffer NetCache_reference;
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "Llr;"
+   )
+   @Export("rasterProvider")
+   public static BufferProvider rasterProvider;
+   @ObfuscatedName("dg")
+   @ObfuscatedSignature(
+      signature = "Ljs;"
+   )
+   @Export("indexCache13")
+   static IndexData indexCache13;
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(Lbq;Lbq;IZI)I",
+      garbageValue = "725512358"
+   )
+   static int method154(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
+
+            if(var5 == -1) {
+               var5 = 2001;
             }
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method166(var0, var1, var2, var5 - 1);
-         method166(var0, var1, var5 + 1, var3);
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1672()?(var1.method1672()?0:1):(var1.method1672()?-1:0)):(var2 == 5?(var0.method1654()?(var1.method1654()?0:1):(var1.method1654()?-1:0)):(var2 == 6?(var0.method1655()?(var1.method1655()?0:1):(var1.method1655()?-1:0)):(var2 == 7?(var0.method1653()?(var1.method1653()?0:1):(var1.method1653()?-1:0)):var0.id - var1.id)))));
       }
-
    }
 
-   @ObfuscatedName("fr")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IZZZI)Lia;",
-      garbageValue = "-1577422433"
+      signature = "(ZI)V",
+      garbageValue = "-1029147786"
    )
-   @Export("openCacheIndex")
-   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
-      IndexFile var4 = null;
-      if(class166.dat2File != null) {
-         var4 = new IndexFile(var0, class166.dat2File, class151.idxFiles[var0], 1000000);
+   static void method153(boolean var0) {
+      class90.loginMessage1 = "";
+      class90.loginMessage2 = "Enter your username/email & password.";
+      class90.loginMessage3 = "";
+      class90.loginIndex = 2;
+      if(var0) {
+         class90.password = "";
       }
 
-      return new IndexData(var4, class162.indexStore255, var0, var1, var2, var3);
+      if(class90.username == null || class90.username.length() <= 0) {
+         if(class55.preferences.rememberedUsername != null) {
+            class90.username = class55.preferences.rememberedUsername;
+            class90.Login_isUsernameRemembered = true;
+         } else {
+            class90.Login_isUsernameRemembered = false;
+         }
+      }
+
+      FontName.method5595();
    }
 
-   @ObfuscatedName("fp")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-775823596"
+      signature = "(I)V",
+      garbageValue = "381351369"
    )
-   static void method168(int var0) {
-      if(var0 == -1 && !Client.field1039) {
-         class155.field2105.method4140();
-         class223.field2646 = 1;
-         Huffman.field2471 = null;
-      } else if(var0 != -1 && var0 != Client.field1015 && Client.field971 != 0 && !Client.field1039) {
-         IndexData var1 = class155.indexTrack1;
-         int var2 = Client.field971;
-         class223.field2646 = 1;
-         Huffman.field2471 = var1;
-         class223.field2648 = var0;
-         TextureProvider.field1658 = 0;
-         class223.field2645 = var2;
-         class223.field2647 = false;
-         VertexNormal.field1888 = 2;
-      }
-
-      Client.field1015 = var0;
+   public static void method152() {
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
    }
 }

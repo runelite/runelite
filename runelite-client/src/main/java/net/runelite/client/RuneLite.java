@@ -95,10 +95,12 @@ public class RuneLite
 
 	@Inject
 	private DiscordService discordService;
+	
+	@Inject
+	private ClientSessionManager clientSessionManager;
 
 	Client client;
 	ClientUI gui;
-	Notifier notifier;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -161,9 +163,6 @@ public class RuneLite
 		eventBus.register(gui);
 		eventBus.register(pluginManager);
 
-		// Setup the notifier
-		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon(), runeliteConfig);
-
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
 
@@ -177,6 +176,9 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
+		
+		// Start client session
+		clientSessionManager.start();
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
@@ -205,6 +207,7 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		clientSessionManager.shutdown();
 		discordService.close();
 	}
 
@@ -217,12 +220,6 @@ public class RuneLite
 	public void setClient(Client client)
 	{
 		this.client = client;
-	}
-
-	@VisibleForTesting
-	public void setNotifier(Notifier notifier)
-	{
-		this.notifier = notifier;
 	}
 
 	public static Injector getInjector()

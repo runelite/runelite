@@ -4,74 +4,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
+@ObfuscatedName("bh")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("b")
+   @ObfuscatedName("l")
+   @Export("osName")
+   public static String osName;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 212103781
+      intValue = 1952625995
    )
    @Export("level")
    int level;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1317420265
+      intValue = 1753235967
+   )
+   int field1128;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1722746851
    )
    @Export("type")
    int type;
-   @ObfuscatedName("o")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1276615505
+      intValue = -1827924751
    )
    @Export("x")
    int x;
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -340310357
+      intValue = 285848151
    )
    @Export("y")
    int y;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -570938303
-   )
-   int field1090;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1464866107
-   )
-   int field1085;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1149348317
-   )
-   int field1086;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1742407
+      intValue = 1664709599
+   )
+   int field1129;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 689417223
+   )
+   int field1135;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -390670559
    )
    @Export("id")
    int id;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1408006351
+      intValue = -885639671
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1975632781
+      intValue = -162355115
    )
-   int field1084;
-   @ObfuscatedName("u")
+   int field1125;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 627176435
+      intValue = -2074785401
    )
    @Export("delay")
    int delay;
-   @ObfuscatedName("r")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -971995335
+      intValue = 856103459
    )
    @Export("hitpoints")
    int hitpoints;
@@ -81,24 +84,53 @@ public final class PendingSpawn extends Node {
       this.hitpoints = -1;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)Ljg;",
-      garbageValue = "-192896510"
+      signature = "(I)J",
+      garbageValue = "1409216932"
    )
-   public static VarPlayerType method1617(int var0) {
-      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = VarPlayerType.varplayer_ref.getConfigData(16, var0);
-         var1 = new VarPlayerType();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+   @Export("currentTimeMs")
+   public static synchronized long currentTimeMs() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class3.currentTimeMsLast) {
+         class196.currentTimeMsOffset += class3.currentTimeMsLast - var0;
+      }
 
-         VarPlayerType.varplayers.put(var1, (long)var0);
-         return var1;
+      class3.currentTimeMsLast = var0;
+      return var0 + class196.currentTimeMsOffset;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(IIIIIB)V",
+      garbageValue = "-71"
+   )
+   public static final void method1624(int var0, int var1, int var2, int var3, int var4) {
+      class7.boundingBoxes.addFirst(new BoundingBox2D(var0, var1, var2, var3, var4));
+   }
+
+   @ObfuscatedName("js")
+   @ObfuscatedSignature(
+      signature = "(IIIILly;Lik;B)V",
+      garbageValue = "1"
+   )
+   @Export("drawDot")
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = Graphics3D.SINE[var6];
+            int var9 = Graphics3D.COSINE[var6];
+            int var10 = var9 * var2 + var3 * var8 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method5937(var10 + var5.field2777 / 2 - var4.maxWidth / 2, var5.field2775 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2777, var5.field2775, var5.field2778, var5.field2779);
+            } else {
+               var4.drawAt(var0 + var10 + var5.field2777 / 2 - var4.maxWidth / 2, var5.field2775 / 2 + var1 - var11 - var4.maxHeight / 2);
+            }
+
+         }
       }
    }
 }
