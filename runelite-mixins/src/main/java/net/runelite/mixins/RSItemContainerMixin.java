@@ -25,6 +25,8 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Item;
+import net.runelite.api.events.ContainerChanged;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -32,11 +34,19 @@ import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static net.runelite.client.callback.Hooks.eventBus;
+
 @Mixin(RSItemContainer.class)
 public abstract class RSItemContainerMixin implements RSItemContainer
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private List<Item> previousItems;
 
 	@Inject
 	@Override
@@ -55,6 +65,47 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		}
 
 		return items;
+	}
+
+	@FieldHook("stackSizes")
+	@Inject
+	public void itemsChanged(int idx)
+	{
+		if (previousItems == null)
+		{
+			previousItems = new ArrayList<Item>(getItemIds().length);
+		}
+
+		if (idx < 0 || idx >= getItemIds().length)
+		{
+			return;
+		}
+
+		int[] itemIds = getItemIds();
+		int[] stackSizes = getStackSizes();
+
+		// fetch the previous information
+		Item previousItem = idx >= previousItems.size() ? null : previousItems.get(idx);
+
+		RSItem item = client.createItem();
+		item.setId(itemIds[idx]);
+		item.setQuantity(stackSizes[idx]);
+
+		if (idx >= previousItems.size())
+		{
+			previousItems.add(idx, item);
+		}
+		else
+		{
+			previousItems.set(idx, item);
+		}
+
+		ContainerChanged containerChanged = new ContainerChanged();
+		containerChanged.setContainer(this);
+		containerChanged.setIdx(idx);
+		containerChanged.setItem(item);
+		containerChanged.setPreviousItem(previousItem);
+		eventBus.post(containerChanged);
 	}
 
 }
