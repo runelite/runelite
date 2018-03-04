@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -43,12 +43,18 @@ public class ChatHistoryPlugin extends Plugin
 {
 	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
 	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
-		ChatMessageType.PUBLIC,
-		ChatMessageType.CLANCHAT,
-		ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
-		ChatMessageType.PRIVATE_MESSAGE_SENT,
-		ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
-		ChatMessageType.GAME
+			ChatMessageType.PUBLIC,
+			ChatMessageType.CLANCHAT,
+			ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
+			ChatMessageType.PRIVATE_MESSAGE_SENT,
+			ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
+			ChatMessageType.GAME
+	);
+
+	private static final Set<ChatMessageType> PRIVATE_MESSAGE_TYPE = Sets.newHashSet(
+			ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
+			ChatMessageType.PRIVATE_MESSAGE_SENT,
+			ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD
 	);
 
 	private Queue<QueuedMessage> messageQueue;
@@ -67,6 +73,17 @@ public class ChatHistoryPlugin extends Plugin
 	{
 		messageQueue.clear();
 		messageQueue = null;
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!event.getMenuOption().contains("Clear history"))
+		{
+			return;
+		}
+
+		messageQueue.removeIf(e -> PRIVATE_MESSAGE_TYPE.contains(e.getType()));
 	}
 
 	@Subscribe
