@@ -24,29 +24,30 @@
  */
 package net.runelite.client.plugins.teamcapes;
 
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-
-import javax.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Map;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class TeamCapesOverlay extends Overlay
 {
 	private final TeamCapesPlugin plugin;
+	private final TeamCapesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	TeamCapesOverlay(TeamCapesPlugin plugin)
+	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
@@ -60,12 +61,16 @@ public class TeamCapesOverlay extends Overlay
 		panelComponent.getLines().clear();
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-				"Team-" + Integer.toString(team.getKey()),
-				Color.WHITE,
-				Integer.toString(team.getValue()),
-				Color.WHITE
-			));
+			// Only display team capes that have a count greater than the configured minimum.
+			if (team.getValue() >= config.getMinimumCapeCount())
+			{
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Team-" + Integer.toString(team.getKey()),
+					Color.WHITE,
+					Integer.toString(team.getValue()),
+					Color.WHITE
+				));
+			}
 		}
 		return panelComponent.render(graphics, parent);
 	}
