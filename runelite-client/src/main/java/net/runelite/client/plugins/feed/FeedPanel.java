@@ -26,7 +26,6 @@ package net.runelite.client.plugins.feed;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -34,8 +33,6 @@ import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -52,6 +49,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -116,11 +114,13 @@ class FeedPanel extends PluginPanel
 
 	private final FeedConfig config;
 	private final Supplier<FeedResult> feedSupplier;
+	private final LinkBrowser linkBrowser;
 
-	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
+	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier, LinkBrowser linkBrowser)
 	{
 		this.config = config;
 		this.feedSupplier = feedSupplier;
+		this.linkBrowser = linkBrowser;
 	}
 
 	void rebuildFeed()
@@ -283,23 +283,7 @@ class FeedPanel extends PluginPanel
 			public void mouseReleased(MouseEvent e)
 			{
 				avatarAndRight.setBackground(hoverColor);
-
-				Desktop desktop = Desktop.getDesktop();
-
-				if (!desktop.isSupported(Desktop.Action.BROWSE))
-				{
-					log.info("Desktop browser is not supported");
-					return;
-				}
-
-				try
-				{
-					desktop.browse(new URI(item.getUrl()));
-				}
-				catch (IOException | URISyntaxException ex)
-				{
-					log.warn("Unable to open URL " + item.getUrl(), ex);
-				}
+				linkBrowser.browse(item.getUrl());
 			}
 		});
 

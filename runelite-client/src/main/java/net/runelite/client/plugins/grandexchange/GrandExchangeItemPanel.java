@@ -26,14 +26,10 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -42,11 +38,13 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.LinkBrowser;
 
 @Slf4j
 class GrandExchangeItemPanel extends JPanel
 {
-	GrandExchangeItemPanel(BufferedImage icon, String name, int itemID, int gePrice, Double haPrice)
+	GrandExchangeItemPanel(LinkBrowser linkBrowser, BufferedImage icon, String name, int itemID, int gePrice, Double
+		haPrice)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
@@ -72,7 +70,7 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				geLink(name, itemID);
+				geLink(linkBrowser, name, itemID);
 			}
 		});
 
@@ -111,32 +109,13 @@ class GrandExchangeItemPanel extends JPanel
 		add(rightPanel, BorderLayout.CENTER);
 	}
 
-	public void geLink(String name, int itemID)
+	private void geLink(LinkBrowser linkBrowser, String name, int itemID)
 	{
-		String url = "http://services.runescape.com/m=itemdb_oldschool/" + name.replaceAll(" ", "_") + "/viewitem?obj=" + itemID;
+		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
+			+ name.replaceAll(" ", "_")
+			+ "/viewitem?obj="
+			+ itemID;
 
-		if (!Desktop.isDesktopSupported())
-		{
-			log.info("Desktop is not supported. Visit {}", url);
-			return;
-		}
-
-		Desktop desktop = Desktop.getDesktop();
-		if (!desktop.isSupported(Desktop.Action.BROWSE))
-		{
-			log.info("Desktop browser is not supported. Visit {}", url);
-			return;
-		}
-
-		try
-		{
-			desktop.browse(new URI(url));
-
-			log.debug("Opened browser to {}", url);
-		}
-		catch (IOException | URISyntaxException ex)
-		{
-			log.warn("Unable to open grand exchange page", ex);
-		}
+		linkBrowser.browse(url);
 	}
 }
