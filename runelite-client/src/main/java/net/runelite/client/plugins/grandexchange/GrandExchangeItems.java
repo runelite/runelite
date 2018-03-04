@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <https://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.input;
+package net.runelite.client.plugins.grandexchange;
 
-import java.awt.event.KeyEvent;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.inject.Singleton;
+import java.awt.image.BufferedImage;
+import lombok.Data;
 
-@Singleton
-public class KeyManager
+@Data
+public class GrandExchangeItems
 {
-	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+	private final BufferedImage icon;
+	private final String name;
+	private final int itemId;
+	private final int gePrice;
+	private final double haPrice;
 
-	public void registerKeyListener(KeyListener keyListener)
+	GrandExchangeItems(BufferedImage icon, String name, int itemId, int gePrice, double haPrice)
 	{
-		if (!keyListeners.contains(keyListener))
-		{
-			keyListeners.add(keyListener);
-		}
-	}
-
-	public void unregisterKeyListener(KeyListener keyListener)
-	{
-		keyListeners.remove(keyListener);
-	}
-
-	public void processKeyPressed(KeyEvent keyEvent)
-	{
-		for (KeyListener keyListener : keyListeners)
-		{
-			keyListener.keyPressed(keyEvent);
-		}
-	}
-
-	public void processKeyReleased(KeyEvent keyEvent)
-	{
-		for (KeyListener keyListener : keyListeners)
-		{
-			keyListener.keyReleased(keyEvent);
-		}
-	}
-
-	public void processKeyTyped(KeyEvent keyEvent)
-	{
-		for (KeyListener keyListener : keyListeners)
-		{
-			keyListener.keyTyped(keyEvent);
-		}
+		this.icon = icon;
+		this.name = name;
+		this.itemId = itemId;
+		this.gePrice = gePrice;
+		this.haPrice = haPrice;
 	}
 }

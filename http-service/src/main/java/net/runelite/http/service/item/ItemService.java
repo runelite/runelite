@@ -86,6 +86,7 @@ public class ItemService
 	private final Sql2o sql2o;
 	private final ConcurrentLinkedQueue<Integer> pendingPriceLookups = new ConcurrentLinkedQueue<>();
 	private final ConcurrentLinkedQueue<String> pendingSearches = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<Integer> pendingItems = new ConcurrentLinkedQueue<>();
 
 	@Autowired
 	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
@@ -362,7 +363,7 @@ public class ItemService
 		}
 	}
 
-	public void queueLookup(int itemId)
+	public void queuePriceLookup(int itemId)
 	{
 		if (pendingPriceLookups.size() >= MAX_PENDING)
 		{
@@ -382,25 +383,48 @@ public class ItemService
 		pendingSearches.add(search);
 	}
 
-	@Scheduled(fixedDelay = 5000)
-	public void checkPrices()
+	public void queueItem(int itemId)
 	{
-		Integer itemId = pendingPriceLookups.poll();
-		if (itemId == null)
+		if (pendingItems.size() >= MAX_PENDING)
 		{
 			return;
 		}
 
-		fetchPrice(itemId);
+		pendingItems.add(itemId);
 	}
 
 	@Scheduled(fixedDelay = 5000)
-	public void checkSearches()
+	public void check()
+	{
+		if (checkPrices())
+		{
+			return;
+		}
+		if (checkSearches())
+		{
+			return;
+		}
+		checkItems();
+	}
+
+	private boolean checkPrices()
+	{
+		Integer itemId = pendingPriceLookups.poll();
+		if (itemId == null)
+		{
+			return false;
+		}
+
+		fetchPrice(itemId);
+		return true;
+	}
+
+	private boolean checkSearches()
 	{
 		String search = pendingSearches.poll();
 		if (search == null)
 		{
-			return;
+			return false;
 		}
 
 		try
@@ -413,5 +437,19 @@ public class ItemService
 		{
 			log.warn("error while searching items", ex);
 		}
+
+		return true;
+	}
+
+	private boolean checkItems()
+	{
+		Integer itemId = pendingItems.poll();
+		if (itemId == null)
+		{
+			return false;
+		}
+
+		fetchItem(itemId);
+		return true;
 	}
 }
