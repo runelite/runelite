@@ -46,6 +46,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.hiscore.IconTextField;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
@@ -59,6 +60,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
+	private final LinkBrowser linkBrowser;
 
 	private ItemClient itemClient;
 
@@ -69,11 +71,12 @@ class GrandExchangeSearchPanel extends JPanel
 	private JPanel searchItemsPanel = new JPanel();
 	private JLabel searchingLabel = new JLabel("Searching...");
 
-	GrandExchangeSearchPanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangeSearchPanel(Client client, ItemManager itemManager, ScheduledExecutorService executor, LinkBrowser linkBrowser)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
 		this.executor = executor;
+		this.linkBrowser = linkBrowser;
 		init();
 	}
 
@@ -201,7 +204,8 @@ class GrandExchangeSearchPanel extends JPanel
 		{
 			for (GrandExchangeItems item : ITEMS_LIST)
 			{
-				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(), item.getItemId(), item.getGePrice(), item.getHaPrice());
+				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(linkBrowser, item.getIcon(), item.getName(),
+					item.getItemId(), item.getGePrice(), item.getHaPrice());
 
 				searchItemsPanel.add(panel);
 			}
