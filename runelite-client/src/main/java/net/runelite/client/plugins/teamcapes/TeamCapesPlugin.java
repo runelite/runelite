@@ -25,16 +25,15 @@
 package net.runelite.client.plugins.teamcapes;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -49,9 +48,24 @@ public class TeamCapesPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private TeamCapesConfig config;
+
 	private TeamCapesOverlay teamCapesOverlay;
 
+	// Hashmap of team capes: Key is the teamCape #, Value is the count of teamcapes in the area.
 	private Map<Integer, Integer> teams = new HashMap<>();
+
+	@Provides
+	TeamCapesConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TeamCapesConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		teamCapesOverlay = new TeamCapesOverlay(this, config);
+	}
 
 	@Override
 	public Overlay getOverlay()
@@ -92,6 +106,7 @@ public class TeamCapesPlugin extends Plugin
 				}
 			}
 		}
+
 		// Sort teams by value in descending order and then by key in ascending order, limited to 5 entries
 		teams = teams.entrySet().stream()
 					.sorted(

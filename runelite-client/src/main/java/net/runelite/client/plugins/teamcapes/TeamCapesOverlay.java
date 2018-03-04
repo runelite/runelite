@@ -39,14 +39,16 @@ import java.util.Map;
 public class TeamCapesOverlay extends Overlay
 {
 	private final TeamCapesPlugin plugin;
+	private final TeamCapesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	TeamCapesOverlay(TeamCapesPlugin plugin)
+	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
@@ -60,12 +62,16 @@ public class TeamCapesOverlay extends Overlay
 		panelComponent.getLines().clear();
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-				"Team-" + Integer.toString(team.getKey()),
-				Color.WHITE,
-				Integer.toString(team.getValue()),
-				Color.WHITE
-			));
+			// Only display team capes that have a count greater than the configured minimum.
+			if (team.getValue() >= config.getMinimumCapeCount())
+			{
+				panelComponent.getLines().add(new PanelComponent.Line(
+						"Team-" + Integer.toString(team.getKey()),
+						Color.WHITE,
+						Integer.toString(team.getValue()),
+						Color.WHITE
+				));
+			}
 		}
 		return panelComponent.render(graphics, parent);
 	}
