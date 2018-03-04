@@ -235,7 +235,7 @@ public class GroundItemsOverlay extends Overlay
 						itemId = item.getLinkedNoteId();
 					}
 
-					Color textColor = Color.WHITE; // Color to use when drawing the ground item
+					Color textColor = config.defaultColor(); // Color to use when drawing the ground item
 					ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
 					if (itemPrice != null && config.showGEPrice())
 					{
