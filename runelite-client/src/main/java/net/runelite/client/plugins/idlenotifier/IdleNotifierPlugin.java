@@ -357,8 +357,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (opponent != null
 			&& !isPlayer
-			&& opponent.getCombatLevel() > 0
-			&& opponent.getHealth() != -1)
+			&& opponent.getCombatLevel() > 0)
 		{
 			resetTimers();
 			lastOpponent = opponent;
