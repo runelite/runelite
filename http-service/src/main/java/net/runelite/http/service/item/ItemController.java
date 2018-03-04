@@ -85,43 +85,29 @@ public class ItemController
 	}
 
 	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
-	public byte[] getIcon(HttpServletResponse response, @PathVariable int itemId)
+	public ResponseEntity<byte[]> getIcon(@PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
 		if (item != null && item.getIcon() != null)
 		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return item.getIcon();
+			return ResponseEntity.ok(item.getIcon());
 		}
 
-		item = itemService.fetchItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return item.getIcon();
-		}
-
-		return null;
+		itemService.queueItem(itemId);
+		return ResponseEntity.notFound().build();
 	}
 
 	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
-	public byte[] getIconLarge(HttpServletResponse response, @PathVariable int itemId)
+	public ResponseEntity<byte[]> getIconLarge(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
 		if (item != null && item.getIcon_large() != null)
 		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return item.getIcon_large();
+			return ResponseEntity.ok(item.getIcon_large());
 		}
 
-		item = itemService.fetchItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return item.getIcon_large();
-		}
-
-		return null;
+		itemService.queueItem(itemId);
+		return ResponseEntity.notFound().build();
 	}
 
 	@RequestMapping("/{itemId}/price")
@@ -195,7 +181,7 @@ public class ItemController
 			if (priceEntry.getFetched_time().isBefore(cacheTime))
 			{
 				// Queue a check for the price
-				itemService.queueLookup(itemId);
+				itemService.queuePriceLookup(itemId);
 			}
 		}
 
