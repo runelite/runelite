@@ -28,6 +28,7 @@ package net.runelite.client.plugins.grandexchange;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.text.NumberFormat;
 import javax.annotation.Nullable;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -47,6 +48,8 @@ import net.runelite.client.game.ItemManager;
 @Slf4j
 public class GrandExchangeOfferSlot extends JPanel
 {
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+
 	private static final Color GE_INPROGRESS_ORANGE = new Color(0xd8, 0x80, 0x20).brighter();
 	private static final Color GE_FINISHED_GREEN = new Color(0, 0x5f, 0);
 	private static final Color GE_CANCELLED_RED = new Color(0x8f, 0, 0);
@@ -141,7 +144,7 @@ public class GrandExchangeOfferSlot extends JPanel
 			ImageIcon newItemIcon = new ImageIcon(itemManager.getImage(newOffer.getItemId(), newOffer.getTotalQuantity(), shouldStack));
 			itemIcon.setIcon(newItemIcon);
 
-			offerState.setText(getNameForState(newOffer.getState()) + " at " + newOffer.getPrice() + (newOffer.getTotalQuantity() > 1 ? "gp ea" : "gp"));
+			offerState.setText(getNameForState(newOffer.getState()) + " at " + NUMBER_FORMATTER.format(newOffer.getPrice()) + (newOffer.getTotalQuantity() > 1 ? "gp ea" : "gp"));
 
 			progressBar.setMaximum(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());

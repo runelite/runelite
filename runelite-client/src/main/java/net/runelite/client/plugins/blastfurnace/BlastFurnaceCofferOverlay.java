@@ -27,7 +27,6 @@ package net.runelite.client.plugins.blastfurnace;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.text.NumberFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.Varbits.BLAST_FURNACE_COFFER;
@@ -36,11 +35,10 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.util.StackFormatter;
 
 class BlastFurnaceCofferOverlay extends Overlay
 {
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
-	
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -71,7 +69,7 @@ class BlastFurnaceCofferOverlay extends Overlay
 
 			panelComponent.getLines().add(new PanelComponent.Line(
 				"Coffer:",
-				NUMBER_FORMATTER.format(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
+				StackFormatter.quantityToStackSize(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
 			));
 		}
 		return panelComponent.render(graphics, parent);
