@@ -29,13 +29,18 @@ package net.runelite.client.plugins.cluescrolls;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
+import net.runelite.api.queries.WidgetItemQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Clue scroll"
@@ -44,6 +49,9 @@ public class ClueScrollPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private QueryRunner queryRunner;
 
 	@Inject
 	private ClueScrollOverlay clueScrollOverlay;
@@ -69,6 +77,18 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clueScroll == null)
 		{
+			if (clueScrollOverlay.clue != null)
+			{
+				WidgetItemQuery inventoryQuery = new InventoryWidgetItemQuery().startsWith("Clue scroll");
+				WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+				if (inventoryWidgetItems.length > 0)
+				{
+					return;
+				}
+
+				clueScrollOverlay.clue = null;
+			}
+
 			return;
 		}
 
