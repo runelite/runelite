@@ -41,6 +41,8 @@ public class RuntimeExceptions implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
+		boolean foundInit = false;
+
 		int i = 0;
 		for (ClassFile cf : group.getClasses())
 		{
@@ -49,6 +51,14 @@ public class RuntimeExceptions implements Deobfuscator
 				Code c = m.getCode();
 				if (c == null)
 					continue;
+
+				// Keep one handler in the client so the deobfuscator
+				// keeps the client error handling related methods
+				if (cf.getName().equals("client") && m.getName().equals("init"))
+				{
+					foundInit = true;
+					continue;
+				}
 				
 				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(c.getExceptions().getExceptions()))
 				{
@@ -59,6 +69,11 @@ public class RuntimeExceptions implements Deobfuscator
 					}
 				}
 			}
+		}
+
+		if (!foundInit)
+		{
+			throw new IllegalStateException("client.init(...) method seems to be missing!");
 		}
 
 		logger.info("Remove {} exception handlers", i);
