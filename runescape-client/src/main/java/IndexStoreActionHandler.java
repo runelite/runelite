@@ -93,7 +93,7 @@ public class IndexStoreActionHandler implements Runnable {
             }
          }
       } catch (Exception var13) {
-         ItemLayer.method2658((String)null, var13);
+         ItemLayer.processClientError((String)null, var13);
       }
    }
 

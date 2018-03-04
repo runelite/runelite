@@ -265,7 +265,7 @@ public final class class173 extends class169 implements Runnable {
             break;
          }
       } catch (Exception var12) {
-         ItemLayer.method2658((String)null, var12);
+         ItemLayer.processClientError((String)null, var12);
       }
 
    }

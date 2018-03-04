@@ -71,7 +71,8 @@ public final class ItemLayer {
       signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
       garbageValue = "1384374911"
    )
-   public static void method2658(String var0, Throwable var1) {
+   @Export("processClientError")
+   public static void processClientError(String var0, Throwable var1) {
       if(var1 != null) {
          var1.printStackTrace();
       } else {

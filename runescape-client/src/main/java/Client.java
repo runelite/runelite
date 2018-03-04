@@ -2377,7 +2377,7 @@ public final class Client extends GameEngine implements class302 {
                   SoundTaskDataProvider.idxFiles[var11] = new CacheFile(new FileOnDisk(class1.method5("main_file_cache.idx" + var11), "rw", 1048576L), 6000, 0);
                }
             } catch (Exception var16) {
-               ItemLayer.method2658((String)null, var16);
+               ItemLayer.processClientError((String)null, var16);
             }
 
             class23.clientInstance = this;
@@ -5581,7 +5581,7 @@ public final class Client extends GameEngine implements class302 {
                return true;
             }
 
-            ItemLayer.method2658("" + (var1.serverPacket != null?var1.serverPacket.packetId:-1) + "," + (var1.field1479 != null?var1.field1479.packetId:-1) + "," + (var1.field1480 != null?var1.field1480.packetId:-1) + "," + var1.packetLength, (Throwable)null);
+            ItemLayer.processClientError("" + (var1.serverPacket != null?var1.serverPacket.packetId:-1) + "," + (var1.field1479 != null?var1.field1479.packetId:-1) + "," + (var1.field1480 != null?var1.field1480.packetId:-1) + "," + var1.packetLength, (Throwable)null);
             GrandExchangeEvents.method80();
          } catch (IOException var41) {
             SoundTaskDataProvider.method781();
@@ -5592,7 +5592,7 @@ public final class Client extends GameEngine implements class302 {
                var21 = var21 + var3.payload[var20] + ",";
             }
 
-            ItemLayer.method2658(var21, var42);
+            ItemLayer.processClientError(var21, var42);
             GrandExchangeEvents.method80();
          }
 

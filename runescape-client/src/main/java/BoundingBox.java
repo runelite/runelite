@@ -2413,7 +2413,7 @@ public abstract class BoundingBox extends Node {
             }
 
             var48.append("").append(var52);
-            ItemLayer.method2658(var48.toString(), var49);
+            ItemLayer.processClientError(var48.toString(), var49);
          }
       }
    }
