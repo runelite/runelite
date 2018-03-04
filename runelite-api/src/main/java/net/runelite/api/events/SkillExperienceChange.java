@@ -29,7 +29,7 @@ import lombok.Data;
 import net.runelite.api.Skill;
 
 @Data
-public class ExperienceChanged
+public class SkillExperienceChange
 {
 	/**
 	 * The {@link Skill} that had its experience changed.

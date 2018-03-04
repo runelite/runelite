@@ -33,8 +33,8 @@ import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SkillExperienceChange;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.plugins.Plugin;
@@ -85,7 +85,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onSkillExperienceChanged(SkillExperienceChange event)
 	{
 		final int exp = client.getSkillExperience(event.getSkill());
 		final Integer previous = skillExp.put(event.getSkill(), exp);

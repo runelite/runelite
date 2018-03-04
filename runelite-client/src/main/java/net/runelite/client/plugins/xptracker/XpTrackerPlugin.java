@@ -39,9 +39,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.SkillExperienceChange;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -189,7 +189,7 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onSkillExperienceChanged(SkillExperienceChange event)
 	{
 		xpPanel.updateSkillExperience(event.getSkill());
 	}

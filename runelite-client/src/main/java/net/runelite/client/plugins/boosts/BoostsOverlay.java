@@ -29,113 +29,75 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import javax.inject.Inject;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @Slf4j
 class BoostsOverlay extends Overlay
 {
-	@Getter
-	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
-
-	private final Client client;
-	private final BoostsConfig config;
-	private final InfoBoxManager infoBoxManager;
+	@Inject
+	private Client client;
 
 	@Inject
 	private BoostsPlugin plugin;
 
 	@Inject
-	private SkillIconManager iconManager;
-
+	private BoostsConfig config;
 	private PanelComponent panelComponent;
 
 	@Inject
-	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
+	BoostsOverlay()
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.MED);
-		this.client = client;
-		this.config = config;
-		this.infoBoxManager = infoBoxManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		if (config.displayIndicators())
+		{
+			return null;
+		}
+
 		panelComponent = new PanelComponent();
 
-		for (Skill skill : plugin.getShownSkills())
+		for (Skill skill : plugin.getBoostedSkills())
 		{
-			int boosted = client.getBoostedSkillLevel(skill),
-				base = client.getRealSkillLevel(skill);
+			String str;
+			int boosted = client.getBoostedSkillLevel(skill);
+			int base = client.getRealSkillLevel(skill);
+			int boost = boosted - base;
+			Color strColor = getTextColor(boost);
 
-			BoostIndicator indicator = indicators[skill.ordinal()];
-
-			if (boosted == base)
+			if (!config.useRelativeBoost())
 			{
-				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
-				{
-					infoBoxManager.removeInfoBox(indicator);
-				}
-
-				continue;
-			}
-
-			if (config.displayIndicators())
-			{
-				if (indicator == null)
-				{
-					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
-					indicators[skill.ordinal()] = indicator;
-				}
-
-				if (!infoBoxManager.getInfoBoxes().contains(indicator))
-				{
-					infoBoxManager.addInfoBox(indicator);
-				}
+				str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
 			}
 			else
 			{
-				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
-				{
-					infoBoxManager.removeInfoBox(indicator);
-				}
+				str = String.valueOf(boost);
 
-				String str;
-				int boost = boosted - base;
-				Color strColor = getTextColor(boost);
-				if (!config.useRelativeBoost())
+				if (boost > 0)
 				{
-					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
+					str = "+" + str;
 				}
-				else
-				{
-					str = String.valueOf(boost);
-					if (boost > 0)
-					{
-						str = "+" + str;
-					}
-				}
-
-				panelComponent.getLines().add(new PanelComponent.Line(
-					skill.getName(),
-					Color.WHITE,
-					str,
-					strColor
-				));
 			}
+
+			panelComponent.getLines().add(new PanelComponent.Line(
+				skill.getName(),
+				Color.WHITE,
+				str,
+				strColor
+			));
 		}
 
-		return config.displayIndicators() ? null : panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics, parent);
 	}
 
 	private Color getTextColor(int boost)
@@ -146,6 +108,5 @@ class BoostsOverlay extends Overlay
 		}
 
 		return new Color(238, 51, 51);
-
 	}
 }

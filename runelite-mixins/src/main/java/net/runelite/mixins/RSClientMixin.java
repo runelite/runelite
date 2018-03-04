@@ -43,12 +43,14 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.SkillBoostChange;
+import net.runelite.api.events.SkillExperienceChange;
+import net.runelite.api.events.SkillLevelChange;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -444,17 +446,49 @@ public abstract class RSClientMixin implements RSClient
 
 	@FieldHook("skillExperiences")
 	@Inject
-	public static void experiencedChanged(int idx)
+	public static void skillExperienceChanged(int idx)
 	{
-		ExperienceChanged experienceChanged = new ExperienceChanged();
+		SkillExperienceChange change = new SkillExperienceChange();
 		Skill[] possibleSkills = Skill.values();
 
 		// We subtract one here because 'Overall' isn't considered a skill that's updated.
 		if (idx < possibleSkills.length - 1)
 		{
 			Skill updatedSkill = possibleSkills[idx];
-			experienceChanged.setSkill(updatedSkill);
-			eventBus.post(experienceChanged);
+			change.setSkill(updatedSkill);
+			eventBus.post(change);
+		}
+	}
+
+	@FieldHook("realSkillLevels")
+	@Inject
+	public static void skillLevelChanged(int idx)
+	{
+		SkillLevelChange change = new SkillLevelChange();
+		Skill[] possibleSkills = Skill.values();
+
+		// We subtract one here because 'Overall' isn't considered a skill that's updated.
+		if (idx < possibleSkills.length - 1)
+		{
+			Skill updatedSkill = possibleSkills[idx];
+			change.setSkill(updatedSkill);
+			eventBus.post(change);
+		}
+	}
+
+	@FieldHook("boostedSkillLevels")
+	@Inject
+	public static void skillBoostChanged(int idx)
+	{
+		SkillBoostChange change = new SkillBoostChange();
+		Skill[] possibleSkills = Skill.values();
+
+		// We subtract one here because 'Overall' isn't considered a skill that's updated.
+		if (idx < possibleSkills.length - 1)
+		{
+			Skill updatedSkill = possibleSkills[idx];
+			change.setSkill(updatedSkill);
+			eventBus.post(change);
 		}
 	}
 

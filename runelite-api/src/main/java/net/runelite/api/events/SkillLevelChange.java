@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Kamiel
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,66 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import lombok.Getter;
-import lombok.Setter;
+package net.runelite.api.events;
+
+import lombok.Data;
 import net.runelite.api.Skill;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class BoostIndicator extends InfoBox
+@Data
+public class SkillLevelChange
 {
-	private final BoostsConfig config;
-
-	@Setter
-	@Getter
-	private int baseLevel;
-
-	@Setter
-	@Getter
-	private int boostedLevel;
-
-	@Getter
-	private final Skill skill;
-
-	public BoostIndicator(Skill skill, BufferedImage image, BoostsConfig config, int baseLevel, int boostedLevel)
-	{
-		super(image);
-		this.skill = skill;
-		this.config = config;
-		this.baseLevel = baseLevel;
-		this.boostedLevel = boostedLevel;
-		setTooltip(skill.getName() + " boost");
-	}
-
-	@Override
-	public String getText()
-	{
-		if (!config.useRelativeBoost())
-		{
-			return String.valueOf(boostedLevel);
-		}
-
-		int boost = boostedLevel - baseLevel;
-		String text = String.valueOf(boost);
-		if (boost > 0)
-		{
-			text = "+" + text;
-		}
-
-		return text;
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		if (boostedLevel > baseLevel)
-		{
-			return Color.GREEN;
-		}
-
-		return new Color(238, 51, 51);
-	}
+	/**
+	 * The {@link Skill} that had its experience changed.
+	 */
+	private Skill skill;
 }

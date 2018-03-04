@@ -27,12 +27,21 @@ package net.runelite.client.plugins.boosts;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.SkillBoostChange;
+import net.runelite.api.events.SkillLevelChange;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -47,6 +56,7 @@ public class BoostsPlugin extends Plugin
 	{
 		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
 	};
+
 	private static final Skill[] SKILLING = new Skill[]
 	{
 		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
@@ -54,8 +64,13 @@ public class BoostsPlugin extends Plugin
 		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
 	};
 
+	@Getter
+	private final List<Skill> boostedSkills = new ArrayList<>();
+	private final List<Skill> shownSkills = new ArrayList<>();
+	private final Map<Skill, BoostIndicator> indicators = new HashMap<>();
+
 	@Inject
-	private InfoBoxManager infoBoxManager;
+	private Client client;
 
 	@Inject
 	private BoostsOverlay boostsOverlay;
@@ -63,8 +78,11 @@ public class BoostsPlugin extends Plugin
 	@Inject
 	private BoostsConfig config;
 
-	@Getter
-	private Skill[] shownSkills;
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private SkillIconManager iconManager;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -82,36 +100,174 @@ public class BoostsPlugin extends Plugin
 	protected void startUp()
 	{
 		updateShownSkills(config.enableSkill());
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			refreshBoostedSkills();
+			updateInfoBoxes();
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		boostedSkills.clear();
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
+		indicators.clear();
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		Skill[] old = shownSkills;
-		updateShownSkills(config.enableSkill());
-
-		if (!Arrays.equals(old, shownSkills))
+		if (event.getKey().equals("enableSkill"))
 		{
-			infoBoxManager.removeIf(t -> t instanceof BoostIndicator
-				&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
+			updateShownSkills(config.enableSkill());
+			refreshBoostedSkills();
+			updateInfoBoxes();
 		}
+
+		if (event.getKey().equals("displayIndicators"))
+		{
+			updateInfoBoxes();
+		}
+	}
+
+	@Subscribe
+	public void onSkillLevelChanged(SkillLevelChange event)
+	{
+		Skill skill = event.getSkill();
+		int base = client.getRealSkillLevel(skill);
+		int boosted = client.getBoostedSkillLevel(skill);
+
+		if (base == boosted)
+		{
+			indicators.remove(skill);
+		}
+		else
+		{
+			BoostIndicator indicator = indicators.get(skill);
+
+			if (indicator != null)
+			{
+				int level = client.getRealSkillLevel(skill);
+
+				if (level > indicator.getBaseLevel())
+				{
+					indicator.setBaseLevel(level);
+				}
+			}
+		}
+
+		refreshBoostedSkills();
+		updateInfoBoxes();
+	}
+
+	@Subscribe
+	public void onSkillBoostChanged(SkillBoostChange event)
+	{
+		Skill skill = event.getSkill();
+
+		if (!shownSkills.contains(skill))
+		{
+			return;
+		}
+
+		int base = client.getRealSkillLevel(skill);
+
+		if (base == 0)
+		{
+			return;
+		}
+
+		int boosted = client.getBoostedSkillLevel(skill);
+
+		if (boosted == base)
+		{
+			if (boostedSkills.contains(skill))
+			{
+				boostedSkills.remove(skill);
+				indicators.remove(skill);
+			}
+		}
+		else
+		{
+			if (!boostedSkills.contains(skill))
+			{
+				boostedSkills.add(skill);
+			}
+			else
+			{
+				BoostIndicator indicator = indicators.get(skill);
+
+				if (indicator != null && indicator.getBoostedLevel() != boosted)
+				{
+					indicator.setBoostedLevel(boosted);
+				}
+			}
+		}
+
+		updateInfoBoxes();
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)
 	{
+		shownSkills.clear();
+
 		if (showSkillingSkills)
 		{
-			shownSkills = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
+			shownSkills.addAll(Arrays.asList(ObjectArrays.concat(COMBAT, SKILLING, Skill.class)));
 		}
 		else
 		{
-			shownSkills = COMBAT;
+			shownSkills.addAll(Arrays.asList(COMBAT));
+		}
+	}
+
+	private void refreshBoostedSkills()
+	{
+		boostedSkills.clear();
+
+		for (Skill skill : shownSkills)
+		{
+			int boosted = client.getBoostedSkillLevel(skill);
+			int base = client.getRealSkillLevel(skill);
+
+			if (boosted != base)
+			{
+				boostedSkills.add(skill);
+			}
+		}
+	}
+
+	private void updateInfoBoxes()
+	{
+		if (!config.displayIndicators())
+		{
+			infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
+			indicators.clear();
+			return;
+		}
+
+		infoBoxManager.removeIf(t -> t instanceof BoostIndicator &&
+				(!shownSkills.contains(((BoostIndicator) t).getSkill()) || !boostedSkills.contains(((BoostIndicator) t).getSkill())));
+
+		for (Skill skill : boostedSkills)
+		{
+			BoostIndicator indicator = indicators.get(skill);
+
+			if (indicator == null)
+			{
+				int boosted = client.getBoostedSkillLevel(skill);
+				int base = client.getRealSkillLevel(skill);
+
+				indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), config, base, boosted);
+				indicators.put(skill, indicator);
+			}
+
+			if (!infoBoxManager.getInfoBoxes().contains(indicator))
+			{
+				infoBoxManager.addInfoBox(indicator);
+			}
 		}
 	}
 }

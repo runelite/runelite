@@ -34,8 +34,8 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SkillExperienceChange;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -74,7 +74,7 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onSkillExperienceChanged(SkillExperienceChange event)
 	{
 		Skill skill = event.getSkill();
 		int currentXp = client.getSkillExperience(skill);

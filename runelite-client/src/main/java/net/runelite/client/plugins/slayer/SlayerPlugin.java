@@ -42,8 +42,8 @@ import net.runelite.api.ItemID;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SkillExperienceChange;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -241,7 +241,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onSkillExperienceChanged(SkillExperienceChange event)
 	{
 		if (event.getSkill() != SLAYER)
 		{
