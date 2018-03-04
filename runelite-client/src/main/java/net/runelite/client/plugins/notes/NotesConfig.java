@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface NotesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "persistNotes",
-		name = "Persistent notes",
-		description = "Automatically save notes"
-	)
-	default boolean persistNotes()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "notesData",
 		name = "",
 		description = "",

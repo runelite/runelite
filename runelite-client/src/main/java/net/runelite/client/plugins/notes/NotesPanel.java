@@ -27,8 +27,6 @@ package net.runelite.client.plugins.notes;
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -36,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.PluginPanel;
 
 import java.awt.BorderLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 @Slf4j
 public class NotesPanel extends PluginPanel
@@ -57,48 +57,38 @@ public class NotesPanel extends PluginPanel
 
 		notesEditor.setContentType("text/plain");
 
-		if (config.persistNotes())
+		// load note text
+		String data = config.notesData();
+		notesEditor.setText(data);
+
+		notesEditor.addFocusListener(new FocusListener()
 		{
-			// load note text
-			String data = config.notesData();
-			notesEditor.setText(data);
-
-			notesEditor.getDocument().addDocumentListener(new DocumentListener()
+			@Override
+			public void focusGained(FocusEvent e)
 			{
-				@Override
-				public void insertUpdate(DocumentEvent e)
-				{
-					notesChanged(e.getDocument());
-				}
 
-				@Override
-				public void removeUpdate(DocumentEvent e)
-				{
-					notesChanged(e.getDocument());
-				}
+			}
 
-				@Override
-				public void changedUpdate(DocumentEvent e)
-				{
-					notesChanged(e.getDocument());
-				}
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				notesChanged(notesEditor.getDocument());
+			}
 
-				private void notesChanged(Document doc)
+			private void notesChanged(Document doc)
+			{
+				try
 				{
-					try
-					{
-						// get document text and save to config whenever editor is changed
-						String data = doc.getText(0, doc.getLength());
-						log.debug("Save Notes: " + data.length());
-						config.notesData(data);
-					}
-					catch (BadLocationException ex)
-					{
-						log.warn("Notes Document Bad Location: " + ex);
-					}
+					// get document text and save to config whenever editor is changed
+					String data = doc.getText(0, doc.getLength());
+					config.notesData(data);
 				}
-			});
-		}
+				catch (BadLocationException ex)
+				{
+					log.warn("Notes Document Bad Location: " + ex);
+				}
+			}
+		});
 		add(notesEditor, BorderLayout.CENTER);
 	}
 }
