@@ -22,10 +22,11 @@ public class RunException extends RuntimeException {
    @ObfuscatedName("r")
    String field2171;
    @ObfuscatedName("e")
-   Throwable field2169;
+   @Export("parent")
+   Throwable parent;
 
    RunException(Throwable var1, String var2) {
       this.field2171 = var2;
-      this.field2169 = var1;
+      this.parent = var1;
    }
 }

@@ -84,7 +84,7 @@ public final class ItemLayer {
                if(var1 instanceof RunException) {
                   RunException var6 = (RunException)var1;
                   var5 = var6.field2171 + " | ";
-                  var4 = var6.field2169;
+                  var4 = var6.parent;
                } else {
                   var5 = "";
                }
