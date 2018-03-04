@@ -39,7 +39,7 @@ public class DecorativeObjectQuery extends TileObjectQuery<DecorativeObject, Dec
 	{
 		return getDecorativeObjects(client).stream()
 			.filter(Objects::nonNull)
-			.filter(predicate)
+			.filter(x -> predicate.test(client, x))
 			.distinct()
 			.toArray(DecorativeObject[]::new);
 	}

@@ -39,7 +39,7 @@ public class GroundObjectQuery extends TileObjectQuery<GroundObject, GroundObjec
 	{
 		return getGroundObjects(client).stream()
 			.filter(Objects::nonNull)
-			.filter(predicate)
+			.filter(x -> predicate.test(client, x))
 			.distinct()
 			.toArray(GroundObject[]::new);
 	}
