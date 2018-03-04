@@ -46,7 +46,7 @@ public class BankItemQuery extends WidgetItemQuery
 		{
 			return widgetItems.stream()
 				.filter(Objects::nonNull)
-				.filter(predicate)
+				.filter(x -> predicate.test(client, x))
 				.toArray(WidgetItem[]::new);
 		}
 		return new WidgetItem[0];

@@ -33,7 +33,7 @@ public class PlayerQuery extends ActorQuery<Player, PlayerQuery>
 	public Player[] result(Client client)
 	{
 		return client.getPlayers().stream()
-			.filter(predicate)
+			.filter(x -> predicate.test(client, x))
 			.toArray(Player[]::new);
 	}
 }
