@@ -43,6 +43,7 @@ import net.runelite.api.widgets.WidgetItem;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSNode;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
@@ -76,18 +77,27 @@ public abstract class RSWidgetMixin implements RSWidget
 			return parentId;
 		}
 
-		int i = TO_GROUP(getId());
+		int groupId = TO_GROUP(getId());
 		RSHashTable componentTable = client.getComponentTable();
-		for (Node node : componentTable.getNodes())
+		RSNode[] buckets = componentTable.getBuckets();
+		for (int i = 0; i < buckets.length; ++i)
 		{
-			WidgetNode wn = (WidgetNode) node;
+			Node node = buckets[i];
 
-			if (i == wn.getId())
+			// It looks like the first node in the bucket is always
+			// a sentinel
+			Node cur = node.getNext();
+			while (cur != node)
 			{
-				return (int) wn.getHash();
+				WidgetNode wn = (WidgetNode) cur;
+
+				if (groupId == wn.getId())
+				{
+					return (int) wn.getHash();
+				}
+				cur = cur.getNext();
 			}
 		}
-
 		return -1;
 	}
 
