@@ -84,8 +84,10 @@ public class ClueScrollPlugin extends Plugin
 		{
 			Query inventoryQuery = new InventoryWidgetItemQuery();
 			WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
-			for (WidgetItem item : inventoryWidgetItems) {
-			    if (client.getItemDefinition(item.getId()).getName().startsWith("Clue scroll")) {
+			for (WidgetItem item : inventoryWidgetItems)
+			{
+			    if (client.getItemDefinition(item.getId()).getName().startsWith("Clue scroll"))
+			    {
 			    	return;
 				}
 			}
