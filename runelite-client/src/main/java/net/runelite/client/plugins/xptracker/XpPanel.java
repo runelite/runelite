@@ -45,6 +45,8 @@ import net.runelite.client.ui.PluginPanel;
 @Slf4j
 class XpPanel extends PluginPanel
 {
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
@@ -139,7 +141,6 @@ class XpPanel extends PluginPanel
 
 	static String formatLine(double number, String description)
 	{
-
-		return NumberFormat.getInstance().format(number) + " " + description;
+		return NUMBER_FORMATTER.format(number) + " " + description;
 	}
 }

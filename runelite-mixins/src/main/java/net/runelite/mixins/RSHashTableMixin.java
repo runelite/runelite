@@ -40,6 +40,7 @@ public abstract class RSHashTableMixin implements RSHashTable
 	@Override
 	public Collection<Node> getNodes()
 	{
+		// Copied in RSWidgetMixin.getParentId to reduce allocations
 		List<Node> nodes = new ArrayList<Node>();
 
 		RSNode[] buckets = getBuckets();

@@ -39,6 +39,8 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class BlastFurnaceCofferOverlay extends Overlay
 {
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+	
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -69,7 +71,7 @@ class BlastFurnaceCofferOverlay extends Overlay
 
 			panelComponent.getLines().add(new PanelComponent.Line(
 				"Coffer:",
-				NumberFormat.getInstance().format(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
+				NUMBER_FORMATTER.format(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
 			));
 		}
 		return panelComponent.render(graphics, parent);
