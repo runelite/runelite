@@ -39,7 +39,7 @@ public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery
 	{
 		return getWallObjects(client).stream()
 			.filter(Objects::nonNull)
-			.filter(predicate)
+			.filter(x -> predicate.test(client, x))
 			.distinct()
 			.toArray(WallObject[]::new);
 	}

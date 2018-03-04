@@ -24,11 +24,12 @@
  */
 package net.runelite.api;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public abstract class Query<EntityType, QueryType>
 {
-	protected Predicate<EntityType> predicate = x -> true;
+	protected BiPredicate<Client, EntityType> predicate = (client, x) -> true;
 
 	protected Query()
 	{
@@ -36,12 +37,13 @@ public abstract class Query<EntityType, QueryType>
 
 	public abstract EntityType[] result(Client client);
 
-	protected Predicate<EntityType> and(Predicate<EntityType> other)
+	protected BiPredicate<Client, EntityType> and(BiPredicate<Client, EntityType> other)
 	{
-		if (predicate == null)
-		{
-			return other;
-		}
 		return predicate.and(other);
+	}
+
+	protected BiPredicate<Client, EntityType> and(Predicate<EntityType> other)
+	{
+		return predicate.and((client, x) -> other.test(x));
 	}
 }

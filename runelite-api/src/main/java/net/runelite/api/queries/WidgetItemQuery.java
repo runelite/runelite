@@ -69,6 +69,12 @@ public abstract class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
 		return this;
 	}
 
+	public WidgetItemQuery startsWith(String str)
+	{
+		predicate = and((client, item) -> client.getItemDefinition(item.getId()).getName().startsWith(str));
+		return this;
+	}
+
 	@Override
 	public abstract WidgetItem[] result(Client client);
 }
