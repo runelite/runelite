@@ -162,7 +162,15 @@ public class TitleToolbar extends JPanel
 	{
 		final int iconSize = TITLEBAR_SIZE - 6;
 		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
-		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
+		ImageIcon invertedIcon;
+		if (invertedIconImage == null)
+		{
+			invertedIcon = icon;
+		}
+		else
+		{
+			invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
+		}
 
 		button.setIcon(icon);
 		button.setRolloverIcon(invertedIcon);
@@ -171,6 +179,7 @@ public class TitleToolbar extends JPanel
 
 		add(button);
 		revalidate();
+		repaint();
 	}
 
 	@Override
@@ -178,5 +187,6 @@ public class TitleToolbar extends JPanel
 	{
 		super.remove(c);
 		revalidate();
+		repaint();
 	}
 }

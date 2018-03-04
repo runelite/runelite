@@ -26,9 +26,12 @@ package net.runelite.client.plugins.account;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.JButton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionClose;
 import net.runelite.client.account.AccountSession;
@@ -37,8 +40,7 @@ import net.runelite.api.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
@@ -57,24 +59,58 @@ public class AccountPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	private NavigationButton loginButton;
-	private NavigationButton logoutButton;
+	private JButton loginButton;
+	private JButton logoutButton;
+
+	private static final BufferedImage LOGIN_IMAGE, LOGOUT_IMAGE;
+
+	static
+	{
+		try
+		{
+			LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
+			LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		loginButton = new NavigationButton("Login", ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
-		logoutButton = new NavigationButton("Logout", ImageIO.read(getClass().getResourceAsStream("logout_icon.png")));
+		loginButton = new JButton();
+		loginButton.setToolTipText("Login");
 		loginButton.addActionListener(this::loginClick);
+
+		logoutButton = new JButton();
+		logoutButton.setToolTipText("Logout");
 		logoutButton.addActionListener(this::logoutClick);
-		ui.getPluginToolbar().addNavigation(sessionManager.getAccountSession() != null ? logoutButton : loginButton);
+
+		addAndRemoveButtons();
+	}
+
+	private void addAndRemoveButtons()
+	{
+		TitleToolbar tb = ui.getTitleToolbar();
+		tb.remove(loginButton);
+		tb.remove(logoutButton);
+		if (sessionManager.getAccountSession() == null)
+		{
+			tb.addButton(loginButton, LOGIN_IMAGE, LOGIN_IMAGE);
+		}
+		else
+		{
+			tb.addButton(logoutButton, LOGOUT_IMAGE, LOGOUT_IMAGE);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		ui.getPluginToolbar().removeNavigation(loginButton);
-		ui.getPluginToolbar().removeNavigation(logoutButton);
+		ui.getTitleToolbar().remove(loginButton);
+		ui.getTitleToolbar().remove(logoutButton);
 	}
 
 	private void loginClick(ActionEvent ae)
@@ -90,11 +126,7 @@ public class AccountPlugin extends Plugin
 	@Subscribe
 	public void onSessionClose(SessionClose e)
 	{
-		// Replace logout nav button with login
-		PluginToolbar navigationPanel = ui.getPluginToolbar();
-		navigationPanel.removeNavigation(logoutButton);
-		navigationPanel.addNavigation(loginButton);
-		navigationPanel.repaint();
+		addAndRemoveButtons();
 	}
 
 	@Subscribe
@@ -109,11 +141,7 @@ public class AccountPlugin extends Plugin
 
 		log.debug("Session opened as {}", session.getUsername());
 
-		// Replace login nav button with logout
-		PluginToolbar navigationPanel = ui.getPluginToolbar();
-		navigationPanel.removeNavigation(loginButton);
-		navigationPanel.addNavigation(logoutButton);
-		navigationPanel.repaint();
+		addAndRemoveButtons();
 	}
 
 }
