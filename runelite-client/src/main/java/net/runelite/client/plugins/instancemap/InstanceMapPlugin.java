@@ -25,12 +25,17 @@
 package net.runelite.client.plugins.instancemap;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import java.awt.Dimension;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -43,8 +48,12 @@ import net.runelite.client.ui.overlay.Overlay;
 public class InstanceMapPlugin extends Plugin
 {
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
-	private final WidgetMenuOption ascendOption = new WidgetMenuOption("Ascend", "Instance Map", WidgetInfo.WORLD_MAP);
-	private final WidgetMenuOption descendOption = new WidgetMenuOption("Descend", "Instance Map", WidgetInfo.WORLD_MAP);
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private InstanceMapInputListener inputListener;
 
 	@Inject
 	private InstanceMapOverlay overlay;
@@ -52,30 +61,44 @@ public class InstanceMapPlugin extends Plugin
 	@Inject
 	private MenuManager menuManager;
 
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(InstanceMapInputListener.class);
+	}
+
 	private void addCustomOptions()
 	{
 		menuManager.addManagedCustomMenu(openMapOption);
-		menuManager.addManagedCustomMenu(descendOption);
-		menuManager.addManagedCustomMenu(ascendOption);
 	}
 
 	private void removeCustomOptions()
 	{
 		menuManager.removeManagedCustomMenu(openMapOption);
-		menuManager.removeManagedCustomMenu(descendOption);
-		menuManager.removeManagedCustomMenu(ascendOption);
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		addCustomOptions();
+		keyManager.registerKeyListener(inputListener);
+		mouseManager.registerMouseListener(inputListener);
+		mouseManager.registerMouseWheelListener(inputListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		removeCustomOptions();
+		keyManager.unregisterKeyListener(inputListener);
+		mouseManager.registerMouseListener(inputListener);
+		mouseManager.unregisterMouseWheelListener(inputListener);
 	}
 
 	@Subscribe
@@ -105,24 +128,14 @@ public class InstanceMapPlugin extends Plugin
 
 		if (clickedOptionEquals(event, openMapOption))
 		{
-			overlay.setShowMap(!overlay.isMapShown());
-
 			if (overlay.isMapShown())
 			{
-				openMapOption.setMenuOption("Hide");
+				closeMap();
 			}
 			else
 			{
-				openMapOption.setMenuOption("Show");
+				showMap();
 			}
-		}
-		else if (clickedOptionEquals(event, ascendOption))
-		{
-			overlay.onAscend();
-		}
-		else if (clickedOptionEquals(event, descendOption))
-		{
-			overlay.onDescend();
 		}
 	}
 
@@ -130,5 +143,37 @@ public class InstanceMapPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	public boolean isMapShown()
+	{
+		return overlay.isMapShown();
+	}
+
+	public void showMap()
+	{
+		overlay.setShowMap(true);
+		openMapOption.setMenuOption("Hide");
+	}
+
+	public void closeMap()
+	{
+		overlay.setShowMap(false);
+		openMapOption.setMenuOption("Show");
+	}
+
+	public void ascendMap()
+	{
+		overlay.onAscend();
+	}
+
+	public void descendMap()
+	{
+		overlay.onDescend();
+	}
+
+	public Dimension getOverlaySize()
+	{
+		return overlay.getInstanceMapDimension();
 	}
 }
