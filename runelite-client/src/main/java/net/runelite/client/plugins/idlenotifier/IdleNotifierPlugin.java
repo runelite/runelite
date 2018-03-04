@@ -35,7 +35,9 @@ import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
 import static net.runelite.api.AnimationID.CRAFTING_SPINNING;
+import static net.runelite.api.AnimationID.FISHING_BARBTAIL_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_CAGE;
+import static net.runelite.api.AnimationID.FISHING_DRAGON_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_KARAMBWAN;
 import static net.runelite.api.AnimationID.FISHING_NET;
@@ -205,6 +207,8 @@ public class IdleNotifierPlugin extends Plugin
 			/* Fishing */
 			case FISHING_NET:
 			case FISHING_HARPOON:
+			case FISHING_BARBTAIL_HARPOON:
+			case FISHING_DRAGON_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
 			case FISHING_OILY_ROD:
