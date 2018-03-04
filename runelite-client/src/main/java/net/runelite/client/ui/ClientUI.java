@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -57,7 +58,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
-import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -65,6 +65,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -369,6 +370,18 @@ public class ClientUI extends JFrame
 		titleToolbar = new TitleToolbar(properties);
 
 		add(container);
+	}
+
+	@Override
+	public void requestFocus()
+	{
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			OSXUtil.requestFocus();
+		}
+
+		super.requestFocus();
+		giveClientFocus();
 	}
 
 	private void revalidateMinimumSize()
