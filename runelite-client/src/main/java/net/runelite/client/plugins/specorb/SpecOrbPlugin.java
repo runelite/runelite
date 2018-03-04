@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.specorb;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.Image;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -39,9 +37,6 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class SpecOrbPlugin extends Plugin
 {
-	private Image minimapOrbBackground;
-	private Image specialAttackIcon;
-
 	@Inject
 	private SpecOrbOverlay overlay;
 
@@ -49,13 +44,6 @@ public class SpecOrbPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		minimapOrbBackground = ImageIO.read(getClass().getResourceAsStream("minimap_orb_background.png"));
-		specialAttackIcon = ImageIO.read(getClass().getResourceAsStream("special_orb_icon.png"));
 	}
 
 	@Subscribe
@@ -68,15 +56,5 @@ public class SpecOrbPlugin extends Plugin
 	public void onTick(GameTick event)
 	{
 		overlay.onTick(event);
-	}
-
-	public Image getMinimapOrbBackground()
-	{
-		return minimapOrbBackground;
-	}
-
-	public Image getSpecialAttackIcon()
-	{
-		return specialAttackIcon;
 	}
 }
