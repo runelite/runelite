@@ -484,7 +484,7 @@ public final class class62 {
                   }
 
                   if(var2 == 26) {
-                     class29.method250();
+                     WorldMapRectangle.method250();
                   } else {
                      int var10;
                      Widget var19;

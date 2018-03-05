@@ -678,7 +678,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                   class317.method5715(TotalQuantityComparator.localPlayer, class81.intStack[class81.intStackSize], class81.intStack[class81.intStackSize + 1]);
                                                                                                                   var33 = 1;
                                                                                                                } else if(var7 == 3103) {
-                                                                                                                  class29.method250();
+                                                                                                                  WorldMapRectangle.method250();
                                                                                                                   var33 = 1;
                                                                                                                } else {
                                                                                                                   PacketNode var61;
@@ -816,7 +816,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                            var33 = 1;
                                                                                                                         } else {
                                                                                                                            var61 = WorldMapDecoration.method285(ClientPacket.field2423, Client.field899.field1470);
-                                                                                                                           var61.packetBuffer.putShort(1 + class29.getLength(var75) + class29.getLength(var90));
+                                                                                                                           var61.packetBuffer.putShort(1 + WorldMapRectangle.getLength(var75) + WorldMapRectangle.getLength(var90));
                                                                                                                            var61.packetBuffer.putString(var90);
                                                                                                                            var61.packetBuffer.putByte(var34);
                                                                                                                            var61.packetBuffer.putString(var75);
@@ -1949,7 +1949,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                      var32 = class241.method4553(var7, var3, var60);
                                                                                                                   } else if(var7 < 5400) {
                                                                                                                      if(var7 == 5306) {
-                                                                                                                        class81.intStack[++class81.intStackSize - 1] = class29.method249();
+                                                                                                                        class81.intStack[++class81.intStackSize - 1] = WorldMapRectangle.method249();
                                                                                                                         var33 = 1;
                                                                                                                      } else if(var7 == 5307) {
                                                                                                                         var34 = class81.intStack[--class81.intStackSize];
@@ -1961,7 +1961,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                               Client.isResized = false;
                                                                                                                            }
 
-                                                                                                                           if(class29.method249() == 1) {
+                                                                                                                           if(WorldMapRectangle.method249() == 1) {
                                                                                                                               class23.clientInstance.method891(765, 503);
                                                                                                                            } else {
                                                                                                                               class23.clientInstance.method891(7680, 2160);
@@ -1969,7 +1969,7 @@ public abstract class BoundingBox extends Node {
 
                                                                                                                            if(Client.gameState >= 25) {
                                                                                                                               var76 = WorldMapDecoration.method285(ClientPacket.field2415, Client.field899.field1470);
-                                                                                                                              var76.packetBuffer.putByte(class29.method249());
+                                                                                                                              var76.packetBuffer.putByte(WorldMapRectangle.method249());
                                                                                                                               var76.packetBuffer.putShort(GameEngine.canvasWidth);
                                                                                                                               var76.packetBuffer.putShort(class195.canvasHeight);
                                                                                                                               Client.field899.method2082(var76);

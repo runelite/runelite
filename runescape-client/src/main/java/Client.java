@@ -1685,7 +1685,7 @@ public final class Client extends GameEngine implements class302 {
                   class19.field327 = new int[104];
                   class318.field3919 = new int[104];
                   UnitPriceComparator.field321 = new int[104];
-                  class29.field430 = new int[104];
+                  WorldMapRectangle.field430 = new int[104];
                   UnitPriceComparator.field316 = new int[104];
                   var40 = Buffer.field2570.length;
                   class5.method16();
@@ -2014,7 +2014,7 @@ public final class Client extends GameEngine implements class302 {
 
       int var3;
       if((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field1061 && PendingSpawn.currentTimeMs() > field1061) {
-         var3 = class29.method249();
+         var3 = WorldMapRectangle.method249();
          field1061 = 0L;
          if(var3 >= 2) {
             isResized = true;
@@ -2022,7 +2022,7 @@ public final class Client extends GameEngine implements class302 {
             isResized = false;
          }
 
-         if(class29.method249() == 1) {
+         if(WorldMapRectangle.method249() == 1) {
             class23.clientInstance.method891(765, 503);
          } else {
             class23.clientInstance.method891(7680, 2160);
@@ -2030,7 +2030,7 @@ public final class Client extends GameEngine implements class302 {
 
          if(gameState >= 25) {
             PacketNode var4 = WorldMapDecoration.method285(ClientPacket.field2415, field899.field1470);
-            var4.packetBuffer.putByte(class29.method249());
+            var4.packetBuffer.putByte(WorldMapRectangle.method249());
             var4.packetBuffer.putShort(GameEngine.canvasWidth);
             var4.packetBuffer.putShort(class195.canvasHeight);
             field899.method2082(var4);
@@ -3202,7 +3202,7 @@ public final class Client extends GameEngine implements class302 {
                   }
 
                   PacketNode var22 = WorldMapDecoration.method285(ClientPacket.field2415, field899.field1470);
-                  var22.packetBuffer.putByte(class29.method249());
+                  var22.packetBuffer.putByte(WorldMapRectangle.method249());
                   var22.packetBuffer.putShort(GameEngine.canvasWidth);
                   var22.packetBuffer.putShort(class195.canvasHeight);
                   field899.method2082(var22);
@@ -3306,7 +3306,7 @@ public final class Client extends GameEngine implements class302 {
                      }
 
                      var21 = WorldMapDecoration.method285(ClientPacket.field2415, field899.field1470);
-                     var21.packetBuffer.putByte(class29.method249());
+                     var21.packetBuffer.putByte(WorldMapRectangle.method249());
                      var21.packetBuffer.putShort(GameEngine.canvasWidth);
                      var21.packetBuffer.putShort(class195.canvasHeight);
                      field899.method2082(var21);
@@ -4051,7 +4051,7 @@ public final class Client extends GameEngine implements class302 {
 
       if(class55.preferences != null) {
          try {
-            class53.method787(class23.clientInstance, "resize", new Object[]{Integer.valueOf(class29.method249())});
+            class53.method787(class23.clientInstance, "resize", new Object[]{Integer.valueOf(WorldMapRectangle.method249())});
          } catch (Throwable var4) {
             ;
          }
@@ -4901,7 +4901,7 @@ public final class Client extends GameEngine implements class302 {
                var17 = var3.method3618();
                widgetRoot = var17;
                this.method1214(false);
-               class29.method253(var17);
+               WorldMapRectangle.method253(var17);
                MapLabel.method367(widgetRoot);
 
                for(var5 = 0; var5 < 100; ++var5) {
@@ -5113,7 +5113,7 @@ public final class Client extends GameEngine implements class302 {
                if(var5 != widgetRoot) {
                   widgetRoot = var5;
                   this.method1214(false);
-                  class29.method253(widgetRoot);
+                  WorldMapRectangle.method253(widgetRoot);
                   MapLabel.method367(widgetRoot);
 
                   for(var50 = 0; var50 < 100; ++var50) {

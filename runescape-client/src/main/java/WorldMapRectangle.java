@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aw")
-public final class class29 {
+@Implements("WorldMapRectangle")
+public final class WorldMapRectangle {
    @ObfuscatedName("ol")
    @ObfuscatedSignature(
       signature = "Lcy;"
@@ -50,7 +52,7 @@ public final class class29 {
    @ObfuscatedSignature(
       signature = "(Lag;)V"
    )
-   class29(WorldMapManager var1) {
+   WorldMapRectangle(WorldMapManager var1) {
       this.this$0 = var1;
    }
 

@@ -77,7 +77,7 @@ public class class241 {
                var4 = class81.intStack[class81.intStackSize];
                var17 = class81.intStack[class81.intStackSize + 1];
                PacketNode var31 = WorldMapDecoration.method285(ClientPacket.field2472, Client.field899.field1470);
-               var31.packetBuffer.putByte(class29.getLength(var3) + 2);
+               var31.packetBuffer.putByte(WorldMapRectangle.getLength(var3) + 2);
                var31.packetBuffer.putString(var3);
                var31.packetBuffer.putByte(var4 - 1);
                var31.packetBuffer.putByte(var17);

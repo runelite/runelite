@@ -94,7 +94,7 @@ public class MapCacheArchiveNames
    static final void method560(String var0) {
       if(!var0.equals("")) {
          PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2375, Client.field899.field1470);
-         var1.packetBuffer.putByte(class29.getLength(var0));
+         var1.packetBuffer.putByte(WorldMapRectangle.getLength(var0));
          var1.packetBuffer.putString(var0);
          Client.field899.method2082(var1);
       }

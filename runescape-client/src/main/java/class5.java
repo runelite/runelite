@@ -61,12 +61,12 @@ final class class5 implements class0 {
    static void method16() {
       for(class80 var0 = (class80)class80.field1253.getFront(); var0 != null; var0 = (class80)class80.field1253.getNext()) {
          if(var0.field1247 != null) {
-            class29.field431.method2129(var0.field1247);
+            WorldMapRectangle.field431.method2129(var0.field1247);
             var0.field1247 = null;
          }
 
          if(var0.field1252 != null) {
-            class29.field431.method2129(var0.field1252);
+            WorldMapRectangle.field431.method2129(var0.field1252);
             var0.field1252 = null;
          }
       }

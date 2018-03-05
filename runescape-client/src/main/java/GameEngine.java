@@ -1127,7 +1127,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       var3.id = var1;
       var3.owner = var2;
       Client.componentTable.put(var3, (long)var0);
-      class29.method253(var1);
+      WorldMapRectangle.method253(var1);
       Widget var4 = class5.getWidget(var0);
       class171.method3363(var4);
       if(Client.field1014 != null) {

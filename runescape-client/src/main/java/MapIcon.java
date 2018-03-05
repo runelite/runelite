@@ -173,7 +173,7 @@ public class MapIcon {
    )
    static final void method559(String var0, int var1) {
       PacketNode var2 = WorldMapDecoration.method285(ClientPacket.field2405, Client.field899.field1470);
-      var2.packetBuffer.putByte(class29.getLength(var0) + 1);
+      var2.packetBuffer.putByte(WorldMapRectangle.getLength(var0) + 1);
       var2.packetBuffer.putString(var0);
       var2.packetBuffer.putShortLE(var1);
       Client.field899.method2082(var2);
@@ -280,7 +280,7 @@ public class MapIcon {
                   RawAudioNode var10 = var9.method2168().applyResampler(class57.field673);
                   class115 var11 = class115.method2363(var10, 100, var2);
                   var11.method2366(Client.unknownSoundValues1[var0] - 1);
-                  class29.field431.method2103(var11);
+                  WorldMapRectangle.field431.method2103(var11);
                }
 
                Client.unknownSoundValues2[var0] = -100;

@@ -66,7 +66,7 @@ final class WorldComparator implements Comparator {
                         RawAudioNode var8 = var7.method2168().applyResampler(class57.field673);
                         class115 var9 = class115.method2363(var8, 100, var6);
                         var9.method2366(-1);
-                        class29.field431.method2103(var9);
+                        WorldMapRectangle.field431.method2103(var9);
                         var4.field1247 = var9;
                      }
                   }
@@ -82,7 +82,7 @@ final class WorldComparator implements Comparator {
                         RawAudioNode var13 = var12.method2168().applyResampler(class57.field673);
                         class115 var10 = class115.method2363(var13, 100, var6);
                         var10.method2366(0);
-                        class29.field431.method2103(var10);
+                        WorldMapRectangle.field431.method2103(var10);
                         var4.field1252 = var10;
                         var4.field1251 = var4.field1248 + (int)(Math.random() * (double)(var4.field1249 - var4.field1248));
                      }
@@ -95,12 +95,12 @@ final class WorldComparator implements Comparator {
                }
             } else {
                if(var4.field1247 != null) {
-                  class29.field431.method2129(var4.field1247);
+                  WorldMapRectangle.field431.method2129(var4.field1247);
                   var4.field1247 = null;
                }
 
                if(var4.field1252 != null) {
-                  class29.field431.method2129(var4.field1252);
+                  WorldMapRectangle.field431.method2129(var4.field1252);
                   var4.field1252 = null;
                }
             }

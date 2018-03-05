@@ -167,8 +167,8 @@ public abstract class Timer {
                   class229.field2689 = var28;
                   class229.field2690 = var37;
                   ChatLineBuffer.soundSystem1 = MapIcon.method556(GameEngine.taskManager, 1, 2048);
-                  class29.field431 = new class100();
-                  ChatLineBuffer.soundSystem1.method2248(class29.field431);
+                  WorldMapRectangle.field431 = new class100();
+                  ChatLineBuffer.soundSystem1.method2248(WorldMapRectangle.field431);
                   class57.field673 = new Resampler(22050, KeyFocusListener.sampleRate);
                   class90.loadingText = "Prepared sound engine";
                   class90.loadingBarPercentage = 35;
@@ -251,7 +251,7 @@ public abstract class Timer {
                      IndexData var17 = class20.indexCache13;
                      class3.widgetIndex = var14;
                      BaseVarType.field30 = var15;
-                     class29.field428 = var16;
+                     WorldMapRectangle.field428 = var16;
                      Widget.field2818 = var17;
                      Widget.widgets = new Widget[class3.widgetIndex.size()][];
                      Widget.validInterfaces = new boolean[class3.widgetIndex.size()];

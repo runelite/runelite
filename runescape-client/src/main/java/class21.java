@@ -39,7 +39,7 @@ public class class21 {
       class19.field327 = null;
       class318.field3919 = null;
       UnitPriceComparator.field321 = null;
-      class29.field430 = null;
+      WorldMapRectangle.field430 = null;
       UnitPriceComparator.field316 = null;
    }
 

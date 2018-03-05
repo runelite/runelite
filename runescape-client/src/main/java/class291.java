@@ -34,7 +34,7 @@ public class class291 {
          Client.isResized = false;
       }
 
-      if(class29.method249() == 1) {
+      if(WorldMapRectangle.method249() == 1) {
          class23.clientInstance.method891(765, 503);
       } else {
          class23.clientInstance.method891(7680, 2160);
@@ -42,7 +42,7 @@ public class class291 {
 
       if(Client.gameState >= 25) {
          PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2415, Client.field899.field1470);
-         var1.packetBuffer.putByte(class29.method249());
+         var1.packetBuffer.putByte(WorldMapRectangle.method249());
          var1.packetBuffer.putShort(GameEngine.canvasWidth);
          var1.packetBuffer.putShort(class195.canvasHeight);
          Client.field899.method2082(var1);

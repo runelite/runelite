@@ -1199,7 +1199,7 @@ public class Widget extends Node {
          if(var5 != null) {
             return var5;
          } else {
-            var5 = class45.method640(class29.field428, var2, 0);
+            var5 = class45.method640(WorldMapRectangle.field428, var2, 0);
             if(var5 == null) {
                field2823 = true;
                return null;
@@ -1250,7 +1250,7 @@ public class Widget extends Node {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = WallObject.method3133(class29.field428, field2818, this.fontId, 0);
+            var1 = WallObject.method3133(WorldMapRectangle.field428, field2818, this.fontId, 0);
             if(var1 != null) {
                Widget_cachedFonts.put(var1, (long)this.fontId);
             } else {
@@ -1278,7 +1278,7 @@ public class Widget extends Node {
             if(var3 != null) {
                return var3;
             } else {
-               var3 = class45.method640(class29.field428, var2, 0);
+               var3 = class45.method640(WorldMapRectangle.field428, var2, 0);
                if(var3 != null) {
                   field2819.put(var3, (long)var2);
                } else {

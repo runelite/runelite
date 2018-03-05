@@ -184,7 +184,7 @@ public final class WorldMapManager {
       int var11 = Rasterizer2D.graphicsPixelsHeight;
       int[] var12 = new int[4];
       Rasterizer2D.copyDrawRegion(var12);
-      class29 var13 = this.method588(var1, var2, var3, var4);
+      WorldMapRectangle var13 = this.method588(var1, var2, var3, var4);
       float var14 = this.method568(var7 - var5, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       this.field558 = var15;
@@ -226,7 +226,7 @@ public final class WorldMapManager {
    )
    @Export("drawMapIcons")
    public final void drawMapIcons(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
-      class29 var14 = this.method588(var1, var2, var3, var4);
+      WorldMapRectangle var14 = this.method588(var1, var2, var3, var4);
       float var15 = this.method568(var7 - var5, var3 - var1);
       int var16 = (int)(var15 * 64.0F);
       int var17 = this.field562 + var1;
@@ -328,7 +328,7 @@ public final class WorldMapManager {
       if(!this.loaded) {
          return var11;
       } else {
-         class29 var12 = this.method588(var1, var2, var3, var4);
+         WorldMapRectangle var12 = this.method588(var1, var2, var3, var4);
          float var13 = this.method568(var7, var3 - var1);
          int var14 = (int)(var13 * 64.0F);
          int var15 = this.field562 + var1;
@@ -352,8 +352,8 @@ public final class WorldMapManager {
       signature = "(IIIIB)Law;",
       garbageValue = "8"
    )
-   class29 method588(int var1, int var2, int var3, int var4) {
-      class29 var5 = new class29(this);
+   WorldMapRectangle method588(int var1, int var2, int var3, int var4) {
+      WorldMapRectangle var5 = new WorldMapRectangle(this);
       int var6 = this.field562 + var1;
       int var7 = var2 + this.field559;
       int var8 = var3 + this.field562;
