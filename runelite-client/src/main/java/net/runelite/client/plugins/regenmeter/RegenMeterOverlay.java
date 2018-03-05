@@ -17,7 +17,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class RegenMeterOverlay extends Overlay {
+public class RegenMeterOverlay extends Overlay
+{
 	private final Client client;
 	private Instant timerStart = Instant.now();
 	private int lastHpAmount = 0;
@@ -65,8 +66,8 @@ public class RegenMeterOverlay extends Overlay {
 		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
 	}
 
-	private void CheckStatus(){
-
+	private void CheckStatus()
+	{
 		if (client.getBoostedSkillLevel(Skill.HITPOINTS) < lastHpAmount)
 		{
 			lastHpAmount = client.getBoostedSkillLevel(Skill.HITPOINTS);
