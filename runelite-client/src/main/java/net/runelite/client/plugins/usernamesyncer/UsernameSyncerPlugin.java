@@ -49,10 +49,18 @@ public class UsernameSyncerPlugin extends Plugin
 	@Inject
 	private UsernameSyncerConfig config;
 
+	private String usernameCache;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		applyUsername();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		client.getPreferences().setRememberedUsername(usernameCache);
 	}
 
 	@Provides
@@ -104,6 +112,12 @@ public class UsernameSyncerPlugin extends Plugin
 			if (Strings.isNullOrEmpty(username))
 			{
 				return;
+			}
+
+			// Save it only once
+			if (usernameCache == null)
+			{
+				usernameCache = client.getPreferences().getRememberedUsername();
 			}
 
 			client.getPreferences().setRememberedUsername(username);
