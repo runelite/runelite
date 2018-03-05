@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2018, Zimaya <https://github.com/Zimaya>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.regenmeter;
 
 import java.awt.Color;
@@ -5,12 +29,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Prayer;
-import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -20,10 +40,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 public class RegenMeterOverlay extends Overlay
 {
 	private final Client client;
-	private Instant timerStart = Instant.now();
-	private int lastHpAmount = 0;
-	private boolean rapidHealActive = false;
-	private float regenModifier = 1f;
+	private RegenTimer timer;
 
 	@Inject
 	public RegenMeterOverlay(Client client)
@@ -31,11 +48,7 @@ public class RegenMeterOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
-	}
-
-	public void onTick()
-	{
-		CheckStatus();
+		timer = new RegenTimer(client);
 	}
 
 	@Override
@@ -56,45 +69,9 @@ public class RegenMeterOverlay extends Overlay
 		int orbInnerX = (int) (bounds.getX() + 27);
 		int orbInnerY = (int) (bounds.getY() + 4);
 
-		long timeSinceStart = Duration.between(timerStart, Instant.now()).toMillis();
-
-		float tickProgress = timeSinceStart / 600f;
-
 		graphics.setColor(new Color(255, 255, 255, 100));
-		graphics.fillArc(orbInnerX, orbInnerY, 26, 26, 90, (int) (3.6f * tickProgress * regenModifier));
+		graphics.fillArc(orbInnerX, orbInnerY, 26, 26, 90, (int) (3.6f * timer.getProgress()));
 
-		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
-	}
-
-	private void CheckStatus()
-	{
-		if (client.getBoostedSkillLevel(Skill.HITPOINTS) < lastHpAmount)
-		{
-			lastHpAmount = client.getBoostedSkillLevel(Skill.HITPOINTS);
-		}
-
-		if (rapidHealActive)
-		{
-			if (!client.isPrayerActive(Prayer.RAPID_HEAL))
-			{
-				rapidHealActive = false;
-				timerStart = Instant.now();
-				regenModifier = 1f;
-				return;
-			}
-		}
-		else if (client.isPrayerActive(Prayer.RAPID_HEAL))
-		{
-			rapidHealActive = true;
-			timerStart = Instant.now();
-			regenModifier = 2f;
-			return;
-		}
-
-		if (client.getBoostedSkillLevel(Skill.HITPOINTS) > lastHpAmount)
-		{
-			lastHpAmount = client.getBoostedSkillLevel(Skill.HITPOINTS);
-			timerStart = Instant.now();
-		}
+		return null;
 	}
 }

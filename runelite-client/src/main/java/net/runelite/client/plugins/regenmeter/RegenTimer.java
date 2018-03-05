@@ -24,20 +24,62 @@
  */
 package net.runelite.client.plugins.regenmeter;
 
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import java.time.Duration;
+import java.time.Instant;
+import net.runelite.api.Client;
+import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 
-@PluginDescriptor(name = "Regeneration Meter")
-public class RegenMeterPlugin extends Plugin
+public class RegenTimer
 {
-	@Inject
-	private RegenMeterOverlay overlay;
+	private Client client;
+	private Instant startTime = Instant.now();
+	private int lastHpAmount;
+	private boolean rapidHealActive;
+	private float regenModifier = 1f;
 
-	@Override
-	public Overlay getOverlay()
+	RegenTimer(Client client)
 	{
-		return overlay;
+		this.client = client;
+	}
+
+	public float getProgress()
+	{
+		checkStatus();
+		long timeSinceStart = Duration.between(startTime, Instant.now()).toMillis();
+
+		return timeSinceStart / 600f * regenModifier;
+	}
+
+	private void checkStatus()
+	{
+		if (client.getBoostedSkillLevel(Skill.HITPOINTS) < lastHpAmount)
+		{
+			lastHpAmount = client.getBoostedSkillLevel(Skill.HITPOINTS);
+		}
+
+		if (rapidHealActive)
+		{
+			if (!client.isPrayerActive(Prayer.RAPID_HEAL))
+			{
+				rapidHealActive = false;
+				startTime = Instant.now();
+				regenModifier = 1f;
+				return;
+			}
+		}
+		else if (client.isPrayerActive(Prayer.RAPID_HEAL))
+		{
+			rapidHealActive = true;
+			startTime = Instant.now();
+			regenModifier = 2f;
+			return;
+		}
+
+		if (client.getBoostedSkillLevel(Skill.HITPOINTS) > lastHpAmount)
+		{
+			lastHpAmount = client.getBoostedSkillLevel(Skill.HITPOINTS);
+			startTime = Instant.now();
+		}
 	}
 }
