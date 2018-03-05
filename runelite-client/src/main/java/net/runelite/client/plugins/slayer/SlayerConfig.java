@@ -65,6 +65,16 @@ public interface SlayerConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "statTimeout",
+		name = "InfoBox Expiry (minutes)",
+		description = "Set the time until the InfoBox expires"
+	)
+	default int statTimeout()
+	{
+		return 5;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",
