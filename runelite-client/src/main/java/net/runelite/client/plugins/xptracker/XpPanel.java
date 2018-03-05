@@ -63,7 +63,7 @@ class XpPanel extends PluginPanel
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
 
-	private final JPanel goalPanel = new JPanel();
+	private final JPanel goalSetPanel = new JPanel();
 	private final Component goalPanelPad = Box.createRigidArea(new Dimension(0, 3));
 	private boolean isShowGoal = false;
 
@@ -162,10 +162,10 @@ class XpPanel extends PluginPanel
 		goalConfPanel.add(goalOK, c);
 
 		// create goal panel wrapper
-		goalPanel.setLayout(new BorderLayout());
-		goalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
-		goalPanel.add(goalConfPanel);
-		goalPanel.setVisible(false);
+		goalSetPanel.setLayout(new BorderLayout());
+		goalSetPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
+		goalSetPanel.add(goalConfPanel);
+		goalSetPanel.setVisible(false);
 		goalPanelPad.setVisible(false);
 
 		// create info and goal panel wrapper
@@ -173,11 +173,20 @@ class XpPanel extends PluginPanel
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
 		topPanel.add(totalPanel);
 		topPanel.add(goalPanelPad);
-		topPanel.add(goalPanel);
+		topPanel.add(goalSetPanel);
 
-		// create panel for xp trackers
+		// create panel for goals
+		final JPanel goalsPanel = new JPanel();
+		goalsPanel.setLayout(new GridLayout(0, 1, 0, 3));
+		// create panel for trackers
+		final JPanel trackersPanel = new JPanel();
+		trackersPanel.setLayout(new GridLayout(0, 1, 0, 3));
+
+		// create panel for all trackers
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new GridLayout(0, 1, 0, 3));
+		infoBoxPanel.add(goalsPanel);
+		infoBoxPanel.add(trackersPanel);
 
 		// complete plugin panel layout
 		final JPanel layoutPanel = new JPanel();
@@ -196,7 +205,7 @@ class XpPanel extends PluginPanel
 					break;
 				}
 
-				infoBoxes.put(skill, new XpInfoBox(client, config, infoBoxPanel, xpTrackerPlugin.getSkillXpInfo(skill), iconManager));
+				infoBoxes.put(skill, new XpInfoBox(client, config, goalsPanel, trackersPanel, xpTrackerPlugin.getSkillXpInfo(skill), iconManager));
 			}
 		}
 		catch (IOException e)
@@ -208,7 +217,7 @@ class XpPanel extends PluginPanel
 	void toggleGoalPanel()
 	{
 		isShowGoal = !isShowGoal;
-		goalPanel.setVisible(isShowGoal);
+		goalSetPanel.setVisible(isShowGoal);
 		goalPanelPad.setVisible(isShowGoal);
 	}
 

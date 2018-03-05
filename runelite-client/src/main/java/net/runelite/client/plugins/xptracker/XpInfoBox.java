@@ -53,7 +53,8 @@ class XpInfoBox extends JPanel
 
 	private final Client client;
 	private final XpTrackerConfig config;
-	private final JPanel panel;
+	private final JPanel goalsPanel;
+	private final JPanel trackersPanel;
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillXPInfo xpInfo;
 	private boolean goalSet = false;
@@ -65,11 +66,12 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsHr = new JLabel();
 	private final JLabel actions = new JLabel();
 
-	XpInfoBox(Client client, XpTrackerConfig config, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
+	XpInfoBox(Client client, XpTrackerConfig config, JPanel goalsPanel, JPanel trackersPanel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
 		this.config = config;
-		this.panel = panel;
+		this.goalsPanel = goalsPanel;
+		this.trackersPanel = trackersPanel;
 		this.xpInfo = xpInfo;
 
 		setLayout(new BorderLayout());
@@ -133,8 +135,7 @@ class XpInfoBox extends JPanel
 	{
 		goalSet = false;
 		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
-		panel.remove(this);
-		panel.revalidate();
+		showPanel(false);
 	}
 
 	void init()
@@ -179,15 +180,48 @@ class XpInfoBox extends JPanel
 		});
 	}
 
+	void showPanel(boolean show)
+	{
+		if(show)
+		{
+			if (goalSet)
+			{
+				// remove tracker if necessary
+				showPanel(false);
+				// add goal
+				if (getParent() != goalsPanel)
+				{
+					goalsPanel.add(this);
+					goalsPanel.revalidate();
+				}
+			}
+			else
+			{
+				// remove goal if necessary
+				showPanel(false);
+				// add tracker
+				if (getParent() != trackersPanel)
+				{
+					trackersPanel.add(this);
+					trackersPanel.revalidate();
+				}
+			}
+		}
+		else
+		{
+			// remove tracker / goal
+			goalsPanel.remove(this);
+			trackersPanel.remove(this);
+			goalsPanel.revalidate();
+			trackersPanel.revalidate();
+		}
+	}
+
 	private void panelRefresh(boolean updated)
 	{
 		if (updated)
 		{
-			if (getParent() != panel)
-			{
-				panel.add(this);
-				panel.revalidate();
-			}
+			showPanel(true);
 
 			xpHr.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
 			actions.setText(XpPanel.formatLine(xpInfo.getActions(), "actions"));
