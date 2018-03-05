@@ -38,5 +38,6 @@ public enum JewelleryType
 	PASSAGE,
 	RETURNING,
 	TCRYSTAL,
-	PHARAO
+	PHARAO,
+	WATERSKIN,
 }
