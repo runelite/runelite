@@ -4,6 +4,7 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedList;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -61,7 +62,8 @@ public abstract class class28 {
    @ObfuscatedSignature(
       signature = "[[[[Lau;"
    )
-   WorldMapDecoration[][][][] field417;
+   @Export("decorations")
+   WorldMapDecoration[][][][] decorations;
 
    class28() {
       new LinkedList();
@@ -129,7 +131,7 @@ public abstract class class28 {
          for(var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if(var9 != 0) {
-               WorldMapDecoration[] var14 = this.field417[var8][var1][var2] = new WorldMapDecoration[var9];
+               WorldMapDecoration[] var14 = this.decorations[var8][var1][var2] = new WorldMapDecoration[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
                   int var12 = var3.method3617();

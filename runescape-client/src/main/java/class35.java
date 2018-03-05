@@ -143,7 +143,7 @@ public class class35 {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
             for(int var9 = 0; var9 < var5.field410; ++var9) {
-               WorldMapDecoration[] var10 = var5.field417[var9][var6][var7];
+               WorldMapDecoration[] var10 = var5.decorations[var9][var6][var7];
                if(var10 != null && var10.length != 0) {
                   WorldMapDecoration[] var11 = var10;
 
@@ -529,7 +529,7 @@ public class class35 {
    )
    void method390(int var1, int var2, class28 var3, IndexedSprite[] var4) {
       for(int var5 = 0; var5 < var3.field410; ++var5) {
-         WorldMapDecoration[] var6 = var3.field417[var5][var1][var2];
+         WorldMapDecoration[] var6 = var3.decorations[var5][var1][var2];
          if(var6 != null && var6.length != 0) {
             WorldMapDecoration[] var7 = var6;
 
@@ -560,7 +560,7 @@ public class class35 {
    )
    void method391(int var1, int var2, class28 var3) {
       for(int var4 = 0; var4 < var3.field410; ++var4) {
-         WorldMapDecoration[] var5 = var3.field417[var4][var1][var2];
+         WorldMapDecoration[] var5 = var3.decorations[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
             WorldMapDecoration[] var6 = var5;
 
@@ -782,7 +782,7 @@ public class class35 {
       field496.set(0, var1, var2);
 
       for(int var4 = 0; var4 < var3.field410; ++var4) {
-         WorldMapDecoration[] var5 = var3.field417[var4][var1][var2];
+         WorldMapDecoration[] var5 = var3.decorations[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
             WorldMapDecoration[] var6 = var5;
 
