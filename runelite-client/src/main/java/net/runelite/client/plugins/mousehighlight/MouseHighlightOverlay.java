@@ -33,7 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TextTooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 class MouseHighlightOverlay extends Overlay
@@ -89,7 +89,7 @@ class MouseHighlightOverlay extends Overlay
 				}
 		}
 
-		tooltipManager.add(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
+		tooltipManager.add(new TextTooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
 	}
 }
