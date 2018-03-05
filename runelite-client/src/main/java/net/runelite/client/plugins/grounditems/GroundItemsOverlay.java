@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -69,52 +68,36 @@ public class GroundItemsOverlay extends Overlay
 	private static final int MAX_RANGE = 18;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
-	// Threshold for highlighting items as blue.
-	static final int LOW_VALUE = 20_000;
-	// Threshold for highlighting items as green.
-	private static final int MEDIUM_VALUE = 100_000;
-	// Threshold for highlighting items as amber.
-	private static final int HIGH_VALUE = 1_000_000;
-	// Threshold for highlighting items as pink.
-	private static final int INSANE_VALUE = 10_000_000;
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	// Regex for splitting the hidden items in the config.
-	static final String DELIMITER_REGEX = "\\s*,\\s*";
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 
 	private final Client client;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final GroundItemsPlugin plugin;
+	private final ItemManager itemManager;
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	public GroundItemsOverlay(Client client, GroundItemsConfig config)
+	public GroundItemsOverlay(Client client, GroundItemsConfig config, GroundItemsPlugin plugin, ItemManager itemManager)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.plugin = plugin;
+		this.itemManager = itemManager;
 		this.client = client;
 		this.config = config;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		// gets the hidden/highlighted items from the text box in the config
-		String configItems = config.getHiddenItems().toLowerCase();
-		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
-		// note: both of these lists are immutable
-		configItems = config.getHighlightItems().toLowerCase();
-		List<String> highlightedItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
+		final Region region = client.getRegion();
+		final Tile[][][] tiles = region.getTiles();
+		final FontMetrics fm = graphics.getFontMetrics();
+		final Player player = client.getLocalPlayer();
 
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
-		FontMetrics fm = graphics.getFontMetrics();
-
-		Player player = client.getLocalPlayer();
 		if (player == null || client.getViewportWidget() == null)
 		{
 			return null;
@@ -122,79 +105,34 @@ public class GroundItemsOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		int z = client.getPlane();
-		LocalPoint from = player.getLocalLocation();
+		final int z = client.getPlane();
+		final LocalPoint from = player.getLocalLocation();
 
-		int lowerX = max(0, from.getRegionX() - MAX_RANGE);
-		int lowerY = max(0, from.getRegionY() - MAX_RANGE);
+		final int lowerX = max(0, from.getRegionX() - MAX_RANGE);
+		final int lowerY = max(0, from.getRegionY() - MAX_RANGE);
 
-		int upperX = min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
-		int upperY = min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
+		final int upperX = min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
+		final int upperY = min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
 
 		for (int x = lowerX; x <= upperX; ++x)
 		{
 			for (int y = lowerY; y <= upperY; ++y)
 			{
-				Tile tile = tiles[z][x][y];
+				final Tile tile = tiles[z][x][y];
+
 				if (tile == null)
 				{
 					continue;
 				}
 
-				ItemLayer itemLayer = tile.getItemLayer();
+				final ItemLayer itemLayer = tile.getItemLayer();
+
 				if (itemLayer == null)
 				{
 					continue;
 				}
 
-				Node current = itemLayer.getBottom();
-				Map<Integer, Integer> items = new LinkedHashMap<>();
-				// adds the items on the ground to the ArrayList to be drawn
-				while (current instanceof Item)
-				{
-					Item item = (Item) current;
-					int itemId = item.getId();
-					int itemQuantity = item.getQuantity();
-					ItemComposition itemDefinition = itemManager.getItemComposition(itemId);
-
-					Integer currentQuantity = items.get(itemId);
-
-					String itemName = itemDefinition.getName().toLowerCase();
-					if (config.showHighlightedOnly() ? highlightedItems.contains(itemName) : !hiddenItems.contains(itemName))
-					{
-						if (itemDefinition.getNote() != -1)
-						{
-							itemId = itemDefinition.getLinkedNoteId();
-						}
-
-						int quantity = currentQuantity == null
-							? itemQuantity
-							: currentQuantity + itemQuantity;
-
-						ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
-
-						int gePrice, alchPrice;
-
-						if (itemId == COINS)
-						{
-							gePrice = quantity;
-							alchPrice = quantity;
-						}
-						else
-						{
-							gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
-							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
-						}
-						if (highlightedItems.contains(itemDefinition.getName().toLowerCase()) ||
-							gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
-							(alchPrice >= config.getHideUnderHAValue())))
-						{
-							items.put(itemId, quantity);
-						}
-					}
-
-					current = current.getNext();
-				}
+				Map<Integer, Integer> items = filterItems(itemLayer.getBottom());
 
 				// The bottom item is drawn first
 				List<Integer> itemIds = new ArrayList<>(items.keySet());
@@ -243,7 +181,7 @@ public class GroundItemsOverlay extends Overlay
 					{
 						int cost = itemPrice.getPrice() * quantity;
 
-						textColor = getCostColor(cost);
+						textColor = plugin.getCostColor(cost);
 
 						itemStringBuilder.append(" (EX: ")
 							.append(StackFormatter.quantityToStackSize(cost))
@@ -257,7 +195,7 @@ public class GroundItemsOverlay extends Overlay
 							.append(" gp)");
 					}
 
-					if (highlightedItems.contains(item.getName().toLowerCase()))
+					if (plugin.wildcardMatch(item.getName(), false))
 					{
 						textColor = config.highlightedColor();
 					}
@@ -280,29 +218,67 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	Color getCostColor(int cost)
+	/**
+	 * Filters ground items based on plugin configuration.
+	 * Removes hidden items, highlights highlighted items and applies price filters.
+	 * @param start root node to look for items
+	 * @return list of filtered ground items
+	 */
+	private Map<Integer, Integer> filterItems(Node start)
 	{
-		// set the color according to rarity, if possible
-		if (cost >= INSANE_VALUE) // 10,000,000 gp
-		{
-			return config.insaneValueColor();
-		}
-		else if (cost >= HIGH_VALUE) // 1,000,000 gp
-		{
-			return config.highValueColor();
-		}
-		else if (cost >= MEDIUM_VALUE) // 100,000 gp
-		{
-			return config.mediumValueColor();
-		}
-		else if (cost >= LOW_VALUE) // 20,000 gp
-		{
-			return config.lowValueColor();
-		}
-		else
-		{
-			return config.defaultColor();
-		}
-	}
+		final Map<Integer, Integer> items = new LinkedHashMap<>();
 
+		Node current = start;
+
+		// adds the items on the ground to the ArrayList to be drawn
+		while (current instanceof Item)
+		{
+			Item item = (Item) current;
+			int itemId = item.getId();
+			int itemQuantity = item.getQuantity();
+			ItemComposition itemDefinition = itemManager.getItemComposition(itemId);
+			Integer currentQuantity = items.get(itemId);
+			String itemName = itemDefinition.getName().toLowerCase();
+			final boolean isHighlighted = plugin.wildcardMatch(itemName, false);
+			final boolean isHidden = plugin.wildcardMatch(itemName, true);
+
+			if (config.showHighlightedOnly() ? isHighlighted : !isHidden)
+			{
+				if (itemDefinition.getNote() != -1)
+				{
+					itemId = itemDefinition.getLinkedNoteId();
+				}
+
+				int quantity = currentQuantity == null
+					? itemQuantity
+					: currentQuantity + itemQuantity;
+
+				ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
+
+				int gePrice, alchPrice;
+
+				if (itemId == COINS)
+				{
+					gePrice = quantity;
+					alchPrice = quantity;
+				}
+				else
+				{
+					gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
+					alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+				}
+
+				if (isHighlighted ||
+					gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
+					(alchPrice >= config.getHideUnderHAValue())))
+				{
+					items.put(itemId, quantity);
+				}
+			}
+
+			current = current.getNext();
+		}
+
+		return items;
+	}
 }

@@ -24,11 +24,16 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.base.Splitter;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -39,6 +44,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -52,20 +58,33 @@ import net.runelite.http.api.item.ItemPrice;
 )
 public class GroundItemsPlugin extends Plugin
 {
+	// Splitting the items in the config on commas
+	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
+	// Threshold for highlighting items as blue.
+	private static final int LOW_VALUE = 20_000;
+	// Threshold for highlighting items as green.
+	private static final int MEDIUM_VALUE = 100_000;
+	// Threshold for highlighting items as amber.
+	private static final int HIGH_VALUE = 1_000_000;
+	// Threshold for highlighting items as pink.
+	private static final int INSANE_VALUE = 10_000_000;
+
 	@Inject
 	private Client client;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
-	private ItemManager itemManager;
+	private GroundItemsOverlay overlay;
 
 	@Inject
 	private GroundItemsConfig config;
 
 	@Inject
-	private GroundItemsOverlay overlay;
+	private ItemManager itemManager;
+
+	private List<String> hiddenItems;
+	private List<String> highlightedItems;
+	private LoadingCache<String, Boolean> highlightedItemAssociations;
+	private LoadingCache<String, Boolean> hiddenItemAssociations;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -74,40 +93,50 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp()
+	{
+		updateConfig();
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		hiddenItems = null;
+		highlightedItems = null;
+		hiddenItemAssociations.cleanUp();
+		hiddenItemAssociations = null;
+		highlightedItemAssociations.cleanUp();
+		highlightedItemAssociations = null;
+	}
+
+	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
 	}
 
-	private ItemPrice getItemPrice(ItemComposition itemComposition)
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
 	{
-		if (itemComposition.getNote() != -1)
+		if (!event.getGroup().equals("grounditems"))
 		{
-			return itemManager.getItemPriceAsync(itemComposition.getLinkedNoteId());
+			return;
 		}
-		else
-		{
-			return itemManager.getItemPriceAsync(itemComposition.getId());
-		}
+
+		updateConfig();
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take")
-				&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
-			String hiddenItemsStr = config.getHiddenItems().toLowerCase();
-			List<String> hiddenItems = Arrays.asList(hiddenItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
-
-			String highlightItemsStr = config.getHighlightItems().toLowerCase();
-			List<String> highlightedItems = Arrays.asList(highlightItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
-
 			int itemId = event.getIdentifier();
 			ItemComposition itemComposition = client.getItemDefinition(itemId);
 			String name = itemComposition.getName().toLowerCase();
 
-			if (hiddenItems.contains(name))
+			if (wildcardMatch(name, true))
 			{
 				return;
 			}
@@ -141,12 +170,12 @@ public class GroundItemsPlugin extends Plugin
 
 			Color color = null;
 
-			if (cost >= GroundItemsOverlay.LOW_VALUE)
+			if (cost >= LOW_VALUE)
 			{
-				color = overlay.getCostColor(cost);
+				color = getCostColor(cost);
 			}
 
-			if (highlightedItems.contains(name))
+			if (wildcardMatch(name, false))
 			{
 				color = config.highlightedColor();
 			}
@@ -175,4 +204,93 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
+	private ItemPrice getItemPrice(ItemComposition itemComposition)
+	{
+		if (itemComposition.getNote() != -1)
+		{
+			return itemManager.getItemPriceAsync(itemComposition.getLinkedNoteId());
+		}
+		else
+		{
+			return itemManager.getItemPriceAsync(itemComposition.getId());
+		}
+	}
+
+
+	/**
+	 * Tries to find match in collection of items with wildcards
+	 * @param groundItem ground item
+	 * @param hidden if true search for hidden items, otherwise search for highlighted items
+	 * @return true if match was made
+	 */
+	boolean wildcardMatch(final String groundItem, boolean hidden)
+	{
+		if (hidden)
+		{
+			final Boolean isHidden = hiddenItemAssociations.getUnchecked(groundItem);
+			return isHidden != null ? isHidden : false;
+		}
+
+		final Boolean isHighlighted = highlightedItemAssociations.getUnchecked(groundItem);
+		return isHighlighted != null ? isHighlighted : false;
+	}
+
+	Color getCostColor(int cost)
+	{
+		// set the color according to rarity, if possible
+		if (cost >= INSANE_VALUE) // 10,000,000 gp
+		{
+			return config.insaneValueColor();
+		}
+		else if (cost >= HIGH_VALUE) // 1,000,000 gp
+		{
+			return config.highValueColor();
+		}
+		else if (cost >= MEDIUM_VALUE) // 100,000 gp
+		{
+			return config.mediumValueColor();
+		}
+		else if (cost >= LOW_VALUE) // 20,000 gp
+		{
+			return config.lowValueColor();
+		}
+		else
+		{
+			return config.defaultColor();
+		}
+	}
+
+	private void updateConfig()
+	{
+		// gets the hidden items from the text box in the config
+		hiddenItems = ImmutableList.copyOf(COMMA_SPLITTER
+			.splitToList(config.getHiddenItems().toLowerCase().trim()));
+
+		// gets the highlighted items from the text box in the config
+		highlightedItems = ImmutableList.copyOf(COMMA_SPLITTER
+			.splitToList(config.getHighlightItems().toLowerCase().trim()));
+
+		// cleanup previous association caches
+		if (hiddenItemAssociations != null)
+		{
+			hiddenItemAssociations.cleanUp();
+		}
+
+		if (highlightedItemAssociations != null)
+		{
+			highlightedItemAssociations.cleanUp();
+		}
+
+		// create new association caches
+		hiddenItemAssociations = CacheBuilder.newBuilder()
+			.maximumSize(512L)
+			.expireAfterAccess(1, TimeUnit.MINUTES)
+			.build(new WildcardNameAssociationLoader(hiddenItems));
+
+		highlightedItemAssociations = CacheBuilder.newBuilder()
+			.maximumSize(512L)
+			.expireAfterAccess(1, TimeUnit.MINUTES)
+			.build(new WildcardNameAssociationLoader(highlightedItems));
+
+	}
 }
