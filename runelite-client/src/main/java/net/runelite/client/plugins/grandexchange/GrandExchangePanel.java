@@ -25,32 +25,53 @@
 
 package net.runelite.client.plugins.grandexchange;
 
+import java.awt.BorderLayout;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.LinkBrowser;
 
 @Slf4j
 class GrandExchangePanel extends PluginPanel
 {
 	private static final int MAX_OFFERS = 8;
 
+	@Getter
+	private GrandExchangeSearchPanel searchPanel;
+
 	private GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
 
-	@Inject
-	GrandExchangePanel(ItemManager itemManager)
-	{
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	private JPanel offerPanel = new JPanel();
 
+	private JTabbedPane tabbedPane = new JTabbedPane();
+
+	@Inject
+	GrandExchangePanel(Client client, ItemManager itemManager, ScheduledExecutorService executor, LinkBrowser linkBrowser)
+	{
+		setLayout(new BorderLayout());
+		add(tabbedPane, BorderLayout.NORTH);
+
+		// Offer Panel
+		offerPanel.setLayout(new BoxLayout(offerPanel, BoxLayout.Y_AXIS));
 		for (int i = 0; i < offerSlotPanels.length; ++i)
 		{
 			offerSlotPanels[i] = new GrandExchangeOfferSlot(itemManager);
-			add(offerSlotPanels[i]);
+			offerPanel.add(offerSlotPanels[i]);
 		}
 
-		setVisible(true);
+		// Search Panel
+		searchPanel = new GrandExchangeSearchPanel(client, itemManager, executor, linkBrowser);
+
+		tabbedPane.addTab("Offers", offerPanel);
+		tabbedPane.addTab("Search", searchPanel);
 	}
 
 	void updateOffer(GrandExchangeOffer newOffer, int slot)
@@ -58,4 +79,14 @@ class GrandExchangePanel extends PluginPanel
 		offerSlotPanels[slot].updateOffer(newOffer);
 	}
 
+	void showSearch()
+	{
+		if (searchPanel.isShowing())
+		{
+			return;
+		}
+
+		tabbedPane.setSelectedComponent(searchPanel);
+		revalidate();
+	}
 }

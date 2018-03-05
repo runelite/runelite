@@ -31,6 +31,7 @@ import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -99,6 +100,16 @@ public class ChatHistoryPlugin extends Plugin
 			{
 				messageQueue.offer(queuedMessage);
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuOption().contains("Clear history"))
+		{
+			messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
+					e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 	}
 

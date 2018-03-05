@@ -68,6 +68,8 @@ public class HiscorePanel extends PluginPanel
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
 
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+
 	private static final HiscoreSkill[] SKILL_PANEL_ORDER = new HiscoreSkill[]
 	{
 		ATTACK, HITPOINTS, MINING,
@@ -255,8 +257,6 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		NumberFormat formatter = NumberFormat.getInstance();
-
 		String text;
 		switch (skillName)
 		{
@@ -272,8 +272,8 @@ public class HiscorePanel extends PluginPanel
 					result.getPrayer().getLevel()
 				);
 				text = "Skill: Combat" + System.lineSeparator()
-					+ "Exact Combat Level: " + formatter.format(combatLevel) + System.lineSeparator()
-					+ "Experience: " + formatter.format(result.getAttack().getExperience()
+					+ "Exact Combat Level: " + NUMBER_FORMATTER.format(combatLevel) + System.lineSeparator()
+					+ "Experience: " + NUMBER_FORMATTER.format(result.getAttack().getExperience()
 					+ result.getStrength().getExperience() + result.getDefence().getExperience()
 					+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 					+ result.getRanged().getExperience() + result.getPrayer().getExperience());
@@ -281,28 +281,28 @@ public class HiscorePanel extends PluginPanel
 			}
 			case "Clue Scrolls (all)":
 			{
-				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : formatter.format(result.getClueScrollAll().getRank());
+				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getClueScrollAll().getRank());
 				text = "Total Clue Scrolls Completed" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Rogue":
 			{
-				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : formatter.format(result.getBountyHunterRogue().getRank());
+				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getBountyHunterRogue().getRank());
 				text = "Bounty Hunter - Rogue Kills" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Hunter":
 			{
-				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : formatter.format(result.getBountyHunterHunter().getRank());
+				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getBountyHunterHunter().getRank());
 				text = "Bounty Hunter - Hunter Kills" + System.lineSeparator()
 						+ "Rank: " + rank;
 				break;
 			}
 			case "Last Man Standing":
 			{
-				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : formatter.format(result.getLastManStanding().getRank());
+				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getLastManStanding().getRank());
 				text = "Last Man Standing" + System.lineSeparator()
 						+ "Rank: " + rank;
 				break;
@@ -310,8 +310,8 @@ public class HiscorePanel extends PluginPanel
 			default:
 			{
 				Skill requestedSkill = result.getSkill(skill);
-				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getRank());
-				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getExperience());
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getExperience());
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
 					+ "Experience: " + exp;
@@ -434,7 +434,7 @@ public class HiscorePanel extends PluginPanel
 
 		// Clear details panel
 		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
-		details.setText("Click a skill for details");
+		details.setText("Hover over a skill for details");
 	}
 
 	private static String sanitize(String lookup)

@@ -84,8 +84,7 @@ public class ItemService
 	private static final int MAX_PENDING = 512;
 
 	private final Sql2o sql2o;
-	private final ConcurrentLinkedQueue<Integer> pendingPriceLookups = new ConcurrentLinkedQueue<>();
-	private final ConcurrentLinkedQueue<String> pendingSearches = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<PendingLookup> pendingLookups = new ConcurrentLinkedQueue<PendingLookup>();
 
 	@Autowired
 	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
@@ -362,56 +361,72 @@ public class ItemService
 		}
 	}
 
-	public void queueLookup(int itemId)
+	public void queuePriceLookup(int itemId)
 	{
-		if (pendingPriceLookups.size() >= MAX_PENDING)
+		if (pendingLookups.size() < MAX_PENDING)
 		{
-			return;
+			pendingLookups.add(new PendingLookup(itemId, PendingLookup.Type.PRICE));
 		}
-
-		pendingPriceLookups.add(itemId);
+		else
+		{
+			log.warn("Dropping pending price lookup for {}", itemId);
+		}
 	}
 
 	public void queueSearch(String search)
 	{
-		if (pendingSearches.size() >= MAX_PENDING)
+		if (pendingLookups.size() < MAX_PENDING)
 		{
-			return;
+			pendingLookups.add(new PendingLookup(search, PendingLookup.Type.SEARCH));
 		}
+		else
+		{
+			log.warn("Dropping pending search for {}", search);
+		}
+	}
 
-		pendingSearches.add(search);
+	public void queueItem(int itemId)
+	{
+		if (pendingLookups.size() < MAX_PENDING)
+		{
+			pendingLookups.add(new PendingLookup(itemId, PendingLookup.Type.ITEM));
+		}
+		else
+		{
+			log.warn("Dropping pending item lookup for {}", itemId);
+		}
 	}
 
 	@Scheduled(fixedDelay = 5000)
-	public void checkPrices()
+	public void check()
 	{
-		Integer itemId = pendingPriceLookups.poll();
-		if (itemId == null)
+		PendingLookup pendingLookup = pendingLookups.poll();
+		if (pendingLookup == null)
 		{
 			return;
 		}
 
-		fetchPrice(itemId);
+		switch (pendingLookup.getType())
+		{
+			case PRICE:
+				fetchPrice(pendingLookup.getItemId());
+				break;
+			case SEARCH:
+				try
+				{
+					RSSearch reSearch = fetchRSSearch(pendingLookup.getSearch());
+
+					batchInsertItems(reSearch);
+				}
+				catch (IOException ex)
+				{
+					log.warn("error while searching items", ex);
+				}
+				break;
+			case ITEM:
+				fetchItem(pendingLookup.getItemId());
+				break;
+		}
 	}
 
-	@Scheduled(fixedDelay = 5000)
-	public void checkSearches()
-	{
-		String search = pendingSearches.poll();
-		if (search == null)
-		{
-			return;
-		}
-
-		try
-		{
-			RSSearch reSearch = fetchRSSearch(search);
-
-			batchInsertItems(reSearch);
-		}
-		catch (IOException ex)
-		{
-			log.warn("error while searching items", ex);
-		}
-	}
 }

@@ -38,7 +38,10 @@ public class MouseManager
 
 	public void registerMouseListener(MouseListener mouseListener)
 	{
-		mouseListeners.add(mouseListener);
+		if (!mouseListeners.contains(mouseListener))
+		{
+			mouseListeners.add(mouseListener);
+		}
 	}
 
 	public void unregisterMouseListener(MouseListener mouseListener)
@@ -48,7 +51,10 @@ public class MouseManager
 
 	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener)
 	{
-		mouseWheelListeners.add(mouseWheelListener);
+		if (!mouseWheelListeners.contains(mouseWheelListener))
+		{
+			mouseWheelListeners.add(mouseWheelListener);
+		}
 	}
 
 	public void unregisterMouseWheelListener(MouseWheelListener mouseWheelListener)

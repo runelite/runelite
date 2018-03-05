@@ -71,6 +71,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class InstanceMapOverlay extends Overlay
 {
+	public static final Point OVERLAY_POSITION = new Point(10, 25);
+
 	/**
 	 * The size of tiles on the map. The way the client renders requires
 	 * this value to be 4. Changing this will break the method for rendering
@@ -115,6 +117,16 @@ class InstanceMapOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
+	}
+
+	public Dimension getInstanceMapDimension()
+	{
+		if (mapImage == null)
+		{
+			return null;
+		}
+
+		return new Dimension(mapImage.getWidth(), mapImage.getHeight());
 	}
 
 	public boolean isMapShown()
@@ -179,18 +191,14 @@ class InstanceMapOverlay extends Overlay
 			mapImage = drawMapImage(getTiles());
 		}
 
-		//Scale mapImage by the mapScaling to display a larger map.
-		graphics.drawImage(mapImage, 0, 0, (int) (mapImage.getWidth() * MAP_SCALING), (int) (mapImage.getHeight() * MAP_SCALING), 0, 0, mapImage.getWidth(), mapImage.getHeight(), null);
+		graphics.drawImage(mapImage, OVERLAY_POSITION.getX(), OVERLAY_POSITION.getY(), null);
 
 		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
 		}
 
-		Tile[][] tiles = getTiles();
-		Dimension mapOverlaySize = new Dimension(tiles.length * TILE_SIZE, tiles[0].length * TILE_SIZE);
-
-		return mapOverlaySize;
+		return getInstanceMapDimension();
 	}
 
 	/**
@@ -205,10 +213,12 @@ class InstanceMapOverlay extends Overlay
 		Tile[][] tiles = getTiles();
 		Point localPlayerPoint = new Point(playerLocation.getX(), (tiles[0].length - 1) - playerLocation.getY()); // flip the y value
 
+		int x = OVERLAY_POSITION.getX() + (int) (localPlayerPoint.getX() * TILE_SIZE * MAP_SCALING);
+		int y = OVERLAY_POSITION.getY() + (int) (localPlayerPoint.getY() * TILE_SIZE * MAP_SCALING);
 		graphics.setColor(dotColor);
-		graphics.fillRect((int) (localPlayerPoint.getX() * TILE_SIZE * MAP_SCALING), (int) (localPlayerPoint.getY() * TILE_SIZE * MAP_SCALING), PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
+		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
-		graphics.drawRect((int) (localPlayerPoint.getX() * TILE_SIZE * MAP_SCALING), (int) (localPlayerPoint.getY() * TILE_SIZE * MAP_SCALING), PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//outline
+		graphics.drawRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//outline
 	}
 
 	/**

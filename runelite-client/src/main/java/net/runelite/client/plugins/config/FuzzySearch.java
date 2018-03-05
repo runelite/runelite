@@ -34,6 +34,7 @@ import org.apache.commons.text.similarity.JaroWinklerDistance;
 public class FuzzySearch
 {
 	private static final JaroWinklerDistance FUZZY_SCORE = new JaroWinklerDistance();
+	private static final double STRING_OCCURRENCE_MULTIPLIER = 3d;
 
 	/**
 	 * Try to find a match and call callback on each match, sorted by score and filtered by average
@@ -44,23 +45,87 @@ public class FuzzySearch
 	 */
 	public static void findAndProcess(final String query, final Collection<String> entries, final Consumer<String> callback)
 	{
+		// Calculate score for each entry matching query
 		final Set<FuzzyMatch> matches = entries.stream()
-			.map(e -> new FuzzyMatch(FUZZY_SCORE.apply(query, e), e))
+			.map(entry -> new FuzzyMatch(
+				FUZZY_SCORE.apply(query, entry)
+					+ calculateStringOccurrenceBonus(entry, query)
+					* STRING_OCCURRENCE_MULTIPLIER,
+				entry))
 			.collect(Collectors.toSet());
 
+		// Calculate average score of the matches to filter out the less relevant ones
 		final double average = matches.stream().mapToDouble(m -> m.score).average().orElse(0);
+		final double max = matches.stream().mapToDouble(m -> m.score).max().orElse(0);
+		final double limit = Math.min(average * 1.7, max);
 
 		matches.stream()
-			.filter(m -> m.score > average * 1.5)
+			.filter(m -> m.score >= limit)
 			.sorted((left, right) -> Double.compare(right.score, left.score))
-			.map(m -> m.text)
+			.map(m -> m.value)
 			.forEach(callback);
+	}
+
+	/**
+	 * Calculates string occurrence bonus of query in the entry string
+	 * @param entry entry string
+	 * @param query query string
+	 * @return string occurrence bonus
+	 */
+	private static double calculateStringOccurrenceBonus(final String entry, final String query)
+	{
+		// Exit early, no occurrence bonus for too long query
+		if (query.length() > entry.length())
+		{
+			return 0;
+		}
+
+		// Create relaxed variants of the input (e.g lower cased ones)
+		final String relaxedEntry = entry.toLowerCase();
+		final String relaxedQuery = query.toLowerCase();
+
+		// Create base bonus
+		final double base = 1d / 6d;
+
+		if (entry.equals(query))
+		{
+			return base * 6d;
+		}
+		if (entry.equals(relaxedQuery) || relaxedQuery.equals(entry))
+		{
+			return base * 5d;
+		}
+		if (relaxedEntry.equals(relaxedQuery))
+		{
+			return base * 4d;
+		}
+		if (entry.contains(query))
+		{
+			return base * 3d;
+		}
+		if (entry.contains(relaxedQuery) || relaxedEntry.contains(query))
+		{
+			return base * 2d;
+		}
+		if (relaxedEntry.contains(relaxedQuery))
+		{
+			return base;
+		}
+
+		return 0;
 	}
 
 	@Value
 	private static class FuzzyMatch
 	{
+		/**
+		 * Score of the match
+		 */
 		double score;
-		String text;
+
+		/**
+		 * Match value
+		 */
+		String value;
 	}
 }
