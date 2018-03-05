@@ -38,7 +38,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Combat level"
+	name = "Combat Level"
 )
 public class CombatLevelPlugin extends Plugin
 {

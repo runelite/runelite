@@ -30,7 +30,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Mouse highlight"
+	name = "Mouse Tooltips"
 )
 public class MouseHighlightPlugin extends Plugin
 {

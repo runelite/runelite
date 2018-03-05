@@ -30,7 +30,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "motherlode",
-	name = "Motherlode",
+	name = "Motherlode Mine",
 	description = "Configuration for the motherlode plugin"
 )
 public interface MotherlodeConfig extends Config

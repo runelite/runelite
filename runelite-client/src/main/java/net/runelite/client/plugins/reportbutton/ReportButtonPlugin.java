@@ -46,7 +46,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Report Button Utilities"
+	name = "Report Button"
 )
 @Slf4j
 public class ReportButtonPlugin extends Plugin
