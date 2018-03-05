@@ -84,21 +84,22 @@ final class TotalQuantityComparator implements Comparator {
       signature = "(Lbq;B)V",
       garbageValue = "10"
    )
-   static void method99(World var0) {
-      if(var0.method1653() != Client.isMembers) {
-         Client.isMembers = var0.method1653();
-         boolean var1 = var0.method1653();
+   @Export("changeWorld")
+   static void changeWorld(World world) {
+      if(world.method1653() != Client.isMembers) {
+         Client.isMembers = world.method1653();
+         boolean var1 = world.method1653();
          if(var1 != ItemComposition.isMembersWorld) {
             class20.method152();
             ItemComposition.isMembersWorld = var1;
          }
       }
 
-      BoundingBox.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      class233.port1 = Client.socketType == 0?43594:var0.id + 40000;
-      class44.port2 = Client.socketType == 0?443:var0.id + 50000;
+      BoundingBox.host = world.address;
+      Client.world = world.id;
+      Client.flags = world.mask;
+      class233.port1 = Client.socketType == 0?43594:world.id + 40000;
+      class44.port2 = Client.socketType == 0?443:world.id + 50000;
       class247.myWorldPort = class233.port1;
    }
 }

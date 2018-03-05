@@ -27,6 +27,7 @@ package net.runelite.rs.api;
 import java.util.Map;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.World;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
 
@@ -202,6 +203,7 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getMenuActionParams1();
 
 	@Import("worldList")
+	@Override
 	RSWorld[] getWorldList();
 
 	@Import("addChatMessage")
@@ -495,4 +497,12 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("renderOverview")
 	RSRenderOverview getRenderOverview();
+
+	@Import("changeWorld")
+	@Override
+	void changeWorld(World world);
+
+	@Construct
+	@Override
+	RSWorld createWorld();
 }

@@ -256,7 +256,7 @@ public class UrlRequester implements Runnable {
                         class90.logoSprite.method5899(class90.field1336 + 382 - class90.logoSprite.originalWidth / 2, 18);
                      } else if(class90.field1368 != -1) {
                         World var5 = World.worldList[class90.field1368];
-                        TotalQuantityComparator.method99(var5);
+                        TotalQuantityComparator.changeWorld(var5);
                         class90.worldSelectShown = false;
                         class90.field1338.method6003(class90.field1336, 0);
                         class90.field1340.method6003(class90.field1336 + 382, 0);
