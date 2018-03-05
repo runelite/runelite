@@ -30,7 +30,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "hiscore",
-	name = "Hiscore",
+	name = "HiScore",
 	description = "Configuration for the hiscore plugin"
 )
 public interface HiscoreConfig extends Config

@@ -33,7 +33,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Player names"
+	name = "Player Indicators"
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {

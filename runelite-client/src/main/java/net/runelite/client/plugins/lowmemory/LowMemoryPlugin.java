@@ -33,7 +33,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Low detail",
+	name = "Low Detail",
 	enabledByDefault = false
 )
 public class LowMemoryPlugin extends Plugin
