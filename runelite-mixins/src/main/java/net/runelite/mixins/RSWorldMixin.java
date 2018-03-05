@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.World;
-import net.runelite.mapping.Import;
+import java.util.EnumSet;
+import net.runelite.api.WorldType;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSWorld;
 
-public interface RSWorld extends World
+@Mixin(RSWorld.class)
+public abstract class RSWorldMixin implements RSWorld
 {
-	@Import("mask")
-	int getMask();
-
-	@Import("mask")
-	void setMask(int mask);
-
-	@Import("playerCount")
+	@Inject
 	@Override
-	int getPlayerCount();
+	public EnumSet<WorldType> getTypes()
+	{
+		return WorldType.fromMask(getMask());
+	}
 
-	@Import("playerCount")
+	@Inject
 	@Override
-	void setPlayerCount(int playerCount);
-
-	@Import("location")
-	@Override
-	int getLocation();
-
-	@Import("location")
-	@Override
-	void setLocation(int location);
-
-	@Import("index")
-	@Override
-	int getIndex();
-
-	@Import("index")
-	@Override
-	void setIndex(int index);
-
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("id")
-	@Override
-	void setId(int id);
-
-	@Import("activity")
-	@Override
-	String getActivity();
-
-	@Import("activity")
-	@Override
-	void setActivity(String activity);
-
-	@Import("address")
-	@Override
-	String getAddress();
-
-	@Import("address")
-	@Override
-	void setAddress(String address);
+	public void setTypes(final EnumSet<WorldType> types)
+	{
+		setMask(WorldType.toMask(types));
+	}
 }

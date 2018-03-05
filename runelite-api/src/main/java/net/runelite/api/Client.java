@@ -114,6 +114,12 @@ public interface Client extends GameEngine
 
 	int[] getPlayerMenuTypes();
 
+	/**
+	 * Get list of all RuneScape worlds
+	 * @return world list
+	 */
+	World[] getWorldList();
+
 	MenuEntry[] getMenuEntries();
 
 	void setMenuEntries(MenuEntry[] entries);
@@ -308,4 +314,16 @@ public interface Client extends GameEngine
 	void setStretchedKeepAspectRatio(boolean state);
 
 	Dimension getStretchedDimensions();
+
+	/**
+	 * Changes world. Works only on login screen
+	 * @param world world
+	 */
+	void changeWorld(World world);
+
+	/**
+	 * Creates instance of new world
+	 * @return world
+	 */
+	World createWorld();
 }
