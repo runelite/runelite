@@ -25,7 +25,11 @@
 package net.runelite.http.api.worlds;
 
 import java.util.EnumSet;
+import lombok.Builder;
+import lombok.Value;
 
+@Value
+@Builder
 public class World
 {
 	private int id;
@@ -34,70 +38,4 @@ public class World
 	private String activity;
 	private int location;
 	private int players;
-
-	@Override
-	public String toString()
-	{
-		return "World{" + "id=" + id + ", types=" + types + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public EnumSet<WorldType> getTypes()
-	{
-		return types;
-	}
-
-	public void setTypes(EnumSet<WorldType> types)
-	{
-		this.types = types;
-	}
-
-	public String getAddress()
-	{
-		return address;
-	}
-
-	public void setAddress(String address)
-	{
-		this.address = address;
-	}
-
-	public String getActivity()
-	{
-		return activity;
-	}
-
-	public void setActivity(String activity)
-	{
-		this.activity = activity;
-	}
-
-	public int getLocation()
-	{
-		return location;
-	}
-
-	public void setLocation(int location)
-	{
-		this.location = location;
-	}
-
-	public int getPlayers()
-	{
-		return players;
-	}
-
-	public void setPlayers(int players)
-	{
-		this.players = players;
-	}
 }
