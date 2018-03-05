@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -80,7 +81,7 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(totalPanel, BorderLayout.NORTH);
 
 		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setLayout(new GridLayout(0, 1, 0, 3));
+		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 
 		try
