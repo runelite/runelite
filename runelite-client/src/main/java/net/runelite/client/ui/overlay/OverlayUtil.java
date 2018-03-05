@@ -35,6 +35,7 @@ import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
@@ -357,5 +358,12 @@ public class OverlayUtil
 		}
 
 		return result;
+	}
+
+	public static void renderClickboxOverlayImage(Graphics2D graphics, Area clickbox, BufferedImage image)
+	{
+		int x = (int) clickbox.getBounds().getCenterX() - image.getWidth() / 2;
+		int y = (int) clickbox.getBounds().getCenterY() - image.getHeight() / 2;
+		graphics.drawImage(image, x, y, null);
 	}
 }
