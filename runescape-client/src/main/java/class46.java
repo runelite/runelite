@@ -50,7 +50,7 @@ public class class46 extends class28 {
          super.field416 = new short[super.field410][64][64];
          super.field418 = new byte[super.field410][64][64];
          super.field419 = new byte[super.field410][64][64];
-         super.field417 = new class31[super.field410][64][64][];
+         super.field417 = new WorldMapDecoration[super.field410][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class36.field500.field501) {
             throw new IllegalStateException("");

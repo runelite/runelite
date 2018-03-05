@@ -62,7 +62,7 @@ public class class241 {
             }
 
             Client.field1065 = class81.intStack[class81.intStackSize + 2];
-            var5 = class31.method285(ClientPacket.field2464, Client.field899.field1470);
+            var5 = WorldMapDecoration.method285(ClientPacket.field2464, Client.field899.field1470);
             var5.packetBuffer.putByte(Client.publicChatMode);
             var5.packetBuffer.putByte(BoundingBox.field250.field3927);
             var5.packetBuffer.putByte(Client.field1065);
@@ -76,7 +76,7 @@ public class class241 {
                class81.intStackSize -= 2;
                var4 = class81.intStack[class81.intStackSize];
                var17 = class81.intStack[class81.intStackSize + 1];
-               PacketNode var31 = class31.method285(ClientPacket.field2472, Client.field899.field1470);
+               PacketNode var31 = WorldMapDecoration.method285(ClientPacket.field2472, Client.field899.field1470);
                var31.packetBuffer.putByte(class29.getLength(var3) + 2);
                var31.packetBuffer.putString(var3);
                var31.packetBuffer.putByte(var4 - 1);
@@ -253,7 +253,7 @@ public class class241 {
                      }
                   }
 
-                  PacketNode var8 = class31.method285(ClientPacket.field2426, Client.field899.field1470);
+                  PacketNode var8 = WorldMapDecoration.method285(ClientPacket.field2426, Client.field899.field1470);
                   var8.packetBuffer.putByte(0);
                   int var9 = var8.packetBuffer.offset;
                   var8.packetBuffer.putByte(var4);
@@ -338,7 +338,7 @@ public class class241 {
                      UrlRequester.scriptStringStackSize -= 2;
                      var3 = class81.scriptStringStack[UrlRequester.scriptStringStackSize];
                      String var38 = class81.scriptStringStack[UrlRequester.scriptStringStackSize + 1];
-                     var5 = class31.method285(ClientPacket.field2407, Client.field899.field1470);
+                     var5 = WorldMapDecoration.method285(ClientPacket.field2407, Client.field899.field1470);
                      var5.packetBuffer.putShort(0);
                      var20 = var5.packetBuffer.offset;
                      var5.packetBuffer.putString(var3);
@@ -508,7 +508,7 @@ public class class241 {
                            }
                         }
 
-                        PacketNode var19 = class31.method285(ClientPacket.field2468, Client.field899.field1470);
+                        PacketNode var19 = WorldMapDecoration.method285(ClientPacket.field2468, Client.field899.field1470);
                         var19.packetBuffer.putByte(var3.length() + 1);
                         var19.packetBuffer.putString(var3);
                         Client.field899.method2082(var19);

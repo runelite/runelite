@@ -750,20 +750,20 @@ public abstract class BoundingBox extends Node {
                                                                                                                         var15 = Client.method1623(var55);
                                                                                                                      }
 
-                                                                                                                     var61 = class31.method285(ClientPacket.field2393, Client.field899.field1470);
+                                                                                                                     var61 = WorldMapDecoration.method285(ClientPacket.field2393, Client.field899.field1470);
                                                                                                                      var61.packetBuffer.putInt(var15);
                                                                                                                      Client.field899.method2082(var61);
                                                                                                                      var33 = 1;
                                                                                                                   } else if(var7 == 3105) {
                                                                                                                      var55 = class81.scriptStringStack[--UrlRequester.scriptStringStackSize];
-                                                                                                                     var76 = class31.method285(ClientPacket.field2399, Client.field899.field1470);
+                                                                                                                     var76 = WorldMapDecoration.method285(ClientPacket.field2399, Client.field899.field1470);
                                                                                                                      var76.packetBuffer.putByte(var55.length() + 1);
                                                                                                                      var76.packetBuffer.putString(var55);
                                                                                                                      Client.field899.method2082(var76);
                                                                                                                      var33 = 1;
                                                                                                                   } else if(var7 == 3106) {
                                                                                                                      var55 = class81.scriptStringStack[--UrlRequester.scriptStringStackSize];
-                                                                                                                     var76 = class31.method285(ClientPacket.field2414, Client.field899.field1470);
+                                                                                                                     var76 = WorldMapDecoration.method285(ClientPacket.field2414, Client.field899.field1470);
                                                                                                                      var76.packetBuffer.putByte(var55.length() + 1);
                                                                                                                      var76.packetBuffer.putString(var55);
                                                                                                                      Client.field899.method2082(var76);
@@ -801,7 +801,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                         var33 = 1;
                                                                                                                      } else if(var7 == 3115) {
                                                                                                                         var34 = class81.intStack[--class81.intStackSize];
-                                                                                                                        var76 = class31.method285(ClientPacket.field2434, Client.field899.field1470);
+                                                                                                                        var76 = WorldMapDecoration.method285(ClientPacket.field2434, Client.field899.field1470);
                                                                                                                         var76.packetBuffer.putShort(var34);
                                                                                                                         Client.field899.method2082(var76);
                                                                                                                         var33 = 1;
@@ -815,7 +815,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                         } else if(var90.length() > 500) {
                                                                                                                            var33 = 1;
                                                                                                                         } else {
-                                                                                                                           var61 = class31.method285(ClientPacket.field2423, Client.field899.field1470);
+                                                                                                                           var61 = WorldMapDecoration.method285(ClientPacket.field2423, Client.field899.field1470);
                                                                                                                            var61.packetBuffer.putShort(1 + class29.getLength(var75) + class29.getLength(var90));
                                                                                                                            var61.packetBuffer.putString(var90);
                                                                                                                            var61.packetBuffer.putByte(var34);
@@ -899,22 +899,22 @@ public abstract class BoundingBox extends Node {
                                                                                                                         if(var37 != null && var37 != TotalQuantityComparator.localPlayer && var37.name != null && var37.name.equals(var36)) {
                                                                                                                            PacketNode var38;
                                                                                                                            if(var34 == 1) {
-                                                                                                                              var38 = class31.method285(ClientPacket.field2450, Client.field899.field1470);
+                                                                                                                              var38 = WorldMapDecoration.method285(ClientPacket.field2450, Client.field899.field1470);
                                                                                                                               var38.packetBuffer.method3607(0);
                                                                                                                               var38.packetBuffer.method3754(var59[var20]);
                                                                                                                               Client.field899.method2082(var38);
                                                                                                                            } else if(var34 == 4) {
-                                                                                                                              var38 = class31.method285(ClientPacket.field2441, Client.field899.field1470);
+                                                                                                                              var38 = WorldMapDecoration.method285(ClientPacket.field2441, Client.field899.field1470);
                                                                                                                               var38.packetBuffer.putShort(var59[var20]);
                                                                                                                               var38.packetBuffer.putByte(0);
                                                                                                                               Client.field899.method2082(var38);
                                                                                                                            } else if(var34 == 6) {
-                                                                                                                              var38 = class31.method285(ClientPacket.field2413, Client.field899.field1470);
+                                                                                                                              var38 = WorldMapDecoration.method285(ClientPacket.field2413, Client.field899.field1470);
                                                                                                                               var38.packetBuffer.putShort(var59[var20]);
                                                                                                                               var38.packetBuffer.method3596(0);
                                                                                                                               Client.field899.method2082(var38);
                                                                                                                            } else if(var34 == 7) {
-                                                                                                                              var38 = class31.method285(ClientPacket.field2456, Client.field899.field1470);
+                                                                                                                              var38 = WorldMapDecoration.method285(ClientPacket.field2456, Client.field899.field1470);
                                                                                                                               var38.packetBuffer.method3607(0);
                                                                                                                               var38.packetBuffer.method3754(var59[var20]);
                                                                                                                               Client.field899.method2082(var38);
@@ -1367,7 +1367,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                         MapCacheArchiveNames.method560(var55);
                                                                                                                         var33 = 1;
                                                                                                                      } else if(var7 == 3620) {
-                                                                                                                        PacketNode var64 = class31.method285(ClientPacket.field2375, Client.field899.field1470);
+                                                                                                                        PacketNode var64 = WorldMapDecoration.method285(ClientPacket.field2375, Client.field899.field1470);
                                                                                                                         var64.packetBuffer.putByte(0);
                                                                                                                         Client.field899.method2082(var64);
                                                                                                                         var33 = 1;
@@ -1968,7 +1968,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                            }
 
                                                                                                                            if(Client.gameState >= 25) {
-                                                                                                                              var76 = class31.method285(ClientPacket.field2415, Client.field899.field1470);
+                                                                                                                              var76 = WorldMapDecoration.method285(ClientPacket.field2415, Client.field899.field1470);
                                                                                                                               var76.packetBuffer.putByte(class29.method249());
                                                                                                                               var76.packetBuffer.putShort(GameEngine.canvasWidth);
                                                                                                                               var76.packetBuffer.putShort(class195.canvasHeight);

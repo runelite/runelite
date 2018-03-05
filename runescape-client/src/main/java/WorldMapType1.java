@@ -460,7 +460,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          Client.queuedSoundEffectCount = 0;
          Client.field1092 = false;
          Resampler.cameraX -= var5 << 7;
-         class31.cameraY -= var6 << 7;
+         WorldMapDecoration.cameraY -= var6 << 7;
          field443 -= var5 << 7;
          class171.field2218 -= var6 << 7;
          Client.field1073 = -1;

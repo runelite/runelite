@@ -217,7 +217,7 @@ public class class234 extends TaskDataNode {
 
       Resampler.cameraX = var0 - var8;
       class49.cameraZ = var1 - var9;
-      class31.cameraY = var2 - var10;
+      WorldMapDecoration.cameraY = var2 - var10;
       GameCanvas.cameraPitch = var3;
       IndexDataBase.cameraYaw = var4;
       if(Client.field927 == 1 && Client.rights >= 2 && Client.gameCycle % 50 == 0 && (WorldMapType1.field443 >> 7 != TotalQuantityComparator.localPlayer.x >> 7 || class171.field2218 >> 7 != TotalQuantityComparator.localPlayer.y >> 7)) {

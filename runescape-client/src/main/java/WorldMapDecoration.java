@@ -1,10 +1,13 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("au")
-public class class31 {
+@Implements("WorldMapDecoration")
+public class WorldMapDecoration
+{
    @ObfuscatedName("gx")
    @ObfuscatedGetter(
       intValue = 1810193937
@@ -35,7 +38,7 @@ public class class31 {
    @Export("rotation")
    final int rotation;
 
-   class31(int var1, int var2, int var3) {
+   WorldMapDecoration(int var1, int var2, int var3) {
       this.objectDefinitionId = var1;
       this.decoration = var2;
       this.rotation = var3;

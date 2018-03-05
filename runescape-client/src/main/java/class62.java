@@ -125,7 +125,7 @@ public final class class62 {
          Client.field953 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = class31.method285(ClientPacket.field2381, Client.field899.field1470);
+         var8 = WorldMapDecoration.method285(ClientPacket.field2381, Client.field899.field1470);
          var8.packetBuffer.putShort(var3 >> 14 & 32767);
          var8.packetBuffer.method3746(MapIcon.selectedItemIndex);
          var8.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
@@ -141,7 +141,7 @@ public final class class62 {
          Client.field953 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = class31.method285(ClientPacket.field2394, Client.field899.field1470);
+         var8 = WorldMapDecoration.method285(ClientPacket.field2394, Client.field899.field1470);
          var8.packetBuffer.method3754(Enum.baseY + var1);
          var8.packetBuffer.method3754(Client.field1042);
          var8.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
@@ -156,7 +156,7 @@ public final class class62 {
          Client.field953 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = class31.method285(ClientPacket.field2440, Client.field899.field1470);
+         var8 = WorldMapDecoration.method285(ClientPacket.field2440, Client.field899.field1470);
          var8.packetBuffer.method3754(var3 >> 14 & 32767);
          var8.packetBuffer.putShort(Enum.baseY + var1);
          var8.packetBuffer.method3616(var0 + WorldMapType1.baseX);
@@ -169,7 +169,7 @@ public final class class62 {
          Client.field953 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = class31.method285(ClientPacket.field2387, Client.field899.field1470);
+         var8 = WorldMapDecoration.method285(ClientPacket.field2387, Client.field899.field1470);
          var8.packetBuffer.method3746(var0 + WorldMapType1.baseX);
          var8.packetBuffer.method3746(Enum.baseY + var1);
          var8.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
@@ -182,7 +182,7 @@ public final class class62 {
          Client.field953 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = class31.method285(ClientPacket.field2454, Client.field899.field1470);
+         var8 = WorldMapDecoration.method285(ClientPacket.field2454, Client.field899.field1470);
          var8.packetBuffer.method3754(var3 >> 14 & 32767);
          var8.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
          var8.packetBuffer.method3746(var0 + WorldMapType1.baseX);
@@ -195,7 +195,7 @@ public final class class62 {
          Client.field953 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = class31.method285(ClientPacket.field2403, Client.field899.field1470);
+         var8 = WorldMapDecoration.method285(ClientPacket.field2403, Client.field899.field1470);
          var8.packetBuffer.method3754(var0 + WorldMapType1.baseX);
          var8.packetBuffer.method3746(Enum.baseY + var1);
          var8.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
@@ -213,7 +213,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2382, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2382, Client.field899.field1470);
                var9.packetBuffer.method3626(class71.field820);
                var9.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
                var9.packetBuffer.putShort(var3);
@@ -230,7 +230,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2390, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2390, Client.field899.field1470);
                var9.packetBuffer.method3626(WidgetNode.field785);
                var9.packetBuffer.method3616(Client.field1042);
                var9.packetBuffer.method3754(var3);
@@ -246,7 +246,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2397, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2397, Client.field899.field1470);
                var9.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
                var9.packetBuffer.method3746(var3);
                Client.field899.method2082(var9);
@@ -260,7 +260,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2412, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2412, Client.field899.field1470);
                var9.packetBuffer.method3607(KeyFocusListener.keyPressed[82]?1:0);
                var9.packetBuffer.putShort(var3);
                Client.field899.method2082(var9);
@@ -274,7 +274,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2465, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2465, Client.field899.field1470);
                var9.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
                var9.packetBuffer.method3754(var3);
                Client.field899.method2082(var9);
@@ -288,7 +288,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2417, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2417, Client.field899.field1470);
                var9.packetBuffer.method3616(var3);
                var9.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
                Client.field899.method2082(var9);
@@ -302,7 +302,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var9 = class31.method285(ClientPacket.field2408, Client.field899.field1470);
+               var9 = WorldMapDecoration.method285(ClientPacket.field2408, Client.field899.field1470);
                var9.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
                var9.packetBuffer.method3754(var3);
                Client.field899.method2082(var9);
@@ -318,7 +318,7 @@ public final class class62 {
                   Client.field953 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  var9 = class31.method285(ClientPacket.field2462, Client.field899.field1470);
+                  var9 = WorldMapDecoration.method285(ClientPacket.field2462, Client.field899.field1470);
                   var9.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
                   var9.packetBuffer.method3746(var3);
                   var9.packetBuffer.method3754(MapIcon.selectedItemIndex);
@@ -335,7 +335,7 @@ public final class class62 {
                   Client.field953 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  var9 = class31.method285(ClientPacket.field2443, Client.field899.field1470);
+                  var9 = WorldMapDecoration.method285(ClientPacket.field2443, Client.field899.field1470);
                   var9.packetBuffer.putInt(WidgetNode.field785);
                   var9.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
                   var9.packetBuffer.method3616(var3);
@@ -349,7 +349,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2378, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2378, Client.field899.field1470);
                var8.packetBuffer.method3616(var3);
                var8.packetBuffer.method3746(Script.field1438);
                var8.packetBuffer.method3754(Enum.baseY + var1);
@@ -365,7 +365,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2420, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2420, Client.field899.field1470);
                var8.packetBuffer.method3626(WidgetNode.field785);
                var8.packetBuffer.method3746(Client.field1042);
                var8.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
@@ -380,7 +380,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2428, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2428, Client.field899.field1470);
                var8.packetBuffer.putShort(var3);
                var8.packetBuffer.method3746(var0 + WorldMapType1.baseX);
                var8.packetBuffer.method3616(Enum.baseY + var1);
@@ -393,7 +393,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2419, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2419, Client.field899.field1470);
                var8.packetBuffer.putShort(var0 + WorldMapType1.baseX);
                var8.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
                var8.packetBuffer.putShort(var3);
@@ -406,7 +406,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2400, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2400, Client.field899.field1470);
                var8.packetBuffer.method3616(var3);
                var8.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
                var8.packetBuffer.method3746(var0 + WorldMapType1.baseX);
@@ -419,7 +419,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2392, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2392, Client.field899.field1470);
                var8.packetBuffer.method3746(var0 + WorldMapType1.baseX);
                var8.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
                var8.packetBuffer.method3754(var3);
@@ -432,7 +432,7 @@ public final class class62 {
                Client.field953 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = class31.method285(ClientPacket.field2467, Client.field899.field1470);
+               var8 = WorldMapDecoration.method285(ClientPacket.field2467, Client.field899.field1470);
                var8.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
                var8.packetBuffer.method3754(var0 + WorldMapType1.baseX);
                var8.packetBuffer.putShort(Enum.baseY + var1);
@@ -455,7 +455,7 @@ public final class class62 {
                   }
 
                   if(var13) {
-                     var14 = class31.method285(ClientPacket.field2432, Client.field899.field1470);
+                     var14 = WorldMapDecoration.method285(ClientPacket.field2432, Client.field899.field1470);
                      var14.packetBuffer.putInt(var1);
                      Client.field899.method2082(var14);
                   }
@@ -489,7 +489,7 @@ public final class class62 {
                      int var10;
                      Widget var19;
                      if(var2 == 28) {
-                        var8 = class31.method285(ClientPacket.field2432, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2432, Client.field899.field1470);
                         var8.packetBuffer.putInt(var1);
                         Client.field899.method2082(var8);
                         var19 = class5.getWidget(var1);
@@ -499,7 +499,7 @@ public final class class62 {
                            class149.method3193(var10);
                         }
                      } else if(var2 == 29) {
-                        var8 = class31.method285(ClientPacket.field2432, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2432, Client.field899.field1470);
                         var8.packetBuffer.putInt(var1);
                         Client.field899.method2082(var8);
                         var19 = class5.getWidget(var1);
@@ -517,7 +517,7 @@ public final class class62 {
                            class171.method3363(Client.field1014);
                         }
                      } else if(var2 == 31) {
-                        var8 = class31.method285(ClientPacket.field2435, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2435, Client.field899.field1470);
                         var8.packetBuffer.method3790(var1);
                         var8.packetBuffer.putShort(MapIcon.selectedItemIndex);
                         var8.packetBuffer.method3746(var3);
@@ -529,7 +529,7 @@ public final class class62 {
                         MapLabel.field477 = class5.getWidget(var1);
                         Client.pressedItemIndex = var0;
                      } else if(var2 == 32) {
-                        var8 = class31.method285(ClientPacket.field2459, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2459, Client.field899.field1470);
                         var8.packetBuffer.method3746(var0);
                         var8.packetBuffer.method3746(Client.field1042);
                         var8.packetBuffer.method3625(var1);
@@ -540,7 +540,7 @@ public final class class62 {
                         MapLabel.field477 = class5.getWidget(var1);
                         Client.pressedItemIndex = var0;
                      } else if(var2 == 33) {
-                        var8 = class31.method285(ClientPacket.field2438, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2438, Client.field899.field1470);
                         var8.packetBuffer.method3616(var3);
                         var8.packetBuffer.putShort(var0);
                         var8.packetBuffer.method3625(var1);
@@ -549,7 +549,7 @@ public final class class62 {
                         MapLabel.field477 = class5.getWidget(var1);
                         Client.pressedItemIndex = var0;
                      } else if(var2 == 34) {
-                        var8 = class31.method285(ClientPacket.field2398, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2398, Client.field899.field1470);
                         var8.packetBuffer.putInt(var1);
                         var8.packetBuffer.method3754(var0);
                         var8.packetBuffer.method3616(var3);
@@ -558,7 +558,7 @@ public final class class62 {
                         MapLabel.field477 = class5.getWidget(var1);
                         Client.pressedItemIndex = var0;
                      } else if(var2 == 35) {
-                        var8 = class31.method285(ClientPacket.field2429, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2429, Client.field899.field1470);
                         var8.packetBuffer.method3616(var3);
                         var8.packetBuffer.method3746(var0);
                         var8.packetBuffer.method3625(var1);
@@ -567,7 +567,7 @@ public final class class62 {
                         MapLabel.field477 = class5.getWidget(var1);
                         Client.pressedItemIndex = var0;
                      } else if(var2 == 36) {
-                        var8 = class31.method285(ClientPacket.field2410, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2410, Client.field899.field1470);
                         var8.packetBuffer.method3625(var1);
                         var8.packetBuffer.method3754(var3);
                         var8.packetBuffer.method3616(var0);
@@ -576,7 +576,7 @@ public final class class62 {
                         MapLabel.field477 = class5.getWidget(var1);
                         Client.pressedItemIndex = var0;
                      } else if(var2 == 37) {
-                        var8 = class31.method285(ClientPacket.field2442, Client.field899.field1470);
+                        var8 = WorldMapDecoration.method285(ClientPacket.field2442, Client.field899.field1470);
                         var8.packetBuffer.putShort(var3);
                         var8.packetBuffer.method3754(var0);
                         var8.packetBuffer.method3625(var1);
@@ -602,7 +602,7 @@ public final class class62 {
                         }
 
                         if(var2 == 39) {
-                           var8 = class31.method285(ClientPacket.field2401, Client.field899.field1470);
+                           var8 = WorldMapDecoration.method285(ClientPacket.field2401, Client.field899.field1470);
                            var8.packetBuffer.method3625(var1);
                            var8.packetBuffer.method3616(var0);
                            var8.packetBuffer.method3616(var3);
@@ -611,7 +611,7 @@ public final class class62 {
                            MapLabel.field477 = class5.getWidget(var1);
                            Client.pressedItemIndex = var0;
                         } else if(var2 == 40) {
-                           var8 = class31.method285(ClientPacket.field2461, Client.field899.field1470);
+                           var8 = WorldMapDecoration.method285(ClientPacket.field2461, Client.field899.field1470);
                            var8.packetBuffer.putInt(var1);
                            var8.packetBuffer.method3754(var3);
                            var8.packetBuffer.method3754(var0);
@@ -620,7 +620,7 @@ public final class class62 {
                            MapLabel.field477 = class5.getWidget(var1);
                            Client.pressedItemIndex = var0;
                         } else if(var2 == 41) {
-                           var8 = class31.method285(ClientPacket.field2463, Client.field899.field1470);
+                           var8 = WorldMapDecoration.method285(ClientPacket.field2463, Client.field899.field1470);
                            var8.packetBuffer.method3746(var0);
                            var8.packetBuffer.method3626(var1);
                            var8.packetBuffer.method3746(var3);
@@ -629,7 +629,7 @@ public final class class62 {
                            MapLabel.field477 = class5.getWidget(var1);
                            Client.pressedItemIndex = var0;
                         } else if(var2 == 42) {
-                           var8 = class31.method285(ClientPacket.field2385, Client.field899.field1470);
+                           var8 = WorldMapDecoration.method285(ClientPacket.field2385, Client.field899.field1470);
                            var8.packetBuffer.method3746(var3);
                            var8.packetBuffer.putShort(var0);
                            var8.packetBuffer.method3626(var1);
@@ -638,7 +638,7 @@ public final class class62 {
                            MapLabel.field477 = class5.getWidget(var1);
                            Client.pressedItemIndex = var0;
                         } else if(var2 == 43) {
-                           var8 = class31.method285(ClientPacket.field2452, Client.field899.field1470);
+                           var8 = WorldMapDecoration.method285(ClientPacket.field2452, Client.field899.field1470);
                            var8.packetBuffer.method3616(var0);
                            var8.packetBuffer.putShort(var3);
                            var8.packetBuffer.putInt(var1);
@@ -655,7 +655,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2450, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2450, Client.field899.field1470);
                               var9.packetBuffer.method3607(KeyFocusListener.keyPressed[82]?1:0);
                               var9.packetBuffer.method3754(var3);
                               Client.field899.method2082(var9);
@@ -669,7 +669,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2396, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2396, Client.field899.field1470);
                               var9.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
                               var9.packetBuffer.method3746(var3);
                               Client.field899.method2082(var9);
@@ -683,7 +683,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2458, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2458, Client.field899.field1470);
                               var9.packetBuffer.method3754(var3);
                               var9.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
                               Client.field899.method2082(var9);
@@ -697,7 +697,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2441, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2441, Client.field899.field1470);
                               var9.packetBuffer.putShort(var3);
                               var9.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
                               Client.field899.method2082(var9);
@@ -711,7 +711,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2416, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2416, Client.field899.field1470);
                               var9.packetBuffer.method3607(KeyFocusListener.keyPressed[82]?1:0);
                               var9.packetBuffer.method3754(var3);
                               Client.field899.method2082(var9);
@@ -725,7 +725,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2413, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2413, Client.field899.field1470);
                               var9.packetBuffer.putShort(var3);
                               var9.packetBuffer.method3596(KeyFocusListener.keyPressed[82]?1:0);
                               Client.field899.method2082(var9);
@@ -739,7 +739,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2456, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2456, Client.field899.field1470);
                               var9.packetBuffer.method3607(KeyFocusListener.keyPressed[82]?1:0);
                               var9.packetBuffer.method3754(var3);
                               Client.field899.method2082(var9);
@@ -753,7 +753,7 @@ public final class class62 {
                               Client.field953 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var9 = class31.method285(ClientPacket.field2425, Client.field899.field1470);
+                              var9 = WorldMapDecoration.method285(ClientPacket.field2425, Client.field899.field1470);
                               var9.packetBuffer.method3616(var3);
                               var9.packetBuffer.method3607(KeyFocusListener.keyPressed[82]?1:0);
                               Client.field899.method2082(var9);
@@ -764,7 +764,7 @@ public final class class62 {
                                  if(var2 == 58) {
                                     var23 = class197.getWidgetChild(var1, var0);
                                     if(var23 != null) {
-                                       var9 = class31.method285(ClientPacket.field2437, Client.field899.field1470);
+                                       var9 = WorldMapDecoration.method285(ClientPacket.field2437, Client.field899.field1470);
                                        var9.packetBuffer.method3754(Client.field1007);
                                        var9.packetBuffer.putShort(var0);
                                        var9.packetBuffer.putInt(WidgetNode.field785);
@@ -783,7 +783,7 @@ public final class class62 {
                                     Client.field953 = 0;
                                     Client.destinationX = var0;
                                     Client.destinationY = var1;
-                                    var8 = class31.method285(ClientPacket.field2436, Client.field899.field1470);
+                                    var8 = WorldMapDecoration.method285(ClientPacket.field2436, Client.field899.field1470);
                                     var8.packetBuffer.method3607(KeyFocusListener.keyPressed[82]?1:0);
                                     var8.packetBuffer.putShort(Enum.baseY + var1);
                                     var8.packetBuffer.method3754(var0 + WorldMapType1.baseX);
@@ -797,7 +797,7 @@ public final class class62 {
                                     Client.lastLeftClickY = var7;
                                     Client.cursorState = 2;
                                     Client.field953 = 0;
-                                    var8 = class31.method285(ClientPacket.field2383, Client.field899.field1470);
+                                    var8 = WorldMapDecoration.method285(ClientPacket.field2383, Client.field899.field1470);
                                     var8.packetBuffer.putShort(var3 >> 14 & 32767);
                                     Client.field899.method2082(var8);
                                     break label857;
@@ -816,7 +816,7 @@ public final class class62 {
                                        }
 
                                        if(var24 != null) {
-                                          var14 = class31.method285(ClientPacket.field2469, Client.field899.field1470);
+                                          var14 = WorldMapDecoration.method285(ClientPacket.field2469, Client.field899.field1470);
                                           var14.packetBuffer.method3616(var24.id);
                                           Client.field899.method2082(var14);
                                        }
@@ -829,7 +829,7 @@ public final class class62 {
                                     Client.lastLeftClickY = var7;
                                     Client.cursorState = 2;
                                     Client.field953 = 0;
-                                    var8 = class31.method285(ClientPacket.field2409, Client.field899.field1470);
+                                    var8 = WorldMapDecoration.method285(ClientPacket.field2409, Client.field899.field1470);
                                     var8.packetBuffer.putShort(var3);
                                     Client.field899.method2082(var8);
                                     break label857;
@@ -840,7 +840,7 @@ public final class class62 {
                                     if(var23 != null && var23.itemQuantities[var0] >= 100000) {
                                        class19.sendGameMessage(27, "", var23.itemQuantities[var0] + " x " + class251.getItemDefinition(var3).name);
                                     } else {
-                                       var9 = class31.method285(ClientPacket.field2409, Client.field899.field1470);
+                                       var9 = WorldMapDecoration.method285(ClientPacket.field2409, Client.field899.field1470);
                                        var9.packetBuffer.putShort(var3);
                                        Client.field899.method2082(var9);
                                     }
@@ -881,7 +881,7 @@ public final class class62 {
                                     if(var11 && class196.method3828(class85.getWidgetConfig(var22), var3 - 1)) {
                                        PacketNode var16;
                                        if(var3 == 1) {
-                                          var16 = class31.method285(ClientPacket.field2449, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2449, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -889,7 +889,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 2) {
-                                          var16 = class31.method285(ClientPacket.field2471, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2471, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -897,7 +897,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 3) {
-                                          var16 = class31.method285(ClientPacket.field2439, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2439, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -905,7 +905,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 4) {
-                                          var16 = class31.method285(ClientPacket.field2433, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2433, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -913,7 +913,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 5) {
-                                          var16 = class31.method285(ClientPacket.field2466, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2466, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -921,7 +921,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 6) {
-                                          var16 = class31.method285(ClientPacket.field2444, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2444, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -929,7 +929,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 7) {
-                                          var16 = class31.method285(ClientPacket.field2406, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2406, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -937,7 +937,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 8) {
-                                          var16 = class31.method285(ClientPacket.field2395, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2395, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -945,7 +945,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 9) {
-                                          var16 = class31.method285(ClientPacket.field2446, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2446, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);
@@ -953,7 +953,7 @@ public final class class62 {
                                        }
 
                                        if(var3 == 10) {
-                                          var16 = class31.method285(ClientPacket.field2453, Client.field899.field1470);
+                                          var16 = WorldMapDecoration.method285(ClientPacket.field2453, Client.field899.field1470);
                                           var16.packetBuffer.putInt(var1);
                                           var16.packetBuffer.putShort(var0);
                                           var16.packetBuffer.putShort(var21);

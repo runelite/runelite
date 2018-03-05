@@ -321,8 +321,8 @@ final class WorldComparator implements Comparator {
                            if(class55.preferences.hideRoofs) {
                               var24 = class36.plane;
                            } else {
-                              var25 = class35.getTileHeight(Resampler.cameraX, class31.cameraY, class36.plane);
-                              if(var25 - class49.cameraZ < 800 && (class62.tileSettings[class36.plane][Resampler.cameraX >> 7][class31.cameraY >> 7] & 4) != 0) {
+                              var25 = class35.getTileHeight(Resampler.cameraX, WorldMapDecoration.cameraY, class36.plane);
+                              if(var25 - class49.cameraZ < 800 && (class62.tileSettings[class36.plane][Resampler.cameraX >> 7][WorldMapDecoration.cameraY >> 7] & 4) != 0) {
                                  var24 = class36.plane;
                               } else {
                                  var24 = 3;
@@ -334,7 +334,7 @@ final class WorldComparator implements Comparator {
 
                         var24 = Resampler.cameraX;
                         var25 = class49.cameraZ;
-                        var26 = class31.cameraY;
+                        var26 = WorldMapDecoration.cameraY;
                         var51 = GameCanvas.cameraPitch;
                         var28 = IndexDataBase.cameraYaw;
 
@@ -350,7 +350,7 @@ final class WorldComparator implements Comparator {
                               }
 
                               if(var29 == 2) {
-                                 class31.cameraY += var30;
+                                 WorldMapDecoration.cameraY += var30;
                               }
 
                               if(var29 == 3) {
@@ -389,7 +389,7 @@ final class WorldComparator implements Comparator {
                         Huffman.method3510();
                         var31 = Graphics3D.Rasterizer3D_zoom;
                         Graphics3D.Rasterizer3D_zoom = Client.scale;
-                        class86.region.drawRegion(Resampler.cameraX, class49.cameraZ, class31.cameraY, GameCanvas.cameraPitch, IndexDataBase.cameraYaw, var23);
+                        class86.region.drawRegion(Resampler.cameraX, class49.cameraZ, WorldMapDecoration.cameraY, GameCanvas.cameraPitch, IndexDataBase.cameraYaw, var23);
 
                         while(true) {
                            BoundingBox var54 = (BoundingBox)class7.boundingBoxes.removeLast();
@@ -557,7 +557,7 @@ final class WorldComparator implements Comparator {
                               class138.method3119(var19, var20, var21, var22);
                               Resampler.cameraX = var24;
                               class49.cameraZ = var25;
-                              class31.cameraY = var26;
+                              WorldMapDecoration.cameraY = var26;
                               GameCanvas.cameraPitch = var51;
                               IndexDataBase.cameraYaw = var28;
                               if(Client.field1068) {

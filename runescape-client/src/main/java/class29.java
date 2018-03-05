@@ -122,7 +122,7 @@ public final class class29 {
       garbageValue = "-55"
    )
    static final void method250() {
-      PacketNode var0 = class31.method285(ClientPacket.field2431, Client.field899.field1470);
+      PacketNode var0 = WorldMapDecoration.method285(ClientPacket.field2431, Client.field899.field1470);
       Client.field899.method2082(var0);
 
       for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {

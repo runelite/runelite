@@ -41,7 +41,7 @@ public class class291 {
       }
 
       if(Client.gameState >= 25) {
-         PacketNode var1 = class31.method285(ClientPacket.field2415, Client.field899.field1470);
+         PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2415, Client.field899.field1470);
          var1.packetBuffer.putByte(class29.method249());
          var1.packetBuffer.putShort(GameEngine.canvasWidth);
          var1.packetBuffer.putShort(class195.canvasHeight);

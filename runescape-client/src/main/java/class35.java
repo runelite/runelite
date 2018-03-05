@@ -143,12 +143,12 @@ public class class35 {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
             for(int var9 = 0; var9 < var5.field410; ++var9) {
-               class31[] var10 = var5.field417[var9][var6][var7];
+               WorldMapDecoration[] var10 = var5.field417[var9][var6][var7];
                if(var10 != null && var10.length != 0) {
-                  class31[] var11 = var10;
+                  WorldMapDecoration[] var11 = var10;
 
                   for(int var12 = 0; var12 < var11.length; ++var12) {
-                     class31 var13 = var11[var12];
+                     WorldMapDecoration var13 = var11[var12];
                      Area var14 = this.method464(var13.objectDefinitionId);
                      if(var14 != null) {
                         Coordinates var15 = new Coordinates(var9, this.field494 * 64 + var6, this.field488 * 64 + var7);
@@ -529,12 +529,12 @@ public class class35 {
    )
    void method390(int var1, int var2, class28 var3, IndexedSprite[] var4) {
       for(int var5 = 0; var5 < var3.field410; ++var5) {
-         class31[] var6 = var3.field417[var5][var1][var2];
+         WorldMapDecoration[] var6 = var3.field417[var5][var1][var2];
          if(var6 != null && var6.length != 0) {
-            class31[] var7 = var6;
+            WorldMapDecoration[] var7 = var6;
 
             for(int var8 = 0; var8 < var7.length; ++var8) {
-               class31 var9 = var7[var8];
+               WorldMapDecoration var9 = var7[var8];
                int var11 = var9.decoration;
                boolean var10 = var11 >= WorldMapDecorationType.field3004.rsOrdinal && var11 <= WorldMapDecorationType.field3003.rsOrdinal;
                if(var10 || class22.method161(var9.decoration)) {
@@ -560,12 +560,12 @@ public class class35 {
    )
    void method391(int var1, int var2, class28 var3) {
       for(int var4 = 0; var4 < var3.field410; ++var4) {
-         class31[] var5 = var3.field417[var4][var1][var2];
+         WorldMapDecoration[] var5 = var3.field417[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
-            class31[] var6 = var5;
+            WorldMapDecoration[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
-               class31 var8 = var6[var7];
+               WorldMapDecoration var8 = var6[var7];
                int var10 = var8.decoration;
                boolean var9 = var10 >= WorldMapDecorationType.field2986.rsOrdinal && var10 <= WorldMapDecorationType.field2982.rsOrdinal || var10 == WorldMapDecorationType.field3006.rsOrdinal;
                if(var9) {
@@ -782,12 +782,12 @@ public class class35 {
       field496.set(0, var1, var2);
 
       for(int var4 = 0; var4 < var3.field410; ++var4) {
-         class31[] var5 = var3.field417[var4][var1][var2];
+         WorldMapDecoration[] var5 = var3.field417[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
-            class31[] var6 = var5;
+            WorldMapDecoration[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
-               class31 var8 = var6[var7];
+               WorldMapDecoration var8 = var6[var7];
                Area var9 = this.method464(var8.objectDefinitionId);
                if(var9 != null) {
                   MapIcon var10 = (MapIcon)this.field489.get(field496);

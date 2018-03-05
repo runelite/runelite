@@ -436,7 +436,7 @@ public class RenderOverview {
                }
 
                if(var9) {
-                  PacketNode var12 = class31.method285(ClientPacket.field2386, Client.field899.field1470);
+                  PacketNode var12 = WorldMapDecoration.method285(ClientPacket.field2386, Client.field899.field1470);
                   var12.packetBuffer.putInt(this.field4032.bitpack());
                   Client.field899.method2082(var12);
                   this.field4040 = 0L;

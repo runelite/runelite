@@ -21,7 +21,7 @@ public class class160 implements class159 {
          int var3 = class35.getTileHeight(var0, var1, class36.plane) - var2;
          var0 -= Resampler.cameraX;
          var3 -= class49.cameraZ;
-         var1 -= class31.cameraY;
+         var1 -= WorldMapDecoration.cameraY;
          int var4 = Graphics3D.SINE[GameCanvas.cameraPitch];
          int var5 = Graphics3D.COSINE[GameCanvas.cameraPitch];
          int var6 = Graphics3D.SINE[IndexDataBase.cameraYaw];

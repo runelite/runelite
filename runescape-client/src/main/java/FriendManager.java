@@ -170,7 +170,7 @@ public class FriendManager {
             } else if(this.isFriended(var2, false)) {
                class3.method10(var1);
             } else {
-               PacketNode var3 = class31.method285(ClientPacket.field2411, Client.field899.field1470);
+               PacketNode var3 = WorldMapDecoration.method285(ClientPacket.field2411, Client.field899.field1470);
                var3.packetBuffer.putByte(class29.getLength(var1));
                var3.packetBuffer.putString(var1);
                Client.field899.method2082(var3);
@@ -199,7 +199,7 @@ public class FriendManager {
          if(var2.method5533()) {
             if(this.field1235.method5416(var2)) {
                Size.method187();
-               PacketNode var3 = class31.method285(ClientPacket.field2377, Client.field899.field1470);
+               PacketNode var3 = WorldMapDecoration.method285(ClientPacket.field2377, Client.field899.field1470);
                var3.packetBuffer.putByte(class29.getLength(var1));
                var3.packetBuffer.putString(var1);
                Client.field899.method2082(var3);
@@ -221,7 +221,7 @@ public class FriendManager {
          if(var2.method5533()) {
             if(this.field1233.method5416(var2)) {
                Size.method187();
-               PacketNode var3 = class31.method285(ClientPacket.field2384, Client.field899.field1470);
+               PacketNode var3 = WorldMapDecoration.method285(ClientPacket.field2384, Client.field899.field1470);
                var3.packetBuffer.putByte(class29.getLength(var1));
                var3.packetBuffer.putString(var1);
                Client.field899.method2082(var3);
@@ -264,7 +264,7 @@ public class FriendManager {
             }
 
             int var3 = Resampler.cameraX >> 7;
-            int var4 = class31.cameraY >> 7;
+            int var4 = WorldMapDecoration.cameraY >> 7;
             if(var3 < 0 || var4 < 0 || var3 >= 104 || var4 >= 104) {
                return class36.plane;
             }

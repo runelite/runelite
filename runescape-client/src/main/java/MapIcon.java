@@ -172,7 +172,7 @@ public class MapIcon {
       garbageValue = "1733042415"
    )
    static final void method559(String var0, int var1) {
-      PacketNode var2 = class31.method285(ClientPacket.field2405, Client.field899.field1470);
+      PacketNode var2 = WorldMapDecoration.method285(ClientPacket.field2405, Client.field899.field1470);
       var2.packetBuffer.putByte(class29.getLength(var0) + 1);
       var2.packetBuffer.putString(var0);
       var2.packetBuffer.putShortLE(var1);

@@ -302,7 +302,7 @@ public class class1 {
          }
 
          if(var1 == 326) {
-            PacketNode var4 = class31.method285(ClientPacket.field2422, Client.field899.field1470);
+            PacketNode var4 = WorldMapDecoration.method285(ClientPacket.field2422, Client.field899.field1470);
             Client.field1009.method4531(var4.packetBuffer);
             Client.field899.method2082(var4);
             return true;

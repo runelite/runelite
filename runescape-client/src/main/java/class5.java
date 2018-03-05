@@ -134,7 +134,7 @@ final class class5 implements class0 {
             Client.field1022 = Player.method1146(var0);
             Client.field1023 = var1;
             Client.field1056 = var2;
-            class31.field449 = 0;
+            WorldMapDecoration.field449 = 0;
             Client.field1032 = false;
             int var3 = Client.menuOptionCount - 1;
             if(var3 != -1) {

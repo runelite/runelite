@@ -64,7 +64,7 @@ public class class243 {
       if(Client.field899.field1477 >= 50 || var0) {
          Client.field899.field1477 = 0;
          if(!Client.socketError && Client.field899.getSocket() != null) {
-            PacketNode var1 = class31.method285(ClientPacket.field2451, Client.field899.field1470);
+            PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2451, Client.field899.field1470);
             Client.field899.method2082(var1);
 
             try {
