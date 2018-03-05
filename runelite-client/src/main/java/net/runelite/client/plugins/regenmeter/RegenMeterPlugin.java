@@ -8,24 +8,24 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-        name = "Regeneration Meter"
+		name = "Regeneration Meter"
 )
 
 public class RegenMeterPlugin extends Plugin
 {
 
-    @Inject
-    private RegenMeterOverlay overlay;
+	@Inject
+	private RegenMeterOverlay overlay;
 
-    @Override
-    public Overlay getOverlay()
-    {
-        return overlay;
-    }
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-    @Subscribe
-    public void onTick(GameTick tick)
-    {
-        overlay.onTick();
-    }
+	@Subscribe
+	public void onTick(GameTick tick)
+	{
+		overlay.onTick();
+	}
 }
