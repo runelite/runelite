@@ -26,6 +26,7 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -44,6 +45,8 @@ import net.runelite.client.util.LinkBrowser;
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+
+	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	GrandExchangeItemPanel(LinkBrowser linkBrowser, BufferedImage icon, String name, int itemID, int gePrice, Double
 		haPrice)
@@ -84,7 +87,11 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Icon
 		JLabel itemIcon = new JLabel();
-		itemIcon.setIcon(new ImageIcon(icon));
+		itemIcon.setPreferredSize(ICON_SIZE);
+		if (icon != null)
+		{
+			itemIcon.setIcon(new ImageIcon(icon));
+		}
 		add(itemIcon, BorderLayout.LINE_START);
 
 		// Item details panel
@@ -98,7 +105,14 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Ge price
 		JLabel gePriceLabel = new JLabel();
-		gePriceLabel.setText(NUMBER_FORMATTER.format(gePrice) + " gp");
+		if (gePrice > 0)
+		{
+			gePriceLabel.setText(NUMBER_FORMATTER.format(gePrice) + " gp");
+		}
+		else
+		{
+			gePriceLabel.setText("N/A");
+		}
 		gePriceLabel.setForeground(Color.GREEN);
 		rightPanel.add(gePriceLabel);
 
