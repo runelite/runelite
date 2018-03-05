@@ -27,6 +27,8 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +102,8 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 	private int points;
 	private int cachedXp;
+	private Instant infoTimer;
+	private boolean loginFlag;
 
 	@Override
 	protected void startUp() throws Exception
@@ -134,11 +138,15 @@ public class SlayerPlugin extends Plugin
 				cachedXp = 0;
 				taskName = "";
 				amount = 0;
+				loginFlag = true;
 				break;
 			case LOGGED_IN:
-				if (config.amount() != -1 && !config.taskName().isEmpty())
+				if (config.amount() != -1
+					&& !config.taskName().isEmpty()
+					&& loginFlag == true)
 				{
 					setTask(config.taskName(), config.amount());
+					loginFlag = false;
 				}
 				break;
 		}
@@ -187,6 +195,17 @@ public class SlayerPlugin extends Plugin
 					points = Integer.parseInt(mPoints.group(1));
 					break;
 				}
+			}
+		}
+
+		if (infoTimer != null)
+		{
+			Duration timeSinceInfobox = Duration.between(infoTimer, Instant.now());
+			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+
+			if (timeSinceInfobox.compareTo(statTimeout) >= 0)
+			{
+				removeCounter();
 			}
 		}
 	}
@@ -311,8 +330,10 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		// update counter
+		// add and update counter, set timer
+		addCounter();
 		counter.setText(String.valueOf(amount));
+		infoTimer = Instant.now();
 	}
 
 	private void setTask(String name, int amt)
@@ -322,6 +343,7 @@ public class SlayerPlugin extends Plugin
 		save();
 		removeCounter();
 		addCounter();
+		infoTimer = Instant.now();
 	}
 
 	private void addCounter()
