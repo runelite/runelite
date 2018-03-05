@@ -31,15 +31,15 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "xpdrop",
-	name = "Experience Drop",
-	description = "Configuration for experience drops customization"
+	name = "XP Drop",
+	description = "Configuration for XP drop customization"
 )
-public interface ExperienceDropConfig extends Config
+public interface XpDropConfig extends Config
 {
 	@ConfigItem(
 		keyName = "meleePrayerColor",
 		name = "Melee Prayer Color",
-		description = "Xp Drop color when a melee prayer is active"
+		description = "XP drop color when a melee prayer is active"
 	)
 	default Color getMeleePrayerColor()
 	{
@@ -49,7 +49,7 @@ public interface ExperienceDropConfig extends Config
 	@ConfigItem(
 		keyName = "rangePrayerColor",
 		name = "Range Prayer Color",
-		description = "Xp Drop color when a range prayer is active"
+		description = "XP drop color when a range prayer is active"
 	)
 	default Color getRangePrayerColor()
 	{
@@ -59,7 +59,7 @@ public interface ExperienceDropConfig extends Config
 	@ConfigItem(
 		keyName = "magePrayerColor",
 		name = "Mage Prayer Color",
-		description = "Xp Drop color when a mage prayer is active"
+		description = "XP drop color when a mage prayer is active"
 	)
 	default Color getMagePrayerColor()
 	{

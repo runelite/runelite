@@ -38,20 +38,20 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Experience drop"
+	name = "XP Drop"
 )
-public class ExperienceDropPlugin extends Plugin
+public class XpDropPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private ExperienceDropConfig config;
+	private XpDropConfig config;
 
 	@Provides
-	ExperienceDropConfig provideConfig(ConfigManager configManager)
+	XpDropConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ExperienceDropConfig.class);
+		return configManager.getConfig(XpDropConfig.class);
 	}
 
 	@Subscribe
