@@ -119,7 +119,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
       signature = "(IIII)Z",
       garbageValue = "-1122721489"
    )
-   public boolean vmethod712(int var1, int var2, int var3) {
+   public boolean containsCoord(int var1, int var2, int var3) {
       return var1 >= this.field390 && var1 < this.field390 + this.field397?var2 >= (this.field384 << 6) + (this.field385 << 3) && var2 <= (this.field384 << 6) + (this.field395 << 3) + 7 && var3 >= (this.field383 << 6) + (this.field389 << 3) && var3 <= (this.field383 << 6) + (this.field388 << 3) + 7:false;
    }
 
@@ -138,7 +138,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
       garbageValue = "606812260"
    )
    public int[] vmethod714(int var1, int var2, int var3) {
-      if(!this.vmethod712(var1, var2, var3)) {
+      if(!this.containsCoord(var1, var2, var3)) {
          return null;
       } else {
          int[] var4 = new int[]{this.field386 * 64 - this.field384 * 64 + var2 + (this.field392 * 8 - this.field385 * 8), var3 + (this.field382 * 64 - this.field383 * 64) + (this.field393 * 8 - this.field389 * 8)};

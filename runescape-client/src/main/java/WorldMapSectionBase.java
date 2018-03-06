@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -17,7 +18,8 @@ public interface WorldMapSectionBase {
       signature = "(IIII)Z",
       garbageValue = "-1122721489"
    )
-   boolean vmethod712(int var1, int var2, int var3);
+   @Export("containsCoord")
+   boolean containsCoord(int var1, int var2, int var3);
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(

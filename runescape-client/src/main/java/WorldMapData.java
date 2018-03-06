@@ -150,7 +150,7 @@ public class WorldMapData {
          }
 
          var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod712(var1, var2, var3));
+      } while(!var5.containsCoord(var1, var2, var3));
 
       return true;
    }
@@ -200,7 +200,7 @@ public class WorldMapData {
          }
 
          var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod712(var1, var2, var3));
+      } while(!var5.containsCoord(var1, var2, var3));
 
       return var5.vmethod714(var1, var2, var3);
    }

@@ -66,7 +66,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       signature = "(IIII)Z",
       garbageValue = "-1122721489"
    )
-   public boolean vmethod712(int var1, int var2, int var3) {
+   public boolean containsCoord(int var1, int var2, int var3) {
       return var1 >= this.field527 && var1 < this.field527 + this.field528?var2 >> 6 == this.field524 && var3 >> 6 == this.field522:false;
    }
 
@@ -85,7 +85,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       garbageValue = "606812260"
    )
    public int[] vmethod714(int var1, int var2, int var3) {
-      if(!this.vmethod712(var1, var2, var3)) {
+      if(!this.containsCoord(var1, var2, var3)) {
          return null;
       } else {
          int[] var4 = new int[]{this.field526 * 64 - this.field524 * 64 + var2, var3 + (this.field529 * 64 - this.field522 * 64)};

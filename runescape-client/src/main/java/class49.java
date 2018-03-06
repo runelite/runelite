@@ -98,7 +98,7 @@ public class class49 implements WorldMapSectionBase {
       signature = "(IIII)Z",
       garbageValue = "-1122721489"
    )
-   public boolean vmethod712(int var1, int var2, int var3) {
+   public boolean containsCoord(int var1, int var2, int var3) {
       return var1 >= this.field614 && var1 < this.field604 + this.field614?var2 >= (this.field605 << 6) + (this.field609 << 3) && var2 <= (this.field605 << 6) + (this.field609 << 3) + 7 && var3 >= (this.field608 << 6) + (this.field610 << 3) && var3 <= (this.field608 << 6) + (this.field610 << 3) + 7:false;
    }
 
@@ -117,7 +117,7 @@ public class class49 implements WorldMapSectionBase {
       garbageValue = "606812260"
    )
    public int[] vmethod714(int var1, int var2, int var3) {
-      if(!this.vmethod712(var1, var2, var3)) {
+      if(!this.containsCoord(var1, var2, var3)) {
          return null;
       } else {
          int[] var4 = new int[]{this.field607 * 64 - this.field605 * 64 + var2 + (this.field611 * 8 - this.field609 * 8), var3 + (this.field612 * 64 - this.field608 * 64) + (this.field606 * 8 - this.field610 * 8)};
