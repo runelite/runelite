@@ -41,7 +41,8 @@ public class WorldMapData {
    @ObfuscatedGetter(
       intValue = 1212752855
    )
-   int field459;
+   @Export("minX")
+   int minX;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -177502831
@@ -67,7 +68,7 @@ public class WorldMapData {
       this.field456 = -1;
       this.field454 = -1;
       this.field457 = null;
-      this.field459 = Integer.MAX_VALUE;
+      this.minX = Integer.MAX_VALUE;
       this.field460 = 0;
       this.field453 = Integer.MAX_VALUE;
       this.field462 = 0;
@@ -158,7 +159,7 @@ public class WorldMapData {
    public boolean method338(int var1, int var2) {
       int var3 = var1 / 64;
       int var4 = var2 / 64;
-      if(var3 >= this.field459 && var3 <= this.field460) {
+      if(var3 >= this.minX && var3 <= this.field460) {
          if(var4 >= this.field453 && var4 <= this.field462) {
             Iterator var5 = this.field464.iterator();
 
@@ -295,7 +296,7 @@ public class WorldMapData {
       garbageValue = "1824462720"
    )
    public int method312() {
-      return this.field459;
+      return this.minX;
    }
 
    @ObfuscatedName("v")

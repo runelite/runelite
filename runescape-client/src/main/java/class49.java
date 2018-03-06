@@ -75,8 +75,8 @@ public class class49 implements WorldMapSectionBase {
       garbageValue = "-33"
    )
    public void vmethod716(WorldMapData var1) {
-      if(var1.field459 > this.field607) {
-         var1.field459 = this.field607;
+      if(var1.minX > this.field607) {
+         var1.minX = this.field607;
       }
 
       if(var1.field460 < this.field607) {

@@ -43,8 +43,8 @@ public class WorldMapType2 implements WorldMapSectionBase {
       garbageValue = "-33"
    )
    public void vmethod716(WorldMapData var1) {
-      if(var1.field459 > this.field526) {
-         var1.field459 = this.field526;
+      if(var1.minX > this.field526) {
+         var1.minX = this.field526;
       }
 
       if(var1.field460 < this.field526) {

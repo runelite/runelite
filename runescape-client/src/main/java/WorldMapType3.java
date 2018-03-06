@@ -96,8 +96,8 @@ public class WorldMapType3 implements WorldMapSectionBase {
       garbageValue = "-33"
    )
    public void vmethod716(WorldMapData var1) {
-      if(var1.field459 > this.field386) {
-         var1.field459 = this.field386;
+      if(var1.minX > this.field386) {
+         var1.minX = this.field386;
       }
 
       if(var1.field460 < this.field386) {
