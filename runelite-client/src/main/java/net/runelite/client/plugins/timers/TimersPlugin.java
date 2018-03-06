@@ -146,11 +146,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (!config.showAntiVenomPlus())
-		{
-			removeGameTimer(ANTIVENOMPLUS);
-		}
-
 		if (!config.showTeleblock())
 		{
 			removeGameTimer(FULLTB);
