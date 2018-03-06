@@ -61,7 +61,7 @@ public class MouseRecorder implements Runnable {
       garbageValue = "-878285511"
    )
    static class33 method1100(int var0, int var1) {
-      class213 var2 = class35.field484;
+      class213 var2 = WorldMapRegion.field484;
       long var3 = (long)(0 | var0 << 8 | var1);
       return (class33)var2.method4044(var3);
    }

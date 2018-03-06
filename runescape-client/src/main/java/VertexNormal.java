@@ -68,7 +68,7 @@ public class VertexNormal {
          if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
             if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
                var0.isLowDetail = false;
-               var0.field839 = class35.getTileHeight(var0.x, var0.y, class36.plane);
+               var0.field839 = WorldMapRegion.getTileHeight(var0.x, var0.y, class36.plane);
                var0.field1143 = Client.gameCycle;
                class86.region.method2961(class36.plane, var0.x, var0.y, var0.field839, 60, var0, var0.angle, var2, var0.field832, var0.field838, var0.field846, var0.field834);
             } else {
@@ -80,7 +80,7 @@ public class VertexNormal {
                   Client.field947[var3][var4] = Client.field1108;
                }
 
-               var0.field839 = class35.getTileHeight(var0.x, var0.y, class36.plane);
+               var0.field839 = WorldMapRegion.getTileHeight(var0.x, var0.y, class36.plane);
                var0.field1143 = Client.gameCycle;
                class86.region.method3026(class36.plane, var0.x, var0.y, var0.field839, 60, var0, var0.angle, var2, var0.field1141);
             }

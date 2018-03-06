@@ -625,7 +625,7 @@ public class class22 extends class28 {
                         }
 
                         if(var9.type == 8 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
-                           class35.field497 = var9;
+                           WorldMapRegion.field497 = var9;
                         }
 
                         if(var9.scrollHeight > var9.height) {

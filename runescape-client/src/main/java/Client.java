@@ -3670,9 +3670,9 @@ public final class Client extends GameEngine implements class302 {
                   }
 
                   Widget var37 = class45.field579;
-                  Widget var33 = class35.field497;
+                  Widget var33 = WorldMapRegion.field497;
                   class45.field579 = null;
-                  class35.field497 = null;
+                  WorldMapRegion.field497 = null;
                   field1025 = null;
                   field1029 = false;
                   field1026 = false;
@@ -3824,21 +3824,21 @@ public final class Client extends GameEngine implements class302 {
                                                 }
                                              }
 
-                                             if(var33 != class35.field497 && field1002 == field1001) {
+                                             if(var33 != WorldMapRegion.field497 && field1002 == field1001) {
                                                 if(var33 != null) {
                                                    class171.method3363(var33);
                                                 }
 
-                                                if(class35.field497 != null) {
-                                                   class171.method3363(class35.field497);
+                                                if(WorldMapRegion.field497 != null) {
+                                                   class171.method3363(WorldMapRegion.field497);
                                                 }
                                              }
 
-                                             if(class35.field497 != null) {
+                                             if(WorldMapRegion.field497 != null) {
                                                 if(field1001 < field1002) {
                                                    ++field1001;
                                                    if(field1001 == field1002) {
-                                                      class171.method3363(class35.field497);
+                                                      class171.method3363(WorldMapRegion.field497);
                                                    }
                                                 }
                                              } else if(field1001 > 0) {
@@ -3849,7 +3849,7 @@ public final class Client extends GameEngine implements class302 {
                                              if(field1092) {
                                                 var4 = MapIcon.field530 * 128 + 64;
                                                 var5 = class38.field520 * 128 + 64;
-                                                var6 = class35.getTileHeight(var4, var5, class36.plane) - RunException.field2173;
+                                                var6 = WorldMapRegion.getTileHeight(var4, var5, class36.plane) - RunException.field2173;
                                                 if(Resampler.cameraX < var4) {
                                                    Resampler.cameraX = (var4 - Resampler.cameraX) * UnitPriceComparator.field315 / 1000 + Resampler.cameraX + BoundingBox3D.field264;
                                                    if(Resampler.cameraX > var4) {
@@ -3894,7 +3894,7 @@ public final class Client extends GameEngine implements class302 {
 
                                                 var4 = class3.field17 * 128 + 64;
                                                 var5 = BoundingBox3DDrawMode.field275 * 128 + 64;
-                                                var6 = class35.getTileHeight(var4, var5, class36.plane) - class228.field2685;
+                                                var6 = WorldMapRegion.getTileHeight(var4, var5, class36.plane) - class228.field2685;
                                                 var7 = var4 - Resampler.cameraX;
                                                 var8 = var6 - class49.cameraZ;
                                                 var9 = var5 - WorldMapDecoration.cameraY;
@@ -4417,7 +4417,7 @@ public final class Client extends GameEngine implements class302 {
                if(Tile.field1832 >= 100) {
                   var17 = class3.field17 * 128 + 64;
                   var5 = BoundingBox3DDrawMode.field275 * 128 + 64;
-                  var20 = class35.getTileHeight(var17, var5, class36.plane) - class228.field2685;
+                  var20 = WorldMapRegion.getTileHeight(var17, var5, class36.plane) - class228.field2685;
                   var50 = var17 - Resampler.cameraX;
                   var8 = var20 - class49.cameraZ;
                   var9 = var5 - WorldMapDecoration.cameraY;
@@ -4949,7 +4949,7 @@ public final class Client extends GameEngine implements class302 {
                if(UnitPriceComparator.field315 >= 100) {
                   Resampler.cameraX = MapIcon.field530 * 128 + 64;
                   WorldMapDecoration.cameraY = class38.field520 * 128 + 64;
-                  class49.cameraZ = class35.getTileHeight(Resampler.cameraX, WorldMapDecoration.cameraY, class36.plane) - RunException.field2173;
+                  class49.cameraZ = WorldMapRegion.getTileHeight(Resampler.cameraX, WorldMapDecoration.cameraY, class36.plane) - RunException.field2173;
                }
 
                var1.serverPacket = null;

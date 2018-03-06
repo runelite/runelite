@@ -18,8 +18,8 @@ public class class243 {
       garbageValue = "-789360915"
    )
    public static void method4618() {
-      class35.field485.method4043(5);
-      class35.field484.method4043(5);
+      WorldMapRegion.field485.method4043(5);
+      WorldMapRegion.field484.method4043(5);
    }
 
    @ObfuscatedName("x")

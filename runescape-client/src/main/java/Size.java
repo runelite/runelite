@@ -271,7 +271,7 @@ public class Size {
             }
 
             int var9 = var0 + (var1 << 7) + 1610612736;
-            class86.region.addItemPile(class36.plane, var0, var1, class35.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class36.plane), var5, var9, var11, var10);
+            class86.region.addItemPile(class36.plane, var0, var1, WorldMapRegion.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class36.plane), var5, var9, var11, var10);
          }
       }
    }

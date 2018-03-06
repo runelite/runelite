@@ -40,7 +40,7 @@ public final class WorldMapManager {
       signature = "[[Laz;"
    )
    @Export("mapRegions")
-   class35[][] mapRegions;
+   WorldMapRegion[][] mapRegions;
    @ObfuscatedName("k")
    HashMap field551;
    @ObfuscatedName("s")
@@ -126,9 +126,9 @@ public final class WorldMapManager {
          int var10 = this.field550.method348() - this.field550.method302() + 1;
          System.nanoTime();
          System.nanoTime();
-         class35.field485.method4049();
-         class35.field484.method4049();
-         this.mapRegions = new class35[var17][var10];
+         WorldMapRegion.field485.method4049();
+         WorldMapRegion.field484.method4049();
+         this.mapRegions = new WorldMapRegion[var17][var10];
          Iterator var11 = this.field550.field574.iterator();
 
          while(var11.hasNext()) {
@@ -137,14 +137,14 @@ public final class WorldMapManager {
             int var14 = var12.field420;
             int var15 = var13 - this.field550.method312();
             int var16 = var14 - this.field550.method302();
-            this.mapRegions[var15][var16] = new class35(var13, var14, this.field550.method298(), this.mapFonts);
+            this.mapRegions[var15][var16] = new WorldMapRegion(var13, var14, this.field550.method298(), this.mapFonts);
             this.mapRegions[var15][var16].method372(var12, this.field550.field576);
          }
 
          for(int var18 = 0; var18 < var17; ++var18) {
             for(int var19 = 0; var19 < var10; ++var19) {
                if(this.mapRegions[var18][var19] == null) {
-                  this.mapRegions[var18][var19] = new class35(this.field550.method312() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
+                  this.mapRegions[var18][var19] = new WorldMapRegion(this.field550.method312() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
                   this.mapRegions[var18][var19].method373(this.field550.field575, this.field550.field576);
                }
             }
@@ -195,7 +195,7 @@ public final class WorldMapManager {
          this.field551.put(Integer.valueOf(var15), var16);
       }
 
-      class35[] var22 = new class35[8];
+      WorldMapRegion[] var22 = new WorldMapRegion[8];
 
       int var17;
       int var18;
@@ -260,7 +260,7 @@ public final class WorldMapManager {
       signature = "(II[Laz;I)V",
       garbageValue = "425304368"
    )
-   void method567(int var1, int var2, class35[] var3) {
+   void method567(int var1, int var2, WorldMapRegion[] var3) {
       boolean var4 = var1 <= 0;
       boolean var5 = var1 >= this.mapRegions.length - 1;
       boolean var6 = var2 <= 0;

@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("az")
-public class class35 {
+@Implements("WorldMapRegion")
+public class WorldMapRegion {
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lhw;"
@@ -72,7 +74,7 @@ public class class35 {
       field496 = new Coordinates();
    }
 
-   class35(int var1, int var2, int var3, HashMap var4) {
+   WorldMapRegion(int var1, int var2, int var3, HashMap var4) {
       this.field494 = var1;
       this.field488 = var2;
       this.field490 = new LinkedList();
@@ -195,7 +197,7 @@ public class class35 {
       signature = "(ILam;[Laz;[Llv;I)V",
       garbageValue = "-927762151"
    )
-   void method463(int var1, class47 var2, class35[] var3, IndexedSprite[] var4) {
+   void method463(int var1, class47 var2, WorldMapRegion[] var3, IndexedSprite[] var4) {
       this.field486 = var1;
       if(this.field498 != null || !this.field490.isEmpty()) {
          if(class57.method826(this.field494, this.field488, var1) == null) {
@@ -257,7 +259,7 @@ public class class35 {
       signature = "(Lam;[Laz;[Llv;Laf;I)V",
       garbageValue = "-272710680"
    )
-   void method461(class47 var1, class35[] var2, IndexedSprite[] var3, class33 var4) {
+   void method461(class47 var1, WorldMapRegion[] var2, IndexedSprite[] var3, class33 var4) {
       int var5;
       int var6;
       for(var5 = 0; var5 < 64; ++var5) {
@@ -375,7 +377,7 @@ public class class35 {
       signature = "(II[Laz;B)Laf;",
       garbageValue = "-33"
    )
-   class33 method446(int var1, int var2, class35[] var3) {
+   class33 method446(int var1, int var2, WorldMapRegion[] var3) {
       class33 var4 = MouseRecorder.method1100(var1, var2);
       if(var4 == null) {
          var4 = this.method480(var3);
@@ -392,7 +394,7 @@ public class class35 {
       signature = "([Laz;I)Laf;",
       garbageValue = "1928777713"
    )
-   class33 method480(class35[] var1) {
+   class33 method480(WorldMapRegion[] var1) {
       class44 var2 = new class44(64, 64);
       if(this.field498 != null) {
          this.method387(0, 0, 64, 64, this.field498, var2);
@@ -416,7 +418,7 @@ public class class35 {
       signature = "([Laz;Lax;I)V",
       garbageValue = "-191244303"
    )
-   void method370(class35[] var1, class44 var2) {
+   void method370(WorldMapRegion[] var1, class44 var2) {
       class254[] var3 = class151.method3207();
       class254[] var4 = var3;
 
@@ -500,7 +502,7 @@ public class class35 {
       signature = "(IIIIIILaz;Lax;I)V",
       garbageValue = "-1716106004"
    )
-   void method388(int var1, int var2, int var3, int var4, int var5, int var6, class35 var7, class44 var8) {
+   void method388(int var1, int var2, int var3, int var4, int var5, int var6, WorldMapRegion var7, class44 var8) {
       for(int var9 = 0; var9 < var5; ++var9) {
          for(int var10 = 0; var10 < var6; ++var10) {
             int var11 = var7.method409(var9 + var1, var10 + var2);

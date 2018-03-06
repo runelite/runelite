@@ -321,7 +321,7 @@ final class WorldComparator implements Comparator {
                            if(class55.preferences.hideRoofs) {
                               var24 = class36.plane;
                            } else {
-                              var25 = class35.getTileHeight(Resampler.cameraX, WorldMapDecoration.cameraY, class36.plane);
+                              var25 = WorldMapRegion.getTileHeight(Resampler.cameraX, WorldMapDecoration.cameraY, class36.plane);
                               if(var25 - class49.cameraZ < 800 && (class62.tileSettings[class36.plane][Resampler.cameraX >> 7][WorldMapDecoration.cameraY >> 7] & 4) != 0) {
                                  var24 = class36.plane;
                               } else {
@@ -1006,7 +1006,7 @@ final class WorldComparator implements Comparator {
                                     }
                                  }
 
-                                 if(var10.type == 8 && var10 == class35.field497 && Client.field1002 == Client.field1001) {
+                                 if(var10.type == 8 && var10 == WorldMapRegion.field497 && Client.field1002 == Client.field1001) {
                                     var19 = 0;
                                     var20 = 0;
                                     Font var48 = SoundTaskDataProvider.font_p12full;

@@ -106,7 +106,7 @@ public final class DecorativeObject {
                if(var0.interacting > 0) {
                   NPC var1 = Client.cachedNPCs[var0.interacting - 1];
                   if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
-                     var0.moveProjectile(var1.x, var1.y, class35.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                     var0.moveProjectile(var1.x, var1.y, WorldMapRegion.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
                   }
                }
 
@@ -120,7 +120,7 @@ public final class DecorativeObject {
                   }
 
                   if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
-                     var0.moveProjectile(var3.x, var3.y, class35.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                     var0.moveProjectile(var3.x, var3.y, WorldMapRegion.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
                   }
                }
 
