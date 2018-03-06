@@ -420,7 +420,7 @@ public class RenderOverview {
       if(this.worldMapData != null) {
          int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.field4028) - (float)this.method6103() * this.worldMapZoom / 2.0F) / this.worldMapZoom);
          int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.field4004) - (float)this.method6104() * this.worldMapZoom / 2.0F) / this.worldMapZoom);
-         this.field4032 = this.worldMapData.method292(var6 + this.worldMapData.getMinX() * 64, var7 + this.worldMapData.method302() * 64);
+         this.field4032 = this.worldMapData.method292(var6 + this.worldMapData.getMinX() * 64, var7 + this.worldMapData.getMinY() * 64);
          if(this.field4032 != null && var3) {
             boolean var8 = Client.rights >= 2;
             if(var8 && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81]) {
@@ -666,7 +666,7 @@ public class RenderOverview {
             var4 = this.worldMapData.method291(this.worldMapData.method305(), this.worldMapData.method304(), this.worldMapData.method306());
          }
 
-         this.method6136(var4[0] - this.worldMapData.getMinX() * 64, var4[1] - this.worldMapData.method302() * 64, true);
+         this.method6136(var4[0] - this.worldMapData.getMinX() * 64, var4[1] - this.worldMapData.getMinY() * 64, true);
          this.field4022 = -1;
          this.field4023 = -1;
          this.worldMapZoom = this.method6091(this.worldMapData.method329());
@@ -898,7 +898,7 @@ public class RenderOverview {
    public void method6096(int var1, int var2) {
       if(this.worldMapData != null && this.worldMapData.method338(var1, var2)) {
          this.field4022 = var1 - this.worldMapData.getMinX() * 64;
-         this.field4023 = var2 - this.worldMapData.method302() * 64;
+         this.field4023 = var2 - this.worldMapData.getMinY() * 64;
       }
    }
 
@@ -909,7 +909,7 @@ public class RenderOverview {
    )
    public void method6073(int var1, int var2) {
       if(this.worldMapData != null) {
-         this.method6136(var1 - this.worldMapData.getMinX() * 64, var2 - this.worldMapData.method302() * 64, true);
+         this.method6136(var1 - this.worldMapData.getMinX() * 64, var2 - this.worldMapData.getMinY() * 64, true);
          this.field4022 = -1;
          this.field4023 = -1;
       }
@@ -960,7 +960,7 @@ public class RenderOverview {
       garbageValue = "1480146818"
    )
    public int method6101() {
-      return this.worldMapData == null?-1:this.worldMapY + this.worldMapData.method302() * 64;
+      return this.worldMapData == null?-1:this.worldMapY + this.worldMapData.getMinY() * 64;
    }
 
    @ObfuscatedName("ag")

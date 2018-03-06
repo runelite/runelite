@@ -314,7 +314,8 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "-862051653"
    )
-   public int method302() {
+   @Export("getMinY")
+   public int getMinY() {
       return this.field453;
    }
 
