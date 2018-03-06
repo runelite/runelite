@@ -55,7 +55,8 @@ public class MapIcon {
    @ObfuscatedGetter(
       intValue = -801573435
    )
-   int field538;
+   @Export("screenX")
+   int screenX;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1845405553
@@ -100,19 +101,19 @@ public class MapIcon {
       Area var3 = Area.mapAreaType[this.areaId];
       switch(var3.horizontalAlignment.value) {
       case 0:
-         if(var1 >= this.field538 && var1 < this.field533 + this.field538) {
+         if(var1 >= this.screenX && var1 < this.field533 + this.screenX) {
             break;
          }
 
          return false;
       case 1:
-         if(var1 >= this.field538 - this.field533 / 2 && var1 <= this.field533 / 2 + this.field538) {
+         if(var1 >= this.screenX - this.field533 / 2 && var1 <= this.field533 / 2 + this.screenX) {
             break;
          }
 
          return false;
       case 2:
-         if(var1 <= this.field538 - this.field533 || var1 > this.field538) {
+         if(var1 <= this.screenX - this.field533 || var1 > this.screenX) {
             return false;
          }
       }
@@ -144,7 +145,7 @@ public class MapIcon {
       garbageValue = "-1180742701"
    )
    boolean method550(int var1, int var2) {
-      return this.field536 == null?false:(var1 >= this.field538 - this.field536.field472 / 2 && var1 <= this.field536.field472 / 2 + this.field538?var2 >= this.field537 && var2 <= this.field536.field473 + this.field537:false);
+      return this.field536 == null?false:(var1 >= this.screenX - this.field536.field472 / 2 && var1 <= this.field536.field472 / 2 + this.screenX ?var2 >= this.field537 && var2 <= this.field536.field473 + this.field537:false);
    }
 
    @ObfuscatedName("d")
