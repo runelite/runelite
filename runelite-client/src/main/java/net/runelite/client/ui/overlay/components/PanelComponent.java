@@ -43,10 +43,10 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class PanelComponent implements RenderableEntity
 {
-	private static final int TOP_BORDER = 3;
-	private static final int LEFT_BORDER = 6;
-	private static final int RIGHT_BORDER = 6;
-	private static final int BOTTOM_BORDER = 6;
+	public static final int TOP_BORDER = 3;
+	public static final int LEFT_BORDER = 6;
+	public static final int RIGHT_BORDER = 6;
+	public static final int BOTTOM_BORDER = 6;
 	private static final int SEPARATOR = 2;
 
 	@Data
@@ -80,6 +80,12 @@ public class PanelComponent implements RenderableEntity
 
 	@Setter
 	private int width = 140;
+
+	// Getter for the width, can be useful for formatting/positioning
+	public int getWidth()
+	{
+		return width;
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
