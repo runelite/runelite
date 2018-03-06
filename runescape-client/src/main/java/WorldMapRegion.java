@@ -247,7 +247,7 @@ public class WorldMapRegion {
          MapIcon var5 = (MapIcon)var4.next();
          if(var1.contains(Integer.valueOf(var5.areaId))) {
             Area var6 = Area.mapAreaType[var5.areaId];
-            this.method394(var6, var5.screenX, var5.field537, var2, var3);
+            this.method394(var6, var5.screenX, var5.screenY, var2, var3);
          }
       }
 
@@ -639,7 +639,7 @@ public class WorldMapRegion {
          MapIcon var12 = (MapIcon)var8.getValue();
          if(var12 != null) {
             var12.screenX = var10;
-            var12.field537 = var11;
+            var12.screenY = var11;
             Area var13 = Area.mapAreaType[var12.areaId];
             if(!var3.contains(Integer.valueOf(var13.method4883()))) {
                this.method395(var12, var10, var11, var5);
@@ -661,7 +661,7 @@ public class WorldMapRegion {
          MapIcon var5 = (MapIcon)var4.next();
          Area var6 = Area.mapAreaType[var5.areaId];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4883()))) {
-            this.method394(var6, var5.screenX, var5.field537, var2, var3);
+            this.method394(var6, var5.screenX, var5.screenY, var2, var3);
          }
       }
 
@@ -739,9 +739,9 @@ public class WorldMapRegion {
          int var8 = var7.field531.worldX % 64;
          int var9 = var7.field531.worldY % 64;
          var7.screenX = (int)((float)var1 + var5 * (float)var8);
-         var7.field537 = (int)((float)var2 + var5 * (float)(63 - var9));
+         var7.screenY = (int)((float)var2 + var5 * (float)(63 - var9));
          if(!var3.contains(Integer.valueOf(var7.areaId))) {
-            this.method395(var7, var7.screenX, var7.field537, var5);
+            this.method395(var7, var7.screenX, var7.screenY, var5);
          }
       }
 

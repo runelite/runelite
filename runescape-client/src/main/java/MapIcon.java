@@ -61,7 +61,8 @@ public class MapIcon {
    @ObfuscatedGetter(
       intValue = 1845405553
    )
-   int field537;
+   @Export("screenY")
+   int screenY;
 
    @ObfuscatedSignature(
       signature = "(ILic;Lic;Lai;)V"
@@ -120,18 +121,18 @@ public class MapIcon {
 
       switch(var3.verticalAlignment.value) {
       case 0:
-         if(var2 >= this.field537 && var2 < this.field537 + this.field534) {
+         if(var2 >= this.screenY && var2 < this.screenY + this.field534) {
             break;
          }
 
          return false;
       case 1:
-         if(var2 < this.field537 - this.field534 / 2 || var2 > this.field534 / 2 + this.field537) {
+         if(var2 < this.screenY - this.field534 / 2 || var2 > this.field534 / 2 + this.screenY) {
             return false;
          }
          break;
       case 2:
-         if(var2 <= this.field537 - this.field534 || var2 > this.field537) {
+         if(var2 <= this.screenY - this.field534 || var2 > this.screenY) {
             return false;
          }
       }
@@ -145,7 +146,7 @@ public class MapIcon {
       garbageValue = "-1180742701"
    )
    boolean method550(int var1, int var2) {
-      return this.field536 == null?false:(var1 >= this.screenX - this.field536.field472 / 2 && var1 <= this.field536.field472 / 2 + this.screenX ?var2 >= this.field537 && var2 <= this.field536.field473 + this.field537:false);
+      return this.field536 == null?false:(var1 >= this.screenX - this.field536.field472 / 2 && var1 <= this.field536.field472 / 2 + this.screenX ?var2 >= this.screenY && var2 <= this.field536.field473 + this.screenY :false);
    }
 
    @ObfuscatedName("d")
