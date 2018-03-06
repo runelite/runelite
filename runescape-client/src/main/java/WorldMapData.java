@@ -273,7 +273,8 @@ public class WorldMapData {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-2123083177"
    )
-   public String method288() {
+   @Export("getName")
+   public String getName() {
       return this.name;
    }
 

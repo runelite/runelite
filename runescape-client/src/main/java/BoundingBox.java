@@ -2015,7 +2015,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                            var75 = "";
                                                                                                                            var97 = Occluder.method3163().method6175(var34);
                                                                                                                            if(var97 != null) {
-                                                                                                                              var75 = var97.method288();
+                                                                                                                              var75 = var97.getName();
                                                                                                                            }
 
                                                                                                                            class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var75;
