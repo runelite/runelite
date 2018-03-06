@@ -29,7 +29,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.client.input.MouseListener;
