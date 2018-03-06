@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import net.runelite.api.ItemID;
+
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.api.ItemID;
+
 import static net.runelite.api.NpcID.FISHING_SPOT_1506;
 import static net.runelite.api.NpcID.FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.FISHING_SPOT_1510;
@@ -84,7 +86,7 @@ public enum FishingSpot
 		FISHING_SPOT_1515, FISHING_SPOT_1526, FISHING_SPOT_1527
 	),
 	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON,
-		FISHING_SPOT_1542
+		FISHING_SPOT_1542, 7323
 	),
 	ANGLERFISH("Anglerfish", ItemID.RAW_ANGLERFISH,
 		FISHING_SPOT_6825
