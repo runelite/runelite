@@ -66,11 +66,11 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent event)
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
 		if (!plugin.isMapShown())
 		{
-			return;
+			return event;
 		}
 
 		int direction = event.getWheelRotation();
@@ -85,6 +85,7 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 		}
 
 		event.consume();
+		return event;
 	}
 
 	@Override

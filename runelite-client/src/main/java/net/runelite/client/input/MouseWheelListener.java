@@ -26,10 +26,7 @@ package net.runelite.client.input;
 
 import java.awt.event.MouseWheelEvent;
 
-public abstract class MouseWheelListener
+public interface MouseWheelListener
 {
-	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
-	{
-		return event;
-	}
+	MouseWheelEvent mouseWheelMoved(MouseWheelEvent event);
 }
