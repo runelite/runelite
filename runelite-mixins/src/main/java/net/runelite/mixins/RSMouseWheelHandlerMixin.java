@@ -41,7 +41,7 @@ public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
 	@Replace("mouseWheelMoved")
 	public void mouseWheelMoved(MouseWheelEvent event)
 	{
-		Hooks.mouseWheelMoved(event);
+		event = Hooks.mouseWheelMoved(event);
 		if (!event.isConsumed())
 		{
 			rs$mouseWheelMoved(event);

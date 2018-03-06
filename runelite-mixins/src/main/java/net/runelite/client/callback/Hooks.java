@@ -25,6 +25,8 @@
 package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
+import java.awt.Graphics;
+import net.runelite.api.MainBufferProvider;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -40,6 +42,11 @@ public class Hooks
 	public static Logger log;
 
 	public static EventBus eventBus;
+
+	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
+	{
+		throw new IllegalStateException();
+	}
 
 	public static MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
@@ -76,7 +83,7 @@ public class Hooks
 		throw new RuntimeException();
 	}
 
-	public static void mouseWheelMoved(MouseWheelEvent event)
+	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
 		throw new RuntimeException();
 	}

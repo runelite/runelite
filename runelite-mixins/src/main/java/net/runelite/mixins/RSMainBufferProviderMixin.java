@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.input;
+package net.runelite.mixins;
 
-import java.awt.event.MouseWheelEvent;
+import java.awt.Graphics;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
+import net.runelite.client.callback.Hooks;
+import net.runelite.rs.api.RSMainBufferProvider;
 
-public abstract class MouseWheelListener
+@Mixin(RSMainBufferProvider.class)
+public abstract class RSMainBufferProviderMixin implements RSMainBufferProvider
 {
-	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	/**
+	 * Replacing this method makes it so we can completely
+	 * control when/what is drawn on the game's canvas,
+	 * as the method that is replaced draws
+	 * the game's image on the canvas.
+	 */
+	@Replace("draw")
+	final void draw(Graphics graphics, int x, int y)
 	{
-		return event;
+		Hooks.draw(this, graphics, x, y);
 	}
 }
