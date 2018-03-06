@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,91 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.api;
 
 import java.util.EnumSet;
-import lombok.Builder;
-import lombok.Value;
 
-@Value
-@Builder
-public class World
+/**
+ * Enum representing world type.
+ */
+public enum WorldType
 {
-	private int id;
-	private EnumSet<WorldType> types;
-	private String address;
-	private String activity;
-	private int location;
-	private int players;
+	/**
+	 * Members world type.
+	 */
+	MEMBERS(1),
+	/**
+	 * Pvp world type.
+	 */
+	PVP(1 << 2),
+	/**
+	 * Bounty world type.
+	 */
+	BOUNTY(1 << 5),
+	/**
+	 * Skill total world type.
+	 */
+	SKILL_TOTAL(1 << 7),
+	/**
+	 * Pvp high risk world type.
+	 */
+	PVP_HIGH_RISK(1 << 10),
+	/**
+	 * Last man standing world type.
+	 */
+	LAST_MAN_STANDING(1 << 14),
+	/**
+	 * Deadman world type.
+	 */
+	DEADMAN(1 << 29),
+	/**
+	 * Seasonal deadman world type.
+	 */
+	SEASONAL_DEADMAN(1 << 30);
+
+	private final int mask;
+
+	WorldType(int mask)
+	{
+		this.mask = mask;
+	}
+
+	/**
+	 * Create enum set of world types from mask.
+	 *
+	 * @param mask the mask
+	 * @return the enum set
+	 */
+	public static EnumSet<WorldType> fromMask(final int mask)
+	{
+		final EnumSet<WorldType> types = EnumSet.noneOf(WorldType.class);
+
+		for (WorldType type : WorldType.values())
+		{
+			if ((mask & type.mask) != 0)
+			{
+				types.add(type);
+			}
+		}
+
+		return types;
+	}
+
+	/**
+	 * Create mask from enum set of world types.
+	 *
+	 * @param types the types
+	 * @return the int
+	 */
+	public static int toMask(final EnumSet<WorldType> types)
+	{
+		int mask = 0;
+
+		for (WorldType type : types)
+		{
+			mask |= type.mask;
+		}
+
+		return mask;
+	}
 }

@@ -4997,7 +4997,7 @@ public final class Client extends GameEngine implements class302 {
                Enum.setGameState(45);
                var2.vmethod3379();
                var2 = null;
-               TotalQuantityComparator.method99(var46);
+               TotalQuantityComparator.changeWorld(var46);
                var1.serverPacket = null;
                return false;
             }

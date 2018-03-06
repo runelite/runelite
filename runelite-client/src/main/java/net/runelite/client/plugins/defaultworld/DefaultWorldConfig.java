@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.defaultworld;
 
-import net.runelite.api.World;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSWorld extends World
+@ConfigGroup(
+	keyName = "defaultworld",
+	name = "Default World",
+	description = "Sets the default world and remembers it"
+)
+public interface DefaultWorldConfig extends Config
 {
-	@Import("mask")
-	int getMask();
-
-	@Import("mask")
-	void setMask(int mask);
-
-	@Import("playerCount")
-	@Override
-	int getPlayerCount();
-
-	@Import("playerCount")
-	@Override
-	void setPlayerCount(int playerCount);
-
-	@Import("location")
-	@Override
-	int getLocation();
-
-	@Import("location")
-	@Override
-	void setLocation(int location);
-
-	@Import("index")
-	@Override
-	int getIndex();
-
-	@Import("index")
-	@Override
-	void setIndex(int index);
-
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("id")
-	@Override
-	void setId(int id);
-
-	@Import("activity")
-	@Override
-	String getActivity();
-
-	@Import("activity")
-	@Override
-	void setActivity(String activity);
-
-	@Import("address")
-	@Override
-	String getAddress();
-
-	@Import("address")
-	@Override
-	void setAddress(String address);
+	@ConfigItem(
+		keyName = "defaultWorld",
+		name = "Default world",
+		description = "World to use as default one"
+	)
+	default int getWorld()
+	{
+		return 0;
+	}
 }
