@@ -100,7 +100,7 @@ class CannonOverlay extends Overlay
 		if (config.showDoubleHitSpot())
 		{
 			Color color = config.highlightDoubleHitColor();
-			drawDoubleHitSpots(graphics, plugin.getCannon().getLocalLocation(), color);
+			drawDoubleHitSpots(graphics, cannonPoint, color);
 		}
 
 		return null;
