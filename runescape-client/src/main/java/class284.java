@@ -36,7 +36,8 @@ public enum class284 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -1113098479
    )
-   public final int field3698;
+   @Export("value")
+   public final int value;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 670969701
@@ -44,7 +45,7 @@ public enum class284 implements Enumerated {
    final int field3697;
 
    class284(int var3, int var4) {
-      this.field3698 = var3;
+      this.value = var3;
       this.field3697 = var4;
    }
 

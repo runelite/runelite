@@ -841,7 +841,7 @@ public class WorldMapRegion {
       garbageValue = "92"
    )
    int method401(SpritePixels var1, class284 var2) {
-      switch(var2.field3698) {
+      switch(var2.value) {
       case 1:
          return -var1.width / 2;
       case 2:

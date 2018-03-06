@@ -98,7 +98,7 @@ public class MapIcon {
    )
    boolean method553(int var1, int var2) {
       Area var3 = Area.mapAreaType[this.areaId];
-      switch(var3.field3464.field3698) {
+      switch(var3.field3464.value) {
       case 0:
          if(var1 >= this.field538 && var1 < this.field533 + this.field538) {
             break;
