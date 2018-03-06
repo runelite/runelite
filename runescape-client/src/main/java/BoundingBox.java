@@ -2201,7 +2201,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                        var33 = 1;
                                                                                                                                     } else if(var7 == 6623) {
                                                                                                                                        var70 = new Coordinates(class81.intStack[--class81.intStackSize]);
-                                                                                                                                       var93 = Occluder.method3163().method6077(var70.plane, var70.worldX, var70.worldY);
+                                                                                                                                       var93 = Occluder.method3163().getWorldMapDataContainingCoord(var70.plane, var70.worldX, var70.worldY);
                                                                                                                                        if(var93 == null) {
                                                                                                                                           class81.intStack[++class81.intStackSize - 1] = -1;
                                                                                                                                        } else {

@@ -537,7 +537,8 @@ public class RenderOverview {
       signature = "(IIII)Lal;",
       garbageValue = "1652573332"
    )
-   public WorldMapData method6077(int var1, int var2, int var3) {
+   @Export("getWorldMapDataContainingCoord")
+   public WorldMapData getWorldMapDataContainingCoord(int var1, int var2, int var3) {
       Iterator var4 = this.worldMapDataByIdentifier.values().iterator();
 
       WorldMapData var5;
@@ -558,7 +559,7 @@ public class RenderOverview {
       garbageValue = "6"
    )
    public void method6170(int var1, int var2, int var3, boolean var4) {
-      WorldMapData var5 = this.method6077(var1, var2, var3);
+      WorldMapData var5 = this.getWorldMapDataContainingCoord(var1, var2, var3);
       if(var5 == null) {
          if(!var4) {
             return;
