@@ -71,7 +71,6 @@ public final class MainBufferProvider extends BufferProvider {
       garbageValue = "-845102348"
    )
    @Export("draw")
-   @Hook("draw")
    final void draw(Graphics var1, int var2, int var3) {
       try {
          var1.drawImage(this.image, var2, var3, this.component);

@@ -314,7 +314,7 @@ public class MixinInjector
 			String deobMethodName = (String) copyAnnotation.getElement().getValue();
 
 			ClassFile deobCf = inject.toDeobClass(cf);
-			Method deobMethod = findDeobMethod(deobCf, deobMethodName);
+			Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
 
 			if (deobMethod == null)
 			{
@@ -493,7 +493,7 @@ public class MixinInjector
 				String deobMethodName = (String) replaceAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = findDeobMethod(deobCf, deobMethodName);
+				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
 
 				if (deobMethod == null)
 				{
@@ -657,8 +657,67 @@ public class MixinInjector
 		}
 	}
 
-	private Method findDeobMethod(ClassFile deobCf, String deobMethodName)
+	private Method findDeobMethod(ClassFile deobCf, String deobMethodName, Signature descriptor)
+		throws InjectionException
 	{
+		List<Method> matchingMethods = new ArrayList<>();
+
+		for (Method m : deobCf.getMethods())
+		{
+			if (!deobMethodName.equals(m.getName()))
+			{
+				continue;
+			}
+
+			Type returnType = inject.apiTypeToDeobfuscatedType(descriptor.getReturnValue());
+			Type returnType2 = m.getDescriptor().getReturnValue();
+
+			if (!returnType.equals(returnType2))
+			{
+				continue;
+			}
+
+			List<Type> args = descriptor.getArguments();
+			List<Type> args2 = m.getDescriptor().getArguments();
+
+			if (args.size() > args2.size())
+			{
+				continue;
+			}
+
+			boolean matchingArgs = true;
+
+			for (int i = 0; i < args.size(); i++)
+			{
+				Type type = inject.apiTypeToDeobfuscatedType(args.get(i));
+				Type type2 = args2.get(i);
+
+				if (!type.equals(type2))
+				{
+					matchingArgs = false;
+					break;
+				}
+			}
+
+			if (!matchingArgs)
+			{
+				continue;
+			}
+
+			matchingMethods.add(m);
+		}
+
+		if (matchingMethods.size() > 1)
+		{
+			// this happens when it has found several deob methods for some mixin method,
+			// to get rid of the error, refine your search by making your mixin method have more parameters
+			throw new InjectionException("There are several matching methods when there should only be one");
+		}
+		else if (matchingMethods.size() == 1)
+		{
+			return matchingMethods.get(0);
+		}
+
 		Method method = deobCf.findMethod(deobMethodName);
 
 		if (method == null)

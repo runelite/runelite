@@ -44,6 +44,11 @@ public class MouseManager
 		}
 	}
 
+	public void registerMouseListener(int position, MouseListener mouseListener)
+	{
+		mouseListeners.add(position, mouseListener);
+	}
+
 	public void unregisterMouseListener(MouseListener mouseListener)
 	{
 		mouseListeners.remove(mouseListener);
@@ -55,6 +60,11 @@ public class MouseManager
 		{
 			mouseWheelListeners.add(mouseWheelListener);
 		}
+	}
+
+	public void registerMouseWheelListener(int position, MouseWheelListener mouseWheelListener)
+	{
+		mouseWheelListeners.add(position, mouseWheelListener);
 	}
 
 	public void unregisterMouseWheelListener(MouseWheelListener mouseWheelListener)
@@ -125,11 +135,12 @@ public class MouseManager
 		return mouseEvent;
 	}
 
-	public void processMouseWheelMoved(MouseWheelEvent mouseWheelEvent)
+	public MouseWheelEvent processMouseWheelMoved(MouseWheelEvent mouseWheelEvent)
 	{
 		for (MouseWheelListener mouseWheelListener : mouseWheelListeners)
 		{
-			mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
+			mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
 		}
+		return mouseWheelEvent;
 	}
 }

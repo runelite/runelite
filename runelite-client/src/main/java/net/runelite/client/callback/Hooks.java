@@ -26,8 +26,10 @@ package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -82,6 +84,10 @@ public class Hooks
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
+
+	private static Dimension lastStretchedDimensions;
+	private static BufferedImage stretchedImage;
+	private static Graphics2D stretchedGraphics;
 
 	private static long lastCheck;
 
@@ -182,9 +188,9 @@ public class Hooks
 		return mouseManager.processMouseMoved(mouseEvent);
 	}
 
-	public static void mouseWheelMoved(MouseWheelEvent event)
+	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		mouseManager.processMouseWheelMoved(event);
+		return mouseManager.processMouseWheelMoved(event);
 	}
 
 	public static void keyPressed(KeyEvent keyEvent)
@@ -204,7 +210,12 @@ public class Hooks
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
-		final BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
+		if (graphics == null)
+		{
+			return;
+		}
+
+		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
@@ -215,6 +226,39 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+
+		// Stretch the game image if the user has that enabled
+		if (!client.isResized() && client.isStretchedEnabled())
+		{
+			Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions))
+			{
+				/*
+					Reuse the resulting image instance to avoid creating an extreme amount of objects
+				 */
+				stretchedImage = new BufferedImage(stretchedDimensions.width, stretchedDimensions.height, BufferedImage.TYPE_INT_RGB);
+
+				if (stretchedGraphics != null)
+				{
+					stretchedGraphics.dispose();
+				}
+				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
+
+				lastStretchedDimensions = stretchedDimensions;
+			}
+
+			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					client.isStretchedFast()
+							? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+							: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
+
+			image = stretchedImage;
+		}
+
+		// Draw the image onto the game canvas
+		graphics.drawImage(image, 0, 0, client.getCanvas());
 
 		renderer.provideScreenshot(image);
 	}

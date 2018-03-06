@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018 Abex
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
@@ -26,68 +25,95 @@
 package net.runelite.mixins;
 
 import java.awt.Canvas;
-import java.awt.event.FocusListener;
+import java.awt.Dimension;
+import net.runelite.api.Constants;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSGameCanvas;
 
-@Mixin(RSGameCanvas.class)
-public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
+@Mixin(RSClient.class)
+public abstract class StretchedFixedModeMixin implements RSClient
 {
-	@Shadow("clientInstance")
-	private static RSClient client;
-
-	// This is inverted because it is false initialized.
 	@Inject
-	private static boolean shouldNotHaveFocus;
+	private static boolean stretchedEnabled;
+
+	@Inject
+	private static boolean stretchedFast;
+
+	@Inject
+	private static boolean stretchedKeepAspectRatio;
+
+	@Inject
+	private static Dimension cachedStretchedDimensions;
+
+	@Inject
+	private static Dimension lastCanvasDimensions;
 
 	@Inject
 	@Override
-	public void removeFocusListener(FocusListener l)
+	public boolean isStretchedEnabled()
 	{
-		super.removeFocusListener(l);
-		shouldNotHaveFocus = !this.hasFocus();
+		return stretchedEnabled;
 	}
 
 	@Inject
 	@Override
-	public void requestFocus()
+	public void setStretchedEnabled(boolean state)
 	{
-		// Runescape requests focus whenever the window is resized. Because of this, PluginPanels cannot have focus
-		// if they cause the sidebar to expand. This change prevents Runescape from requesting focus whenever it wants
-		if (!shouldNotHaveFocus)
-		{
-			this.requestFocusInWindow();
-		}
+		stretchedEnabled = state;
 	}
 
 	@Inject
 	@Override
-	public void setSize(int width, int height)
+	public boolean isStretchedFast()
 	{
-		if (!client.isResized() && client.isStretchedEnabled())
-		{
-			super.setSize(getParent().getWidth(), getParent().getHeight());
-		}
-		else
-		{
-			super.setSize(width, height);
-		}
+		return stretchedFast;
 	}
 
 	@Inject
 	@Override
-	public void setLocation(int x, int y)
+	public void setStretchedFast(boolean state)
 	{
-		if (!client.isResized() && client.isStretchedEnabled())
+		stretchedFast = state;
+	}
+
+	@Inject
+	@Override
+	public void setStretchedKeepAspectRatio(boolean state)
+	{
+		stretchedKeepAspectRatio = state;
+		cachedStretchedDimensions = null;
+	}
+
+	@Inject
+	@Override
+	public Dimension getStretchedDimensions()
+	{
+		Canvas canvas = getCanvas();
+
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+
+		if (cachedStretchedDimensions == null || width != lastCanvasDimensions.width || height != lastCanvasDimensions.height)
 		{
-			super.setLocation(0, 0);
+			if (stretchedKeepAspectRatio)
+			{
+				int tempNewWidth = (int) (height * Constants.GAME_FIXED_ASPECT_RATIO);
+
+				if (tempNewWidth > canvas.getWidth())
+				{
+					height = (int) (width / Constants.GAME_FIXED_ASPECT_RATIO);
+				}
+				else
+				{
+					width = tempNewWidth;
+				}
+			}
+
+			cachedStretchedDimensions = new Dimension(width, height);
+			lastCanvasDimensions = new Dimension(width, height);
 		}
-		else
-		{
-			super.setLocation(x, y);
-		}
+
+		return cachedStretchedDimensions;
 	}
 }
