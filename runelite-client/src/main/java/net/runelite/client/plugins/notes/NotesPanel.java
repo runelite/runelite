@@ -91,4 +91,9 @@ public class NotesPanel extends PluginPanel
 		});
 		add(notesEditor, BorderLayout.CENTER);
 	}
+
+	void setNotes(String data)
+	{
+		notesEditor.setText(data);
+	}
 }
