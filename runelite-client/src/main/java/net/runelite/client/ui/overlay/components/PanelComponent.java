@@ -39,9 +39,17 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.api.IndexedSprite;
 import net.runelite.client.ui.overlay.RenderableEntity;
+import net.runelite.client.ui.overlay.tooltip.TooltipComponent;
 
-public class PanelComponent implements RenderableEntity
+import static java.lang.Math.max;
+
+/**
+ * Renders a panel with a title and
+ * left and right aligned key-value lines.
+ */
+public class PanelComponent implements RenderableEntity, TooltipComponent
 {
 	private static final int TOP_BORDER = 3;
 	private static final int LEFT_BORDER = 6;
@@ -81,15 +89,23 @@ public class PanelComponent implements RenderableEntity
 	@Setter
 	private int width = 140;
 
+	@Setter
+	private boolean anchorBottomRight;
+
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		final FontMetrics metrics = graphics.getFontMetrics();
 		final Dimension dimension = new Dimension();
+
+		// determine dimensions of the box
 		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size() + (Objects.isNull(progressBar) ? 0 : 1);
 		int height = elementNumber == 0 ? 0 :
-			TOP_BORDER + (graphics.getFontMetrics().getHeight() * elementNumber)
-				+ SEPARATOR * elementNumber + (Objects.isNull(progressBar) ? 0 : progressBar.getHeight() / 2)
-					+ BOTTOM_BORDER;
+			TOP_BORDER +
+			(metrics.getHeight() * elementNumber) +
+			SEPARATOR * elementNumber +
+			(Objects.isNull(progressBar) ? 0 : progressBar.getHeight() / 2) +
+			BOTTOM_BORDER;
 		dimension.setSize(width, height);
 
 		if (dimension.height == 0)
@@ -97,10 +113,13 @@ public class PanelComponent implements RenderableEntity
 			return null;
 		}
 
-		final FontMetrics metrics = graphics.getFontMetrics();
 
-		// Calculate panel dimensions
-		int y = position.y + TOP_BORDER + metrics.getHeight();
+		// if anchoring bottom right, subtract dimensions but don't render outside screen
+		if (anchorBottomRight)
+		{
+			position.x = max(position.x - width, 0);
+			position.y = max(position.y - height, 0);
+		}
 
 		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
@@ -108,39 +127,41 @@ public class PanelComponent implements RenderableEntity
 		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
 		backgroundComponent.render(graphics, parent);
 
+		int currentY = position.y + TOP_BORDER + metrics.getHeight();
+
 		// Render title
 		if (!Strings.isNullOrEmpty(title))
 		{
 			final TextComponent titleComponent = new TextComponent();
 			titleComponent.setText(title);
 			titleComponent.setColor(titleColor);
-			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, y));
+			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, currentY));
 			titleComponent.render(graphics, parent);
-			y += metrics.getHeight() + SEPARATOR;
+			currentY += metrics.getHeight() + SEPARATOR;
 		}
 
 		// Render all lines
 		for (final Line line : lines)
 		{
 			final TextComponent leftLineComponent = new TextComponent();
-			leftLineComponent.setPosition(new Point(position.x + LEFT_BORDER, y));
+			leftLineComponent.setPosition(new Point(position.x + LEFT_BORDER, currentY));
 			leftLineComponent.setText(line.getLeft());
 			leftLineComponent.setColor(line.getLeftColor());
 			leftLineComponent.render(graphics, parent);
 
 			final TextComponent rightLineComponent = new TextComponent();
-			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), y));
+			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), currentY));
 			rightLineComponent.setText(line.getRight());
 			rightLineComponent.setColor(line.getRightColor());
 			rightLineComponent.render(graphics, parent);
-			y += metrics.getHeight() + SEPARATOR;
+			currentY += metrics.getHeight() + SEPARATOR;
 		}
 
 		//Render progress bar
 		if (!Objects.isNull(progressBar))
 		{
 			progressBar.setWidth(width - LEFT_BORDER - RIGHT_BORDER);
-			progressBar.setPosition(new Point(position.x + LEFT_BORDER, y - (metrics.getHeight() / 2)));
+			progressBar.setPosition(new Point(position.x + LEFT_BORDER, currentY - (metrics.getHeight() / 2)));
 			progressBar.render(graphics, parent);
 		}
 
