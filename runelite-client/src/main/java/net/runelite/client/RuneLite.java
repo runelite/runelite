@@ -200,6 +200,8 @@ public class RuneLite
 			{
 				gui.setAlwaysOnTop(runeliteConfig.gameAlwaysOnTop());
 			}
+
+			gui.setResizable(runeliteConfig.isResizable());
 		});
 
 		eventBus.post(new ClientUILoaded());
