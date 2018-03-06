@@ -28,18 +28,22 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.FontMetrics;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TeamCapesOverlay extends Overlay
 {
+	private final int MAX_CLAN_NAME_LENGTH = 35;
+	private final int MIN_PX_BETWEEN_NAME_COUNT = 4;
 	private final TeamCapesPlugin plugin;
 	private final TeamCapesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
-	private final int MAX_CLAN_NAME_LENGTH = 35;
 	private Map<Integer, String> teamNames = new HashMap<>();
 
 	@Inject
@@ -59,11 +63,11 @@ public class TeamCapesOverlay extends Overlay
 		{
 			return null;
 		}
-		panelComponent.getLines().clear();
+
 		final FontMetrics metrics = graphics.getFontMetrics();
 
 		// Setup customTeamNames by parsing the formatted input to rename team-capes.
-		// Format w/ examples (comma seperated): teamcape#=TEAMNAME
+		// Format w/ example (comma separated): teamcape#=TEAMNAME
 		// 7=Critical Damage,30=FOE
 		teamNames.clear();
 		if (this.config.getCustomTeamNames().length() >= 3)
@@ -78,7 +82,7 @@ public class TeamCapesOverlay extends Overlay
 					capeNum = Integer.parseInt(values[0]);
 					capeName = values[1];
 				}
-				// If parse error, then invalid formatting. Go to next comma seperated group.
+				// If parse error, then invalid formatting. Go to next comma separated group.
 				catch (NumberFormatException | ArrayIndexOutOfBoundsException e)
 				{
 					continue;
@@ -88,14 +92,14 @@ public class TeamCapesOverlay extends Overlay
 			}
 		}
 
-
+		panelComponent.getLines().clear();
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
+			String capeName;
+
 			// Only display team capes that have a count greater than the configured minimum.
 			if (team.getValue() >= config.getMinimumCapeCount())
 			{
-				String capeName;
-
 				if (teamNames.containsKey(team.getKey()))
 				{
 					// If the cape has a name assigned, output that instead of the #.
@@ -105,7 +109,7 @@ public class TeamCapesOverlay extends Overlay
 					// too many useless calculations/function calls.
 					if (capeName.length() > MAX_CLAN_NAME_LENGTH)
 					{
-						capeName = capeName.substring(0, MAX_CLAN_NAME_LENGTH );
+						capeName = capeName.substring(0, MAX_CLAN_NAME_LENGTH);
 						teamNames.replace(team.getKey(), capeName);
 					}
 
@@ -114,7 +118,8 @@ public class TeamCapesOverlay extends Overlay
 					while (metrics.stringWidth(capeName) >=
 							(panelComponent.getWidth() -
 									metrics.stringWidth(Integer.toString(team.getValue())) -
-									PanelComponent.LEFT_BORDER - PanelComponent.RIGHT_BORDER - 4))
+									PanelComponent.LEFT_BORDER - PanelComponent.RIGHT_BORDER -
+									MIN_PX_BETWEEN_NAME_COUNT))
 					{
 						capeName = capeName.substring(0, capeName.length() - 1);
 					}

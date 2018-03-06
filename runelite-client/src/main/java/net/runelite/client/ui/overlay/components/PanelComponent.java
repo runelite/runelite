@@ -81,6 +81,7 @@ public class PanelComponent implements RenderableEntity
 	@Setter
 	private int width = 140;
 
+	// Getter for the width, can be useful for formatting/positioning
 	public int getWidth()
 	{
 		return width;

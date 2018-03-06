@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-
 import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -54,6 +53,7 @@ public class TeamCapesPlugin extends Plugin
 	@Inject
 	private TeamCapesConfig config;
 
+	@Inject
 	private TeamCapesOverlay teamCapesOverlay;
 
 	// Hashmap of team capes: Key is the teamCape #, Value is the count of teamcapes in the area.
@@ -63,12 +63,6 @@ public class TeamCapesPlugin extends Plugin
 	TeamCapesConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(TeamCapesConfig.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		teamCapesOverlay = new TeamCapesOverlay(this, config);
 	}
 
 	@Override
