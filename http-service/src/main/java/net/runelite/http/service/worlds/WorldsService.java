@@ -71,15 +71,15 @@ public class WorldsService
 
 		for (int i = 0; i < num; ++i)
 		{
-			World world = new World();
-			world.setId(buf.getShort() & 0xFFFF);
-			world.setTypes(getTypes(buf.getInt()));
-			world.setAddress(readString(buf));
-			world.setActivity(readString(buf));
-			world.setLocation(buf.get() & 0xFF);
-			world.setPlayers(buf.getShort() & 0xFFFF);
+			final World.WorldBuilder worldBuilder = World.builder()
+				.id(buf.getShort() & 0xFFFF)
+				.types(getTypes(buf.getInt()))
+				.address(readString(buf))
+				.activity(readString(buf))
+				.location(buf.get() & 0xFF)
+				.players(buf.getShort() & 0xFFFF);
 
-			worlds.add(world);
+			worlds.add(worldBuilder.build());
 		}
 
 		WorldResult result = new WorldResult();

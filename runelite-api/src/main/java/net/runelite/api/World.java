@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,111 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.World;
-import net.runelite.mapping.Import;
 
-public interface RSWorld extends World
+import java.util.EnumSet;
+
+/**
+ * Holds data of RuneScape world.
+ */
+public interface World
 {
-	@Import("mask")
-	int getMask();
+	/**
+	 * Gets world types.
+	 *
+	 * @return the types
+	 */
+	EnumSet<WorldType> getTypes();
 
-	@Import("mask")
-	void setMask(int mask);
+	/**
+	 * Sets world types.
+	 *
+	 * @param types the types
+	 */
+	void setTypes(EnumSet<WorldType> types);
 
-	@Import("playerCount")
-	@Override
+	/**
+	 * Gets player count.
+	 *
+	 * @return the player count
+	 */
 	int getPlayerCount();
 
-	@Import("playerCount")
-	@Override
+	/**
+	 * Sets player count.
+	 *
+	 * @param playerCount the player count
+	 */
 	void setPlayerCount(int playerCount);
 
-	@Import("location")
-	@Override
+	/**
+	 * Gets location.
+	 *
+	 * @return the location
+	 */
 	int getLocation();
 
-	@Import("location")
-	@Override
+	/**
+	 * Sets location.
+	 *
+	 * @param location the location
+	 */
 	void setLocation(int location);
 
-	@Import("index")
-	@Override
+	/**
+	 * Gets index.
+	 *
+	 * @return the index
+	 */
 	int getIndex();
 
-	@Import("index")
-	@Override
+	/**
+	 * Sets index.
+	 *
+	 * @param index the index
+	 */
 	void setIndex(int index);
 
-	@Import("id")
-	@Override
+	/**
+	 * Gets id.
+	 *
+	 * @return the id
+	 */
 	int getId();
 
-	@Import("id")
-	@Override
+	/**
+	 * Sets id.
+	 *
+	 * @param id the id
+	 */
 	void setId(int id);
 
-	@Import("activity")
-	@Override
+	/**
+	 * Gets activity.
+	 *
+	 * @return the activity
+	 */
 	String getActivity();
 
-	@Import("activity")
-	@Override
+	/**
+	 * Sets activity.
+	 *
+	 * @param activity the activity
+	 */
 	void setActivity(String activity);
 
-	@Import("address")
-	@Override
+	/**
+	 * Gets address.
+	 *
+	 * @return the address
+	 */
 	String getAddress();
 
-	@Import("address")
-	@Override
+	/**
+	 * Sets address.
+	 *
+	 * @param address the address
+	 */
 	void setAddress(String address);
 }
