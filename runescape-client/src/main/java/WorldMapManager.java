@@ -39,7 +39,8 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "[[Laz;"
    )
-   class35[][] field554;
+   @Export("mapRegions")
+   class35[][] mapRegions;
    @ObfuscatedName("k")
    HashMap field551;
    @ObfuscatedName("s")
@@ -127,7 +128,7 @@ public final class WorldMapManager {
          System.nanoTime();
          class35.field485.method4049();
          class35.field484.method4049();
-         this.field554 = new class35[var17][var10];
+         this.mapRegions = new class35[var17][var10];
          Iterator var11 = this.field550.field574.iterator();
 
          while(var11.hasNext()) {
@@ -136,15 +137,15 @@ public final class WorldMapManager {
             int var14 = var12.field420;
             int var15 = var13 - this.field550.method312();
             int var16 = var14 - this.field550.method302();
-            this.field554[var15][var16] = new class35(var13, var14, this.field550.method298(), this.mapFonts);
-            this.field554[var15][var16].method372(var12, this.field550.field576);
+            this.mapRegions[var15][var16] = new class35(var13, var14, this.field550.method298(), this.mapFonts);
+            this.mapRegions[var15][var16].method372(var12, this.field550.field576);
          }
 
          for(int var18 = 0; var18 < var17; ++var18) {
             for(int var19 = 0; var19 < var10; ++var19) {
-               if(this.field554[var18][var19] == null) {
-                  this.field554[var18][var19] = new class35(this.field550.method312() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
-                  this.field554[var18][var19].method373(this.field550.field575, this.field550.field576);
+               if(this.mapRegions[var18][var19] == null) {
+                  this.mapRegions[var18][var19] = new class35(this.field550.method312() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
+                  this.mapRegions[var18][var19].method373(this.field550.field575, this.field550.field576);
                }
             }
          }
@@ -201,7 +202,7 @@ public final class WorldMapManager {
       for(var17 = var13.worldMapRegionX; var17 < var13.worldMapRegionX + var13.worldMapRegionWidth; ++var17) {
          for(var18 = var13.worldMapRegionY; var18 < var13.worldMapRegionHeight + var13.worldMapRegionY; ++var18) {
             this.method567(var17, var18, var22);
-            this.field554[var17][var18].method463(var15, (class47)this.field551.get(Integer.valueOf(var15)), var22, this.field564);
+            this.mapRegions[var17][var18].method463(var15, (class47)this.field551.get(Integer.valueOf(var15)), var22, this.field564);
          }
       }
 
@@ -213,7 +214,7 @@ public final class WorldMapManager {
 
       for(int var20 = var13.worldMapRegionX; var20 < var13.worldMapRegionX + var13.worldMapRegionWidth; ++var20) {
          for(int var21 = var13.worldMapRegionY; var21 < var13.worldMapRegionY + var13.worldMapRegionHeight; ++var21) {
-            this.field554[var20][var21].method371(var5 + var17 * (this.field554[var20][var21].field494 * 64 - var18) / 64, var8 - var17 * (this.field554[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
+            this.mapRegions[var20][var21].method371(var5 + var17 * (this.mapRegions[var20][var21].field494 * 64 - var18) / 64, var8 - var17 * (this.mapRegions[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
          }
       }
 
@@ -237,17 +238,17 @@ public final class WorldMapManager {
       for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionX + var14.worldMapRegionWidth; ++var19) {
          for(var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionY + var14.worldMapRegionHeight; ++var20) {
             if(var13) {
-               this.field554[var19][var20].method399();
+               this.mapRegions[var19][var20].method399();
             }
 
-            this.field554[var19][var20].method377(var5 + var16 * (this.field554[var19][var20].field494 * 64 - var17) / 64, var8 - var16 * (this.field554[var19][var20].field488 * 64 - var18 + 64) / 64, var16, var9);
+            this.mapRegions[var19][var20].method377(var5 + var16 * (this.mapRegions[var19][var20].field494 * 64 - var17) / 64, var8 - var16 * (this.mapRegions[var19][var20].field488 * 64 - var18 + 64) / 64, var16, var9);
          }
       }
 
       if(var10 != null && var11 > 0) {
          for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionWidth + var14.worldMapRegionX; ++var19) {
             for(var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionY + var14.worldMapRegionHeight; ++var20) {
-               this.field554[var19][var20].drawFlashingMapIcons(var10, var11, var12);
+               this.mapRegions[var19][var20].drawFlashingMapIcons(var10, var11, var12);
             }
          }
       }
@@ -261,22 +262,22 @@ public final class WorldMapManager {
    )
    void method567(int var1, int var2, class35[] var3) {
       boolean var4 = var1 <= 0;
-      boolean var5 = var1 >= this.field554.length - 1;
+      boolean var5 = var1 >= this.mapRegions.length - 1;
       boolean var6 = var2 <= 0;
-      boolean var7 = var2 >= this.field554[0].length - 1;
+      boolean var7 = var2 >= this.mapRegions[0].length - 1;
       if(var7) {
          var3[class254.field3324.rsOrdinal()] = null;
       } else {
-         var3[class254.field3324.rsOrdinal()] = this.field554[var1][var2 + 1];
+         var3[class254.field3324.rsOrdinal()] = this.mapRegions[var1][var2 + 1];
       }
 
-      var3[class254.field3315.rsOrdinal()] = !var7 && !var5?this.field554[var1 + 1][var2 + 1]:null;
-      var3[class254.field3321.rsOrdinal()] = !var7 && !var4?this.field554[var1 - 1][var2 + 1]:null;
-      var3[class254.field3316.rsOrdinal()] = var5?null:this.field554[var1 + 1][var2];
-      var3[class254.field3320.rsOrdinal()] = var4?null:this.field554[var1 - 1][var2];
-      var3[class254.field3318.rsOrdinal()] = var6?null:this.field554[var1][var2 - 1];
-      var3[class254.field3317.rsOrdinal()] = !var6 && !var5?this.field554[var1 + 1][var2 - 1]:null;
-      var3[class254.field3319.rsOrdinal()] = !var6 && !var4?this.field554[var1 - 1][var2 - 1]:null;
+      var3[class254.field3315.rsOrdinal()] = !var7 && !var5?this.mapRegions[var1 + 1][var2 + 1]:null;
+      var3[class254.field3321.rsOrdinal()] = !var7 && !var4?this.mapRegions[var1 - 1][var2 + 1]:null;
+      var3[class254.field3316.rsOrdinal()] = var5?null:this.mapRegions[var1 + 1][var2];
+      var3[class254.field3320.rsOrdinal()] = var4?null:this.mapRegions[var1 - 1][var2];
+      var3[class254.field3318.rsOrdinal()] = var6?null:this.mapRegions[var1][var2 - 1];
+      var3[class254.field3317.rsOrdinal()] = !var6 && !var5?this.mapRegions[var1 + 1][var2 - 1]:null;
+      var3[class254.field3319.rsOrdinal()] = !var6 && !var4?this.mapRegions[var1 - 1][var2 - 1]:null;
    }
 
    @ObfuscatedName("y")
@@ -336,7 +337,7 @@ public final class WorldMapManager {
 
          for(int var17 = var12.worldMapRegionX; var17 < var12.worldMapRegionWidth + var12.worldMapRegionX; ++var17) {
             for(int var18 = var12.worldMapRegionY; var18 < var12.worldMapRegionY + var12.worldMapRegionHeight; ++var18) {
-               List var19 = this.field554[var17][var18].method413(var5 + var14 * (this.field554[var17][var18].field494 * 64 - var15) / 64, var8 + var6 - var14 * (this.field554[var17][var18].field488 * 64 - var16 + 64) / 64, var14, var9, var10);
+               List var19 = this.mapRegions[var17][var18].method413(var5 + var14 * (this.mapRegions[var17][var18].field494 * 64 - var15) / 64, var8 + var6 - var14 * (this.mapRegions[var17][var18].field488 * 64 - var16 + 64) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -372,8 +373,8 @@ public final class WorldMapManager {
          var5.worldMapRegionX = 0;
       }
 
-      if(var5.worldMapRegionX > this.field554.length - var5.worldMapRegionWidth) {
-         var5.worldMapRegionWidth = this.field554.length - var5.worldMapRegionX;
+      if(var5.worldMapRegionX > this.mapRegions.length - var5.worldMapRegionWidth) {
+         var5.worldMapRegionWidth = this.mapRegions.length - var5.worldMapRegionX;
       }
 
       if(var5.worldMapRegionY < 0) {
@@ -381,12 +382,12 @@ public final class WorldMapManager {
          var5.worldMapRegionY = 0;
       }
 
-      if(var5.worldMapRegionY > this.field554[0].length - var5.worldMapRegionHeight) {
-         var5.worldMapRegionHeight = this.field554[0].length - var5.worldMapRegionY;
+      if(var5.worldMapRegionY > this.mapRegions[0].length - var5.worldMapRegionHeight) {
+         var5.worldMapRegionHeight = this.mapRegions[0].length - var5.worldMapRegionY;
       }
 
-      var5.worldMapRegionWidth = Math.min(var5.worldMapRegionWidth, this.field554.length);
-      var5.worldMapRegionHeight = Math.min(var5.worldMapRegionHeight, this.field554[0].length);
+      var5.worldMapRegionWidth = Math.min(var5.worldMapRegionWidth, this.mapRegions.length);
+      var5.worldMapRegionHeight = Math.min(var5.worldMapRegionHeight, this.mapRegions[0].length);
       return var5;
    }
 
@@ -421,9 +422,9 @@ public final class WorldMapManager {
 
       this.field553.clear();
 
-      for(int var1 = 0; var1 < this.field554.length; ++var1) {
-         for(int var2 = 0; var2 < this.field554[var1].length; ++var2) {
-            List var3 = this.field554[var1][var2].method407();
+      for(int var1 = 0; var1 < this.mapRegions.length; ++var1) {
+         for(int var2 = 0; var2 < this.mapRegions[var1].length; ++var2) {
+            List var3 = this.mapRegions[var1][var2].method407();
             Iterator var4 = var3.iterator();
 
             while(var4.hasNext()) {
