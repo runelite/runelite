@@ -24,34 +24,51 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The interface for a tooltip. Tooltips can return
- * any TooltipComponent which is an extension of the
- * RenderableEntity with a few additional methods.
+ * A tooltip that displays key value data.
+ *
+ * @see PanelComponent The component the tooltip uses.
  */
-public interface Tooltip
+public class PanelTooltip implements Tooltip
 {
+	@Setter
+	private String title;
+
+	@Setter
+	private Color titleColor;
+
+	@Getter
+	private List<PanelComponent.Line> lines = new ArrayList<>();
+
+	@Getter
+	@Setter
+	private boolean followMouse = true;
+
+	@Setter
+	@Getter
+	private Point position = new Point();
+
 	/**
 	 * Creates the TooltipComponent for the tooltip.
 	 *
 	 * @return The TooltipComponent
 	 */
-	TooltipComponent createTooltipComponent();
-
-	/**
-	 * Whether the tooltip should follow the mouse.
-	 *
-	 * @return True if the tooltip should follow the mouse.
-	 */
-	boolean isFollowMouse();
-
-	/**
-	 * In the case that the Tooltip is not intended to
-	 * follow the mouse, this position is used instead.
-	 *
-	 * @return The desired mouse position.
-	 */
-	Point getPosition();
+	@Override
+	public TooltipComponent createTooltipComponent()
+	{
+		PanelComponent component = new PanelComponent();
+		component.getLines().addAll(this.lines);
+		component.setTitle(title);
+		component.setTitleColor(titleColor);
+		return component;
+	}
 }

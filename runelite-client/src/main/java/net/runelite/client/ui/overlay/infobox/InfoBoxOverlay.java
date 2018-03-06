@@ -38,7 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TextTooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class InfoBoxOverlay extends Overlay
@@ -100,7 +100,7 @@ public class InfoBoxOverlay extends Overlay
 				if (client != null && intersectionRectangle.contains(new Point(client.getMouseCanvasPosition().getX(),
 					client.getMouseCanvasPosition().getY())))
 				{
-					tooltipManager.add(new Tooltip(box.getTooltip()));
+					tooltipManager.add(new TextTooltip(box.getTooltip()));
 				}
 			}
 

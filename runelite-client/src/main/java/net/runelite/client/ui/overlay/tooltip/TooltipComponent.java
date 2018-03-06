@@ -24,34 +24,30 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
+import net.runelite.api.Client;
+import net.runelite.api.IndexedSprite;
+import net.runelite.client.ui.overlay.RenderableEntity;
+
 import java.awt.Point;
 
 /**
- * The interface for a tooltip. Tooltips can return
- * any TooltipComponent which is an extension of the
- * RenderableEntity with a few additional methods.
+ * An extension of RenderableEntity that adds some
+ * useful methods for tooltips.
  */
-public interface Tooltip
+public interface TooltipComponent extends RenderableEntity
 {
 	/**
-	 * Creates the TooltipComponent for the tooltip.
+	 * Sets the position of the RenderableEntity to the given Point.
 	 *
-	 * @return The TooltipComponent
+	 * @param position The desired position.
 	 */
-	TooltipComponent createTooltipComponent();
+	void setPosition(Point position);
 
 	/**
-	 * Whether the tooltip should follow the mouse.
+	 * Sets whether the component should anchor itself to the
+	 * top left (default) or bottom right (tooltip).
 	 *
-	 * @return True if the tooltip should follow the mouse.
+	 * @param value True for bottom right.
 	 */
-	boolean isFollowMouse();
-
-	/**
-	 * In the case that the Tooltip is not intended to
-	 * follow the mouse, this position is used instead.
-	 *
-	 * @return The desired mouse position.
-	 */
-	Point getPosition();
+	void setAnchorBottomRight(boolean value);
 }

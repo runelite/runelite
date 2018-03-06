@@ -32,7 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TextTooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QueryRunner;
 
@@ -76,7 +76,7 @@ public class ItemStatOverlay extends Overlay
 					{
 						b.append(buildStatChangeString(c));
 					}
-					tooltipManager.add(new Tooltip(b.toString()));
+					tooltipManager.add(new TextTooltip(b.toString()));
 				}
 			}
 		}
