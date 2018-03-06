@@ -30,10 +30,8 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TeamCapesOverlay extends Overlay
@@ -41,6 +39,8 @@ public class TeamCapesOverlay extends Overlay
 	private final TeamCapesPlugin plugin;
 	private final TeamCapesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
+	private final int MAX_CLAN_NAME_LENGTH = 35;
+	private Map<Integer, String> teamNames = new HashMap<>();
 
 	@Inject
 	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
@@ -60,13 +60,72 @@ public class TeamCapesOverlay extends Overlay
 			return null;
 		}
 		panelComponent.getLines().clear();
+		final FontMetrics metrics = graphics.getFontMetrics();
+
+		// Setup customTeamNames by parsing the formatted input to rename team-capes.
+		// Format w/ examples (comma seperated): teamcape#=TEAMNAME
+		// 7=Critical Damage,30=FOE
+		teamNames.clear();
+		if (this.config.getCustomTeamNames().length() >= 3)
+		{
+			for (String teamName : this.config.getCustomTeamNames().split(","))
+			{
+				String[] values = teamName.split("=");
+				int capeNum;
+				String capeName;
+				try
+				{
+					capeNum = Integer.parseInt(values[0]);
+					capeName = values[1];
+				}
+				// If parse error, then invalid formatting. Go to next comma seperated group.
+				catch (NumberFormatException | ArrayIndexOutOfBoundsException e)
+				{
+					continue;
+				}
+
+				teamNames.put(capeNum, capeName);
+			}
+		}
+
+
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
 			// Only display team capes that have a count greater than the configured minimum.
 			if (team.getValue() >= config.getMinimumCapeCount())
 			{
+				String capeName;
+
+				if (teamNames.containsKey(team.getKey()))
+				{
+					// If the cape has a name assigned, output that instead of the #.
+					capeName = teamNames.get(team.getKey());
+
+					// Cut the name if it's way too long to prevent the following loop from doing
+					// too many useless calculations/function calls.
+					if (capeName.length() > MAX_CLAN_NAME_LENGTH)
+					{
+						capeName = capeName.substring(0, MAX_CLAN_NAME_LENGTH );
+						teamNames.replace(team.getKey(), capeName);
+					}
+
+					// If the capeName is too long, it will go all the way until it's under the cape count.
+					// So take chars off the cape name until it is short enough to fit reasonably.
+					while (metrics.stringWidth(capeName) >=
+							(panelComponent.getWidth() -
+									metrics.stringWidth(Integer.toString(team.getValue())) -
+									PanelComponent.LEFT_BORDER - PanelComponent.RIGHT_BORDER - 4))
+					{
+						capeName = capeName.substring(0, capeName.length() - 1);
+					}
+				}
+				else // If it has no custom name, just display Team-##
+				{
+					capeName = "Team-" + Integer.toString(team.getKey());
+				}
+
 				panelComponent.getLines().add(new PanelComponent.Line(
-						"Team-" + Integer.toString(team.getKey()),
+						capeName,
 						Color.WHITE,
 						Integer.toString(team.getValue()),
 						Color.WHITE
