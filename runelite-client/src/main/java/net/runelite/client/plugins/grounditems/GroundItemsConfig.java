@@ -116,10 +116,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "defaultColor",
+		name = "Default items color",
+		description = "Configures the color for default, non-highlighted items",
+		position = 8
+	)
+	default Color defaultColor()
+	{
+		return Color.WHITE;
+	}
+
+	@ConfigItem(
 		keyName = "highlightedColor",
 		name = "Highlighted items color",
 		description = "Configures the color for highlighted items",
-		position = 8
+		position = 9
 	)
 	default Color highlightedColor()
 	{
@@ -130,7 +141,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "lowValueColor",
 		name = "Low value items color",
 		description = "Configures the color for low value items",
-		position = 9
+		position = 10
 	)
 	default Color lowValueColor()
 	{
@@ -141,7 +152,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 10
+		position = 11
 	)
 	default Color mediumValueColor()
 	{
@@ -152,7 +163,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 11
+		position = 12
 	)
 	default Color highValueColor()
 	{
@@ -163,7 +174,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 12
+		position = 13
 	)
 	default Color insaneValueColor()
 	{
