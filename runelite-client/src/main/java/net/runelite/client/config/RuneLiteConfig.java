@@ -45,13 +45,13 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "isResizable",
-		name = "Enable window resizing",
-		description = "Determines if the window is resizable"
+		keyName = "lockWindowSize",
+		name = "Lock window size",
+		description = "Determines if the window resizing is allowed or not"
 	)
-	default boolean isResizable()
+	default boolean lockWindowSize()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
