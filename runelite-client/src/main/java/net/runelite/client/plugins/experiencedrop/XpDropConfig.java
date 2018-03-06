@@ -37,6 +37,16 @@ import net.runelite.client.config.ConfigItem;
 public interface XpDropConfig extends Config
 {
 	@ConfigItem(
+		keyName = "hideSkillIcons",
+		name = "Hide skill icons",
+		description = "Configure if XP drops will show their respective skill icons"
+	)
+	default boolean hideSkillIcons()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "meleePrayerColor",
 		name = "Melee Prayer Color",
 		description = "XP drop color when a melee prayer is active"
