@@ -242,7 +242,8 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "1384503579"
    )
-   public int method294() {
+   @Export("getFileId")
+   public int getFileId() {
       return this.fileId;
    }
 

@@ -2205,7 +2205,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                        if(var93 == null) {
                                                                                                                                           class81.intStack[++class81.intStackSize - 1] = -1;
                                                                                                                                        } else {
-                                                                                                                                          class81.intStack[++class81.intStackSize - 1] = var93.method294();
+                                                                                                                                          class81.intStack[++class81.intStackSize - 1] = var93.getFileId();
                                                                                                                                        }
 
                                                                                                                                        var33 = 1;

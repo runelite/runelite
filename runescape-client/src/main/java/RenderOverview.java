@@ -598,7 +598,7 @@ public class RenderOverview {
       garbageValue = "232989975"
    )
    public int method6080() {
-      return this.worldMapData == null?-1:this.worldMapData.method294();
+      return this.worldMapData == null?-1:this.worldMapData.getFileId();
    }
 
    @ObfuscatedName("f")
@@ -885,7 +885,7 @@ public class RenderOverview {
          }
 
          var3 = (WorldMapData)var2.next();
-      } while(var3.method294() != var1);
+      } while(var3.getFileId() != var1);
 
       return var3;
    }
