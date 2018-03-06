@@ -155,6 +155,17 @@ public class TooltipComponent implements RenderableEntity
 							lineX += modIcon.getWidth();
 						}
 					}
+					else
+					{
+						TextComponent textComponent = new TextComponent();
+						textComponent.setColor(nextColor);
+						String text = line.substring(begin, j + 1);
+						textComponent.setText(text);
+						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+						textComponent.render(graphics, parent);
+
+						lineX += metrics.stringWidth(text);
+					}
 
 					begin = j + 1;
 				}
@@ -192,6 +203,10 @@ public class TooltipComponent implements RenderableEntity
 				if (subLine.startsWith("img="))
 				{
 					textWidth += MOD_ICON_WIDTH;
+				}
+				else if (!subLine.startsWith("col=") && !subLine.startsWith("/col"))
+				{
+					textWidth += metrics.stringWidth(line.substring(begin, j + 1));
 				}
 
 				begin = j + 1;
