@@ -50,7 +50,8 @@ public class RenderOverview {
    )
    IndexedSprite[] field4013;
    @ObfuscatedName("i")
-   HashMap field4014;
+   @Export("worldMapDataByIdentifier")
+   HashMap worldMapDataByIdentifier;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lal;"
@@ -298,13 +299,13 @@ public class RenderOverview {
       this.field4019 = new class333(var1);
       int var5 = this.field4058.getFile(MapCacheArchiveNames.DETAILS.name);
       int[] var6 = this.field4058.getChilds(var5);
-      this.field4014 = new HashMap(var6.length);
+      this.worldMapDataByIdentifier = new HashMap(var6.length);
 
       for(int var7 = 0; var7 < var6.length; ++var7) {
          Buffer var8 = new Buffer(this.field4058.getConfigData(var5, var6[var7]));
          WorldMapData var9 = new WorldMapData();
          var9.loadMapData(var8, var6[var7]);
-         this.field4014.put(var9.getIdentifier(), var9);
+         this.worldMapDataByIdentifier.put(var9.getIdentifier(), var9);
          if(var9.method313()) {
             this.field4020 = var9;
          }
@@ -537,7 +538,7 @@ public class RenderOverview {
       garbageValue = "1652573332"
    )
    public WorldMapData method6077(int var1, int var2, int var3) {
-      Iterator var4 = this.field4014.values().iterator();
+      Iterator var4 = this.worldMapDataByIdentifier.values().iterator();
 
       WorldMapData var5;
       do {
@@ -876,7 +877,7 @@ public class RenderOverview {
       garbageValue = "2038581939"
    )
    public WorldMapData method6175(int var1) {
-      Iterator var2 = this.field4014.values().iterator();
+      Iterator var2 = this.worldMapDataByIdentifier.values().iterator();
 
       WorldMapData var3;
       do {
