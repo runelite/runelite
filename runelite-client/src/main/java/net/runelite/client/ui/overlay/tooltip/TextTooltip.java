@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,33 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.ui.overlay.components.TextBoxComponent;
+
+import java.awt.Point;
 
 /**
- * A singleton class to handle displaying tooltips on the screen.
+ * A simple tooltip for displaying lines of text. Also
+ * supports runescape's text markup.
+ *
+ * @see TextBoxComponent The component the TextTooltip uses.
  */
-@Singleton
-@Slf4j
-public class TooltipManager
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class TextTooltip implements Tooltip
 {
-	/**
-	 * The list of tooltips to display on the screen.
-	 * It is cleared each frame, and so the tooltip must
-	 * be added each frame it is drawn.
-	 */
-	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
+	private final String text;
+	private boolean followMouse = true;
+	private Point position = new Point();
 
-	public void add(Tooltip tooltip)
+	@Override
+	public TooltipComponent getTooltipComponent()
 	{
-		tooltips.add(tooltip);
-	}
-
-	public void clear()
-	{
-		tooltips.clear();
+		TextBoxComponent component = new TextBoxComponent();
+		component.setText(this.getText());
+		return component;
 	}
 }

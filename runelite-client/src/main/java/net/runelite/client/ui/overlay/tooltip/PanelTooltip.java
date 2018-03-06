@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, arlyon <https://github.com/arlyon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,51 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
- * A singleton class to handle displaying tooltips on the screen.
+ * A tooltip that displays key value data.
+ *
+ * @see PanelComponent The component the tooltip uses.
  */
-@Singleton
-@Slf4j
-public class TooltipManager
+public class PanelTooltip implements Tooltip
 {
-	/**
-	 * The list of tooltips to display on the screen.
-	 * It is cleared each frame, and so the tooltip must
-	 * be added each frame it is drawn.
-	 */
+	@Setter
+	private String title;
+
+	@Setter
+	private Color titleColor;
+
 	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
+	private List<PanelComponent.Line> lines = new ArrayList<>();
 
-	public void add(Tooltip tooltip)
-	{
-		tooltips.add(tooltip);
-	}
+	@Getter
+	@Setter
+	private boolean followMouse = true;
 
-	public void clear()
+	@Setter
+	@Getter
+	private Point position = new Point();
+
+	/**
+	 * Creates the TooltipComponent for the tooltip.
+	 *
+	 * @return The TooltipComponent
+	 */
+	@Override
+	public TooltipComponent getTooltipComponent()
 	{
-		tooltips.clear();
+		PanelComponent component = new PanelComponent();
+		component.getLines().addAll(this.lines);
+		component.setTitle(title);
+		component.setTitleColor(titleColor);
+		return component;
 	}
 }

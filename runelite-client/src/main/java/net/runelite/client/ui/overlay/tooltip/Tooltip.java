@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, arlyon <https://github.com/arlyon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,16 +25,33 @@
 package net.runelite.client.ui.overlay.tooltip;
 
 import java.awt.Point;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class Tooltip
+/**
+ * The interface for a tooltip. Tooltips can return
+ * any TooltipComponent which is an extension of the
+ * RenderableEntity with a few additional methods.
+ */
+public interface Tooltip
 {
-	private final String text;
-	private boolean followMouse = true;
-	private Point position = new Point();
+	/**
+	 * Creates the TooltipComponent for the tooltip.
+	 *
+	 * @return The TooltipComponent
+	 */
+	TooltipComponent getTooltipComponent();
+
+	/**
+	 * Whether the tooltip should follow the mouse.
+	 *
+	 * @return True if the tooltip should follow the mouse.
+	 */
+	boolean isFollowMouse();
+
+	/**
+	 * In the case that the Tooltip is not intended to
+	 * follow the mouse, this position is used instead.
+	 *
+	 * @return The desired mouse position.
+	 */
+	Point getPosition();
 }

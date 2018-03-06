@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, arlyon <https://github.com/arlyon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltip;
+package net.runelite.client.plugins.combatlevel;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * A singleton class to handle displaying tooltips on the screen.
- */
-@Singleton
-@Slf4j
-public class TooltipManager
+@ConfigGroup(
+	keyName = "combatLevel",
+	name = "Combat Level",
+	description = "Displays more detailed info about the combat level"
+)
+public interface CombatLevelConfig extends Config
 {
-	/**
-	 * The list of tooltips to display on the screen.
-	 * It is cleared each frame, and so the tooltip must
-	 * be added each frame it is drawn.
-	 */
-	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
-
-	public void add(Tooltip tooltip)
+	@ConfigItem(
+		keyName = "showTotalLevel",
+		name = "Show total levels on mouseover",
+		description = "Defines whether the total required level should be displayed",
+		position = 2
+	)
+	default boolean showTotalLevel()
 	{
-		tooltips.add(tooltip);
+		return false;
 	}
 
-	public void clear()
+	@ConfigItem(
+		keyName = "showDeltaLevel",
+		name = "Show required level ups on mouseover",
+		description = "Defines whether the number of level ups needed should be displayed",
+		position = 3
+	)
+	default boolean showDeltaLevel()
 	{
-		tooltips.clear();
+		return false;
+	}
+
+
+	@ConfigItem(
+		keyName = "showExperience",
+		name = "Show required experience on mouseover",
+		description = "Defines whether the required experience should be displayed",
+		position = 4
+	)
+	default boolean showExperience()
+	{
+		return true;
 	}
 }
+

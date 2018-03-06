@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, arlyon <https://github.com/arlyon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltip;
+package net.runelite.client.plugins.combatlevel;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 
 /**
- * A singleton class to handle displaying tooltips on the screen.
+ * A utility class that simplifies comparing current xp to a target level.
  */
-@Singleton
-@Slf4j
-public class TooltipManager
+public class SkillLevelEntry implements Comparable<SkillLevelEntry>
 {
-	/**
-	 * The list of tooltips to display on the screen.
-	 * It is cleared each frame, and so the tooltip must
-	 * be added each frame it is drawn.
-	 */
-	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
+	private Skill skill;
+	private int targetLevel;
+	private int currentExperience;
 
-	public void add(Tooltip tooltip)
+	SkillLevelEntry(Skill skill, int targetLevel, int currentExperience)
 	{
-		tooltips.add(tooltip);
+		this.skill = skill;
+		this.targetLevel = targetLevel;
+		this.currentExperience = currentExperience;
 	}
 
-	public void clear()
+	public String getName()
 	{
-		tooltips.clear();
+		return skill.getName();
+	}
+
+	public int getTargetLevel()
+	{
+		return targetLevel;
+	}
+
+	public int getCurrentLevel()
+	{
+		return Experience.getLevelForXp(currentExperience);
+	}
+
+	@Override
+	public int compareTo(SkillLevelEntry o)
+	{
+		return Integer.compare(this.getRemainingXp(), o.getRemainingXp());
+	}
+
+	/**
+	 * Gets the amount of experience needed to reach the level target.
+	 */
+	public int getRemainingXp()
+	{
+		return Experience.getXpForLevel(targetLevel) - currentExperience;
 	}
 }

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, arlyon <https://github.com/arlyon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +26,7 @@
 package net.runelite.client.plugins.combatlevel;
 
 import com.google.common.eventbus.Subscribe;
-import java.text.DecimalFormat;
-import javax.inject.Inject;
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
@@ -34,8 +34,13 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
+
+import javax.inject.Inject;
+import java.text.DecimalFormat;
 
 @PluginDescriptor(
 	name = "Combat level"
@@ -45,10 +50,16 @@ public class CombatLevelPlugin extends Plugin
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
 	@Inject
-	Client client;
+	private Client client;
 
+	@Inject
+	private CombatLevelOverlay overlay;
+
+	/**
+	 * Returns the text to normal upon shutdown of the plugin.
+	 */
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
 
@@ -63,6 +74,11 @@ public class CombatLevelPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Updates the text on the combat level widget.
+	 *
+	 * @param event The current tick.
+	 */
 	@Subscribe
 	public void updateCombatLevel(GameTick event)
 	{
@@ -78,15 +94,27 @@ public class CombatLevelPlugin extends Plugin
 		}
 
 		double combatLevelPrecise = Experience.getCombatLevelPrecise(
-				client.getRealSkillLevel(Skill.ATTACK),
-				client.getRealSkillLevel(Skill.STRENGTH),
-				client.getRealSkillLevel(Skill.DEFENCE),
-				client.getRealSkillLevel(Skill.HITPOINTS),
-				client.getRealSkillLevel(Skill.MAGIC),
-				client.getRealSkillLevel(Skill.RANGED),
-				client.getRealSkillLevel(Skill.PRAYER)
+			client.getRealSkillLevel(Skill.ATTACK),
+			client.getRealSkillLevel(Skill.STRENGTH),
+			client.getRealSkillLevel(Skill.DEFENCE),
+			client.getRealSkillLevel(Skill.HITPOINTS),
+			client.getRealSkillLevel(Skill.MAGIC),
+			client.getRealSkillLevel(Skill.RANGED),
+			client.getRealSkillLevel(Skill.PRAYER)
 		);
 
 		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
+
+	@Provides
+	CombatLevelConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CombatLevelConfig.class);
 	}
 }

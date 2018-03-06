@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, arlyon <https://github.com/arlyon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,38 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.IndexedSprite;
+import net.runelite.client.ui.overlay.RenderableEntity;
+
+import java.awt.Point;
 
 /**
- * A singleton class to handle displaying tooltips on the screen.
+ * An extension of RenderableEntity that adds some
+ * useful methods for tooltips.
  */
-@Singleton
-@Slf4j
-public class TooltipManager
+public interface TooltipComponent extends RenderableEntity
 {
 	/**
-	 * The list of tooltips to display on the screen.
-	 * It is cleared each frame, and so the tooltip must
-	 * be added each frame it is drawn.
+	 * Sets the mod icons such that the tooltip may use them.
+	 *
+	 * @param modIcons An array of mod icons.
+	 * @see Client#getModIcons() Gets the list of mod icons from the client.
 	 */
-	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
+	void setModIcons(IndexedSprite[] modIcons);
 
-	public void add(Tooltip tooltip)
-	{
-		tooltips.add(tooltip);
-	}
+	/**
+	 * Sets the position of the RenderableEntity to the given Point.
+	 *
+	 * @param position The desired position.
+	 */
+	void setPosition(Point position);
 
-	public void clear()
-	{
-		tooltips.clear();
-	}
+	/**
+	 * Sets whether the component should anchor itself to the
+	 * top left (default) or bottom right (tooltip).
+	 *
+	 * @param value True for bottom right.
+	 */
+	void setAnchorBottomRight(boolean value);
 }
