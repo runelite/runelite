@@ -703,7 +703,7 @@ public class WorldMapRegion {
    void method389(Area var1, int var2, int var3) {
       SpritePixels var4 = var1.getMapIcon(false);
       if(var4 != null) {
-         int var5 = this.method401(var4, var1.field3464);
+         int var5 = this.method401(var4, var1.horizontalAlignment);
          int var6 = this.method471(var4, var1.field3463);
          var4.drawAt(var5 + var2, var3 + var6);
       }
