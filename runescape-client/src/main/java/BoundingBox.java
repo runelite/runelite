@@ -2013,7 +2013,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                         if(var7 == 6601) {
                                                                                                                            var34 = class81.intStack[--class81.intStackSize];
                                                                                                                            var75 = "";
-                                                                                                                           var97 = Occluder.method3163().method6175(var34);
+                                                                                                                           var97 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                            if(var97 != null) {
                                                                                                                               var75 = var97.getName();
                                                                                                                            }
@@ -2060,7 +2060,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                               WorldMapData var93;
                                                                                                                               if(var7 == 6611) {
                                                                                                                                  var34 = class81.intStack[--class81.intStackSize];
-                                                                                                                                 var93 = Occluder.method3163().method6175(var34);
+                                                                                                                                 var93 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                  if(var93 == null) {
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                  } else {
@@ -2070,7 +2070,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                  var33 = 1;
                                                                                                                               } else if(var7 == 6612) {
                                                                                                                                  var34 = class81.intStack[--class81.intStackSize];
-                                                                                                                                 var93 = Occluder.method3163().method6175(var34);
+                                                                                                                                 var93 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                  if(var93 == null) {
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
@@ -2082,7 +2082,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                  var33 = 1;
                                                                                                                               } else if(var7 == 6613) {
                                                                                                                                  var34 = class81.intStack[--class81.intStackSize];
-                                                                                                                                 var93 = Occluder.method3163().method6175(var34);
+                                                                                                                                 var93 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                  if(var93 == null) {
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
@@ -2098,7 +2098,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                  var33 = 1;
                                                                                                                               } else if(var7 == 6614) {
                                                                                                                                  var34 = class81.intStack[--class81.intStackSize];
-                                                                                                                                 var93 = Occluder.method3163().method6175(var34);
+                                                                                                                                 var93 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                  if(var93 == null) {
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = -1;
                                                                                                                                  } else {
@@ -2165,7 +2165,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                        class81.intStackSize -= 2;
                                                                                                                                        var34 = class81.intStack[class81.intStackSize];
                                                                                                                                        var98 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
-                                                                                                                                       var97 = Occluder.method3163().method6175(var34);
+                                                                                                                                       var97 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                        var35 = TotalQuantityComparator.localPlayer.field844;
                                                                                                                                        var18 = (TotalQuantityComparator.localPlayer.x >> 7) + WorldMapType1.baseX;
                                                                                                                                        var65 = (TotalQuantityComparator.localPlayer.y >> 7) + Enum.baseY;
@@ -2176,7 +2176,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                        class81.intStackSize -= 2;
                                                                                                                                        var34 = class81.intStack[class81.intStackSize];
                                                                                                                                        var98 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
-                                                                                                                                       var97 = Occluder.method3163().method6175(var34);
+                                                                                                                                       var97 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                        var35 = TotalQuantityComparator.localPlayer.field844;
                                                                                                                                        var18 = (TotalQuantityComparator.localPlayer.x >> 7) + WorldMapType1.baseX;
                                                                                                                                        var65 = (TotalQuantityComparator.localPlayer.y >> 7) + Enum.baseY;
@@ -2187,7 +2187,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                        class81.intStackSize -= 2;
                                                                                                                                        var34 = class81.intStack[class81.intStackSize];
                                                                                                                                        var98 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
-                                                                                                                                       var97 = Occluder.method3163().method6175(var34);
+                                                                                                                                       var97 = Occluder.method3163().getWorldMapDataByFileId(var34);
                                                                                                                                        if(var97 == null) {
                                                                                                                                           class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                           var33 = 1;

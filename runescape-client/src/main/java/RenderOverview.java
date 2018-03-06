@@ -586,7 +586,7 @@ public class RenderOverview {
       garbageValue = "21305"
    )
    public void method6079(int var1) {
-      WorldMapData var2 = this.method6175(var1);
+      WorldMapData var2 = this.getWorldMapDataByFileId(var1);
       if(var2 != null) {
          this.method6082(var2);
       }
@@ -876,7 +876,8 @@ public class RenderOverview {
       signature = "(II)Lal;",
       garbageValue = "2038581939"
    )
-   public WorldMapData method6175(int var1) {
+   @Export("getWorldMapDataByFileId")
+   public WorldMapData getWorldMapDataByFileId(int var1) {
       Iterator var2 = this.worldMapDataByIdentifier.values().iterator();
 
       WorldMapData var3;
