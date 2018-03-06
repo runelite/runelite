@@ -36,11 +36,15 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.TooltipComponent;
 
+
+/**
+ * Renders the tooltips from the {@link TooltipManager}.
+ */
 public class TooltipOverlay extends Overlay
 {
 	private static final int PADDING = 2;
+
 	private final TooltipManager tooltipManager;
 	private final Provider<Client> clientProvider;
 
@@ -64,38 +68,41 @@ public class TooltipOverlay extends Overlay
 			return null;
 		}
 
-		final Rectangle lastLocation = new Rectangle();
+		final Rectangle lastTooltipRectangle = new Rectangle();
+		final Client client = clientProvider.get();
 
 		for (Tooltip tooltip : tooltips)
 		{
-			final Client client = clientProvider.get();
-			final TooltipComponent tooltipComponent = new TooltipComponent();
-			tooltipComponent.setModIcons(client.getModIcons());
-			tooltipComponent.setText(tooltip.getText());
+			final TooltipComponent tooltipComponent = tooltip.createTooltipComponent();
+			tooltipComponent.setAnchorBottomRight(true);
+			final Point currentTooltipPosition = new Point();
 
-			final Point position = new Point();
-
+			// set position to mouse location, or pos defined by tooltip
 			if (tooltip.isFollowMouse())
 			{
-				final net.runelite.api.Point mouseCanvasPosition = client != null
-					? client.getMouseCanvasPosition()
-					: new net.runelite.api.Point(0, 0);
-
-				position.setLocation(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
+				final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+				currentTooltipPosition.setLocation(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 			}
 			else
 			{
-				position.setLocation(tooltip.getPosition());
+				currentTooltipPosition.setLocation(tooltip.getPosition());
 			}
 
-			if (lastLocation.contains(position))
+			// move tooltip to make sure no overlap occurs
+			if (lastTooltipRectangle.contains(currentTooltipPosition))
 			{
-				position.translate(0, -lastLocation.height - PADDING);
+				currentTooltipPosition.translate(0, -lastTooltipRectangle.height - PADDING);
 			}
 
-			tooltipComponent.setPosition(position);
-			lastLocation.setLocation(position);
-			lastLocation.setSize(tooltipComponent.render(graphics, parent));
+			// give the mod icons to components that need it
+			if (tooltipComponent instanceof ModIconReceiver)
+			{
+				((ModIconReceiver) tooltipComponent).setModIcons(client.getModIcons());
+			}
+
+			tooltipComponent.setPosition(currentTooltipPosition);
+			lastTooltipRectangle.setLocation(currentTooltipPosition);
+			lastTooltipRectangle.setSize(tooltipComponent.render(graphics, parent));
 		}
 
 		tooltipManager.clear();

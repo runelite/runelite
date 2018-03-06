@@ -35,8 +35,15 @@ import lombok.Setter;
 import net.runelite.api.IndexedSprite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
+import net.runelite.client.ui.overlay.tooltip.ModIconReceiver;
+import net.runelite.client.ui.overlay.tooltip.TooltipComponent;
 
-public class TooltipComponent implements RenderableEntity
+import static java.lang.Math.max;
+
+/**
+ * Renders a string with a background panel.
+ */
+public class TextBoxComponent implements TooltipComponent, ModIconReceiver, RenderableEntity
 {
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
@@ -53,6 +60,9 @@ public class TooltipComponent implements RenderableEntity
 
 	@Setter
 	private IndexedSprite[] modIcons;
+
+	@Setter
+	private boolean anchorBottomRight;
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
@@ -80,19 +90,14 @@ public class TooltipComponent implements RenderableEntity
 			tooltipHeight += textHeight;
 		}
 
-		// Tooltip position
 		int x = position.x;
 		int y = position.y;
-		x = x - tooltipWidth - OFFSET * 2;
-		if (x < 0)
-		{
-			x = 0;
-		}
 
-		y = y - tooltipHeight - OFFSET * 2;
-		if (y < 0)
+		// if anchoring bottom right, subtract dimensions but don't render outside screen
+		if (anchorBottomRight)
 		{
-			y = 0;
+			x = max(x - tooltipWidth - OFFSET * 2, 0);
+			y = max(y - tooltipHeight - OFFSET * 2, 0);
 		}
 
 		// Render tooltip - background

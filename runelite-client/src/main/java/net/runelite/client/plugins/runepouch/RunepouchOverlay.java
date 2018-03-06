@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TextTooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QueryRunner;
 
@@ -156,7 +156,7 @@ public class RunepouchOverlay extends Overlay
 
 		if (!tooltip.isEmpty() && runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			tooltipManager.add(new Tooltip(tooltip));
+			tooltipManager.add(new TextTooltip(tooltip));
 		}
 		return null;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, arlyon <https://github.com/arlyon>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,33 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.ui.overlay.components.TextBoxComponent;
+
 import java.awt.Point;
 
 /**
- * The interface for a tooltip. Tooltips can return
- * any TooltipComponent which is an extension of the
- * RenderableEntity with a few additional methods.
+ * A simple tooltip for displaying lines of text. Also
+ * supports runescape's text markup.
+ *
+ * @see TextBoxComponent The component the TextTooltip uses.
  */
-public interface Tooltip
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class TextTooltip implements Tooltip
 {
-	/**
-	 * Creates the TooltipComponent for the tooltip.
-	 *
-	 * @return The TooltipComponent
-	 */
-	TooltipComponent createTooltipComponent();
+	private final String text;
+	private boolean followMouse = true;
+	private Point position = new Point();
 
-	/**
-	 * Whether the tooltip should follow the mouse.
-	 *
-	 * @return True if the tooltip should follow the mouse.
-	 */
-	boolean isFollowMouse();
-
-	/**
-	 * In the case that the Tooltip is not intended to
-	 * follow the mouse, this position is used instead.
-	 *
-	 * @return The desired mouse position.
-	 */
-	Point getPosition();
+	@Override
+	public TooltipComponent createTooltipComponent()
+	{
+		TextBoxComponent component = new TextBoxComponent();
+		component.setText(this.getText());
+		return component;
+	}
 }

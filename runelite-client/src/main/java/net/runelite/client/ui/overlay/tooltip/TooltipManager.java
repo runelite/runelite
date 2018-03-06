@@ -30,10 +30,18 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * A singleton class to handle displaying tooltips on the screen.
+ */
 @Singleton
 @Slf4j
 public class TooltipManager
 {
+	/**
+	 * The list of tooltips to display on the screen.
+	 * It is cleared each frame, and so the tooltip must
+	 * be added each frame it is drawn.
+	 */
 	@Getter
 	private final List<Tooltip> tooltips = new ArrayList<>();
 
