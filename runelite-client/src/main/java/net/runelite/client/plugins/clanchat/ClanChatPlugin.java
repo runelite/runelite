@@ -146,7 +146,7 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
