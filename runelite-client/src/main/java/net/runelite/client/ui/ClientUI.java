@@ -245,6 +245,14 @@ public class ClientUI extends JFrame
 			}
 		}
 
+		if (event.getKey().equals("isResizable"))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				this.setResizable(Boolean.valueOf(event.getNewValue()));
+			});
+		}
+
 		if (!event.getKey().equals("gameSize"))
 		{
 			return;

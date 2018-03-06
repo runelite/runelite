@@ -45,6 +45,16 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "isResizable",
+		name = "Enable window resizing",
+		description = "Determines if the window is resizable"
+	)
+	default boolean isResizable()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use Runelite's custom window title and borders.",
