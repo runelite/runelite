@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface BarbarianAssaultConfig extends Config
 {
 	@ConfigItem(
-		keyName = "removeUnused",
-		name = "Remove incorrect calls",
-		description = "Removes incorrect calls for Role horn"
-	)
-	default boolean removeWrong()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
 		description = "Show time to next call change"
