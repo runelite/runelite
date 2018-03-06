@@ -117,7 +117,7 @@ public class MapIcon {
          }
       }
 
-      switch(var3.field3463.value) {
+      switch(var3.verticalAlignment.value) {
       case 0:
          if(var2 >= this.field537 && var2 < this.field537 + this.field534) {
             break;
