@@ -1,4 +1,5 @@
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -32,7 +33,8 @@ public enum VerticalAlignment implements Enumerated {
    @ObfuscatedGetter(
       intValue = 1814702347
    )
-   public final int field3436;
+   @Export("value")
+   public final int value;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 845569293
@@ -40,7 +42,7 @@ public enum VerticalAlignment implements Enumerated {
    final int field3437;
 
    VerticalAlignment(int var3, int var4) {
-      this.field3436 = var3;
+      this.value = var3;
       this.field3437 = var4;
    }
 

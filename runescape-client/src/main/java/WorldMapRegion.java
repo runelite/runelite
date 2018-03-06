@@ -857,7 +857,7 @@ public class WorldMapRegion {
       garbageValue = "64"
    )
    int method471(SpritePixels var1, VerticalAlignment var2) {
-      switch(var2.field3436) {
+      switch(var2.value) {
       case 1:
          return -var1.height / 2;
       case 2:
