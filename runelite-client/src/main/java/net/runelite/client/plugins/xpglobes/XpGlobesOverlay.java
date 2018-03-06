@@ -179,8 +179,12 @@ public class XpGlobesOverlay extends Overlay
 	{
 		graphics.setColor(config.progressOrbBackgroundColor());
 		Ellipse2D ellipse = new Ellipse2D.Double(x, y, config.xpOrbSize(), config.xpOrbSize());
-		graphics.fill(ellipse);
-		graphics.draw(ellipse);
+		if (config.showOrbBackground())
+		{
+			graphics.fill(ellipse);
+			graphics.draw(ellipse);
+		}
+
 		return ellipse;
 	}
 
