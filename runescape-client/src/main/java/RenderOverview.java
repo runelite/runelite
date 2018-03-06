@@ -548,7 +548,7 @@ public class RenderOverview {
          }
 
          var5 = (WorldMapData)var4.next();
-      } while(!var5.method290(var1, var2, var3));
+      } while(!var5.containsCoord(var1, var2, var3));
 
       return var5;
    }
@@ -647,7 +647,7 @@ public class RenderOverview {
             this.initializeWorldMap(var1);
          }
 
-         if(!var4 && this.worldMapData.method290(var2.plane, var2.worldX, var2.worldY)) {
+         if(!var4 && this.worldMapData.containsCoord(var2.plane, var2.worldX, var2.worldY)) {
             this.method6085(var2.plane, var2.worldX, var2.worldY);
          } else {
             this.method6085(var3.plane, var3.worldX, var3.worldY);

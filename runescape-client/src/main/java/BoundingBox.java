@@ -2192,7 +2192,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                           class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                           var33 = 1;
                                                                                                                                        } else {
-                                                                                                                                          class81.intStack[++class81.intStackSize - 1] = var97.method290(var98.plane, var98.worldX, var98.worldY)?1:0;
+                                                                                                                                          class81.intStack[++class81.intStackSize - 1] = var97.containsCoord(var98.plane, var98.worldX, var98.worldY)?1:0;
                                                                                                                                           var33 = 1;
                                                                                                                                        }
                                                                                                                                     } else if(var7 == 6622) {

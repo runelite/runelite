@@ -139,7 +139,8 @@ public class WorldMapData {
       signature = "(IIIB)Z",
       garbageValue = "-79"
    )
-   public boolean method290(int var1, int var2, int var3) {
+   @Export("containsCoord")
+   public boolean containsCoord(int var1, int var2, int var3) {
       Iterator var4 = this.field464.iterator();
 
       WorldMapSectionBase var5;
