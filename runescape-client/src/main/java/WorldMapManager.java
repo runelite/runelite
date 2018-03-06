@@ -118,11 +118,11 @@ public final class WorldMapManager {
          this.field550.method304();
          this.field550.method305();
          this.field550.method306();
-         this.field562 = this.field550.method312() * 64;
+         this.field562 = this.field550.getMinX() * 64;
          this.field559 = this.field550.method302() * 64;
-         this.field555 = (this.field550.method300() - this.field550.method312() + 1) * 64;
+         this.field555 = (this.field550.method300() - this.field550.getMinX() + 1) * 64;
          this.field561 = (this.field550.method348() - this.field550.method302() + 1) * 64;
-         int var17 = this.field550.method300() - this.field550.method312() + 1;
+         int var17 = this.field550.method300() - this.field550.getMinX() + 1;
          int var10 = this.field550.method348() - this.field550.method302() + 1;
          System.nanoTime();
          System.nanoTime();
@@ -135,7 +135,7 @@ public final class WorldMapManager {
             class22 var12 = (class22)var11.next();
             int var13 = var12.field411;
             int var14 = var12.field420;
-            int var15 = var13 - this.field550.method312();
+            int var15 = var13 - this.field550.getMinX();
             int var16 = var14 - this.field550.method302();
             this.mapRegions[var15][var16] = new WorldMapRegion(var13, var14, this.field550.method298(), this.mapFonts);
             this.mapRegions[var15][var16].method372(var12, this.field550.field576);
@@ -144,7 +144,7 @@ public final class WorldMapManager {
          for(int var18 = 0; var18 < var17; ++var18) {
             for(int var19 = 0; var19 < var10; ++var19) {
                if(this.mapRegions[var18][var19] == null) {
-                  this.mapRegions[var18][var19] = new WorldMapRegion(this.field550.method312() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
+                  this.mapRegions[var18][var19] = new WorldMapRegion(this.field550.getMinX() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
                   this.mapRegions[var18][var19].method373(this.field550.field575, this.field550.field576);
                }
             }
@@ -366,7 +366,7 @@ public final class WorldMapManager {
       int var13 = var9 / 64;
       var5.worldMapRegionWidth = var12 - var10 + 1;
       var5.worldMapRegionHeight = var13 - var11 + 1;
-      var5.worldMapRegionX = var10 - this.field550.method312();
+      var5.worldMapRegionX = var10 - this.field550.getMinX();
       var5.worldMapRegionY = var11 - this.field550.method302();
       if(var5.worldMapRegionX < 0) {
          var5.worldMapRegionWidth += var5.worldMapRegionX;

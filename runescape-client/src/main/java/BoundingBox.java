@@ -2075,7 +2075,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                  } else {
-                                                                                                                                    class81.intStack[++class81.intStackSize - 1] = (var93.method300() - var93.method312() + 1) * 64;
+                                                                                                                                    class81.intStack[++class81.intStackSize - 1] = (var93.method300() - var93.getMinX() + 1) * 64;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = (var93.method348() - var93.method302() + 1) * 64;
                                                                                                                                  }
 
@@ -2089,7 +2089,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = 0;
                                                                                                                                  } else {
-                                                                                                                                    class81.intStack[++class81.intStackSize - 1] = var93.method312() * 64;
+                                                                                                                                    class81.intStack[++class81.intStackSize - 1] = var93.getMinX() * 64;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = var93.method302() * 64;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = var93.method300() * 64 + 64 - 1;
                                                                                                                                     class81.intStack[++class81.intStackSize - 1] = var93.method348() * 64 + 64 - 1;

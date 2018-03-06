@@ -295,7 +295,8 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "1824462720"
    )
-   public int method312() {
+   @Export("getMinX")
+   public int getMinX() {
       return this.minX;
    }
 
