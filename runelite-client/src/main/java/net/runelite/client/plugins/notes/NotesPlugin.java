@@ -27,7 +27,9 @@ package net.runelite.client.plugins.notes;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -76,5 +78,13 @@ public class NotesPlugin extends Plugin
 	protected void shutDown()
 	{
 		ui.getPluginToolbar().removeNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen event)
+	{
+		// update notes
+		String data = config.notesData();
+		panel.setNotes(data);
 	}
 }
