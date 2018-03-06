@@ -19,7 +19,8 @@ public class WorldMapData {
    @Export("fileId")
    int fileId;
    @ObfuscatedName("z")
-   String field465;
+   @Export("identifier")
+   String identifier;
    @ObfuscatedName("n")
    String field455;
    @ObfuscatedName("r")
@@ -84,7 +85,7 @@ public class WorldMapData {
    @Export("loadMapData")
    public void loadMapData(Buffer var1, int var2) {
       this.fileId = var2;
-      this.field465 = var1.readString();
+      this.identifier = var1.readString();
       this.field455 = var1.readString();
       this.field457 = new Coordinates(var1.readInt());
       this.field456 = var1.readInt();
@@ -262,7 +263,7 @@ public class WorldMapData {
       garbageValue = "19"
    )
    public String method296() {
-      return this.field465;
+      return this.identifier;
    }
 
    @ObfuscatedName("t")
