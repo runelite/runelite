@@ -43,6 +43,8 @@ import net.runelite.client.util.LinkBrowser;
 @Slf4j
 class GrandExchangeItemPanel extends JPanel
 {
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+
 	GrandExchangeItemPanel(LinkBrowser linkBrowser, BufferedImage icon, String name, int itemID, int gePrice, Double
 		haPrice)
 	{
@@ -96,13 +98,13 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Ge price
 		JLabel gePriceLabel = new JLabel();
-		gePriceLabel.setText(NumberFormat.getInstance().format(gePrice) + " gp");
+		gePriceLabel.setText(NUMBER_FORMATTER.format(gePrice) + " gp");
 		gePriceLabel.setForeground(Color.GREEN);
 		rightPanel.add(gePriceLabel);
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(NumberFormat.getInstance().format(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(NUMBER_FORMATTER.format(haPrice.intValue()) + " alch");
 		haPriceLabel.setForeground(Color.orange);
 		rightPanel.add(haPriceLabel);
 
