@@ -304,7 +304,7 @@ public class RenderOverview {
          Buffer var8 = new Buffer(this.field4058.getConfigData(var5, var6[var7]));
          WorldMapData var9 = new WorldMapData();
          var9.loadMapData(var8, var6[var7]);
-         this.field4014.put(var9.method296(), var9);
+         this.field4014.put(var9.getIdentifier(), var9);
          if(var9.method313()) {
             this.field4020 = var9;
          }
@@ -320,7 +320,7 @@ public class RenderOverview {
       garbageValue = "-596708677"
    )
    public int method6086() {
-      return this.field4058.tryLoadRecordByNames(this.field4020.method296(), MapCacheArchiveNames.AREA.name)?100:this.field4058.archiveLoadPercentByName(this.field4020.method296());
+      return this.field4058.tryLoadRecordByNames(this.field4020.getIdentifier(), MapCacheArchiveNames.AREA.name)?100:this.field4058.archiveLoadPercentByName(this.field4020.getIdentifier());
    }
 
    @ObfuscatedName("n")
@@ -631,7 +631,7 @@ public class RenderOverview {
    void initializeWorldMap(WorldMapData var1) {
       this.worldMapData = var1;
       this.worldMapManager = new WorldMapManager(this.field4013, this.mapFonts);
-      this.field4019.method6053(this.worldMapData.method296());
+      this.field4019.method6053(this.worldMapData.getIdentifier());
    }
 
    @ObfuscatedName("w")
@@ -693,7 +693,7 @@ public class RenderOverview {
          this.method6090(var1, var2, var3, var4, var7);
       } else {
          if(!this.worldMapManager.method571()) {
-            this.worldMapManager.load(this.field4058, this.worldMapData.method296(), Client.isMembers);
+            this.worldMapManager.load(this.field4058, this.worldMapData.getIdentifier(), Client.isMembers);
             if(!this.worldMapManager.method571()) {
                return;
             }
@@ -800,7 +800,7 @@ public class RenderOverview {
    public void extractData(int var1, int var2, int var3, int var4) {
       if(this.field4019.method6055()) {
          if(!this.worldMapManager.method571()) {
-            this.worldMapManager.load(this.field4058, this.worldMapData.method296(), Client.isMembers);
+            this.worldMapManager.load(this.field4058, this.worldMapData.getIdentifier(), Client.isMembers);
             if(!this.worldMapManager.method571()) {
                return;
             }

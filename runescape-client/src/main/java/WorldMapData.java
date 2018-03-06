@@ -262,7 +262,8 @@ public class WorldMapData {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "19"
    )
-   public String method296() {
+   @Export("getIdentifier")
+   public String getIdentifier() {
       return this.identifier;
    }
 
