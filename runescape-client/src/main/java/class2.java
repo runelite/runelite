@@ -159,7 +159,7 @@ final class class2 implements class0 {
             AttackOption.field1331 = var8;
             class229.field2692 = 255;
             class37.field506 = false;
-            class284.field3699 = 2;
+            HorizontalAlignment.field3699 = 2;
          } else {
             class229.field2694 = 1;
             class229.field2687 = null;
@@ -167,7 +167,7 @@ final class class2 implements class0 {
             AttackOption.field1331 = -1;
             class229.field2692 = 0;
             class37.field506 = false;
-            class284.field3699 = 2;
+            HorizontalAlignment.field3699 = 2;
          }
 
          class36.sendConInfo(false);

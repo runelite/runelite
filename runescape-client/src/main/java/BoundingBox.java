@@ -966,7 +966,7 @@ public abstract class BoundingBox extends Node {
                                                                                                                      AttackOption.field1331 = 0;
                                                                                                                      class229.field2692 = var16;
                                                                                                                      class37.field506 = false;
-                                                                                                                     class284.field3699 = 2;
+                                                                                                                     HorizontalAlignment.field3699 = 2;
                                                                                                                   }
 
                                                                                                                   Client.field1115 = var34;

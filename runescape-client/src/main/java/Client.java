@@ -2008,8 +2008,8 @@ public final class Client extends GameEngine implements class302 {
    @Export("methodDraw")
    protected final void methodDraw(boolean var1) {
       boolean var2 = class61.method1024();
-      if(var2 && field970 && class284.soundSystem0 != null) {
-         class284.soundSystem0.tryFlush();
+      if(var2 && field970 && HorizontalAlignment.soundSystem0 != null) {
+         HorizontalAlignment.soundSystem0.tryFlush();
       }
 
       int var3;
@@ -2127,8 +2127,8 @@ public final class Client extends GameEngine implements class302 {
       }
 
       WorldMapType3.mouseWheel = null;
-      if(class284.soundSystem0 != null) {
-         class284.soundSystem0.shutdown();
+      if(HorizontalAlignment.soundSystem0 != null) {
+         HorizontalAlignment.soundSystem0.shutdown();
       }
 
       if(ChatLineBuffer.soundSystem1 != null) {
@@ -2859,8 +2859,8 @@ public final class Client extends GameEngine implements class302 {
          boolean var11;
          int var12;
          if(loginState == 3) {
-            if(class284.soundSystem0 != null) {
-               class284.soundSystem0.method2259();
+            if(HorizontalAlignment.soundSystem0 != null) {
+               HorizontalAlignment.soundSystem0.method2259();
             }
 
             if(ChatLineBuffer.soundSystem1 != null) {
@@ -2874,8 +2874,8 @@ public final class Client extends GameEngine implements class302 {
 
             if(var11) {
                var12 = ((class169)var1).vmethod3381();
-               if(class284.soundSystem0 != null) {
-                  class284.soundSystem0.method2259();
+               if(HorizontalAlignment.soundSystem0 != null) {
+                  HorizontalAlignment.soundSystem0.method2259();
                }
 
                if(ChatLineBuffer.soundSystem1 != null) {

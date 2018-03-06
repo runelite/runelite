@@ -157,8 +157,8 @@ public abstract class Timer {
                   GrandExchangeOffer.field309 = 2;
                   class230 var37 = new class230();
                   var37.method4261(9, 128);
-                  class284.soundSystem0 = MapIcon.method556(GameEngine.taskManager, 0, 22050);
-                  class284.soundSystem0.method2248(var37);
+                  HorizontalAlignment.soundSystem0 = MapIcon.method556(GameEngine.taskManager, 0, 22050);
+                  HorizontalAlignment.soundSystem0.method2248(var37);
                   var26 = class55.indexCache15;
                   var27 = class152.vorbisIndex;
                   IndexData var28 = class178.indexCache4;

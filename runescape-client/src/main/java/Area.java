@@ -84,7 +84,7 @@ public class Area extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Ljz;"
    )
-   public class284 field3464;
+   public HorizontalAlignment field3464;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Ljh;"
@@ -113,7 +113,7 @@ public class Area extends CacheableNode {
       this.field3461 = Integer.MAX_VALUE;
       this.field3457 = Integer.MIN_VALUE;
       this.field3454 = Integer.MIN_VALUE;
-      this.field3464 = class284.field3696;
+      this.field3464 = HorizontalAlignment.field3696;
       this.field3463 = class266.field3434;
       this.field3451 = -1;
       this.id = var1;
@@ -214,8 +214,8 @@ public class Area extends CacheableNode {
             } else if(var2 == 28) {
                var1.readUnsignedByte();
             } else if(var2 == 29) {
-               class284[] var6 = new class284[]{class284.field3695, class284.field3696, class284.field3700};
-               this.field3464 = (class284)MapIcon.forOrdinal(var6, var1.readUnsignedByte());
+               HorizontalAlignment[] var6 = new HorizontalAlignment[]{HorizontalAlignment.field3695, HorizontalAlignment.field3696, HorizontalAlignment.field3700};
+               this.field3464 = (HorizontalAlignment)MapIcon.forOrdinal(var6, var1.readUnsignedByte());
             } else if(var2 == 30) {
                class266[] var7 = new class266[]{class266.field3439, class266.field3434, class266.field3433};
                this.field3463 = (class266)MapIcon.forOrdinal(var7, var1.readUnsignedByte());

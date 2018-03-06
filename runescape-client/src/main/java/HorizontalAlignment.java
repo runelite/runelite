@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jz")
-public enum class284 implements Enumerated {
+@Implements("HorizontalAlignment")
+public enum HorizontalAlignment implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Ljz;"
@@ -44,7 +46,7 @@ public enum class284 implements Enumerated {
    )
    final int field3697;
 
-   class284(int var3, int var4) {
+   HorizontalAlignment(int var3, int var4) {
       this.value = var3;
       this.field3697 = var4;
    }

@@ -1086,7 +1086,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          if(class229.field2694 == 1) {
             int var0 = class229.field2690.method4287();
             if(var0 > 0 && class229.field2690.method4266()) {
-               var0 -= class284.field3699;
+               var0 -= HorizontalAlignment.field3699;
                if(var0 < 0) {
                   var0 = 0;
                }

@@ -41,7 +41,7 @@ public class class248 {
       AttackOption.field1331 = var3;
       class229.field2692 = var4;
       class37.field506 = var5;
-      class284.field3699 = var0;
+      HorizontalAlignment.field3699 = var0;
    }
 
    @ObfuscatedName("y")

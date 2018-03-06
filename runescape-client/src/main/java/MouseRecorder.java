@@ -78,7 +78,7 @@ public class MouseRecorder implements Runnable {
       AttackOption.field1331 = var2;
       class229.field2692 = var3;
       class37.field506 = var4;
-      class284.field3699 = 10000;
+      HorizontalAlignment.field3699 = 10000;
    }
 
    @ObfuscatedName("ji")

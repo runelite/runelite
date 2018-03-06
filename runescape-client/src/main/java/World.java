@@ -167,7 +167,7 @@ public class World {
          AttackOption.field1331 = -1;
          class229.field2692 = 0;
          class37.field506 = false;
-         class284.field3699 = 2;
+         HorizontalAlignment.field3699 = 2;
          class36.sendConInfo(true);
          class90.field1343 = false;
       }
