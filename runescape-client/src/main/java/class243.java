@@ -42,7 +42,7 @@ public class class243 {
       } else if(TotalQuantityComparator.localPlayer == var0) {
          return Projectile.method1955();
       } else {
-         boolean var1 = class266.method4849() || MessageNode.method1132() && var0.isFriend();
+         boolean var1 = VerticalAlignment.method4849() || MessageNode.method1132() && var0.isFriend();
          if(!var1) {
             boolean var2 = (Client.field988 & 2) != 0;
             var1 = var2 && var0.isClanMember();

@@ -1475,7 +1475,7 @@ public class Widget extends Node {
          int var11 = class95.field1436 - var5;
          int var12 = class132.field1907 - var6;
          int var13 = class110.field1591 - var7;
-         return Math.abs(var11) > var8 + GroundObject.field1781?false:(Math.abs(var12) > var9 + class298.field3830?false:(Math.abs(var13) > var10 + class171.field2222?false:(Math.abs(var13 * class266.field3435 - var12 * class38.field519) > var9 * class171.field2222 + var10 * class298.field3830?false:(Math.abs(var11 * class38.field519 - var13 * class132.field1904) > var10 * GroundObject.field1781 + var8 * class171.field2222?false:Math.abs(var12 * class132.field1904 - var11 * class266.field3435) <= var8 * class298.field3830 + var9 * GroundObject.field1781))));
+         return Math.abs(var11) > var8 + GroundObject.field1781?false:(Math.abs(var12) > var9 + class298.field3830?false:(Math.abs(var13) > var10 + class171.field2222?false:(Math.abs(var13 * VerticalAlignment.field3435 - var12 * class38.field519) > var9 * class171.field2222 + var10 * class298.field3830?false:(Math.abs(var11 * class38.field519 - var13 * class132.field1904) > var10 * GroundObject.field1781 + var8 * class171.field2222?false:Math.abs(var12 * class132.field1904 - var11 * VerticalAlignment.field3435) <= var8 * class298.field3830 + var9 * GroundObject.field1781))));
       }
    }
 }

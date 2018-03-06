@@ -89,7 +89,7 @@ public class Area extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Ljh;"
    )
-   public class266 field3463;
+   public VerticalAlignment field3463;
    @ObfuscatedName("j")
    int[] field3466;
    @ObfuscatedName("l")
@@ -114,7 +114,7 @@ public class Area extends CacheableNode {
       this.field3457 = Integer.MIN_VALUE;
       this.field3454 = Integer.MIN_VALUE;
       this.field3464 = HorizontalAlignment.field3696;
-      this.field3463 = class266.field3434;
+      this.field3463 = VerticalAlignment.field3434;
       this.field3451 = -1;
       this.id = var1;
    }
@@ -217,8 +217,8 @@ public class Area extends CacheableNode {
                HorizontalAlignment[] var6 = new HorizontalAlignment[]{HorizontalAlignment.field3695, HorizontalAlignment.field3696, HorizontalAlignment.field3700};
                this.field3464 = (HorizontalAlignment)MapIcon.forOrdinal(var6, var1.readUnsignedByte());
             } else if(var2 == 30) {
-               class266[] var7 = new class266[]{class266.field3439, class266.field3434, class266.field3433};
-               this.field3463 = (class266)MapIcon.forOrdinal(var7, var1.readUnsignedByte());
+               VerticalAlignment[] var7 = new VerticalAlignment[]{VerticalAlignment.field3439, VerticalAlignment.field3434, VerticalAlignment.field3433};
+               this.field3463 = (VerticalAlignment)MapIcon.forOrdinal(var7, var1.readUnsignedByte());
             }
          }
       }

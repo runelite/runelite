@@ -67,14 +67,14 @@ final class TotalQuantityComparator implements Comparator {
          }
 
          if(class57.field668.startsWith("win")) {
-            class266.method4851(var0, 0, "openjs");
+            VerticalAlignment.method4851(var0, 0, "openjs");
          } else if(class57.field668.startsWith("mac")) {
-            class266.method4851(var0, 1, "openjs");
+            VerticalAlignment.method4851(var0, 1, "openjs");
          } else {
-            class266.method4851(var0, 2, "openjs");
+            VerticalAlignment.method4851(var0, 2, "openjs");
          }
       } else {
-         class266.method4851(var0, 3, "openjs");
+         VerticalAlignment.method4851(var0, 3, "openjs");
       }
 
    }

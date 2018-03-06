@@ -856,7 +856,7 @@ public class WorldMapRegion {
       signature = "(Lly;Ljh;B)I",
       garbageValue = "64"
    )
-   int method471(SpritePixels var1, class266 var2) {
+   int method471(SpritePixels var1, VerticalAlignment var2) {
       switch(var2.field3436) {
       case 1:
          return -var1.height / 2;
