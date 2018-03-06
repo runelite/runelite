@@ -83,8 +83,8 @@ public class class49 implements WorldMapSectionBase {
          var1.field460 = this.field607;
       }
 
-      if(var1.field453 > this.field612) {
-         var1.field453 = this.field612;
+      if(var1.minY > this.field612) {
+         var1.minY = this.field612;
       }
 
       if(var1.field462 < this.field612) {

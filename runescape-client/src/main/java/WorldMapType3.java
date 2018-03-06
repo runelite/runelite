@@ -104,8 +104,8 @@ public class WorldMapType3 implements WorldMapSectionBase {
          var1.field460 = this.field386;
       }
 
-      if(var1.field453 > this.field382) {
-         var1.field453 = this.field382;
+      if(var1.minY > this.field382) {
+         var1.minY = this.field382;
       }
 
       if(var1.field462 < this.field382) {

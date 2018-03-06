@@ -51,8 +51,8 @@ public class WorldMapType2 implements WorldMapSectionBase {
          var1.field460 = this.field526;
       }
 
-      if(var1.field453 > this.field529) {
-         var1.field453 = this.field529;
+      if(var1.minY > this.field529) {
+         var1.minY = this.field529;
       }
 
       if(var1.field462 < this.field529) {

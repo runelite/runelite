@@ -52,7 +52,8 @@ public class WorldMapData {
    @ObfuscatedGetter(
       intValue = -275213023
    )
-   int field453;
+   @Export("minY")
+   int minY;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1056889133
@@ -70,7 +71,7 @@ public class WorldMapData {
       this.field457 = null;
       this.minX = Integer.MAX_VALUE;
       this.field460 = 0;
-      this.field453 = Integer.MAX_VALUE;
+      this.minY = Integer.MAX_VALUE;
       this.field462 = 0;
       this.field458 = false;
    }
@@ -160,7 +161,7 @@ public class WorldMapData {
       int var3 = var1 / 64;
       int var4 = var2 / 64;
       if(var3 >= this.minX && var3 <= this.field460) {
-         if(var4 >= this.field453 && var4 <= this.field462) {
+         if(var4 >= this.minY && var4 <= this.field462) {
             Iterator var5 = this.field464.iterator();
 
             WorldMapSectionBase var6;
@@ -316,7 +317,7 @@ public class WorldMapData {
    )
    @Export("getMinY")
    public int getMinY() {
-      return this.field453;
+      return this.minY;
    }
 
    @ObfuscatedName("b")
