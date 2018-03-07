@@ -69,7 +69,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Raids"
+	name = "Chambers Of Xeric"
 )
 @Slf4j
 public class RaidsPlugin extends Plugin

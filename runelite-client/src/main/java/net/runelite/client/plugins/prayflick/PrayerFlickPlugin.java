@@ -32,7 +32,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Prayer flicking"
+	name = "Prayer Flicking"
 )
 public class PrayerFlickPlugin extends Plugin
 {

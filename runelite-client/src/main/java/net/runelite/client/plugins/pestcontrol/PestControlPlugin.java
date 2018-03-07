@@ -32,7 +32,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Pest control"
+	name = "Pest Control"
 )
 public class PestControlPlugin extends Plugin
 {

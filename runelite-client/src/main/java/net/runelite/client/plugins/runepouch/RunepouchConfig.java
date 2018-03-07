@@ -31,7 +31,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "runepouch",
-	name = "Runepouch",
+	name = "Rune Pouch",
 	description = "Configuration for the Runepouch plugin"
 )
 public interface RunepouchConfig extends Config

@@ -36,7 +36,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Opponent information"
+	name = "Opponent Information"
 )
 public class OpponentInfoPlugin extends Plugin
 {

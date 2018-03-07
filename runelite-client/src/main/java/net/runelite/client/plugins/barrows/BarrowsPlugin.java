@@ -49,7 +49,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Barrows plugin"
+	name = "Barrows Brothers"
 )
 public class BarrowsPlugin extends Plugin
 {
