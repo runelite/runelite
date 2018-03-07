@@ -45,7 +45,6 @@ import joptsimple.OptionSet;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
-import net.runelite.client.ui.ClientUI;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
@@ -68,9 +67,6 @@ public class PluginManagerTest
 	private Set<Class> pluginClasses;
 
 	@Mock
-	ClientUI clientUi;
-
-	@Mock
 	Client client;
 
 	@Before
@@ -83,7 +79,6 @@ public class PluginManagerTest
 		RuneLite.setInjector(injector);
 
 		runelite = injector.getInstance(RuneLite.class);
-		runelite.setGui(clientUi);
 
 		// Find plugins we expect to have
 		pluginClasses = new HashSet<>();

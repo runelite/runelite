@@ -41,7 +41,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.QueryRunner;
 
 @Slf4j
@@ -65,12 +64,6 @@ public class RuneLiteModule extends AbstractModule
 	Client provideClient(RuneLite runeLite)
 	{
 		return runeLite.client;
-	}
-
-	@Provides
-	ClientUI provideClientUi(RuneLite runelite)
-	{
-		return runelite.gui;
 	}
 
 	@Provides
