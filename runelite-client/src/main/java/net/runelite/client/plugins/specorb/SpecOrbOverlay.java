@@ -24,9 +24,13 @@
  */
 package net.runelite.client.plugins.specorb;
 
+import com.google.inject.Singleton;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -38,8 +42,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.MinimapOrb;
 
+@Singleton
 public class SpecOrbOverlay extends Overlay
 {
 	private static final int RECHARGE_TIME_TICKS = 51;
@@ -57,20 +62,27 @@ public class SpecOrbOverlay extends Overlay
 	private static final int RUN_ORB_Y_RESIZABLE = 103;
 
 	private static final Color SPECIAL_ORB_BACKGROUND_COLOR = new Color(51, 102, 255);
-	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
 
 	private final Client client;
-	private final SpecOrbPlugin plugin;
+	private final MinimapOrb orb;
 	private int lastSpecialPercent = 0;
 	private int tickCounter = 0;
 
 	@Inject
-	public SpecOrbOverlay(Client client, SpecOrbPlugin plugin)
+	public SpecOrbOverlay(Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
-		this.plugin = plugin;
+		try
+		{
+			BufferedImage icon = ImageIO.read(getClass().getResourceAsStream("special_orb_icon.png"));
+			orb = new MinimapOrb(SPECIAL_ORB_BACKGROUND_COLOR, SPECIAL_ORB_BACKGROUND_COLOR, icon);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -125,20 +137,19 @@ public class SpecOrbOverlay extends Overlay
 
 		graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
 
-		boolean specialAttackEnabled = client.getSetting(Setting.SPECIAL_ATTACK_ENABLED) == 1;
+		orb.setEnabled(client.getSetting(Setting.SPECIAL_ATTACK_ENABLED) == 1);
 
 		// draw relative to run orb
 		Point runOrbPoint = runOrb.getCanvasLocation();
-		Point specOrbPoint = new Point(runOrbPoint.getX() + (client.isResized() ? SPEC_ORB_X_RESIZABLE : SPEC_ORB_X_FIXED),
+		java.awt.Point specOrbPoint = new java.awt.Point(runOrbPoint.getX() + (client.isResized() ? SPEC_ORB_X_RESIZABLE : SPEC_ORB_X_FIXED),
 				runOrbPoint.getY() + (client.isResized() ? SPEC_ORB_Y_RESIZABLE : SPEC_ORB_Y_FIXED));
 
 		double specialPercent = client.getSetting(Setting.SPECIAL_ATTACK_PERCENT) / 1000.0;
-		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
+		orb.setPercentFilled(specialPercent);
+		orb.setAmount((int) (specialPercent * 100));
+		orb.setRechargePercentFilled(tickCounter / (double) RECHARGE_TIME_TICKS);
 
-		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent,
-			SPECIAL_ORB_RECHARGE_COLOR, specialRechargePercent,
-			plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(),
-			(int) (specialPercent * 100), specialAttackEnabled);
+		orb.render(graphics, specOrbPoint);
 
 		return null;
 	}
