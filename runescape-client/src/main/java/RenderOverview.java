@@ -1257,7 +1257,8 @@ public class RenderOverview {
       signature = "(IILic;Lic;I)V",
       garbageValue = "-669880805"
    )
-   public void method6122(int var1, int var2, Coordinates var3, Coordinates var4) {
+   @Export("onMapClicked")
+   public void onMapClicked(int var1, int var2, Coordinates var3, Coordinates var4) {
       ScriptEvent var5 = new ScriptEvent();
       MapIconReference var6 = new MapIconReference(var2, var3, var4);
       var5.method1084(new Object[]{var6});

@@ -853,7 +853,7 @@ public final class class62 {
 
                                  if(var2 != 1007) {
                                     if(var2 == 1011 || var2 == 1010 || var2 == 1009 || var2 == 1008 || var2 == 1012) {
-                                       class248.renderOverview.method6122(var2, var3, new Coordinates(var0), new Coordinates(var1));
+                                       class248.renderOverview.onMapClicked(var2, var3, new Coordinates(var0), new Coordinates(var1));
                                     }
                                     break label857;
                                  }
