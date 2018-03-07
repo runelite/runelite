@@ -63,10 +63,13 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
+import net.runelite.client.events.TitleToolbarButtonAdded;
+import net.runelite.client.events.TitleToolbarButtonRemoved;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -102,9 +105,6 @@ public class ClientUI
 	@Getter
 	private TrayIcon trayIcon;
 
-	@Getter
-	private TitleToolbar titleToolbar;
-
 	private final RuneLite runelite;
 	private final RuneLiteProperties properties;
 	private final RuneLiteConfig config;
@@ -114,6 +114,7 @@ public class ClientUI
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
+	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 
 	@Inject
@@ -247,6 +248,48 @@ public class ClientUI
 		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
 	}
 
+	@Subscribe
+	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
+	{
+		if (!config.enableCustomChrome())
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+
+			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
+			final BufferedImage scaledImage = SwingUtil.resizeImage(event.getButton().getIcon(), iconSize, iconSize);
+			final JButton button = new JButton();
+			button.setName(event.getButton().getName());
+			button.setToolTipText(event.getButton().getTooltip());
+			button.setIcon(new ImageIcon(scaledImage));
+			button.setRolloverIcon(new ImageIcon(SwingUtil.createInvertedImage(scaledImage)));
+			button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
+			button.setFocusable(false);
+
+			if (event.getButton().getOnClick() != null)
+			{
+				button.addActionListener(e -> event.getButton().getOnClick().run());
+			}
+
+			event.getButton().setOnSelect(() -> button.setSelected(event.getButton().isSelected()));
+			titleToolbar.addComponent(event.getButton(), button);
+		});
+	}
+
+	@Subscribe
+	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
+	{
+		if (!config.enableCustomChrome())
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() -> titleToolbar.removeComponent(event.getButton()));
+	}
+
 	/**
 	 * Initialize UI.
 	 *
@@ -300,8 +343,7 @@ public class ClientUI
 			pluginToolbar = new ClientPluginToolbar();
 			container.add(pluginToolbar);
 
-			titleToolbar = new TitleToolbar(properties);
-
+			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
 		});
 	}
@@ -323,7 +365,7 @@ public class ClientUI
 			{
 				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-				JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
+				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
 				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
 				titleBar.add(titleToolbar);
 
