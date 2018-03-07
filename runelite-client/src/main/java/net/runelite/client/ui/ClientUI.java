@@ -39,11 +39,14 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,6 +61,8 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ClientUILoaded;
+import net.runelite.client.events.PluginToolbarButtonAdded;
+import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -98,9 +103,6 @@ public class ClientUI
 	private TrayIcon trayIcon;
 
 	@Getter
-	private PluginToolbar pluginToolbar;
-
-	@Getter
 	private TitleToolbar titleToolbar;
 
 	private final RuneLite runelite;
@@ -111,6 +113,8 @@ public class ClientUI
 	private JFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
+	private ClientPluginToolbar pluginToolbar;
+	private JButton currentButton;
 
 	@Inject
 	private ClientUI(
@@ -193,6 +197,56 @@ public class ClientUI
 		});
 	}
 
+	@Subscribe
+	public void onPluginToolbarButtonAdded(final PluginToolbarButtonAdded event)
+	{
+		final JButton button = new JButton();
+		button.setName(event.getButton().getName());
+		button.setToolTipText(event.getButton().getTooltip());
+		button.setToolTipText(event.getButton().getTooltip());
+		button.setIcon(new ImageIcon(event.getButton().getIcon()));
+		button.addActionListener(e ->
+		{
+			final Supplier<PluginPanel> panelSupplier = event.getButton().getPanel();
+
+			if (panelSupplier == null)
+			{
+				return;
+			}
+
+			if (currentButton != null)
+			{
+				currentButton.setSelected(false);
+			}
+
+			if (currentButton == button)
+			{
+				contract();
+				currentButton = null;
+			}
+			else
+			{
+				currentButton = button;
+				currentButton.setSelected(true);
+				expand(panelSupplier.get());
+			}
+
+			if (event.getButton().getOnClick() != null)
+			{
+				event.getButton().getOnClick().run();
+			}
+		});
+
+		event.getButton().setOnSelect(() -> button.setSelected(event.getButton().isSelected()));
+		SwingUtilities.invokeLater(() -> pluginToolbar.addComponent(event.getIndex(), event.getButton(), button));
+	}
+
+	@Subscribe
+	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
+	{
+		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
+	}
+
 	/**
 	 * Initialize UI.
 	 *
@@ -243,7 +297,7 @@ public class ClientUI
 			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
 			container.add(navContainer);
 
-			pluginToolbar = new PluginToolbar(this);
+			pluginToolbar = new ClientPluginToolbar();
 			container.add(pluginToolbar);
 
 			titleToolbar = new TitleToolbar(properties);
@@ -378,12 +432,7 @@ public class ClientUI
 		giveClientFocus();
 	}
 
-	/**
-	 * Expand panel.
-	 *
-	 * @param panel the panel
-	 */
-	public void expand(PluginPanel panel)
+	private void expand(PluginPanel panel)
 	{
 		if (pluginPanel != null)
 		{
@@ -415,10 +464,7 @@ public class ClientUI
 		SwingUtil.revalidateMinimumSize(frame);
 	}
 
-	/**
-	 * Contract. panel.
-	 */
-	public void contract()
+	private void contract()
 	{
 		boolean wasMinimumWidth = frame.getWidth() == frame.getMinimumSize().width;
 		pluginPanel.onDeactivate();
