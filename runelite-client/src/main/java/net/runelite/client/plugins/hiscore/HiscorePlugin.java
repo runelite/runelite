@@ -41,7 +41,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
 @PluginDescriptor(
-	name = "Hiscore",
+	name = "HiScore",
 	loadWhenOutdated = true
 )
 public class HiscorePlugin extends Plugin

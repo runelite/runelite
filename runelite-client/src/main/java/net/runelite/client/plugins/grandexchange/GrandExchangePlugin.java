@@ -52,7 +52,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
 @PluginDescriptor(
-	name = "Grand Exchange offers"
+	name = "Grand Exchange"
 )
 public class GrandExchangePlugin extends Plugin
 {

@@ -38,7 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fight cave"
+	name = "Fight Cave"
 )
 public class FightCavePlugin extends Plugin
 {

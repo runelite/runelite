@@ -54,7 +54,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Poh"
+	name = "Player-owned House"
 )
 public class PohPlugin extends Plugin
 {

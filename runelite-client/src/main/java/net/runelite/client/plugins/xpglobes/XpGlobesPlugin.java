@@ -42,7 +42,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "XP globes"
+	name = "XP Globes"
 )
 public class XpGlobesPlugin extends Plugin
 {

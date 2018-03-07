@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boosts"
+	name = "Boosts Information"
 )
 public class BoostsPlugin extends Plugin
 {

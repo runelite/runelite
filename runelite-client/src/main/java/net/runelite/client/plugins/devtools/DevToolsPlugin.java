@@ -36,7 +36,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Developer tools",
+	name = "Developer Tools",
 	developerPlugin = true
 )
 public class DevToolsPlugin extends Plugin

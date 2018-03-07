@@ -30,7 +30,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "barrows",
-	name = "Barrows Plugin",
+	name = "Barrows Brothers",
 	description = "Configuration for the Barrows plugin"
 )
 public interface BarrowsConfig extends Config
