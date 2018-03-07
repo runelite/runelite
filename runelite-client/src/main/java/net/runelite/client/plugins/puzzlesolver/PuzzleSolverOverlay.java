@@ -36,7 +36,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -432,8 +431,10 @@ public class PuzzleSolverOverlay extends Overlay
 		{
 			try
 			{
-				InputStream in = PuzzleSolverOverlay.class.getResourceAsStream("arrow.png");
-				downArrow = ImageIO.read(in);
+				synchronized (ImageIO.class)
+				{
+					downArrow = ImageIO.read(PuzzleSolverOverlay.class.getResourceAsStream("arrow.png"));
+				}
 			}
 			catch (IOException e)
 			{

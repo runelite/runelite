@@ -95,7 +95,10 @@ class FeedPanel extends PluginPanel
 	{
 		try
 		{
-			RUNELITE_ICON = ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png"));
+			synchronized (ImageIO.class)
+			{
+				RUNELITE_ICON = ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png"));
+			}
 		}
 		catch (IOException e)
 		{
@@ -104,7 +107,10 @@ class FeedPanel extends PluginPanel
 
 		try
 		{
-			OSRS_ICON = ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png"));
+			synchronized (ImageIO.class)
+			{
+				OSRS_ICON = ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png"));
+			}
 		}
 		catch (IOException e)
 		{
@@ -184,7 +190,12 @@ class FeedPanel extends PluginPanel
 									return;
 								}
 
-								avatar.setIcon(new ImageIcon(ImageIO.read(responseBody.byteStream())));
+								BufferedImage icon;
+								synchronized (ImageIO.class)
+								{
+									icon = ImageIO.read(responseBody.byteStream());
+								}
+								avatar.setIcon(new ImageIcon(icon));
 							}
 						}
 					});

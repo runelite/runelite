@@ -26,7 +26,6 @@ package net.runelite.client.plugins.poh;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -101,10 +100,12 @@ public enum PohIcons
 			return image;
 		}
 
-		InputStream in = PohIcons.class.getResourceAsStream(getImageResource() + ".png");
 		try
 		{
-			image = ImageIO.read(in);
+			synchronized (ImageIO.class)
+			{
+				image = ImageIO.read(PohIcons.class.getResourceAsStream(getImageResource() + ".png"));
+			}
 		}
 		catch (IOException ex)
 		{

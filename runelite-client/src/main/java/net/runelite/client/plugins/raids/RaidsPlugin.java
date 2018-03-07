@@ -30,7 +30,6 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -601,12 +600,12 @@ public class RaidsPlugin extends Plugin
 		{
 			return raidsIcon;
 		}
-
-		InputStream in = RaidsPlugin.class.getResourceAsStream("raids_icon.png");
-
 		try
 		{
-			raidsIcon = ImageIO.read(in);
+			synchronized (ImageIO.class)
+			{
+				raidsIcon = ImageIO.read(RaidsPlugin.class.getResourceAsStream("raids_icon.png"));
+			}
 		}
 		catch (IOException ex)
 		{

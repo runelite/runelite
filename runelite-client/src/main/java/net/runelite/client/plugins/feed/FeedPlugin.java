@@ -27,6 +27,7 @@ package net.runelite.client.plugins.feed;
 import com.google.common.base.Suppliers;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ScheduledExecutorService;
@@ -87,9 +88,15 @@ public class FeedPlugin extends Plugin
 	{
 		feedPanel = new FeedPanel(config, feedSupplier, linkBrowser);
 
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("icon.png"));
+		}
+
 		navButton = new NavigationButton(
 			"News Feed",
-			ImageIO.read(getClass().getResourceAsStream("icon.png")),
+			icon,
 			() -> feedPanel);
 
 		ui.getPluginToolbar().addNavigation(navButton);

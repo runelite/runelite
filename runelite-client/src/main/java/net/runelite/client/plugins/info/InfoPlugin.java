@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.info;
 
+import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
@@ -48,9 +49,15 @@ public class InfoPlugin extends Plugin
 		final InfoPanel panel = injector.getInstance(InfoPanel.class);
 		panel.init();
 
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("info_icon.png"));
+		}
+
 		navButton = new NavigationButton(
 			"Info",
-			ImageIO.read(getClass().getResourceAsStream("info_icon.png")),
+			icon,
 			() -> panel
 		);
 

@@ -76,7 +76,11 @@ public class SpecOrbOverlay extends Overlay
 		this.client = client;
 		try
 		{
-			BufferedImage icon = ImageIO.read(getClass().getResourceAsStream("special_orb_icon.png"));
+			BufferedImage icon;
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(getClass().getResourceAsStream("special_orb_icon.png"));
+			}
 			orb = new MinimapOrb(SPECIAL_ORB_BACKGROUND_COLOR, SPECIAL_ORB_BACKGROUND_COLOR, icon);
 		}
 		catch (IOException e)
