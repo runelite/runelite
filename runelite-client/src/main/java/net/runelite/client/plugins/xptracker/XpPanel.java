@@ -32,11 +32,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -59,6 +62,7 @@ class XpPanel extends PluginPanel
 {
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
+	private final XpTrackerConfig config;
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
@@ -109,6 +113,7 @@ class XpPanel extends PluginPanel
 	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, XpTrackerConfig config, SkillIconManager iconManager)
 	{
 		super();
+		this.config = config;
 
 		// info panel buttons
 		final JButton resetButton = new JButton("Reset All");
@@ -170,21 +175,21 @@ class XpPanel extends PluginPanel
 
 		// create info and goal panel wrapper
 		final JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(totalPanel);
 		topPanel.add(goalPanelPad);
 		topPanel.add(goalSetPanel);
 
 		// create panel for goals
 		final JPanel goalsPanel = new JPanel();
-		goalsPanel.setLayout(new GridLayout(0, 1, 0, 3));
+		goalsPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		// create panel for trackers
 		final JPanel trackersPanel = new JPanel();
-		trackersPanel.setLayout(new GridLayout(0, 1, 0, 3));
+		trackersPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
 		// create panel for all trackers
 		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setLayout(new GridLayout(0, 1, 0, 3));
+		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		infoBoxPanel.add(goalsPanel);
 		infoBoxPanel.add(trackersPanel);
 
@@ -261,6 +266,29 @@ class XpPanel extends PluginPanel
 		infoBoxes.get(skill).setGoal(goal);
 	}
 
+	void loadGoals()
+	{
+		String json = config.goalData();
+		log.info("LOAD GOALS: " + json);
+
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, GoalInfo>>(){}.getType();
+		Map<String, GoalInfo> goals = gson.fromJson(json, type);
+		goals.forEach((skstr, goal) -> {
+			Skill skill = Skill.valueOf(skstr);
+			infoBoxes.get(skill).load(goal);
+		});
+		updateTotal();
+	}
+
+	void updateSkillExperience(Skill skill)
+	{
+		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
+		xpInfoBox.update();
+		xpInfoBox.init();
+		updateTotal();
+	}
+
 	void resetAllInfoBoxes()
 	{
 		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.reset());
@@ -270,14 +298,6 @@ class XpPanel extends PluginPanel
 	void updateAllInfoBoxes()
 	{
 		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.update());
-		updateTotal();
-	}
-
-	void updateSkillExperience(Skill skill)
-	{
-		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
-		xpInfoBox.update();
-		xpInfoBox.init();
 		updateTotal();
 	}
 

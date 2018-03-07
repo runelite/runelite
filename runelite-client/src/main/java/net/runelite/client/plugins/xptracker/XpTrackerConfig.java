@@ -46,12 +46,30 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showLevelProgress",
-			name = "Show level progress with goal",
-			description = "Second progress bar in tracker shows level progress"
+		keyName = "showLevelProgress",
+		name = "Show level progress with goal",
+		description = "Second progress bar in tracker shows level progress"
 	)
 	default boolean showLevelProgress()
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "goalData",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String goalData()
+	{
+		return "{}";
+	}
+
+	@ConfigItem(
+		keyName = "goalData",
+		name = "",
+		description = ""
+	)
+	void goalData(String str);
 }

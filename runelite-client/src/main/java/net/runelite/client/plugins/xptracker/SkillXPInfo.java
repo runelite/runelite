@@ -41,12 +41,13 @@ class SkillXPInfo
 
 	private int startXp = -1; 		// total exp at start
 	private int goalXp = -1;		// total exp at goal
-	private int xpGained = 0; 		// exp gained since start
+	private int xpGained = -1; 		// exp gained since start
 	private int actions = 0; 		// number of actions since start
 	private int actionExp = 0; 		// exp of last action
+	private int lastXp = -1;
 
 	private int startLevelXp = 0;	// current level start total exp
-	private int nextLevelXp = -1;	// next level start total exp
+	private int nextLevelXp = 0;	// next level start total exp
 
 	int getXpHr()
 	{
@@ -135,6 +136,21 @@ class SkillXPInfo
 
 	boolean update(int currentXp)
 	{
+		// init xpgained when possible
+		if (xpGained == -1 &&  startXp != -1)
+		{
+			xpGained = currentXp - startXp;
+		}
+
+		updateXp(currentXp);
+
+		// first xp update on login is not an action
+		if (lastXp == -1)
+		{
+			lastXp = currentXp;
+			return false;
+		}
+
 		if (startXp == -1)
 		{
 			return false;
@@ -151,8 +167,6 @@ class SkillXPInfo
 		actions++;
 		xpGained = currentXp - startXp;
 
-		updateXp(currentXp);
-
 		if (skillTimeStart == null)
 		{
 			skillTimeStart = Instant.now();
@@ -165,6 +179,6 @@ class SkillXPInfo
 	{
 		final int currentLevel = Experience.getLevelForXp(currentXp);
 		startLevelXp = Experience.getXpForLevel(currentLevel);
-		nextLevelXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+		nextLevelXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : 0;
 	}
 }
