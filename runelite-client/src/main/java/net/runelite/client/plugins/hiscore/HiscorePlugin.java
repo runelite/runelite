@@ -26,6 +26,7 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
@@ -73,9 +74,16 @@ public class HiscorePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
+
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("hiscore.gif"));
+		}
+
 		navButton = new NavigationButton(
 			"Hiscore",
-			ImageIO.read(getClass().getResourceAsStream("hiscore.gif")),
+			icon,
 			() -> hiscorePanel);
 
 		ui.getPluginToolbar().addNavigation(navButton);

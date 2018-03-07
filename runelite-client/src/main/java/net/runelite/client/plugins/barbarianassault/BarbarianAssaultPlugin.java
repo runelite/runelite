@@ -80,7 +80,11 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 24);
-		clockImage = ImageIO.read(getClass().getResourceAsStream("clock.png"));
+
+		synchronized (ImageIO.class)
+		{
+			clockImage = ImageIO.read(getClass().getResourceAsStream("clock.png"));
+		}
 	}
 
 	@Subscribe

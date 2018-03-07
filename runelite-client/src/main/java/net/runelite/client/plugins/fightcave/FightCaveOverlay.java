@@ -39,7 +39,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
 @Slf4j
 public class FightCaveOverlay extends Overlay
@@ -110,8 +109,10 @@ public class FightCaveOverlay extends Overlay
 		BufferedImage image = null;
 		try
 		{
-			InputStream in = FightCaveOverlay.class.getResourceAsStream(path);
-			image = ImageIO.read(in);
+			synchronized (ImageIO.class)
+			{
+				image = ImageIO.read(FightCaveOverlay.class.getResourceAsStream(path));
+			}
 		}
 		catch (IOException e)
 		{

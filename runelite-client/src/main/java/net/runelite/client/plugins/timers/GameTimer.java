@@ -27,7 +27,6 @@ package net.runelite.client.plugins.timers;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import javax.imageio.ImageIO;
@@ -99,10 +98,12 @@ public enum GameTimer
 			return image;
 		}
 
-		InputStream in = GameTimer.class.getResourceAsStream(imageResource + ".png");
 		try
 		{
-			image = ImageIO.read(in);
+			synchronized (ImageIO.class)
+			{
+				image = ImageIO.read(GameTimer.class.getResourceAsStream(imageResource + ".png"));
+			}
 		}
 		catch (IOException ex)
 		{

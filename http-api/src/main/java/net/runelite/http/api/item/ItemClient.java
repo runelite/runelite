@@ -95,8 +95,10 @@ public class ItemClient
 			}
 
 			InputStream in = response.body().byteStream();
-			BufferedImage imageIcon = ImageIO.read(in);
-			return imageIcon;
+			synchronized (ImageIO.class)
+			{
+				return ImageIO.read(in);
+			}
 		}
 	}
 

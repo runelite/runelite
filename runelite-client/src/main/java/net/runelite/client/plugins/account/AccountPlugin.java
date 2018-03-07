@@ -68,8 +68,11 @@ public class AccountPlugin extends Plugin
 	{
 		try
 		{
-			LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
-			LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
+			synchronized (ImageIO.class)
+			{
+				LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
+				LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
+			}
 		}
 		catch (IOException e)
 		{
