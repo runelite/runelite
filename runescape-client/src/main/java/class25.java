@@ -132,7 +132,7 @@ public class class25 {
             class19.field327[var11] = 0;
             class318.field3919[var11] = 0;
             UnitPriceComparator.field321[var11] = 0;
-            class29.field430[var11] = 0;
+            WorldMapRectangle.field430[var11] = 0;
             UnitPriceComparator.field316[var11] = 0;
          }
 
@@ -146,7 +146,7 @@ public class class25 {
                      class19.field327[var12] += var43.hue;
                      class318.field3919[var12] += var43.saturation;
                      UnitPriceComparator.field321[var12] += var43.lightness;
-                     class29.field430[var12] += var43.hueMultiplier;
+                     WorldMapRectangle.field430[var12] += var43.hueMultiplier;
                      ++UnitPriceComparator.field316[var12];
                   }
                }
@@ -159,7 +159,7 @@ public class class25 {
                      class19.field327[var12] -= var44.hue;
                      class318.field3919[var12] -= var44.saturation;
                      UnitPriceComparator.field321[var12] -= var44.lightness;
-                     class29.field430[var12] -= var44.hueMultiplier;
+                     WorldMapRectangle.field430[var12] -= var44.hueMultiplier;
                      --UnitPriceComparator.field316[var12];
                   }
                }
@@ -178,7 +178,7 @@ public class class25 {
                      var12 += class19.field327[var18];
                      var13 += class318.field3919[var18];
                      var14 += UnitPriceComparator.field321[var18];
-                     var15 += class29.field430[var18];
+                     var15 += WorldMapRectangle.field430[var18];
                      var16 += UnitPriceComparator.field316[var18];
                   }
 
@@ -187,7 +187,7 @@ public class class25 {
                      var12 -= class19.field327[var19];
                      var13 -= class318.field3919[var19];
                      var14 -= UnitPriceComparator.field321[var19];
-                     var15 -= class29.field430[var19];
+                     var15 -= WorldMapRectangle.field430[var19];
                      var16 -= UnitPriceComparator.field316[var19];
                   }
 

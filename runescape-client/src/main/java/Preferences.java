@@ -173,10 +173,10 @@ public class Preferences {
          class132.field1907 = (var9 + var7) / 2;
          class110.field1591 = (var12 + var11) / 2;
          class132.field1904 = (var10 - var6) / 2;
-         class266.field3435 = (var9 - var7) / 2;
+         VerticalAlignment.field3435 = (var9 - var7) / 2;
          class38.field519 = (var12 - var11) / 2;
          GroundObject.field1781 = Math.abs(class132.field1904);
-         class298.field3830 = Math.abs(class266.field3435);
+         class298.field3830 = Math.abs(VerticalAlignment.field3435);
          class171.field2222 = Math.abs(class38.field519);
       }
    }

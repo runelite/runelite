@@ -27,7 +27,7 @@ public class class22 extends class28 {
          super.field416 = new short[super.field410][64][64];
          super.field418 = new byte[super.field410][64][64];
          super.field419 = new byte[super.field410][64][64];
-         super.field417 = new class31[super.field410][64][64][];
+         super.decorations = new WorldMapDecoration[super.field410][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class36.field499.field501) {
             throw new IllegalStateException("");
@@ -67,7 +67,7 @@ public class class22 extends class28 {
       garbageValue = "-1185923333"
    )
    public static boolean method161(int var0) {
-      return var0 == class247.field2990.field3005;
+      return var0 == WorldMapDecorationType.field2990.rsOrdinal;
    }
 
    @ObfuscatedName("hx")
@@ -234,7 +234,7 @@ public class class22 extends class28 {
                               int var26 = var21 * var24 - var37 * var23 >> 11;
                               int var27 = var25 + TotalQuantityComparator.localPlayer.x >> 7;
                               int var28 = TotalQuantityComparator.localPlayer.y - var26 >> 7;
-                              PacketNode var29 = class31.method285(ClientPacket.field2418, Client.field899.field1470);
+                              PacketNode var29 = WorldMapDecoration.method285(ClientPacket.field2418, Client.field899.field1470);
                               var29.packetBuffer.putByte(18);
                               var29.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?(KeyFocusListener.keyPressed[81]?2:1):0);
                               var29.packetBuffer.method3616(var28 + Enum.baseY);
@@ -288,7 +288,7 @@ public class class22 extends class28 {
                                  }
                               }
 
-                              if(class31.field449 == 0) {
+                              if(WorldMapDecoration.field449 == 0) {
                                  Client.field1021 = null;
                                  Client.field1022 = null;
                               }
@@ -325,7 +325,7 @@ public class class22 extends class28 {
                               }
                            }
 
-                           if(class31.field449 == 0) {
+                           if(WorldMapDecoration.field449 == 0) {
                               Client.field1021 = null;
                               Client.field1022 = null;
                            }
@@ -625,7 +625,7 @@ public class class22 extends class28 {
                         }
 
                         if(var9.type == 8 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
-                           class35.field497 = var9;
+                           WorldMapRegion.field497 = var9;
                         }
 
                         if(var9.scrollHeight > var9.height) {

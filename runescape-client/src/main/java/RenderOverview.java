@@ -50,7 +50,8 @@ public class RenderOverview {
    )
    IndexedSprite[] field4013;
    @ObfuscatedName("i")
-   HashMap field4014;
+   @Export("worldMapDataByIdentifier")
+   HashMap worldMapDataByIdentifier;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lal;"
@@ -296,15 +297,15 @@ public class RenderOverview {
       this.mapFonts.put(Size.field368, var3.get(fontNameVerdana13));
       this.mapFonts.put(Size.field364, var3.get(fontNameVerdana15));
       this.field4019 = new class333(var1);
-      int var5 = this.field4058.getFile(class41.field546.field542);
+      int var5 = this.field4058.getFile(MapCacheArchiveNames.DETAILS.name);
       int[] var6 = this.field4058.getChilds(var5);
-      this.field4014 = new HashMap(var6.length);
+      this.worldMapDataByIdentifier = new HashMap(var6.length);
 
       for(int var7 = 0; var7 < var6.length; ++var7) {
          Buffer var8 = new Buffer(this.field4058.getConfigData(var5, var6[var7]));
          WorldMapData var9 = new WorldMapData();
          var9.loadMapData(var8, var6[var7]);
-         this.field4014.put(var9.method296(), var9);
+         this.worldMapDataByIdentifier.put(var9.getIdentifier(), var9);
          if(var9.method313()) {
             this.field4020 = var9;
          }
@@ -320,7 +321,7 @@ public class RenderOverview {
       garbageValue = "-596708677"
    )
    public int method6086() {
-      return this.field4058.tryLoadRecordByNames(this.field4020.method296(), class41.field544.field542)?100:this.field4058.archiveLoadPercentByName(this.field4020.method296());
+      return this.field4058.tryLoadRecordByNames(this.field4020.getIdentifier(), MapCacheArchiveNames.AREA.name)?100:this.field4058.archiveLoadPercentByName(this.field4020.getIdentifier());
    }
 
    @ObfuscatedName("n")
@@ -420,7 +421,7 @@ public class RenderOverview {
       if(this.worldMapData != null) {
          int var6 = (int)((float)this.worldMapX + ((float)(var1 - this.field4028) - (float)this.method6103() * this.worldMapZoom / 2.0F) / this.worldMapZoom);
          int var7 = (int)((float)this.worldMapY - ((float)(var2 - this.field4004) - (float)this.method6104() * this.worldMapZoom / 2.0F) / this.worldMapZoom);
-         this.field4032 = this.worldMapData.method292(var6 + this.worldMapData.method312() * 64, var7 + this.worldMapData.method302() * 64);
+         this.field4032 = this.worldMapData.method292(var6 + this.worldMapData.getMinX() * 64, var7 + this.worldMapData.getMinY() * 64);
          if(this.field4032 != null && var3) {
             boolean var8 = Client.rights >= 2;
             if(var8 && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81]) {
@@ -436,7 +437,7 @@ public class RenderOverview {
                }
 
                if(var9) {
-                  PacketNode var12 = class31.method285(ClientPacket.field2386, Client.field899.field1470);
+                  PacketNode var12 = WorldMapDecoration.method285(ClientPacket.field2386, Client.field899.field1470);
                   var12.packetBuffer.putInt(this.field4032.bitpack());
                   Client.field899.method2082(var12);
                   this.field4040 = 0L;
@@ -536,8 +537,9 @@ public class RenderOverview {
       signature = "(IIII)Lal;",
       garbageValue = "1652573332"
    )
-   public WorldMapData method6077(int var1, int var2, int var3) {
-      Iterator var4 = this.field4014.values().iterator();
+   @Export("getWorldMapDataContainingCoord")
+   public WorldMapData getWorldMapDataContainingCoord(int var1, int var2, int var3) {
+      Iterator var4 = this.worldMapDataByIdentifier.values().iterator();
 
       WorldMapData var5;
       do {
@@ -546,7 +548,7 @@ public class RenderOverview {
          }
 
          var5 = (WorldMapData)var4.next();
-      } while(!var5.method290(var1, var2, var3));
+      } while(!var5.containsCoord(var1, var2, var3));
 
       return var5;
    }
@@ -557,7 +559,7 @@ public class RenderOverview {
       garbageValue = "6"
    )
    public void method6170(int var1, int var2, int var3, boolean var4) {
-      WorldMapData var5 = this.method6077(var1, var2, var3);
+      WorldMapData var5 = this.getWorldMapDataContainingCoord(var1, var2, var3);
       if(var5 == null) {
          if(!var4) {
             return;
@@ -585,7 +587,7 @@ public class RenderOverview {
       garbageValue = "21305"
    )
    public void method6079(int var1) {
-      WorldMapData var2 = this.method6175(var1);
+      WorldMapData var2 = this.getWorldMapDataByFileId(var1);
       if(var2 != null) {
          this.method6082(var2);
       }
@@ -598,7 +600,7 @@ public class RenderOverview {
       garbageValue = "232989975"
    )
    public int method6080() {
-      return this.worldMapData == null?-1:this.worldMapData.method294();
+      return this.worldMapData == null?-1:this.worldMapData.getFileId();
    }
 
    @ObfuscatedName("f")
@@ -631,7 +633,7 @@ public class RenderOverview {
    void initializeWorldMap(WorldMapData var1) {
       this.worldMapData = var1;
       this.worldMapManager = new WorldMapManager(this.field4013, this.mapFonts);
-      this.field4019.method6053(this.worldMapData.method296());
+      this.field4019.method6053(this.worldMapData.getIdentifier());
    }
 
    @ObfuscatedName("w")
@@ -645,7 +647,7 @@ public class RenderOverview {
             this.initializeWorldMap(var1);
          }
 
-         if(!var4 && this.worldMapData.method290(var2.plane, var2.worldX, var2.worldY)) {
+         if(!var4 && this.worldMapData.containsCoord(var2.plane, var2.worldX, var2.worldY)) {
             this.method6085(var2.plane, var2.worldX, var2.worldY);
          } else {
             this.method6085(var3.plane, var3.worldX, var3.worldY);
@@ -666,7 +668,7 @@ public class RenderOverview {
             var4 = this.worldMapData.method291(this.worldMapData.method305(), this.worldMapData.method304(), this.worldMapData.method306());
          }
 
-         this.method6136(var4[0] - this.worldMapData.method312() * 64, var4[1] - this.worldMapData.method302() * 64, true);
+         this.method6136(var4[0] - this.worldMapData.getMinX() * 64, var4[1] - this.worldMapData.getMinY() * 64, true);
          this.field4022 = -1;
          this.field4023 = -1;
          this.worldMapZoom = this.method6091(this.worldMapData.method329());
@@ -693,7 +695,7 @@ public class RenderOverview {
          this.method6090(var1, var2, var3, var4, var7);
       } else {
          if(!this.worldMapManager.method571()) {
-            this.worldMapManager.load(this.field4058, this.worldMapData.method296(), Client.isMembers);
+            this.worldMapManager.load(this.field4058, this.worldMapData.getIdentifier(), Client.isMembers);
             if(!this.worldMapManager.method571()) {
                return;
             }
@@ -800,7 +802,7 @@ public class RenderOverview {
    public void extractData(int var1, int var2, int var3, int var4) {
       if(this.field4019.method6055()) {
          if(!this.worldMapManager.method571()) {
-            this.worldMapManager.load(this.field4058, this.worldMapData.method296(), Client.isMembers);
+            this.worldMapManager.load(this.field4058, this.worldMapData.getIdentifier(), Client.isMembers);
             if(!this.worldMapManager.method571()) {
                return;
             }
@@ -875,8 +877,9 @@ public class RenderOverview {
       signature = "(II)Lal;",
       garbageValue = "2038581939"
    )
-   public WorldMapData method6175(int var1) {
-      Iterator var2 = this.field4014.values().iterator();
+   @Export("getWorldMapDataByFileId")
+   public WorldMapData getWorldMapDataByFileId(int var1) {
+      Iterator var2 = this.worldMapDataByIdentifier.values().iterator();
 
       WorldMapData var3;
       do {
@@ -885,7 +888,7 @@ public class RenderOverview {
          }
 
          var3 = (WorldMapData)var2.next();
-      } while(var3.method294() != var1);
+      } while(var3.getFileId() != var1);
 
       return var3;
    }
@@ -897,8 +900,8 @@ public class RenderOverview {
    )
    public void method6096(int var1, int var2) {
       if(this.worldMapData != null && this.worldMapData.method338(var1, var2)) {
-         this.field4022 = var1 - this.worldMapData.method312() * 64;
-         this.field4023 = var2 - this.worldMapData.method302() * 64;
+         this.field4022 = var1 - this.worldMapData.getMinX() * 64;
+         this.field4023 = var2 - this.worldMapData.getMinY() * 64;
       }
    }
 
@@ -909,7 +912,7 @@ public class RenderOverview {
    )
    public void method6073(int var1, int var2) {
       if(this.worldMapData != null) {
-         this.method6136(var1 - this.worldMapData.method312() * 64, var2 - this.worldMapData.method302() * 64, true);
+         this.method6136(var1 - this.worldMapData.getMinX() * 64, var2 - this.worldMapData.getMinY() * 64, true);
          this.field4022 = -1;
          this.field4023 = -1;
       }
@@ -951,7 +954,7 @@ public class RenderOverview {
       garbageValue = "-909290804"
    )
    public int method6190() {
-      return this.worldMapData == null?-1:this.worldMapX + this.worldMapData.method312() * 64;
+      return this.worldMapData == null?-1:this.worldMapX + this.worldMapData.getMinX() * 64;
    }
 
    @ObfuscatedName("at")
@@ -960,7 +963,7 @@ public class RenderOverview {
       garbageValue = "1480146818"
    )
    public int method6101() {
-      return this.worldMapData == null?-1:this.worldMapY + this.worldMapData.method302() * 64;
+      return this.worldMapData == null?-1:this.worldMapY + this.worldMapData.getMinY() * 64;
    }
 
    @ObfuscatedName("ag")
@@ -1254,7 +1257,8 @@ public class RenderOverview {
       signature = "(IILic;Lic;I)V",
       garbageValue = "-669880805"
    )
-   public void method6122(int var1, int var2, Coordinates var3, Coordinates var4) {
+   @Export("onMapClicked")
+   public void onMapClicked(int var1, int var2, Coordinates var3, Coordinates var4) {
       ScriptEvent var5 = new ScriptEvent();
       MapIconReference var6 = new MapIconReference(var2, var3, var4);
       var5.method1084(new Object[]{var6});

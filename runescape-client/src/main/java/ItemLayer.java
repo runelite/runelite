@@ -108,7 +108,7 @@ public final class ItemLayer {
       MouseRecorder.method1099(var5);
       var5.putLong(var3.nextLong());
       var5.encryptRsa(class85.field1293, class85.field1296);
-      var7 = class29.getLength(var2);
+      var7 = WorldMapRectangle.getLength(var2);
       if(var7 % 8 != 0) {
          var7 += 8 - var7 % 8;
       }

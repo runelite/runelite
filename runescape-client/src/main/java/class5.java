@@ -61,12 +61,12 @@ final class class5 implements class0 {
    static void method16() {
       for(class80 var0 = (class80)class80.field1253.getFront(); var0 != null; var0 = (class80)class80.field1253.getNext()) {
          if(var0.field1247 != null) {
-            class29.field431.method2129(var0.field1247);
+            WorldMapRectangle.field431.method2129(var0.field1247);
             var0.field1247 = null;
          }
 
          if(var0.field1252 != null) {
-            class29.field431.method2129(var0.field1252);
+            WorldMapRectangle.field431.method2129(var0.field1252);
             var0.field1252 = null;
          }
       }
@@ -134,7 +134,7 @@ final class class5 implements class0 {
             Client.field1022 = Player.method1146(var0);
             Client.field1023 = var1;
             Client.field1056 = var2;
-            class31.field449 = 0;
+            WorldMapDecoration.field449 = 0;
             Client.field1032 = false;
             int var3 = Client.menuOptionCount - 1;
             if(var3 != -1) {

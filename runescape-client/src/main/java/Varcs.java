@@ -161,7 +161,7 @@ public class Varcs {
 
          for(int var5 = 0; var5 < this.varcstrings.length; ++var5) {
             if(this.varcstringSerials[var5] && this.varcstrings[var5] != null) {
-               var2 += 2 + class29.getLength(this.varcstrings[var5]);
+               var2 += 2 + WorldMapRectangle.getLength(this.varcstrings[var5]);
                ++var4;
             }
          }

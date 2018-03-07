@@ -31,7 +31,7 @@ public class Resampler {
 
    public Resampler(int var1, int var2) {
       if(var2 != var1) {
-         int var3 = class31.method286(var1, var2);
+         int var3 = WorldMapDecoration.method286(var1, var2);
          var1 /= var3;
          var2 /= var3;
          this.storedSampleRateRatio = var1;

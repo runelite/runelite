@@ -66,7 +66,7 @@ final class WorldComparator implements Comparator {
                         RawAudioNode var8 = var7.method2168().applyResampler(class57.field673);
                         class115 var9 = class115.method2363(var8, 100, var6);
                         var9.method2366(-1);
-                        class29.field431.method2103(var9);
+                        WorldMapRectangle.field431.method2103(var9);
                         var4.field1247 = var9;
                      }
                   }
@@ -82,7 +82,7 @@ final class WorldComparator implements Comparator {
                         RawAudioNode var13 = var12.method2168().applyResampler(class57.field673);
                         class115 var10 = class115.method2363(var13, 100, var6);
                         var10.method2366(0);
-                        class29.field431.method2103(var10);
+                        WorldMapRectangle.field431.method2103(var10);
                         var4.field1252 = var10;
                         var4.field1251 = var4.field1248 + (int)(Math.random() * (double)(var4.field1249 - var4.field1248));
                      }
@@ -95,12 +95,12 @@ final class WorldComparator implements Comparator {
                }
             } else {
                if(var4.field1247 != null) {
-                  class29.field431.method2129(var4.field1247);
+                  WorldMapRectangle.field431.method2129(var4.field1247);
                   var4.field1247 = null;
                }
 
                if(var4.field1252 != null) {
-                  class29.field431.method2129(var4.field1252);
+                  WorldMapRectangle.field431.method2129(var4.field1252);
                   var4.field1252 = null;
                }
             }
@@ -321,8 +321,8 @@ final class WorldComparator implements Comparator {
                            if(class55.preferences.hideRoofs) {
                               var24 = class36.plane;
                            } else {
-                              var25 = class35.getTileHeight(Resampler.cameraX, class31.cameraY, class36.plane);
-                              if(var25 - class49.cameraZ < 800 && (class62.tileSettings[class36.plane][Resampler.cameraX >> 7][class31.cameraY >> 7] & 4) != 0) {
+                              var25 = WorldMapRegion.getTileHeight(Resampler.cameraX, WorldMapDecoration.cameraY, class36.plane);
+                              if(var25 - class49.cameraZ < 800 && (class62.tileSettings[class36.plane][Resampler.cameraX >> 7][WorldMapDecoration.cameraY >> 7] & 4) != 0) {
                                  var24 = class36.plane;
                               } else {
                                  var24 = 3;
@@ -334,7 +334,7 @@ final class WorldComparator implements Comparator {
 
                         var24 = Resampler.cameraX;
                         var25 = class49.cameraZ;
-                        var26 = class31.cameraY;
+                        var26 = WorldMapDecoration.cameraY;
                         var51 = GameCanvas.cameraPitch;
                         var28 = IndexDataBase.cameraYaw;
 
@@ -350,7 +350,7 @@ final class WorldComparator implements Comparator {
                               }
 
                               if(var29 == 2) {
-                                 class31.cameraY += var30;
+                                 WorldMapDecoration.cameraY += var30;
                               }
 
                               if(var29 == 3) {
@@ -389,7 +389,7 @@ final class WorldComparator implements Comparator {
                         Huffman.method3510();
                         var31 = Graphics3D.Rasterizer3D_zoom;
                         Graphics3D.Rasterizer3D_zoom = Client.scale;
-                        class86.region.drawRegion(Resampler.cameraX, class49.cameraZ, class31.cameraY, GameCanvas.cameraPitch, IndexDataBase.cameraYaw, var23);
+                        class86.region.drawRegion(Resampler.cameraX, class49.cameraZ, WorldMapDecoration.cameraY, GameCanvas.cameraPitch, IndexDataBase.cameraYaw, var23);
 
                         while(true) {
                            BoundingBox var54 = (BoundingBox)class7.boundingBoxes.removeLast();
@@ -557,7 +557,7 @@ final class WorldComparator implements Comparator {
                               class138.method3119(var19, var20, var21, var22);
                               Resampler.cameraX = var24;
                               class49.cameraZ = var25;
-                              class31.cameraY = var26;
+                              WorldMapDecoration.cameraY = var26;
                               GameCanvas.cameraPitch = var51;
                               IndexDataBase.cameraYaw = var28;
                               if(Client.field1068) {
@@ -1006,7 +1006,7 @@ final class WorldComparator implements Comparator {
                                     }
                                  }
 
-                                 if(var10.type == 8 && var10 == class35.field497 && Client.field1002 == Client.field1001) {
+                                 if(var10.type == 8 && var10 == WorldMapRegion.field497 && Client.field1002 == Client.field1001) {
                                     var19 = 0;
                                     var20 = 0;
                                     Font var48 = SoundTaskDataProvider.font_p12full;

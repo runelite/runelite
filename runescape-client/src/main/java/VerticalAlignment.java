@@ -1,10 +1,13 @@
 import java.net.URL;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jh")
-public enum class266 implements Enumerated {
+@Implements("VerticalAlignment")
+public enum VerticalAlignment implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Ljh;"
@@ -30,15 +33,16 @@ public enum class266 implements Enumerated {
    @ObfuscatedGetter(
       intValue = 1814702347
    )
-   public final int field3436;
+   @Export("value")
+   public final int value;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 845569293
    )
    final int field3437;
 
-   class266(int var3, int var4) {
-      this.field3436 = var3;
+   VerticalAlignment(int var3, int var4) {
+      this.value = var3;
       this.field3437 = var4;
    }
 

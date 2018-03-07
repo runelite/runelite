@@ -70,6 +70,6 @@ public class class138 {
          }
       }
 
-      class29.method252();
+      WorldMapRectangle.method252();
    }
 }

@@ -18,10 +18,10 @@ public class class160 implements class159 {
    @Export("worldToScreen")
    static final void worldToScreen(int var0, int var1, int var2) {
       if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = class35.getTileHeight(var0, var1, class36.plane) - var2;
+         int var3 = WorldMapRegion.getTileHeight(var0, var1, class36.plane) - var2;
          var0 -= Resampler.cameraX;
          var3 -= class49.cameraZ;
-         var1 -= class31.cameraY;
+         var1 -= WorldMapDecoration.cameraY;
          int var4 = Graphics3D.SINE[GameCanvas.cameraPitch];
          int var5 = Graphics3D.COSINE[GameCanvas.cameraPitch];
          int var6 = Graphics3D.SINE[IndexDataBase.cameraYaw];

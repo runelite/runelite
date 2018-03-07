@@ -19,9 +19,11 @@ public class WorldMapData {
    @Export("fileId")
    int fileId;
    @ObfuscatedName("z")
-   String field465;
+   @Export("identifier")
+   String identifier;
    @ObfuscatedName("n")
-   String field455;
+   @Export("name")
+   String name;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -969876331
@@ -41,7 +43,8 @@ public class WorldMapData {
    @ObfuscatedGetter(
       intValue = 1212752855
    )
-   int field459;
+   @Export("minX")
+   int minX;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -177502831
@@ -51,7 +54,8 @@ public class WorldMapData {
    @ObfuscatedGetter(
       intValue = -275213023
    )
-   int field453;
+   @Export("minY")
+   int minY;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1056889133
@@ -67,9 +71,9 @@ public class WorldMapData {
       this.field456 = -1;
       this.field454 = -1;
       this.field457 = null;
-      this.field459 = Integer.MAX_VALUE;
+      this.minX = Integer.MAX_VALUE;
       this.field460 = 0;
-      this.field453 = Integer.MAX_VALUE;
+      this.minY = Integer.MAX_VALUE;
       this.field462 = 0;
       this.field458 = false;
    }
@@ -82,8 +86,8 @@ public class WorldMapData {
    @Export("loadMapData")
    public void loadMapData(Buffer var1, int var2) {
       this.fileId = var2;
-      this.field465 = var1.readString();
-      this.field455 = var1.readString();
+      this.identifier = var1.readString();
+      this.name = var1.readString();
       this.field457 = new Coordinates(var1.readInt());
       this.field456 = var1.readInt();
       var1.readUnsignedByte();
@@ -135,7 +139,8 @@ public class WorldMapData {
       signature = "(IIIB)Z",
       garbageValue = "-79"
    )
-   public boolean method290(int var1, int var2, int var3) {
+   @Export("containsCoord")
+   public boolean containsCoord(int var1, int var2, int var3) {
       Iterator var4 = this.field464.iterator();
 
       WorldMapSectionBase var5;
@@ -145,7 +150,7 @@ public class WorldMapData {
          }
 
          var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod712(var1, var2, var3));
+      } while(!var5.containsCoord(var1, var2, var3));
 
       return true;
    }
@@ -158,8 +163,8 @@ public class WorldMapData {
    public boolean method338(int var1, int var2) {
       int var3 = var1 / 64;
       int var4 = var2 / 64;
-      if(var3 >= this.field459 && var3 <= this.field460) {
-         if(var4 >= this.field453 && var4 <= this.field462) {
+      if(var3 >= this.minX && var3 <= this.field460) {
+         if(var4 >= this.minY && var4 <= this.field462) {
             Iterator var5 = this.field464.iterator();
 
             WorldMapSectionBase var6;
@@ -195,7 +200,7 @@ public class WorldMapData {
          }
 
          var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod712(var1, var2, var3));
+      } while(!var5.containsCoord(var1, var2, var3));
 
       return var5.vmethod714(var1, var2, var3);
    }
@@ -240,7 +245,8 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "1384503579"
    )
-   public int method294() {
+   @Export("getFileId")
+   public int getFileId() {
       return this.fileId;
    }
 
@@ -258,8 +264,9 @@ public class WorldMapData {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "19"
    )
-   public String method296() {
-      return this.field465;
+   @Export("getIdentifier")
+   public String getIdentifier() {
+      return this.identifier;
    }
 
    @ObfuscatedName("t")
@@ -267,8 +274,9 @@ public class WorldMapData {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-2123083177"
    )
-   public String method288() {
-      return this.field455;
+   @Export("getName")
+   public String getName() {
+      return this.name;
    }
 
    @ObfuscatedName("i")
@@ -294,8 +302,9 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "1824462720"
    )
-   public int method312() {
-      return this.field459;
+   @Export("getMinX")
+   public int getMinX() {
+      return this.minX;
    }
 
    @ObfuscatedName("v")
@@ -312,8 +321,9 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "-862051653"
    )
-   public int method302() {
-      return this.field453;
+   @Export("getMinY")
+   public int getMinY() {
+      return this.minY;
    }
 
    @ObfuscatedName("b")

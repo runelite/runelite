@@ -157,8 +157,8 @@ public abstract class Timer {
                   GrandExchangeOffer.field309 = 2;
                   class230 var37 = new class230();
                   var37.method4261(9, 128);
-                  class284.soundSystem0 = MapIcon.method556(GameEngine.taskManager, 0, 22050);
-                  class284.soundSystem0.method2248(var37);
+                  HorizontalAlignment.soundSystem0 = MapIcon.method556(GameEngine.taskManager, 0, 22050);
+                  HorizontalAlignment.soundSystem0.method2248(var37);
                   var26 = class55.indexCache15;
                   var27 = class152.vorbisIndex;
                   IndexData var28 = class178.indexCache4;
@@ -167,8 +167,8 @@ public abstract class Timer {
                   class229.field2689 = var28;
                   class229.field2690 = var37;
                   ChatLineBuffer.soundSystem1 = MapIcon.method556(GameEngine.taskManager, 1, 2048);
-                  class29.field431 = new class100();
-                  ChatLineBuffer.soundSystem1.method2248(class29.field431);
+                  WorldMapRectangle.field431 = new class100();
+                  ChatLineBuffer.soundSystem1.method2248(WorldMapRectangle.field431);
                   class57.field673 = new Resampler(22050, KeyFocusListener.sampleRate);
                   class90.loadingText = "Prepared sound engine";
                   class90.loadingBarPercentage = 35;
@@ -184,7 +184,7 @@ public abstract class Timer {
                      class90.loadingText = "Loading fonts - " + Client.fontsMap.size() * 100 / var1 + "%";
                      class90.loadingBarPercentage = 40;
                   } else {
-                     class41.fontPlain11 = (Font)Client.fontsMap.get(FontName.FontName_plain11);
+                     MapCacheArchiveNames.fontPlain11 = (Font)Client.fontsMap.get(FontName.FontName_plain11);
                      SoundTaskDataProvider.font_p12full = (Font)Client.fontsMap.get(FontName.FontName_plain12);
                      DecorativeObject.fontBold12 = (Font)Client.fontsMap.get(FontName.FontName_bold12);
                      class21.platformInfo = new MachineInfo(true);
@@ -230,7 +230,7 @@ public abstract class Timer {
                      IndexData var7 = BoundingBox2D.configsIndex;
                      IndexData var8 = Client.indexModels;
                      boolean var9 = Client.isMembers;
-                     Font var10 = class41.fontPlain11;
+                     Font var10 = MapCacheArchiveNames.fontPlain11;
                      WorldComparator.item_ref = var7;
                      class288.ItemDefinition_modelIndexCache = var8;
                      ItemComposition.isMembersWorld = var9;
@@ -251,7 +251,7 @@ public abstract class Timer {
                      IndexData var17 = class20.indexCache13;
                      class3.widgetIndex = var14;
                      BaseVarType.field30 = var15;
-                     class29.field428 = var16;
+                     WorldMapRectangle.field428 = var16;
                      Widget.field2818 = var17;
                      Widget.widgets = new Widget[class3.widgetIndex.size()][];
                      Widget.validInterfaces = new boolean[class3.widgetIndex.size()];
@@ -421,8 +421,8 @@ public abstract class Timer {
                   }
                } else if(Client.loadingStage == 140) {
                   class90.loadingBarPercentage = 100;
-                  if(!ServerPacket.indexWorldMap.tryLoadArchiveByName(class41.field546.field542)) {
-                     class90.loadingText = "Loading world map - " + ServerPacket.indexWorldMap.archiveLoadPercentByName(class41.field546.field542) / 10 + "%";
+                  if(!ServerPacket.indexWorldMap.tryLoadArchiveByName(MapCacheArchiveNames.DETAILS.name)) {
+                     class90.loadingText = "Loading world map - " + ServerPacket.indexWorldMap.archiveLoadPercentByName(MapCacheArchiveNames.DETAILS.name) / 10 + "%";
                   } else {
                      if(class248.renderOverview == null) {
                         class248.renderOverview = new RenderOverview();

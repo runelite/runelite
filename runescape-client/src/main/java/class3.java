@@ -60,7 +60,7 @@ final class class3 implements class0 {
       garbageValue = "221233004"
    )
    public static void method8(int var0, int var1, int var2, boolean var3) {
-      PacketNode var4 = class31.method285(ClientPacket.field2448, Client.field899.field1470);
+      PacketNode var4 = WorldMapDecoration.method285(ClientPacket.field2448, Client.field899.field1470);
       var4.packetBuffer.method3626(var3?Client.field932:0);
       var4.packetBuffer.method3596(var2);
       var4.packetBuffer.putShort(var1);

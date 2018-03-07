@@ -318,8 +318,8 @@ public class Huffman {
          ChatLineBuffer.soundSystem1.method2249();
       }
 
-      if(class284.soundSystem0 != null) {
-         class284.soundSystem0.method2249();
+      if(HorizontalAlignment.soundSystem0 != null) {
+         HorizontalAlignment.soundSystem0.method2249();
       }
 
    }

@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aw")
-public final class class29 {
+@Implements("WorldMapRectangle")
+public final class WorldMapRectangle {
    @ObfuscatedName("ol")
    @ObfuscatedSignature(
       signature = "Lcy;"
@@ -21,22 +23,26 @@ public final class class29 {
    @ObfuscatedGetter(
       intValue = 361414627
    )
-   int field432;
+   @Export("worldMapRegionWidth")
+   int worldMapRegionWidth;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1251520857
    )
-   int field427;
+   @Export("worldMapRegionHeight")
+   int worldMapRegionHeight;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 656939217
    )
-   int field429;
+   @Export("worldMapRegionX")
+   int worldMapRegionX;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 975977773
    )
-   int field426;
+   @Export("worldMapRegionY")
+   int worldMapRegionY;
    // $FF: synthetic field
    @ObfuscatedSignature(
       signature = "Lag;"
@@ -46,7 +52,7 @@ public final class class29 {
    @ObfuscatedSignature(
       signature = "(Lag;)V"
    )
-   class29(WorldMapManager var1) {
+   WorldMapRectangle(WorldMapManager var1) {
       this.this$0 = var1;
    }
 
@@ -118,7 +124,7 @@ public final class class29 {
       garbageValue = "-55"
    )
    static final void method250() {
-      PacketNode var0 = class31.method285(ClientPacket.field2431, Client.field899.field1470);
+      PacketNode var0 = WorldMapDecoration.method285(ClientPacket.field2431, Client.field899.field1470);
       Client.field899.method2082(var0);
 
       for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {

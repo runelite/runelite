@@ -92,7 +92,7 @@ public enum BaseVarType implements Enumerated {
       garbageValue = "-46"
    )
    static void method12() {
-      Client.field899.method2082(class31.method285(ClientPacket.field2427, Client.field899.field1470));
+      Client.field899.method2082(WorldMapDecoration.method285(ClientPacket.field2427, Client.field899.field1470));
       Client.field927 = 0;
    }
 }

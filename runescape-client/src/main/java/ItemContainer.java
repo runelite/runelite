@@ -358,8 +358,8 @@ public class ItemContainer extends Node {
                var39 = var39 * 128 + 64;
                var7 = var7 * 128 + 64;
                var2 = var2 * 128 + 64;
-               Projectile var31 = new Projectile(var6, class36.plane, var10, var39, class35.getTileHeight(var10, var39, class36.plane) - var5, var4 + Client.gameCycle, var8 + Client.gameCycle, var41, var40, var3, var14);
-               var31.moveProjectile(var7, var2, class35.getTileHeight(var7, var2, class36.plane) - var14, var4 + Client.gameCycle);
+               Projectile var31 = new Projectile(var6, class36.plane, var10, var39, WorldMapRegion.getTileHeight(var10, var39, class36.plane) - var5, var4 + Client.gameCycle, var8 + Client.gameCycle, var41, var40, var3, var14);
+               var31.moveProjectile(var7, var2, WorldMapRegion.getTileHeight(var7, var2, class36.plane) - var14, var4 + Client.gameCycle);
                Client.projectiles.addFront(var31);
             }
 
@@ -373,7 +373,7 @@ public class ItemContainer extends Node {
             if(var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
                var5 = var5 * 128 + 64;
                var6 = var6 * 128 + 64;
-               GraphicsObject var42 = new GraphicsObject(var3, class36.plane, var5, var6, class35.getTileHeight(var5, var6, class36.plane) - var2, var7, Client.gameCycle);
+               GraphicsObject var42 = new GraphicsObject(var3, class36.plane, var5, var6, WorldMapRegion.getTileHeight(var5, var6, class36.plane) - var2, var7, Client.gameCycle);
                Client.graphicsObjectDeque.addFront(var42);
             }
 

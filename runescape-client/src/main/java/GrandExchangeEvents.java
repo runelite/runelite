@@ -200,7 +200,7 @@ public class GrandExchangeEvents {
       AttackOption.field1331 = -1;
       class229.field2692 = 0;
       class37.field506 = false;
-      class284.field3699 = 2;
+      HorizontalAlignment.field3699 = 2;
       Client.field1115 = -1;
       Client.field970 = false;
       class5.method16();

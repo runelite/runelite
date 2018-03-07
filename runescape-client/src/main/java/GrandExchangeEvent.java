@@ -75,8 +75,8 @@ public class GrandExchangeEvent {
       garbageValue = "-581753514"
    )
    static final void method91(String var0) {
-      PacketNode var1 = class31.method285(ClientPacket.field2380, Client.field899.field1470);
-      var1.packetBuffer.putByte(class29.getLength(var0));
+      PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2380, Client.field899.field1470);
+      var1.packetBuffer.putByte(WorldMapRectangle.getLength(var0));
       var1.packetBuffer.putString(var0);
       Client.field899.method2082(var1);
    }
@@ -279,8 +279,8 @@ public class GrandExchangeEvent {
    )
    static final void method86(String var0) {
       if(WidgetNode.clanMemberManager != null) {
-         PacketNode var1 = class31.method285(ClientPacket.field2389, Client.field899.field1470);
-         var1.packetBuffer.putByte(class29.getLength(var0));
+         PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2389, Client.field899.field1470);
+         var1.packetBuffer.putByte(WorldMapRectangle.getLength(var0));
          var1.packetBuffer.putString(var0);
          Client.field899.method2082(var1);
       }

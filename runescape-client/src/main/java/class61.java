@@ -139,7 +139,7 @@ public final class class61 {
       garbageValue = "260449837"
    )
    static void method1023(int var0, int var1) {
-      PacketNode var2 = class31.method285(ClientPacket.field2402, Client.field899.field1470);
+      PacketNode var2 = WorldMapDecoration.method285(ClientPacket.field2402, Client.field899.field1470);
       var2.packetBuffer.putShort(var1);
       var2.packetBuffer.method3625(var0);
       Client.field899.method2082(var2);

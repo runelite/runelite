@@ -1,34 +1,42 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("at")
-public class class41 {
+@Implements("MapCacheArchiveNames")
+public class MapCacheArchiveNames
+{
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field546;
+   @Export("DETAILS")
+   public static final MapCacheArchiveNames DETAILS;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field541;
+   @Export("COMPOSITE_MAP")
+   public static final MapCacheArchiveNames COMPOSITE_MAP;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field548;
+   @Export("COMPOSITE_TEXTURE")
+   public static final MapCacheArchiveNames COMPOSITE_TEXTURE;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field544;
+   @Export("AREA")
+   public static final MapCacheArchiveNames AREA;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lat;"
    )
-   public static final class41 field545;
+   @Export("LABELS")
+   public static final MapCacheArchiveNames LABELS;
    @ObfuscatedName("em")
    @ObfuscatedSignature(
       signature = "Lkw;"
@@ -36,18 +44,19 @@ public class class41 {
    @Export("fontPlain11")
    static Font fontPlain11;
    @ObfuscatedName("y")
-   public final String field542;
+   @Export("name")
+   public final String name;
 
    static {
-      field546 = new class41("details");
-      field541 = new class41("compositemap");
-      field548 = new class41("compositetexture");
-      field544 = new class41("area");
-      field545 = new class41("labels");
+      DETAILS = new MapCacheArchiveNames("details");
+      COMPOSITE_MAP = new MapCacheArchiveNames("compositemap");
+      COMPOSITE_TEXTURE = new MapCacheArchiveNames("compositetexture");
+      AREA = new MapCacheArchiveNames("area");
+      LABELS = new MapCacheArchiveNames("labels");
    }
 
-   class41(String var1) {
-      this.field542 = var1;
+   MapCacheArchiveNames(String var1) {
+      this.name = var1;
    }
 
    @ObfuscatedName("ev")
@@ -84,8 +93,8 @@ public class class41 {
    )
    static final void method560(String var0) {
       if(!var0.equals("")) {
-         PacketNode var1 = class31.method285(ClientPacket.field2375, Client.field899.field1470);
-         var1.packetBuffer.putByte(class29.getLength(var0));
+         PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2375, Client.field899.field1470);
+         var1.packetBuffer.putByte(WorldMapRectangle.getLength(var0));
          var1.packetBuffer.putString(var0);
          Client.field899.method2082(var1);
       }

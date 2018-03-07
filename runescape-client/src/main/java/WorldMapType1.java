@@ -75,16 +75,16 @@ public class WorldMapType1 implements WorldMapSectionBase {
       garbageValue = "-33"
    )
    public void vmethod716(WorldMapData var1) {
-      if(var1.field459 > this.field433) {
-         var1.field459 = this.field433;
+      if(var1.minX > this.field433) {
+         var1.minX = this.field433;
       }
 
       if(var1.field460 < this.field440) {
          var1.field460 = this.field440;
       }
 
-      if(var1.field453 > this.field442) {
-         var1.field453 = this.field442;
+      if(var1.minY > this.field442) {
+         var1.minY = this.field442;
       }
 
       if(var1.field462 < this.field441) {
@@ -98,7 +98,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       signature = "(IIII)Z",
       garbageValue = "-1122721489"
    )
-   public boolean vmethod712(int var1, int var2, int var3) {
+   public boolean containsCoord(int var1, int var2, int var3) {
       return var1 >= this.field437 && var1 < this.field434 + this.field437?var2 >> 6 >= this.field435 && var2 >> 6 <= this.field436 && var3 >> 6 >= this.field439 && var3 >> 6 <= this.field438:false;
    }
 
@@ -117,7 +117,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       garbageValue = "606812260"
    )
    public int[] vmethod714(int var1, int var2, int var3) {
-      if(!this.vmethod712(var1, var2, var3)) {
+      if(!this.containsCoord(var1, var2, var3)) {
          return null;
       } else {
          int[] var4 = new int[]{this.field433 * 64 - this.field435 * 64 + var2, var3 + (this.field442 * 64 - this.field439 * 64)};
@@ -460,7 +460,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          Client.queuedSoundEffectCount = 0;
          Client.field1092 = false;
          Resampler.cameraX -= var5 << 7;
-         class31.cameraY -= var6 << 7;
+         WorldMapDecoration.cameraY -= var6 << 7;
          field443 -= var5 << 7;
          class171.field2218 -= var6 << 7;
          Client.field1073 = -1;

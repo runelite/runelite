@@ -39,7 +39,8 @@ public final class WorldMapManager {
    @ObfuscatedSignature(
       signature = "[[Laz;"
    )
-   class35[][] field554;
+   @Export("mapRegions")
+   WorldMapRegion[][] mapRegions;
    @ObfuscatedName("k")
    HashMap field551;
    @ObfuscatedName("s")
@@ -99,11 +100,11 @@ public final class WorldMapManager {
          this.loaded = false;
          this.loading = true;
          System.nanoTime();
-         int var4 = var1.getFile(class41.field546.field542);
+         int var4 = var1.getFile(MapCacheArchiveNames.DETAILS.name);
          int var5 = var1.getChild(var4, var2);
-         Buffer var6 = new Buffer(var1.takeRecordByNames(class41.field546.field542, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(class41.field541.field542, var2));
-         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, class41.field544.field542));
+         Buffer var6 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.DETAILS.name, var2));
+         Buffer var7 = new Buffer(var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, var2));
+         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, MapCacheArchiveNames.AREA.name));
          System.nanoTime();
          System.nanoTime();
          this.field550 = new class45();
@@ -117,42 +118,42 @@ public final class WorldMapManager {
          this.field550.method304();
          this.field550.method305();
          this.field550.method306();
-         this.field562 = this.field550.method312() * 64;
-         this.field559 = this.field550.method302() * 64;
-         this.field555 = (this.field550.method300() - this.field550.method312() + 1) * 64;
-         this.field561 = (this.field550.method348() - this.field550.method302() + 1) * 64;
-         int var17 = this.field550.method300() - this.field550.method312() + 1;
-         int var10 = this.field550.method348() - this.field550.method302() + 1;
+         this.field562 = this.field550.getMinX() * 64;
+         this.field559 = this.field550.getMinY() * 64;
+         this.field555 = (this.field550.method300() - this.field550.getMinX() + 1) * 64;
+         this.field561 = (this.field550.method348() - this.field550.getMinY() + 1) * 64;
+         int var17 = this.field550.method300() - this.field550.getMinX() + 1;
+         int var10 = this.field550.method348() - this.field550.getMinY() + 1;
          System.nanoTime();
          System.nanoTime();
-         class35.field485.method4049();
-         class35.field484.method4049();
-         this.field554 = new class35[var17][var10];
+         WorldMapRegion.field485.method4049();
+         WorldMapRegion.field484.method4049();
+         this.mapRegions = new WorldMapRegion[var17][var10];
          Iterator var11 = this.field550.field574.iterator();
 
          while(var11.hasNext()) {
             class22 var12 = (class22)var11.next();
             int var13 = var12.field411;
             int var14 = var12.field420;
-            int var15 = var13 - this.field550.method312();
-            int var16 = var14 - this.field550.method302();
-            this.field554[var15][var16] = new class35(var13, var14, this.field550.method298(), this.mapFonts);
-            this.field554[var15][var16].method372(var12, this.field550.field576);
+            int var15 = var13 - this.field550.getMinX();
+            int var16 = var14 - this.field550.getMinY();
+            this.mapRegions[var15][var16] = new WorldMapRegion(var13, var14, this.field550.method298(), this.mapFonts);
+            this.mapRegions[var15][var16].method372(var12, this.field550.field576);
          }
 
          for(int var18 = 0; var18 < var17; ++var18) {
             for(int var19 = 0; var19 < var10; ++var19) {
-               if(this.field554[var18][var19] == null) {
-                  this.field554[var18][var19] = new class35(this.field550.method312() + var18, this.field550.method302() + var19, this.field550.method298(), this.mapFonts);
-                  this.field554[var18][var19].method373(this.field550.field575, this.field550.field576);
+               if(this.mapRegions[var18][var19] == null) {
+                  this.mapRegions[var18][var19] = new WorldMapRegion(this.field550.getMinX() + var18, this.field550.getMinY() + var19, this.field550.method298(), this.mapFonts);
+                  this.mapRegions[var18][var19].method373(this.field550.field575, this.field550.field576);
                }
             }
          }
 
          System.nanoTime();
          System.nanoTime();
-         if(var1.method4689(class41.field548.field542, var2)) {
-            byte[] var21 = var1.takeRecordByNames(class41.field548.field542, var2);
+         if(var1.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, var2)) {
+            byte[] var21 = var1.takeRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, var2);
             this.field552 = KeyFocusListener.method774(var21);
          }
 
@@ -184,7 +185,7 @@ public final class WorldMapManager {
       int var11 = Rasterizer2D.graphicsPixelsHeight;
       int[] var12 = new int[4];
       Rasterizer2D.copyDrawRegion(var12);
-      class29 var13 = this.method588(var1, var2, var3, var4);
+      WorldMapRectangle var13 = this.getRegionRectForViewport(var1, var2, var3, var4);
       float var14 = this.method568(var7 - var5, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       this.field558 = var15;
@@ -194,14 +195,14 @@ public final class WorldMapManager {
          this.field551.put(Integer.valueOf(var15), var16);
       }
 
-      class35[] var22 = new class35[8];
+      WorldMapRegion[] var22 = new WorldMapRegion[8];
 
       int var17;
       int var18;
-      for(var17 = var13.field429; var17 < var13.field429 + var13.field432; ++var17) {
-         for(var18 = var13.field426; var18 < var13.field427 + var13.field426; ++var18) {
+      for(var17 = var13.worldMapRegionX; var17 < var13.worldMapRegionX + var13.worldMapRegionWidth; ++var17) {
+         for(var18 = var13.worldMapRegionY; var18 < var13.worldMapRegionHeight + var13.worldMapRegionY; ++var18) {
             this.method567(var17, var18, var22);
-            this.field554[var17][var18].method463(var15, (class47)this.field551.get(Integer.valueOf(var15)), var22, this.field564);
+            this.mapRegions[var17][var18].method463(var15, (class47)this.field551.get(Integer.valueOf(var15)), var22, this.field564);
          }
       }
 
@@ -211,9 +212,9 @@ public final class WorldMapManager {
       var18 = this.field562 + var1;
       int var19 = var2 + this.field559;
 
-      for(int var20 = var13.field429; var20 < var13.field429 + var13.field432; ++var20) {
-         for(int var21 = var13.field426; var21 < var13.field426 + var13.field427; ++var21) {
-            this.field554[var20][var21].method371(var5 + var17 * (this.field554[var20][var21].field494 * 64 - var18) / 64, var8 - var17 * (this.field554[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
+      for(int var20 = var13.worldMapRegionX; var20 < var13.worldMapRegionX + var13.worldMapRegionWidth; ++var20) {
+         for(int var21 = var13.worldMapRegionY; var21 < var13.worldMapRegionY + var13.worldMapRegionHeight; ++var21) {
+            this.mapRegions[var20][var21].method371(var5 + var17 * (this.mapRegions[var20][var21].field494 * 64 - var18) / 64, var8 - var17 * (this.mapRegions[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
          }
       }
 
@@ -226,7 +227,7 @@ public final class WorldMapManager {
    )
    @Export("drawMapIcons")
    public final void drawMapIcons(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
-      class29 var14 = this.method588(var1, var2, var3, var4);
+      WorldMapRectangle var14 = this.getRegionRectForViewport(var1, var2, var3, var4);
       float var15 = this.method568(var7 - var5, var3 - var1);
       int var16 = (int)(var15 * 64.0F);
       int var17 = this.field562 + var1;
@@ -234,20 +235,20 @@ public final class WorldMapManager {
 
       int var19;
       int var20;
-      for(var19 = var14.field429; var19 < var14.field429 + var14.field432; ++var19) {
-         for(var20 = var14.field426; var20 < var14.field426 + var14.field427; ++var20) {
+      for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionX + var14.worldMapRegionWidth; ++var19) {
+         for(var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionY + var14.worldMapRegionHeight; ++var20) {
             if(var13) {
-               this.field554[var19][var20].method399();
+               this.mapRegions[var19][var20].method399();
             }
 
-            this.field554[var19][var20].method377(var5 + var16 * (this.field554[var19][var20].field494 * 64 - var17) / 64, var8 - var16 * (this.field554[var19][var20].field488 * 64 - var18 + 64) / 64, var16, var9);
+            this.mapRegions[var19][var20].method377(var5 + var16 * (this.mapRegions[var19][var20].field494 * 64 - var17) / 64, var8 - var16 * (this.mapRegions[var19][var20].field488 * 64 - var18 + 64) / 64, var16, var9);
          }
       }
 
       if(var10 != null && var11 > 0) {
-         for(var19 = var14.field429; var19 < var14.field432 + var14.field429; ++var19) {
-            for(var20 = var14.field426; var20 < var14.field426 + var14.field427; ++var20) {
-               this.field554[var19][var20].drawFlashingMapIcons(var10, var11, var12);
+         for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionWidth + var14.worldMapRegionX; ++var19) {
+            for(var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionY + var14.worldMapRegionHeight; ++var20) {
+               this.mapRegions[var19][var20].drawFlashingMapIcons(var10, var11, var12);
             }
          }
       }
@@ -259,24 +260,24 @@ public final class WorldMapManager {
       signature = "(II[Laz;I)V",
       garbageValue = "425304368"
    )
-   void method567(int var1, int var2, class35[] var3) {
+   void method567(int var1, int var2, WorldMapRegion[] var3) {
       boolean var4 = var1 <= 0;
-      boolean var5 = var1 >= this.field554.length - 1;
+      boolean var5 = var1 >= this.mapRegions.length - 1;
       boolean var6 = var2 <= 0;
-      boolean var7 = var2 >= this.field554[0].length - 1;
+      boolean var7 = var2 >= this.mapRegions[0].length - 1;
       if(var7) {
          var3[class254.field3324.rsOrdinal()] = null;
       } else {
-         var3[class254.field3324.rsOrdinal()] = this.field554[var1][var2 + 1];
+         var3[class254.field3324.rsOrdinal()] = this.mapRegions[var1][var2 + 1];
       }
 
-      var3[class254.field3315.rsOrdinal()] = !var7 && !var5?this.field554[var1 + 1][var2 + 1]:null;
-      var3[class254.field3321.rsOrdinal()] = !var7 && !var4?this.field554[var1 - 1][var2 + 1]:null;
-      var3[class254.field3316.rsOrdinal()] = var5?null:this.field554[var1 + 1][var2];
-      var3[class254.field3320.rsOrdinal()] = var4?null:this.field554[var1 - 1][var2];
-      var3[class254.field3318.rsOrdinal()] = var6?null:this.field554[var1][var2 - 1];
-      var3[class254.field3317.rsOrdinal()] = !var6 && !var5?this.field554[var1 + 1][var2 - 1]:null;
-      var3[class254.field3319.rsOrdinal()] = !var6 && !var4?this.field554[var1 - 1][var2 - 1]:null;
+      var3[class254.field3315.rsOrdinal()] = !var7 && !var5?this.mapRegions[var1 + 1][var2 + 1]:null;
+      var3[class254.field3321.rsOrdinal()] = !var7 && !var4?this.mapRegions[var1 - 1][var2 + 1]:null;
+      var3[class254.field3316.rsOrdinal()] = var5?null:this.mapRegions[var1 + 1][var2];
+      var3[class254.field3320.rsOrdinal()] = var4?null:this.mapRegions[var1 - 1][var2];
+      var3[class254.field3318.rsOrdinal()] = var6?null:this.mapRegions[var1][var2 - 1];
+      var3[class254.field3317.rsOrdinal()] = !var6 && !var5?this.mapRegions[var1 + 1][var2 - 1]:null;
+      var3[class254.field3319.rsOrdinal()] = !var6 && !var4?this.mapRegions[var1 - 1][var2 - 1]:null;
    }
 
    @ObfuscatedName("y")
@@ -328,15 +329,15 @@ public final class WorldMapManager {
       if(!this.loaded) {
          return var11;
       } else {
-         class29 var12 = this.method588(var1, var2, var3, var4);
+         WorldMapRectangle var12 = this.getRegionRectForViewport(var1, var2, var3, var4);
          float var13 = this.method568(var7, var3 - var1);
          int var14 = (int)(var13 * 64.0F);
          int var15 = this.field562 + var1;
          int var16 = var2 + this.field559;
 
-         for(int var17 = var12.field429; var17 < var12.field432 + var12.field429; ++var17) {
-            for(int var18 = var12.field426; var18 < var12.field426 + var12.field427; ++var18) {
-               List var19 = this.field554[var17][var18].method413(var5 + var14 * (this.field554[var17][var18].field494 * 64 - var15) / 64, var8 + var6 - var14 * (this.field554[var17][var18].field488 * 64 - var16 + 64) / 64, var14, var9, var10);
+         for(int var17 = var12.worldMapRegionX; var17 < var12.worldMapRegionWidth + var12.worldMapRegionX; ++var17) {
+            for(int var18 = var12.worldMapRegionY; var18 < var12.worldMapRegionY + var12.worldMapRegionHeight; ++var18) {
+               List var19 = this.mapRegions[var17][var18].method413(var5 + var14 * (this.mapRegions[var17][var18].field494 * 64 - var15) / 64, var8 + var6 - var14 * (this.mapRegions[var17][var18].field488 * 64 - var16 + 64) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -352,8 +353,9 @@ public final class WorldMapManager {
       signature = "(IIIIB)Law;",
       garbageValue = "8"
    )
-   class29 method588(int var1, int var2, int var3, int var4) {
-      class29 var5 = new class29(this);
+   @Export("getRegionRectForViewport")
+   WorldMapRectangle getRegionRectForViewport(int var1, int var2, int var3, int var4) {
+      WorldMapRectangle var5 = new WorldMapRectangle(this);
       int var6 = this.field562 + var1;
       int var7 = var2 + this.field559;
       int var8 = var3 + this.field562;
@@ -362,30 +364,30 @@ public final class WorldMapManager {
       int var11 = var7 / 64;
       int var12 = var8 / 64;
       int var13 = var9 / 64;
-      var5.field432 = var12 - var10 + 1;
-      var5.field427 = var13 - var11 + 1;
-      var5.field429 = var10 - this.field550.method312();
-      var5.field426 = var11 - this.field550.method302();
-      if(var5.field429 < 0) {
-         var5.field432 += var5.field429;
-         var5.field429 = 0;
+      var5.worldMapRegionWidth = var12 - var10 + 1;
+      var5.worldMapRegionHeight = var13 - var11 + 1;
+      var5.worldMapRegionX = var10 - this.field550.getMinX();
+      var5.worldMapRegionY = var11 - this.field550.getMinY();
+      if(var5.worldMapRegionX < 0) {
+         var5.worldMapRegionWidth += var5.worldMapRegionX;
+         var5.worldMapRegionX = 0;
       }
 
-      if(var5.field429 > this.field554.length - var5.field432) {
-         var5.field432 = this.field554.length - var5.field429;
+      if(var5.worldMapRegionX > this.mapRegions.length - var5.worldMapRegionWidth) {
+         var5.worldMapRegionWidth = this.mapRegions.length - var5.worldMapRegionX;
       }
 
-      if(var5.field426 < 0) {
-         var5.field427 += var5.field426;
-         var5.field426 = 0;
+      if(var5.worldMapRegionY < 0) {
+         var5.worldMapRegionHeight += var5.worldMapRegionY;
+         var5.worldMapRegionY = 0;
       }
 
-      if(var5.field426 > this.field554[0].length - var5.field427) {
-         var5.field427 = this.field554[0].length - var5.field426;
+      if(var5.worldMapRegionY > this.mapRegions[0].length - var5.worldMapRegionHeight) {
+         var5.worldMapRegionHeight = this.mapRegions[0].length - var5.worldMapRegionY;
       }
 
-      var5.field432 = Math.min(var5.field432, this.field554.length);
-      var5.field427 = Math.min(var5.field427, this.field554[0].length);
+      var5.worldMapRegionWidth = Math.min(var5.worldMapRegionWidth, this.mapRegions.length);
+      var5.worldMapRegionHeight = Math.min(var5.worldMapRegionHeight, this.mapRegions[0].length);
       return var5;
    }
 
@@ -420,9 +422,9 @@ public final class WorldMapManager {
 
       this.field553.clear();
 
-      for(int var1 = 0; var1 < this.field554.length; ++var1) {
-         for(int var2 = 0; var2 < this.field554[var1].length; ++var2) {
-            List var3 = this.field554[var1][var2].method407();
+      for(int var1 = 0; var1 < this.mapRegions.length; ++var1) {
+         for(int var2 = 0; var2 < this.mapRegions[var1].length; ++var2) {
+            List var3 = this.mapRegions[var1][var2].method407();
             Iterator var4 = var3.iterator();
 
             while(var4.hasNext()) {

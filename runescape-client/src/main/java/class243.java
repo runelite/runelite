@@ -18,8 +18,8 @@ public class class243 {
       garbageValue = "-789360915"
    )
    public static void method4618() {
-      class35.field485.method4043(5);
-      class35.field484.method4043(5);
+      WorldMapRegion.field485.method4043(5);
+      WorldMapRegion.field484.method4043(5);
    }
 
    @ObfuscatedName("x")
@@ -42,7 +42,7 @@ public class class243 {
       } else if(TotalQuantityComparator.localPlayer == var0) {
          return Projectile.method1955();
       } else {
-         boolean var1 = class266.method4849() || MessageNode.method1132() && var0.isFriend();
+         boolean var1 = VerticalAlignment.method4849() || MessageNode.method1132() && var0.isFriend();
          if(!var1) {
             boolean var2 = (Client.field988 & 2) != 0;
             var1 = var2 && var0.isClanMember();
@@ -64,7 +64,7 @@ public class class243 {
       if(Client.field899.field1477 >= 50 || var0) {
          Client.field899.field1477 = 0;
          if(!Client.socketError && Client.field899.getSocket() != null) {
-            PacketNode var1 = class31.method285(ClientPacket.field2451, Client.field899.field1470);
+            PacketNode var1 = WorldMapDecoration.method285(ClientPacket.field2451, Client.field899.field1470);
             Client.field899.method2082(var1);
 
             try {

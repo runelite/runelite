@@ -26,7 +26,7 @@ public class class57 {
       garbageValue = "-1101903591"
    )
    static SpritePixels method826(int var0, int var1, int var2) {
-      class213 var3 = class35.field485;
+      class213 var3 = WorldMapRegion.field485;
       long var4 = (long)(var2 << 16 | var0 << 8 | var1);
       return (SpritePixels)var3.method4044(var4);
    }

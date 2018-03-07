@@ -107,7 +107,7 @@ public enum class27 implements Enumerated {
                }
 
                var2.field1143 = Client.gameCycle;
-               class86.region.method3026(class36.plane, var2.x, var2.y, class35.getTileHeight(var2.field1193 * 64 - 64 + var2.x, var2.field1193 * 64 - 64 + var2.y, class36.plane), var2.field1193 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1141);
+               class86.region.method3026(class36.plane, var2.x, var2.y, WorldMapRegion.getTileHeight(var2.field1193 * 64 - 64 + var2.x, var2.field1193 * 64 - 64 + var2.y, class36.plane), var2.field1193 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1141);
             }
          }
       }

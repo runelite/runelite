@@ -109,7 +109,7 @@ public final class class80 extends Node {
       }
 
       if(var1 != this.field1244 && this.field1247 != null) {
-         class29.field431.method2129(this.field1247);
+         WorldMapRectangle.field431.method2129(this.field1247);
          this.field1247 = null;
       }
 

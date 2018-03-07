@@ -117,7 +117,7 @@ public class class44 {
 
          var2 = WorldMapType1.field443 >> 7;
          var3 = class171.field2218 >> 7;
-         var4 = class35.getTileHeight(WorldMapType1.field443, class171.field2218, class36.plane);
+         var4 = WorldMapRegion.getTileHeight(WorldMapType1.field443, class171.field2218, class36.plane);
          var5 = 0;
          int var6;
          if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
@@ -151,14 +151,14 @@ public class class44 {
             Client.field936 += (var6 - Client.field936) / 80;
          }
 
-         MapLabel.field476 = class35.getTileHeight(TotalQuantityComparator.localPlayer.x, TotalQuantityComparator.localPlayer.y, class36.plane) - Client.field928;
+         MapLabel.field476 = WorldMapRegion.getTileHeight(TotalQuantityComparator.localPlayer.x, TotalQuantityComparator.localPlayer.y, class36.plane) - Client.field928;
       } else if(Client.field927 == 1) {
          if(Client.field933 && TotalQuantityComparator.localPlayer != null) {
             var0 = TotalQuantityComparator.localPlayer.pathX[0];
             var1 = TotalQuantityComparator.localPlayer.pathY[0];
             if(var0 >= 0 && var1 >= 0 && var0 < 104 && var1 < 104) {
                WorldMapType1.field443 = TotalQuantityComparator.localPlayer.x;
-               MapLabel.field476 = class35.getTileHeight(TotalQuantityComparator.localPlayer.x, TotalQuantityComparator.localPlayer.y, class36.plane) - Client.field928;
+               MapLabel.field476 = WorldMapRegion.getTileHeight(TotalQuantityComparator.localPlayer.x, TotalQuantityComparator.localPlayer.y, class36.plane) - Client.field928;
                class171.field2218 = TotalQuantityComparator.localPlayer.y;
                Client.field933 = false;
             }

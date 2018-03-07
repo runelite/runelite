@@ -55,12 +55,14 @@ public class MapIcon {
    @ObfuscatedGetter(
       intValue = -801573435
    )
-   int field538;
+   @Export("screenX")
+   int screenX;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1845405553
    )
-   int field537;
+   @Export("screenY")
+   int screenY;
 
    @ObfuscatedSignature(
       signature = "(ILic;Lic;Lai;)V"
@@ -98,39 +100,39 @@ public class MapIcon {
    )
    boolean method553(int var1, int var2) {
       Area var3 = Area.mapAreaType[this.areaId];
-      switch(var3.field3464.field3698) {
+      switch(var3.horizontalAlignment.value) {
       case 0:
-         if(var1 >= this.field538 && var1 < this.field533 + this.field538) {
+         if(var1 >= this.screenX && var1 < this.field533 + this.screenX) {
             break;
          }
 
          return false;
       case 1:
-         if(var1 >= this.field538 - this.field533 / 2 && var1 <= this.field533 / 2 + this.field538) {
+         if(var1 >= this.screenX - this.field533 / 2 && var1 <= this.field533 / 2 + this.screenX) {
             break;
          }
 
          return false;
       case 2:
-         if(var1 <= this.field538 - this.field533 || var1 > this.field538) {
+         if(var1 <= this.screenX - this.field533 || var1 > this.screenX) {
             return false;
          }
       }
 
-      switch(var3.field3463.field3436) {
+      switch(var3.verticalAlignment.value) {
       case 0:
-         if(var2 >= this.field537 && var2 < this.field537 + this.field534) {
+         if(var2 >= this.screenY && var2 < this.screenY + this.field534) {
             break;
          }
 
          return false;
       case 1:
-         if(var2 < this.field537 - this.field534 / 2 || var2 > this.field534 / 2 + this.field537) {
+         if(var2 < this.screenY - this.field534 / 2 || var2 > this.field534 / 2 + this.screenY) {
             return false;
          }
          break;
       case 2:
-         if(var2 <= this.field537 - this.field534 || var2 > this.field537) {
+         if(var2 <= this.screenY - this.field534 || var2 > this.screenY) {
             return false;
          }
       }
@@ -144,7 +146,7 @@ public class MapIcon {
       garbageValue = "-1180742701"
    )
    boolean method550(int var1, int var2) {
-      return this.field536 == null?false:(var1 >= this.field538 - this.field536.field472 / 2 && var1 <= this.field536.field472 / 2 + this.field538?var2 >= this.field537 && var2 <= this.field536.field473 + this.field537:false);
+      return this.field536 == null?false:(var1 >= this.screenX - this.field536.field472 / 2 && var1 <= this.field536.field472 / 2 + this.screenX ?var2 >= this.screenY && var2 <= this.field536.field473 + this.screenY :false);
    }
 
    @ObfuscatedName("d")
@@ -172,8 +174,8 @@ public class MapIcon {
       garbageValue = "1733042415"
    )
    static final void method559(String var0, int var1) {
-      PacketNode var2 = class31.method285(ClientPacket.field2405, Client.field899.field1470);
-      var2.packetBuffer.putByte(class29.getLength(var0) + 1);
+      PacketNode var2 = WorldMapDecoration.method285(ClientPacket.field2405, Client.field899.field1470);
+      var2.packetBuffer.putByte(WorldMapRectangle.getLength(var0) + 1);
       var2.packetBuffer.putString(var0);
       var2.packetBuffer.putShortLE(var1);
       Client.field899.method2082(var2);
@@ -280,7 +282,7 @@ public class MapIcon {
                   RawAudioNode var10 = var9.method2168().applyResampler(class57.field673);
                   class115 var11 = class115.method2363(var10, 100, var2);
                   var11.method2366(Client.unknownSoundValues1[var0] - 1);
-                  class29.field431.method2103(var11);
+                  WorldMapRectangle.field431.method2103(var11);
                }
 
                Client.unknownSoundValues2[var0] = -100;
