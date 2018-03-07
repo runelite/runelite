@@ -122,17 +122,38 @@ public class PanelComponent implements RenderableEntity
 		// Render all lines
 		for (final Line line : lines)
 		{
-			final TextComponent leftLineComponent = new TextComponent();
-			leftLineComponent.setPosition(new Point(position.x + LEFT_BORDER, y));
-			leftLineComponent.setText(line.getLeft());
-			leftLineComponent.setColor(line.getLeftColor());
-			leftLineComponent.render(graphics, parent);
+			// Center Text if left/right line is empty
+			if (line.getLeft().equals("") && !line.getRight().equals(""))
+			{
+				final TextComponent rightLineComponent = new TextComponent();
+				rightLineComponent.setPosition(new Point((width - metrics.stringWidth(line.getRight())) / 2, y));
+				rightLineComponent.setText(line.getRight());
+				rightLineComponent.setColor(line.getRightColor());
+				rightLineComponent.render(graphics, parent);
+			}
+			else if (!line.getLeft().equals("") && line.getRight().equals(""))
+			{
+				final TextComponent leftLineComponent = new TextComponent();
+				leftLineComponent.setPosition(new Point((width - metrics.stringWidth(line.getLeft())) / 2, y));
+				leftLineComponent.setText(line.getLeft());
+				leftLineComponent.setColor(line.getLeftColor());
+				leftLineComponent.render(graphics, parent);
+			}
+			else
+			{
+				final TextComponent leftLineComponent = new TextComponent();
+				leftLineComponent.setPosition(new Point(position.x + LEFT_BORDER, y));
+				leftLineComponent.setText(line.getLeft());
+				leftLineComponent.setColor(line.getLeftColor());
+				leftLineComponent.render(graphics, parent);
 
-			final TextComponent rightLineComponent = new TextComponent();
-			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), y));
-			rightLineComponent.setText(line.getRight());
-			rightLineComponent.setColor(line.getRightColor());
-			rightLineComponent.render(graphics, parent);
+				final TextComponent rightLineComponent = new TextComponent();
+				rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), y));
+				rightLineComponent.setText(line.getRight());
+				rightLineComponent.setColor(line.getRightColor());
+				rightLineComponent.render(graphics, parent);
+			}
+
 			y += metrics.getHeight() + SEPARATOR;
 		}
 
