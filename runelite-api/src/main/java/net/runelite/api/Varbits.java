@@ -171,6 +171,13 @@ public enum Varbits
 	SACK_NUMBER(5558),
 
 	/**
+	 * Experience tracker
+	 */
+	EXPERIENCE_TRACKER_POSITION(4692),
+	EXPERIENCE_TRACKER_COUNTER(4697),
+	EXPERIENCE_TRACKER_PROGRESS_BAR(4698),
+
+	/**
 	 * Experience drop color
 	 */
 	EXPERIENCE_DROP_COLOR(4695),
