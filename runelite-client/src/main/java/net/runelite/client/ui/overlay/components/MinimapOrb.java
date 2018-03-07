@@ -58,7 +58,10 @@ public class MinimapOrb implements RenderableEntity
 	{
 		try
 		{
-			FRAME = ImageIO.read(MinimapOrb.class.getResourceAsStream("minimap_orb_background.png"));
+			synchronized (ImageIO.class)
+			{
+				FRAME = ImageIO.read(MinimapOrb.class.getResourceAsStream("minimap_orb_background.png"));
+			}
 		}
 		catch (IOException e)
 		{

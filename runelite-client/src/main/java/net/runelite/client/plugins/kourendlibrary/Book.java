@@ -137,7 +137,10 @@ public enum Book
 	{
 		try
 		{
-			return ImageIO.read(Book.class.getResourceAsStream("items/" + name + ".png"));
+			synchronized (ImageIO.class)
+			{
+				return ImageIO.read(Book.class.getResourceAsStream("items/" + name + ".png"));
+			}
 		}
 		catch (IOException | IllegalArgumentException e)
 		{

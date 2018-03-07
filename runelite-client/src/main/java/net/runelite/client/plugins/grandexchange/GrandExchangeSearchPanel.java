@@ -88,7 +88,12 @@ class GrandExchangeSearchPanel extends JPanel
 		// Search Box
 		try
 		{
-			search = new ImageIcon(ImageIO.read(GrandExchangePlugin.class.getResourceAsStream("search.png")));
+			BufferedImage icon;
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(GrandExchangePlugin.class.getResourceAsStream("search.png"));
+			}
+			search = new ImageIcon(icon);
 		}
 		catch (IOException e)
 		{

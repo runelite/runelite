@@ -35,6 +35,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -118,10 +119,15 @@ public class HiscorePanel extends PluginPanel
 		inputPanel.setLayout(new BorderLayout(7, 7));
 		inputPanel.setBorder(subPanelBorder);
 
-		Icon search = null;
+		Icon search;
 		try
 		{
-			search = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream("search.png")));
+			BufferedImage icon;
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(HiscorePanel.class.getResourceAsStream("search.png"));
+			}
+			search = new ImageIcon(icon);
 		}
 		catch (IOException ex)
 		{
@@ -217,13 +223,18 @@ public class HiscorePanel extends PluginPanel
 		{
 			try
 			{
-				Icon icon = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(
-					endpoint.name().toLowerCase() + ".png")));
-				Icon selected = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(
-					endpoint.name().toLowerCase() + "_selected.png")));
+				BufferedImage iconImage;
+				BufferedImage selectedImage;
+				synchronized (ImageIO.class)
+				{
+					iconImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
+						endpoint.name().toLowerCase() + ".png"));
+					selectedImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
+						endpoint.name().toLowerCase() + "_selected.png"));
+				}
 				JToggleButton button = new JToggleButton();
-				button.setIcon(icon);
-				button.setSelectedIcon(selected);
+				button.setIcon(new ImageIcon(iconImage));
+				button.setSelectedIcon(new ImageIcon(selectedImage));
 				button.setPreferredSize(new Dimension(24, 24));
 				button.setBackground(Color.WHITE);
 				button.setFocusPainted(false);
@@ -344,7 +355,12 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
-			label.setIcon(new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon))));
+			BufferedImage icon;
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon));
+			}
+			label.setIcon(new ImageIcon(icon));
 		}
 		catch (IOException ex)
 		{

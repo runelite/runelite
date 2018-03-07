@@ -128,8 +128,13 @@ public class TitleToolbar extends JPanel
 
 		try
 		{
-			BufferedImage discordIcon = ImageIO.read(ClientUI.class.getResourceAsStream("discord.png"));
-			BufferedImage invertedIcon = ImageIO.read(ClientUI.class.getResourceAsStream("discord_inverted.png"));
+			BufferedImage discordIcon;
+			BufferedImage invertedIcon;
+			synchronized (ImageIO.class)
+			{
+				discordIcon = ImageIO.read(ClientUI.class.getResourceAsStream("discord.png"));
+				invertedIcon = ImageIO.read(ClientUI.class.getResourceAsStream("discord_inverted.png"));
+			}
 
 			JButton discordButton = new JButton();
 			discordButton.setToolTipText("Join Discord");

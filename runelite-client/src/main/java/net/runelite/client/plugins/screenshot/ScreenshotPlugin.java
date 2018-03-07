@@ -151,8 +151,13 @@ public class ScreenshotPlugin extends Plugin
 	{
 		try
 		{
-			BufferedImage iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
-			BufferedImage invertedIconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot_inverted.png"));
+			BufferedImage iconImage;
+			BufferedImage invertedIconImage;
+			synchronized (ImageIO.class)
+			{
+				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
+				invertedIconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot_inverted.png"));
+			}
 
 			SwingUtilities.invokeLater(() ->
 			{
@@ -391,7 +396,11 @@ public class ScreenshotPlugin extends Plugin
 			{
 				try (InputStream reportButton = ScreenshotPlugin.class.getResourceAsStream("report_button.png"))
 				{
-					BufferedImage reportButtonImage = ImageIO.read(reportButton);
+					BufferedImage reportButtonImage;
+					synchronized (ImageIO.class)
+					{
+						reportButtonImage = ImageIO.read(reportButton);
+					}
 
 					int x = gameOffsetX + 403;
 					int y = gameOffsetY + image.getHeight() - reportButtonImage.getHeight() - 1;

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.eventbus.Subscribe;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -68,9 +69,15 @@ public class ConfigPlugin extends Plugin
 	{
 		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
 
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("config_icon.png"));
+		}
+
 		navButton = new NavigationButton(
 			"Configuration",
-			ImageIO.read(getClass().getResourceAsStream("config_icon.png")),
+			icon,
 			() -> configPanel);
 
 		ui.getPluginToolbar().addNavigation(navButton);

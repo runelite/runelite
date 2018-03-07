@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.common.eventbus.Subscribe;
+import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -81,9 +82,15 @@ public class KourendLibraryPlugin extends Plugin
 		panel = injector.getInstance(KourendLibraryPanel.class);
 		panel.init();
 
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(Book.class.getResourceAsStream("panel_icon.png"));
+		}
+
 		navButton = new NavigationButton(
 			"Kourend Library",
-			ImageIO.read(Book.class.getResourceAsStream("panel_icon.png")),
+			icon,
 			() -> panel
 		);
 
