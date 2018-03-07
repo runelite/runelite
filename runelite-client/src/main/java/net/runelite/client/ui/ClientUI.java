@@ -26,38 +26,24 @@ package net.runelite.client.ui;
 
 import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
-import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.LayoutManager;
-import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Enumeration;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.FontUIResource;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -67,6 +53,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
+import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
@@ -111,34 +98,20 @@ public class ClientUI extends JFrame
 
 	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client)
 	{
-		// Force heavy-weight popups/tooltips.
-		// Prevents them from being obscured by the game applet.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-		// Do not render shadows under popups/tooltips.
-		// Fixes black boxes under popups that are above the game applet.
-		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
-
-		// Do not fill in background on repaint. Reduces flickering when
-		// the applet is resized.
-		System.setProperty("sun.awt.noerasebackground", "true");
+		// Set some sensible swing defaults
+		SwingUtil.setupDefaults();
 
 		// Use substance look and feel
-		try
-		{
-			UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
-		}
-		catch (UnsupportedLookAndFeelException ex)
-		{
-			log.warn("unable to set look and feel", ex);
-		}
+		SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
 
 		// Use custom UI font
-		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
+		SwingUtil.setFont(FontManager.getRunescapeFont());
 
-		ClientUI gui = new ClientUI(runelite, properties, client);
+		final ClientUI gui = new ClientUI(runelite, properties, client);
+
+		// Try to enable fullscreen on OSX
 		OSXUtil.tryEnableFullscreen(gui);
+
 		return gui;
 	}
 
@@ -147,7 +120,7 @@ public class ClientUI extends JFrame
 		this.runelite = runelite;
 		this.properties = properties;
 		this.client = client;
-		this.trayIcon = setupTrayIcon();
+		this.trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), this);
 
 		init();
 		setTitle(properties.getTitle());
@@ -297,70 +270,14 @@ public class ClientUI extends JFrame
 		});
 	}
 
-	private static void setUIFont(FontUIResource f)
-	{
-		final Enumeration keys = UIManager.getDefaults().keys();
-
-		while (keys.hasMoreElements())
-		{
-			final Object key = keys.nextElement();
-			final Object value = UIManager.get(key);
-
-			if (value instanceof FontUIResource)
-			{
-				UIManager.put(key, f);
-			}
-		}
-	}
-
-	private TrayIcon setupTrayIcon()
-	{
-		if (!SystemTray.isSupported())
-		{
-			return null;
-		}
-
-		SystemTray systemTray = SystemTray.getSystemTray();
-		TrayIcon trayIcon = new TrayIcon(ICON, properties.getTitle());
-		trayIcon.setImageAutoSize(true);
-
-		try
-		{
-			systemTray.add(trayIcon);
-		}
-		catch (AWTException ex)
-		{
-			log.debug("Unable to add system tray icon", ex);
-			return trayIcon;
-		}
-
-		// bring to front when tray icon is clicked
-		trayIcon.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				setVisible(true);
-				setState(Frame.NORMAL); // unminimize
-			}
-		});
-
-		return trayIcon;
-	}
-
 	private void init()
 	{
 		assert SwingUtilities.isEventDispatchThread();
 
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				checkExit();
-			}
-		});
+		SwingUtil.addGracefulExitCallback(this, runelite::shutdown,
+			() -> client != null
+				&& client instanceof Client
+				&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
 
 		final JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
@@ -406,7 +323,9 @@ public class ClientUI extends JFrame
 		}
 		else
 		{
-			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
+			if (SwingUtil.isInScreenBounds(
+				getLocationOnScreen().y + getWidth() + PANEL_EXPANDED_WIDTH,
+				getLocationOnScreen().y))
 			{
 				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
 			}
@@ -448,29 +367,6 @@ public class ClientUI extends JFrame
 		}
 
 		pluginPanel = null;
-	}
-
-	private boolean isInScreenBounds(int x, int y)
-	{
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		return x >= 0 && x <= size.getWidth() && y >= 0 && y <= size.getHeight();
-	}
-
-	private void checkExit()
-	{
-		int result = JOptionPane.OK_OPTION;
-
-		// only ask if not logged out
-		if (client != null && client instanceof Client && ((Client) client).getGameState() != GameState.LOGIN_SCREEN)
-		{
-			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-		}
-
-		if (result == JOptionPane.OK_OPTION)
-		{
-			runelite.shutdown();
-			System.exit(0);
-		}
 	}
 
 	public PluginToolbar getPluginToolbar()
