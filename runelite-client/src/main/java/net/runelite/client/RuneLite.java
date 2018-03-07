@@ -35,7 +35,6 @@ import java.applet.Applet;
 import java.io.File;
 import java.util.Optional;
 import javax.inject.Singleton;
-import javax.swing.SwingUtilities;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
@@ -43,9 +42,7 @@ import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.discord.DiscordService;
-import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -65,9 +62,6 @@ public class RuneLite
 
 	private static Injector injector;
 	private static OptionSet options;
-
-	@Inject
-	private RuneLiteProperties properties;
 
 	@Inject
 	private PluginManager pluginManager;
@@ -91,16 +85,15 @@ public class RuneLite
 	private SessionManager sessionManager;
 
 	@Inject
-	private RuneLiteConfig runeliteConfig;
-
-	@Inject
 	private DiscordService discordService;
 	
 	@Inject
 	private ClientSessionManager clientSessionManager;
 
+	@Inject
+	private ClientUI clientUI;
+
 	Client client;
-	ClientUI gui;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -147,8 +140,8 @@ public class RuneLite
 			this.client = (Client) client;
 		}
 
-		// Load swing UI
-		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(this, properties, client)));
+		// Initialize UI
+		clientUI.init(client);
 
 		// Initialize Discord service
 		discordService.init();
@@ -157,10 +150,10 @@ public class RuneLite
 		configManager.load();
 
 		// Register event listeners
+		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
-		eventBus.register(gui);
 		eventBus.register(pluginManager);
 
 		// Tell the plugin manager if client is outdated or not
@@ -183,39 +176,14 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
-		SwingUtilities.invokeAndWait(() ->
-		{
-			if (client != null)
-			{
-				client.setSize(runeliteConfig.gameSize());
-				client.setPreferredSize(runeliteConfig.gameSize());
-
-				client.getParent().setPreferredSize(runeliteConfig.gameSize());
-				client.getParent().setSize(runeliteConfig.gameSize());
-			}
-
-			gui.showWithChrome(runeliteConfig.enableCustomChrome());
-
-			if (gui.isAlwaysOnTopSupported())
-			{
-				gui.setAlwaysOnTop(runeliteConfig.gameAlwaysOnTop());
-			}
-
-			gui.setResizable(!runeliteConfig.lockWindowSize());
-		});
-
-		eventBus.post(new ClientUILoaded());
+		// Show UI after all plugins are loaded
+		clientUI.show();
 	}
 
 	public void shutdown()
 	{
 		clientSessionManager.shutdown();
 		discordService.close();
-	}
-
-	public void setGui(ClientUI gui)
-	{
-		this.gui = gui;
 	}
 
 	@VisibleForTesting

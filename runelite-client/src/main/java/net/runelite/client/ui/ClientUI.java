@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.BorderLayout;
@@ -32,12 +33,16 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -51,6 +56,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -58,24 +65,15 @@ import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
+/**
+ * Client UI.
+ */
 @Slf4j
-public class ClientUI extends JFrame
+@Singleton
+public class ClientUI
 {
 	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
 	public static final BufferedImage ICON;
-
-	@Getter
-	private TrayIcon trayIcon;
-
-	private final RuneLite runelite;
-	private final Applet client;
-	private final RuneLiteProperties properties;
-	private JPanel navContainer;
-	private PluginToolbar pluginToolbar;
-	private PluginPanel pluginPanel;
-
-	@Getter
-	private TitleToolbar titleToolbar;
 
 	static
 	{
@@ -96,115 +94,42 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client)
-	{
-		// Set some sensible swing defaults
-		SwingUtil.setupDefaults();
+	@Getter
+	private TrayIcon trayIcon;
 
-		// Use substance look and feel
-		SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
+	@Getter
+	private PluginToolbar pluginToolbar;
 
-		// Use custom UI font
-		SwingUtil.setFont(FontManager.getRunescapeFont());
+	@Getter
+	private TitleToolbar titleToolbar;
 
-		final ClientUI gui = new ClientUI(runelite, properties, client);
+	private final RuneLite runelite;
+	private final RuneLiteProperties properties;
+	private final RuneLiteConfig config;
+	private final EventBus eventBus;
+	private Applet client;
+	private JFrame frame;
+	private JPanel navContainer;
+	private PluginPanel pluginPanel;
 
-		// Try to enable fullscreen on OSX
-		OSXUtil.tryEnableFullscreen(gui);
-
-		return gui;
-	}
-
-	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client)
+	@Inject
+	private ClientUI(
+		RuneLite runelite,
+		RuneLiteProperties properties,
+		RuneLiteConfig config,
+		EventBus eventBus)
 	{
 		this.runelite = runelite;
 		this.properties = properties;
-		this.client = client;
-		this.trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), this);
-
-		init();
-		setTitle(properties.getTitle());
-		setIconImage(ICON);
-		// Prevent substance from using a resize cursor for pointing
-		getLayeredPane().setCursor(Cursor.getDefaultCursor());
-		setLocationRelativeTo(getOwner());
-		setResizable(true);
+		this.config = config;
+		this.eventBus = eventBus;
 	}
 
-	public void showWithChrome(boolean customChrome)
-	{
-		setUndecorated(customChrome);
-
-		if (customChrome)
-		{
-			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-
-			JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(this);
-			titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-			titleBar.add(titleToolbar);
-
-			// Substance's default layout manager for the title bar only lays out substance's components
-			// This wraps the default manager and lays out the TitleToolbar as well.
-			LayoutManager delegate = titleBar.getLayout();
-			titleBar.setLayout(new LayoutManager()
-			{
-				@Override
-				public void addLayoutComponent(String name, Component comp)
-				{
-					delegate.addLayoutComponent(name, comp);
-				}
-
-				@Override
-				public void removeLayoutComponent(Component comp)
-				{
-					delegate.removeLayoutComponent(comp);
-				}
-
-				@Override
-				public Dimension preferredLayoutSize(Container parent)
-				{
-					return delegate.preferredLayoutSize(parent);
-				}
-
-				@Override
-				public Dimension minimumLayoutSize(Container parent)
-				{
-					return delegate.minimumLayoutSize(parent);
-				}
-
-				@Override
-				public void layoutContainer(Container parent)
-				{
-					delegate.layoutContainer(parent);
-					final int width = titleToolbar.getPreferredSize().width;
-					titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-				}
-			});
-		}
-
-		pack();
-		revalidateMinimumSize();
-		setLocationRelativeTo(getOwner());
-
-		setVisible(true);
-		toFront();
-		requestFocus();
-		giveClientFocus();
-	}
-
-	private void giveClientFocus()
-	{
-		if (client instanceof Client)
-		{
-			final Canvas c = ((Client) client).getCanvas();
-			c.requestFocusInWindow();
-		}
-		else if (client != null)
-		{
-			client.requestFocusInWindow();
-		}
-	}
-
+	/**
+	 * On config changed.
+	 *
+	 * @param event the event
+	 */
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -213,91 +138,235 @@ public class ClientUI extends JFrame
 			return;
 		}
 
-		if (event.getKey().equals("gameAlwaysOnTop"))
-		{
-			if (this.isAlwaysOnTopSupported())
-			{
-				this.setAlwaysOnTop(Boolean.valueOf(event.getNewValue()));
-			}
-		}
-
-		if (event.getKey().equals("lockWindowSize"))
-		{
-			SwingUtilities.invokeLater(() -> setResizable(!Boolean.valueOf(event.getNewValue())));
-		}
-
-		if (!event.getKey().equals("gameSize"))
-		{
-			return;
-		}
-
-		if (client == null)
-		{
-			return;
-		}
-
-		String[] splitStr = event.getNewValue().split("x");
-		int width = Integer.parseInt(splitStr[0]);
-		int height = Integer.parseInt(splitStr[1]);
-
-		// The upper bounds are defined by the applet's max size
-		// The lower bounds are taken care of by ClientPanel's setMinimumSize
-
-		if (width > 7680)
-		{
-			width = 7680;
-		}
-
-		if (height > 2160)
-		{
-			height = 2160;
-		}
-
-		Dimension size = new Dimension(width, height);
-
 		SwingUtilities.invokeLater(() ->
 		{
+			if (event.getKey().equals("gameAlwaysOnTop"))
+			{
+				if (frame.isAlwaysOnTopSupported())
+				{
+					frame.setAlwaysOnTop(config.gameAlwaysOnTop());
+				}
+			}
+
+			if (event.getKey().equals("lockWindowSize"))
+			{
+				SwingUtilities.invokeLater(() -> frame.setResizable(!config.lockWindowSize()));
+			}
+
+			if (!event.getKey().equals("gameSize"))
+			{
+				return;
+			}
+
+			if (client == null)
+			{
+				return;
+			}
+
+			int width = config.gameSize().width;
+			int height = config.gameSize().height;
+
+			// The upper bounds are defined by the applet's max size
+			// The lower bounds are taken care of by ClientPanel's setMinimumSize
+
+			if (width > 7680)
+			{
+				width = 7680;
+			}
+
+			if (height > 2160)
+			{
+				height = 2160;
+			}
+
+			final Dimension size = new Dimension(width, height);
+
 			client.setSize(size);
 			client.setPreferredSize(size);
-
 			client.getParent().setPreferredSize(size);
 			client.getParent().setSize(size);
 
-			if (isVisible())
+			if (frame.isVisible())
 			{
-				pack();
+				frame.pack();
 			}
 		});
 	}
 
-	private void init()
+	/**
+	 * Initialize UI.
+	 *
+	 * @param client the client
+	 * @throws Exception exception that can occur during creation of the UI
+	 */
+	public void init(@Nullable final Applet client) throws Exception
 	{
-		assert SwingUtilities.isEventDispatchThread();
+		this.client = client;
 
-		SwingUtil.addGracefulExitCallback(this, runelite::shutdown,
-			() -> client != null
-				&& client instanceof Client
-				&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+		SwingUtilities.invokeAndWait(() ->
+		{
+			// Set some sensible swing defaults
+			SwingUtil.setupDefaults();
 
-		final JPanel container = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-		container.add(new ClientPanel(client));
+			// Use substance look and feel
+			SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
 
-		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0, 0));
-		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
-		container.add(navContainer);
+			// Use custom UI font
+			SwingUtil.setFont(FontManager.getRunescapeFont());
 
-		pluginToolbar = new PluginToolbar(this);
-		container.add(pluginToolbar);
+			// Create main window
+			frame = new JFrame();
 
-		titleToolbar = new TitleToolbar(properties);
+			// Try to enable fullscreen on OSX
+			OSXUtil.tryEnableFullscreen(frame);
 
-		add(container);
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
+			frame.setTitle(properties.getTitle());
+			frame.setIconImage(ICON);
+			frame.getLayeredPane().setCursor(Cursor.getDefaultCursor()); // Prevent substance from using a resize cursor for pointing
+			frame.setLocationRelativeTo(frame.getOwner());
+			frame.setResizable(true);
+
+			SwingUtil.addGracefulExitCallback(frame, runelite::shutdown,
+				() -> client != null
+					&& client instanceof Client
+					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+
+			final JPanel container = new JPanel();
+			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+			container.add(new ClientPanel(client));
+
+			navContainer = new JPanel();
+			navContainer.setLayout(new BorderLayout(0, 0));
+			navContainer.setMinimumSize(new Dimension(0, 0));
+			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+			container.add(navContainer);
+
+			pluginToolbar = new PluginToolbar(this);
+			container.add(pluginToolbar);
+
+			titleToolbar = new TitleToolbar(properties);
+
+			frame.add(container);
+		});
 	}
 
-	@Override
+	/**
+	 * Show client UI after everything else is done.
+	 *
+	 * @throws Exception exception that can occur during modification of the UI
+	 */
+	public void show() throws Exception
+	{
+		final boolean withTitleBar = config.enableCustomChrome();
+
+		SwingUtilities.invokeAndWait(() ->
+		{
+			frame.setUndecorated(withTitleBar);
+
+			if (withTitleBar)
+			{
+				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+				JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
+				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
+				titleBar.add(titleToolbar);
+
+				// Substance's default layout manager for the title bar only lays out substance's components
+				// This wraps the default manager and lays out the TitleToolbar as well.
+				LayoutManager delegate = titleBar.getLayout();
+				titleBar.setLayout(new LayoutManager()
+				{
+					@Override
+					public void addLayoutComponent(String name, Component comp)
+					{
+						delegate.addLayoutComponent(name, comp);
+					}
+
+					@Override
+					public void removeLayoutComponent(Component comp)
+					{
+						delegate.removeLayoutComponent(comp);
+					}
+
+					@Override
+					public Dimension preferredLayoutSize(Container parent)
+					{
+						return delegate.preferredLayoutSize(parent);
+					}
+
+					@Override
+					public Dimension minimumLayoutSize(Container parent)
+					{
+						return delegate.minimumLayoutSize(parent);
+					}
+
+					@Override
+					public void layoutContainer(Container parent)
+					{
+						delegate.layoutContainer(parent);
+						final int width = titleToolbar.getPreferredSize().width;
+						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
+					}
+				});
+			}
+
+			frame.pack();
+			SwingUtil.revalidateMinimumSize(frame);
+			frame.setLocationRelativeTo(frame.getOwner());
+			frame.setVisible(true);
+			frame.toFront();
+			requestFocus();
+			giveClientFocus();
+		});
+
+		eventBus.post(new ClientUILoaded());
+	}
+
+	/**
+	 * Paint this component to target graphics
+	 *
+	 * @param graphics the graphics
+	 */
+	public void paint(final Graphics graphics)
+	{
+		frame.paint(graphics);
+	}
+
+	/**
+	 * Gets component width.
+	 *
+	 * @return the width
+	 */
+	public int getWidth()
+	{
+		return frame.getWidth();
+	}
+
+	/**
+	 * Gets component height.
+	 *
+	 * @return the height
+	 */
+	public int getHeight()
+	{
+		return frame.getHeight();
+	}
+
+	/**
+	 * Returns true if this component has focus.
+	 *
+	 * @return true if component has focus
+	 */
+	public boolean isFocused()
+	{
+		return frame.isFocused();
+	}
+
+	/**
+	 * Request focus on this component and then on client component
+	 */
 	public void requestFocus()
 	{
 		if (OSType.getOSType() == OSType.MacOS)
@@ -305,17 +374,16 @@ public class ClientUI extends JFrame
 			OSXUtil.requestFocus();
 		}
 
-		super.requestFocus();
+		frame.requestFocus();
 		giveClientFocus();
 	}
 
-	private void revalidateMinimumSize()
-	{
-		// The JFrame only respects minimumSize if it was set by setMinimumSize, for some reason. (atleast on windows/native)
-		this.setMinimumSize(this.getLayout().minimumLayoutSize(this));
-	}
-
-	void expand(PluginPanel panel)
+	/**
+	 * Expand panel.
+	 *
+	 * @param panel the panel
+	 */
+	public void expand(PluginPanel panel)
 	{
 		if (pluginPanel != null)
 		{
@@ -324,10 +392,10 @@ public class ClientUI extends JFrame
 		else
 		{
 			if (SwingUtil.isInScreenBounds(
-				getLocationOnScreen().y + getWidth() + PANEL_EXPANDED_WIDTH,
-				getLocationOnScreen().y))
+				frame.getLocationOnScreen().y + frame.getWidth() + PANEL_EXPANDED_WIDTH,
+				frame.getLocationOnScreen().y))
 			{
-				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+				frame.setSize(frame.getWidth() + PANEL_EXPANDED_WIDTH, frame.getHeight());
 			}
 		}
 
@@ -344,34 +412,45 @@ public class ClientUI extends JFrame
 		panel.onActivate();
 
 		wrappedPanel.repaint();
-		revalidateMinimumSize();
+		SwingUtil.revalidateMinimumSize(frame);
 	}
 
-	void contract()
+	/**
+	 * Contract. panel.
+	 */
+	public void contract()
 	{
-		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		boolean wasMinimumWidth = frame.getWidth() == frame.getMinimumSize().width;
 		pluginPanel.onDeactivate();
 		navContainer.remove(0);
 		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		navContainer.setMaximumSize(new Dimension(0, 0));
 		navContainer.revalidate();
 		giveClientFocus();
-		revalidateMinimumSize();
+		SwingUtil.revalidateMinimumSize(frame);
+
 		if (wasMinimumWidth)
 		{
-			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
+			frame.setSize(frame.getMinimumSize().width, frame.getHeight());
 		}
-		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		else if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
 		{
-			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
+			frame.setSize(frame.getWidth() - PANEL_EXPANDED_WIDTH, frame.getHeight());
 		}
 
 		pluginPanel = null;
 	}
 
-	public PluginToolbar getPluginToolbar()
+	private void giveClientFocus()
 	{
-		return pluginToolbar;
+		if (client instanceof Client)
+		{
+			final Canvas c = ((Client) client).getCanvas();
+			c.requestFocusInWindow();
+		}
+		else if (client != null)
+		{
+			client.requestFocusInWindow();
+		}
 	}
-
 }
