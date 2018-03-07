@@ -54,6 +54,8 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -85,6 +87,8 @@ public class RaidsPlugin extends Plugin
 
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
+
+	@Getter
 	private boolean inRaidChambers;
 
 	@Inject
@@ -301,6 +305,27 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	public void repositionPointsBox()
+	{
+		Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
+		int x = widget.getParent().getWidth() - widget.getWidth() - 2;
+		int y = widget.getOriginalY();
+
+		if (client.getSetting(Varbits.EXPERIENCE_TRACKER_POSITION) == 0)
+		{
+			Widget area = client.getWidget(WidgetInfo.EXPERIENCE_TRACKER_BOTTOM_BAR);
+
+			if (area != null)
+			{
+				y = area.getOriginalY() + 2;
+				area.setRelativeY(y + widget.getHeight());
+			}
+		}
+
+		widget.setRelativeX(x);
+		widget.setRelativeY(y);
 	}
 
 	private void updateInfoBoxState()
