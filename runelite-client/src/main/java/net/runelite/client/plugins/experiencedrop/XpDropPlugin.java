@@ -66,12 +66,18 @@ public class XpDropPlugin extends Plugin
 			return;
 		}
 
-		PrayerType prayer = getActivePrayerType();
 		if (widget.isHidden())
 		{
 			return;
 		}
 
+		if (config.hideSkillIcons() && widget.getSpriteId() > 0)
+		{
+			widget.setHidden(true);
+			return;
+		}
+
+		PrayerType prayer = getActivePrayerType();
 		if (prayer == null)
 		{
 			resetTextColor(widget);
