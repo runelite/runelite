@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,60 +25,52 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JToolBar;
 
 /**
- * Plugin toolbar buttons holder.
+ * Client plugin toolbar.
  */
-@Singleton
-public class PluginToolbar
+public class ClientPluginToolbar extends JToolBar
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
-	{
-		this.eventBus = eventBus;
-	}
+	private static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
+	private final Map<NavigationButton, Component> componentMap = new HashMap<>();
 
 	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
+	 * Instantiates a new Client plugin toolbar.
 	 */
-	public void addNavigation(final NavigationButton button)
+	ClientPluginToolbar()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
+		super(JToolBar.VERTICAL);
+		setFloatable(false);
+		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
+	}
 
-		if (buttons.add(button))
+	public void addComponent(final int index, final NavigationButton button, final Component component)
+	{
+		if (componentMap.put(button, component) == null)
 		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
+			add(component, index);
+			revalidate();
+			repaint();
 		}
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public void removeComponent(final NavigationButton button)
 	{
-		int index = buttons.headSet(button).size();
+		final Component component = componentMap.remove(button);
 
-		if (buttons.remove(button))
+		if (component != null)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			remove(component);
+			revalidate();
+			repaint();
 		}
 	}
 }
