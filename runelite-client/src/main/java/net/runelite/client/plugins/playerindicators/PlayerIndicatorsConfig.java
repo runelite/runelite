@@ -134,4 +134,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "drawMinimapNames",
+		name = "Draw names on minimap",
+		description = "Configures whether or not minimap names for players with rendered names should be drawn"
+	)
+	default boolean drawMinimapNames()
+	{
+		return false;
+	}
 }
