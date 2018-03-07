@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,14 +35,19 @@ import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.SessionOpen;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -67,6 +73,9 @@ public class XpTrackerPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private XpTrackerConfig config;
+
+	@Inject
 	private SkillIconManager skillIconManager;
 
 	@Inject
@@ -82,6 +91,12 @@ public class XpTrackerPlugin extends Plugin
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
+
+	@Provides
+	XpTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -103,12 +118,11 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = new XpPanel(this, client, skillIconManager);
+		xpPanel = new XpPanel(this, client, config, skillIconManager);
 		navButton = new NavigationButton(
 			"XP Tracker",
 			ImageIO.read(getClass().getResourceAsStream("xp.png")),
 			() -> xpPanel);
-
 		ui.getPluginToolbar().addNavigation(navButton);
 	}
 
@@ -143,7 +157,8 @@ public class XpTrackerPlugin extends Plugin
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;
-				xpPanel.resetAllInfoBoxes();
+				//xpPanel.resetAllInfoBoxes();
+				xpPanel.loadGoals();
 			}
 		}
 		else if (event.getGameState() == GameState.LOGIN_SCREEN)
@@ -189,7 +204,7 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		xpPanel.updateSkillExperience(event.getSkill());
 	}
@@ -198,5 +213,15 @@ public class XpTrackerPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		xpPanel.updateAllInfoBoxes();
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen event)
+	{
+		if (client.getGameState()  == GameState.LOGGED_IN)
+		{
+			// if session changes while logged in, update
+			xpPanel.loadGoals();
+		}
 	}
 }

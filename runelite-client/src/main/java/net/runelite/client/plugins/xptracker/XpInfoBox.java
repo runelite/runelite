@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,22 +25,29 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.text.NumberFormat;
+import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 
 @Slf4j
@@ -52,20 +60,29 @@ class XpInfoBox extends JPanel
 	};
 
 	private final Client client;
-	private final JPanel panel;
+	private final XpTrackerConfig config;
+	private final JPanel goalsPanel;
+	private final JPanel trackersPanel;
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillXPInfo xpInfo;
+	private boolean ready = false;
+	private boolean updateOnce = false;
+	private boolean goalSet = false;
 
+	private final JPanel boxPanel = new JPanel();
 	private final JProgressBar progressBar = new JProgressBar();
+	private final JProgressBar lvlProgressBar = new JProgressBar();
 	private final JLabel xpHr = new JLabel();
 	private final JLabel xpGained = new JLabel();
 	private final JLabel actionsHr = new JLabel();
 	private final JLabel actions = new JLabel();
 
-	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
+	XpInfoBox(Client client, XpTrackerConfig config, JPanel goalsPanel, JPanel trackersPanel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
-		this.panel = panel;
+		this.config = config;
+		this.goalsPanel = goalsPanel;
+		this.trackersPanel = trackersPanel;
 		this.xpInfo = xpInfo;
 
 		setLayout(new BorderLayout());
@@ -90,74 +107,236 @@ class XpInfoBox extends JPanel
 		rightPanel.add(actionsHr);
 		rightPanel.add(actions);
 
-		// Create progress bar
+		// Create goal progress bar
 		progressBar.setStringPainted(true);
 		progressBar.setValue(0);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
 		progressBar.setBackground(Color.RED);
 
+		// Create level progress bar
+		lvlProgressBar.setStringPainted(false);
+		lvlProgressBar.setValue(0);
+		lvlProgressBar.setMinimum(0);
+		lvlProgressBar.setMaximum(100);
+		lvlProgressBar.setBackground(Color.RED);
+		lvlProgressBar.setPreferredSize(new Dimension(0, 5));
+		lvlProgressBar.setVisible(false);
+
+		// Create panel for progress bars
+		final JPanel southPanel = new JPanel();
+		southPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.gridx = c.gridy = 0;
+		c.weightx = 0.5;
+		c.weighty = 0.25;
+		southPanel.add(progressBar, c);
+		c.gridy = 1;
+		c.weighty = 0.75;
+		southPanel.add(lvlProgressBar, c);
+
 		container.add(resetIcon, BorderLayout.LINE_START);
 		container.add(rightPanel, BorderLayout.CENTER);
-		container.add(progressBar, BorderLayout.SOUTH);
+		container.add(southPanel, BorderLayout.SOUTH);
 		add(container, BorderLayout.CENTER);
-	}
 
-	void reset()
-	{
-		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
-		panel.remove(this);
-		panel.revalidate();
+		boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+		boxPanel.add(this);
+		boxPanel.add(Box.createVerticalStrut(3));
 	}
 
 	void init()
 	{
-		if (xpInfo.getStartXp() != -1)
+		// tracker already active, skip
+		if (ready)
 		{
 			return;
 		}
 
-		xpInfo.setStartXp(client.getSkillExperience(xpInfo.getSkill()));
+		ready = true;
+
+		if (xpInfo.getStartXp() == -1)
+		{
+			final int currentXp = client.getSkillExperience(xpInfo.getSkill());
+			xpInfo.setStartXp(currentXp);
+		}
+	}
+
+	void load(GoalInfo goal)
+	{
+		goalSet = true;
+		xpInfo.setStartXp(goal.startXp);
+		xpInfo.setGoalXp(goal.goalXp);
+		updateOnce = true;
 	}
 
 	void update()
 	{
-		if (xpInfo.getStartXp() == -1)
+		// tracker not active, skip
+		if (!ready)
 		{
 			return;
 		}
 
-		boolean updated = xpInfo.update(client.getSkillExperience(xpInfo.getSkill()));
+		// update xp info
+		final int currentXp = client.getSkillExperience(xpInfo.getSkill());
+		final boolean updated = (xpInfo.update(currentXp) || updateOnce);
+		updateOnce = false;
+
+		// reset goal if passed
+		if (currentXp >= xpInfo.getGoalXp() && config.clearOnGoal())
+		{
+			goalSet = false;
+		}
+
+		// queue ui update
+		SwingUtilities.invokeLater(() ->
+		{
+			panelRefresh(updated);
+		});
+	}
+
+	void reset()
+	{
+		goalSet = false;
+		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
+
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, GoalInfo>>(){}.getType();
+		Map<String, GoalInfo> goals = gson.fromJson(config.goalData(), type);
+		goals.remove(xpInfo.getSkill().toString());
+		String json = gson.toJson(goals);
+		config.goalData(json);
 
 		SwingUtilities.invokeLater(() ->
 		{
-			if (updated)
+			showPanel(false);
+		});
+	}
+
+	void setGoal(int exp)
+	{
+		goalSet = true;
+		xpInfo.setGoalXp(exp);
+		// update the current xp so the level bar is immediately accurate
+		xpInfo.updateXp(client.getSkillExperience(xpInfo.getSkill()));
+
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, GoalInfo>>(){}.getType();
+		Map<String, GoalInfo> goals = gson.fromJson(config.goalData(), type);
+		GoalInfo goal = new GoalInfo();
+		goal.startXp = xpInfo.getStartXp();
+		goal.goalXp = exp;
+		goals.put(xpInfo.getSkill().toString(), goal);
+		String json = gson.toJson(goals);
+		config.goalData(json);
+
+		// force a refresh so the skill is added to the panel
+		SwingUtilities.invokeLater(() ->
+		{
+			panelRefresh(true);
+		});
+	}
+
+	private void panelRefresh(boolean updated)
+	{
+		if (updated)
+		{
+			showPanel(true);
+
+			xpHr.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
+			actions.setText(XpPanel.formatLine(xpInfo.getActions(), "actions"));
+
+			// first progress bar shows goal progress if goal set
+			final int progress = goalSet ? xpInfo.getGoalProgress() : xpInfo.getLevelProgress();
+			progressBar.setValue(progress);
+			progressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double) progress / 100d));
+
+			// second progress bar only visible when goal set
+			lvlProgressBar.setVisible(goalSet && config.showLevelProgress());
+
+			if (goalSet)
 			{
-				if (getParent() != panel)
-				{
-					panel.add(this);
-					panel.revalidate();
-				}
-
-				xpHr.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
-				actions.setText(XpPanel.formatLine(xpInfo.getActions(), "actions"));
-
-				final int progress = xpInfo.getSkillProgress();
-
-				progressBar.setValue(progress);
-				progressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double) progress / 100d));
-
+				// when goal is set, first bar shows goal, second bar shows level
 				progressBar.setToolTipText("<html>"
-					+ XpPanel.formatLine(xpInfo.getXpRemaining(), "xp remaining")
-					+ "<br/>"
-					+ XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions remaining")
-					+ "</html>");
+						+ XpPanel.formatLine(xpInfo.getGoalXpRemaining(), "xp to goal")
+						+ "<br/>"
+						+ XpPanel.formatLine(xpInfo.getGoalActionsRemaining(), "actions remaining")
+						+ "</html>");
+
+				final int lvlProgress = xpInfo.getLevelProgress();
+				lvlProgressBar.setValue(lvlProgress);
+				lvlProgressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double) lvlProgress / 100d));
+
+				lvlProgressBar.setToolTipText("<html>"
+						+ XpPanel.formatLine(xpInfo.getLevelXpRemaining(), "xp to level")
+						+ "<br/>"
+						+ XpPanel.formatLine(xpInfo.getLevelActionsRemaining(), "actions remaining")
+						+ "</html>");
+			}
+			else
+			{
+				// when goal is not set, first bar shows level
+				progressBar.setToolTipText("<html>"
+						+ XpPanel.formatLine(xpInfo.getLevelXpRemaining(), "xp to level")
+						+ "<br/>"
+						+ XpPanel.formatLine(xpInfo.getLevelActionsRemaining(), "actions remaining")
+						+ "</html>");
 			}
 
-			// Always update xp/hr and actions/hr as time always changes
-			xpGained.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
-			actionsHr.setText(XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr"));
-		});
+			final int startXp = xpInfo.getStartXp();
+			final int goalXp = xpInfo.getGoalXp();
+			if (startXp > 0 && goalXp > 0)
+			{
+				setToolTipText("<html>"
+						+ "start: " + NumberFormat.getInstance().format(Experience.getLevelForXp(startXp)) + " (" + NumberFormat.getInstance().format(startXp) + " xp)"
+						+ "<br/>"
+						+ "goal: " + NumberFormat.getInstance().format(Experience.getLevelForXp(goalXp)) + " (" + NumberFormat.getInstance().format(goalXp) + " xp)"
+						+ "</html>");
+			}
+		}
+
+		// Always update xp/hr and actions/hr as time always changes
+		xpGained.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
+		actionsHr.setText(XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr"));
+	}
+
+	void showPanel(boolean show)
+	{
+		if(show)
+		{
+			if (goalSet)
+			{
+				// remove tracker if necessary
+				showPanel(false);
+				// add goal
+				if (getParent() != goalsPanel)
+				{
+					goalsPanel.add(boxPanel);
+					goalsPanel.revalidate();
+				}
+			}
+			else
+			{
+				// remove goal if necessary
+				showPanel(false);
+				// add tracker
+				if (getParent() != trackersPanel)
+				{
+					trackersPanel.add(boxPanel);
+					trackersPanel.revalidate();
+				}
+			}
+		}
+		else
+		{
+			// remove tracker / goal
+			goalsPanel.remove(boxPanel);
+			trackersPanel.remove(boxPanel);
+			goalsPanel.revalidate();
+			trackersPanel.revalidate();
+		}
 	}
 
 	/**
