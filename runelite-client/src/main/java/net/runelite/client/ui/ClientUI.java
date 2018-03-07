@@ -245,12 +245,9 @@ public class ClientUI extends JFrame
 			}
 		}
 
-		if (event.getKey().equals("isResizable"))
+		if (event.getKey().equals("lockWindowSize"))
 		{
-			SwingUtilities.invokeLater(() ->
-			{
-				this.setResizable(Boolean.valueOf(event.getNewValue()));
-			});
+			SwingUtilities.invokeLater(() -> setResizable(!Boolean.valueOf(event.getNewValue())));
 		}
 
 		if (!event.getKey().equals("gameSize"))
