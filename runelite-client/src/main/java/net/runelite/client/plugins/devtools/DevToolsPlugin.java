@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.widgets.Widget;
@@ -67,9 +68,16 @@ public class DevToolsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
+
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
+		}
+
 		navButton = new NavigationButton(
 			"Developer Tools",
-			ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")),
+			icon,
 			() -> panel);
 
 		ui.getPluginToolbar().addNavigation(navButton);

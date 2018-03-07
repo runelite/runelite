@@ -51,7 +51,10 @@ public class SkillIconManager
 		{
 			String skillIconPath = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
 			log.debug("Loading skill icon from {}", skillIconPath);
-			skillImage = ImageIO.read(SkillIconManager.class.getResourceAsStream(skillIconPath));
+			synchronized (ImageIO.class)
+			{
+				skillImage = ImageIO.read(SkillIconManager.class.getResourceAsStream(skillIconPath));
+			}
 			imgCache[skillIdx] = skillImage;
 		}
 		catch (IOException e)

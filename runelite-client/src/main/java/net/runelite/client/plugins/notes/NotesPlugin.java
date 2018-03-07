@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.notes;
 
+import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
@@ -65,9 +66,15 @@ public class NotesPlugin extends Plugin
 		panel = injector.getInstance(NotesPanel.class);
 		panel.init(config);
 
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("notes_icon.png"));
+		}
+
 		navButton = new NavigationButton(
 			"Notes",
-			ImageIO.read(getClass().getResourceAsStream("notes_icon.png")),
+			icon,
 			() -> panel
 		);
 

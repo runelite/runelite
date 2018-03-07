@@ -96,7 +96,10 @@ public class ClientUI extends JFrame
 
 		try
 		{
-			icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+			}
 		}
 		catch (IOException e)
 		{

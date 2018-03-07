@@ -92,9 +92,12 @@ public class ConfigPanel extends PluginPanel
 	{
 		try
 		{
-			CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
-			UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
-			CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
+			synchronized (ImageIO.class)
+			{
+				CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
+				UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
+				CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
+			}
 		}
 		catch (IOException e)
 		{

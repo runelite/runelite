@@ -26,6 +26,7 @@ package net.runelite.client.plugins.xptracker;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -103,10 +104,16 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
+		}
+
 		xpPanel = new XpPanel(this, client, skillIconManager);
 		navButton = new NavigationButton(
 			"XP Tracker",
-			ImageIO.read(getClass().getResourceAsStream("xp.png")),
+			icon,
 			() -> xpPanel);
 
 		ui.getPluginToolbar().addNavigation(navButton);
