@@ -60,16 +60,14 @@ public class SessionManager
 	private final EventBus eventBus;
 	private ConfigManager configManager;
 	private ScheduledExecutorService executor;
-	private final LinkBrowser browser;
 	private final AccountClient loginClient = new AccountClient();
 
 	@Inject
-	public SessionManager(ConfigManager configManager, EventBus eventBus, ScheduledExecutorService executor, LinkBrowser browser)
+	public SessionManager(ConfigManager configManager, EventBus eventBus, ScheduledExecutorService executor)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.executor = executor;
-		this.browser = browser;
 		eventBus.register(this);
 	}
 
@@ -213,7 +211,7 @@ public class SessionManager
 		openSession(new AccountSession(login.getUid(), Instant.now()));
 
 		// Navigate to login link
-		browser.browse(login.getOauthUrl());
+		LinkBrowser.browse(login.getOauthUrl());
 	}
 
 	@Subscribe

@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -410,9 +409,8 @@ public class ScreenshotPlugin extends Plugin
 				clientUi.paint(graphics);
 
 				// Evaluate the position of the game inside the frame
-				Point gamePoint = SwingUtilities.convertPoint(client.getCanvas(), 0, 0, clientUi);
-				gameOffsetX = gamePoint.x;
-				gameOffsetY = gamePoint.y;
+				gameOffsetX = 6;
+				gameOffsetY = 0;
 			}
 
 			// Draw the game onto the screenshot
