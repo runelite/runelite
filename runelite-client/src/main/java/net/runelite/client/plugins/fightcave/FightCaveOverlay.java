@@ -47,22 +47,29 @@ public class FightCaveOverlay extends Overlay
 
 	private final Client client;
 	private final FightCavePlugin plugin;
+	private final FightCaveConfig config;
 
 	private BufferedImage protectFromMagicImg;
 	private BufferedImage protectFromMissilesImg;
 
 	@Inject
-	FightCaveOverlay(Client client, FightCavePlugin plugin)
+	FightCaveOverlay(Client client, FightCavePlugin plugin, FightCaveConfig config)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		if (!config.showJad())
+		{
+			return null;
+		}
+
 		JadAttack attack = plugin.getAttack();
 		if (attack == null)
 		{
