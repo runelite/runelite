@@ -27,19 +27,25 @@ package net.runelite.client.plugins.discord;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
 	name = "Discord"
@@ -55,9 +61,16 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private DiscordService discordService;
 
+	@Inject
+	private TitleToolbar titleToolbar;
+
+	@Inject
+	private RuneLiteProperties properties;
+
 	private final DiscordState discordState = new DiscordState();
 	private Map<Skill, Integer> skillExp = new HashMap<>();
 	private boolean loggedIn = false;
+	private NavigationButton discordButton;
 
 	@Provides
 	private DiscordConfig provideConfig(ConfigManager configManager)
@@ -68,12 +81,26 @@ public class DiscordPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("discord.png"));
+		}
+
+		discordButton = NavigationButton.builder()
+			.tooltip("Join Discord")
+			.icon(icon)
+			.onClick(() -> LinkBrowser.browse(properties.getDiscordInvite()))
+			.build();
+
+		titleToolbar.addNavigation(discordButton);
 		updateGameStatus(client.getGameState(), true);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		titleToolbar.removeNavigation(discordButton);
 		discordService.clearPresence();
 		discordState.reset();
 	}
