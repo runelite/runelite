@@ -27,6 +27,7 @@ package net.runelite.client.plugins.instancemap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -68,6 +69,7 @@ import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.BackgroundComponent;
 
 class InstanceMapOverlay extends Overlay
 {
@@ -109,6 +111,7 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private volatile BufferedImage mapImage;
 	private volatile boolean showMap = false;
+	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 
 	@Inject
 	InstanceMapOverlay(Client client, InstanceMapPlugin plugin)
@@ -297,10 +300,9 @@ class InstanceMapOverlay extends Overlay
 
 		Dimension mapOverlaySize = new Dimension(tiles.length * TILE_SIZE, tiles[0].length * TILE_SIZE);
 
-		graphics.setColor(Color.black);
-		graphics.fillRect(0, 0, mapOverlaySize.width, mapOverlaySize.height);//draw background
-		graphics.setColor(Color.white);
-		graphics.drawRect(0, 0, mapOverlaySize.width - 1, mapOverlaySize.height - 1);//draw outline
+		backgroundComponent.setFill(false);
+		backgroundComponent.setRectangle(new Rectangle(0, 0, mapOverlaySize.width, mapOverlaySize.height));
+		backgroundComponent.render(graphics, new java.awt.Point());
 
 		//These loops are seperated on purpose to prevent layering issues. This is how it's written in the client
 		//Draw the base colors first
