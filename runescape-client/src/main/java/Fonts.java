@@ -12,7 +12,8 @@ public class Fonts {
    @ObfuscatedGetter(
       intValue = 1469563003
    )
-   static int field3877;
+   @Export("menuHeight")
+   static int menuHeight;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Ljk;"

@@ -4120,8 +4120,8 @@ public final class Client extends GameEngine implements class302 {
       } else {
          var1 = MouseRecorder.menuX;
          var2 = IndexDataBase.menuY;
-         var3 = CombatInfoListHolder.field1289;
-         int var4 = Fonts.field3877;
+         var3 = CombatInfoListHolder.menuWidth;
+         int var4 = Fonts.menuHeight;
          int var11 = 6116423;
          Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, var11);
          Rasterizer2D.Rasterizer2D_fillRectangle(var1 + 1, var2 + 1, var3 - 2, 16, 0);
@@ -4140,7 +4140,7 @@ public final class Client extends GameEngine implements class302 {
             DecorativeObject.fontBold12.method5689(class22.method170(var8), var1 + 3, var9, var10, 0);
          }
 
-         LoginPacket.method3483(MouseRecorder.menuX, IndexDataBase.menuY, CombatInfoListHolder.field1289, Fonts.field3877);
+         LoginPacket.method3483(MouseRecorder.menuX, IndexDataBase.menuY, CombatInfoListHolder.menuWidth, Fonts.menuHeight);
       }
 
       if(gameDrawingMode == 3) {
@@ -5624,16 +5624,16 @@ public final class Client extends GameEngine implements class302 {
                   if(var1 != 1 && (Enum.middleMouseMovesCamera || var1 != 4)) {
                      var2 = MouseInput.mouseLastX;
                      var3 = MouseInput.mouseLastY;
-                     if(var2 < MouseRecorder.menuX - 10 || var2 > CombatInfoListHolder.field1289 + MouseRecorder.menuX + 10 || var3 < IndexDataBase.menuY - 10 || var3 > IndexDataBase.menuY + Fonts.field3877 + 10) {
+                     if(var2 < MouseRecorder.menuX - 10 || var2 > CombatInfoListHolder.menuWidth + MouseRecorder.menuX + 10 || var3 < IndexDataBase.menuY - 10 || var3 > IndexDataBase.menuY + Fonts.menuHeight + 10) {
                         isMenuOpen = false;
-                        class149.method3192(MouseRecorder.menuX, IndexDataBase.menuY, CombatInfoListHolder.field1289, Fonts.field3877);
+                        class149.method3192(MouseRecorder.menuX, IndexDataBase.menuY, CombatInfoListHolder.menuWidth, Fonts.menuHeight);
                      }
                   }
 
                   if(var1 == 1 || !Enum.middleMouseMovesCamera && var1 == 4) {
                      var2 = MouseRecorder.menuX;
                      var3 = IndexDataBase.menuY;
-                     var4 = CombatInfoListHolder.field1289;
+                     var4 = CombatInfoListHolder.menuWidth;
                      var5 = MouseInput.mouseLastPressedX;
                      var6 = MouseInput.mouseLastPressedY;
                      var7 = -1;
@@ -5657,7 +5657,7 @@ public final class Client extends GameEngine implements class302 {
                      }
 
                      isMenuOpen = false;
-                     class149.method3192(MouseRecorder.menuX, IndexDataBase.menuY, CombatInfoListHolder.field1289, Fonts.field3877);
+                     class149.method3192(MouseRecorder.menuX, IndexDataBase.menuY, CombatInfoListHolder.menuWidth, Fonts.menuHeight);
                   }
                } else {
                   var2 = menuOptionCount - 1;
@@ -5780,8 +5780,8 @@ public final class Client extends GameEngine implements class302 {
       isMenuOpen = true;
       MouseRecorder.menuX = var5;
       IndexDataBase.menuY = var6;
-      CombatInfoListHolder.field1289 = var3;
-      Fonts.field3877 = menuOptionCount * 15 + 22;
+      CombatInfoListHolder.menuWidth = var3;
+      Fonts.menuHeight = menuOptionCount * 15 + 22;
    }
 
    @ObfuscatedName("hk")

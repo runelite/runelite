@@ -11,7 +11,8 @@ public class CombatInfoListHolder extends Node {
    @ObfuscatedGetter(
       intValue = -1840552905
    )
-   static int field1289;
+   @Export("menuWidth")
+   static int menuWidth;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Ljc;"
