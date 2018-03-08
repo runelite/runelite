@@ -26,7 +26,7 @@ public class SoundTask implements Runnable {
             }
          }
       } catch (Exception var4) {
-         ItemLayer.method2658((String)null, var4);
+         ItemLayer.processClientError((String)null, var4);
       }
 
    }

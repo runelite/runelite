@@ -30,8 +30,10 @@ import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.IfNull;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
@@ -69,8 +71,15 @@ public class ClientErrorTransformer implements Transformer
 		Code code = m.getCode();
 		Instructions ins = code.getInstructions();
 
-		code.getExceptions().clear();
-		ins.clear();
+		/*
+			Makes it so the old code in this method is logically dead,
+			letting the mapper map it but making it so it's never executed.
+		 */
+
+		Instruction aload0 = new ALoad(ins, 1); // load throwable
+
+		IfNull ifNull = new IfNull(ins, InstructionType.IFNULL);
+		ifNull.setTo(ins.createLabelFor(ins.getInstructions().get(0)));
 
 		Instruction aload1 = new ALoad(ins, 1); // load throwable
 
@@ -84,9 +93,11 @@ public class ClientErrorTransformer implements Transformer
 
 		Instruction ret = new VReturn(ins);
 
-		ins.addInstruction(aload1);
-		ins.addInstruction(printStackTrace);
-		ins.addInstruction(ret);
+		ins.addInstruction(0, aload0);
+		ins.addInstruction(1, ifNull);
+		ins.addInstruction(2, aload1);
+		ins.addInstruction(3, printStackTrace);
+		ins.addInstruction(4, ret);
 
 		done = true;
 	}

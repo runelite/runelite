@@ -27,6 +27,22 @@ public class class237 {
       widgetSettings = new int[2000];
    }
 
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Throwable;Ljava/lang/String;)Lfm;"
+   )
+   public static RunException method4484(Throwable var0, String var1) {
+      RunException var2;
+      if(var0 instanceof RunException) {
+         var2 = (RunException)var0;
+         var2.field2171 = var2.field2171 + ' ' + var1;
+      } else {
+         var2 = new RunException(var0, var1);
+      }
+
+      return var2;
+   }
+
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)[Llv;",

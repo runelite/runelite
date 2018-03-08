@@ -481,7 +481,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          taskManager.createRunnable(this, 1);
       } catch (Exception var5) {
-         ItemLayer.method2658((String)null, var5);
+         ItemLayer.processClientError((String)null, var5);
          this.error("crash");
       }
 
@@ -997,7 +997,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             this.method851(this.canvas);
          }
       } catch (Exception var17) {
-         ItemLayer.method2658((String)null, var17);
+         ItemLayer.processClientError((String)null, var17);
          this.error("crash");
       }
 

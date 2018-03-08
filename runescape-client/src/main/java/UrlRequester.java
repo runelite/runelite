@@ -132,7 +132,7 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            ItemLayer.method2658((String)null, var17);
+            ItemLayer.processClientError((String)null, var17);
          }
       }
 

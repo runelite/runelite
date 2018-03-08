@@ -30,6 +30,7 @@ import org.objectweb.asm.MethodVisitor;
 public class Label extends NOP
 {
 	private org.objectweb.asm.Label label;
+	private Integer lineNumber;
 
 	public Label(Instructions instructions)
 	{
@@ -45,19 +46,32 @@ public class Label extends NOP
 	@Override
 	public String toString()
 	{
+		String string;
+
 		if (this.getInstructions() == null)
 		{
-			return "label <unattached>";
+			string = "label <unattached>";
 		}
-
-		Instruction next = next();
-
-		if (next == null)
+		else
 		{
-			return "label with no next instruction";
+			Instruction next = next();
+
+			if (next == null)
+			{
+				string = "label with no next instruction";
+			}
+			else
+			{
+				string = "label " + next.toString();
+			}
 		}
 
-		return "label " + next.toString();
+		if (lineNumber != null)
+		{
+			string += " on line number " + lineNumber;
+		}
+
+		return string;
 	}
 
 	@Override
@@ -65,6 +79,7 @@ public class Label extends NOP
 	{
 		Label l = (Label) super.clone();
 		l.label = new org.objectweb.asm.Label();
+		l.lineNumber = lineNumber;
 		return l;
 	}
 
@@ -72,6 +87,11 @@ public class Label extends NOP
 	public void accept(MethodVisitor visitor)
 	{
 		visitor.visitLabel(label);
+
+		if (lineNumber != null)
+		{
+			visitor.visitLineNumber(lineNumber, label);
+		}
 	}
 
 	public org.objectweb.asm.Label getLabel()
@@ -82,6 +102,11 @@ public class Label extends NOP
 	public void setLabel(org.objectweb.asm.Label label)
 	{
 		this.label = label;
+	}
+
+	public void setLineNumber(Integer lineNumber)
+	{
+		this.lineNumber = lineNumber;
 	}
 
 	public Instruction next()
