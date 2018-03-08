@@ -22,15 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.coords;
 
 import lombok.Value;
 import net.runelite.api.Point;
 
 @Value
-public class Point3D
+public class WorldPoint
 {
-	private final int X, Y, Z;
+	/**
+	 * The X coordinate of the Point.
+	 * Units are in tiles
+	 */
+	private final int X;
+
+	/**
+	 * The Y coordinate of the Point.
+	 * Units are in tiles
+	 */
+	private final int Y;
+
+	/**
+	 * The plane coordinate of the Point.
+	 */
+	private final int plane;
 
 	public Point toPoint()
 	{
