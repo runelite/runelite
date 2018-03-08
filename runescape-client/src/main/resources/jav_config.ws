@@ -1,9 +1,9 @@
 title=Old School RuneScape
 adverturl=http://www.runescape.com/g=oldscape/bare_advert.ws
-codebase=http://oldschool21.runescape.com/
+codebase=http://oldschool86.runescape.com/
 cachedir=oldschool
 storebase=0
-initial_jar=gamepack_8629381.jar
+initial_jar=gamepack_774352.jar
 initial_class=client.class
 termsurl=http://www.jagex.com/g=oldscape/terms/terms.ws
 privacyurl=http://www.jagex.com/g=oldscape/privacy/privacy.ws
@@ -13,7 +13,7 @@ mac_sub_version=2
 other_sub_version=2
 browsercontrol_win_x86_jar=browsercontrol_0_-1928975093.jar
 browsercontrol_win_amd64_jar=browsercontrol_1_1674545273.jar
-download=1300028
+download=1326214
 window_preferredwidth=800
 window_preferredheight=600
 advert_height=96
@@ -44,19 +44,19 @@ msg=err_get_file=Error getting file
 msg=new_version=Update available! You can now launch the client directly from the OldSchool website.\nGet the new version from the link on the OldSchool homepage: http://oldschool.runescape.com/
 msg=new_version_linktext=Open OldSchool Homepage
 msg=new_version_link=http://oldschool.runescape.com/
-param=14=0
-param=7=1
-param=12=
-param=10=.runescape.com
-param=6=true
-param=16=false
-param=15=321
-param=5=5
-param=3=1
-param=13=http://www.runescape.com/g=oldscape/slr.ws?order=LPWM
-param=8=0
-param=2=0
-param=9=37269
-param=11=ElZAIrq5NpKN6D3mDdihco3oPeYN2KFy2DCquj7JMmECPmLrDP3Bnw
+param=15=
+param=13=0
+param=3=5
+param=16=32505
 param=4=0
-param=1=true
+param=2=1
+param=11=0
+param=8=false
+param=6=ElZAIrq5NpKN6D3mDdihco3oPeYN2KFy2DCquj7JMmECPmLrDP3Bnw
+param=10=.runescape.com
+param=1=http://www.runescape.com/g=oldscape/slr.ws?order=LPWM
+param=12=true
+param=9=1
+param=5=0
+param=14=386
+param=7=true
