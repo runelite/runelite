@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSNPC;
+import net.runelite.rs.api.RSNPCComposition;
 
 @Mixin(RSNPC.class)
 public abstract class RSNPCMixin implements RSNPC
@@ -35,20 +36,23 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public int getId()
 	{
-		return getComposition().getId();
+		RSNPCComposition composition = getComposition();
+		return composition == null ? -1 : composition.getId();
 	}
 
 	@Inject
 	@Override
 	public String getName()
 	{
-		return getComposition().getName().replace('\u00A0', ' ');
+		RSNPCComposition composition = getComposition();
+		return composition == null ? null : composition.getName().replace('\u00A0', ' ');
 	}
 
 	@Inject
 	@Override
 	public int getCombatLevel()
 	{
-		return getComposition().getCombatLevel();
+		RSNPCComposition composition = getComposition();
+		return composition == null ? -1 : composition.getCombatLevel();
 	}
 }
