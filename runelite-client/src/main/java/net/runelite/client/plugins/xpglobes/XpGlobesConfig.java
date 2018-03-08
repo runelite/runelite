@@ -81,10 +81,21 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "enableOrbBackground",
+		name = "Show orb background",
+		description = "Display the globe background",
+		position = 4
+	)
+	default boolean showOrbBackground()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "Progress arc width",
 		name = "Progress arc width",
 		description = "Change the stroke width of the progress arc",
-		position = 4
+		position = 5
 	)
 	default int progressArcStrokeWidth()
 	{
@@ -95,7 +106,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Orb size",
 		name = "Size of orbs",
 		description = "Change the size of the xp orbs",
-		position = 5
+		position = 6
 	)
 	default int xpOrbSize()
 	{
@@ -106,7 +117,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Center orbs",
 		name = "Center orbs",
 		description = "Where to center the xp orbs around",
-		position = 6
+		position = 7
 	)
 	default OrbCentering centerOrbs()
 	{
