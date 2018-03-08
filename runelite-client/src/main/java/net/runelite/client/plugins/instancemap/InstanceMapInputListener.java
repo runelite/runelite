@@ -29,10 +29,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
+import net.runelite.api.Point;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseWheelListener;
-import static net.runelite.client.plugins.instancemap.InstanceMapOverlay.OVERLAY_POSITION;
 
 public class InstanceMapInputListener extends MouseListener implements KeyListener, MouseWheelListener
 {
@@ -116,11 +116,14 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	private boolean isWithinOverlay(int x, int y)
 	{
 		Dimension dimm = plugin.getOverlaySize();
+
 		if (dimm == null)
 		{
 			return false;
 		}
-		return (x >= OVERLAY_POSITION.getX() && x <= OVERLAY_POSITION.getX() + dimm.width &&
-			y >= OVERLAY_POSITION.getY() && y <= OVERLAY_POSITION.getY() + dimm.height);
+
+		final Point offset =  plugin.getMapOffset();
+		return (x >= offset.getX() && x <= offset.getX() + dimm.width &&
+				y >= offset.getY() && y <= offset.getY() + dimm.height);
 	}
 }

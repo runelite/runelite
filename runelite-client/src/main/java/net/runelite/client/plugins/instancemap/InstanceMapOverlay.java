@@ -71,8 +71,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class InstanceMapOverlay extends Overlay
 {
-	public static final Point OVERLAY_POSITION = new Point(10, 25);
-
 	/**
 	 * The size of tiles on the map. The way the client renders requires
 	 * this value to be 4. Changing this will break the method for rendering
@@ -93,6 +91,7 @@ class InstanceMapOverlay extends Overlay
 
 	private static final int MAX_PLANE = 3;
 	private static final int MIN_PLANE = 0;
+	private final InstanceMapPlugin plugin;
 
 	/**
 	 * The plane to render on the instance map. When the map is opened this
@@ -112,11 +111,12 @@ class InstanceMapOverlay extends Overlay
 	private volatile boolean showMap = false;
 
 	@Inject
-	InstanceMapOverlay(Client client)
+	InstanceMapOverlay(Client client, InstanceMapPlugin plugin)
 	{
+		this.plugin = plugin;
+		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		this.client = client;
 	}
 
 	public Dimension getInstanceMapDimension()
@@ -204,11 +204,13 @@ class InstanceMapOverlay extends Overlay
 			}
 		}
 
-		graphics.drawImage(image, OVERLAY_POSITION.getX(), OVERLAY_POSITION.getY(), null);
+		final Point offset = plugin.getMapOffset();
+
+		graphics.drawImage(image, offset.getX(), offset.getY(), null);
 
 		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
-			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
+			drawPlayerDot(graphics, offset.getX(), offset.getY(), client.getLocalPlayer(), Color.white, Color.black);
 		}
 
 		return getInstanceMapDimension();
@@ -219,7 +221,8 @@ class InstanceMapOverlay extends Overlay
 	 *
 	 * @param graphics graphics to be drawn to
 	 */
-	private void drawPlayerDot(Graphics2D graphics, Player player, Color dotColor, Color outlineColor)
+	private void drawPlayerDot(Graphics2D graphics, int baseX, int baseY, Player player,
+		Color dotColor, Color outlineColor)
 	{
 		LocalPoint playerLoc = player.getLocalLocation();
 
@@ -227,8 +230,8 @@ class InstanceMapOverlay extends Overlay
 		int tileX = playerLoc.getRegionX();
 		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
 
-		int x = OVERLAY_POSITION.getX() + (int) (tileX * TILE_SIZE * MAP_SCALING);
-		int y = OVERLAY_POSITION.getY() + (int) (tileY * TILE_SIZE * MAP_SCALING);
+		int x = baseX + (int) (tileX * TILE_SIZE * MAP_SCALING);
+		int y = baseY + (int) (tileY * TILE_SIZE * MAP_SCALING);
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
