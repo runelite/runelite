@@ -346,7 +346,8 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public Rectangle getMenuBounds()
 	{
-		if (isMenuOpen()) {
+		if (isMenuOpen())
+		{
 			return new Rectangle(getMenuX(), getMenuY(), getMenuWidth(), getMenuHeight());
 		}
 		return null;
