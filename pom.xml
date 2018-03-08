@@ -43,7 +43,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>165</rs.version>
+		<rs.version>166</rs.version>
 	</properties>
 
 	<licenses>
