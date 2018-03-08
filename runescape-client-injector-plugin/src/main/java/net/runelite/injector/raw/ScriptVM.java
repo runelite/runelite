@@ -240,6 +240,7 @@ public class ScriptVM
 
 		Instructions instrs = runScript.getCode().getInstructions();
 		ListIterator<Instruction> instrIter = instrs.getInstructions().listIterator();
+		boolean injectedPc = false;
 		while (instrIter.hasNext())
 		{
 			Instruction instr = instrIter.next();
@@ -253,6 +254,7 @@ public class ScriptVM
 					instrIter.add(new Dup(instrs));
 					instrIter.add(new PutStatic(instrs, currentScriptPCField));
 					instrIter.next();
+					injectedPc = true;
 				}
 			}
 
@@ -263,6 +265,7 @@ public class ScriptVM
 				{
 					instrIter.add(new ILoad(instrs, pcLocalVar));
 					instrIter.add(new PutStatic(instrs, currentScriptPCField));
+					injectedPc = true;
 				}
 			}
 		}
@@ -272,6 +275,10 @@ public class ScriptVM
 		if (currentOpcodeStore == null)
 		{
 			throw new InjectionException("Unable to find IStore for current opcode");
+		}
+		if (!injectedPc)
+		{
+			throw new InjectionException("Did not inject putstatic pc");
 		}
 
 		int istorepc = instrs.getInstructions().indexOf(currentOpcodeStore);
