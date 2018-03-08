@@ -349,8 +349,8 @@ public class Perspective
 		Point topLeft = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
 			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
 		// expand by size
-		Point bottomRight = new Point(topLeft.getX() + size * LOCAL_TILE_SIZE,
-			topLeft.getY() + size * LOCAL_TILE_SIZE);
+		Point bottomRight = new Point(topLeft.getX() + size * LOCAL_TILE_SIZE - 1,
+			topLeft.getY() + size * LOCAL_TILE_SIZE - 1);
 		// Take the x of top left and the y of bottom right to create bottom left
 		Point bottomLeft = new Point(topLeft.getX(), bottomRight.getY());
 		// Similarly for top right
