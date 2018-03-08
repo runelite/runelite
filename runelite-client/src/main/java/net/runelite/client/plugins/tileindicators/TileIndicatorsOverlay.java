@@ -54,8 +54,8 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (client.getSceneDestinationLocation().getX() >= 0
-			&& client.getSceneDestinationLocation().getY() >= 0)
+		if (client.getSceneDestinationLocation().getX() > 0
+			&& client.getSceneDestinationLocation().getY() > 0)
 		{
 			drawRegionTile(graphics, client.getSceneDestinationLocation(), config.highlightDestinationColor());
 		}
