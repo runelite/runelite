@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +26,13 @@
 package net.runelite.api.coords;
 
 import lombok.Value;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 
+/**
+ * WorldPoint is a Three-Dimensional point representing the location of a Tile
+ */
 @Value
 public class WorldPoint
 {
@@ -34,21 +40,99 @@ public class WorldPoint
 	 * The X coordinate of the Point.
 	 * Units are in tiles
 	 */
-	private final int X;
+	private final int x;
 
 	/**
 	 * The Y coordinate of the Point.
 	 * Units are in tiles
 	 */
-	private final int Y;
+	private final int y;
 
 	/**
 	 * The plane coordinate of the Point.
 	 */
 	private final int plane;
 
+	public static boolean isInScene(Client client, int x, int y)
+	{
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
+
+		int maxX = baseX + Perspective.SCENE_SIZE;
+		int maxY = baseY + Perspective.SCENE_SIZE;
+
+		return x >= baseX && x < maxX && y >= baseY && y < maxY;
+	}
+
+	public boolean isInScene(Client client)
+	{
+		return client.getPlane() == plane && isInScene(client, x, y);
+	}
+
+	/**
+	 * Returns a WorldPoint containing the passed LocalPoint
+	 */
+	public static WorldPoint fromLocal(Client client, LocalPoint local)
+	{
+		return fromLocal(client, local.getX(), local.getY(), client.getPlane());
+	}
+
+	/**
+	 * Returns a WorldPoint containing the passed local coordinates
+	 */
+	public static WorldPoint fromLocal(Client client, int x, int y, int plane)
+	{
+		return new WorldPoint(
+			(x >>> Perspective.LOCAL_COORD_BITS) + client.getBaseX(),
+			(y >>> Perspective.LOCAL_COORD_BITS) + client.getBaseY(),
+			plane
+		);
+	}
+
+	/**
+	 * Find the distance from this point to another point. Returns Integer.MAX_VALUE if other is on
+	 * a different plane.
+	 *
+	 * @param other
+	 * @return
+	 */
+	public int distanceTo(WorldPoint other)
+	{
+		if (other.plane != plane)
+		{
+			return Integer.MAX_VALUE;
+		}
+
+		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
+	}
+
+
+	/**
+	 * Find the distance from this point to another point.
+	 *
+	 * @param other
+	 * @return
+	 */
+	public int distanceTo2D(WorldPoint other)
+	{
+		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
+	}
+
+	/**
+	 * Returns a WorldPoint from the passed region coords
+	 */
+	public static WorldPoint fromRegion(Client client, int x, int y, int plane)
+	{
+		return new WorldPoint(
+			x + client.getBaseX(),
+			y + client.getBaseY(),
+			plane
+		);
+	}
+
+	@Deprecated
 	public Point toPoint()
 	{
-		return new Point(X, Y);
+		return new Point(x, y);
 	}
 }

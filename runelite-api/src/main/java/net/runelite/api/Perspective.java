@@ -64,6 +64,7 @@ public class Perspective
 	 * @param point world location
 	 * @return
 	 */
+	@Deprecated
 	public static boolean isWorldInScene(Client client, Point point)
 	{
 		int x = point.getX();
@@ -276,6 +277,7 @@ public class Perspective
 		return 0;
 	}
 
+	@Deprecated
 	public static Point worldToLocal(Client client, Point point)
 	{
 		if (!isWorldInScene(client, point))
@@ -292,6 +294,7 @@ public class Perspective
 		return new Point(x, y);
 	}
 
+	@Deprecated
 	public static Point localToWorld(Client client, Point point)
 	{
 		int x = (point.getX() >>> LOCAL_COORD_BITS) + client.getBaseX();
@@ -299,6 +302,7 @@ public class Perspective
 		return new Point(x, y);
 	}
 
+	@Deprecated
 	public static Point regionToWorld(Client client, Point point)
 	{
 		int baseX = client.getBaseX();
@@ -308,6 +312,7 @@ public class Perspective
 		return new Point(x, y);
 	}
 
+	@Deprecated
 	public static Point regionToLocal(Client client, Point point)
 	{
 		int x = point.getX() << LOCAL_COORD_BITS;
