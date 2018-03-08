@@ -4929,7 +4929,7 @@ public final class Client extends GameEngine implements class302 {
             }
 
             if(ServerPacket.field2285 == var1.serverPacket) {
-               class167.method3261(true, var3);
+               class167.updateNpcs(true, var3);
                var1.serverPacket = null;
                return true;
             }
@@ -5258,7 +5258,7 @@ public final class Client extends GameEngine implements class302 {
             }
 
             if(ServerPacket.field2343 == var1.serverPacket) {
-               class167.method3261(false, var3);
+               class167.updateNpcs(false, var3);
                var1.serverPacket = null;
                return true;
             }

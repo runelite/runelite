@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -56,7 +57,9 @@ public class class167 {
       signature = "(ZLgz;I)V",
       garbageValue = "-1120687622"
    )
-   static final void method3261(boolean var0, PacketBuffer var1) {
+   @Hook("onNpcUpdate")
+   @Export("updateNpcs")
+   static final void updateNpcs(boolean var0, PacketBuffer var1) {
       Client.field969 = 0;
       Client.pendingNpcFlagsCount = 0;
       Client.method1257();
