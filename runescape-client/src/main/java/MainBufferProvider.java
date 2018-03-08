@@ -10,18 +10,17 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bm")
 @Implements("MainBufferProvider")
 public final class MainBufferProvider extends BufferProvider {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @Export("component")
    Component component;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @Export("image")
    Image image;
 
@@ -37,38 +36,38 @@ public final class MainBufferProvider extends BufferProvider {
       this.setRaster();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;B)V",
-      garbageValue = "125"
+      signature = "(Ljava/awt/Component;S)V",
+      garbageValue = "29189"
    )
    @Export("replaceComponent")
    final void replaceComponent(Component var1) {
       this.component = var1;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "1823139136"
+      garbageValue = "-1238219303"
    )
    public final void drawFull(int var1, int var2) {
       this.draw(this.component.getGraphics(), var1, var2);
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIIIS)V",
-      garbageValue = "13460"
+      signature = "(IIIII)V",
+      garbageValue = "-703209304"
    )
    public final void draw(int var1, int var2, int var3, int var4) {
       this.drawSub(this.component.getGraphics(), var1, var2, var3, var4);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "-845102348"
+      signature = "(Ljava/awt/Graphics;IIS)V",
+      garbageValue = "-19505"
    )
    @Export("draw")
    final void draw(Graphics var1, int var2, int var3) {
@@ -80,10 +79,10 @@ public final class MainBufferProvider extends BufferProvider {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIIB)V",
-      garbageValue = "29"
+      garbageValue = "-1"
    )
    @Export("drawSub")
    final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {

@@ -2,17 +2,22 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("iv")
 public class class237 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @Export("varpsMasks")
    static int[] varpsMasks;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @Export("settings")
    public static int[] settings;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @Export("widgetSettings")
    public static int[] widgetSettings;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lla;"
+   )
+   static SpritePixels field2773;
 
    static {
       varpsMasks = new int[32];
@@ -25,45 +30,5 @@ public class class237 {
 
       settings = new int[2000];
       widgetSettings = new int[2000];
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Throwable;Ljava/lang/String;)Lfm;"
-   )
-   public static RunException method4484(Throwable var0, String var1) {
-      RunException var2;
-      if(var0 instanceof RunException) {
-         var2 = (RunException)var0;
-         var2.field2171 = var2.field2171 + ' ' + var1;
-      } else {
-         var2 = new RunException(var0, var1);
-      }
-
-      return var2;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)[Llv;",
-      garbageValue = "1346623749"
-   )
-   static IndexedSprite[] method4477() {
-      IndexedSprite[] var0 = new IndexedSprite[class18.field325];
-
-      for(int var1 = 0; var1 < class18.field325; ++var1) {
-         IndexedSprite var2 = var0[var1] = new IndexedSprite();
-         var2.width = class332.field3995;
-         var2.originalHeight = class332.field3991;
-         var2.offsetX = class332.field3990[var1];
-         var2.offsetY = class332.offsetsY[var1];
-         var2.originalWidth = Varbit.field3539[var1];
-         var2.height = BoundingBox2D.field242[var1];
-         var2.palette = class332.field3994;
-         var2.pixels = class332.spritePixels[var1];
-      }
-
-      class151.method3208();
-      return var0;
    }
 }

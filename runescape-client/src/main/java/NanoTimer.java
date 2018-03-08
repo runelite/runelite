@@ -7,39 +7,39 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fu")
 @Implements("NanoTimer")
 public class NanoTimer extends Timer {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      longValue = -2688411897373911911L
+      longValue = 6370949410782803463L
    )
    @Export("nanoTime")
    long nanoTime;
 
-   public NanoTimer() {
+   NanoTimer() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2072405029"
+      signature = "(B)V",
+      garbageValue = "2"
    )
-   public void vmethod3369() {
+   public void vmethod3325() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-2142133773"
+      garbageValue = "1292093981"
    )
-   public int vmethod3370(int var1, int var2) {
+   public int vmethod3323(int var1, int var2) {
       long var3 = (long)var2 * 1000000L;
       long var5 = this.nanoTime - System.nanoTime();
       if(var5 < var3) {
          var5 = var3;
       }
 
-      PacketBuffer.method3907(var5 / 1000000L);
+      class93.method1982(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;

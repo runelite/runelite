@@ -3,86 +3,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("ff")
 public enum class158 implements Enumerated {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfr;"
+      signature = "Lff;"
    )
-   field2140(0, 0),
-   @ObfuscatedName("z")
+   field2126(1, 0),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lfr;"
+      signature = "Lff;"
    )
-   field2141(1, 1),
-   @ObfuscatedName("n")
+   field2123(2, 1),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lfr;"
+      signature = "Lff;"
    )
-   field2145(2, 2),
-   @ObfuscatedName("r")
+   field2124(3, 2),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfr;"
+      signature = "Lff;"
    )
-   field2143(3, 3);
+   field2125(0, 3);
 
-   @ObfuscatedName("fy")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -192099525
+   @ObfuscatedName("fq")
+   @ObfuscatedSignature(
+      signature = "[Llk;"
    )
-   public final int field2144;
-   @ObfuscatedName("y")
+   @Export("modIconSprites")
+   static IndexedSprite[] modIconSprites;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 654810181
+      intValue = -623389511
    )
-   final int field2142;
+   public final int field2128;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 523422393
+   )
+   final int field2127;
 
    class158(int var3, int var4) {
-      this.field2144 = var3;
-      this.field2142 = var4;
+      this.field2128 = var3;
+      this.field2127 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "846888120"
+      signature = "(B)I",
+      garbageValue = "64"
    )
    public int rsOrdinal() {
-      return this.field2142;
+      return this.field2127;
    }
 
-   @ObfuscatedName("gq")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIIII)V",
-      garbageValue = "1217627096"
+      signature = "(IB)Lkf;",
+      garbageValue = "-69"
    )
-   static final void method3248(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      PendingSpawn var9 = null;
-
-      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
-            var9 = var10;
-            break;
+   @Export("getAnimation")
+   public static Sequence getAnimation(int var0) {
+      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class2.seq_ref.getConfigData(12, var0);
+         var1 = new Sequence();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
-      }
 
-      if(var9 == null) {
-         var9 = new PendingSpawn();
-         var9.level = var0;
-         var9.type = var3;
-         var9.x = var1;
-         var9.y = var2;
-         CombatInfoListHolder.method1860(var9);
-         Client.pendingSpawns.addFront(var9);
+         var1.post();
+         Sequence.sequences.put(var1, (long)var0);
+         return var1;
       }
+   }
 
-      var9.id = var4;
-      var9.field1125 = var5;
-      var9.orientation = var6;
-      var9.delay = var7;
-      var9.hitpoints = var8;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-1938098369"
+   )
+   public static int method3176(CharSequence var0) {
+      return IndexData.parseInt(var0, 10, true);
    }
 }

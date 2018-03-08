@@ -1,133 +1,88 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("ao")
 public enum class27 implements Enumerated {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lap;"
+      signature = "Lao;"
    )
-   field404(0, (byte)0),
-   @ObfuscatedName("z")
+   field370(1, (byte)0),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lap;"
+      signature = "Lao;"
    )
-   field400(1, (byte)1),
-   @ObfuscatedName("n")
+   field366(0, (byte)1),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lap;"
+      signature = "Lao;"
    )
-   field401(3, (byte)2),
-   @ObfuscatedName("r")
+   field368(3, (byte)2),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lap;"
+      signature = "Lao;"
    )
-   field399(2, (byte)3);
+   field375(2, (byte)3);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("pr")
    @ObfuscatedGetter(
-      intValue = 1733657607
+      intValue = -1339000471
    )
-   final int field406;
-   @ObfuscatedName("y")
-   final byte field403;
+   static int field372;
+   @ObfuscatedName("ao")
+   static int[] field365;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1899422909
+   )
+   final int field369;
+   @ObfuscatedName("b")
+   final byte field367;
 
    class27(int var3, byte var4) {
-      this.field406 = var3;
-      this.field403 = var4;
+      this.field369 = var3;
+      this.field367 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "846888120"
+      signature = "(B)I",
+      garbageValue = "64"
    )
    public int rsOrdinal() {
-      return this.field403;
+      return this.field367;
    }
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZI)Z",
-      garbageValue = "-938653123"
-   )
-   public static boolean method221(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
-         }
-
-         return true;
-      } catch (Exception var4) {
-         return false;
-      }
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1176643479"
-   )
-   static void method224() {
-      ItemContainer.itemContainers = new HashTable(32);
-   }
-
-   @ObfuscatedName("fz")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "938754353"
-   )
-   static final void method222(boolean var0) {
-      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
-         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method5232()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field1193 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field947[var4][var5] == Client.field1108) {
-                     continue;
-                  }
-
-                  Client.field947[var4][var5] = Client.field1108;
-               }
-
-               if(!var2.composition.field3718) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               var2.field1143 = Client.gameCycle;
-               class86.region.method3026(class36.plane, var2.x, var2.y, WorldMapRegion.getTileHeight(var2.field1193 * 64 - 64 + var2.x, var2.field1193 * 64 - 64 + var2.y, class36.plane), var2.field1193 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1141);
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("jg")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(B)V",
       garbageValue = "1"
    )
-   static void method223() {
-      if(OwnWorldComparator.field852 != null) {
-         Client.field1116 = Client.gameCycle;
-         OwnWorldComparator.field852.method4825();
+   static void method228() {
+      class62.field711 = null;
+      class62.field707 = null;
+      class62.field708 = null;
+      FrameMap.field1952 = null;
+      class62.field709 = null;
+      class62.field704 = null;
+      class62.field714 = null;
+      BoundingBox.field239 = null;
+      class36.field475 = null;
+      class22.field319 = null;
+      class199.field2584 = null;
+      class36.field476 = null;
+   }
 
-         for(int var0 = 0; var0 < Client.cachedPlayers.length; ++var0) {
-            if(Client.cachedPlayers[var0] != null) {
-               OwnWorldComparator.field852.method4824((Client.cachedPlayers[var0].x >> 7) + WorldMapType1.baseX, (Client.cachedPlayers[var0].y >> 7) + Enum.baseY);
-            }
+   @ObfuscatedName("jx")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1807421451"
+   )
+   static void method232(int var0) {
+      for(IntegerNode var1 = (IntegerNode)Client.widgetFlags.first(); var1 != null; var1 = (IntegerNode)Client.widgetFlags.next()) {
+         if((long)var0 == (var1.hash >> 48 & 65535L)) {
+            var1.unlink();
          }
       }
 

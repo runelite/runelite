@@ -1,18 +1,21 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kh")
+@ObfuscatedName("kc")
 public class class292 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "2098005395"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "739325609"
    )
-   public static final void method5315(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
-      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
-      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
-      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
-      PendingSpawn.method1624(var7, var9, var8, var10, -49088);
+   public static int method5197(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+      }
+
+      return var2;
    }
 }

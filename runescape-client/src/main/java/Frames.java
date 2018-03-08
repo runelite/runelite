@@ -3,21 +3,20 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("et")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "[Ldy;"
+      signature = "[Ldm;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Ljk;Ljk;IZ)V",
-      garbageValue = "0"
+      signature = "(Ljc;Ljc;IZ)V"
    )
-   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -36,7 +35,13 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13 = var2.getChild(var11, 0);
+            byte[] var13;
+            if(var4) {
+               var13 = var2.getChild(0, var11);
+            } else {
+               var13 = var2.getChild(var11, 0);
+            }
+
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -46,51 +51,25 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-4"
+      signature = "(II)Z",
+      garbageValue = "-1079763849"
    )
-   public boolean method3141(int var1) {
+   public boolean method3052(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILct;ZB)I",
-      garbageValue = "1"
+      signature = "(IIB)V",
+      garbageValue = "63"
    )
-   static int method3142(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class20.field338:class81.field1267;
-      if(var0 == 1800) {
-         int[] var4 = class81.intStack;
-         int var5 = ++class81.intStackSize - 1;
-         int var7 = class85.getWidgetConfig(var3);
-         int var6 = var7 >> 11 & 63;
-         var4[var5] = var6;
-         return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.name == null) {
-               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = "";
-            } else {
-               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         int var8 = class81.intStack[--class81.intStackSize];
-         --var8;
-         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
-            class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var3.actions[var8];
-         } else {
-            class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = "";
-         }
-
-         return 1;
+   static void method3056(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      FileRequest var4 = (FileRequest)class264.NetCache_pendingWrites.get(var2);
+      if(var4 != null) {
+         class264.NetCache_pendingWritesQueue.setHead(var4);
       }
    }
 }

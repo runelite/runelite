@@ -4,77 +4,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("bl")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("l")
-   @Export("osName")
-   public static String osName;
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1952625995
+      intValue = 1271334225
    )
    @Export("level")
    int level;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1753235967
-   )
-   int field1128;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1722746851
+      intValue = -1791403159
    )
    @Export("type")
    int type;
-   @ObfuscatedName("r")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1827924751
+      intValue = -1971824699
    )
    @Export("x")
    int x;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 285848151
+      intValue = 1952681829
    )
    @Export("y")
    int y;
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1664709599
+      intValue = 1363990175
    )
-   int field1129;
-   @ObfuscatedName("k")
+   int field1125;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 689417223
+      intValue = -1245381677
    )
-   int field1135;
-   @ObfuscatedName("s")
+   int field1126;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -390670559
+      intValue = -1550544765
+   )
+   int field1121;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1313820901
    )
    @Export("id")
    int id;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -885639671
+      intValue = 1948648261
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -162355115
+      intValue = 131457153
    )
-   int field1125;
-   @ObfuscatedName("m")
+   int field1129;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2074785401
+      intValue = -571366851
    )
    @Export("delay")
    int delay;
-   @ObfuscatedName("h")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 856103459
+      intValue = -1350090127
    )
    @Export("hitpoints")
    int hitpoints;
@@ -84,53 +81,58 @@ public final class PendingSpawn extends Node {
       this.hitpoints = -1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "1409216932"
+      signature = "(II)Ljh;",
+      garbageValue = "-1390673728"
    )
-   @Export("currentTimeMs")
-   public static synchronized long currentTimeMs() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class3.currentTimeMsLast) {
-         class196.currentTimeMsOffset += class3.currentTimeMsLast - var0;
+   public static class281 method1649(int var0) {
+      class281 var1 = (class281)class281.field3573.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class281.field3585.getConfigData(32, var0);
+         var1 = new class281();
+         if(var2 != null) {
+            var1.method4952(new Buffer(var2));
+         }
+
+         class281.field3573.put(var1, (long)var0);
+         return var1;
       }
-
-      class3.currentTimeMsLast = var0;
-      return var0 + class196.currentTimeMsOffset;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIIIIB)V",
-      garbageValue = "-71"
+      signature = "(Ljc;I)V",
+      garbageValue = "989690234"
    )
-   public static final void method1624(int var0, int var1, int var2, int var3, int var4) {
-      class7.boundingBoxes.addFirst(new BoundingBox2D(var0, var1, var2, var3, var4));
+   public static void method1647(IndexDataBase var0) {
+      Enum.EnumDefinition_indexCache = var0;
    }
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIIILly;Lik;B)V",
-      garbageValue = "1"
+      signature = "(III)V",
+      garbageValue = "785970621"
    )
-   @Export("drawDot")
-   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
-      if(var4 != null) {
-         int var6 = Client.mapAngle & 2047;
-         int var7 = var3 * var3 + var2 * var2;
-         if(var7 <= 6400) {
-            int var8 = Graphics3D.SINE[var6];
-            int var9 = Graphics3D.COSINE[var6];
-            int var10 = var9 * var2 + var3 * var8 >> 16;
-            int var11 = var3 * var9 - var8 * var2 >> 16;
-            if(var7 > 2500) {
-               var4.method5937(var10 + var5.field2777 / 2 - var4.maxWidth / 2, var5.field2775 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2777, var5.field2775, var5.field2778, var5.field2779);
-            } else {
-               var4.drawAt(var0 + var10 + var5.field2777 / 2 - var4.maxWidth / 2, var5.field2775 / 2 + var1 - var11 - var4.maxHeight / 2);
-            }
+   static void method1648(int var0, int var1) {
+      int[] var2 = new int[4];
+      int[] var3 = new int[4];
+      var2[0] = var0;
+      var3[0] = var1;
+      int var4 = 1;
 
+      for(int var5 = 0; var5 < 4; ++var5) {
+         if(World.field1210[var5] != var0) {
+            var2[var4] = World.field1210[var5];
+            var3[var4] = World.field1204[var5];
+            ++var4;
          }
       }
+
+      World.field1210 = var2;
+      World.field1204 = var3;
+      ItemLayer.method2592(World.worldList, 0, World.worldList.length - 1, World.field1210, World.field1204);
    }
 }

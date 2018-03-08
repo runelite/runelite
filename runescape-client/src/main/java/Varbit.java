@@ -4,38 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jf")
+@ObfuscatedName("jr")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhp;"
+      signature = "Lhj;"
    )
    @Export("varbits")
-   public static NodeCache varbits;
-   @ObfuscatedName("y")
-   static int[] field3539;
-   @ObfuscatedName("n")
+   static NodeCache varbits;
+   @ObfuscatedName("ca")
+   @ObfuscatedSignature(
+      signature = "Lju;"
+   )
+   @Export("indexTrack1")
+   static IndexData indexTrack1;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 732450525
+      intValue = -1683686481
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1047522595
+      intValue = 569480575
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1143733535
+      intValue = 1273491247
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -44,13 +48,13 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "1332412318"
+      signature = "(Lgb;I)V",
+      garbageValue = "-588955908"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -61,10 +65,10 @@ public class Varbit extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgy;II)V",
-      garbageValue = "377744748"
+      signature = "(Lgb;IB)V",
+      garbageValue = "9"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {

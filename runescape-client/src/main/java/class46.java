@@ -1,68 +1,69 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("aa")
 public class class46 extends class28 {
-   @ObfuscatedName("h")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1911866693
+      intValue = -1443982277
    )
-   int field585;
-   @ObfuscatedName("t")
+   int field559;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 352141443
+      intValue = 1514186289
    )
-   int field583;
-   @ObfuscatedName("i")
+   int field560;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1312677505
+      intValue = -1392548365
    )
-   int field584;
+   int field561;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1278901949
+      intValue = 1112571767
    )
-   int field582;
+   int field562;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgy;Lgy;B)V",
-      garbageValue = "-95"
+      signature = "(Lgb;Lgb;I)V",
+      garbageValue = "-1887428871"
    )
-   void method641(Buffer var1, Buffer var2) {
+   void method695(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(var3 != class37.field505.field507) {
+      if(var3 != class37.field482.field483) {
          throw new IllegalStateException("");
       } else {
-         super.field414 = var2.readUnsignedByte();
-         super.field410 = var2.readUnsignedByte();
-         super.field411 = var2.readUnsignedShort();
-         super.field420 = var2.readUnsignedShort();
-         this.field585 = var2.readUnsignedByte();
-         this.field583 = var2.readUnsignedByte();
-         super.field422 = var2.readUnsignedShort();
-         super.field413 = var2.readUnsignedShort();
-         this.field584 = var2.readUnsignedByte();
-         this.field582 = var2.readUnsignedByte();
-         super.field410 = Math.min(super.field410, 4);
-         super.field423 = new short[1][64][64];
-         super.field416 = new short[super.field410][64][64];
-         super.field418 = new byte[super.field410][64][64];
-         super.field419 = new byte[super.field410][64][64];
-         super.decorations = new WorldMapDecoration[super.field410][64][64][];
+         super.field381 = var2.readUnsignedByte();
+         super.field382 = var2.readUnsignedByte();
+         super.field379 = var2.readUnsignedShort();
+         super.field378 = var2.readUnsignedShort();
+         this.field559 = var2.readUnsignedByte();
+         this.field560 = var2.readUnsignedByte();
+         super.field390 = var2.readUnsignedShort();
+         super.field385 = var2.readUnsignedShort();
+         this.field561 = var2.readUnsignedByte();
+         this.field562 = var2.readUnsignedByte();
+         super.field382 = Math.min(super.field382, 4);
+         super.field383 = new short[1][64][64];
+         super.field384 = new short[super.field382][64][64];
+         super.field389 = new byte[super.field382][64][64];
+         super.field386 = new byte[super.field382][64][64];
+         super.decorations = new WorldMapDecoration[super.field382][64][64][];
          var3 = var1.readUnsignedByte();
-         if(var3 != class36.field500.field501) {
+         if(var3 != class36.field473.field474) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
             int var6 = var1.readUnsignedByte();
             int var7 = var1.readUnsignedByte();
-            if(var4 == super.field422 && var5 == super.field413 && var6 == this.field584 && var7 == this.field582) {
+            if(var4 == super.field390 && var5 == super.field385 && var6 == this.field561 && var7 == this.field562) {
                for(int var8 = 0; var8 < 8; ++var8) {
                   for(int var9 = 0; var9 < 8; ++var9) {
-                     this.method225(var8 + this.field584 * 8, var9 + this.field582 * 8, var1);
+                     this.method234(var8 + this.field561 * 8, var9 + this.field562 * 8, var1);
                   }
                }
 
@@ -73,49 +74,49 @@ public class class46 extends class28 {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "-1625254779"
+      garbageValue = "791183531"
    )
-   boolean method642(int var1, int var2) {
-      return var1 < this.field584 * 8?false:(var2 < this.field582 * 8?false:(var1 >= this.field584 * 8 + 8?false:var2 < this.field582 * 8 + 8));
+   boolean method703(int var1, int var2) {
+      return var1 < this.field561 * 8?false:(var2 < this.field562 * 8?false:(var1 >= this.field561 * 8 + 8?false:var2 < this.field562 * 8 + 8));
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1959359789"
+      garbageValue = "-1164041156"
    )
-   int method644() {
-      return this.field585;
+   int method705() {
+      return this.field559;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "60822844"
+      signature = "(B)I",
+      garbageValue = "1"
    )
-   int method645() {
-      return this.field583;
+   int method696() {
+      return this.field560;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "109638280"
+      signature = "(B)I",
+      garbageValue = "31"
    )
-   int method650() {
-      return this.field584;
+   int method697() {
+      return this.field561;
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-386482167"
+      signature = "(B)I",
+      garbageValue = "87"
    )
-   int method647() {
-      return this.field582;
+   int method698() {
+      return this.field562;
    }
 
    public boolean equals(Object var1) {
@@ -123,36 +124,41 @@ public class class46 extends class28 {
          return false;
       } else {
          class46 var2 = (class46)var1;
-         return super.field422 == var2.field422 && var2.field413 == super.field413?this.field584 == var2.field584 && var2.field582 == this.field582:false;
+         return super.field390 == var2.field390 && super.field385 == var2.field385?var2.field561 == this.field561 && var2.field562 == this.field562:false;
       }
    }
 
    public int hashCode() {
-      return super.field422 | super.field413 << 8 | this.field584 << 16 | this.field582 << 24;
+      return super.field390 | super.field385 << 8 | this.field561 << 16 | this.field562 << 24;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Lly;",
-      garbageValue = "2093977496"
+      signature = "(I)Z",
+      garbageValue = "-2142379490"
    )
-   static SpritePixels method666() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class332.field3995;
-      var0.maxHeight = class332.field3991;
-      var0.offsetX = class332.field3990[0];
-      var0.offsetY = class332.offsetsY[0];
-      var0.width = Varbit.field3539[0];
-      var0.height = BoundingBox2D.field242[0];
-      int var1 = var0.height * var0.width;
-      byte[] var2 = class332.spritePixels[0];
-      var0.pixels = new int[var1];
+   public static boolean method717() {
+      ClassInfo var0 = (ClassInfo)class326.classInfos.last();
+      return var0 != null;
+   }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.pixels[var3] = class332.field3994[var2[var3] & 255];
-      }
-
-      class151.method3208();
-      return var0;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IIIS)I",
+      garbageValue = "28315"
+   )
+   @Export("getSmoothNoise")
+   static final int getSmoothNoise(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = UnitPriceComparator.getSmoothNoise2D(var3, var5);
+      int var8 = UnitPriceComparator.getSmoothNoise2D(var3 + 1, var5);
+      int var9 = UnitPriceComparator.getSmoothNoise2D(var3, var5 + 1);
+      int var10 = UnitPriceComparator.getSmoothNoise2D(var3 + 1, var5 + 1);
+      int var11 = class19.method161(var7, var8, var4, var2);
+      int var12 = class19.method161(var9, var10, var4, var2);
+      return class19.method161(var11, var12, var6, var2);
    }
 }

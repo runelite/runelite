@@ -4,47 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("ia")
 @Implements("FileSystem")
 public class FileSystem extends Node {
    @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Llv;"
-   )
-   static IndexedSprite field3358;
-   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1348650597
+      intValue = 2007273829
    )
    @Export("type")
    int type;
-   @ObfuscatedName("z")
-   byte[] field3359;
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
+   public byte[] field3367;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lfp;"
+      signature = "Lfn;"
    )
    @Export("index")
-   IndexFile index;
-   @ObfuscatedName("r")
+   public IndexFile index;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Ljs;"
+      signature = "Lju;"
    )
    @Export("data")
-   IndexData data;
+   public IndexData data;
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgb;II)V",
-      garbageValue = "2145641317"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "1752458693"
    )
-   static final void method4665(PacketBuffer var0, int var1) {
-      int var2 = var0.offset;
-      class93.field1410 = 0;
-      UnitPriceComparator.method121(var0);
-      MapIconReference.method711(var0);
-      if(var0.offset - var2 != var1) {
-         throw new RuntimeException(var0.offset - var2 + " " + var1);
-      }
+   static String method4559() {
+      return MapIcon.preferences.hideUsername?Fonts.method5483(class90.username):class90.username;
    }
 }

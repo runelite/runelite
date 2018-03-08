@@ -2,53 +2,53 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hz")
 public class class211 implements Iterator {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lhs;"
+      signature = "Lhr;"
    )
-   CombatInfoList field2635;
-   @ObfuscatedName("z")
+   CombatInfoList field2616;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lho;"
+      signature = "Lhx;"
    )
-   Node field2634;
-   @ObfuscatedName("n")
+   Node field2617;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lho;"
+      signature = "Lhx;"
    )
-   Node field2633;
+   Node field2618;
 
    @ObfuscatedSignature(
-      signature = "(Lhs;)V"
+      signature = "(Lhr;)V"
    )
    class211(CombatInfoList var1) {
-      this.field2633 = null;
-      this.field2635 = var1;
-      this.field2634 = this.field2635.node.next;
-      this.field2633 = null;
-   }
-
-   public boolean hasNext() {
-      return this.field2635.node != this.field2634;
-   }
-
-   public void remove() {
-      this.field2633.unlink();
-      this.field2633 = null;
+      this.field2618 = null;
+      this.field2616 = var1;
+      this.field2617 = this.field2616.node.next;
+      this.field2618 = null;
    }
 
    public Object next() {
-      Node var1 = this.field2634;
-      if(var1 == this.field2635.node) {
+      Node var1 = this.field2617;
+      if(var1 == this.field2616.node) {
          var1 = null;
-         this.field2634 = null;
+         this.field2617 = null;
       } else {
-         this.field2634 = var1.next;
+         this.field2617 = var1.next;
       }
 
-      this.field2633 = var1;
+      this.field2618 = var1;
       return var1;
+   }
+
+   public boolean hasNext() {
+      return this.field2616.node != this.field2617;
+   }
+
+   public void remove() {
+      this.field2618.unlink();
+      this.field2618 = null;
    }
 }

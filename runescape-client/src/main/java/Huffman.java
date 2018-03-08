@@ -1,18 +1,24 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("go")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1252375287
+   )
+   static int field2483;
+   @ObfuscatedName("t")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @Export("keys")
    int[] keys;
 
@@ -99,10 +105,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "([BII[BII)I",
-      garbageValue = "1774865429"
+      garbageValue = "-1841011075"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -120,7 +126,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = (var10 + var12 - 1 >> 3) + var11;
+         int var13 = (var12 + var10 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -150,10 +156,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "-2019985610"
+      garbageValue = "2116238880"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -294,78 +300,26 @@ public class Huffman {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lhd;ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-2128271047"
+      signature = "(BI)C",
+      garbageValue = "1681628024"
    )
-   static String method3512(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
+   public static char method3458(byte var0) {
+      int var1 = var0 & 255;
+      if(var1 == 0) {
+         throw new IllegalArgumentException("");
       } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
+         if(var1 >= 128 && var1 < 160) {
+            char var2 = class314.cp1252AsciiExtension[var1 - 128];
+            if(var2 == 0) {
+               var2 = '?';
+            }
+
+            var1 = var2;
+         }
+
+         return (char)var1;
       }
-   }
-
-   @ObfuscatedName("ee")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-453723388"
-   )
-   static final void method3510() {
-      if(ChatLineBuffer.soundSystem1 != null) {
-         ChatLineBuffer.soundSystem1.method2249();
-      }
-
-      if(HorizontalAlignment.soundSystem0 != null) {
-         HorizontalAlignment.soundSystem0.method2249();
-      }
-
-   }
-
-   @ObfuscatedName("ip")
-   @ObfuscatedSignature(
-      signature = "(Liw;IIZI)V",
-      garbageValue = "65536"
-   )
-   static void method3509(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.dynamicWidth == 0) {
-         var0.width = var0.originalWidth;
-      } else if(var0.dynamicWidth == 1) {
-         var0.width = var1 - var0.originalWidth;
-      } else if(var0.dynamicWidth == 2) {
-         var0.width = var0.originalWidth * var1 >> 14;
-      }
-
-      if(var0.buttonType == 0) {
-         var0.height = var0.originalHeight;
-      } else if(var0.buttonType == 1) {
-         var0.height = var2 - var0.originalHeight;
-      } else if(var0.buttonType == 2) {
-         var0.height = var2 * var0.originalHeight >> 14;
-      }
-
-      if(var0.dynamicWidth == 4) {
-         var0.width = var0.field2842 * var0.height / var0.field2843;
-      }
-
-      if(var0.buttonType == 4) {
-         var0.height = var0.width * var0.field2843 / var0.field2842;
-      }
-
-      if(var0.contentType == 1337) {
-         Client.field1020 = var0;
-      }
-
-      if(var3 && var0.field2934 != null && (var4 != var0.width || var5 != var0.height)) {
-         ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
-         var6.objs = var0.field2934;
-         Client.field1047.addFront(var6);
-      }
-
    }
 }

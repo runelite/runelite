@@ -1,157 +1,136 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("lj")
+@ObfuscatedName("lb")
 @Implements("Bounds")
 public class Bounds {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1551717403
+      intValue = -1245223283
    )
-   public int field3939;
-   @ObfuscatedName("z")
+   public int field3941;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1406927319
+      intValue = -1231090535
    )
-   public int field3935;
-   @ObfuscatedName("n")
+   public int field3942;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1017079649
+      intValue = 850119981
    )
-   public int field3937;
-   @ObfuscatedName("r")
+   public int field3943;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -140278913
+      intValue = 1784600163
    )
-   public int field3936;
+   public int field3944;
 
    public Bounds(int var1, int var2, int var3, int var4) {
-      this.method5760(var1, var2);
-      this.method5756(var3, var4);
+      this.method5680(var1, var2);
+      this.method5671(var3, var4);
    }
 
    public Bounds(int var1, int var2) {
       this(0, 0, var1, var2);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "1397064166"
+      garbageValue = "-1347027473"
    )
-   public void method5760(int var1, int var2) {
-      this.field3939 = var1;
-      this.field3935 = var2;
+   public void method5680(int var1, int var2) {
+      this.field3941 = var1;
+      this.field3942 = var2;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "752877777"
+      garbageValue = "1026297832"
    )
-   public void method5756(int var1, int var2) {
-      this.field3937 = var1;
-      this.field3936 = var2;
+   public void method5671(int var1, int var2) {
+      this.field3943 = var1;
+      this.field3944 = var2;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Llj;Llj;B)V",
-      garbageValue = "28"
+      signature = "(Llb;Llb;I)V",
+      garbageValue = "1818261206"
    )
-   public void method5758(Bounds var1, Bounds var2) {
-      this.method5759(var1, var2);
-      this.method5765(var1, var2);
+   public void method5667(Bounds var1, Bounds var2) {
+      this.method5666(var1, var2);
+      this.method5664(var1, var2);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Llj;Llj;B)V",
-      garbageValue = "59"
+      signature = "(Llb;Llb;B)V",
+      garbageValue = "53"
    )
-   void method5759(Bounds var1, Bounds var2) {
-      var2.field3939 = this.field3939;
-      var2.field3937 = this.field3937;
-      if(this.field3939 < var1.field3939) {
-         var2.field3937 -= var1.field3939 - this.field3939;
-         var2.field3939 = var1.field3939;
+   void method5666(Bounds var1, Bounds var2) {
+      var2.field3941 = this.field3941;
+      var2.field3943 = this.field3943;
+      if(this.field3941 < var1.field3941) {
+         var2.field3943 -= var1.field3941 - this.field3941;
+         var2.field3941 = var1.field3941;
       }
 
-      if(var2.method5761() > var1.method5761()) {
-         var2.field3937 -= var2.method5761() - var1.method5761();
+      if(var2.method5668() > var1.method5668()) {
+         var2.field3943 -= var2.method5668() - var1.method5668();
       }
 
-      if(var2.field3937 < 0) {
-         var2.field3937 = 0;
+      if(var2.field3943 < 0) {
+         var2.field3943 = 0;
       }
 
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Llb;Llb;I)V",
+      garbageValue = "1703752617"
+   )
+   void method5664(Bounds var1, Bounds var2) {
+      var2.field3942 = this.field3942;
+      var2.field3944 = this.field3944;
+      if(this.field3942 < var1.field3942) {
+         var2.field3944 -= var1.field3942 - this.field3942;
+         var2.field3942 = var1.field3942;
+      }
+
+      if(var2.method5669() > var1.method5669()) {
+         var2.field3944 -= var2.method5669() - var1.method5669();
+      }
+
+      if(var2.field3944 < 0) {
+         var2.field3944 = 0;
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "97"
+   )
+   int method5668() {
+      return this.field3941 + this.field3943;
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Llj;Llj;I)V",
-      garbageValue = "-795570511"
+      signature = "(S)I",
+      garbageValue = "2048"
    )
-   void method5765(Bounds var1, Bounds var2) {
-      var2.field3935 = this.field3935;
-      var2.field3936 = this.field3936;
-      if(this.field3935 < var1.field3935) {
-         var2.field3936 -= var1.field3935 - this.field3935;
-         var2.field3935 = var1.field3935;
-      }
-
-      if(var2.method5780() > var1.method5780()) {
-         var2.field3936 -= var2.method5780() - var1.method5780();
-      }
-
-      if(var2.field3936 < 0) {
-         var2.field3936 = 0;
-      }
-
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1615108158"
-   )
-   int method5761() {
-      return this.field3939 + this.field3937;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1112693754"
-   )
-   int method5780() {
-      return this.field3935 + this.field3936;
+   int method5669() {
+      return this.field3942 + this.field3944;
    }
 
    public String toString() {
       return null;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;IS)I",
-      garbageValue = "-26562"
-   )
-   public static int method5781(CharSequence var0, int var1) {
-      return class132.parseInt(var0, var1, true);
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "-1345814210"
-   )
-   @Export("loadClassFromDescriptor")
-   static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
    }
 }

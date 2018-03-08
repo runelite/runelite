@@ -3,55 +3,55 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("v")
+@ObfuscatedName("k")
 @Implements("GrandExchangeOffer")
 public class GrandExchangeOffer {
-   @ObfuscatedName("k")
-   @Export("colorsToFind")
-   public static short[] colorsToFind;
+   @ObfuscatedName("on")
+   @ObfuscatedSignature(
+      signature = "Lla;"
+   )
+   @Export("minimapSprite")
+   static SpritePixels minimapSprite;
+   @ObfuscatedName("e")
+   static int[] field294;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 284766633
+      intValue = -1094681987
    )
-   public static int field309;
-   @ObfuscatedName("dh")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
-   )
-   @Export("indexCache10")
-   static IndexData indexCache10;
-   @ObfuscatedName("d")
+   public static int field284;
+   @ObfuscatedName("bj")
+   static String field290;
+   @ObfuscatedName("t")
    @Export("state")
    byte state;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1793968015
+      intValue = -1830026537
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 759568497
+      intValue = -185808529
    )
    @Export("price")
    public int price;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -547290191
+      intValue = -1716879073
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1317485775
+      intValue = 1627042683
    )
    @Export("quantitySold")
    public int quantitySold;
-   @ObfuscatedName("y")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 84543113
+      intValue = 2125956321
    )
    @Export("spent")
    public int spent;
@@ -60,7 +60,7 @@ public class GrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgy;Z)V",
+      signature = "(Lgb;Z)V",
       garbageValue = "0"
    )
    public GrandExchangeOffer(Buffer var1, boolean var2) {
@@ -72,42 +72,42 @@ public class GrandExchangeOffer {
       this.spent = var1.readInt();
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-116"
+      signature = "(I)I",
+      garbageValue = "-1534869825"
    )
    @Export("status")
    public int status() {
       return this.state & 7;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-67"
+      signature = "(I)I",
+      garbageValue = "1695031298"
    )
    @Export("type")
    public int type() {
       return (this.state & 8) == 8?1:0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1533137850"
+      garbageValue = "1066687601"
    )
-   void method116(int var1) {
+   void method106(int var1) {
       this.state &= -8;
       this.state = (byte)(this.state | var1 & 7);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "1"
+      signature = "(II)V",
+      garbageValue = "-1573795457"
    )
-   void method104(int var1) {
+   void method107(int var1) {
       this.state &= -9;
       if(var1 == 1) {
          this.state = (byte)(this.state | 8);
@@ -115,68 +115,53 @@ public class GrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "2"
+      signature = "(II)I",
+      garbageValue = "1688664144"
    )
-   static String method119() {
-      String var0;
-      if(class55.preferences.hideUsername) {
-         String var2 = class90.username;
-         int var4 = var2.length();
-         char[] var5 = new char[var4];
+   public static int method124(int var0) {
+      return var0 >> 17 & 7;
+   }
 
-         for(int var6 = 0; var6 < var4; ++var6) {
-            var5[var6] = '*';
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IZIZB)V",
+      garbageValue = "-17"
+   )
+   static void method117(int var0, boolean var1, int var2, boolean var3) {
+      if(World.worldList != null) {
+         WorldMapType1.method286(0, World.worldList.length - 1, var0, var1, var2, var3);
+      }
+
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-822209613"
+   )
+   @Export("adjustHSLListness0")
+   static final int adjustHSLListness0(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         String var3 = new String(var5);
-         var0 = var3;
+         return var1;
       } else {
-         var0 = class90.username;
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("jh")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-78"
-   )
-   static final void method117() {
-      for(int var0 = 0; var0 < class93.playerIndexesCount; ++var0) {
-         Player var1 = Client.cachedPlayers[class93.playerIndices[var0]];
-         var1.method1144();
-      }
-
-   }
-
-   @ObfuscatedName("jc")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-455817517"
-   )
-   static void method103(String var0) {
-      class25.sessionToken = var0;
-
-      try {
-         String var1 = class23.clientInstance.getParameter(Parameters.field3809.key);
-         String var2 = class23.clientInstance.getParameter(Parameters.field3806.key);
-         String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
-         if(var0.length() == 0) {
-            var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
-         } else {
-            var3 = var3 + "; Expires=" + FontName.method5594(PendingSpawn.currentTimeMs() + 94608000000L) + "; Max-Age=" + 94608000L;
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         Client var4 = class23.clientInstance;
-         String var5 = "document.cookie=\"" + var3 + "\"";
-         JSObject.getWindow(var4).eval(var5);
-      } catch (Throwable var6) {
-         ;
+         return (var0 & 65408) + var1;
       }
-
    }
 }

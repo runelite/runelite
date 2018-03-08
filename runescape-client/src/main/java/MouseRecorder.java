@@ -1,35 +1,33 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bb")
+@ObfuscatedName("bf")
 @Implements("MouseRecorder")
 public class MouseRecorder implements Runnable {
-   @ObfuscatedName("jf")
-   @ObfuscatedGetter(
-      intValue = -478206321
+   @ObfuscatedName("ie")
+   @ObfuscatedSignature(
+      signature = "Lig;"
    )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("d")
+   static Widget field797;
+   @ObfuscatedName("t")
    @Export("isRunning")
    boolean isRunning;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @Export("lock")
    Object lock;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1459665061
+      intValue = -2071533289
    )
    @Export("index")
    int index;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @Export("xs")
    int[] xs;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @Export("ys")
    int[] ys;
 
@@ -42,7 +40,7 @@ public class MouseRecorder implements Runnable {
    }
 
    public void run() {
-      for(; this.isRunning; PacketBuffer.method3907(50L)) {
+      for(; this.isRunning; class93.method1982(50L)) {
          Object var1 = this.lock;
          synchronized(this.lock) {
             if(this.index < 500) {
@@ -55,62 +53,33 @@ public class MouseRecorder implements Runnable {
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(III)Laf;",
-      garbageValue = "-878285511"
+      signature = "(III)I",
+      garbageValue = "1978816203"
    )
-   static class33 method1100(int var0, int var1) {
-      class213 var2 = WorldMapRegion.field484;
-      long var3 = (long)(0 | var0 << 8 | var1);
-      return (class33)var2.method4044(var3);
+   static final int method1159(int var0, int var1) {
+      int var2 = var1 * 57 + var0;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("jq")
    @ObfuscatedSignature(
-      signature = "(Ljk;IIIZI)V",
-      garbageValue = "-931825979"
+      signature = "(I)V",
+      garbageValue = "1769106309"
    )
-   public static void method1095(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
-      class229.field2694 = 1;
-      class229.field2687 = var0;
-      class229.field2691 = var1;
-      AttackOption.field1331 = var2;
-      class229.field2692 = var3;
-      class37.field506 = var4;
-      HorizontalAlignment.field3699 = 10000;
-   }
-
-   @ObfuscatedName("ji")
-   @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "-1652967387"
-   )
-   static void method1099(Buffer var0) {
-      if(Client.field889 != null) {
-         var0.putBytes(Client.field889, 0, Client.field889.length);
-      } else {
-         byte[] var2 = new byte[24];
-
-         try {
-            class167.randomDat.seek(0L);
-            class167.randomDat.read(var2);
-
-            int var3;
-            for(var3 = 0; var3 < 24 && var2[var3] == 0; ++var3) {
-               ;
-            }
-
-            if(var3 >= 24) {
-               throw new IOException();
-            }
-         } catch (Exception var6) {
-            for(int var4 = 0; var4 < 24; ++var4) {
-               var2[var4] = -1;
-            }
-         }
-
-         var0.putBytes(var2, 0, var2.length);
+   static final void method1163() {
+      for(int var0 = 0; var0 < class93.playerIndexesCount; ++var0) {
+         Player var1 = Client.cachedPlayers[class93.playerIndices[var0]];
+         var1.method1203();
       }
+
+      WorldMapType3.method227();
+      if(KeyFocusListener.clanMemberManager != null) {
+         KeyFocusListener.clanMemberManager.method5453();
+      }
+
    }
 }

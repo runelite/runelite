@@ -1,105 +1,43 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.net.URI;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("j")
 @Implements("TotalQuantityComparator")
 final class TotalQuantityComparator implements Comparator {
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Ljk;"
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -635563425
    )
-   static IndexDataBase field304;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
-   )
-   @Export("currentRequest")
-   public static FileRequest currentRequest;
-   @ObfuscatedName("ap")
-   static int[] field299;
-   @ObfuscatedName("fr")
-   @Export("landRegionFileIds")
-   static int[] landRegionFileIds;
-   @ObfuscatedName("if")
-   @ObfuscatedSignature(
-      signature = "Lbd;"
-   )
-   @Export("localPlayer")
-   static Player localPlayer;
+   static int field282;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(Lu;Lu;B)I",
-      garbageValue = "70"
+      garbageValue = "-31"
    )
-   int method95(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   int method93(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.totalQuantity < var2.grandExchangeOffer.totalQuantity?-1:(var2.grandExchangeOffer.totalQuantity == var1.grandExchangeOffer.totalQuantity?0:1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method95((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.method93((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZB)V",
-      garbageValue = "17"
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-1248824827"
    )
-   public static void method98(String var0, boolean var1, boolean var2) {
-      if(var1) {
-         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
-            try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var4) {
-               ;
-            }
-         }
-
-         if(class57.field668.startsWith("win")) {
-            VerticalAlignment.method4851(var0, 0, "openjs");
-         } else if(class57.field668.startsWith("mac")) {
-            VerticalAlignment.method4851(var0, 1, "openjs");
-         } else {
-            VerticalAlignment.method4851(var0, 2, "openjs");
-         }
-      } else {
-         VerticalAlignment.method4851(var0, 3, "openjs");
-      }
-
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(Lbq;B)V",
-      garbageValue = "10"
-   )
-   @Export("changeWorld")
-   static void changeWorld(World world) {
-      if(world.method1653() != Client.isMembers) {
-         Client.isMembers = world.method1653();
-         boolean var1 = world.method1653();
-         if(var1 != ItemComposition.isMembersWorld) {
-            class20.method152();
-            ItemComposition.isMembersWorld = var1;
-         }
-      }
-
-      BoundingBox.host = world.address;
-      Client.world = world.id;
-      Client.flags = world.mask;
-      class233.port1 = Client.socketType == 0?43594:world.id + 40000;
-      class44.port2 = Client.socketType == 0?443:world.id + 50000;
-      WorldMapDecorationType.myWorldPort = class233.port1;
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      class64.addChatMessage(var0, var1, var2, (String)null);
    }
 }

@@ -4,42 +4,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ja")
+@ObfuscatedName("jt")
 @Implements("IndexStoreActionHandler")
 public class IndexStoreActionHandler implements Runnable {
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhv;"
+      signature = "Lhf;"
    )
    @Export("IndexStoreActionHandler_requestQueue")
-   static Deque IndexStoreActionHandler_requestQueue;
-   @ObfuscatedName("z")
+   public static Deque IndexStoreActionHandler_requestQueue;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhv;"
+      signature = "Lhf;"
    )
    @Export("IndexStoreActionHandler_responseQueue")
-   static Deque IndexStoreActionHandler_responseQueue;
-   @ObfuscatedName("n")
+   public static Deque IndexStoreActionHandler_responseQueue;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 667948873
+      intValue = 620701449
    )
-   public static int field3394;
-   @ObfuscatedName("r")
+   static int field3398;
+   @ObfuscatedName("l")
    @Export("IndexStoreActionHandler_lock")
-   public static Object IndexStoreActionHandler_lock;
-   @ObfuscatedName("e")
+   static Object IndexStoreActionHandler_lock;
+   @ObfuscatedName("b")
    @Export("IndexStoreActionHandler_thread")
    static Thread IndexStoreActionHandler_thread;
-   @ObfuscatedName("bn")
-   @ObfuscatedSignature(
-      signature = "Llv;"
-   )
-   static IndexedSprite field3390;
 
    static {
       IndexStoreActionHandler_requestQueue = new Deque();
       IndexStoreActionHandler_responseQueue = new Deque();
-      field3394 = 0;
+      field3398 = 0;
       IndexStoreActionHandler_lock = new Object();
    }
 
@@ -55,13 +50,13 @@ public class IndexStoreActionHandler implements Runnable {
             Object var14;
             if(var1 != null) {
                if(var1.type == 0) {
-                  var1.index.write((int)var1.hash, var1.field3359, var1.field3359.length);
+                  var1.index.write((int)var1.hash, var1.field3367, var1.field3367.length);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      var1.unlink();
                   }
                } else if(var1.type == 1) {
-                  var1.field3359 = var1.index.read((int)var1.hash);
+                  var1.field3367 = var1.index.read((int)var1.hash);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      IndexStoreActionHandler_responseQueue.addFront(var1);
@@ -70,58 +65,45 @@ public class IndexStoreActionHandler implements Runnable {
 
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3394 <= 1) {
-                     field3394 = 0;
+                  if(field3398 <= 1) {
+                     field3398 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  field3394 = 600;
+                  field3398 = 600;
                }
             } else {
-               PacketBuffer.method3907(100L);
+               class93.method1982(100L);
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3394 <= 1) {
-                     field3394 = 0;
+                  if(field3398 <= 1) {
+                     field3398 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  --field3394;
+                  --field3398;
                }
             }
          }
       } catch (Exception var13) {
-         ItemLayer.processClientError((String)null, var13);
+         GroundObject.processClientError((String)null, var13);
       }
    }
 
-   @ObfuscatedName("ha")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
+      signature = "(IIB)V",
+      garbageValue = "-89"
    )
-   static void method4767() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
-               }
-            }
-
-            --Client.menuOptionCount;
+   static final void method4675(int var0, int var1) {
+      if(Client.hintArrowTargetType == 2) {
+         class25.worldToScreen((Client.hintArrowX - class38.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - PlayerComposition.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
+         if(Client.screenX > -1 && Client.gameCycle % 20 < 10) {
+            class234.headIconsHint[0].drawAt(var0 + Client.screenX - 12, Client.screenY + var1 - 28);
          }
-      }
 
+      }
    }
 }

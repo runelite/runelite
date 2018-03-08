@@ -1,14 +1,19 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("gk")
 public class class191 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
+   @Export("scriptLocalStrings")
+   static String[] scriptLocalStrings;
+
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-156107054"
+      signature = "(IIB)Z",
+      garbageValue = "-81"
    )
-   public static boolean method3549(int var0) {
-      return (var0 >> 20 & 1) != 0;
+   static boolean method3509(int var0, int var1) {
+      return var0 != 4 || var1 < 8;
    }
 }

@@ -1,50 +1,71 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hi")
+@ObfuscatedName("hd")
 public class class228 {
-   @ObfuscatedName("pi")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -826086971
+      intValue = -611187595
    )
-   static int field2685;
-   @ObfuscatedName("d")
-   byte[] field2679;
-   @ObfuscatedName("z")
-   byte[] field2678;
-   @ObfuscatedName("n")
+   static int field2669;
+   @ObfuscatedName("aj")
+   static int[] field2670;
+   @ObfuscatedName("t")
+   byte[] field2671;
+   @ObfuscatedName("q")
+   byte[] field2661;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -671738197
+      intValue = 308446449
    )
-   int field2686;
-   @ObfuscatedName("r")
+   int field2662;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -727688971
+      intValue = -249965263
    )
-   int field2677;
+   int field2667;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1961455951
+   )
+   int field2664;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 277493449
+   )
+   int field2666;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1046623169
+      intValue = 1111787581
    )
-   int field2681;
-   @ObfuscatedName("y")
+   int field2660;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2080547185
+      intValue = 446302239
    )
-   int field2682;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -30233947
-   )
-   int field2680;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 2090379463
-   )
-   int field2684;
+   int field2665;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -474486511
+      intValue = 136276765
    )
-   int field2683;
+   int field2663;
+
+   @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1705878866"
+   )
+   static final void method4140() {
+      int var0 = class93.playerIndexesCount;
+      int[] var1 = class93.playerIndices;
+
+      for(int var2 = 0; var2 < var0; ++var2) {
+         Player var3 = Client.cachedPlayers[var1[var2]];
+         if(var3 != null) {
+            MapCacheArchiveNames.method592(var3, 1);
+         }
+      }
+
+   }
 }

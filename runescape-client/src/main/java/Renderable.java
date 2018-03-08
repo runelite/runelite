@@ -4,18 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("en")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("cm")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
-   )
-   @Export("indexSprites")
-   static IndexData indexSprites;
-   @ObfuscatedName("cw")
+   @ObfuscatedName("cc")
    @ObfuscatedGetter(
-      intValue = -1254448269
+      intValue = 664571155
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -24,17 +18,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)Lel;",
-      garbageValue = "2099798459"
+      signature = "(B)Lek;",
+      garbageValue = "22"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cc")
+   @ObfuscatedName("cd")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -45,82 +39,40 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "-86"
+      signature = "(Ljc;Ljava/lang/String;Ljava/lang/String;I)Llk;",
+      garbageValue = "608926699"
    )
-   public static char method3121(char var0) {
-      switch(var0) {
-      case ' ':
-      case '-':
-      case '_':
-      case ' ':
-         return '_';
-      case '#':
-      case '[':
-      case ']':
-         return var0;
-      case 'À':
-      case 'Á':
-      case 'Â':
-      case 'Ã':
-      case 'Ä':
-      case 'à':
-      case 'á':
-      case 'â':
-      case 'ã':
-      case 'ä':
-         return 'a';
-      case 'Ç':
-      case 'ç':
-         return 'c';
-      case 'È':
-      case 'É':
-      case 'Ê':
-      case 'Ë':
-      case 'è':
-      case 'é':
-      case 'ê':
-      case 'ë':
-         return 'e';
-      case 'Í':
-      case 'Î':
-      case 'Ï':
-      case 'í':
-      case 'î':
-      case 'ï':
-         return 'i';
-      case 'Ñ':
-      case 'ñ':
-         return 'n';
-      case 'Ò':
-      case 'Ó':
-      case 'Ô':
-      case 'Õ':
-      case 'Ö':
-      case 'ò':
-      case 'ó':
-      case 'ô':
-      case 'õ':
-      case 'ö':
-         return 'o';
-      case 'Ù':
-      case 'Ú':
-      case 'Û':
-      case 'Ü':
-      case 'ù':
-      case 'ú':
-      case 'û':
-      case 'ü':
-         return 'u';
-      case 'ß':
-         return 'b';
-      case 'ÿ':
-      case 'Ÿ':
-         return 'y';
-      default:
-         return Character.toLowerCase(var0);
+   @Export("getSprite")
+   public static IndexedSprite getSprite(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      byte[] var7 = var0.getConfigData(var3, var4);
+      boolean var6;
+      if(var7 == null) {
+         var6 = false;
+      } else {
+         Widget.decodeSprite(var7);
+         var6 = true;
       }
+
+      IndexedSprite var5;
+      if(!var6) {
+         var5 = null;
+      } else {
+         var5 = Ignore.method5387();
+      }
+
+      return var5;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(IS)Z",
+      garbageValue = "-17915"
+   )
+   public static boolean method3047(int var0) {
+      return (var0 >> 31 & 1) != 0;
    }
 }

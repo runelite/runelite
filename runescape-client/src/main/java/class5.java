@@ -1,147 +1,213 @@
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("b")
 final class class5 implements class0 {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lip;"
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 466042085
    )
-   static Track1 field36;
-   @ObfuscatedName("cf")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
+   static int field30;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1599027539
    )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-
-   @ObfuscatedName("d")
+   @Export("intStackSize")
+   static int intStackSize;
+   @ObfuscatedName("aa")
+   protected static GarbageCollectorMXBean field32;
+   @ObfuscatedName("ev")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2028812366"
+      signature = "Lkm;"
    )
-   static int method17() {
-      return ++class95.field1434 - 1;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(II)Liw;",
-      garbageValue = "-809382862"
-   )
-   @Export("getWidget")
-   public static Widget getWidget(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & 65535;
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = class18.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
-      }
-
-      return Widget.widgets[var1][var2];
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljk;I)V",
-      garbageValue = "1764329639"
-   )
-   public static void method21(IndexDataBase var0) {
-      Varbit.varbit_ref = var0;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2041370268"
-   )
-   static void method16() {
-      for(class80 var0 = (class80)class80.field1253.getFront(); var0 != null; var0 = (class80)class80.field1253.getNext()) {
-         if(var0.field1247 != null) {
-            WorldMapRectangle.field431.method2129(var0.field1247);
-            var0.field1247 = null;
-         }
-
-         if(var0.field1252 != null) {
-            WorldMapRectangle.field431.method2129(var0.field1252);
-            var0.field1252 = null;
-         }
-      }
-
-      class80.field1253.clear();
-   }
+   @Export("fontBold12")
+   static Font fontBold12;
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1686815758"
+      signature = "(IIB)I",
+      garbageValue = "2"
    )
-   @Export("getSmoothNoise2D")
-   static final int getSmoothNoise2D(int var0, int var1) {
-      int var2 = Size.method185(var0 - 1, var1 - 1) + Size.method185(var0 + 1, var1 - 1) + Size.method185(var0 - 1, 1 + var1) + Size.method185(1 + var0, 1 + var1);
-      int var3 = Size.method185(var0 - 1, var1) + Size.method185(var0 + 1, var1) + Size.method185(var0, var1 - 1) + Size.method185(var0, var1 + 1);
-      int var4 = Size.method185(var0, var1);
-      return var2 / 16 + var3 / 8 + var4 / 4;
-   }
-
-   @ObfuscatedName("gi")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-122"
-   )
-   static final void method18() {
-      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-         if(var0.hitpoints > 0) {
-            --var0.hitpoints;
+   public static int method15(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 = var0 * var2;
          }
 
-         if(var0.hitpoints == 0) {
-            if(var0.field1128 < 0 || class57.method833(var0.field1128, var0.field1135)) {
-               class93.method1987(var0.level, var0.type, var0.x, var0.y, var0.field1128, var0.field1129, var0.field1135);
-               var0.unlink();
-            }
-         } else {
-            if(var0.delay > 0) {
-               --var0.delay;
-            }
+         var0 *= var0;
+      }
 
-            if(var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || class57.method833(var0.id, var0.field1125))) {
-               class93.method1987(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field1125);
-               var0.delay = -1;
-               if(var0.field1128 == var0.id && var0.field1128 == -1) {
-                  var0.unlink();
-               } else if(var0.field1128 == var0.id && var0.field1129 == var0.orientation && var0.field1125 == var0.field1135) {
-                  var0.unlink();
-               }
-            }
+      if(var1 == 1) {
+         return var0 * var2;
+      } else {
+         return var2;
+      }
+   }
+
+   @ObfuscatedName("jg")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "372741659"
+   )
+   static final void method14(int var0) {
+      class38.method549();
+
+      for(class80 var1 = (class80)class80.field1240.getFront(); var1 != null; var1 = (class80)class80.field1240.getNext()) {
+         if(var1.field1250 != null) {
+            var1.method1794();
          }
       }
 
-   }
-
-   @ObfuscatedName("il")
-   @ObfuscatedSignature(
-      signature = "(Liw;IIB)V",
-      garbageValue = "-56"
-   )
-   static final void method20(Widget var0, int var1, int var2) {
-      if(Client.field1021 == null && !Client.isMenuOpen) {
-         if(var0 != null && Player.method1146(var0) != null) {
-            Client.field1021 = var0;
-            Client.field1022 = Player.method1146(var0);
-            Client.field1023 = var1;
-            Client.field1056 = var2;
-            WorldMapDecoration.field449 = 0;
-            Client.field1032 = false;
-            int var3 = Client.menuOptionCount - 1;
-            if(var3 != -1) {
-               WorldMapType1.method264(var3);
+      int var4 = Client.method1275(var0).configType;
+      if(var4 != 0) {
+         int var2 = class237.widgetSettings[var0];
+         if(var4 == 1) {
+            if(var2 == 1) {
+               Graphics3D.setBrightness(0.9D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.9D);
             }
 
+            if(var2 == 2) {
+               Graphics3D.setBrightness(0.8D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.8D);
+            }
+
+            if(var2 == 3) {
+               Graphics3D.setBrightness(0.7D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.7D);
+            }
+
+            if(var2 == 4) {
+               Graphics3D.setBrightness(0.6D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.6D);
+            }
+
+            ItemComposition.itemSpriteCache.reset();
          }
+
+         if(var4 == 3) {
+            short var3 = 0;
+            if(var2 == 0) {
+               var3 = 255;
+            }
+
+            if(var2 == 1) {
+               var3 = 192;
+            }
+
+            if(var2 == 2) {
+               var3 = 128;
+            }
+
+            if(var2 == 3) {
+               var3 = 64;
+            }
+
+            if(var2 == 4) {
+               var3 = 0;
+            }
+
+            if(var3 != Client.field1079) {
+               if(Client.field1079 == 0 && Client.field1080 != -1) {
+                  CombatInfo1.method1668(Varbit.indexTrack1, Client.field1080, 0, var3, false);
+                  Client.field956 = false;
+               } else if(var3 == 0) {
+                  ScriptState.method1124();
+                  Client.field956 = false;
+               } else {
+                  ISAACCipher.method3847(var3);
+               }
+
+               Client.field1079 = var3;
+            }
+         }
+
+         if(var4 == 4) {
+            if(var2 == 0) {
+               Client.field899 = 127;
+            }
+
+            if(var2 == 1) {
+               Client.field899 = 96;
+            }
+
+            if(var2 == 2) {
+               Client.field899 = 64;
+            }
+
+            if(var2 == 3) {
+               Client.field899 = 32;
+            }
+
+            if(var2 == 4) {
+               Client.field899 = 0;
+            }
+         }
+
+         if(var4 == 5) {
+            Client.field1022 = var2;
+         }
+
+         if(var4 == 6) {
+            Client.field1010 = var2;
+         }
+
+         if(var4 == 9) {
+            Client.field1011 = var2;
+         }
+
+         if(var4 == 10) {
+            if(var2 == 0) {
+               Client.field1083 = 127;
+            }
+
+            if(var2 == 1) {
+               Client.field1083 = 96;
+            }
+
+            if(var2 == 2) {
+               Client.field1083 = 64;
+            }
+
+            if(var2 == 3) {
+               Client.field1083 = 32;
+            }
+
+            if(var2 == 4) {
+               Client.field1083 = 0;
+            }
+         }
+
+         if(var4 == 17) {
+            Client.field1016 = var2 & 65535;
+         }
+
+         if(var4 == 18) {
+            Client.playerAttackOption = (AttackOption)WorldMapRectangle.forOrdinal(class229.method4159(), var2);
+            if(Client.playerAttackOption == null) {
+               Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
+            }
+         }
+
+         if(var4 == 19) {
+            if(var2 == -1) {
+               Client.field890 = -1;
+            } else {
+               Client.field890 = var2 & 2047;
+            }
+         }
+
+         if(var4 == 22) {
+            Client.npcAttackOption = (AttackOption)WorldMapRectangle.forOrdinal(class229.method4159(), var2);
+            if(Client.npcAttackOption == null) {
+               Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
+            }
+         }
+
       }
    }
 }

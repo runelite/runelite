@@ -5,21 +5,21 @@ import netscape.javascript.JSObject;
 
 @ObfuscatedName("br")
 public class class53 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(Ljava/applet/Applet;Ljava/lang/String;I)Ljava/lang/Object;",
-      garbageValue = "1314846677"
+      garbageValue = "-1520393353"
    )
-   public static Object method786(Applet var0, String var1) throws Throwable {
+   public static Object method840(Applet var0, String var1) throws Throwable {
       return JSObject.getWindow(var0).call(var1, (Object[])null);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/applet/Applet;Ljava/lang/String;[Ljava/lang/Object;I)Ljava/lang/Object;",
-      garbageValue = "1587001852"
+      signature = "(Ljava/applet/Applet;Ljava/lang/String;[Ljava/lang/Object;B)Ljava/lang/Object;",
+      garbageValue = "-35"
    )
-   public static Object method787(Applet var0, String var1, Object[] var2) throws Throwable {
+   public static Object method844(Applet var0, String var1, Object[] var2) throws Throwable {
       return JSObject.getWindow(var0).call(var1, var2);
    }
 }

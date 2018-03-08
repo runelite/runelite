@@ -3,106 +3,102 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hi")
 public class class229 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
-   public static IndexDataBase field2688;
-   @ObfuscatedName("z")
+   static IndexDataBase field2678;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
-   public static IndexDataBase field2693;
-   @ObfuscatedName("n")
+   static IndexDataBase field2675;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Lhk;"
    )
-   public static IndexDataBase field2689;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhl;"
-   )
-   public static class230 field2690;
-   @ObfuscatedName("e")
+   public static class230 field2673;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1868776503
+      intValue = 1957132757
    )
-   public static int field2694;
-   @ObfuscatedName("y")
+   public static int field2674;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
-   public static IndexDataBase field2687;
-   @ObfuscatedName("k")
+   public static IndexDataBase field2672;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2000070787
+      intValue = 693748113
    )
-   public static int field2691;
+   public static int field2676;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -841866287
+      intValue = -331877721
    )
-   public static int field2692;
+   public static int field2677;
 
    static {
-      field2694 = 0;
+      field2674 = 0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljs;IIIBZI)V",
-      garbageValue = "-159576396"
+      signature = "(I)[Lcq;",
+      garbageValue = "-379017910"
    )
-   @Export("requestNetFile")
-   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class264.NetCache_pendingPriorityWrites.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class264.NetCache_pendingPriorityResponses.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class264.NetCache_pendingWrites.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  --class264.NetCache_pendingWritesCount;
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               }
+   static AttackOption[] method4159() {
+      return new AttackOption[]{AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_hidden};
+   }
 
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class264.NetCache_pendingResponses.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1021619853"
+   )
+   static void method4165() {
+      class93.playerIndexesCount = 0;
 
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               } else {
-                  class264.NetCache_pendingWritesQueue.push(var8);
-                  class264.NetCache_pendingWrites.put(var8, var6);
-                  ++class264.NetCache_pendingWritesCount;
-               }
+      for(int var0 = 0; var0 < 2048; ++var0) {
+         class93.field1405[var0] = null;
+         class93.field1393[var0] = 1;
+      }
 
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "([BZB)Ljava/lang/Object;",
+      garbageValue = "6"
+   )
+   @Export("byteArrayToObject")
+   public static Object byteArrayToObject(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !AbstractByteBuffer.directBufferUnavailable) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.directBufferUnavailable = true;
             }
          }
+
+         return var0;
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1569507818"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "998148305"
    )
-   public static void method4237() {
-      KitDefinition.identKits.reset();
+   static final void method4163(String var0) {
+      MapIconReference.method757("Please remove " + var0 + " from your friend list first");
    }
 }

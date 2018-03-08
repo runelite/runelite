@@ -2,105 +2,105 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ls")
+@ObfuscatedName("lg")
 public class class333 {
-   @ObfuscatedName("y")
-   String field4000;
-   @ObfuscatedName("k")
+   @ObfuscatedName("b")
+   String field4003;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
-   IndexDataBase field4001;
-   @ObfuscatedName("s")
+   IndexDataBase field4005;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1938351847
+      intValue = -264227029
    )
-   int field3998;
+   int field4004;
    @ObfuscatedName("p")
-   boolean field4003;
+   boolean field4006;
 
    @ObfuscatedSignature(
-      signature = "(Ljk;)V"
+      signature = "(Ljc;)V"
    )
    class333(IndexDataBase var1) {
-      this.field3998 = 0;
-      this.field4003 = false;
-      this.field4001 = var1;
+      this.field4004 = 0;
+      this.field4006 = false;
+      this.field4005 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-551502548"
+      garbageValue = "1677725568"
    )
-   void method6053(String var1) {
+   void method5974(String var1) {
       if(var1 != null && !var1.isEmpty()) {
-         if(var1 != this.field4000) {
-            this.field4000 = var1;
-            this.field3998 = 0;
-            this.field4003 = false;
-            this.method6054();
+         if(var1 != this.field4003) {
+            this.field4003 = var1;
+            this.field4004 = 0;
+            this.field4006 = false;
+            this.method5981();
          }
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1167777833"
+      signature = "(B)I",
+      garbageValue = "84"
    )
-   int method6054() {
-      if(this.field3998 < 25) {
-         if(!this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, this.field4000)) {
-            return this.field3998;
+   int method5981() {
+      if(this.field4004 < 25) {
+         if(!this.field4005.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, this.field4003)) {
+            return this.field4004;
          }
 
-         this.field3998 = 25;
+         this.field4004 = 25;
       }
 
-      if(this.field3998 == 25) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.AREA.name)) {
-            return 25 + this.field4001.archiveLoadPercentByName(this.field4000) * 25 / 100;
+      if(this.field4004 == 25) {
+         if(!this.field4005.tryLoadRecordByNames(this.field4003, MapCacheArchiveNames.AREA.name)) {
+            return 25 + this.field4005.archiveLoadPercentByName(this.field4003) * 25 / 100;
          }
 
-         this.field3998 = 50;
+         this.field4004 = 50;
       }
 
-      if(this.field3998 == 50) {
-         if(this.field4001.method4689(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4000) && !this.field4001.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4000)) {
+      if(this.field4004 == 50) {
+         if(this.field4005.method4584(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4003) && !this.field4005.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4003)) {
             return 50;
          }
 
-         this.field3998 = 75;
+         this.field4004 = 75;
       }
 
-      if(this.field3998 == 75) {
-         if(!this.field4001.tryLoadRecordByNames(this.field4000, MapCacheArchiveNames.LABELS.name)) {
+      if(this.field4004 == 75) {
+         if(!this.field4005.tryLoadRecordByNames(this.field4003, MapCacheArchiveNames.LABELS.name)) {
             return 75;
          }
 
-         this.field3998 = 100;
-         this.field4003 = true;
+         this.field4004 = 100;
+         this.field4006 = true;
       }
 
-      return this.field3998;
+      return this.field4004;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-1289580997"
+      garbageValue = "-325319175"
    )
-   boolean method6055() {
-      return this.field4003;
+   boolean method5973() {
+      return this.field4006;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "1"
+      garbageValue = "2"
    )
-   int method6056() {
-      return this.field3998;
+   int method5977() {
+      return this.field4004;
    }
 }

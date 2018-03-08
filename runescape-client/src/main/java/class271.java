@@ -1,63 +1,72 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ju")
+@ObfuscatedName("jz")
 public class class271 extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
-   public static IndexDataBase field3475;
-   @ObfuscatedName("z")
+   public static IndexDataBase field3485;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhp;"
+      signature = "Lhj;"
    )
-   static NodeCache field3476;
-   @ObfuscatedName("n")
-   public boolean field3477;
+   public static NodeCache field3482;
+   @ObfuscatedName("ks")
+   @ObfuscatedGetter(
+      intValue = -828255141
+   )
+   @Export("selectedItemIndex")
+   static int selectedItemIndex;
+   @ObfuscatedName("i")
+   public boolean field3484;
 
    static {
-      field3476 = new NodeCache(64);
+      field3482 = new NodeCache(64);
    }
 
-   class271() {
-      this.field3477 = false;
+   public class271() {
+      this.field3484 = false;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "1884093876"
+      signature = "(Lgb;I)V",
+      garbageValue = "-380806387"
    )
-   void method4920(Buffer var1) {
+   public void method4797(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4921(var1, var2);
+         this.method4795(var1, var2);
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgy;II)V",
-      garbageValue = "1825558500"
+      signature = "(Lgb;II)V",
+      garbageValue = "-935218479"
    )
-   void method4921(Buffer var1, int var2) {
+   void method4795(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3477 = true;
+         this.field3484 = true;
       }
 
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljk;IB)Llv;",
-      garbageValue = "-76"
+      signature = "(B)V",
+      garbageValue = "-75"
    )
-   public static IndexedSprite method4927(IndexDataBase var0, int var1) {
-      return !GraphicsObject.method1846(var0, var1)?null:class19.method140();
+   public static void method4800() {
+      NPCComposition.npcs.reset();
+      NPCComposition.npcModelCache.reset();
    }
 }

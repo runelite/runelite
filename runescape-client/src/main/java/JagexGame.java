@@ -1,49 +1,50 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("in")
 @Implements("JagexGame")
 public enum JagexGame implements Enumerated {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Liq;"
+      signature = "Lin;"
    )
-   field3357("runescape", "RuneScape", 0),
-   @ObfuscatedName("z")
+   field3364("runescape", "RuneScape", 0),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Liq;"
+      signature = "Lin;"
    )
-   field3351("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("n")
+   field3361("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Liq;"
+      signature = "Lin;"
    )
-   field3350("game3", "Game 3", 2),
-   @ObfuscatedName("r")
+   field3360("game3", "Game 3", 2),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Liq;"
+      signature = "Lin;"
    )
-   field3355("game4", "Game 4", 3),
-   @ObfuscatedName("e")
+   field3365("game4", "Game 4", 3),
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Liq;"
+      signature = "Lin;"
    )
-   field3354("game5", "Game 5", 4),
-   @ObfuscatedName("y")
+   field3362("game5", "Game 5", 4),
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Liq;"
+      signature = "Lin;"
    )
-   field3352("oldscape", "RuneScape 2007", 5);
+   field3363("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @Export("name")
    public final String name;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1937627611
+      intValue = 1898258613
    )
    @Export("id")
    final int id;
@@ -53,12 +54,39 @@ public enum JagexGame implements Enumerated {
       this.id = var5;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "846888120"
+      signature = "(B)I",
+      garbageValue = "64"
    )
    public int rsOrdinal() {
       return this.id;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "-1290719922"
+   )
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
+      if(SoundTaskDataProvider.NetCache_socket != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            SoundTaskDataProvider.NetCache_socket.vmethod3340(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               SoundTaskDataProvider.NetCache_socket.vmethod3339();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class264.field3413;
+            SoundTaskDataProvider.NetCache_socket = null;
+         }
+
+      }
    }
 }

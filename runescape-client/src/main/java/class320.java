@@ -2,36 +2,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lh")
+@ObfuscatedName("ll")
 public class class320 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Llh;"
+      signature = "Lll;"
    )
-   public static final class320 field3924;
-   @ObfuscatedName("z")
+   public static final class320 field3933;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Llh;"
+      signature = "Lll;"
    )
-   public static final class320 field3928;
-   @ObfuscatedName("n")
+   public static final class320 field3935;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Llh;"
+      signature = "Lll;"
    )
-   public static final class320 field3926;
-   @ObfuscatedName("r")
+   public static final class320 field3934;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1456611787
+      intValue = 429195029
    )
-   public final int field3927;
+   public final int field3936;
 
    static {
-      field3924 = new class320(0);
-      field3928 = new class320(1);
-      field3926 = new class320(2);
+      field3933 = new class320(0);
+      field3935 = new class320(1);
+      field3934 = new class320(2);
    }
 
    class320(int var1) {
-      this.field3927 = var1;
+      this.field3936 = var1;
    }
 }

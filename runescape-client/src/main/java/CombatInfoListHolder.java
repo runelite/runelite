@@ -1,44 +1,38 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("cw")
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
-   @ObfuscatedName("ji")
-   @ObfuscatedGetter(
-      intValue = -1840552905
-   )
-   static int field1289;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ljc;"
+      signature = "Ljb;"
    )
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lhs;"
+      signature = "Lhr;"
    )
    @Export("combatInfo1")
    CombatInfoList combatInfo1;
 
    @ObfuscatedSignature(
-      signature = "(Ljc;)V"
+      signature = "(Ljb;)V"
    )
    CombatInfoListHolder(CombatInfo2 var1) {
       this.combatInfo1 = new CombatInfoList();
       this.combatInfo2 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "1903131180"
+      garbageValue = "384907867"
    )
-   void method1848(int var1, int var2, int var3, int var4) {
+   void method1887(int var1, int var2, int var3, int var4) {
       CombatInfo1 var5 = null;
       int var6 = 0;
 
@@ -60,7 +54,7 @@ public class CombatInfoListHolder extends Node {
          }
 
       } else {
-         CombatInfoList.method4086(new CombatInfo1(var1, var2, var3, var4), var5);
+         CombatInfoList.method3992(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.last().unlink();
          }
@@ -68,12 +62,12 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)Lbo;",
-      garbageValue = "1852366583"
+      signature = "(II)Lbp;",
+      garbageValue = "-1626141503"
    )
-   CombatInfo1 method1850(int var1) {
+   CombatInfo1 method1881(int var1) {
       CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.last();
       if(var2 != null && var2.cycle <= var1) {
          for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.previous(); var3 != null && var3.cycle <= var1; var3 = (CombatInfo1)this.combatInfo1.previous()) {
@@ -81,7 +75,7 @@ public class CombatInfoListHolder extends Node {
             var2 = var3;
          }
 
-         if(this.combatInfo2.field3525 + var2.int2 + var2.cycle > var1) {
+         if(this.combatInfo2.field3532 + var2.int2 + var2.cycle > var1) {
             return var2;
          } else {
             var2.unlink();
@@ -92,75 +86,21 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "35300551"
+      garbageValue = "1384812962"
    )
-   boolean method1851() {
+   boolean method1882() {
       return this.combatInfo1.isEmpty();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIIIIB)I",
-      garbageValue = "94"
+      signature = "(I)Lbd;",
+      garbageValue = "1681226249"
    )
-   public static int method1862(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1023329759"
-   )
-   public static boolean method1849(int var0) {
-      return (var0 >> 30 & 1) != 0;
-   }
-
-   @ObfuscatedName("gg")
-   @ObfuscatedSignature(
-      signature = "(Lbh;B)V",
-      garbageValue = "-22"
-   )
-   static final void method1860(PendingSpawn var0) {
-      int var1 = 0;
-      int var2 = -1;
-      int var3 = 0;
-      int var4 = 0;
-      if(var0.type == 0) {
-         var1 = class86.region.method2994(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 1) {
-         var1 = class86.region.method3034(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 2) {
-         var1 = class86.region.method2944(var0.level, var0.x, var0.y);
-      }
-
-      if(var0.type == 3) {
-         var1 = class86.region.method3084(var0.level, var0.x, var0.y);
-      }
-
-      if(var1 != 0) {
-         int var5 = class86.region.getObjectFlags(var0.level, var0.x, var0.y, var1);
-         var2 = var1 >> 14 & 32767;
-         var3 = var5 & 31;
-         var4 = var5 >> 6 & 3;
-      }
-
-      var0.field1128 = var2;
-      var0.field1135 = var3;
-      var0.field1129 = var4;
+   static World method1879() {
+      return World.field1211 < World.worldCount?World.worldList[++World.field1211 - 1]:null;
    }
 }

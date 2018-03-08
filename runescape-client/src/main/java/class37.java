@@ -1,144 +1,125 @@
+import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("ar")
 public class class37 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lae;"
+      signature = "Lar;"
    )
-   static final class37 field509;
-   @ObfuscatedName("z")
+   static final class37 field481;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lae;"
+      signature = "Lar;"
    )
-   static final class37 field505;
-   @ObfuscatedName("m")
-   public static boolean field506;
-   @ObfuscatedName("aa")
+   static final class37 field482;
+   @ObfuscatedName("a")
+   @Export("jagexClDat")
+   static File jagexClDat;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1433244755
+      intValue = 1619473099
    )
-   static int field512;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 682502291
-   )
-   final int field507;
+   final int field483;
 
    static {
-      field509 = new class37(0);
-      field505 = new class37(1);
+      field481 = new class37(0);
+      field482 = new class37(1);
    }
 
    class37(int var1) {
-      this.field507 = var1;
+      this.field483 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;S)Ljava/lang/String;",
-      garbageValue = "17347"
+      signature = "(B)V",
+      garbageValue = "-1"
    )
-   public static String method507(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
+   public static void method541() {
+      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
+         if(IndexStoreActionHandler.field3398 != 0) {
+            IndexStoreActionHandler.field3398 = 1;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-            if(var4 == ' ') {
-               var2.append('+');
-            } else {
-               byte var5 = Client.charToByteCp1252(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
+            try {
+               IndexStoreActionHandler.IndexStoreActionHandler_lock.wait();
+            } catch (InterruptedException var3) {
+               ;
             }
-         } else {
-            var2.append(var4);
+         }
+
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "2088682816"
+   )
+   @Export("getColTags")
+   static String getColTags(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-105"
+   )
+   static void method538() {
+      FileOnDisk var0 = null;
+
+      try {
+         var0 = class297.getPreferencesFile("", Client.field852.name, true);
+         Buffer var1 = MapIcon.preferences.serialize();
+         var0.write(var1.payload, 0, var1.offset);
+      } catch (Exception var3) {
+         ;
+      }
+
+      try {
+         if(var0 != null) {
+            var0.closeSync(true);
+         }
+      } catch (Exception var2) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("ht")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "1373496145"
+   )
+   static final void method539(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      PendingSpawn var9 = null;
+
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+            var9 = var10;
+            break;
          }
       }
 
-      return var2.toString();
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1792957764"
-   )
-   @Export("setItemTableSlot")
-   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
-      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var4 == null) {
-         var4 = new ItemContainer();
-         ItemContainer.itemContainers.put(var4, (long)var0);
+      if(var9 == null) {
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
+         GZipDecompressor.method3474(var9);
+         Client.pendingSpawns.addFront(var9);
       }
 
-      if(var4.itemIds.length <= var1) {
-         int[] var5 = new int[var1 + 1];
-         int[] var6 = new int[var1 + 1];
-
-         int var7;
-         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
-            var5[var7] = var4.itemIds[var7];
-            var6[var7] = var4.stackSizes[var7];
-         }
-
-         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
-            var5[var7] = -1;
-            var6[var7] = 0;
-         }
-
-         var4.itemIds = var5;
-         var4.stackSizes = var6;
-      }
-
-      var4.itemIds[var1] = var2;
-      var4.stackSizes[var1] = var3;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)[Liq;",
-      garbageValue = "-2023228195"
-   )
-   public static JagexGame[] method505() {
-      return new JagexGame[]{JagexGame.field3351, JagexGame.field3352, JagexGame.field3357, JagexGame.field3350, JagexGame.field3355, JagexGame.field3354};
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "-65"
-   )
-   static char method504(char var0) {
-      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1641663795"
-   )
-   static void method503() {
-      if(GrandExchangeEvents.loadWorlds()) {
-         class90.worldSelectShown = true;
-      }
-
+      var9.id = var4;
+      var9.field1129 = var5;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
    }
 }

@@ -1,56 +1,49 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("ea")
 public class class151 extends class297 {
-   @ObfuscatedName("d")
-   final boolean field2120;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      longValue = -8873859351953491735L
+   )
+   public static long field2101;
+   @ObfuscatedName("t")
+   final boolean field2102;
 
    public class151(boolean var1) {
-      this.field2120 = var1;
+      this.field2102 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lkz;Lkz;S)I",
-      garbageValue = "12621"
+      signature = "(Lkp;Lkp;S)I",
+      garbageValue = "6682"
    )
-   int method3202(ChatPlayer var1, ChatPlayer var2) {
+   int method3119(ChatPlayer var1, ChatPlayer var2) {
       if(Client.world == var1.world) {
          if(var2.world != Client.world) {
-            return this.field2120?-1:1;
+            return this.field2102?-1:1;
          }
       } else if(var2.world == Client.world) {
-         return this.field2120?1:-1;
+         return this.field2102?1:-1;
       }
 
-      return this.method5387(var1, var2);
+      return this.method5273(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3202((ChatPlayer)var1, (ChatPlayer)var2);
+      return this.method3119((ChatPlayer)var1, (ChatPlayer)var2);
    }
 
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)[Lio;",
-      garbageValue = "-1427083191"
-   )
-   public static class254[] method3207() {
-      return new class254[]{class254.field3315, class254.field3321, class254.field3316, class254.field3324, class254.field3319, class254.field3318, class254.field3317, class254.field3320};
-   }
-
-   @ObfuscatedName("v")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2100972752"
+      garbageValue = "699240423"
    )
-   static void method3208() {
-      class332.field3990 = null;
-      class332.offsetsY = null;
-      Varbit.field3539 = null;
-      BoundingBox2D.field242 = null;
-      class332.field3994 = null;
-      class332.spritePixels = null;
+   public static void method3120() {
+      WorldMapRegion.field457.method3950(5);
+      WorldMapRegion.field462.method3950(5);
    }
 }

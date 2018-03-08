@@ -5,202 +5,114 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ah")
+@ObfuscatedName("aq")
 public class class45 extends WorldMapData {
-   @ObfuscatedName("qf")
-   static short[] field578;
-   @ObfuscatedName("eb")
+   @ObfuscatedName("mb")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Lfs;"
    )
-   @Export("urlRequester")
-   static UrlRequester urlRequester;
-   @ObfuscatedName("kn")
+   @Export("mouseWheel")
+   static MouseWheel mouseWheel;
+   @ObfuscatedName("fw")
    @ObfuscatedSignature(
-      signature = "Liw;"
+      signature = "Lla;"
    )
-   static Widget field579;
-   @ObfuscatedName("t")
-   HashSet field574;
-   @ObfuscatedName("i")
-   HashSet field575;
+   @Export("mapedge")
+   static SpritePixels mapedge;
+   @ObfuscatedName("c")
+   HashSet field556;
+   @ObfuscatedName("v")
+   HashSet field555;
    @ObfuscatedName("u")
-   List field576;
+   List field554;
 
-   @ObfuscatedName("bk")
+   @ObfuscatedName("cu")
    @ObfuscatedSignature(
-      signature = "(Lgy;Lgy;Lgy;IZI)V",
-      garbageValue = "1806423251"
+      signature = "(Lgb;Lgb;Lgb;IZI)V",
+      garbageValue = "-1670821459"
    )
-   void method632(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {
+   void method682(Buffer var1, Buffer var2, Buffer var3, int var4, boolean var5) {
       this.loadMapData(var1, var4);
       int var6 = var3.readUnsignedShort();
-      this.field574 = new HashSet(var6);
+      this.field556 = new HashSet(var6);
 
       int var7;
       for(var7 = 0; var7 < var6; ++var7) {
          class22 var8 = new class22();
 
          try {
-            var8.method164(var2, var3);
+            var8.method176(var2, var3);
          } catch (IllegalStateException var13) {
             continue;
          }
 
-         this.field574.add(var8);
+         this.field556.add(var8);
       }
 
       var7 = var3.readUnsignedShort();
-      this.field575 = new HashSet(var7);
+      this.field555 = new HashSet(var7);
 
       for(int var11 = 0; var11 < var7; ++var11) {
          class46 var9 = new class46();
 
          try {
-            var9.method641(var2, var3);
+            var9.method695(var2, var3);
          } catch (IllegalStateException var12) {
             continue;
          }
 
-         this.field575.add(var9);
+         this.field555.add(var9);
       }
 
-      this.method631(var2, var5);
+      this.method683(var2, var5);
    }
 
-   @ObfuscatedName("bo")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(Lgy;ZS)V",
-      garbageValue = "4114"
+      signature = "(Lgb;ZI)V",
+      garbageValue = "975435623"
    )
-   void method631(Buffer var1, boolean var2) {
-      this.field576 = new LinkedList();
+   void method683(Buffer var1, boolean var2) {
+      this.field554 = new LinkedList();
       int var3 = var1.readUnsignedShort();
 
       for(int var4 = 0; var4 < var3; ++var4) {
-         int var5 = var1.method3617();
+         int var5 = var1.method3553();
          Coordinates var6 = new Coordinates(var1.readInt());
          boolean var7 = var1.readUnsignedByte() == 1;
          if(var2 || !var7) {
-            this.field576.add(new class25(var5, var6));
+            this.field554.add(new class25(var5, var6));
          }
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljk;IIS)Lly;",
-      garbageValue = "-3964"
+      signature = "(I)V",
+      garbageValue = "196572852"
    )
-   public static SpritePixels method640(IndexDataBase var0, int var1, int var2) {
-      return !AbstractByteBuffer.method3843(var0, var1, var2)?null:class46.method666();
+   static final void method687() {
+      MapIconReference.method757("Your friend list is full. Max of 200 for free users, and 400 for members");
    }
 
-   @ObfuscatedName("fh")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lbk;I)V",
-      garbageValue = "2048935719"
+      signature = "(Lbd;I)V",
+      garbageValue = "1728686707"
    )
-   static final void method639(Actor var0) {
-      var0.field1141 = false;
-      Sequence var1;
-      if(var0.poseAnimation != -1) {
-         var1 = class270.getAnimation(var0.poseAnimation);
-         if(var1 != null && var1.frameIDs != null) {
-            ++var0.field1170;
-            if(var0.poseFrame < var1.frameIDs.length && var0.field1170 > var1.frameLenghts[var0.poseFrame]) {
-               var0.field1170 = 1;
-               ++var0.poseFrame;
-               MapCacheArchiveNames.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
-            }
-
-            if(var0.poseFrame >= var1.frameIDs.length) {
-               var0.field1170 = 0;
-               var0.poseFrame = 0;
-               MapCacheArchiveNames.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
-            }
-         } else {
-            var0.poseAnimation = -1;
-         }
+   @Export("changeWorld")
+   static void changeWorld(World var0) {
+      if(var0.method1690() != Client.isMembers) {
+         Client.isMembers = var0.method1690();
+         class240.method4449(var0.method1690());
       }
 
-      if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
-         if(var0.field1177 < 0) {
-            var0.field1177 = 0;
-         }
-
-         int var3 = class55.getSpotAnimType(var0.graphic).field3484;
-         if(var3 != -1) {
-            Sequence var2 = class270.getAnimation(var3);
-            if(var2 != null && var2.frameIDs != null) {
-               ++var0.field1178;
-               if(var0.field1177 < var2.frameIDs.length && var0.field1178 > var2.frameLenghts[var0.field1177]) {
-                  var0.field1178 = 1;
-                  ++var0.field1177;
-                  MapCacheArchiveNames.queueAnimationSound(var2, var0.field1177, var0.x, var0.y);
-               }
-
-               if(var0.field1177 >= var2.frameIDs.length && (var0.field1177 < 0 || var0.field1177 >= var2.frameIDs.length)) {
-                  var0.graphic = -1;
-               }
-            } else {
-               var0.graphic = -1;
-            }
-         } else {
-            var0.graphic = -1;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
-         var1 = class270.getAnimation(var0.animation);
-         if(var1.precedenceAnimating == 1 && var0.field1198 > 0 && var0.field1188 <= Client.gameCycle && var0.field1186 < Client.gameCycle) {
-            var0.actionAnimationDisable = 1;
-            return;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-         var1 = class270.getAnimation(var0.animation);
-         if(var1 != null && var1.frameIDs != null) {
-            ++var0.field1173;
-            if(var0.actionFrame < var1.frameIDs.length && var0.field1173 > var1.frameLenghts[var0.actionFrame]) {
-               var0.field1173 = 1;
-               ++var0.actionFrame;
-               MapCacheArchiveNames.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
-            }
-
-            if(var0.actionFrame >= var1.frameIDs.length) {
-               var0.actionFrame -= var1.frameStep;
-               ++var0.field1175;
-               if(var0.field1175 >= var1.maxLoops) {
-                  var0.animation = -1;
-               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
-                  MapCacheArchiveNames.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
-               } else {
-                  var0.animation = -1;
-               }
-            }
-
-            var0.field1141 = var1.stretches;
-         } else {
-            var0.animation = -1;
-         }
-      }
-
-      if(var0.actionAnimationDisable > 0) {
-         --var0.actionAnimationDisable;
-      }
-
-   }
-
-   @ObfuscatedName("hr")
-   @ObfuscatedSignature(
-      signature = "(III)Ljava/lang/String;",
-      garbageValue = "-1858350594"
-   )
-   static final String method634(int var0, int var1) {
-      int var2 = var1 - var0;
-      return var2 < -9?IndexFile.getColTags(16711680):(var2 < -6?IndexFile.getColTags(16723968):(var2 < -3?IndexFile.getColTags(16740352):(var2 < 0?IndexFile.getColTags(16756736):(var2 > 9?IndexFile.getColTags(65280):(var2 > 6?IndexFile.getColTags(4259584):(var2 > 3?IndexFile.getColTags(8453888):(var2 > 0?IndexFile.getColTags(12648192):IndexFile.getColTags(16776960))))))));
+      GrandExchangeEvent.host = var0.address;
+      Client.world = var0.id;
+      Client.flags = var0.mask;
+      class110.port1 = Client.socketType == 0?43594:var0.id + 40000;
+      Player.port2 = Client.socketType == 0?443:var0.id + 50000;
+      class85.myWorldPort = class110.port1;
    }
 }

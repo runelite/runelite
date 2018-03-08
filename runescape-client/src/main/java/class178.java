@@ -3,55 +3,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fv")
 public abstract class class178 {
-   @ObfuscatedName("be")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "[Llv;"
+      signature = "Lix;"
    )
-   @Export("slStarSprites")
-   static IndexedSprite[] slStarSprites;
-   @ObfuscatedName("cz")
+   static Track1 field2258;
+   @ObfuscatedName("ez")
    @ObfuscatedSignature(
-      signature = "Ljs;"
+      signature = "Lkm;"
    )
-   @Export("indexCache4")
-   static IndexData indexCache4;
-   @ObfuscatedName("d")
+   @Export("fontPlain11")
+   static Font fontPlain11;
+   @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Lkm;"
+   )
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -2084893001
+      intValue = -321286983
    )
-   public int field2282;
-   @ObfuscatedName("z")
+   public int field2254;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 987598907
+      intValue = -566578481
    )
-   public int field2279;
-   @ObfuscatedName("n")
+   public int field2255;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 505783573
+      intValue = 735939299
    )
-   public int field2280;
-   @ObfuscatedName("r")
+   public int field2257;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -856605283
+      intValue = 2122294051
    )
-   public int field2281;
+   public int field2256;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIILfb;I)Z",
-      garbageValue = "740500381"
+      signature = "(IIILfa;I)Z",
+      garbageValue = "-2078182693"
    )
-   public abstract boolean vmethod3470(int var1, int var2, int var3, CollisionData var4);
+   protected abstract boolean vmethod3427(int var1, int var2, int var3, CollisionData var4);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-2"
+      signature = "([BIIB)I",
+      garbageValue = "74"
    )
-   public static void method3472() {
-      CombatInfo2.field3527.reset();
-      CombatInfo2.field3517.reset();
+   static int method3429(byte[] var0, int var1, int var2) {
+      int var3 = -1;
+
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
+      }
+
+      var3 = ~var3;
+      return var3;
    }
 }

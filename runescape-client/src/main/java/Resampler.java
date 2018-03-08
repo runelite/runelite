@@ -4,34 +4,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dn")
+@ObfuscatedName("dt")
 @Implements("Resampler")
 public class Resampler {
-   @ObfuscatedName("go")
-   @ObfuscatedGetter(
-      intValue = -777772071
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lkm;"
    )
-   @Export("cameraX")
-   static int cameraX;
-   @ObfuscatedName("r")
+   public static Font field1590;
+   @ObfuscatedName("kr")
    @ObfuscatedGetter(
-      intValue = 1721796239
+      intValue = 2036146259
+   )
+   static int field1597;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1951843609
    )
    @Export("storedSampleRateRatio")
    int storedSampleRateRatio;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 178723623
+      intValue = 1124074761
    )
    @Export("playbackSampleRateRatio")
    int playbackSampleRateRatio;
-   @ObfuscatedName("y")
+   @ObfuscatedName("b")
    @Export("resampleTable")
    int[][] resampleTable;
 
    public Resampler(int var1, int var2) {
       if(var2 != var1) {
-         int var3 = WorldMapDecoration.method286(var1, var2);
+         int var3 = class169.method3290(var1, var2);
          var1 /= var3;
          var2 /= var3;
          this.storedSampleRateRatio = var1;
@@ -40,13 +44,13 @@ public class Resampler {
 
          for(int var4 = 0; var4 < var1; ++var4) {
             int[] var5 = this.resampleTable[var4];
-            double var6 = 6.0D + (double)var4 / (double)var1;
+            double var6 = (double)var4 / (double)var1 + 6.0D;
             int var8 = (int)Math.floor(1.0D + (var6 - 7.0D));
             if(var8 < 0) {
                var8 = 0;
             }
 
-            int var9 = (int)Math.ceil(7.0D + var6);
+            int var9 = (int)Math.ceil(var6 + 7.0D);
             if(var9 > 14) {
                var9 = 14;
             }
@@ -66,10 +70,10 @@ public class Resampler {
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "([BB)[B",
-      garbageValue = "0"
+      garbageValue = "120"
    )
    @Export("resampleIfNecessary")
    byte[] resampleIfNecessary(byte[] var1) {
@@ -86,7 +90,7 @@ public class Resampler {
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
-               var3[var9 + var4] += var8[var9] * var7;
+               var3[var4 + var9] += var7 * var8[var9];
             }
 
             var5 += this.playbackSampleRateRatio;
@@ -112,12 +116,12 @@ public class Resampler {
       return var1;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "-2100250815"
+      garbageValue = "1143007816"
    )
-   int method2350(int var1) {
+   int method2312(int var1) {
       if(this.resampleTable != null) {
          var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio);
       }
@@ -125,12 +129,12 @@ public class Resampler {
       return var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "-2011189860"
+      garbageValue = "1457910263"
    )
-   int method2351(int var1) {
+   int method2309(int var1) {
       if(this.resampleTable != null) {
          var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio) + 6;
       }
@@ -138,52 +142,10 @@ public class Resampler {
       return var1;
    }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IIIZIZI)V",
-      garbageValue = "-736875264"
-   )
-   static void method2358(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if(var0 < var1) {
-         int var6 = (var0 + var1) / 2;
-         int var7 = var0;
-         World var8 = World.worldList[var6];
-         World.worldList[var6] = World.worldList[var1];
-         World.worldList[var1] = var8;
-
-         for(int var9 = var0; var9 < var1; ++var9) {
-            World var11 = World.worldList[var9];
-            int var12 = class20.method154(var11, var8, var2, var3);
-            int var10;
-            if(var12 != 0) {
-               if(var3) {
-                  var10 = -var12;
-               } else {
-                  var10 = var12;
-               }
-            } else if(var4 == -1) {
-               var10 = 0;
-            } else {
-               int var13 = class20.method154(var11, var8, var4, var5);
-               if(var5) {
-                  var10 = -var13;
-               } else {
-                  var10 = var13;
-               }
-            }
-
-            if(var10 <= 0) {
-               World var14 = World.worldList[var9];
-               World.worldList[var9] = World.worldList[var7];
-               World.worldList[var7++] = var14;
-            }
-         }
-
-         World.worldList[var1] = World.worldList[var7];
-         World.worldList[var7] = var8;
-         method2358(var0, var7 - 1, var2, var3, var4, var5);
-         method2358(var7 + 1, var1, var2, var3, var4, var5);
-      }
-
+   @ObfuscatedName("t")
+   static double method2307(double var0, double var2, double var4) {
+      double var8 = (var0 - var2) / var4;
+      double var6 = Math.exp(var8 * -var8 / 2.0D) / Math.sqrt(6.283185307179586D);
+      return var6 / var4;
    }
 }

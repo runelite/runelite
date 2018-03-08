@@ -6,61 +6,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fz")
+@ObfuscatedName("fj")
 @Implements("GameSocket")
 public class GameSocket implements Runnable {
-   @ObfuscatedName("d")
-   Thread field2250;
-   @ObfuscatedName("z")
-   OutputStream field2247;
-   @ObfuscatedName("n")
+   @ObfuscatedName("t")
+   Thread field2223;
+   @ObfuscatedName("q")
+   OutputStream field2222;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1257422465
+      intValue = 453998783
    )
-   int field2248;
-   @ObfuscatedName("r")
-   byte[] field2249;
+   int field2225;
+   @ObfuscatedName("a")
+   byte[] field2224;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -885760093
+   )
+   int field2226;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -94509961
+   )
+   int field2221;
    @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1808972607
-   )
-   int field2252;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1607402475
-   )
-   int field2251;
-   @ObfuscatedName("k")
-   IOException field2246;
-   @ObfuscatedName("s")
-   boolean field2253;
+   IOException field2227;
+   @ObfuscatedName("x")
+   boolean field2228;
 
    GameSocket(OutputStream var1, int var2) {
-      this.field2252 = 0;
-      this.field2251 = 0;
-      this.field2247 = var1;
-      this.field2248 = var2 + 1;
-      this.field2249 = new byte[this.field2248];
-      this.field2250 = new Thread(this);
-      this.field2250.setDaemon(true);
-      this.field2250.start();
+      this.field2226 = 0;
+      this.field2221 = 0;
+      this.field2222 = var1;
+      this.field2225 = var2 + 1;
+      this.field2224 = new byte[this.field2225];
+      this.field2223 = new Thread(this);
+      this.field2223.setDaemon(true);
+      this.field2223.start();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1756865742"
+      signature = "(B)Z",
+      garbageValue = "-39"
    )
-   boolean method3421() {
-      if(this.field2253) {
+   boolean method3381() {
+      if(this.field2228) {
          try {
-            this.field2247.close();
-            if(this.field2246 == null) {
-               this.field2246 = new IOException("");
+            this.field2222.close();
+            if(this.field2227 == null) {
+               this.field2227 = new IOException("");
             }
          } catch (IOException var2) {
-            if(this.field2246 == null) {
-               this.field2246 = new IOException(var2);
+            if(this.field2227 == null) {
+               this.field2227 = new IOException(var2);
             }
          }
 
@@ -70,37 +70,37 @@ public class GameSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "430922557"
+      garbageValue = "-1112849919"
    )
    @Export("read")
    void read(byte[] var1, int var2, int var3) throws IOException {
       if(var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
          synchronized(this) {
-            if(this.field2246 != null) {
-               throw new IOException(this.field2246.toString());
+            if(this.field2227 != null) {
+               throw new IOException(this.field2227.toString());
             } else {
                int var5;
-               if(this.field2252 <= this.field2251) {
-                  var5 = this.field2248 - this.field2251 + this.field2252 - 1;
+               if(this.field2226 <= this.field2221) {
+                  var5 = this.field2225 - this.field2221 + this.field2226 - 1;
                } else {
-                  var5 = this.field2252 - this.field2251 - 1;
+                  var5 = this.field2226 - this.field2221 - 1;
                }
 
                if(var5 < var3) {
                   throw new IOException("");
                } else {
-                  if(var3 + this.field2251 <= this.field2248) {
-                     System.arraycopy(var1, var2, this.field2249, this.field2251, var3);
+                  if(var3 + this.field2221 <= this.field2225) {
+                     System.arraycopy(var1, var2, this.field2224, this.field2221, var3);
                   } else {
-                     int var6 = this.field2248 - this.field2251;
-                     System.arraycopy(var1, var2, this.field2249, this.field2251, var6);
-                     System.arraycopy(var1, var6 + var2, this.field2249, 0, var3 - var6);
+                     int var6 = this.field2225 - this.field2221;
+                     System.arraycopy(var1, var2, this.field2224, this.field2221, var6);
+                     System.arraycopy(var1, var6 + var2, this.field2224, 0, var3 - var6);
                   }
 
-                  this.field2251 = (var3 + this.field2251) % this.field2248;
+                  this.field2221 = (var3 + this.field2221) % this.field2225;
                   this.notifyAll();
                }
             }
@@ -110,19 +110,19 @@ public class GameSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-32348"
+      signature = "(B)V",
+      garbageValue = "-86"
    )
-   void method3423() {
+   void method3373() {
       synchronized(this) {
-         this.field2253 = true;
+         this.field2228 = true;
          this.notifyAll();
       }
 
       try {
-         this.field2250.join();
+         this.field2223.join();
       } catch (InterruptedException var3) {
          ;
       }
@@ -134,14 +134,14 @@ public class GameSocket implements Runnable {
          int var1;
          synchronized(this) {
             while(true) {
-               if(this.field2246 != null) {
+               if(this.field2227 != null) {
                   return;
                }
 
-               if(this.field2252 <= this.field2251) {
-                  var1 = this.field2251 - this.field2252;
+               if(this.field2226 <= this.field2221) {
+                  var1 = this.field2221 - this.field2226;
                } else {
-                  var1 = this.field2248 - this.field2252 + this.field2251;
+                  var1 = this.field2225 - this.field2226 + this.field2221;
                }
 
                if(var1 > 0) {
@@ -149,13 +149,13 @@ public class GameSocket implements Runnable {
                }
 
                try {
-                  this.field2247.flush();
+                  this.field2222.flush();
                } catch (IOException var11) {
-                  this.field2246 = var11;
+                  this.field2227 = var11;
                   return;
                }
 
-               if(this.method3421()) {
+               if(this.method3381()) {
                   return;
                }
 
@@ -168,106 +168,25 @@ public class GameSocket implements Runnable {
          }
 
          try {
-            if(var1 + this.field2252 <= this.field2248) {
-               this.field2247.write(this.field2249, this.field2252, var1);
+            if(var1 + this.field2226 <= this.field2225) {
+               this.field2222.write(this.field2224, this.field2226, var1);
             } else {
-               int var7 = this.field2248 - this.field2252;
-               this.field2247.write(this.field2249, this.field2252, var7);
-               this.field2247.write(this.field2249, 0, var1 - var7);
+               int var7 = this.field2225 - this.field2226;
+               this.field2222.write(this.field2224, this.field2226, var7);
+               this.field2222.write(this.field2224, 0, var1 - var7);
             }
          } catch (IOException var10) {
             IOException var2 = var10;
             synchronized(this) {
-               this.field2246 = var2;
+               this.field2227 = var2;
                return;
             }
          }
 
          synchronized(this) {
-            this.field2252 = (var1 + this.field2252) % this.field2248;
+            this.field2226 = (var1 + this.field2226) % this.field2225;
          }
-      } while(!this.method3421());
+      } while(!this.method3381());
 
-   }
-
-   @ObfuscatedName("fw")
-   @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "-2032579996"
-   )
-   static final void method3420(int var0, int var1, int var2, int var3, boolean var4) {
-      if(var2 < 1) {
-         var2 = 1;
-      }
-
-      if(var3 < 1) {
-         var3 = 1;
-      }
-
-      int var5 = var3 - 334;
-      if(var5 < 0) {
-         var5 = 0;
-      } else if(var5 > 100) {
-         var5 = 100;
-      }
-
-      int var6 = (Client.field1099 - Client.field871) * var5 / 100 + Client.field871;
-      int var7 = var3 * var6 * 512 / (var2 * 334);
-      int var8;
-      int var9;
-      short var15;
-      if(var7 < Client.field1104) {
-         var15 = Client.field1104;
-         var6 = var15 * var2 * 334 / (var3 * 512);
-         if(var6 > Client.field860) {
-            var6 = Client.field860;
-            var8 = var3 * var6 * 512 / (var15 * 334);
-            var9 = (var2 - var8) / 2;
-            if(var4) {
-               Rasterizer2D.noClip();
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
-            }
-
-            var0 += var9;
-            var2 -= var9 * 2;
-         }
-      } else if(var7 > Client.field992) {
-         var15 = Client.field992;
-         var6 = var15 * var2 * 334 / (var3 * 512);
-         if(var6 < Client.field893) {
-            var6 = Client.field893;
-            var8 = var15 * var2 * 334 / (var6 * 512);
-            var9 = (var3 - var8) / 2;
-            if(var4) {
-               Rasterizer2D.noClip();
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
-            }
-
-            var1 += var9;
-            var3 -= var9 * 2;
-         }
-      }
-
-      var8 = (Client.field1101 - Client.field1100) * var5 / 100 + Client.field1100;
-      Client.scale = var3 * var8 * var6 / 85504 << 1;
-      if(var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
-         int[] var14 = new int[9];
-
-         for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = var10 * 32 + 15 + 128;
-            int var12 = var11 * 3 + 600;
-            int var13 = Graphics3D.SINE[var11];
-            var14[var10] = var12 * var13 >> 16;
-         }
-
-         Region.buildVisibilityMaps(var14, 500, 800, var2, var3);
-      }
-
-      Client.Viewport_xOffset = var0;
-      Client.Viewport_yOffset = var1;
-      Client.viewportWidth = var2;
-      Client.viewportHeight = var3;
    }
 }

@@ -1,44 +1,62 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fo")
+@ObfuscatedName("fc")
 public class class177 {
-   @ObfuscatedName("n")
-   public static int[][] field2272;
-   @ObfuscatedName("r")
-   public static int[][] field2270;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 527226453
-   )
-   public static int field2271;
-   @ObfuscatedName("s")
-   public static int[] field2274;
+   @ObfuscatedName("i")
+   static int[][] field2249;
+   @ObfuscatedName("a")
+   static int[][] field2250;
+   @ObfuscatedName("x")
+   static int[] field2251;
    @ObfuscatedName("p")
-   public static int[] field2275;
-   @ObfuscatedName("ac")
-   static int[] field2277;
+   static int[] field2253;
 
    static {
-      field2272 = new int[128][128];
-      field2270 = new int[128][128];
-      field2274 = new int[4096];
-      field2275 = new int[4096];
+      field2249 = new int[128][128];
+      field2250 = new int[128][128];
+      field2251 = new int[4096];
+      field2253 = new int[4096];
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1972216268"
+      signature = "(IZI)Ljava/lang/String;",
+      garbageValue = "2087177062"
    )
-   public static int method3467(int var0, int var1) {
-      int var2;
-      for(var2 = 0; var1 > 0; --var1) {
-         var2 = var2 << 1 | var0 & 1;
-         var0 >>>= 1;
-      }
+   public static String method3421(int var0, boolean var1) {
+      if(var1 && var0 >= 0) {
+         int var3 = var0;
+         String var2;
+         if(var1 && var0 >= 0) {
+            int var4 = 2;
 
-      return var2;
+            for(int var5 = var0 / 10; var5 != 0; ++var4) {
+               var5 /= 10;
+            }
+
+            char[] var6 = new char[var4];
+            var6[0] = '+';
+
+            for(int var7 = var4 - 1; var7 > 0; --var7) {
+               int var8 = var3;
+               var3 /= 10;
+               int var9 = var8 - var3 * 10;
+               if(var9 >= 10) {
+                  var6[var7] = (char)(var9 + 87);
+               } else {
+                  var6[var7] = (char)(var9 + 48);
+               }
+            }
+
+            var2 = new String(var6);
+         } else {
+            var2 = Integer.toString(var0, 10);
+         }
+
+         return var2;
+      } else {
+         return Integer.toString(var0);
+      }
    }
 }

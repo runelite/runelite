@@ -4,107 +4,98 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cx")
+@ObfuscatedName("ci")
 public class class90 {
-   @ObfuscatedName("d")
-   static boolean field1343;
+   @ObfuscatedName("t")
+   static boolean field1340;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -418036251
+   )
+   static int field1323;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Llk;"
+   )
+   static IndexedSprite field1324;
+   @ObfuscatedName("a")
+   static int[] field1360;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "[Llk;"
+   )
+   @Export("titlemuteSprite")
+   static IndexedSprite[] titlemuteSprite;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Llk;"
+   )
+   static IndexedSprite field1326;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Llk;"
+   )
+   static IndexedSprite field1331;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1899485945
-   )
-   static int field1336;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Llv;"
-   )
-   static IndexedSprite field1356;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "[Llv;"
-   )
-   @Export("runeSprites")
-   static IndexedSprite[] runeSprites;
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lly;"
-   )
-   static SpritePixels field1338;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lly;"
-   )
-   static SpritePixels field1340;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Llv;"
-   )
-   @Export("logoSprite")
-   static IndexedSprite logoSprite;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Llv;"
-   )
-   static IndexedSprite field1342;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1368220797
+      intValue = 806100173
    )
    @Export("loginWindowX")
    static int loginWindowX;
-   @ObfuscatedName("j")
-   static int[] field1344;
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
+   static int[] field1330;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 290470851
+      intValue = 994021257
    )
-   static int field1345;
-   @ObfuscatedName("ak")
+   static int field1332;
+   @ObfuscatedName("ay")
    @ObfuscatedGetter(
-      intValue = -1051380913
+      intValue = -597929271
    )
-   static int field1346;
-   @ObfuscatedName("au")
+   static int field1333;
+   @ObfuscatedName("am")
    @ObfuscatedGetter(
-      intValue = 538201555
+      intValue = 1340725783
    )
-   static int field1347;
-   @ObfuscatedName("al")
-   @ObfuscatedGetter(
-      intValue = -195717053
-   )
-   static int field1352;
-   @ObfuscatedName("af")
-   @ObfuscatedGetter(
-      intValue = -1989542503
-   )
-   static int field1359;
-   @ObfuscatedName("ai")
-   @ObfuscatedGetter(
-      intValue = -1019983803
-   )
-   static int field1350;
+   static int field1334;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = -1388666353
+      intValue = 1388299511
+   )
+   static int field1335;
+   @ObfuscatedName("ap")
+   @ObfuscatedGetter(
+      intValue = 1665776075
+   )
+   static int field1336;
+   @ObfuscatedName("ah")
+   @ObfuscatedGetter(
+      intValue = -729629433
+   )
+   static int field1338;
+   @ObfuscatedName("au")
+   @ObfuscatedGetter(
+      intValue = 1817064831
    )
    @Export("loadingBarPercentage")
    static int loadingBarPercentage;
-   @ObfuscatedName("aq")
+   @ObfuscatedName("ax")
    @Export("loadingText")
    static String loadingText;
-   @ObfuscatedName("ae")
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = 697155513
+      intValue = -743811639
    )
    @Export("loginIndex")
    static int loginIndex;
-   @ObfuscatedName("ad")
+   @ObfuscatedName("an")
    @Export("Login_response0")
    static String Login_response0;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ai")
    @Export("loginMessage1")
    static String loginMessage1;
-   @ObfuscatedName("ao")
+   @ObfuscatedName("al")
    @Export("loginMessage2")
    static String loginMessage2;
    @ObfuscatedName("at")
@@ -113,52 +104,58 @@ public class class90 {
    @ObfuscatedName("ag")
    @Export("username")
    static String username;
-   @ObfuscatedName("an")
+   @ObfuscatedName("as")
    @Export("password")
    static String password;
-   @ObfuscatedName("ax")
+   @ObfuscatedName("aw")
    @Export("Login_isUsernameRemembered")
    static boolean Login_isUsernameRemembered;
-   @ObfuscatedName("av")
-   static boolean field1335;
-   @ObfuscatedName("bc")
-   static boolean field1362;
-   @ObfuscatedName("bl")
-   static boolean field1363;
-   @ObfuscatedName("bs")
+   @ObfuscatedName("ad")
+   static boolean field1348;
+   @ObfuscatedName("bg")
+   static boolean field1327;
+   @ObfuscatedName("bk")
+   static boolean field1350;
+   @ObfuscatedName("be")
    @ObfuscatedGetter(
-      intValue = 2064553993
+      intValue = 1530417765
    )
-   static int field1364;
-   @ObfuscatedName("bm")
+   static int field1351;
+   @ObfuscatedName("bs")
    @Export("worldSelectShown")
    static boolean worldSelectShown;
-   @ObfuscatedName("bw")
+   @ObfuscatedName("bq")
    @ObfuscatedGetter(
-      intValue = 687527079
+      intValue = -477376755
    )
-   static int field1368;
-   @ObfuscatedName("bg")
+   static int field1322;
+   @ObfuscatedName("bz")
    @ObfuscatedGetter(
-      longValue = -6118141378853504073L
+      longValue = 5483961857841493021L
    )
-   static long field1369;
-   @ObfuscatedName("bi")
+   static long field1356;
+   @ObfuscatedName("bx")
    @ObfuscatedGetter(
-      longValue = 7103010554099090951L
+      longValue = -7871758363910397079L
    )
-   static long field1370;
+   static long field1357;
+   @ObfuscatedName("jh")
+   @ObfuscatedGetter(
+      intValue = 677629911
+   )
+   @Export("menuY")
+   static int menuY;
 
    static {
+      field1323 = 0;
+      loginWindowX = field1323 + 202;
+      field1330 = new int[256];
+      field1332 = 0;
+      field1333 = 0;
+      field1334 = 0;
+      field1335 = 0;
       field1336 = 0;
-      loginWindowX = field1336 + 202;
-      field1344 = new int[256];
-      field1345 = 0;
-      field1346 = 0;
-      field1347 = 0;
-      field1352 = 0;
-      field1359 = 0;
-      field1350 = 0;
+      field1338 = 0;
       loadingBarPercentage = 10;
       loadingText = "";
       loginIndex = 0;
@@ -169,174 +166,67 @@ public class class90 {
       username = "";
       password = "";
       Login_isUsernameRemembered = false;
-      field1335 = false;
-      field1362 = false;
-      field1363 = true;
-      field1364 = 0;
+      field1348 = false;
+      field1327 = false;
+      field1350 = true;
+      field1351 = 0;
       worldSelectShown = false;
-      field1368 = -1;
+      field1322 = -1;
       new DecimalFormat("##0.00");
       new class160();
-      field1369 = -1L;
-      field1370 = -1L;
+      field1356 = -1L;
+      field1357 = -1L;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Ljr;",
-      garbageValue = "-784571536"
+      signature = "(I)V",
+      garbageValue = "-1690697439"
    )
-   public static class270 method1941(int var0) {
-      class270 var1 = (class270)class270.field3474.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class270.field3471.getConfigData(19, var0);
-         var1 = new class270();
-         if(var2 != null) {
-            var1.method4912(new Buffer(var2));
-         }
-
-         class270.field3474.put(var1, (long)var0);
-         return var1;
+   static final void method1942() {
+      if(!class132.Viewport_false0) {
+         int var0 = Region.pitchSin;
+         int var1 = Region.pitchCos;
+         int var2 = Region.yawSin;
+         int var3 = Region.yawCos;
+         byte var4 = 50;
+         short var5 = 3500;
+         int var6 = (class132.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var7 = (class132.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var8 = (class132.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var9 = (class132.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var10 = Graphics3D.method2799(var7, var4, var1, var0);
+         int var11 = Graphics3D.method2784(var7, var4, var1, var0);
+         var7 = var10;
+         var10 = Graphics3D.method2799(var9, var5, var1, var0);
+         int var12 = Graphics3D.method2784(var9, var5, var1, var0);
+         var9 = var10;
+         var10 = Graphics3D.method2797(var6, var11, var3, var2);
+         var11 = Graphics3D.method2798(var6, var11, var3, var2);
+         var6 = var10;
+         var10 = Graphics3D.method2797(var8, var12, var3, var2);
+         var12 = Graphics3D.method2798(var8, var12, var3, var2);
+         class5.field30 = (var10 + var6) / 2;
+         class132.field1897 = (var9 + var7) / 2;
+         class61.field698 = (var12 + var11) / 2;
+         NPC.field1282 = (var10 - var6) / 2;
+         VarPlayerType.field3451 = (var9 - var7) / 2;
+         class228.field2669 = (var12 - var11) / 2;
+         class326.field3956 = Math.abs(NPC.field1282);
+         class132.field1893 = Math.abs(VarPlayerType.field3451);
+         class132.field1899 = Math.abs(class228.field2669);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("fy")
    @ObfuscatedSignature(
-      signature = "(IZIZI)V",
-      garbageValue = "-64268121"
+      signature = "(III)V",
+      garbageValue = "-1123272087"
    )
-   static void method1940(int var0, boolean var1, int var2, boolean var3) {
-      if(World.worldList != null) {
-         Resampler.method2358(0, World.worldList.length - 1, var0, var1, var2, var3);
-      }
-
-   }
-
-   @ObfuscatedName("gj")
-   @ObfuscatedSignature(
-      signature = "(ZLgb;I)V",
-      garbageValue = "-1803424955"
-   )
-   @Export("xteaChanged")
-   static final void xteaChanged(boolean var0, PacketBuffer var1) {
-      Client.isDynamicRegion = var0;
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      if(!Client.isDynamicRegion) {
-         int var2 = var1.method3620();
-         var3 = var1.method3620();
-         var4 = var1.readUnsignedShort();
-         class158.xteaKeys = new int[var4][4];
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            for(var6 = 0; var6 < 4; ++var6) {
-               class158.xteaKeys[var5][var6] = var1.readInt();
-            }
-         }
-
-         WorldMapData.mapRegions = new int[var4];
-         MapLabel.landMapFileIds = new int[var4];
-         TotalQuantityComparator.landRegionFileIds = new int[var4];
-         Buffer.field2570 = new byte[var4][];
-         UnitPriceComparator.field320 = new byte[var4][];
-         boolean var16 = false;
-         if((var2 / 8 == 48 || var2 / 8 == 49) && var3 / 8 == 48) {
-            var16 = true;
-         }
-
-         if(var2 / 8 == 48 && var3 / 8 == 148) {
-            var16 = true;
-         }
-
-         var4 = 0;
-
-         for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
-            for(var7 = (var3 - 6) / 8; var7 <= (var3 + 6) / 8; ++var7) {
-               var8 = var7 + (var6 << 8);
-               if(!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
-                  WorldMapData.mapRegions[var4] = var8;
-                  MapLabel.landMapFileIds[var4] = BuildType.indexMaps.getFile("m" + var6 + "_" + var7);
-                  TotalQuantityComparator.landRegionFileIds[var4] = BuildType.indexMaps.getFile("l" + var6 + "_" + var7);
-                  ++var4;
-               }
-            }
-         }
-
-         WorldMapType1.method280(var2, var3, true);
-      } else {
-         boolean var15 = var1.method3583() == 1;
-         var3 = var1.method3620();
-         var4 = var1.readUnsignedShortOb1();
-         var5 = var1.readUnsignedShort();
-         var1.bitAccess();
-
-         int var9;
-         for(var6 = 0; var6 < 4; ++var6) {
-            for(var7 = 0; var7 < 13; ++var7) {
-               for(var8 = 0; var8 < 13; ++var8) {
-                  var9 = var1.getBits(1);
-                  if(var9 == 1) {
-                     Client.instanceTemplateChunks[var6][var7][var8] = var1.getBits(26);
-                  } else {
-                     Client.instanceTemplateChunks[var6][var7][var8] = -1;
-                  }
-               }
-            }
-         }
-
-         var1.byteAccess();
-         class158.xteaKeys = new int[var5][4];
-
-         for(var6 = 0; var6 < var5; ++var6) {
-            for(var7 = 0; var7 < 4; ++var7) {
-               class158.xteaKeys[var6][var7] = var1.readInt();
-            }
-         }
-
-         WorldMapData.mapRegions = new int[var5];
-         MapLabel.landMapFileIds = new int[var5];
-         TotalQuantityComparator.landRegionFileIds = new int[var5];
-         Buffer.field2570 = new byte[var5][];
-         UnitPriceComparator.field320 = new byte[var5][];
-         var5 = 0;
-
-         for(var6 = 0; var6 < 4; ++var6) {
-            for(var7 = 0; var7 < 13; ++var7) {
-               for(var8 = 0; var8 < 13; ++var8) {
-                  var9 = Client.instanceTemplateChunks[var6][var7][var8];
-                  if(var9 != -1) {
-                     int var10 = var9 >> 14 & 1023;
-                     int var11 = var9 >> 3 & 2047;
-                     int var12 = (var10 / 8 << 8) + var11 / 8;
-
-                     int var13;
-                     for(var13 = 0; var13 < var5; ++var13) {
-                        if(WorldMapData.mapRegions[var13] == var12) {
-                           var12 = -1;
-                           break;
-                        }
-                     }
-
-                     if(var12 != -1) {
-                        WorldMapData.mapRegions[var5] = var12;
-                        var13 = var12 >> 8 & 255;
-                        int var14 = var12 & 255;
-                        MapLabel.landMapFileIds[var5] = BuildType.indexMaps.getFile("m" + var13 + "_" + var14);
-                        TotalQuantityComparator.landRegionFileIds[var5] = BuildType.indexMaps.getFile("l" + var13 + "_" + var14);
-                        ++var5;
-                     }
-                  }
-               }
-            }
-         }
-
-         WorldMapType1.method280(var4, var3, !var15);
+   static void method1929(int var0, int var1) {
+      if(Client.field1079 != 0 && var0 != -1) {
+         CombatInfo1.method1668(class55.indexTrack2, var0, 0, Client.field1079, false);
+         Client.field956 = true;
       }
 
    }

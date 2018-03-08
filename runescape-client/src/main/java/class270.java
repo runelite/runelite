@@ -1,78 +1,71 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jr")
+@ObfuscatedName("jq")
 public class class270 extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljk;"
+      signature = "Ljc;"
    )
-   public static IndexDataBase field3471;
-   @ObfuscatedName("z")
+   public static IndexDataBase field3480;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhp;"
+      signature = "Lhj;"
    )
-   static NodeCache field3474;
-   @ObfuscatedName("n")
-   public boolean field3472;
+   public static NodeCache field3478;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Ldc;"
+   )
+   static class110 field3481;
+   @ObfuscatedName("i")
+   public boolean field3477;
 
    static {
-      field3474 = new NodeCache(64);
+      field3478 = new NodeCache(64);
    }
 
-   class270() {
-      this.field3472 = false;
+   public class270() {
+      this.field3477 = false;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgy;I)V",
-      garbageValue = "331983508"
+      signature = "(Lgb;I)V",
+      garbageValue = "-1727418854"
    )
-   void method4912(Buffer var1) {
+   public void method4790(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4908(var1, var2);
+         this.method4791(var1, var2);
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgy;II)V",
-      garbageValue = "517940811"
+      signature = "(Lgb;II)V",
+      garbageValue = "-551559342"
    )
-   void method4908(Buffer var1, int var2) {
+   void method4791(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3472 = true;
+         this.field3477 = true;
       }
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("hd")
    @ObfuscatedSignature(
-      signature = "(IB)Lki;",
-      garbageValue = "0"
+      signature = "(III)V",
+      garbageValue = "1824769960"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Sequence.seq_ref.getConfigData(12, var0);
-         var1 = new Sequence();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         Sequence.sequences.put(var1, (long)var0);
-         return var1;
-      }
+   static void method4793(int var0, int var1) {
+      PacketNode var2 = class33.method382(ClientPacket.field2442, Client.field1072.field1456);
+      var2.packetBuffer.method3573(var1);
+      var2.packetBuffer.method3584(var0);
+      Client.field1072.method2073(var2);
    }
 }

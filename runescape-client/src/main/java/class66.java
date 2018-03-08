@@ -1,42 +1,33 @@
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bq")
 public class class66 {
-   @ObfuscatedName("dd")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
-   )
-   @Export("indexTrack2")
-   static IndexData indexTrack2;
+   @ObfuscatedName("fp")
+   @Export("landMapFileIds")
+   static int[] landMapFileIds;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("hl")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "40"
+      signature = "(Lcv;III)V",
+      garbageValue = "-1022067648"
    )
-   public static final void method1082(int var0, int var1) {
-      class132.Viewport_mouseX = var0;
-      class132.Viewport_mouseY = var1;
-      class132.Viewport_containsMouse = true;
-      class132.Viewport_entityCountAtMouse = 0;
-      class132.Viewport_false0 = false;
+   static final void method1149(ContextMenuRow var0, int var1, int var2) {
+      class3.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("jf")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2065028478"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "1193369743"
    )
-   static void method1081() {
-      Iterator var0 = class95.messages.iterator();
-
-      while(var0.hasNext()) {
-         MessageNode var1 = (MessageNode)var0.next();
-         var1.method1103();
+   static final void method1150(String var0) {
+      if(KeyFocusListener.clanMemberManager != null) {
+         PacketNode var1 = class33.method382(ClientPacket.field2424, Client.field1072.field1456);
+         var1.packetBuffer.putByte(UnitPriceComparator.getLength(var0));
+         var1.packetBuffer.putString(var0);
+         Client.field1072.method2073(var1);
       }
-
    }
 }

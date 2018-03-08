@@ -2,41 +2,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("am")
+@ObfuscatedName("af")
 public class class47 {
-   @ObfuscatedName("od")
-   static boolean field588;
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1767763447
+      intValue = 1920637669
    )
-   int field590;
-   @ObfuscatedName("z")
-   byte[][][] field587;
+   int field564;
+   @ObfuscatedName("q")
+   byte[][][] field567;
 
    class47(int var1) {
-      this.field590 = var1;
+      this.field564 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIII)V",
-      garbageValue = "-1592203409"
+      signature = "(IIIIIIIIB)V",
+      garbageValue = "3"
    )
-   void method667(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      if(var7 != 0 && this.field590 != 0 && this.field587 != null) {
-         var8 = this.method669(var8, var7);
-         var7 = this.method670(var7);
-         Rasterizer2D.method5811(var1, var2, var5, var6, var3, var4, this.field587[var7 - 1][var8], this.field590);
+   void method750(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      if(var7 != 0 && this.field564 != 0 && this.field567 != null) {
+         var8 = this.method720(var8, var7);
+         var7 = this.method721(var7);
+         Rasterizer2D.method5715(var1, var2, var5, var6, var3, var4, this.field567[var7 - 1][var8], this.field564);
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "0"
+      signature = "(III)I",
+      garbageValue = "584568329"
    )
-   int method669(int var1, int var2) {
+   int method720(int var1, int var2) {
       if(var2 == 9) {
          var1 = var1 + 1 & 3;
       }
@@ -52,47 +50,47 @@ public class class47 {
       return var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "952731092"
+      garbageValue = "1035686147"
    )
-   int method670(int var1) {
+   int method721(int var1) {
       return var1 != 9 && var1 != 10?(var1 == 11?8:var1):1;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "20"
+      signature = "(I)V",
+      garbageValue = "1164052647"
    )
-   void method671() {
-      if(this.field587 == null) {
-         this.field587 = new byte[8][4][];
-         this.method684();
-         this.method673();
-         this.method674();
-         this.method675();
-         this.method704();
-         this.method680();
-         this.method668();
-         this.method679();
+   void method722() {
+      if(this.field567 == null) {
+         this.field567 = new byte[8][4][];
+         this.method718();
+         this.method724();
+         this.method725();
+         this.method736();
+         this.method727();
+         this.method742();
+         this.method729();
+         this.method741();
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1806653807"
+      garbageValue = "171085030"
    )
-   void method684() {
-      byte[] var1 = new byte[this.field590 * this.field590];
+   void method718() {
+      byte[] var1 = new byte[this.field564 * this.field564];
       int var2 = 0;
 
       int var3;
       int var4;
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 <= var3) {
                var1[var2] = -1;
             }
@@ -101,12 +99,12 @@ public class class47 {
          }
       }
 
-      this.field587[0][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[0][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 <= var3) {
                var1[var2] = -1;
             }
@@ -115,12 +113,12 @@ public class class47 {
          }
       }
 
-      this.field587[0][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[0][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 >= var3) {
                var1[var2] = -1;
             }
@@ -129,12 +127,12 @@ public class class47 {
          }
       }
 
-      this.field587[0][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[0][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 >= var3) {
                var1[var2] = -1;
             }
@@ -143,22 +141,22 @@ public class class47 {
          }
       }
 
-      this.field587[0][3] = var1;
+      this.field567[0][3] = var1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1655572446"
+      signature = "(S)V",
+      garbageValue = "1973"
    )
-   void method673() {
-      byte[] var1 = new byte[this.field590 * this.field590];
+   void method724() {
+      byte[] var1 = new byte[this.field564 * this.field564];
       int var2 = 0;
 
       int var3;
       int var4;
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
@@ -167,12 +165,12 @@ public class class47 {
          }
       }
 
-      this.field587[1][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[1][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var2 >= 0 && var2 < var1.length) {
                if(var4 >= var3 << 1) {
                   var1[var2] = -1;
@@ -185,12 +183,12 @@ public class class47 {
          }
       }
 
-      this.field587[1][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[1][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
             if(var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
@@ -199,12 +197,12 @@ public class class47 {
          }
       }
 
-      this.field587[1][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[1][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
             if(var4 >= var3 << 1) {
                var1[var2] = -1;
             }
@@ -213,22 +211,22 @@ public class class47 {
          }
       }
 
-      this.field587[1][3] = var1;
+      this.field567[1][3] = var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1491760827"
+      garbageValue = "-122710201"
    )
-   void method674() {
-      byte[] var1 = new byte[this.field590 * this.field590];
+   void method725() {
+      byte[] var1 = new byte[this.field564 * this.field564];
       int var2 = 0;
 
       int var3;
       int var4;
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
             if(var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
@@ -237,12 +235,12 @@ public class class47 {
          }
       }
 
-      this.field587[2][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[2][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 >= var3 << 1) {
                var1[var2] = -1;
             }
@@ -251,12 +249,12 @@ public class class47 {
          }
       }
 
-      this.field587[2][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[2][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 <= var3 >> 1) {
                var1[var2] = -1;
             }
@@ -265,12 +263,12 @@ public class class47 {
          }
       }
 
-      this.field587[2][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[2][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
             if(var4 >= var3 << 1) {
                var1[var2] = -1;
             }
@@ -279,88 +277,22 @@ public class class47 {
          }
       }
 
-      this.field587[2][3] = var1;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "61"
-   )
-   void method675() {
-      byte[] var1 = new byte[this.field590 * this.field590];
-      int var2 = 0;
-
-      int var3;
-      int var4;
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 >= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field587[3][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var2 = 0;
-
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 <= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field587[3][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var2 = 0;
-
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 >> 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field587[3][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var2 = 0;
-
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 << 1) {
-               var1[var2] = -1;
-            }
-
-            ++var2;
-         }
-      }
-
-      this.field587[3][3] = var1;
+      this.field567[2][3] = var1;
    }
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "81"
+      garbageValue = "6"
    )
-   void method704() {
-      byte[] var1 = new byte[this.field590 * this.field590];
+   void method736() {
+      byte[] var1 = new byte[this.field564 * this.field564];
       int var2 = 0;
 
       int var3;
       int var4;
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 >= var3 >> 1) {
                var1[var2] = -1;
             }
@@ -369,12 +301,12 @@ public class class47 {
          }
       }
 
-      this.field587[4][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[3][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
             if(var4 <= var3 << 1) {
                var1[var2] = -1;
             }
@@ -383,12 +315,12 @@ public class class47 {
          }
       }
 
-      this.field587[4][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[3][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
             if(var4 >= var3 >> 1) {
                var1[var2] = -1;
             }
@@ -397,12 +329,12 @@ public class class47 {
          }
       }
 
-      this.field587[4][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[3][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var2 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
             if(var4 <= var3 << 1) {
                var1[var2] = -1;
             }
@@ -411,25 +343,91 @@ public class class47 {
          }
       }
 
-      this.field587[4][3] = var1;
+      this.field567[3][3] = var1;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "413"
+      signature = "(I)V",
+      garbageValue = "2143542986"
    )
-   void method680() {
-      byte[] var1 = new byte[this.field590 * this.field590];
+   void method727() {
+      byte[] var1 = new byte[this.field564 * this.field564];
+      int var2 = 0;
+
+      int var3;
+      int var4;
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
+            if(var4 >= var3 >> 1) {
+               var1[var2] = -1;
+            }
+
+            ++var2;
+         }
+      }
+
+      this.field567[4][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var2 = 0;
+
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 <= var3 << 1) {
+               var1[var2] = -1;
+            }
+
+            ++var2;
+         }
+      }
+
+      this.field567[4][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var2 = 0;
+
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 >= var3 >> 1) {
+               var1[var2] = -1;
+            }
+
+            ++var2;
+         }
+      }
+
+      this.field567[4][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var2 = 0;
+
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
+            if(var4 <= var3 << 1) {
+               var1[var2] = -1;
+            }
+
+            ++var2;
+         }
+      }
+
+      this.field567[4][3] = var1;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-100"
+   )
+   void method742() {
+      byte[] var1 = new byte[this.field564 * this.field564];
       boolean var2 = false;
-      var1 = new byte[this.field590 * this.field590];
+      var1 = new byte[this.field564 * this.field564];
       int var5 = 0;
 
       int var3;
       int var4;
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 <= this.field590 / 2) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 <= this.field564 / 2) {
                var1[var5] = -1;
             }
 
@@ -437,13 +435,13 @@ public class class47 {
          }
       }
 
-      this.field587[5][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[5][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var5 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var3 <= this.field590 / 2) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var3 <= this.field564 / 2) {
                var1[var5] = -1;
             }
 
@@ -451,13 +449,13 @@ public class class47 {
          }
       }
 
-      this.field587[5][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[5][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var5 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 >= this.field590 / 2) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 >= this.field564 / 2) {
                var1[var5] = -1;
             }
 
@@ -465,13 +463,13 @@ public class class47 {
          }
       }
 
-      this.field587[5][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
+      this.field567[5][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
       var5 = 0;
 
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var3 >= this.field590 / 2) {
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var3 >= this.field564 / 2) {
                var1[var5] = -1;
             }
 
@@ -479,156 +477,174 @@ public class class47 {
          }
       }
 
-      this.field587[5][3] = var1;
+      this.field567[5][3] = var1;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-256585513"
+   )
+   void method729() {
+      byte[] var1 = new byte[this.field564 * this.field564];
+      boolean var2 = false;
+      var1 = new byte[this.field564 * this.field564];
+      int var5 = 0;
+
+      int var3;
+      int var4;
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 <= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[6][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var5 = 0;
+
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 <= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[6][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var5 = 0;
+
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
+            if(var4 <= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[6][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var5 = 0;
+
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
+            if(var4 <= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[6][3] = var1;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1109859627"
+   )
+   void method741() {
+      byte[] var1 = new byte[this.field564 * this.field564];
+      boolean var2 = false;
+      var1 = new byte[this.field564 * this.field564];
+      int var5 = 0;
+
+      int var3;
+      int var4;
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 >= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[7][0] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var5 = 0;
+
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = 0; var4 < this.field564; ++var4) {
+            if(var4 >= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[7][1] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var5 = 0;
+
+      for(var3 = this.field564 - 1; var3 >= 0; --var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
+            if(var4 >= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[7][2] = var1;
+      var1 = new byte[this.field564 * this.field564];
+      var5 = 0;
+
+      for(var3 = 0; var3 < this.field564; ++var3) {
+         for(var4 = this.field564 - 1; var4 >= 0; --var4) {
+            if(var4 >= var3 - this.field564 / 2) {
+               var1[var5] = -1;
+            }
+
+            ++var5;
+         }
+      }
+
+      this.field567[7][3] = var1;
    }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-9872"
+      signature = "(Ljc;I)V",
+      garbageValue = "1642824812"
    )
-   void method668() {
-      byte[] var1 = new byte[this.field590 * this.field590];
-      boolean var2 = false;
-      var1 = new byte[this.field590 * this.field590];
-      int var5 = 0;
-
-      int var3;
-      int var4;
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 <= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[6][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var5 = 0;
-
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 <= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[6][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var5 = 0;
-
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[6][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var5 = 0;
-
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
-            if(var4 <= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[6][3] = var1;
+   public static void method756(IndexDataBase var0) {
+      class271.field3485 = var0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1671844850"
+      signature = "(ZS)V",
+      garbageValue = "-19498"
    )
-   void method679() {
-      byte[] var1 = new byte[this.field590 * this.field590];
-      boolean var2 = false;
-      var1 = new byte[this.field590 * this.field590];
-      int var5 = 0;
-
-      int var3;
-      int var4;
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 >= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
+   static void method752(boolean var0) {
+      class90.loginMessage1 = "";
+      class90.loginMessage2 = "Enter your username/email & password.";
+      class90.loginMessage3 = "";
+      class90.loginIndex = 2;
+      if(var0) {
+         class90.password = "";
       }
 
-      this.field587[7][0] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var5 = 0;
-
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = 0; var4 < this.field590; ++var4) {
-            if(var4 >= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[7][1] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var5 = 0;
-
-      for(var3 = this.field590 - 1; var3 >= 0; --var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[7][2] = var1;
-      var1 = new byte[this.field590 * this.field590];
-      var5 = 0;
-
-      for(var3 = 0; var3 < this.field590; ++var3) {
-         for(var4 = this.field590 - 1; var4 >= 0; --var4) {
-            if(var4 >= var3 - this.field590 / 2) {
-               var1[var5] = -1;
-            }
-
-            ++var5;
-         }
-      }
-
-      this.field587[7][3] = var1;
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Lhd;III)I",
-      garbageValue = "-1734374718"
-   )
-   static int method699(IterableHashTable var0, int var1, int var2) {
-      if(var0 == null) {
-         return var2;
+      Tile.method2682();
+      if(class90.Login_isUsernameRemembered && class90.username != null && class90.username.length() > 0) {
+         class90.field1351 = 1;
       } else {
-         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
-         return var3 == null?var2:var3.value;
+         class90.field1351 = 0;
       }
+
    }
 }

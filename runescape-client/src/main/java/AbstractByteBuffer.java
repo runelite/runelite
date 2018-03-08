@@ -1,53 +1,52 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gg")
+@ObfuscatedName("gr")
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @Export("directBufferUnavailable")
    static boolean directBufferUnavailable;
-   @ObfuscatedName("be")
-   @ObfuscatedGetter(
-      intValue = 374764243
-   )
-   static int field2602;
 
    static {
       directBufferUnavailable = false;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(B)[B",
-      garbageValue = "-2"
+      garbageValue = "38"
    )
    @Export("get")
    abstract byte[] get();
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "1473071301"
+      garbageValue = "-818307234"
    )
    @Export("put")
    abstract void put(byte[] var1);
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljk;III)Z",
-      garbageValue = "-660391723"
+      signature = "(IIII)I",
+      garbageValue = "1208547636"
    )
-   static boolean method3843(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         FontName.decodeSprite(var3);
-         return true;
-      }
+   public static int method3787(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1778319270"
+   )
+   public static int method3789(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
    }
 }

@@ -1,27 +1,23 @@
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
+@ObfuscatedName("ba")
 @Implements("GameCanvas")
 public final class GameCanvas extends Canvas {
-   @ObfuscatedName("q")
+   @ObfuscatedName("pz")
    @ObfuscatedGetter(
-      intValue = 1021484827
+      intValue = 589048107
    )
-   public static int field655;
-   @ObfuscatedName("gd")
-   @ObfuscatedGetter(
-      intValue = 604024075
-   )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("d")
+   static int field624;
+   @ObfuscatedName("t")
    @Export("component")
    Component component;
 
@@ -37,97 +33,105 @@ public final class GameCanvas extends Canvas {
       this.component.update(var1);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lbi;I)V",
-      garbageValue = "971052557"
+      signature = "(Ljava/io/File;Ljava/io/File;B)V",
+      garbageValue = "-80"
    )
-   public static void method800(ScriptEvent var0) {
-      BoundingBox.runScript(var0, 500000);
+   static void method853(File var0, File var1) {
+      try {
+         FileOnDisk var2 = new FileOnDisk(class37.jagexClDat, "rw", 10000L);
+         Buffer var3 = new Buffer(500);
+         var3.putByte(3);
+         var3.putByte(var1 != null?1:0);
+         var3.putCESU8(var0.getPath());
+         if(var1 != null) {
+            var3.putCESU8("");
+         }
+
+         var2.write(var3.payload, 0, var3.offset);
+         var2.close();
+      } catch (IOException var4) {
+         var4.printStackTrace();
+      }
+
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "2129976793"
+      signature = "(IIIIIIII)V",
+      garbageValue = "1511894939"
    )
-   static String method796(int var0) {
-      return "<img=" + var0 + ">";
+   static final void method854(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2919(var0, var1, var2);
+      int[] var8 = Region.method2919(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("hj")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "-607935376"
+      signature = "(III)V",
+      garbageValue = "-2045346283"
    )
-   public static void method798(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   @Export("groundItemSpawned")
+   static final void groundItemSpawned(int var0, int var1) {
+      Deque var2 = Client.groundItemDeque[Ignore.plane][var0][var1];
+      if(var2 == null) {
+         class38.region.removeGroundItemPile(Ignore.plane, var0, var1);
+      } else {
+         long var3 = -99999999L;
+         Item var5 = null;
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+         Item var6;
+         for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
+            ItemComposition var7 = class81.getItemDefinition(var6.id);
+            long var8 = (long)var7.price;
+            if(var7.isStackable == 1) {
+               var8 *= (long)(var6.quantity + 1);
+            }
+
+            if(var8 > var3) {
+               var3 = var8;
+               var5 = var6;
             }
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method798(var0, var1, var2, var5 - 1);
-         method798(var0, var1, var5 + 1, var3);
-      }
+         if(var5 == null) {
+            class38.region.removeGroundItemPile(Ignore.plane, var0, var1);
+         } else {
+            var2.addTail(var5);
+            Item var11 = null;
+            Item var10 = null;
 
-   }
+            for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
+               if(var5.id != var6.id) {
+                  if(var11 == null) {
+                     var11 = var6;
+                  }
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(ILct;ZI)I",
-      garbageValue = "1690859759"
-   )
-   static int method797(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class20.field338:class81.field1267;
-      if(var0 == 1500) {
-         class81.intStack[++class81.intStackSize - 1] = var3.relativeX;
-         return 1;
-      } else if(var0 == 1501) {
-         class81.intStack[++class81.intStackSize - 1] = var3.relativeY;
-         return 1;
-      } else if(var0 == 1502) {
-         class81.intStack[++class81.intStackSize - 1] = var3.width;
-         return 1;
-      } else if(var0 == 1503) {
-         class81.intStack[++class81.intStackSize - 1] = var3.height;
-         return 1;
-      } else if(var0 == 1504) {
-         class81.intStack[++class81.intStackSize - 1] = var3.isHidden?1:0;
-         return 1;
-      } else if(var0 == 1505) {
-         class81.intStack[++class81.intStackSize - 1] = var3.parentId;
-         return 1;
-      } else {
-         return 2;
+                  if(var11.id != var6.id && var10 == null) {
+                     var10 = var6;
+                  }
+               }
+            }
+
+            int var9 = var0 + (var1 << 7) + 1610612736;
+            class38.region.addItemPile(Ignore.plane, var0, var1, class149.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, Ignore.plane), var5, var9, var11, var10);
+         }
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("hw")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1644330243"
+      signature = "(IIIII)V",
+      garbageValue = "874344618"
    )
-   public static void method799() {
-      PlayerComposition.field2796.reset();
+   static final void method846(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1051[var4] = true;
+         }
+      }
+
    }
 }

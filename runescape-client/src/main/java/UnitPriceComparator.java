@@ -5,177 +5,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("f")
+@ObfuscatedName("z")
 @Implements("UnitPriceComparator")
 final class UnitPriceComparator implements Comparator {
-   @ObfuscatedName("pc")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1014848265
+      intValue = -1462483621
    )
-   static int field315;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Ljk;"
-   )
-   @Export("skel_ref")
-   static IndexDataBase skel_ref;
-   @ObfuscatedName("h")
-   static int[] field321;
-   @ObfuscatedName("i")
-   static int[] field316;
-   @ObfuscatedName("fu")
-   static byte[][] field320;
+   static int field297;
+   @ObfuscatedName("x")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lu;Lu;B)I",
-      garbageValue = "98"
+      signature = "(Lu;Lu;I)I",
+      garbageValue = "-262344594"
    )
-   int method120(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   int method126(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.price < var2.grandExchangeOffer.price?-1:(var2.grandExchangeOffer.price == var1.grandExchangeOffer.price?0:1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method126((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method120((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "-64"
+   )
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = MouseRecorder.method1159(var0 - 1, var1 - 1) + MouseRecorder.method1159(var0 + 1, var1 - 1) + MouseRecorder.method1159(var0 - 1, 1 + var1) + MouseRecorder.method1159(1 + var0, 1 + var1);
+      int var3 = MouseRecorder.method1159(var0 - 1, var1) + MouseRecorder.method1159(var0 + 1, var1) + MouseRecorder.method1159(var0, var1 - 1) + MouseRecorder.method1159(var0, 1 + var1);
+      int var4 = MouseRecorder.method1159(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lgb;I)V",
-      garbageValue = "1868760878"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "-1161178324"
    )
-   static final void method121(PacketBuffer var0) {
-      int var1 = 0;
-      var0.bitAccess();
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
+   }
 
-      int var2;
-      int var3;
-      int var4;
-      for(var2 = 0; var2 < class93.playerIndexesCount; ++var2) {
-         var3 = class93.playerIndices[var2];
-         if((class93.field1403[var3] & 1) == 0) {
-            if(var1 > 0) {
-               --var1;
-               class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-            } else {
-               var4 = var0.getBits(1);
-               if(var4 == 0) {
-                  var1 = ScriptEvent.method1090(var0);
-                  class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-               } else {
-                  Varcs.decodeMovement(var0, var3);
-               }
-            }
-         }
-      }
-
-      var0.byteAccess();
-      if(var1 != 0) {
-         throw new RuntimeException();
-      } else {
-         var0.bitAccess();
-
-         for(var2 = 0; var2 < class93.playerIndexesCount; ++var2) {
-            var3 = class93.playerIndices[var2];
-            if((class93.field1403[var3] & 1) != 0) {
-               if(var1 > 0) {
-                  --var1;
-                  class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-               } else {
-                  var4 = var0.getBits(1);
-                  if(var4 == 0) {
-                     var1 = ScriptEvent.method1090(var0);
-                     class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                  } else {
-                     Varcs.decodeMovement(var0, var3);
-                  }
-               }
-            }
-         }
-
-         var0.byteAccess();
-         if(var1 != 0) {
-            throw new RuntimeException();
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(ILcj;ZB)I",
+      garbageValue = "9"
+   )
+   static int method139(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 == 2700) {
+         var3 = GZipDecompressor.getWidget(class81.intStack[--class5.intStackSize]);
+         class81.intStack[++class5.intStackSize - 1] = var3.itemId;
+         return 1;
+      } else if(var0 == 2701) {
+         var3 = GZipDecompressor.getWidget(class81.intStack[--class5.intStackSize]);
+         if(var3.itemId != -1) {
+            class81.intStack[++class5.intStackSize - 1] = var3.itemQuantity;
          } else {
-            var0.bitAccess();
-
-            for(var2 = 0; var2 < class93.field1408; ++var2) {
-               var3 = class93.field1409[var2];
-               if((class93.field1403[var3] & 1) != 0) {
-                  if(var1 > 0) {
-                     --var1;
-                     class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                  } else {
-                     var4 = var0.getBits(1);
-                     if(var4 == 0) {
-                        var1 = ScriptEvent.method1090(var0);
-                        class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                     } else if(Size.decodeRegionHash(var0, var3)) {
-                        class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                     }
-                  }
-               }
-            }
-
-            var0.byteAccess();
-            if(var1 != 0) {
-               throw new RuntimeException();
-            } else {
-               var0.bitAccess();
-
-               for(var2 = 0; var2 < class93.field1408; ++var2) {
-                  var3 = class93.field1409[var2];
-                  if((class93.field1403[var3] & 1) == 0) {
-                     if(var1 > 0) {
-                        --var1;
-                        class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                     } else {
-                        var4 = var0.getBits(1);
-                        if(var4 == 0) {
-                           var1 = ScriptEvent.method1090(var0);
-                           class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                        } else if(Size.decodeRegionHash(var0, var3)) {
-                           class93.field1403[var3] = (byte)(class93.field1403[var3] | 2);
-                        }
-                     }
-                  }
-               }
-
-               var0.byteAccess();
-               if(var1 != 0) {
-                  throw new RuntimeException();
-               } else {
-                  class93.playerIndexesCount = 0;
-                  class93.field1408 = 0;
-
-                  for(var2 = 1; var2 < 2048; ++var2) {
-                     class93.field1403[var2] = (byte)(class93.field1403[var2] >> 1);
-                     Player var5 = Client.cachedPlayers[var2];
-                     if(var5 != null) {
-                        class93.playerIndices[++class93.playerIndexesCount - 1] = var2;
-                     } else {
-                        class93.field1409[++class93.field1408 - 1] = var2;
-                     }
-                  }
-
-               }
-            }
+            class81.intStack[++class5.intStackSize - 1] = 0;
          }
+
+         return 1;
+      } else if(var0 == 2702) {
+         int var5 = class81.intStack[--class5.intStackSize];
+         WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var5);
+         if(var4 != null) {
+            class81.intStack[++class5.intStackSize - 1] = 1;
+         } else {
+            class81.intStack[++class5.intStackSize - 1] = 0;
+         }
+
+         return 1;
+      } else if(var0 == 2706) {
+         class81.intStack[++class5.intStackSize - 1] = Client.widgetRoot;
+         return 1;
+      } else {
+         return 2;
       }
    }
 
-   @ObfuscatedName("is")
+   @ObfuscatedName("hx")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIB)V",
-      garbageValue = "0"
+      signature = "(I)V",
+      garbageValue = "-301186038"
    )
-   static final void method126(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(class18.loadWidget(var0)) {
-         class22.method171(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
-      }
+   static void method130() {
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
    }
 }

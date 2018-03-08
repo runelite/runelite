@@ -9,27 +9,27 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("di")
+@ObfuscatedName("de")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      longValue = 1347991565056993615L
+      longValue = -5911749899801209833L
    )
    @Export("length")
    long length;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      longValue = -9142159151113047375L
+      longValue = 331807842309922009L
    )
    @Export("position")
    long position;
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(-1L == var3) {
+      if(var3 == -1L) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -49,22 +49,22 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-1036215976"
+      garbageValue = "467686700"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
       if(this.position + (long)var3 > this.length) {
-         this.file.seek(this.length + 1L);
+         this.file.seek(1L + this.length);
          this.file.write(1);
          throw new EOFException();
       } else {
@@ -73,20 +73,20 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2073960154"
+      garbageValue = "1535529545"
    )
    @Export("close")
    public final void close() throws IOException {
       this.closeSync(false);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1383131630"
+      signature = "(ZS)V",
+      garbageValue = "147"
    )
    @Export("closeSync")
    public final void closeSync(boolean var1) throws IOException {
@@ -105,20 +105,20 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-1689086150"
+      signature = "(B)J",
+      garbageValue = "27"
    )
    @Export("length")
    public final long length() throws IOException {
       return this.file.length();
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "-556741703"
+      signature = "([BIIB)I",
+      garbageValue = "2"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -138,95 +138,196 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljk;B)V",
-      garbageValue = "-1"
+      signature = "(I)V",
+      garbageValue = "-1610804582"
    )
-   public static void method2621(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
+   static final void method2556() {
+      MapIconReference.method757("You can\'t add yourself to your own friend list");
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;II)I",
-      garbageValue = "1841227524"
+      signature = "(ILcj;ZI)I",
+      garbageValue = "-213873683"
    )
-   public static int method2603(CharSequence var0, CharSequence var1, int var2) {
-      int var3 = var0.length();
-      int var4 = var1.length();
-      int var5 = 0;
-      int var6 = 0;
-      char var7 = 0;
-      char var8 = 0;
-
-      while(var5 - var7 < var3 || var6 - var8 < var4) {
-         if(var5 - var7 >= var3) {
-            return -1;
-         }
-
-         if(var6 - var8 >= var4) {
-            return 1;
-         }
-
-         char var9;
-         if(var7 != 0) {
-            var9 = var7;
-            boolean var14 = false;
-         } else {
-            var9 = var0.charAt(var5++);
-         }
-
-         char var10;
-         if(var8 != 0) {
-            var10 = var8;
-            boolean var15 = false;
-         } else {
-            var10 = var1.charAt(var6++);
-         }
-
-         var7 = class37.method504(var9);
-         var8 = class37.method504(var10);
-         var9 = class167.method3311(var9, var2);
-         var10 = class167.method3311(var10, var2);
-         if(var9 != var10 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
-            var9 = Character.toLowerCase(var9);
-            var10 = Character.toLowerCase(var10);
-            if(var10 != var9) {
-               return NetWriter.method2100(var9, var2) - NetWriter.method2100(var10, var2);
-            }
-         }
-      }
-
-      int var16 = Math.min(var3, var4);
-
-      char var12;
-      int var17;
-      for(var17 = 0; var17 < var16; ++var17) {
-         char var11 = var0.charAt(var17);
-         var12 = var1.charAt(var17);
-         if(var12 != var11 && Character.toUpperCase(var11) != Character.toUpperCase(var12)) {
-            var11 = Character.toLowerCase(var11);
-            var12 = Character.toLowerCase(var12);
-            if(var11 != var12) {
-               return NetWriter.method2100(var11, var2) - NetWriter.method2100(var12, var2);
-            }
-         }
-      }
-
-      var17 = var3 - var4;
-      if(var17 != 0) {
-         return var17;
+   static int method2563(int var0, Script var1, boolean var2) {
+      if(var0 == 3300) {
+         class81.intStack[++class5.intStackSize - 1] = Client.gameCycle;
+         return 1;
       } else {
-         for(int var18 = 0; var18 < var16; ++var18) {
-            var12 = var0.charAt(var18);
-            char var13 = var1.charAt(var18);
-            if(var12 != var13) {
-               return NetWriter.method2100(var12, var2) - NetWriter.method2100(var13, var2);
+         int var3;
+         int var4;
+         if(var0 == 3301) {
+            class5.intStackSize -= 2;
+            var3 = class81.intStack[class5.intStackSize];
+            var4 = class81.intStack[class5.intStackSize + 1];
+            class81.intStack[++class5.intStackSize - 1] = BoundingBox3DDrawMode.method63(var3, var4);
+            return 1;
+         } else if(var0 == 3302) {
+            class5.intStackSize -= 2;
+            var3 = class81.intStack[class5.intStackSize];
+            var4 = class81.intStack[class5.intStackSize + 1];
+            class81.intStack[++class5.intStackSize - 1] = SoundTaskDataProvider.method831(var3, var4);
+            return 1;
+         } else if(var0 == 3303) {
+            class5.intStackSize -= 2;
+            var3 = class81.intStack[class5.intStackSize];
+            var4 = class81.intStack[class5.intStackSize + 1];
+            class81.intStack[++class5.intStackSize - 1] = BoundingBox3DDrawMode.method60(var3, var4);
+            return 1;
+         } else {
+            int var5;
+            if(var0 == 3304) {
+               var3 = class81.intStack[--class5.intStackSize];
+               int[] var9 = class81.intStack;
+               var5 = ++class5.intStackSize - 1;
+               InvType var7 = (InvType)InvType.inventoryCache.get((long)var3);
+               InvType var6;
+               if(var7 != null) {
+                  var6 = var7;
+               } else {
+                  byte[] var13 = InvType.field3443.getConfigData(5, var3);
+                  var7 = new InvType();
+                  if(var13 != null) {
+                     var7.decode(new Buffer(var13));
+                  }
+
+                  InvType.inventoryCache.put(var7, (long)var3);
+                  var6 = var7;
+               }
+
+               var9[var5] = var6.size;
+               return 1;
+            } else if(var0 == 3305) {
+               var3 = class81.intStack[--class5.intStackSize];
+               class81.intStack[++class5.intStackSize - 1] = Client.boostedSkillLevels[var3];
+               return 1;
+            } else if(var0 == 3306) {
+               var3 = class81.intStack[--class5.intStackSize];
+               class81.intStack[++class5.intStackSize - 1] = Client.realSkillLevels[var3];
+               return 1;
+            } else if(var0 == 3307) {
+               var3 = class81.intStack[--class5.intStackSize];
+               class81.intStack[++class5.intStackSize - 1] = Client.skillExperiences[var3];
+               return 1;
+            } else if(var0 == 3308) {
+               var3 = Ignore.plane;
+               var4 = (WorldMapData.localPlayer.x >> 7) + class38.baseX;
+               var5 = (WorldMapData.localPlayer.y >> 7) + PlayerComposition.baseY;
+               class81.intStack[++class5.intStackSize - 1] = (var4 << 14) + var5 + (var3 << 28);
+               return 1;
+            } else if(var0 == 3309) {
+               var3 = class81.intStack[--class5.intStackSize];
+               class81.intStack[++class5.intStackSize - 1] = var3 >> 14 & 16383;
+               return 1;
+            } else if(var0 == 3310) {
+               var3 = class81.intStack[--class5.intStackSize];
+               class81.intStack[++class5.intStackSize - 1] = var3 >> 28;
+               return 1;
+            } else if(var0 == 3311) {
+               var3 = class81.intStack[--class5.intStackSize];
+               class81.intStack[++class5.intStackSize - 1] = var3 & 16383;
+               return 1;
+            } else if(var0 == 3312) {
+               class81.intStack[++class5.intStackSize - 1] = Client.isMembers?1:0;
+               return 1;
+            } else if(var0 == 3313) {
+               class5.intStackSize -= 2;
+               var3 = class81.intStack[class5.intStackSize] + 32768;
+               var4 = class81.intStack[class5.intStackSize + 1];
+               class81.intStack[++class5.intStackSize - 1] = BoundingBox3DDrawMode.method63(var3, var4);
+               return 1;
+            } else {
+               int var11;
+               if(var0 != 3314) {
+                  if(var0 == 3315) {
+                     class5.intStackSize -= 2;
+                     var3 = class81.intStack[class5.intStackSize] + 32768;
+                     var4 = class81.intStack[class5.intStackSize + 1];
+                     class81.intStack[++class5.intStackSize - 1] = BoundingBox3DDrawMode.method60(var3, var4);
+                     return 1;
+                  } else if(var0 == 3316) {
+                     if(Client.rights >= 2) {
+                        class81.intStack[++class5.intStackSize - 1] = Client.rights;
+                     } else {
+                        class81.intStack[++class5.intStackSize - 1] = 0;
+                     }
+
+                     return 1;
+                  } else if(var0 == 3317) {
+                     class81.intStack[++class5.intStackSize - 1] = Client.field865;
+                     return 1;
+                  } else if(var0 == 3318) {
+                     class81.intStack[++class5.intStackSize - 1] = Client.world;
+                     return 1;
+                  } else if(var0 == 3321) {
+                     class81.intStack[++class5.intStackSize - 1] = Client.energy;
+                     return 1;
+                  } else if(var0 == 3322) {
+                     class81.intStack[++class5.intStackSize - 1] = Client.weight;
+                     return 1;
+                  } else if(var0 == 3323) {
+                     if(Client.field1017) {
+                        class81.intStack[++class5.intStackSize - 1] = 1;
+                     } else {
+                        class81.intStack[++class5.intStackSize - 1] = 0;
+                     }
+
+                     return 1;
+                  } else if(var0 == 3324) {
+                     class81.intStack[++class5.intStackSize - 1] = Client.flags;
+                     return 1;
+                  } else if(var0 == 3325) {
+                     class5.intStackSize -= 4;
+                     var3 = class81.intStack[class5.intStackSize];
+                     var4 = class81.intStack[class5.intStackSize + 1];
+                     var5 = class81.intStack[class5.intStackSize + 2];
+                     var11 = class81.intStack[class5.intStackSize + 3];
+                     var3 += var4 << 14;
+                     var3 += var5 << 28;
+                     var3 += var11;
+                     class81.intStack[++class5.intStackSize - 1] = var3;
+                     return 1;
+                  } else {
+                     return 2;
+                  }
+               } else {
+                  class5.intStackSize -= 2;
+                  var3 = class81.intStack[class5.intStackSize] + 32768;
+                  var4 = class81.intStack[class5.intStackSize + 1];
+                  int[] var10 = class81.intStack;
+                  var11 = ++class5.intStackSize - 1;
+                  ItemContainer var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
+                  int var12;
+                  if(var8 == null) {
+                     var12 = 0;
+                  } else if(var4 >= 0 && var4 < var8.stackSizes.length) {
+                     var12 = var8.stackSizes[var4];
+                  } else {
+                     var12 = 0;
+                  }
+
+                  var10[var11] = var12;
+                  return 1;
+               }
             }
          }
-
-         return 0;
       }
+   }
+
+   @ObfuscatedName("kw")
+   @ObfuscatedSignature(
+      signature = "(IIIZB)V",
+      garbageValue = "21"
+   )
+   public static void method2542(int var0, int var1, int var2, boolean var3) {
+      PacketNode var4 = class33.method382(ClientPacket.field2415, Client.field1072.field1456);
+      var4.packetBuffer.method3570(var1);
+      var4.packetBuffer.method3619(var2);
+      var4.packetBuffer.putShort(var0);
+      var4.packetBuffer.method3582(var3?Client.field930:0);
+      Client.field1072.method2073(var4);
    }
 }

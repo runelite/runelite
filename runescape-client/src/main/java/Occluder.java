@@ -4,133 +4,119 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("es")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("d")
+   @ObfuscatedName("qe")
+   @ObfuscatedSignature(
+      signature = "Lv;"
+   )
+   @Export("grandExchangeEvents")
+   static GrandExchangeEvents grandExchangeEvents;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -147950691
+      intValue = 295495745
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1219553899
+      intValue = 1480621369
    )
    @Export("maxTIleX")
    int maxTIleX;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1503927691
+      intValue = 2138493387
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1314117851
+      intValue = 1321941507
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 356342551
+      intValue = 416838291
    )
    @Export("type")
    int type;
-   @ObfuscatedName("y")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -283447731
+      intValue = 43607059
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1596509319
+      intValue = 220193339
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1622757191
+      intValue = 1161995879
    )
    @Export("minZ")
    int minZ;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1938720047
+      intValue = 1257693611
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 376326159
+      intValue = -1163360945
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("m")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -898667259
+      intValue = -1616025175
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("h")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 379234141
+      intValue = 477731823
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1581183463
+      intValue = 1976435773
    )
    int field2059;
-   @ObfuscatedName("i")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 272072733
+      intValue = -1377183047
    )
-   int field2060;
+   int field2057;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 487892989
+      intValue = 1562538651
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -680820287
+      intValue = 2033085935
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("v")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1153191711
+      intValue = 2138992303
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -867147689
+      intValue = -428390477
    )
    @Export("maxNormalY")
    int maxNormalY;
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljk;Ljk;Ljk;B)V",
-      garbageValue = "-81"
-   )
-   public static void method3162(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
-      class281.field3577 = var0;
-      TotalQuantityComparator.field304 = var1;
-      class281.field3564 = var2;
-   }
-
-   @ObfuscatedName("ec")
-   @ObfuscatedSignature(
-      signature = "(I)Llp;",
-      garbageValue = "-1397848199"
-   )
-   static RenderOverview method3163() {
-      return class248.renderOverview;
-   }
 }

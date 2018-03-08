@@ -4,234 +4,253 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("m")
+@ObfuscatedName("n")
 @Implements("BoundingBox3D")
 public final class BoundingBox3D extends BoundingBox {
-   @ObfuscatedName("pu")
+   @ObfuscatedName("rd")
    @ObfuscatedGetter(
-      intValue = -650709577
+      intValue = 482328323
    )
-   static int field264;
-   @ObfuscatedName("bb")
+   static int field250;
+   @ObfuscatedName("fi")
    @ObfuscatedSignature(
-      signature = "Lbb;"
+      signature = "[Lla;"
    )
-   @Export("mouseRecorder")
-   static MouseRecorder mouseRecorder;
-   @ObfuscatedName("d")
+   @Export("headIconsPrayer")
+   static SpritePixels[] headIconsPrayer;
+   @ObfuscatedName("gp")
    @ObfuscatedGetter(
-      intValue = 1269585401
+      intValue = -593803019
+   )
+   @Export("cameraY")
+   static int cameraY;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1526887609
    )
    @Export("int1")
    final int int1;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 534661615
+      intValue = -27905273
    )
    @Export("int2")
    final int int2;
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 621499393
+      intValue = 1200763357
    )
    @Export("int3")
    final int int3;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1467907473
+      intValue = 1231412103
    )
    @Export("int4")
    final int int4;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1768428995
+      intValue = -517625221
    )
    @Export("int5")
    final int int5;
-   @ObfuscatedName("y")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 808869803
+      intValue = -1342539139
    )
    @Export("int6")
    final int int6;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1367137847
+      intValue = 100589153
    )
    @Export("color")
    final int color;
 
    @ObfuscatedSignature(
-      signature = "(Lel;IIII)V"
+      signature = "(Lek;IIII)V"
    )
-   public BoundingBox3D(Model var1, int var2, int var3, int var4, int var5) {
+   BoundingBox3D(Model var1, int var2, int var3, int var4, int var5) {
       this.int1 = var2 + var1.centerX - var1.extremeX;
       this.int2 = var3 + var1.centerY - var1.extremeY;
       this.int3 = var4 + var1.centerZ - var1.extremeZ;
       this.int4 = var2 + var1.extremeX + var1.centerX;
-      this.int5 = var3 + var1.extremeY + var1.centerY;
-      this.int6 = var4 + var1.centerZ + var1.extremeZ;
+      this.int5 = var3 + var1.centerY + var1.extremeY;
+      this.int6 = var4 + var1.extremeZ + var1.centerZ;
       this.color = var5;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
+      signature = "(I)V",
+      garbageValue = "-706888510"
    )
-   public final void vmethod59() {
+   public final void vmethod56() {
       for(int var4 = 0; var4 < 8; ++var4) {
          int var1 = (var4 & 1) == 0?this.int1:this.int4;
          int var2 = (var4 & 2) == 0?this.int2:this.int5;
          int var3 = (var4 & 4) == 0?this.int3:this.int6;
          if((var4 & 1) == 0) {
-            MapLabel.method369(var1, var2, var3, this.int4, var2, var3, this.color);
+            GameCanvas.method854(var1, var2, var3, this.int4, var2, var3, this.color);
          }
 
          if((var4 & 2) == 0) {
-            MapLabel.method369(var1, var2, var3, var1, this.int5, var3, this.color);
+            GameCanvas.method854(var1, var2, var3, var1, this.int5, var3, this.color);
          }
 
          if((var4 & 4) == 0) {
-            MapLabel.method369(var1, var2, var3, var1, var2, this.int6, this.color);
+            GameCanvas.method854(var1, var2, var3, var1, var2, this.int6, this.color);
          }
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("gj")
    @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "915864679"
+      signature = "(IIIIII)V",
+      garbageValue = "-1386515520"
    )
-   static synchronized byte[] method61(int var0) {
-      return class195.method3820(var0, false);
-   }
+   static final void method57(int var0, int var1, int var2, int var3, int var4) {
+      int var5 = class38.region.method2987(var0, var1, var2);
+      int var6;
+      int var7;
+      int var8;
+      int var9;
+      int var11;
+      int var12;
+      if(var5 != 0) {
+         var6 = class38.region.getObjectFlags(var0, var1, var2, var5);
+         var7 = var6 >> 6 & 3;
+         var8 = var6 & 31;
+         var9 = var3;
+         if(var5 > 0) {
+            var9 = var4;
+         }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-65"
-   )
-   public static boolean method60(int var0) {
-      return (var0 >> 21 & 1) != 0;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(ILct;ZI)I",
-      garbageValue = "143644636"
-   )
-   static int method57(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 4200) {
-         var3 = class81.intStack[--class81.intStackSize];
-         class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = class251.getItemDefinition(var3).name;
-         return 1;
-      } else {
-         int var4;
-         ItemComposition var5;
-         if(var0 == 4201) {
-            class81.intStackSize -= 2;
-            var3 = class81.intStack[class81.intStackSize];
-            var4 = class81.intStack[class81.intStackSize + 1];
-            var5 = class251.getItemDefinition(var3);
-            if(var4 >= 1 && var4 <= 5 && var5.groundActions[var4 - 1] != null) {
-               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var5.groundActions[var4 - 1];
-            } else {
-               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = "";
+         int[] var10 = GrandExchangeOffer.minimapSprite.pixels;
+         var11 = var1 * 4 + (103 - var2) * 2048 + 24624;
+         var12 = var5 >> 14 & 32767;
+         ObjectComposition var13 = Spotanim.getObjectDefinition(var12);
+         if(var13.mapSceneId != -1) {
+            IndexedSprite var14 = class318.mapscene[var13.mapSceneId];
+            if(var14 != null) {
+               int var15 = (var13.width * 4 - var14.originalWidth) / 2;
+               int var16 = (var13.length * 4 - var14.height) / 2;
+               var14.method5806(var1 * 4 + var15 + 48, (104 - var2 - var13.length) * 4 + var16 + 48);
             }
-
-            return 1;
-         } else if(var0 == 4202) {
-            class81.intStackSize -= 2;
-            var3 = class81.intStack[class81.intStackSize];
-            var4 = class81.intStack[class81.intStackSize + 1];
-            var5 = class251.getItemDefinition(var3);
-            if(var4 >= 1 && var4 <= 5 && var5.inventoryActions[var4 - 1] != null) {
-               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = var5.inventoryActions[var4 - 1];
-            } else {
-               class81.scriptStringStack[++UrlRequester.scriptStringStackSize - 1] = "";
-            }
-
-            return 1;
-         } else if(var0 == 4203) {
-            var3 = class81.intStack[--class81.intStackSize];
-            class81.intStack[++class81.intStackSize - 1] = class251.getItemDefinition(var3).price;
-            return 1;
-         } else if(var0 == 4204) {
-            var3 = class81.intStack[--class81.intStackSize];
-            class81.intStack[++class81.intStackSize - 1] = class251.getItemDefinition(var3).isStackable == 1?1:0;
-            return 1;
          } else {
-            ItemComposition var6;
-            if(var0 == 4205) {
-               var3 = class81.intStack[--class81.intStackSize];
-               var6 = class251.getItemDefinition(var3);
-               if(var6.notedTemplate == -1 && var6.note >= 0) {
-                  class81.intStack[++class81.intStackSize - 1] = var6.note;
-               } else {
-                  class81.intStack[++class81.intStackSize - 1] = var3;
+            if(var8 == 0 || var8 == 2) {
+               if(var7 == 0) {
+                  var10[var11] = var9;
+                  var10[var11 + 512] = var9;
+                  var10[var11 + 1024] = var9;
+                  var10[var11 + 1536] = var9;
+               } else if(var7 == 1) {
+                  var10[var11] = var9;
+                  var10[var11 + 1] = var9;
+                  var10[var11 + 2] = var9;
+                  var10[var11 + 3] = var9;
+               } else if(var7 == 2) {
+                  var10[var11 + 3] = var9;
+                  var10[var11 + 512 + 3] = var9;
+                  var10[var11 + 1024 + 3] = var9;
+                  var10[var11 + 1536 + 3] = var9;
+               } else if(var7 == 3) {
+                  var10[var11 + 1536] = var9;
+                  var10[var11 + 1536 + 1] = var9;
+                  var10[var11 + 1536 + 2] = var9;
+                  var10[var11 + 1536 + 3] = var9;
                }
+            }
 
-               return 1;
-            } else if(var0 == 4206) {
-               var3 = class81.intStack[--class81.intStackSize];
-               var6 = class251.getItemDefinition(var3);
-               if(var6.notedTemplate >= 0 && var6.note >= 0) {
-                  class81.intStack[++class81.intStackSize - 1] = var6.note;
-               } else {
-                  class81.intStack[++class81.intStackSize - 1] = var3;
+            if(var8 == 3) {
+               if(var7 == 0) {
+                  var10[var11] = var9;
+               } else if(var7 == 1) {
+                  var10[var11 + 3] = var9;
+               } else if(var7 == 2) {
+                  var10[var11 + 1536 + 3] = var9;
+               } else if(var7 == 3) {
+                  var10[var11 + 1536] = var9;
                }
+            }
 
-               return 1;
-            } else if(var0 == 4207) {
-               var3 = class81.intStack[--class81.intStackSize];
-               class81.intStack[++class81.intStackSize - 1] = class251.getItemDefinition(var3).isMembers?1:0;
-               return 1;
-            } else if(var0 == 4208) {
-               var3 = class81.intStack[--class81.intStackSize];
-               var6 = class251.getItemDefinition(var3);
-               if(var6.int3 == -1 && var6.int2 >= 0) {
-                  class81.intStack[++class81.intStackSize - 1] = var6.int2;
-               } else {
-                  class81.intStack[++class81.intStackSize - 1] = var3;
+            if(var8 == 2) {
+               if(var7 == 3) {
+                  var10[var11] = var9;
+                  var10[var11 + 512] = var9;
+                  var10[var11 + 1024] = var9;
+                  var10[var11 + 1536] = var9;
+               } else if(var7 == 0) {
+                  var10[var11] = var9;
+                  var10[var11 + 1] = var9;
+                  var10[var11 + 2] = var9;
+                  var10[var11 + 3] = var9;
+               } else if(var7 == 1) {
+                  var10[var11 + 3] = var9;
+                  var10[var11 + 512 + 3] = var9;
+                  var10[var11 + 1024 + 3] = var9;
+                  var10[var11 + 1536 + 3] = var9;
+               } else if(var7 == 2) {
+                  var10[var11 + 1536] = var9;
+                  var10[var11 + 1536 + 1] = var9;
+                  var10[var11 + 1536 + 2] = var9;
+                  var10[var11 + 1536 + 3] = var9;
                }
-
-               return 1;
-            } else if(var0 == 4209) {
-               var3 = class81.intStack[--class81.intStackSize];
-               var6 = class251.getItemDefinition(var3);
-               if(var6.int3 >= 0 && var6.int2 >= 0) {
-                  class81.intStack[++class81.intStackSize - 1] = var6.int2;
-               } else {
-                  class81.intStack[++class81.intStackSize - 1] = var3;
-               }
-
-               return 1;
-            } else if(var0 == 4210) {
-               String var7 = class81.scriptStringStack[--UrlRequester.scriptStringStackSize];
-               var4 = class81.intStack[--class81.intStackSize];
-               WorldMapType1.method283(var7, var4 == 1);
-               class81.intStack[++class81.intStackSize - 1] = AttackOption.field1333;
-               return 1;
-            } else if(var0 != 4211) {
-               if(var0 == 4212) {
-                  BaseVarType.field28 = 0;
-                  return 1;
-               } else {
-                  return 2;
-               }
-            } else {
-               if(class45.field578 != null && BaseVarType.field28 < AttackOption.field1333) {
-                  class81.intStack[++class81.intStackSize - 1] = class45.field578[++BaseVarType.field28 - 1] & '\uffff';
-               } else {
-                  class81.intStack[++class81.intStackSize - 1] = -1;
-               }
-
-               return 1;
             }
          }
       }
+
+      var5 = class38.region.method2885(var0, var1, var2);
+      if(var5 != 0) {
+         var6 = class38.region.getObjectFlags(var0, var1, var2, var5);
+         var7 = var6 >> 6 & 3;
+         var8 = var6 & 31;
+         var9 = var5 >> 14 & 32767;
+         ObjectComposition var23 = Spotanim.getObjectDefinition(var9);
+         int var18;
+         if(var23.mapSceneId != -1) {
+            IndexedSprite var17 = class318.mapscene[var23.mapSceneId];
+            if(var17 != null) {
+               var12 = (var23.width * 4 - var17.originalWidth) / 2;
+               var18 = (var23.length * 4 - var17.height) / 2;
+               var17.method5806(var1 * 4 + var12 + 48, var18 + (104 - var2 - var23.length) * 4 + 48);
+            }
+         } else if(var8 == 9) {
+            var11 = 15658734;
+            if(var5 > 0) {
+               var11 = 15597568;
+            }
+
+            int[] var22 = GrandExchangeOffer.minimapSprite.pixels;
+            var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
+            if(var7 != 0 && var7 != 2) {
+               var22[var18] = var11;
+               var22[var18 + 1 + 512] = var11;
+               var22[var18 + 1024 + 2] = var11;
+               var22[var18 + 1536 + 3] = var11;
+            } else {
+               var22[var18 + 1536] = var11;
+               var22[var18 + 1 + 1024] = var11;
+               var22[var18 + 512 + 2] = var11;
+               var22[var18 + 3] = var11;
+            }
+         }
+      }
+
+      var5 = class38.region.method3005(var0, var1, var2);
+      if(var5 != 0) {
+         var6 = var5 >> 14 & 32767;
+         ObjectComposition var19 = Spotanim.getObjectDefinition(var6);
+         if(var19.mapSceneId != -1) {
+            IndexedSprite var20 = class318.mapscene[var19.mapSceneId];
+            if(var20 != null) {
+               var9 = (var19.width * 4 - var20.originalWidth) / 2;
+               int var21 = (var19.length * 4 - var20.height) / 2;
+               var20.method5806(var9 + var1 * 4 + 48, var21 + (104 - var2 - var19.length) * 4 + 48);
+            }
+         }
+      }
+
    }
 }
