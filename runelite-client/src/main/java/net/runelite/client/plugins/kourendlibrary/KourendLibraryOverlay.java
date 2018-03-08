@@ -40,7 +40,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Point3D;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -93,7 +93,7 @@ public class KourendLibraryOverlay extends Overlay
 		for (Bookcase bookcase : allBookcases)
 		{
 			// AABB
-			Point3D caseLoc = bookcase.getLocation();
+			WorldPoint caseLoc = bookcase.getLocation();
 			if (Math.abs(playerLoc.getX() - caseLoc.getX()) > MAXIMUM_DISTANCE
 				|| Math.abs(playerLoc.getY() - caseLoc.getY()) > MAXIMUM_DISTANCE)
 			{
@@ -101,7 +101,7 @@ public class KourendLibraryOverlay extends Overlay
 			}
 
 			Point localBookcase = Perspective.worldToLocal(client, caseLoc.toPoint());
-			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getZ(), 25);
+			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getPlane(), 25);
 
 			if (screenBookcase != null)
 			{
