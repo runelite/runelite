@@ -77,7 +77,7 @@ public class WidgetID
 
 	static class WorldMap
 	{
-		static final int OPTION = 29;
+		static final int OPTION = 36;
 	}
 
 	static class SlayerRewards
