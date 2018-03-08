@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
@@ -339,6 +340,17 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		setMenuOptionCount(count);
+	}
+
+	@Inject
+	@Override
+	public Rectangle getMenuBounds()
+	{
+		if (isMenuOpen())
+		{
+			return new Rectangle(getMenuX(), getMenuY(), getMenuWidth(), getMenuHeight());
+		}
+		return null;
 	}
 
 	@Inject

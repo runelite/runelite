@@ -92,8 +92,8 @@ public class class44 {
    static final void method681() {
       int var0 = TextureProvider.menuX;
       int var1 = class90.menuY;
-      int var2 = class23.field331;
-      int var3 = MapIconReference.field571;
+      int var2 = class23.menuWidth;
+      int var3 = MapIconReference.menuHeight;
       int var4 = 6116423;
       Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, var4);
       Rasterizer2D.Rasterizer2D_fillRectangle(var0 + 1, var1 + 1, var2 - 2, 16, 0);
@@ -112,7 +112,7 @@ public class class44 {
          class5.fontBold12.method5500(method677(var7), var0 + 3, var8, var9, 0);
       }
 
-      ItemContainer.method1148(TextureProvider.menuX, class90.menuY, class23.field331, MapIconReference.field571);
+      ItemContainer.method1148(TextureProvider.menuX, class90.menuY, class23.menuWidth, MapIconReference.menuHeight);
    }
 
    @ObfuscatedName("hb")
