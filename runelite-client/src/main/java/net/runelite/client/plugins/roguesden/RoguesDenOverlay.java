@@ -31,7 +31,7 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -61,7 +61,7 @@ public class RoguesDenOverlay extends Overlay
 			return null;
 		}
 
-		Point playerLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
 		plugin.getObstaclesHull().forEach((obstacle, tile) ->
 		{

@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -69,10 +69,10 @@ public class PohOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		Point localLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 		plugin.getPohObjects().forEach((object, tile) ->
 		{
-			Point location = object.getLocalLocation();
+			LocalPoint location = object.getLocalLocation();
 			if (tile.getPlane() == client.getPlane() && localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				PohIcons icon = PohIcons.getIcon(object.getId());

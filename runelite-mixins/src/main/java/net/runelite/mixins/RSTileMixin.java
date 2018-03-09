@@ -28,9 +28,10 @@ import net.runelite.api.Actor;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -75,10 +76,9 @@ public abstract class RSTileMixin implements RSTile
 
 	@Inject
 	@Override
-	public Point getWorldLocation()
+	public WorldPoint getWorldLocation()
 	{
-		Point regionLocation = getRegionLocation();
-		return Perspective.regionToWorld(client, regionLocation);
+		return WorldPoint.fromRegion(client, getX(), getY(), getPlane());
 	}
 
 	@Inject
@@ -90,10 +90,9 @@ public abstract class RSTileMixin implements RSTile
 
 	@Inject
 	@Override
-	public Point getLocalLocation()
+	public LocalPoint getLocalLocation()
 	{
-		Point regionLocation = getRegionLocation();
-		return Perspective.regionToLocal(client, regionLocation);
+		return LocalPoint.fromRegion(getX(), getY());
 	}
 
 	@FieldHook("wallObject")

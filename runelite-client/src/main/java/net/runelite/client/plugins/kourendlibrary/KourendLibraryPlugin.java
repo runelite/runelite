@@ -35,8 +35,6 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -114,8 +112,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
-			Point worldPoint = Perspective.regionToWorld(client, new Point(menuOpt.getId() & 127, menuOpt.getId() >> 7 & 127));
-			lastBookcaseClick = new WorldPoint(worldPoint.getX(), worldPoint.getY(), client.getPlane());
+			lastBookcaseClick = WorldPoint.fromLocal(client, menuOpt.getId() & 127, menuOpt.getId() >> 7 & 127, client.getPlane());
 		}
 	}
 

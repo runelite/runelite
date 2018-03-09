@@ -39,7 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -321,7 +321,7 @@ public class HunterPlugin extends Plugin
 	 */
 	private HunterTrap getTrapFromCollection(GameObject gameObject)
 	{
-		final Point gameObjectLocation = gameObject.getWorldLocation();
+		final WorldPoint gameObjectLocation = gameObject.getWorldLocation();
 
 		for (HunterTrap trap : traps)
 		{
