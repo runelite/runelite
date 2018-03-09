@@ -61,26 +61,6 @@ public class Perspective
 	}
 
 	/**
-	 * Check if a world location is in the scene
-	 * @param point world location
-	 * @return
-	 */
-	@Deprecated
-	public static boolean isWorldInScene(Client client, Point point)
-	{
-		int x = point.getX();
-		int y = point.getY();
-
-		int baseX = client.getBaseX();
-		int baseY = client.getBaseY();
-
-		int maxX = baseX + SCENE_SIZE;
-		int maxY = baseY + SCENE_SIZE;
-
-		return x >= baseX && x < maxX && y >= baseY && y < maxY;
-	}
-
-	/**
 	 * Translates two-dimensional ground coordinates within the 3D world to
 	 * their corresponding coordinates on the game screen.
 	 *
@@ -276,49 +256,6 @@ public class Perspective
 		}
 
 		return 0;
-	}
-
-	@Deprecated
-	public static Point worldToLocal(Client client, Point point)
-	{
-		if (!isWorldInScene(client, point))
-		{
-			return null;
-		}
-
-		int baseX = client.getBaseX();
-		int baseY = client.getBaseY();
-
-		int x = ((point.getX() - baseX) << LOCAL_COORD_BITS) + (1 << LOCAL_COORD_BITS - 1) - 1;
-		int y = ((point.getY() - baseY) << LOCAL_COORD_BITS) + (1 << LOCAL_COORD_BITS - 1) - 1;
-
-		return new Point(x, y);
-	}
-
-	@Deprecated
-	public static Point localToWorld(Client client, Point point)
-	{
-		int x = (point.getX() >>> LOCAL_COORD_BITS) + client.getBaseX();
-		int y = (point.getY() >>> LOCAL_COORD_BITS) + client.getBaseY();
-		return new Point(x, y);
-	}
-
-	@Deprecated
-	public static Point regionToWorld(Client client, Point point)
-	{
-		int baseX = client.getBaseX();
-		int baseY = client.getBaseY();
-		int x = point.getX() + baseX;
-		int y = point.getY() + baseY;
-		return new Point(x, y);
-	}
-
-	@Deprecated
-	public static Point regionToLocal(Client client, Point point)
-	{
-		int x = point.getX() << LOCAL_COORD_BITS;
-		int y = point.getY() << LOCAL_COORD_BITS;
-		return new Point(x, y);
 	}
 
 	/**
