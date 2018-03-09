@@ -133,4 +133,21 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 		return rotatedTriangles;
 	}
+
+	@Inject
+	@Override
+	public int getCacheIndex()
+	{
+		RSPlayer[] players = client.getCachedPlayers();
+
+		for (int i = 0; i < players.length; ++i)
+		{
+			RSPlayer cachedPlayer = players[i];
+
+			if (cachedPlayer == this)
+				return i;
+		}
+
+		return -1;
+	}
 }

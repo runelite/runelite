@@ -40,4 +40,12 @@ public interface Player extends Actor
 	boolean isClanMember();
 
 	boolean isFriend();
+
+	/**
+	 * This returns the index of the Player in the client cache.
+	 * This cache usually persists throughout the game session and is the preferred
+	 * method for tracking players
+	 * @return the cache id of the player
+	 */
+	int getCacheIndex();
 }
