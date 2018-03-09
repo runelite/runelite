@@ -57,6 +57,11 @@ public class RaidsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		if (plugin.isInRaidChambers())
+		{
+			plugin.repositionPointsBox();
+		}
+
 		if (!config.scoutOverlay() || !scoutOverlayShown)
 		{
 			return null;

@@ -24,11 +24,15 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -48,6 +52,9 @@ public class DevToolsPlugin extends Plugin
 	@Inject
 	private DevToolsOverlay overlay;
 
+	@Inject
+	private LocationOverlay locationOverlay;
+
 	private boolean togglePlayers;
 	private boolean toggleNpcs;
 	private boolean toggleGroundItems;
@@ -57,12 +64,19 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleDecor;
 	private boolean toggleInventory;
 	private boolean toggleProjectiles;
+	private boolean toggleLocation;
 
 	Widget currentWidget;
 	int itemIndex = -1;
 
 	private Font font;
 	private NavigationButton navButton;
+
+	@Provides
+	DevToolsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(DevToolsConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -93,9 +107,9 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, locationOverlay);
 	}
 
 	Font getFont()
@@ -148,6 +162,11 @@ public class DevToolsPlugin extends Plugin
 		toggleProjectiles = !toggleProjectiles;
 	}
 
+	void toggleLocation()
+	{
+		toggleLocation = !toggleLocation;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -191,5 +210,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleProjectiles()
 	{
 		return toggleProjectiles;
+	}
+
+	boolean isToggleLocation()
+	{
+		return toggleLocation;
 	}
 }

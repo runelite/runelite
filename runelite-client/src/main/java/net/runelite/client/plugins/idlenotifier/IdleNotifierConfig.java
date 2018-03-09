@@ -36,21 +36,43 @@ import net.runelite.client.config.ConfigItem;
 public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
-		keyName = "timeout",
-		name = "Idle Timeout (ms)",
-		description = "The notification delay after the player is idle",
-		position = 5
+		keyName = "animationidle",
+		name = "Idle Animation Notifications",
+		description = "Configures if idle animation notifications are enabled",
+		position = 1
 	)
-	default int getTimeout()
+	default boolean animationIdle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "combatidle",
+		name = "Combat Idle Notifications",
+		description = "Configures if out of combat notifications are enabled",
+		position = 2
+	)
+	default boolean combatIdle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "timeout",
+		name = "Idle Notification Delay (ms)",
+		description = "The notification delay after the player is idle",
+		position = 3
+	)
+	default int getIdleNotificationDelay()
 	{
 		return 5000;
 	}
 
 	@ConfigItem(
 		keyName = "hitpoints",
-		name = "Hitpoints Threshold",
+		name = "Hitpoints Notification Threshold",
 		description = "The amount of hitpoints to send a notification at",
-		position = 6
+		position = 4
 	)
 	default int getHitpointsThreshold()
 	{
@@ -59,9 +81,9 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "prayer",
-		name = "Prayer Threshold",
+		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at",
-		position = 7
+		position = 5
 	)
 	default int getPrayerThreshold()
 	{

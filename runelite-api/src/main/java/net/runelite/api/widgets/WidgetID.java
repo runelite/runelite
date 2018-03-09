@@ -74,6 +74,7 @@ public class WidgetID
 	public static final int WORLD_MAP = 595;
 	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
+	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 
 	static class WorldMap
 	{
@@ -185,7 +186,7 @@ public class WidgetID
 
 	static class Viewport
 	{
-		static final int FIXED_VIEWPORT = 20;
+		static final int FIXED_VIEWPORT = 17;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
 	}
@@ -317,5 +318,11 @@ public class WidgetID
 	{
 		static final int SPRITE = 0;
 		static final int TEXT = 1;
+	}
+
+	static class ExperienceTracker
+	{
+		static final int WIDGET = 1;
+		static final int BOTTOM_BAR = 14;
 	}
 }

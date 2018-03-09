@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.devtools;
 
-public enum JewelleryType
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "devtools",
+	name = "Dev Tools",
+	description = "Configuration for developer tools"
+)
+public interface DevToolsConfig
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL,
-	PHARAO,
-	WATERSKIN,
-	IMP_IN_A_BOX
+	@ConfigItem(
+		keyName = "inspectorAlwaysOnTop",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default boolean inspectorAlwaysOnTop()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "inspectorAlwaysOnTop",
+		name = "",
+		description = ""
+	)
+	void inspectorAlwaysOnTop(boolean value);
 }

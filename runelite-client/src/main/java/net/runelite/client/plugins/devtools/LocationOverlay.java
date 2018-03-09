@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Seth <https://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tileindicators;
+package net.runelite.client.plugins.devtools;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class TileIndicatorsOverlay extends Overlay
+public class LocationOverlay extends Overlay
 {
 	private final Client client;
-	private final TileIndicatorsConfig config;
+	private final DevToolsPlugin plugin;
 
-	TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
+	private PanelComponent panelComponent;
+
+	@Inject
+	LocationOverlay(Client client, DevToolsPlugin plugin)
 	{
+		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
-		this.config = config;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.LOW);
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (client.getSceneDestinationLocation().getX() > 0
-			&& client.getSceneDestinationLocation().getY() > 0)
+		if (!plugin.isToggleLocation())
 		{
-			drawRegionTile(graphics, client.getSceneDestinationLocation(), config.highlightDestinationColor());
+			return null;
 		}
 
-		return null;
-	}
+		panelComponent = new PanelComponent();
 
-	private void drawRegionTile(Graphics2D graphics, Point tile, Color color)
-	{
-		Point localTile = Perspective.regionToLocal(client, tile);
-		localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
-		Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
+		Point localWorld = client.getLocalPlayer().getWorldLocation();
 
-		if (poly != null)
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Tile",
+			localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane()
+		));
+
+		for (int i = 0; i < client.getMapRegions().length; i++)
 		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
+			int region = client.getMapRegions()[i];
+
+			panelComponent.getLines().add(new PanelComponent.Line(
+				(i == 0) ? "Map region" : " ",
+				String.valueOf(region)
+			));
 		}
+
+
+		return panelComponent.render(graphics, parent);
 	}
 }

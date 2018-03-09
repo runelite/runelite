@@ -120,6 +120,8 @@ public class ScriptVM
 		e.addMethodContextVisitor(pcontext::set);
 		e.run();
 
+		Instructions instrs = runScript.getCode().getInstructions();
+
 		Set<AStore> scriptStores = new HashSet<>();
 		Integer pcLocalVar = null;
 		Integer instructionArrayLocalVar = null;
@@ -215,57 +217,65 @@ public class ScriptVM
 		}
 
 		// Add PutStatics to all Script AStores
-		int outerSciptIdx = scriptStores.stream()
-			.mapToInt(AStore::getVariableIndex)
-			.reduce(Math::min)
-			.orElseThrow(() -> new InjectionException("Unable to find any Script AStores in runScript"));
-		log.debug("Found script index {}", outerSciptIdx);
-
-		scriptStores.stream()
-			.filter(s -> s.getVariableIndex() == outerSciptIdx)
-			.forEach(store ->
-			{
-				Instructions instrs = store.getInstructions();
-				int idx = instrs.getInstructions().indexOf(store);
-				instrs.addInstruction(idx, new Dup(instrs));
-				instrs.addInstruction(idx + 1, new PutStatic(instrs, currentScriptField));
-			});
-
-		// Add PutStatics to all PC IStores and IIncs
-		if (pcLocalVar == null)
 		{
-			throw new InjectionException("Unable to find ILoad for invokedFromPc IStore");
-		}
-		log.debug("Found pc index {}", pcLocalVar);
+			int outerSciptIdx = scriptStores.stream()
+				.mapToInt(AStore::getVariableIndex)
+				.reduce(Math::min)
+				.orElseThrow(() -> new InjectionException("Unable to find any Script AStores in runScript"));
+			log.debug("Found script index {}", outerSciptIdx);
 
-		Instructions instrs = runScript.getCode().getInstructions();
-		ListIterator<Instruction> instrIter = instrs.getInstructions().listIterator();
-		boolean injectedPc = false;
-		while (instrIter.hasNext())
-		{
-			Instruction instr = instrIter.next();
-
-			if (instr instanceof IStore)
+			ListIterator<Instruction> instrIter = instrs.getInstructions().listIterator();
+			while (instrIter.hasNext())
 			{
-				IStore il = (IStore) instr;
-				if (il.getVariableIndex() == pcLocalVar)
+				Instruction instr = instrIter.next();
+
+				if (instr instanceof AStore)
 				{
-					instrIter.previous();
-					instrIter.add(new Dup(instrs));
-					instrIter.add(new PutStatic(instrs, currentScriptPCField));
-					instrIter.next();
-					injectedPc = true;
+					AStore il = (AStore) instr;
+					if (il.getVariableIndex() == outerSciptIdx)
+					{
+						instrIter.previous();
+						instrIter.add(new Dup(instrs));
+						instrIter.add(new PutStatic(instrs, currentScriptField));
+						instrIter.next();
+					}
 				}
 			}
+		}
 
-			if (instr instanceof IInc)
+		// Add PutStatics to all PC IStores and IIncs
+		{
+			if (pcLocalVar == null)
 			{
-				IInc iinc = (IInc) instr;
-				if (iinc.getVariableIndex() == pcLocalVar)
+				throw new InjectionException("Unable to find ILoad for invokedFromPc IStore");
+			}
+			log.debug("Found pc index {}", pcLocalVar);
+
+			ListIterator<Instruction> instrIter = instrs.getInstructions().listIterator();
+			while (instrIter.hasNext())
+			{
+				Instruction instr = instrIter.next();
+
+				if (instr instanceof IStore)
 				{
-					instrIter.add(new ILoad(instrs, pcLocalVar));
-					instrIter.add(new PutStatic(instrs, currentScriptPCField));
-					injectedPc = true;
+					IStore il = (IStore) instr;
+					if (il.getVariableIndex() == pcLocalVar)
+					{
+						instrIter.previous();
+						instrIter.add(new Dup(instrs));
+						instrIter.add(new PutStatic(instrs, currentScriptPCField));
+						instrIter.next();
+					}
+				}
+
+				if (instr instanceof IInc)
+				{
+					IInc iinc = (IInc) instr;
+					if (iinc.getVariableIndex() == pcLocalVar)
+					{
+						instrIter.add(new ILoad(instrs, pcLocalVar));
+						instrIter.add(new PutStatic(instrs, currentScriptPCField));
+					}
 				}
 			}
 		}
@@ -275,10 +285,6 @@ public class ScriptVM
 		if (currentOpcodeStore == null)
 		{
 			throw new InjectionException("Unable to find IStore for current opcode");
-		}
-		if (!injectedPc)
-		{
-			throw new InjectionException("Did not inject putstatic pc");
 		}
 
 		int istorepc = instrs.getInstructions().indexOf(currentOpcodeStore);
