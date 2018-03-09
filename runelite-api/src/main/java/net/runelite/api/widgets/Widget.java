@@ -78,8 +78,19 @@ public interface Widget
 
 	void setSpriteId(int spriteId);
 
+	/**
+	 * @return True if this widget or any of it's parents are hidden
+	 */
 	boolean isHidden();
 
+	/**
+	 * @return True if this widget, regardless of it's parent's state
+	 */
+	boolean isSelfHidden();
+
+	/**
+	 * Sets if this element is hidden as returned by isSelfHidden()
+	 */
 	void setHidden(boolean hidden);
 
 	Point getCanvasLocation();
