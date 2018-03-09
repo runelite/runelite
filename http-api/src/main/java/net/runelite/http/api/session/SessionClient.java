@@ -56,7 +56,7 @@ public class SessionClient
 			InputStream in = body.byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
 		}
-		catch (JsonParseException ex)
+		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
 		{
 			throw new IOException(ex);
 		}
