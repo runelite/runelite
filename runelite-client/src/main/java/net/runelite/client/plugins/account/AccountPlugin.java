@@ -32,6 +32,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionClose;
 import net.runelite.client.account.AccountSession;
@@ -123,7 +124,12 @@ public class AccountPlugin extends Plugin
 
 	private void logoutClick(ActionEvent ae)
 	{
-		sessionManager.logout();
+		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(ui,
+				"Are you sure you want to logout?", "Logout Confirmation",
+				JOptionPane.YES_NO_OPTION))
+		{
+			sessionManager.logout();
+		}
 	}
 
 	@Subscribe
