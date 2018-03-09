@@ -274,7 +274,7 @@ public class IdleNotifierPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		final Player local = client.getLocalPlayer();
-		final Duration waitDuration = Duration.ofMillis(config.getTimeout());
+		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 
 		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
@@ -291,12 +291,12 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
-		if (checkAnimationIdle(waitDuration, local))
+		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
-		if (checkOutOfCombat(waitDuration, local))
+		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
 		{
 			notifier.notify("[" + local.getName() + "] is now out of combat!");
 		}
