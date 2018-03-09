@@ -26,6 +26,7 @@
 package net.runelite.client.ui;
 
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.function.Supplier;
 import lombok.Builder;
 import lombok.Data;
@@ -73,4 +74,9 @@ public class NavigationButton
 	 * Supplier for plugin panel, used when expanding and contracting sidebar.
 	 */
 	private Supplier<PluginPanel> panel;
+
+	/**
+	 * Map of key-value pairs for setting the popup menu
+	 */
+	private Map<String, Runnable> popup;
 }

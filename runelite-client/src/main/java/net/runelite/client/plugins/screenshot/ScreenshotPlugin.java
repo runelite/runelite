@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.screenshot;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -153,6 +155,21 @@ public class ScreenshotPlugin extends Plugin
 				.onClick(() -> takeScreenshot(
 					TIME_FORMAT.format(new Date()),
 					client.getLocalPlayer() != null))
+				.popup(ImmutableMap
+					.<String, Runnable>builder()
+					.put("Open screenshot folder...", () ->
+					{
+						try
+						{
+							Desktop.getDesktop().open(RuneLite.SCREENSHOT_DIR);
+						}
+						catch (IOException ex)
+						{
+							log.warn("Error opening screenshot dir", ex);
+
+						}
+					})
+					.build())
 				.build();
 
 			titleToolbar.addNavigation(titleBarButton);

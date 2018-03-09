@@ -49,7 +49,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -272,6 +274,20 @@ public class ClientUI
 			if (event.getButton().getOnClick() != null)
 			{
 				button.addActionListener(e -> event.getButton().getOnClick().run());
+			}
+
+			if (event.getButton().getPopup() != null)
+			{
+				final JPopupMenu popupMenu = new JPopupMenu();
+
+				event.getButton().getPopup().forEach((name, callback) ->
+				{
+					final JMenuItem menuItem = new JMenuItem(name);
+					menuItem.addActionListener((e) -> callback.run());
+					popupMenu.add(menuItem);
+				});
+
+				button.setComponentPopupMenu(popupMenu);
 			}
 
 			event.getButton().setOnSelect(() -> button.setSelected(event.getButton().isSelected()));
