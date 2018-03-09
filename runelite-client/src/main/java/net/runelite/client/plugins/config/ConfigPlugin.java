@@ -78,7 +78,7 @@ public class ConfigPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.name("Configuration")
 			.icon(icon)
-			.panel(() -> configPanel)
+			.panel(configPanel)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);
