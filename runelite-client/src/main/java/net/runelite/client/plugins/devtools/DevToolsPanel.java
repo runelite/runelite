@@ -65,6 +65,7 @@ public class DevToolsPanel extends PluginPanel
 	private JButton renderInventoryBtn = new JButton();
 	private JButton renderProjectilesBtn = new JButton();
 	private JPanel boundsDebugPanel = new JPanel();
+	private JButton renderLocationBtn = new JButton();
 
 	private JLabel textLbl = new JLabel();
 	private JLabel textColorLbl = new JLabel();
@@ -103,7 +104,7 @@ public class DevToolsPanel extends PluginPanel
 	private JPanel createOptionsPanel()
 	{
 		JPanel container = new JPanel();
-		container.setLayout(new GridLayout(6, 2, 3, 3));
+		container.setLayout(new GridLayout(7, 2, 3, 3));
 
 		renderPlayersBtn = new JButton("Players");
 		renderPlayersBtn.addActionListener(e ->
@@ -187,6 +188,14 @@ public class DevToolsPanel extends PluginPanel
 		JButton settingsClearBtn = new JButton("Clear Settings");
 		settingsClearBtn.addActionListener(settingsTracker::clear);
 		container.add(settingsClearBtn);
+
+		renderLocationBtn = new JButton("Location");
+		renderLocationBtn.addActionListener(e ->
+		{
+			highlightButton(renderLocationBtn);
+			plugin.toggleLocation();
+		});
+		container.add(renderLocationBtn);
 
 		return container;
 	}
