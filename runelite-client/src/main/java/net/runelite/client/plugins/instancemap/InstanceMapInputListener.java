@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.instancemap;
 
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -114,7 +115,12 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 
 	private boolean isWithinOverlay(int x, int y)
 	{
-		return (x >= OVERLAY_POSITION.getX() && x <= OVERLAY_POSITION.getX() + plugin.getOverlaySize().width &&
-				y >= OVERLAY_POSITION.getY() && y <= OVERLAY_POSITION.getY() + plugin.getOverlaySize().height);
+		Dimension dimm = plugin.getOverlaySize();
+		if (dimm == null)
+		{
+			return false;
+		}
+		return (x >= OVERLAY_POSITION.getX() && x <= OVERLAY_POSITION.getX() + dimm.width &&
+			y >= OVERLAY_POSITION.getY() && y <= OVERLAY_POSITION.getY() + dimm.height);
 	}
 }
