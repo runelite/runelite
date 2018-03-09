@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
@@ -230,9 +231,9 @@ public class AttackIndicatorPlugin extends Plugin
 					break;
 				case "removeWarnedStyles":
 					hideWarnedStyles(enabled);
-					processWidgets();
 					break;
 			}
+			processWidgets();
 		}
 	}
 
@@ -354,5 +355,17 @@ public class AttackIndicatorPlugin extends Plugin
 		{
 			widget.setHidden(hidden);
 		}
+	}
+
+	@VisibleForTesting
+	Set<Skill> getWarnedSkills()
+	{
+		return warnedSkills;
+	}
+
+	@VisibleForTesting
+	Table<WeaponType, WidgetInfo, Boolean> getHiddenWidgets()
+	{
+		return widgetsToHide;
 	}
 }
