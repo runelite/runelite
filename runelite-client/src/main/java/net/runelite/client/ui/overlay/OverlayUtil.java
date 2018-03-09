@@ -32,10 +32,7 @@ import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.SpritePixels;
 import net.runelite.api.TileObject;
 import net.runelite.client.ui.FontManager;
 
@@ -83,14 +80,6 @@ public class OverlayUtil
 		graphics.drawImage(image, x, y, null);
 	}
 
-	public static void renderSpriteLocation(Graphics2D graphics, Point imgLoc, SpritePixels sprite)
-	{
-		int x = imgLoc.getX();
-		int y = imgLoc.getY();
-
-		sprite.drawAt(x, y);
-	}
-
 	public static void renderActorOverlay(Graphics2D graphics, Actor actor, String text, Color color)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
@@ -121,27 +110,6 @@ public class OverlayUtil
 		}
 	}
 
-	public static void renderActorOverlaySprite(Graphics2D graphics, Actor actor, SpritePixels sprite, Color color)
-	{
-		Polygon poly = actor.getCanvasTilePoly();
-		if (poly != null)
-		{
-			renderPolygon(graphics, poly, color);
-		}
-
-		Point minimapLocation = actor.getMinimapLocation();
-		if (minimapLocation != null)
-		{
-			renderMinimapLocation(graphics, minimapLocation, color);
-		}
-
-		Point imageLocation = actor.getCanvasSpriteLocation(graphics, sprite, actor.getLogicalHeight());
-		if (imageLocation != null)
-		{
-			renderSpriteLocation(graphics, imageLocation, sprite);
-		}
-	}
-
 	public static void renderTileOverlay(Graphics2D graphics, TileObject tileObject, String text, Color color)
 	{
 		Polygon poly = tileObject.getCanvasTilePoly();
@@ -157,28 +125,6 @@ public class OverlayUtil
 		}
 
 		Point textLocation = tileObject.getCanvasTextLocation(graphics, text, 0);
-		if (textLocation != null)
-		{
-			renderTextLocation(graphics, textLocation, text, color);
-		}
-	}
-
-	public static void renderTilePointOverlay(Graphics2D graphics, Client client, Point point, String text, Color color)
-	{
-		Polygon poly = Perspective.getCanvasTilePoly(client, point);
-
-		if (poly != null)
-		{
-			renderPolygon(graphics, poly, color);
-		}
-
-		Point minimapLocation = Perspective.worldToMiniMap(client, point.getX(), point.getY());
-		if (minimapLocation != null)
-		{
-			renderMinimapLocation(graphics, minimapLocation, color);
-		}
-
-		Point textLocation = Perspective.getCanvasTextLocation(client, graphics, point, text, 0);
 		if (textLocation != null)
 		{
 			renderTextLocation(graphics, textLocation, text, color);
