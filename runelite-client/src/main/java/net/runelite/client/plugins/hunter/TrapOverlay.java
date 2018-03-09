@@ -32,7 +32,6 @@ import java.awt.Point;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,6 +42,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
  */
 public class TrapOverlay extends Overlay
 {
+	private static final int MAX_DISTANCE = 2500;
+
 	/**
 	 * Size of the trap timer.
 	 */
@@ -107,11 +108,11 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTraps(Graphics2D graphics)
 	{
-		Widget viewport = client.getViewportWidget();
+		net.runelite.api.Point localLocation = client.getLocalPlayer().getLocalLocation();
 		for (HunterTrap trap : plugin.getTraps())
 		{
-			net.runelite.api.Point trapLoc = trap.getGameObject().getCanvasLocation();
-			if (viewport != null && trapLoc != null && viewport.contains(trapLoc))
+			net.runelite.api.Point trapLocation = trap.getGameObject().getLocalLocation();
+			if (trapLocation != null && localLocation.distanceTo(trapLocation) <= MAX_DISTANCE)
 			{
 				switch (trap.getState())
 				{
