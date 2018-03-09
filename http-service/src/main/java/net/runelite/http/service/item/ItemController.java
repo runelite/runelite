@@ -28,6 +28,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -51,6 +53,7 @@ public class ItemController
 {
 	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
 	private static final String RUNELITE_CACHE = "RuneLite-Cache";
+	private static final int MAX_BATCH_LOOKUP = 1024;
 
 	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
 		.maximumSize(1024L)
@@ -197,7 +200,7 @@ public class ItemController
 	}
 
 	@RequestMapping("/search")
-	public SearchResult search(HttpServletResponse response, @RequestParam String query)
+	public SearchResult search(@RequestParam String query)
 	{
 		List<ItemEntry> result = itemService.search(query);
 
@@ -208,5 +211,34 @@ public class ItemController
 			.map(ItemEntry::toItem)
 			.collect(Collectors.toList()));
 		return searchResult;
+	}
+
+	@RequestMapping("/price")
+	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
+	{
+		if (itemIds.length > MAX_BATCH_LOOKUP)
+		{
+			itemIds = Arrays.copyOf(itemIds, MAX_BATCH_LOOKUP);
+		}
+
+		List<ItemPrice> itemPrices = new ArrayList<>(itemIds.length);
+		for (int itemId : itemIds)
+		{
+			ItemEntry item = itemService.getItem(itemId);
+			PriceEntry priceEntry = itemService.getPrice(itemId, null);
+
+			if (item == null || priceEntry == null)
+			{
+				continue;
+			}
+
+			ItemPrice itemPrice = new ItemPrice();
+			itemPrice.setItem(item.toItem());
+			itemPrice.setPrice(priceEntry.getPrice());
+			itemPrice.setTime(priceEntry.getTime());
+			itemPrices.add(itemPrice);
+		}
+
+		return itemPrices.toArray(new ItemPrice[itemPrices.size()]);
 	}
 }
