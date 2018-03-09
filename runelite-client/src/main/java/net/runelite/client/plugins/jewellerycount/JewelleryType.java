@@ -40,4 +40,5 @@ public enum JewelleryType
 	TCRYSTAL,
 	PHARAO,
 	WATERSKIN,
+	IMP_IN_A_BOX
 }
