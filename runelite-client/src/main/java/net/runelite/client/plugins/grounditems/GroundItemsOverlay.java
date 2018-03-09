@@ -47,6 +47,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -122,13 +123,13 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		int z = client.getPlane();
-		Point from = player.getRegionLocation();
+		LocalPoint from = player.getLocalLocation();
 
-		int lowerX = max(0, from.getX() - MAX_RANGE);
-		int lowerY = max(0, from.getY() - MAX_RANGE);
+		int lowerX = max(0, from.getRegionX() - MAX_RANGE);
+		int lowerY = max(0, from.getRegionY() - MAX_RANGE);
 
-		int upperX = min(from.getX() + MAX_RANGE, REGION_SIZE - 1);
-		int upperY = min(from.getY() + MAX_RANGE, REGION_SIZE - 1);
+		int upperX = min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
+		int upperY = min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
 
 		for (int x = lowerX; x <= upperX; ++x)
 		{

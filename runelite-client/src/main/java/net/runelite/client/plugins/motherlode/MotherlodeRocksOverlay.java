@@ -38,6 +38,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -83,10 +84,10 @@ class MotherlodeRocksOverlay extends Overlay
 
 	private void renderTiles(Graphics2D graphics, Player local)
 	{
-		Point localLocation = local.getLocalLocation();
+		LocalPoint localLocation = local.getLocalLocation();
 		for (WallObject vein : plugin.getVeins())
 		{
-			Point location = vein.getLocalLocation();
+			LocalPoint location = vein.getLocalLocation();
 			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				renderVein(graphics, vein);
@@ -95,7 +96,7 @@ class MotherlodeRocksOverlay extends Overlay
 
 		for (GameObject rock : plugin.getRocks())
 		{
-			Point location = rock.getLocalLocation();
+			LocalPoint location = rock.getLocalLocation();
 			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				renderRock(graphics, rock);

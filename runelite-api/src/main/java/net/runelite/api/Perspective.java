@@ -34,6 +34,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
@@ -218,7 +219,7 @@ public class Perspective
 	{
 		int angle = client.getMapAngle() & 0x7FF;
 
-		Point localLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 		x = x / 32 - localLocation.getX() / 32;
 		y = y / 32 - localLocation.getY() / 32;
 
@@ -328,7 +329,7 @@ public class Perspective
 	 * @return a {@link Polygon} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Polygon getCanvasTilePoly(Client client, Point localLocation)
+	public static Polygon getCanvasTilePoly(Client client, LocalPoint localLocation)
 	{
 		return getCanvasTileAreaPoly(client, localLocation, 1);
 	}
@@ -342,7 +343,7 @@ public class Perspective
 	 * size = 3
 	 * @return a polygon representing the tiles in the area
 	 */
-	public static Polygon getCanvasTileAreaPoly(Client client, Point localLocation, int size)
+	public static Polygon getCanvasTileAreaPoly(Client client, LocalPoint localLocation, int size)
 	{
 		int plane = client.getPlane();
 		int halfTile = LOCAL_TILE_SIZE / 2;
@@ -391,7 +392,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasTextLocation(Client client, Graphics2D graphics, Point localLocation, String text, int zOffset)
+	public static Point getCanvasTextLocation(Client client, Graphics2D graphics, LocalPoint localLocation, String text, int zOffset)
 	{
 		int plane = client.getPlane();
 
@@ -420,7 +421,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasImageLocation(Client client, Graphics2D graphics, Point localLocation, BufferedImage image, int zOffset)
+	public static Point getCanvasImageLocation(Client client, Graphics2D graphics, LocalPoint localLocation, BufferedImage image, int zOffset)
 	{
 		int plane = client.getPlane();
 
@@ -446,7 +447,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getMiniMapImageLocation(Client client, Point localLocation, BufferedImage image)
+	public static Point getMiniMapImageLocation(Client client, LocalPoint localLocation, BufferedImage image)
 	{
 		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
 
@@ -472,7 +473,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasSpriteLocation(Client client, Graphics2D graphics, Point localLocation, SpritePixels sprite, int zOffset)
+	public static Point getCanvasSpriteLocation(Client client, Graphics2D graphics, LocalPoint localLocation, SpritePixels sprite, int zOffset)
 	{
 		int plane = client.getPlane();
 
@@ -718,7 +719,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasTextMiniMapLocation(Client client, Graphics2D graphics, Point localLocation, String text)
+	public static Point getCanvasTextMiniMapLocation(Client client, Graphics2D graphics, LocalPoint localLocation, String text)
 	{
 		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
 

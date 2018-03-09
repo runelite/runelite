@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -52,6 +51,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -341,7 +341,7 @@ public class DevToolsOverlay extends Overlay
 			int originX = projectile.getX1();
 			int originY = projectile.getY1();
 
-			net.runelite.api.Point tilePoint = new net.runelite.api.Point(originX, originY);
+			LocalPoint tilePoint = new LocalPoint(originX, originY);
 			Polygon poly = Perspective.getCanvasTilePoly(client, tilePoint);
 
 			if (poly != null)
@@ -370,17 +370,6 @@ public class DevToolsOverlay extends Overlay
 				OverlayUtil.renderActorOverlay(graphics, projectile.getInteracting(), infoString, Color.RED);
 			}
 		}
-	}
-
-	public void renderProjectileOrigin(Graphics2D graphics, Projectile projectile, int floor, net.runelite.api.Point origin)
-	{
-		Polygon poly = Perspective.getCanvasTilePoly(client, origin);
-
-		graphics.setColor(Color.RED);
-		graphics.setStroke(new BasicStroke(2));
-		graphics.drawPolygon(poly);
-		graphics.setColor(Color.RED);
-		graphics.fillPolygon(poly);
 	}
 
 	public void renderWidgets(Graphics2D graphics)

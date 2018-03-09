@@ -27,6 +27,8 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 
 public interface Actor extends Renderable
 {
@@ -40,9 +42,9 @@ public interface Actor extends Renderable
 
 	int getHealth();
 
-	Point getWorldLocation();
+	WorldPoint getWorldLocation();
 
-	Point getLocalLocation();
+	LocalPoint getLocalLocation();
 
 	int getOrientation();
 
@@ -61,8 +63,6 @@ public interface Actor extends Renderable
 	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
 
 	Point getMinimapLocation();
-
-	Point getRegionLocation();
 
 	/**
 	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.

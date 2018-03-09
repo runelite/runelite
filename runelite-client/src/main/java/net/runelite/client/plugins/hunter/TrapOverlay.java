@@ -32,6 +32,7 @@ import java.awt.Point;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -108,10 +109,10 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTraps(Graphics2D graphics)
 	{
-		net.runelite.api.Point localLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 		for (HunterTrap trap : plugin.getTraps())
 		{
-			net.runelite.api.Point trapLocation = trap.getGameObject().getLocalLocation();
+			LocalPoint trapLocation = trap.getGameObject().getLocalLocation();
 			if (trapLocation != null && localLocation.distanceTo(trapLocation) <= MAX_DISTANCE)
 			{
 				switch (trap.getState())
