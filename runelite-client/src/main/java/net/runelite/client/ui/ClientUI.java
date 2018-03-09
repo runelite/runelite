@@ -39,7 +39,6 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -210,9 +209,9 @@ public class ClientUI
 		button.setIcon(new ImageIcon(event.getButton().getIcon()));
 		button.addActionListener(e ->
 		{
-			final Supplier<PluginPanel> panelSupplier = event.getButton().getPanel();
+			final PluginPanel panel = event.getButton().getPanel();
 
-			if (panelSupplier == null)
+			if (panel == null)
 			{
 				return;
 			}
@@ -231,7 +230,7 @@ public class ClientUI
 			{
 				currentButton = button;
 				currentButton.setSelected(true);
-				expand(panelSupplier.get());
+				expand(panel);
 			}
 
 			if (event.getButton().getOnClick() != null)

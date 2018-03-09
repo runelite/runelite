@@ -84,7 +84,7 @@ public class HiscorePlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.name("Hiscore")
 			.icon(icon)
-			.panel(() -> hiscorePanel)
+			.panel(hiscorePanel)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);

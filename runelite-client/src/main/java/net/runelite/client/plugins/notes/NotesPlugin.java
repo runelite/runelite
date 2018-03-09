@@ -74,7 +74,7 @@ public class NotesPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.name("Notes")
 			.icon(icon)
-			.panel(() -> panel)
+			.panel(panel)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);

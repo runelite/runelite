@@ -93,7 +93,7 @@ public class FeedPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.name("News Feed")
 			.icon(icon)
-			.panel(() -> feedPanel)
+			.panel(feedPanel)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);

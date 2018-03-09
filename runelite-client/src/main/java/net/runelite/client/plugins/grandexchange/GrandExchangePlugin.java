@@ -94,7 +94,7 @@ public class GrandExchangePlugin extends Plugin
 		button = NavigationButton.builder()
 			.name("GE Offers")
 			.icon(icon)
-			.panel(() -> panel)
+			.panel(panel)
 			.build();
 
 		pluginToolbar.addNavigation(button);

@@ -58,7 +58,7 @@ public class InfoPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.name("Info")
 			.icon(icon)
-			.panel(() -> panel)
+			.panel(panel)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);
