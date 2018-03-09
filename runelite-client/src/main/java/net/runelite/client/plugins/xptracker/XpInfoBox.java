@@ -26,26 +26,38 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.LookupOp;
+import java.awt.image.LookupTable;
 import java.io.IOException;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
 class XpInfoBox extends JPanel
 {
-
+	private static final Rectangle ICON_BOUNDS = new Rectangle(0, 0, 26, 26);
 	private static final Color[] PROGRESS_COLORS = new Color[]
 	{
 		Color.RED, Color.YELLOW, Color.GREEN
@@ -56,11 +68,18 @@ class XpInfoBox extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillXPInfo xpInfo;
 
+	private final JPanel container = new JPanel();
+
+	private final JPanel iconBarPanel = new JPanel();
+	private final JPanel statsPanel = new JPanel();
+
 	private final JProgressBar progressBar = new JProgressBar();
 	private final JLabel xpHr = new JLabel();
 	private final JLabel xpGained = new JLabel();
-	private final JLabel actionsHr = new JLabel();
-	private final JLabel actions = new JLabel();
+	private final JLabel xpLeft = new JLabel();
+	private final JLabel actionsLeft = new JLabel();
+	private final JLabel levelLabel = new JLabel();
+	private final JButton skillIcon = new JButton();
 
 	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
@@ -69,26 +88,64 @@ class XpInfoBox extends JPanel
 		this.xpInfo = xpInfo;
 
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
+		setBorder(new CompoundBorder
+		(
+			new EmptyBorder(2, 0, 2, 0),
+			new LineBorder(getBackground().brighter(), 1)
+		));
 
-		final JPanel container = new JPanel();
-		container.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		container.setLayout(new BorderLayout(3, 3));
+		// Expand stats panel on click
+		Color backgroundColor = getBackground();
+
+		MouseListener panelMouseListener = new MouseAdapter()
+		{
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				container.setBackground(backgroundColor.darker().darker());
+			}
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				container.setBackground(backgroundColor);
+			}
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				showStatsPanel();
+			}
+		};
+
+		container.setLayout(new BorderLayout());
+		container.setBorder(new EmptyBorder(5, 5, 5, 5));
+		container.addMouseListener(panelMouseListener);
+
+		iconBarPanel.setLayout(new BorderLayout(5, 0));
+		iconBarPanel.setOpaque(false);
 
 		// Create skill/reset icon
-		final JButton resetIcon = new JButton(new ImageIcon(iconManager.getSkillImage(xpInfo.getSkill())));
-		resetIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
-		resetIcon.setPreferredSize(new Dimension(64, 64));
-		resetIcon.addActionListener(e -> reset());
+		final BufferedImage skillImage = iconManager.getSkillImage(xpInfo.getSkill());
+		skillIcon.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
+		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
+		skillIcon.setIcon(new ImageIcon(skillImage));
+		skillIcon.setRolloverIcon(new ImageIcon(createHoverImage(skillImage)));
+		skillIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
+		skillIcon.addActionListener(e -> reset());
+		skillIcon.setBounds(ICON_BOUNDS);
+		skillIcon.setOpaque(false);
+		skillIcon.setFocusPainted(false);
 
-		// Create info panel
-		final JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new GridLayout(4, 1));
-		rightPanel.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
-		rightPanel.add(xpHr);
-		rightPanel.add(xpGained);
-		rightPanel.add(actionsHr);
-		rightPanel.add(actions);
+		// Create level label
+		levelLabel.setHorizontalAlignment(JLabel.CENTER);
+		levelLabel.setBounds(ICON_BOUNDS);
+		levelLabel.setOpaque(false);
+
+		// Create pane for grouping skill icon and level label
+		final JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.add(skillIcon, new Integer(1));
+		layeredPane.add(levelLabel, new Integer(2));
+		layeredPane.setPreferredSize(ICON_BOUNDS.getSize());
+		iconBarPanel.add(layeredPane, BorderLayout.LINE_START);
 
 		// Create progress bar
 		progressBar.setStringPainted(true);
@@ -96,16 +153,44 @@ class XpInfoBox extends JPanel
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
 		progressBar.setBackground(Color.RED);
+		progressBar.addMouseListener(panelMouseListener);
+		iconBarPanel.add(progressBar, BorderLayout.CENTER);
 
-		container.add(resetIcon, BorderLayout.LINE_START);
-		container.add(rightPanel, BorderLayout.CENTER);
-		container.add(progressBar, BorderLayout.SOUTH);
+		container.add(iconBarPanel, BorderLayout.NORTH);
+
+		// Stats panel
+		statsPanel.setLayout(new GridLayout(2, 2));
+		statsPanel.setBorder(new EmptyBorder(3, 0, 0, 0));
+		statsPanel.setOpaque(false);
+
+		statsPanel.add(xpGained);
+		xpHr.setHorizontalAlignment(SwingConstants.RIGHT);
+		statsPanel.add(xpHr);
+		statsPanel.add(xpLeft);
+		actionsLeft.setHorizontalAlignment(SwingConstants.RIGHT);
+		statsPanel.add(actionsLeft);
+
 		add(container, BorderLayout.CENTER);
+	}
+
+	private void showStatsPanel()
+	{
+		if (statsPanel.isShowing())
+		{
+			container.remove(statsPanel);
+			revalidate();
+		}
+		else
+		{
+			container.add(statsPanel, BorderLayout.SOUTH);
+			revalidate();
+		}
 	}
 
 	void reset()
 	{
 		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
+		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
 	}
@@ -139,8 +224,10 @@ class XpInfoBox extends JPanel
 					panel.revalidate();
 				}
 
-				xpHr.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
-				actions.setText(XpPanel.formatLine(xpInfo.getActions(), "actions"));
+				levelLabel.setText(String.valueOf(xpInfo.getLevel()));
+				xpGained.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
+				xpLeft.setText(XpPanel.formatLine(xpInfo.getXpRemaining(), "xp left"));
+				actionsLeft.setText(XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions left"));
 
 				final int progress = xpInfo.getSkillProgress();
 
@@ -148,15 +235,14 @@ class XpInfoBox extends JPanel
 				progressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double) progress / 100d));
 
 				progressBar.setToolTipText("<html>"
-					+ XpPanel.formatLine(xpInfo.getXpRemaining(), "xp remaining")
+					+ XpPanel.formatLine(xpInfo.getActions(), "actions")
 					+ "<br/>"
-					+ XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions remaining")
+					+ XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr")
 					+ "</html>");
 			}
 
-			// Always update xp/hr and actions/hr as time always changes
-			xpGained.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
-			actionsHr.setText(XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr"));
+			// Always update xp/hr as time always changes
+			xpHr.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
 		});
 	}
 
@@ -198,5 +284,25 @@ class XpInfoBox extends JPanel
 		}
 
 		return new Color((int) r, (int) g, (int) b);
+	}
+
+	private static BufferedImage createHoverImage(BufferedImage image)
+	{
+		LookupTable lookup = new LookupTable(0, 4)
+		{
+			@Override
+			public int[] lookupPixel(int[] src, int[] dest)
+			{
+				if (dest[3] != 0)
+				{
+					dest[3] = 60;
+				}
+
+				return dest;
+			}
+		};
+
+		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
+		return op.filter(image, null);
 	}
 }

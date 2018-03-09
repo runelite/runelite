@@ -43,6 +43,7 @@ class SkillXPInfo
 	private int actionExp = 0;
 	private int nextLevelExp = 0;
 	private int startLevelExp = 0;
+	private int level = 0;
 
 	int getXpHr()
 	{
@@ -116,6 +117,9 @@ class SkillXPInfo
 		startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
 
 		int currentLevel = Experience.getLevelForXp(currentXp);
+
+		level = currentLevel;
+
 		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
 		if (skillTimeStart == null)
