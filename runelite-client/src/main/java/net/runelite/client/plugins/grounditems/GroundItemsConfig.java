@@ -72,10 +72,43 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showMenuItemQuantities",
+		name = "Show Menu Item Quantities",
+		description = "Configures whether or not to show the item quantities in the menu",
+		position = 4
+	)
+	default boolean showMenuItemQuantities()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightMenuOption",
+		name = "Highlight Menu Option",
+		description = "Configures whether or not to highlight the menu option",
+		position = 5
+	)
+	default boolean highlightMenuOption()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightMenuItemName",
+		name = "Highlight Menu Item Name",
+		description = "Configures whether or not to highlight the menu item name",
+		position = 6
+	)
+	default boolean highlightMenuItemName()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hideUnderGeValue",
 		name = "Hide < GE Value",
 		description = "Configures hidden ground items under GE value",
-		position = 4
+		position = 7
 	)
 	default int getHideUnderGeValue()
 	{
@@ -86,7 +119,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hideUnderHaValue",
 		name = "Hide < HA Value",
 		description = "Configures hidden ground items under High Alch value",
-		position = 5
+		position = 8
 	)
 	default int getHideUnderHAValue()
 	{
@@ -97,7 +130,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 6
+		position = 9
 	)
 	default String getHighlightItems()
 	{
@@ -108,7 +141,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 7
+		position = 10
 	)
 	default String getHiddenItems()
 	{
@@ -119,7 +152,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "defaultColor",
 		name = "Default items color",
 		description = "Configures the color for default, non-highlighted items",
-		position = 8
+		position = 11
 	)
 	default Color defaultColor()
 	{
@@ -130,7 +163,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightedColor",
 		name = "Highlighted items color",
 		description = "Configures the color for highlighted items",
-		position = 9
+		position = 12
 	)
 	default Color highlightedColor()
 	{
@@ -141,7 +174,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "lowValueColor",
 		name = "Low value items color",
 		description = "Configures the color for low value items",
-		position = 10
+		position = 13
 	)
 	default Color lowValueColor()
 	{
@@ -152,7 +185,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 11
+		position = 14
 	)
 	default Color mediumValueColor()
 	{
@@ -163,7 +196,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 12
+		position = 15
 	)
 	default Color highValueColor()
 	{
@@ -174,7 +207,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 13
+		position = 16
 	)
 	default Color insaneValueColor()
 	{
