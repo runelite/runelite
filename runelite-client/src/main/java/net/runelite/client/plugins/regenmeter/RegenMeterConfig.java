@@ -61,4 +61,24 @@ public interface RegenMeterConfig extends Config
 	{
 		return false;
 	}
+
+
+	@ConfigItem(
+		keyName = "shownotification",
+		name = "Notify before hitpoints regeneration",
+		description = "Sends you a desktop notification before your hitpoints regenerate")
+	default boolean showNotification()
+	{
+		return false;
+	}
+
+
+	@ConfigItem(
+		keyName = "notificationearliness",
+		name = "Notification Earliness",
+		description = "Time in seconds before health regeneration occurs at which to send the notification")
+	default int notificationEarliness()
+	{
+		return 7;
+	}
 }
