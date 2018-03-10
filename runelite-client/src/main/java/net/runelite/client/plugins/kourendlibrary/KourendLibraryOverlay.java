@@ -40,7 +40,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Point3D;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -50,7 +51,7 @@ import static net.runelite.api.Perspective.getCanvasTilePoly;
 
 public class KourendLibraryOverlay extends Overlay
 {
-	private final static Point LIBRARY_CENTER = new Point(1632, 3807);
+	private final static WorldPoint LIBRARY_CENTER = new WorldPoint(1632, 3807, 1);
 	private final static int MAXIMUM_DISTANCE = 24;
 	private final static int ROUGH_ENABLE_DISTANCE = 45;
 
@@ -76,9 +77,9 @@ public class KourendLibraryOverlay extends Overlay
 			return null;
 		}
 
-		Point playerLoc = player.getWorldLocation();
+		WorldPoint playerLoc = player.getWorldLocation();
 
-		if (playerLoc.distanceTo(LIBRARY_CENTER) > ROUGH_ENABLE_DISTANCE)
+		if (playerLoc.distanceTo2D(LIBRARY_CENTER) > ROUGH_ENABLE_DISTANCE)
 		{
 			return null;
 		}
@@ -93,15 +94,15 @@ public class KourendLibraryOverlay extends Overlay
 		for (Bookcase bookcase : allBookcases)
 		{
 			// AABB
-			Point3D caseLoc = bookcase.getLocation();
+			WorldPoint caseLoc = bookcase.getLocation();
 			if (Math.abs(playerLoc.getX() - caseLoc.getX()) > MAXIMUM_DISTANCE
 				|| Math.abs(playerLoc.getY() - caseLoc.getY()) > MAXIMUM_DISTANCE)
 			{
 				continue;
 			}
 
-			Point localBookcase = Perspective.worldToLocal(client, caseLoc.toPoint());
-			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getZ(), 25);
+			LocalPoint localBookcase = LocalPoint.fromWorld(client, caseLoc);
+			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getPlane(), 25);
 
 			if (screenBookcase != null)
 			{
@@ -211,7 +212,7 @@ public class KourendLibraryOverlay extends Overlay
 				.forEach(n ->
 				{
 					Book b = library.getCustomerBook();
-					Point local = n.getLocalLocation();
+					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
 					OverlayUtil.renderPolygon(g, poly, Color.WHITE);
 					Point screen = Perspective.worldToCanvas(client, local.getX(), local.getY(), client.getPlane(), n.getLogicalHeight());

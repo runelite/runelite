@@ -51,6 +51,7 @@ import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -89,10 +90,10 @@ class AbyssOverlay extends Overlay
 			return null;
 		}
 
-		Point localLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 		for (DecorativeObject object : plugin.getAbyssObjects())
 		{
-			Point location = object.getLocalLocation();
+			LocalPoint location = object.getLocalLocation();
 			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				renderRifts(graphics, object);

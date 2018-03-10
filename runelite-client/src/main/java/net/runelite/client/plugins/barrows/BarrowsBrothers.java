@@ -25,25 +25,21 @@
 package net.runelite.client.plugins.barrows;
 
 import lombok.Getter;
-import net.runelite.api.Point;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.coords.WorldPoint;
 
+@RequiredArgsConstructor
 public enum BarrowsBrothers
 {
-	VERAC("V", new Point(3557, 3298)),
-	DHAROK("D", new Point(3575, 3298)),
-	AHRIM("A", new Point(3566, 3289)),
-	TORAG("T", new Point(3553, 3283)),
-	KARIL("K", new Point(3566, 3275)),
-	GUTHAN("G", new Point(3577, 3283));
+	VERAC("V", new WorldPoint(3557, 3298, 0)),
+	DHAROK("D", new WorldPoint(3575, 3298, 0)),
+	AHRIM("A", new WorldPoint(3566, 3289, 0)),
+	TORAG("T", new WorldPoint(3553, 3283, 0)),
+	KARIL("K", new WorldPoint(3566, 3275, 0)),
+	GUTHAN("G", new WorldPoint(3577, 3283, 0));
 
 	@Getter
 	private final String name;
 	@Getter
-	private final Point location;
-
-	BarrowsBrothers(String name, net.runelite.api.Point location)
-	{
-		this.name = name;
-		this.location = location;
-	}
+	private final WorldPoint location;
 }

@@ -37,6 +37,7 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -94,12 +95,12 @@ class BarrowsOverlay extends Overlay
 		return null;
 	}
 
-	private void renderObjects(Graphics2D graphics, Player local)
+	private void renderObjects(Graphics2D graphics, Player localPlayer)
 	{
-		net.runelite.api.Point localLocation = local.getLocalLocation();
+		LocalPoint localLocation = localPlayer.getLocalLocation();
 		for (WallObject wall : plugin.getWalls())
 		{
-			net.runelite.api.Point location = wall.getLocalLocation();
+			LocalPoint location = wall.getLocalLocation();
 			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				renderWalls(graphics, wall);
@@ -108,7 +109,7 @@ class BarrowsOverlay extends Overlay
 
 		for (GameObject ladder : plugin.getLadders())
 		{
-			net.runelite.api.Point location = ladder.getLocalLocation();
+			LocalPoint location = ladder.getLocalLocation();
 			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				renderLadders(graphics, ladder);
@@ -162,15 +163,15 @@ class BarrowsOverlay extends Overlay
 	{
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			net.runelite.api.Point location = brother.getLocation();
+			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation());
 
-			if (!Perspective.isWorldInScene(client, location))
+			if (localLocation == null)
 			{
 				continue;
 			}
 
 			net.runelite.api.Point minimapText = Perspective.getCanvasTextMiniMapLocation(client, graphics,
-				Perspective.worldToLocal(client, brother.getLocation()), brother.getName());
+				localLocation, brother.getName());
 
 			if (minimapText != null)
 			{

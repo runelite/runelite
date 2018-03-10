@@ -33,10 +33,26 @@ import net.runelite.rs.api.RSItemLayer;
 public abstract class RSItemLayerMixin implements RSItemLayer
 {
 	@Inject
+	private int itemLayerPlane;
+
+	@Inject
+	@Override
+	public int getPlane()
+	{
+		return itemLayerPlane;
+	}
+
+	@Inject
+	@Override
+	public void setPlane(int plane)
+	{
+		this.itemLayerPlane = plane;
+	}
+
+	@Inject
 	@Override
 	public Area getClickbox()
 	{
 		throw new UnsupportedOperationException();
 	}
-
 }

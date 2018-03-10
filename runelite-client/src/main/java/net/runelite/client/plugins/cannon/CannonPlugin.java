@@ -37,11 +37,11 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
-import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
@@ -71,7 +71,7 @@ public class CannonPlugin extends Plugin
 	private boolean cannonPlaced;
 
 	@Getter
-	private net.runelite.api.Point cannonPosition;
+	private WorldPoint cannonPosition;
 
 	@Getter
 	private GameObject cannon;
@@ -159,7 +159,7 @@ public class CannonPlugin extends Plugin
 
 		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null)
 		{
-			net.runelite.api.Point projectileLoc = Perspective.localToWorld(client, new net.runelite.api.Point(projectile.getX1(), projectile.getY1()));
+			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
 			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)

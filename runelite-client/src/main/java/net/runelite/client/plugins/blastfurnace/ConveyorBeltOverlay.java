@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -60,12 +61,12 @@ class ConveyorBeltOverlay extends Overlay
 			return null;
 		}
 
-		Point localLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 
 		GameObject object = plugin.getConveyorBelt();
 
-		Point location = object.getLocalLocation();
+		LocalPoint location = object.getLocalLocation();
 		if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 		{
 			Area objectClickbox = object.getClickbox();

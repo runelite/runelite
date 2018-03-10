@@ -42,4 +42,6 @@ public interface RSGroundObject extends GroundObject
 
 	@Import("renderable")
 	Renderable getRenderable();
+
+	void setPlane(int plane);
 }

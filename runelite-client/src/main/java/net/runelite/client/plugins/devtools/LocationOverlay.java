@@ -28,7 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -58,7 +58,7 @@ public class LocationOverlay extends Overlay
 
 		panelComponent = new PanelComponent();
 
-		Point localWorld = client.getLocalPlayer().getWorldLocation();
+		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
 
 		panelComponent.getLines().add(new PanelComponent.Line(
 			"Tile",

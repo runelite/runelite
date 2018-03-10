@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
@@ -43,6 +44,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -366,9 +368,16 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Point getSceneDestinationLocation()
+	@Nullable
+	public LocalPoint getLocalDestinationLocation()
 	{
-		return new Point(getDestinationX(), getDestinationY());
+		int regionX = getDestinationX();
+		int regionY = getDestinationY();
+		if (regionX != 0 && regionY != 0)
+		{
+			return LocalPoint.fromRegion(regionX, regionY);
+		}
+		return null;
 	}
 
 	@Inject

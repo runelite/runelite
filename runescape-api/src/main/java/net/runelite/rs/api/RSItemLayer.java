@@ -56,4 +56,6 @@ public interface RSItemLayer extends ItemLayer
 	@Import("top")
 	@Override
 	RSRenderable getTop();
+
+	void setPlane(int plane);
 }
