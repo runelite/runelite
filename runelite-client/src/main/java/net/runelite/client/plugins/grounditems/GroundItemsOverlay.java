@@ -70,7 +70,7 @@ public class GroundItemsOverlay extends Overlay
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
 	// Threshold for highlighting items as blue.
-	private static final int LOW_VALUE = 20_000;
+	static final int LOW_VALUE = 20_000;
 	// Threshold for highlighting items as green.
 	private static final int MEDIUM_VALUE = 100_000;
 	// Threshold for highlighting items as amber.
@@ -80,7 +80,7 @@ public class GroundItemsOverlay extends Overlay
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// Regex for splitting the hidden items in the config.
-	private static final String DELIMITER_REGEX = "\\s*,\\s*";
+	static final String DELIMITER_REGEX = "\\s*,\\s*";
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 
@@ -242,23 +242,8 @@ public class GroundItemsOverlay extends Overlay
 					if (itemPrice != null && config.showGEPrice())
 					{
 						int cost = itemPrice.getPrice() * quantity;
-						// set the color according to rarity, if possible
-						if (cost >= INSANE_VALUE) // 10,000,000 gp
-						{
-							textColor = config.insaneValueColor();
-						}
-						else if (cost >= HIGH_VALUE) // 1,000,000 gp
-						{
-							textColor = config.highValueColor();
-						}
-						else if (cost >= MEDIUM_VALUE) // 100,000 gp
-						{
-							textColor = config.mediumValueColor();
-						}
-						else if (cost >= LOW_VALUE) // 20,000 gp
-						{
-							textColor = config.lowValueColor();
-						}
+
+						textColor = getCostColor(cost);
 
 						itemStringBuilder.append(" (EX: ")
 							.append(StackFormatter.quantityToStackSize(cost))
@@ -294,4 +279,30 @@ public class GroundItemsOverlay extends Overlay
 
 		return null;
 	}
+
+	Color getCostColor(int cost)
+	{
+		// set the color according to rarity, if possible
+		if (cost >= INSANE_VALUE) // 10,000,000 gp
+		{
+			return config.insaneValueColor();
+		}
+		else if (cost >= HIGH_VALUE) // 1,000,000 gp
+		{
+			return config.highValueColor();
+		}
+		else if (cost >= MEDIUM_VALUE) // 100,000 gp
+		{
+			return config.mediumValueColor();
+		}
+		else if (cost >= LOW_VALUE) // 20,000 gp
+		{
+			return config.lowValueColor();
+		}
+		else
+		{
+			return config.defaultColor();
+		}
+	}
+
 }
