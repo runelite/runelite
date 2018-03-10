@@ -209,7 +209,10 @@ public enum MenuAction
 	 * Fifth menu action for a widget.
 	 */
 	WIDGET_FIFTH_OPTION(43),
-
+	/**
+	 * Menu action triggered by whacking, pelting or slashing a player.
+	 */
+	FUN_WEAPON(48),
 	/**
 	 * Default menu action for a widget.
 	 */
