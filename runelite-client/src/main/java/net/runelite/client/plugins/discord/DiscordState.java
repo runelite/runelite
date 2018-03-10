@@ -60,7 +60,7 @@ public class DiscordState
 		}
 	}
 
-	void triggerEvent(final DiscordGameEventType eventType, int delay)
+	void triggerEvent(final DiscordGameEventType eventType, int delay, String state)
 	{
 		final boolean first = startOfAction == null;
 		final boolean changed = eventType != event && eventType.getIsChanged().apply(event);
@@ -101,22 +101,18 @@ public class DiscordState
 		}
 
 		lastAction = Instant.now();
-		final DiscordGameEventType newEvent = lastQueue.get(lastQueue.size() - 1);
+		event = lastQueue.get(lastQueue.size() - 1);
 
-		if (event != newEvent)
-		{
-			event = newEvent;
+		final DiscordPresence.DiscordPresenceBuilder discordPresenceBuilder = DiscordPresence.builder()
+			.details(event.getDetails())
+			.state(state)
+			.smallImageKey(event.getImageKey());
 
-			final DiscordPresence.DiscordPresenceBuilder discordPresenceBuilder = DiscordPresence.builder()
-				.details(event.getDetails())
-				.smallImageKey(event.getImageKey());
+		lastPresence = eventType.isTrackTime()
+			? discordPresenceBuilder.startTimestamp(startOfAction).build()
+			: discordPresenceBuilder.build();
 
-			lastPresence = eventType.isTrackTime()
-				? discordPresenceBuilder.startTimestamp(startOfAction).build()
-				: discordPresenceBuilder.build();
-
-			needsFlush = true;
-		}
+		needsFlush = true;
 	}
 
 	boolean checkForTimeout(final int timeout)

@@ -60,6 +60,7 @@ public enum DiscordGameEventType
 {
 	IN_GAME("In Game", false, true),
 	IN_MENU("In Menu", false, false),
+	RAID("In Raid", "raids", false, true),
 	TRAINING_ATTACK(ATTACK, DiscordGameEventType::combatSkillChanged),
 	TRAINING_DEFENCE(DEFENCE, DiscordGameEventType::combatSkillChanged),
 	TRAINING_STRENGTH(STRENGTH, DiscordGameEventType::combatSkillChanged),
@@ -92,6 +93,14 @@ public enum DiscordGameEventType
 	private boolean considerDelay = true;
 	private Function<DiscordGameEventType, Boolean> isChanged = (l) -> true;
 	private int priority = 0;
+
+	DiscordGameEventType(String details, String minigame, boolean considerDelay, boolean trackTime)
+	{
+		this.imageKey = getImageKey(minigame);
+		this.details = details;
+		this.considerDelay = considerDelay;
+		this.trackTime = trackTime;
+	}
 
 	DiscordGameEventType(String details, boolean considerDelay, boolean trackTime)
 	{
