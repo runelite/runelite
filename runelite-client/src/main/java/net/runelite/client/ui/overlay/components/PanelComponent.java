@@ -79,7 +79,7 @@ public class PanelComponent implements RenderableEntity
 	private ProgressBarComponent progressBar;
 
 	@Setter
-	private int width = 140;
+	private int width = 129;
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
