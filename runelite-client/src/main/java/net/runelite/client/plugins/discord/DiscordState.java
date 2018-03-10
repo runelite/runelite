@@ -108,8 +108,8 @@ public class DiscordState
 			event = newEvent;
 
 			final DiscordPresence.DiscordPresenceBuilder discordPresenceBuilder = DiscordPresence.builder()
-				.state(event.getState())
-				.details(event.getDetails());
+				.details(event.getDetails())
+				.smallImageKey(event.getImageKey());
 
 			lastPresence = eventType.isTrackTime()
 				? discordPresenceBuilder.startTimestamp(startOfAction).build()
