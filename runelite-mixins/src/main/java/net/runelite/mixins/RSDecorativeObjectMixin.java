@@ -42,6 +42,23 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 	private static RSClient client;
 
 	@Inject
+	private int decorativeObjectPlane;
+
+	@Inject
+	@Override
+	public int getPlane()
+	{
+		return decorativeObjectPlane;
+	}
+
+	@Inject
+	@Override
+	public void setPlane(int plane)
+	{
+		this.decorativeObjectPlane = plane;
+	}
+
+	@Inject
 	private Model getModel()
 	{
 		Renderable renderable = getRenderable();
