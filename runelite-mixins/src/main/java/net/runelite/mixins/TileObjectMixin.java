@@ -71,7 +71,7 @@ public abstract class TileObjectMixin implements TileObject
 	@Inject
 	public WorldPoint getWorldLocation()
 	{
-		return WorldPoint.fromLocal(client, getX(), getY(), client.getPlane()); //TODO: use the correct plane
+		return WorldPoint.fromLocal(client, getX(), getY(), getPlane());
 	}
 
 	@Override

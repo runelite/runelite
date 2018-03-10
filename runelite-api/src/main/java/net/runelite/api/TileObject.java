@@ -38,6 +38,8 @@ public interface TileObject
 
 	int getY();
 
+	int getPlane();
+
 	int getId();
 
 	WorldPoint getWorldLocation();
