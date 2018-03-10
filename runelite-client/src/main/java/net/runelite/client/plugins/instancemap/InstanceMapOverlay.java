@@ -42,6 +42,7 @@ import net.runelite.api.SceneTilePaint;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import static net.runelite.client.plugins.instancemap.PixelMaps.ALL;
@@ -220,13 +221,14 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private void drawPlayerDot(Graphics2D graphics, Player player, Color dotColor, Color outlineColor)
 	{
-		Point playerLocation = player.getRegionLocation();
+		LocalPoint playerLoc = player.getLocalLocation();
 
 		Tile[][] tiles = getTiles();
-		Point localPlayerPoint = new Point(playerLocation.getX(), (tiles[0].length - 1) - playerLocation.getY()); // flip the y value
+		int tileX = playerLoc.getRegionX();
+		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
 
-		int x = OVERLAY_POSITION.getX() + (int) (localPlayerPoint.getX() * TILE_SIZE * MAP_SCALING);
-		int y = OVERLAY_POSITION.getY() + (int) (localPlayerPoint.getY() * TILE_SIZE * MAP_SCALING);
+		int x = OVERLAY_POSITION.getX() + (int) (tileX * TILE_SIZE * MAP_SCALING);
+		int y = OVERLAY_POSITION.getY() + (int) (tileY * TILE_SIZE * MAP_SCALING);
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);

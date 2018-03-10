@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -66,19 +67,14 @@ class CannonOverlay extends Overlay
 			return null;
 		}
 
-		if (!Perspective.isWorldInScene(client, plugin.getCannonPosition()))
-		{
-			return null;
-		}
-
-		Point cannonPoint = Perspective.worldToLocal(client, plugin.getCannonPosition());
+		LocalPoint cannonPoint = LocalPoint.fromWorld(client, plugin.getCannonPosition());
 
 		if (cannonPoint == null)
 		{
 			return null;
 		}
 
-		Point localLocation = client.getLocalPlayer().getLocalLocation();
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
 		if (localLocation.distanceTo(cannonPoint) <= MAX_DISTANCE)
 		{
@@ -110,7 +106,7 @@ class CannonOverlay extends Overlay
 	 * Draw the double hit spots on a 6 by 6 grid around the cannon
 	 * @param startTile The position of the cannon
 	 */
-	private void drawDoubleHitSpots(Graphics2D graphics, net.runelite.api.Point startTile, Color color)
+	private void drawDoubleHitSpots(Graphics2D graphics, LocalPoint startTile, Color color)
 	{
 		for (int x = -3; x <= 3; x++)
 		{
@@ -130,7 +126,7 @@ class CannonOverlay extends Overlay
 				int xPos = startTile.getX() - (x * LOCAL_TILE_SIZE);
 				int yPos = startTile.getY() - (y * LOCAL_TILE_SIZE);
 
-				net.runelite.api.Point marker = new net.runelite.api.Point(xPos, yPos);
+				LocalPoint marker = new LocalPoint(xPos, yPos);
 				Polygon poly = Perspective.getCanvasTilePoly(client, marker);
 
 				if (poly == null)

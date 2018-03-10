@@ -35,7 +35,7 @@ import java.util.stream.IntStream;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Point3D;
+import net.runelite.api.coords.WorldPoint;
 
 import static net.runelite.client.plugins.kourendlibrary.Book.*;
 
@@ -59,7 +59,7 @@ import static net.runelite.client.plugins.kourendlibrary.Book.*;
 @Slf4j
 public class Library
 {
-	private final Map<Point3D, Bookcase> byPoint = new HashMap<>();
+	private final Map<WorldPoint, Bookcase> byPoint = new HashMap<>();
 	private final Map<Integer, ArrayList<Bookcase>> byLevel = new HashMap<>();
 	private final List<Bookcase> byIndex = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class Library
 		log.info("Library is now reset");
 	}
 
-	public synchronized void mark(Point3D loc, Book book)
+	public synchronized void mark(WorldPoint loc, Book book)
 	{
 		Bookcase bookcase = byPoint.get(loc);
 		if (bookcase == null)
@@ -428,7 +428,7 @@ public class Library
 	private void add(int x, int y, int z, int i)
 	{
 		// 'i' is added as a parameter for readability
-		Point3D p = new Point3D(x, y, z);
+		WorldPoint p = new WorldPoint(x, y, z);
 		Bookcase b = byPoint.get(p);
 		if (b == null)
 		{

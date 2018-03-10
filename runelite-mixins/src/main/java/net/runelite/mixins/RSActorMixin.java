@@ -30,10 +30,11 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
-import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -123,24 +124,16 @@ public abstract class RSActorMixin implements RSActor
 
 	@Override
 	@Inject
-	public Point getWorldLocation()
+	public WorldPoint getWorldLocation()
 	{
-		Point localLocation = getLocalLocation();
-		return Perspective.localToWorld(client, localLocation);
+		return WorldPoint.fromLocal(client, getX(), getY(), client.getPlane());
 	}
 
 	@Inject
 	@Override
-	public Point getRegionLocation()
+	public LocalPoint getLocalLocation()
 	{
-		return new Point(getX() >>> LOCAL_COORD_BITS, getY() >>> LOCAL_COORD_BITS);// divided by 128
-	}
-
-	@Inject
-	@Override
-	public Point getLocalLocation()
-	{
-		return new Point(getX(), getY());
+		return new LocalPoint(getX(), getY());
 	}
 
 	@Inject
