@@ -26,10 +26,10 @@ package net.runelite.client.plugins.hunter;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameObject;
+import net.runelite.api.coords.WorldPoint;
 
 /**
  * Wrapper class for a GameObject that represents a hunter trap.
@@ -39,7 +39,7 @@ class HunterTrap
 	/**
 	 * A hunter trap stays up 1 minute before collapsing.
 	 */
-	private static final Duration TRAP_TIME = Duration.ofMinutes(1);
+	static final Duration TRAP_TIME = Duration.ofMinutes(1);
 
 	/**
 	 * The time in milliseconds when the trap was placed.
@@ -55,10 +55,13 @@ class HunterTrap
 	private State state;
 
 	/**
-	 * The gameobject thats corresponds with this trap.
+	 * The ID of the game object this is representing
 	 */
 	@Getter
-	private final GameObject gameObject;
+	private int objectId;
+
+	@Getter
+	private WorldPoint worldLocation;
 
 	/**
 	 * The states a trap can be in.
@@ -91,8 +94,9 @@ class HunterTrap
 	HunterTrap(GameObject gameObject)
 	{
 		this.state = State.OPEN;
-		this.gameObject = gameObject;
 		this.placedOn = Instant.now();
+		this.objectId = gameObject.getId();
+		this.worldLocation = gameObject.getWorldLocation();
 	}
 
 	/**
@@ -113,28 +117,5 @@ class HunterTrap
 	public void resetTimer()
 	{
 		placedOn = Instant.now();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (!(o instanceof HunterTrap))
-		{
-			return false;
-		}
-		HunterTrap t = (HunterTrap) o;
-		return gameObject.getWorldLocation().equals(t.getGameObject().getWorldLocation());
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 97 * hash + Objects.hashCode(this.gameObject.getWorldLocation());
-		return hash;
 	}
 }
