@@ -34,4 +34,5 @@ public interface NPC extends Actor
 	@Override
 	int getCombatLevel();
 
+	int getIndex();
 }

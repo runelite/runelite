@@ -65,6 +65,7 @@ import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
+import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSWidget;
 
@@ -492,6 +493,24 @@ public abstract class RSClientMixin implements RSClient
 		GameStateChanged gameStateChange = new GameStateChanged();
 		gameStateChange.setGameState(client.getGameState());
 		eventBus.post(gameStateChange);
+	}
+
+
+	@FieldHook("cachedNPCs")
+	@Inject
+	public static void cachedNPCsChanged(int idx)
+	{
+		RSNPC[] cachedNPCs = client.getCachedNPCs();
+		if (idx < 0 || idx >= cachedNPCs.length)
+		{
+			return;
+		}
+
+		RSNPC npc = cachedNPCs[idx];
+		if (npc != null)
+		{
+			npc.setIndex(idx);
+		}
 	}
 
 	@Inject
