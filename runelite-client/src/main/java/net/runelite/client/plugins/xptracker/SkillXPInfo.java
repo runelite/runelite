@@ -26,6 +26,7 @@ package net.runelite.client.plugins.xptracker;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalTime;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
@@ -48,6 +49,11 @@ class SkillXPInfo
 	int getXpHr()
 	{
 		return toHourly(xpGained);
+	}
+
+	int getXpSec()
+	{
+		return getXpHr() / 3600;
 	}
 
 	int getActionsHr()
@@ -83,6 +89,15 @@ class SkillXPInfo
 		double xpGained = currentXp - startLevelExp;
 		double xpGoal = nextLevelExp - startLevelExp;
 		return (int) ((xpGained / xpGoal) * 100);
+	}
+
+	String getTimeTillLevel()
+	{
+		if (getXpSec() > 0)
+		{
+			return LocalTime.MIN.plusSeconds( getXpRemaining() / getXpSec() ).toString();
+		}
+		return "\u221e";
 	}
 
 	void reset(int currentXp)

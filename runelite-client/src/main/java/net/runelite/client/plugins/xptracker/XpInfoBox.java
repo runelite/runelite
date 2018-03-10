@@ -238,6 +238,8 @@ class XpInfoBox extends JPanel
 					+ XpPanel.formatLine(xpInfo.getActions(), "actions")
 					+ "<br/>"
 					+ XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr")
+					+ "<br/>"
+					+ xpInfo.getTimeTillLevel() + " till next lvl"
 					+ "</html>");
 			}
 
