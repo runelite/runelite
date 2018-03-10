@@ -91,15 +91,17 @@ public class DefaultWorldPlugin extends Plugin
 
 	private void changeWorld(int newWorld)
 	{
-		if (!worldChangeRequired || client.getGameState() != GameState.LOGIN_SCREEN || client.getWorld() == newWorld)
+		if (!worldChangeRequired || client.getGameState() != GameState.LOGIN_SCREEN)
 		{
 			return;
 		}
 
 		worldChangeRequired = false;
+		int correctedWorld = newWorld < 300 ? newWorld + 300 : newWorld;
 
-		// Old School RuneScape worlds start for 301 so don't even bother trying to find lower id ones
-		if (client.getWorld() <= 300)
+		// Old School RuneScape worlds start on 301 so don't even bother trying to find lower id ones
+		// and also do not try to set world if we are already on it
+		if (correctedWorld <= 300 || client.getWorld() == correctedWorld)
 		{
 			return;
 		}
@@ -107,7 +109,7 @@ public class DefaultWorldPlugin extends Plugin
 		try
 		{
 			final WorldResult worldResult = worldClient.lookupWorlds();
-			final World world = worldResult.findWorld(newWorld);
+			final World world = worldResult.findWorld(correctedWorld);
 
 			if (world != null)
 			{
@@ -120,16 +122,16 @@ public class DefaultWorldPlugin extends Plugin
 				rsWorld.setTypes(toWorldTypes(world.getTypes()));
 
 				client.changeWorld(rsWorld);
-				log.debug("Applied new world {}", newWorld);
+				log.debug("Applied new world {}", correctedWorld);
 			}
 			else
 			{
-				log.warn("World {} not found.", newWorld);
+				log.warn("World {} not found.", correctedWorld);
 			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Error looking up world {}. Error: {}", newWorld, e);
+			log.warn("Error looking up world {}. Error: {}", correctedWorld, e);
 		}
 	}
 

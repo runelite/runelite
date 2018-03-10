@@ -45,4 +45,6 @@ public interface RSDecorativeObject extends DecorativeObject
 
 	@Import("renderable1")
 	Renderable getRenderable();
+
+	void setPlane(int plane);
 }

@@ -41,6 +41,23 @@ public abstract class RSGroundObjectMixin implements RSGroundObject
 	private static RSClient client;
 
 	@Inject
+	private int groundObjectPlane;
+
+	@Inject
+	@Override
+	public int getPlane()
+	{
+		return groundObjectPlane;
+	}
+
+	@Inject
+	@Override
+	public void setPlane(int plane)
+	{
+		this.groundObjectPlane = plane;
+	}
+
+	@Inject
 	private Model getModel()
 	{
 		Renderable renderable = getRenderable();

@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+
 public interface Tile
 {
 	/**
@@ -45,11 +48,11 @@ public interface Tile
 
 	SceneTileModel getSceneTileModel();
 
-	Point getWorldLocation();
+	WorldPoint getWorldLocation();
 
 	Point getRegionLocation();
 
-	Point getLocalLocation();
+	LocalPoint getLocalLocation();
 
 	int getPlane();
 }

@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
@@ -44,6 +45,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -64,6 +66,7 @@ import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
+import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSWidget;
 
@@ -378,9 +381,16 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public Point getSceneDestinationLocation()
+	@Nullable
+	public LocalPoint getLocalDestinationLocation()
 	{
-		return new Point(getDestinationX(), getDestinationY());
+		int regionX = getDestinationX();
+		int regionY = getDestinationY();
+		if (regionX != 0 && regionY != 0)
+		{
+			return LocalPoint.fromRegion(regionX, regionY);
+		}
+		return null;
 	}
 
 	@Inject
@@ -495,6 +505,24 @@ public abstract class RSClientMixin implements RSClient
 		GameStateChanged gameStateChange = new GameStateChanged();
 		gameStateChange.setGameState(client.getGameState());
 		eventBus.post(gameStateChange);
+	}
+
+
+	@FieldHook("cachedNPCs")
+	@Inject
+	public static void cachedNPCsChanged(int idx)
+	{
+		RSNPC[] cachedNPCs = client.getCachedNPCs();
+		if (idx < 0 || idx >= cachedNPCs.length)
+		{
+			return;
+		}
+
+		RSNPC npc = cachedNPCs[idx];
+		if (npc != null)
+		{
+			npc.setIndex(idx);
+		}
 	}
 
 	@Inject

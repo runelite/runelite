@@ -30,18 +30,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import net.runelite.api.Point3D;
+import net.runelite.api.coords.WorldPoint;
 
 class Bookcase
 {
-	public Bookcase(Point3D location)
+	public Bookcase(WorldPoint location)
 	{
 		this.location = location;
 		this.index = new ArrayList<>();
 	}
 
 	@Getter
-	private final Point3D location;
+	private final WorldPoint location;
 
 	@Getter
 	private final List<Integer> index;
@@ -99,7 +99,7 @@ class Bookcase
 
 		b.append(" ");
 
-		switch (location.getZ())
+		switch (location.getPlane())
 		{
 			case 0:
 				b.append("ground floor");

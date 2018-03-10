@@ -129,6 +129,7 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getNpcIndices();
 
 	@Import("cachedNPCs")
+	@Override
 	RSNPC[] getCachedNPCs();
 
 	@Import("collisionMaps")

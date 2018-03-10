@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -37,6 +39,8 @@ public interface Client extends GameEngine
 	List<Player> getPlayers();
 
 	List<NPC> getNpcs();
+
+	NPC[] getCachedNPCs();
 
 	int getBoostedSkillLevel(Skill skill);
 
@@ -195,7 +199,8 @@ public interface Client extends GameEngine
 
 	SpritePixels createSpritePixels(int[] pixels, int width, int height);
 
-	Point getSceneDestinationLocation();
+	@Nullable
+	LocalPoint getLocalDestinationLocation();
 
 	List<Projectile> getProjectiles();
 

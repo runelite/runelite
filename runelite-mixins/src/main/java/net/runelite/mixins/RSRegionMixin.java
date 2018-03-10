@@ -24,11 +24,16 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
+import net.runelite.rs.api.RSDecorativeObject;
+import net.runelite.rs.api.RSGroundObject;
+import net.runelite.rs.api.RSItemLayer;
 import net.runelite.rs.api.RSRegion;
+import net.runelite.rs.api.RSWallObject;
 
 @Mixin(RSRegion.class)
 public abstract class RSRegionMixin implements RSRegion
@@ -51,5 +56,45 @@ public abstract class RSRegionMixin implements RSRegion
 		{
 			isDrawingRegion = false;
 		}
+	}
+
+	@Copy("addBoundaryDecoration")
+	abstract public void rs$addBoundaryDecoration(int plane, int x, int y, int hash, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, int var11, int var12);
+
+	@Replace("addBoundaryDecoration")
+	public void rl$addBoundaryDecoration(int plane, int x, int y, int hash, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, int var11, int var12)
+	{
+		rs$addBoundaryDecoration(plane, x, y, hash, var5, var6, var7, var8, var9, var10, var11, var12);
+		((RSDecorativeObject) getTiles()[plane][x][y].getDecorativeObject()).setPlane(plane);
+	}
+
+	@Copy("addItemPile")
+	abstract public void rs$addItemPile(int plane, int x, int y, int hash, Renderable var5, int var6, Renderable var7, Renderable var8);
+
+	@Replace("addItemPile")
+	public void rl$addItemPile(int plane, int x, int y, int hash, Renderable var5, int var6, Renderable var7, Renderable var8)
+	{
+		rs$addItemPile(plane, x, y, hash, var5, var6, var7, var8);
+		((RSItemLayer) getTiles()[plane][x][y].getItemLayer()).setPlane(plane);
+	}
+
+	@Copy("groundObjectSpawned")
+	abstract public void rs$groundObjectSpawned(int plane, int x, int y, int hash, Renderable var5, int var6, int var7);
+
+	@Replace("groundObjectSpawned")
+	public void rl$groundObjectSpawned(int plane, int x, int y, int hash, Renderable var5, int var6, int var7)
+	{
+		rs$groundObjectSpawned(plane, x, y, hash, var5, var6, var7);
+		((RSGroundObject) getTiles()[plane][x][y].getGroundObject()).setPlane(plane);
+	}
+
+	@Copy("addBoundary")
+	abstract public void rs$addBoundary(int plane, int x, int y, int hash, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10);
+
+	@Replace("addBoundary")
+	public void rl$addBoundary(int plane, int x, int y, int hash, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10)
+	{
+		rs$addBoundary(plane, x, y, hash, var5, var6, var7, var8, var9, var10);
+		((RSWallObject) getTiles()[plane][x][y].getWallObject()).setPlane(plane);
 	}
 }

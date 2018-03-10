@@ -40,12 +40,12 @@ import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
-import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -372,11 +372,11 @@ public class Hooks
 	 */
 	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
 	{
-		Point position = new Point(targetX, targetY);
+		LocalPoint position = new LocalPoint(targetX, targetY);
 		ProjectileMoved projectileMoved = new ProjectileMoved();
 		projectileMoved.setProjectile(projectile);
 		projectileMoved.setPosition(position);
-		projectileMoved.setPlane(targetZ);
+		projectileMoved.setZ(targetZ);
 		eventBus.post(projectileMoved);
 	}
 

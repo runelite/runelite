@@ -41,6 +41,23 @@ public abstract class RSWallObjectMixin implements RSWallObject
 	private static RSClient client;
 
 	@Inject
+	private int wallPlane;
+
+	@Inject
+	@Override
+	public int getPlane()
+	{
+		return wallPlane;
+	}
+
+	@Inject
+	@Override
+	public void setPlane(int plane)
+	{
+		this.wallPlane = plane;
+	}
+
+	@Inject
 	private Model getModelA()
 	{
 		Renderable renderable = getRenderable1();

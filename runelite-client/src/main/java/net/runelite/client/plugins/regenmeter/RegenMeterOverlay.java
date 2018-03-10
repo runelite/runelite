@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,67 +22,82 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.agilityplugin;
+package net.runelite.client.plugins.regenmeter;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.geom.Arc2D;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-@Slf4j
-public class AgilityOverlay extends Overlay
+public class RegenMeterOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
+	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
+	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
 
 	private final Client client;
-	private final AgilityPlugin plugin;
+	private RegenMeterPlugin plugin;
+	private RegenMeterConfig config;
+
+	private static Color brighter(int color)
+	{
+		float[] hsv = new float[3];
+		Color.RGBtoHSB(color >>> 16, (color >> 8) & 0xFF, color & 0xFF, hsv);
+		return Color.getHSBColor(hsv[0], 1.f, 1.f);
+	}
 
 	@Inject
-	public AgilityOverlay(Client client, AgilityPlugin plugin)
+	public RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D g, Point point)
 	{
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
-		Point mousePosition = client.getMouseCanvasPosition();
-		plugin.getObstacles().forEach((object, tile) ->
-		{
-			if (tile.getPlane() == client.getPlane()
-				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
-			{
-				Area objectClickbox = object.getClickbox();
-				if (objectClickbox != null)
-				{
-					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
-					{
-						graphics.setColor(Color.GREEN.darker());
-					}
-					else
-					{
-						graphics.setColor(Color.GREEN);
-					}
-					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(0, 0xff, 0, 20));
-					graphics.fill(objectClickbox);
-				}
-			}
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-		});
+		if (config.showHitpoints())
+		{
+			renderRegen(g, WidgetInfo.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+		}
+
+		if (config.showSpecial())
+		{
+			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+		}
 
 		return null;
+	}
+
+	private void renderRegen(Graphics2D g, WidgetInfo widgetInfo, double percent, Color color)
+	{
+		Widget widget = client.getWidget(widgetInfo);
+		if (widget == null)
+		{
+			return;
+		}
+		Rectangle bounds = widget.getBounds();
+
+		Arc2D.Double arc = new Arc2D.Double(bounds.x + 26d, bounds.y + 3.d, 27d, 27d, 90.d, -360.d * percent, Arc2D.OPEN);
+		final Stroke STROKE = new BasicStroke(2f);
+		g.setStroke(STROKE);
+		g.setColor(color);
+		g.draw(arc);
 	}
 }

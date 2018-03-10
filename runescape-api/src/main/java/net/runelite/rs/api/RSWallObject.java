@@ -59,4 +59,6 @@ public interface RSWallObject extends WallObject
 	@Import("config")
 	@Override
 	int getConfig();
+
+	void setPlane(int plane);
 }

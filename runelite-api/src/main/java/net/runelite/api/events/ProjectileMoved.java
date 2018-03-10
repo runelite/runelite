@@ -25,13 +25,13 @@
 package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.Point;
 import net.runelite.api.Projectile;
+import net.runelite.api.coords.LocalPoint;
 
 @Data
 public class ProjectileMoved
 {
 	private Projectile projectile;
-	private Point position;
-	private int plane;
+	private LocalPoint position;
+	private int z;
 }

@@ -30,9 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
-import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Mixins;
@@ -68,25 +69,16 @@ public abstract class TileObjectMixin implements TileObject
 
 	@Override
 	@Inject
-	public Point getWorldLocation()
+	public WorldPoint getWorldLocation()
 	{
-		Point localLocation = getLocalLocation();
-		return Perspective.localToWorld(client, localLocation);
+		return WorldPoint.fromLocal(client, getX(), getY(), getPlane());
 	}
 
 	@Override
 	@Inject
-	public Point getLocalLocation()
+	public LocalPoint getLocalLocation()
 	{
-		return new Point(getX(), getY());
-	}
-
-	@Override
-	@Inject
-	public Point getRegionLocation()
-	{
-		Point localLocation = getLocalLocation();
-		return new Point(localLocation.getX() >>> LOCAL_COORD_BITS, localLocation.getY() >>> LOCAL_COORD_BITS);
+		return new LocalPoint(getX(), getY());
 	}
 
 	@Override
@@ -100,8 +92,7 @@ public abstract class TileObjectMixin implements TileObject
 	@Inject
 	public Point getCanvasLocation(int zOffset)
 	{
-		Point localLocation = getLocalLocation();
-		return Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), 0, zOffset);
+		return Perspective.worldToCanvas(client, getX(), getY(), 0, zOffset);
 	}
 
 	@Override
