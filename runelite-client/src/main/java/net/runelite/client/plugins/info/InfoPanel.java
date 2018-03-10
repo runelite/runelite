@@ -28,16 +28,13 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.Font;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
@@ -54,12 +51,11 @@ import net.runelite.client.events.TitleToolbarButtonRemoved;
 import net.runelite.client.ui.ClientTitleToolbar;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.client.util.SwingUtil;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
+@Singleton
 public class InfoPanel extends PluginPanel
 {
 	private static final int TITLEBAR_SIZE = 23;
@@ -68,9 +64,6 @@ public class InfoPanel extends PluginPanel
 	@Inject
 	@Nullable
 	private Client client;
-
-	@Inject
-	private TitleToolbar titleToolbar;
 
 	@Inject
 	private RuneLiteConfig runeliteConfig;
@@ -97,7 +90,7 @@ public class InfoPanel extends PluginPanel
 		setLayout(layout);
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
-		titleBar.setVisible(false);
+		updateTitleBar();
 
 		final JLabel runeliteVersionHeader = new JLabel("RuneLite version");
 		runeliteVersionHeader.setFont(smallFont);
@@ -125,7 +118,8 @@ public class InfoPanel extends PluginPanel
 				}
 			}
 		});
-		setNotLoggedIn();
+
+		updateLoggedIn();
 
 		final JRichTextPane issueLink = new JRichTextPane("text/html",
 			"RuneLite is open source!<br>"
@@ -175,39 +169,48 @@ public class InfoPanel extends PluginPanel
 		eventBus.register(this);
 	}
 
-	private void setNotLoggedIn()
+	private void updateLoggedIn()
 	{
-		username.setContentType("text/html");
-		username.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
-		usernameHeader.setText("Not logged in");
-	}
+		final String name = sessionManager.getAccountSession() != null
+			? sessionManager.getAccountSession().getUsername()
+			: null;
 
-	@Subscribe
-	public void onClientUILoaded(ClientUILoaded e)
-	{
-		// Add the title toolbar to the infopanel if the custom chrome is disabled
-		if (!runeliteConfig.enableCustomChrome())
-		{
-			titleBar.setVisible(true);
-		}
-	}
-
-	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
-	{
-		String name = sessionManager.getAccountSession().getUsername();
 		if (name != null)
 		{
 			username.setContentType("text/plain");
 			username.setText(name);
 			usernameHeader.setText("Logged in as");
 		}
+		else
+		{
+			username.setContentType("text/html");
+			username.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
+			usernameHeader.setText("Not logged in");
+		}
+	}
+
+	private void updateTitleBar()
+	{
+		titleBar.setVisible(!runeliteConfig.enableCustomChrome());
+	}
+
+	@Subscribe
+	public void onClientUILoaded(ClientUILoaded e)
+	{
+		// Add the title toolbar to the infopanel if the custom chrome is disabled
+		updateTitleBar();
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen sessionOpen)
+	{
+		updateLoggedIn();
 	}
 
 	@Subscribe
 	public void onSessionClose(SessionClose e)
 	{
-		setNotLoggedIn();
+		updateLoggedIn();
 	}
 
 	@Subscribe
@@ -220,38 +223,8 @@ public class InfoPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
-
 			final int iconSize = TITLEBAR_SIZE - 6;
-			final BufferedImage scaledImage = SwingUtil.resizeImage(event.getButton().getIcon(), iconSize, iconSize);
-
-			final JButton button = new JButton();
-			button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
-			button.setName(event.getButton().getName());
-			button.setToolTipText(event.getButton().getTooltip());
-			button.setIcon(new ImageIcon(scaledImage));
-			button.setRolloverIcon(new ImageIcon(SwingUtil.createInvertedImage(scaledImage)));
-
-			if (event.getButton().getOnClick() != null)
-			{
-				button.addActionListener(e -> event.getButton().getOnClick().run());
-			}
-
-			if (event.getButton().getPopup() != null)
-			{
-				final JPopupMenu popupMenu = new JPopupMenu();
-
-				event.getButton().getPopup().forEach((name, callback) ->
-				{
-					final JMenuItem menuItem = new JMenuItem(name);
-					menuItem.addActionListener((e) -> callback.run());
-					popupMenu.add(menuItem);
-				});
-
-				button.setComponentPopupMenu(popupMenu);
-			}
-
-			event.getButton().setOnSelect(() -> button.setSelected(event.getButton().isSelected()));
-
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
 			titleBar.addComponent(event.getButton(), button);
 			titleBar.revalidate();
 			titleBar.repaint();

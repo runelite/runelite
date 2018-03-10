@@ -31,22 +31,24 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.LookupOp;
-import java.awt.image.LookupTable;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
@@ -56,6 +58,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.NavigationButton;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Various Swing utilities.
@@ -234,44 +239,7 @@ public class SwingUtil
 		frame.setMinimumSize(frame.getLayout().minimumLayoutSize(frame));
 	}
 
-	/**
-	 * Create inverted buffered image
-	 *
-	 * @param image buffered image
-	 * @return inverted buffered image
-	 */
-	public static BufferedImage createInvertedImage(BufferedImage image)
-	{
-		if (image.getType() != BufferedImage.TYPE_INT_ARGB)
-		{
-			image = convertToARGB(image);
-		}
-
-		final LookupTable lookup = new LookupTable(0, 4)
-		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				dest[0] = 255 - src[0];
-				dest[1] = 255 - src[1];
-				dest[2] = 255 - src[2];
-				return dest;
-			}
-		};
-
-		final LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
-	}
-
-	/**
-	 * Resize buffered image.
-	 *
-	 * @param image  the image
-	 * @param newWidth the new width
-	 * @param newHeight the new height
-	 * @return the buffered image
-	 */
-	public static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
+	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
 	{
 		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
@@ -282,15 +250,69 @@ public class SwingUtil
 		return dimg;
 	}
 
-	private static BufferedImage convertToARGB(final BufferedImage image)
+	/**
+	 * Create swing button from navigation button.
+	 *
+	 * @param navigationButton the navigation button
+	 * @param iconSize         the icon size (in case it is 0 default icon size will be used)
+	 * @param specialCallback  the special callback
+	 * @return the swing button
+	 */
+	public static JButton createSwingButton(
+		@Nonnull final NavigationButton navigationButton,
+		int iconSize,
+		@Nullable final Consumer<JButton> specialCallback)
 	{
-		final BufferedImage newImage = new BufferedImage(
-			image.getWidth(), image.getHeight(),
-			BufferedImage.TYPE_INT_ARGB);
 
-		final Graphics2D g = newImage.createGraphics();
-		g.drawImage(image, 0, 0, null);
-		g.dispose();
-		return newImage;
+		final BufferedImage scaledImage = iconSize > 0
+			? resizeImage(navigationButton.getIcon(), iconSize, iconSize)
+			: navigationButton.getIcon();
+
+		final JButton button = new JButton();
+		button.setName(navigationButton.getName());
+		button.setToolTipText(navigationButton.getTooltip());
+		button.setIcon(new ImageIcon(scaledImage));
+		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
+		button.setFocusable(false);
+		button.addActionListener(e ->
+		{
+			if (specialCallback != null)
+			{
+				specialCallback.accept(button);
+			}
+
+			if (navigationButton.getOnClick() != null)
+			{
+				navigationButton.getOnClick().run();
+			}
+		});
+
+		if (navigationButton.getPopup() != null)
+		{
+			final JPopupMenu popupMenu = new JPopupMenu();
+
+			navigationButton.getPopup().forEach((name, callback) ->
+			{
+				final JMenuItem menuItem = new JMenuItem(name);
+				menuItem.addActionListener((e) -> callback.run());
+				popupMenu.add(menuItem);
+			});
+
+			button.setComponentPopupMenu(popupMenu);
+		}
+
+		navigationButton.setOnSelect(() -> button.setSelected(navigationButton.isSelected()));
+		return button;
+	}
+
+	/**
+	 * Checks if custom substance title pane is present.
+	 *
+	 * @param frame the parent frame
+	 * @return true if title pane is present
+	 */
+	public static boolean isCustomTitlePanePresent(final Window frame)
+	{
+		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
 }

@@ -44,13 +44,10 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -70,7 +67,6 @@ import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -202,45 +198,37 @@ public class ClientUI
 	@Subscribe
 	public void onPluginToolbarButtonAdded(final PluginToolbarButtonAdded event)
 	{
-		final JButton button = new JButton();
-		button.setName(event.getButton().getName());
-		button.setToolTipText(event.getButton().getTooltip());
-		button.setToolTipText(event.getButton().getTooltip());
-		button.setIcon(new ImageIcon(event.getButton().getIcon()));
-		button.addActionListener(e ->
+		SwingUtilities.invokeLater(() ->
 		{
-			final PluginPanel panel = event.getButton().getPanel();
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (jButton) ->
+			{
+				final PluginPanel panel = event.getButton().getPanel();
 
-			if (panel == null)
-			{
-				return;
-			}
+				if (panel == null)
+				{
+					return;
+				}
 
-			if (currentButton != null)
-			{
-				currentButton.setSelected(false);
-			}
+				if (currentButton != null)
+				{
+					currentButton.setSelected(false);
+				}
 
-			if (currentButton == button)
-			{
-				contract();
-				currentButton = null;
-			}
-			else
-			{
-				currentButton = button;
-				currentButton.setSelected(true);
-				expand(panel);
-			}
+				if (currentButton == jButton)
+				{
+					contract();
+					currentButton = null;
+				}
+				else
+				{
+					currentButton = jButton;
+					currentButton.setSelected(true);
+					expand(panel);
+				}
+			});
 
-			if (event.getButton().getOnClick() != null)
-			{
-				event.getButton().getOnClick().run();
-			}
+			pluginToolbar.addComponent(event.getIndex(), event.getButton(), button);
 		});
-
-		event.getButton().setOnSelect(() -> button.setSelected(event.getButton().isSelected()));
-		SwingUtilities.invokeLater(() -> pluginToolbar.addComponent(event.getIndex(), event.getButton(), button));
 	}
 
 	@Subscribe
@@ -252,44 +240,15 @@ public class ClientUI
 	@Subscribe
 	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
 	{
-		if (!config.enableCustomChrome())
+		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
 		{
 			return;
 		}
 
 		SwingUtilities.invokeLater(() ->
 		{
-
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
-			final BufferedImage scaledImage = SwingUtil.resizeImage(event.getButton().getIcon(), iconSize, iconSize);
-			final JButton button = new JButton();
-			button.setName(event.getButton().getName());
-			button.setToolTipText(event.getButton().getTooltip());
-			button.setIcon(new ImageIcon(scaledImage));
-			button.setRolloverIcon(new ImageIcon(SwingUtil.createInvertedImage(scaledImage)));
-			button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
-			button.setFocusable(false);
-
-			if (event.getButton().getOnClick() != null)
-			{
-				button.addActionListener(e -> event.getButton().getOnClick().run());
-			}
-
-			if (event.getButton().getPopup() != null)
-			{
-				final JPopupMenu popupMenu = new JPopupMenu();
-
-				event.getButton().getPopup().forEach((name, callback) ->
-				{
-					final JMenuItem menuItem = new JMenuItem(name);
-					menuItem.addActionListener((e) -> callback.run());
-					popupMenu.add(menuItem);
-				});
-
-				button.setComponentPopupMenu(popupMenu);
-			}
-
-			event.getButton().setOnSelect(() -> button.setSelected(event.getButton().isSelected()));
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
 			titleToolbar.addComponent(event.getButton(), button);
 		});
 	}
@@ -297,7 +256,7 @@ public class ClientUI
 	@Subscribe
 	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
 	{
-		if (!config.enableCustomChrome())
+		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
 		{
 			return;
 		}
