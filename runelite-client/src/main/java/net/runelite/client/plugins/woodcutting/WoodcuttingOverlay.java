@@ -95,12 +95,12 @@ class WoodcuttingOverlay extends Overlay
 
 		if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()))
 		{
-			panelComponent.setTitle("You are woodcutting");
+			panelComponent.setTitle("Woodcutting");
 			panelComponent.setTitleColor(Color.GREEN);
 		}
 		else
 		{
-			panelComponent.setTitle("You are NOT woodcutting");
+			panelComponent.setTitle("NOT woodcutting");
 			panelComponent.setTitleColor(Color.RED);
 		}
 
