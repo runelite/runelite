@@ -94,4 +94,14 @@ public interface MinimapConfig extends Config
 	{
 		return new Color(170, 0, 190);
 	}
+
+	@ConfigItem(
+		keyName = "hideMinimap",
+		name = "Hide minimap",
+		description = "Do not show the minimap on screen (Resizable only)"
+	)
+	default boolean hideMinimap()
+	{
+		return false;
+	}
 }
