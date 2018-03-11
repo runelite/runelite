@@ -53,6 +53,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Slayer"
@@ -155,7 +156,7 @@ public class SlayerPlugin extends Plugin
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
 		{
-			String NPCText = NPCDialog.getText().replaceAll("<[^>]*>", " "); //remove color and linebreaks
+			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
 			Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
 			Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
 			boolean found1 = mAssign.find();
@@ -193,7 +194,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		String chatMsg = event.getMessage().replaceAll("<[^>]*>", ""); //remove color and linebreaks
+		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
