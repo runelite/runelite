@@ -81,6 +81,7 @@ import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -227,7 +228,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (chatMessage.contains("You have completed") && chatMessage.contains("Treasure"))
 		{
-			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
 				clueNumber = Integer.valueOf(m.group());
@@ -238,7 +239,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (chatMessage.startsWith("Your Barrows chest count is"))
 		{
-			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
 				barrowsNumber = Integer.valueOf(m.group());
@@ -248,7 +249,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
 		{
-			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
 				raidsNumber = Integer.valueOf(m.group());

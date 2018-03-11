@@ -68,6 +68,7 @@ import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric"
@@ -252,7 +253,7 @@ public class RaidsPlugin extends Plugin
 	{
 		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
 		{
-			String message = event.getMessage().replaceAll("<[^>]*>", "");
+			String message = Text.removeTags(event.getMessage());
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{

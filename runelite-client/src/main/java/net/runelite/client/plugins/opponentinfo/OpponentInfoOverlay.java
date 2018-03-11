@@ -45,6 +45,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.Text;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -120,14 +121,14 @@ class OpponentInfoOverlay extends Overlay
 		{
 			lastTime = Instant.now();
 			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
-			opponentName = opponent.getName().replaceAll("<[^>]*>", "");
+			opponentName = Text.removeTags(opponent.getName());
 			lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
 
 			Actor opponentsOpponent = opponent.getInteracting();
 			if (opponentsOpponent != null
 					&& (opponentsOpponent != client.getLocalPlayer() || client.getSetting(Varbits.MULTICOMBAT_AREA) == 1))
 			{
-				opponentsOpponentName = opponentsOpponent.getName().replaceAll("<[^>]*>", "");
+				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
 			}
 			else
 			{
