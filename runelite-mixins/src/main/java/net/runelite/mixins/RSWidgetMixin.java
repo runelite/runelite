@@ -147,45 +147,55 @@ public abstract class RSWidgetMixin implements RSWidget
 	}
 
 	@Inject
+	private Point canvasLocation = null;
+
+	@Inject
 	@Override
 	public Point getCanvasLocation()
 	{
-		int x = 0;
-		int y = 0;
-		RSWidget cur;
-
-		for (cur = this; cur.getParent() != null; cur = (RSWidget) cur.getParent())
+		if (canvasLocation != null)
 		{
-			x += cur.getRelativeX();
-			y += cur.getRelativeY();
-
-			x -= cur.getScrollX();
-			y -= cur.getScrollY();
+			return canvasLocation;
 		}
 
-		// cur is now the root
-		int[] widgetBoundsWidth = client.getWidgetPositionsX();
-		int[] widgetBoundsHeight = client.getWidgetPositionsY();
+		RSWidget parent = (RSWidget) getParent();
 
-		int boundsIndex = cur.getBoundsIndex();
-		if (boundsIndex != -1)
+		int x = 0;
+		int y = 0;
+		if (parent == null)
 		{
-			x += widgetBoundsWidth[boundsIndex];
-			y += widgetBoundsHeight[boundsIndex];
+			// widget root
+			int[] widgetBoundsWidth = client.getWidgetPositionsX();
+			int[] widgetBoundsHeight = client.getWidgetPositionsY();
 
-			if (cur.getType() > 0)
+			int boundsIndex = getBoundsIndex();
+			if (boundsIndex != -1)
 			{
-				x += cur.getRelativeX();
-				y += cur.getRelativeY();
+				x = widgetBoundsWidth[boundsIndex];
+				y = widgetBoundsHeight[boundsIndex];
+
+				if (getType() > 0)
+				{
+					x += getRelativeX();
+					y += getRelativeY();
+				}
+			}
+			else
+			{
+				x += getRelativeX();
+				y += getRelativeY();
 			}
 		}
 		else
 		{
-			x += cur.getRelativeX();
-			y += cur.getRelativeY();
+			// non root
+			Point pcl = parent.getCanvasLocation();
+			x = getRelativeX() + pcl.getX() - getScrollX();
+			y = getRelativeY() + pcl.getY() - getScrollY();
 		}
 
-		return new Point(x, y);
+		canvasLocation = new Point(x, y);
+		return canvasLocation;
 	}
 
 	@Inject
