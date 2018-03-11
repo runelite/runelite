@@ -34,6 +34,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,6 +65,13 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+
+		if (minimapWidget != null)
+		{
+			minimapWidget.setHidden(config.hideMinimap());
+		}
+
 		storeOriginalDots();
 		replaceMapDots();
 	}
@@ -69,6 +79,13 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+
+		if (minimapWidget != null)
+		{
+			minimapWidget.setHidden(false);
+		}
+
 		restoreOriginalDots();
 	}
 
@@ -126,7 +143,29 @@ public class MinimapPlugin extends Plugin
 			return;
 		}
 
+		if (event.getKey().equals("hideMinimap"))
+		{
+			Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+
+			if (minimapWidget != null)
+			{
+				minimapWidget.setHidden(config.hideMinimap());
+			}
+			return;
+		}
+
 		replaceMapDots();
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChange(WidgetHiddenChanged event)
+	{
+		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+
+		if (event.getWidget() == minimapWidget)
+		{
+			minimapWidget.setHidden(config.hideMinimap());
+		}
 	}
 
 	private void replaceMapDots()
