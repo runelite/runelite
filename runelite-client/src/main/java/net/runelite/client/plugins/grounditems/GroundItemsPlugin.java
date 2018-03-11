@@ -24,12 +24,27 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Node;
+import net.runelite.api.Region;
+import net.runelite.api.Tile;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Ground Items"
@@ -37,7 +52,16 @@ import net.runelite.client.ui.overlay.Overlay;
 public class GroundItemsPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private GroundItemsConfig config;
 
 	@Inject
 	private GroundItemsOverlay overlay;
@@ -52,6 +76,97 @@ public class GroundItemsPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	private ItemPrice getItemPrice(ItemComposition itemComposition)
+	{
+		if (itemComposition.getNote() != -1)
+		{
+			return itemManager.getItemPriceAsync(itemComposition.getLinkedNoteId());
+		}
+		else
+		{
+			return itemManager.getItemPriceAsync(itemComposition.getId());
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take"))
+		{
+			String hiddenItemsStr = config.getHiddenItems().toLowerCase();
+			List<String> hiddenItems = Arrays.asList(hiddenItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
+
+			String highlightItemsStr = config.getHighlightItems().toLowerCase();
+			List<String> highlightedItems = Arrays.asList(highlightItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
+
+			int itemId = event.getIdentifier();
+			ItemComposition itemComposition = client.getItemDefinition(itemId);
+			String name = itemComposition.getName().toLowerCase();
+
+			if (hiddenItems.contains(name))
+			{
+				return;
+			}
+
+			Region region = client.getRegion();
+			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+			ItemLayer itemLayer = tile.getItemLayer();
+
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+
+			int quantity = 1;
+			Node current = itemLayer.getBottom();
+			while (current instanceof Item)
+			{
+				Item item = (Item) current;
+				if (item.getId() == itemId)
+				{
+					quantity = item.getQuantity();
+				}
+				current = current.getNext();
+			}
+
+			ItemPrice itemPrice = getItemPrice(itemComposition);
+			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+			int cost = quantity * price;
+
+			Color color = null;
+
+			if (cost >= GroundItemsOverlay.LOW_VALUE)
+			{
+				color = overlay.getCostColor(cost);
+			}
+
+			if (highlightedItems.contains(name))
+			{
+				color = config.highlightedColor();
+			}
+
+			if (color != null)
+			{
+				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
+				String colTag = "<col=" + hexColor + ">";
+				if (config.highlightMenuOption())
+				{
+					lastEntry.setOption(colTag + "Take");
+				}
+				if (config.highlightMenuItemName())
+				{
+					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+					lastEntry.setTarget(colTag + target);
+				}
+			}
+
+			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+			{
+				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+			}
+
+			client.setMenuEntries(menuEntries);
+		}
 	}
 
 }
