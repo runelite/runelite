@@ -39,6 +39,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Nightmare Zone"
@@ -110,7 +111,7 @@ public class NightmareZonePlugin extends Plugin
 			return;
 		}
 
-		String msg = event.getMessage().replaceAll("<[^>]*>", " "); //remove color and linebreaks
+		String msg = Text.removeTags(event.getMessage()); //remove color and linebreaks
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
 			notifier.notify("Your overload has worn off");
