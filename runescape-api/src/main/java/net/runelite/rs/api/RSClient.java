@@ -214,6 +214,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("getObjectDefinition")
 	RSObjectComposition getObjectDefinition(int objectId);
 
+	@Override
+	@Import("getNpcDefinition")
+	RSNPCComposition getNpcDefinition(int npcId);
+
 	@Import("scale")
 	@Override
 	int getScale();
