@@ -181,6 +181,8 @@ public interface Client extends GameEngine
 
 	ObjectComposition getObjectDefinition(int objectId);
 
+	NPCComposition getNpcDefinition(int npcId);
+
 	Area[] getMapAreas();
 
 	IndexedSprite[] getMapScene();
