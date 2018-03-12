@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -131,7 +132,7 @@ public class BlastMinePlugin extends Plugin
 
 	private BlastMineRock getRockFromCollection(GameObject gameObject)
 	{
-		Point gameObjectLocation = gameObject.getWorldLocation();
+		WorldPoint gameObjectLocation = gameObject.getWorldLocation();
 		for (BlastMineRock rock : rocks)
 		{
 			if (gameObjectLocation.equals(rock.getGameObject().getWorldLocation()))

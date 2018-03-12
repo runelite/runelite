@@ -29,6 +29,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -161,8 +162,8 @@ public class BlastMineRockOverlay extends Overlay
 			return;
 		}
 		int z = client.getPlane();
-		int x = rock.getGameObject().getRegionLocation().getX();
-		int y = rock.getGameObject().getRegionLocation().getY();
+		int x = rock.getGameObject().getLocalLocation().getX() / Perspective.LOCAL_TILE_SIZE;
+		int y = rock.getGameObject().getLocalLocation().getY() / Perspective.LOCAL_TILE_SIZE;
 		int orientation = tiles[z][x][y].getWallObject().getOrientationA();
 
 		switch (orientation) //calculate explosion around the tile in front of the wall
@@ -188,7 +189,7 @@ public class BlastMineRockOverlay extends Overlay
 				//check if tile is empty, or is a wall... waiting for null names being added to ObjectID
 				if (gameObject == null  || !(28570 <= gameObject.getId() && 28588 >= gameObject.getId()))
 				{
-					net.runelite.api.Point localTile = new net.runelite.api.Point(
+					LocalPoint localTile = new LocalPoint(
 							(x + i) * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
 							(y + j) * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2);
 					Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
