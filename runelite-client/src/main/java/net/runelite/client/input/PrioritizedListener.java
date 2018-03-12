@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,42 +24,13 @@
  */
 package net.runelite.client.input;
 
-import java.awt.event.MouseEvent;
-
-public abstract class MouseListener implements PrioritizedListener
+public interface PrioritizedListener
 {
-	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	/**
+	 * @return Priority of the listener. Lower means it will run earlier, higher means it will run later
+	 */
+	default int getPriority()
 	{
-		return mouseEvent;
-	}
-
-	public MouseEvent mousePressed(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	public MouseEvent mouseReleased(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	public MouseEvent mouseEntered(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	public MouseEvent mouseExited(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	public MouseEvent mouseDragged(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	public MouseEvent mouseMoved(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
+		return 0;
 	}
 }

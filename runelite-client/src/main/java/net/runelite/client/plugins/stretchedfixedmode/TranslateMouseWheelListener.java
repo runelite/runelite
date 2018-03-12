@@ -37,6 +37,12 @@ public class TranslateMouseWheelListener implements MouseWheelListener
 {
 	private final Client client;
 
+	@Override
+	public int getPriority()
+	{
+		return -100;
+	}
+
 	@Inject
 	public TranslateMouseWheelListener(Client client)
 	{

@@ -26,27 +26,18 @@ package net.runelite.client.input;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
 import javax.inject.Singleton;
 
 @Singleton
 public class MouseManager
 {
-	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
-	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
+	private final Set<MouseListener> mouseListeners = new PrioritizedListenerList<>();
+	private final Set<MouseWheelListener> mouseWheelListeners = new PrioritizedListenerList<>();
 
 	public void registerMouseListener(MouseListener mouseListener)
 	{
-		if (!mouseListeners.contains(mouseListener))
-		{
-			mouseListeners.add(mouseListener);
-		}
-	}
-
-	public void registerMouseListener(int position, MouseListener mouseListener)
-	{
-		mouseListeners.add(position, mouseListener);
+		mouseListeners.add(mouseListener);
 	}
 
 	public void unregisterMouseListener(MouseListener mouseListener)
@@ -56,15 +47,7 @@ public class MouseManager
 
 	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener)
 	{
-		if (!mouseWheelListeners.contains(mouseWheelListener))
-		{
-			mouseWheelListeners.add(mouseWheelListener);
-		}
-	}
-
-	public void registerMouseWheelListener(int position, MouseWheelListener mouseWheelListener)
-	{
-		mouseWheelListeners.add(position, mouseWheelListener);
+		mouseWheelListeners.add(mouseWheelListener);
 	}
 
 	public void unregisterMouseWheelListener(MouseWheelListener mouseWheelListener)

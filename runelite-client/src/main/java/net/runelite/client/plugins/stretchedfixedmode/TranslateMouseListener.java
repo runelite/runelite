@@ -44,6 +44,12 @@ public class TranslateMouseListener extends MouseListener
 	}
 
 	@Override
+	public int getPriority()
+	{
+		return -100;
+	}
+
+	@Override
 	public MouseEvent mouseClicked(MouseEvent mouseEvent)
 	{
 		return translateEvent(mouseEvent);
