@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemLayer;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
 import net.runelite.api.Region;
@@ -93,7 +94,8 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take"))
+		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take")
+				&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			String hiddenItemsStr = config.getHiddenItems().toLowerCase();
 			List<String> hiddenItems = Arrays.asList(hiddenItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
@@ -113,6 +115,10 @@ public class GroundItemsPlugin extends Plugin
 			Region region = client.getRegion();
 			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
 			ItemLayer itemLayer = tile.getItemLayer();
+			if (itemLayer == null)
+			{
+				return;
+			}
 
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
