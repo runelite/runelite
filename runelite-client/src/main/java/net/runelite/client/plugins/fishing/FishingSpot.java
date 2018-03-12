@@ -27,20 +27,14 @@ package net.runelite.client.plugins.fishing;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
-import static net.runelite.api.NpcID.FISHING_SPOT_1506;
-import static net.runelite.api.NpcID.FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.FISHING_SPOT_1510;
 import static net.runelite.api.NpcID.FISHING_SPOT_1511;
-import static net.runelite.api.NpcID.FISHING_SPOT_1513;
-import static net.runelite.api.NpcID.FISHING_SPOT_1515;
 import static net.runelite.api.NpcID.FISHING_SPOT_1518;
 import static net.runelite.api.NpcID.FISHING_SPOT_1519;
 import static net.runelite.api.NpcID.FISHING_SPOT_1520;
 import static net.runelite.api.NpcID.FISHING_SPOT_1521;
 import static net.runelite.api.NpcID.FISHING_SPOT_1522;
 import static net.runelite.api.NpcID.FISHING_SPOT_1525;
-import static net.runelite.api.NpcID.FISHING_SPOT_1526;
-import static net.runelite.api.NpcID.FISHING_SPOT_1527;
 import static net.runelite.api.NpcID.FISHING_SPOT_1528;
 import static net.runelite.api.NpcID.FISHING_SPOT_1530;
 import static net.runelite.api.NpcID.FISHING_SPOT_1542;
@@ -49,18 +43,23 @@ import static net.runelite.api.NpcID.FISHING_SPOT_4316;
 import static net.runelite.api.NpcID.FISHING_SPOT_4710;
 import static net.runelite.api.NpcID.FISHING_SPOT_4712;
 import static net.runelite.api.NpcID.FISHING_SPOT_4713;
-import static net.runelite.api.NpcID.FISHING_SPOT_6825;
 import static net.runelite.api.NpcID.FISHING_SPOT_7155;
 import static net.runelite.api.NpcID.FISHING_SPOT_7199;
 import static net.runelite.api.NpcID.FISHING_SPOT_7200;
 import static net.runelite.api.NpcID.FISHING_SPOT_7469;
 import static net.runelite.api.NpcID.FISHING_SPOT_7470;
-import static net.runelite.api.NpcID.FISHING_SPOT_7676;
 import static net.runelite.api.NpcID.FISHING_SPOT_7730;
 import static net.runelite.api.NpcID.FISHING_SPOT_7731;
 import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
-import static net.runelite.api.NpcID.FISHING_SPOT_7734;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1508;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1513;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1515;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1526;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1527;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_6825;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7676;
 
 public enum FishingSpot
 {
@@ -80,20 +79,20 @@ public enum FishingSpot
 		FISHING_SPOT_4316
 	),
 	SALMON("Salmon, Trout", ItemID.RAW_SALMON,
-		FISHING_SPOT_1506, FISHING_SPOT_1508, FISHING_SPOT_1513,
-		FISHING_SPOT_1515, FISHING_SPOT_1526, FISHING_SPOT_1527
+		ROD_FISHING_SPOT, ROD_FISHING_SPOT_1508, ROD_FISHING_SPOT_1513,
+		ROD_FISHING_SPOT_1515, ROD_FISHING_SPOT_1526, ROD_FISHING_SPOT_1527
 	),
 	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON,
 		FISHING_SPOT_1542
 	),
 	ANGLERFISH("Anglerfish", ItemID.RAW_ANGLERFISH,
-		FISHING_SPOT_6825
+		ROD_FISHING_SPOT_6825
 	),
 	MINNOW("Minnow", ItemID.MINNOW,
-		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733, FISHING_SPOT_7734
+		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733
 	),
 	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,
-		FISHING_SPOT_7676
+		ROD_FISHING_SPOT_7676
 	),
 	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN,
 		FISHING_SPOT_4712, FISHING_SPOT_4713
@@ -102,7 +101,6 @@ public enum FishingSpot
 		FISHING_SPOT_4710
 	);
 
-	public static final int FLYING_FISH = FISHING_SPOT_7734;
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
 
 	private final String name;
