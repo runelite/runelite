@@ -73,7 +73,7 @@ class SkillXPInfo
 
 	int getActionsRemaining()
 	{
-		return getXpRemaining() / actionExp;
+		return (int) Math.ceil(getXpRemaining() / (float) actionExp);
 	}
 
 	int getSkillProgress()
