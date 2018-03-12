@@ -125,7 +125,7 @@ public class GroundItemsPlugin extends Plugin
 
 			int quantity = 1;
 			Node current = itemLayer.getBottom();
-			while (current != null && (current instanceof Item))
+			while (current instanceof Item)
 			{
 				Item item = (Item) current;
 				if (item.getId() == itemId)
