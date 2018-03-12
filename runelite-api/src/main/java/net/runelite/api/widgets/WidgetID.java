@@ -75,6 +75,7 @@ public class WidgetID
 	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
+	public static final int ROGUE_TRADER_PUZZLE_GROUP_ID = 288;
 
 	static class WorldMap
 	{
@@ -327,5 +328,11 @@ public class WidgetID
 	{
 		static final int WIDGET = 1;
 		static final int BOTTOM_BAR = 14;
+	}
+
+	public static class RogueTrader
+	{
+		public static final int FIRST_TILE = 10;
+		public static final int RUNE_GRID = 131;
 	}
 }
