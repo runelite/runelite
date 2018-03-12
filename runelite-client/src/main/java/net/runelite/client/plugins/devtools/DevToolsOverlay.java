@@ -44,6 +44,7 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Node;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -153,7 +154,14 @@ public class DevToolsOverlay extends Overlay
 		List<NPC> npcs = client.getNpcs();
 		for (NPC npc : npcs)
 		{
-			String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
+			NPCComposition composition = npc.getComposition();
+			if (composition.getConfigs() != null && composition.transform() != null)
+			{
+				composition = composition.transform();
+			}
+
+			String text = composition.getName() + " (ID: " + composition.getId() + ") (A: " + npc.getAnimation()
+					+ ") (G: " + npc.getGraphic() + ")";
 			if (npc.getCombatLevel() > 1)
 			{
 				OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
