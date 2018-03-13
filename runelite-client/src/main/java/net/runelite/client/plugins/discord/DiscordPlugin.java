@@ -109,7 +109,10 @@ public class DiscordPlugin extends Plugin
 
 		if (discordGameEventType != null)
 		{
-			triggerEvent(discordGameEventType, config.actionDelay();
+			int level = client.getRealSkillLevel(event.getSkill());
+			int xpToLevel = Experience.getXpForLevel(level + 1) - client.getSkillExperience(event.getSkill());
+
+			triggerEvent(discordGameEventType, config.actionDelay(), "Level: " + level + " (" + StackFormatter.quantityToStackSize(xpToLevel) + " till " + (level + 1) + ")");
 		}
 	}
 
