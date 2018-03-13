@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import javax.inject.Inject;
+import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -65,7 +66,7 @@ class FishingSpotMinimapOverlay extends Overlay
 				continue;
 			}
 
-			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
+			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
 			net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
 			if (minimapLocation != null)
