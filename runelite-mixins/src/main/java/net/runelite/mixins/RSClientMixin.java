@@ -51,6 +51,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ExperienceChanged;
@@ -458,6 +459,22 @@ public abstract class RSClientMixin implements RSClient
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
+	}
+
+	@Inject
+	@Override
+	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
+	{
+		int zoom = get3dZoom();
+		set3dZoom(scale);
+		try
+		{
+			return createItemSprite(itemId, quantity, border, shadowColor, stackable, noted);
+		}
+		finally
+		{
+			set3dZoom(zoom);
+		}
 	}
 
 	@FieldHook("skillExperiences")
