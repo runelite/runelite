@@ -76,7 +76,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 					renderPlayerOverlay(graphics, player, config.getOwnNameColor());
 				}
 			}
-			else if (config.drawFriendNames() && player.isFriend())
+			else if (config.drawFriendNames() && client.isFriended(player.getName(), false))
 			{
 				renderPlayerOverlay(graphics, player, config.getFriendNameColor());
 			}
