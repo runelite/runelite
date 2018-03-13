@@ -53,7 +53,7 @@ public class ItemDefinition
 	public short[] textureFind;
 	public short[] textureReplace;
 
-	public int zoom2d = 200000;
+	public int zoom2d = 2000;
 	public int xOffset2d = 0;
 	public int yOffset2d = 0;
 

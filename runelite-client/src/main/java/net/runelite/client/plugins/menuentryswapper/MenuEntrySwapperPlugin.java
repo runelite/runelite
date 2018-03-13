@@ -36,7 +36,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Menu entry swapper plugin",
+	name = "Menu Entry Swapper",
 	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
