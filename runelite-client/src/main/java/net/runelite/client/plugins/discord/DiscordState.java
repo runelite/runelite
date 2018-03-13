@@ -66,6 +66,9 @@ public class DiscordState
 		final boolean changed = eventType != event && eventType.getIsChanged().apply(event);
 		boolean reset = false;
 
+		// Set the state of the event
+		eventType.setState(state);
+
 		if (first)
 		{
 			reset = true;
@@ -105,7 +108,7 @@ public class DiscordState
 
 		final DiscordPresence.DiscordPresenceBuilder discordPresenceBuilder = DiscordPresence.builder()
 			.details(event.getDetails())
-			.state(state)
+			.state(event.getState())
 			.smallImageKey(event.getImageKey());
 
 		lastPresence = eventType.isTrackTime()

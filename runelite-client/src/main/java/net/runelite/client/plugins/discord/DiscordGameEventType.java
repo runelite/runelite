@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
 import static net.runelite.api.Skill.ATTACK;
@@ -60,7 +61,7 @@ public enum DiscordGameEventType
 {
 	IN_GAME("In Game", false, true),
 	IN_MENU("In Menu", false, false),
-	RAID("In Raid", "raids", false, true),
+	RAID("In Raid", "raids", 2, false, true),
 	TRAINING_ATTACK(ATTACK, DiscordGameEventType::combatSkillChanged),
 	TRAINING_DEFENCE(DEFENCE, DiscordGameEventType::combatSkillChanged),
 	TRAINING_STRENGTH(STRENGTH, DiscordGameEventType::combatSkillChanged),
@@ -72,7 +73,7 @@ public enum DiscordGameEventType
 	TRAINING_COOKING(COOKING),
 	TRAINING_WOODCUTTING(WOODCUTTING),
 	TRAINING_FLETCHING(FLETCHING),
-	TRAINING_FISHING(FISHING),
+	TRAINING_FISHING(FISHING, 1),
 	TRAINING_FIREMAKING(FIREMAKING),
 	TRAINING_CRAFTING(CRAFTING),
 	TRAINING_SMITHING(SMITHING),
@@ -89,15 +90,18 @@ public enum DiscordGameEventType
 	private Skill skill;
 	private String imageKey;
 	private String details;
+	@Setter
+	private String state;
 	private boolean trackTime = true;
 	private boolean considerDelay = true;
 	private Function<DiscordGameEventType, Boolean> isChanged = (l) -> true;
 	private int priority = 0;
 
-	DiscordGameEventType(String details, String minigame, boolean considerDelay, boolean trackTime)
+	DiscordGameEventType(String details, String minigame, int priority, boolean considerDelay, boolean trackTime)
 	{
 		this.imageKey = getImageKey(minigame);
 		this.details = details;
+		this.priority = priority;
 		this.considerDelay = considerDelay;
 		this.trackTime = trackTime;
 	}
@@ -129,6 +133,13 @@ public enum DiscordGameEventType
 	{
 		this.imageKey = getImageKey(skill);
 		this.details = training(skill);
+	}
+
+	DiscordGameEventType(Skill skill, int priority)
+	{
+		this.imageKey = getImageKey(skill);
+		this.details = training(skill);
+		this.priority = priority;
 	}
 
 	private static String getImageKey(final Skill skill)
