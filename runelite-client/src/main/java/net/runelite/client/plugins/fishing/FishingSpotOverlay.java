@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -72,7 +73,7 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
+			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 			if (config.showIcons())
 			{
 				BufferedImage fishImage = getFishImage(spot);
