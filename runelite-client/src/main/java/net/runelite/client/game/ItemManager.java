@@ -37,6 +37,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Value;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
 import net.runelite.http.api.item.ItemClient;
@@ -193,7 +194,7 @@ public class ItemManager
 	 */
 	private BufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, stackable ? 1 : 0, false);
+		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
 		return sprite.toBufferedImage();
 	}
 
