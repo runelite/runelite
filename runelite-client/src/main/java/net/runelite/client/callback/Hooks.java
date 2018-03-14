@@ -48,7 +48,6 @@ import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
@@ -332,18 +331,6 @@ public class Hooks
 		log.debug("Menu action clicked: {}", menuOptionClicked);
 
 		eventBus.post(menuOptionClicked);
-	}
-
-	public static void addMenuEntry(String option, String target, int type, int identifier, int param0, int param1)
-	{
-		if (log.isTraceEnabled())
-		{
-			log.trace("Menu entry added {} {}", option, target);
-		}
-
-		MenuEntryAdded menuEntry = new MenuEntryAdded(option, target, type, identifier, param0, param1);
-
-		eventBus.post(menuEntry);
 	}
 
 	public static void addChatMessage(int type, String name, String message, String sender)
