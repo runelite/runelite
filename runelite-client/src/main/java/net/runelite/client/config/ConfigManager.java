@@ -25,6 +25,12 @@
 package net.runelite.client.config;
 
 import com.google.common.eventbus.EventBus;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
@@ -67,12 +73,78 @@ public class ConfigManager
 	private ConfigClient client;
 	private File propertiesFile;
 
+	private final Gson gson;
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 
 	public ConfigManager()
 	{
 		this.propertiesFile = getPropertiesFile();
+
+		final GsonBuilder gsonBuilder = new GsonBuilder();
+
+		gsonBuilder.registerTypeAdapter(Color.class, new TypeAdapter<Color>()
+		{
+			@Override
+			public void write(JsonWriter out, Color value) throws IOException
+			{
+				if (value == null)
+				{
+					out.nullValue();
+					return;
+				}
+
+				final String colorString = String.valueOf(value.getRGB());
+				out.value(colorString);
+			}
+
+			@Override
+			public Color read(JsonReader in) throws IOException
+			{
+				if (in.peek() == JsonToken.NULL)
+				{
+					in.nextNull();
+					return null;
+				}
+
+				final String colorString = in.nextString();
+				return Color.decode(colorString);
+			}
+		});
+
+		gsonBuilder.registerTypeAdapter(Dimension.class, new TypeAdapter<Dimension>()
+		{
+			@Override
+			public void write(JsonWriter out, Dimension value) throws IOException
+			{
+				if (value == null)
+				{
+					out.nullValue();
+					return;
+				}
+
+				final String dimensionString = value.width + "x" + value.height;
+				out.value(dimensionString);
+			}
+
+			@Override
+			public Dimension read(JsonReader in) throws IOException
+			{
+				if (in.peek() == JsonToken.NULL)
+				{
+					in.nextNull();
+					return null;
+				}
+
+				final String dimensionString = in.nextString();
+				String[] splitStr = dimensionString.split("x");
+				int width = Integer.parseInt(splitStr[0]);
+				int height = Integer.parseInt(splitStr[1]);
+				return new Dimension(width, height);
+			}
+		});
+
+		gson = gsonBuilder.create();
 	}
 
 	public final void switchSession(AccountSession session)
@@ -369,7 +441,7 @@ public class ConfigManager
 		}
 	}
 
-	static Object stringToObject(String str, Class<?> type)
+	Object stringToObject(String str, Class<?> type)
 	{
 		if (type == boolean.class)
 		{
@@ -394,10 +466,14 @@ public class ConfigManager
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
+		if (type.isArray())
+		{
+			return gson.fromJson(str, type);
+		}
 		return str;
 	}
 
-	static String objectToString(Object object)
+	private String objectToString(Object object)
 	{
 		if (object instanceof Color)
 		{
@@ -412,6 +488,11 @@ public class ConfigManager
 			Dimension d = (Dimension) object;
 			return d.width + "x" + d.height;
 		}
+		if (object.getClass().isArray())
+		{
+			return gson.toJson(object);
+		}
+
 		return object.toString();
 	}
 }
