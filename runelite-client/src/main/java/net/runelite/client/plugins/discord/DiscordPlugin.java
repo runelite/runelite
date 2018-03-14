@@ -30,16 +30,23 @@ import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
 	name = "Discord"
@@ -58,6 +65,9 @@ public class DiscordPlugin extends Plugin
 	private final DiscordState discordState = new DiscordState();
 	private Map<Skill, Integer> skillExp = new HashMap<>();
 	private boolean loggedIn = false;
+
+	private boolean raidInProgress = false;
+	private boolean inRaidChambers = false;
 
 	@Provides
 	private DiscordConfig provideConfig(ConfigManager configManager)
@@ -99,7 +109,47 @@ public class DiscordPlugin extends Plugin
 
 		if (discordGameEventType != null)
 		{
-			discordState.triggerEvent(discordGameEventType, config.actionDelay());
+			int level = client.getRealSkillLevel(event.getSkill());
+			int xpToLevel = Experience.getXpForLevel(level + 1) - client.getSkillExperience(event.getSkill());
+
+			triggerEvent(discordGameEventType, config.actionDelay(), "Level: " + level + " (" + StackFormatter.quantityToStackSize(xpToLevel) + " till " + (level + 1) + ")");
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		// Raid
+		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		{
+			String message = event.getMessage().replaceAll("<[^>]*>", "");
+
+			if (message.startsWith("The raid has begun!"))
+			{
+				raidInProgress = true;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChange(VarbitChanged event)
+	{
+		// Raid
+		boolean setting = client.getSetting(Varbits.IN_RAID) == 1;
+
+		if (inRaidChambers != setting)
+		{
+			inRaidChambers = setting;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		// Raid
+		if (raidInProgress)
+		{
+			checkIfInRaid();
 		}
 	}
 
@@ -130,12 +180,40 @@ public class DiscordPlugin extends Plugin
 		{
 			skillExp.clear();
 			loggedIn = false;
-			discordState.triggerEvent(DiscordGameEventType.IN_MENU, config.actionDelay());
+			triggerEvent(DiscordGameEventType.IN_MENU, config.actionDelay());
 		}
 		else if (client.getGameState() == GameState.LOGGED_IN && (force || !loggedIn))
 		{
 			loggedIn = true;
-			discordState.triggerEvent(DiscordGameEventType.IN_GAME, config.actionDelay());
+			triggerEvent(DiscordGameEventType.IN_GAME, config.actionDelay());
+		}
+	}
+
+	private void triggerEvent(DiscordGameEventType type, int delay)
+	{
+		triggerEvent(type, delay, "");
+	}
+
+	private void triggerEvent(DiscordGameEventType type, int delay, String state)
+	{
+		discordState.triggerEvent(type, delay, state);
+	}
+
+	private void checkIfInRaid()
+	{
+		if (inRaidChambers)
+		{
+			// Raid has started, triggering raid event
+			int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
+			int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
+
+			triggerEvent(DiscordGameEventType.RAID, config.actionDelay(), "Points: " + totalPoints + " (" + personalPoints + ")");
+		}
+		else
+		{
+			// No longer in raid
+			raidInProgress = false;
+			updateGameStatus(client.getGameState(), true);
 		}
 	}
 }

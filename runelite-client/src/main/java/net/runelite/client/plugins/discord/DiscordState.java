@@ -35,7 +35,7 @@ import net.runelite.client.discord.DiscordService;
 public class DiscordState
 {
 	private final List<DiscordGameEventType> lastQueue = new ArrayList<>();
-	private DiscordGameEventType lastEvent;
+	private DiscordGameEventType event;
 	private Instant startOfAction;
 	private Instant lastAction;
 	private DiscordPresence lastPresence;
@@ -44,7 +44,7 @@ public class DiscordState
 	void reset()
 	{
 		lastQueue.clear();
-		lastEvent = null;
+		event = null;
 		startOfAction = null;
 		lastAction = null;
 		lastPresence = null;
@@ -60,11 +60,14 @@ public class DiscordState
 		}
 	}
 
-	void triggerEvent(final DiscordGameEventType eventType, int delay)
+	void triggerEvent(final DiscordGameEventType eventType, int delay, String state)
 	{
 		final boolean first = startOfAction == null;
-		final boolean changed = eventType != lastEvent && eventType.getIsChanged().apply(lastEvent);
+		final boolean changed = eventType != event && eventType.getIsChanged().apply(event);
 		boolean reset = false;
+
+		// Set the state of the event
+		eventType.setState(state);
 
 		if (first)
 		{
@@ -101,20 +104,18 @@ public class DiscordState
 		}
 
 		lastAction = Instant.now();
-		final DiscordGameEventType newEvent = lastQueue.get(lastQueue.size() - 1);
+		event = lastQueue.get(lastQueue.size() - 1);
 
-		if (lastEvent != newEvent)
-		{
-			lastEvent = newEvent;
+		final DiscordPresence.DiscordPresenceBuilder discordPresenceBuilder = DiscordPresence.builder()
+			.details(event.getDetails())
+			.state(event.getState())
+			.smallImageKey(event.getImageKey());
 
-			lastPresence = DiscordPresence.builder()
-				.state(lastEvent.getState())
-				.details(lastEvent.getDetails())
-				.startTimestamp(startOfAction)
-				.build();
+		lastPresence = eventType.isTrackTime()
+			? discordPresenceBuilder.startTimestamp(startOfAction).build()
+			: discordPresenceBuilder.build();
 
-			needsFlush = true;
-		}
+		needsFlush = true;
 	}
 
 	boolean checkForTimeout(final int timeout)
@@ -126,11 +127,7 @@ public class DiscordState
 
 		final Duration actionTimeout = Duration.ofMinutes(timeout);
 
-		if (Instant.now().compareTo(lastAction.plus(actionTimeout)) >= 0)
-		{
-			return true;
-		}
+		return Instant.now().compareTo(lastAction.plus(actionTimeout)) >= 0;
 
-		return false;
 	}
 }
