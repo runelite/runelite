@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(name = "Regeneration Meter")
 public class RegenMeterPlugin extends Plugin
 {
-	private static final int SPEC_REGEN_TICKS = 51;
+	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
 	@Inject
