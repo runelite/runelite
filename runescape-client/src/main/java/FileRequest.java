@@ -46,7 +46,7 @@ public class FileRequest extends CacheableNode {
 
       for(int var9 = 0; var9 < var0.length; ++var9) {
          Widget var10 = var0[var9];
-         if(var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.field1019)) {
+         if(var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.draggedWidget)) {
             int var11;
             if(var8 == -1) {
                Client.widgetPositionX[Client.widgetCount] = var10.relativeX + var6;
@@ -110,7 +110,7 @@ public class FileRequest extends CacheableNode {
             int var14 = var10.opacity;
             int var15;
             int var16;
-            if(var10 == Client.field1019) {
+            if(var10 == Client.draggedWidget) {
                if(var1 != -1412584499 && !var10.field2895) {
                   class2.field14 = var0;
                   ItemContainer.field746 = var6;
@@ -118,7 +118,7 @@ public class FileRequest extends CacheableNode {
                   continue;
                }
 
-               if(Client.field858 && Client.field1024) {
+               if(Client.draggingWidget && Client.field1024) {
                   var15 = MouseInput.mouseLastX;
                   var16 = MouseInput.mouseLastY;
                   var15 -= Client.field1021;
