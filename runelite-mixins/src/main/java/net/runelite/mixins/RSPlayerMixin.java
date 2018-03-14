@@ -36,6 +36,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSPlayer;
 
 @Mixin(RSPlayer.class)
@@ -48,7 +49,14 @@ public abstract class RSPlayerMixin implements RSPlayer
 	@Override
 	public String getName()
 	{
-		String name = getRsName().getName();
+		final RSName rsName = getRsName();
+
+		if (rsName == null)
+		{
+			return null;
+		}
+
+		String name = rsName.getName();
 
 		if (name == null)
 		{
