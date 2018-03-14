@@ -24,17 +24,12 @@
  */
 package net.runelite.client.ui.overlay.tooltip;
 
-import java.awt.Point;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Tooltip
 {
 	private final String text;
-	private boolean followMouse = true;
-	private Point position = new Point();
 }
