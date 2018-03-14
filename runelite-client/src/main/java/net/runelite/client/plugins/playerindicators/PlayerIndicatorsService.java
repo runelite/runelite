@@ -25,54 +25,57 @@
 package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Polygon;
+import java.util.function.BiConsumer;
+import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class PlayerIndicatorsOverlay extends Overlay
+public class PlayerIndicatorsService
 {
-	private final PlayerIndicatorsService playerIndicatorsService;
+	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
-	PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
 	{
 		this.config = config;
-		this.playerIndicatorsService = playerIndicatorsService;
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		this.client = client;
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-		return null;
-	}
-
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
-	{
-		if (config.drawTiles())
+		if (!config.drawOwnName() && !config.drawClanMemberNames()
+			&& !config.drawFriendNames() && !config.drawNonClanMemberNames())
 		{
-			Polygon poly = actor.getCanvasTilePoly();
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
+			return;
 		}
 
-		final String name = actor.getName().replace('\u00A0', ' ');
-		net.runelite.api.Point textLocation = actor
-			.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
-
-		if (textLocation != null)
+		for (Player player : client.getPlayers())
 		{
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			if (player == null || player.getName() == null)
+			{
+				continue;
+			}
+
+			boolean isClanMember = player.isClanMember();
+
+			if (player == client.getLocalPlayer())
+			{
+				if (config.drawOwnName())
+				{
+					consumer.accept(player, config.getOwnNameColor());
+				}
+			}
+			else if (config.drawFriendNames() && player.isFriend())
+			{
+				consumer.accept(player, config.getFriendNameColor());
+			}
+			else if (config.drawClanMemberNames() && isClanMember)
+			{
+				consumer.accept(player, config.getClanMemberColor());
+			}
+			else if (config.drawNonClanMemberNames() && !isClanMember)
+			{
+				consumer.accept(player, config.getNonClanMemberColor());
+			}
 		}
 	}
 }
