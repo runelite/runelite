@@ -25,7 +25,7 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Client;
-import net.runelite.api.events.ScriptEvent;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -64,7 +64,7 @@ public abstract class ScriptVMMixin implements RSClient
 			String stringOp = client.getStringStack()[--stringStackSize];
 			client.setStringStackSize(stringStackSize);
 
-			ScriptEvent event = new ScriptEvent();
+			ScriptCallbackEvent event = new ScriptCallbackEvent();
 			event.setScript(currentScript);
 			event.setEventName(stringOp);
 			Hooks.eventBus.post(event);

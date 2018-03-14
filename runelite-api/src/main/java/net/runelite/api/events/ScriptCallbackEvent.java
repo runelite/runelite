@@ -28,7 +28,7 @@ import lombok.Data;
 import net.runelite.api.Script;
 
 @Data
-public class ScriptEvent
+public class ScriptCallbackEvent
 {
 	private Script script;
 	private String eventName;
