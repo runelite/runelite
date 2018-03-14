@@ -83,17 +83,6 @@ public class TooltipComponent implements RenderableEntity
 		// Tooltip position
 		int x = position.x;
 		int y = position.y;
-		x = x - tooltipWidth - OFFSET * 2;
-		if (x < 0)
-		{
-			x = 0;
-		}
-
-		y = y - tooltipHeight - OFFSET * 2;
-		if (y < 0)
-		{
-			y = 0;
-		}
 
 		// Render tooltip - background
 		final Rectangle tooltipBackground = new Rectangle(x, y,
