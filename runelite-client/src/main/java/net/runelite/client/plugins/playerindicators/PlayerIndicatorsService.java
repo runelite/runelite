@@ -26,15 +26,19 @@ package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
 import java.util.function.BiConsumer;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 
+@Singleton
 public class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
-	PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
+	@Inject
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
 	{
 		this.config = config;
 		this.client = client;
