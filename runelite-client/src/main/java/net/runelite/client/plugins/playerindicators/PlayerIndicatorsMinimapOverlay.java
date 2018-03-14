@@ -28,22 +28,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class PlayerIndicatorsOverlay extends Overlay
+public class PlayerIndicatorsMinimapOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 
-	PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	PlayerIndicatorsMinimapOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 	}
@@ -57,22 +58,16 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (config.drawTiles())
-		{
-			Polygon poly = actor.getCanvasTilePoly();
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
-			}
-		}
-
 		final String name = actor.getName().replace('\u00A0', ' ');
-		net.runelite.api.Point textLocation = actor
-			.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
 
-		if (textLocation != null)
+		if (config.drawMinimapNames())
 		{
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+			}
 		}
 	}
 }
