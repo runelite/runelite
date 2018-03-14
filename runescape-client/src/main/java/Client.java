@@ -2769,7 +2769,7 @@ public final class Client extends GameEngine implements class302 {
                   }
 
                   for(WidgetNode var21 = (WidgetNode)componentTable.first(); var21 != null; var21 = (WidgetNode)componentTable.next()) {
-                     class93.method1983(var21, true);
+                     class93.closeWidget(var21, true);
                   }
 
                   widgetRoot = -1;
@@ -4082,7 +4082,7 @@ public final class Client extends GameEngine implements class302 {
                WidgetNode var95 = (WidgetNode)componentTable.get((long)var21);
                var7 = (WidgetNode)componentTable.get((long)var20);
                if(var7 != null) {
-                  class93.method1983(var7, var95 == null || var95.id != var7.id);
+                  class93.closeWidget(var7, var95 == null || var95.id != var7.id);
                }
 
                if(var95 != null) {
@@ -4769,7 +4769,7 @@ public final class Client extends GameEngine implements class302 {
                var20 = var3.readInt();
                WidgetNode var64 = (WidgetNode)componentTable.get((long)var20);
                if(var64 != null) {
-                  class93.method1983(var64, true);
+                  class93.closeWidget(var64, true);
                }
 
                if(field1012 != null) {
@@ -5454,7 +5454,7 @@ public final class Client extends GameEngine implements class302 {
                var6 = var3.method3565();
                var7 = (WidgetNode)componentTable.get((long)var21);
                if(var7 != null) {
-                  class93.method1983(var7, var20 != var7.id);
+                  class93.closeWidget(var7, var20 != var7.id);
                }
 
                class132.openWidget(var21, var20, var6);
@@ -5531,7 +5531,7 @@ public final class Client extends GameEngine implements class302 {
                   var9 = var3.readUnsignedByte();
                   var100 = (WidgetNode)componentTable.get((long)var23);
                   if(var100 != null && var24 != var100.id) {
-                     class93.method1983(var100, true);
+                     class93.closeWidget(var100, true);
                      var100 = null;
                   }
 
@@ -5544,7 +5544,7 @@ public final class Client extends GameEngine implements class302 {
                   if(var7.field773) {
                      var7.field773 = false;
                   } else {
-                     class93.method1983(var7, true);
+                     class93.closeWidget(var7, true);
                   }
                }
 

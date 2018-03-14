@@ -402,7 +402,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
          for(WidgetNode var18 = (WidgetNode)Client.componentTable.first(); var18 != null; var18 = (WidgetNode)Client.componentTable.next()) {
             if(var18.owner == 0 || var18.owner == 3) {
-               class93.method1983(var18, true);
+               class93.closeWidget(var18, true);
             }
          }
 

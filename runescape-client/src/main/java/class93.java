@@ -124,7 +124,8 @@ public class class93 {
       signature = "(Lbz;ZI)V",
       garbageValue = "729122055"
    )
-   static final void method1983(WidgetNode var0, boolean var1) {
+   @Export("closeWidget")
+   static final void closeWidget(WidgetNode var0, boolean var1) {
       int var2 = var0.id;
       int var3 = (int)var0.hash;
       var0.unlink();
