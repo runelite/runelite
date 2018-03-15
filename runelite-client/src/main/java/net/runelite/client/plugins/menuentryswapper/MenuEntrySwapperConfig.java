@@ -72,7 +72,7 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 3,
 		keyName = "swapHarpoon",
 		name = "Harpoon",
-		description = "Swap Cage, Net with Harpoon on Fishing spot"
+		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
 	)
 	default boolean swapHarpoon()
 	{
