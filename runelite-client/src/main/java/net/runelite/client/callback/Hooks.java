@@ -85,6 +85,7 @@ public class Hooks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
+	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
 	private static final GameTick tick = new GameTick();
 
 	private static Dimension lastStretchedDimensions;
@@ -95,6 +96,8 @@ public class Hooks
 
 	public static void clientMainLoop(Client client, boolean arg1)
 	{
+		clientThread.invoke();
+
 		long now = System.currentTimeMillis();
 
 		if (now - lastCheck < CHECK)
