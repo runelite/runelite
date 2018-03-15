@@ -28,10 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 @Singleton
-@Slf4j
 public class TooltipManager
 {
 	@Getter
@@ -40,6 +38,11 @@ public class TooltipManager
 	public void add(Tooltip tooltip)
 	{
 		tooltips.add(tooltip);
+	}
+
+	public void addFront(Tooltip tooltip)
+	{
+		tooltips.add(0, tooltip);
 	}
 
 	public void clear()
