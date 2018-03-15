@@ -150,15 +150,15 @@ public class RuneLite
 		// Initialize Discord service
 		discordService.init();
 
-		// Load user configuration
-		configManager.load();
-
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(pluginManager);
+
+		// Load user configuration
+		configManager.load();
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
