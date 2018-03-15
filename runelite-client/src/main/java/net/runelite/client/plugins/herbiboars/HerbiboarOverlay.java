@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.util.Map;
 import java.util.Set;
-import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -40,18 +39,16 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class HerbiboarsOverlay extends Overlay
+class HerbiboarOverlay extends Overlay
 {
-	private final Client client;
-	private final Herbiboars plugin;
+	private final HerbiboarPlugin plugin;
 	private final HerbiboarConfig config;
 
 	@Inject
-	public HerbiboarsOverlay(Client client, Herbiboars plugin, HerbiboarConfig config)
+	public HerbiboarOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 	}
