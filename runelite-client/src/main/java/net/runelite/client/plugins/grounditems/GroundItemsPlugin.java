@@ -28,7 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
@@ -43,6 +43,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Ground Items"
@@ -116,16 +117,19 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		final Set<Map.Entry<String, GroundItem>> entries = groundItemsService
+		final Optional<Map.Entry<String, GroundItem>> groundItemEntry = groundItemsService
 			.filterAndCollect(itemLayer.getBottom())
-			.entrySet();
+			.entrySet()
+			.stream()
+			.filter(entry -> entry.getKey().equals(Text.removeTags(event.getTarget())))
+			.findAny();
 
-		if (entries.isEmpty())
+		if (!groundItemEntry.isPresent())
 		{
 			return;
 		}
 
-		final Map.Entry<String, GroundItem> groundItem = entries.iterator().next(); // Here we will have single item
+		final Map.Entry<String, GroundItem> groundItem = groundItemEntry.get(); // Here we will have single item
 		final String name = groundItem.getKey();
 		final int cost = groundItem.getValue().getGePrice();
 		final int quantity = groundItem.getValue().getQuantity();
