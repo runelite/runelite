@@ -25,6 +25,7 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Renderable;
+import net.runelite.api.Tile;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -65,7 +66,15 @@ public abstract class RSRegionMixin implements RSRegion
 	public void rl$addBoundaryDecoration(int plane, int x, int y, int hash, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, int var11, int var12)
 	{
 		rs$addBoundaryDecoration(plane, x, y, hash, var5, var6, var7, var8, var9, var10, var11, var12);
-		((RSDecorativeObject) getTiles()[plane][x][y].getDecorativeObject()).setPlane(plane);
+		Tile tile = getTiles()[plane][x][y];
+		if (tile != null)
+		{
+			RSDecorativeObject object = (RSDecorativeObject) tile.getDecorativeObject();
+			if (object != null)
+			{
+				object.setPlane(plane);
+			}
+		}
 	}
 
 	@Copy("addItemPile")
@@ -75,7 +84,15 @@ public abstract class RSRegionMixin implements RSRegion
 	public void rl$addItemPile(int plane, int x, int y, int hash, Renderable var5, int var6, Renderable var7, Renderable var8)
 	{
 		rs$addItemPile(plane, x, y, hash, var5, var6, var7, var8);
-		((RSItemLayer) getTiles()[plane][x][y].getItemLayer()).setPlane(plane);
+		Tile tile = getTiles()[plane][x][y];
+		if (tile != null)
+		{
+			RSItemLayer itemLayer = (RSItemLayer) tile.getItemLayer();
+			if (itemLayer != null)
+			{
+				itemLayer.setPlane(plane);
+			}
+		}
 	}
 
 	@Copy("groundObjectSpawned")
@@ -85,7 +102,15 @@ public abstract class RSRegionMixin implements RSRegion
 	public void rl$groundObjectSpawned(int plane, int x, int y, int hash, Renderable var5, int var6, int var7)
 	{
 		rs$groundObjectSpawned(plane, x, y, hash, var5, var6, var7);
-		((RSGroundObject) getTiles()[plane][x][y].getGroundObject()).setPlane(plane);
+		Tile tile = getTiles()[plane][x][y];
+		if (tile != null)
+		{
+			RSGroundObject groundObject = (RSGroundObject) tile.getGroundObject();
+			if (groundObject != null)
+			{
+				groundObject.setPlane(plane);
+			}
+		}
 	}
 
 	@Copy("addBoundary")
@@ -95,6 +120,14 @@ public abstract class RSRegionMixin implements RSRegion
 	public void rl$addBoundary(int plane, int x, int y, int hash, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10)
 	{
 		rs$addBoundary(plane, x, y, hash, var5, var6, var7, var8, var9, var10);
-		((RSWallObject) getTiles()[plane][x][y].getWallObject()).setPlane(plane);
+		Tile tile = getTiles()[plane][x][y];
+		if (tile != null)
+		{
+			RSWallObject wallObject = (RSWallObject) tile.getWallObject();
+			if (wallObject != null)
+			{
+				wallObject.setPlane(plane);
+			}
+		}
 	}
 }
