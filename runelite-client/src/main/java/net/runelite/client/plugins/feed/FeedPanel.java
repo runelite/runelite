@@ -120,13 +120,11 @@ class FeedPanel extends PluginPanel
 
 	private final FeedConfig config;
 	private final Supplier<FeedResult> feedSupplier;
-	private final LinkBrowser linkBrowser;
 
-	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier, LinkBrowser linkBrowser)
+	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
 	{
 		this.config = config;
 		this.feedSupplier = feedSupplier;
-		this.linkBrowser = linkBrowser;
 	}
 
 	void rebuildFeed()
@@ -294,7 +292,7 @@ class FeedPanel extends PluginPanel
 			public void mouseReleased(MouseEvent e)
 			{
 				avatarAndRight.setBackground(hoverColor);
-				linkBrowser.browse(item.getUrl());
+				LinkBrowser.browse(item.getUrl());
 			}
 		});
 

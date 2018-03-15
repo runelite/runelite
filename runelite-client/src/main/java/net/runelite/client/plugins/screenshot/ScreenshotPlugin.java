@@ -25,19 +25,17 @@
 package net.runelite.client.plugins.screenshot;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -52,10 +50,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -80,6 +74,8 @@ import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
@@ -126,12 +122,15 @@ public class ScreenshotPlugin extends Plugin
 	private ClientUI clientUi;
 
 	@Inject
+	private TitleToolbar titleToolbar;
+
+	@Inject
 	private OverlayRenderer overlayRenderer;
 
 	@Inject
 	private ScheduledExecutorService executor;
 
-	private JButton titleBarButton;
+	private NavigationButton titleBarButton;
 
 	@Provides
 	ScreenshotConfig getConfig(ConfigManager configManager)
@@ -142,65 +141,38 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		addButtonToTitleBar();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		removeButtonFromTitlebar();
-	}
-
-	private void addButtonToTitleBar()
-	{
 		try
 		{
 			BufferedImage iconImage;
-			BufferedImage invertedIconImage;
 			synchronized (ImageIO.class)
 			{
 				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
-				invertedIconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot_inverted.png"));
 			}
 
-			SwingUtilities.invokeLater(() ->
-			{
-				titleBarButton = new JButton();
-				titleBarButton.setToolTipText("Take screenshot");
-				titleBarButton.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mouseClicked(MouseEvent e)
+			titleBarButton = NavigationButton.builder()
+				.tooltip("Take screenshot")
+				.icon(iconImage)
+				.onClick(() -> takeScreenshot(
+					TIME_FORMAT.format(new Date()),
+					client.getLocalPlayer() != null))
+				.popup(ImmutableMap
+					.<String, Runnable>builder()
+					.put("Open screenshot folder...", () ->
 					{
-						super.mouseClicked(e);
-
-						if (SwingUtilities.isLeftMouseButton(e))
+						try
 						{
-							takeScreenshot(TIME_FORMAT.format(new Date()), client.getLocalPlayer() != null);
+							Desktop.getDesktop().open(RuneLite.SCREENSHOT_DIR);
 						}
-					}
-				});
+						catch (IOException ex)
+						{
+							log.warn("Error opening screenshot dir", ex);
 
-				JPopupMenu popupMenu = new JPopupMenu();
+						}
+					})
+					.build())
+				.build();
 
-				JMenuItem folderItem = new JMenuItem("Open screenshot folder...");
-				folderItem.addActionListener(e ->
-				{
-					try
-					{
-						Desktop.getDesktop().open(RuneLite.SCREENSHOT_DIR);
-					}
-					catch (IOException ex)
-					{
-						log.warn("Error opening screenshot directory", ex);
-					}
-				});
-				popupMenu.add(folderItem);
-
-				titleBarButton.setComponentPopupMenu(popupMenu);
-
-				clientUi.getTitleToolbar().addButton(titleBarButton, iconImage, invertedIconImage);
-			});
+			titleToolbar.addNavigation(titleBarButton);
 		}
 		catch (IOException ex)
 		{
@@ -208,12 +180,10 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void removeButtonFromTitlebar()
+	@Override
+	protected void shutDown() throws Exception
 	{
-		SwingUtilities.invokeLater(() ->
-		{
-			clientUi.getTitleToolbar().remove(titleBarButton);
-		});
+		titleToolbar.removeNavigation(titleBarButton);
 	}
 
 	@Subscribe
@@ -410,9 +380,8 @@ public class ScreenshotPlugin extends Plugin
 				clientUi.paint(graphics);
 
 				// Evaluate the position of the game inside the frame
-				Point gamePoint = SwingUtilities.convertPoint(client.getCanvas(), 0, 0, clientUi);
-				gameOffsetX = gamePoint.x;
-				gameOffsetY = gamePoint.y;
+				gameOffsetX = 6;
+				gameOffsetY = 0;
 			}
 
 			// Draw the game onto the screenshot
