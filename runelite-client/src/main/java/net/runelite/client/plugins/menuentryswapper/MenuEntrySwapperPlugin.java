@@ -134,10 +134,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				case LAST_DESTINATION:
 					swap("last-destination (", option, target, false);
+					break;
 				case CONFIGURE:
 					swap("configure", option, target, false);
+					break;
 				case ZANARIS:
 					swap("zanaris", option, target, false);
+					break;
 				default:
 					break;
 			}
