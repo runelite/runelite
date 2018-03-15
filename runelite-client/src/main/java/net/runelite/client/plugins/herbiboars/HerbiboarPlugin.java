@@ -61,9 +61,9 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Herbiboars"
+	name = "Herbiboar"
 )
-public class Herbiboars extends Plugin
+public class HerbiboarPlugin extends Plugin
 {
 	private static final List<WorldPoint> END_LOCATIONS = Arrays.asList(
 		new WorldPoint(3693, 3798, 0),
@@ -96,10 +96,7 @@ public class Herbiboars extends Plugin
 	private Client client;
 
 	@Inject
-	private HerbiboarsOverlay overlay;
-
-	@Inject
-	private HerbiboarConfig config;;
+	private HerbiboarOverlay overlay;
 
 	@Override
 	public Overlay getOverlay()
@@ -232,37 +229,37 @@ public class Herbiboars extends Plugin
 	}
 
 	@Subscribe
-	public void GameObjectSpawned(GameObjectSpawned event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onGameObject(event.getTile(), null, event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectChanged(GameObjectChanged event)
+	public void onGameObjectChanged(GameObjectChanged event)
 	{
 		onGameObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDeSpawned(GameObjectDespawned event)
 	{
 		onGameObject(event.getTile(), event.getGameObject(), null);
 	}
 
 	@Subscribe
-	public void GroundObjectSpawned(GroundObjectSpawned event)
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onGroundObject(event.getTile(), null, event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectChanged(GroundObjectChanged event)
+	public void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onGroundObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
 	{
 		onGroundObject(event.getTile(), event.getGroundObject(), null);
 	}
