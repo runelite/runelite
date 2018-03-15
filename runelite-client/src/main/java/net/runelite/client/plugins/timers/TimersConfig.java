@@ -216,9 +216,9 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showGodWarsAltar",
-			name = "God wars altar timer",
-			description = "Configures whether god wars altar timer is displayed"
+		keyName = "showGodWarsAltar",
+		name = "God wars altar timer",
+		description = "Configures whether god wars altar timer is displayed"
 	)
 	default boolean showGodWarsAltar()
 	{
