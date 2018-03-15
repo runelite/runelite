@@ -327,7 +327,7 @@ public class Herbiboars extends Plugin
 
 	private boolean checkArea()
 	{
-		return Arrays.stream(client.getMapRegions())
+		return client.getMapRegions() != null && Arrays.stream(client.getMapRegions())
 				.filter(x -> Arrays.stream(HERBIBOAR_REGIONS).anyMatch(y -> y == x))
 				.toArray().length > 0;
 	}
