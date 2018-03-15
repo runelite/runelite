@@ -98,9 +98,6 @@ public class HerbiboarPlugin extends Plugin
 	@Inject
 	private HerbiboarOverlay overlay;
 
-	@Inject
-	private HerbiboarConfig config;;
-
 	@Override
 	public Overlay getOverlay()
 	{
