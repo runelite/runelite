@@ -30,13 +30,10 @@ import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.ui.ClientUI;
 
 /**
  * Utility class used for browser navigation
@@ -45,21 +42,13 @@ import net.runelite.client.ui.ClientUI;
 @Slf4j
 public class LinkBrowser
 {
-	private final Provider<ClientUI> clientUIProvider;
-
-	@Inject
-	private LinkBrowser(final Provider<ClientUI> clientUIProvider)
-	{
-		this.clientUIProvider = clientUIProvider;
-	}
-
 	/**
 	 * Tries to navigate to specified URL in browser. In case operation fails, displays message box with message
 	 * and copies link to clipboard to navigate to.
 	 * @param url url to open
 	 * @return true if operation was successful
 	 */
-	public boolean browse(final String url)
+	public static boolean browse(final String url)
 	{
 		if (!Desktop.isDesktopSupported())
 		{
@@ -93,18 +82,11 @@ public class LinkBrowser
 	 * Open swing message box with specified message and copy data to clipboard
 	 * @param message message to show
 	 */
-	private void showMessageBox(final String message, final String data)
+	private static void showMessageBox(final String message, final String data)
 	{
-		final ClientUI clientUI = clientUIProvider.get();
-
-		if (clientUI == null)
-		{
-			return;
-		}
-
 		SwingUtilities.invokeLater(() ->
 		{
-			final int result = JOptionPane.showConfirmDialog(clientUI, message, "Message",
+			final int result = JOptionPane.showConfirmDialog(null, message, "Message",
 				JOptionPane.OK_CANCEL_OPTION);
 
 			if (result == JOptionPane.OK_OPTION)

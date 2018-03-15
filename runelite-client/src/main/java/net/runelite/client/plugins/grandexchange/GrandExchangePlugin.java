@@ -48,8 +48,8 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Grand Exchange"
@@ -69,7 +69,7 @@ public class GrandExchangePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private	ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private GrandExchangeConfig config;
@@ -84,13 +84,20 @@ public class GrandExchangePlugin extends Plugin
 	protected void startUp() throws IOException
 	{
 		panel = injector.getInstance(GrandExchangePanel.class);
+
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
 			icon = ImageIO.read(getClass().getResourceAsStream("ge_icon.png"));
 		}
-		button = new NavigationButton("GE Offers", icon, () -> panel);
-		ui.getPluginToolbar().addNavigation(button);
+
+		button = NavigationButton.builder()
+			.name("GE Offers")
+			.icon(icon)
+			.panel(panel)
+			.build();
+
+		pluginToolbar.addNavigation(button);
 
 		itemClick = new MouseListener()
 		{
@@ -119,7 +126,8 @@ public class GrandExchangePlugin extends Plugin
 
 										if (!button.isSelected())
 										{
-											button.doClick();
+											button.setSelected(true);
+											button.getOnSelect().run();
 										}
 
 										panel.getSearchPanel().priceLookup(itemComp.getName());
@@ -145,8 +153,7 @@ public class GrandExchangePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		ui.getPluginToolbar().removeNavigation(button);
-
+		pluginToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(itemClick);
 	}
 
@@ -172,10 +179,6 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent)
 	{
-		SwingUtilities.invokeLater(() ->
-		{
-			panel.updateOffer(offerEvent.getOffer(), offerEvent.getSlot());
-		});
+		SwingUtilities.invokeLater(() -> panel.updateOffer(offerEvent.getOffer(), offerEvent.getSlot()));
 	}
-
 }

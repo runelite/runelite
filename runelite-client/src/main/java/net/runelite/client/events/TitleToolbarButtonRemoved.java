@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.con>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,59 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.client.events;
 
-import java.awt.image.BufferedImage;
-import java.util.Map;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Value;
+import net.runelite.client.ui.NavigationButton;
 
-/**
- * UI navigation button.
- */
-@Data
-@Builder
-@EqualsAndHashCode(of = {"name", "tooltip"})
-public class NavigationButton
+@Value
+public class TitleToolbarButtonRemoved
 {
-	/**
-	 * Button name.
-	 */
-	private final String name;
-
-	/**
-	 * Icon of button.
-	 */
-	private final BufferedImage icon;
-
-	/**
-	 * Tooltip to show when hovered.
-	 */
-	private String tooltip;
-
-	/**
-	 * Button selection state
-	 */
-	private boolean selected;
-
-	/**
-	 * On select action of the button.
-	 */
-	private Runnable onSelect;
-
-	/**
-	 * On click action of the button.
-	 */
-	private Runnable onClick;
-
-	/**
-	 * Plugin panel, used when expanding and contracting sidebar.
-	 */
-	private PluginPanel panel;
-
-	/**
-	 * Map of key-value pairs for setting the popup menu
-	 */
-	private Map<String, Runnable> popup;
+	private NavigationButton button;
+	private int index;
 }

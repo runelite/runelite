@@ -45,10 +45,9 @@ import net.runelite.client.util.LinkBrowser;
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
-
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(LinkBrowser linkBrowser, BufferedImage icon, String name, int itemID, int gePrice, Double
+	GrandExchangeItemPanel(BufferedImage icon, String name, int itemID, int gePrice, Double
 		haPrice)
 	{
 		BorderLayout layout = new BorderLayout();
@@ -75,7 +74,7 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				geLink(linkBrowser, name, itemID);
+				geLink(name, itemID);
 			}
 		});
 
@@ -125,13 +124,13 @@ class GrandExchangeItemPanel extends JPanel
 		add(rightPanel, BorderLayout.CENTER);
 	}
 
-	private void geLink(LinkBrowser linkBrowser, String name, int itemID)
+	private void geLink(String name, int itemID)
 	{
 		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
 			+ name.replaceAll(" ", "_")
 			+ "/viewitem?obj="
 			+ itemID;
 
-		linkBrowser.browse(url);
+		LinkBrowser.browse(url);
 	}
 }

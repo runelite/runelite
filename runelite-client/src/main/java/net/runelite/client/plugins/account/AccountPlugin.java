@@ -25,22 +25,20 @@
 package net.runelite.client.plugins.account;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
-import net.runelite.api.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 
@@ -55,13 +53,13 @@ public class AccountPlugin extends Plugin
 	private SessionManager sessionManager;
 
 	@Inject
-	private ClientUI ui;
+	private TitleToolbar titleToolbar;
 
 	@Inject
 	private ScheduledExecutorService executor;
 
-	private JButton loginButton;
-	private JButton logoutButton;
+	private NavigationButton loginButton;
+	private NavigationButton logoutButton;
 
 	private static final BufferedImage LOGIN_IMAGE, LOGOUT_IMAGE;
 
@@ -84,47 +82,45 @@ public class AccountPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		loginButton = new JButton();
-		loginButton.setToolTipText("Login");
-		loginButton.addActionListener(this::loginClick);
+		loginButton = NavigationButton.builder()
+			.icon(LOGIN_IMAGE)
+			.tooltip("Login")
+			.onClick(this::loginClick)
+			.build();
 
-		logoutButton = new JButton();
-		logoutButton.setToolTipText("Logout");
-		logoutButton.addActionListener(this::logoutClick);
+		logoutButton = NavigationButton.builder()
+			.icon(LOGOUT_IMAGE)
+			.tooltip("Logout")
+			.onClick(this::logoutClick)
+			.build();
 
 		addAndRemoveButtons();
 	}
 
 	private void addAndRemoveButtons()
 	{
-		TitleToolbar tb = ui.getTitleToolbar();
-		tb.remove(loginButton);
-		tb.remove(logoutButton);
-		if (sessionManager.getAccountSession() == null)
-		{
-			tb.addButton(loginButton, LOGIN_IMAGE, LOGIN_IMAGE);
-		}
-		else
-		{
-			tb.addButton(logoutButton, LOGOUT_IMAGE, LOGOUT_IMAGE);
-		}
+		titleToolbar.removeNavigation(loginButton);
+		titleToolbar.removeNavigation(logoutButton);
+		titleToolbar.addNavigation(sessionManager.getAccountSession() == null
+			? loginButton
+			: logoutButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		ui.getTitleToolbar().remove(loginButton);
-		ui.getTitleToolbar().remove(logoutButton);
+		titleToolbar.removeNavigation(loginButton);
+		titleToolbar.removeNavigation(logoutButton);
 	}
 
-	private void loginClick(ActionEvent ae)
+	private void loginClick()
 	{
 		executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
 	}
 
-	private void logoutClick(ActionEvent ae)
+	private void logoutClick()
 	{
-		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(ui,
+		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
 				"Are you sure you want to logout?", "Logout Confirmation",
 				JOptionPane.YES_NO_OPTION))
 		{

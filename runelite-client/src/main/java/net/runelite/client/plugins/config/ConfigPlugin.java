@@ -36,8 +36,8 @@ import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Configuration",
@@ -47,7 +47,7 @@ import net.runelite.client.ui.NavigationButton;
 public class ConfigPlugin extends Plugin
 {
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private ConfigManager configManager;
@@ -75,18 +75,19 @@ public class ConfigPlugin extends Plugin
 			icon = ImageIO.read(getClass().getResourceAsStream("config_icon.png"));
 		}
 
-		navButton = new NavigationButton(
-			"Configuration",
-			icon,
-			() -> configPanel);
+		navButton = NavigationButton.builder()
+			.name("Configuration")
+			.icon(icon)
+			.panel(configPanel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe

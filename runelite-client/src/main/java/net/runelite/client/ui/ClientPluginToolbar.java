@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.con>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,57 +25,52 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.image.BufferedImage;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.util.HashMap;
 import java.util.Map;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import javax.swing.JToolBar;
 
 /**
- * UI navigation button.
+ * Client plugin toolbar.
  */
-@Data
-@Builder
-@EqualsAndHashCode(of = {"name", "tooltip"})
-public class NavigationButton
+public class ClientPluginToolbar extends JToolBar
 {
-	/**
-	 * Button name.
-	 */
-	private final String name;
+	private static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
+	private final Map<NavigationButton, Component> componentMap = new HashMap<>();
 
 	/**
-	 * Icon of button.
+	 * Instantiates a new Client plugin toolbar.
 	 */
-	private final BufferedImage icon;
+	ClientPluginToolbar()
+	{
+		super(JToolBar.VERTICAL);
+		setFloatable(false);
+		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
+	}
 
-	/**
-	 * Tooltip to show when hovered.
-	 */
-	private String tooltip;
+	public void addComponent(final int index, final NavigationButton button, final Component component)
+	{
+		if (componentMap.put(button, component) == null)
+		{
+			add(component, index);
+			revalidate();
+			repaint();
+		}
+	}
 
-	/**
-	 * Button selection state
-	 */
-	private boolean selected;
+	public void removeComponent(final NavigationButton button)
+	{
+		final Component component = componentMap.remove(button);
 
-	/**
-	 * On select action of the button.
-	 */
-	private Runnable onSelect;
-
-	/**
-	 * On click action of the button.
-	 */
-	private Runnable onClick;
-
-	/**
-	 * Plugin panel, used when expanding and contracting sidebar.
-	 */
-	private PluginPanel panel;
-
-	/**
-	 * Map of key-value pairs for setting the popup menu
-	 */
-	private Map<String, Runnable> popup;
+		if (component != null)
+		{
+			remove(component);
+			revalidate();
+			repaint();
+		}
+	}
 }

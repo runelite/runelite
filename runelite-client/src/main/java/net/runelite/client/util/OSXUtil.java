@@ -26,8 +26,8 @@ package net.runelite.client.util;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.FullScreenUtilities;
+import javax.swing.JFrame;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.ui.ClientUI;
 
 /**
  * A class with OSX-specific functions to improve integration.
@@ -40,7 +40,7 @@ public class OSXUtil
 	 *
 	 * @param gui The gui to enable the fullscreen on.
 	 */
-	public static void tryEnableFullscreen(ClientUI gui)
+	public static void tryEnableFullscreen(JFrame gui)
 	{
 		if (OSType.getOSType() == OSType.MacOS)
 		{
