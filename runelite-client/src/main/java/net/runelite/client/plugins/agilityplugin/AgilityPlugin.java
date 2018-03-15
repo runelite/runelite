@@ -70,73 +70,73 @@ public class AgilityPlugin extends Plugin
 	// This code, brought to you, in part, by the letters C and V
 	// ... and the words "search" and "replace"
 	@Subscribe
-	public void GameObjectSpawned(GameObjectSpawned event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectChanged(GameObjectChanged event)
+	public void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDeSpawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
 	@Subscribe
-	public void GroundObjectSpawned(GroundObjectSpawned event)
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectChanged(GroundObjectChanged event)
+	public void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
 
 	@Subscribe
-	public void WallObjectSpawned(WallObjectSpawned event)
+	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
 	@Subscribe
-	public void WallObjectChanged(WallObjectChanged event)
+	public void onWallObjectChanged(WallObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
 	}
 
 	@Subscribe
-	public void WallObjectDeSpawned(WallObjectDespawned event)
+	public void onWallObjectDeSpawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
 
 	@Subscribe
-	public void DecorativeObjectSpawned(DecorativeObjectSpawned event)
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getDecorativeObject());
 	}
 
 	@Subscribe
-	public void DecorativeObjectChanged(DecorativeObjectChanged event)
+	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
 	}
 
 	@Subscribe
-	public void DecorativeObjectDeSpawned(DecorativeObjectDespawned event)
+	public void onDecorativeObjectDeSpawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
 	}
