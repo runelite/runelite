@@ -33,6 +33,7 @@ import static net.runelite.client.plugins.timers.GameTimer.CANNON;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
+import static net.runelite.client.plugins.timers.GameTimer.GOD_WARS_ALTAR;
 import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
 import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
@@ -267,6 +268,11 @@ public class TimersPlugin extends Plugin
 		if (config.showExAntiFire() && event.getMessage().equals("You drink some of your extended antifire potion."))
 		{
 			createGameTimer(EXANTIFIRE);
+		}
+
+		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase("you recharge your prayer."))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
+		{
+			createGameTimer(GOD_WARS_ALTAR);
 		}
 
 		if (config.showExSuperAntifire() && event.getMessage().equals("You drink some of your extended super antifire potion."))
