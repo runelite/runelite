@@ -61,9 +61,9 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Herbiboars"
+	name = "Herbiboar"
 )
-public class Herbiboars extends Plugin
+public class HerbiboarPlugin extends Plugin
 {
 	private static final List<WorldPoint> END_LOCATIONS = Arrays.asList(
 		new WorldPoint(3693, 3798, 0),
@@ -96,7 +96,7 @@ public class Herbiboars extends Plugin
 	private Client client;
 
 	@Inject
-	private HerbiboarsOverlay overlay;
+	private HerbiboarOverlay overlay;
 
 	@Inject
 	private HerbiboarConfig config;;
