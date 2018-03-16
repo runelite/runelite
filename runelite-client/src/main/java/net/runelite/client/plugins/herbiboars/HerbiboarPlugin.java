@@ -152,8 +152,6 @@ public class HerbiboarPlugin extends Plugin
 		currentTrail = null;
 		currentPath = -1;
 
-		//TODO: REGION CHECK
-
 		// Get trail data
 		for (HerbiboarTrail trail : HerbiboarTrail.values())
 		{
@@ -213,10 +211,11 @@ public class HerbiboarPlugin extends Plugin
 			case HOPPING:
 			case LOGGING_IN:
 				resetTrailData();
-				inHerbiboarArea = checkArea();
 				break;
 			case LOADING:
 				clearCache();
+				inHerbiboarArea = checkArea();
+				break;
 			default:
 				break;
 		}
