@@ -44,8 +44,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -57,7 +57,7 @@ public class KourendLibraryPlugin extends Plugin
 	final static boolean debug = false;
 
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private Client client;
@@ -86,19 +86,19 @@ public class KourendLibraryPlugin extends Plugin
 			icon = ImageIO.read(Book.class.getResourceAsStream("panel_icon.png"));
 		}
 
-		navButton = new NavigationButton(
-			"Kourend Library",
-			icon,
-			() -> panel
-		);
+		navButton = NavigationButton.builder()
+			.name("Kourend Library")
+			.icon(icon)
+			.panel(panel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromLocal(client, menuOpt.getId() & 127, menuOpt.getId() >> 7 & 127, client.getPlane());
+			lastBookcaseClick = WorldPoint.fromRegion(client, menuOpt.getId() & 127, menuOpt.getId() >> 7 & 127, client.getPlane());
 		}
 	}
 

@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.3.0-SNAPSHOT</version>
+		<version>1.3.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
@@ -260,6 +260,17 @@
 					<alias>${jarsigner.alias}</alias>
 					<storepass>${jarsigner.storepass}</storepass>
 					<keypass>${jarsigner.keypass}</keypass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>de.jutzig</groupId>
+				<artifactId>github-release-plugin</artifactId>
+				<version>1.1.1</version>
+				<configuration>
+					<releaseName>${project.version} Release</releaseName>
+					<tag>runelite-parent-${project.version}</tag>
+					<repositoryId>runelite/runelite</repositoryId>
+					<artifact>${project.build.directory}/${project.artifactId}-${project.version}-shaded.${project.packaging}</artifact>
 				</configuration>
 			</plugin>
 		</plugins>

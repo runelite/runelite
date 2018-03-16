@@ -35,9 +35,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.Overlay;
 public class DevToolsPlugin extends Plugin
 {
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private DevToolsOverlay overlay;
@@ -89,12 +89,13 @@ public class DevToolsPlugin extends Plugin
 			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
 		}
 
-		navButton = new NavigationButton(
-			"Developer Tools",
-			icon,
-			() -> panel);
+		navButton = NavigationButton.builder()
+			.name("Developer Tools")
+			.icon(icon)
+			.panel(panel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
@@ -103,7 +104,7 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Override

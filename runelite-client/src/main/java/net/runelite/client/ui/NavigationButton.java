@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.con>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +25,57 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.Image;
-import java.util.function.Supplier;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Slf4j
-public class NavigationButton extends JButton
+/**
+ * UI navigation button.
+ */
+@Data
+@Builder
+@EqualsAndHashCode(of = {"name", "tooltip"})
+public class NavigationButton
 {
-	@Getter
-	private final Supplier<PluginPanel> panelSupplier;
+	/**
+	 * Button name.
+	 */
+	private final String name;
 
-	public NavigationButton(String name, Image icon)
-	{
-		this(name, icon, null);
-	}
+	/**
+	 * Icon of button.
+	 */
+	private final BufferedImage icon;
 
-	public NavigationButton(String name, Image icon, Supplier<PluginPanel> panelSupplier)
-	{
-		super();
-		setName(name);
-		setToolTipText(name);
-		setIcon(new ImageIcon(icon));
-		this.panelSupplier = panelSupplier;
-	}
+	/**
+	 * Tooltip to show when hovered.
+	 */
+	private String tooltip;
+
+	/**
+	 * Button selection state
+	 */
+	private boolean selected;
+
+	/**
+	 * On select action of the button.
+	 */
+	private Runnable onSelect;
+
+	/**
+	 * On click action of the button.
+	 */
+	private Runnable onClick;
+
+	/**
+	 * Plugin panel, used when expanding and contracting sidebar.
+	 */
+	private PluginPanel panel;
+
+	/**
+	 * Map of key-value pairs for setting the popup menu
+	 */
+	private Map<String, Runnable> popup;
 }

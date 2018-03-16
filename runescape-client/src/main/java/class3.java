@@ -439,7 +439,7 @@ final class class3 implements class0 {
 
                      for(WidgetNode var20 = (WidgetNode)Client.componentTable.first(); var20 != null; var20 = (WidgetNode)Client.componentTable.next()) {
                         if(var20.owner == 0 || var20.owner == 3) {
-                           class93.method1983(var20, true);
+                           class93.closeWidget(var20, true);
                         }
                      }
 

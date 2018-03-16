@@ -214,6 +214,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("getObjectDefinition")
 	RSObjectComposition getObjectDefinition(int objectId);
 
+	@Override
+	@Import("getNpcDefinition")
+	RSNPCComposition getNpcDefinition(int npcId);
+
 	@Import("scale")
 	@Override
 	int getScale();
@@ -246,7 +250,6 @@ public interface RSClient extends RSGameEngine, Client
 	RSItemComposition getItemDefinition(int itemId);
 
 	@Import("createSprite")
-	@Override
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
 	@Import("componentTable")
@@ -495,6 +498,12 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("pitchCos")
 	void setPitchCos(int v);
+
+	@Import("Rasterizer3D_zoom")
+	int get3dZoom();
+
+	@Import("Rasterizer3D_zoom")
+	void set3dZoom(int zoom);
 
 	@Import("renderOverview")
 	RSRenderOverview getRenderOverview();

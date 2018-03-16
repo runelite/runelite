@@ -216,7 +216,7 @@ public class class190 {
                var15 = var17 < var5?var17:var5;
             }
 
-            if(var9 == Client.field1019) {
+            if(var9 == Client.draggedWidget) {
                Client.field1095 = true;
                Client.field1028 = var43;
                Client.field944 = var11;
@@ -469,7 +469,7 @@ public class class190 {
                            }
 
                            if(MapLabel.field446 == 0) {
-                              Client.field1019 = null;
+                              Client.draggedWidget = null;
                               Client.field1020 = null;
                            }
 
@@ -504,7 +504,7 @@ public class class190 {
                         }
 
                         if(MapLabel.field446 == 0) {
-                           Client.field1019 = null;
+                           Client.draggedWidget = null;
                            Client.field1020 = null;
                         }
 
@@ -537,11 +537,11 @@ public class class190 {
                         class251.renderOverview.method6122(var16, var17, var44 & var45, var44 & var46);
                      }
 
-                     if(Client.field1019 != null && var9 != Client.field1019 && var44) {
+                     if(Client.draggedWidget != null && var9 != Client.draggedWidget && var44) {
                         var22 = GrandExchangeEvent.getWidgetConfig(var9);
                         boolean var21 = (var22 >> 20 & 1) != 0;
                         if(var21) {
-                           Client.field951 = var9;
+                           Client.draggedOnWidget = var9;
                         }
                      }
 
@@ -562,7 +562,7 @@ public class class190 {
                            Client.field1045.addFront(var35);
                         }
 
-                        if(Client.field1019 != null || MapIconReference.field574 != null || Client.isMenuOpen) {
+                        if(Client.draggedWidget != null || MapIconReference.field574 != null || Client.isMenuOpen) {
                            var46 = false;
                            var45 = false;
                            var44 = false;
@@ -792,7 +792,7 @@ public class class190 {
                      }
                   }
 
-                  if(!var9.hasScript && Client.field1019 == null && MapIconReference.field574 == null && !Client.isMenuOpen) {
+                  if(!var9.hasScript && Client.draggedWidget == null && MapIconReference.field574 == null && !Client.isMenuOpen) {
                      if((var9.field2932 >= 0 || var9.field2844 != 0) && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
                         if(var9.field2932 >= 0) {
                            class28.field377 = var0[var9.field2932];

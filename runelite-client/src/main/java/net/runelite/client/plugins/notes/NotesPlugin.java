@@ -24,19 +24,18 @@
  */
 package net.runelite.client.plugins.notes;
 
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Notes",
@@ -46,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NotesPlugin extends Plugin
 {
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private NotesConfig config;
@@ -72,19 +71,19 @@ public class NotesPlugin extends Plugin
 			icon = ImageIO.read(getClass().getResourceAsStream("notes_icon.png"));
 		}
 
-		navButton = new NavigationButton(
-			"Notes",
-			icon,
-			() -> panel
-		);
+		navButton = NavigationButton.builder()
+			.name("Notes")
+			.icon(icon)
+			.panel(panel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe

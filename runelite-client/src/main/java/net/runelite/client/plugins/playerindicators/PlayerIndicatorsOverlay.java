@@ -29,24 +29,25 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Slf4j
+@Singleton
 public class PlayerIndicatorsOverlay extends Overlay
 {
-	private final Client client;
+	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 
-	PlayerIndicatorsOverlay(Client client, PlayerIndicatorsConfig config)
+	@Inject
+	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
 		this.config = config;
-		this.client = client;
+		this.playerIndicatorsService = playerIndicatorsService;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 	}
@@ -54,42 +55,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.drawOwnName() && !config.drawClanMemberNames()
-			&& !config.drawFriendNames() && !config.drawNonClanMemberNames())
-		{
-			return null;
-		}
-
-		for (Player player : client.getPlayers())
-		{
-			if (player == null || player.getName() == null)
-			{
-				continue;
-			}
-
-			boolean isClanMember = player.isClanMember();
-
-			if (player == client.getLocalPlayer())
-			{
-				if (config.drawOwnName())
-				{
-					renderPlayerOverlay(graphics, player, config.getOwnNameColor());
-				}
-			}
-			else if (config.drawFriendNames() && player.isFriend())
-			{
-				renderPlayerOverlay(graphics, player, config.getFriendNameColor());
-			}
-			else if (config.drawClanMemberNames() && isClanMember)
-			{
-				renderPlayerOverlay(graphics, player, config.getClanMemberColor());
-			}
-			else if (config.drawNonClanMemberNames() && !isClanMember)
-			{
-				renderPlayerOverlay(graphics, player, config.getNonClanMemberColor());
-			}
-		}
-
+		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
 
@@ -111,16 +77,6 @@ public class PlayerIndicatorsOverlay extends Overlay
 		if (textLocation != null)
 		{
 			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
-		}
-
-		if (config.drawMinimapNames())
-		{
-			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
-
-			if (minimapLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-			}
 		}
 	}
 }

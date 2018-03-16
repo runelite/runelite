@@ -36,7 +36,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Menu entry swapper plugin",
+	name = "Menu Entry Swapper",
 	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
@@ -103,7 +103,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
-		else if (config.swapHarpoon() && option.equals("net"))
+		else if (config.swapHarpoon() && option.equals("big net"))
 		{
 			swap("harpoon", option, target, true);
 		}

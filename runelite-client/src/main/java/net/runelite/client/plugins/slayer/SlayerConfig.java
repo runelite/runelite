@@ -55,6 +55,26 @@ public interface SlayerConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "superiornotification",
+		name = "Superior foe notification",
+		description = "Toggles notifications on superior foe encounters"
+	)
+	default boolean showSuperiorNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "statTimeout",
+		name = "InfoBox Expiry (minutes)",
+		description = "Set the time until the InfoBox expires"
+	)
+	default int statTimeout()
+	{
+		return 5;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",

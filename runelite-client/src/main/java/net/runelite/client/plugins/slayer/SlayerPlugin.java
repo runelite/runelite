@@ -27,6 +27,8 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -66,6 +69,7 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("[\\d]+(?:,[\\d]+)?");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
+	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
@@ -89,12 +93,17 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private Notifier notifier;
+
 	private String taskName;
 	private int amount;
 	private TaskCounter counter;
 	private int streak;
 	private int points;
 	private int cachedXp;
+	private Instant infoTimer;
+	private boolean loginFlag;
 
 	@Override
 	protected void startUp() throws Exception
@@ -129,11 +138,15 @@ public class SlayerPlugin extends Plugin
 				cachedXp = 0;
 				taskName = "";
 				amount = 0;
+				loginFlag = true;
 				break;
 			case LOGGED_IN:
-				if (config.amount() != -1 && !config.taskName().isEmpty())
+				if (config.amount() != -1
+					&& !config.taskName().isEmpty()
+					&& loginFlag == true)
 				{
 					setTask(config.taskName(), config.amount());
+					loginFlag = false;
 				}
 				break;
 		}
@@ -184,6 +197,17 @@ public class SlayerPlugin extends Plugin
 				}
 			}
 		}
+
+		if (infoTimer != null)
+		{
+			Duration timeSinceInfobox = Duration.between(infoTimer, Instant.now());
+			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+
+			if (timeSinceInfobox.compareTo(statTimeout) >= 0)
+			{
+				removeCounter();
+			}
+		}
 	}
 
 	@Subscribe
@@ -227,6 +251,12 @@ public class SlayerPlugin extends Plugin
 		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE))
 		{
 			setTask("", 0);
+			return;
+		}
+
+		if (config.showSuperiorNotification() && chatMsg.equals(CHAT_SUPERIOR_MESSAGE))
+		{
+			notifier.notify(CHAT_SUPERIOR_MESSAGE);
 			return;
 		}
 
@@ -300,8 +330,10 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		// update counter
+		// add and update counter, set timer
+		addCounter();
 		counter.setText(String.valueOf(amount));
+		infoTimer = Instant.now();
 	}
 
 	private void setTask(String name, int amt)
@@ -311,6 +343,7 @@ public class SlayerPlugin extends Plugin
 		save();
 		removeCounter();
 		addCounter();
+		infoTimer = Instant.now();
 	}
 
 	private void addCounter()

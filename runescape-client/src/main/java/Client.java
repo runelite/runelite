@@ -1146,7 +1146,8 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedSignature(
       signature = "Lig;"
    )
-   static Widget field1019;
+   @Export("draggedWidget")
+   static Widget draggedWidget;
    @ObfuscatedName("lm")
    @ObfuscatedSignature(
       signature = "Lig;"
@@ -1166,7 +1167,8 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedSignature(
       signature = "Lig;"
    )
-   static Widget field951;
+   @Export("draggedOnWidget")
+   static Widget draggedOnWidget;
    @ObfuscatedName("lk")
    static boolean field1024;
    @ObfuscatedName("la")
@@ -1192,7 +1194,8 @@ public final class Client extends GameEngine implements class302 {
    )
    static int field944;
    @ObfuscatedName("lr")
-   static boolean field858;
+   @Export("draggingWidget")
+   static boolean draggingWidget;
 
    static {
       field889 = true;
@@ -1361,18 +1364,18 @@ public final class Client extends GameEngine implements class302 {
       field1016 = -1;
       field1017 = false;
       field1061 = null;
-      field1019 = null;
+      draggedWidget = null;
       field1020 = null;
       field1021 = 0;
       field1015 = 0;
-      field951 = null;
+      draggedOnWidget = null;
       field1024 = false;
       field1025 = -1;
       field1098 = -1;
       field1095 = false;
       field1028 = -1;
       field944 = -1;
-      field858 = false;
+      draggingWidget = false;
       cycleCntr = 1;
       field1032 = new int[32];
       field1033 = 0;
@@ -2766,7 +2769,7 @@ public final class Client extends GameEngine implements class302 {
                   }
 
                   for(WidgetNode var21 = (WidgetNode)componentTable.first(); var21 != null; var21 = (WidgetNode)componentTable.next()) {
-                     class93.method1983(var21, true);
+                     class93.closeWidget(var21, true);
                   }
 
                   widgetRoot = -1;
@@ -3160,7 +3163,7 @@ public final class Client extends GameEngine implements class302 {
                   Widget var39 = FileRequest.field3371;
                   class28.field377 = null;
                   FileRequest.field3371 = null;
-                  field951 = null;
+                  draggedOnWidget = null;
                   field1095 = false;
                   field1024 = false;
                   field869 = 0;
@@ -3224,7 +3227,7 @@ public final class Client extends GameEngine implements class302 {
                                                 class251.renderOverview.method6032();
                                              }
 
-                                             if(field1019 != null) {
+                                             if(draggedWidget != null) {
                                                 this.method1432();
                                              }
 
@@ -4079,7 +4082,7 @@ public final class Client extends GameEngine implements class302 {
                WidgetNode var95 = (WidgetNode)componentTable.get((long)var21);
                var7 = (WidgetNode)componentTable.get((long)var20);
                if(var7 != null) {
-                  class93.method1983(var7, var95 == null || var95.id != var7.id);
+                  class93.closeWidget(var7, var95 == null || var95.id != var7.id);
                }
 
                if(var95 != null) {
@@ -4766,7 +4769,7 @@ public final class Client extends GameEngine implements class302 {
                var20 = var3.readInt();
                WidgetNode var64 = (WidgetNode)componentTable.get((long)var20);
                if(var64 != null) {
-                  class93.method1983(var64, true);
+                  class93.closeWidget(var64, true);
                }
 
                if(field1012 != null) {
@@ -5451,10 +5454,10 @@ public final class Client extends GameEngine implements class302 {
                var6 = var3.method3565();
                var7 = (WidgetNode)componentTable.get((long)var21);
                if(var7 != null) {
-                  class93.method1983(var7, var20 != var7.id);
+                  class93.closeWidget(var7, var20 != var7.id);
                }
 
-               class132.method2773(var21, var20, var6);
+               class132.openWidget(var21, var20, var6);
                var1.serverPacket = null;
                return true;
             }
@@ -5528,12 +5531,12 @@ public final class Client extends GameEngine implements class302 {
                   var9 = var3.readUnsignedByte();
                   var100 = (WidgetNode)componentTable.get((long)var23);
                   if(var100 != null && var24 != var100.id) {
-                     class93.method1983(var100, true);
+                     class93.closeWidget(var100, true);
                      var100 = null;
                   }
 
                   if(var100 == null) {
-                     var100 = class132.method2773(var23, var24, var9);
+                     var100 = class132.openWidget(var23, var24, var9);
                   }
                }
 
@@ -5541,7 +5544,7 @@ public final class Client extends GameEngine implements class302 {
                   if(var7.field773) {
                      var7.field773 = false;
                   } else {
-                     class93.method1983(var7, true);
+                     class93.closeWidget(var7, true);
                   }
                }
 
@@ -5752,7 +5755,7 @@ public final class Client extends GameEngine implements class302 {
       }
 
       if(MapIconReference.field574 == null) {
-         if(field1019 == null) {
+         if(draggedWidget == null) {
             int var19 = MouseInput.mouseLastButton;
             int var7;
             int var15;
@@ -5958,7 +5961,7 @@ public final class Client extends GameEngine implements class302 {
       garbageValue = "-2078182693"
    )
    final void method1432() {
-      GameEngine.method1053(field1019);
+      GameEngine.method1053(draggedWidget);
       ++MapLabel.field446;
       if(field1095 && field1024) {
          int var1 = MouseInput.mouseLastX;
@@ -5969,57 +5972,57 @@ public final class Client extends GameEngine implements class302 {
             var1 = field1025;
          }
 
-         if(var1 + field1019.width > field1025 + field1020.width) {
-            var1 = field1025 + field1020.width - field1019.width;
+         if(var1 + draggedWidget.width > field1025 + field1020.width) {
+            var1 = field1025 + field1020.width - draggedWidget.width;
          }
 
          if(var2 < field1098) {
             var2 = field1098;
          }
 
-         if(var2 + field1019.height > field1098 + field1020.height) {
-            var2 = field1098 + field1020.height - field1019.height;
+         if(var2 + draggedWidget.height > field1098 + field1020.height) {
+            var2 = field1098 + field1020.height - draggedWidget.height;
          }
 
          int var3 = var1 - field1028;
          int var4 = var2 - field944;
-         int var5 = field1019.field2817;
-         if(MapLabel.field446 > field1019.field2894 && (var3 > var5 || var3 < -var5 || var4 > var5 || var4 < -var5)) {
-            field858 = true;
+         int var5 = draggedWidget.field2817;
+         if(MapLabel.field446 > draggedWidget.field2894 && (var3 > var5 || var3 < -var5 || var4 > var5 || var4 < -var5)) {
+            draggingWidget = true;
          }
 
          int var6 = var1 - field1025 + field1020.scrollX;
          int var7 = var2 - field1098 + field1020.scrollY;
          ScriptEvent var8;
-         if(field1019.field2906 != null && field858) {
+         if(draggedWidget.field2906 != null && draggingWidget) {
             var8 = new ScriptEvent();
-            var8.widget = field1019;
+            var8.widget = draggedWidget;
             var8.field782 = var6;
             var8.field789 = var7;
-            var8.objs = field1019.field2906;
+            var8.objs = draggedWidget.field2906;
             class25.runScript(var8, 500000);
          }
 
          if(MouseInput.mouseCurrentButton == 0) {
-            if(field858) {
-               if(field1019.field2907 != null) {
+            if(draggingWidget) {
+               if(draggedWidget.field2907 != null) {
                   var8 = new ScriptEvent();
-                  var8.widget = field1019;
+                  var8.widget = draggedWidget;
                   var8.field782 = var6;
                   var8.field789 = var7;
-                  var8.field785 = field951;
-                  var8.objs = field1019.field2907;
+                  var8.field785 = draggedOnWidget;
+                  var8.objs = draggedWidget.field2907;
                   class25.runScript(var8, 500000);
                }
 
-               if(field951 != null && RunException.method3217(field1019) != null) {
+               if(draggedOnWidget != null && RunException.method3217(draggedWidget) != null) {
                   PacketNode var9 = class33.method382(ClientPacket.field2422, field1072.field1456);
-                  var9.packetBuffer.putShort(field1019.itemId);
-                  var9.packetBuffer.method3573(field951.index);
-                  var9.packetBuffer.putInt(field1019.id);
-                  var9.packetBuffer.method3582(field951.id);
-                  var9.packetBuffer.method3573(field1019.index);
-                  var9.packetBuffer.putShort(field951.itemId);
+                  var9.packetBuffer.putShort(draggedWidget.itemId);
+                  var9.packetBuffer.method3573(draggedOnWidget.index);
+                  var9.packetBuffer.putInt(draggedWidget.id);
+                  var9.packetBuffer.method3582(draggedOnWidget.id);
+                  var9.packetBuffer.method3573(draggedWidget.index);
+                  var9.packetBuffer.putShort(draggedOnWidget.itemId);
                   field1072.method2073(var9);
                }
             } else if(this.method1270()) {
@@ -6028,12 +6031,12 @@ public final class Client extends GameEngine implements class302 {
                class153.method3140(field1028 + field1021, field1015 + field944);
             }
 
-            field1019 = null;
+            draggedWidget = null;
          }
 
       } else {
          if(MapLabel.field446 > 1) {
-            field1019 = null;
+            draggedWidget = null;
          }
 
       }

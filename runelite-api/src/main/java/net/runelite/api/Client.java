@@ -92,7 +92,7 @@ public interface Client extends GameEngine
 
 	ItemComposition getItemDefinition(int id);
 
-	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted);
+	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
 	int getBaseX();
 
@@ -169,6 +169,8 @@ public interface Client extends GameEngine
 	Widget getViewportWidget();
 
 	ObjectComposition getObjectDefinition(int objectId);
+
+	NPCComposition getNpcDefinition(int npcId);
 
 	Area[] getMapAreas();
 

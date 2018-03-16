@@ -49,12 +49,12 @@ import net.runelite.client.util.Text;
 
 class OpponentInfoOverlay extends Overlay
 {
-	private static final int WIDTH = 140;
+	private static final int WIDTH = 129;
 
-	private static final int TOP_BORDER = 3;
-	private static final int BOTTOM_BORDER = 3;
+	private static final int TOP_BORDER = 4;
+	private static final int BOTTOM_BORDER = 4;
 
-	private static final int BAR_WIDTH = 124;
+	private static final int BAR_WIDTH = WIDTH - 10;
 	private static final int BAR_HEIGHT = 16;
 
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);

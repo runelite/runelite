@@ -51,7 +51,9 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -60,9 +62,11 @@ import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -458,6 +462,51 @@ public abstract class RSClientMixin implements RSClient
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
+	}
+
+	@Inject
+	@Override
+	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
+	{
+		int zoom = get3dZoom();
+		set3dZoom(scale);
+		try
+		{
+			return createItemSprite(itemId, quantity, border, shadowColor, stackable, noted);
+		}
+		finally
+		{
+			set3dZoom(zoom);
+		}
+	}
+
+	@Copy("closeWidget")
+	public static void rs$closeWidget(WidgetNode widget, boolean b)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("closeWidget")
+	public static void rl$closeWidget(WidgetNode widget, boolean b)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		rs$closeWidget(widget, b);
+		client.setMenuEntries(entries);
+	}
+
+	@Copy("openWidget")
+	public static WidgetNode rs$openWidget(int parentHash, int widgetId, int autoClose)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("openWidget")
+	public static WidgetNode rl$openWidget(int parentHash, int widgetId, int autoClose)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		WidgetNode widgetNode = rs$openWidget(parentHash, widgetId, autoClose);
+		client.setMenuEntries(entries);
+		return widgetNode;
 	}
 
 	@FieldHook("skillExperiences")

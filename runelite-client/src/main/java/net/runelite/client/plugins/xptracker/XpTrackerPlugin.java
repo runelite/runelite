@@ -47,8 +47,8 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
@@ -62,7 +62,7 @@ import net.runelite.http.api.xp.XpClient;
 public class XpTrackerPlugin extends Plugin
 {
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private Client client;
@@ -104,25 +104,27 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
+		xpPanel = new XpPanel(this, client, skillIconManager);
+
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
 			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
 		}
 
-		xpPanel = new XpPanel(this, client, skillIconManager);
-		navButton = new NavigationButton(
-			"XP Tracker",
-			icon,
-			() -> xpPanel);
+		navButton = NavigationButton.builder()
+			.name("XP Tracker")
+			.icon(icon)
+			.panel(xpPanel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe

@@ -1164,14 +1164,14 @@ public class WorldMapRegion {
       garbageValue = "5"
    )
    static final void method534(Widget var0, int var1, int var2) {
-      if(Client.field1019 == null && !Client.isMenuOpen) {
+      if(Client.draggedWidget == null && !Client.isMenuOpen) {
          if(var0 != null && class110.method2298(var0) != null) {
-            Client.field1019 = var0;
+            Client.draggedWidget = var0;
             Client.field1020 = class110.method2298(var0);
             Client.field1021 = var1;
             Client.field1015 = var2;
             MapLabel.field446 = 0;
-            Client.field858 = false;
+            Client.draggingWidget = false;
             int var3 = Client.menuOptionCount - 1;
             if(var3 != -1) {
                WorldMapDecoration.topContextMenuRow = new ContextMenuRow();

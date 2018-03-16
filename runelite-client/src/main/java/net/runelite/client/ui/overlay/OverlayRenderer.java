@@ -58,8 +58,11 @@ import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 @Slf4j
 public class OverlayRenderer
 {
-	private static final int BORDER_TOP = 25;
-	private static final int BORDER_LEFT = 5;
+	private static final int BORDER_LEFT_RESIZABLE = 5;
+	private static final int BORDER_TOP_RESIZABLE = 20;
+	private static final int FRAME_OFFSET = 4;
+	private static final int BORDER_LEFT_FIXED = BORDER_LEFT_RESIZABLE + FRAME_OFFSET;
+	private static final int BORDER_TOP_FIXED = BORDER_TOP_RESIZABLE + FRAME_OFFSET;
 	private static final int BORDER_RIGHT = 2;
 	private static final int BORDER_BOTTOM = 2;
 	private static final int PADDING = 2;
@@ -192,6 +195,7 @@ public class OverlayRenderer
 			return;
 		}
 
+		final boolean isResizeable = client.isResized();
 		final Widget viewport = client.getViewportWidget();
 		final Rectangle bounds = viewport != null
 			? new Rectangle(viewport.getBounds())
@@ -203,18 +207,20 @@ public class OverlayRenderer
 
 		OverlayUtil.setGraphicProperties(graphics);
 		final Point topLeftPoint = new Point();
-		topLeftPoint.move(BORDER_LEFT, BORDER_TOP);
+		topLeftPoint.move(
+			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
+			isResizeable ? BORDER_TOP_RESIZABLE : BORDER_TOP_FIXED);
 		final Point topRightPoint = new Point();
-		topRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP);
+		topRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP_FIXED);
 		final Point bottomLeftPoint = new Point();
-		bottomLeftPoint.move(BORDER_LEFT, bounds.y + bounds.height - BORDER_BOTTOM);
+		bottomLeftPoint.move(isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED, bounds.y + bounds.height - BORDER_BOTTOM);
 		final Point bottomRightPoint = new Point();
 		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
 		final Point rightChatboxPoint = new Point();
 		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
 
 		//check to see if Chatbox is minimized
-		if (chatbox != null && client.isResized() && chatbox.isHidden())
+		if (chatbox != null && isResizeable && chatbox.isHidden())
 		{
 			rightChatboxPoint.y += chatboxBounds.height;
 			bottomLeftPoint.y += chatboxBounds.height;

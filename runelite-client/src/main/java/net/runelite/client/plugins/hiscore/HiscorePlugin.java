@@ -38,8 +38,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -50,7 +50,7 @@ public class HiscorePlugin extends Plugin
 	private static final String LOOKUP = "Lookup";
 
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private MenuManager menuManager;
@@ -81,12 +81,13 @@ public class HiscorePlugin extends Plugin
 			icon = ImageIO.read(getClass().getResourceAsStream("hiscore.gif"));
 		}
 
-		navButton = new NavigationButton(
-			"Hiscore",
-			icon,
-			() -> hiscorePanel);
+		navButton = NavigationButton.builder()
+			.name("Hiscore")
+			.icon(icon)
+			.panel(hiscorePanel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
 
 		if (config.playerOption())
 		{
@@ -97,8 +98,7 @@ public class HiscorePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
-
+		pluginToolbar.removeNavigation(navButton);
 		menuManager.removePlayerMenuItem(LOOKUP);
 	}
 
@@ -129,7 +129,8 @@ public class HiscorePlugin extends Plugin
 					{
 						if (!navButton.isSelected())
 						{
-							navButton.doClick();
+							navButton.setSelected(true);
+							navButton.getOnSelect().run();
 						}
 					});
 				}

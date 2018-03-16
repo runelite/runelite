@@ -140,7 +140,8 @@ public class class132 {
       signature = "(IIIB)Lbz;",
       garbageValue = "0"
    )
-   static final WidgetNode method2773(int var0, int var1, int var2) {
+   @Export("openWidget")
+   static final WidgetNode openWidget(int var0, int var1, int var2) {
       WidgetNode var3 = new WidgetNode();
       var3.id = var1;
       var3.owner = var2;

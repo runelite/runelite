@@ -27,10 +27,12 @@ package net.runelite.client.plugins.info;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.TitleToolbar;
 
 @PluginDescriptor(
 	name = "Info Panel",
@@ -39,7 +41,13 @@ import net.runelite.client.ui.NavigationButton;
 public class InfoPlugin extends Plugin
 {
 	@Inject
-	private ClientUI ui;
+	private PluginToolbar pluginToolbar;
+
+	@Inject
+	private TitleToolbar titleToolbar;
+
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
 
 	private NavigationButton navButton;
 
@@ -55,18 +63,23 @@ public class InfoPlugin extends Plugin
 			icon = ImageIO.read(getClass().getResourceAsStream("info_icon.png"));
 		}
 
-		navButton = new NavigationButton(
-			"Info",
-			icon,
-			() -> panel
-		);
+		navButton = NavigationButton.builder()
+			.name("Info")
+			.icon(icon)
+			.panel(panel)
+			.build();
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		pluginToolbar.addNavigation(navButton);
+
+		if (!runeLiteConfig.enableCustomChrome())
+		{
+			titleToolbar.refresh();
+		}
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		ui.getPluginToolbar().removeNavigation(navButton);
+		pluginToolbar.removeNavigation(navButton);
 	}
 }
