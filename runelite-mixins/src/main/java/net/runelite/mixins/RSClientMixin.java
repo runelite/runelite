@@ -192,7 +192,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		RSWidget[][] widgets = getWidgets();
 
-		if (widgets == null || groupId < 0 || groupId >= widgets.length)
+		if (widgets == null || groupId < 0 || groupId >= widgets.length || widgets[groupId] == null)
 		{
 			return null;
 		}
