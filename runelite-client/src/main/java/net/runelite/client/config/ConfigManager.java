@@ -173,6 +173,19 @@ public class ConfigManager
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
 			properties.load(in);
+
+			properties.forEach((groupAndKey, value) ->
+			{
+				final String[] split = ((String)groupAndKey).split("\\.");
+				final String groupName = split[0];
+				final String key = split[1];
+				ConfigChanged configChanged = new ConfigChanged();
+				configChanged.setGroup(groupName);
+				configChanged.setKey(key);
+				configChanged.setOldValue(null);
+				configChanged.setNewValue((String) value);
+				eventBus.post(configChanged);
+			});
 		}
 		catch (FileNotFoundException ex)
 		{

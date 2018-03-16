@@ -152,7 +152,7 @@ public class ClientUI
 
 			if (event.getKey().equals("lockWindowSize"))
 			{
-				SwingUtilities.invokeLater(() -> frame.setResizable(!config.lockWindowSize()));
+				frame.setResizable(!config.lockWindowSize());
 			}
 
 			if (!event.getKey().equals("gameSize"))
