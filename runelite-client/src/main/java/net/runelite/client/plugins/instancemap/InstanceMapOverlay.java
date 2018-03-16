@@ -27,6 +27,7 @@ package net.runelite.client.plugins.instancemap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -68,11 +69,10 @@ import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.BackgroundComponent;
 
 class InstanceMapOverlay extends Overlay
 {
-	public static final Point OVERLAY_POSITION = new Point(10, 25);
-
 	/**
 	 * The size of tiles on the map. The way the client renders requires
 	 * this value to be 4. Changing this will break the method for rendering
@@ -93,6 +93,7 @@ class InstanceMapOverlay extends Overlay
 
 	private static final int MAX_PLANE = 3;
 	private static final int MIN_PLANE = 0;
+	private final InstanceMapPlugin plugin;
 
 	/**
 	 * The plane to render on the instance map. When the map is opened this
@@ -110,13 +111,15 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private volatile BufferedImage mapImage;
 	private volatile boolean showMap = false;
+	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 
 	@Inject
-	InstanceMapOverlay(Client client)
+	InstanceMapOverlay(Client client, InstanceMapPlugin plugin)
 	{
+		this.plugin = plugin;
+		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		this.client = client;
 	}
 
 	public Dimension getInstanceMapDimension()
@@ -204,11 +207,13 @@ class InstanceMapOverlay extends Overlay
 			}
 		}
 
-		graphics.drawImage(image, OVERLAY_POSITION.getX(), OVERLAY_POSITION.getY(), null);
+		final Point offset = plugin.getMapOffset();
+
+		graphics.drawImage(image, offset.getX(), offset.getY(), null);
 
 		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
-			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
+			drawPlayerDot(graphics, offset.getX(), offset.getY(), client.getLocalPlayer(), Color.white, Color.black);
 		}
 
 		return getInstanceMapDimension();
@@ -219,7 +224,8 @@ class InstanceMapOverlay extends Overlay
 	 *
 	 * @param graphics graphics to be drawn to
 	 */
-	private void drawPlayerDot(Graphics2D graphics, Player player, Color dotColor, Color outlineColor)
+	private void drawPlayerDot(Graphics2D graphics, int baseX, int baseY, Player player,
+		Color dotColor, Color outlineColor)
 	{
 		LocalPoint playerLoc = player.getLocalLocation();
 
@@ -227,8 +233,8 @@ class InstanceMapOverlay extends Overlay
 		int tileX = playerLoc.getRegionX();
 		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
 
-		int x = OVERLAY_POSITION.getX() + (int) (tileX * TILE_SIZE * MAP_SCALING);
-		int y = OVERLAY_POSITION.getY() + (int) (tileY * TILE_SIZE * MAP_SCALING);
+		int x = baseX + (int) (tileX * TILE_SIZE * MAP_SCALING);
+		int y = baseY + (int) (tileY * TILE_SIZE * MAP_SCALING);
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
@@ -294,10 +300,9 @@ class InstanceMapOverlay extends Overlay
 
 		Dimension mapOverlaySize = new Dimension(tiles.length * TILE_SIZE, tiles[0].length * TILE_SIZE);
 
-		graphics.setColor(Color.black);
-		graphics.fillRect(0, 0, mapOverlaySize.width, mapOverlaySize.height);//draw background
-		graphics.setColor(Color.white);
-		graphics.drawRect(0, 0, mapOverlaySize.width - 1, mapOverlaySize.height - 1);//draw outline
+		backgroundComponent.setFill(false);
+		backgroundComponent.setRectangle(new Rectangle(0, 0, mapOverlaySize.width, mapOverlaySize.height));
+		backgroundComponent.render(graphics, new java.awt.Point());
 
 		//These loops are seperated on purpose to prevent layering issues. This is how it's written in the client
 		//Draw the base colors first
