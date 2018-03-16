@@ -56,6 +56,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.DraggingWidgetChanged;
+import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -539,6 +540,21 @@ public abstract class RSClientMixin implements RSClient
 			Skill updatedSkill = possibleSkills[idx];
 			experienceChanged.setSkill(updatedSkill);
 			eventBus.post(experienceChanged);
+		}
+	}
+
+	@FieldHook("boostedSkillLevels")
+	@Inject
+	public static void boostedSkillLevelsChanged(int idx)
+	{
+		Skill[] skills = Skill.values();
+
+		if (idx >= 0 && idx < skills.length - 1)
+		{
+			Skill updatedSkill = skills[idx];
+			BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
+			boostedLevelChanged.setSkill(updatedSkill);
+			eventBus.post(boostedLevelChanged);
 		}
 	}
 
