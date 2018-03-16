@@ -43,11 +43,11 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class PanelComponent implements RenderableEntity
 {
-	private static final int TOP_BORDER = 3;
-	private static final int LEFT_BORDER = 6;
-	private static final int RIGHT_BORDER = 6;
-	private static final int BOTTOM_BORDER = 6;
-	private static final int SEPARATOR = 2;
+	private static final int TOP_BORDER = 4;
+	private static final int LEFT_BORDER = 4;
+	private static final int RIGHT_BORDER = 4;
+	private static final int BOTTOM_BORDER = 4;
+	private static final int SEPARATOR = 1;
 
 	@Data
 	@AllArgsConstructor
@@ -79,7 +79,7 @@ public class PanelComponent implements RenderableEntity
 	private ProgressBarComponent progressBar;
 
 	@Setter
-	private int width = 140;
+	private int width = 129;
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)

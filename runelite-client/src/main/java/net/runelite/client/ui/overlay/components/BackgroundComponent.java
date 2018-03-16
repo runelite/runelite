@@ -58,6 +58,9 @@ public class BackgroundComponent implements RenderableEntity
 	@Setter
 	private Rectangle rectangle = new Rectangle();
 
+	@Setter
+	private boolean fill = true;
+
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
@@ -76,8 +79,11 @@ public class BackgroundComponent implements RenderableEntity
 		);
 
 		// Render background
-		graphics.setColor(backgroundColor);
-		graphics.fill(rectangle);
+		if (fill)
+		{
+			graphics.setColor(backgroundColor);
+			graphics.fill(rectangle);
+		}
 
 		// Render outside stroke
 		final Rectangle outsideStroke = new Rectangle();

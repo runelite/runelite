@@ -41,10 +41,10 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class ImagePanelComponent implements RenderableEntity
 {
-	private static final int TOP_BORDER = 3;
-	private static final int SIDE_BORDER = 6;
-	private static final int BOTTOM_BORDER = 6;
-	private static final int SEPARATOR = 4;
+	private static final int TOP_BORDER = 4;
+	private static final int SIDE_BORDER = 4;
+	private static final int BOTTOM_BORDER = 4;
+	private static final int SEPARATOR = 1;
 
 	@Setter
 	@Nullable
