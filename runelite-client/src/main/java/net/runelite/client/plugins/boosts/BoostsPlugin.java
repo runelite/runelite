@@ -27,10 +27,14 @@ package net.runelite.client.plugins.boosts;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -41,6 +45,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Boosts Information"
 )
+@Slf4j
 public class BoostsPlugin extends Plugin
 {
 	private static final Skill[] COMBAT = new Skill[]
@@ -53,6 +58,14 @@ public class BoostsPlugin extends Plugin
 		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
 		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
 	};
+
+	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
+
+	@Getter
+	private Instant lastChange;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
@@ -82,6 +95,7 @@ public class BoostsPlugin extends Plugin
 	protected void startUp()
 	{
 		updateShownSkills(config.enableSkill());
+		Arrays.fill(lastSkillLevels, -1);
 	}
 
 	@Override
@@ -101,6 +115,30 @@ public class BoostsPlugin extends Plugin
 			infoBoxManager.removeIf(t -> t instanceof BoostIndicator
 				&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
 		}
+	}
+
+	@Subscribe
+	void onBoostedLevelChange(BoostedLevelChanged boostedLevelChanged)
+	{
+		Skill skill = boostedLevelChanged.getSkill();
+
+		// Ignore changes to hitpoints or prayer
+		if (skill == Skill.HITPOINTS || skill == Skill.PRAYER)
+		{
+			return;
+		}
+
+		int skillIdx = skill.ordinal();
+		int last = lastSkillLevels[skillIdx];
+		int cur = client.getBoostedSkillLevel(skill);
+
+		// Check if stat goes +1 or -2
+		if (cur == last + 1 || cur == last - 1)
+		{
+			log.debug("Skill {} healed", skill);
+			lastChange = Instant.now();
+		}
+		lastSkillLevels[skillIdx] = cur;
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)
