@@ -301,7 +301,16 @@ public class SwingUtil
 			button.setComponentPopupMenu(popupMenu);
 		}
 
-		navigationButton.setOnSelect(() -> button.setSelected(navigationButton.isSelected()));
+		navigationButton.setOnSelect(() ->
+		{
+			button.setSelected(navigationButton.isSelected());
+
+			if (navigationButton.isSelected())
+			{
+				button.doClick();
+			}
+		});
+
 		return button;
 	}
 
