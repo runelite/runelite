@@ -28,9 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
@@ -40,7 +41,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
-@Slf4j
 class BoostsOverlay extends Overlay
 {
 	@Getter
@@ -72,6 +72,7 @@ class BoostsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		panelComponent = new PanelComponent();
+		boolean overlayActive = false;
 
 		for (Skill skill : plugin.getShownSkills())
 		{
@@ -89,6 +90,8 @@ class BoostsOverlay extends Overlay
 
 				continue;
 			}
+
+			overlayActive = true;
 
 			if (config.displayIndicators())
 			{
@@ -135,7 +138,22 @@ class BoostsOverlay extends Overlay
 			}
 		}
 
-		return config.displayIndicators() ? null : panelComponent.render(graphics, parent);
+		Instant lastChange = plugin.getLastChange();
+		if (config.displayNextChange() && lastChange != null && overlayActive)
+		{
+			int nextChange = 60 - (int)Duration.between(lastChange, Instant.now()).getSeconds();
+			if (nextChange > 0)
+			{
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Next change in",
+					Color.WHITE,
+					String.valueOf(nextChange),
+					Color.WHITE
+				));
+			}
+		}
+
+		return panelComponent.getLines().isEmpty() ? null : panelComponent.render(graphics, parent);
 	}
 
 	private Color getTextColor(int boost)
