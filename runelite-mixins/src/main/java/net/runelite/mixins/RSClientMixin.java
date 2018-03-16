@@ -55,6 +55,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -462,6 +463,15 @@ public abstract class RSClientMixin implements RSClient
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
+	}
+
+	@FieldHook("draggingWidget")
+	@Inject
+	public static void draggingWidgetChanged(int idx)
+	{
+		DraggingWidgetChanged draggingWidgetChanged = new DraggingWidgetChanged();
+		draggingWidgetChanged.setDraggingWidget(client.isDraggingWidget());
+		eventBus.post(draggingWidgetChanged);
 	}
 
 	@Inject
