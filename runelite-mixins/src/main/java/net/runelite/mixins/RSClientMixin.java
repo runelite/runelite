@@ -55,6 +55,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -62,6 +63,7 @@ import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetOpened;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -190,7 +192,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		RSWidget[][] widgets = getWidgets();
 
-		if (widgets == null || groupId < 0 || groupId >= widgets.length)
+		if (widgets == null || groupId < 0 || groupId >= widgets.length || widgets[groupId] == null)
 		{
 			return null;
 		}
@@ -464,6 +466,15 @@ public abstract class RSClientMixin implements RSClient
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
+	@FieldHook("draggingWidget")
+	@Inject
+	public static void draggingWidgetChanged(int idx)
+	{
+		DraggingWidgetChanged draggingWidgetChanged = new DraggingWidgetChanged();
+		draggingWidgetChanged.setDraggingWidget(client.isDraggingWidget());
+		eventBus.post(draggingWidgetChanged);
+	}
+
 	@Inject
 	@Override
 	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
@@ -495,17 +506,23 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Copy("openWidget")
-	public static WidgetNode rs$openWidget(int parentHash, int widgetId, int autoClose)
+	public static WidgetNode rs$openWidget(int parentId, int groupId, int autoClose)
 	{
 		throw new RuntimeException();
 	}
 
 	@Replace("openWidget")
-	public static WidgetNode rl$openWidget(int parentHash, int widgetId, int autoClose)
+	public static WidgetNode rl$openWidget(int parentId, int groupId, int autoClose)
 	{
 		MenuEntry[] entries = client.getMenuEntries();
-		WidgetNode widgetNode = rs$openWidget(parentHash, widgetId, autoClose);
+		WidgetNode widgetNode = rs$openWidget(parentId, groupId, autoClose);
 		client.setMenuEntries(entries);
+
+		WidgetOpened event = new WidgetOpened();
+		event.setParentId(parentId);
+		event.setGroupId(groupId);
+		event.setAutoClose(autoClose);
+		eventBus.post(event);
 		return widgetNode;
 	}
 
