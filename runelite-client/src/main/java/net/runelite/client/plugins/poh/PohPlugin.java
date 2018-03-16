@@ -44,6 +44,7 @@ import static net.runelite.api.ObjectID.INCENSE_BURNER_13211;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13212;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13213;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -62,7 +63,7 @@ public class PohPlugin extends Plugin
 	static final Set<Integer> BURNER_LIT = Sets.newHashSet(INCENSE_BURNER_13209, INCENSE_BURNER_13211, INCENSE_BURNER_13213);
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<GameObject, Tile> pohObjects = new HashMap<>();
+	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
 
 	@Inject
 	private PohOverlay overlay;
