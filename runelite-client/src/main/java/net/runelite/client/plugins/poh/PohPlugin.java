@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.ObjectID.INCENSE_BURNER;
@@ -46,6 +47,8 @@ import static net.runelite.api.ObjectID.INCENSE_BURNER_13213;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -116,6 +119,23 @@ public class PohPlugin extends Plugin
 	{
 		GameObject gameObject = event.getGameObject();
 		pohObjects.remove(gameObject);
+	}
+
+	@Subscribe
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		DecorativeObject decorativeObject = event.getDecorativeObject();
+		if (PohIcons.getIcon(decorativeObject.getId()) != null)
+		{
+			pohObjects.put(decorativeObject, event.getTile());
+		}
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		DecorativeObject decorativeObject = event.getDecorativeObject();
+		pohObjects.remove(decorativeObject);
 	}
 
 	@Subscribe
