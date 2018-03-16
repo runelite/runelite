@@ -29,9 +29,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.TileObject;
 import static net.runelite.client.plugins.poh.PohPlugin.BURNER_LIT;
 import static net.runelite.client.plugins.poh.PohPlugin.BURNER_UNLIT;
 import net.runelite.client.ui.overlay.Overlay;
@@ -82,9 +82,9 @@ public class BurnerOverlay extends Overlay
 		return null;
 	}
 
-	private void drawBurner(Graphics2D graphics, String text, GameObject gameObject, Color color, java.awt.Point parent)
+	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color, java.awt.Point parent)
 	{
-		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, gameObject.getLocalLocation(), text, 200);
+		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, 200);
 
 		if (canvasText == null)
 		{
@@ -97,6 +97,6 @@ public class BurnerOverlay extends Overlay
 		textComponent.render(graphics, parent);
 
 		//render tile
-		OverlayUtil.renderPolygon(graphics, gameObject.getCanvasTilePoly(), color);
+		OverlayUtil.renderPolygon(graphics, tileObject.getCanvasTilePoly(), color);
 	}
 }
