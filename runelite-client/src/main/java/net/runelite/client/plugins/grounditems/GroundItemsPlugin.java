@@ -24,11 +24,16 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.base.Splitter;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Arrays;
+import static java.lang.Boolean.TRUE;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -39,6 +44,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Node;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -67,6 +73,9 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private GroundItemsOverlay overlay;
 
+	private LoadingCache<String, Boolean> highlightedItems;
+	private LoadingCache<String, Boolean> hiddenItems;
+
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
 	{
@@ -77,6 +86,42 @@ public class GroundItemsPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Override
+	protected void startUp()
+	{
+		reset();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("grounditems"))
+		{
+			reset();
+		}
+	}
+
+	private void reset()
+	{
+		Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
+
+		// gets the hidden items from the text box in the config
+		List<String> hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems().trim());
+
+		// gets the highlighted items from the text box in the config
+		List<String> highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
+
+		highlightedItems = CacheBuilder.newBuilder()
+			.maximumSize(512L)
+			.expireAfterAccess(10, TimeUnit.MINUTES)
+			.build(new WildcardMatchLoader(highlightedItemsList));
+
+		hiddenItems = CacheBuilder.newBuilder()
+			.maximumSize(512L)
+			.expireAfterAccess(10, TimeUnit.MINUTES)
+			.build(new WildcardMatchLoader(hiddenItemList));
 	}
 
 	private ItemPrice getItemPrice(ItemComposition itemComposition)
@@ -95,19 +140,12 @@ public class GroundItemsPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take")
-				&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
-			String hiddenItemsStr = config.getHiddenItems().toLowerCase();
-			List<String> hiddenItems = Arrays.asList(hiddenItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
-
-			String highlightItemsStr = config.getHighlightItems().toLowerCase();
-			List<String> highlightedItems = Arrays.asList(highlightItemsStr.split(GroundItemsOverlay.DELIMITER_REGEX));
-
 			int itemId = event.getIdentifier();
 			ItemComposition itemComposition = client.getItemDefinition(itemId);
-			String name = itemComposition.getName().toLowerCase();
 
-			if (hiddenItems.contains(name))
+			if (isHidden(itemComposition.getName()))
 			{
 				return;
 			}
@@ -146,7 +184,7 @@ public class GroundItemsPlugin extends Plugin
 				color = overlay.getCostColor(cost);
 			}
 
-			if (highlightedItems.contains(name))
+			if (isHighlighted(itemComposition.getName()))
 			{
 				color = config.highlightedColor();
 			}
@@ -175,4 +213,13 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
+	public boolean isHighlighted(String item)
+	{
+		return TRUE.equals(highlightedItems.getUnchecked(item));
+	}
+
+	public boolean isHidden(String item)
+	{
+		return TRUE.equals(hiddenItems.getUnchecked(item));
+	}
 }
