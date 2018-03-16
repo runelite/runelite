@@ -102,6 +102,10 @@ public class KourendLibraryOverlay extends Overlay
 			}
 
 			LocalPoint localBookcase = LocalPoint.fromWorld(client, caseLoc);
+			if (localBookcase == null)
+			{
+				continue;
+			}
 			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getPlane(), 25);
 
 			if (screenBookcase != null)
