@@ -40,11 +40,17 @@ public interface Widget
 
 	void setContentType(int contentType);
 
+	int getConfig();
+
+	void setConfig(int config);
+
 	Widget getParent();
 
 	int getParentId();
 
 	Widget getChild(int index);
+
+	Widget[] getChildren();
 
 	Widget[] getDynamicChildren();
 

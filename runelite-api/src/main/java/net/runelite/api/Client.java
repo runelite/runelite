@@ -98,6 +98,16 @@ public interface Client extends GameEngine
 
 	int getBaseY();
 
+	int getMouseCurrentButton();
+
+	boolean isDraggingWidget();
+
+	Widget getDraggedWidget();
+
+	Widget getDraggedOnWidget();
+
+	void setDraggedOnWidget(Widget widget);
+
 	Widget[] getWidgetRoots();
 
 	Widget getWidget(WidgetInfo widget);
