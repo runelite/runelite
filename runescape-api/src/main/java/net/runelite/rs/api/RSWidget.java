@@ -33,6 +33,7 @@ public interface RSWidget extends Widget
 	int[][] getDynamicValues();
 
 	@Import("children")
+	@Override
 	RSWidget[] getChildren();
 
 	@Import("id")
@@ -41,6 +42,12 @@ public interface RSWidget extends Widget
 
 	@Import("parentId")
 	int getRSParentId();
+
+	@Import("config")
+	int getConfig();
+
+	@Import("config")
+	void setConfig(int config);
 
 	@Import("boundsIndex")
 	int getBoundsIndex();
