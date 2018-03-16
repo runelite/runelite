@@ -45,6 +45,7 @@ public class WidgetID
 	public static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID = 161;
 	public static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
 	public static final int PRAYER_GROUP_ID = 541;
+	public static final int QUICK_PRAYERS_GROUP_ID = 77;
 	public static final int SHOP_GROUP_ID = 300;
 	public static final int SHOP_INVENTORY_GROUP_ID = 301;
 	public static final int GUIDE_PRICES_GROUP_ID = 464;
@@ -194,6 +195,21 @@ public class WidgetID
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
 	}
 
+	static class FixedViewport
+	{
+		static final int PRAYER_TAB = 53;
+	}
+
+	static class ResizableViewport
+	{
+		static final int PRAYER_TAB = 56;
+	}
+
+	static class ResizableViewportBottomLine
+	{
+		static final int PRAYER_TAB = 53;
+	}
+
 	static class Chatbox
 	{
 		static final int CHATBOX_MESSAGES = 29;
@@ -232,6 +248,41 @@ public class WidgetID
 		static final int PIETY = 29;
 		static final int RIGOUR = 30;
 		static final int AUGURY = 31;
+	}
+
+	public static class QuickPrayer
+	{
+		static final int PRAYERS = 4;
+
+		public static final int THICK_SKIN_CHILD_ID = 0;
+		public static final int BURST_OF_STRENGTH_CHILD_ID = 1;
+		public static final int CLARITY_OF_THOUGHT_CHILD_ID = 2;
+		public static final int SHARP_EYE_CHILD_ID = 18;
+		public static final int MYSTIC_WILL_CHILD_ID = 19;
+		public static final int ROCK_SKIN_CHILD_ID = 3;
+		public static final int SUPERHUMAN_STRENGTH_CHILD_ID = 4;
+		public static final int IMPROVED_REFLEXES_CHILD_ID = 5;
+		public static final int RAPID_RESTORE_CHILD_ID = 6;
+		public static final int RAPID_HEAL_CHILD_ID = 7;
+		public static final int PROTECT_ITEM_CHILD_ID = 8;
+		public static final int HAWK_EYE_CHILD_ID = 20;
+		public static final int MYSTIC_LORE_CHILD_ID = 21;
+		public static final int STEEL_SKIN_CHILD_ID = 9;
+		public static final int ULTIMATE_STRENGTH_CHILD_ID = 10;
+		public static final int INCREDIBLE_REFLEXES_CHILD_ID = 11;
+		public static final int PROTECT_FROM_MAGIC_CHILD_ID = 12;
+		public static final int PROTECT_FROM_MISSILES_CHILD_ID = 13;
+		public static final int PROTECT_FROM_MELEE_CHILD_ID = 14;
+		public static final int EAGLE_EYE_CHILD_ID = 22;
+		public static final int MYSTIC_MIGHT_CHILD_ID = 23;
+		public static final int RETRIBUTION_CHILD_ID = 15;
+		public static final int REDEMPTION_CHILD_ID = 16;
+		public static final int SMITE_CHILD_ID = 17;
+		public static final int PRESERVE_CHILD_ID = 28;
+		public static final int CHIVALRY_CHILD_ID = 25;
+		public static final int PIETY_CHILD_ID = 26;
+		public static final int RIGOUR_CHILD_ID = 24;
+		public static final int AUGURY_CHILD_ID = 27;
 	}
 
 	static class Combat
