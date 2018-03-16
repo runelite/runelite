@@ -111,10 +111,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("home", option, target, true);
 		}
-		else if (config.swapLastDestination() && option.equals("zanaris"))
-		{
-			swap("last-destination (", option, target, false);
-		}
 		else if (config.swapBoxTrap() && option.equals("check"))
 		{
 			swap("reset", option, target, true);
@@ -131,6 +127,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapTeleportItem() && option.equals("wield"))
 		{
 			swap("teleport", option, target, true);
+		}
+		else if (option.equals("zanaris") || option.equals("configure"))
+		{
+			switch (config.swapFairyRing())
+			{
+				case LAST_DESTINATION:
+					swap("last-destination (", option, target, false);
+					break;
+				case CONFIGURE:
+					swap("configure", option, target, false);
+					break;
+				case ZANARIS:
+					swap("zanaris", option, target, false);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 

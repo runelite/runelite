@@ -125,17 +125,6 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "swapLastDestination",
-		name = "Last-destination (XXX)",
-		description = "Swap Zanaris with Last-destination on Fairy ring"
-	)
-	default boolean swapLastDestination()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 9,
 		keyName = "swapBoxTrap",
 		name = "Reset",
 		description = "Swap Check with Reset on box trap"
@@ -146,7 +135,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 9,
 		keyName = "swapCatacombEntrance",
 		name = "Catacomb entrance",
 		description = "Swap Read with Investigate on Catacombs of Kourend entrance"
@@ -157,7 +146,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 10,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
@@ -165,5 +154,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapTeleportItem()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "swapFairyRing",
+		name = "Fairy Rings",
+		description = "Swap Zanaris with Configure or Last-Destination on Fairy rings"
+	)
+	default FairyRingSwap swapFairyRing()
+	{
+		return FairyRingSwap.ZANARIS;
 	}
 }
