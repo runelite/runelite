@@ -300,12 +300,12 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is now out of combat!");
 		}
 
-		if (config.limitHealth() && checkLowHitpoints())
+		if (config.getHitpointsThreshold() != 0 && checkLowHitpoints())
 		{
 			notifier.notify("[" + local.getName() + "] has reached the hitpoint threshold!");
 		}
 
-		if (config.limitPrayer() && checkLowPrayer())
+		if (config.getPrayerThreshold() != 0 && checkLowPrayer())
 		{
 			notifier.notify("[" + local.getName() + "] has reached the prayer threshold!");
 		}
@@ -420,8 +420,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowHitpoints()
 	{
-		if (config.getHitpointsThreshold() != 0
-			&& client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
 			{
@@ -442,8 +441,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowPrayer()
 	{
-		if (config.getPrayerThreshold() != 0
-			&& client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
+		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
 			{
