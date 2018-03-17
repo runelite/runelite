@@ -175,10 +175,10 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_RUNE:
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
-				/* Cooking(Fire, Range) */
+			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-				/* Crafting(Gem Cutting, Glassblowing, Spinning) */
+			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -188,7 +188,7 @@ public class IdleNotifierPlugin extends Plugin
 			case GEM_CUTTING_DIAMOND:
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
-				/* Fletching(Cutting, Stringing) */
+			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -202,11 +202,11 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-				/* Smithing(Anvil, Furnace, Cannonballs */
+			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-				/* Fishing */
+			/* Fishing */
 			case FISHING_NET:
 			case FISHING_HARPOON:
 			case FISHING_BARBTAIL_HARPOON:
@@ -215,7 +215,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_POLE_CAST:
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
-				/* Mining(Normal) */
+			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -226,7 +226,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE:
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
-				/* Mining(Motherlode) */
+			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
 			case MINING_MOTHERLODE_STEEL:
@@ -237,10 +237,10 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_DRAGON:
 			case MINING_MOTHERLODE_DRAGON_ORN:
 			case MINING_MOTHERLODE_INFERNAL:
-				/* Herblore */
+			/* Herblore */
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
-				/* Magic */
+			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 				triggeredIdleAnimation = true;
 				lastAnimation = 0L;
@@ -358,7 +358,9 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		if (triggeredIdleAnimation)
 		{
-			if (lastAnimation != 0L && System.nanoTime() >= lastAnimation)
+			if (lastAnimation != 0L
+				&& System.nanoTime() >= lastAnimation
+				&& config.animationIdle())
 			{
 				triggeredIdleAnimation = false;
 				lastAnimation = 0L;
@@ -366,7 +368,7 @@ public class IdleNotifierPlugin extends Plugin
 			}
 			else if (local.getAnimation() == IDLE)
 			{
-				lastAnimation = System.nanoTime();
+				lastAnimation = System.nanoTime() + (long) (config.getAnimationIdleNotificationDelay() * 1000000000L);
 			}
 		}
 
@@ -378,7 +380,9 @@ public class IdleNotifierPlugin extends Plugin
 		Actor opponent = local.getInteracting();
 		boolean isOpponentPlayer = opponent instanceof Player;
 
-		if (opponentWarningTime != 0L && System.nanoTime() >= opponentWarningTime)
+		if (opponentWarningTime != 0L
+			&& System.nanoTime() >= opponentWarningTime
+			&& config.combatIdle())
 		{
 			if (!triggeredOutOfCombatIdle)
 			{
@@ -416,7 +420,8 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowHitpoints()
 	{
-		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		if (config.getHitpointsThreshold() != 0
+			&& client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
 			{
@@ -437,7 +442,8 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowPrayer()
 	{
-		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
+		if (config.getPrayerThreshold() != 0
+			&& client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
 			{

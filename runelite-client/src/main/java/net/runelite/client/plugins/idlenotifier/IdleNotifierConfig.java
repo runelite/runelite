@@ -45,12 +45,23 @@ public interface IdleNotifierConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+		keyName = "animationidledelay",
+		name = "Idle Animation Notification Delay (s)",
+		description = "The animation notification delay after the player is idle",
+		position = 2
+	)
+	default int getAnimationIdleNotificationDelay()
+	{
+		return 5;
+	}	
 
 	@ConfigItem(
 		keyName = "combatidle",
 		name = "Combat Idle Notification",
 		description = "Configures if the combat idle notification is enabled",
-		position = 2
+		position = 3
 	)
 	default boolean combatIdle()
 	{
@@ -61,22 +72,11 @@ public interface IdleNotifierConfig extends Config
 		keyName = "combatidledelay",
 		name = "Combat Idle Notification Delay (s)",
 		description = "The notification delay after the player is idle",
-		position = 3
+		position = 4
 	)
 	default int getCombatIdleNotificationDelay()
 	{
 		return 5;
-	}
-
-	@ConfigItem(
-		keyName = "hitpoints",
-		name = "Hitpoints Notification",
-		description = "Configures if the hitpoint notifications is enabled",
-		position = 4
-	)
-	default boolean limitHealth()
-	{
-		return true;
 	}
 
 	@ConfigItem(
@@ -91,21 +91,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "prayer",
-		name = "Prayer Notification",
-		description = "Configures if the prayer notifications is enabled",
-		position = 6
-	)
-	default boolean limitPrayer()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "prayerlimit",
 		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at",
-		position = 7
+		position = 6
 	)
 	default int getPrayerThreshold()
 	{
