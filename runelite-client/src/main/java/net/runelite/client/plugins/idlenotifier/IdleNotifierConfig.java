@@ -37,8 +37,8 @@ public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
 		keyName = "animationidle",
-		name = "Idle Animation Notifications",
-		description = "Configures if idle animation notifications are enabled",
+		name = "Idle Animation Notification",
+		description = "Configures if the idle animation notification is enabled",
 		position = 1
 	)
 	default boolean animationIdle()
@@ -48,8 +48,8 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "combatidle",
-		name = "Combat Idle Notifications",
-		description = "Configures if out of combat notifications are enabled",
+		name = "Combat Idle Notification",
+		description = "Configures if the combat idle notification is enabled",
 		position = 2
 	)
 	default boolean combatIdle()
@@ -58,21 +58,32 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "timeout",
-		name = "Idle Notification Delay (ms)",
+		keyName = "combatidledelay",
+		name = "Combat Idle Notification Delay (s)",
 		description = "The notification delay after the player is idle",
 		position = 3
 	)
-	default int getIdleNotificationDelay()
+	default int getCombatIdleNotificationDelay()
 	{
-		return 5000;
+		return 5;
 	}
 
 	@ConfigItem(
 		keyName = "hitpoints",
+		name = "Hitpoints Notification",
+		description = "Configures if the hitpoint notifications is enabled",
+		position = 4
+	)
+	default boolean limitHealth()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hitpointslimit",
 		name = "Hitpoints Notification Threshold",
 		description = "The amount of hitpoints to send a notification at",
-		position = 4
+		position = 5
 	)
 	default int getHitpointsThreshold()
 	{
@@ -81,9 +92,20 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "prayer",
+		name = "Prayer Notification",
+		description = "Configures if the prayer notifications is enabled",
+		position = 6
+	)
+	default boolean limitPrayer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "prayerlimit",
 		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at",
-		position = 5
+		position = 7
 	)
 	default int getPrayerThreshold()
 	{
