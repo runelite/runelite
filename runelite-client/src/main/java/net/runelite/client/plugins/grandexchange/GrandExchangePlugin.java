@@ -36,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
@@ -44,6 +45,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -61,6 +63,9 @@ public class GrandExchangePlugin extends Plugin
 	private GrandExchangePanel panel;
 
 	private MouseListener itemClick;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -179,6 +184,10 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent)
 	{
-		SwingUtilities.invokeLater(() -> panel.updateOffer(offerEvent.getOffer(), offerEvent.getSlot()));
+		GrandExchangeOffer offer = offerEvent.getOffer();
+		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
+		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
+		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
+		SwingUtilities.invokeLater(() -> panel.updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
 	}
 }

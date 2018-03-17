@@ -28,6 +28,7 @@ package net.runelite.client.plugins.grandexchange;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.text.NumberFormat;
 import javax.annotation.Nullable;
 import javax.swing.BorderFactory;
@@ -43,7 +44,6 @@ import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.game.ItemManager;
 
 @Slf4j
 public class GrandExchangeOfferSlot extends JPanel
@@ -57,8 +57,6 @@ public class GrandExchangeOfferSlot extends JPanel
 	private static final String INFO_CARD = "INFO_CARD";
 	private static final String EMPTY_CARD = "EMPTY_CARD";
 
-	private final ItemManager itemManager;
-
 	private final CardLayout cardLayout = new CardLayout();
 	private final JLabel itemIcon = new JLabel();
 	private final TitledBorder itemName = BorderFactory.createTitledBorder("Nothing");
@@ -69,9 +67,8 @@ public class GrandExchangeOfferSlot extends JPanel
 	 * This (sub)panel is used for each GE slot displayed
 	 * in the sidebar
 	 */
-	GrandExchangeOfferSlot(ItemManager itemManager)
+	GrandExchangeOfferSlot()
 	{
-		this.itemManager = itemManager;
 		buildPanel();
 	}
 
@@ -120,12 +117,9 @@ public class GrandExchangeOfferSlot extends JPanel
 		emptySlotCard.add(Box.createHorizontalGlue());
 
 		cardLayout.show(this, EMPTY_CARD);
-
-
-
 	}
 
-	void updateOffer(@Nullable GrandExchangeOffer newOffer)
+	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
 	{
 		if (newOffer == null || newOffer.getState() == EMPTY)
 		{
@@ -136,12 +130,10 @@ public class GrandExchangeOfferSlot extends JPanel
 		{
 			cardLayout.show(this, INFO_CARD);
 
-			ItemComposition offerItem = itemManager.getItemComposition(newOffer.getItemId());
-
 			itemName.setTitle(offerItem.getName());
 
 			boolean shouldStack = offerItem.isStackable() || newOffer.getTotalQuantity() > 1;
-			ImageIcon newItemIcon = new ImageIcon(itemManager.getImage(newOffer.getItemId(), newOffer.getTotalQuantity(), shouldStack));
+			ImageIcon newItemIcon = new ImageIcon(itemImage);
 			itemIcon.setIcon(newItemIcon);
 
 			offerState.setText(getNameForState(newOffer.getState()) + " at " + NUMBER_FORMATTER.format(newOffer.getPrice()) + (newOffer.getTotalQuantity() > 1 ? "gp ea" : "gp"));

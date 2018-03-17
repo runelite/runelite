@@ -29,11 +29,8 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.game.ItemManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,20 +40,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class GrandExchangeOfferSlotTest
 {
 	@Mock
-	private ItemManager itemManager;
-
-	@Mock
 	private GrandExchangeOffer offer;
 
 	@Test
 	public void testUpdateOffer()
 	{
-		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
-		when(itemManager.getImage(anyInt(), anyInt(), anyBoolean())).thenReturn(mock(BufferedImage.class));
 		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED);
 
-		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot(itemManager);
-		offerSlot.updateOffer(offer);
+		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot();
+		offerSlot.updateOffer(mock(ItemComposition.class), mock(BufferedImage.class), offer);
 	}
 
 }
