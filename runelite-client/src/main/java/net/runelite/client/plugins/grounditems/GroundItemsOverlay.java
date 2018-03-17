@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -79,12 +78,11 @@ public class GroundItemsOverlay extends Overlay
 	private static final int INSANE_VALUE = 10_000_000;
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	// Regex for splitting the hidden items in the config.
-	static final String DELIMITER_REGEX = "\\s*,\\s*";
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 
 	private final Client client;
+	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
@@ -92,24 +90,18 @@ public class GroundItemsOverlay extends Overlay
 	private ItemManager itemManager;
 
 	@Inject
-	public GroundItemsOverlay(Client client, GroundItemsConfig config)
+	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
+		this.plugin = plugin;
 		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		// gets the hidden/highlighted items from the text box in the config
-		String configItems = config.getHiddenItems().toLowerCase();
-		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
-		// note: both of these lists are immutable
-		configItems = config.getHighlightItems().toLowerCase();
-		List<String> highlightedItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
-
 		Region region = client.getRegion();
 		Tile[][][] tiles = region.getTiles();
 		FontMetrics fm = graphics.getFontMetrics();
@@ -159,8 +151,7 @@ public class GroundItemsOverlay extends Overlay
 
 					Integer currentQuantity = items.get(itemId);
 
-					String itemName = itemDefinition.getName().toLowerCase();
-					if (config.showHighlightedOnly() ? highlightedItems.contains(itemName) : !hiddenItems.contains(itemName))
+					if (config.showHighlightedOnly() ? plugin.isHighlighted(itemDefinition.getName()) : !plugin.isHidden(itemDefinition.getName()))
 					{
 						if (itemDefinition.getNote() != -1)
 						{
@@ -185,7 +176,7 @@ public class GroundItemsOverlay extends Overlay
 							gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
 							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 						}
-						if (highlightedItems.contains(itemDefinition.getName().toLowerCase()) ||
+						if (plugin.isHighlighted(itemDefinition.getName()) ||
 							gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
 							(alchPrice >= config.getHideUnderHAValue())))
 						{
@@ -257,7 +248,7 @@ public class GroundItemsOverlay extends Overlay
 							.append(" gp)");
 					}
 
-					if (highlightedItems.contains(item.getName().toLowerCase()))
+					if (plugin.isHighlighted(item.getName()))
 					{
 						textColor = config.highlightedColor();
 					}
