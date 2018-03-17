@@ -52,6 +52,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.JShadowedLabel;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
@@ -78,7 +79,7 @@ class XpInfoBox extends JPanel
 	private final JLabel xpGained = new JLabel();
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
-	private final JLabel levelLabel = new JLabel();
+	private final JLabel levelLabel = new JShadowedLabel();
 	private final JButton skillIcon = new JButton();
 
 	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
