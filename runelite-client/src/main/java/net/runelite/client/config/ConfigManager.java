@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -420,6 +421,13 @@ public class ConfigManager
 			int height = Integer.parseInt(splitStr[1]);
 			return new Dimension(width, height);
 		}
+		if (type == Point.class)
+		{
+			String[] splitStr = str.split(":");
+			int width = Integer.parseInt(splitStr[0]);
+			int height = Integer.parseInt(splitStr[1]);
+			return new Point(width, height);
+		}
 		if (type.isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
@@ -441,6 +449,11 @@ public class ConfigManager
 		{
 			Dimension d = (Dimension) object;
 			return d.width + "x" + d.height;
+		}
+		if (object instanceof Point)
+		{
+			Point p = (Point) object;
+			return p.x + ":" + p.y;
 		}
 		return object.toString();
 	}
