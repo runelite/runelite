@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.BoxLayout;
@@ -35,6 +36,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
 
@@ -62,7 +64,7 @@ class GrandExchangePanel extends PluginPanel
 		offerPanel.setLayout(new BoxLayout(offerPanel, BoxLayout.Y_AXIS));
 		for (int i = 0; i < offerSlotPanels.length; ++i)
 		{
-			offerSlotPanels[i] = new GrandExchangeOfferSlot(itemManager);
+			offerSlotPanels[i] = new GrandExchangeOfferSlot();
 			offerPanel.add(offerSlotPanels[i]);
 		}
 
@@ -73,9 +75,9 @@ class GrandExchangePanel extends PluginPanel
 		tabbedPane.addTab("Search", searchPanel);
 	}
 
-	void updateOffer(GrandExchangeOffer newOffer, int slot)
+	void updateOffer(ItemComposition item, BufferedImage itemImage, GrandExchangeOffer newOffer, int slot)
 	{
-		offerSlotPanels[slot].updateOffer(newOffer);
+		offerSlotPanels[slot].updateOffer(item, itemImage, newOffer);
 	}
 
 	void showSearch()
