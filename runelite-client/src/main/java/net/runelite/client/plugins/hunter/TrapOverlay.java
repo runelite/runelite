@@ -24,12 +24,10 @@
  */
 package net.runelite.client.plugins.hunter;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Arc2D;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
@@ -40,6 +38,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ProgressPie;
 
 /**
  * Represents the overlay that shows timers on traps that are placed by the
@@ -47,16 +46,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
  */
 public class TrapOverlay extends Overlay
 {
-	/**
-	 * Size of the trap timer.
-	 */
-	private static final int TIMER_SIZE = 25;
-
-	/**
-	 * Width of the border around the trap timer.
-	 */
-	private static final int TIMER_BORDER_WIDTH = 1;
-
 	/**
 	 * The timer is low when only 25% is left.
 	 */
@@ -158,21 +147,12 @@ public class TrapOverlay extends Overlay
 		}
 		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
 
-		//Construct the arc
-		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
 		double timeLeft = 1 - trap.getTrapTimeRelative();
-		arc.setAngleExtent(timeLeft * 360);
-		arc.setFrame(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
 
-		//Draw the inside of the arc
-		graphics.setColor(timeLeft > TIMER_LOW ? fill : fillTimeLow);
-		graphics.fill(arc);
-
-		//Draw the outlines of the arc
-		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.setColor(timeLeft > TIMER_LOW ? border : borderTimeLow);
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		ProgressPie pie = new ProgressPie();
+		pie.setFill(timeLeft > TIMER_LOW ? fill : fillTimeLow);
+		pie.setBorderColor(timeLeft > TIMER_LOW ? border : borderTimeLow);
+		pie.render(graphics, loc, timeLeft);
 	}
 
 	/**
@@ -196,13 +176,9 @@ public class TrapOverlay extends Overlay
 		}
 		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
 
-		//Draw the inside of the arc
-		graphics.setColor(fill);
-		graphics.fillOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
-
-		//Draw the border of the cirlce
-		graphics.setColor(border);
-		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		ProgressPie pie = new ProgressPie();
+		pie.setFill(fill);
+		pie.setBorderColor(border);
+		pie.render(graphics, loc, 1);
 	}
 }
