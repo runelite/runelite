@@ -359,8 +359,7 @@ public class IdleNotifierPlugin extends Plugin
 		if (triggeredIdleAnimation)
 		{
 			if (lastAnimation != 0L
-				&& System.nanoTime() >= lastAnimation
-				&& config.animationIdle())
+				&& System.nanoTime() >= lastAnimation)
 			{
 				triggeredIdleAnimation = false;
 				lastAnimation = 0L;
@@ -381,12 +380,12 @@ public class IdleNotifierPlugin extends Plugin
 		boolean isOpponentPlayer = opponent instanceof Player;
 
 		if (opponentWarningTime != 0L
-			&& System.nanoTime() >= opponentWarningTime
-			&& config.combatIdle())
+			&& System.nanoTime() >= opponentWarningTime)
 		{
 			if (!triggeredOutOfCombatIdle)
 			{
 				triggeredOutOfCombatIdle = true;
+				trackedOpponent = null;
 				opponentWarningTime = 0L;
 				return true;
 			}
