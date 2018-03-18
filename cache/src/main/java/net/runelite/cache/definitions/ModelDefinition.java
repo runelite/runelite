@@ -341,6 +341,7 @@ public class ModelDefinition
 
 	private void reset()
 	{
+		vertexNormals = null;
 		faceNormals = null;
 		faceTextureUCoordinates = faceTextureVCoordinates = null;
 	}
