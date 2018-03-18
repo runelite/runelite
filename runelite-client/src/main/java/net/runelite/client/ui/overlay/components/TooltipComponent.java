@@ -225,7 +225,7 @@ public class TooltipComponent implements RenderableEntity
 
 		for (int y2 = 0; y2 < modIcon.getHeight(); y2++)
 		{
-			for (int x2 = 0; x2 < modIcon.getOriginalWidth(); x2++)
+			for (int x2 = 0; x2 < modIcon.getWidth(); x2++)
 			{
 				int index = modIcon.getPixels()[sourceOffset++] & 0xff;
 
