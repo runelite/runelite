@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders;
+package net.runelite.cache.item;
 
-import net.runelite.cache.definitions.TextureDefinition;
-import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class TextureLoader
+class Rasterizer2D
 {
-	private static final Logger logger = LoggerFactory.getLogger(TextureLoader.class);
+	public int[] graphicsPixels;
+	public int graphicsPixelsWidth;
+	public int graphicsPixelsHeight;
+	public int drawingAreaTop;
+	public int drawingAreaBottom;
+	public int draw_region_x;
+	protected int drawingAreaRight;
 
-	public TextureDefinition load(int id, byte[] b)
+	public void setRasterBuffer(int[] var0, int var1, int var2)
 	{
-		TextureDefinition def = new TextureDefinition();
-		InputStream is = new InputStream(b);
-
-		def.field1777 = is.readUnsignedShort();
-		def.field1778 = is.readByte() != 0;
-		def.setId(id);
-
-		int count = is.readUnsignedByte();
-		int[] files = new int[count];
-
-		for (int i = 0; i < count; ++i)
-			files[i] = is.readUnsignedShort();
-
-		def.setFileIds(files);
-
-		if (count > 1)
-		{
-			def.field1780 = new int[count - 1];
-
-			for (int var3 = 0; var3 < count - 1; ++var3)
-			{
-				def.field1780[var3] = is.readUnsignedByte();
-			}
-		}
-
-		if (count > 1)
-		{
-			def.field1781 = new int[count - 1];
-
-			for (int var3 = 0; var3 < count - 1; ++var3)
-			{
-				def.field1781[var3] = is.readUnsignedByte();
-			}
-		}
-
-		def.field1786 = new int[count];
-
-		for (int var3 = 0; var3 < count; ++var3)
-		{
-			def.field1786[var3] = is.readInt();
-		}
-
-		def.field1783 = is.readUnsignedByte();
-		def.field1782 = is.readUnsignedByte();
-
-		return def;
+		graphicsPixels = var0;
+		graphicsPixelsWidth = var1;
+		graphicsPixelsHeight = var2;
+		setDrawRegion(0, 0, var1, var2);
 	}
+
+	public void setDrawRegion(int var0, int var1, int var2, int var3)
+	{
+		if (var0 < 0)
+		{
+			var0 = 0;
+		}
+
+		if (var1 < 0)
+		{
+			var1 = 0;
+		}
+
+		if (var2 > graphicsPixelsWidth)
+		{
+			var2 = graphicsPixelsWidth;
+		}
+
+		if (var3 > graphicsPixelsHeight)
+		{
+			var3 = graphicsPixelsHeight;
+		}
+
+		draw_region_x = var0;
+		drawingAreaTop = var1;
+		drawingAreaRight = var2;
+		drawingAreaBottom = var3;
+	}
+
+	public void reset()
+	{
+		int var0 = 0;
+
+		int var1;
+		for (var1 = graphicsPixelsWidth * graphicsPixelsHeight - 7; var0 < var1; graphicsPixels[var0++] = 0)
+		{
+			graphicsPixels[var0++] = 0;
+			graphicsPixels[var0++] = 0;
+			graphicsPixels[var0++] = 0;
+			graphicsPixels[var0++] = 0;
+			graphicsPixels[var0++] = 0;
+			graphicsPixels[var0++] = 0;
+			graphicsPixels[var0++] = 0;
+		}
+
+		for (var1 += 7; var0 < var1; graphicsPixels[var0++] = 0)
+		{
+			;
+		}
+
+	}
+
 }

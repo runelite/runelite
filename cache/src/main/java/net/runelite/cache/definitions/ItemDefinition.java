@@ -101,4 +101,23 @@ public class ItemDefinition
 	public int placeholderTemplateId = -1;
 
 	public Map<Integer, Object> params = null;
+
+	public void updateNote(ItemDefinition notedItem, ItemDefinition unnotedItem)
+	{
+		this.inventoryModel = notedItem.inventoryModel;
+		this.zoom2d = notedItem.zoom2d;
+		this.xan2d = notedItem.xan2d;
+		this.yan2d = notedItem.yan2d;
+		this.zan2d = notedItem.zan2d;
+		this.xOffset2d = notedItem.xOffset2d;
+		this.yOffset2d = notedItem.yOffset2d;
+		this.colorFind = notedItem.colorFind;
+		this.colorReplace = notedItem.colorReplace;
+		this.textureFind = notedItem.textureFind;
+		this.textureReplace = notedItem.textureReplace;
+		this.name = unnotedItem.name;
+		this.members = unnotedItem.members;
+		this.cost = unnotedItem.cost;
+		this.stackable = 1;
+	}
 }
