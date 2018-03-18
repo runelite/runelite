@@ -39,23 +39,13 @@ public class ModelDefinition
 	public int[] faceSkins;
 
 	public byte priority;
-	public int shadowIntensity;
 
-	public int anInt2562;
-	public short aShort2565;
-	boolean aBool2579;
 	public short[] aShortArray2574;
 	public short[] aShortArray2575;
 	public short[] aShortArray2577;
 	public short[] aShortArray2578;
 	public byte[] aByteArray2580;
-	public int[][] anIntArrayArray2583;
-	public int[][] anIntArrayArray2584;
 	public short[] aShortArray2586;
-	public short aShort2589;
-	public int anInt2592;
-	public int anInt2593;
-	public int anInt2595;
 
 	public void computeNormals()
 	{
@@ -344,5 +334,44 @@ public class ModelDefinition
 		vertexNormals = null;
 		faceNormals = null;
 		faceTextureUCoordinates = faceTextureVCoordinates = null;
+	}
+
+	public void resize(int var1, int var2, int var3)
+	{
+		for (int var4 = 0; var4 < this.vertexCount; ++var4)
+		{
+			this.vertexPositionsX[var4] = this.vertexPositionsX[var4] * var1 / 128;
+			this.vertexPositionsY[var4] = var2 * this.vertexPositionsY[var4] / 128;
+			this.vertexPositionsZ[var4] = var3 * this.vertexPositionsZ[var4] / 128;
+		}
+
+		reset();
+	}
+
+	public void recolor(short var1, short var2)
+	{
+		for (int var3 = 0; var3 < this.faceCount; ++var3)
+		{
+			if (this.faceColors[var3] == var1)
+			{
+				this.faceColors[var3] = var2;
+			}
+		}
+
+	}
+
+	public void retexture(short var1, short var2)
+	{
+		if (this.faceTextures != null)
+		{
+			for (int var3 = 0; var3 < this.faceCount; ++var3)
+			{
+				if (this.faceTextures[var3] == var1)
+				{
+					this.faceTextures[var3] = var2;
+				}
+			}
+
+		}
 	}
 }
