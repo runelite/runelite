@@ -61,7 +61,7 @@ public class BankItemQuery extends WidgetItemQuery
 			Widget[] children = bank.getDynamicChildren();
 			for (int i = 0; i < children.length; i++)
 			{
-				if (children[i].getItemId() == ITEM_EMPTY)
+				if (children[i].getItemId() == ITEM_EMPTY || children[i].isHidden())
 				{
 					continue;
 				}
