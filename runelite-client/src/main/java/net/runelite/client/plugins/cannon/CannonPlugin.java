@@ -27,6 +27,11 @@ package net.runelite.client.plugins.cannon;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -51,6 +56,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -76,6 +82,9 @@ public class CannonPlugin extends Plugin
 	@Getter
 	private GameObject cannon;
 
+	@Getter
+	private List<WorldPoint> spotPoints = new ArrayList<>();
+
 	@Inject
 	private ItemManager itemManager;
 
@@ -87,6 +96,9 @@ public class CannonPlugin extends Plugin
 
 	@Inject
 	private CannonOverlay cannonOverlay;
+
+	@Inject
+	private CannonSpotOverlay cannonSpotOverlay;
 
 	@Inject
 	private CannonConfig config;
@@ -101,9 +113,9 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return cannonOverlay;
+		return Arrays.asList(cannonOverlay, cannonSpotOverlay);
 	}
 
 	@Override
@@ -133,6 +145,29 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void checkSpots()
+	{
+		if (!config.showCannonSpots())
+		{
+			return;
+		}
+
+		spotPoints.clear();
+		for (WorldPoint spot : CannonSpots.getCannonSpots())
+		{
+			if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
+			{
+				continue;
+			}
+
+			spotPoints.add(spot);
+		}
 	}
 
 	@Subscribe
@@ -197,7 +232,7 @@ public class CannonPlugin extends Plugin
 			if (m.find())
 			{
 				int amt = Integer.valueOf(m.group());
-				
+
 				// make sure cballs doesn't go above MAX_CBALLS
 				if (amt + cballsLeft > MAX_CBALLS)
 				{
