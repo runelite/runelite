@@ -138,6 +138,13 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightedItems",
+		name = "",
+		description = ""
+	)
+	void setHighlightedItem(String key);
+
+	@ConfigItem(
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
@@ -147,6 +154,13 @@ public interface GroundItemsConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(
+		keyName = "hiddenItems",
+		name = "",
+		description = ""
+	)
+	void setHiddenItems(String key);
 
 	@ConfigItem(
 		keyName = "defaultColor",
