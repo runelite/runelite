@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import java.util.ArrayList;
@@ -81,6 +82,12 @@ public class GroundItemsOverlay extends Overlay
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 
+	// Size of the hidden/highlight boxes
+	private static final int RECTANGLE_SIZE = 8;
+
+	private Rectangle itemHiddenBox;
+	private Rectangle itemHighlightBox;
+
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
@@ -123,6 +130,13 @@ public class GroundItemsOverlay extends Overlay
 		int upperX = min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
 		int upperY = min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
 
+		// Clear boxes
+		if (plugin.isHotKeyPressed())
+		{
+			plugin.getHiddenBoxes().clear();
+			plugin.getHighlightBoxes().clear();
+		}
+
 		for (int x = lowerX; x <= upperX; ++x)
 		{
 			for (int y = lowerY; y <= upperY; ++y)
@@ -151,7 +165,7 @@ public class GroundItemsOverlay extends Overlay
 
 					Integer currentQuantity = items.get(itemId);
 
-					if (config.showHighlightedOnly() ? plugin.isHighlighted(itemDefinition.getName()) : !plugin.isHidden(itemDefinition.getName()))
+					if ((config.showHighlightedOnly() ? plugin.isHighlighted(itemDefinition.getName()) : !plugin.isHidden(itemDefinition.getName())) || plugin.isHotKeyPressed())
 					{
 						if (itemDefinition.getNote() != -1)
 						{
@@ -257,13 +271,47 @@ public class GroundItemsOverlay extends Overlay
 					itemStringBuilder.setLength(0);
 
 					int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
+					int screenY = point.getY() - (STRING_GAP * i);
 
 					// Drawing the shadow for the text, 1px on both x and y
 					graphics.setColor(Color.BLACK);
-					graphics.drawString(itemString, screenX + 1, point.getY() - (STRING_GAP * i) + 1);
+					graphics.drawString(itemString, screenX + 1, screenY + 1);
 					// Drawing the text itself
 					graphics.setColor(textColor);
-					graphics.drawString(itemString, screenX, point.getY() - (STRING_GAP * i));
+					graphics.drawString(itemString, screenX, screenY);
+
+					if (plugin.isHotKeyPressed())
+					{
+						// Hidden box
+						itemHiddenBox = new Rectangle
+						(
+							screenX + fm.stringWidth(itemString),
+							screenY - (fm.getHeight() / 2) - fm.getDescent(),
+							RECTANGLE_SIZE,
+							fm.getHeight() / 2
+						);
+						plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
+
+						// Highlight box
+						itemHighlightBox = new Rectangle
+						(
+							screenX + fm.stringWidth(itemString) + RECTANGLE_SIZE + 2,
+							screenY - (fm.getHeight() / 2) - fm.getDescent(),
+							RECTANGLE_SIZE,
+							fm.getHeight() / 2
+						);
+						plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
+
+						Point mousePos = client.getMouseCanvasPosition();
+						boolean mouseInHiddenBox = itemHiddenBox.contains(mousePos.getX(), mousePos.getY());
+						boolean mouseInHighlightBox = itemHighlightBox.contains(mousePos.getX(), mousePos.getY());
+
+						// Draw hidden box
+						drawRectangle(graphics, itemHiddenBox, mouseInHiddenBox ? Color.RED : textColor, plugin.isHidden(item.getName()), true);
+
+						// Draw highlight box
+						drawRectangle(graphics, itemHighlightBox, mouseInHighlightBox ? Color.GREEN : textColor, plugin.isHighlighted(item.getName()), false);
+					}
 				}
 			}
 		}
@@ -294,6 +342,43 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return config.defaultColor();
 		}
+	}
+
+	private void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
+	{
+		graphics.setColor(Color.BLACK);
+		graphics.drawRect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+
+		graphics.setColor(color);
+		graphics.draw(rect);
+
+		if (inList)
+		{
+			graphics.fill(rect);
+		}
+
+		graphics.setColor(Color.WHITE);
+		// Minus symbol
+		graphics.drawLine
+		(
+			rect.x + 2,
+			rect.y + (RECTANGLE_SIZE / 2),
+			rect.x + RECTANGLE_SIZE - 2,
+			rect.y + (RECTANGLE_SIZE / 2)
+		);
+
+		if (!hiddenBox)
+		{
+			// Plus symbol
+			graphics.drawLine
+			(
+				rect.x + (RECTANGLE_SIZE / 2),
+				rect.y + 2,
+				rect.x + (RECTANGLE_SIZE / 2),
+				rect.y + RECTANGLE_SIZE - 2
+			);
+		}
+
 	}
 
 }
