@@ -58,12 +58,12 @@ public class StackFormatter
 	 * @return A condensed version, with commas, K, M or B
 	 * as needed to 3 significant figures.
 	 */
-	public static String quantityToStackSize(int quantity)
+	public static String quantityToStackSize(long quantity)
 	{
 		if (quantity < 0)
 		{
-			// Integer.MIN_VALUE = -1 * Integer.MIN_VALUE so we need to correct for it.
-			return "-" + quantityToStackSize(quantity == Integer.MIN_VALUE ? Integer.MAX_VALUE : -quantity);
+			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
+			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
 		}
 		else if (quantity < 10_000)
 		{
@@ -71,14 +71,14 @@ public class StackFormatter
 		}
 
 		String suffix = SUFFIXES[0];
-		int divideBy = 1;
+		long divideBy = 1;
 
 		// determine correct suffix by iterating backward through the list
 		// of suffixes until the suffix results in a value >= 1
 		for (int i = (SUFFIXES.length - 1); i >= 0; i--)
 		{
-			divideBy = (int) Math.pow(10, i * 3);
-			if ((float) quantity / divideBy >= 1)
+			divideBy = (long) Math.pow(10, i * 3);
+			if ((double) quantity / divideBy >= 1)
 			{
 				suffix = SUFFIXES[i];
 				break;
@@ -86,7 +86,7 @@ public class StackFormatter
 		}
 
 		// get locale formatted string
-		String formattedString = NUMBER_FORMATTER.format((float) quantity / divideBy);
+		String formattedString = NUMBER_FORMATTER.format((double) quantity / divideBy);
 
 		// strip down any digits past the 4 first
 		formattedString = (formattedString.length() > 4 ? formattedString.substring(0, 4) : formattedString);
