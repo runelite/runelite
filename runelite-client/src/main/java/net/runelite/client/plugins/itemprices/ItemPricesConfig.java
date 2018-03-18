@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.itemprices;
 
-public enum InventoryID
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "itemprices",
+	name = "Item Prices",
+	description = "Configuration for the Item Prices plugin"
+)
+public interface ItemPricesConfig extends Config
 {
-	INVENTORY(93),
-	EQUIPMENT(94),
-	BANK(95),
-	PUZZLE_BOX(140);
-
-	private final int id;
-
-	InventoryID(int id)
+	@ConfigItem(
+		keyName = "showGEPrice",
+		name = "Show Grand Exchange Prices",
+		description = "Grand exchange prices should be shown on tooltips",
+		position = 1
+	)
+	default boolean showGEPrice()
 	{
-		this.id = id;
+		return true;
 	}
 
-	public int getId()
+	@ConfigItem(
+		keyName = "showHAValue",
+		name = "Show High Alchemy Values",
+		description = "High Alchemy values should be shown on tooltips",
+		position = 2
+	)
+	default boolean showHAValue()
 	{
-		return id;
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showEA",
+		name = "Show Price Each on Stacks",
+		description = "The price/value of each item should be shown on stacks",
+		position = 3
+	)
+	default boolean showEA()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideInventory",
+		name = "Hide Tooltips on Inventory Items",
+		description = "Tooltips should be hidden on items in the inventory",
+		position = 4
+	)
+	default boolean hideInventory()
+	{
+		return true;
 	}
 }
