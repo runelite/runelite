@@ -29,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -65,6 +66,42 @@ public class ItemClient
 
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public ItemPrice[] lookupItemPrice(Integer[] itemIds) throws IOException
+	{
+		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
+				.addPathSegment("item")
+				.addPathSegment("price");
+
+		for (int itemId : itemIds)
+		{
+			urlBuilder.addQueryParameter("id", String.valueOf(itemId));
+		}
+
+		HttpUrl url = urlBuilder.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error looking up items {}: {}", Arrays.toString(itemIds), response.message());
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class);
 		}
 		catch (JsonParseException ex)
 		{
