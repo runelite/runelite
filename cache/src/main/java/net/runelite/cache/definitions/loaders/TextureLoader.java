@@ -38,7 +38,8 @@ public class TextureLoader
 		TextureDefinition def = new TextureDefinition();
 		InputStream is = new InputStream(b);
 
-		is.skip(3);
+		def.field1777 = is.readUnsignedShort();
+		def.field1778 = is.readByte() != 0;
 		def.setId(id);
 
 		int count = is.readUnsignedByte();
@@ -48,6 +49,36 @@ public class TextureLoader
 			files[i] = is.readUnsignedShort();
 
 		def.setFileIds(files);
+
+		if (count > 1)
+		{
+			def.field1780 = new int[count - 1];
+
+			for (int var3 = 0; var3 < count - 1; ++var3)
+			{
+				def.field1780[var3] = is.readUnsignedByte();
+			}
+		}
+
+		if (count > 1)
+		{
+			def.field1781 = new int[count - 1];
+
+			for (int var3 = 0; var3 < count - 1; ++var3)
+			{
+				def.field1781[var3] = is.readUnsignedByte();
+			}
+		}
+
+		def.field1786 = new int[count];
+
+		for (int var3 = 0; var3 < count; ++var3)
+		{
+			def.field1786[var3] = is.readInt();
+		}
+
+		def.field1783 = is.readUnsignedByte();
+		def.field1782 = is.readUnsignedByte();
 
 		return def;
 	}
