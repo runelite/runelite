@@ -325,7 +325,7 @@ public class HiscorePanel extends PluginPanel
 						+ "Rank: " + rank;
 				break;
 			}
-			default:
+			case "Overall":
 			{
 				Skill requestedSkill = result.getSkill(skill);
 				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
@@ -333,6 +333,27 @@ public class HiscorePanel extends PluginPanel
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
 					+ "Experience: " + exp;
+				break;
+			}
+			default:
+			{
+				Skill requestedSkill = result.getSkill(skill);
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getExperience());
+				String remainingXp;
+				if (requestedSkill.getRank() == -1)
+				{
+					remainingXp = "Unranked";
+				}
+				else
+				{
+					int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
+					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? NUMBER_FORMATTER.format(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+				}
+				text = "Skill: " + skillName + System.lineSeparator()
+					+ "Rank: " + rank + System.lineSeparator()
+					+ "Experience: " + exp + System.lineSeparator()
+					+ "Remaining XP: " + remainingXp;
 				break;
 			}
 		}
