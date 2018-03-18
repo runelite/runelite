@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +23,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.bankvalue;
 
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-public class BankItemQuery extends WidgetItemQuery
+@PluginDescriptor(name = "Bank Value")
+public class BankValuePlugin extends Plugin
 {
-	private static final int ITEM_EMPTY = 6512;
+	@Inject
+	private Client client;
 
-	@Override
-	public WidgetItem[] result(Client client)
+	@Inject
+	private BankCalculation bankCalculation;
+
+	@Inject
+	private BankTitle bankTitle;
+
+	@Provides
+	BankValueConfig getConfig(ConfigManager configManager)
 	{
-		Collection<WidgetItem> widgetItems = getBankItems(client);
-		if (widgetItems != null)
-		{
-			return widgetItems.stream()
-				.filter(Objects::nonNull)
-				.filter(predicate)
-				.toArray(WidgetItem[]::new);
-		}
-		return new WidgetItem[0];
+		return configManager.getConfig(BankValueConfig.class);
 	}
 
-	private Collection<WidgetItem> getBankItems(Client client)
+	@Override
+	protected void shutDown()
 	{
-		Collection<WidgetItem> widgetItems = new ArrayList<>();
-		Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		if (bank != null && !bank.isHidden())
+		bankTitle.reset();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+
+		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
 		{
-			Widget[] children = bank.getDynamicChildren();
-			for (int i = 0; i < children.length; i++)
-			{
-				if (children[i].getItemId() == ITEM_EMPTY || children[i].isHidden())
-				{
-					continue;
-				}
-				// set bounds to same size as default inventory
-				Rectangle bounds = children[i].getBounds();
-				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
-				// Index is set to 0 because the widget's index does not correlate to the order in the bank
-				widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), 0, bounds));
-			}
+			return;
 		}
-		return widgetItems;
+
+		bankTitle.save();
+		bankCalculation.calculate();
+		if (bankCalculation.isFinished())
+		{
+			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
+		}
 	}
 }
