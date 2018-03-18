@@ -78,7 +78,7 @@ public class class81 {
 
          var1.post();
          if(var1.notedTemplate != -1) {
-            var1.method5042(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
+            var1.updateNote(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
          }
 
          if(var1.notedId != -1) {
