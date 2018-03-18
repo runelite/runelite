@@ -34,6 +34,7 @@ import java.util.Map;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.definitions.exporters.ItemExporter;
 import net.runelite.cache.definitions.loaders.ItemLoader;
+import net.runelite.cache.definitions.providers.ItemProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -42,7 +43,7 @@ import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
 
-public class ItemManager
+public class ItemManager implements ItemProvider
 {
 	private final Store store;
 	private final Map<Integer, ItemDefinition> items = new HashMap<>();
@@ -123,5 +124,11 @@ public class ItemManager
 			}
 			fw.println("}");
 		}
+	}
+
+	@Override
+	public ItemDefinition provide(int itemId)
+	{
+		return getItem(itemId);
 	}
 }
