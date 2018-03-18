@@ -48,7 +48,7 @@ public class ExamineService
 	private static final Logger logger = LoggerFactory.getLogger(ExamineService.class);
 
 	private static final String CREATE_EXAMINE = "CREATE TABLE IF NOT EXISTS `examine` (\n"
-		+ "  `type` enum('OBJECT','NPC','ID','') NOT NULL,\n"
+		+ "  `type` enum('OBJECT','NPC','ITEM') NOT NULL,\n"
 		+ "  `id` int(11) NOT NULL,\n"
 		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
 		+ "  `count` int(11) NOT NULL,\n"
