@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.bankvalue;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@AllArgsConstructor
-@Getter
-public enum Setting
+@ConfigGroup(
+	keyName = "bankvalue",
+	name = "Bank Value",
+	description = "Shows the value of your bank and/or current tab")
+public interface BankValueConfig extends Config
 {
-	ATTACK_STYLE(43),
+	@ConfigItem(
+		keyName = "showGE",
+		name = "Show Grand Exchange price",
+		description = "Show grand exchange price total (GE)")
+	default boolean showGE()
+	{
+		return true;
+	}
 
-	BANK_TAB(115),
-
-	SPECIAL_ATTACK_PERCENT(300),
-	SPECIAL_ATTACK_ENABLED(301),
-
-	IN_RAID_PARTY(1427);
-
-	private final int id;
+	@ConfigItem(
+		keyName = "showHA",
+		name = "Show high alchemy price",
+		description = "Show high alchemy price total (HA)")
+	default boolean showHA()
+	{
+		return false;
+	}
 }
