@@ -134,7 +134,7 @@ public final class BoundingBox3D extends BoundingBox {
          if(var13.mapSceneId != -1) {
             IndexedSprite var14 = class318.mapscene[var13.mapSceneId];
             if(var14 != null) {
-               int var15 = (var13.width * 4 - var14.originalWidth) / 2;
+               int var15 = (var13.width * 4 - var14.width) / 2;
                int var16 = (var13.length * 4 - var14.height) / 2;
                var14.method5806(var1 * 4 + var15 + 48, (104 - var2 - var13.length) * 4 + var16 + 48);
             }
@@ -212,7 +212,7 @@ public final class BoundingBox3D extends BoundingBox {
          if(var23.mapSceneId != -1) {
             IndexedSprite var17 = class318.mapscene[var23.mapSceneId];
             if(var17 != null) {
-               var12 = (var23.width * 4 - var17.originalWidth) / 2;
+               var12 = (var23.width * 4 - var17.width) / 2;
                var18 = (var23.length * 4 - var17.height) / 2;
                var17.method5806(var1 * 4 + var12 + 48, var18 + (104 - var2 - var23.length) * 4 + 48);
             }
@@ -245,7 +245,7 @@ public final class BoundingBox3D extends BoundingBox {
          if(var19.mapSceneId != -1) {
             IndexedSprite var20 = class318.mapscene[var19.mapSceneId];
             if(var20 != null) {
-               var9 = (var19.width * 4 - var20.originalWidth) / 2;
+               var9 = (var19.width * 4 - var20.width) / 2;
                int var21 = (var19.length * 4 - var20.height) / 2;
                var20.method5806(var9 + var1 * 4 + 48, var21 + (104 - var2 - var19.length) * 4 + 48);
             }

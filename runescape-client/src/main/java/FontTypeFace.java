@@ -230,7 +230,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         if(var7.startsWith("img=")) {
                            try {
                               int var8 = class158.method3176(var7.substring(4));
-                              var4 += modIcons[var8].width;
+                              var4 += modIcons[var8].originalWidth;
                               var3 = -1;
                            } catch (Exception var10) {
                               ;
@@ -313,7 +313,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                   } else if(var16.startsWith("img=")) {
                      try {
                         int var17 = class158.method3176(var16.substring(4));
-                        var4 += modIcons[var17].width;
+                        var4 += modIcons[var17].originalWidth;
                         var11 = 0;
                      } catch (Exception var20) {
                         ;
@@ -648,7 +648,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                               var9 = class158.method3176(var8.substring(4));
                               IndexedSprite var10 = modIcons[var9];
                               var10.method5806(var2, var3 + this.verticalSpace - var10.originalHeight);
-                              var2 += var10.width;
+                              var2 += var10.originalWidth;
                               var5 = -1;
                            } catch (Exception var14) {
                               ;
@@ -754,7 +754,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                               var14 = class158.method3176(var11.substring(4));
                               IndexedSprite var15 = modIcons[var14];
                               var15.method5806(var12 + var2, var13 + (var3 + this.verticalSpace - var15.originalHeight));
-                              var2 += var15.width;
+                              var2 += var15.originalWidth;
                               var7 = -1;
                            } catch (Exception var19) {
                               ;

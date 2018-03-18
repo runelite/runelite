@@ -148,18 +148,18 @@ public final class Item extends Renderable {
    )
    static SpritePixels method1973() {
       SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class332.field3995;
-      var0.maxHeight = class332.field3996;
-      var0.offsetX = class90.field1360[0];
-      var0.offsetY = class153.offsetsY[0];
-      var0.width = class332.field3998[0];
-      var0.height = GrandExchangeOffer.field294[0];
+      var0.maxWidth = class332.indexedSpriteWidth;
+      var0.maxHeight = class332.indexedSpriteHeight;
+      var0.offsetX = class90.indexedSpriteOffsetXs[0];
+      var0.offsetY = class153.indexedSpriteOffsetYs[0];
+      var0.width = class332.indexSpriteWidths[0];
+      var0.height = GrandExchangeOffer.indexedSpriteHeights[0];
       int var1 = var0.height * var0.width;
       byte[] var2 = ClassInfo.spritePixels[0];
       var0.pixels = new int[var1];
 
       for(int var3 = 0; var3 < var1; ++var3) {
-         var0.pixels[var3] = class332.field3994[var2[var3] & 255];
+         var0.pixels[var3] = class332.indexedSpritePalette[var2[var3] & 255];
       }
 
       class316.method5605();

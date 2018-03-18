@@ -106,13 +106,13 @@ public class class279 extends CacheableNode {
          return null;
       } else {
          IndexedSprite var3 = new IndexedSprite();
-         var3.width = class332.field3995;
-         var3.originalHeight = class332.field3996;
-         var3.offsetX = class90.field1360[0];
-         var3.offsetY = class153.offsetsY[0];
-         var3.originalWidth = class332.field3998[0];
-         var3.height = GrandExchangeOffer.field294[0];
-         var3.palette = class332.field3994;
+         var3.originalWidth = class332.indexedSpriteWidth;
+         var3.originalHeight = class332.indexedSpriteHeight;
+         var3.offsetX = class90.indexedSpriteOffsetXs[0];
+         var3.offsetY = class153.indexedSpriteOffsetYs[0];
+         var3.width = class332.indexSpriteWidths[0];
+         var3.height = GrandExchangeOffer.indexedSpriteHeights[0];
+         var3.palette = class332.indexedSpritePalette;
          var3.pixels = ClassInfo.spritePixels[0];
          class316.method5605();
          return var3;

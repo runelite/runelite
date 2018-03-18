@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -7,19 +8,24 @@ public class class332 {
    @ObfuscatedGetter(
       intValue = -1166229263
    )
-   static int field3997;
+   @Export("indexedSpriteCount")
+   static int indexedSpriteCount;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1805726131
    )
-   static int field3995;
+   @Export("indexedSpriteWidth")
+   static int indexedSpriteWidth;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1795657731
    )
-   static int field3996;
+   @Export("indexedSpriteHeight")
+   static int indexedSpriteHeight;
    @ObfuscatedName("b")
-   static int[] field3998;
+   @Export("indexSpriteWidths")
+   static int[] indexSpriteWidths;
    @ObfuscatedName("x")
-   static int[] field3994;
+   @Export("indexedSpritePalette")
+   static int[] indexedSpritePalette;
 }

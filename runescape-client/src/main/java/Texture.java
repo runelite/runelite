@@ -135,11 +135,11 @@ public class Texture extends Node {
          }
 
          if(var11 == 0) {
-            if(var3 == var7.originalWidth) {
+            if(var3 == var7.width) {
                for(var12 = 0; var12 < var5; ++var12) {
                   this.pixels[var12] = var9[var8[var12] & 255];
                }
-            } else if(var7.originalWidth == 64 && var3 == 128) {
+            } else if(var7.width == 64 && var3 == 128) {
                var12 = 0;
 
                for(var13 = 0; var13 < var3; ++var13) {
@@ -148,7 +148,7 @@ public class Texture extends Node {
                   }
                }
             } else {
-               if(var7.originalWidth != 128 || var3 != 64) {
+               if(var7.width != 128 || var3 != 64) {
                   throw new RuntimeException();
                }
 

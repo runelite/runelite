@@ -392,7 +392,7 @@ public class class49 implements WorldMapSectionBase {
          if(var3) {
             Item.field1387.method5830(class90.field1323, 0);
             class237.field2773.method5830(class90.field1323 + 382, 0);
-            class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.originalWidth / 2, 18);
+            class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.width / 2, 18);
          }
 
          if(Client.gameState == 0 || Client.gameState == 5) {
@@ -410,7 +410,7 @@ public class class49 implements WorldMapSectionBase {
          short var28;
          short var30;
          if(Client.gameState == 20) {
-            class90.field1324.method5806(class90.loginWindowX + 180 - class90.field1324.originalWidth / 2, 271 - class90.field1324.height / 2);
+            class90.field1324.method5806(class90.loginWindowX + 180 - class90.field1324.width / 2, 271 - class90.field1324.height / 2);
             var28 = 201;
             var0.drawTextCentered(class90.loginMessage1, class90.loginWindowX + 180, var28, 16776960, 0);
             var29 = var28 + 15;
@@ -490,14 +490,14 @@ public class class49 implements WorldMapSectionBase {
                boolean var10 = class90.field1348;
                IndexedSprite var23 = var9?(var10?class90.field1331:class90.field1326):(var10?class160.field2132:FaceNormal.field2035);
                var23.method5806(var7, var28);
-               var7 = var7 + var23.originalWidth + 5;
+               var7 = var7 + var23.width + 5;
                var1.method5500("Remember username", var7, var28 + 13, 16776960, 0);
                var7 = Coordinates.field2778 + 24;
                boolean var13 = MapIcon.preferences.hideUsername;
                boolean var14 = class90.field1327;
                IndexedSprite var25 = var13?(var14?class90.field1331:class90.field1326):(var14?class160.field2132:FaceNormal.field2035);
                var25.method5806(var7, var28);
-               var7 = var7 + var25.originalWidth + 5;
+               var7 = var7 + var25.width + 5;
                var1.method5500("Hide username", var7, var28 + 13, 16776960, 0);
                var29 = var28 + 15;
                int var15 = Coordinates.field2778 - 80;

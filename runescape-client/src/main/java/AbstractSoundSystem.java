@@ -506,7 +506,7 @@ public class AbstractSoundSystem {
          if(var6 == null) {
             var8 = null;
          } else {
-            Font var7 = new Font(var6, class90.field1360, class153.offsetsY, class332.field3998, GrandExchangeOffer.field294, class332.field3994, ClassInfo.spritePixels);
+            Font var7 = new Font(var6, class90.indexedSpriteOffsetXs, class153.indexedSpriteOffsetYs, class332.indexSpriteWidths, GrandExchangeOffer.indexedSpriteHeights, class332.indexedSpritePalette, ClassInfo.spritePixels);
             class316.method5605();
             var8 = var7;
          }

@@ -132,7 +132,7 @@ public class GrandExchangeEvents {
          class160.field2132 = Renderable.getSprite(var1, "options_radio_buttons,4", "");
          class90.field1326 = Renderable.getSprite(var1, "options_radio_buttons,2", "");
          class90.field1331 = Renderable.getSprite(var1, "options_radio_buttons,6", "");
-         class7.field221 = FaceNormal.field2035.originalWidth;
+         class7.field221 = FaceNormal.field2035.width;
          class279.field3554 = FaceNormal.field2035.height;
          MapLabel.field448 = new int[256];
 
@@ -223,7 +223,7 @@ public class GrandExchangeEvents {
          Coordinates.field2778 = class90.loginWindowX + 180;
          Item.field1387.method5830(class90.field1323, 0);
          class237.field2773.method5830(class90.field1323 + 382, 0);
-         class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.originalWidth / 2, 18);
+         class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.width / 2, 18);
       }
    }
 
