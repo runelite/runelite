@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import java.awt.event.MouseAdapter;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
@@ -93,6 +94,8 @@ public class HiscorePanel extends PluginPanel
 	private final JPanel statsPanel = new JPanel();
 	private final ButtonGroup endpointButtonGroup = new ButtonGroup();
 	private final JTextArea details = new JTextArea();
+
+	private List<JToggleButton> endpointButtons;
 
 	private final HiscoreClient client = new HiscoreClient();
 	private HiscoreResult result;
@@ -217,30 +220,33 @@ public class HiscorePanel extends PluginPanel
 		JPanel endpointPanel = new JPanel();
 		endpointPanel.setBorder(subPanelBorder);
 
-		List<JToggleButton> endpointButtons = new ArrayList<>();
-
+		endpointButtons = new ArrayList<>();
 		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
 		{
 			try
 			{
 				BufferedImage iconImage;
-				BufferedImage selectedImage;
 				synchronized (ImageIO.class)
 				{
 					iconImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
 						endpoint.name().toLowerCase() + ".png"));
-					selectedImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
-						endpoint.name().toLowerCase() + "_selected.png"));
 				}
 				JToggleButton button = new JToggleButton();
 				button.setIcon(new ImageIcon(iconImage));
-				button.setSelectedIcon(new ImageIcon(selectedImage));
 				button.setPreferredSize(new Dimension(24, 24));
 				button.setBackground(Color.WHITE);
 				button.setFocusPainted(false);
 				button.setActionCommand(endpoint.name());
 				button.setToolTipText(endpoint.getName() + " Hiscores");
 				button.addActionListener((e -> executor.execute(this::lookup)));
+				button.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseReleased(MouseEvent e)
+					{
+						updateButtons();
+					}
+				});
 				endpointButtons.add(button);
 				endpointButtonGroup.add(button);
 				endpointPanel.add(button);
@@ -252,6 +258,7 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		endpointButtons.get(0).setSelected(true);
+		endpointButtons.get(0).setBackground(Color.CYAN);
 
 		c.gridx = 0;
 		c.gridy = 5;
@@ -456,5 +463,22 @@ public class HiscorePanel extends PluginPanel
 	private static String sanitize(String lookup)
 	{
 		return lookup.replace('\u00A0', ' ');
+	}
+
+	private void updateButtons()
+	{
+		for (JToggleButton button : endpointButtons)
+		{
+			Color color;
+			if (button.isSelected())
+			{
+				color = Color.CYAN;
+			}
+			else
+			{
+				color = Color.WHITE;
+			}
+			button.setBackground(color);
+		}
 	}
 }
