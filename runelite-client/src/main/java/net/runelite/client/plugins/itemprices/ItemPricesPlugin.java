@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.itemprices;
 
-public enum InventoryID
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
+
+@PluginDescriptor(
+	name = "Item Prices",
+	enabledByDefault = false
+)
+public class ItemPricesPlugin extends Plugin
 {
-	INVENTORY(93),
-	EQUIPMENT(94),
-	BANK(95),
-	PUZZLE_BOX(140);
+	@Inject
+	private ItemPricesConfig config;
+	@Inject
+	private ItemPricesOverlay overlay;
 
-	private final int id;
-
-	InventoryID(int id)
+	@Provides
+	ItemPricesConfig getConfig(ConfigManager configManager)
 	{
-		this.id = id;
+		return configManager.getConfig(ItemPricesConfig.class);
 	}
 
-	public int getId()
+	@Override
+	public Overlay getOverlay()
 	{
-		return id;
+		return overlay;
 	}
 }

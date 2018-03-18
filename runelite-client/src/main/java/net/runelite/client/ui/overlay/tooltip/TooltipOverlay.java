@@ -57,14 +57,14 @@ public class TooltipOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		List<Tooltip> tooltips = tooltipManager.getTooltips();
+		final List<Tooltip> tooltips = tooltipManager.getTooltips();
 
 		if (tooltips.isEmpty())
 		{
 			return null;
 		}
 
-		final Rectangle lastLocation = new Rectangle();
+		Rectangle lastLocation = null;
 
 		for (Tooltip tooltip : tooltips)
 		{
@@ -88,14 +88,26 @@ public class TooltipOverlay extends Overlay
 				position.setLocation(tooltip.getPosition());
 			}
 
-			if (lastLocation.contains(position))
+			// check if this tooltip would overlap the last
+			if (lastLocation != null && lastLocation.contains(position))
 			{
+				// shift tooltip above previous
 				position.translate(0, -lastLocation.height - PADDING);
 			}
 
+			// render tooltip
 			tooltipComponent.setPosition(position);
-			lastLocation.setLocation(position);
-			lastLocation.setSize(tooltipComponent.render(graphics, parent));
+			final Dimension thisSize = tooltipComponent.render(graphics, parent);
+
+			// update tooltip bounding rect
+			if (lastLocation == null)
+			{
+				lastLocation = new Rectangle(position, thisSize);
+			}
+			else
+			{
+				lastLocation.setSize(new Dimension(Math.max(lastLocation.width, thisSize.width), lastLocation.height + thisSize.height + PADDING));
+			}
 		}
 
 		tooltipManager.clear();
