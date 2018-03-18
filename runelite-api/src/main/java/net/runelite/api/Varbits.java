@@ -249,7 +249,7 @@ public enum Varbits
 	BLAST_FURNACE_RUNITE_BAR(946),
 	BLAST_FURNACE_SILVER_BAR(948),
 	BLAST_FURNACE_GOLD_BAR(947),
-
+	
 	BLAST_FURNACE_COFFER(5357),
 
 	/**
@@ -261,7 +261,13 @@ public enum Varbits
 	/**
 	 * Multicombat area
 	 */
-	MULTICOMBAT_AREA(4605);
+	MULTICOMBAT_AREA(4605),
+
+	/**
+	 * Kingdom Management
+	 */
+	KINGDOM_FAVOR(72),
+	KINGDOM_COFFER(74);
 
 	/**
 	 * varbit id
