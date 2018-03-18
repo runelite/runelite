@@ -136,14 +136,14 @@ public class class195 {
                         class90.worldSelectShown = false;
                         Item.field1387.method5830(class90.field1323, 0);
                         class237.field2773.method5830(class90.field1323 + 382, 0);
-                        class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.originalWidth / 2, 18);
+                        class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.width / 2, 18);
                      } else if(class90.field1322 != -1) {
                         World var15 = World.worldList[class90.field1322];
                         class45.changeWorld(var15);
                         class90.worldSelectShown = false;
                         Item.field1387.method5830(class90.field1323, 0);
                         class237.field2773.method5830(class90.field1323 + 382, 0);
-                        class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.originalWidth / 2, 18);
+                        class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.width / 2, 18);
                      }
                   }
                }

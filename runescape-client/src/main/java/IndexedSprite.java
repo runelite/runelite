@@ -12,8 +12,8 @@ public final class IndexedSprite extends Rasterizer2D {
    @Export("palette")
    public int[] palette;
    @ObfuscatedName("i")
-   @Export("originalWidth")
-   public int originalWidth;
+   @Export("width")
+   public int width;
    @ObfuscatedName("a")
    @Export("height")
    public int height;
@@ -24,8 +24,8 @@ public final class IndexedSprite extends Rasterizer2D {
    @Export("offsetY")
    public int offsetY;
    @ObfuscatedName("e")
-   @Export("width")
-   public int width;
+   @Export("originalWidth")
+   public int originalWidth;
    @ObfuscatedName("x")
    @Export("originalHeight")
    public int originalHeight;
@@ -33,18 +33,18 @@ public final class IndexedSprite extends Rasterizer2D {
    @ObfuscatedName("t")
    @Export("normalize")
    public void normalize() {
-      if(this.originalWidth != this.width || this.height != this.originalHeight) {
-         byte[] var1 = new byte[this.width * this.originalHeight];
+      if(this.width != this.originalWidth || this.height != this.originalHeight) {
+         byte[] var1 = new byte[this.originalWidth * this.originalHeight];
          int var2 = 0;
 
          for(int var3 = 0; var3 < this.height; ++var3) {
-            for(int var4 = 0; var4 < this.originalWidth; ++var4) {
-               var1[var4 + (var3 + this.offsetY) * this.width + this.offsetX] = this.pixels[var2++];
+            for(int var4 = 0; var4 < this.width; ++var4) {
+               var1[var4 + (var3 + this.offsetY) * this.originalWidth + this.offsetX] = this.pixels[var2++];
             }
          }
 
          this.pixels = var1;
-         this.originalWidth = this.width;
+         this.width = this.originalWidth;
          this.height = this.originalHeight;
          this.offsetX = 0;
          this.offsetY = 0;
@@ -90,7 +90,7 @@ public final class IndexedSprite extends Rasterizer2D {
       int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
       int var4 = 0;
       int var5 = this.height;
-      int var6 = this.originalWidth;
+      int var6 = this.width;
       int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
       int var8 = 0;
       int var9;
@@ -130,11 +130,11 @@ public final class IndexedSprite extends Rasterizer2D {
 
    @ObfuscatedName("l")
    public void method5823(int var1, int var2, int var3, int var4) {
-      int var5 = this.originalWidth;
+      int var5 = this.width;
       int var6 = this.height;
       int var7 = 0;
       int var8 = 0;
-      int var9 = this.width;
+      int var9 = this.originalWidth;
       int var10 = this.originalHeight;
       int var11 = (var9 << 16) / var3;
       int var12 = (var10 << 16) / var4;

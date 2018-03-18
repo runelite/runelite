@@ -19,7 +19,8 @@ public class class90 {
    )
    static IndexedSprite field1324;
    @ObfuscatedName("a")
-   static int[] field1360;
+   @Export("indexedSpriteOffsetXs")
+   static int[] indexedSpriteOffsetXs;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "[Llk;"

@@ -105,6 +105,8 @@ public class SpriteLoader
 			int dimension = spriteWidth * spriteHeight;
 			byte[] pixelPaletteIndicies = new byte[dimension];
 			byte[] pixelAlphas = new byte[dimension];
+			def.pixelIdx = pixelPaletteIndicies;
+			def.palette = palette;
 
 			int flags = is.readUnsignedByte();
 

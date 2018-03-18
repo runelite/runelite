@@ -14,7 +14,8 @@ public class GrandExchangeOffer {
    @Export("minimapSprite")
    static SpritePixels minimapSprite;
    @ObfuscatedName("e")
-   static int[] field294;
+   @Export("indexedSpriteHeights")
+   static int[] indexedSpriteHeights;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1094681987

@@ -1461,49 +1461,49 @@ public class Widget extends Node {
    static void decodeSprite(byte[] var0) {
       Buffer var1 = new Buffer(var0);
       var1.offset = var0.length - 2;
-      class332.field3997 = var1.readUnsignedShort();
-      class90.field1360 = new int[class332.field3997];
-      class153.offsetsY = new int[class332.field3997];
-      class332.field3998 = new int[class332.field3997];
-      GrandExchangeOffer.field294 = new int[class332.field3997];
-      ClassInfo.spritePixels = new byte[class332.field3997][];
-      var1.offset = var0.length - 7 - class332.field3997 * 8;
-      class332.field3995 = var1.readUnsignedShort();
-      class332.field3996 = var1.readUnsignedShort();
+      class332.indexedSpriteCount = var1.readUnsignedShort();
+      class90.indexedSpriteOffsetXs = new int[class332.indexedSpriteCount];
+      class153.indexedSpriteOffsetYs = new int[class332.indexedSpriteCount];
+      class332.indexSpriteWidths = new int[class332.indexedSpriteCount];
+      GrandExchangeOffer.indexedSpriteHeights = new int[class332.indexedSpriteCount];
+      ClassInfo.spritePixels = new byte[class332.indexedSpriteCount][];
+      var1.offset = var0.length - 7 - class332.indexedSpriteCount * 8;
+      class332.indexedSpriteWidth = var1.readUnsignedShort();
+      class332.indexedSpriteHeight = var1.readUnsignedShort();
       int var2 = (var1.readUnsignedByte() & 255) + 1;
 
       int var3;
-      for(var3 = 0; var3 < class332.field3997; ++var3) {
-         class90.field1360[var3] = var1.readUnsignedShort();
+      for(var3 = 0; var3 < class332.indexedSpriteCount; ++var3) {
+         class90.indexedSpriteOffsetXs[var3] = var1.readUnsignedShort();
       }
 
-      for(var3 = 0; var3 < class332.field3997; ++var3) {
-         class153.offsetsY[var3] = var1.readUnsignedShort();
+      for(var3 = 0; var3 < class332.indexedSpriteCount; ++var3) {
+         class153.indexedSpriteOffsetYs[var3] = var1.readUnsignedShort();
       }
 
-      for(var3 = 0; var3 < class332.field3997; ++var3) {
-         class332.field3998[var3] = var1.readUnsignedShort();
+      for(var3 = 0; var3 < class332.indexedSpriteCount; ++var3) {
+         class332.indexSpriteWidths[var3] = var1.readUnsignedShort();
       }
 
-      for(var3 = 0; var3 < class332.field3997; ++var3) {
-         GrandExchangeOffer.field294[var3] = var1.readUnsignedShort();
+      for(var3 = 0; var3 < class332.indexedSpriteCount; ++var3) {
+         GrandExchangeOffer.indexedSpriteHeights[var3] = var1.readUnsignedShort();
       }
 
-      var1.offset = var0.length - 7 - class332.field3997 * 8 - (var2 - 1) * 3;
-      class332.field3994 = new int[var2];
+      var1.offset = var0.length - 7 - class332.indexedSpriteCount * 8 - (var2 - 1) * 3;
+      class332.indexedSpritePalette = new int[var2];
 
       for(var3 = 1; var3 < var2; ++var3) {
-         class332.field3994[var3] = var1.read24BitInt();
-         if(class332.field3994[var3] == 0) {
-            class332.field3994[var3] = 1;
+         class332.indexedSpritePalette[var3] = var1.read24BitInt();
+         if(class332.indexedSpritePalette[var3] == 0) {
+            class332.indexedSpritePalette[var3] = 1;
          }
       }
 
       var1.offset = 0;
 
-      for(var3 = 0; var3 < class332.field3997; ++var3) {
-         int var4 = class332.field3998[var3];
-         int var5 = GrandExchangeOffer.field294[var3];
+      for(var3 = 0; var3 < class332.indexedSpriteCount; ++var3) {
+         int var4 = class332.indexSpriteWidths[var3];
+         int var5 = GrandExchangeOffer.indexedSpriteHeights[var3];
          int var6 = var5 * var4;
          byte[] var7 = new byte[var6];
          ClassInfo.spritePixels[var3] = var7;

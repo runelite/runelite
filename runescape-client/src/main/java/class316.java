@@ -30,11 +30,11 @@ public final class class316 {
       garbageValue = "4096"
    )
    static void method5605() {
-      class90.field1360 = null;
-      class153.offsetsY = null;
-      class332.field3998 = null;
-      GrandExchangeOffer.field294 = null;
-      class332.field3994 = null;
+      class90.indexedSpriteOffsetXs = null;
+      class153.indexedSpriteOffsetYs = null;
+      class332.indexSpriteWidths = null;
+      GrandExchangeOffer.indexedSpriteHeights = null;
+      class332.indexedSpritePalette = null;
       ClassInfo.spritePixels = null;
    }
 }

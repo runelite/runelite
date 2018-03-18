@@ -141,17 +141,17 @@ public class class304 extends NameableContainer {
       garbageValue = "1678133732"
    )
    static IndexedSprite[] method5411() {
-      IndexedSprite[] var0 = new IndexedSprite[class332.field3997];
+      IndexedSprite[] var0 = new IndexedSprite[class332.indexedSpriteCount];
 
-      for(int var1 = 0; var1 < class332.field3997; ++var1) {
+      for(int var1 = 0; var1 < class332.indexedSpriteCount; ++var1) {
          IndexedSprite var2 = var0[var1] = new IndexedSprite();
-         var2.width = class332.field3995;
-         var2.originalHeight = class332.field3996;
-         var2.offsetX = class90.field1360[var1];
-         var2.offsetY = class153.offsetsY[var1];
-         var2.originalWidth = class332.field3998[var1];
-         var2.height = GrandExchangeOffer.field294[var1];
-         var2.palette = class332.field3994;
+         var2.originalWidth = class332.indexedSpriteWidth;
+         var2.originalHeight = class332.indexedSpriteHeight;
+         var2.offsetX = class90.indexedSpriteOffsetXs[var1];
+         var2.offsetY = class153.indexedSpriteOffsetYs[var1];
+         var2.width = class332.indexSpriteWidths[var1];
+         var2.height = GrandExchangeOffer.indexedSpriteHeights[var1];
+         var2.palette = class332.indexedSpritePalette;
          var2.pixels = ClassInfo.spritePixels[var1];
       }
 

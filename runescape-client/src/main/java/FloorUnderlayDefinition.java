@@ -213,7 +213,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
          var2 = 0;
 
          for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
+            for(var4 = 0; var4 < var0.width; ++var4) {
                if(var0.pixels[var2++] != 0) {
                   var5 = var4 + var0.offsetX + 16;
                   int var6 = var3 + var0.offsetY + 16;

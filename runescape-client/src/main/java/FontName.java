@@ -126,22 +126,22 @@ public class FontName {
       garbageValue = "-670039635"
    )
    static SpritePixels[] method5478() {
-      SpritePixels[] var0 = new SpritePixels[class332.field3997];
+      SpritePixels[] var0 = new SpritePixels[class332.indexedSpriteCount];
 
-      for(int var1 = 0; var1 < class332.field3997; ++var1) {
+      for(int var1 = 0; var1 < class332.indexedSpriteCount; ++var1) {
          SpritePixels var2 = var0[var1] = new SpritePixels();
-         var2.maxWidth = class332.field3995;
-         var2.maxHeight = class332.field3996;
-         var2.offsetX = class90.field1360[var1];
-         var2.offsetY = class153.offsetsY[var1];
-         var2.width = class332.field3998[var1];
-         var2.height = GrandExchangeOffer.field294[var1];
+         var2.maxWidth = class332.indexedSpriteWidth;
+         var2.maxHeight = class332.indexedSpriteHeight;
+         var2.offsetX = class90.indexedSpriteOffsetXs[var1];
+         var2.offsetY = class153.indexedSpriteOffsetYs[var1];
+         var2.width = class332.indexSpriteWidths[var1];
+         var2.height = GrandExchangeOffer.indexedSpriteHeights[var1];
          int var3 = var2.height * var2.width;
          byte[] var4 = ClassInfo.spritePixels[var1];
          var2.pixels = new int[var3];
 
          for(int var5 = 0; var5 < var3; ++var5) {
-            var2.pixels[var5] = class332.field3994[var4[var5] & 255];
+            var2.pixels[var5] = class332.indexedSpritePalette[var4[var5] & 255];
          }
       }
 

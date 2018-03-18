@@ -5,8 +5,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("er")
 public class class153 extends class297 {
    @ObfuscatedName("l")
-   @Export("offsetsY")
-   static int[] offsetsY;
+   @Export("indexedSpriteOffsetYs")
+   static int[] indexedSpriteOffsetYs;
    @ObfuscatedName("ch")
    @Export("middleMouseMovesCamera")
    static boolean middleMouseMovesCamera;

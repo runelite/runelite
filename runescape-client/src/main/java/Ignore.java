@@ -48,13 +48,13 @@ public class Ignore extends Nameable {
    )
    static IndexedSprite method5387() {
       IndexedSprite var0 = new IndexedSprite();
-      var0.width = class332.field3995;
-      var0.originalHeight = class332.field3996;
-      var0.offsetX = class90.field1360[0];
-      var0.offsetY = class153.offsetsY[0];
-      var0.originalWidth = class332.field3998[0];
-      var0.height = GrandExchangeOffer.field294[0];
-      var0.palette = class332.field3994;
+      var0.originalWidth = class332.indexedSpriteWidth;
+      var0.originalHeight = class332.indexedSpriteHeight;
+      var0.offsetX = class90.indexedSpriteOffsetXs[0];
+      var0.offsetY = class153.indexedSpriteOffsetYs[0];
+      var0.width = class332.indexSpriteWidths[0];
+      var0.height = GrandExchangeOffer.indexedSpriteHeights[0];
+      var0.palette = class332.indexedSpritePalette;
       var0.pixels = ClassInfo.spritePixels[0];
       class316.method5605();
       return var0;

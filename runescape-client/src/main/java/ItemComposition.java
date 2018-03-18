@@ -492,7 +492,8 @@ public class ItemComposition extends CacheableNode {
       signature = "(Ljy;Ljy;I)V",
       garbageValue = "2043970354"
    )
-   void method5042(ItemComposition var1, ItemComposition var2) {
+   @Export("updateNote")
+   void updateNote(ItemComposition var1, ItemComposition var2) {
       this.inventoryModel = var1.inventoryModel;
       this.zoom2d = var1.zoom2d;
       this.xan2d = var1.xan2d;
