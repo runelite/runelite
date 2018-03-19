@@ -217,10 +217,6 @@ class ItemPricesOverlay extends Overlay
 
 	private String stackValueText(int qty, int gePrice, int haValue)
 	{
-		if (qty > 1)
-		{
-			itemStringBuilder.append("(").append(qty).append(") ");
-		}
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
