@@ -265,6 +265,7 @@ public class GroundItemsOverlay extends Overlay
 					if (plugin.isHighlighted(item.getName()))
 					{
 						textColor = config.highlightedColor();
+						itemStringBuilder.insert(0, "★ ");
 					}
 
 					String itemString = itemStringBuilder.toString();
@@ -284,22 +285,22 @@ public class GroundItemsOverlay extends Overlay
 					{
 						// Hidden box
 						itemHiddenBox = new Rectangle
-						(
-							screenX + fm.stringWidth(itemString),
-							screenY - (fm.getHeight() / 2) - fm.getDescent(),
-							RECTANGLE_SIZE,
-							fm.getHeight() / 2
-						);
+							(
+								screenX + fm.stringWidth(itemString),
+								screenY - (fm.getHeight() / 2) - fm.getDescent(),
+								RECTANGLE_SIZE,
+								fm.getHeight() / 2
+							);
 						plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
 
 						// Highlight box
 						itemHighlightBox = new Rectangle
-						(
-							screenX + fm.stringWidth(itemString) + RECTANGLE_SIZE + 2,
-							screenY - (fm.getHeight() / 2) - fm.getDescent(),
-							RECTANGLE_SIZE,
-							fm.getHeight() / 2
-						);
+							(
+								screenX + fm.stringWidth(itemString) + RECTANGLE_SIZE + 2,
+								screenY - (fm.getHeight() / 2) - fm.getDescent(),
+								RECTANGLE_SIZE,
+								fm.getHeight() / 2
+							);
 						plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
 
 						Point mousePos = client.getMouseCanvasPosition();
@@ -360,23 +361,23 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setColor(Color.WHITE);
 		// Minus symbol
 		graphics.drawLine
-		(
-			rect.x + 2,
-			rect.y + (RECTANGLE_SIZE / 2),
-			rect.x + RECTANGLE_SIZE - 2,
-			rect.y + (RECTANGLE_SIZE / 2)
-		);
+			(
+				rect.x + 2,
+				rect.y + (RECTANGLE_SIZE / 2),
+				rect.x + RECTANGLE_SIZE - 2,
+				rect.y + (RECTANGLE_SIZE / 2)
+			);
 
 		if (!hiddenBox)
 		{
 			// Plus symbol
 			graphics.drawLine
-			(
-				rect.x + (RECTANGLE_SIZE / 2),
-				rect.y + 2,
-				rect.x + (RECTANGLE_SIZE / 2),
-				rect.y + RECTANGLE_SIZE - 2
-			);
+				(
+					rect.x + (RECTANGLE_SIZE / 2),
+					rect.y + 2,
+					rect.x + (RECTANGLE_SIZE / 2),
+					rect.y + RECTANGLE_SIZE - 2
+				);
 		}
 
 	}

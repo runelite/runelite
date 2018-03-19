@@ -237,7 +237,7 @@ public class GroundItemsPlugin extends Plugin
 				String colTag = "<col=" + hexColor + ">";
 				if (config.highlightMenuOption())
 				{
-					lastEntry.setOption(colTag + "Take");
+					lastEntry.setOption(colTag + "<img=26> " + "Take");
 				}
 				if (config.highlightMenuItemName())
 				{
