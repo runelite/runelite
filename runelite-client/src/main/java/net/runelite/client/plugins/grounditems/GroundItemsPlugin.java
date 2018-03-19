@@ -24,17 +24,25 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -48,6 +56,8 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -58,6 +68,28 @@ import net.runelite.http.api.item.ItemPrice;
 )
 public class GroundItemsPlugin extends Plugin
 {
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<Rectangle, String> hiddenBoxes = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<Rectangle, String> highlightBoxes = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed;
+
+	private List<String> hiddenItemList = new ArrayList<>();
+	private List<String> highlightedItemsList = new ArrayList<>();
+
+	@Inject
+	private GroundItemInputListener inputListener;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
+
 	@Inject
 	private Client client;
 
@@ -92,6 +124,16 @@ public class GroundItemsPlugin extends Plugin
 	protected void startUp()
 	{
 		reset();
+
+		mouseManager.registerMouseListener(inputListener);
+		keyManager.registerKeyListener(inputListener);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		mouseManager.unregisterMouseListener(inputListener);
+		keyManager.unregisterKeyListener(inputListener);
 	}
 
 	@Subscribe
@@ -108,10 +150,10 @@ public class GroundItemsPlugin extends Plugin
 		Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
 
 		// gets the hidden items from the text box in the config
-		List<String> hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems().trim());
+		hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems().trim());
 
 		// gets the highlighted items from the text box in the config
-		List<String> highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
+		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
 
 		highlightedItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
@@ -210,6 +252,28 @@ public class GroundItemsPlugin extends Plugin
 			}
 
 			client.setMenuEntries(menuEntries);
+		}
+	}
+
+	void updateList(String item, boolean hiddenList)
+	{
+		List<String> items = new ArrayList<>((hiddenList) ? hiddenItemList : highlightedItemsList);
+
+		items.removeIf(s -> s.isEmpty());
+		if (!items.removeIf(s -> s.equalsIgnoreCase(item)))
+		{
+			items.add(item);
+		}
+
+		String newList = Joiner.on(", ").join(items);
+		// This triggers the config update which updates the list
+		if (hiddenList)
+		{
+			config.setHiddenItems(newList);
+		}
+		else
+		{
+			config.setHighlightedItem(newList);
 		}
 	}
 
