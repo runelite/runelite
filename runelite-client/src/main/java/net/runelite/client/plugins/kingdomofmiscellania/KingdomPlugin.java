@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
@@ -41,6 +42,8 @@ public class KingdomPlugin extends Plugin
 	@Getter
 	private int favor = -1, coffer = -1;
 
+	private KingdomCounter counter;
+
 	@Provides
 	KingdomConfig provideConfig(ConfigManager configManager)
 	{
@@ -50,21 +53,27 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		infoBoxManager.removeIf(t -> t instanceof KingdomCounter);
-		if (!config.showOnlyInKingdom())
+		if (event.getGroup().equals("kingdom") && client.getGameState() == GameState.LOGGED_IN)
 		{
-			addKingdomInfobox();
-		}
-		else if (config.showWhenLow() && (isFavorLow(config.favorLessThanValue()) || isCofferLow(config.cofferLessThanValue())))
-		{
-			addKingdomInfobox();
+			if (!config.showOnlyInKingdom())
+			{
+				addKingdomInfobox();
+			}
+			else if (config.showWhenLow() && (isFavorLow(config.favorLessThanValue()) || isCofferLow(config.cofferLessThanValue())))
+			{
+				addKingdomInfobox();
+			}
+			else
+			{
+				removeKingdomInfobox();
+			}
 		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		infoBoxManager.removeIf(t -> t instanceof KingdomCounter);
+		removeKingdomInfobox();
 	}
 
 	@Subscribe
@@ -77,10 +86,13 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onRegionChanged(MapRegionChanged event)
 	{
-		infoBoxManager.removeIf(t -> t instanceof KingdomCounter);
 		if (config.showOnlyInKingdom() && isInKingdom())
 		{
 			addKingdomInfobox();
+		}
+		else if (config.showOnlyInKingdom() && !isInKingdom())
+		{
+			removeKingdomInfobox();
 		}
 	}
 
@@ -91,7 +103,22 @@ public class KingdomPlugin extends Plugin
 
 	private void addKingdomInfobox()
 	{
-		infoBoxManager.addInfoBox(new KingdomCounter(itemManager.getImage(ItemID.TEAK_PRIZE_CHEST), this));
+		if (counter == null)
+		{
+			counter = new KingdomCounter(itemManager.getImage(ItemID.TEAK_PRIZE_CHEST), this);
+			infoBoxManager.addInfoBox(counter);
+			log.debug("Added Kingdom Infobox");
+		}
+	}
+
+	private void removeKingdomInfobox()
+	{
+		if (counter != null)
+		{
+			infoBoxManager.removeInfoBox(counter);
+			counter = null;
+			log.debug("Removed Kingdom Infobox");
+		}
 	}
 
 	private boolean isFavorLow(int lessThanValue)

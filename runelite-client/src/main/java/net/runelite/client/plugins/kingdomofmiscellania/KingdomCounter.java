@@ -12,13 +12,18 @@ public class KingdomCounter extends Counter
 	{
 		super(image, String.valueOf(plugin.getFavor()));
 		this.plugin = plugin;
-		setTooltip(String.format("Favor: " + plugin.getFavor() + "/127" + "</br>Coffer: " + NumberFormat.getInstance().format(plugin.getCoffer())));
 	}
 
 	@Override
 	public String getText()
 	{
 		return getFavorPercent(plugin.getFavor());
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return String.format("Favor: " + plugin.getFavor() + "/127" + "</br>Coffer: " + NumberFormat.getInstance().format(plugin.getCoffer()));
 	}
 
 	public static String getFavorPercent(int favor)
