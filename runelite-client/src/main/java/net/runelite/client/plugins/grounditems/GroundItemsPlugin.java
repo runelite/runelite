@@ -107,6 +107,9 @@ public class GroundItemsPlugin extends Plugin
 	private static final int COINS = ItemID.COINS_995;
 
 	@Getter(AccessLevel.PACKAGE)
+	private final Map<Rectangle, String> boxes = new ConcurrentHashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<Rectangle, String> hiddenBoxes = new ConcurrentHashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)

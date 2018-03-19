@@ -45,6 +45,7 @@ import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
@@ -59,14 +60,13 @@ public class GroundItemsOverlay extends Overlay
 	// so we replace any item quantity higher with "Lots" instead.
 	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
-	private static final int STRING_GAP = 15;
-	// Size of the hidden/highlight boxes
-	private static final int RECTANGLE_SIZE = 8;
+	private static final int STRING_GAP = OFFSET_Z;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 	private final ItemManager itemManager;
@@ -102,6 +102,7 @@ public class GroundItemsOverlay extends Overlay
 
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
+		final Point mousePos = client.getMouseCanvasPosition();
 
 		for (GroundItem item : plugin.getCollectedGroundItems().values())
 		{
@@ -216,37 +217,44 @@ public class GroundItemsOverlay extends Overlay
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
 
-			textComponent.setText(itemString);
-			textComponent.setColor(color);
-			textComponent.setPosition(new java.awt.Point(textX, textY));
-			textComponent.render(graphics);
-
 			if (plugin.isHotKeyPressed())
 			{
 				final int stringWidth = fm.stringWidth(itemString);
 				final int stringHeight = fm.getHeight();
 
+				// Item bounds
+				int x = textX - 2;
+				int y = textY - stringHeight - 2;
+				int width = stringWidth + 4;
+				int height = stringHeight + 4;
+				final Rectangle itemBounds = new Rectangle(x, y, width, height);
+
+				plugin.getBoxes().put(itemBounds, item.getName());
+
 				// Hidden box
-				final Rectangle itemHiddenBox = new Rectangle(
-					textX + stringWidth,
-					textY - (RECTANGLE_SIZE + stringHeight) / 2,
-					RECTANGLE_SIZE,
-					RECTANGLE_SIZE);
+				x += width + 2;
+				y += 4;
+				width = height = stringHeight - 2;
+				final Rectangle itemHiddenBox = new Rectangle(x, y, width, height);
 
 				plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
 
 				// Highlight box
-				final Rectangle itemHighlightBox = new Rectangle(
-					textX + stringWidth + RECTANGLE_SIZE + 2,
-					textY - (RECTANGLE_SIZE + stringHeight) / 2,
-					RECTANGLE_SIZE,
-					RECTANGLE_SIZE);
+				x += width + 2;
+				final Rectangle itemHighlightBox = new Rectangle(x, y, width, height);
 
 				plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
 
-				final Point mousePos = client.getMouseCanvasPosition();
+				boolean mouseInBox = itemBounds.contains(mousePos.getX(), mousePos.getY());
 				boolean mouseInHiddenBox = itemHiddenBox.contains(mousePos.getX(), mousePos.getY());
 				boolean mouseInHighlightBox = itemHighlightBox.contains(mousePos.getX(), mousePos.getY());
+
+				// Draw background if hovering
+				if (mouseInBox || mouseInHiddenBox || mouseInHighlightBox)
+				{
+					backgroundComponent.setRectangle(itemBounds);
+					backgroundComponent.render(graphics);
+				}
 
 				// Draw hidden box
 				drawRectangle(graphics, itemHiddenBox, mouseInHiddenBox ? Color.RED : color, hidden, true);
@@ -254,6 +262,11 @@ public class GroundItemsOverlay extends Overlay
 				// Draw highlight box
 				drawRectangle(graphics, itemHighlightBox, mouseInHighlightBox ? Color.GREEN : color, highlighted, false);
 			}
+
+			textComponent.setText(itemString);
+			textComponent.setColor(color);
+			textComponent.setPosition(new java.awt.Point(textX, textY));
+			textComponent.render(graphics);
 		}
 
 		return null;
@@ -313,9 +326,9 @@ public class GroundItemsOverlay extends Overlay
 		graphics.drawLine
 			(
 				rect.x + 2,
-				rect.y + (RECTANGLE_SIZE / 2),
-				rect.x + RECTANGLE_SIZE - 2,
-				rect.y + (RECTANGLE_SIZE / 2)
+				rect.y + (rect.height / 2),
+				rect.x + rect.width - 2,
+				rect.y + (rect.height / 2)
 			);
 
 		if (!hiddenBox)
@@ -323,10 +336,10 @@ public class GroundItemsOverlay extends Overlay
 			// Plus symbol
 			graphics.drawLine
 				(
-					rect.x + (RECTANGLE_SIZE / 2),
+					rect.x + (rect.width / 2),
 					rect.y + 2,
-					rect.x + (RECTANGLE_SIZE / 2),
-					rect.y + RECTANGLE_SIZE - 2
+					rect.x + (rect.width / 2),
+					rect.y + rect.height - 2
 				);
 		}
 
