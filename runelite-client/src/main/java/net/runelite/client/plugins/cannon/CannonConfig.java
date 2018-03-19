@@ -75,4 +75,14 @@ public interface CannonConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "showCannonSpots",
+		name = "Show common cannon spots",
+		description = "Configures whether to show common cannon spots or not"
+	)
+	default boolean showCannonSpots()
+	{
+		return true;
+	}
 }
