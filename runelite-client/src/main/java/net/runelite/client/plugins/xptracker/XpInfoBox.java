@@ -52,16 +52,13 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.JShadowedLabel;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
 class XpInfoBox extends JPanel
 {
 	private static final Rectangle ICON_BOUNDS = new Rectangle(0, 0, 26, 26);
-	private static final Color[] PROGRESS_COLORS = new Color[]
-	{
-		Color.RED, Color.YELLOW, Color.GREEN
-	};
 
 	private final Client client;
 	private final JPanel panel;
@@ -78,7 +75,7 @@ class XpInfoBox extends JPanel
 	private final JLabel xpGained = new JLabel();
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
-	private final JLabel levelLabel = new JLabel();
+	private final JLabel levelLabel = new JShadowedLabel();
 	private final JButton skillIcon = new JButton();
 
 	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
@@ -137,6 +134,7 @@ class XpInfoBox extends JPanel
 
 		// Create level label
 		levelLabel.setHorizontalAlignment(JLabel.CENTER);
+		levelLabel.setForeground(Color.YELLOW);
 		levelLabel.setBounds(ICON_BOUNDS);
 		levelLabel.setOpaque(false);
 
@@ -232,7 +230,7 @@ class XpInfoBox extends JPanel
 				final int progress = xpInfo.getSkillProgress();
 
 				progressBar.setValue(progress);
-				progressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double) progress / 100d));
+				progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
 
 				progressBar.setToolTipText("<html>"
 					+ XpPanel.formatLine(xpInfo.getActions(), "actions")
@@ -246,46 +244,6 @@ class XpInfoBox extends JPanel
 			// Always update xp/hr as time always changes
 			xpHr.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
 		});
-	}
-
-	/**
-	 * Interpolate between array of colors using Normal (Gaussian)
-	 * distribution
-	 *
-	 * @see
-	 * <a href="https://en.wikipedia.org/wiki/Normal_distribution}">Normal
-	 * distribution on Wikipedia</a>
-	 * @param colors array of colors
-	 * @param x distribution factor
-	 * @return interpolated color
-	 */
-	private static Color interpolateColors(Color[] colors, double x)
-	{
-		double r = 0.0, g = 0.0, b = 0.0;
-		double total = 0.0;
-		double step = 1.0 / (double) (colors.length - 1);
-		double mu = 0.0;
-		double sigma2 = 0.035;
-
-		for (Color ignored : colors)
-		{
-			total += Math.exp(-(x - mu) * (x - mu) / (2.0 * sigma2)) / Math.sqrt(2.0 * Math.PI * sigma2);
-			mu += step;
-		}
-
-		mu = 0.0;
-
-		for (Color color : colors)
-		{
-			double percent = Math.exp(-(x - mu) * (x - mu) / (2.0 * sigma2)) / Math.sqrt(2.0 * Math.PI * sigma2);
-			mu += step;
-
-			r += color.getRed() * percent / total;
-			g += color.getGreen() * percent / total;
-			b += color.getBlue() * percent / total;
-		}
-
-		return new Color((int) r, (int) g, (int) b);
 	}
 
 	private static BufferedImage createHoverImage(BufferedImage image)
