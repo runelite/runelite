@@ -423,6 +423,7 @@ public class HiscorePanel extends PluginPanel
 	private void lookup()
 	{
 		String lookup = input.getText();
+		details.setText("Loading...");
 
 		lookup = sanitize(lookup);
 
@@ -446,6 +447,7 @@ public class HiscorePanel extends PluginPanel
 		catch (IOException ex)
 		{
 			log.warn("Error fetching Hiscore data " + ex.getMessage());
+			details.setText("Error fetching Hiscore data");
 			return;
 		}
 
