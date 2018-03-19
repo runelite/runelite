@@ -166,4 +166,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "swapBones",
+		name = "Bury",
+		description = "Swap Bury with Use on Bones"
+	)
+	default boolean swapBones()
+	{
+		return true;
+	}
 }

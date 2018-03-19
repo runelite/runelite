@@ -132,6 +132,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("teleport", option, target, true);
 		}
+		else if (config.swapBones() && option.equals("bury"))
+		{
+			swap("use", option, target, true);
+		}
 	}
 
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
