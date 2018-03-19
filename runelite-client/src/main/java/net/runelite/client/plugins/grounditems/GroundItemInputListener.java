@@ -24,22 +24,21 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.Map;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Point;
+import javax.swing.SwingUtilities;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 
 public class GroundItemInputListener extends MouseListener implements KeyListener
 {
 	private static final int HOTKEY = KeyEvent.VK_ALT;
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private GroundItemsPlugin plugin;
@@ -65,8 +64,9 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 		if (e.getKeyCode() == HOTKEY)
 		{
 			plugin.setHotKeyPressed(false);
-			plugin.getHighlightBoxes().clear();
+			plugin.getBoxes().clear();
 			plugin.getHiddenBoxes().clear();
+			plugin.getHighlightBoxes().clear();
 		}
 	}
 
@@ -75,34 +75,66 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 	{
 		if (plugin.isHotKeyPressed())
 		{
-			// Check if left click
-			if (e.getButton() == MouseEvent.BUTTON1)
+			if (SwingUtilities.isLeftMouseButton(e))
 			{
-				Point mousePos = client.getMouseCanvasPosition();
+				// Process both click boxes for hidden and highlighted items
+				final Iterator<Map.Entry<Rectangle, String>> highlightIterator = plugin
+					.getHighlightBoxes().entrySet().iterator();
 
-				for (Map.Entry<Rectangle, String> entry : plugin.getHiddenBoxes().entrySet())
+				if (findMatchAndProcess(e, highlightIterator, false) != null)
 				{
-					if (entry.getKey().contains(mousePos.getX(), mousePos.getY()))
-					{
-						plugin.updateList(entry.getValue(), true);
-						e.consume();
-						return e;
-					}
+					return e;
 				}
 
-				for (Map.Entry<Rectangle, String> entry : plugin.getHighlightBoxes().entrySet())
+				final Iterator<Map.Entry<Rectangle, String>> hiddenIterator = plugin
+					.getHiddenBoxes().entrySet().iterator();
+
+				if (findMatchAndProcess(e, hiddenIterator, true) != null)
 				{
-					if (entry.getKey().contains(mousePos.getX(), mousePos.getY()))
-					{
-						plugin.updateList(entry.getValue(), false);
-						e.consume();
-						return e;
-					}
+					return e;
+				}
+
+				// There is one name click box for left click and one for right click
+				final Iterator<Map.Entry<Rectangle, String>> iterator = plugin.getBoxes().entrySet().iterator();
+				if (findMatchAndProcess(e, iterator, false) != null)
+				{
+					return e;
+				}
+			}
+			else if (SwingUtilities.isRightMouseButton(e))
+			{
+				final Iterator<Map.Entry<Rectangle, String>> iterator = plugin.getBoxes().entrySet().iterator();
+				if (findMatchAndProcess(e, iterator, true) != null)
+				{
+					return e;
 				}
 			}
 		}
 
 		return e;
+	}
+
+	@Nullable
+	private MouseEvent findMatchAndProcess(
+		final MouseEvent mouseEvent,
+		final Iterator<Map.Entry<Rectangle, String>> iterator,
+		final boolean hiddenList)
+	{
+		final Point mousePos = mouseEvent.getPoint();
+
+		while (iterator.hasNext())
+		{
+			final Map.Entry<Rectangle, String> next = iterator.next();
+
+			if (next.getKey().contains(mousePos))
+			{
+				plugin.updateList(next.getValue(), hiddenList);
+				mouseEvent.consume();
+				return mouseEvent;
+			}
+		}
+
+		return null;
 	}
 }
 
