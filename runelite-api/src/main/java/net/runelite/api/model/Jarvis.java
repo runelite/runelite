@@ -79,7 +79,11 @@ public class Jarvis
 				}
 			}
 
-			assert next != null;
+			// Points can be null if they are behind or very close to the camera.
+			if (next == null)
+			{
+				return null;
+			}
 
 			assert ch.size() <= points.size() : "hull has more points than graph";
 			current = next;
