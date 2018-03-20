@@ -41,6 +41,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.WidgetOpened;
 import net.runelite.api.widgets.Widget;
@@ -229,6 +230,15 @@ public class ReorderPrayersPlugin extends Plugin
 		clearPrayerTabMenus();
 		prayerOrder = Prayer.values();
 		reorderPrayers();
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			reorderPrayers();
+		}
 	}
 
 	@Subscribe
