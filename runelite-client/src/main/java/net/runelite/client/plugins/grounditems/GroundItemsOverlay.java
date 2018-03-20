@@ -118,7 +118,8 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final boolean hidden = plugin.isHidden(item.getName());
-			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(), highlighted);
+			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
+				highlighted, hidden);
 			itemStringBuilder.append(item.getName());
 
 			if (item.getQuantity() > 1)
@@ -208,8 +209,13 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	Color getCostColor(int cost, boolean highlighted)
+	Color getCostColor(int cost, boolean highlighted, boolean hidden)
 	{
+		if (hidden)
+		{
+			return Color.GRAY;
+		}
+
 		if (highlighted)
 		{
 			return config.highlightedColor();

@@ -394,7 +394,8 @@ public class GroundItemsPlugin extends Plugin
 			ItemPrice itemPrice = getItemPrice(itemComposition);
 			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
 			int cost = quantity * price;
-			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()));
+			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
+				isHidden(itemComposition.getName()));
 
 			if (!color.equals(config.defaultColor()))
 			{
