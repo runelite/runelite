@@ -29,10 +29,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
+import java.awt.Transparency;
 import java.awt.TrayIcon;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
@@ -86,6 +90,36 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
+	}
+
+	/**
+	 * Create compatible accelerated BufferedImage
+	 * @param img buffered image
+	 * @return compatible buffered image
+	 */
+	public static BufferedImage createCompatibleImage(BufferedImage img)
+	{
+		// Get default graphics device
+		final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
+			.getDefaultScreenDevice();
+		final GraphicsConfiguration config = graphicsDevice
+			.getDefaultConfiguration();
+
+		// Get desired transparency mode
+		int transparency = img.getColorModel().hasAlpha() ? Transparency.TRANSLUCENT
+			: Transparency.OPAQUE;
+
+		// Create device compatible buffered image
+		final BufferedImage ret = config.createCompatibleImage(img.getWidth(),
+			img.getHeight(), transparency);
+
+		// Draw old image onto new compatible image
+		final Graphics2D graphics = ret.createGraphics();
+		graphics.drawImage(img, 0, 0, null);
+		graphics.dispose();
+
+		// Return compatible image
+		return ret;
 	}
 
 	/**
