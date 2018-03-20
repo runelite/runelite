@@ -74,7 +74,8 @@ public class AgilityOverlay extends Overlay
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 					{
 						graphics.setColor(configColor.darker());
-					} else
+					}
+					else
 					{
 						graphics.setColor(configColor);
 					}
