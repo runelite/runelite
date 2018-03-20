@@ -26,8 +26,6 @@ package net.runelite.client.plugins.reportbutton;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -52,12 +50,13 @@ import net.runelite.client.task.Schedule;
 public class ReportButtonPlugin extends Plugin
 {
 	private static final ZoneId UTC = ZoneId.of("UTC");
-	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
+	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
 
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
-
-	private Instant loginTime;
 	private boolean ready;
+	private boolean idle;
+
+	private long loginTime;
+	private long idleTime;
 
 	@Inject
 	private Client client;
@@ -81,12 +80,14 @@ public class ReportButtonPlugin extends Plugin
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
+			case LOGIN_SCREEN:
 				ready = true;
+				resetTimers();
 				break;
 			case LOGGED_IN:
 				if (ready)
 				{
-					loginTime = Instant.now();
+					loginTime = System.nanoTime();
 					ready = false;
 				}
 				break;
@@ -94,8 +95,8 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
+		period = 500,
+		unit = ChronoUnit.MILLIS
 	)
 	public void updateReportButtonTime()
 	{
@@ -105,29 +106,74 @@ public class ReportButtonPlugin extends Plugin
 		}
 
 		Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
+
 		if (reportButton == null)
 		{
 			return;
 		}
 
-		switch (config.time())
+		if (!config.idleTime())
 		{
-			case UTC:
-				reportButton.setText(getUTCTime());
-				break;
-			case JAGEX:
-				reportButton.setText(getJagexTime());
-				break;
-			case LOCAL_TIME:
-				reportButton.setText(getLocalTime());
-				break;
-			case LOGIN_TIME:
-				reportButton.setText(getLoginTime());
-				break;
-			case OFF:
-				reportButton.setText("Report");
-				break;
+			switch (config.time())
+			{
+				case UTC:
+					reportButton.setText(getUTCTime());
+					break;
+				case LOCAL_TIME:
+					reportButton.setText(getLocalTime());
+					break;
+				case LOGIN_TIME:
+					reportButton.setText(getFormattedTime(loginTime));
+					break;
+				case OFF:
+					reportButton.setText("Report");
+					break;
+			}
 		}
+		else
+		{
+			if(client.getMouseIdleTicks() > 25
+					&& client.getKeyboardIdleTicks() > 25
+					&& !idle)
+			{
+				idle = true;
+				idleTime = System.nanoTime();
+			}
+			else if(client.getMouseIdleTicks() <= 25
+					|| client.getKeyboardIdleTicks() <= 25
+					&& idle)
+			{
+				idle = false;
+				idleTime = 0L;
+			}
+
+			switch (config.time())
+			{
+				case UTC:
+					reportButton.setText(getFormattedTime(idleTime) + "<br>" + getUTCTime());
+					break;
+				case LOCAL_TIME:
+					reportButton.setText(getFormattedTime(idleTime) + "<br>" + getLocalTime());
+					break;
+				case LOGIN_TIME:
+					reportButton.setText(getFormattedTime(idleTime) + "<br>" + getFormattedTime(loginTime));
+					break;
+				case OFF:
+					reportButton.setText(getFormattedTime(idleTime) + "<br>" + "Report");
+					break;
+			}
+		}
+	}
+
+	public void resetTimers()
+	{
+		loginTime = 0L;
+		idleTime = 0L;
+	}
+
+	public String getUTCTime()
+	{
+		return LocalTime.now(UTC).format(DATE_TIME_FORMAT);
 	}
 
 	public String getLocalTime()
@@ -135,27 +181,19 @@ public class ReportButtonPlugin extends Plugin
 		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
 
-	public String getLoginTime()
+	public String getFormattedTime(long time)
 	{
-		if (loginTime == null)
+		if(time == 0L)
 		{
-			return "Report";
+			return "00:00:00";
 		}
 
-		Duration duration = Duration.between(loginTime, Instant.now());
-		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
-		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-	}
+		long duration = (System.nanoTime() - time) / 1000000000L;
 
-	public String getUTCTime()
-	{
-		LocalTime time = LocalTime.now(UTC);
-		return time.format(DATE_TIME_FORMAT);
-	}
-
-	public String getJagexTime()
-	{
-		LocalTime time = LocalTime.now(JAGEX);
-		return time.format(DATE_TIME_FORMAT);
+		String strTime = String.format("%02d:%02d:%02d",
+										(duration % 86400) / 3600,
+										(duration % 3600) / 60,
+										duration % 60);
+		return strTime;
 	}
 }
