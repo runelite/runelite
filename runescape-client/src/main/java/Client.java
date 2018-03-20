@@ -4401,10 +4401,10 @@ public final class Client extends GameEngine implements class302 {
                      var11 = var3.method3586();
                      var76.field1178 = var11 >> 16;
                      var76.graphicsDelay = (var11 & 65535) + gameCycle;
-                     var76.field1175 = 0;
-                     var76.field1176 = 0;
+                     var76.spotAnimFrame = 0;
+                     var76.spotAnimFrameCycle = 0;
                      if(var76.graphicsDelay > gameCycle) {
-                        var76.field1175 = -1;
+                        var76.spotAnimFrame = -1;
                      }
 
                      if(var76.graphic == 65535) {

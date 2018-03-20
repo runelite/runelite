@@ -121,8 +121,8 @@ public class class22 extends class28 {
                   if(var5 != -1) {
                      Sequence var6 = class158.getAnimation(var5);
 
-                     for(var3.field2940 += Client.field910; var3.field2940 > var6.frameLenghts[var3.field2939]; GameEngine.method1053(var3)) {
-                        var3.field2940 -= var6.frameLenghts[var3.field2939];
+                     for(var3.field2940 += Client.field910; var3.field2940 > var6.frameLengths[var3.field2939]; GameEngine.method1053(var3)) {
+                        var3.field2940 -= var6.frameLengths[var3.field2939];
                         ++var3.field2939;
                         if(var3.field2939 >= var6.frameIDs.length) {
                            var3.field2939 -= var6.frameStep;

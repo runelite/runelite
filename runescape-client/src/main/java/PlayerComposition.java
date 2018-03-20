@@ -331,11 +331,11 @@ public class PlayerComposition {
          } else {
             Model var17;
             if(var1 != null && var3 != null) {
-               var17 = var1.method5171(var8, var2, var3, var4);
+               var17 = var1.applyTransformations(var8, var2, var3, var4);
             } else if(var1 != null) {
-               var17 = var1.method5168(var8, var2);
+               var17 = var1.transformActorModel(var8, var2);
             } else {
-               var17 = var3.method5168(var8, var4);
+               var17 = var3.transformActorModel(var8, var4);
             }
 
             return var17;

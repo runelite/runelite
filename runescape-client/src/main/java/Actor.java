@@ -158,7 +158,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = -1170479349
    )
-   int field1168;
+   @Export("poseFrameCycle")
+   int poseFrameCycle;
    @ObfuscatedName("by")
    @ObfuscatedGetter(
       intValue = -1975994063
@@ -175,7 +176,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = 643850469
    )
-   int field1140;
+   @Export("actionFrameCycle")
+   int actionFrameCycle;
    @ObfuscatedName("bq")
    @ObfuscatedGetter(
       intValue = -1519238471
@@ -197,12 +199,14 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = 1946148451
    )
-   int field1175;
+   @Export("spotAnimFrame")
+   int spotAnimFrame;
    @ObfuscatedName("bo")
    @ObfuscatedGetter(
       intValue = 1476010501
    )
-   int field1176;
+   @Export("spotAnimFrameCycle")
+   int spotAnimFrameCycle;
    @ObfuscatedName("bv")
    @ObfuscatedGetter(
       intValue = 1543223173
@@ -331,15 +335,15 @@ public abstract class Actor extends Renderable {
       this.field1142 = -1;
       this.poseAnimation = -1;
       this.poseFrame = 0;
-      this.field1168 = 0;
+      this.poseFrameCycle = 0;
       this.animation = -1;
       this.actionFrame = 0;
-      this.field1140 = 0;
+      this.actionFrameCycle = 0;
       this.actionAnimationDisable = 0;
       this.field1186 = 0;
       this.graphic = -1;
-      this.field1175 = 0;
-      this.field1176 = 0;
+      this.spotAnimFrame = 0;
+      this.spotAnimFrameCycle = 0;
       this.npcCycle = 0;
       this.logicalHeight = 200;
       this.field1150 = 0;

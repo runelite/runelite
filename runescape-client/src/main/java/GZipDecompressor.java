@@ -269,7 +269,7 @@ public class GZipDecompressor {
          int var3 = class158.getAnimation(var1).replyMode;
          if(var3 == 1) {
             var0.actionFrame = 0;
-            var0.field1140 = 0;
+            var0.actionFrameCycle = 0;
             var0.actionAnimationDisable = var2;
             var0.field1186 = 0;
          }
@@ -280,7 +280,7 @@ public class GZipDecompressor {
       } else if(var1 == -1 || var0.animation == -1 || class158.getAnimation(var1).forcedPriority >= class158.getAnimation(var0.animation).forcedPriority) {
          var0.animation = var1;
          var0.actionFrame = 0;
-         var0.field1140 = 0;
+         var0.actionFrameCycle = 0;
          var0.actionAnimationDisable = var2;
          var0.field1186 = 0;
          var0.field1196 = var0.queueSize;

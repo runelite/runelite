@@ -61,11 +61,14 @@ public class Model extends Renderable {
    @Export("xViewportBuffer")
    static int[] xViewportBuffer;
    @ObfuscatedName("bm")
-   static int field1881;
+   @Export("animOffsetX")
+   static int animOffsetX;
    @ObfuscatedName("bh")
-   static int field1845;
+   @Export("animOffsetY")
+   static int animOffsetY;
    @ObfuscatedName("bs")
-   static int field1883;
+   @Export("animOffsetZ")
+   static int animOffsetZ;
    @ObfuscatedName("bj")
    @Export("useBoundingBoxes3D")
    static boolean useBoundingBoxes3D;
@@ -128,7 +131,8 @@ public class Model extends Renderable {
    @ObfuscatedName("y")
    int[] field1846;
    @ObfuscatedName("h")
-   int[][] field1847;
+   @Export("vertexGroups")
+   int[][] vertexGroups;
    @ObfuscatedName("m")
    int[][] field1848;
    @ObfuscatedName("ay")
@@ -390,7 +394,7 @@ public class Model extends Renderable {
                var11.field1844 = this.field1844;
                var11.field1865 = this.field1865;
                var11.field1846 = this.field1846;
-               var11.field1847 = this.field1847;
+               var11.vertexGroups = this.vertexGroups;
                var11.field1848 = this.field1848;
                var11.field1849 = this.field1849;
                var11.verticesY = new int[var11.verticesCount];
@@ -451,7 +455,8 @@ public class Model extends Renderable {
    @ObfuscatedSignature(
       signature = "(Z)Lek;"
    )
-   public Model method2686(boolean var1) {
+   @Export("toSharedModel")
+   public Model toSharedModel(boolean var1) {
       if(!var1 && field1824.length < this.indicesCount) {
          field1824 = new byte[this.indicesCount + 100];
       }
@@ -463,7 +468,8 @@ public class Model extends Renderable {
    @ObfuscatedSignature(
       signature = "(Z)Lek;"
    )
-   public Model method2697(boolean var1) {
+   @Export("toSharedSpotAnimModel")
+   public Model toSharedSpotAnimModel(boolean var1) {
       if(!var1 && field1826.length < this.indicesCount) {
          field1826 = new byte[this.indicesCount + 100];
       }
@@ -520,7 +526,7 @@ public class Model extends Renderable {
       var2.field1844 = this.field1844;
       var2.field1865 = this.field1865;
       var2.field1846 = this.field1846;
-      var2.field1847 = this.field1847;
+      var2.vertexGroups = this.vertexGroups;
       var2.field1848 = this.field1848;
       var2.field1849 = this.field1849;
       var2.resetBounds();
@@ -663,17 +669,17 @@ public class Model extends Renderable {
       signature = "(Let;I)V"
    )
    public void method2746(Frames var1, int var2) {
-      if(this.field1847 != null) {
+      if(this.vertexGroups != null) {
          if(var2 != -1) {
             Frame var3 = var1.skeletons[var2];
             FrameMap var4 = var3.skin;
-            field1881 = 0;
-            field1845 = 0;
-            field1883 = 0;
+            animOffsetX = 0;
+            animOffsetY = 0;
+            animOffsetZ = 0;
 
-            for(int var5 = 0; var5 < var3.field1793; ++var5) {
-               int var6 = var3.field1790[var5];
-               this.method2695(var4.types[var6], var4.list[var6], var3.translator_x[var5], var3.translator_y[var5], var3.translator_z[var5]);
+            for(int var5 = 0; var5 < var3.transformCount; ++var5) {
+               int var6 = var3.transformTypes[var5];
+               this.animate(var4.types[var6], var4.list[var6], var3.translator_x[var5], var3.translator_y[var5], var3.translator_z[var5]);
             }
 
             this.resetBounds();
@@ -691,39 +697,39 @@ public class Model extends Renderable {
             Frame var6 = var1.skeletons[var2];
             Frame var7 = var3.skeletons[var4];
             FrameMap var8 = var6.skin;
-            field1881 = 0;
-            field1845 = 0;
-            field1883 = 0;
+            animOffsetX = 0;
+            animOffsetY = 0;
+            animOffsetZ = 0;
             byte var9 = 0;
             int var13 = var9 + 1;
             int var10 = var5[var9];
 
             int var11;
             int var12;
-            for(var11 = 0; var11 < var6.field1793; ++var11) {
-               for(var12 = var6.field1790[var11]; var12 > var10; var10 = var5[var13++]) {
+            for(var11 = 0; var11 < var6.transformCount; ++var11) {
+               for(var12 = var6.transformTypes[var11]; var12 > var10; var10 = var5[var13++]) {
                   ;
                }
 
                if(var12 != var10 || var8.types[var12] == 0) {
-                  this.method2695(var8.types[var12], var8.list[var12], var6.translator_x[var11], var6.translator_y[var11], var6.translator_z[var11]);
+                  this.animate(var8.types[var12], var8.list[var12], var6.translator_x[var11], var6.translator_y[var11], var6.translator_z[var11]);
                }
             }
 
-            field1881 = 0;
-            field1845 = 0;
-            field1883 = 0;
+            animOffsetX = 0;
+            animOffsetY = 0;
+            animOffsetZ = 0;
             var9 = 0;
             var13 = var9 + 1;
             var10 = var5[var9];
 
-            for(var11 = 0; var11 < var7.field1793; ++var11) {
-               for(var12 = var7.field1790[var11]; var12 > var10; var10 = var5[var13++]) {
+            for(var11 = 0; var11 < var7.transformCount; ++var11) {
+               for(var12 = var7.transformTypes[var11]; var12 > var10; var10 = var5[var13++]) {
                   ;
                }
 
                if(var12 == var10 || var8.types[var12] == 0) {
-                  this.method2695(var8.types[var12], var8.list[var12], var7.translator_x[var11], var7.translator_y[var11], var7.translator_z[var11]);
+                  this.animate(var8.types[var12], var8.list[var12], var7.translator_x[var11], var7.translator_y[var11], var7.translator_z[var11]);
                }
             }
 
@@ -735,7 +741,8 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("k")
-   void method2695(int var1, int[] var2, int var3, int var4, int var5) {
+   @Export("animate")
+   void animate(int var1, int[] var2, int var3, int var4, int var5) {
       int var6 = var2.length;
       int var7;
       int var8;
@@ -743,33 +750,33 @@ public class Model extends Renderable {
       int var12;
       if(var1 == 0) {
          var7 = 0;
-         field1881 = 0;
-         field1845 = 0;
-         field1883 = 0;
+         animOffsetX = 0;
+         animOffsetY = 0;
+         animOffsetZ = 0;
 
          for(var8 = 0; var8 < var6; ++var8) {
             int var9 = var2[var8];
-            if(var9 < this.field1847.length) {
-               int[] var10 = this.field1847[var9];
+            if(var9 < this.vertexGroups.length) {
+               int[] var10 = this.vertexGroups[var9];
 
                for(var11 = 0; var11 < var10.length; ++var11) {
                   var12 = var10[var11];
-                  field1881 += this.verticesX[var12];
-                  field1845 += this.verticesY[var12];
-                  field1883 += this.verticesZ[var12];
+                  animOffsetX += this.verticesX[var12];
+                  animOffsetY += this.verticesY[var12];
+                  animOffsetZ += this.verticesZ[var12];
                   ++var7;
                }
             }
          }
 
          if(var7 > 0) {
-            field1881 = var3 + field1881 / var7;
-            field1845 = var4 + field1845 / var7;
-            field1883 = var5 + field1883 / var7;
+            animOffsetX = var3 + animOffsetX / var7;
+            animOffsetY = var4 + animOffsetY / var7;
+            animOffsetZ = var5 + animOffsetZ / var7;
          } else {
-            field1881 = var3;
-            field1845 = var4;
-            field1883 = var5;
+            animOffsetX = var3;
+            animOffsetY = var4;
+            animOffsetZ = var5;
          }
 
       } else {
@@ -778,8 +785,8 @@ public class Model extends Renderable {
          if(var1 == 1) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var2[var7];
-               if(var8 < this.field1847.length) {
-                  var18 = this.field1847[var8];
+               if(var8 < this.vertexGroups.length) {
+                  var18 = this.vertexGroups[var8];
 
                   for(var19 = 0; var19 < var18.length; ++var19) {
                      var11 = var18[var19];
@@ -793,14 +800,14 @@ public class Model extends Renderable {
          } else if(var1 == 2) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var2[var7];
-               if(var8 < this.field1847.length) {
-                  var18 = this.field1847[var8];
+               if(var8 < this.vertexGroups.length) {
+                  var18 = this.vertexGroups[var8];
 
                   for(var19 = 0; var19 < var18.length; ++var19) {
                      var11 = var18[var19];
-                     this.verticesX[var11] -= field1881;
-                     this.verticesY[var11] -= field1845;
-                     this.verticesZ[var11] -= field1883;
+                     this.verticesX[var11] -= animOffsetX;
+                     this.verticesY[var11] -= animOffsetY;
+                     this.verticesZ[var11] -= animOffsetZ;
                      var12 = (var3 & 255) * 8;
                      int var13 = (var4 & 255) * 8;
                      int var14 = (var5 & 255) * 8;
@@ -831,9 +838,9 @@ public class Model extends Renderable {
                         this.verticesX[var11] = var17;
                      }
 
-                     this.verticesX[var11] += field1881;
-                     this.verticesY[var11] += field1845;
-                     this.verticesZ[var11] += field1883;
+                     this.verticesX[var11] += animOffsetX;
+                     this.verticesY[var11] += animOffsetY;
+                     this.verticesZ[var11] += animOffsetZ;
                   }
                }
             }
@@ -841,20 +848,20 @@ public class Model extends Renderable {
          } else if(var1 == 3) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var2[var7];
-               if(var8 < this.field1847.length) {
-                  var18 = this.field1847[var8];
+               if(var8 < this.vertexGroups.length) {
+                  var18 = this.vertexGroups[var8];
 
                   for(var19 = 0; var19 < var18.length; ++var19) {
                      var11 = var18[var19];
-                     this.verticesX[var11] -= field1881;
-                     this.verticesY[var11] -= field1845;
-                     this.verticesZ[var11] -= field1883;
+                     this.verticesX[var11] -= animOffsetX;
+                     this.verticesY[var11] -= animOffsetY;
+                     this.verticesZ[var11] -= animOffsetZ;
                      this.verticesX[var11] = var3 * this.verticesX[var11] / 128;
                      this.verticesY[var11] = var4 * this.verticesY[var11] / 128;
                      this.verticesZ[var11] = var5 * this.verticesZ[var11] / 128;
-                     this.verticesX[var11] += field1881;
-                     this.verticesY[var11] += field1845;
-                     this.verticesZ[var11] += field1883;
+                     this.verticesX[var11] += animOffsetX;
+                     this.verticesY[var11] += animOffsetY;
+                     this.verticesZ[var11] += animOffsetZ;
                   }
                }
             }
@@ -898,7 +905,8 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("w")
-   public void method2750() {
+   @Export("rotateY180Ccw")
+   public void rotateY180Ccw() {
       for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          this.verticesX[var1] = -this.verticesX[var1];
          this.verticesZ[var1] = -this.verticesZ[var1];
@@ -908,7 +916,8 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("s")
-   public void method2718() {
+   @Export("rotateY270Ccw")
+   public void rotateY270Ccw() {
       for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          int var2 = this.verticesZ[var1];
          this.verticesZ[var1] = this.verticesX[var1];

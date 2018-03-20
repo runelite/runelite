@@ -1711,7 +1711,7 @@ public class ModelData extends Renderable {
       var8.field1838 = this.faceRenderPriorities;
       var8.field1882 = this.faceAlphas;
       var8.field1842 = this.priority;
-      var8.field1847 = this.field1725;
+      var8.vertexGroups = this.field1725;
       var8.field1848 = this.field1726;
       var8.field1841 = this.faceTextures;
       return var8;

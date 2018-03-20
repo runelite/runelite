@@ -142,8 +142,8 @@ public final class NPC extends Actor {
          } else {
             var3.calculateBoundsCylinder();
             super.logicalHeight = var3.modelHeight;
-            if(super.graphic != -1 && super.field1175 != -1) {
-               Model var4 = MapLabel.getSpotAnimType(super.graphic).getModel(super.field1175);
+            if(super.graphic != -1 && super.spotAnimFrame != -1) {
+               Model var4 = MapLabel.getSpotAnimType(super.graphic).getModel(super.spotAnimFrame);
                if(var4 != null) {
                   var4.offsetBy(0, -super.field1178, 0);
                   Model[] var5 = new Model[]{var3, var4};

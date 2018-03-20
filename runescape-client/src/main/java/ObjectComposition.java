@@ -667,9 +667,9 @@ public class ObjectComposition extends CacheableNode {
          return var11;
       } else {
          if(var7 != null) {
-            var11 = var7.method5185(var11, var8, var2);
+            var11 = var7.transformObjectModel(var11, var8, var2);
          } else {
-            var11 = var11.method2686(true);
+            var11 = var11.toSharedModel(true);
          }
 
          if(this.contouredGround >= 0) {

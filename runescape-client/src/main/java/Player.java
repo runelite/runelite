@@ -376,8 +376,8 @@ public final class Player extends Actor {
             super.logicalHeight = var3.modelHeight;
             Model var4;
             Model[] var5;
-            if(!this.isLowDetail && super.graphic != -1 && super.field1175 != -1) {
-               var4 = MapLabel.getSpotAnimType(super.graphic).getModel(super.field1175);
+            if(!this.isLowDetail && super.graphic != -1 && super.spotAnimFrame != -1) {
+               var4 = MapLabel.getSpotAnimType(super.graphic).getModel(super.spotAnimFrame);
                if(var4 != null) {
                   var4.offsetBy(0, -super.field1178, 0);
                   var5 = new Model[]{var3, var4};

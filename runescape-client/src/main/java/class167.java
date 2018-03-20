@@ -160,10 +160,10 @@ public class class167 {
             var6 = var1.readInt();
             var4.field1178 = var6 >> 16;
             var4.graphicsDelay = (var6 & 65535) + Client.gameCycle;
-            var4.field1175 = 0;
-            var4.field1176 = 0;
+            var4.spotAnimFrame = 0;
+            var4.spotAnimFrameCycle = 0;
             if(var4.graphicsDelay > Client.gameCycle) {
-               var4.field1175 = -1;
+               var4.spotAnimFrame = -1;
             }
 
             if(var4.graphic == 65535) {
@@ -251,7 +251,7 @@ public class class167 {
                var8 = class158.getAnimation(var6).replyMode;
                if(var8 == 1) {
                   var4.actionFrame = 0;
-                  var4.field1140 = 0;
+                  var4.actionFrameCycle = 0;
                   var4.actionAnimationDisable = var7;
                   var4.field1186 = 0;
                }
@@ -262,7 +262,7 @@ public class class167 {
             } else if(var6 == -1 || var4.animation == -1 || class158.getAnimation(var6).forcedPriority >= class158.getAnimation(var4.animation).forcedPriority) {
                var4.animation = var6;
                var4.actionFrame = 0;
-               var4.field1140 = 0;
+               var4.actionFrameCycle = 0;
                var4.actionAnimationDisable = var7;
                var4.field1186 = 0;
                var4.field1196 = var4.queueSize;

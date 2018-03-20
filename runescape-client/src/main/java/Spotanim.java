@@ -195,9 +195,9 @@ public class Spotanim extends CacheableNode {
 
       Model var5;
       if(this.field3494 != -1 && var1 != -1) {
-         var5 = class158.getAnimation(this.field3494).method5180(var2, var1);
+         var5 = class158.getAnimation(this.field3494).transformSpotAnimModel(var2, var1);
       } else {
-         var5 = var2.method2697(true);
+         var5 = var2.toSharedSpotAnimModel(true);
       }
 
       if(this.widthScale != 128 || this.heightScale != 128) {

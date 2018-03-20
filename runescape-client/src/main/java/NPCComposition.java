@@ -410,13 +410,13 @@ public class NPCComposition extends CacheableNode {
 
          Model var10;
          if(var1 != null && var3 != null) {
-            var10 = var1.method5171(var5, var2, var3, var4);
+            var10 = var1.applyTransformations(var5, var2, var3, var4);
          } else if(var1 != null) {
-            var10 = var1.method5168(var5, var2);
+            var10 = var1.transformActorModel(var5, var2);
          } else if(var3 != null) {
-            var10 = var3.method5168(var5, var4);
+            var10 = var3.transformActorModel(var5, var4);
          } else {
-            var10 = var5.method2686(true);
+            var10 = var5.toSharedModel(true);
          }
 
          if(this.widthScale != 128 || this.heightScale != 128) {
