@@ -25,7 +25,6 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.Renderable;
 import net.runelite.mapping.Import;
 
 public interface RSDecorativeObject extends DecorativeObject
@@ -44,7 +43,7 @@ public interface RSDecorativeObject extends DecorativeObject
 	int getOrientation();
 
 	@Import("renderable1")
-	Renderable getRenderable();
+	RSRenderable getRenderable();
 
 	void setPlane(int plane);
 }

@@ -24,7 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.Model;
 import net.runelite.api.Renderable;
 import net.runelite.mapping.Import;
 
@@ -35,5 +34,5 @@ public interface RSRenderable extends RSNode, Renderable
 
 	@Import("getModel")
 	@Override
-	Model getModel();
+	RSModel getModel();
 }
