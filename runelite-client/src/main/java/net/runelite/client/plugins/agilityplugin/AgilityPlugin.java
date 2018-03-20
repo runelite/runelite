@@ -153,7 +153,8 @@ public class AgilityPlugin extends Plugin
 	{
 		obstacles.remove(oldObject);
 
-		if (newObject != null && Obstacles.OBSTACLE_IDS.contains(newObject.getId())) {
+		if (newObject != null && Obstacles.OBSTACLE_IDS.contains(newObject.getId()))
+		{
 			obstacles.put(newObject, tile);
 		}
 	}
@@ -161,7 +162,8 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOADING) {
+		if (event.getGameState() == GameState.LOADING)
+		{
 			obstacles.clear();
 		}
 	}
