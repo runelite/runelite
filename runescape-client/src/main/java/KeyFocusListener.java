@@ -113,6 +113,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
    }
 
+   @Export("keyTyped")
+   @ObfuscatedName("keyTyped")
    public final void keyTyped(KeyEvent var1) {
       if(keyboard != null) {
          char var2 = var1.getKeyChar();
@@ -155,6 +157,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    public final void focusGained(FocusEvent var1) {
    }
 
+   @Export("keyReleased")
+   @ObfuscatedName("keyReleased")
    public final synchronized void keyReleased(KeyEvent var1) {
       if(keyboard != null) {
          int var2 = var1.getKeyCode();
