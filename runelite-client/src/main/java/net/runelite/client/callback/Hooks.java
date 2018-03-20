@@ -34,6 +34,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
@@ -46,6 +47,7 @@ import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -55,7 +57,6 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.game.DeathChecker;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
@@ -81,7 +82,6 @@ public class Hooks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
-	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
 
 	private static Dimension lastStretchedDimensions;
@@ -103,8 +103,6 @@ public class Hooks
 
 		try
 		{
-			death.check();
-
 			// tick pending scheduled tasks
 			scheduler.tick();
 
@@ -382,5 +380,15 @@ public class Hooks
 	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
 	{
 		eventBus.post(tick);
+	}
+
+	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
+	{
+		if (healthRatio == 0)
+		{
+			ActorDeath death = new ActorDeath();
+			death.setActor(actor);
+			eventBus.post(death);
+		}
 	}
 }
