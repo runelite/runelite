@@ -48,6 +48,7 @@ import net.runelite.rs.api.RSCombatInfo1;
 import net.runelite.rs.api.RSCombatInfo2;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
+import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNode;
 
 @Mixin(RSActor.class)
@@ -187,5 +188,17 @@ public abstract class RSActorMixin implements RSActor
 		GraphicChanged graphicChanged = new GraphicChanged();
 		graphicChanged.setActor(this);
 		eventBus.post(graphicChanged);
+	}
+
+	@Inject
+	@Override
+	public Polygon getConvexHull()
+	{
+		RSModel model = getModel();
+		if (model == null)
+		{
+			return null;
+		}
+		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 }
