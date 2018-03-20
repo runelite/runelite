@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Random;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -456,7 +457,9 @@ public abstract class Actor extends Renderable {
       signature = "(IIIIIII)V",
       garbageValue = "-1192596976"
    )
-   final void method1654(int var1, int var2, int var3, int var4, int var5, int var6) {
+   @Export("setCombatInfo")
+   @Hook("onSetCombatInfo")
+   final void setCombatInfo(int var1, int var2, int var3, int var4, int var5, int var6) {
       CombatInfo2 var8 = (CombatInfo2)CombatInfo2.field3527.get((long)var1);
       CombatInfo2 var7;
       if(var8 != null) {

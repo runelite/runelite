@@ -4469,7 +4469,7 @@ public final class Client extends GameEngine implements class302 {
                               var16 = var3.getUSmart();
                               var17 = var3.method3566();
                               var27 = var81 > 0?var3.method3565():var17;
-                              var76.method1654(var14, gameCycle, var81, var16, var17, var27);
+                              var76.setCombatInfo(var14, gameCycle, var81, var16, var17, var27);
                            } else {
                               var76.method1655(var14);
                            }

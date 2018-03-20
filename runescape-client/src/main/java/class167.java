@@ -232,7 +232,7 @@ public class class167 {
                      var11 = var1.getUSmart();
                      var12 = var1.readUnsignedByte();
                      int var13 = var10 > 0?var1.method3566():var12;
-                     var4.method1654(var9, Client.gameCycle, var10, var11, var12, var13);
+                     var4.setCombatInfo(var9, Client.gameCycle, var10, var11, var12, var13);
                   } else {
                      var4.method1655(var9);
                   }
