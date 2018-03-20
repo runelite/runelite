@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public interface Actor extends Renderable
+public class WildcardMatcher
 {
-	int getCombatLevel();
+	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
 
-	String getName();
+	public static boolean matches(String pattern, String text)
+	{
+		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern);
+		final StringBuffer buffer = new StringBuffer();
 
-	Actor getInteracting();
+		buffer.append("(?i)");
+		while (matcher.find())
+		{
+			if (matcher.group(1) != null)
+			{
+				matcher.appendReplacement(buffer, ".*");
+			}
+			else
+			{
+				matcher.appendReplacement(buffer, "\\\\Q" + matcher.group(0) + "\\\\E");
+			}
+		}
 
-	int getHealthRatio();
+		matcher.appendTail(buffer);
+		final String replaced = buffer.toString();
 
-	int getHealth();
-
-	WorldPoint getWorldLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getOrientation();
-
-	int getAnimation();
-
-	int getGraphic();
-
-	int getModelHeight();
-
-	Polygon getCanvasTilePoly();
-
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
-
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
-
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
-
-	Point getMinimapLocation();
-
-	/**
-	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
-	 */
-	int getLogicalHeight();
-
-	Polygon getConvexHull();
+		return text.matches(replaced);
+	}
 }

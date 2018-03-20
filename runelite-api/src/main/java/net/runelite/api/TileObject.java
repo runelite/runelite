@@ -56,8 +56,6 @@ public interface TileObject
 
 	Point getMinimapLocation();
 
-	Polygon getConvexHull(Model model, int orientation);
-
 	/**
 	 * Get the on-screen clickable area of {@code object}
 	 *
