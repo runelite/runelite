@@ -49,6 +49,7 @@ import net.runelite.client.task.Schedule;
 @Slf4j
 public class ReportButtonPlugin extends Plugin
 {
+	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
 
@@ -119,6 +120,9 @@ public class ReportButtonPlugin extends Plugin
 				case JAGEX:
 					reportButton.setText(getJagexTime());
 					break;
+				case UTC:
+					reportButton.setText(getUTCTime());
+					break;
 				case LOCAL_TIME:
 					reportButton.setText(getLocalTime());
 					break;
@@ -152,6 +156,9 @@ public class ReportButtonPlugin extends Plugin
 				case JAGEX:
 					reportButton.setText(getFormattedTime(idleTime) + "<br>" + getJagexTime());
 					break;
+				case UTC:
+					reportButton.setText(getFormattedTime(idleTime) + "<br>" + getUTCTime());
+					break;
 				case LOCAL_TIME:
 					reportButton.setText(getFormattedTime(idleTime) + "<br>" + getLocalTime());
 					break;
@@ -175,7 +182,12 @@ public class ReportButtonPlugin extends Plugin
 	{
 		return LocalTime.now(JAGEX).format(DATE_TIME_FORMAT);
 	}
-
+	
+	public String getUTCTime()
+	{
+		return LocalTime.now(UTC).format(DATE_TIME_FORMAT);
+	}
+	
 	public String getLocalTime()
 	{
 		return LocalTime.now().format(DATE_TIME_FORMAT);
