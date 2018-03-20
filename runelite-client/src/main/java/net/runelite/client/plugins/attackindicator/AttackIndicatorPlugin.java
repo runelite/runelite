@@ -128,7 +128,7 @@ public class AttackIndicatorPlugin extends Plugin
 	@Subscribe
 	public void hideWidgets(WidgetHiddenChanged event)
 	{
-		if (event.getWidget().isHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
+		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
 		{
 			return;
 		}
