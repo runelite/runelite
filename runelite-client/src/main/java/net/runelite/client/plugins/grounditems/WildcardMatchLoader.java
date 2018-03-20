@@ -27,15 +27,11 @@ package net.runelite.client.plugins.grounditems;
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheLoader;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
+import net.runelite.client.util.WildcardMatcher;
 
 class WildcardMatchLoader extends CacheLoader<String, Boolean>
 {
-	// Regex used for matching item names with others
-	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
-
 	private final List<String> nameFilters;
 
 	WildcardMatchLoader(List<String> nameFilters)
@@ -55,26 +51,7 @@ class WildcardMatchLoader extends CacheLoader<String, Boolean>
 
 		for (final String filter : nameFilters)
 		{
-			final Matcher matcher = WILDCARD_PATTERN.matcher(filter);
-			final StringBuffer buffer = new StringBuffer();
-
-			buffer.append("(?i)");
-			while (matcher.find())
-			{
-				if (matcher.group(1) != null)
-				{
-					matcher.appendReplacement(buffer, ".*");
-				}
-				else
-				{
-					matcher.appendReplacement(buffer, "\\\\Q" + matcher.group(0) + "\\\\E");
-				}
-			}
-
-			matcher.appendTail(buffer);
-			final String replaced = buffer.toString();
-
-			if (filteredName.matches(replaced))
+			if (WildcardMatcher.matches(filter, filteredName))
 			{
 				return true;
 			}
