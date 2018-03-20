@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Charlie Waters
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.events;
 
-import java.awt.event.FocusListener;
-import java.awt.event.KeyListener;
-import net.runelite.api.KeyFocusListener;
+import lombok.Data;
 
-public interface RSKeyFocusListener extends KeyListener, FocusListener, KeyFocusListener
+@Data
+public class FocusChanged
 {
+	private boolean focused;
 }
