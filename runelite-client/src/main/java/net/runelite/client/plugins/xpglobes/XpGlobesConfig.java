@@ -48,10 +48,76 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showSkillName",
+			name = "Show skill name",
+			description = "Configures whether or not to show skill name",
+			position = 1
+	)
+	default boolean enableSkillName()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showCurrentXp",
+			name = "Show current xp",
+			description = "Configures whether or not to show current xp",
+			position = 2
+	)
+	default boolean enableCurrentXp()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showXpToLevel",
+			name = "Show xp to level",
+			description = "Configures whether or not to show xp to level",
+			position = 3
+	)
+	default boolean enableXpToLevel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showXpPerHour",
+			name = "Show xp per hour",
+			description = "Configures whether or not to show xp per hour",
+			position = 4
+	)
+	default boolean enableXpPerHour()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showActionsLeft",
+			name = "Show actions left",
+			description = "Configures whether or not to show actions left",
+			position = 5
+	)
+	default boolean enableActionsLeft()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showProgressBar",
+			name = "Show progress bar",
+			description = "Configures whether or not to show progress bar",
+			position = 6
+	)
+	default boolean enableProgressBar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "Progress arc color",
 		name = "Progress arc color",
 		description = "Change the color of the progress arc in the xp orb",
-		position = 1
+		position = 7
 	)
 	default Color progressArcColor()
 	{
@@ -62,7 +128,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress orb outline color",
 		name = "Progress orb outline color",
 		description = "Change the color of the progress orb outline",
-		position = 2
+		position = 8
 	)
 	default Color progressOrbOutLineColor()
 	{
@@ -73,7 +139,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress orb background color",
 		name = "Progress orb background color",
 		description = "Change the color of the progress orb background",
-		position = 3
+		position = 9
 	)
 	default Color progressOrbBackgroundColor()
 	{
@@ -84,7 +150,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress arc width",
 		name = "Progress arc width",
 		description = "Change the stroke width of the progress arc",
-		position = 4
+		position = 10
 	)
 	default int progressArcStrokeWidth()
 	{
@@ -95,7 +161,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Orb size",
 		name = "Size of orbs",
 		description = "Change the size of the xp orbs",
-		position = 5
+		position = 11
 	)
 	default int xpOrbSize()
 	{
@@ -106,10 +172,11 @@ public interface XpGlobesConfig extends Config
 		keyName = "Center orbs",
 		name = "Center orbs",
 		description = "Where to center the xp orbs around",
-		position = 6
+		position = 12
 	)
 	default OrbCentering centerOrbs()
 	{
 		return OrbCentering.DYNAMIC;
 	}
+
 }

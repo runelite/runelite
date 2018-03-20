@@ -41,4 +41,8 @@ public interface XpTrackerService
 	 * @return
 	 */
 	int getActionsHr(Skill skill);
+
+	int getXpPerHour(Skill skill);
+
+	int getActionsLeft(Skill skill);
 }

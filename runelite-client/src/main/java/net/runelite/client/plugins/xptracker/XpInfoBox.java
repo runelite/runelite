@@ -226,7 +226,6 @@ class XpInfoBox extends JPanel
 				xpGained.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
 				xpLeft.setText(XpPanel.formatLine(xpInfo.getXpRemaining(), "xp left"));
 				actionsLeft.setText(XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions left"));
-
 				final int progress = xpInfo.getSkillProgress();
 
 				progressBar.setValue(progress);
