@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Cas <https://github.com/casvandongen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,14 +45,16 @@ public class AgilityOverlay extends Overlay
 
 	private final Client client;
 	private final AgilityPlugin plugin;
+	private final AgilityConfig config;
 
 	@Inject
-	public AgilityOverlay(Client client, AgilityPlugin plugin)
+	public AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
@@ -67,16 +70,17 @@ public class AgilityOverlay extends Overlay
 				Area objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
+					Color configColor = config.getOverlayColor();
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 					{
-						graphics.setColor(Color.GREEN.darker());
+						graphics.setColor(configColor.darker());
 					}
 					else
 					{
-						graphics.setColor(Color.GREEN);
+						graphics.setColor(configColor);
 					}
 					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(0, 0xff, 0, 20));
+					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
 					graphics.fill(objectClickbox);
 				}
 			}

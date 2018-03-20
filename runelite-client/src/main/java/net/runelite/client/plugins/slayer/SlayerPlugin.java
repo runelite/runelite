@@ -27,8 +27,8 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.time.Instant;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +70,8 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("[\\d]+(?:,[\\d]+)?");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
+	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
+	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
@@ -213,12 +215,24 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
 		}
 
 		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+
+
+		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
+		{
+			amount++;
+		}
+
+		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
+		{
+			amount--;
+		}
+
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
