@@ -351,6 +351,44 @@ public abstract class RSWidgetMixin implements RSWidget
 		return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
 	}
 
+	@Inject
+	@Override
+	public void broadcastHidden(boolean hidden)
+	{
+		WidgetHiddenChanged event = new WidgetHiddenChanged();
+		event.setWidget(this);
+		event.setHidden(hidden);
+
+		eventBus.post(event);
+
+		RSWidget[] children = getChildren();
+
+		if (children != null)
+		{
+			// recursive through children
+			for (RSWidget child : children)
+			{
+				// if the widget is hidden it will not magically unhide from its parent changing
+				if (child == null || child.isSelfHidden())
+					continue;
+
+				child.broadcastHidden(hidden);
+			}
+		}
+
+		// make sure we iterate nested children as well
+		// cannot be null
+		Widget[] nestedChildren = getNestedChildren();
+
+		for (Widget nestedChild : nestedChildren)
+		{
+			if (nestedChild == null || nestedChild.isSelfHidden())
+				continue;
+
+			((RSWidget) nestedChild).broadcastHidden(hidden);
+		}
+	}
+
 	@FieldHook("isHidden")
 	@Inject
 	public void onHiddenChanged(int idx)
@@ -362,12 +400,22 @@ public abstract class RSWidgetMixin implements RSWidget
 			return;
 		}
 
-		boolean hidden = isHidden();
+		Widget parent = getParent();
 
-		WidgetHiddenChanged event = new WidgetHiddenChanged();
-		event.setWidget(this);
-		event.setHidden(hidden);
+		// if the parent is hidden then changes in this widget don't have any visual effect
+		// so ignore them
+		if (parent != null)
+		{
+			if (parent.isHidden())
+			{
+				return;
+			}
+		}
+		else if (TO_GROUP(id) != client.getWidgetRoot())
+		{
+			return;
+		}
 
-		eventBus.post(event);
+		broadcastHidden(isSelfHidden());
 	}
 }
