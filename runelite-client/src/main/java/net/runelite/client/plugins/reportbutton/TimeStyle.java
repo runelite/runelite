@@ -28,7 +28,7 @@ public enum TimeStyle
 {
 	OFF("Off"),
 	LOGIN_TIME("Login"),
-	UTC("UTC / Jagex"),
+	JAGEX("Jagex"),
 	LOCAL_TIME("System");
 
 	private final String name;
