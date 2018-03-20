@@ -82,17 +82,17 @@ public class TooltipOverlay extends Overlay
 					: new net.runelite.api.Point(0, 0);
 
 				position.setLocation(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
+
+				// check if this tooltip would overlap the last
+				if (lastLocation != null && lastLocation.contains(position))
+				{
+					// shift tooltip above previous
+					position.translate(0, -lastLocation.height - PADDING);
+				}
 			}
 			else
 			{
 				position.setLocation(tooltip.getPosition());
-			}
-
-			// check if this tooltip would overlap the last
-			if (lastLocation != null && lastLocation.contains(position))
-			{
-				// shift tooltip above previous
-				position.translate(0, -lastLocation.height - PADDING);
 			}
 
 			// render tooltip
@@ -100,13 +100,16 @@ public class TooltipOverlay extends Overlay
 			final Dimension thisSize = tooltipComponent.render(graphics, parent);
 
 			// update tooltip bounding rect
-			if (lastLocation == null)
+			if (tooltip.isFollowMouse())
 			{
-				lastLocation = new Rectangle(position, thisSize);
-			}
-			else
-			{
-				lastLocation.setSize(new Dimension(Math.max(lastLocation.width, thisSize.width), lastLocation.height + thisSize.height + PADDING));
+				if (lastLocation == null)
+				{
+					lastLocation = new Rectangle(position, thisSize);
+				}
+				else
+				{
+					lastLocation.setSize(new Dimension(Math.max(lastLocation.width, thisSize.width), lastLocation.height + thisSize.height + PADDING));
+				}
 			}
 		}
 
