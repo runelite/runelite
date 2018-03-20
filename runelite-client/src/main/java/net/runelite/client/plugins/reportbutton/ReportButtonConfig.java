@@ -37,11 +37,23 @@ public interface ReportButtonConfig extends Config
 {
 	@ConfigItem(
 		keyName = "time",
-		name = "Display Options",
-		description = "Configures what text the report button shows."
+		name = "Time Options",
+		description = "Configures what text the report button shows.",
+		position = 1
 	)
 	default TimeStyle time()
 	{
 		return TimeStyle.LOGIN_TIME;
+	}
+
+	@ConfigItem(
+		keyName = "idletime",
+		name = "Display Idle Time",
+		description = "Configures if the idle time is displayed in the report button",
+		position = 2
+	)
+	default boolean idleTime()
+	{
+		return false;
 	}
 }
