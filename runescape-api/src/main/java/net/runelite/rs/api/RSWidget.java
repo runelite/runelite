@@ -225,4 +225,6 @@ public interface RSWidget extends Widget
 	@Import("paddingY")
 	@Override
 	void setPaddingY(int paddingY);
+
+	void broadcastHidden(boolean hidden);
 }
