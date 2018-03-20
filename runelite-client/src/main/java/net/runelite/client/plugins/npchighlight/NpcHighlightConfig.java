@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.npchighlight;
 
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface Actor extends Renderable
+@ConfigGroup(
+	keyName = "npchighlight",
+	name = "NPC Highlight",
+	description = "Configuration for the NPC highlight plugin"
+)
+public interface NpcHighlightConfig extends Config
 {
-	int getCombatLevel();
+	@ConfigItem(
+		position = 0,
+		keyName = "npcToHighlight",
+		name = "NPCs to Highlight",
+		description = "List of NPC names to highlight"
+	)
+	default String getNpcToHighlight()
+	{
+		return "";
+	}
 
-	String getName();
+	@ConfigItem(
+		position = 1,
+		keyName = "npcColor",
+		name = "Highlight Color",
+		description = "Color of the NPC highlight"
+	)
+	default Color getNpcColor()
+	{
+		return Color.CYAN;
+	}
 
-	Actor getInteracting();
+	@ConfigItem(
+		position = 2,
+		keyName = "enableTag",
+		name = "Enable Tag Option",
+		description = "Enable the NPC tag menu option"
+	)
+	default boolean isTagEnabled()
+	{
+		return false;
+	}
 
-	int getHealthRatio();
-
-	int getHealth();
-
-	WorldPoint getWorldLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getOrientation();
-
-	int getAnimation();
-
-	int getGraphic();
-
-	int getModelHeight();
-
-	Polygon getCanvasTilePoly();
-
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
-
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
-
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
-
-	Point getMinimapLocation();
-
-	/**
-	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
-	 */
-	int getLogicalHeight();
-
-	Polygon getConvexHull();
+	@ConfigItem(
+		position = 3,
+		keyName = "tagColor",
+		name = "Tag Color",
+		description = "Color of the NPC tag highlight"
+	)
+	default Color getTagColor()
+	{
+		return Color.CYAN;
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import lombok.Data;
+import net.runelite.api.NPCComposition;
 
-public interface Actor extends Renderable
+@Data
+public class NpcActionChanged
 {
-	int getCombatLevel();
-
-	String getName();
-
-	Actor getInteracting();
-
-	int getHealthRatio();
-
-	int getHealth();
-
-	WorldPoint getWorldLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getOrientation();
-
-	int getAnimation();
-
-	int getGraphic();
-
-	int getModelHeight();
-
-	Polygon getCanvasTilePoly();
-
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
-
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
-
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
-
-	Point getMinimapLocation();
-
-	/**
-	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
-	 */
-	int getLogicalHeight();
-
-	Polygon getConvexHull();
+	private NPCComposition npcComposition;
+	private int idx;
 }

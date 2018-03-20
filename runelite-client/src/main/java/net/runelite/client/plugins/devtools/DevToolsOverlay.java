@@ -155,7 +155,7 @@ public class DevToolsOverlay extends Overlay
 		for (NPC npc : npcs)
 		{
 			NPCComposition composition = npc.getComposition();
-			if (composition.getConfigs() != null && composition.transform() != null)
+			if (composition.getConfigs() != null)
 			{
 				composition = composition.transform();
 			}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import static junit.framework.TestCase.assertTrue;
+import static net.runelite.client.util.WildcardMatcher.matches;
+import static org.junit.Assert.assertFalse;
+import org.junit.Test;
 
-public interface Actor extends Renderable
+public class WildcardMatcherTest
 {
-	int getCombatLevel();
-
-	String getName();
-
-	Actor getInteracting();
-
-	int getHealthRatio();
-
-	int getHealth();
-
-	WorldPoint getWorldLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getOrientation();
-
-	int getAnimation();
-
-	int getGraphic();
-
-	int getModelHeight();
-
-	Polygon getCanvasTilePoly();
-
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
-
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
-
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
-
-	Point getMinimapLocation();
-
-	/**
-	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
-	 */
-	int getLogicalHeight();
-
-	Polygon getConvexHull();
+	@Test
+	public void testMatches()
+	{
+		assertTrue(matches("rune*", "rune pouch"));
+		assertTrue(matches("rune*", "Rune pouch"));
+		assertFalse(matches("Abyssal whip", "Adamant dagger"));
+		assertTrue(matches("rune*", "Runeite Ore"));
+		assertTrue(matches("Abyssal whip", "Abyssal whip"));
+	}
 }
