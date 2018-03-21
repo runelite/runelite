@@ -52,8 +52,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.WildcardMatcher;
 
-@PluginDescriptor(name = "NPC Highlight")
-public class NpcHighlightPlugin extends Plugin
+@PluginDescriptor(name = "NPC Indicators")
+public class NpcIndicatorsPlugin extends Plugin
 {
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
@@ -68,7 +68,7 @@ public class NpcHighlightPlugin extends Plugin
 	private MenuManager menuManager;
 
 	@Inject
-	private NpcHighlightConfig config;
+	private NpcIndicatorsConfig config;
 
 	@Inject
 	private NpcClickboxOverlay npcClickboxOverlay;
@@ -93,9 +93,9 @@ public class NpcHighlightPlugin extends Plugin
 	}
 
 	@Provides
-	NpcHighlightConfig provideConfig(ConfigManager configManager)
+	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(NpcHighlightConfig.class);
+		return configManager.getConfig(NpcIndicatorsConfig.class);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class NpcHighlightPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("npchighlight"))
+		if (!event.getGroup().equals("npcindicators"))
 			return;
 
 		if (config.isTagEnabled())
