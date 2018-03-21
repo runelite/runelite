@@ -634,7 +634,7 @@ public abstract class RSClientMixin implements RSClient
 		eventBus.post(offerChangedEvent);
 	}
 
-	@FieldHook("settings")
+	@FieldHook("clientVarps")
 	@Inject
 	public static void settingsChanged(int idx)
 	{
