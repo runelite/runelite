@@ -86,7 +86,6 @@ class SkillAbbreviations
 	 */
 	static String getFullName(String abbrev)
 	{
-		abbrev = abbrev.toUpperCase();
-		return MAP.getOrDefault(abbrev, abbrev);
+		return MAP.getOrDefault(abbrev.toUpperCase(), abbrev);
 	}
 }
