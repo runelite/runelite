@@ -25,9 +25,10 @@
 package net.runelite.rs.api;
 
 import java.awt.Canvas;
+import net.runelite.api.KeyFocusListener;
 import net.runelite.mapping.Import;
 
-public interface RSGameEngine
+public interface RSGameEngine extends KeyFocusListener
 {
 	@Import("canvas")
 	Canvas getCanvas();

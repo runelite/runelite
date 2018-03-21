@@ -18,6 +18,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.ImageObserver;
 import java.net.URL;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -843,6 +844,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       }
    }
 
+   @Export("focusGained")
+   @Hook("focusGained")
+   @ObfuscatedName("focusGained")
    public final void focusGained(FocusEvent var1) {
       focused = true;
       this.field665 = true;
