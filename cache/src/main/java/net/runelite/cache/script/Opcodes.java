@@ -27,8 +27,8 @@ package net.runelite.cache.script;
 public class Opcodes
 {
 	public static final int LOAD_INT = 0;
-	public static final int GET_SETTINGS = 1;
-	public static final int PUT_SETTINGS = 2;
+	public static final int GET_VARP = 1;
+	public static final int PUT_VARP = 2;
 	public static final int LOAD_STRING = 3;
 	public static final int JUMP = 6;
 	public static final int IF_ICMPNE = 7;
