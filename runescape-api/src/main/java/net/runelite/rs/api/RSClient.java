@@ -77,7 +77,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	byte[][][] getTileSettings();
 
-	@Import("settings")
+	@Import("serverVarps")
 	@Override
 	int[] getSettings();
 
