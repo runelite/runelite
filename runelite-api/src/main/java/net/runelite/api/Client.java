@@ -154,7 +154,7 @@ public interface Client extends GameEngine
 
 	int[] getSettings();
 
-	int[] getWidgetSettings();
+	int[] getVarps();
 
 	int getSetting(Setting setting);
 

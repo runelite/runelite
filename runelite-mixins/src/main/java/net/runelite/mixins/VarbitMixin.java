@@ -64,8 +64,8 @@ public abstract class VarbitMixin implements RSClient
 			varbitCache.put(varbitId, v);
 		}
 
-		int[] settings = getSettings();
-		int value = settings[v.getIndex()];
+		int[] varps = getVarps();
+		int value = varps[v.getIndex()];
 		int lsb = v.getLeastSignificantBit();
 		int msb = v.getMostSignificantBit();
 		int mask = (1 << ((msb - lsb) + 1)) - 1;
