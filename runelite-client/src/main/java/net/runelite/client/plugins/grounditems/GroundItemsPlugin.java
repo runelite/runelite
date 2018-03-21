@@ -53,6 +53,7 @@ import net.runelite.api.Node;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -285,5 +286,14 @@ public class GroundItemsPlugin extends Plugin
 	public boolean isHidden(String item)
 	{
 		return TRUE.equals(hiddenItems.getUnchecked(item));
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
+		{
+			setHotKeyPressed(false);
+		}
 	}
 }
