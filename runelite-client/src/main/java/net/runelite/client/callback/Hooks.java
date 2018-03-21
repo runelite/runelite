@@ -53,8 +53,11 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.WidgetRedraw;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
+
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
@@ -390,5 +393,12 @@ public class Hooks
 			death.setActor(actor);
 			eventBus.post(death);
 		}
+	}
+
+	public static void widgetRedraw(Widget widget)
+	{
+		WidgetRedraw event = new WidgetRedraw();
+		event.setWidget(widget);
+		eventBus.post(event);
 	}
 }
