@@ -27,13 +27,18 @@ package net.runelite.client.plugins.wasdcamera;
 import com.google.common.eventbus.Subscribe;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 
 import javax.inject.Inject;
 
@@ -41,55 +46,109 @@ import javax.inject.Inject;
 	name = "WASD Camera",
 	enabledByDefault = false
 )
+@Slf4j
 public class WASDCameraPlugin extends Plugin
 {
+	private static final String PRESS_ENTER_TEXT = "Press Enter to Chat...";
+
+	@Inject
+	Client client;
+
 	@Inject
 	private KeyManager keyManager;
 
 	@Inject
 	private WASDCameraInputListener inputListener;
 
-	@Inject
-	private WASDCameraOverlay overlay;
-
 	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean chatMode;
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
 	private boolean inGame;
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
+	@Getter(AccessLevel.PACKAGE)
+	private boolean chatMode;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean textWidgetOverride;
+	
 	@Override
 	protected void startUp()
 	{
-		setChatMode(false);
+		chatMode = false;
+		inGame = false;
+		textWidgetOverride = false;
 		keyManager.registerKeyListener(inputListener);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			setInGame(true);
-			setChatMode(false);
-		}
-		else
-		{
-			setInGame(false);
-		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		keyManager.unregisterKeyListener(inputListener);
+	}
+
+	public boolean shouldRemap()
+	{
+		return inGame && !chatMode && !textWidgetOverride;
+	}
+
+	public void setChatMode(boolean mode)
+	{
+		chatMode = mode;
+		updateTooltip();
+	}
+
+	public void updateTooltip()
+	{
+		// Change the widget text when not in chat mode
+		if (!chatMode)
+		{
+			final Widget chatwidget = client.getWidget(WidgetInfo.CHATBOX_CHAT_LINE);
+			if (chatwidget != null)
+			{
+				final String line = chatwidget.getText();
+				final int start = line.indexOf("<col=") + 12;
+				final int end = line.indexOf("</col>");
+				if (start < 0 || end < 0)
+				{
+					return;
+				}
+
+				final String text = line.substring(start, end);
+				if (!text.equals(PRESS_ENTER_TEXT))
+				{
+					final String nline = line.substring(0, start) + PRESS_ENTER_TEXT + line.substring(end);
+					chatwidget.setText(nline);
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		chatMode = false;
+		inGame = (event.getGameState() == GameState.LOGGED_IN);
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		final Widget widget = event.getWidget();
+		if (WidgetInfo.TO_GROUP(widget.getId()) == WidgetID.CHATBOX_GROUP_ID)
+		{
+			if (widget.getId() == WidgetInfo.CHATBOX_ENTRY_BOX.getPackedId())
+			{
+				textWidgetOverride = !widget.isHidden();
+				log.debug("Text Widget: " + textWidgetOverride);
+			}
+			else if (widget.getId() == WidgetInfo.CHATBOX_CHAT_LINE.getPackedId())
+			{
+				log.debug("Chat Line: " + widget.isHidden());
+			}
+		}
+
+		updateTooltip();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		updateTooltip();
 	}
 }

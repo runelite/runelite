@@ -41,7 +41,7 @@ public class WASDCameraInputListener implements KeyListener
 	{
 		//log.debug("Typed: " + e);
 
-		if (plugin.isInGame() && !plugin.isChatMode())
+		if (plugin.shouldRemap())
 		{
 			e.consume();
 		}
@@ -52,24 +52,9 @@ public class WASDCameraInputListener implements KeyListener
 	{
 		//log.debug("Pressed: " + e);
 
-		if (!plugin.isInGame())
+		if (plugin.shouldRemap())
 		{
-			return;
-		}
-
-		if (plugin.isChatMode())
-		{
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_ESCAPE:
-					e.consume();
-				case KeyEvent.VK_ENTER:
-					plugin.setChatMode(false);
-					break;
-			}
-		}
-		else
-		{
+			// Remap WASD, catch enter and backspace
 			switch (e.getKeyCode())
 			{
 				case KeyEvent.VK_W:
@@ -95,6 +80,18 @@ public class WASDCameraInputListener implements KeyListener
 					break;
 			}
 		}
+		else if (plugin.isInGame() && plugin.isChatMode())
+		{
+			//
+			switch (e.getKeyCode())
+			{
+				case KeyEvent.VK_ESCAPE:
+					e.consume();
+				case KeyEvent.VK_ENTER:
+					plugin.setChatMode(false);
+					break;
+			}
+		}
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class WASDCameraInputListener implements KeyListener
 	{
 		//log.debug("Released: " + e);
 
-		if (plugin.isInGame() && !plugin.isChatMode())
+		if (plugin.shouldRemap())
 		{
 			switch (e.getKeyCode())
 			{
