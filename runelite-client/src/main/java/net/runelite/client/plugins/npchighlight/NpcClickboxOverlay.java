@@ -44,11 +44,11 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class NpcClickboxOverlay extends Overlay
 {
 	private final Client client;
-	private final NpcHighlightConfig config;
-	private final NpcHighlightPlugin plugin;
+	private final NpcIndicatorsConfig config;
+	private final NpcIndicatorsPlugin plugin;
 
 	@Inject
-	NpcClickboxOverlay(Client client, NpcHighlightConfig config, NpcHighlightPlugin plugin)
+	NpcClickboxOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;

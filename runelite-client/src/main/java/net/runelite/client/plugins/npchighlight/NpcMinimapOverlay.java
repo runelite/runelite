@@ -39,11 +39,11 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class NpcMinimapOverlay extends Overlay
 {
-	private final NpcHighlightConfig config;
-	private final NpcHighlightPlugin plugin;
+	private final NpcIndicatorsConfig config;
+	private final NpcIndicatorsPlugin plugin;
 
 	@Inject
-	NpcMinimapOverlay(NpcHighlightConfig config, NpcHighlightPlugin plugin)
+	NpcMinimapOverlay(NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
 	{
 		this.config = config;
 		this.plugin = plugin;
