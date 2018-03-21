@@ -103,7 +103,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
-		else if (config.swapHarpoon() && option.equals("big net"))
+		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap("harpoon", option, target, true);
 		}
