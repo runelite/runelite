@@ -233,8 +233,8 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public int getSetting(Setting setting)
 	{
-		int[] settings = getSettings();
-		return settings[setting.getId()];
+		int[] varps = getVarps();
+		return varps[setting.getId()];
 	}
 
 	@Inject

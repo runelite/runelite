@@ -2736,7 +2736,7 @@ public final class Client extends GameEngine implements class302 {
                      VarPlayerType var23 = method1275(var28);
                      if(var23 != null) {
                         class237.settings[var28] = 0;
-                        class237.widgetSettings[var28] = 0;
+                        class237.clientVarps[var28] = 0;
                      }
                   }
 
@@ -4029,9 +4029,9 @@ public final class Client extends GameEngine implements class302 {
             }
 
             if(ServerPacket.field2305 == var1.serverPacket) {
-               for(var20 = 0; var20 < class237.widgetSettings.length; ++var20) {
-                  if(class237.settings[var20] != class237.widgetSettings[var20]) {
-                     class237.widgetSettings[var20] = class237.settings[var20];
+               for(var20 = 0; var20 < class237.clientVarps.length; ++var20) {
+                  if(class237.settings[var20] != class237.clientVarps[var20]) {
+                     class237.clientVarps[var20] = class237.settings[var20];
                      class5.method14(var20);
                      field1032[++field1033 - 1 & 31] = var20;
                   }
@@ -4553,7 +4553,7 @@ public final class Client extends GameEngine implements class302 {
                   VarPlayerType var67 = method1275(var20);
                   if(var67 != null) {
                      class237.settings[var20] = 0;
-                     class237.widgetSettings[var20] = 0;
+                     class237.clientVarps[var20] = 0;
                   }
                }
 
@@ -4998,8 +4998,8 @@ public final class Client extends GameEngine implements class302 {
                var20 = var3.method3585();
                var21 = var3.method3576();
                class237.settings[var21] = var20;
-               if(class237.widgetSettings[var21] != var20) {
-                  class237.widgetSettings[var21] = var20;
+               if(class237.clientVarps[var21] != var20) {
+                  class237.clientVarps[var21] = var20;
                }
 
                class5.method14(var21);
@@ -5374,8 +5374,8 @@ public final class Client extends GameEngine implements class302 {
                byte var85 = var3.method3613();
                var21 = var3.method3574();
                class237.settings[var21] = var85;
-               if(class237.widgetSettings[var21] != var85) {
-                  class237.widgetSettings[var21] = var85;
+               if(class237.clientVarps[var21] != var85) {
+                  class237.clientVarps[var21] = var85;
                }
 
                class5.method14(var21);

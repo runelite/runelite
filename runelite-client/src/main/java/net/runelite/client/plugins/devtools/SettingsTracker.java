@@ -47,14 +47,14 @@ public class SettingsTracker
 		if (clientSettings == null || widgetSettings == null)
 		{
 			clientSettings = copy(client.getSettings());
-			widgetSettings = copy(client.getWidgetSettings());
+			widgetSettings = copy(client.getVarps());
 
 			log.info("Snapshotted client and widget settings");
 			return;
 		}
 
 		int[] newClientSettings = client.getSettings();
-		int[] newWidgetSettings = client.getWidgetSettings();
+		int[] newWidgetSettings = client.getVarps();
 
 		for (int i = 0; i < Math.min(clientSettings.length, newClientSettings.length); ++i)
 		{

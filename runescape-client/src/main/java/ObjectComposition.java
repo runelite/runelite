@@ -832,7 +832,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.varpId != -1) {
          var1 = World.getVarbit(this.varpId);
       } else if(this.configId != -1) {
-         var1 = class237.widgetSettings[this.configId];
+         var1 = class237.clientVarps[this.configId];
       }
 
       int var2;

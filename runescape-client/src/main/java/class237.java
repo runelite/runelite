@@ -11,8 +11,8 @@ public class class237 {
    @Export("settings")
    public static int[] settings;
    @ObfuscatedName("i")
-   @Export("widgetSettings")
-   public static int[] widgetSettings;
+   @Export("clientVarps")
+   public static int[] clientVarps;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lla;"
@@ -29,6 +29,6 @@ public class class237 {
       }
 
       settings = new int[2000];
-      widgetSettings = new int[2000];
+      clientVarps = new int[2000];
    }
 }

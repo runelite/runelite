@@ -52,7 +52,7 @@ public abstract class Timer {
       }
 
       var6 <<= var4;
-      class237.widgetSettings[var3] = class237.widgetSettings[var3] & ~var6 | var1 << var4 & var6;
+      class237.clientVarps[var3] = class237.clientVarps[var3] & ~var6 | var1 << var4 & var6;
    }
 
    @ObfuscatedName("c")

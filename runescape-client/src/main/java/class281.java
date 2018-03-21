@@ -227,7 +227,7 @@ public class class281 extends CacheableNode {
       if(this.field3592 != -1) {
          var1 = World.getVarbit(this.field3592);
       } else if(this.field3593 != -1) {
-         var1 = class237.widgetSettings[this.field3593];
+         var1 = class237.clientVarps[this.field3593];
       }
 
       int var2;
