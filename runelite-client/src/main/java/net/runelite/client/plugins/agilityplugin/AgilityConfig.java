@@ -32,7 +32,8 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(
 	keyName = "agility",
 	name = "Agility",
-	description = "Placeholder")
+	description = "Placeholder"
+)
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
