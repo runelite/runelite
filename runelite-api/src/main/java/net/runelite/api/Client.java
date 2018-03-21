@@ -292,6 +292,7 @@ public interface Client extends GameEngine
 	 * @param inventory
 	 * @return
 	 */
+	@Nullable
 	ItemContainer getItemContainer(InventoryID inventory);
 
 	int getIntStackSize();
