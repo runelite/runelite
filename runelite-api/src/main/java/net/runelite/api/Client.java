@@ -152,8 +152,6 @@ public interface Client extends GameEngine
 
 	int[][] getXteaKeys();
 
-	int[] getSettings();
-
 	int[] getVarps();
 
 	int getSetting(Setting setting);
