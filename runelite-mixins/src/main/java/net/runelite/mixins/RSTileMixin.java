@@ -28,6 +28,9 @@ import net.runelite.api.Actor;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
+import net.runelite.api.Item;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
@@ -38,6 +41,8 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GroundItemDespawned;
+import net.runelite.api.events.GroundItemSpawned;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -73,6 +78,9 @@ public abstract class RSTileMixin implements RSTile
 
 	@Inject
 	private GameObject[] previousGameObjects;
+
+	@Inject
+	private ItemLayer previousItemLayer;
 
 	@Inject
 	@Override
@@ -255,5 +263,42 @@ public abstract class RSTileMixin implements RSTile
 				eventBus.post(gameObjectsChanged);
 			}
 		}
+	}
+
+	@FieldHook("itemLayer")
+	@Inject
+	public void itemLayerChanged(int idx)
+	{
+		final ItemLayer previous = previousItemLayer;
+		final ItemLayer current = getItemLayer();
+
+		if (current == previous)
+		{
+			return;
+		}
+
+		previousItemLayer = current;
+		Node currentNode;
+
+		if (previous != null && previous.getBottom() != null)
+		{
+			currentNode = previous.getBottom();
+			while (currentNode instanceof Item)
+			{
+				eventBus.post(new GroundItemDespawned(this, (Item) currentNode));
+				currentNode = currentNode.getNext();
+			}
+		}
+
+		if (current != null && current.getBottom() != null)
+		{
+			currentNode = current.getBottom();
+			while (currentNode instanceof Item)
+			{
+				eventBus.post(new GroundItemSpawned(this, (Item) currentNode));
+				currentNode = currentNode.getNext();
+			}
+		}
+
 	}
 }

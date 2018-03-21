@@ -377,18 +377,18 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(IIIILen;ILen;Len;)V"
    )
-   @Export("addItemPile")
-   public void addItemPile(int var1, int var2, int var3, int var4, Renderable var5, int var6, Renderable var7, Renderable var8) {
+   @Export("addGroundItemPile")
+   public void addGroundItemPile(int plane, int x, int y, int hash, Renderable bottom, int flags, Renderable middle, Renderable top) {
       ItemLayer var9 = new ItemLayer();
-      var9.bottom = var5;
-      var9.x = var2 * 128 + 64;
-      var9.y = var3 * 128 + 64;
-      var9.hash = var4;
-      var9.flags = var6;
-      var9.middle = var7;
-      var9.top = var8;
+      var9.bottom = bottom;
+      var9.x = x * 128 + 64;
+      var9.y = y * 128 + 64;
+      var9.hash = hash;
+      var9.flags = flags;
+      var9.middle = middle;
+      var9.top = top;
       int var10 = 0;
-      Tile var11 = this.tiles[var1][var2][var3];
+      Tile var11 = this.tiles[plane][x][y];
       if(var11 != null) {
          for(int var12 = 0; var12 < var11.entityCount; ++var12) {
             if((var11.objects[var12].flags & 256) == 256 && var11.objects[var12].renderable instanceof Model) {
@@ -402,11 +402,11 @@ public class Region {
       }
 
       var9.height = var10;
-      if(this.tiles[var1][var2][var3] == null) {
-         this.tiles[var1][var2][var3] = new Tile(var1, var2, var3);
+      if(this.tiles[plane][x][y] == null) {
+         this.tiles[plane][x][y] = new Tile(plane, x, y);
       }
 
-      this.tiles[var1][var2][var3].itemLayer = var9;
+      this.tiles[plane][x][y].itemLayer = var9;
    }
 
    @ObfuscatedName("p")
@@ -705,8 +705,8 @@ public class Region {
 
    @ObfuscatedName("av")
    @Export("removeGroundItemPile")
-   public void removeGroundItemPile(int var1, int var2, int var3) {
-      Tile var4 = this.tiles[var1][var2][var3];
+   public void removeGroundItemPile(int plane, int x, int y) {
+      Tile var4 = this.tiles[plane][x][y];
       if(var4 != null) {
          var4.itemLayer = null;
       }

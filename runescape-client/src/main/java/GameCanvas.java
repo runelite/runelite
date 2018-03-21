@@ -116,7 +116,7 @@ public final class GameCanvas extends Canvas {
             }
 
             int var9 = var0 + (var1 << 7) + 1610612736;
-            class38.region.addItemPile(Ignore.plane, var0, var1, class149.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, Ignore.plane), var5, var9, var11, var10);
+            class38.region.addGroundItemPile(Ignore.plane, var0, var1, class149.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, Ignore.plane), var5, var9, var11, var10);
          }
       }
    }

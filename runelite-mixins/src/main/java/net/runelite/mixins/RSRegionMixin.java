@@ -77,13 +77,15 @@ public abstract class RSRegionMixin implements RSRegion
 		}
 	}
 
-	@Copy("addItemPile")
-	abstract public void rs$addItemPile(int plane, int x, int y, int hash, Renderable var5, int var6, Renderable var7, Renderable var8);
+	@Copy("addGroundItemPile")
+	abstract public void rs$addGroundItemPile(int plane, int x, int y, int hash, Renderable var5, int var6,
+		Renderable var7, Renderable var8);
 
-	@Replace("addItemPile")
-	public void rl$addItemPile(int plane, int x, int y, int hash, Renderable var5, int var6, Renderable var7, Renderable var8)
+	@Replace("addGroundItemPile")
+	public void rl$addGroundItemPile(int plane, int x, int y, int hash, Renderable var5, int var6, Renderable var7,
+		Renderable var8)
 	{
-		rs$addItemPile(plane, x, y, hash, var5, var6, var7, var8);
+		rs$addGroundItemPile(plane, x, y, hash, var5, var6, var7, var8);
 		Tile tile = getTiles()[plane][x][y];
 		if (tile != null)
 		{
