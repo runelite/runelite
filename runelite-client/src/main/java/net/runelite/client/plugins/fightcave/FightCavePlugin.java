@@ -24,17 +24,33 @@
  */
 package net.runelite.client.plugins.fightcave;
 
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.Getter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
@@ -42,8 +58,28 @@ import net.runelite.client.util.QueryRunner;
 )
 public class FightCavePlugin extends Plugin
 {
+	private static final int[] FIGHT_CAVE_REGION = { 9551 };
+
+	private static final Pattern WAVE_MESSAGE = Pattern.compile("([0-9]+)");
+
+	@Getter
+	private Waves wave;
+
+	private JadAttack attack;
+
+	private FightCaveTimer fightCaveTimer;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
+
 	@Inject
 	private Client client;
+
+	@Inject
+	private FightCaveConfig config;
 
 	@Inject
 	private QueryRunner queryRunner;
@@ -51,12 +87,87 @@ public class FightCavePlugin extends Plugin
 	@Inject
 	private FightCaveOverlay overlay;
 
-	private JadAttack attack;
+	@Inject
+	private FightCaveWaveOverlay fightCaveWaveOverlay;
+
+	@Provides
+	FightCaveConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FightCaveConfig.class);
+	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, fightCaveWaveOverlay);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		removeFightCaveTimer();
+	}
+
+	@Subscribe
+	public void onConfigChange(ConfigChanged event)
+	{
+		if (event.getGroup().equals("fightcave") )
+		{
+			if (!config.showTimer())
+			{
+				removeFightCaveTimer();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		String message = event.getMessage();
+
+		if (message.startsWith("Your TzTok-Jad kill count is"))
+		{
+			fightCaveTimer.setStopped(true);
+			return;
+		}
+
+		if (message.contains("Wave: "))
+		{
+			if (isInFightCaveInstance())
+			{
+				Matcher m = WAVE_MESSAGE.matcher(message.replaceAll("<[^>]*>", ""));
+				if (m.find())
+				{
+					int waveNum = Integer.parseInt(m.group());
+
+					//add fight cave timer
+					if (config.showTimer() && waveNum == 1)
+					{
+						fightCaveTimer = new FightCaveTimer(itemManager.getImage(ItemID.FIRE_CAPE), Instant.now());
+						infoBoxManager.addInfoBox(fightCaveTimer);
+					}
+
+					wave = Waves.values()[waveNum];
+					return;
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (wave != null && !isInFightCaveInstance())
+		{
+			wave = null;
+			removeFightCaveTimer();
+			return;
+		}
 	}
 
 	@Schedule(
@@ -70,21 +181,24 @@ public class FightCavePlugin extends Plugin
 			return;
 		}
 
-		NPC jad = findJad();
-		if (jad != null)
+		if (config.showJad())
 		{
-			if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
+			NPC jad = findJad();
+			if (jad != null)
 			{
-				attack = JadAttack.MAGIC;
+				if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
+				{
+					attack = JadAttack.MAGIC;
+				}
+				else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
+				{
+					attack = JadAttack.RANGE;
+				}
 			}
-			else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
+			else
 			{
-				attack = JadAttack.RANGE;
+				attack = null;
 			}
-		}
-		else
-		{
-			attack = null;
 		}
 	}
 
@@ -98,5 +212,15 @@ public class FightCavePlugin extends Plugin
 	JadAttack getAttack()
 	{
 		return attack;
+	}
+
+	public boolean isInFightCaveInstance()
+	{
+		return Arrays.equals(client.getMapRegions(), FIGHT_CAVE_REGION);
+	}
+
+	private void removeFightCaveTimer()
+	{
+		infoBoxManager.removeInfoBox(fightCaveTimer);
 	}
 }
