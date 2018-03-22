@@ -25,12 +25,8 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
-import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.client.input.KeyListener;
@@ -64,77 +60,56 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 		if (e.getKeyCode() == HOTKEY)
 		{
 			plugin.setHotKeyPressed(false);
-			plugin.getBoxes().clear();
-			plugin.getHiddenBoxes().clear();
-			plugin.getHighlightBoxes().clear();
+			plugin.setTextBoxBounds(null);
+			plugin.setHiddenBoxBounds(null);
+			plugin.setHighlightBoxBounds(null);
 		}
 	}
 
 	@Override
 	public MouseEvent mousePressed(MouseEvent e)
 	{
+		final Point mousePos = e.getPoint();
+
 		if (plugin.isHotKeyPressed())
 		{
 			if (SwingUtilities.isLeftMouseButton(e))
 			{
 				// Process both click boxes for hidden and highlighted items
-				final Iterator<Map.Entry<Rectangle, String>> highlightIterator = plugin
-					.getHighlightBoxes().entrySet().iterator();
-
-				if (findMatchAndProcess(e, highlightIterator, false) != null)
+				if (plugin.getHiddenBoxBounds() != null && plugin.getHiddenBoxBounds().getKey().contains(mousePos))
 				{
+					plugin.updateList(plugin.getHiddenBoxBounds().getValue().getName(), true);
+					e.consume();
 					return e;
 				}
 
-				final Iterator<Map.Entry<Rectangle, String>> hiddenIterator = plugin
-					.getHiddenBoxes().entrySet().iterator();
-
-				if (findMatchAndProcess(e, hiddenIterator, true) != null)
+				if (plugin.getHighlightBoxBounds() != null && plugin.getHighlightBoxBounds().getKey().contains(mousePos))
 				{
+					plugin.updateList(plugin.getHighlightBoxBounds().getValue().getName(), false);
+					e.consume();
 					return e;
 				}
 
 				// There is one name click box for left click and one for right click
-				final Iterator<Map.Entry<Rectangle, String>> iterator = plugin.getBoxes().entrySet().iterator();
-				if (findMatchAndProcess(e, iterator, false) != null)
+				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
 				{
+					plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), false);
+					e.consume();
 					return e;
 				}
 			}
 			else if (SwingUtilities.isRightMouseButton(e))
 			{
-				final Iterator<Map.Entry<Rectangle, String>> iterator = plugin.getBoxes().entrySet().iterator();
-				if (findMatchAndProcess(e, iterator, true) != null)
+				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
 				{
+					plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), true);
+					e.consume();
 					return e;
 				}
 			}
 		}
 
 		return e;
-	}
-
-	@Nullable
-	private MouseEvent findMatchAndProcess(
-		final MouseEvent mouseEvent,
-		final Iterator<Map.Entry<Rectangle, String>> iterator,
-		final boolean hiddenList)
-	{
-		final Point mousePos = mouseEvent.getPoint();
-
-		while (iterator.hasNext())
-		{
-			final Map.Entry<Rectangle, String> next = iterator.next();
-
-			if (next.getKey().contains(mousePos))
-			{
-				plugin.updateList(next.getValue(), hiddenList);
-				mouseEvent.consume();
-				return mouseEvent;
-			}
-		}
-
-		return null;
 	}
 }
 

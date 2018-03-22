@@ -41,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -107,13 +106,16 @@ public class GroundItemsPlugin extends Plugin
 	private static final int COINS = ItemID.COINS_995;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> boxes = new ConcurrentHashMap<>();
+	@Setter(AccessLevel.PACKAGE)
+	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> hiddenBoxes = new ConcurrentHashMap<>();
+	@Setter(AccessLevel.PACKAGE)
+	private Map.Entry<Rectangle, GroundItem> hiddenBoxBounds;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> highlightBoxes = new ConcurrentHashMap<>();
+	@Setter(AccessLevel.PACKAGE)
+	private Map.Entry<Rectangle, GroundItem> highlightBoxBounds;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)

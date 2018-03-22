@@ -30,7 +30,10 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -61,6 +64,8 @@ public class GroundItemsOverlay extends Overlay
 	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = OFFSET_Z;
+	// Size of the hidden/highlight boxes
+	private static final int RECTANGLE_SIZE = 8;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -103,8 +108,60 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
+		final List<GroundItem> groundItemList = new ArrayList<>(plugin.getCollectedGroundItems().values());
+		GroundItem topGroundItem = null;
 
-		for (GroundItem item : plugin.getCollectedGroundItems().values())
+		if (plugin.isHotKeyPressed())
+		{
+			final java.awt.Point awtMousePos = new java.awt.Point(mousePos.getX(), mousePos.getY());
+			GroundItem groundItem = null;
+
+			for (GroundItem item : groundItemList)
+			{
+				item.setOffset(offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0));
+
+				if (groundItem != null)
+				{
+					continue;
+				}
+
+				if (plugin.getTextBoxBounds() != null
+					&& item.equals(plugin.getTextBoxBounds().getValue())
+					&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
+				{
+					groundItem = item;
+					continue;
+				}
+
+				if (plugin.getHiddenBoxBounds() != null
+					&& item.equals(plugin.getHiddenBoxBounds().getValue())
+					&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
+				{
+					groundItem = item;
+					continue;
+				}
+
+				if (plugin.getHighlightBoxBounds() != null
+					&& item.equals(plugin.getHighlightBoxBounds().getValue())
+					&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
+				{
+					groundItem = item;
+				}
+			}
+
+			if (groundItem != null)
+			{
+				groundItemList.remove(groundItem);
+				groundItemList.add(groundItem);
+				topGroundItem = groundItem;
+			}
+		}
+
+		plugin.setTextBoxBounds(null);
+		plugin.setHiddenBoxBounds(null);
+		plugin.setHighlightBoxBounds(null);
+
+		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
@@ -213,7 +270,10 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final int offset = offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+			final int offset = plugin.isHotKeyPressed()
+				? item.getOffset()
+				: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
 
@@ -229,38 +289,48 @@ public class GroundItemsOverlay extends Overlay
 				int height = stringHeight + 4;
 				final Rectangle itemBounds = new Rectangle(x, y, width, height);
 
-				plugin.getBoxes().put(itemBounds, item.getName());
-
 				// Hidden box
 				x += width + 2;
-				y += 4;
-				width = height = stringHeight - 2;
+				y = textY - (RECTANGLE_SIZE + stringHeight) / 2;
+				width = height = RECTANGLE_SIZE - 2;
 				final Rectangle itemHiddenBox = new Rectangle(x, y, width, height);
-
-				plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
 
 				// Highlight box
 				x += width + 2;
 				final Rectangle itemHighlightBox = new Rectangle(x, y, width, height);
 
-				plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
-
 				boolean mouseInBox = itemBounds.contains(mousePos.getX(), mousePos.getY());
 				boolean mouseInHiddenBox = itemHiddenBox.contains(mousePos.getX(), mousePos.getY());
 				boolean mouseInHighlightBox = itemHighlightBox.contains(mousePos.getX(), mousePos.getY());
 
+				if (mouseInBox)
+				{
+					plugin.setTextBoxBounds(new SimpleEntry<>(itemBounds, item));
+				}
+				else if (mouseInHiddenBox)
+				{
+					plugin.setHiddenBoxBounds(new SimpleEntry<>(itemHiddenBox, item));
+
+				}
+				else if (mouseInHighlightBox)
+				{
+					plugin.setHighlightBoxBounds(new SimpleEntry<>(itemHighlightBox, item));
+				}
+
+				boolean topItem = topGroundItem == item;
+
 				// Draw background if hovering
-				if (mouseInBox || mouseInHiddenBox || mouseInHighlightBox)
+				if (topItem && (mouseInBox || mouseInHiddenBox || mouseInHighlightBox))
 				{
 					backgroundComponent.setRectangle(itemBounds);
 					backgroundComponent.render(graphics);
 				}
 
 				// Draw hidden box
-				drawRectangle(graphics, itemHiddenBox, mouseInHiddenBox ? Color.RED : color, hidden, true);
+				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden, true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, mouseInHighlightBox ? Color.GREEN : color, highlighted, false);
+				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted, false);
 			}
 
 			textComponent.setText(itemString);

@@ -40,6 +40,7 @@ class GroundItem
 	private WorldPoint location;
 	private int haPrice;
 	private int gePrice;
+	private int offset;
 	private boolean tradeable;
 
 	@Value
