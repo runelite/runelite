@@ -26,16 +26,22 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import lombok.Getter;
+import net.runelite.client.plugins.Plugin;
 
 public abstract class InfoBox
 {
 	private final BufferedImage image;
 
+	@Getter
+	private final Plugin plugin;
+
 	private String tooltip;
 
-	public InfoBox(BufferedImage image)
+	public InfoBox(BufferedImage image, Plugin plugin)
 	{
 		this.image = image;
+		this.plugin = plugin;
 	}
 
 	public BufferedImage getImage()
