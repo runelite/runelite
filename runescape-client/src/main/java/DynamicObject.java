@@ -52,12 +52,14 @@ public class DynamicObject extends Renderable {
    @ObfuscatedGetter(
       intValue = -1630363609
    )
-   int field1444;
+   @Export("animFrame")
+   int animFrame;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 789619793
    )
-   int field1436;
+   @Export("animCycleCount")
+   int animCycleCount;
 
    @ObfuscatedSignature(
       signature = "(IIIIIIIZLen;)V"
@@ -71,20 +73,20 @@ public class DynamicObject extends Renderable {
       this.sceneY = var6;
       if(var7 != -1) {
          this.field1442 = class158.getAnimation(var7);
-         this.field1444 = 0;
-         this.field1436 = Client.gameCycle - 1;
+         this.animFrame = 0;
+         this.animCycleCount = Client.gameCycle - 1;
          if(this.field1442.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
             DynamicObject var10 = (DynamicObject)var9;
             if(this.field1442 == var10.field1442) {
-               this.field1444 = var10.field1444;
-               this.field1436 = var10.field1436;
+               this.animFrame = var10.animFrame;
+               this.animCycleCount = var10.animCycleCount;
                return;
             }
          }
 
          if(var8 && this.field1442.frameStep != -1) {
-            this.field1444 = (int)(Math.random() * (double)this.field1442.frameIDs.length);
-            this.field1436 -= (int)(Math.random() * (double)this.field1442.frameLenghts[this.field1444]);
+            this.animFrame = (int)(Math.random() * (double)this.field1442.frameIDs.length);
+            this.animCycleCount -= (int)(Math.random() * (double)this.field1442.frameLengths[this.animFrame]);
          }
       }
 
@@ -97,7 +99,7 @@ public class DynamicObject extends Renderable {
    )
    protected final Model getModel() {
       if(this.field1442 != null) {
-         int var1 = Client.gameCycle - this.field1436;
+         int var1 = Client.gameCycle - this.animCycleCount;
          if(var1 > 100 && this.field1442.frameStep > 0) {
             var1 = 100;
          }
@@ -105,22 +107,23 @@ public class DynamicObject extends Renderable {
          label56: {
             do {
                do {
-                  if(var1 <= this.field1442.frameLenghts[this.field1444]) {
+                  if(var1 <= this.field1442.frameLengths[this.animFrame]) {
                      break label56;
                   }
 
-                  var1 -= this.field1442.frameLenghts[this.field1444];
-                  ++this.field1444;
-               } while(this.field1444 < this.field1442.frameIDs.length);
+                  var1 -= this.field1442.frameLengths[this.animFrame];
+                  ++this.animFrame;
+               } while(this.animFrame < this.field1442.frameIDs.length);
 
-               this.field1444 -= this.field1442.frameStep;
-            } while(this.field1444 >= 0 && this.field1444 < this.field1442.frameIDs.length);
+               this.animFrame -= this.field1442.frameStep;
+            } while(this.animFrame >= 0 && this.animFrame < this.field1442.frameIDs.length);
 
             this.field1442 = null;
          }
 
-         this.field1436 = Client.gameCycle - var1;
+         this.animCycleCount = Client.gameCycle - var1;
       }
+
 
       ObjectComposition var12 = Spotanim.getObjectDefinition(this.id);
       if(var12.impostorIds != null) {
@@ -148,7 +151,7 @@ public class DynamicObject extends Renderable {
          int var9 = var8[var5][var7] + var8[var5][var6] + var8[var4][var6] + var8[var4][var7] >> 2;
          int var10 = (this.sceneX << 7) + (var2 << 6);
          int var11 = (this.sceneY << 7) + (var3 << 6);
-         return var12.method5000(this.type, this.orientation, var8, var10, var9, var11, this.field1442, this.field1444);
+         return var12.method5000(this.type, this.orientation, var8, var10, var9, var11, this.field1442, this.animFrame);
       }
    }
 

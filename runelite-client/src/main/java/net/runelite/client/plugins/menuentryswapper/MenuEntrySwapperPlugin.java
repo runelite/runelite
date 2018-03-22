@@ -103,7 +103,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
-		else if (config.swapHarpoon() && option.equals("big net"))
+		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap("harpoon", option, target, true);
 		}
@@ -128,9 +128,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
 		}
-		else if (config.swapTeleportItem() && option.equals("wield"))
+		else if (option.equals("wield"))
 		{
-			swap("teleport", option, target, true);
+			if (config.swapTeleportItem())
+			{
+				swap("teleport", option, target, true);
+			}
+
+			if (config.swapSilverSickle())
+			{
+				swap("cast bloom", option, target, true);
+			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{

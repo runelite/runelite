@@ -37,8 +37,8 @@ public class Sequence extends CacheableNode {
    @ObfuscatedName("e")
    int[] field3760;
    @ObfuscatedName("x")
-   @Export("frameLenghts")
-   public int[] frameLenghts;
+   @Export("frameLengths")
+   public int[] frameLengths;
    @ObfuscatedName("p")
    public int[] field3762;
    @ObfuscatedName("g")
@@ -141,10 +141,10 @@ public class Sequence extends CacheableNode {
       int var4;
       if(var2 == 1) {
          var3 = var1.readUnsignedShort();
-         this.frameLenghts = new int[var3];
+         this.frameLengths = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.frameLenghts[var4] = var1.readUnsignedShort();
+            this.frameLengths[var4] = var1.readUnsignedShort();
          }
 
          this.frameIDs = new int[var3];
@@ -235,14 +235,15 @@ public class Sequence extends CacheableNode {
       signature = "(Lek;IB)Lek;",
       garbageValue = "36"
    )
-   public Model method5168(Model var1, int var2) {
+   @Export("transformActorModel")
+   public Model transformActorModel(Model var1, int var2) {
       var2 = this.frameIDs[var2];
       Frames var3 = ISAACCipher.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var3 == null) {
-         return var1.method2686(true);
+         return var1.toSharedModel(true);
       } else {
-         Model var4 = var1.method2686(!var3.method3052(var2));
+         Model var4 = var1.toSharedModel(!var3.method3052(var2));
          var4.method2746(var3, var2);
          return var4;
       }
@@ -253,19 +254,20 @@ public class Sequence extends CacheableNode {
       signature = "(Lek;IIB)Lek;",
       garbageValue = "60"
    )
-   Model method5185(Model var1, int var2, int var3) {
+   @Export("transformObjectModel")
+   Model transformObjectModel(Model var1, int var2, int var3) {
       var2 = this.frameIDs[var2];
       Frames var4 = ISAACCipher.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var4 == null) {
-         return var1.method2686(true);
+         return var1.toSharedModel(true);
       } else {
-         Model var5 = var1.method2686(!var4.method3052(var2));
+         Model var5 = var1.toSharedModel(!var4.method3052(var2));
          var3 &= 3;
          if(var3 == 1) {
-            var5.method2718();
+            var5.rotateY270Ccw();
          } else if(var3 == 2) {
-            var5.method2750();
+            var5.rotateY180Ccw();
          } else if(var3 == 3) {
             var5.rotateY90Ccw();
          }
@@ -274,9 +276,9 @@ public class Sequence extends CacheableNode {
          if(var3 == 1) {
             var5.rotateY90Ccw();
          } else if(var3 == 2) {
-            var5.method2750();
+            var5.rotateY180Ccw();
          } else if(var3 == 3) {
-            var5.method2718();
+            var5.rotateY270Ccw();
          }
 
          return var5;
@@ -288,14 +290,15 @@ public class Sequence extends CacheableNode {
       signature = "(Lek;IB)Lek;",
       garbageValue = "120"
    )
-   Model method5180(Model var1, int var2) {
+   @Export("transformSpotAnimModel")
+   Model transformSpotAnimModel(Model var1, int var2) {
       var2 = this.frameIDs[var2];
       Frames var3 = ISAACCipher.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var3 == null) {
-         return var1.method2697(true);
+         return var1.toSharedSpotAnimModel(true);
       } else {
-         Model var4 = var1.method2697(!var3.method3052(var2));
+         Model var4 = var1.toSharedSpotAnimModel(!var3.method3052(var2));
          var4.method2746(var3, var2);
          return var4;
       }
@@ -306,23 +309,24 @@ public class Sequence extends CacheableNode {
       signature = "(Lek;ILkf;IB)Lek;",
       garbageValue = "1"
    )
-   public Model method5171(Model var1, int var2, Sequence var3, int var4) {
+   @Export("applyTransformations")
+   public Model applyTransformations(Model var1, int var2, Sequence var3, int var4) {
       var2 = this.frameIDs[var2];
       Frames var5 = ISAACCipher.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var5 == null) {
-         return var3.method5168(var1, var4);
+         return var3.transformActorModel(var1, var4);
       } else {
          var4 = var3.frameIDs[var4];
          Frames var6 = ISAACCipher.getFrames(var4 >> 16);
          var4 &= 65535;
          Model var7;
          if(var6 == null) {
-            var7 = var1.method2686(!var5.method3052(var2));
+            var7 = var1.toSharedModel(!var5.method3052(var2));
             var7.method2746(var5, var2);
             return var7;
          } else {
-            var7 = var1.method2686(!var5.method3052(var2) & !var6.method3052(var4));
+            var7 = var1.toSharedModel(!var5.method3052(var2) & !var6.method3052(var4));
             var7.method2712(var5, var2, var6, var4, this.interleaveLeave);
             return var7;
          }
@@ -339,7 +343,7 @@ public class Sequence extends CacheableNode {
       Frames var4 = ISAACCipher.getFrames(var3 >> 16);
       var3 &= 65535;
       if(var4 == null) {
-         return var1.method2686(true);
+         return var1.toSharedModel(true);
       } else {
          Frames var5 = null;
          int var6 = 0;
@@ -351,12 +355,12 @@ public class Sequence extends CacheableNode {
 
          Model var7;
          if(var5 != null && var6 != 65535) {
-            var7 = var1.method2686(!var4.method3052(var3) & !var5.method3052(var6));
+            var7 = var1.toSharedModel(!var4.method3052(var3) & !var5.method3052(var6));
             var7.method2746(var4, var3);
             var7.method2746(var5, var6);
             return var7;
          } else {
-            var7 = var1.method2686(!var4.method3052(var3));
+            var7 = var1.toSharedModel(!var4.method3052(var3));
             var7.method2746(var4, var3);
             return var7;
          }

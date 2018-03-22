@@ -94,8 +94,8 @@ public final class GraphicsObject extends Renderable {
       if(!this.finished) {
          this.field1273 += var1;
 
-         while(this.field1273 > this.field1275.frameLenghts[this.field1272]) {
-            this.field1273 -= this.field1275.frameLenghts[this.field1272];
+         while(this.field1273 > this.field1275.frameLengths[this.field1272]) {
+            this.field1273 -= this.field1275.frameLengths[this.field1272];
             ++this.field1272;
             if(this.field1272 >= this.field1275.frameIDs.length) {
                this.finished = true;

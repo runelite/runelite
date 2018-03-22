@@ -26,15 +26,15 @@ package net.runelite.mixins;
 
 import java.awt.Polygon;
 import java.awt.geom.Area;
-import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGameObject;
+import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSRenderable;
 
 @Mixin(RSGameObject.class)
 public abstract class RSGameObjectMixin implements RSGameObject
@@ -57,17 +57,17 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	}
 
 	@Inject
-	private Model getModel()
+	private RSModel getModel()
 	{
-		Renderable renderable = getRenderable();
+		RSRenderable renderable = getRenderable();
 		if (renderable == null)
 		{
 			return null;
 		}
 
-		if (renderable instanceof Model)
+		if (renderable instanceof RSModel)
 		{
-			return (Model) renderable;
+			return (RSModel) renderable;
 		}
 		else
 		{
@@ -86,13 +86,13 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	@Override
 	public Polygon getConvexHull()
 	{
-		Model model = getModel();
+		RSModel model = getModel();
 
 		if (model == null)
 		{
 			return null;
 		}
 
-		return getConvexHull(model, getOrientation());
+		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 }

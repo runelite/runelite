@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -15,7 +16,8 @@ public class class36 {
    )
    static final class36 field473;
    @ObfuscatedName("n")
-   static int[] field475;
+   @Export("floorSaturations")
+   static int[] floorSaturations;
    @ObfuscatedName("v")
    static int[] field476;
    @ObfuscatedName("i")

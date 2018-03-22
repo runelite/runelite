@@ -47,6 +47,7 @@ import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
@@ -529,6 +530,32 @@ public class MixinInjector
 				if (method.getDescriptor().size() > obMethod.getDescriptor().size())
 				{
 					throw new InjectionException("Mixin methods cannot have more parameters than their corresponding ob method");
+				}
+
+				Type returnType = method.getDescriptor().getReturnValue();
+				Type deobReturnType = inject.apiTypeToDeobfuscatedType(returnType);
+				if (!returnType.equals(deobReturnType))
+				{
+					ClassFile deobReturnTypeClassFile = inject.getDeobfuscated()
+							.findClass(deobReturnType.getInternalName());
+					if (deobReturnTypeClassFile != null)
+					{
+						ClassFile obReturnTypeClass = inject.toObClass(deobReturnTypeClassFile);
+						Instructions instructions = method.getCode().getInstructions();
+						ListIterator<Instruction> listIter = instructions.getInstructions().listIterator();
+						for (; listIter.hasNext(); )
+						{
+							Instruction instr = listIter.next();
+							if (instr instanceof ReturnInstruction)
+							{
+								listIter.previous();
+								CheckCast checkCast = new CheckCast(instructions);
+								checkCast.setType(new Type(obReturnTypeClass.getName()));
+								listIter.add(checkCast);
+								listIter.next();
+							}
+						}
+					}
 				}
 
 				moveCode(obMethod, method.getCode());

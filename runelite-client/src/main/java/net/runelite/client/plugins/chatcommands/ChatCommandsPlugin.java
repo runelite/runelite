@@ -59,7 +59,7 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat commands"
+	name = "Chat Commands"
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
@@ -148,7 +148,7 @@ public class ChatCommandsPlugin extends Plugin
 	/**
 	 * Checks if the chat message is a command.
 	 *
-	 * @param setMessage The chat message
+	 * @param setMessage The chat message.
 	 */
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
@@ -172,7 +172,7 @@ public class ChatCommandsPlugin extends Plugin
 		String message = setMessage.getValue();
 		MessageNode messageNode = setMessage.getMessageNode();
 
-		// clear runelite formatted messsage as the message node is
+		// clear RuneLite formatted message as the message node is
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
@@ -200,7 +200,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Looks up the item price and changes the original message to the
-	 * reponse.
+	 * response.
 	 *
 	 * @param messageNode The chat message containing the command.
 	 * @param search The item given with the command.
@@ -273,13 +273,15 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Looks up the player skill and changes the original message to the
-	 * reponse.
+	 * response.
 	 *
 	 * @param setMessage The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
 	private void playerSkillLookup(ChatMessageType type, SetMessage setMessage, String search)
 	{
+		search = SkillAbbreviations.getFullName(search);
+
 		String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
@@ -288,13 +290,6 @@ public class ChatCommandsPlugin extends Plugin
 		else
 		{
 			player = sanitize(setMessage.getName());
-		}
-		try
-		{
-			search = SkillAbbreviations.valueOf(search.toUpperCase()).getName();
-		}
-		catch (IllegalArgumentException i)
-		{
 		}
 
 		HiscoreSkill skill;
@@ -341,7 +336,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Compares the names of the items in the list with the original input.
-	 * returns the item if its name is equal to the original input or null
+	 * Returns the item if its name is equal to the original input or null
 	 * if it can't find the item.
 	 *
 	 * @param items List of items.
@@ -361,11 +356,11 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	/**
-	 * Cleans the playername string from ironman status icon if present and
-	 * corrects spaces
+	 * Cleans the ironman status icon from playername string if present and
+	 * corrects spaces.
 	 *
-	 * @param lookup Playername to lookup
-	 * @return Cleaned playername
+	 * @param lookup Playername to lookup.
+	 * @return Cleaned playername.
 	 */
 	private static String sanitize(String lookup)
 	{

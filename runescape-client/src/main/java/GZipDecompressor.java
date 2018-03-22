@@ -269,7 +269,7 @@ public class GZipDecompressor {
          int var3 = class158.getAnimation(var1).replyMode;
          if(var3 == 1) {
             var0.actionFrame = 0;
-            var0.field1140 = 0;
+            var0.actionFrameCycle = 0;
             var0.actionAnimationDisable = var2;
             var0.field1186 = 0;
          }
@@ -280,7 +280,7 @@ public class GZipDecompressor {
       } else if(var1 == -1 || var0.animation == -1 || class158.getAnimation(var1).forcedPriority >= class158.getAnimation(var0.animation).forcedPriority) {
          var0.animation = var1;
          var0.actionFrame = 0;
-         var0.field1140 = 0;
+         var0.actionFrameCycle = 0;
          var0.actionAnimationDisable = var2;
          var0.field1186 = 0;
          var0.field1196 = var0.queueSize;
@@ -299,7 +299,7 @@ public class GZipDecompressor {
       int var3 = 0;
       int var4 = 0;
       if(var0.type == 0) {
-         var1 = class38.region.method2987(var0.level, var0.x, var0.y);
+         var1 = class38.region.getWallObjectHash(var0.level, var0.x, var0.y);
       }
 
       if(var0.type == 1) {
@@ -311,7 +311,7 @@ public class GZipDecompressor {
       }
 
       if(var0.type == 3) {
-         var1 = class38.region.method3005(var0.level, var0.x, var0.y);
+         var1 = class38.region.getGroundObjectHash(var0.level, var0.x, var0.y);
       }
 
       if(var1 != 0) {

@@ -28,12 +28,13 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDecorativeObject;
+import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSRenderable;
 
 @Mixin(RSDecorativeObject.class)
 public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
@@ -59,19 +60,19 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 	}
 
 	@Inject
-	private Model getModel()
+	private RSModel getModel()
 	{
-		Renderable renderable = getRenderable();
+		RSRenderable renderable = getRenderable();
 		if (renderable == null)
 		{
 			return null;
 		}
 
-		Model model;
+		RSModel model;
 
 		if (renderable instanceof Model)
 		{
-			model = (Model) renderable;
+			model = (RSModel) renderable;
 		}
 		else
 		{
@@ -92,13 +93,13 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 	@Override
 	public Polygon getConvexHull()
 	{
-		Model model = getModel();
+		RSModel model = getModel();
 
 		if (model == null)
 		{
 			return null;
 		}
 
-		return getConvexHull(model, getOrientation());
+		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.config;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,6 +39,7 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
@@ -173,19 +175,6 @@ public class ConfigManager
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
 			properties.load(in);
-
-			properties.forEach((groupAndKey, value) ->
-			{
-				final String[] split = ((String)groupAndKey).split("\\.");
-				final String groupName = split[0];
-				final String key = split[1];
-				ConfigChanged configChanged = new ConfigChanged();
-				configChanged.setGroup(groupName);
-				configChanged.setKey(key);
-				configChanged.setOldValue(null);
-				configChanged.setNewValue((String) value);
-				eventBus.post(configChanged);
-			});
 		}
 		catch (FileNotFoundException ex)
 		{
@@ -194,6 +183,34 @@ public class ConfigManager
 		catch (IOException ex)
 		{
 			log.warn("Unable to load settings", ex);
+		}
+
+		try
+		{
+			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
+			copy.forEach((groupAndKey, value) ->
+			{
+				final String[] split = ((String) groupAndKey).split("\\.");
+				if (split.length != 2)
+				{
+					log.debug("Properties key malformed!: {}", groupAndKey);
+					return;
+				}
+
+				final String groupName = split[0];
+				final String key = split[1];
+
+				ConfigChanged configChanged = new ConfigChanged();
+				configChanged.setGroup(groupName);
+				configChanged.setKey(key);
+				configChanged.setOldValue(null);
+				configChanged.setNewValue((String) value);
+				eventBus.post(configChanged);
+			});
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error posting config events", ex);
 		}
 	}
 

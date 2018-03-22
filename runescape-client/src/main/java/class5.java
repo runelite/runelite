@@ -64,7 +64,7 @@ final class class5 implements class0 {
 
       int var4 = Client.method1275(var0).configType;
       if(var4 != 0) {
-         int var2 = class237.widgetSettings[var0];
+         int var2 = class237.clientVarps[var0];
          if(var4 == 1) {
             if(var2 == 1) {
                Graphics3D.setBrightness(0.9D);

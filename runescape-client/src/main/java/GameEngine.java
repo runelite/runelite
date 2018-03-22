@@ -844,6 +844,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       }
    }
 
+   @Export("focusGained")
+   @Hook("focusGained")
+   @ObfuscatedName("focusGained")
    public final void focusGained(FocusEvent var1) {
       focused = true;
       this.field665 = true;

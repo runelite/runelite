@@ -21,9 +21,11 @@ public class Frame {
    @Export("skin")
    FrameMap skin;
    @ObfuscatedName("b")
-   int field1793;
+   @Export("transformCount")
+   int transformCount;
    @ObfuscatedName("e")
-   int[] field1790;
+   @Export("transformTypes")
+   int[] transformTypes;
    @ObfuscatedName("x")
    @Export("translator_x")
    int[] translator_x;
@@ -49,7 +51,7 @@ public class Frame {
    )
    Frame(byte[] var1, FrameMap var2) {
       this.skin = null;
-      this.field1793 = -1;
+      this.transformCount = -1;
       this.showing = false;
       this.skin = var2;
       Buffer var3 = new Buffer(var1);
@@ -112,14 +114,14 @@ public class Frame {
       if(var1.length != var4.offset) {
          throw new RuntimeException();
       } else {
-         this.field1793 = var7;
-         this.field1790 = new int[var7];
+         this.transformCount = var7;
+         this.transformTypes = new int[var7];
          this.translator_x = new int[var7];
          this.translator_y = new int[var7];
          this.translator_z = new int[var7];
 
          for(var8 = 0; var8 < var7; ++var8) {
-            this.field1790[var8] = field1794[var8];
+            this.transformTypes[var8] = field1794[var8];
             this.translator_x[var8] = field1795[var8];
             this.translator_y[var8] = field1789[var8];
             this.translator_z[var8] = field1791[var8];

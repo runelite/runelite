@@ -410,13 +410,13 @@ public class NPCComposition extends CacheableNode {
 
          Model var10;
          if(var1 != null && var3 != null) {
-            var10 = var1.method5171(var5, var2, var3, var4);
+            var10 = var1.applyTransformations(var5, var2, var3, var4);
          } else if(var1 != null) {
-            var10 = var1.method5168(var5, var2);
+            var10 = var1.transformActorModel(var5, var2);
          } else if(var3 != null) {
-            var10 = var3.method5168(var5, var4);
+            var10 = var3.transformActorModel(var5, var4);
          } else {
-            var10 = var5.method2686(true);
+            var10 = var5.toSharedModel(true);
          }
 
          if(this.widthScale != 128 || this.heightScale != 128) {
@@ -492,7 +492,7 @@ public class NPCComposition extends CacheableNode {
       if(this.varpIndex != -1) {
          var1 = World.getVarbit(this.varpIndex);
       } else if(this.varp32Index != -1) {
-         var1 = class237.widgetSettings[this.varp32Index];
+         var1 = class237.clientVarps[this.varp32Index];
       }
 
       int var2;
@@ -518,7 +518,7 @@ public class NPCComposition extends CacheableNode {
          if(this.varpIndex != -1) {
             var1 = World.getVarbit(this.varpIndex);
          } else if(this.varp32Index != -1) {
-            var1 = class237.widgetSettings[this.varp32Index];
+            var1 = class237.clientVarps[this.varp32Index];
          }
 
          return var1 >= 0 && var1 < this.configs.length?this.configs[var1] != -1:this.configs[this.configs.length - 1] != -1;

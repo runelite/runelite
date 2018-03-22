@@ -209,11 +209,11 @@ public final class Projectile extends Renderable {
          while(true) {
             do {
                do {
-                  if(this.int6 <= this.animationSequence.frameLenghts[this.int7]) {
+                  if(this.int6 <= this.animationSequence.frameLengths[this.int7]) {
                      return;
                   }
 
-                  this.int6 -= this.animationSequence.frameLenghts[this.int7];
+                  this.int6 -= this.animationSequence.frameLengths[this.int7];
                   ++this.int7;
                } while(this.int7 < this.animationSequence.frameIDs.length);
 

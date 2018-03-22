@@ -10,7 +10,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("FrameMap")
 public class FrameMap extends Node {
    @ObfuscatedName("e")
-   static byte[][][] field1952;
+   @Export("overlayRotations")
+   static byte[][][] overlayRotations;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1666598467

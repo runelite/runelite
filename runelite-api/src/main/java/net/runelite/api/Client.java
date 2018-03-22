@@ -152,9 +152,7 @@ public interface Client extends GameEngine
 
 	int[][] getXteaKeys();
 
-	int[] getSettings();
-
-	int[] getWidgetSettings();
+	int[] getVarps();
 
 	int getSetting(Setting setting);
 
@@ -292,6 +290,7 @@ public interface Client extends GameEngine
 	 * @param inventory
 	 * @return
 	 */
+	@Nullable
 	ItemContainer getItemContainer(InventoryID inventory);
 
 	int getIntStackSize();

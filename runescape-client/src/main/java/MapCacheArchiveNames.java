@@ -73,7 +73,7 @@ public class MapCacheArchiveNames {
          int var5;
          int var7;
          if(var0.field1184 >= Client.gameCycle) {
-            if(var0.field1184 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1140 + 1 > class158.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+            if(var0.field1184 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.actionFrameCycle + 1 > class158.getAnimation(var0.animation).frameLengths[var0.actionFrame]) {
                var2 = var0.field1184 - var0.field1183;
                var3 = Client.gameCycle - var0.field1183;
                var4 = var0.field1159 * 128 + var0.field1139 * 64;
@@ -269,15 +269,15 @@ public class MapCacheArchiveNames {
       if(var0.poseAnimation != -1) {
          var11 = class158.getAnimation(var0.poseAnimation);
          if(var11 != null && var11.frameIDs != null) {
-            ++var0.field1168;
-            if(var0.poseFrame < var11.frameIDs.length && var0.field1168 > var11.frameLenghts[var0.poseFrame]) {
-               var0.field1168 = 1;
+            ++var0.poseFrameCycle;
+            if(var0.poseFrame < var11.frameIDs.length && var0.poseFrameCycle > var11.frameLengths[var0.poseFrame]) {
+               var0.poseFrameCycle = 1;
                ++var0.poseFrame;
                class150.queueAnimationSound(var11, var0.poseFrame, var0.x, var0.y);
             }
 
             if(var0.poseFrame >= var11.frameIDs.length) {
-               var0.field1168 = 0;
+               var0.poseFrameCycle = 0;
                var0.poseFrame = 0;
                class150.queueAnimationSound(var11, var0.poseFrame, var0.x, var0.y);
             }
@@ -287,22 +287,22 @@ public class MapCacheArchiveNames {
       }
 
       if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
-         if(var0.field1175 < 0) {
-            var0.field1175 = 0;
+         if(var0.spotAnimFrame < 0) {
+            var0.spotAnimFrame = 0;
          }
 
          var2 = MapLabel.getSpotAnimType(var0.graphic).field3494;
          if(var2 != -1) {
             Sequence var12 = class158.getAnimation(var2);
             if(var12 != null && var12.frameIDs != null) {
-               ++var0.field1176;
-               if(var0.field1175 < var12.frameIDs.length && var0.field1176 > var12.frameLenghts[var0.field1175]) {
-                  var0.field1176 = 1;
-                  ++var0.field1175;
-                  class150.queueAnimationSound(var12, var0.field1175, var0.x, var0.y);
+               ++var0.spotAnimFrameCycle;
+               if(var0.spotAnimFrame < var12.frameIDs.length && var0.spotAnimFrameCycle > var12.frameLengths[var0.spotAnimFrame]) {
+                  var0.spotAnimFrameCycle = 1;
+                  ++var0.spotAnimFrame;
+                  class150.queueAnimationSound(var12, var0.spotAnimFrame, var0.x, var0.y);
                }
 
-               if(var0.field1175 >= var12.frameIDs.length && (var0.field1175 < 0 || var0.field1175 >= var12.frameIDs.length)) {
+               if(var0.spotAnimFrame >= var12.frameIDs.length && (var0.spotAnimFrame < 0 || var0.spotAnimFrame >= var12.frameIDs.length)) {
                   var0.graphic = -1;
                }
             } else {
@@ -324,9 +324,9 @@ public class MapCacheArchiveNames {
       if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
          var11 = class158.getAnimation(var0.animation);
          if(var11 != null && var11.frameIDs != null) {
-            ++var0.field1140;
-            if(var0.actionFrame < var11.frameIDs.length && var0.field1140 > var11.frameLenghts[var0.actionFrame]) {
-               var0.field1140 = 1;
+            ++var0.actionFrameCycle;
+            if(var0.actionFrame < var11.frameIDs.length && var0.actionFrameCycle > var11.frameLengths[var0.actionFrame]) {
+               var0.actionFrameCycle = 1;
                ++var0.actionFrame;
                class150.queueAnimationSound(var11, var0.actionFrame, var0.x, var0.y);
             }

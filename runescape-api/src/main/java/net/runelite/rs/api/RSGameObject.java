@@ -25,13 +25,12 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.GameObject;
-import net.runelite.api.Renderable;
 import net.runelite.mapping.Import;
 
 public interface RSGameObject extends GameObject
 {
 	@Import("renderable")
-	Renderable getRenderable();
+	RSRenderable getRenderable();
 
 	@Import("plane")
 	int getPlane();

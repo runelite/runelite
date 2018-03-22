@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -37,6 +38,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
@@ -49,6 +51,7 @@ import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ProjectileMoved;
@@ -206,6 +209,22 @@ public class Hooks
 	public static void keyTyped(KeyEvent keyEvent)
 	{
 		keyManager.processKeyTyped(keyEvent);
+	}
+
+	public static void focusGained(KeyFocusListener l, FocusEvent focusEvent)
+	{
+		FocusChanged focusChanged = new FocusChanged();
+		focusChanged.setFocused(true);
+
+		eventBus.post(focusChanged);
+	}
+
+	public static void focusLost(KeyFocusListener l, FocusEvent focusEvent)
+	{
+		FocusChanged focusChanged = new FocusChanged();
+		focusChanged.setFocused(false);
+
+		eventBus.post(focusChanged);
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
