@@ -662,7 +662,7 @@ public final class Player extends Actor {
             MapIcon.method588();
             class62.field705 = 99;
             class62.tileUnderlayIds = new byte[4][104][104];
-            class62.field707 = new byte[4][104][104];
+            class62.tileOverlayIds = new byte[4][104][104];
             class62.field708 = new byte[4][104][104];
             FrameMap.overlayRotations = new byte[4][104][104];
             class62.field709 = new int[4][105][105];
@@ -1054,7 +1054,7 @@ public final class Player extends Actor {
                            }
 
                            var22 = class62.tileUnderlayIds[var4][var13][var54] & 255;
-                           var23 = class62.field707[var4][var13][var54] & 255;
+                           var23 = class62.tileOverlayIds[var4][var13][var54] & 255;
                            if(var22 > 0 || var23 > 0) {
                               var24 = class62.tileHeights[var4][var13][var54];
                               var25 = class62.tileHeights[var4][var13 + 1][var54];
@@ -1176,7 +1176,7 @@ public final class Player extends Actor {
                }
 
                class62.tileUnderlayIds[var4] = null;
-               class62.field707[var4] = null;
+               class62.tileOverlayIds[var4] = null;
                class62.field708[var4] = null;
                FrameMap.overlayRotations[var4] = null;
                class62.field704[var4] = null;

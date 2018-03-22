@@ -20,7 +20,8 @@ public final class class62 {
    @Export("tileUnderlayIds")
    static byte[][][] tileUnderlayIds;
    @ObfuscatedName("l")
-   static byte[][][] field707;
+   @Export("tileOverlayIds")
+   static byte[][][] tileOverlayIds;
    @ObfuscatedName("b")
    static byte[][][] field708;
    @ObfuscatedName("x")
