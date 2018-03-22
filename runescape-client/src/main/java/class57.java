@@ -30,7 +30,7 @@ public class class57 {
          boolean var9 = false;
          boolean var10 = false;
          if(var1 == 0) {
-            var7 = class38.region.method2987(var0, var2, var3);
+            var7 = class38.region.getWallObjectHash(var0, var2, var3);
          }
 
          if(var1 == 1) {
@@ -236,7 +236,7 @@ public class class57 {
                      int var33;
                      if(var6 == 5) {
                         var32 = 16;
-                        var33 = var37.method2987(var0, var2, var3);
+                        var33 = var37.getWallObjectHash(var0, var2, var3);
                         if(var33 != 0) {
                            var32 = Spotanim.getObjectDefinition(var33 >> 14 & 32767).decorDisplacement;
                         }
@@ -250,7 +250,7 @@ public class class57 {
                         var37.addBoundaryDecoration(var0, var2, var3, var22, (Renderable)var29, (Renderable)null, class62.field713[var5], 0, var32 * class62.field722[var5], var32 * class62.field716[var5], var25, var26);
                      } else if(var6 == 6) {
                         var32 = 8;
-                        var33 = var37.method2987(var0, var2, var3);
+                        var33 = var37.getWallObjectHash(var0, var2, var3);
                         if(var33 != 0) {
                            var32 = Spotanim.getObjectDefinition(var33 >> 14 & 32767).decorDisplacement / 2;
                         }
@@ -273,7 +273,7 @@ public class class57 {
                         var37.addBoundaryDecoration(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, 256, var33, 0, 0, var25, var26);
                      } else if(var6 == 8) {
                         var32 = 8;
-                        var33 = var37.method2987(var0, var2, var3);
+                        var33 = var37.getWallObjectHash(var0, var2, var3);
                         if(var33 != 0) {
                            var32 = Spotanim.getObjectDefinition(var33 >> 14 & 32767).decorDisplacement / 2;
                         }

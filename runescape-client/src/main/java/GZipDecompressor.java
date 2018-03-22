@@ -299,7 +299,7 @@ public class GZipDecompressor {
       int var3 = 0;
       int var4 = 0;
       if(var0.type == 0) {
-         var1 = class38.region.method2987(var0.level, var0.x, var0.y);
+         var1 = class38.region.getWallObjectHash(var0.level, var0.x, var0.y);
       }
 
       if(var0.type == 1) {
