@@ -63,7 +63,7 @@ public enum class27 implements Enumerated {
       class62.field711 = null;
       class62.field707 = null;
       class62.field708 = null;
-      FrameMap.field1952 = null;
+      FrameMap.overlayRotations = null;
       class62.field709 = null;
       class62.field704 = null;
       class62.field714 = null;

@@ -664,7 +664,7 @@ public final class Player extends Actor {
             class62.field711 = new byte[4][104][104];
             class62.field707 = new byte[4][104][104];
             class62.field708 = new byte[4][104][104];
-            FrameMap.field1952 = new byte[4][104][104];
+            FrameMap.overlayRotations = new byte[4][104][104];
             class62.field709 = new int[4][105][105];
             class62.field704 = new byte[4][105][105];
             class62.field714 = new int[105][105];
@@ -1108,7 +1108,7 @@ public final class Player extends Actor {
                                  var60.addTile(var4, var13, var54, 0, 0, -1, var24, var25, var26, var27, FriendManager.method1792(var32, var28), FriendManager.method1792(var32, var29), FriendManager.method1792(var32, var56), FriendManager.method1792(var32, var31), 0, 0, 0, 0, var57, 0);
                               } else {
                                  var35 = class62.field708[var4][var13][var54] + 1;
-                                 byte var67 = FrameMap.field1952[var4][var13][var54];
+                                 byte var67 = FrameMap.overlayRotations[var4][var13][var54];
                                  Overlay var37 = class183.getOverlayDefinition(var23 - 1);
                                  int var38 = var37.texture;
                                  int var39;
@@ -1178,7 +1178,7 @@ public final class Player extends Actor {
                class62.field711[var4] = null;
                class62.field707[var4] = null;
                class62.field708[var4] = null;
-               FrameMap.field1952[var4] = null;
+               FrameMap.overlayRotations[var4] = null;
                class62.field704[var4] = null;
             }
 
