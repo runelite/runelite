@@ -40,7 +40,7 @@ public class GameObjectQuery extends TileObjectQuery<GameObject, GameObjectQuery
 	{
 		return getGameObjects(client).stream()
 			.filter(Objects::nonNull)
-			.filter(predicate)
+			.filter(x -> predicate.test(client, x))
 			.distinct()
 			.toArray(GameObject[]::new);
 	}

@@ -34,7 +34,7 @@ public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 	public NPC[] result(Client client)
 	{
 		return client.getNpcs().stream()
-				.filter(predicate)
+				.filter(x -> predicate.test(client, x))
 				.toArray(NPC[]::new);
 	}
 	
