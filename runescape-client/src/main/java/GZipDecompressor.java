@@ -311,7 +311,7 @@ public class GZipDecompressor {
       }
 
       if(var0.type == 3) {
-         var1 = class38.region.method3005(var0.level, var0.x, var0.y);
+         var1 = class38.region.getGroundObjectHash(var0.level, var0.x, var0.y);
       }
 
       if(var1 != 0) {

@@ -791,7 +791,8 @@ public class Region {
    }
 
    @ObfuscatedName("ax")
-   public int method3005(int var1, int var2, int var3) {
+   @Export("getGroundObjectHash")
+   public int getGroundObjectHash(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 != null && var4.groundObject != null?var4.groundObject.hash:0;
    }

@@ -42,7 +42,7 @@ public class class57 {
          }
 
          if(var1 == 3) {
-            var7 = class38.region.method3005(var0, var2, var3);
+            var7 = class38.region.getGroundObjectHash(var0, var2, var3);
          }
 
          int var11;

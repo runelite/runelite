@@ -238,7 +238,7 @@ public final class BoundingBox3D extends BoundingBox {
          }
       }
 
-      var5 = class38.region.method3005(var0, var1, var2);
+      var5 = class38.region.getGroundObjectHash(var0, var1, var2);
       if(var5 != 0) {
          var6 = var5 >> 14 & 32767;
          ObjectComposition var19 = Spotanim.getObjectDefinition(var6);
