@@ -10,7 +10,7 @@ public class class22 extends class28 {
    )
    static int field322;
    @ObfuscatedName("o")
-   static int[] field319;
+   static int[] floorLightness;
    @ObfuscatedName("aj")
    static java.awt.Font field320;
 

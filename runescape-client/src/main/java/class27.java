@@ -69,7 +69,7 @@ public enum class27 implements Enumerated {
       class62.field714 = null;
       BoundingBox.floorHues = null;
       class36.floorSaturations = null;
-      class22.field319 = null;
+      class22.floorLightness = null;
       class199.field2584 = null;
       class36.field476 = null;
    }
