@@ -181,7 +181,7 @@ public final class class80 extends Node {
 
             if(var7 <= 49) {
                class62.tileOverlayIds[var1][var2][var3] = var0.readByte();
-               class62.field708[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class62.tileOverlayPath[var1][var2][var3] = (byte)((var7 - 2) / 4);
                FrameMap.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
             } else if(var7 <= 81) {
                class62.tileSettings[var1][var2][var3] = (byte)(var7 - 49);

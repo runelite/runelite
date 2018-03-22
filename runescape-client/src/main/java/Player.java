@@ -663,7 +663,7 @@ public final class Player extends Actor {
             class62.field705 = 99;
             class62.tileUnderlayIds = new byte[4][104][104];
             class62.tileOverlayIds = new byte[4][104][104];
-            class62.field708 = new byte[4][104][104];
+            class62.tileOverlayPath = new byte[4][104][104];
             FrameMap.overlayRotations = new byte[4][104][104];
             class62.field709 = new int[4][105][105];
             class62.field704 = new byte[4][105][105];
@@ -1086,7 +1086,7 @@ public final class Player extends Actor {
 
                               if(var4 > 0) {
                                  boolean var74 = true;
-                                 if(var22 == 0 && class62.field708[var4][var13][var54] != 0) {
+                                 if(var22 == 0 && class62.tileOverlayPath[var4][var13][var54] != 0) {
                                     var74 = false;
                                  }
 
@@ -1107,7 +1107,7 @@ public final class Player extends Actor {
                               if(var23 == 0) {
                                  var60.addTile(var4, var13, var54, 0, 0, -1, var24, var25, var26, var27, FriendManager.method1792(var32, var28), FriendManager.method1792(var32, var29), FriendManager.method1792(var32, var56), FriendManager.method1792(var32, var31), 0, 0, 0, 0, var57, 0);
                               } else {
-                                 var35 = class62.field708[var4][var13][var54] + 1;
+                                 var35 = class62.tileOverlayPath[var4][var13][var54] + 1;
                                  byte var67 = FrameMap.overlayRotations[var4][var13][var54];
                                  Overlay var37 = class183.getOverlayDefinition(var23 - 1);
                                  int var38 = var37.texture;
@@ -1177,7 +1177,7 @@ public final class Player extends Actor {
 
                class62.tileUnderlayIds[var4] = null;
                class62.tileOverlayIds[var4] = null;
-               class62.field708[var4] = null;
+               class62.tileOverlayPath[var4] = null;
                FrameMap.overlayRotations[var4] = null;
                class62.field704[var4] = null;
             }

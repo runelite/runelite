@@ -62,7 +62,7 @@ public enum class27 implements Enumerated {
    static void method228() {
       class62.tileUnderlayIds = null;
       class62.tileOverlayIds = null;
-      class62.field708 = null;
+      class62.tileOverlayPath = null;
       FrameMap.overlayRotations = null;
       class62.field709 = null;
       class62.field704 = null;
