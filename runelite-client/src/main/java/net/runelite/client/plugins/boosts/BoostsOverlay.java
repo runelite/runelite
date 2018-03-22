@@ -96,7 +96,7 @@ class BoostsOverlay extends Overlay
 			{
 				if (indicator == null)
 				{
-					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
+					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), plugin, client, config);
 					indicators[skill.ordinal()] = indicator;
 				}
 

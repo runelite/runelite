@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
 public class AbsorptionCounter extends Counter
@@ -46,9 +47,9 @@ public class AbsorptionCounter extends Counter
 	@Setter
 	private Color belowThresholdColor = Color.RED;
 
-	public AbsorptionCounter(BufferedImage image, int absorption, int threshold)
+	public AbsorptionCounter(BufferedImage image, Plugin plugin, int absorption, int threshold)
 	{
-		super(image, "");
+		super(image, plugin, "");
 		this.threshold = threshold;
 		setAbsorption(absorption);
 	}
