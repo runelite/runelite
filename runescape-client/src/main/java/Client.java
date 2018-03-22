@@ -3044,7 +3044,7 @@ public final class Client extends GameEngine implements class302 {
             AbstractSoundSystem.method2255();
             if(field1071 != Ignore.plane) {
                field1071 = Ignore.plane;
-               class1.method0(Ignore.plane);
+               class1.drawMinimapSprite(Ignore.plane);
             }
 
             if(gameState == 30) {

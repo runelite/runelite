@@ -160,7 +160,8 @@ public class class1 {
       signature = "(IB)V",
       garbageValue = "1"
    )
-   static final void method0(int var0) {
+   @Export("drawMinimapSprite")
+   static final void drawMinimapSprite(int var0) {
       int[] var1 = GrandExchangeOffer.minimapSprite.pixels;
       int var2 = var1.length;
 
