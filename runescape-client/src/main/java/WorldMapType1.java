@@ -208,7 +208,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       KeyFocusListener var0 = KeyFocusListener.keyboard;
       synchronized(KeyFocusListener.keyboard) {
          ++KeyFocusListener.keyboardIdleTicks;
-         KeyFocusListener.field611 = KeyFocusListener.field610;
+         KeyFocusListener.currentEventIndex = KeyFocusListener.field610;
          KeyFocusListener.field600 = 0;
          int var1;
          if(KeyFocusListener.field603 < 0) {
@@ -219,7 +219,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
             KeyFocusListener.field603 = KeyFocusListener.field602;
          } else {
             while(KeyFocusListener.field603 != KeyFocusListener.field602) {
-               var1 = KeyFocusListener.field597[KeyFocusListener.field602];
+               var1 = KeyFocusListener.releasedKeys[KeyFocusListener.field602];
                KeyFocusListener.field602 = KeyFocusListener.field602 + 1 & 127;
                if(var1 < 0) {
                   KeyFocusListener.keyPressed[~var1] = false;
@@ -237,7 +237,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
             KeyFocusListener.keyboardIdleTicks = 0;
          }
 
-         KeyFocusListener.field610 = KeyFocusListener.field590;
+         KeyFocusListener.field610 = KeyFocusListener.keyEventIndex;
       }
    }
 

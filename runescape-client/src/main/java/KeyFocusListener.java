@@ -42,7 +42,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @Export("keyPressed")
    public static boolean[] keyPressed;
    @ObfuscatedName("cq")
-   static int[] field597;
+   static int[] releasedKeys;
    @ObfuscatedName("ci")
    @ObfuscatedGetter(
       intValue = -642864633
@@ -54,9 +54,9 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    )
    static int field603;
    @ObfuscatedName("ce")
-   static char[] field601;
+   static char[] typedKeys;
    @ObfuscatedName("cx")
-   static int[] field605;
+   static int[] pressedKeys;
    @ObfuscatedName("cy")
    public static int[] field606;
    @ObfuscatedName("cg")
@@ -68,12 +68,12 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @ObfuscatedGetter(
       intValue = 1092602855
    )
-   static int field611;
+   static int currentEventIndex;
    @ObfuscatedName("cl")
    @ObfuscatedGetter(
       intValue = -1147949605
    )
-   static int field590;
+   static int keyEventIndex;
    @ObfuscatedName("cz")
    @ObfuscatedGetter(
       intValue = 1886525411
@@ -92,15 +92,15 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    static {
       keyboard = new KeyFocusListener();
       keyPressed = new boolean[112];
-      field597 = new int[128];
+      releasedKeys = new int[128];
       field602 = 0;
       field603 = 0;
-      field601 = new char[128];
-      field605 = new int[128];
+      typedKeys = new char[128];
+      pressedKeys = new int[128];
       field606 = new int[128];
       field600 = 0;
-      field611 = 0;
-      field590 = 0;
+      currentEventIndex = 0;
+      keyEventIndex = 0;
       field610 = 0;
       keyboardIdleTicks = 0;
       KeyHandler_keyCodes = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -141,11 +141,11 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             }
 
             if(var3) {
-               int var4 = field590 + 1 & 127;
-               if(var4 != field611) {
-                  field605[field590] = -1;
-                  field601[field590] = var2;
-                  field590 = var4;
+               int var4 = keyEventIndex + 1 & 127;
+               if(var4 != currentEventIndex) {
+                  pressedKeys[keyEventIndex] = -1;
+                  typedKeys[keyEventIndex] = var2;
+                  keyEventIndex = var4;
                }
             }
          }
@@ -169,7 +169,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          }
 
          if(field603 >= 0 && var2 >= 0) {
-            field597[field603] = ~var2;
+            releasedKeys[field603] = ~var2;
             field603 = field603 + 1 & 127;
             if(field603 == field602) {
                field603 = -1;
@@ -195,7 +195,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          }
 
          if(field603 >= 0 && var2 >= 0) {
-            field597[field603] = var2;
+            releasedKeys[field603] = var2;
             field603 = field603 + 1 & 127;
             if(field602 == field603) {
                field603 = -1;
@@ -204,11 +204,11 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
          int var3;
          if(var2 >= 0) {
-            var3 = field590 + 1 & 127;
-            if(var3 != field611) {
-               field605[field590] = var2;
-               field601[field590] = 0;
-               field590 = var3;
+            var3 = keyEventIndex + 1 & 127;
+            if(var3 != currentEventIndex) {
+               pressedKeys[keyEventIndex] = var2;
+               typedKeys[keyEventIndex] = 0;
+               keyEventIndex = var3;
             }
          }
 

@@ -23,7 +23,7 @@ public class Size {
    )
    public static final Size field334;
    @ObfuscatedName("cv")
-   public static char field341;
+   public static char keyTypeCode;
    @ObfuscatedName("dk")
    @ObfuscatedGetter(
       intValue = 1746983793

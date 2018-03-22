@@ -83,12 +83,12 @@ public class class290 {
    public static final boolean method5196() {
       KeyFocusListener var0 = KeyFocusListener.keyboard;
       synchronized(KeyFocusListener.keyboard) {
-         if(KeyFocusListener.field610 == KeyFocusListener.field611) {
+         if(KeyFocusListener.field610 == KeyFocusListener.currentEventIndex) {
             return false;
          } else {
-            class85.field1295 = KeyFocusListener.field605[KeyFocusListener.field611];
-            Size.field341 = KeyFocusListener.field601[KeyFocusListener.field611];
-            KeyFocusListener.field611 = KeyFocusListener.field611 + 1 & 127;
+            class85.keyPressCode = KeyFocusListener.pressedKeys[KeyFocusListener.currentEventIndex];
+            Size.keyTypeCode = KeyFocusListener.typedKeys[KeyFocusListener.currentEventIndex];
+            KeyFocusListener.currentEventIndex = KeyFocusListener.currentEventIndex + 1 & 127;
             return true;
          }
       }

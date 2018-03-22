@@ -17,7 +17,7 @@ public class class85 {
    @ObfuscatedGetter(
       intValue = -2124586831
    )
-   public static int field1295;
+   public static int keyPressCode;
    @ObfuscatedName("du")
    @ObfuscatedGetter(
       intValue = 855908717
