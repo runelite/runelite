@@ -36,8 +36,8 @@ public class Instructions
 	public void init()
 	{
 		add(LOAD_INT, "load_int", 0, 1);
-		add(GET_SETTINGS, "get_settings", 0, 1);
-		add(PUT_SETTINGS, "put_settings", 0, 1);
+		add(GET_VARP, "get_varp", 0, 1);
+		add(PUT_VARP, "put_varp", 0, 1);
 		add(LOAD_STRING, "load_string", 0, 0, 0, 1);
 		add(JUMP, "jump", 0, 0);
 		add(IF_ICMPNE, "if_icmpne", 2, 0);

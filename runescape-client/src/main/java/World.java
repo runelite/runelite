@@ -150,7 +150,7 @@ public class World {
       int var3 = var1.leastSignificantBit;
       int var4 = var1.mostSignificantBit;
       int var5 = class237.varpsMasks[var4 - var3];
-      return class237.widgetSettings[var2] >> var3 & var5;
+      return class237.clientVarps[var2] >> var3 & var5;
    }
 
    @ObfuscatedName("ae")

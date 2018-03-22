@@ -470,12 +470,12 @@ public class class25 {
                                                                                                       }
                                                                                                    } else {
                                                                                                       var21 = var30[var19];
-                                                                                                      class237.widgetSettings[var21] = class81.intStack[--class5.intStackSize];
+                                                                                                      class237.clientVarps[var21] = class81.intStack[--class5.intStackSize];
                                                                                                       class5.method14(var21);
                                                                                                    }
                                                                                                 } else {
                                                                                                    var21 = var30[var19];
-                                                                                                   class81.intStack[++class5.intStackSize - 1] = class237.widgetSettings[var21];
+                                                                                                   class81.intStack[++class5.intStackSize - 1] = class237.clientVarps[var21];
                                                                                                 }
                                                                                              } else {
                                                                                                 class81.intStack[++class5.intStackSize - 1] = var30[var19];

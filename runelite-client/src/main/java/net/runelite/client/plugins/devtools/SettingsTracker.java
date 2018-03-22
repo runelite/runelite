@@ -34,7 +34,6 @@ public class SettingsTracker
 {
 	private final Client client;
 
-	private int[] clientSettings;
 	private int[] widgetSettings;
 
 	public SettingsTracker(Client client)
@@ -44,31 +43,15 @@ public class SettingsTracker
 
 	public void snapshot(ActionEvent e)
 	{
-		if (clientSettings == null || widgetSettings == null)
+		if (widgetSettings == null)
 		{
-			clientSettings = copy(client.getSettings());
-			widgetSettings = copy(client.getWidgetSettings());
+			widgetSettings = copy(client.getVarps());
 
 			log.info("Snapshotted client and widget settings");
 			return;
 		}
 
-		int[] newClientSettings = client.getSettings();
-		int[] newWidgetSettings = client.getWidgetSettings();
-
-		for (int i = 0; i < Math.min(clientSettings.length, newClientSettings.length); ++i)
-		{
-			int before = clientSettings[i];
-			int after = newClientSettings[i];
-
-			if (before == after)
-			{
-				continue;
-			}
-
-			log.info("Client setting index {} has changed from {} to {}: {} -> {}",
-				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
-		}
+		int[] newWidgetSettings = client.getVarps();
 
 		for (int i = 0; i < Math.min(widgetSettings.length, newWidgetSettings.length); ++i)
 		{
@@ -84,13 +67,12 @@ public class SettingsTracker
 				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
 		}
 
-		clientSettings = copy(newClientSettings);
 		widgetSettings = copy(newWidgetSettings);
 	}
 
 	public void clear(ActionEvent e)
 	{
-		clientSettings = widgetSettings = null;
+		widgetSettings = null;
 	}
 
 	private static int[] copy(int[] array)
