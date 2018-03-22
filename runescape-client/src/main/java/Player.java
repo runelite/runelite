@@ -661,7 +661,7 @@ public final class Player extends Actor {
 
             MapIcon.method588();
             class62.field705 = 99;
-            class62.field711 = new byte[4][104][104];
+            class62.tileUnderlayIds = new byte[4][104][104];
             class62.field707 = new byte[4][104][104];
             class62.field708 = new byte[4][104][104];
             FrameMap.overlayRotations = new byte[4][104][104];
@@ -997,7 +997,7 @@ public final class Player extends Actor {
                   for(var14 = 0; var14 < 104; ++var14) {
                      var15 = var13 + 5;
                      if(var15 >= 0 && var15 < 104) {
-                        var16 = class62.field711[var4][var15][var14] & 255;
+                        var16 = class62.tileUnderlayIds[var4][var15][var14] & 255;
                         if(var16 > 0) {
                            FloorUnderlayDefinition var72 = BuildType.getUnderlayDefinition(var16 - 1);
                            BoundingBox.floorHues[var14] += var72.hue;
@@ -1010,7 +1010,7 @@ public final class Player extends Actor {
 
                      var16 = var13 - 5;
                      if(var16 >= 0 && var16 < 104) {
-                        var17 = class62.field711[var4][var16][var14] & 255;
+                        var17 = class62.tileUnderlayIds[var4][var16][var14] & 255;
                         if(var17 > 0) {
                            FloorUnderlayDefinition var73 = BuildType.getUnderlayDefinition(var17 - 1);
                            BoundingBox.floorHues[var14] -= var73.hue;
@@ -1053,7 +1053,7 @@ public final class Player extends Actor {
                               class62.field705 = var4;
                            }
 
-                           var22 = class62.field711[var4][var13][var54] & 255;
+                           var22 = class62.tileUnderlayIds[var4][var13][var54] & 255;
                            var23 = class62.field707[var4][var13][var54] & 255;
                            if(var22 > 0 || var23 > 0) {
                               var24 = class62.tileHeights[var4][var13][var54];
@@ -1175,7 +1175,7 @@ public final class Player extends Actor {
                   }
                }
 
-               class62.field711[var4] = null;
+               class62.tileUnderlayIds[var4] = null;
                class62.field707[var4] = null;
                class62.field708[var4] = null;
                FrameMap.overlayRotations[var4] = null;

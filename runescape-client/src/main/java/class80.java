@@ -186,7 +186,7 @@ public final class class80 extends Node {
             } else if(var7 <= 81) {
                class62.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
             } else {
-               class62.field711[var1][var2][var3] = (byte)(var7 - 81);
+               class62.tileUnderlayIds[var1][var2][var3] = (byte)(var7 - 81);
             }
          }
       } else {
