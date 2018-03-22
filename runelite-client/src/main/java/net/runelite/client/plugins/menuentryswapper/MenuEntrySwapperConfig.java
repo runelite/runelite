@@ -188,4 +188,12 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "swapRemove",
+		name = "Remove",
+		description = "Swap Remove with Teleport on cape teleports"
+	)
+	default boolean swapRemove(){ return true; }
 }
