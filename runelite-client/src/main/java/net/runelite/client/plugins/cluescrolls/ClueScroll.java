@@ -575,9 +575,8 @@ public enum ClueScroll
 	CLUE536("The cipher reveals who to speak to next: HCKTA IQFHCVJGT", "Fairy Godfather", "Zanaris throne room", "64", CIPHER),
 	CLUE537("The cipher reveals who to speak to next: ZSBKDO ZODO", "Pirate Pete", "Dock northeast of the Ectofunctus", CIPHER),
 	CLUE538("The cipher reveals who to speak to next: GBJSZ RVFFO", "Fairy Queen", "Fairy Resistance Hideout", CIPHER),
-	CLUE539("The cipher reveals who to speak to next: QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", "Arceuus House Library, ground floor", "9", CIPHER)
-
-		CLUE540("This anagram reveals who to speak to next: A baker", "Baraek", "Varrock Square ", "5", ANAGRAM),
+	CLUE539("The cipher reveals who to speak to next: QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", "Arceuus House Library, ground floor", "9", CIPHER),
+	CLUE540("This anagram reveals who to speak to next: A baker", "Baraek", "Varrock Square ", "5", ANAGRAM),
 	CLUE541("This anagram reveals who to speak to next: A basic anti pot", "Captain Tobias", "Port Sarim", "7", ANAGRAM),
 	CLUE542("This anagram reveals who to speak to next: A heart", "Aretha", "Soul altar", "2", ANAGRAM),
 	CLUE543("This anagram reveals who to speak to next: A zen she", "Zenesha", "The platebody shop on the southern edge of Ardougne Centre Square.", "Puzzle box", ANAGRAM),
