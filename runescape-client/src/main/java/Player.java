@@ -671,7 +671,7 @@ public final class Player extends Actor {
             BoundingBox.floorHues = new int[104];
             class36.floorSaturations = new int[104];
             class22.floorLightness = new int[104];
-            class199.field2584 = new int[104];
+            class199.floorMultiplier = new int[104];
             class36.field476 = new int[104];
             var1 = class204.field2601.length;
 
@@ -989,7 +989,7 @@ public final class Player extends Actor {
                   BoundingBox.floorHues[var13] = 0;
                   class36.floorSaturations[var13] = 0;
                   class22.floorLightness[var13] = 0;
-                  class199.field2584[var13] = 0;
+                  class199.floorMultiplier[var13] = 0;
                   class36.field476[var13] = 0;
                }
 
@@ -1003,7 +1003,7 @@ public final class Player extends Actor {
                            BoundingBox.floorHues[var14] += var72.hue;
                            class36.floorSaturations[var14] += var72.saturation;
                            class22.floorLightness[var14] += var72.lightness;
-                           class199.field2584[var14] += var72.hueMultiplier;
+                           class199.floorMultiplier[var14] += var72.hueMultiplier;
                            ++class36.field476[var14];
                         }
                      }
@@ -1016,7 +1016,7 @@ public final class Player extends Actor {
                            BoundingBox.floorHues[var14] -= var73.hue;
                            class36.floorSaturations[var14] -= var73.saturation;
                            class22.floorLightness[var14] -= var73.lightness;
-                           class199.field2584[var14] -= var73.hueMultiplier;
+                           class199.floorMultiplier[var14] -= var73.hueMultiplier;
                            --class36.field476[var14];
                         }
                      }
@@ -1035,7 +1035,7 @@ public final class Player extends Actor {
                            var14 += BoundingBox.floorHues[var20];
                            var15 += class36.floorSaturations[var20];
                            var16 += class22.floorLightness[var20];
-                           var17 += class199.field2584[var20];
+                           var17 += class199.floorMultiplier[var20];
                            var18 += class36.field476[var20];
                         }
 
@@ -1044,7 +1044,7 @@ public final class Player extends Actor {
                            var14 -= BoundingBox.floorHues[var21];
                            var15 -= class36.floorSaturations[var21];
                            var16 -= class22.floorLightness[var21];
-                           var17 -= class199.field2584[var21];
+                           var17 -= class199.floorMultiplier[var21];
                            var18 -= class36.field476[var21];
                         }
 
