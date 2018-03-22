@@ -668,7 +668,7 @@ public final class Player extends Actor {
             class62.field709 = new int[4][105][105];
             class62.field704 = new byte[4][105][105];
             class62.field714 = new int[105][105];
-            BoundingBox.field239 = new int[104];
+            BoundingBox.floorHues = new int[104];
             class36.field475 = new int[104];
             class22.field319 = new int[104];
             class199.field2584 = new int[104];
@@ -986,7 +986,7 @@ public final class Player extends Actor {
                }
 
                for(var13 = 0; var13 < 104; ++var13) {
-                  BoundingBox.field239[var13] = 0;
+                  BoundingBox.floorHues[var13] = 0;
                   class36.field475[var13] = 0;
                   class22.field319[var13] = 0;
                   class199.field2584[var13] = 0;
@@ -1000,7 +1000,7 @@ public final class Player extends Actor {
                         var16 = class62.field711[var4][var15][var14] & 255;
                         if(var16 > 0) {
                            FloorUnderlayDefinition var72 = BuildType.getUnderlayDefinition(var16 - 1);
-                           BoundingBox.field239[var14] += var72.hue;
+                           BoundingBox.floorHues[var14] += var72.hue;
                            class36.field475[var14] += var72.saturation;
                            class22.field319[var14] += var72.lightness;
                            class199.field2584[var14] += var72.hueMultiplier;
@@ -1013,7 +1013,7 @@ public final class Player extends Actor {
                         var17 = class62.field711[var4][var16][var14] & 255;
                         if(var17 > 0) {
                            FloorUnderlayDefinition var73 = BuildType.getUnderlayDefinition(var17 - 1);
-                           BoundingBox.field239[var14] -= var73.hue;
+                           BoundingBox.floorHues[var14] -= var73.hue;
                            class36.field475[var14] -= var73.saturation;
                            class22.field319[var14] -= var73.lightness;
                            class199.field2584[var14] -= var73.hueMultiplier;
@@ -1032,7 +1032,7 @@ public final class Player extends Actor {
                      for(var54 = -5; var54 < 109; ++var54) {
                         var20 = var54 + 5;
                         if(var20 >= 0 && var20 < 104) {
-                           var14 += BoundingBox.field239[var20];
+                           var14 += BoundingBox.floorHues[var20];
                            var15 += class36.field475[var20];
                            var16 += class22.field319[var20];
                            var17 += class199.field2584[var20];
@@ -1041,7 +1041,7 @@ public final class Player extends Actor {
 
                         var21 = var54 - 5;
                         if(var21 >= 0 && var21 < 104) {
-                           var14 -= BoundingBox.field239[var21];
+                           var14 -= BoundingBox.floorHues[var21];
                            var15 -= class36.field475[var21];
                            var16 -= class22.field319[var21];
                            var17 -= class199.field2584[var21];
