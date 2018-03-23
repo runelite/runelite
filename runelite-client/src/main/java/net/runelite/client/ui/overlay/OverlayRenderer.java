@@ -335,13 +335,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					location.setLocation(overlay.getPreferredLocation());
 				}
 
-				final Dimension overlayDimension = MoreObjects.firstNonNull(
-					safeRender(overlay, graphics, location),
-					new Dimension());
+				safeRender(overlay, graphics, location);
+				dimension.setSize(overlay.getBounds().getSize());
 
-				overlay.setBounds(new Rectangle(location, overlayDimension));
-
-				if (overlayDimension.width == 0 && overlayDimension.height == 0)
+				if (dimension.width == 0 && dimension.height == 0)
 				{
 					continue;
 				}
@@ -486,13 +483,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
-	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
+	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
 		subGraphics.translate(point.x, point.y);
-		final Dimension dimension = entity.render(subGraphics, point);
+		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics, point), new Dimension());
 		subGraphics.dispose();
-		return dimension;
+		overlay.setBounds(new Rectangle(point, dimension));
 	}
 
 	private boolean shouldInvalidateOverlays()
