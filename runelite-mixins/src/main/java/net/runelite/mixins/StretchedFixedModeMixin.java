@@ -87,6 +87,18 @@ public abstract class StretchedFixedModeMixin implements RSClient
 
 	@Inject
 	@Override
+	public Dimension getRealDimensions()
+	{
+		if (isStretchedEnabled() && !isResized())
+		{
+			return Constants.GAME_FIXED_SIZE;
+		}
+
+		return getCanvas().getSize();
+	}
+
+	@Inject
+	@Override
 	public Dimension getStretchedDimensions()
 	{
 		Canvas canvas = getCanvas();
