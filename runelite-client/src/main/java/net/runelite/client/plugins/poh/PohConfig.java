@@ -38,7 +38,8 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showPortals",
 		name = "Show Portals",
-		description = "Configures whether to display teleport portals"
+		description = "Configures whether to display teleport portals",
+		position = 1
 	)
 	default boolean showPortals()
 	{
@@ -48,7 +49,8 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showAltar",
 		name = "Show Altar",
-		description = "Configures whether or not the altar is displayed"
+		description = "Configures whether or not the altar is displayed",
+		position = 2
 	)
 	default boolean showAltar()
 	{
@@ -58,7 +60,8 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showGlory",
 		name = "Show Glory mount",
-		description = "Configures whether or not the mounted glory is displayed"
+		description = "Configures whether or not the mounted glory is displayed",
+		position = 3
 	)
 	default boolean showGlory()
 	{
@@ -68,7 +71,8 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showPools",
 		name = "Show Pools",
-		description = "Configures whether or not the pools are displayed"
+		description = "Configures whether or not the pools are displayed",
+		position = 4
 	)
 	default boolean showPools()
 	{
@@ -78,7 +82,8 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showRepairStand",
 		name = "Show Repair stand",
-		description = "Configures whether or not the repair stand is displayed"
+		description = "Configures whether or not the repair stand is displayed",
+		position = 5
 	)
 	default boolean showRepairStand()
 	{
@@ -88,7 +93,8 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showExitPortal",
 		name = "Show Exit portal",
-		description = "Configures whether or not the exit portal is displayed"
+		description = "Configures whether or not the exit portal is displayed",
+		position = 6
 	)
 	default boolean showExitPortal()
 	{
@@ -98,10 +104,33 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showBurner",
 		name = "Show Unlit/Lit burner",
-		description = "Configures whether or not unlit/lit burners are displayed"
+		description = "Configures whether or not unlit/lit burners are displayed",
+		position = 7
 	)
 	default boolean showBurner()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showTimer",
+		name = "Show the burner timer",
+		description = "[HOST ONLY]",
+		position = 8
+	)
+	default boolean showBurnerTimer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "burnerTimer",
+		name = "Burner timer",
+		description = "Will indicate when burners run out",
+		position = 9
+	)
+	default int burnerTimer()
+	{
+		return 120;
 	}
 }
