@@ -24,10 +24,12 @@
  */
 package net.runelite.client.config;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -244,6 +246,16 @@ public class ConfigManager
 		return properties.getProperty(groupName + "." + key);
 	}
 
+	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
+	{
+		String value = getConfiguration(groupName, key);
+		if (!Strings.isNullOrEmpty(value))
+		{
+			return (T) stringToObject(value, clazz);
+		}
+		return null;
+	}
+
 	public void setConfiguration(String groupName, String key, String value)
 	{
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
@@ -287,6 +299,11 @@ public class ConfigManager
 		configChanged.setNewValue(value);
 
 		eventBus.post(configChanged);
+	}
+
+	public void setConfiguration(String groupName, String key, Object value)
+	{
+		setConfiguration(groupName, key, objectToString(value));
 	}
 
 	public void unsetConfiguration(String groupName, String key)
@@ -420,6 +437,13 @@ public class ConfigManager
 			int height = Integer.parseInt(splitStr[1]);
 			return new Dimension(width, height);
 		}
+		if (type == Point.class)
+		{
+			String[] splitStr = str.split(":");
+			int width = Integer.parseInt(splitStr[0]);
+			int height = Integer.parseInt(splitStr[1]);
+			return new Point(width, height);
+		}
 		if (type.isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
@@ -441,6 +465,11 @@ public class ConfigManager
 		{
 			Dimension d = (Dimension) object;
 			return d.width + "x" + d.height;
+		}
+		if (object instanceof Point)
+		{
+			Point p = (Point) object;
+			return p.x + ":" + p.y;
 		}
 		return object.toString();
 	}
