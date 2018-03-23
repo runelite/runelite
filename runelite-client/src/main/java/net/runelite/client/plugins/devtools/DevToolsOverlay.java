@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -92,7 +91,7 @@ public class DevToolsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Font font = plugin.getFont();
 		if (font != null)

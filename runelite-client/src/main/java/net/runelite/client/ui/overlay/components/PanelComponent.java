@@ -82,7 +82,7 @@ public class PanelComponent implements RenderableEntity
 	private int width = 129;
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final Dimension dimension = new Dimension();
 		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size() + (Objects.isNull(progressBar) ? 0 : 1);
@@ -106,7 +106,7 @@ public class PanelComponent implements RenderableEntity
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
-		backgroundComponent.render(graphics, parent);
+		backgroundComponent.render(graphics);
 
 		// Render title
 		if (!Strings.isNullOrEmpty(title))
@@ -115,7 +115,7 @@ public class PanelComponent implements RenderableEntity
 			titleComponent.setText(title);
 			titleComponent.setColor(titleColor);
 			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, y));
-			titleComponent.render(graphics, parent);
+			titleComponent.render(graphics);
 			y += metrics.getHeight() + SEPARATOR;
 		}
 
@@ -126,13 +126,13 @@ public class PanelComponent implements RenderableEntity
 			leftLineComponent.setPosition(new Point(position.x + LEFT_BORDER, y));
 			leftLineComponent.setText(line.getLeft());
 			leftLineComponent.setColor(line.getLeftColor());
-			leftLineComponent.render(graphics, parent);
+			leftLineComponent.render(graphics);
 
 			final TextComponent rightLineComponent = new TextComponent();
 			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), y));
 			rightLineComponent.setText(line.getRight());
 			rightLineComponent.setColor(line.getRightColor());
-			rightLineComponent.render(graphics, parent);
+			rightLineComponent.render(graphics);
 			y += metrics.getHeight() + SEPARATOR;
 		}
 
@@ -141,7 +141,7 @@ public class PanelComponent implements RenderableEntity
 		{
 			progressBar.setWidth(width - LEFT_BORDER - RIGHT_BORDER);
 			progressBar.setPosition(new Point(position.x + LEFT_BORDER, y - (metrics.getHeight() / 2)));
-			progressBar.render(graphics, parent);
+			progressBar.render(graphics);
 		}
 
 		return dimension;

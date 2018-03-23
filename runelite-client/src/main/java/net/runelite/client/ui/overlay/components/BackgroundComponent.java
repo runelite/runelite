@@ -27,7 +27,6 @@ package net.runelite.client.ui.overlay.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -62,7 +61,7 @@ public class BackgroundComponent implements RenderableEntity
 	private boolean fill = true;
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Color outsideStrokeColor = new Color(
 			Math.max(0, backgroundColor.getRed() - OUTSIDE_STROKE_RED_OFFSET),

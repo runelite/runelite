@@ -58,7 +58,7 @@ public class BurnerOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showBurner())
 		{
@@ -71,18 +71,18 @@ public class BurnerOverlay extends Overlay
 			{
 				if (BURNER_UNLIT.contains(object.getId()))
 				{
-					drawBurner(graphics, "Unlit", object, Color.RED, parent);
+					drawBurner(graphics, "Unlit", object, Color.RED);
 				}
 				else if (BURNER_LIT.contains(object.getId()))
 				{
-					drawBurner(graphics, "Lit", object, Color.GREEN, parent);
+					drawBurner(graphics, "Lit", object, Color.GREEN);
 				}
 			}
 		});
 		return null;
 	}
 
-	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color, java.awt.Point parent)
+	private void drawBurner(Graphics2D graphics, String text, TileObject tileObject, Color color)
 	{
 		Point canvasText = Perspective.getCanvasTextLocation(client, graphics, tileObject.getLocalLocation(), text, 200);
 
@@ -94,7 +94,7 @@ public class BurnerOverlay extends Overlay
 		textComponent.setText(text);
 		textComponent.setPosition(new java.awt.Point(canvasText.getX(), canvasText.getY()));
 		textComponent.setColor(color);
-		textComponent.render(graphics, parent);
+		textComponent.render(graphics);
 
 		//render tile
 		OverlayUtil.renderPolygon(graphics, tileObject.getCanvasTilePoly(), color);

@@ -490,7 +490,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
 		subGraphics.translate(point.x, point.y);
-		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics, point), new Dimension());
+		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();
 		overlay.setBounds(new Rectangle(point, dimension));
 	}

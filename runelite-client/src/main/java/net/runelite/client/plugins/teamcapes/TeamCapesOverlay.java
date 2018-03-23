@@ -27,7 +27,6 @@ package net.runelite.client.plugins.teamcapes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
@@ -51,7 +50,7 @@ public class TeamCapesOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Map<Integer, Integer> teams = plugin.getTeams();
 		if (teams.isEmpty())
@@ -72,6 +71,6 @@ public class TeamCapesOverlay extends Overlay
 				));
 			}
 		}
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }
