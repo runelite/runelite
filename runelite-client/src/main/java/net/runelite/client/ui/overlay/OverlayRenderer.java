@@ -283,7 +283,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		// Draw snap corners
 		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null)
 		{
-			final OverlayBounds translatedSnapCorners = translateSnapCorners(snapCorners);
+			final OverlayBounds translatedSnapCorners = snapCorners.translated(
+				-SNAP_CORNER_SIZE.width,
+				-SNAP_CORNER_SIZE.height);
+
 			final Color previous = graphics.getColor();
 
 			for (final Rectangle corner : translatedSnapCorners.getBounds())
@@ -432,7 +435,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (movedOverlay != null)
 		{
 			mousePosition.setLocation(-1, -1);
-			final OverlayBounds snapCorners = translateSnapCorners(buildSnapCorners());
+			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
 
 			for (Rectangle snapCorner : snapCorners.getBounds())
 			{
@@ -556,22 +559,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			new Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
 			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
 			new Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE));
-	}
-
-	private OverlayBounds translateSnapCorners(OverlayBounds snapCorners)
-	{
-		return new OverlayBounds(
-			snapCorners.getTopLeft(),
-			translate(snapCorners.getTopRight(), -SNAP_CORNER_SIZE.width, 0),
-			translate(snapCorners.getBottomLeft(), 0, -SNAP_CORNER_SIZE.height),
-			translate(snapCorners.getBottomRight(), -SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height),
-			translate(snapCorners.getAboveChatboxRight(), -SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height));
-	}
-
-	private static Rectangle translate(Rectangle rectangle, int dx, int dy)
-	{
-		rectangle.translate(dx, dy);
-		return rectangle;
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)
