@@ -37,7 +37,6 @@ import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 class BlastMineOreCountOverlay extends Overlay
@@ -64,7 +63,7 @@ class BlastMineOreCountOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.enabled())
 		{
@@ -87,7 +86,7 @@ class BlastMineOreCountOverlay extends Overlay
 				imagePanelComponent.getImages().add(getImage(RUNITE_ORE, client.getSetting(Varbits.BLAST_MINE_RUNITE)));
 			}
 		}
-		return imagePanelComponent.render(graphics, parent);
+		return imagePanelComponent.render(graphics);
 	}
 
 	private BufferedImage getImage(int itemID, int amount)

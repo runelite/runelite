@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.blastmine;
 
+import com.google.common.collect.Sets;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -42,10 +44,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.Set;
 
 public class BlastMineRockOverlay extends Overlay
 {
@@ -53,6 +56,10 @@ public class BlastMineRockOverlay extends Overlay
 	private static final int TIMER_BORDER_WIDTH = 1;
 	private static final int MAX_DISTANCE = 16;
 	private static final int WARNING_DISTANCE = 2;
+	private static final Set<Integer> WALL_OBJECTS = Collections.unmodifiableSet(Sets.newHashSet(ObjectID.NULL_28570, ObjectID.NULL_28571, ObjectID.NULL_28572, ObjectID.NULL_28573, ObjectID.NULL_28574,
+			ObjectID.NULL_28575, ObjectID.NULL_28576, ObjectID.NULL_28577, ObjectID.NULL_28578, ObjectID.HARD_ROCK, ObjectID.HARD_ROCK_28580,
+			ObjectID.CAVITY, ObjectID.CAVITY_28582, ObjectID.POT_OF_DYNAMITE, ObjectID.POT_OF_DYNAMITE_28584, ObjectID.POT_OF_DYNAMITE_28585,
+			ObjectID.POT_OF_DYNAMITE_28586, ObjectID.SHATTERED_ROCKFACE, ObjectID.SHATTERED_ROCKFACE_28588));
 
 	private final Client client;
 	private final BlastMinePlugin plugin;
@@ -75,7 +82,7 @@ public class BlastMineRockOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (config.enabled())
 		{
@@ -186,8 +193,8 @@ public class BlastMineRockOverlay extends Overlay
 			for (int j = -WARNING_DISTANCE; j <= WARNING_DISTANCE; j++)
 			{
 				GameObject gameObject = tiles[z][x + i][y + j].getGameObjects()[0];
-				//check if tile is empty, or is a wall... waiting for null names being added to ObjectID
-				if (gameObject == null  || !(28570 <= gameObject.getId() && 28588 >= gameObject.getId()))
+				//check if tile is empty, or is a wall...
+				if (gameObject == null  || !WALL_OBJECTS.contains(gameObject.getId()))
 				{
 					LocalPoint localTile = new LocalPoint(
 							(x + i) * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
