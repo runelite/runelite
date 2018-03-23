@@ -54,7 +54,7 @@ public class ItemStatOverlay extends Overlay
 	private ItemStatConfig config;
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (client.isMenuOpen() || (!config.relative() && !config.absolute() && !config.theoretical()))
 		{

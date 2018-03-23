@@ -91,7 +91,7 @@ class SlayerOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showItemOverlay())
 		{
@@ -122,7 +122,7 @@ class SlayerOverlay extends Overlay
 			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
 				? bounds.height
 				: graphics.getFontMetrics().getHeight())));
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return null;

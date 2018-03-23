@@ -100,7 +100,7 @@ public class PuzzleSolverOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if ((!config.displaySolution() && !config.displayRemainingMoves())
 				|| client.getGameState() != GameState.LOGGED_IN)
@@ -323,7 +323,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 			BackgroundComponent backgroundComponent = new BackgroundComponent();
 			backgroundComponent.setRectangle(new Rectangle(x, y, INFO_BOX_WIDTH, height));
-			backgroundComponent.render(graphics, parent);
+			backgroundComponent.render(graphics);
 
 			int textOffsetX = (INFO_BOX_WIDTH - fm.stringWidth(infoString)) / 2;
 			int textOffsetY = fm.getHeight();
@@ -331,7 +331,7 @@ public class PuzzleSolverOverlay extends Overlay
 			TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(x + textOffsetX, y + textOffsetY));
 			textComponent.setText(infoString);
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		// Solve the puzzle if we don't have an up to date solution

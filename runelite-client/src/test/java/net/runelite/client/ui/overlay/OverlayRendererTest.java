@@ -26,7 +26,6 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -41,7 +40,7 @@ class TestOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

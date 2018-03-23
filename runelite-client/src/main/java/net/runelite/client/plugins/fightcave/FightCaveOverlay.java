@@ -36,7 +36,6 @@ import javax.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -61,7 +60,7 @@ public class FightCaveOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		JadAttack attack = plugin.getAttack();
 		if (attack == null)
@@ -76,7 +75,7 @@ public class FightCaveOverlay extends Overlay
 		{
 			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
 		}
-		return imagePanelComponent.render(graphics, parent);
+		return imagePanelComponent.render(graphics);
 	}
 
 	private BufferedImage getPrayerImage(JadAttack attack)

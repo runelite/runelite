@@ -55,7 +55,7 @@ public class TooltipComponent implements RenderableEntity
 	private IndexedSprite[] modIcons;
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
@@ -101,7 +101,7 @@ public class TooltipComponent implements RenderableEntity
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(tooltipBackground);
-		backgroundComponent.render(graphics, parent);
+		backgroundComponent.render(graphics);
 		graphics.setColor(Color.WHITE);
 
 		// Render tooltip - text - line by line
@@ -125,7 +125,7 @@ public class TooltipComponent implements RenderableEntity
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
 					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-					textComponent.render(graphics, parent);
+					textComponent.render(graphics);
 
 					lineX += metrics.stringWidth(text);
 
@@ -162,7 +162,7 @@ public class TooltipComponent implements RenderableEntity
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
 						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-						textComponent.render(graphics, parent);
+						textComponent.render(graphics);
 
 						lineX += metrics.stringWidth(text);
 					}
@@ -176,7 +176,7 @@ public class TooltipComponent implements RenderableEntity
 			textComponent.setColor(nextColor);
 			textComponent.setText(line.substring(begin, line.length()));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return new Dimension(tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
