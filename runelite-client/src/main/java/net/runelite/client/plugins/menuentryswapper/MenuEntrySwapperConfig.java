@@ -169,6 +169,17 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 12,
+		keyName = "swapSilverSickle",
+		name = "Silver sickle(b)",
+		description = "Swap Wield with Cast Bloom on Silver sickle(b)"
+	)
+	default boolean swapSilverSickle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
 		keyName = "swapBones",
 		name = "Bury",
 		description = "Swap Bury with Use on Bones"

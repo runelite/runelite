@@ -456,7 +456,7 @@ final class class3 implements class0 {
                         var22 = GZipDecompressor.getWidget(var1);
                         if(var22.dynamicValues != null && var22.dynamicValues[0][0] == 5) {
                            var10 = var22.dynamicValues[0][1];
-                           class237.widgetSettings[var10] = 1 - class237.widgetSettings[var10];
+                           class237.clientVarps[var10] = 1 - class237.clientVarps[var10];
                            class5.method14(var10);
                         }
                      } else if(var2 == 29) {
@@ -466,8 +466,8 @@ final class class3 implements class0 {
                         var22 = GZipDecompressor.getWidget(var1);
                         if(var22.dynamicValues != null && var22.dynamicValues[0][0] == 5) {
                            var10 = var22.dynamicValues[0][1];
-                           if(class237.widgetSettings[var10] != var22.field2931[0]) {
-                              class237.widgetSettings[var10] = var22.field2931[0];
+                           if(class237.clientVarps[var10] != var22.field2931[0]) {
+                              class237.clientVarps[var10] = var22.field2931[0];
                               class5.method14(var10);
                            }
                         }

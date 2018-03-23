@@ -8,11 +8,11 @@ public class class237 {
    @Export("varpsMasks")
    static int[] varpsMasks;
    @ObfuscatedName("q")
-   @Export("settings")
-   public static int[] settings;
+   @Export("serverVarps")
+   public static int[] serverVarps;
    @ObfuscatedName("i")
-   @Export("widgetSettings")
-   public static int[] widgetSettings;
+   @Export("clientVarps")
+   public static int[] clientVarps;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lla;"
@@ -28,7 +28,7 @@ public class class237 {
          var0 += var0;
       }
 
-      settings = new int[2000];
-      widgetSettings = new int[2000];
+      serverVarps = new int[2000];
+      clientVarps = new int[2000];
    }
 }
