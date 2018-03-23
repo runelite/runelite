@@ -137,6 +137,35 @@ public class OverlayUtil
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
+	public static java.awt.Point padPosition(OverlayPosition position, Dimension dimension, final int padding)
+	{
+		final java.awt.Point result = new java.awt.Point();
+
+		switch (position)
+		{
+			case DYNAMIC:
+			case TOOLTIP:
+				break;
+			case BOTTOM_LEFT:
+				result.x += dimension.width + (dimension.width == 0 ? 0 : padding);
+				break;
+			case BOTTOM_RIGHT:
+				result.x -= dimension.width + (dimension.width == 0 ? 0 : padding);
+				break;
+			case TOP_LEFT:
+				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
+				break;
+			case TOP_RIGHT:
+				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
+				break;
+			case ABOVE_CHATBOX_RIGHT:
+				result.y -= dimension.height + (dimension.height == 0 ? 0 : padding);
+				break;
+		}
+
+		return result;
+	}
+
 	public static java.awt.Point transformPosition(OverlayPosition position, Dimension dimension)
 	{
 		final java.awt.Point result = new java.awt.Point();
@@ -144,6 +173,7 @@ public class OverlayUtil
 		switch (position)
 		{
 			case DYNAMIC:
+			case TOOLTIP:
 			case TOP_LEFT:
 				break;
 			case BOTTOM_LEFT:
