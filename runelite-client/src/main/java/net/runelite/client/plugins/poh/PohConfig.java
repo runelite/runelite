@@ -125,7 +125,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "burnerTimer",
-		name = "Burner timer",
+		name = "Burner timer (s)",
 		description = "Will indicate when burners run out",
 		position = 9
 	)
