@@ -261,7 +261,13 @@ public enum Varbits
 	/**
 	 * Multicombat area
 	 */
-	MULTICOMBAT_AREA(4605);
+	MULTICOMBAT_AREA(4605),
+
+	/**
+	 * Kingdom Management
+	 */
+	KINGDOM_FAVOR(72),
+	KINGDOM_COFFER(74);
 
 	/**
 	 * varbit id
