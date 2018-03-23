@@ -168,7 +168,7 @@ public class ConfigManager
 		}
 	}
 
-	private void loadFromFile()
+	private synchronized void loadFromFile()
 	{
 		properties.clear();
 
@@ -214,7 +214,7 @@ public class ConfigManager
 		}
 	}
 
-	private void saveToFile() throws IOException
+	private synchronized void saveToFile() throws IOException
 	{
 		propertiesFile.getParentFile().mkdirs();
 
