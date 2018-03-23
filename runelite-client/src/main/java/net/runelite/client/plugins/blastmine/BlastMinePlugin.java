@@ -47,7 +47,7 @@ import java.util.Set;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Blast Mine Plugin"
+	name = "Blast Mine"
 )
 public class BlastMinePlugin extends Plugin
 {
