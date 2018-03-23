@@ -331,6 +331,8 @@ public interface Client extends GameEngine
 
 	Dimension getStretchedDimensions();
 
+	Dimension getRealDimensions();
+
 	/**
 	 * Changes world. Works only on login screen
 	 * @param world world
