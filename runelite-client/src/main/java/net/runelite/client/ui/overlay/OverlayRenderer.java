@@ -34,7 +34,11 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -89,10 +93,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final ConfigManager configManager;
 	private final TooltipOverlay tooltipOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
-	private final List<Overlay> overlaysAboveScene = new CopyOnWriteArrayList<>(),
-		overlaysUnderWidgets = new CopyOnWriteArrayList<>(),
-		overlaysAboveWidgets = new CopyOnWriteArrayList<>(),
-		overlaysOnTop = new CopyOnWriteArrayList<>();
 	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
 	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
@@ -108,6 +108,8 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private boolean chatboxHidden;
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
+	private final Map<OverlayLayer, List<Overlay>> overlayLayerOverlayMap = Collections
+		.synchronizedMap(new HashMap<>());
 
 	@Inject
 	private OverlayRenderer(
@@ -150,26 +152,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		rebuildOverlays();
 	}
 
-	private List<Overlay> getOverlaysForLayer(OverlayLayer layer)
-	{
-		switch (layer)
-		{
-			case ABOVE_SCENE:
-				return overlaysAboveScene;
-			case UNDER_WIDGETS:
-				return overlaysUnderWidgets;
-			case ABOVE_WIDGETS:
-				return overlaysAboveWidgets;
-			case ALWAYS_ON_TOP:
-				return overlaysOnTop;
-			default:
-				throw new IllegalStateException();
-		}
-	}
-
 	private void rebuildOverlays()
 	{
-		List<Overlay> overlays = Stream
+		final List<Overlay> overlays = Stream
 			.concat(
 				pluginManager.getPlugins()
 					.stream()
@@ -180,7 +165,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			.collect(Collectors.toList());
 
 		sortOverlays(overlays);
-
 		allOverlays.clear();
 		allOverlays.addAll(overlays);
 
@@ -211,10 +195,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	private void rebuildOverlayLayers()
 	{
-		overlaysAboveScene.clear();
-		overlaysUnderWidgets.clear();
-		overlaysAboveWidgets.clear();
-		overlaysOnTop.clear();
+		overlayLayerOverlayMap.clear();
 
 		for (final Overlay overlay : allOverlays)
 		{
@@ -230,8 +211,16 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 			}
 
-			List<Overlay> overlayLayer = getOverlaysForLayer(layer);
-			overlayLayer.add(overlay);
+			overlayLayerOverlayMap.compute(layer, (key, value) ->
+			{
+				if (value == null)
+				{
+					value = new ArrayList<>();
+				}
+
+				value.add(overlay);
+				return value;
+			});
 		}
 	}
 
@@ -260,7 +249,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
 		final Client client = clientProvider.get();
-		List<Overlay> overlays = getOverlaysForLayer(layer);
+		final List<Overlay> overlays = overlayLayerOverlayMap.get(layer);
 
 		if (client == null
 			|| overlays.isEmpty()
