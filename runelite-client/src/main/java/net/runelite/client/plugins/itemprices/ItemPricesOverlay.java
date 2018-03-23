@@ -26,7 +26,6 @@ package net.runelite.client.plugins.itemprices;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.text.NumberFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -50,8 +49,6 @@ class ItemPricesOverlay extends Overlay
 {
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
@@ -176,11 +173,11 @@ class ItemPricesOverlay extends Overlay
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
 		{
-			return NUMBER_FORMATTER.format(qty) + " gp";
+			return StackFormatter.formatNumber(qty) + " gp";
 		}
 		else if (id == ItemID.PLATINUM_TOKEN)
 		{
-			return NUMBER_FORMATTER.format(qty * 1000) + " gp";
+			return StackFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
 		final ItemComposition itemDef = itemManager.getItemComposition(id);
