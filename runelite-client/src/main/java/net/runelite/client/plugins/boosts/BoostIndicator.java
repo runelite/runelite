@@ -31,6 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
 public class BoostIndicator extends InfoBox
 {
@@ -47,6 +48,7 @@ public class BoostIndicator extends InfoBox
 		this.client = client;
 		this.skill = skill;
 		setTooltip(skill.getName() + " boost");
+		setPriority(InfoBoxPriority.HIGH);
 	}
 
 	@Override

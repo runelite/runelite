@@ -96,6 +96,7 @@ public class InfoBoxManager
 	{
 		Collections.sort(infoBoxes, (b1, b2) -> ComparisonChain
 			.start()
+			.compare(b1.getPriority(), b2.getPriority())
 			.compare(b1.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name(), b2.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name())
 			.result());
 	}
