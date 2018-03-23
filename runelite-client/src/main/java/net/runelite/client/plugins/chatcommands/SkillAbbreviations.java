@@ -24,56 +24,34 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 
 class SkillAbbreviations
 {
-	private static final Map<String, String> MAP = new HashMap<>();
+	private static final Map<String, String> ALT_NAMES = new HashMap<>();
 
 	static
 	{
-		MAP.put("ATK", Skill.ATTACK.getName());
-		MAP.put("ATT", Skill.ATTACK.getName());
-		MAP.put("DEF", Skill.DEFENCE.getName());
-		MAP.put("STR", Skill.STRENGTH.getName());
-		MAP.put("HEALTH", Skill.HITPOINTS.getName());
-		MAP.put("HIT", Skill.HITPOINTS.getName());
-		MAP.put("HITPOINT", Skill.HITPOINTS.getName());
-		MAP.put("HP", Skill.HITPOINTS.getName());
-		MAP.put("RANGE", Skill.RANGED.getName());
-		MAP.put("RANGING", Skill.RANGED.getName());
-		MAP.put("RNG", Skill.RANGED.getName());
-		MAP.put("PRAY", Skill.PRAYER.getName());
-		MAP.put("MAG", Skill.MAGIC.getName());
-		MAP.put("MAGE", Skill.MAGIC.getName());
-		MAP.put("COOK", Skill.COOKING.getName());
-		MAP.put("WC", Skill.WOODCUTTING.getName());
-		MAP.put("WOOD", Skill.WOODCUTTING.getName());
-		MAP.put("WOODCUT", Skill.WOODCUTTING.getName());
-		MAP.put("FLETCH", Skill.FLETCHING.getName());
-		MAP.put("FISH", Skill.FISHING.getName());
-		MAP.put("FM", Skill.FIREMAKING.getName());
-		MAP.put("FIRE", Skill.FIREMAKING.getName());
-		MAP.put("CRAFT", Skill.CRAFTING.getName());
-		MAP.put("SMITH", Skill.SMITHING.getName());
-		MAP.put("MINE", Skill.MINING.getName());
-		MAP.put("HL", Skill.HERBLORE.getName());
-		MAP.put("HERB", Skill.HERBLORE.getName());
-		MAP.put("AGI", Skill.AGILITY.getName());
-		MAP.put("AGIL", Skill.AGILITY.getName());
-		MAP.put("THIEF", Skill.THIEVING.getName());
-		MAP.put("SLAY", Skill.SLAYER.getName());
-		MAP.put("FARM", Skill.FARMING.getName());
-		MAP.put("RC", Skill.RUNECRAFT.getName());
-		MAP.put("RUNE", Skill.RUNECRAFT.getName());
-		MAP.put("RUNECRAFTING", Skill.RUNECRAFT.getName());
-		MAP.put("HUNT", Skill.HUNTER.getName());
-		MAP.put("CON", Skill.CONSTRUCTION.getName());
-		MAP.put("CONSTRUCT", Skill.CONSTRUCTION.getName());
-		MAP.put("ALL", Skill.OVERALL.getName());
-		MAP.put("TOTAL", Skill.OVERALL.getName());
+		ALT_NAMES.put("ATK", Skill.ATTACK.getName());
+		ALT_NAMES.put("HEALTH", Skill.HITPOINTS.getName());
+		ALT_NAMES.put("HP", Skill.HITPOINTS.getName());
+		ALT_NAMES.put("RANGING", Skill.RANGED.getName());
+		ALT_NAMES.put("RNG", Skill.RANGED.getName());
+		ALT_NAMES.put("MAGE", Skill.MAGIC.getName());
+		ALT_NAMES.put("WC", Skill.WOODCUTTING.getName());
+		ALT_NAMES.put("FM", Skill.FIREMAKING.getName());
+		ALT_NAMES.put("MINE", Skill.MINING.getName());
+		ALT_NAMES.put("HL", Skill.HERBLORE.getName());
+		ALT_NAMES.put("THIEF", Skill.THIEVING.getName());
+		ALT_NAMES.put("THIEVE", Skill.THIEVING.getName());
+		ALT_NAMES.put("RC", Skill.RUNECRAFT.getName());
+		ALT_NAMES.put("RUNECRAFTING", Skill.RUNECRAFT.getName());
+		ALT_NAMES.put("ALL", Skill.OVERALL.getName());
+		ALT_NAMES.put("TOTAL", Skill.OVERALL.getName());
 	}
 
 	/**
@@ -85,6 +63,41 @@ class SkillAbbreviations
 	 */
 	static String getFullName(String abbrev)
 	{
-		return MAP.getOrDefault(abbrev.toUpperCase(), abbrev);
+		if (ALT_NAMES.containsKey(abbrev.toUpperCase()))
+		{
+			return ALT_NAMES.getOrDefault(abbrev.toUpperCase(), abbrev);
+		}
+		else
+		{
+			return getFullNameStartingWith(abbrev);
+		}
+	}
+
+	/**
+	 * Takes the first few letters of a skill, and if exactly one skill starts
+	 * with them, expands it into its full canonical name. Case-insensitive.
+	 *
+	 * @param abbrev First few letters of a skill.
+	 * @return Full skill name if recognized, else the original string.
+	 */
+	private static String getFullNameStartingWith(String abbrev)
+	{
+		List<Skill> matches = new ArrayList<>();
+		for (Skill skill : Skill.class.getEnumConstants())
+		{
+			if (skill.getName().toUpperCase().startsWith(abbrev.toUpperCase()))
+			{
+				matches.add(skill);
+			}
+		}
+
+		if (matches.size() == 1)
+		{
+			return matches.get(0).getName();
+		}
+		else
+		{
+			return abbrev;
+		}
 	}
 }
