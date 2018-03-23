@@ -199,4 +199,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true; 
 	}	
+	
+	@ConfigItem(
+		position = 15,
+		keyName = "swapTeleportPOH",
+		name = "Tele to POH",
+		description = "Swap Wear/Remove with Tele to POH on Construction and max cape"
+	)
+	default boolean swapTeleportPOH()
+	{
+		return true;
+	}
 }
