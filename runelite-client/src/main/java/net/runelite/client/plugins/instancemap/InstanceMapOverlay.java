@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
@@ -67,10 +68,11 @@ import static net.runelite.client.plugins.instancemap.WallOffset.NONE;
 import static net.runelite.client.plugins.instancemap.WallOffset.TOP_LEFT;
 import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 
+@Singleton
 class InstanceMapOverlay extends Overlay
 {
 	/**
@@ -93,7 +95,6 @@ class InstanceMapOverlay extends Overlay
 
 	private static final int MAX_PLANE = 3;
 	private static final int MIN_PLANE = 0;
-	private final InstanceMapPlugin plugin;
 
 	/**
 	 * The plane to render on the instance map. When the map is opened this
@@ -114,24 +115,11 @@ class InstanceMapOverlay extends Overlay
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 
 	@Inject
-	InstanceMapOverlay(Client client, InstanceMapPlugin plugin)
+	InstanceMapOverlay(Client client)
 	{
-		this.plugin = plugin;
 		this.client = client;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-	}
-
-	public Dimension getInstanceMapDimension()
-	{
-		BufferedImage image = mapImage;
-
-		if (image == null)
-		{
-			return null;
-		}
-
-		return new Dimension(image.getWidth(), image.getHeight());
+		setPriority(OverlayPriority.HIGH);
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	public boolean isMapShown()
@@ -207,16 +195,19 @@ class InstanceMapOverlay extends Overlay
 			}
 		}
 
-		final Point offset = plugin.getMapOffset();
-
-		graphics.drawImage(image, offset.getX(), offset.getY(), null);
+		graphics.drawImage(image, 0, 0, null);
 
 		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
-			drawPlayerDot(graphics, offset.getX(), offset.getY(), client.getLocalPlayer(), Color.white, Color.black);
+			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
 		}
 
-		return getInstanceMapDimension();
+		if (image == null)
+		{
+			return null;
+		}
+
+		return new Dimension(image.getWidth(), image.getHeight());
 	}
 
 	/**
@@ -224,7 +215,7 @@ class InstanceMapOverlay extends Overlay
 	 *
 	 * @param graphics graphics to be drawn to
 	 */
-	private void drawPlayerDot(Graphics2D graphics, int baseX, int baseY, Player player,
+	private void drawPlayerDot(Graphics2D graphics, Player player,
 		Color dotColor, Color outlineColor)
 	{
 		LocalPoint playerLoc = player.getLocalLocation();
@@ -233,8 +224,8 @@ class InstanceMapOverlay extends Overlay
 		int tileX = playerLoc.getRegionX();
 		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
 
-		int x = baseX + (int) (tileX * TILE_SIZE * MAP_SCALING);
-		int y = baseY + (int) (tileY * TILE_SIZE * MAP_SCALING);
+		int x = (int) (tileX * TILE_SIZE * MAP_SCALING);
+		int y = (int) (tileY * TILE_SIZE * MAP_SCALING);
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
