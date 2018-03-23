@@ -231,8 +231,12 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (haValue > 0)
 		{
-			itemStringBuilder.append(gePrice > 0 ? ", " : "")
-				.append("HA: ")
+			if (gePrice > 0)
+			{
+				itemStringBuilder.append("</br>");
+			}
+
+			itemStringBuilder.append("HA: ")
 				.append(StackFormatter.quantityToStackSize(haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
