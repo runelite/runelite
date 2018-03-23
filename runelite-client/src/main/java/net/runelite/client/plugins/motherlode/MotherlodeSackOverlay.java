@@ -27,7 +27,6 @@ package net.runelite.client.plugins.motherlode;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -52,7 +51,7 @@ class MotherlodeSackOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
@@ -71,6 +70,6 @@ class MotherlodeSackOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

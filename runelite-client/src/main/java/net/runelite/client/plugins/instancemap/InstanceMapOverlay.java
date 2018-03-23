@@ -185,7 +185,7 @@ class InstanceMapOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!showMap)
 		{
@@ -302,7 +302,7 @@ class InstanceMapOverlay extends Overlay
 
 		backgroundComponent.setFill(false);
 		backgroundComponent.setRectangle(new Rectangle(0, 0, mapOverlaySize.width, mapOverlaySize.height));
-		backgroundComponent.render(graphics, new java.awt.Point());
+		backgroundComponent.render(graphics);
 
 		//These loops are seperated on purpose to prevent layering issues. This is how it's written in the client
 		//Draw the base colors first

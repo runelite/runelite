@@ -60,7 +60,7 @@ public class InfoBoxOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
 
@@ -85,12 +85,12 @@ public class InfoBoxOverlay extends Overlay
 			infoBoxComponent.setImage(box.getImage());
 			infoBoxComponent.setText(box.getText());
 			infoBoxComponent.setPosition(new Point(x, 0));
-			final Dimension infoBoxBounds = infoBoxComponent.render(graphics, parent);
+			final Dimension infoBoxBounds = infoBoxComponent.render(graphics);
 
 			if (!Strings.isNullOrEmpty(box.getTooltip()))
 			{
 				final Rectangle intersectionRectangle = new Rectangle(infoBoxBounds);
-				intersectionRectangle.setLocation(parent);
+				intersectionRectangle.setLocation(getBounds().getLocation());
 				intersectionRectangle.translate(x, 0);
 				final Point transformed = OverlayUtil.transformPosition(getPosition(), intersectionRectangle.getSize());
 				intersectionRectangle.translate(transformed.x, transformed.y);

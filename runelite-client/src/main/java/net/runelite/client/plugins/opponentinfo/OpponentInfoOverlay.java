@@ -94,7 +94,7 @@ class OpponentInfoOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Actor opponent = getOpponent();
 
@@ -157,7 +157,7 @@ class OpponentInfoOverlay extends Overlay
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(0, 0, WIDTH, height));
-		backgroundComponent.render(graphics, parent);
+		backgroundComponent.render(graphics);
 
 		int y = TOP_BORDER + fm.getHeight();
 
@@ -166,7 +166,7 @@ class OpponentInfoOverlay extends Overlay
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(x, y));
 			textComponent.setText(opponentName);
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 
 			y += 3;
 		}
@@ -199,7 +199,7 @@ class OpponentInfoOverlay extends Overlay
 			final TextComponent textComponent1 = new TextComponent();
 			textComponent1.setText(str);
 			textComponent1.setPosition(new Point((WIDTH - fm.stringWidth(str)) / 2, y));
-			textComponent1.render(graphics, parent);
+			textComponent1.render(graphics);
 
 			y += 3;
 		}
@@ -212,7 +212,7 @@ class OpponentInfoOverlay extends Overlay
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(x, y));
 			textComponent.setText(opponentsOpponentName);
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return new Dimension(WIDTH, height);

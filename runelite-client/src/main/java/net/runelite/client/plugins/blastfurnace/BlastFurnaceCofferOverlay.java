@@ -26,7 +26,6 @@ package net.runelite.client.plugins.blastfurnace;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.Varbits.BLAST_FURNACE_COFFER;
@@ -52,7 +51,7 @@ class BlastFurnaceCofferOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (plugin.getConveyorBelt() == null)
 		{
@@ -72,6 +71,6 @@ class BlastFurnaceCofferOverlay extends Overlay
 				StackFormatter.quantityToStackSize(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
 			));
 		}
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

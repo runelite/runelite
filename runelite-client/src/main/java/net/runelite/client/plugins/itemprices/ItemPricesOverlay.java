@@ -26,7 +26,6 @@ package net.runelite.client.plugins.itemprices;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.text.NumberFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -76,7 +75,7 @@ class ItemPricesOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (client.isMenuOpen())
 		{

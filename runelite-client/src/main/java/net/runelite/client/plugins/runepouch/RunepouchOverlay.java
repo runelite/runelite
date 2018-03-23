@@ -79,7 +79,7 @@ public class RunepouchOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
 		WidgetItem[] items = queryRunner.runQuery(query);

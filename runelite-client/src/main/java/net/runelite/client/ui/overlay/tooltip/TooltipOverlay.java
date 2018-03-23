@@ -55,7 +55,7 @@ public class TooltipOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final List<Tooltip> tooltips = tooltipManager.getTooltips();
 
@@ -97,7 +97,7 @@ public class TooltipOverlay extends Overlay
 
 			// render tooltip
 			tooltipComponent.setPosition(position);
-			final Dimension thisSize = tooltipComponent.render(graphics, parent);
+			final Dimension thisSize = tooltipComponent.render(graphics);
 
 			// update tooltip bounding rect
 			if (lastLocation == null)

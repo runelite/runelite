@@ -59,7 +59,7 @@ public class TextComponentTest
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("test");
 		textComponent.setColor(Color.RED);
-		textComponent.render(graphics, new Point(0, 0));
+		textComponent.render(graphics);
 		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.RED);
 	}
@@ -69,7 +69,7 @@ public class TextComponentTest
 	{
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test");
-		textComponent.render(graphics, new Point(0, 0));
+		textComponent.render(graphics);
 		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
 	}
@@ -79,7 +79,7 @@ public class TextComponentTest
 	{
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test<col=00ff00> test");
-		textComponent.render(graphics, new Point(0, 0));
+		textComponent.render(graphics);
 		verify(graphics, atLeastOnce()).drawString(eq("test"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).drawString(eq(" test"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
