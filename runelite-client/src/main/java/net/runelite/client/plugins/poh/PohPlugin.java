@@ -114,7 +114,8 @@ public class PohPlugin extends Plugin
 	public void updateConfig(ConfigChanged event)
 	{
 		overlay.updateConfig();
-		if(!config.showBurnerTimer()){
+		if (!config.showBurnerTimer())
+		{
 			infoBoxManager.removeIf(t -> t instanceof BurnerTimer);
 		}
 	}
@@ -127,13 +128,13 @@ public class PohPlugin extends Plugin
 		{
 			pohObjects.put(gameObject, event.getTile());
 		}
-		if(config.showBurnerTimer())
+		if (config.showBurnerTimer())
 		{
 			if (BURNER_LIT.contains(gameObject.getId()))
 			{
 				infoBoxManager.removeIf(t -> t instanceof BurnerTimer);
 				BurnerTimer timer = new BurnerTimer(config.burnerTimer(), itemManager.getImage(594));
-				timer.setTooltip("Lit Torch");
+				timer.setTooltip("Lit Burner");
 				infoBoxManager.addInfoBox(timer);
 			}
 		}
