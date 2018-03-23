@@ -50,6 +50,16 @@ class OverlayBounds
 		aboveChatboxRight = new Rectangle(other.aboveChatboxRight);
 	}
 
+	OverlayBounds translated(final int x, final int y)
+	{
+		final OverlayBounds translated = new OverlayBounds(this);
+		translated.getTopRight().translate(x, 0);
+		translated.getBottomLeft().translate(0, y);
+		translated.getBottomRight().translate(x, y);
+		translated.getAboveChatboxRight().translate(x, y);
+		return translated;
+	}
+
 	Rectangle forPosition(OverlayPosition overlayPosition)
 	{
 		switch (overlayPosition)
