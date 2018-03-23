@@ -195,5 +195,8 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Remove",
 		description = "Swap Remove with Teleport on cape teleports"
 	)
-	default boolean swapRemove(){ return true; }
+	default boolean swapRemove()
+	{
+		return true; 
+	}	
 }
