@@ -52,6 +52,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -150,6 +151,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	public void onPluginChanged(PluginChanged event)
 	{
 		rebuildOverlays();
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			inOverlayDraggingMode = false;
+		}
 	}
 
 	private void rebuildOverlays()
