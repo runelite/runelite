@@ -129,10 +129,10 @@ public class PohPlugin extends Plugin
 		}
 		if(config.showBurnerTimer())
 		{
-			BurnerTimer timer = new BurnerTimer(config.burnerTimer(), itemManager.getImage(594));
 			if (BURNER_LIT.contains(gameObject.getId()))
 			{
 				infoBoxManager.removeIf(t -> t instanceof BurnerTimer);
+				BurnerTimer timer = new BurnerTimer(config.burnerTimer(), itemManager.getImage(594));
 				timer.setTooltip("Lit Torch");
 				infoBoxManager.addInfoBox(timer);
 			}
