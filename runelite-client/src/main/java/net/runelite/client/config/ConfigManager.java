@@ -24,6 +24,7 @@
  */
 package net.runelite.client.config;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
@@ -245,6 +246,16 @@ public class ConfigManager
 		return properties.getProperty(groupName + "." + key);
 	}
 
+	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
+	{
+		String value = getConfiguration(groupName, key);
+		if (!Strings.isNullOrEmpty(value))
+		{
+			return (T) stringToObject(value, clazz);
+		}
+		return null;
+	}
+
 	public void setConfiguration(String groupName, String key, String value)
 	{
 		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
@@ -288,6 +299,11 @@ public class ConfigManager
 		configChanged.setNewValue(value);
 
 		eventBus.post(configChanged);
+	}
+
+	public void setConfiguration(String groupName, String key, Object value)
+	{
+		setConfiguration(groupName, key, objectToString(value));
 	}
 
 	public void unsetConfiguration(String groupName, String key)
