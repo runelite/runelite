@@ -27,7 +27,6 @@ package net.runelite.client.plugins.raids;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import lombok.Setter;
 import net.runelite.client.plugins.raids.solver.Room;
@@ -55,7 +54,7 @@ public class RaidsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (plugin.isInRaidChambers())
 		{
@@ -73,7 +72,7 @@ public class RaidsOverlay extends Overlay
 		{
 			panelComponent.setTitleColor(Color.RED);
 			panelComponent.setTitle("Unable to scout this raid!");
-			return panelComponent.render(graphics, parent);
+			return panelComponent.render(graphics);
 		}
 
 		panelComponent.setTitleColor(Color.WHITE);
@@ -147,6 +146,6 @@ public class RaidsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

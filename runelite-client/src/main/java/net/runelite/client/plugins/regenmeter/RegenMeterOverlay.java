@@ -28,7 +28,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
@@ -68,7 +67,7 @@ public class RegenMeterOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D g, Point point)
+	public Dimension render(Graphics2D g)
 	{
 		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 

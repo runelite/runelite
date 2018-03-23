@@ -27,7 +27,6 @@ package net.runelite.client.plugins.nightmarezone;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -70,7 +69,7 @@ class NightmareZoneOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!plugin.isInNightmareZone() || !config.moveOverlay())
 		{
@@ -104,7 +103,7 @@ class NightmareZoneOverlay extends Overlay
 				Color.WHITE
 		));
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 
 	private void renderAbsorptionCounter()

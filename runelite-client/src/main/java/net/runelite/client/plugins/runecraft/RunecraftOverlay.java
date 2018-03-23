@@ -64,7 +64,7 @@ public class RunecraftOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showPouch())
 		{
@@ -104,7 +104,7 @@ public class RunecraftOverlay extends Overlay
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(String.valueOf(client.getSetting(varbits)));
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return null;

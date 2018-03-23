@@ -69,7 +69,7 @@ public class KourendLibraryOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D g, java.awt.Point parent)
+	public Dimension render(Graphics2D g)
 	{
 		Player player = client.getLocalPlayer();
 		if (player == null)

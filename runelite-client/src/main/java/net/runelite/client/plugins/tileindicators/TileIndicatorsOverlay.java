@@ -51,7 +51,7 @@ public class TileIndicatorsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		LocalPoint dest = client.getLocalDestinationLocation();
 		if (dest == null)

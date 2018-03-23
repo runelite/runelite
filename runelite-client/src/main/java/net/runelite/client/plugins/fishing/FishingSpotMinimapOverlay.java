@@ -27,7 +27,6 @@ package net.runelite.client.plugins.fishing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
@@ -49,7 +48,7 @@ class FishingSpotMinimapOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		NPC[] fishingSpots = plugin.getFishingSpots();
 		if (fishingSpots == null)
