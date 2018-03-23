@@ -26,10 +26,7 @@ package net.runelite.client.plugins.instancemap;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import java.awt.Dimension;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Point;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
@@ -48,14 +45,7 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class InstanceMapPlugin extends Plugin
 {
-	private static final int OVERLAY_POSITION_X = 5;
-	private static final int OVERLAY_POSITION_Y = 20;
-	private static final int FRAME_OFFSET = 4;
-
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private InstanceMapInputListener inputListener;
@@ -150,18 +140,6 @@ public class InstanceMapPlugin extends Plugin
 		return overlay;
 	}
 
-	public boolean isMapShown()
-	{
-		return overlay.isMapShown();
-	}
-
-	public Point getMapOffset()
-	{
-		return new Point(
-			OVERLAY_POSITION_X + (client.isResized() ? 0 : FRAME_OFFSET),
-			OVERLAY_POSITION_Y + (client.isResized() ? 0 : FRAME_OFFSET));
-	}
-
 	public void showMap()
 	{
 		overlay.setShowMap(true);
@@ -182,10 +160,5 @@ public class InstanceMapPlugin extends Plugin
 	public void descendMap()
 	{
 		overlay.onDescend();
-	}
-
-	public Dimension getOverlaySize()
-	{
-		return overlay.getInstanceMapDimension();
 	}
 }
