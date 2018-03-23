@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,10 @@
  */
 package net.runelite.client.ui.overlay.infobox;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.plugins.Plugin;
-
-public abstract class InfoBox
+public enum InfoBoxPriority
 {
-	private final BufferedImage image;
-
-	@Getter
-	private final Plugin plugin;
-
-	@Getter
-	@Setter
-	private InfoBoxPriority priority;
-
-	private String tooltip;
-
-	public InfoBox(BufferedImage image, Plugin plugin)
-	{
-		this.image = image;
-		this.plugin = plugin;
-		setPriority(InfoBoxPriority.NONE);
-	}
-
-	public BufferedImage getImage()
-	{
-		return image;
-	}
-
-	public abstract String getText();
-
-	public abstract Color getTextColor();
-
-	public boolean render()
-	{
-		return true;
-	}
-
-	public boolean cull()
-	{
-		return false;
-	}
-
-	public String getTooltip()
-	{
-		return tooltip;
-	}
-
-	public void setTooltip(String tooltip)
-	{
-		this.tooltip = tooltip;
-	}
+	HIGH,
+	MED,
+	NONE,
+	LOW
 }
