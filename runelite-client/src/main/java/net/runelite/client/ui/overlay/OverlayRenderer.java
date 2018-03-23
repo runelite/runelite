@@ -104,6 +104,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	// Overlay state validation
 	private Rectangle viewportBounds;
+	private Rectangle chatboxBounds;
 	private boolean chatboxHidden;
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
@@ -270,7 +271,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			return;
 		}
 
-		if (shouldInvalidateOverlays())
+		if (shouldInvalidateBounds())
 		{
 			snapCorners = buildSnapCorners();
 		}
@@ -307,7 +308,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				overlayPosition = overlay.getPreferredPosition();
 			}
 
-			if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !client.isResized())
+			if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !isResizeable)
 			{
 				// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
 				// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
@@ -495,24 +496,33 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		overlay.setBounds(new Rectangle(point, dimension));
 	}
 
-	private boolean shouldInvalidateOverlays()
+	private boolean shouldInvalidateBounds()
 	{
 		final Client client = clientProvider.get();
-		final Widget widget = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
 		final boolean resizeableChanged = isResizeable != client.isResized();
+		boolean changed = false;
 
 		if (resizeableChanged)
 		{
 			isResizeable = client.isResized();
-			return true;
+			changed = true;
 		}
 
-		final boolean chatboxHiddenChanged = chatboxHidden != (widget != null && widget.isHidden());
+		final boolean chatboxBoundsChanged = chatbox == null || !chatbox.getBounds().equals(chatboxBounds);
+
+		if (chatboxBoundsChanged)
+		{
+			chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
+			changed = true;
+		}
+
+		final boolean chatboxHiddenChanged = chatboxHidden != (chatbox == null || chatbox.isHidden());
 
 		if (chatboxHiddenChanged)
 		{
-			chatboxHidden = widget != null && widget.isHidden();
-			return true;
+			chatboxHidden = chatbox == null || chatbox.isHidden();
+			changed = true;
 		}
 
 		final boolean viewportChanged = !client.getViewportWidget().getBounds().equals(viewportBounds);
@@ -520,34 +530,36 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (viewportChanged)
 		{
 			viewportBounds = client.getViewportWidget().getBounds();
-			return true;
+			changed = true;
 		}
 
-		return false;
+		return changed;
 	}
 
 	private OverlayBounds buildSnapCorners()
 	{
-		final Client client = clientProvider.get();
-
-		final Rectangle bounds = viewportBounds != null
-			? viewportBounds
-			: new Rectangle(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
-
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
-		final Rectangle chatboxBounds = chatbox != null
-			? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
-
 		final Point topLeftPoint = new Point(
 			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
 			isResizeable ? BORDER_TOP_RESIZABLE : BORDER_TOP_FIXED);
-		final Point topRightPoint = new Point(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP_FIXED);
-		final Point bottomLeftPoint = new Point(isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED, bounds.y + bounds.height - BORDER_BOTTOM);
-		final Point bottomRightPoint = new Point(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
-		final Point rightChatboxPoint = new Point(bounds.x + chatboxBounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
+
+		final Point topRightPoint = new Point(
+			viewportBounds.x + viewportBounds.width - BORDER_RIGHT,
+			BORDER_TOP_FIXED);
+
+		final Point bottomLeftPoint = new Point(
+			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		final Point bottomRightPoint = new Point(
+			viewportBounds.x + viewportBounds.width - BORDER_RIGHT,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		final Point rightChatboxPoint = new Point(
+			viewportBounds.x + chatboxBounds.width - BORDER_RIGHT,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
 
 		// Check to see if chat box is minimized
-		if (chatbox != null && isResizeable && chatboxHidden)
+		if (isResizeable && chatboxHidden)
 		{
 			rightChatboxPoint.y += chatboxBounds.height;
 			bottomLeftPoint.y += chatboxBounds.height;
