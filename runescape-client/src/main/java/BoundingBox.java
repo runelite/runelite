@@ -13,7 +13,8 @@ public abstract class BoundingBox extends Node {
    @Export("chatMessages")
    static Varcs chatMessages;
    @ObfuscatedName("g")
-   static int[] field239;
+   @Export("floorHues")
+   static int[] floorHues;
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(

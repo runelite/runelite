@@ -17,11 +17,14 @@ public final class class62 {
    )
    static int field705;
    @ObfuscatedName("a")
-   static byte[][][] field711;
+   @Export("tileUnderlayIds")
+   static byte[][][] tileUnderlayIds;
    @ObfuscatedName("l")
-   static byte[][][] field707;
+   @Export("tileOverlayIds")
+   static byte[][][] tileOverlayIds;
    @ObfuscatedName("b")
-   static byte[][][] field708;
+   @Export("tileOverlayPath")
+   static byte[][][] tileOverlayPath;
    @ObfuscatedName("x")
    static byte[][][] field704;
    @ObfuscatedName("p")

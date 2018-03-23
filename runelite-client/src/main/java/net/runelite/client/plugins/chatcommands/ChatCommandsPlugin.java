@@ -59,7 +59,7 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat commands"
+	name = "Chat Commands"
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin

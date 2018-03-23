@@ -160,7 +160,8 @@ public class class1 {
       signature = "(IB)V",
       garbageValue = "1"
    )
-   static final void method0(int var0) {
+   @Export("drawMinimapSprite")
+   static final void drawMinimapSprite(int var0) {
       int[] var1 = GrandExchangeOffer.minimapSprite.pixels;
       int var2 = var1.length;
 
@@ -208,7 +209,7 @@ public class class1 {
 
       for(var5 = 0; var5 < 104; ++var5) {
          for(var6 = 0; var6 < 104; ++var6) {
-            int var7 = class38.region.method3005(Ignore.plane, var5, var6);
+            int var7 = class38.region.getGroundObjectHash(Ignore.plane, var5, var6);
             if(var7 != 0) {
                var7 = var7 >> 14 & 32767;
                int var8 = Spotanim.getObjectDefinition(var7).mapIconId;

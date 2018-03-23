@@ -1097,7 +1097,6 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("av")
-   @Export("method0")
    final void method0(boolean var1, boolean var2, boolean var3, int var4) {
       if(this.diameter < 1600) {
          int var5;

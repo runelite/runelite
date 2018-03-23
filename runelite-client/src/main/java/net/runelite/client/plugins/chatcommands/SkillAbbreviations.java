@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import net.runelite.api.Skill;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.Skill;
 
 class SkillAbbreviations
 {

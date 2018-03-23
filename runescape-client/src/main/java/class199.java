@@ -1,11 +1,13 @@
 import java.awt.FontMetrics;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gn")
 public class class199 {
    @ObfuscatedName("c")
-   static int[] field2584;
+   @Export("floorMultiplier")
+   static int[] floorMultiplier;
    @ObfuscatedName("ae")
    static FontMetrics field2583;
 
