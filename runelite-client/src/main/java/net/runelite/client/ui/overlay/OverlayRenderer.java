@@ -262,6 +262,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final List<Overlay> overlays = overlayLayerOverlayMap.get(layer);
 
 		if (client == null
+			|| overlays == null
 			|| overlays.isEmpty()
 			|| client.getViewportWidget() == null
 			|| client.getGameState() != GameState.LOGGED_IN
