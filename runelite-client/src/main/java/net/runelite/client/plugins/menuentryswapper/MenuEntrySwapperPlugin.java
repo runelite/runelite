@@ -123,7 +123,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("investigate", option, target, true);
 		}
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (config.swapTeleportPOH() && (option.equals("wear") || option.equals("remove")))
+        	{
+            		swap("tele to poh", option, target, true);
+        	}
+		
+		if (config.swapTeleportItem() && option.equals("wear"))
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
