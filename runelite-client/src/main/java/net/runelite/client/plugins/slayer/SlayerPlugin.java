@@ -361,7 +361,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		counter = new TaskCounter(taskImg, amount);
+		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format("<col=ff7700>%s</br><col=ffff00>Pts:</col> %s</br><col=ffff00>Streak:</col> %s",
 			capsString(taskName), points, streak));
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bosstimer;
+package net.runelite.client.ui.overlay.infobox;
 
-import java.awt.image.BufferedImage;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
-
-class RespawnTimer extends Timer
+public enum InfoBoxPriority
 {
-	private final Boss boss;
-
-	public RespawnTimer(Boss boss, BufferedImage bossImage, Plugin plugin)
-	{
-		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
-		this.boss = boss;
-	}
-
-	public Boss getBoss()
-	{
-		return boss;
-	}
+	HIGH,
+	MED,
+	NONE,
+	LOW
 }

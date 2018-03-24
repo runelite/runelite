@@ -450,7 +450,7 @@ public class TimersPlugin extends Plugin
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer);
+		TimerTimer t = new TimerTimer(timer, this);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 	}
