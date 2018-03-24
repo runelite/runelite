@@ -55,20 +55,32 @@ public class ArchiveResponseEncoder extends MessageToByteEncoder<ArchiveResponse
 		// - 3 for the header
 		int chunkSize = Math.min(file.readableBytes(), CHUNK_SIZE - 3);
 
-		out.writeBytes(file.readBytes(chunkSize));
+		writeChunk(file.readBytes(chunkSize), out);
 
 		while (file.isReadable())
 		{
 			out.writeByte(0xff);
 
 			chunkSize = Math.min(file.readableBytes(), CHUNK_SIZE - 1);
-			out.writeBytes(file.readBytes(chunkSize));
+			writeChunk(file.readBytes(chunkSize), out);
 		}
 
 		int size = out.readableBytes() - pos;
 		logger.debug("Wrote index {} archive {} (size {}) in {} bytes",
 			archiveResponse.getIndex(), archiveResponse.getArchive(),
 			archiveResponse.getData().length, size);
+	}
+
+	private void writeChunk(ByteBuf chunk, ByteBuf out)
+	{
+		try
+		{
+			out.writeBytes(chunk);
+		}
+		finally
+		{
+			chunk.release();
+		}
 	}
 
 }

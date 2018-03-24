@@ -1,43 +1,48 @@
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("n")
+@ObfuscatedName("v")
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
-   @ObfuscatedName("po")
-   @ObfuscatedGetter(
-      intValue = 397313793
-   )
-   static int field273;
-   @ObfuscatedName("w")
-   public static Comparator field268;
-   @ObfuscatedName("e")
-   public static Comparator field271;
-   @ObfuscatedName("k")
-   public static Comparator field270;
-   @ObfuscatedName("u")
-   public static Comparator field267;
+   @ObfuscatedName("q")
+   public static Comparator field266;
+   @ObfuscatedName("i")
+   public static Comparator field272;
    @ObfuscatedName("a")
+   public static Comparator field268;
+   @ObfuscatedName("l")
+   public static Comparator field264;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lak;"
+   )
+   @Export("scriptMapIconReference")
+   static MapIconReference scriptMapIconReference;
+   @ObfuscatedName("t")
    @Export("events")
    public final List events;
 
    static {
-      field268 = new class19();
+      field266 = new class19();
       new WorldComparator();
-      field271 = new UnitPriceComparator();
-      field270 = new class18();
-      field267 = new TotalQuantityComparator();
+      field272 = new UnitPriceComparator();
+      field268 = new class18();
+      field264 = new TotalQuantityComparator();
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgh;Z)V",
+      signature = "(Lgb;Z)V",
       garbageValue = "1"
    )
    public GrandExchangeEvents(Buffer var1, boolean var2) {
@@ -59,10 +64,10 @@ public class GrandExchangeEvents {
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZB)V",
-      garbageValue = "120"
+      signature = "(Ljava/util/Comparator;ZI)V",
+      garbageValue = "1319080101"
    )
    @Export("sort")
    public void sort(Comparator var1, boolean var2) {
@@ -74,104 +79,174 @@ public class GrandExchangeEvents {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)Ljg;",
-      garbageValue = "-1432370023"
+      signature = "(Ljc;Ljc;ZIB)V",
+      garbageValue = "-42"
    )
-   public static Enum method70(int var0) {
-      Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static void method80(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
+      if(class90.field1340) {
+         if(var3 == 4) {
+            class90.loginIndex = 4;
+         }
+
       } else {
-         byte[] var2 = Enum.EnumDefinition_indexCache.getConfigData(8, var0);
-         var1 = new Enum();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+         class90.loginIndex = var3;
+         Rasterizer2D.reset();
+         byte[] var4 = var0.takeRecordByNames("title.jpg", "");
+         BufferedImage var6 = null;
+
+         SpritePixels var5;
+         label161: {
+            try {
+               var6 = ImageIO.read(new ByteArrayInputStream(var4));
+               int var7 = var6.getWidth();
+               int var8 = var6.getHeight();
+               int[] var9 = new int[var7 * var8];
+               PixelGrabber var10 = new PixelGrabber(var6, 0, 0, var7, var8, var9, 0, var7);
+               var10.grabPixels();
+               var5 = new SpritePixels(var9, var7, var8);
+               break label161;
+            } catch (IOException var13) {
+               ;
+            } catch (InterruptedException var14) {
+               ;
+            }
+
+            var5 = new SpritePixels(0, 0);
          }
 
-         Enum.EnumDefinition_cached.put(var1, (long)var0);
-         return var1;
+         Item.field1387 = var5;
+         class237.field2773 = Item.field1387.method5831();
+         if((Client.flags & 536870912) != 0) {
+            class252.logoSprite = Renderable.getSprite(var1, "logo_deadman_mode", "");
+         } else {
+            class252.logoSprite = Renderable.getSprite(var1, "logo", "");
+         }
+
+         class90.field1324 = Renderable.getSprite(var1, "titlebox", "");
+         class250.field3014 = Renderable.getSprite(var1, "titlebutton", "");
+         class241.runeSprites = WorldMapData.getIndexedSprites(var1, "runes", "");
+         class90.titlemuteSprite = WorldMapData.getIndexedSprites(var1, "title_mute", "");
+         FaceNormal.field2035 = Renderable.getSprite(var1, "options_radio_buttons,0", "");
+         class160.field2132 = Renderable.getSprite(var1, "options_radio_buttons,4", "");
+         class90.field1326 = Renderable.getSprite(var1, "options_radio_buttons,2", "");
+         class90.field1331 = Renderable.getSprite(var1, "options_radio_buttons,6", "");
+         class7.field221 = FaceNormal.field2035.width;
+         class279.field3554 = FaceNormal.field2035.height;
+         MapLabel.field448 = new int[256];
+
+         int var12;
+         for(var12 = 0; var12 < 64; ++var12) {
+            MapLabel.field448[var12] = var12 * 262144;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MapLabel.field448[var12 + 64] = var12 * 1024 + 16711680;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MapLabel.field448[var12 + 128] = var12 * 4 + 16776960;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MapLabel.field448[var12 + 192] = 16777215;
+         }
+
+         class233.field2754 = new int[256];
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            class233.field2754[var12] = var12 * 1024;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            class233.field2754[var12 + 64] = var12 * 4 + 65280;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            class233.field2754[var12 + 128] = var12 * 262144 + 65535;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            class233.field2754[var12 + 192] = 16777215;
+         }
+
+         MilliTimer.field2140 = new int[256];
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MilliTimer.field2140[var12] = var12 * 4;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MilliTimer.field2140[var12 + 64] = var12 * 262144 + 255;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MilliTimer.field2140[var12 + 128] = var12 * 1024 + 16711935;
+         }
+
+         for(var12 = 0; var12 < 64; ++var12) {
+            MilliTimer.field2140[var12 + 192] = 16777215;
+         }
+
+         ItemContainer.field750 = new int[256];
+         class27.field365 = new int['耀'];
+         SceneTilePaint.field1943 = new int['耀'];
+         FloorUnderlayDefinition.method4830((IndexedSprite)null);
+         class228.field2670 = new int['耀'];
+         class55.field626 = new int['耀'];
+         if(var2) {
+            class90.username = "";
+            class90.password = "";
+         }
+
+         class80.field1251 = 0;
+         Coordinates.field2779 = "";
+         class90.field1350 = true;
+         class90.worldSelectShown = false;
+         if(!MapIcon.preferences.muted) {
+            class64.method1133(2, Varbit.indexTrack1, "scape main", "", 255, false);
+         } else {
+            class229.field2674 = 1;
+            class229.field2672 = null;
+            class171.field2199 = -1;
+            class229.field2676 = -1;
+            class229.field2677 = 0;
+            class85.field1294 = false;
+            class2.field13 = 2;
+         }
+
+         JagexGame.sendConInfo(false);
+         class90.field1340 = true;
+         class90.field1323 = (WallObject.canvasWidth - 765) / 2;
+         class90.loginWindowX = class90.field1323 + 202;
+         Coordinates.field2778 = class90.loginWindowX + 180;
+         Item.field1387.method5830(class90.field1323, 0);
+         class237.field2773.method5830(class90.field1323 + 382, 0);
+         class252.logoSprite.method5806(class90.field1323 + 382 - class252.logoSprite.width / 2, 18);
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "1112909614"
+      signature = "(IIIIII)V",
+      garbageValue = "-1372691033"
    )
-   static char method66(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
-      }
-
-      return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
+   public static final void method77(int var0, int var1, int var2, int var3, int var4) {
+      class7.boundingBoxes.addFirst(new BoundingBox2D(var0, var1, var2, var3, var4));
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("hf")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-2006585394"
+      signature = "(I)V",
+      garbageValue = "-1055027677"
    )
-   public static boolean method69(int var0) {
-      return var0 == class232.field2919.field2941;
+   static void method79() {
+      UnitPriceComparator.method130();
+      Client.menuOptions[0] = "Cancel";
+      Client.menuTargets[0] = "";
+      Client.menuTypes[0] = 1006;
+      Client.menuBooleanArray[0] = false;
+      Client.menuOptionCount = 1;
    }
 }

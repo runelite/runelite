@@ -1,36 +1,60 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iy")
-public class class236 {
-   @ObfuscatedName("w")
+@ObfuscatedName("iq")
+public class class236 extends CacheableNode {
+   @ObfuscatedName("cf")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "2126703986"
+      signature = "Lju;"
    )
-   static final void method4216(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
-         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
-            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-               class96.field1418[0][var5][var4] = 127;
-               if(var0 == var5 && var5 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 - 1][var4];
-               }
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1929998547
+   )
+   public final int field2766;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -309301115
+   )
+   public final int field2767;
+   @ObfuscatedName("i")
+   public final int[] field2764;
+   @ObfuscatedName("a")
+   public final int[] field2765;
 
-               if(var5 == var0 + var2 && var5 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 + 1][var4];
-               }
+   class236(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2766 = var1;
+      this.field2767 = var2;
+      this.field2764 = var3;
+      this.field2765 = var4;
+   }
 
-               if(var4 == var1 && var4 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 - 1];
-               }
-
-               if(var3 + var1 == var4 && var4 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 + 1];
-               }
-            }
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "-1889394584"
+   )
+   public boolean method4386(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2765.length) {
+         int var3 = this.field2765[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2764[var2]) {
+            return true;
          }
       }
 
+      return false;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)[Ljm;",
+      garbageValue = "428719059"
+   )
+   static HorizontalAlignment[] method4387() {
+      return new HorizontalAlignment[]{HorizontalAlignment.field3701, HorizontalAlignment.field3702, HorizontalAlignment.field3700};
    }
 }

@@ -24,54 +24,46 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
-import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.util.QueryRunner;
 
 class FishingSpotOverlay extends Overlay
 {
-	private final List<Integer> ids = new ArrayList<>();
-
-	private final QueryRunner queryRunner;
+	private final FishingPlugin plugin;
 	private final FishingConfig config;
 
 	@Inject
 	ItemManager itemManager;
 
 	@Inject
-	public FishingSpotOverlay(QueryRunner queryRunner, FishingConfig config)
+	public FishingSpotOverlay(FishingPlugin plugin, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.queryRunner = queryRunner;
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.plugin = plugin;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
+		NPC[] fishingSpots = plugin.getFishingSpots();
+		if (fishingSpots == null)
 		{
 			return null;
 		}
 
-		NPCQuery query = new NPCQuery()
-			.idEquals(Ints.toArray(ids));
-		NPC[] npcs = queryRunner.runQuery(query);
-
-		for (NPC npc : npcs)
+		for (NPC npc : fishingSpots)
 		{
 			FishingSpot spot = FishingSpot.getSpot(npc.getId());
 
@@ -79,7 +71,8 @@ class FishingSpotOverlay extends Overlay
 			{
 				continue;
 			}
-			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
+
+			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 			if (config.showIcons())
 			{
 				BufferedImage fishImage = getFishImage(spot);
@@ -102,42 +95,5 @@ class FishingSpotOverlay extends Overlay
 	{
 		BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
 		return fishImage;
-	}
-
-	public void updateConfig()
-	{
-		ids.clear();
-		if (config.showShrimp())
-		{
-			ids.addAll(Ints.asList(FishingSpot.SHRIMP.getIds()));
-		}
-		if (config.showLobster())
-		{
-			ids.addAll(Ints.asList(FishingSpot.LOBSTER.getIds()));
-		}
-		if (config.showShark())
-		{
-			ids.addAll(Ints.asList(FishingSpot.SHARK.getIds()));
-		}
-		if (config.showMonkfish())
-		{
-			ids.addAll(Ints.asList(FishingSpot.MONKFISH.getIds()));
-		}
-		if (config.showSalmon())
-		{
-			ids.addAll(Ints.asList(FishingSpot.SALMON.getIds()));
-		}
-		if (config.showBarb())
-		{
-			ids.addAll(Ints.asList(FishingSpot.BARB_FISH.getIds()));
-		}
-		if (config.showAngler())
-		{
-			ids.addAll(Ints.asList(FishingSpot.ANGLERFISH.getIds()));
-		}
-		if (config.showMinnow())
-		{
-			ids.addAll(Ints.asList(FishingSpot.MINNOW.getIds()));
-		}
 	}
 }

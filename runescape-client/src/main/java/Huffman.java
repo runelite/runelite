@@ -4,22 +4,21 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("go")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1401406659
+      intValue = 1252375287
    )
-   @Export("canvasWidth")
-   public static int canvasWidth;
-   @ObfuscatedName("a")
+   static int field2483;
+   @ObfuscatedName("t")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @Export("keys")
    int[] keys;
 
@@ -106,10 +105,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "([BII[BIB)I",
-      garbageValue = "0"
+      signature = "([BII[BII)I",
+      garbageValue = "-1841011075"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -157,10 +156,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "-183302365"
+      garbageValue = "2116238880"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -298,6 +297,29 @@ public class Huffman {
          }
 
          return var7 + 1 - var2;
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(BI)C",
+      garbageValue = "1681628024"
+   )
+   public static char method3458(byte var0) {
+      int var1 = var0 & 255;
+      if(var1 == 0) {
+         throw new IllegalArgumentException("");
+      } else {
+         if(var1 >= 128 && var1 < 160) {
+            char var2 = class314.cp1252AsciiExtension[var1 - 128];
+            if(var2 == 0) {
+               var2 = '?';
+            }
+
+            var1 = var2;
+         }
+
+         return (char)var1;
       }
    }
 }

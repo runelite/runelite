@@ -36,65 +36,43 @@ import net.runelite.client.config.ConfigItem;
 public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Toggles idle notifications",
+		keyName = "animationidle",
+		name = "Idle Animation Notifications",
+		description = "Configures if idle animation notifications are enabled",
 		position = 1
 	)
-	default boolean isEnabled()
+	default boolean animationIdle()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "tray",
-		name = "Send Tray Notification",
-		description = "Toggles tray notifications",
+		keyName = "combatidle",
+		name = "Combat Idle Notifications",
+		description = "Configures if out of combat notifications are enabled",
 		position = 2
 	)
-	default boolean sendTrayNotification()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "focused",
-		name = "Alert When Focused",
-		description = "Toggles idle notifications for when the client is focused",
-		position = 3
-	)
-	default boolean alertWhenFocused()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "request",
-		name = "Request Window Focus",
-		description = "Toggles window focus request",
-		position = 4
-	)
-	default boolean requestFocus()
+	default boolean combatIdle()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "timeout",
-		name = "Idle Timeout (ms)",
+		name = "Idle Notification Delay (ms)",
 		description = "The notification delay after the player is idle",
-		position = 5
+		position = 3
 	)
-	default int getTimeout()
+	default int getIdleNotificationDelay()
 	{
 		return 5000;
 	}
 
 	@ConfigItem(
 		keyName = "hitpoints",
-		name = "Hitpoints Threshold",
+		name = "Hitpoints Notification Threshold",
 		description = "The amount of hitpoints to send a notification at",
-		position = 6
+		position = 4
 	)
 	default int getHitpointsThreshold()
 	{
@@ -103,9 +81,9 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "prayer",
-		name = "Prayer Threshold",
+		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at",
-		position = 7
+		position = 5
 	)
 	default int getPrayerThreshold()
 	{

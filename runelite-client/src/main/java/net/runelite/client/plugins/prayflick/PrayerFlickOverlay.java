@@ -27,32 +27,30 @@ package net.runelite.client.plugins.prayflick;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.time.Duration;
 import java.time.Instant;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
-	private final PrayerFlickConfig config;
 	private boolean prayersActive = false;
 	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	public PrayerFlickOverlay(@Nullable Client client, PrayerFlickConfig config)
+	public PrayerFlickOverlay(Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
-		this.config = config;
 	}
 
 	public void onTick()
@@ -62,9 +60,9 @@ public class PrayerFlickOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled() || !prayersActive)//If there are no prayers active we don't need to be flicking
+		if (!prayersActive) //If there are no prayers active we don't need to be flicking
 		{
 			return null;
 		}
@@ -99,9 +97,6 @@ public class PrayerFlickOverlay extends Overlay
 		int indicatorHeight = (int) (Math.sin(t) * orbInnerHeight);
 
 		int yOffset = (orbInnerHeight / 2) - (indicatorHeight / 2);
-
-		graphics.setColor(new Color(255, 255, 255, 100));
-		graphics.fillArc(orbInnerX, orbInnerY, orbInnerWidth, orbInnerHeight, 0, 360);
 
 		graphics.setColor(Color.cyan);
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);

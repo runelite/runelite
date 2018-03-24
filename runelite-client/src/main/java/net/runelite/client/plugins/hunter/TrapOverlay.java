@@ -24,18 +24,20 @@
  */
 package net.runelite.client.plugins.hunter;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.Arc2D;
-import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ProgressPie;
 
 /**
  * Represents the overlay that shows timers on traps that are placed by the
@@ -43,16 +45,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
  */
 public class TrapOverlay extends Overlay
 {
-	/**
-	 * Size of the trap timer.
-	 */
-	private static final int TIMER_SIZE = 25;
-
-	/**
-	 * Width of the border around the trap timer.
-	 */
-	private static final int TIMER_BORDER_WIDTH = 1;
-
 	/**
 	 * The timer is low when only 25% is left.
 	 */
@@ -68,21 +60,19 @@ public class TrapOverlay extends Overlay
 	private Color colorTrans, colorTransBorder;
 
 	@Inject
-	TrapOverlay(@Nullable Client client, HunterPlugin plugin, HunterConfig config)
+	TrapOverlay(Client client, HunterPlugin plugin, HunterConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.config = config;
 		this.client = client;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (config.enabled())
-		{
-			drawTraps(graphics);
-		}
+		drawTraps(graphics);
 		return null;
 	}
 
@@ -109,26 +99,26 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTraps(Graphics2D graphics)
 	{
-		Widget viewport = client.getViewportWidget();
-		for (HunterTrap trap : plugin.getTraps())
+		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = plugin.getTraps().entrySet().iterator();
+		while (it.hasNext())
 		{
-			if (viewport != null && viewport.contains(trap.getGameObject().getCanvasLocation()))
+			Map.Entry<WorldPoint, HunterTrap> entry = it.next();
+			HunterTrap trap = entry.getValue();
+
+			switch (trap.getState())
 			{
-				switch (trap.getState())
-				{
-					case OPEN:
-						drawTimerOnTrap(graphics, trap, colorOpen, colorOpenBorder, colorEmpty, colorOpenBorder);
-						break;
-					case EMPTY:
-						drawTimerOnTrap(graphics, trap, colorEmpty, colorEmptyBorder, colorEmpty, colorEmptyBorder);
-						break;
-					case FULL:
-						drawCircleOnTrap(graphics, trap, colorFull, colorFullBorder);
-						break;
-					case TRANSITION:
-						drawCircleOnTrap(graphics, trap, colorTrans, colorTransBorder);
-						break;
-				}
+				case OPEN:
+					drawTimerOnTrap(graphics, trap, colorOpen, colorOpenBorder, colorEmpty, colorOpenBorder);
+					break;
+				case EMPTY:
+					drawTimerOnTrap(graphics, trap, colorEmpty, colorEmptyBorder, colorEmpty, colorEmptyBorder);
+					break;
+				case FULL:
+					drawCircleOnTrap(graphics, trap, colorFull, colorFullBorder);
+					break;
+				case TRANSITION:
+					drawCircleOnTrap(graphics, trap, colorTrans, colorTransBorder);
+					break;
 			}
 		}
 	}
@@ -145,23 +135,23 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTimerOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border, Color fillTimeLow, Color borderTimeLow)
 	{
-		net.runelite.api.Point loc = trap.getGameObject().getCanvasLocation();
+		if (trap.getWorldLocation().getPlane() != client.getPlane())
+		{
+			return;
+		}
+		LocalPoint localLoc = LocalPoint.fromWorld(client, trap.getWorldLocation());
+		if (localLoc == null)
+		{
+			return;
+		}
+		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
 
-		//Construct the arc
-		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
 		double timeLeft = 1 - trap.getTrapTimeRelative();
-		arc.setAngleExtent(timeLeft * 360);
-		arc.setFrame(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
 
-		//Draw the inside of the arc
-		graphics.setColor(timeLeft > TIMER_LOW ? fill : fillTimeLow);
-		graphics.fill(arc);
-
-		//Draw the outlines of the arc
-		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.setColor(timeLeft > TIMER_LOW ? border : borderTimeLow);
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		ProgressPie pie = new ProgressPie();
+		pie.setFill(timeLeft > TIMER_LOW ? fill : fillTimeLow);
+		pie.setBorderColor(timeLeft > TIMER_LOW ? border : borderTimeLow);
+		pie.render(graphics, loc, timeLeft);
 	}
 
 	/**
@@ -174,15 +164,20 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border)
 	{
-		net.runelite.api.Point loc = trap.getGameObject().getCanvasLocation();
+		if (trap.getWorldLocation().getPlane() != client.getPlane())
+		{
+			return;
+		}
+		LocalPoint localLoc = LocalPoint.fromWorld(client, trap.getWorldLocation());
+		if (localLoc == null)
+		{
+			return;
+		}
+		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
 
-		//Draw the inside of the arc
-		graphics.setColor(fill);
-		graphics.fillOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
-
-		//Draw the border of the cirlce
-		graphics.setColor(border);
-		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		ProgressPie pie = new ProgressPie();
+		pie.setFill(fill);
+		pie.setBorderColor(border);
+		pie.render(graphics, loc, 1);
 	}
 }

@@ -41,6 +41,15 @@ public abstract class RSProjectileMixin implements RSProjectile
 
 	@Inject
 	@Override
+	public int getRemainingCycles()
+	{
+		int currentGameCycle = client.getGameCycle();
+
+		return getEndCycle() - currentGameCycle;
+	}
+
+	@Inject
+	@Override
 	public Actor getInteracting()
 	{
 		int interactingIndex = getRsInteracting();

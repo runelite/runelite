@@ -25,16 +25,23 @@
 package net.runelite.mixins;
 
 import java.awt.Polygon;
-import net.runelite.api.Model;
+import java.awt.geom.Area;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGameObject;
+import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSRenderable;
 
 @Mixin(RSGameObject.class)
 public abstract class RSGameObjectMixin implements RSGameObject
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@Override
 	public Point getRegionMinLocation()
@@ -50,31 +57,42 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	}
 
 	@Inject
-	@Override
-	public Polygon getConvexHull()
+	private RSModel getModel()
 	{
-		Renderable renderable = getRenderable();
+		RSRenderable renderable = getRenderable();
 		if (renderable == null)
 		{
 			return null;
 		}
 
-		Model model;
-
-		if (renderable instanceof Model)
+		if (renderable instanceof RSModel)
 		{
-			model = (Model) renderable;
+			return (RSModel) renderable;
 		}
 		else
 		{
-			model = renderable.getModel();
+			return renderable.getModel();
 		}
+	}
+
+	@Inject
+	@Override
+	public Area getClickbox()
+	{
+		return Perspective.getClickbox(client, getModel(), getOrientation(), getX(), getY());
+	}
+
+	@Inject
+	@Override
+	public Polygon getConvexHull()
+	{
+		RSModel model = getModel();
 
 		if (model == null)
 		{
 			return null;
 		}
 
-		return getConvexHull(model, getOrientation());
+		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 }

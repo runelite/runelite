@@ -60,6 +60,12 @@ public class ConstructorMapper
 		}
 
 		ClassFile other = (ClassFile) mapping.get(cf);
+		if (other == null)
+		{
+			logger.debug("Unable to map other type due to no class mapping for {}", cf);
+			return null;
+		}
+
 		return new Type("L" + other.getName() + ";");
 	}
 
@@ -69,7 +75,12 @@ public class ConstructorMapper
 			.setReturnType(toOtherType(s.getReturnValue()));
 		for (Type t : s.getArguments())
 		{
-			builder.addArgument(toOtherType(t));
+			Type other = toOtherType(t);
+			if (other == null)
+			{
+				return null;
+			}
+			builder.addArgument(other);
 		}
 		return builder.build();
 	}
@@ -96,6 +107,10 @@ public class ConstructorMapper
 				}
 
 				Signature otherSig = toOtherSignature(m.getDescriptor());
+				if (otherSig == null)
+				{
+					continue;
+				}
 
 				logger.debug("Converted signature {} -> {}", m.getDescriptor(), otherSig);
 

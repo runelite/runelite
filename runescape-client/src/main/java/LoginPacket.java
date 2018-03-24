@@ -4,58 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fh")
+@ObfuscatedName("gu")
 @Implements("LoginPacket")
-public class LoginPacket implements class169 {
+public class LoginPacket implements class179 {
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lgu;"
+   )
+   public static final LoginPacket field2453;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lgu;"
+   )
+   static final LoginPacket field2448;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lgu;"
+   )
+   public static final LoginPacket field2449;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfh;"
+      signature = "Lgu;"
    )
-   public static final LoginPacket field2411;
-   @ObfuscatedName("w")
+   public static final LoginPacket field2447;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lfh;"
+      signature = "[Lgu;"
    )
-   static final LoginPacket field2418;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lfh;"
-   )
-   public static final LoginPacket field2416;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lfh;"
-   )
-   public static final LoginPacket field2413;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "[Lfh;"
-   )
-   static final LoginPacket[] field2415;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lfi;"
-   )
-   @Export("timer")
-   protected static Timer timer;
-   @ObfuscatedName("u")
+   static final LoginPacket[] field2450;
+   @ObfuscatedName("h")
+   @Export("tt")
+   static int[] tt;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -105058661
+      intValue = -1406644011
    )
    @Export("id")
    public final int id;
 
    static {
-      field2411 = new LoginPacket(14, 0);
-      field2418 = new LoginPacket(15, 4);
-      field2416 = new LoginPacket(16, -2);
-      field2413 = new LoginPacket(18, -2);
-      field2415 = new LoginPacket[32];
-      LoginPacket[] var0 = new LoginPacket[]{field2416, field2413, field2418, field2411};
-      LoginPacket[] var1 = var0;
+      field2453 = new LoginPacket(14, 0);
+      field2448 = new LoginPacket(15, 4);
+      field2449 = new LoginPacket(16, -2);
+      field2447 = new LoginPacket(18, -2);
+      field2450 = new LoginPacket[32];
+      LoginPacket[] var0 = class298.method5285();
 
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         field2415[var1[var2].id] = var1[var2];
+      for(int var1 = 0; var1 < var0.length; ++var1) {
+         field2450[var0[var1].id] = var0[var1];
       }
 
    }

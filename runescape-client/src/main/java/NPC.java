@@ -1,24 +1,33 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("ch")
 @Implements("NPC")
 public final class NPC extends Actor {
-   @ObfuscatedName("a")
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1287585829
+   )
+   static int field1282;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljd;"
    )
    @Export("composition")
    NPCComposition composition;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IBB)V",
-      garbageValue = "-20"
+      signature = "(IBI)V",
+      garbageValue = "1003370521"
    )
-   final void method1640(int var1, byte var2) {
+   final void method1890(int var1, byte var2) {
       int var3 = super.pathX[0];
       int var4 = super.pathY[0];
       if(var1 == 0) {
@@ -57,7 +66,7 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && Permission.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && class158.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -76,13 +85,13 @@ public final class NPC extends Actor {
       super.pathTraversed[0] = var2;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IIZI)V",
-      garbageValue = "-1468017787"
+      garbageValue = "2075608925"
    )
-   final void method1646(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && Permission.getAnimation(super.animation).priority == 1) {
+   final void method1895(int var1, int var2, boolean var3) {
+      if(super.animation != -1 && class158.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -108,42 +117,42 @@ public final class NPC extends Actor {
       }
 
       super.queueSize = 0;
-      super.field1155 = 0;
-      super.field1180 = 0;
+      super.field1196 = 0;
+      super.field1195 = 0;
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      super.x = super.field1126 * 64 + super.pathX[0] * 128;
-      super.y = super.field1126 * 64 + super.pathY[0] * 128;
+      super.x = super.field1139 * 64 + super.pathX[0] * 128;
+      super.y = super.field1139 * 64 + super.pathY[0] * 128;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)Lef;",
-      garbageValue = "620909653"
+      signature = "(B)Lek;",
+      garbageValue = "22"
    )
    protected final Model getModel() {
       if(this.composition == null) {
          return null;
       } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?Permission.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:Permission.getAnimation(super.poseAnimation);
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class158.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation == -1 || super.poseAnimation == super.idlePoseAnimation && var1 != null?null:class158.getAnimation(super.poseAnimation);
          Model var3 = this.composition.getModel(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
          } else {
             var3.calculateBoundsCylinder();
-            super.field1136 = var3.modelHeight;
-            if(super.graphic != -1 && super.field1160 != -1) {
-               Model var4 = class250.getSpotAnimType(super.graphic).getModel(super.field1160);
+            super.logicalHeight = var3.modelHeight;
+            if(super.graphic != -1 && super.spotAnimFrame != -1) {
+               Model var4 = MapLabel.getSpotAnimType(super.graphic).getModel(super.spotAnimFrame);
                if(var4 != null) {
-                  var4.offsetBy(0, -super.field1163, 0);
+                  var4.offsetBy(0, -super.field1178, 0);
                   Model[] var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                }
             }
 
-            if(this.composition.field3620 == 1) {
-               var3.field1851 = true;
+            if(this.composition.field3710 == 1) {
+               var3.field1849 = true;
             }
 
             return var3;
@@ -151,46 +160,104 @@ public final class NPC extends Actor {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "591771192"
+      garbageValue = "1675922393"
    )
    @Export("hasConfig")
    final boolean hasConfig() {
       return this.composition != null;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Liu;IB)V",
-      garbageValue = "8"
+      signature = "([Ljava/lang/String;[SIIB)V",
+      garbageValue = "32"
    )
-   static void method1634(IndexData var0, int var1) {
-      if(SoundTask.NetCache_reference != null) {
-         SoundTask.NetCache_reference.offset = var1 * 8 + 5;
-         int var2 = SoundTask.NetCache_reference.readInt();
-         int var3 = SoundTask.NetCache_reference.readInt();
-         var0.setInformation(var2, var3);
-      } else {
-         OwnWorldComparator.requestNetFile((IndexData)null, 255, 255, 0, (byte)0, true);
-         class249.NetCache_indexCaches[var1] = var0;
+   public static void method1904(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
+
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
+            }
+         }
+
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method1904(var0, var1, var2, var5 - 1);
+         method1904(var0, var1, var5 + 1, var3);
       }
+
    }
 
-   @ObfuscatedName("fs")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-698415250"
+      garbageValue = "-569249719"
    )
-   static final void method1648() {
-      if(VertexNormal.soundSystem1 != null) {
-         VertexNormal.soundSystem1.method2003();
+   public static void method1902() {
+      try {
+         File var0 = new File(class167.userHome, "random.dat");
+         int var2;
+         if(var0.exists()) {
+            class167.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         } else {
+            label38:
+            for(int var1 = 0; var1 < class169.field2186.length; ++var1) {
+               for(var2 = 0; var2 < class19.cacheLocations.length; ++var2) {
+                  File var3 = new File(class19.cacheLocations[var2] + class169.field2186[var1] + File.separatorChar + "random.dat");
+                  if(var3.exists()) {
+                     class167.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label38;
+                  }
+               }
+            }
+         }
+
+         if(class167.randomDat == null) {
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
+            class167.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         }
+      } catch (IOException var5) {
+         ;
       }
 
-      if(class36.soundSystem0 != null) {
-         class36.soundSystem0.method2003();
-      }
+   }
 
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(ILjc;IIIZI)V",
+      garbageValue = "2094308115"
+   )
+   public static void method1903(int var0, IndexDataBase var1, int var2, int var3, int var4, boolean var5) {
+      class229.field2674 = 1;
+      class229.field2672 = var1;
+      class171.field2199 = var2;
+      class229.field2676 = var3;
+      class229.field2677 = var4;
+      class85.field1294 = var5;
+      class2.field13 = var0;
    }
 }

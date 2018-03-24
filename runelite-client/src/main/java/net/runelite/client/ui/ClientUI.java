@@ -24,62 +24,61 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.base.Strings;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
-import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.SystemTray;
+import java.awt.Graphics;
+import java.awt.LayoutManager;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Enumeration;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JRootPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.ClientUILoaded;
+import net.runelite.client.events.PluginToolbarButtonAdded;
+import net.runelite.client.events.PluginToolbarButtonRemoved;
+import net.runelite.client.events.TitleToolbarButtonAdded;
+import net.runelite.client.events.TitleToolbarButtonRemoved;
+import net.runelite.client.util.OSType;
+import net.runelite.client.util.OSXUtil;
+import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
+/**
+ * Client UI.
+ */
 @Slf4j
-public class ClientUI extends JFrame
+@Singleton
+public class ClientUI
 {
-	private static final int SCROLLBAR_WIDTH = 17;
-	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
-	private static final BufferedImage ICON;
-
-	@Getter
-	private TrayIcon trayIcon;
-
-	private final Applet client;
-	private final RuneLiteProperties properties;
-	private JPanel container;
-	private JPanel navContainer;
-	private PluginToolbar pluginToolbar;
-	private PluginPanel pluginPanel;
+	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
+	public static final BufferedImage ICON;
 
 	static
 	{
@@ -87,7 +86,10 @@ public class ClientUI extends JFrame
 
 		try
 		{
-			icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+			}
 		}
 		catch (IOException e)
 		{
@@ -97,244 +99,420 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneLiteProperties properties, Applet client)
+	@Getter
+	private TrayIcon trayIcon;
+
+	private final RuneLite runelite;
+	private final RuneLiteProperties properties;
+	private final RuneLiteConfig config;
+	private final EventBus eventBus;
+	private Applet client;
+	private JFrame frame;
+	private JPanel navContainer;
+	private PluginPanel pluginPanel;
+	private ClientPluginToolbar pluginToolbar;
+	private ClientTitleToolbar titleToolbar;
+	private JButton currentButton;
+
+	@Inject
+	private ClientUI(
+		RuneLite runelite,
+		RuneLiteProperties properties,
+		RuneLiteConfig config,
+		EventBus eventBus)
 	{
-		// Force heavy-weight popups/tooltips.
-		// Prevents them from being obscured by the game applet.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-		// Do not render shadows under popups/tooltips.
-		// Fixes black boxes under popups that are above the game applet.
-		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
-
-		// Do not fill in background on repaint. Reduces flickering when
-		// the applet is resized.
-		System.setProperty("sun.awt.noerasebackground", "true");
-
-		// Use substance look and feel
-		try
-		{
-			UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
-		}
-		catch (UnsupportedLookAndFeelException ex)
-		{
-			log.warn("unable to set look and feel", ex);
-		}
-
-		// Use custom UI font
-		setUIFont(new FontUIResource(StyleContext.getDefaultStyleContext()
-				.getFont(FontManager.getRunescapeFont().getName(), Font.PLAIN, 16)));
-
-		return new ClientUI(properties, client);
-	}
-
-	private ClientUI(RuneLiteProperties properties, Applet client)
-	{
+		this.runelite = runelite;
 		this.properties = properties;
+		this.config = config;
+		this.eventBus = eventBus;
+	}
+
+	/**
+	 * On config changed.
+	 *
+	 * @param event the event
+	 */
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("runelite"))
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			if (event.getKey().equals("gameAlwaysOnTop"))
+			{
+				if (frame.isAlwaysOnTopSupported())
+				{
+					frame.setAlwaysOnTop(config.gameAlwaysOnTop());
+				}
+			}
+
+			if (event.getKey().equals("lockWindowSize"))
+			{
+				frame.setResizable(!config.lockWindowSize());
+			}
+
+			if (!event.getKey().equals("gameSize"))
+			{
+				return;
+			}
+
+			if (client == null)
+			{
+				return;
+			}
+
+			int width = config.gameSize().width;
+			int height = config.gameSize().height;
+
+			// The upper bounds are defined by the applet's max size
+			// The lower bounds are taken care of by ClientPanel's setMinimumSize
+
+			if (width > 7680)
+			{
+				width = 7680;
+			}
+
+			if (height > 2160)
+			{
+				height = 2160;
+			}
+
+			final Dimension size = new Dimension(width, height);
+
+			client.setSize(size);
+			client.setPreferredSize(size);
+			client.getParent().setPreferredSize(size);
+			client.getParent().setSize(size);
+
+			if (frame.isVisible())
+			{
+				frame.pack();
+			}
+		});
+	}
+
+	@Subscribe
+	public void onPluginToolbarButtonAdded(final PluginToolbarButtonAdded event)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (jButton) ->
+			{
+				final PluginPanel panel = event.getButton().getPanel();
+
+				if (panel == null)
+				{
+					return;
+				}
+
+				if (currentButton != null)
+				{
+					currentButton.setSelected(false);
+				}
+
+				if (currentButton == jButton)
+				{
+					contract();
+					currentButton = null;
+				}
+				else
+				{
+					currentButton = jButton;
+					currentButton.setSelected(true);
+					expand(panel);
+				}
+			});
+
+			pluginToolbar.addComponent(event.getIndex(), event.getButton(), button);
+		});
+	}
+
+	@Subscribe
+	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
+	{
+		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
+	}
+
+	@Subscribe
+	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
+	{
+		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
+			titleToolbar.addComponent(event.getButton(), button);
+		});
+	}
+
+	@Subscribe
+	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
+	{
+		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() -> titleToolbar.removeComponent(event.getButton()));
+	}
+
+	/**
+	 * Initialize UI.
+	 *
+	 * @param client the client
+	 * @throws Exception exception that can occur during creation of the UI
+	 */
+	public void init(@Nullable final Applet client) throws Exception
+	{
 		this.client = client;
-		this.trayIcon = setupTrayIcon();
 
-		init();
-		setTitle(null);
-		setIconImage(ICON);
-		// Prevent substance from using a resize cursor for pointing
-		getLayeredPane().setCursor(Cursor.getDefaultCursor());
-		setLocationRelativeTo(getOwner());
-		setResizable(true);
+		SwingUtilities.invokeAndWait(() ->
+		{
+			// Set some sensible swing defaults
+			SwingUtil.setupDefaults();
+
+			// Use substance look and feel
+			SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
+
+			// Use custom UI font
+			SwingUtil.setFont(FontManager.getRunescapeFont());
+
+			// Create main window
+			frame = new JFrame();
+
+			// Try to enable fullscreen on OSX
+			OSXUtil.tryEnableFullscreen(frame);
+
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
+			frame.setTitle(properties.getTitle());
+			frame.setIconImage(ICON);
+			frame.getLayeredPane().setCursor(Cursor.getDefaultCursor()); // Prevent substance from using a resize cursor for pointing
+			frame.setLocationRelativeTo(frame.getOwner());
+			frame.setResizable(true);
+
+			SwingUtil.addGracefulExitCallback(frame, runelite::shutdown,
+				() -> client != null
+					&& client instanceof Client
+					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+
+			final JPanel container = new JPanel();
+			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+			container.add(new ClientPanel(client));
+
+			navContainer = new JPanel();
+			navContainer.setLayout(new BorderLayout(0, 0));
+			navContainer.setMinimumSize(new Dimension(0, 0));
+			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+			container.add(navContainer);
+
+			pluginToolbar = new ClientPluginToolbar();
+			container.add(pluginToolbar);
+
+			titleToolbar = new ClientTitleToolbar();
+			frame.add(container);
+		});
 	}
 
-	public void showWithChrome(boolean customChrome)
+	/**
+	 * Show client UI after everything else is done.
+	 *
+	 * @throws Exception exception that can occur during modification of the UI
+	 */
+	public void show() throws Exception
 	{
-		setUndecorated(customChrome);
-		if (customChrome)
+		final boolean withTitleBar = config.enableCustomChrome();
+
+		SwingUtilities.invokeAndWait(() ->
 		{
-			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-		}
-		pack();
-		revalidateMinimumSize();
-		setLocationRelativeTo(getOwner());
-		if (customChrome)
-		{
-			new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI()).editTitleBar(this);
-		}
+			frame.setUndecorated(withTitleBar);
 
-		setVisible(true);
-		toFront();
-	}
-
-	private static void setUIFont(FontUIResource f)
-	{
-		final Enumeration keys = UIManager.getDefaults().keys();
-
-		while (keys.hasMoreElements())
-		{
-			final Object key = keys.nextElement();
-			final Object value = UIManager.get(key);
-
-			if (value instanceof FontUIResource)
+			if (withTitleBar)
 			{
-				UIManager.put(key, f);
+				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
+				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
+				titleBar.add(titleToolbar);
+
+				// Substance's default layout manager for the title bar only lays out substance's components
+				// This wraps the default manager and lays out the TitleToolbar as well.
+				LayoutManager delegate = titleBar.getLayout();
+				titleBar.setLayout(new LayoutManager()
+				{
+					@Override
+					public void addLayoutComponent(String name, Component comp)
+					{
+						delegate.addLayoutComponent(name, comp);
+					}
+
+					@Override
+					public void removeLayoutComponent(Component comp)
+					{
+						delegate.removeLayoutComponent(comp);
+					}
+
+					@Override
+					public Dimension preferredLayoutSize(Container parent)
+					{
+						return delegate.preferredLayoutSize(parent);
+					}
+
+					@Override
+					public Dimension minimumLayoutSize(Container parent)
+					{
+						return delegate.minimumLayoutSize(parent);
+					}
+
+					@Override
+					public void layoutContainer(Container parent)
+					{
+						delegate.layoutContainer(parent);
+						final int width = titleToolbar.getPreferredSize().width;
+						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
+					}
+				});
 			}
-		}
-	}
 
-	private TrayIcon setupTrayIcon()
-	{
-		if (!SystemTray.isSupported())
-		{
-			return null;
-		}
-
-		SystemTray systemTray = SystemTray.getSystemTray();
-		TrayIcon trayIcon = new TrayIcon(ICON, properties.getTitle());
-		trayIcon.setImageAutoSize(true);
-
-		try
-		{
-			systemTray.add(trayIcon);
-		}
-		catch (AWTException ex)
-		{
-			log.debug("Unable to add system tray icon", ex);
-			return trayIcon;
-		}
-
-		// bring to front when tray icon is clicked
-		trayIcon.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				setVisible(true);
-				setState(Frame.NORMAL); // unminimize
-			}
+			frame.pack();
+			SwingUtil.revalidateMinimumSize(frame);
+			frame.setLocationRelativeTo(frame.getOwner());
+			frame.setVisible(true);
+			frame.toFront();
+			requestFocus();
+			giveClientFocus();
 		});
 
-		return trayIcon;
+		eventBus.post(new ClientUILoaded());
 	}
 
-
-	@Override
-	public void setTitle(String extra)
+	/**
+	 * Paint this component to target graphics
+	 *
+	 * @param graphics the graphics
+	 */
+	public void paint(final Graphics graphics)
 	{
-		if (!Strings.isNullOrEmpty(extra))
+		frame.paint(graphics);
+	}
+
+	/**
+	 * Gets component width.
+	 *
+	 * @return the width
+	 */
+	public int getWidth()
+	{
+		return frame.getWidth();
+	}
+
+	/**
+	 * Gets component height.
+	 *
+	 * @return the height
+	 */
+	public int getHeight()
+	{
+		return frame.getHeight();
+	}
+
+	/**
+	 * Returns true if this component has focus.
+	 *
+	 * @return true if component has focus
+	 */
+	public boolean isFocused()
+	{
+		return frame.isFocused();
+	}
+
+	/**
+	 * Request focus on this component and then on client component
+	 */
+	public void requestFocus()
+	{
+		if (OSType.getOSType() == OSType.MacOS)
 		{
-			super.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
+			OSXUtil.requestFocus();
 		}
-		else
-		{
-			super.setTitle(properties.getTitle() + " " + properties.getVersion());
-		}
+
+		frame.requestFocus();
+		giveClientFocus();
 	}
 
-	private void init()
-	{
-		assert SwingUtilities.isEventDispatchThread();
-
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				checkExit();
-			}
-		});
-
-		container = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-		container.add(new ClientPanel(client));
-
-		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0,0));
-		navContainer.setMinimumSize(new Dimension(0,0));
-		navContainer.setMaximumSize(new Dimension(0,Integer.MAX_VALUE));
-		container.add(navContainer);
-
-		pluginToolbar = new PluginToolbar(this);
-		container.add(pluginToolbar);
-
-		add(container);
-	}
-
-	private void revalidateMinimumSize()
-	{
-		// The JFrame only respects minimumSize if it was set by setMinimumSize, for some reason. (atleast on windows/native)
-		this.setMinimumSize(this.getLayout().minimumLayoutSize(this));
-	}
-
-	void expand(PluginPanel panel)
+	private void expand(PluginPanel panel)
 	{
 		if (pluginPanel != null)
 		{
 			navContainer.remove(0);
 		}
+		else
+		{
+			if (SwingUtil.isInScreenBounds(
+				frame.getLocationOnScreen().y + frame.getWidth() + PANEL_EXPANDED_WIDTH,
+				frame.getLocationOnScreen().y))
+			{
+				frame.setSize(frame.getWidth() + PANEL_EXPANDED_WIDTH, frame.getHeight());
+			}
+		}
 
 		pluginPanel = panel;
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
-		navContainer.add(wrapPanel(pluginPanel));
+
+		final JPanel wrappedPanel = panel.getWrappedPanel();
+		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
-		revalidateMinimumSize();
+
+		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
+		giveClientFocus();
+		panel.onActivate();
+
+		wrappedPanel.repaint();
+		SwingUtil.revalidateMinimumSize(frame);
 	}
 
-	void contract()
+	private void contract()
 	{
-		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		boolean wasMinimumWidth = frame.getWidth() == frame.getMinimumSize().width;
+		pluginPanel.onDeactivate();
 		navContainer.remove(0);
 		navContainer.setMinimumSize(new Dimension(0, 0));
-		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		navContainer.setMaximumSize(new Dimension(0, 0));
 		navContainer.revalidate();
-		revalidateMinimumSize();
+		giveClientFocus();
+		SwingUtil.revalidateMinimumSize(frame);
+
 		if (wasMinimumWidth)
 		{
-			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
+			frame.setSize(frame.getMinimumSize().width, frame.getHeight());
 		}
+		else if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			frame.setSize(frame.getWidth() - PANEL_EXPANDED_WIDTH, frame.getHeight());
+		}
+
 		pluginPanel = null;
 	}
 
-	private JPanel wrapPanel(PluginPanel panel)
+	private void giveClientFocus()
 	{
-		final JPanel northPanel = new JPanel();
-		northPanel.setLayout(new BorderLayout());
-		northPanel.add(panel, BorderLayout.NORTH);
-
-		final JScrollPane scrollPane = new JScrollPane(northPanel);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-		final JPanel panelWrap = new JPanel();
-
-		// Adjust the preferred size to expand to width of scrollbar to
-		// to preven scrollbar overlapping over contents
-		panelWrap.setPreferredSize(new Dimension(
-					PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH,
-					0));
-
-		panelWrap.setLayout(new BorderLayout());
-		panelWrap.add(scrollPane, BorderLayout.CENTER);
-		return panelWrap;
-	}
-
-	private void checkExit()
-	{
-		int result = JOptionPane.OK_OPTION;
-
-		// only ask if not logged out
-		if (client != null && client instanceof Client && ((Client)client).getGameState() != GameState.LOGIN_SCREEN)
+		if (client instanceof Client)
 		{
-			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+			final Canvas c = ((Client) client).getCanvas();
+			c.requestFocusInWindow();
 		}
-
-		if (result == JOptionPane.OK_OPTION)
+		else if (client != null)
 		{
-			System.exit(0);
+			client.requestFocusInWindow();
 		}
-	}
-
-	public PluginToolbar getPluginToolbar()
-	{
-		return pluginToolbar;
 	}
 }

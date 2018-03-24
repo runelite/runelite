@@ -26,64 +26,56 @@ package net.runelite.client;
 
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
+import com.google.inject.Inject;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.OSType;
 
+@Singleton
 @Slf4j
 public class Notifier
 {
-	private enum OSType
-	{
-		Windows, MacOS, Linux, Other
-	};
-
+	// Default timeout of notification in milliseconds
+	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
-	private static final Escaper SHELL_ESCAPE;
-	private static final OSType DETECTED_OS;
-
-	static
-	{
-		final Escapers.Builder builder = Escapers.builder();
-		builder.addEscape('"', "'");
-		SHELL_ESCAPE = builder.build();
-
-		final String OS = System
-			.getProperty("os.name", "generic")
-			.toLowerCase();
-
-		if ((OS.contains("mac")) || (OS.contains("darwin")))
-		{
-			DETECTED_OS = OSType.MacOS;
-		}
-		else if (OS.contains("win"))
-		{
-			DETECTED_OS = OSType.Windows;
-		}
-		else if (OS.contains("nux"))
-		{
-			DETECTED_OS = OSType.Linux;
-		}
-		else
-		{
-			DETECTED_OS = OSType.Other;
-		}
-
-		log.debug("Detect OS: {}", DETECTED_OS);
-	}
+	private static final Escaper SHELL_ESCAPE = Escapers.builder()
+		.addEscape('"', "'")
+		.build();
 
 	private final String appName;
-	private final TrayIcon trayIcon;
+	private final RuneLiteConfig runeLiteConfig;
+	private final Provider<ClientUI> clientUI;
+	private final ScheduledExecutorService executorService;
+	private final Path notifyIconPath;
 
-	Notifier(final String appName, final TrayIcon trayIcon)
+	@Inject
+	private Notifier(
+			final Provider<ClientUI> clientUI,
+			final RuneLiteConfig runeliteConfig,
+			final RuneLiteProperties runeLiteProperties,
+			final ScheduledExecutorService executorService)
 	{
-		this.appName = appName;
-		this.trayIcon = trayIcon;
-	}
+		this.appName = runeLiteProperties.getTitle();
+		this.clientUI = clientUI;
+		this.runeLiteConfig = runeliteConfig;
+		this.executorService = executorService;
 
+		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
+		storeIcon();
+	}
 
 	public void notify(String message)
 	{
@@ -92,8 +84,32 @@ public class Notifier
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		sendNotification(appName, message, type, null);
-		Toolkit.getDefaultToolkit().beep();
+		final ClientUI clientUI = this.clientUI.get();
+
+		if (clientUI == null)
+		{
+			return;
+		}
+
+		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
+		{
+			return;
+		}
+
+		if (runeLiteConfig.requestFocusOnNotification())
+		{
+			clientUI.requestFocus();
+		}
+
+		if (runeLiteConfig.enableTrayNotifications())
+		{
+			sendNotification(appName, message, type, null);
+		}
+
+		if (runeLiteConfig.enableNotificationSound())
+		{
+			Toolkit.getDefaultToolkit().beep();
+		}
 	}
 
 	private void sendNotification(
@@ -106,7 +122,7 @@ public class Notifier
 		final String escapedMessage = SHELL_ESCAPE.escape(message);
 		final String escapedSubtitle = subtitle != null ? SHELL_ESCAPE.escape(subtitle) : null;
 
-		switch (DETECTED_OS)
+		switch (OSType.getOSType())
 		{
 			case Linux:
 				sendLinuxNotification(escapedTitle, escapedMessage, type);
@@ -124,9 +140,16 @@ public class Notifier
 		final String message,
 		final TrayIcon.MessageType type)
 	{
-		if (trayIcon != null)
+		final ClientUI clientUI = this.clientUI.get();
+
+		if (clientUI == null)
 		{
-			trayIcon.displayMessage(title, message, type);
+			return;
+		}
+
+		if (clientUI.getTrayIcon() != null)
+		{
+			clientUI.getTrayIcon().displayMessage(title, message, type);
 		}
 	}
 
@@ -139,9 +162,24 @@ public class Notifier
 		commands.add("notify-send");
 		commands.add(title);
 		commands.add(message);
+		commands.add("-i");
+		commands.add(SHELL_ESCAPE.escape(notifyIconPath.toAbsolutePath().toString()));
 		commands.add("-u");
 		commands.add(toUrgency(type));
-		sendCommand(commands);
+		commands.add("-t");
+		commands.add(String.valueOf(DEFAULT_TIMEOUT));
+
+		executorService.submit(() ->
+		{
+			final boolean success = sendCommand(commands)
+					.map(process -> process.exitValue() == 0)
+					.orElse(false);
+
+			if (!success)
+			{
+				sendTrayNotification(title, message, type);
+			}
+		});
 	}
 
 	private void sendMacNotification(
@@ -176,17 +214,34 @@ public class Notifier
 		sendCommand(commands);
 	}
 
-	private void sendCommand(final List<String> commands)
+	private Optional<Process> sendCommand(final List<String> commands)
 	{
 		try
 		{
-			new ProcessBuilder(commands.toArray(new String[commands.size()]))
+			return Optional.of(new ProcessBuilder(commands.toArray(new String[commands.size()]))
 				.redirectErrorStream(true)
-				.start();
+				.start());
 		}
 		catch (IOException ex)
 		{
 			log.warn(null, ex);
+		}
+
+		return Optional.empty();
+	}
+
+	private void storeIcon()
+	{
+		if (OSType.getOSType() == OSType.Linux && !Files.exists(notifyIconPath))
+		{
+			try (InputStream stream = Notifier.class.getResourceAsStream("/runelite.png"))
+			{
+				Files.copy(stream, notifyIconPath);
+			}
+			catch (IOException ex)
+			{
+				log.warn(null, ex);
+			}
 		}
 	}
 

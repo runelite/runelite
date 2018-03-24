@@ -28,10 +28,8 @@ package net.runelite.client.plugins.cluescrolls;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
@@ -44,28 +42,21 @@ public class ClueScrollOverlay extends Overlay
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
 
 	private final Client client;
-	private final ClueScrollConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	ClueScroll clue;
 	Instant clueTimeout;
 
 	@Inject
-	public ClueScrollOverlay(@Nullable Client client, ClueScrollConfig config)
+	public ClueScrollOverlay(Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
-		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		if (clue == null)
 		{
 			return null;
@@ -98,6 +89,6 @@ public class ClueScrollOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

@@ -32,14 +32,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.client.events.MapRegionChanged;
+import net.runelite.api.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Xtea plugin"
+	name = "Xtea",
+	hidden = true
 )
 @Slf4j
 public class XteaPlugin extends Plugin
@@ -49,10 +50,10 @@ public class XteaPlugin extends Plugin
 	private final Set<Integer> sentRegions = new HashSet<>();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	@Subscribe
 	public void onMapRegionChanged(MapRegionChanged event)

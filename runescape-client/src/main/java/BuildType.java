@@ -4,42 +4,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("il")
+@ObfuscatedName("iu")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Liu;"
    )
    @Export("RC")
-   static final BuildType RC;
-   @ObfuscatedName("w")
+   public static final BuildType RC;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Liu;"
    )
    @Export("WIP")
-   static final BuildType WIP;
-   @ObfuscatedName("e")
+   public static final BuildType WIP;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Liu;"
    )
    @Export("LIVE")
-   static final BuildType LIVE;
-   @ObfuscatedName("k")
+   public static final BuildType LIVE;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Liu;"
    )
    @Export("BUILD_LIVE")
-   static final BuildType BUILD_LIVE;
-   @ObfuscatedName("u")
+   public static final BuildType BUILD_LIVE;
+   @ObfuscatedName("fe")
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
+   @ObfuscatedName("l")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 175058789
+      intValue = -376512769
    )
-   @Export("ordinal")
-   final int ordinal;
+   public final int field3357;
 
    static {
       RC = new BuildType("LIVE", 0);
@@ -50,32 +52,42 @@ public class BuildType {
 
    BuildType(String var1, int var2) {
       this.identifier = var1;
-      this.ordinal = var2;
+      this.field3357 = var2;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(ILck;ZB)I",
-      garbageValue = "3"
+      signature = "(II)Ljs;",
+      garbageValue = "-1440239756"
    )
-   static int method4241(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class139.field2008:AttackOption.field1306;
-      if(var0 == 1700) {
-         class82.intStack[++class82.intStackSize - 1] = var3.itemId;
-         return 1;
-      } else if(var0 == 1701) {
-         if(var3.itemId != -1) {
-            class82.intStack[++class82.intStackSize - 1] = var3.itemQuantity;
-         } else {
-            class82.intStack[++class82.intStackSize - 1] = 0;
+   @Export("getUnderlayDefinition")
+   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
          }
 
-         return 1;
-      } else if(var0 == 1702) {
-         class82.intStack[++class82.intStackSize - 1] = var3.index;
-         return 1;
-      } else {
-         return 2;
+         var1.post();
+         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
+         return var1;
       }
+   }
+
+   @ObfuscatedName("je")
+   @ObfuscatedSignature(
+      signature = "([BII)V",
+      garbageValue = "-1675869357"
+   )
+   static void method4551(byte[] var0, int var1) {
+      if(Client.field888 == null) {
+         Client.field888 = new byte[24];
+      }
+
+      class205.method3857(var0, var1, Client.field888, 0, 24);
    }
 }

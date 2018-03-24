@@ -1,49 +1,51 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ah")
+@ObfuscatedName("as")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Laz;I)V",
+      garbageValue = "1173479592"
+   )
+   void vmethod762(WorldMapData var1);
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IIIB)Z",
+      garbageValue = "-52"
+   )
+   @Export("containsCoord")
+   boolean containsCoord(int var1, int var2, int var3);
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "53"
+   )
+   boolean vmethod764(int var1, int var2);
+
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lax;I)V",
-      garbageValue = "-2145049745"
-   )
-   void vmethod695(WorldMapData var1);
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "1120247978"
-   )
-   boolean vmethod708(int var1, int var2, int var3);
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "1865125342"
-   )
-   boolean vmethod698(int var1, int var2);
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
       signature = "(IIII)[I",
-      garbageValue = "1197920526"
+      garbageValue = "-653420606"
    )
-   int[] vmethod700(int var1, int var2, int var3);
+   int[] vmethod765(int var1, int var2, int var3);
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(III)Lhc;",
-      garbageValue = "-879620257"
+      signature = "(III)Lik;",
+      garbageValue = "-2033075237"
    )
-   Coordinates vmethod714(int var1, int var2);
+   Coordinates vmethod770(int var1, int var2);
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lgh;I)V",
-      garbageValue = "1638498953"
+      signature = "(Lgb;I)V",
+      garbageValue = "1382348566"
    )
-   void vmethod701(Buffer var1);
+   void vmethod761(Buffer var1);
 }

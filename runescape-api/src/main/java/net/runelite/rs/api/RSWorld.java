@@ -24,28 +24,62 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.World;
 import net.runelite.mapping.Import;
 
-public interface RSWorld
+public interface RSWorld extends World
 {
 	@Import("mask")
 	int getMask();
 
+	@Import("mask")
+	void setMask(int mask);
+
 	@Import("playerCount")
+	@Override
 	int getPlayerCount();
 
+	@Import("playerCount")
+	@Override
+	void setPlayerCount(int playerCount);
+
 	@Import("location")
+	@Override
 	int getLocation();
 
+	@Import("location")
+	@Override
+	void setLocation(int location);
+
 	@Import("index")
+	@Override
 	int getIndex();
 
+	@Import("index")
+	@Override
+	void setIndex(int index);
+
 	@Import("id")
+	@Override
 	int getId();
 
+	@Import("id")
+	@Override
+	void setId(int id);
+
 	@Import("activity")
+	@Override
 	String getActivity();
 
+	@Import("activity")
+	@Override
+	void setActivity(String activity);
+
 	@Import("address")
+	@Override
 	String getAddress();
+
+	@Import("address")
+	@Override
+	void setAddress(String address);
 }

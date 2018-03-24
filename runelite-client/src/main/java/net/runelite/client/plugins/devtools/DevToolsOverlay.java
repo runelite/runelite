@@ -30,13 +30,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -44,15 +43,20 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Node;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -78,18 +82,16 @@ public class DevToolsOverlay extends Overlay
 	private final DevToolsPlugin plugin;
 
 	@Inject
-	public DevToolsOverlay(@Nullable Client client, DevToolsPlugin plugin)
+	public DevToolsOverlay(Client client, DevToolsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setDrawOverBankScreen(true);
-		setDrawOverClickToPlayScreen(true);
-		setDrawOverLoginScreen(true);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Font font = plugin.getFont();
 		if (font != null)
@@ -115,6 +117,11 @@ public class DevToolsOverlay extends Overlay
 		if (plugin.isToggleInventory())
 		{
 			renderInventory(graphics);
+		}
+
+		if (plugin.isToggleProjectiles())
+		{
+			renderProjectiles(graphics);
 		}
 
 		renderWidgets(graphics);
@@ -146,7 +153,14 @@ public class DevToolsOverlay extends Overlay
 		List<NPC> npcs = client.getNpcs();
 		for (NPC npc : npcs)
 		{
-			String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
+			NPCComposition composition = npc.getComposition();
+			if (composition.getConfigs() != null)
+			{
+				composition = composition.transform();
+			}
+
+			String text = composition.getName() + " (ID: " + composition.getId() + ") (A: " + npc.getAnimation()
+					+ ") (G: " + npc.getGraphic() + ")";
 			if (npc.getCombatLevel() > 1)
 			{
 				OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
@@ -322,6 +336,46 @@ public class DevToolsOverlay extends Overlay
 			graphics.drawString(idText, textX + 1, textY + 1);
 			graphics.setColor(YELLOW);
 			graphics.drawString(idText, textX, textY);
+		}
+	}
+
+	private void renderProjectiles(Graphics2D graphics)
+	{
+		List<Projectile> projectiles = client.getProjectiles();
+
+		for (Projectile projectile : projectiles)
+		{
+			int originX = projectile.getX1();
+			int originY = projectile.getY1();
+
+			LocalPoint tilePoint = new LocalPoint(originX, originY);
+			Polygon poly = Perspective.getCanvasTilePoly(client, tilePoint);
+
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+			}
+
+			int projectileId = projectile.getId();
+			Actor projectileInteracting = projectile.getInteracting();
+
+			String infoString = "";
+
+			if (projectileInteracting == null)
+			{
+				infoString += "AoE";
+			}
+			else
+			{
+				infoString += "Targeted (T: " + projectileInteracting.getName() + ")";
+			}
+
+			infoString += " (ID: " + projectileId + ")";
+
+			if (projectileInteracting != null)
+			{
+				OverlayUtil.renderActorOverlay(graphics, projectile.getInteracting(), infoString, Color.RED);
+			}
 		}
 	}
 

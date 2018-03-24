@@ -1,114 +1,141 @@
-import net.runelite.mapping.Export;
+import java.util.Iterator;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("v")
+@ObfuscatedName("h")
 @Implements("Size")
 public class Size {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lv;"
+      signature = "Lh;"
+   )
+   public static final Size field343;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lh;"
    )
    public static final Size field335;
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lv;"
-   )
-   public static final Size field333;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lv;"
+      signature = "Lh;"
    )
    public static final Size field334;
-   @ObfuscatedName("fb")
+   @ObfuscatedName("cv")
+   public static char field341;
+   @ObfuscatedName("dk")
+   @ObfuscatedGetter(
+      intValue = 1746983793
+   )
+   static int field342;
+   @ObfuscatedName("id")
    @ObfuscatedSignature(
-      signature = "[Lks;"
+      signature = "Ldg;"
    )
-   @Export("crossSprites")
-   static SpritePixels[] crossSprites;
-   @ObfuscatedName("jk")
+   static TextureProvider field336;
+   @ObfuscatedName("a")
+   final String field338;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -557930467
-   )
-   @Export("menuHeight")
-   static int menuHeight;
-   @ObfuscatedName("k")
-   final String field343;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1891351419
-   )
-   final int field332;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -73299465
+      intValue = -1560505711
    )
    final int field337;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1807549591
+      intValue = -1767971937
    )
-   final int field338;
+   final int field339;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -193283801
+   )
+   final int field340;
 
    static {
-      field335 = new Size("SMALL", 0, 0, 4);
-      field333 = new Size("MEDIUM", 1, 1, 2);
+      field343 = new Size("SMALL", 1, 0, 4);
+      field335 = new Size("MEDIUM", 0, 1, 2);
       field334 = new Size("LARGE", 2, 2, 0);
    }
 
    Size(String var1, int var2, int var3, int var4) {
-      this.field343 = var1;
-      this.field332 = var2;
-      this.field337 = var3;
-      this.field338 = var4;
+      this.field338 = var1;
+      this.field337 = var2;
+      this.field339 = var3;
+      this.field340 = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(FB)Z",
-      garbageValue = "-23"
+      garbageValue = "0"
    )
-   boolean method177(float var1) {
-      return var1 >= (float)this.field338;
+   boolean method189(float var1) {
+      return var1 >= (float)this.field340;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)[Lfa;",
-      garbageValue = "876332136"
+      signature = "(IIIB)Lla;",
+      garbageValue = "1"
    )
-   public static class173[] method173() {
-      return new class173[]{class173.field2427, class173.field2428, class173.field2422, class173.field2423, class173.field2424, class173.field2425, class173.field2426, class173.field2421, class173.field2420, class173.field2430};
+   static SpritePixels method190(int var0, int var1, int var2) {
+      class213 var3 = WorldMapRegion.field457;
+      long var4 = (long)(var2 << 16 | var0 << 8 | var1);
+      return (SpritePixels)var3.method3951(var4);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1428230951"
+      signature = "(S)V",
+      garbageValue = "-14098"
    )
-   static int method178(int var0, int var1) {
-      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
-   }
+   static void method194() {
+      Iterator var0 = class95.messages.iterator();
 
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(Lcp;I)V",
-      garbageValue = "-1126597833"
-   )
-   static void method176(World var0) {
-      if(var0.method1518() != Client.isMembers) {
-         Client.isMembers = var0.method1518();
-         class94.method1760(var0.method1518());
+      while(var0.hasNext()) {
+         MessageNode var1 = (MessageNode)var0.next();
+         var1.method1169();
       }
 
-      class11.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      GraphicsObject.port1 = Client.socketType == 0?43594:var0.id + 40000;
-      FileOnDisk.port2 = Client.socketType == 0?443:var0.id + 50000;
-      class268.myWorldPort = GraphicsObject.port1;
+   }
+
+   @ObfuscatedName("hk")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZB)V",
+      garbageValue = "-71"
+   )
+   static final void method193(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            Client.menuBooleanArray[Client.menuOptionCount] = var6;
+            ++Client.menuOptionCount;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("jy")
+   @ObfuscatedSignature(
+      signature = "(Lgb;II)V",
+      garbageValue = "-376561332"
+   )
+   static void method188(Buffer var0, int var1) {
+      BuildType.method4551(var0.payload, var1);
+      if(class167.randomDat != null) {
+         try {
+            class167.randomDat.seek(0L);
+            class167.randomDat.write(var0.payload, var1, 24);
+         } catch (Exception var3) {
+            ;
+         }
+      }
+
    }
 }

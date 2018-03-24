@@ -4,58 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("u")
 @Implements("GrandExchangeEvent")
 public class GrandExchangeEvent {
-   @ObfuscatedName("ff")
-   @ObfuscatedSignature(
-      signature = "Lks;"
-   )
-   @Export("compass")
-   static SpritePixels compass;
-   @ObfuscatedName("gd")
+   @ObfuscatedName("do")
+   @Export("host")
+   static String host;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 508599443
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 306485541
+      intValue = 1042997751
    )
    @Export("world")
    public final int world;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      longValue = 8897992286683141835L
+      longValue = 6025418101370467541L
    )
-   public final long field278;
-   @ObfuscatedName("e")
+   public final long field274;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lr;"
+      signature = "Lk;"
    )
    @Export("grandExchangeOffer")
    public final GrandExchangeOffer grandExchangeOffer;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @Export("string1")
    String string1;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @Export("string2")
    String string2;
 
    @ObfuscatedSignature(
-      signature = "(Lgh;BI)V"
+      signature = "(Lgb;BI)V"
    )
    GrandExchangeEvent(Buffer var1, byte var2, int var3) {
       this.string1 = var1.readString();
       this.string2 = var1.readString();
       this.world = var1.readUnsignedShort();
-      this.field278 = var1.readLong();
+      this.field274 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
       this.grandExchangeOffer = new GrandExchangeOffer();
-      this.grandExchangeOffer.method99(2);
-      this.grandExchangeOffer.method95(var2);
+      this.grandExchangeOffer.method106(2);
+      this.grandExchangeOffer.method107(var2);
       this.grandExchangeOffer.price = var4;
       this.grandExchangeOffer.totalQuantity = var5;
       this.grandExchangeOffer.quantitySold = 0;
@@ -63,121 +54,103 @@ public class GrandExchangeEvent {
       this.grandExchangeOffer.itemId = var3;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1856400372"
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "14"
    )
-   public String method72() {
+   public String method82() {
       return this.string1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "0"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-1505801552"
    )
-   public String method78() {
+   public String method84() {
       return this.string2;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-1443270829"
+      signature = "(Ljava/lang/CharSequence;B)J",
+      garbageValue = "1"
    )
-   public static String method84(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
+   public static long method91(CharSequence var0) {
+      long var1 = 0L;
+      int var3 = var0.length();
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-            if(var4 == ' ') {
-               var2.append('+');
+      for(int var4 = 0; var4 < var3; ++var4) {
+         var1 *= 37L;
+         char var5 = var0.charAt(var4);
+         if(var5 >= 'A' && var5 <= 'Z') {
+            var1 += (long)(var5 + 1 - 65);
+         } else if(var5 >= 'a' && var5 <= 'z') {
+            var1 += (long)(var5 + 1 - 97);
+         } else if(var5 >= '0' && var5 <= '9') {
+            var1 += (long)(var5 + 27 - 48);
+         }
+
+         if(var1 >= 177917621779460413L) {
+            break;
+         }
+      }
+
+      while(0L == var1 % 37L && var1 != 0L) {
+         var1 /= 37L;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(ILcj;ZI)I",
+      garbageValue = "482146849"
+   )
+   static int method88(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class233.field2755:class81.field1260;
+      if(var0 == 1800) {
+         int[] var4 = class81.intStack;
+         int var5 = ++class5.intStackSize - 1;
+         int var7 = getWidgetConfig(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class81.scriptStringStack[++class316.scriptStringStackSize - 1] = "";
             } else {
-               byte var5 = class34.charToByteCp1252(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
+               class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.name;
             }
+
+            return 1;
          } else {
-            var2.append(var4);
+            return 2;
          }
-      }
-
-      return var2.toString();
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(ILhi;B)Lck;",
-      garbageValue = "13"
-   )
-   static Script method83(int var0, class230 var1) {
-      Script var2 = (Script)Script.field1431.get((long)(var0 << 16));
-      if(var2 != null) {
-         return var2;
       } else {
-         String var3 = String.valueOf(var0);
-         int var4 = class161.indexScripts.getFile(var3);
-         if(var4 == -1) {
-            return null;
+         int var8 = class81.intStack[--class5.intStackSize];
+         --var8;
+         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.actions[var8];
          } else {
-            byte[] var5 = class161.indexScripts.takeRecordFlat(var4);
-            if(var5 != null) {
-               if(var5.length <= 1) {
-                  return null;
-               }
-
-               var2 = WidgetNode.newScript(var5);
-               if(var2 != null) {
-                  Script.field1431.put(var2, (long)(var0 << 16));
-                  return var2;
-               }
-            }
-
-            return null;
+            class81.scriptStringStack[++class316.scriptStringStackSize - 1] = "";
          }
+
+         return 1;
       }
    }
 
-   @ObfuscatedName("ha")
+   @ObfuscatedName("jr")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1420140280"
+      signature = "(Lig;I)I",
+      garbageValue = "400254367"
    )
-   static void method82() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
-               }
-            }
-
-            --Client.menuOptionCount;
-         }
-      }
-
+   @Export("getWidgetConfig")
+   static int getWidgetConfig(Widget var0) {
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
+      return var1 != null?var1.value:var0.config;
    }
 }

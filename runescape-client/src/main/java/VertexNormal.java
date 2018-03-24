@@ -4,45 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ee")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("or")
+   @ObfuscatedName("cn")
    @ObfuscatedSignature(
-      signature = "Ldn;"
+      signature = "Lju;"
    )
-   @Export("soundSystem1")
-   static AbstractSoundSystem soundSystem1;
-   @ObfuscatedName("nn")
-   @Export("clanChatRank")
-   static byte clanChatRank;
-   @ObfuscatedName("v")
+   @Export("indexMaps")
+   static IndexData indexMaps;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 197876021
-   )
-   @Export("canvasHeight")
-   protected static int canvasHeight;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -364405127
+      intValue = -66107763
    )
    @Export("x")
    int x;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -312726173
+      intValue = 2115920509
    )
    @Export("y")
    int y;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -820067941
+      intValue = 1873915047
    )
    @Export("z")
    int z;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1070537593
+      intValue = -117213315
    )
    @Export("magnitude")
    int magnitude;
@@ -51,7 +42,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lek;)V"
+      signature = "(Lee;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -60,52 +51,40 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Lhz;",
-      garbageValue = "1567554923"
+      signature = "(III)Lap;",
+      garbageValue = "-1411881696"
    )
-   @Export("getWidget")
-   public static Widget getWidget(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & 65535;
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = GraphicsObject.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
-      }
-
-      return Widget.widgets[var1][var2];
+   static class33 method2776(int var0, int var1) {
+      class213 var2 = WorldMapRegion.field462;
+      long var3 = (long)(0 | var0 << 8 | var1);
+      return (class33)var2.method3951(var3);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(ILck;ZI)I",
-      garbageValue = "1580470275"
+      signature = "(IIII)I",
+      garbageValue = "2137282322"
    )
-   static int method2601(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class139.field2008:AttackOption.field1306;
-      if(var0 == 1500) {
-         class82.intStack[++class82.intStackSize - 1] = var3.relativeX;
-         return 1;
-      } else if(var0 == 1501) {
-         class82.intStack[++class82.intStackSize - 1] = var3.relativeY;
-         return 1;
-      } else if(var0 == 1502) {
-         class82.intStack[++class82.intStackSize - 1] = var3.width;
-         return 1;
-      } else if(var0 == 1503) {
-         class82.intStack[++class82.intStackSize - 1] = var3.height;
-         return 1;
-      } else if(var0 == 1504) {
-         class82.intStack[++class82.intStackSize - 1] = var3.isHidden?1:0;
-         return 1;
-      } else if(var0 == 1505) {
-         class82.intStack[++class82.intStackSize - 1] = var3.parentId;
-         return 1;
-      } else {
-         return 2;
+   static final int method2775(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
       }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
    }
 }

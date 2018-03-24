@@ -24,36 +24,18 @@
  */
 package net.runelite.client.plugins.jewellerycount;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Jewellery count plugin"
+	name = "Jewellery Count"
 )
 public class JewelleryCountPlugin extends Plugin
 {
 	@Inject
-	JewelleryCountConfig config;
-
-	@Inject
-	JewelleryCountOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(JewelleryCountOverlay.class);
-	}
-
-	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(JewelleryCountConfig.class);
-	}
+	private JewelleryCountOverlay overlay;
 
 	@Override
 	public Overlay getOverlay()

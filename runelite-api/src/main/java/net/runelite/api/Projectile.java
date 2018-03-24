@@ -24,9 +24,43 @@
  */
 package net.runelite.api;
 
-public interface Projectile
+public interface Projectile extends Renderable
 {
 	int getId();
 
 	Actor getInteracting();
+
+	int getX1();
+
+	int getY1();
+
+	int getFloor();
+
+	int getHeight();
+
+	int getEndHeight();
+
+	int getStartMovementCycle();
+
+	int getEndCycle();
+
+	int getRemainingCycles();
+
+	int getSlope();
+
+	int getStartHeight();
+
+	double getX();
+
+	double getY();
+
+	double getZ();
+
+	double getScalar();
+
+	double getVelocityX();
+
+	double getVelocityY();
+
+	double getVelocityZ();
 }

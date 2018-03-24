@@ -23,17 +23,15 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.http.service.hiscore;
 
+import java.io.IOException;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import okhttp3.HttpUrl;
 
-import java.io.IOException;
-
 class HiscoreTestService extends HiscoreService
 {
-	private HttpUrl testUrl;
+	private final HttpUrl testUrl;
 
 	HiscoreTestService(HttpUrl testUrl)
 	{
@@ -41,7 +39,7 @@ class HiscoreTestService extends HiscoreService
 	}
 
 	@Override
-	HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
+	public HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
 		return super.lookupUsername(username, testUrl);
 	}

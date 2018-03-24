@@ -25,152 +25,113 @@
 package net.runelite.client.plugins.account;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.Desktop;
-import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
-import net.runelite.http.api.account.AccountClient;
-import net.runelite.http.api.account.OAuthResponse;
-import net.runelite.http.api.ws.messages.LoginResponse;
 
 @PluginDescriptor(
-	name = "Account plugin",
+	name = "Account",
 	loadWhenOutdated = true
 )
 @Slf4j
 public class AccountPlugin extends Plugin
 {
 	@Inject
-	SessionManager sessionManager;
+	private SessionManager sessionManager;
 
 	@Inject
-	ClientUI ui;
+	private TitleToolbar titleToolbar;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	private NavigationButton loginButton;
 	private NavigationButton logoutButton;
 
-	private final AccountClient loginClient = new AccountClient();
+	private static final BufferedImage LOGIN_IMAGE, LOGOUT_IMAGE;
+
+	static
+	{
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				LOGIN_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("login_icon.png"));
+				LOGOUT_IMAGE = ImageIO.read(AccountPlugin.class.getResourceAsStream("logout_icon.png"));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		loginButton = new NavigationButton("Login", ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
-		logoutButton = new NavigationButton("Logout", ImageIO.read(getClass().getResourceAsStream("logout_icon.png")));
-		loginButton.addActionListener(this::loginClick);
-		logoutButton.addActionListener(this::logoutClick);
-		ui.getPluginToolbar().addNavigation(loginButton);
+		loginButton = NavigationButton.builder()
+			.icon(LOGIN_IMAGE)
+			.tooltip("Login")
+			.onClick(this::loginClick)
+			.build();
+
+		logoutButton = NavigationButton.builder()
+			.icon(LOGOUT_IMAGE)
+			.tooltip("Logout")
+			.onClick(this::logoutClick)
+			.build();
+
+		addAndRemoveButtons();
 	}
 
-	private void loginClick(ActionEvent ae)
+	private void addAndRemoveButtons()
 	{
-		executor.execute(RunnableExceptionLogger.wrap(this::openLoginPage));
+		titleToolbar.removeNavigation(loginButton);
+		titleToolbar.removeNavigation(logoutButton);
+		titleToolbar.addNavigation(sessionManager.getAccountSession() == null
+			? loginButton
+			: logoutButton);
 	}
 
-	private void logoutClick(ActionEvent ae)
+	@Override
+	protected void shutDown() throws Exception
 	{
-		// Destroy session
-		AccountSession session = sessionManager.getAccountSession();
-		if (session != null)
-		{
-			AccountClient client = new AccountClient(session.getUuid());
-			try
-			{
-				client.logout();
-			}
-			catch (IOException ex)
-			{
-				log.warn("Unable to logout of session", ex);
-			}
-		}
-
-		sessionManager.closeSession(); // remove session from client
-		sessionManager.deleteSession(); // delete saved session file
-
-		// Replace logout nav button with login
-		PluginToolbar navigationPanel = ui.getPluginToolbar();
-		navigationPanel.removeNavigation(logoutButton);
-		navigationPanel.addNavigation(loginButton);
+		titleToolbar.removeNavigation(loginButton);
+		titleToolbar.removeNavigation(logoutButton);
 	}
 
-	private void openLoginPage()
+	private void loginClick()
 	{
-		OAuthResponse login;
+		executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
+	}
 
-		try
+	private void logoutClick()
+	{
+		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
+				"Are you sure you want to logout?", "Logout Confirmation",
+				JOptionPane.YES_NO_OPTION))
 		{
-			login = loginClient.login();
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to get oauth url", ex);
-			return;
-		}
-
-		// Create new session
-		AccountSession session = new AccountSession();
-		session.setUuid(login.getUid());
-		session.setCreated(Instant.now());
-
-		sessionManager.openSession(session);
-
-		if (!Desktop.isDesktopSupported())
-		{
-			log.info("Desktop is not supported. Visit {}", login.getOauthUrl());
-			return;
-		}
-
-		Desktop desktop = Desktop.getDesktop();
-		if (!desktop.isSupported(Desktop.Action.BROWSE))
-		{
-			log.info("Desktop browser is not supported. Visit {}", login.getOauthUrl());
-			return;
-		}
-
-		try
-		{
-			desktop.browse(new URI(login.getOauthUrl()));
-
-			log.debug("Opened browser to {}", login.getOauthUrl());
-		}
-		catch (IOException | URISyntaxException ex)
-		{
-			log.warn("Unable to open login page", ex);
+			sessionManager.logout();
 		}
 	}
 
 	@Subscribe
-	public void onLogin(LoginResponse loginResponse)
+	public void onSessionClose(SessionClose e)
 	{
-		log.debug("Now logged in as {}", loginResponse.getUsername());
-
-		AccountSession session = sessionManager.getAccountSession();
-		session.setUsername(loginResponse.getUsername());
-
-		// Open session, again, now that we have a username
-		// This triggers onSessionOpen
-		sessionManager.openSession(session);
-
-		// Save session to disk
-		sessionManager.saveSession();
+		addAndRemoveButtons();
 	}
 
 	@Subscribe
@@ -185,23 +146,7 @@ public class AccountPlugin extends Plugin
 
 		log.debug("Session opened as {}", session.getUsername());
 
-		ui.setTitle("(" + session.getUsername() + ")");
-
-		replaceLoginWithLogout();
-	}
-
-	private void replaceLoginWithLogout()
-	{
-		// Replace login nav button with logout
-		PluginToolbar navigationPanel = ui.getPluginToolbar();
-		navigationPanel.removeNavigation(loginButton);
-		navigationPanel.addNavigation(logoutButton);
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
-	{
-		ui.setTitle(null);
+		addAndRemoveButtons();
 	}
 
 }

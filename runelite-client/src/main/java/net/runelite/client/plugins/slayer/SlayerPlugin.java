@@ -24,36 +24,42 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import static net.runelite.api.Skill.SLAYER;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
+import static net.runelite.api.Skill.SLAYER;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ChatMessage;
-import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Slayer plugin"
+	name = "Slayer"
 )
 @Slf4j
 public class SlayerPlugin extends Plugin
@@ -63,6 +69,7 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("[\\d]+(?:,[\\d]+)?");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
+	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
@@ -72,19 +79,22 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	SlayerConfig config;
+	private SlayerConfig config;
 
 	@Inject
-	SlayerOverlay overlay;
+	private SlayerOverlay overlay;
 
 	@Inject
-	InfoBoxManager infoBoxManager;
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
+
+	@Inject
+	private Notifier notifier;
 
 	private String taskName;
 	private int amount;
@@ -92,11 +102,24 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 	private int points;
 	private int cachedXp;
+	private Instant infoTimer;
+	private boolean loginFlag;
 
 	@Override
-	public void configure(Binder binder)
+	protected void startUp() throws Exception
 	{
-		binder.bind(SlayerOverlay.class);
+		if (client.getGameState() == GameState.LOGGED_IN
+			&& config.amount() != -1
+			&& !config.taskName().isEmpty())
+		{
+			setTask(config.taskName(), config.amount());
+		}
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		removeCounter();
 	}
 
 	@Provides
@@ -108,11 +131,6 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		switch (event.getGameState())
 		{
 			case HOPPING:
@@ -120,11 +138,15 @@ public class SlayerPlugin extends Plugin
 				cachedXp = 0;
 				taskName = "";
 				amount = 0;
+				loginFlag = true;
 				break;
 			case LOGGED_IN:
-				if (config.amount() != -1 && !config.taskName().isEmpty())
+				if (config.amount() != -1
+					&& !config.taskName().isEmpty()
+					&& loginFlag == true)
 				{
 					setTask(config.taskName(), config.amount());
+					loginFlag = false;
 				}
 				break;
 		}
@@ -144,15 +166,10 @@ public class SlayerPlugin extends Plugin
 	)
 	public void scheduledChecks()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
 		{
-			String NPCText = NPCDialog.getText().replaceAll("<[^>]*>", " "); //remove color and linebreaks
+			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
 			Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(NPCText); //number, name
 			Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(NPCText); //name, number
 			boolean found1 = mAssign.find();
@@ -180,17 +197,28 @@ public class SlayerPlugin extends Plugin
 				}
 			}
 		}
+
+		if (infoTimer != null)
+		{
+			Duration timeSinceInfobox = Duration.between(infoTimer, Instant.now());
+			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+
+			if (timeSinceInfobox.compareTo(statTimeout) >= 0)
+			{
+				removeCounter();
+			}
+		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.enabled() || event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
 
-		String chatMsg = event.getMessage().replaceAll("<[^>]*>", ""); //remove color and linebreaks
+		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
@@ -226,6 +254,12 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
+		if (config.showSuperiorNotification() && chatMsg.equals(CHAT_SUPERIOR_MESSAGE))
+		{
+			notifier.notify(CHAT_SUPERIOR_MESSAGE);
+			return;
+		}
+
 		Matcher mProgress = CHAT_GEM_PROGRESS_MESSAGE.matcher(chatMsg);
 		if (!mProgress.find())
 		{
@@ -240,7 +274,14 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (!config.enabled() || event.getSkill() != SLAYER)
+		if (event.getSkill() != SLAYER)
+		{
+			return;
+		}
+
+		int slayerExp = client.getSkillExperience(SLAYER);
+
+		if (slayerExp <= cachedXp)
 		{
 			return;
 		}
@@ -248,22 +289,51 @@ public class SlayerPlugin extends Plugin
 		if (cachedXp == 0)
 		{
 			// this is the initial xp sent on login
-			cachedXp = client.getSkillExperience(SLAYER);
+			cachedXp = slayerExp;
 			return;
 		}
 
 		killedOne();
+		cachedXp = slayerExp;
+	}
+
+	@Subscribe
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("slayer"))
+		{
+			return;
+		}
+
+		if (config.showInfobox())
+		{
+			addCounter();
+		}
+		else
+		{
+			removeCounter();
+		}
 	}
 
 	private void killedOne()
 	{
+		if (amount == 0)
+		{
+			return;
+		}
+
 		amount--;
-		save();
+		config.amount(amount); // save changed value
+
 		if (!config.showInfobox())
 		{
 			return;
 		}
+
+		// add and update counter, set timer
+		addCounter();
 		counter.setText(String.valueOf(amount));
+		infoTimer = Instant.now();
 	}
 
 	private void setTask(String name, int amt)
@@ -271,21 +341,21 @@ public class SlayerPlugin extends Plugin
 		taskName = name.toLowerCase();
 		amount = amt;
 		save();
+		removeCounter();
+		addCounter();
+		infoTimer = Instant.now();
+	}
 
-		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
-
-		if (taskName.isEmpty() || !config.showInfobox())
+	private void addCounter()
+	{
+		if (!config.showInfobox() || counter != null || Strings.isNullOrEmpty(taskName))
 		{
 			return;
 		}
 
 		Task task = Task.getTask(taskName);
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
-		if (task == null)
-		{
-			log.debug("No slayer task for {} in the Task database", taskName);
-		}
-		else
+		if (task != null)
 		{
 			itemSpriteId = task.getItemSpriteId();
 		}
@@ -296,6 +366,17 @@ public class SlayerPlugin extends Plugin
 			capsString(taskName), points, streak));
 
 		infoBoxManager.addInfoBox(counter);
+	}
+
+	private void removeCounter()
+	{
+		if (counter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(counter);
+		counter = null;
 	}
 
 	//Getters

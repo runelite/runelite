@@ -3,12 +3,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gm")
 @Implements("Node2LinkedList")
 public final class Node2LinkedList {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lhh;"
    )
    @Export("sentinel")
    CacheableNode sentinel;
@@ -19,9 +19,9 @@ public final class Node2LinkedList {
       this.sentinel.next = this.sentinel;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgi;)V"
+      signature = "(Lhh;)V"
    )
    @Export("push")
    public void push(CacheableNode var1) {
@@ -35,9 +35,9 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgi;)V"
+      signature = "(Lhh;)V"
    )
    @Export("setHead")
    public void setHead(CacheableNode var1) {
@@ -51,9 +51,9 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "()Lgi;"
+      signature = "()Lhh;"
    )
    @Export("pop")
    CacheableNode pop() {
@@ -66,9 +66,9 @@ public final class Node2LinkedList {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "()Lgi;"
+      signature = "()Lhh;"
    )
    @Export("peek")
    public CacheableNode peek() {
@@ -76,7 +76,7 @@ public final class Node2LinkedList {
       return var1 == this.sentinel?null:var1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @Export("clear")
    void clear() {
       while(true) {
@@ -87,5 +87,20 @@ public final class Node2LinkedList {
 
          var1.unlinkDual();
       }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lhh;Lhh;)V"
+   )
+   static void method3888(CacheableNode var0, CacheableNode var1) {
+      if(var0.next != null) {
+         var0.unlinkDual();
+      }
+
+      var0.next = var1;
+      var0.previous = var1.previous;
+      var0.next.previous = var0;
+      var0.previous.next = var0;
    }
 }

@@ -25,41 +25,81 @@
 package net.runelite.mixins;
 
 import java.awt.Polygon;
+import java.awt.geom.Area;
 import net.runelite.api.Model;
-import net.runelite.api.Renderable;
+import net.runelite.api.Perspective;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDecorativeObject;
+import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSRenderable;
 
 @Mixin(RSDecorativeObject.class)
 public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@Inject
+	private int decorativeObjectPlane;
+
 	@Inject
 	@Override
-	public Polygon getConvexHull()
+	public int getPlane()
 	{
-		Renderable renderable = getRenderable();
+		return decorativeObjectPlane;
+	}
+
+	@Inject
+	@Override
+	public void setPlane(int plane)
+	{
+		this.decorativeObjectPlane = plane;
+	}
+
+	@Inject
+	private RSModel getModel()
+	{
+		RSRenderable renderable = getRenderable();
 		if (renderable == null)
 		{
 			return null;
 		}
 
-		Model model;
+		RSModel model;
 
 		if (renderable instanceof Model)
 		{
-			model = (Model) renderable;
+			model = (RSModel) renderable;
 		}
 		else
 		{
 			model = renderable.getModel();
 		}
 
+		return model;
+	}
+
+	@Inject
+	@Override
+	public Area getClickbox()
+	{
+		return Perspective.getClickbox(client, getModel(), getOrientation(), getX(), getY());
+	}
+
+	@Inject
+	@Override
+	public Polygon getConvexHull()
+	{
+		RSModel model = getModel();
+
 		if (model == null)
 		{
 			return null;
 		}
 
-		return getConvexHull(model, getOrientation());
+		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 }

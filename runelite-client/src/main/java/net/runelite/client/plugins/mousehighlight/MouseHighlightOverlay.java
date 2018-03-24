@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.mousehighlight;
 
+import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
@@ -38,28 +37,20 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 class MouseHighlightOverlay extends Overlay
 {
-	private final MouseHighlightConfig config;
 	private final TooltipManager tooltipManager;
 	private final Client client;
 
 	@Inject
-	MouseHighlightOverlay(@Nullable Client client, MouseHighlightConfig config, TooltipManager tooltipManager)
+	MouseHighlightOverlay(Client client, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
-		this.config = config;
 		this.tooltipManager = tooltipManager;
-		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		if (client.isMenuOpen())
 		{
 			return null;
@@ -77,7 +68,7 @@ class MouseHighlightOverlay extends Overlay
 		String target = menuEntry.getTarget();
 		String option = menuEntry.getOption();
 
-		if (target.isEmpty())
+		if (Strings.isNullOrEmpty(option))
 		{
 			return null;
 		}
@@ -89,9 +80,15 @@ class MouseHighlightOverlay extends Overlay
 			case "Cancel":
 			case "Continue":
 				return null;
+			case "Move":
+				// Hide overlay on sliding puzzle boxes
+				if (target.contains("Sliding piece"))
+				{
+					return null;
+				}
 		}
 
-		tooltipManager.add(new Tooltip(option + " " + target));
+		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
 	}
 }

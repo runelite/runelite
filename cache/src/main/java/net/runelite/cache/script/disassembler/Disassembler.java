@@ -38,6 +38,13 @@ public class Disassembler
 {
 	private static final Logger logger = LoggerFactory.getLogger(Disassembler.class);
 
+	private final Instructions instructions = new Instructions();
+
+	public Disassembler()
+	{
+		instructions.init();
+	}
+
 	private boolean isJump(int opcode)
 	{
 		switch (opcode)
@@ -120,7 +127,7 @@ public class Disassembler
 			int iop = iops[i];
 			String sop = sops[i];
 
-			Instruction ins = Instructions.find(opcode);
+			Instruction ins = this.instructions.find(opcode);
 			if (ins == null)
 			{
 				logger.warn("Unknown instruction {} in script {}", opcode, script.getId());

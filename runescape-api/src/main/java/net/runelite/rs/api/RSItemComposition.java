@@ -58,6 +58,15 @@ public interface RSItemComposition extends ItemComposition
 	@Override
 	boolean isMembers();
 
+	/**
+	 * You probably want {@link #isStackable}
+	 * <p>
+	 * This is the <b>{@code int}</b> that client code uses internally to represent this true/false value. It appears to only ever be set to 1 or 0
+	 * @return 0 when this type of item isn't stackable, 1 otherwise
+	 */
+	@Import("isStackable")
+	int getIsStackable();
+
 	@Import("maleModel")
 	int getMaleModel();
 }

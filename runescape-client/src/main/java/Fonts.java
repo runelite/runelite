@@ -4,42 +4,36 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ju")
+@ObfuscatedName("kn")
 @Implements("Fonts")
 public class Fonts {
-   @ObfuscatedName("cm")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Ljc;"
    )
-   @Export("configsIndex")
-   static IndexData configsIndex;
-   @ObfuscatedName("a")
+   IndexDataBase field3886;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Ljc;"
    )
-   IndexDataBase field3703;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   IndexDataBase field3701;
-   @ObfuscatedName("e")
+   IndexDataBase field3889;
+   @ObfuscatedName("i")
    @Export("map")
    HashMap map;
 
    @ObfuscatedSignature(
-      signature = "(Lib;Lib;)V"
+      signature = "(Ljc;Ljc;)V"
    )
    public Fonts(IndexDataBase var1, IndexDataBase var2) {
-      this.field3703 = var1;
-      this.field3701 = var2;
+      this.field3886 = var1;
+      this.field3889 = var2;
       this.map = new HashMap();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "([Ljl;I)Ljava/util/HashMap;",
-      garbageValue = "1016658752"
+      signature = "([Lkq;B)Ljava/util/HashMap;",
+      garbageValue = "-80"
    )
    @Export("createMap")
    public HashMap createMap(FontName[] var1) {
@@ -51,7 +45,7 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            Font var6 = class280.method5002(this.field3703, this.field3701, var5.field3695, "");
+            Font var6 = MilliTimer.method3182(this.field3886, this.field3889, var5.field3882, "");
             if(var6 != null) {
                this.map.put(var5, var6);
                var2.put(var5, var6);
@@ -60,5 +54,34 @@ public class Fonts {
       }
 
       return var2;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1119282817"
+   )
+   public static String method5483(CharSequence var0) {
+      return Name.method5436('*', var0.length());
+   }
+
+   @ObfuscatedName("hv")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-952785331"
+   )
+   static void method5482() {
+      if(Client.spellSelected) {
+         Widget var0 = CollisionData.getWidgetChild(Resampler.field1597, Client.field1050);
+         if(var0 != null && var0.field2807 != null) {
+            ScriptEvent var1 = new ScriptEvent();
+            var1.widget = var0;
+            var1.objs = var0.field2807;
+            class25.runScript(var1, 500000);
+         }
+
+         Client.spellSelected = false;
+         GameEngine.method1053(var0);
+      }
    }
 }

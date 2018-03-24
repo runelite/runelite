@@ -4,132 +4,183 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cp")
+@ObfuscatedName("bd")
 @Implements("World")
 public class World {
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "[Lbd;"
+   )
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -2073723129
+      intValue = 870452627
    )
    @Export("worldCount")
    static int worldCount;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1724680161
+      intValue = -1937794089
    )
-   static int field1196;
-   @ObfuscatedName("f")
-   static int[] field1197;
-   @ObfuscatedName("g")
-   static int[] field1203;
+   static int field1211;
    @ObfuscatedName("x")
+   static int[] field1204;
+   @ObfuscatedName("p")
+   static int[] field1210;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lep;"
+   )
+   @Export("listFetcher")
+   static UrlRequest listFetcher;
+   @ObfuscatedName("cy")
+   @ObfuscatedSignature(
+      signature = "Lju;"
+   )
+   @Export("indexInterfaces")
+   static IndexData indexInterfaces;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -404484463
+      intValue = 354819381
    )
    @Export("id")
    int id;
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1198421041
+      intValue = -632448853
    )
    @Export("mask")
    int mask;
-   @ObfuscatedName("s")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -2015743543
+      intValue = 1270343535
    )
    @Export("playerCount")
    int playerCount;
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
    @Export("address")
    String address;
-   @ObfuscatedName("y")
+   @ObfuscatedName("u")
    @Export("activity")
    String activity;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 614439421
+      intValue = 1500916537
    )
    @Export("location")
    int location;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1567307001
+      intValue = 1290981435
    )
    @Export("index")
    int index;
 
    static {
       worldCount = 0;
-      field1196 = 0;
-      field1197 = new int[]{1, 1, 1, 1};
-      field1203 = new int[]{0, 1, 2, 3};
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2143679429"
-   )
-   boolean method1518() {
-      return (1 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "649347417"
-   )
-   boolean method1494() {
-      return (2 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-48"
-   )
-   boolean method1495() {
-      return (4 & this.mask) != 0;
+      field1211 = 0;
+      field1204 = new int[]{1, 1, 1, 1};
+      field1210 = new int[]{0, 1, 2, 3};
    }
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "2028000626"
+      garbageValue = "-1718212214"
    )
-   boolean method1496() {
-      return (8 & this.mask) != 0;
+   boolean method1690() {
+      return (1 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "2"
+   )
+   boolean method1677() {
+      return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "642767242"
+   )
+   boolean method1673() {
+      return (4 & this.mask) != 0;
    }
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-1868845426"
+      garbageValue = "2055537262"
    )
-   boolean method1497() {
+   boolean method1675() {
+      return (8 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1092386556"
+   )
+   boolean method1672() {
       return (536870912 & this.mask) != 0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-279717715"
+      garbageValue = "375025298"
    )
-   boolean method1498() {
+   boolean method1676() {
       return (33554432 & this.mask) != 0;
    }
 
-   @ObfuscatedName("a")
-   public static final void method1500(long var0) {
-      if(var0 > 0L) {
-         if(var0 % 10L == 0L) {
-            Coordinates.method4079(var0 - 1L);
-            Coordinates.method4079(1L);
-         } else {
-            Coordinates.method4079(var0);
-         }
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "1925890860"
+   )
+   @Export("getVarbit")
+   public static int getVarbit(int var0) {
+      Varbit var1 = VerticalAlignment.method4748(var0);
+      int var2 = var1.configId;
+      int var3 = var1.leastSignificantBit;
+      int var4 = var1.mostSignificantBit;
+      int var5 = class237.varpsMasks[var4 - var3];
+      return class237.clientVarps[var2] >> var3 & var5;
+   }
 
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "(Lcf;I)V",
+      garbageValue = "563586675"
+   )
+   public static final void method1707(class101 var0) {
+      AbstractSoundSystem.soundTaskDataProvider = var0;
+   }
+
+   @ObfuscatedName("ik")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Lig;B)Ljava/lang/String;",
+      garbageValue = "93"
+   )
+   static String method1709(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         for(int var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
+               }
+
+               var0 = var0.substring(0, var3) + Buffer.method3763(class110.method2292(var1, var2 - 1)) + var0.substring(var3 + 2);
+            }
+         }
       }
+
+      return var0;
    }
 }

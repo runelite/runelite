@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.fightcave;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -33,7 +31,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -41,35 +38,20 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fight cave plugin"
+	name = "Fight Cave"
 )
 public class FightCavePlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	QueryRunner queryRunner;
+	private QueryRunner queryRunner;
 
 	@Inject
-	FightCaveConfig config;
-
-	@Inject
-	FightCaveOverlay overlay;
+	private FightCaveOverlay overlay;
 
 	private JadAttack attack;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(FightCaveOverlay.class);
-	}
-
-	@Provides
-	FightCaveConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(FightCaveConfig.class);
-	}
 
 	@Override
 	public Overlay getOverlay()
@@ -83,7 +65,7 @@ public class FightCavePlugin extends Plugin
 	)
 	public void update()
 	{
-		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

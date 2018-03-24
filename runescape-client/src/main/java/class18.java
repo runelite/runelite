@@ -1,37 +1,32 @@
 import java.util.Comparator;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("l")
+@ObfuscatedName("w")
 final class class18 implements Comparator {
-   @ObfuscatedName("fh")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "[Lks;"
+      signature = "(Lu;Lu;I)I",
+      garbageValue = "-665488501"
    )
-   @Export("headIconsPk")
-   static SpritePixels[] headIconsPk;
-   @ObfuscatedName("ix")
-   @ObfuscatedGetter(
-      intValue = -755091831
-   )
-   static int field304;
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(Ly;Ly;I)I",
-      garbageValue = "1698235005"
-   )
-   int method131(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      return var1.method72().compareTo(var2.method72());
+   int method141(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+      return var1.method82().compareTo(var2.method82());
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method131((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
+      return this.method141((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)Lbo;",
+      garbageValue = "1017268411"
+   )
+   static MessageNode method151(int var0) {
+      return (MessageNode)class95.messages.get((long)var0);
    }
 }

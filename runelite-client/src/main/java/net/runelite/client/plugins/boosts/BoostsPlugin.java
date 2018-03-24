@@ -24,27 +24,60 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import com.google.inject.Binder;
+import com.google.common.collect.ObjectArrays;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Instant;
+import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boosts plugin"
+	name = "Boosts Information"
 )
+@Slf4j
 public class BoostsPlugin extends Plugin
 {
-	@Inject
-	BoostsOverlay boostsOverlay;
-
-	@Override
-	public void configure(Binder binder)
+	private static final Skill[] COMBAT = new Skill[]
 	{
-		binder.bind(BoostsOverlay.class);
-	}
+		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
+	};
+	private static final Skill[] SKILLING = new Skill[]
+	{
+		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
+		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
+		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
+	};
+
+	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
+
+	@Getter
+	private Instant lastChange;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private BoostsOverlay boostsOverlay;
+
+	@Inject
+	private BoostsConfig config;
+
+	@Getter
+	private Skill[] shownSkills;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -56,5 +89,67 @@ public class BoostsPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return boostsOverlay;
+	}
+
+	@Override
+	protected void startUp()
+	{
+		updateShownSkills(config.enableSkill());
+		Arrays.fill(lastSkillLevels, -1);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		Skill[] old = shownSkills;
+		updateShownSkills(config.enableSkill());
+
+		if (!Arrays.equals(old, shownSkills))
+		{
+			infoBoxManager.removeIf(t -> t instanceof BoostIndicator
+				&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
+		}
+	}
+
+	@Subscribe
+	void onBoostedLevelChange(BoostedLevelChanged boostedLevelChanged)
+	{
+		Skill skill = boostedLevelChanged.getSkill();
+
+		// Ignore changes to hitpoints or prayer
+		if (skill == Skill.HITPOINTS || skill == Skill.PRAYER)
+		{
+			return;
+		}
+
+		int skillIdx = skill.ordinal();
+		int last = lastSkillLevels[skillIdx];
+		int cur = client.getBoostedSkillLevel(skill);
+
+		// Check if stat goes +1 or -2
+		if (cur == last + 1 || cur == last - 1)
+		{
+			log.debug("Skill {} healed", skill);
+			lastChange = Instant.now();
+		}
+		lastSkillLevels[skillIdx] = cur;
+	}
+
+	private void updateShownSkills(boolean showSkillingSkills)
+	{
+		if (showSkillingSkills)
+		{
+			shownSkills = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
+		}
+		else
+		{
+			shownSkills = COMBAT;
+		}
 	}
 }

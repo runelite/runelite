@@ -47,29 +47,27 @@ import okhttp3.WebSocketListener;
 public class WSClient extends WebSocketListener implements AutoCloseable
 {
 	private static final Duration PING_TIME = Duration.ofSeconds(30);
-
-	private static final Gson gson = WebsocketGsonFactory.build();
+	private static final Gson GSON = WebsocketGsonFactory.build();
 
 	private final OkHttpClient client = new OkHttpClient();
-
 	private final EventBus eventBus;
+	private final ScheduledFuture pingFuture;
 	private final AccountSession session;
 	private WebSocket webSocket;
-	private final ScheduledFuture pingFuture;
 
-	public WSClient(EventBus eventBus, ScheduledExecutorService executor, AccountSession session)
+	WSClient(EventBus eventBus, ScheduledExecutorService executor, AccountSession session)
 	{
 		this.eventBus = eventBus;
 		this.session = session;
 		this.pingFuture = executor.scheduleWithFixedDelay(this::ping, PING_TIME.getSeconds(), PING_TIME.getSeconds(), TimeUnit.SECONDS);
 	}
 
-	public AccountSession getSession()
+	boolean checkSession(AccountSession session)
 	{
-		return session;
+		return session.equals(this.session);
 	}
 
-	public void connect()
+	void connect()
 	{
 		Request request = new Request.Builder()
 			.url(RuneLiteAPI.getWsEndpoint())
@@ -82,14 +80,14 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		send(handshake);
 	}
 
-	public void ping()
+	private void ping()
 	{
 		Ping ping = new Ping();
 		ping.setTime(Instant.now());
 		send(ping);
 	}
 
-	public void send(WebsocketMessage message)
+	private void send(WebsocketMessage message)
 	{
 		if (webSocket == null)
 		{
@@ -98,7 +96,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			connect();
 		}
 
-		String json = gson.toJson(message, WebsocketMessage.class);
+		String json = GSON.toJson(message, WebsocketMessage.class);
 		webSocket.send(json);
 
 		log.debug("Sent: {}", json);
@@ -127,7 +125,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onMessage(WebSocket webSocket, String text)
 	{
-		WebsocketMessage message = gson.fromJson(text, WebsocketMessage.class);
+		WebsocketMessage message = GSON.fromJson(text, WebsocketMessage.class);
 		log.debug("Got message: {}", message);
 
 		eventBus.post(message);

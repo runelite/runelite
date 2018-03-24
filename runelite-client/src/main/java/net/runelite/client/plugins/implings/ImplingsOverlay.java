@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.implings;
 
 import com.google.common.primitives.Ints;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -40,7 +39,9 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Point;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.QueryRunner;
 
 /**
@@ -64,12 +65,13 @@ public class ImplingsOverlay extends Overlay
 	public ImplingsOverlay(QueryRunner queryRunner, ImplingsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.queryRunner = queryRunner;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids.keySet()));
 		NPC[] implings = queryRunner.runQuery(implingQuery);
@@ -154,34 +156,19 @@ public class ImplingsOverlay extends Overlay
 		Polygon poly = actor.getCanvasTilePoly();
 		if (poly != null)
 		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.drawPolygon(poly);
-			graphics.setColor(new Color(0, 0, 0, 50));
-			graphics.fillPolygon(poly);
+			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
 		Point minimapLocation = actor.getMinimapLocation();
 		if (minimapLocation != null)
 		{
-			graphics.setColor(color);
-			graphics.fillOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
-			graphics.setColor(Color.WHITE);
-			graphics.setStroke(new BasicStroke(1));
-			graphics.drawOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
+			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getModelHeight());
+		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());
 		if (textLocation != null)
 		{
-			int x = textLocation.getX();
-			int y = textLocation.getY();
-
-			graphics.setColor(Color.BLACK);
-			graphics.drawString(text, x + 1, y + 1);
-
-			graphics.setColor(color);
-			graphics.drawString(text, x, y);
+			OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
 		}
 	}
 

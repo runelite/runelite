@@ -1,54 +1,77 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
-public class class254 extends CacheableNode {
+@ObfuscatedName("im")
+public enum class254 implements Enumerated {
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3326(7, 0),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3320(5, 1),
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3321(0, 2),
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lim;"
    )
-   public static IndexDataBase field3400;
-   @ObfuscatedName("w")
+   field3322(1, 3),
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lim;"
    )
-   public static NodeCache field3401;
-   @ObfuscatedName("e")
-   public boolean field3402;
-
-   static {
-      field3401 = new NodeCache(64);
-   }
-
-   public class254() {
-      this.field3402 = false;
-   }
-
-   @ObfuscatedName("w")
+   field3323(3, 4),
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lgh;B)V",
-      garbageValue = "-82"
+      signature = "Lim;"
    )
-   public void method4463(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4461(var1, var2);
-      }
-   }
-
+   field3319(2, 5),
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgh;II)V",
-      garbageValue = "-1543158015"
+      signature = "Lim;"
    )
-   void method4461(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3402 = true;
-      }
+   field3325(4, 6),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3327(6, 7);
 
+   @ObfuscatedName("pv")
+   @ObfuscatedGetter(
+      intValue = -290450649
+   )
+   static int field3329;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -79338951
+   )
+   public final int field3328;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 168139889
+   )
+   final int field3324;
+
+   class254(int var3, int var4) {
+      this.field3328 = var3;
+      this.field3324 = var4;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "64"
+   )
+   public int rsOrdinal() {
+      return this.field3324;
    }
 }

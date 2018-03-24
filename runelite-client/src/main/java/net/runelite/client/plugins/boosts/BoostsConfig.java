@@ -24,31 +24,22 @@
  */
 package net.runelite.client.plugins.boosts;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Config;
 
 @ConfigGroup(
 	keyName = "boosts",
-	name = "Boosts Info",
+	name = "Boosts Information",
 	description = "Configuration for the Boosts plugin"
 )
 public interface BoostsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not boost info is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "enableSkill",
 		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information"
+		description = "Configures whether or not to display skill boost information",
+		position = 1
 	)
 	default boolean enableSkill()
 	{
@@ -58,10 +49,33 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "relativeBoost",
 		name = "Use Relative Boosts",
-		description = "Configures whether or not relative boost is used"
+		description = "Configures whether or not relative boost is used",
+		position = 2
 	)
 	default boolean useRelativeBoost()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "displayIndicators",
+		name = "Display as indicators",
+		description = "Configures whether or not to display the boost as indicators",
+		position = 3
+	)
+	default boolean displayIndicators()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "displayNextChange",
+		name = "Display next change",
+		description = "Configures whether or not to display when the next stat change will be",
+		position = 4
+	)
+	default boolean displayNextChange()
+	{
+		return true;
 	}
 }

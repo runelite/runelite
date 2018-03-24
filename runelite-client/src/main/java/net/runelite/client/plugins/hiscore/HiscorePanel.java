@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import java.awt.event.MouseAdapter;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
@@ -35,6 +36,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -68,6 +70,8 @@ public class HiscorePanel extends PluginPanel
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
 
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+
 	private static final HiscoreSkill[] SKILL_PANEL_ORDER = new HiscoreSkill[]
 	{
 		ATTACK, HITPOINTS, MINING,
@@ -91,6 +95,8 @@ public class HiscorePanel extends PluginPanel
 	private final ButtonGroup endpointButtonGroup = new ButtonGroup();
 	private final JTextArea details = new JTextArea();
 
+	private List<JToggleButton> endpointButtons;
+
 	private final HiscoreClient client = new HiscoreClient();
 	private HiscoreResult result;
 
@@ -101,7 +107,6 @@ public class HiscorePanel extends PluginPanel
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
 		Border subPanelBorder = BorderFactory.createLineBorder(this.getBackground().brighter(), 2);
-		Font labelFont = UIManager.getFont("Label.font");
 
 		// Create GBL to arrange sub items
 		GridBagLayout gridBag = new GridBagLayout();
@@ -117,10 +122,15 @@ public class HiscorePanel extends PluginPanel
 		inputPanel.setLayout(new BorderLayout(7, 7));
 		inputPanel.setBorder(subPanelBorder);
 
-		Icon search = null;
+		Icon search;
 		try
 		{
-			search = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream("search.png")));
+			BufferedImage icon;
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(HiscorePanel.class.getResourceAsStream("search.png"));
+			}
+			search = new ImageIcon(icon);
 		}
 		catch (IOException ex)
 		{
@@ -129,7 +139,6 @@ public class HiscorePanel extends PluginPanel
 
 		input = new IconTextField();
 		input.setIcon(search);
-		input.setFont(labelFont.deriveFont(Font.BOLD));
 		input.addActionListener(e -> executor.execute(this::lookup));
 		inputPanel.add(input, BorderLayout.CENTER);
 
@@ -195,7 +204,6 @@ public class HiscorePanel extends PluginPanel
 		details.setCursor(null);
 		details.setOpaque(false);
 		details.setFocusable(false);
-		details.setFont(labelFont);
 		details.setWrapStyleWord(true);
 		details.setLineWrap(true);
 		details.setMargin(new Insets(2, 4, 4, 4));
@@ -212,25 +220,33 @@ public class HiscorePanel extends PluginPanel
 		JPanel endpointPanel = new JPanel();
 		endpointPanel.setBorder(subPanelBorder);
 
-		List<JToggleButton> endpointButtons = new ArrayList<>();
-
+		endpointButtons = new ArrayList<>();
 		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
 		{
 			try
 			{
-				Icon icon = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(
-					endpoint.name().toLowerCase() + ".png")));
-				Icon selected = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(
-					endpoint.name().toLowerCase() + "_selected.png")));
+				BufferedImage iconImage;
+				synchronized (ImageIO.class)
+				{
+					iconImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
+						endpoint.name().toLowerCase() + ".png"));
+				}
 				JToggleButton button = new JToggleButton();
-				button.setIcon(icon);
-				button.setSelectedIcon(selected);
+				button.setIcon(new ImageIcon(iconImage));
 				button.setPreferredSize(new Dimension(24, 24));
 				button.setBackground(Color.WHITE);
 				button.setFocusPainted(false);
 				button.setActionCommand(endpoint.name());
 				button.setToolTipText(endpoint.getName() + " Hiscores");
 				button.addActionListener((e -> executor.execute(this::lookup)));
+				button.addMouseListener(new MouseAdapter()
+				{
+					@Override
+					public void mouseReleased(MouseEvent e)
+					{
+						updateButtons();
+					}
+				});
 				endpointButtons.add(button);
 				endpointButtonGroup.add(button);
 				endpointPanel.add(button);
@@ -242,6 +258,7 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		endpointButtons.get(0).setSelected(true);
+		endpointButtons.get(0).setBackground(Color.CYAN);
 
 		c.gridx = 0;
 		c.gridy = 5;
@@ -258,8 +275,6 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		NumberFormat formatter = NumberFormat.getInstance();
-
 		String text;
 		switch (skillName)
 		{
@@ -275,8 +290,8 @@ public class HiscorePanel extends PluginPanel
 					result.getPrayer().getLevel()
 				);
 				text = "Skill: Combat" + System.lineSeparator()
-					+ "Exact Combat Level: " + formatter.format(combatLevel) + System.lineSeparator()
-					+ "Experience: " + formatter.format(result.getAttack().getExperience()
+					+ "Exact Combat Level: " + NUMBER_FORMATTER.format(combatLevel) + System.lineSeparator()
+					+ "Experience: " + NUMBER_FORMATTER.format(result.getAttack().getExperience()
 					+ result.getStrength().getExperience() + result.getDefence().getExperience()
 					+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 					+ result.getRanged().getExperience() + result.getPrayer().getExperience());
@@ -284,46 +299,74 @@ public class HiscorePanel extends PluginPanel
 			}
 			case "Clue Scrolls (all)":
 			{
-				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : formatter.format(result.getClueScrollAll().getRank());
+				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getClueScrollAll().getRank());
 				text = "Total Clue Scrolls Completed" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Rogue":
 			{
-				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : formatter.format(result.getBountyHunterRogue().getRank());
+				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getBountyHunterRogue().getRank());
 				text = "Bounty Hunter - Rogue Kills" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Hunter":
 			{
-				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : formatter.format(result.getBountyHunterHunter().getRank());
+				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getBountyHunterHunter().getRank());
 				text = "Bounty Hunter - Hunter Kills" + System.lineSeparator()
 						+ "Rank: " + rank;
 				break;
 			}
 			case "Last Man Standing":
 			{
-				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : formatter.format(result.getLastManStanding().getRank());
+				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getLastManStanding().getRank());
 				text = "Last Man Standing" + System.lineSeparator()
 						+ "Rank: " + rank;
+				break;
+			}
+			case "Overall":
+			{
+				Skill requestedSkill = result.getSkill(skill);
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getExperience());
+				text = "Skill: " + skillName + System.lineSeparator()
+					+ "Rank: " + rank + System.lineSeparator()
+					+ "Experience: " + exp;
 				break;
 			}
 			default:
 			{
 				Skill requestedSkill = result.getSkill(skill);
-				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getRank());
-				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getExperience());
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getExperience());
+				String remainingXp;
+				if (requestedSkill.getRank() == -1)
+				{
+					remainingXp = "Unranked";
+				}
+				else
+				{
+					int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
+					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? NUMBER_FORMATTER.format(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+				}
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
-					+ "Experience: " + exp;
+					+ "Experience: " + exp + System.lineSeparator()
+					+ "Remaining XP: " + remainingXp;
 				break;
 			}
 		}
 
 		details.setFont(UIManager.getFont("Label.font"));
 		details.setText(text);
+	}
+
+	@Override
+	public void onActivate()
+	{
+		super.onActivate();
+		input.requestFocusInWindow();
 	}
 
 	private JPanel makeSkillPanel(String skillName, HiscoreSkill skill)
@@ -340,19 +383,23 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
-			label.setIcon(new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon))));
+			BufferedImage icon;
+			synchronized (ImageIO.class)
+			{
+				icon = ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon));
+			}
+			label.setIcon(new ImageIcon(icon));
 		}
 		catch (IOException ex)
 		{
 			log.warn(null, ex);
 		}
 
-		// Show skill details on click
+		// Show skill details on hover
 		label.addMouseListener(new MouseInputAdapter()
 		{
-			// mouseReleased feels better than mouseClick UX-wise
 			@Override
-			public void mouseReleased(MouseEvent e)
+			public void mouseEntered(MouseEvent e)
 			{
 				JLabel source = (JLabel) e.getSource();
 				String skillName = (String) source.getClientProperty(SKILL_NAME);
@@ -376,6 +423,7 @@ public class HiscorePanel extends PluginPanel
 	private void lookup()
 	{
 		String lookup = input.getText();
+		details.setText("Loading...");
 
 		lookup = sanitize(lookup);
 
@@ -399,6 +447,7 @@ public class HiscorePanel extends PluginPanel
 		catch (IOException ex)
 		{
 			log.warn("Error fetching Hiscore data " + ex.getMessage());
+			details.setText("Error fetching Hiscore data");
 			return;
 		}
 
@@ -431,11 +480,28 @@ public class HiscorePanel extends PluginPanel
 
 		// Clear details panel
 		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
-		details.setText("Click a skill for details");
+		details.setText("Hover over a skill for details");
 	}
 
 	private static String sanitize(String lookup)
 	{
 		return lookup.replace('\u00A0', ' ');
+	}
+
+	private void updateButtons()
+	{
+		for (JToggleButton button : endpointButtons)
+		{
+			Color color;
+			if (button.isSelected())
+			{
+				color = Color.CYAN;
+			}
+			else
+			{
+				color = Color.WHITE;
+			}
+			button.setBackground(color);
+		}
 	}
 }

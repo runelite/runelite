@@ -25,46 +25,58 @@
 package net.runelite.client.plugins.fishing;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.NPC;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fishing plugin"
+	name = "Fishing"
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Singleton
 public class FishingPlugin extends Plugin
 {
-	@Inject
-	FishingConfig config;
+	private final List<Integer> spotIds = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private NPC[] fishingSpots;
 
 	@Inject
-	FishingOverlay overlay;
+	private QueryRunner queryRunner;
 
 	@Inject
-	FishingSpotOverlay spotOverlay;
+	private FishingConfig config;
+
+	@Inject
+	private FishingOverlay overlay;
+
+	@Inject
+	private FishingSpotOverlay spotOverlay;
+
+	@Inject
+	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
 
 	private final FishingSession session = new FishingSession();
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(FishingOverlay.class);
-	}
 
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
@@ -76,13 +88,13 @@ public class FishingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		// Initialize overlay config
-		spotOverlay.updateConfig();
+		updateConfig();
 	}
 
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, spotOverlay);
+		return Arrays.asList(overlay, spotOverlay, fishingSpotMinimapOverlay);
 	}
 
 	public FishingSession getSession()
@@ -100,35 +112,70 @@ public class FishingPlugin extends Plugin
 
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
-			session.incrementFishCaught();
+			session.setLastFishCaught();
 		}
 	}
 
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
-		spotOverlay.updateConfig();
+		updateConfig();
 	}
 
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkFishing()
+	private void updateConfig()
 	{
-		Instant lastFishCaught = session.getLastFishCaught();
-		if (lastFishCaught == null)
+		spotIds.clear();
+		if (config.showShrimp())
 		{
-			return;
+			spotIds.addAll(Ints.asList(FishingSpot.SHRIMP.getIds()));
 		}
-
-		// reset recentcaught if you haven't caught anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCaught = Duration.between(lastFishCaught, Instant.now());
-
-		if (sinceCaught.compareTo(statTimeout) >= 0)
+		if (config.showLobster())
 		{
-			session.resetRecent();
+			spotIds.addAll(Ints.asList(FishingSpot.LOBSTER.getIds()));
 		}
+		if (config.showShark())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SHARK.getIds()));
+		}
+		if (config.showMonkfish())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.MONKFISH.getIds()));
+		}
+		if (config.showSalmon())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SALMON.getIds()));
+		}
+		if (config.showBarb())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.BARB_FISH.getIds()));
+		}
+		if (config.showAngler())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.ANGLERFISH.getIds()));
+		}
+		if (config.showMinnow())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.MINNOW.getIds()));
+		}
+		if (config.showInfernalEel())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
+		}
+		if (config.showKarambwanji())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWANJI.getIds()));
+		}
+		if (config.showKarambwan())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWAN.getIds()));
+		}
+	}
+
+	@Subscribe
+	public void checkSpots(GameTick event)
+	{
+		NPCQuery query = new NPCQuery()
+			.idEquals(Ints.toArray(spotIds));
+		fishingSpots = queryRunner.runQuery(query);
 	}
 }

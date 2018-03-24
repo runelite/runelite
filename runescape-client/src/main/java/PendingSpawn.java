@@ -4,86 +4,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bl")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("bq")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   @Export("jagexLoginType")
-   static JagexLoginType jagexLoginType;
-   @ObfuscatedName("jv")
-   @ObfuscatedSignature(
-      signature = "Lcw;"
-   )
-   @Export("topContextMenuRow")
-   static ContextMenuRow topContextMenuRow;
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1314434327
+      intValue = 1271334225
    )
    @Export("level")
    int level;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1135806613
+      intValue = -1791403159
    )
    @Export("type")
    int type;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1534725047
+      intValue = -1971824699
    )
    @Export("x")
    int x;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -2011832797
+      intValue = 1952681829
    )
    @Export("y")
    int y;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1155203191
+      intValue = 1363990175
    )
-   int field1112;
-   @ObfuscatedName("z")
+   int field1125;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1851868879
+      intValue = -1245381677
    )
-   int field1113;
-   @ObfuscatedName("t")
+   int field1126;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1968438559
+      intValue = -1550544765
    )
-   int field1114;
-   @ObfuscatedName("f")
+   int field1121;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -591865171
+      intValue = -1313820901
    )
    @Export("id")
    int id;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1702666337
+      intValue = 1948648261
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -2067797229
+      intValue = 131457153
    )
-   int field1117;
-   @ObfuscatedName("x")
+   int field1129;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1885900041
+      intValue = -571366851
    )
    @Export("delay")
    int delay;
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1299482467
+      intValue = -1350090127
    )
    @Export("hitpoints")
    int hitpoints;
@@ -93,168 +81,58 @@ public final class PendingSpawn extends Node {
       this.hitpoints = -1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
-      garbageValue = "58"
+      signature = "(II)Ljh;",
+      garbageValue = "-1390673728"
    )
-   public static void method1461(String var0, Throwable var1) {
-      var1.printStackTrace();
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(ILck;ZB)I",
-      garbageValue = "127"
-   )
-   static int method1459(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      if(var0 == 100) {
-         class82.intStackSize -= 3;
-         var3 = class82.intStack[class82.intStackSize];
-         var4 = class82.intStack[class82.intStackSize + 1];
-         int var5 = class82.intStack[class82.intStackSize + 2];
-         if(var4 == 0) {
-            throw new RuntimeException();
-         } else {
-            Widget var6 = VertexNormal.getWidget(var3);
-            if(var6.children == null) {
-               var6.children = new Widget[var5 + 1];
-            }
-
-            if(var6.children.length <= var5) {
-               Widget[] var7 = new Widget[var5 + 1];
-
-               for(int var8 = 0; var8 < var6.children.length; ++var8) {
-                  var7[var8] = var6.children[var8];
-               }
-
-               var6.children = var7;
-            }
-
-            if(var5 > 0 && var6.children[var5 - 1] == null) {
-               throw new RuntimeException("" + (var5 - 1));
-            } else {
-               Widget var12 = new Widget();
-               var12.type = var4;
-               var12.parentId = var12.id = var6.id;
-               var12.index = var5;
-               var12.hasScript = true;
-               var6.children[var5] = var12;
-               if(var2) {
-                  class139.field2008 = var12;
-               } else {
-                  AttackOption.field1306 = var12;
-               }
-
-               class33.method344(var6);
-               return 1;
-            }
-         }
+   public static class281 method1649(int var0) {
+      class281 var1 = (class281)class281.field3573.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         Widget var9;
-         if(var0 == 101) {
-            var9 = var2?class139.field2008:AttackOption.field1306;
-            Widget var10 = VertexNormal.getWidget(var9.id);
-            var10.children[var9.index] = null;
-            class33.method344(var10);
-            return 1;
-         } else if(var0 == 102) {
-            var9 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
-            var9.children = null;
-            class33.method344(var9);
-            return 1;
-         } else if(var0 != 200) {
-            if(var0 == 201) {
-               var9 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
-               if(var9 != null) {
-                  class82.intStack[++class82.intStackSize - 1] = 1;
-                  if(var2) {
-                     class139.field2008 = var9;
-                  } else {
-                     AttackOption.field1306 = var9;
-                  }
-               } else {
-                  class82.intStack[++class82.intStackSize - 1] = 0;
-               }
-
-               return 1;
-            } else {
-               return 2;
-            }
-         } else {
-            class82.intStackSize -= 2;
-            var3 = class82.intStack[class82.intStackSize];
-            var4 = class82.intStack[class82.intStackSize + 1];
-            Widget var11 = TextureProvider.getWidgetChild(var3, var4);
-            if(var11 != null && var4 != -1) {
-               class82.intStack[++class82.intStackSize - 1] = 1;
-               if(var2) {
-                  class139.field2008 = var11;
-               } else {
-                  AttackOption.field1306 = var11;
-               }
-            } else {
-               class82.intStack[++class82.intStackSize - 1] = 0;
-            }
-
-            return 1;
+         byte[] var2 = class281.field3585.getConfigData(32, var0);
+         var1 = new class281();
+         if(var2 != null) {
+            var1.method4952(new Buffer(var2));
          }
+
+         class281.field3573.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lcp;Lcp;IZIZI)I",
-      garbageValue = "-262261266"
+      signature = "(Ljc;I)V",
+      garbageValue = "989690234"
    )
-   static int method1460(World var0, World var1, int var2, boolean var3, int var4, boolean var5) {
-      int var6 = class31.method268(var0, var1, var2, var3);
-      if(var6 != 0) {
-         return var3?-var6:var6;
-      } else if(var4 == -1) {
-         return 0;
-      } else {
-         int var7 = class31.method268(var0, var1, var4, var5);
-         return var5?-var7:var7;
-      }
+   public static void method1647(IndexDataBase var0) {
+      Enum.EnumDefinition_indexCache = var0;
    }
 
-   @ObfuscatedName("fz")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lbj;ZI)V",
-      garbageValue = "-1700483995"
+      signature = "(III)V",
+      garbageValue = "785970621"
    )
-   static void method1462(Player var0, boolean var1) {
-      if(var0 != null && var0.hasConfig() && !var0.hidden) {
-         int var2 = var0.field810 << 14;
-         var0.isLowDetail = false;
-         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.idlePoseAnimation == var0.poseAnimation) {
-            var0.isLowDetail = true;
-         }
+   static void method1648(int var0, int var1) {
+      int[] var2 = new int[4];
+      int[] var3 = new int[4];
+      var2[0] = var0;
+      var3[0] = var1;
+      int var4 = 1;
 
-         int var3 = var0.x >> 7;
-         int var4 = var0.y >> 7;
-         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-            if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
-               var0.isLowDetail = false;
-               var0.field816 = WorldMapType2.getTileHeight(var0.x, var0.y, BoundingBox2D.plane);
-               class48.region.method2862(BoundingBox2D.plane, var0.x, var0.y, var0.field816, 60, var0, var0.angle, var2, var0.field823, var0.field824, var0.field825, var0.field828);
-            } else {
-               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
-                  if(Client.field931[var3][var4] == Client.field932) {
-                     return;
-                  }
-
-                  Client.field931[var3][var4] = Client.field932;
-               }
-
-               var0.field816 = WorldMapType2.getTileHeight(var0.x, var0.y, BoundingBox2D.plane);
-               class48.region.method2701(BoundingBox2D.plane, var0.x, var0.y, var0.field816, 60, var0, var0.angle, var2, var0.field1170);
-            }
+      for(int var5 = 0; var5 < 4; ++var5) {
+         if(World.field1210[var5] != var0) {
+            var2[var4] = World.field1210[var5];
+            var3[var4] = World.field1204[var5];
+            ++var4;
          }
       }
 
+      World.field1210 = var2;
+      World.field1204 = var3;
+      ItemLayer.method2592(World.worldList, 0, World.worldList.length - 1, World.field1210, World.field1204);
    }
 }

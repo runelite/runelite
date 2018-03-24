@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,46 +24,34 @@
  */
 package net.runelite.http.service.item;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemType;
-import net.runelite.http.api.item.SearchResult;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
-@RestController
-@RequestMapping("/item")
+@Service
+@Slf4j
 public class ItemService
 {
-	private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
-
 	private static final String BASE = "https://services.runescape.com/m=itemdb_oldschool";
 	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse(BASE + "/api/catalogue/detail.json");
 	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "/api/graph");
@@ -77,28 +65,26 @@ public class ItemService
 		+ "  `icon` blob,\n"
 		+ "  `icon_large` blob,\n"
 		+ "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  PRIMARY KEY (`id`)\n"
+		+ "  PRIMARY KEY (`id`),\n"
+		+ "  FULLTEXT idx_name (name)\n"
 		+ ") ENGINE=InnoDB";
 
 	private static final String CREATE_PRICES = "CREATE TABLE IF NOT EXISTS `prices` (\n"
 		+ "  `item` int(11) NOT NULL,\n"
 		+ "  `price` int(11) NOT NULL,\n"
-		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
-		+ "  KEY `item` (`item`)\n"
+		+ "  `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n"
+		+ "  `fetched_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n"
+		+ "  UNIQUE KEY `item_time` (`item`,`time`),\n"
+		+ "  KEY `item_fetched_time` (`item`,`fetched_time`)\n"
 		+ ") ENGINE=InnoDB";
 
 	private static final String CREATE_PRICES_FK = "ALTER TABLE `prices`\n"
 		+ "  ADD CONSTRAINT `item` FOREIGN KEY (`item`) REFERENCES `items` (`id`);";
 
-	private static final String CREATE_PRICES_IDX = "ALTER TABLE `prices`\n"
-		+ "  ADD UNIQUE KEY `item` (`item`,`time`);";
-
-	private static final String RUNELITE_CACHE = "RuneLite-Cache";
+	private static final int MAX_PENDING = 512;
 
 	private final Sql2o sql2o;
-	private final Cache<String, SearchResult> cachedSearches = CacheBuilder.newBuilder()
-		.maximumSize(1024L)
-		.build();
+	private final ConcurrentLinkedQueue<PendingLookup> pendingLookups = new ConcurrentLinkedQueue<PendingLookup>();
 
 	@Autowired
 	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
@@ -122,197 +108,10 @@ public class ItemService
 			{
 				// Ignore, happens when index already exists
 			}
-
-			try
-			{
-				con.createQuery(CREATE_PRICES_IDX)
-					.executeUpdate();
-			}
-			catch (Sql2oException ex)
-			{
-				// Ignore
-			}
 		}
 	}
 
-	@RequestMapping("/{itemId}")
-	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
-	{
-		ItemEntry item = getItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return item.toItem();
-		}
-
-		item = fetchItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return item.toItem();
-		}
-
-		return null;
-	}
-
-	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
-	public byte[] getIcon(HttpServletResponse response, @PathVariable int itemId)
-	{
-		ItemEntry item = getItem(itemId);
-		if (item != null && item.getIcon() != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return item.getIcon();
-		}
-
-		item = fetchItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return item.getIcon();
-		}
-
-		return null;
-	}
-
-	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
-	public byte[] getIconLarge(HttpServletResponse response, @PathVariable int itemId)
-	{
-		ItemEntry item = getItem(itemId);
-		if (item != null && item.getIcon_large() != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return item.getIcon_large();
-		}
-
-		item = fetchItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return item.getIcon_large();
-		}
-
-		return null;
-	}
-
-	@RequestMapping("/{itemId}/price")
-	public ItemPrice getPrice(
-		HttpServletResponse response,
-		@PathVariable int itemId,
-		@RequestParam(required = false) Instant time
-	)
-	{
-		Instant now = Instant.now();
-		boolean hit = true;
-
-		if (time != null && time.isAfter(now))
-		{
-			time = now;
-		}
-
-		ItemEntry item = getItem(itemId);
-		if (item == null)
-		{
-			item = fetchItem(itemId);
-			hit = false;
-
-			if (item == null)
-			{
-				return null;
-			}
-		}
-
-		PriceEntry priceEntry = getPrice(itemId, time);
-
-		if (time != null)
-		{
-			if (priceEntry == null)
-			{
-				// we maybe can't backfill this
-				return null;
-			}
-		}
-		else
-		{
-			Instant yesterday = now.minus(1, ChronoUnit.DAYS);
-			if (priceEntry == null || priceEntry.getTime().isBefore(yesterday))
-			{
-				List<PriceEntry> prices = fetchPrice(itemId);
-
-				if (prices == null || prices.isEmpty())
-				{
-					return null;
-				}
-
-				priceEntry = prices.get(prices.size() - 1);
-				hit = false;
-			}
-		}
-
-		ItemPrice itemPrice = new ItemPrice();
-		itemPrice.setItem(item.toItem());
-		itemPrice.setPrice(priceEntry.getPrice());
-		itemPrice.setTime(priceEntry.getTime());
-
-		response.setHeader(RUNELITE_CACHE, hit ? "HIT" : "MISS");
-		return itemPrice;
-	}
-
-	@RequestMapping("/search")
-	public SearchResult search(HttpServletResponse response, @RequestParam String query)
-	{
-		// rs api seems to require lowercase
-		query = query.toLowerCase();
-
-		SearchResult searchResult = cachedSearches.getIfPresent(query);
-		if (searchResult != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return searchResult;
-		}
-
-		try
-		{
-			RSSearch search = fetchRSSearch(query);
-
-			searchResult = new SearchResult();
-			List<Item> items = search.getItems().stream()
-				.map(rsi -> rsi.toItem())
-				.collect(Collectors.toList());
-			searchResult.setItems(items);
-
-			cachedSearches.put(query, searchResult);
-
-			try (Connection con = sql2o.beginTransaction())
-			{
-				Query q = con.createQuery("insert into items (id, name, description, type) values (:id,"
-					+ " :name, :description, :type) ON DUPLICATE KEY UPDATE name = :name,"
-					+ " description = :description, type = :type");
-
-				for (RSItem rsItem : search.getItems())
-				{
-					q.addParameter("id", rsItem.getId())
-						.addParameter("name", rsItem.getName())
-						.addParameter("description", rsItem.getDescription())
-						.addParameter("type", rsItem.getType())
-						.addToBatch();
-				}
-
-				q.executeBatch();
-				con.commit();
-			}
-
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return searchResult;
-		}
-		catch (IOException ex)
-		{
-			logger.warn("error while searching items", ex);
-			return null;
-		}
-	}
-
-	private ItemEntry getItem(int itemId)
+	public ItemEntry getItem(int itemId)
 	{
 		try (Connection con = sql2o.open())
 		{
@@ -324,27 +123,39 @@ public class ItemService
 		}
 	}
 
-	private PriceEntry getPrice(int itemId, Instant time)
+	public PriceEntry getPrice(int itemId, Instant time)
 	{
 		try (Connection con = sql2o.open())
 		{
 			if (time != null)
 			{
-				return con.createQuery("select price, time from prices where item = :item and time <= :time order by time desc limit 1")
+				return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
 					.addParameter("item", itemId)
 					.addParameter("time", time.toString())
 					.executeAndFetchFirst(PriceEntry.class);
 			}
 			else
 			{
-				return con.createQuery("select price, time from prices where item = :item order by time desc limit 1")
+				return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
 					.addParameter("item", itemId)
 					.executeAndFetchFirst(PriceEntry.class);
 			}
 		}
 	}
 
-	private ItemEntry fetchItem(int itemId)
+	public List<ItemEntry> search(String search)
+	{
+		try (Connection con = sql2o.open())
+		{
+			return con.createQuery("select id, name, description, type, match (name) against (:search) as score from items "
+				+ "where match (name) against (:search) order by score desc limit 10")
+				.throwOnMappingFailure(false) // otherwise it tries to map 'score'
+				.addParameter("search", search)
+				.executeAndFetch(ItemEntry.class);
+		}
+	}
+
+	public ItemEntry fetchItem(int itemId)
 	{
 		try
 		{
@@ -357,7 +168,7 @@ public class ItemService
 			}
 			catch (IOException ex)
 			{
-				logger.warn("error fetching image", ex);
+				log.warn("error fetching image", ex);
 			}
 
 			try
@@ -366,7 +177,7 @@ public class ItemService
 			}
 			catch (IOException ex)
 			{
-				logger.warn("error fetching image", ex);
+				log.warn("error fetching image", ex);
 			}
 
 			try (Connection con = sql2o.open())
@@ -394,21 +205,23 @@ public class ItemService
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to fetch item {}", itemId, ex);
+			log.warn("unable to fetch item {}", itemId, ex);
 			return null;
 		}
 	}
 
-	private List<PriceEntry> fetchPrice(int itemId)
+	public List<PriceEntry> fetchPrice(int itemId)
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
 			RSPrices rsprice = fetchRSPrices(itemId);
 			List<PriceEntry> entries = new ArrayList<>();
+			Instant now = Instant.now();
 
-			Query query = con.createQuery("insert ignore into prices (item, price, time) values (:item, :price, :time)");
+			Query query = con.createQuery("insert into prices (item, price, time, fetched_time) values (:item, :price, :time, :fetched_time) "
+				+ "ON DUPLICATE KEY UPDATE price = VALUES(price), fetched_time = VALUES(fetched_time)");
 
-			for (Entry<Long, Integer> entry : rsprice.getDaily().entrySet())
+			for (Map.Entry<Long, Integer> entry : rsprice.getDaily().entrySet())
 			{
 				long ts = entry.getKey(); // ms since epoch
 				int price = entry.getValue(); // gp
@@ -419,12 +232,14 @@ public class ItemService
 				priceEntry.setItem(itemId);
 				priceEntry.setPrice(price);
 				priceEntry.setTime(time);
+				priceEntry.setFetched_time(now);
 				entries.add(priceEntry);
 
 				query
 					.addParameter("item", itemId)
 					.addParameter("price", price)
 					.addParameter("time", time)
+					.addParameter("fetched_time", now)
 					.addToBatch();
 			}
 
@@ -435,7 +250,7 @@ public class ItemService
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to fetch price for item {}", itemId, ex);
+			log.warn("unable to fetch price for item {}", itemId, ex);
 			return null;
 		}
 	}
@@ -470,8 +285,11 @@ public class ItemService
 		return fetchJson(request, RSPrices.class);
 	}
 
-	private RSSearch fetchRSSearch(String query) throws IOException
+	public RSSearch fetchRSSearch(String query) throws IOException
 	{
+		// rs api seems to require lowercase
+		query = query.toLowerCase();
+
 		HttpUrl searchUrl = RS_SEARCH_URL
 			.newBuilder()
 			.addQueryParameter("alpha", query)
@@ -482,6 +300,28 @@ public class ItemService
 			.build();
 
 		return fetchJson(request, RSSearch.class);
+	}
+
+	private void batchInsertItems(RSSearch search)
+	{
+		try (Connection con = sql2o.beginTransaction())
+		{
+			Query q = con.createQuery("insert into items (id, name, description, type) values (:id,"
+				+ " :name, :description, :type) ON DUPLICATE KEY UPDATE name = :name,"
+				+ " description = :description, type = :type");
+
+			for (RSItem rsItem : search.getItems())
+			{
+				q.addParameter("id", rsItem.getId())
+					.addParameter("name", rsItem.getName())
+					.addParameter("description", rsItem.getDescription())
+					.addParameter("type", rsItem.getType())
+					.addToBatch();
+			}
+
+			q.executeBatch();
+			con.commit();
+		}
 	}
 
 	private <T> T fetchJson(Request request, Class<T> clazz) throws IOException
@@ -520,4 +360,73 @@ public class ItemService
 			return response.body().bytes();
 		}
 	}
+
+	public void queuePriceLookup(int itemId)
+	{
+		if (pendingLookups.size() < MAX_PENDING)
+		{
+			pendingLookups.add(new PendingLookup(itemId, PendingLookup.Type.PRICE));
+		}
+		else
+		{
+			log.warn("Dropping pending price lookup for {}", itemId);
+		}
+	}
+
+	public void queueSearch(String search)
+	{
+		if (pendingLookups.size() < MAX_PENDING)
+		{
+			pendingLookups.add(new PendingLookup(search, PendingLookup.Type.SEARCH));
+		}
+		else
+		{
+			log.warn("Dropping pending search for {}", search);
+		}
+	}
+
+	public void queueItem(int itemId)
+	{
+		if (pendingLookups.size() < MAX_PENDING)
+		{
+			pendingLookups.add(new PendingLookup(itemId, PendingLookup.Type.ITEM));
+		}
+		else
+		{
+			log.warn("Dropping pending item lookup for {}", itemId);
+		}
+	}
+
+	@Scheduled(fixedDelay = 5000)
+	public void check()
+	{
+		PendingLookup pendingLookup = pendingLookups.poll();
+		if (pendingLookup == null)
+		{
+			return;
+		}
+
+		switch (pendingLookup.getType())
+		{
+			case PRICE:
+				fetchPrice(pendingLookup.getItemId());
+				break;
+			case SEARCH:
+				try
+				{
+					RSSearch reSearch = fetchRSSearch(pendingLookup.getSearch());
+
+					batchInsertItems(reSearch);
+				}
+				catch (IOException ex)
+				{
+					log.warn("error while searching items", ex);
+				}
+				break;
+			case ITEM:
+				fetchItem(pendingLookup.getItemId());
+				break;
+		}
+	}
+
 }

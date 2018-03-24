@@ -37,5 +37,8 @@ public enum JewelleryType
 	BURNING,
 	PASSAGE,
 	RETURNING,
-	TCRYSTAL
+	TCRYSTAL,
+	PHARAO,
+	WATERSKIN,
+	IMP_IN_A_BOX
 }

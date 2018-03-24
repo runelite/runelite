@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.loaders.TextureLoader;
+import net.runelite.cache.definitions.providers.TextureProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -36,7 +37,7 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
-public class TextureManager
+public class TextureManager implements TextureProvider
 {
 	private final Store store;
 	private final List<TextureDefinition> textures = new ArrayList<>();
@@ -79,5 +80,11 @@ public class TextureManager
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public TextureDefinition[] provide()
+	{
+		return textures.toArray(new TextureDefinition[textures.size()]);
 	}
 }

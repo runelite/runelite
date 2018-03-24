@@ -24,107 +24,145 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import com.google.common.collect.ObjectArrays;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import javax.annotation.Nullable;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 class BoostsOverlay extends Overlay
 {
-	private static final Skill[] COMBAT = new Skill[]
-	{
-		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
-	};
-	private static final Skill[] SKILLING = new Skill[]
-	{
-		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
-		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
-	};
+	@Getter
+	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
 
 	private final Client client;
 	private final BoostsConfig config;
+	private final InfoBoxManager infoBoxManager;
+
+	@Inject
+	private BoostsPlugin plugin;
+
+	@Inject
+	private SkillIconManager iconManager;
+
 	private PanelComponent panelComponent;
 
 	@Inject
-	BoostsOverlay(@Nullable Client client, BoostsConfig config)
+	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.MED);
 		this.client = client;
 		this.config = config;
+		this.infoBoxManager = infoBoxManager;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
-		Skill[] show;
-		if (config.enableSkill())
-		{
-			show = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
-		}
-		else
-		{
-			show = COMBAT;
-		}
-
 		panelComponent = new PanelComponent();
+		boolean overlayActive = false;
 
-		for (Skill skill : show)
+		for (Skill skill : plugin.getShownSkills())
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);
 
+			BoostIndicator indicator = indicators[skill.ordinal()];
+
 			if (boosted == base)
 			{
+				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
+				{
+					infoBoxManager.removeInfoBox(indicator);
+				}
+
 				continue;
 			}
 
+			overlayActive = true;
 
-			String str;
-			Color strColor = Color.WHITE;
-			if (!config.useRelativeBoost())
+			if (config.displayIndicators())
 			{
-				str = boosted + "/" + base;
+				if (indicator == null)
+				{
+					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
+					indicators[skill.ordinal()] = indicator;
+				}
+
+				if (!infoBoxManager.getInfoBoxes().contains(indicator))
+				{
+					infoBoxManager.addInfoBox(indicator);
+				}
 			}
 			else
 			{
-				int boost = boosted - base;
-				str = String.valueOf(boost);
-				if (boost > 0)
+				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
 				{
-					str = "+"  + str;
-					strColor = Color.GREEN.darker();
+					infoBoxManager.removeInfoBox(indicator);
+				}
+
+				String str;
+				int boost = boosted - base;
+				Color strColor = getTextColor(boost);
+				if (!config.useRelativeBoost())
+				{
+					str = "<col=" + Integer.toHexString(strColor.getRGB() & 0xFFFFFF) + ">" + boosted + "<col=ffffff>/" + base;
 				}
 				else
 				{
-					strColor = Color.RED.darker();
+					str = String.valueOf(boost);
+					if (boost > 0)
+					{
+						str = "+" + str;
+					}
 				}
-			}
 
-			panelComponent.getLines().add(new PanelComponent.Line(
-				skill.getName(),
-				Color.WHITE,
-				str,
-				strColor
-			));
+				panelComponent.getLines().add(new PanelComponent.Line(
+					skill.getName(),
+					Color.WHITE,
+					str,
+					strColor
+				));
+			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		Instant lastChange = plugin.getLastChange();
+		if (config.displayNextChange() && lastChange != null && overlayActive)
+		{
+			int nextChange = 60 - (int)Duration.between(lastChange, Instant.now()).getSeconds();
+			if (nextChange > 0)
+			{
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Next change in",
+					Color.WHITE,
+					String.valueOf(nextChange),
+					Color.WHITE
+				));
+			}
+		}
+
+		return panelComponent.getLines().isEmpty() ? null : panelComponent.render(graphics);
 	}
 
+	private Color getTextColor(int boost)
+	{
+		if (boost > 0)
+		{
+			return Color.GREEN;
+		}
+
+		return new Color(238, 51, 51);
+
+	}
 }

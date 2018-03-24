@@ -27,8 +27,8 @@ package net.runelite.cache.script;
 public class Opcodes
 {
 	public static final int LOAD_INT = 0;
-	public static final int GET_SETTINGS = 1;
-	public static final int PUT_SETTINGS = 2;
+	public static final int GET_VARP = 1;
+	public static final int PUT_VARP = 2;
 	public static final int LOAD_STRING = 3;
 	public static final int JUMP = 6;
 	public static final int IF_ICMPNE = 7;
@@ -361,12 +361,17 @@ public class Opcodes
 	public static final int GET_SCREENTYPE = 5308;
 	public static final int SET_SCREENTYPE = 5309;
 	public static final int GET_MAPANGLE = 5506;
+	public static final int SET_CAMERA_FOCAL_POINT_HEIGHT = 5530;
+	public static final int GET_CAMERA_FOCAL_POINT_HEIGHT = 5531;
 	public static final int CANCEL_LOGIN = 5630;
+	public static final int SET_ZOOM_DISTANCE = 6201;
 	public static final int GET_VIEWPORT_SIZE = 6203;
+	public static final int GET_ZOOM_DISTANCE = 6204;
 	public static final int LOAD_WORLDS = 6500;
 	public static final int GET_FIRST_WORLD = 6501;
 	public static final int GET_NEXT_WORLD = 6502;
 	public static final int GET_WORLD_BY_ID = 6506;
 	public static final int GET_WORLD_BY_INDEX = 6511;
+	public static final int GET_IS_MOBILE = 6518;
 	public static final int GET_AREA_NAME = 6693;
 }

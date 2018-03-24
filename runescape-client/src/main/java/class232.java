@@ -1,337 +1,232 @@
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hw")
-public enum class232 implements Enumerated {
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2923(0, 0),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2921(1, 0),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2920(2, 0),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2918(3, 0),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2929(9, 2),
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2934(4, 1),
+@ObfuscatedName("hy")
+public class class232 {
+   @ObfuscatedName("g")
+   static final byte[] field2741;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lhw;"
+      signature = "Lgb;"
    )
-   field2924(5, 1),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2922(6, 1),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2926(7, 1),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2927(8, 1),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2928(12, 2),
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2932(13, 2),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2940(14, 2),
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2931(15, 2),
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2930(16, 2),
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2933(17, 2),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2925(18, 2),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2935(19, 2),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2936(20, 2),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2937(21, 2),
+   Buffer field2737;
    @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2938(10, 2),
+   int field2734;
+   @ObfuscatedName("i")
+   int[] field2745;
+   @ObfuscatedName("a")
+   int[] field2735;
+   @ObfuscatedName("l")
+   int[] field2736;
    @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2939(11, 2),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   field2919(22, 3);
+   int[] field2732;
+   @ObfuscatedName("e")
+   int field2733;
+   @ObfuscatedName("p")
+   long field2740;
 
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -929274249
-   )
-   public final int field2941;
+   static {
+      field2741 = new byte[]{(byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)0, (byte)1, (byte)2, (byte)1, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
+   }
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   class232(int var3, int var4) {
-      this.field2941 = var3;
+   class232(byte[] var1) {
+      this.field2737 = new Buffer((byte[])null);
+      this.method4294(var1);
+   }
+
+   class232() {
+      this.field2737 = new Buffer((byte[])null);
+   }
+
+   @ObfuscatedName("t")
+   void method4294(byte[] var1) {
+      this.field2737.payload = var1;
+      this.field2737.offset = 10;
+      int var2 = this.field2737.readUnsignedShort();
+      this.field2734 = this.field2737.readUnsignedShort();
+      this.field2733 = 500000;
+      this.field2745 = new int[var2];
+
+      int var3;
+      int var5;
+      for(var3 = 0; var3 < var2; this.field2737.offset += var5) {
+         int var4 = this.field2737.readInt();
+         var5 = this.field2737.readInt();
+         if(var4 == 1297379947) {
+            this.field2745[var3] = this.field2737.offset;
+            ++var3;
+         }
+      }
+
+      this.field2740 = 0L;
+      this.field2735 = new int[var2];
+
+      for(var3 = 0; var3 < var2; ++var3) {
+         this.field2735[var3] = this.field2745[var3];
+      }
+
+      this.field2736 = new int[var2];
+      this.field2732 = new int[var2];
+   }
+
+   @ObfuscatedName("q")
+   void method4306() {
+      this.field2737.payload = null;
+      this.field2745 = null;
+      this.field2735 = null;
+      this.field2736 = null;
+      this.field2732 = null;
+   }
+
+   @ObfuscatedName("i")
+   boolean method4296() {
+      return this.field2737.payload != null;
    }
 
    @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1035813094"
-   )
-   public int rsOrdinal() {
-      return this.field2941;
+   int method4324() {
+      return this.field2735.length;
+   }
+
+   @ObfuscatedName("l")
+   void method4298(int var1) {
+      this.field2737.offset = this.field2735[var1];
+   }
+
+   @ObfuscatedName("b")
+   void method4297(int var1) {
+      this.field2735[var1] = this.field2737.offset;
+   }
+
+   @ObfuscatedName("e")
+   void method4300() {
+      this.field2737.offset = -1;
+   }
+
+   @ObfuscatedName("x")
+   void method4301(int var1) {
+      int var2 = this.field2737.readVarInt();
+      this.field2736[var1] += var2;
+   }
+
+   @ObfuscatedName("p")
+   int method4341(int var1) {
+      int var2 = this.method4303(var1);
+      return var2;
+   }
+
+   @ObfuscatedName("o")
+   int method4303(int var1) {
+      byte var2 = this.field2737.payload[this.field2737.offset];
+      int var5;
+      if(var2 < 0) {
+         var5 = var2 & 255;
+         this.field2732[var1] = var5;
+         ++this.field2737.offset;
+      } else {
+         var5 = this.field2732[var1];
+      }
+
+      if(var5 != 240 && var5 != 247) {
+         return this.method4336(var1, var5);
+      } else {
+         int var3 = this.field2737.readVarInt();
+         if(var5 == 247 && var3 > 0) {
+            int var4 = this.field2737.payload[this.field2737.offset] & 255;
+            if(var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
+               ++this.field2737.offset;
+               this.field2732[var1] = var4;
+               return this.method4336(var1, var4);
+            }
+         }
+
+         this.field2737.offset += var3;
+         return 0;
+      }
+   }
+
+   @ObfuscatedName("c")
+   int method4336(int var1, int var2) {
+      int var4;
+      if(var2 == 255) {
+         int var7 = this.field2737.readUnsignedByte();
+         var4 = this.field2737.readVarInt();
+         if(var7 == 47) {
+            this.field2737.offset += var4;
+            return 1;
+         } else if(var7 == 81) {
+            int var5 = this.field2737.read24BitInt();
+            var4 -= 3;
+            int var6 = this.field2736[var1];
+            this.field2740 += (long)var6 * (long)(this.field2733 - var5);
+            this.field2733 = var5;
+            this.field2737.offset += var4;
+            return 2;
+         } else {
+            this.field2737.offset += var4;
+            return 3;
+         }
+      } else {
+         byte var3 = field2741[var2 - 128];
+         var4 = var2;
+         if(var3 >= 1) {
+            var4 = var2 | this.field2737.readUnsignedByte() << 8;
+         }
+
+         if(var3 >= 2) {
+            var4 |= this.field2737.readUnsignedByte() << 16;
+         }
+
+         return var4;
+      }
+   }
+
+   @ObfuscatedName("u")
+   long method4315(int var1) {
+      return this.field2740 + (long)var1 * (long)this.field2733;
+   }
+
+   @ObfuscatedName("k")
+   int method4304() {
+      int var1 = this.field2735.length;
+      int var2 = -1;
+      int var3 = Integer.MAX_VALUE;
+
+      for(int var4 = 0; var4 < var1; ++var4) {
+         if(this.field2735[var4] >= 0 && this.field2736[var4] < var3) {
+            var2 = var4;
+            var3 = this.field2736[var4];
+         }
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("z")
+   boolean method4307() {
+      int var1 = this.field2735.length;
+
+      for(int var2 = 0; var2 < var1; ++var2) {
+         if(this.field2735[var2] >= 0) {
+            return false;
+         }
+      }
+
+      return true;
    }
 
    @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "79"
-   )
-   static final int method4209() {
-      return class133.Viewport_mouseX;
-   }
+   void method4308(long var1) {
+      this.field2740 = var1;
+      int var3 = this.field2735.length;
 
-   @ObfuscatedName("ai")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1460359231"
-   )
-   protected static int method4205() {
-      int var0 = 0;
-      if(PlayerComposition.field2738 == null || !PlayerComposition.field2738.isValid()) {
-         try {
-            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
-
-            while(var1.hasNext()) {
-               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-               if(var2.isValid()) {
-                  PlayerComposition.field2738 = var2;
-                  GameEngine.garbageCollectorLastCheckTimeMs = -1L;
-                  GameEngine.garbageCollectorLastCollectionTime = -1L;
-               }
-            }
-         } catch (Throwable var11) {
-            ;
-         }
+      for(int var4 = 0; var4 < var3; ++var4) {
+         this.field2736[var4] = 0;
+         this.field2732[var4] = 0;
+         this.field2737.offset = this.field2745[var4];
+         this.method4301(var4);
+         this.field2735[var4] = this.field2737.offset;
       }
 
-      if(PlayerComposition.field2738 != null) {
-         long var9 = Preferences.currentTimeMs();
-         long var3 = PlayerComposition.field2738.getCollectionTime();
-         if(GameEngine.garbageCollectorLastCollectionTime != -1L) {
-            long var5 = var3 - GameEngine.garbageCollectorLastCollectionTime;
-            long var7 = var9 - GameEngine.garbageCollectorLastCheckTimeMs;
-            if(var7 != 0L) {
-               var0 = (int)(100L * var5 / var7);
-            }
-         }
-
-         GameEngine.garbageCollectorLastCollectionTime = var3;
-         GameEngine.garbageCollectorLastCheckTimeMs = var9;
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("hq")
-   @ObfuscatedSignature(
-      signature = "(Ljn;IIIB)V",
-      garbageValue = "-111"
-   )
-   static final void method4202(NPCComposition var0, int var1, int var2, int var3) {
-      if(Client.menuOptionCount < 400) {
-         if(var0.configs != null) {
-            var0 = var0.transform();
-         }
-
-         if(var0 != null) {
-            if(var0.field3643) {
-               if(!var0.field3654 || Client.field996 == var1) {
-                  String var4 = var0.name;
-                  int var7;
-                  int var8;
-                  if(var0.combatLevel != 0) {
-                     var7 = var0.combatLevel;
-                     var8 = UrlRequest.localPlayer.combatLevel;
-                     int var9 = var8 - var7;
-                     String var6;
-                     if(var9 < -9) {
-                        var6 = Buffer.getColTags(16711680);
-                     } else if(var9 < -6) {
-                        var6 = Buffer.getColTags(16723968);
-                     } else if(var9 < -3) {
-                        var6 = Buffer.getColTags(16740352);
-                     } else if(var9 < 0) {
-                        var6 = Buffer.getColTags(16756736);
-                     } else if(var9 > 9) {
-                        var6 = Buffer.getColTags(65280);
-                     } else if(var9 > 6) {
-                        var6 = Buffer.getColTags(4259584);
-                     } else if(var9 > 3) {
-                        var6 = Buffer.getColTags(8453888);
-                     } else if(var9 > 0) {
-                        var6 = Buffer.getColTags(12648192);
-                     } else {
-                        var6 = Buffer.getColTags(16776960);
-                     }
-
-                     var4 = var4 + var6 + " " + " (" + "level-" + var0.combatLevel + ")";
-                  }
-
-                  if(var0.field3654 && Client.field975) {
-                     class37.addMenuEntry("Examine", Buffer.getColTags(16776960) + var4, 1003, var1, var2, var3);
-                  }
-
-                  if(Client.itemSelectionState == 1) {
-                     class37.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + Buffer.getColTags(16776960) + var4, 7, var1, var2, var3);
-                  } else if(Client.spellSelected) {
-                     if((class86.field1278 & 2) == 2) {
-                        class37.addMenuEntry(Client.field986, Client.field910 + " " + "->" + " " + Buffer.getColTags(16776960) + var4, 8, var1, var2, var3);
-                     }
-                  } else {
-                     int var10 = var0.field3654 && Client.field975?2000:0;
-                     String[] var11 = var0.actions;
-                     if(Client.numberMenuOptions) {
-                        var11 = GameEngine.prependIndices(var11);
-                     }
-
-                     if(var11 != null) {
-                        for(var7 = 4; var7 >= 0; --var7) {
-                           if(var11[var7] != null && !var11[var7].equalsIgnoreCase("Attack")) {
-                              var8 = 0;
-                              if(var7 == 0) {
-                                 var8 = var10 + 9;
-                              }
-
-                              if(var7 == 1) {
-                                 var8 = var10 + 10;
-                              }
-
-                              if(var7 == 2) {
-                                 var8 = var10 + 11;
-                              }
-
-                              if(var7 == 3) {
-                                 var8 = var10 + 12;
-                              }
-
-                              if(var7 == 4) {
-                                 var8 = var10 + 13;
-                              }
-
-                              class37.addMenuEntry(var11[var7], Buffer.getColTags(16776960) + var4, var8, var1, var2, var3);
-                           }
-                        }
-                     }
-
-                     if(var11 != null) {
-                        for(var7 = 4; var7 >= 0; --var7) {
-                           if(var11[var7] != null && var11[var7].equalsIgnoreCase("Attack")) {
-                              short var12 = 0;
-                              if(AttackOption.AttackOption_hidden != Client.npcAttackOption) {
-                                 if(Client.npcAttackOption == AttackOption.AttackOption_alwaysRightClick || Client.npcAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > UrlRequest.localPlayer.combatLevel) {
-                                    var12 = 2000;
-                                 }
-
-                                 var8 = 0;
-                                 if(var7 == 0) {
-                                    var8 = var12 + 9;
-                                 }
-
-                                 if(var7 == 1) {
-                                    var8 = var12 + 10;
-                                 }
-
-                                 if(var7 == 2) {
-                                    var8 = var12 + 11;
-                                 }
-
-                                 if(var7 == 3) {
-                                    var8 = var12 + 12;
-                                 }
-
-                                 if(var7 == 4) {
-                                    var8 = var12 + 13;
-                                 }
-
-                                 class37.addMenuEntry(var11[var7], Buffer.getColTags(16776960) + var4, var8, var1, var2, var3);
-                              }
-                           }
-                        }
-                     }
-
-                     if(!var0.field3654 || !Client.field975) {
-                        class37.addMenuEntry("Examine", Buffer.getColTags(16776960) + var4, 1003, var1, var2, var3);
-                     }
-                  }
-
-               }
-            }
-         }
-      }
    }
 }

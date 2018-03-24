@@ -24,6 +24,7 @@
  */
 package net.runelite.injector;
 
+import net.runelite.injector.raw.DrawAfterWidgets;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
@@ -45,6 +46,7 @@ import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
+import net.runelite.injector.raw.ScriptVM;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
 import org.slf4j.Logger;
@@ -59,7 +61,6 @@ public class Inject
 	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.RS";
 	public static final String RL_API_PACKAGE_BASE = "net.runelite.api.";
 
-	private final InjectHook hooks = new InjectHook(this);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
 
 	private final InjectGetter getters = new InjectGetter(this);
@@ -68,6 +69,8 @@ public class Inject
 	private final InjectConstruct construct = new InjectConstruct(this);
 
 	private final MixinInjector mixinInjector = new MixinInjector(this);
+	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
+	private final ScriptVM scriptVM = new ScriptVM(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -183,8 +186,6 @@ public class Inject
 
 	public void run() throws InjectionException
 	{
-		hooks.run();
-
 		Map<ClassFile, java.lang.Class> implemented = new HashMap<>();
 
 		// inject interfaces first, so the validateTypeIsConvertibleTo
@@ -272,7 +273,7 @@ public class Inject
 					assert !f.isStatic();
 
 					// non static field exported on non exported interface
-					logger.warn("Non static exported field {} on non exported interface", exportedName);
+					logger.debug("Non static exported field {} on non exported interface", exportedName);
 					continue;
 				}
 
@@ -291,7 +292,7 @@ public class Inject
 				apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
 				if (apiMethod == null)
 				{
-					logger.info("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
+					logger.debug("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
 					continue;
 				}
 
@@ -314,9 +315,12 @@ public class Inject
 			}
 		}
 		
-		logger.info("Injected {} hooks, {} getters, {} settters, {} invokers",
-			hooks.getInjectedHooks(), getters.getInjectedGetters(),
+		logger.info("Injected {} getters, {} settters, {} invokers",
+			getters.getInjectedGetters(),
 			setters.getInjectedSetters(), invokes.getInjectedInvokers());
+
+		drawAfterWidgets.inject();
+		scriptVM.inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
@@ -342,7 +346,7 @@ public class Inject
 		}
 		catch (ClassNotFoundException ex)
 		{
-			logger.info("Class {} implements nonexistent interface {}, skipping interface injection",
+			logger.trace("Class {} implements nonexistent interface {}, skipping interface injection",
 				cf.getName(),
 				ifaceName);
 			return null;
@@ -434,6 +438,21 @@ public class Inject
 		return null;
 	}
 
+	public ClassFile toObClass(ClassFile deobClass)
+	{
+		String obfuscatedName = DeobAnnotations.getObfuscatedName(deobClass.getAnnotations());
+
+		for (ClassFile cf : vanilla.getClasses())
+		{
+			if (cf.getName().equalsIgnoreCase(obfuscatedName))
+			{
+				return cf;
+			}
+		}
+
+		return null;
+	}
+
 	Field toObField(Field field)
 	{
 		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
@@ -488,6 +507,22 @@ public class Inject
 		}
 
 		return Type.getType("L" + rlApiType.getName().replace('.', '/') + ";", type.getDimensions());
+	}
+
+	Type apiTypeToDeobfuscatedType(Type type) throws InjectionException
+	{
+		if (type.isPrimitive())
+		{
+			return type;
+		}
+
+		String internalName = type.getInternalName().replace('/', '.');
+		if (!internalName.startsWith(API_PACKAGE_BASE))
+		{
+			return type; // not an rs api type
+		}
+
+		return Type.getType("L" + type.getInternalName().substring(API_PACKAGE_BASE.length()) + ";", type.getDimensions());
 	}
 	
 	ClassFile findVanillaForInterface(java.lang.Class<?> clazz)

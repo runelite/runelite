@@ -38,6 +38,9 @@ public class RuneLiteProperties
 {
 	private static final String RUNELITE_TITLE = "runelite.title";
 	private static final String RUNELITE_VERSION = "runelite.version";
+	private static final String RUNESCAPE_VERSION = "runescape.version";
+	private static final String DISCORD_APP_ID = "runelite.discord.appid";
+	private static final String DISCORD_INVITE = "runelite.discord.invite";
 
 	private final Properties properties = new Properties();
 
@@ -63,5 +66,20 @@ public class RuneLiteProperties
 	public String getVersion()
 	{
 		return properties.getProperty(RUNELITE_VERSION);
+	}
+
+	public String getRunescapeVersion()
+	{
+		return properties.getProperty(RUNESCAPE_VERSION);
+	}
+
+	public String getDiscordAppId()
+	{
+		return properties.getProperty(DISCORD_APP_ID);
+	}
+
+	public String getDiscordInvite()
+	{
+		return properties.getProperty(DISCORD_INVITE);
 	}
 }

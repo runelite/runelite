@@ -37,11 +37,12 @@ import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
-import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
@@ -56,13 +57,13 @@ public class BindNeckOverlay extends Overlay
 	BindNeckOverlay(QueryRunner queryRunner, RunecraftConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
-		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showBindNeck())
 		{
@@ -81,7 +82,7 @@ public class BindNeckOverlay extends Overlay
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(text);
 			textComponent.setColor(color);
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return null;
@@ -89,7 +90,7 @@ public class BindNeckOverlay extends Overlay
 
 	private Collection<WidgetItem> getNecklaceWidgetItems()
 	{
-		Query inventoryQuery = new InventoryItemQuery()
+		Query inventoryQuery = new InventoryWidgetItemQuery()
 			.idEquals(BINDING_NECKLACE);
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 

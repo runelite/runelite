@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
@@ -33,21 +32,15 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Runepouch plugin"
+	name = "Rune Pouch"
 )
 public class RunepouchPlugin extends Plugin
 {
 	@Inject
-	ConfigManager configManager;
+	private ConfigManager configManager;
 
 	@Inject
-	RunepouchOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(RunepouchOverlay.class);
-	}
+	private RunepouchOverlay overlay;
 
 	@Provides
 	RunepouchConfig getConfig(ConfigManager configManager)

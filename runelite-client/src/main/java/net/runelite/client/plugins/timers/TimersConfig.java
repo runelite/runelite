@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface TimersConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether the timer plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showStamina",
 		name = "Stamina timer",
 		description = "Configures whether stamina timer is displayed"
@@ -67,7 +57,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showExAntiFire",
-		name = "Extended Antifire timer",
+		name = "Extended antifire timer",
 		description = "Configures whether extended antifire timer is displayed"
 	)
 	default boolean showExAntiFire()
@@ -97,7 +87,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMagicImbue",
-		name = "Magic Imbue timer",
+		name = "Magic imbue timer",
 		description = "Configures whether magic imbue timer is displayed"
 	)
 	default boolean showMagicImbue()
@@ -116,18 +106,18 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAntiVenom",
-		name = "Anti Venom+ timer",
+		keyName = "showAntiVenomPlus",
+		name = "Anti-venom+ timer",
 		description = "Configures whether anti venom+ timer is displayed"
 	)
-	default boolean showAntiVenom()
+	default boolean showAntiVenomPlus()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "showSuperAntiFire",
-		name = "Super Antifire timer",
+		name = "Super antifire timer",
 		description = "Configures whether super antifire timer is displayed"
 	)
 	default boolean showSuperAntiFire()
@@ -141,6 +131,96 @@ public interface TimersConfig extends Config
 		description = "Configures whether antidote++ timer is displayed"
 	)
 	default boolean showAntidotePlusPlus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showImbuedHeart",
+		name = "Imbued heart timer",
+		description = "Configures whether imbued heart timer is displayed"
+	)
+	default boolean showImbuedHeart()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showVengeance",
+		name = "Vengeance timer",
+		description = "Configures whether vengeance timer is displayed"
+	)
+	default boolean showVengeance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFreezes",
+		name = "Freeze timer",
+		description = "Configures whether freeze timer is displayed"
+	)
+	default boolean showFreezes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showExSuperAntifire",
+		name = "Extended super antifire timer",
+		description = "Configures whether extended super antifire timer is displayed"
+	)
+	default boolean showExSuperAntifire()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSanfew",
+		name = "Sanfew serum timer",
+		description = "Configures whether sanfew serum timer is displayed"
+	)
+	default boolean showSanfew()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAntidotePlus",
+		name = "Antidote+ timer",
+		description = "Configures whether antidote+ timer is displayed"
+	)
+	default boolean showAntidotePlus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAntiVenom",
+		name = "Anti-venom timer",
+		description = "Configures whether antivenom timer is displayed"
+	)
+	default boolean showAntiVenom()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPrayerEnhance",
+		name = "Prayer enhance timer",
+		description = "Configures whether prayer enhance timer is displayed"
+	)
+	default boolean showPrayerEnhance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showGodWarsAltar",
+		name = "God wars altar timer",
+		description = "Configures whether god wars altar timer is displayed"
+	)
+	default boolean showGodWarsAltar()
 	{
 		return true;
 	}

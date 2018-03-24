@@ -1,68 +1,68 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cl")
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1075365621
+      intValue = -1511146089
    )
    @Export("id")
    int id;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -86666889
+      intValue = 1680474799
    )
    @Export("type")
    int type;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1841293615
+      intValue = 1229574213
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -156840023
+      intValue = -523905713
    )
    @Export("level")
    int level;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 45773791
+      intValue = -1851123415
    )
    @Export("sceneX")
    int sceneX;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1127872755
+      intValue = 1844217227
    )
    @Export("sceneY")
    int sceneY;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Ljj;"
+      signature = "Lkf;"
    )
-   Sequence field1438;
-   @ObfuscatedName("f")
+   Sequence field1442;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1267006365
+      intValue = -1630363609
    )
-   int field1439;
-   @ObfuscatedName("g")
+   @Export("animFrame")
+   int animFrame;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2100657835
+      intValue = 789619793
    )
-   int field1440;
+   @Export("animCycleCount")
+   int animCycleCount;
 
    @ObfuscatedSignature(
-      signature = "(IIIIIIIZLel;)V"
+      signature = "(IIIIIIIZLen;)V"
    )
    DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
       this.id = var1;
@@ -72,59 +72,60 @@ public class DynamicObject extends Renderable {
       this.sceneX = var5;
       this.sceneY = var6;
       if(var7 != -1) {
-         this.field1438 = Permission.getAnimation(var7);
-         this.field1439 = 0;
-         this.field1440 = Client.gameCycle - 1;
-         if(this.field1438.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
+         this.field1442 = class158.getAnimation(var7);
+         this.animFrame = 0;
+         this.animCycleCount = Client.gameCycle - 1;
+         if(this.field1442.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
             DynamicObject var10 = (DynamicObject)var9;
-            if(this.field1438 == var10.field1438) {
-               this.field1439 = var10.field1439;
-               this.field1440 = var10.field1440;
+            if(this.field1442 == var10.field1442) {
+               this.animFrame = var10.animFrame;
+               this.animCycleCount = var10.animCycleCount;
                return;
             }
          }
 
-         if(var8 && this.field1438.frameStep != -1) {
-            this.field1439 = (int)(Math.random() * (double)this.field1438.frameIDs.length);
-            this.field1440 -= (int)(Math.random() * (double)this.field1438.frameLenghts[this.field1439]);
+         if(var8 && this.field1442.frameStep != -1) {
+            this.animFrame = (int)(Math.random() * (double)this.field1442.frameIDs.length);
+            this.animCycleCount -= (int)(Math.random() * (double)this.field1442.frameLengths[this.animFrame]);
          }
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)Lef;",
-      garbageValue = "620909653"
+      signature = "(B)Lek;",
+      garbageValue = "22"
    )
    protected final Model getModel() {
-      if(this.field1438 != null) {
-         int var1 = Client.gameCycle - this.field1440;
-         if(var1 > 100 && this.field1438.frameStep > 0) {
+      if(this.field1442 != null) {
+         int var1 = Client.gameCycle - this.animCycleCount;
+         if(var1 > 100 && this.field1442.frameStep > 0) {
             var1 = 100;
          }
 
-         label54: {
+         label56: {
             do {
                do {
-                  if(var1 <= this.field1438.frameLenghts[this.field1439]) {
-                     break label54;
+                  if(var1 <= this.field1442.frameLengths[this.animFrame]) {
+                     break label56;
                   }
 
-                  var1 -= this.field1438.frameLenghts[this.field1439];
-                  ++this.field1439;
-               } while(this.field1439 < this.field1438.frameIDs.length);
+                  var1 -= this.field1442.frameLengths[this.animFrame];
+                  ++this.animFrame;
+               } while(this.animFrame < this.field1442.frameIDs.length);
 
-               this.field1439 -= this.field1438.frameStep;
-            } while(this.field1439 >= 0 && this.field1439 < this.field1438.frameIDs.length);
+               this.animFrame -= this.field1442.frameStep;
+            } while(this.animFrame >= 0 && this.animFrame < this.field1442.frameIDs.length);
 
-            this.field1438 = null;
+            this.field1442 = null;
          }
 
-         this.field1440 = Client.gameCycle - var1;
+         this.animCycleCount = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = CacheFile.getObjectDefinition(this.id);
+
+      ObjectComposition var12 = Spotanim.getObjectDefinition(this.id);
       if(var12.impostorIds != null) {
          var12 = var12.getImpostor();
       }
@@ -135,65 +136,39 @@ public class DynamicObject extends Renderable {
          int var2;
          int var3;
          if(this.orientation != 1 && this.orientation != 3) {
-            var2 = var12.sizeX;
-            var3 = var12.sizeY;
+            var2 = var12.width;
+            var3 = var12.length;
          } else {
-            var2 = var12.sizeY;
-            var3 = var12.sizeX;
+            var2 = var12.length;
+            var3 = var12.width;
          }
 
          int var4 = (var2 >> 1) + this.sceneX;
          int var5 = (var2 + 1 >> 1) + this.sceneX;
          int var6 = (var3 >> 1) + this.sceneY;
          int var7 = (var3 + 1 >> 1) + this.sceneY;
-         int[][] var8 = class61.tileHeights[this.level];
-         int var9 = var8[var4][var7] + var8[var5][var6] + var8[var4][var6] + var8[var5][var7] >> 2;
+         int[][] var8 = class62.tileHeights[this.level];
+         int var9 = var8[var5][var7] + var8[var5][var6] + var8[var4][var6] + var8[var4][var7] >> 2;
          int var10 = (this.sceneX << 7) + (var2 << 6);
          int var11 = (this.sceneY << 7) + (var3 << 6);
-         return var12.method4666(this.type, this.orientation, var8, var10, var9, var11, this.field1438, this.field1439);
+         return var12.method5000(this.type, this.orientation, var8, var10, var9, var11, this.field1442, this.animFrame);
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("fh")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lda;",
-      garbageValue = "-734480589"
+      signature = "(IIIB)V",
+      garbageValue = "23"
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class157.field2138, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
+   static void method2052(int var0, int var1, int var2) {
+      if(Client.field899 != 0 && var1 != 0 && Client.queuedSoundEffectCount < 50) {
+         Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var0;
+         Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var1;
+         Client.unknownSoundValues2[Client.queuedSoundEffectCount] = var2;
+         Client.audioEffects[Client.queuedSoundEffectCount] = null;
+         Client.soundLocations[Client.queuedSoundEffectCount] = 0;
+         ++Client.queuedSoundEffectCount;
       }
 
-      String var4 = "";
-      if(AbstractByteBuffer.field2534 == 33) {
-         var4 = "_rc";
-      } else if(AbstractByteBuffer.field2534 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class1.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
    }
 }

@@ -24,102 +24,13 @@
  */
 package net.runelite.http.service.cache.beans;
 
+import lombok.Data;
+
+@Data
 public class IndexEntry
 {
 	private int id;
 	private int indexId;
 	private int crc;
 	private int revision;
-
-	@Override
-	public String toString()
-	{
-		return "IndexEntry{" + "id=" + id + ", indexId=" + indexId + ", crc=" + crc + ", revision=" + revision + '}';
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 5;
-		hash = 17 * hash + this.id;
-		hash = 17 * hash + this.indexId;
-		hash = 17 * hash + this.crc;
-		hash = 17 * hash + this.revision;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final IndexEntry other = (IndexEntry) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.indexId != other.indexId)
-		{
-			return false;
-		}
-		if (this.crc != other.crc)
-		{
-			return false;
-		}
-		if (this.revision != other.revision)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getIndexId()
-	{
-		return indexId;
-	}
-
-	public void setIndexId(int indexId)
-	{
-		this.indexId = indexId;
-	}
-
-	public int getCrc()
-	{
-		return crc;
-	}
-
-	public void setCrc(int crc)
-	{
-		this.crc = crc;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
 }

@@ -25,16 +25,7 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.ClanMember;
-import net.runelite.mapping.Import;
 
-public interface RSClanMember extends ClanMember
+public interface RSClanMember extends RSChatPlayer, ClanMember
 {
-	@Import("username")
-	String getUsername();
-
-	@Import("world")
-	int getWorld();
-
-	@Import("rank")
-	byte getRSRank();
 }

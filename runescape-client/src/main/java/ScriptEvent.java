@@ -4,95 +4,114 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
+@ObfuscatedName("bx")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @Export("objs")
    Object[] objs;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @Export("boolean1")
    boolean boolean1;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lig;"
    )
    @Export("widget")
    Widget widget;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 2041116237
+      intValue = -219484955
    )
-   int field771;
-   @ObfuscatedName("u")
+   int field782;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 334266043
+      intValue = 1092709369
    )
-   int field772;
-   @ObfuscatedName("z")
+   int field789;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1797326927
+      intValue = 89189973
    )
-   int field773;
-   @ObfuscatedName("t")
+   int field784;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lig;"
    )
-   Widget field776;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 137937717
-   )
-   int field768;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1936247983
-   )
-   int field775;
-   @ObfuscatedName("j")
-   @Export("string")
-   String string;
+   Widget field785;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1408604377
+      intValue = -182394341
    )
-   int field778;
-   @ObfuscatedName("c")
+   int field780;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 141229905
+   )
+   int field781;
+   @ObfuscatedName("g")
+   @Export("string")
+   String string;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1106261651
+   )
+   int field786;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Liw;"
    )
-   class230 field779;
+   class245 field779;
 
    public ScriptEvent() {
-      this.field779 = class230.field2898;
+      this.field779 = class245.field2959;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "([Ljava/lang/Object;B)V",
-      garbageValue = "13"
+      garbageValue = "53"
    )
-   public void method1050(Object[] var1) {
+   public void method1153(Object[] var1) {
       this.objs = var1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lhi;I)V",
-      garbageValue = "-1217881542"
+      signature = "(Liw;I)V",
+      garbageValue = "244103375"
    )
-   public void method1051(class230 var1) {
+   public void method1152(class245 var1) {
       this.field779 = var1;
    }
 
-   @ObfuscatedName("hd")
+   @ObfuscatedName("ex")
    @ObfuscatedSignature(
-      signature = "(IIIZI)V",
-      garbageValue = "-3922817"
+      signature = "(Lju;Ljava/lang/String;B)V",
+      garbageValue = "-26"
    )
-   static final void method1055(int var0, int var1, int var2, boolean var3) {
-      if(GraphicsObject.loadWidget(var0)) {
-         class239.method4227(Widget.widgets[var0], -1, var1, var2, var3);
+   static void method1158(IndexData var0, String var1) {
+      class64 var2 = new class64(var0, var1);
+      Client.field1023.add(var2);
+   }
+
+   @ObfuscatedName("ka")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "-64"
+   )
+   static String method1157(String var0) {
+      Permission[] var1 = new Permission[]{Permission.field3341, Permission.field3345, Permission.field3344, Permission.field3342, Permission.field3340, Permission.field3343};
+      Permission[] var2 = var1;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         Permission var4 = var2[var3];
+         if(var4.field3346 != -1 && var0.startsWith(class157.method3168(var4.field3346))) {
+            var0 = var0.substring(6 + Integer.toString(var4.field3346).length());
+            break;
+         }
       }
+
+      return var0;
    }
 }

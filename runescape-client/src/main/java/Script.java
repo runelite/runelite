@@ -4,132 +4,116 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("cj")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lhj;"
    )
-   static NodeCache field1431;
-   @ObfuscatedName("fd")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
-   )
-   @Export("mapDots")
-   static SpritePixels[] mapDots;
-   @ObfuscatedName("w")
+   static NodeCache field1433;
+   @ObfuscatedName("q")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 475547171
+      intValue = 2115928073
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1400091303
+      intValue = 950532213
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1243325363
+      intValue = -1929874997
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1013854573
+      intValue = 1572978431
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "[Lgr;"
+      signature = "[Lhq;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1431 = new NodeCache(128);
+      field1433 = new NodeCache(128);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)[Lgr;",
-      garbageValue = "2031854513"
+      signature = "(II)[Lhq;",
+      garbageValue = "552036554"
    )
-   IterableHashTable[] method1833(int var1) {
+   IterableHashTable[] method2042(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("a")
-   static final int method1842(double var0, double var2, double var4) {
-      double var6 = var4;
-      double var8 = var4;
-      double var10 = var4;
-      if(0.0D != var2) {
-         double var12;
-         if(var4 < 0.5D) {
-            var12 = (var2 + 1.0D) * var4;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljc;IB)Lho;",
+      garbageValue = "1"
+   )
+   static class233 method2048(IndexDataBase var0, int var1) {
+      byte[] var2 = var0.takeRecordFlat(var1);
+      return var2 == null?null:new class233(var2);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IS)Z",
+      garbageValue = "-18399"
+   )
+   @Export("loadWidget")
+   public static boolean loadWidget(int var0) {
+      if(WorldComparator.validInterfaces[var0]) {
+         return true;
+      } else if(!Widget.widgetIndex.containsFile(var0)) {
+         return false;
+      } else {
+         int var1 = Widget.widgetIndex.fileCount(var0);
+         if(var1 == 0) {
+            WorldComparator.validInterfaces[var0] = true;
+            return true;
          } else {
-            var12 = var4 + var2 - var2 * var4;
-         }
+            if(Widget.widgets[var0] == null) {
+               Widget.widgets[var0] = new Widget[var1];
+            }
 
-         double var14 = var4 * 2.0D - var12;
-         double var16 = var0 + 0.3333333333333333D;
-         if(var16 > 1.0D) {
-            --var16;
-         }
+            for(int var2 = 0; var2 < var1; ++var2) {
+               if(Widget.widgets[var0][var2] == null) {
+                  byte[] var3 = Widget.widgetIndex.getConfigData(var0, var2);
+                  if(var3 != null) {
+                     Widget.widgets[var0][var2] = new Widget();
+                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
+                     if(var3[0] == -1) {
+                        Widget.widgets[var0][var2].decodeActive(new Buffer(var3));
+                     } else {
+                        Widget.widgets[var0][var2].decode(new Buffer(var3));
+                     }
+                  }
+               }
+            }
 
-         double var20 = var0 - 0.3333333333333333D;
-         if(var20 < 0.0D) {
-            ++var20;
-         }
-
-         if(6.0D * var16 < 1.0D) {
-            var6 = var14 + var16 * (var12 - var14) * 6.0D;
-         } else if(var16 * 2.0D < 1.0D) {
-            var6 = var12;
-         } else if(var16 * 3.0D < 2.0D) {
-            var6 = (var12 - var14) * (0.6666666666666666D - var16) * 6.0D + var14;
-         } else {
-            var6 = var14;
-         }
-
-         if(6.0D * var0 < 1.0D) {
-            var8 = var14 + 6.0D * (var12 - var14) * var0;
-         } else if(2.0D * var0 < 1.0D) {
-            var8 = var12;
-         } else if(3.0D * var0 < 2.0D) {
-            var8 = 6.0D * (0.6666666666666666D - var0) * (var12 - var14) + var14;
-         } else {
-            var8 = var14;
-         }
-
-         if(6.0D * var20 < 1.0D) {
-            var10 = var14 + var20 * (var12 - var14) * 6.0D;
-         } else if(var20 * 2.0D < 1.0D) {
-            var10 = var12;
-         } else if(var20 * 3.0D < 2.0D) {
-            var10 = (var12 - var14) * (0.6666666666666666D - var20) * 6.0D + var14;
-         } else {
-            var10 = var14;
+            WorldComparator.validInterfaces[var0] = true;
+            return true;
          }
       }
-
-      int var22 = (int)(var6 * 256.0D);
-      int var13 = (int)(256.0D * var8);
-      int var23 = (int)(256.0D * var10);
-      int var15 = var23 + (var13 << 8) + (var22 << 16);
-      return var15;
    }
 }

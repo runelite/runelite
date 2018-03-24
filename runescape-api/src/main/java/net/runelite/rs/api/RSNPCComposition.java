@@ -24,31 +24,48 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.NPCComposition;
 import net.runelite.mapping.Import;
 
-public interface RSNPCComposition
+public interface RSNPCComposition extends NPCComposition
 {
 	@Import("name")
+	@Override
 	String getName();
 
 	@Import("models")
+	@Override
 	int[] getModels();
 
 	@Import("actions")
+	@Override
 	String[] getActions();
 
 	@Import("isClickable")
+	@Override
 	boolean isClickable();
 
 	@Import("isMinimapVisible")
+	@Override
 	boolean isMinimapVisable();
 
 	@Import("isVisible")
+	@Override
 	boolean isVisable();
 
 	@Import("id")
+	@Override
 	int getId();
 
 	@Import("combatLevel")
+	@Override
 	int getCombatLevel();
+	
+	@Import("configs")
+	@Override
+	int[] getConfigs();
+	
+	@Import("transform")
+	@Override
+	RSNPCComposition transform();
 }

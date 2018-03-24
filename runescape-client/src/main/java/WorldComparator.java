@@ -5,70 +5,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("s")
+@ObfuscatedName("c")
 @Implements("WorldComparator")
 final class WorldComparator implements Comparator {
-   @ObfuscatedName("ld")
+   @ObfuscatedName("pi")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Ldr;"
    )
-   @Export("mouseWheel")
-   static MouseWheel mouseWheel;
+   @Export("soundSystem0")
+   static AbstractSoundSystem soundSystem0;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
+   static IndexDataBase field258;
    @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 795662373
-   )
-   public static int field265;
-
-   @ObfuscatedName("a")
+   @Export("validInterfaces")
+   public static boolean[] validInterfaces;
+   @ObfuscatedName("p")
+   public static short[] field260;
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "(Ly;Ly;B)I",
-      garbageValue = "8"
+      signature = "Lig;"
    )
-   int method53(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+   static Widget field261;
+   @ObfuscatedName("mx")
+   @ObfuscatedGetter(
+      intValue = 1861335125
+   )
+   static int field262;
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Lu;Lu;I)I",
+      garbageValue = "1001922856"
+   )
+   int method65(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.world < var2.world?-1:(var2.world == var1.world?0:1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method65((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method53((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)[Lil;",
-      garbageValue = "-5"
-   )
-   static BuildType[] method55() {
-      return new BuildType[]{BuildType.WIP, BuildType.RC, BuildType.BUILD_LIVE, BuildType.LIVE};
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "137980233"
-   )
-   static void method63() {
-      FileOnDisk var0 = null;
-
-      try {
-         var0 = DynamicObject.getPreferencesFile("", ItemContainer.field721.name, true);
-         Buffer var1 = class2.preferences.serialize();
-         var0.write(var1.payload, 0, var1.offset);
-      } catch (Exception var3) {
-         ;
-      }
-
-      try {
-         if(var0 != null) {
-            var0.closeSync(true);
-         }
-      } catch (Exception var2) {
-         ;
-      }
-
    }
 }

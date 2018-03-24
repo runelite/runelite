@@ -24,11 +24,15 @@
  */
 package net.runelite.rs.api;
 
+import java.awt.Polygon;
 import net.runelite.api.Model;
 import net.runelite.mapping.Import;
 
 public interface RSModel extends RSRenderable, Model
 {
+	@Import("verticesCount")
+	int getVerticesCount();
+
 	@Import("verticesX")
 	int[] getVerticesX();
 
@@ -38,6 +42,9 @@ public interface RSModel extends RSRenderable, Model
 	@Import("verticesZ")
 	int[] getVerticesZ();
 
+	@Import("indicesCount")
+	int getTrianglesCount();
+
 	@Import("indices1")
 	int[] getTrianglesX();
 
@@ -46,4 +53,13 @@ public interface RSModel extends RSRenderable, Model
 
 	@Import("indices3")
 	int[] getTrianglesZ();
+
+	/**
+	 * Compute the convex hull of this model
+	 * @param localX
+	 * @param localY
+	 * @param orientation
+	 * @return
+	 */
+	Polygon getConvexHull(int localX, int localY, int orientation);
 }

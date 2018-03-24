@@ -4,90 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("eo")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1866751847
+      intValue = -2121753603
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1840593029
+      intValue = -1983836773
    )
    @Export("height")
    int height;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1087761421
+      intValue = -1662603331
    )
    @Export("x")
    int x;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1063628249
+      intValue = 1201064895
    )
    @Export("y")
    int y;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lel;"
+      signature = "Len;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1672836637
+      intValue = -1009009609
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1610249375
+      intValue = -2010824623
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1511254367
+      intValue = 1823542521
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 19135965
+      intValue = 286852845
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 235575925
+      intValue = 453037631
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("x")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 792465583
+      intValue = 1637612641
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -833063441
+      intValue = -1726444151
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("s")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1044473627
+      intValue = 1860841847
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 195247177
+      intValue = 606414333
    )
    @Export("flags")
    int flags;
@@ -97,129 +97,115 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-360058868"
+      signature = "(ILcj;ZI)I",
+      garbageValue = "-532153162"
    )
-   static final void method2909(int var0) {
-      short var1 = 256;
-      class91.field1321 += var0 * 128;
-      int var2;
-      if(class91.field1321 > class36.field478.length) {
-         class91.field1321 -= class36.field478.length;
-         var2 = (int)(Math.random() * 12.0D);
-         CombatInfoListHolder.method1623(class234.runeSprites[var2]);
+   static int method3072(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = GZipDecompressor.getWidget(class81.intStack[--class5.intStackSize]);
+      } else {
+         var3 = var2?class233.field2755:class81.field1260;
       }
 
-      var2 = 0;
-      int var3 = var0 * 128;
-      int var4 = (var1 - var0) * 128;
-
-      int var5;
-      int var6;
-      for(var5 = 0; var5 < var4; ++var5) {
-         var6 = class89.field1302[var2 + var3] - class36.field478[var2 + class91.field1321 & class36.field478.length - 1] * var0 / 6;
-         if(var6 < 0) {
-            var6 = 0;
+      String var4 = class81.scriptStringStack[--class316.scriptStringStackSize];
+      int[] var5 = null;
+      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
+         int var6 = class81.intStack[--class5.intStackSize];
+         if(var6 > 0) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class81.intStack[--class5.intStackSize]) {
+               ;
+            }
          }
 
-         class89.field1302[var2++] = var6;
+         var4 = var4.substring(0, var4.length() - 1);
       }
+
+      Object[] var8 = new Object[var4.length() + 1];
 
       int var7;
-      int var8;
-      for(var5 = var1 - var0; var5 < var1; ++var5) {
-         var6 = var5 * 128;
-
-         for(var7 = 0; var7 < 128; ++var7) {
-            var8 = (int)(Math.random() * 100.0D);
-            if(var8 < 50 && var7 > 10 && var7 < 118) {
-               class89.field1302[var7 + var6] = 255;
-            } else {
-               class89.field1302[var6 + var7] = 0;
-            }
+      for(var7 = var8.length - 1; var7 >= 1; --var7) {
+         if(var4.charAt(var7 - 1) == 's') {
+            var8[var7] = class81.scriptStringStack[--class316.scriptStringStackSize];
+         } else {
+            var8[var7] = new Integer(class81.intStack[--class5.intStackSize]);
          }
       }
 
-      if(class91.field1323 > 0) {
-         class91.field1323 -= var0 * 4;
+      var7 = class81.intStack[--class5.intStackSize];
+      if(var7 != -1) {
+         var8[0] = new Integer(var7);
+      } else {
+         var8 = null;
       }
 
-      if(class91.field1327 > 0) {
-         class91.field1327 -= var0 * 4;
-      }
-
-      if(class91.field1323 == 0 && class91.field1327 == 0) {
-         var5 = (int)(Math.random() * (double)(2000 / var0));
-         if(var5 == 0) {
-            class91.field1323 = 1024;
+      if(var0 == 1400) {
+         var3.field2899 = var8;
+      } else if(var0 == 1401) {
+         var3.field2902 = var8;
+      } else if(var0 == 1402) {
+         var3.field2901 = var8;
+      } else if(var0 == 1403) {
+         var3.mouseEnterListener = var8;
+      } else if(var0 == 1404) {
+         var3.mouseExitListener = var8;
+      } else if(var0 == 1405) {
+         var3.field2906 = var8;
+      } else if(var0 == 1406) {
+         var3.field2807 = var8;
+      } else if(var0 == 1407) {
+         var3.configListenerArgs = var8;
+         var3.configTriggers = var5;
+      } else if(var0 == 1408) {
+         var3.renderListener = var8;
+      } else if(var0 == 1409) {
+         var3.field2917 = var8;
+      } else if(var0 == 1410) {
+         var3.field2907 = var8;
+      } else if(var0 == 1411) {
+         var3.field2900 = var8;
+      } else if(var0 == 1412) {
+         var3.mouseHoverListener = var8;
+      } else if(var0 == 1414) {
+         var3.tableListenerArgs = var8;
+         var3.tableModTriggers = var5;
+      } else if(var0 == 1415) {
+         var3.skillListenerArgs = var8;
+         var3.skillTriggers = var5;
+      } else if(var0 == 1416) {
+         var3.field2908 = var8;
+      } else if(var0 == 1417) {
+         var3.scrollListener = var8;
+      } else if(var0 == 1418) {
+         var3.field2919 = var8;
+      } else if(var0 == 1419) {
+         var3.field2920 = var8;
+      } else if(var0 == 1420) {
+         var3.field2921 = var8;
+      } else if(var0 == 1421) {
+         var3.field2922 = var8;
+      } else if(var0 == 1422) {
+         var3.field2923 = var8;
+      } else if(var0 == 1423) {
+         var3.field2924 = var8;
+      } else if(var0 == 1424) {
+         var3.field2925 = var8;
+      } else if(var0 == 1425) {
+         var3.field2873 = var8;
+      } else if(var0 == 1426) {
+         var3.field2820 = var8;
+      } else {
+         if(var0 != 1427) {
+            return 2;
          }
 
-         if(var5 == 1) {
-            class91.field1327 = 1024;
-         }
+         var3.field2926 = var8;
       }
 
-      for(var5 = 0; var5 < var1 - var0; ++var5) {
-         class91.field1324[var5] = class91.field1324[var0 + var5];
-      }
-
-      for(var5 = var1 - var0; var5 < var1; ++var5) {
-         class91.field1324[var5] = (int)(Math.sin((double)class91.field1342 / 14.0D) * 16.0D + Math.sin((double)class91.field1342 / 15.0D) * 14.0D + Math.sin((double)class91.field1342 / 16.0D) * 12.0D);
-         ++class91.field1342;
-      }
-
-      class91.field1350 += var0;
-      var5 = (var0 + (Client.gameCycle & 1)) / 2;
-      if(var5 > 0) {
-         for(var6 = 0; var6 < class91.field1350 * 100; ++var6) {
-            var7 = (int)(Math.random() * 124.0D) + 2;
-            var8 = (int)(Math.random() * 128.0D) + 128;
-            class89.field1302[var7 + (var8 << 7)] = 192;
-         }
-
-         class91.field1350 = 0;
-
-         int var9;
-         for(var6 = 0; var6 < var1; ++var6) {
-            var7 = 0;
-            var8 = var6 * 128;
-
-            for(var9 = -var5; var9 < 128; ++var9) {
-               if(var5 + var9 < 128) {
-                  var7 += class89.field1302[var9 + var8 + var5];
-               }
-
-               if(var9 - (var5 + 1) >= 0) {
-                  var7 -= class89.field1302[var9 + var8 - (var5 + 1)];
-               }
-
-               if(var9 >= 0) {
-                  BoundingBox.field238[var9 + var8] = var7 / (var5 * 2 + 1);
-               }
-            }
-         }
-
-         for(var6 = 0; var6 < 128; ++var6) {
-            var7 = 0;
-
-            for(var8 = -var5; var8 < var1; ++var8) {
-               var9 = var8 * 128;
-               if(var5 + var8 < var1) {
-                  var7 += BoundingBox.field238[var9 + var6 + var5 * 128];
-               }
-
-               if(var8 - (var5 + 1) >= 0) {
-                  var7 -= BoundingBox.field238[var9 + var6 - (var5 + 1) * 128];
-               }
-
-               if(var8 >= 0) {
-                  class89.field1302[var9 + var6] = var7 / (var5 * 2 + 1);
-               }
-            }
-         }
-      }
-
+      var3.field2878 = true;
+      return 1;
    }
 }

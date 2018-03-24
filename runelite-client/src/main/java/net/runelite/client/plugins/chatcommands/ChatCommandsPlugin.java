@@ -28,6 +28,7 @@ package net.runelite.client.plugins.chatcommands;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,14 +39,14 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.GameStateChanged;
-import net.runelite.client.events.SetMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -58,29 +59,37 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat commands plugin"
+	name = "Chat Commands"
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ChatCommandsConfig config;
+	private ChatCommandsConfig config;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	@Inject
-	ChatMessageManager chatMessageManager;
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
+
+	@Override
+	protected void startUp()
+	{
+		cacheConfiguredColors();
+		chatMessageManager.refreshAll();
+	}
 
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
@@ -139,7 +148,7 @@ public class ChatCommandsPlugin extends Plugin
 	/**
 	 * Checks if the chat message is a command.
 	 *
-	 * @param setMessage The chat message
+	 * @param setMessage The chat message.
 	 */
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
@@ -163,7 +172,7 @@ public class ChatCommandsPlugin extends Plugin
 		String message = setMessage.getValue();
 		MessageNode messageNode = setMessage.getMessageNode();
 
-		// clear runelite formatted messsage as the message node is
+		// clear RuneLite formatted message as the message node is
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
 
@@ -178,7 +187,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Running price lookup for {}", search);
 
-			executor.submit(() -> itemPriceLookup(setMessage.getType(), setMessage.getMessageNode(), search));
+			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
 		{
@@ -191,12 +200,12 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Looks up the item price and changes the original message to the
-	 * reponse.
+	 * response.
 	 *
 	 * @param messageNode The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
-	private void itemPriceLookup(ChatMessageType type, MessageNode messageNode, String search)
+	private void itemPriceLookup(MessageNode messageNode, String search)
 	{
 		SearchResult result;
 
@@ -240,7 +249,7 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", itemPrice.getPrice()));
+				.append(NUMBER_FORMATTER.format(itemPrice.getPrice()));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
@@ -250,26 +259,29 @@ public class ChatCommandsPlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", alchPrice));
+					.append(NUMBER_FORMATTER.format(alchPrice));
 			}
 
 			String response = builder.build();
 
 			log.debug("Setting response {}", response);
-			chatMessageManager.update(type, response, messageNode);
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 	}
 
 	/**
 	 * Looks up the player skill and changes the original message to the
-	 * reponse.
+	 * response.
 	 *
 	 * @param setMessage The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
 	private void playerSkillLookup(ChatMessageType type, SetMessage setMessage, String search)
 	{
+		search = SkillAbbreviations.getFullName(search);
+
 		String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
@@ -278,13 +290,6 @@ public class ChatCommandsPlugin extends Plugin
 		else
 		{
 			player = sanitize(setMessage.getName());
-		}
-		try
-		{
-			search = SkillAbbreviations.valueOf(search.toUpperCase()).getName();
-		}
-		catch (IllegalArgumentException i)
-		{
 		}
 
 		HiscoreSkill skill;
@@ -318,7 +323,9 @@ public class ChatCommandsPlugin extends Plugin
 				.build();
 
 			log.debug("Setting response {}", response);
-			chatMessageManager.update(type, response, setMessage.getMessageNode());
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 		catch (IOException ex)
@@ -329,7 +336,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Compares the names of the items in the list with the original input.
-	 * returns the item if its name is equal to the original input or null
+	 * Returns the item if its name is equal to the original input or null
 	 * if it can't find the item.
 	 *
 	 * @param items List of items.
@@ -349,11 +356,11 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	/**
-	 * Cleans the playername string from ironman status icon if present and
-	 * corrects spaces
+	 * Cleans the ironman status icon from playername string if present and
+	 * corrects spaces.
 	 *
-	 * @param lookup Playername to lookup
-	 * @return Cleaned playername
+	 * @param lookup Playername to lookup.
+	 * @return Cleaned playername.
 	 */
 	private static String sanitize(String lookup)
 	{

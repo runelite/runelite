@@ -26,9 +26,8 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 
 public interface RenderableEntity
 {
-	Dimension render(Graphics2D graphics, Point parent);
+	Dimension render(Graphics2D graphics);
 }

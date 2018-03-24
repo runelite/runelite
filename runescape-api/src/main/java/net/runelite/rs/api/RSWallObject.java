@@ -24,6 +24,7 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.Renderable;
 import net.runelite.api.WallObject;
 import net.runelite.mapping.Import;
 
@@ -49,7 +50,15 @@ public interface RSWallObject extends WallObject
 	@Override
 	int getOrientationB();
 
+	@Import("renderable1")
+	Renderable getRenderable1();
+
+	@Import("renderable2")
+	Renderable getRenderable2();
+
 	@Import("config")
 	@Override
 	int getConfig();
+
+	void setPlane(int plane);
 }

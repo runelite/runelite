@@ -4,277 +4,273 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jf")
+@ObfuscatedName("je")
 @Implements("ObjectComposition")
 public class ObjectComposition extends CacheableNode {
-   @ObfuscatedName("a")
-   @Export("ObjectDefinition_isLowDetail")
-   static boolean ObjectDefinition_isLowDetail;
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
+   @Export("objectCompositionLowDetail")
+   static boolean objectCompositionLowDetail;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Ljc;"
    )
    @Export("objects_ref")
    static IndexDataBase objects_ref;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   static IndexDataBase field3551;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lhj;"
    )
    @Export("objects")
-   static NodeCache objects;
-   @ObfuscatedName("u")
+   public static NodeCache objects;
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lhj;"
    )
-   public static NodeCache field3512;
-   @ObfuscatedName("z")
+   public static NodeCache field3597;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lhj;"
    )
    @Export("cachedModels")
-   static NodeCache cachedModels;
-   @ObfuscatedName("t")
+   public static NodeCache cachedModels;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lhj;"
    )
-   static NodeCache field3521;
-   @ObfuscatedName("f")
+   public static NodeCache field3599;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "[Ldm;"
+      signature = "[Ldi;"
    )
-   static ModelData[] field3508;
-   @ObfuscatedName("g")
+   static ModelData[] field3600;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1714760777
+      intValue = -842687417
    )
    @Export("id")
    public int id;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @Export("objectModels")
    int[] objectModels;
-   @ObfuscatedName("x")
+   @ObfuscatedName("n")
    @Export("objectTypes")
    int[] objectTypes;
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @Export("name")
    public String name;
-   @ObfuscatedName("s")
+   @ObfuscatedName("c")
    @Export("recolorToFind")
    short[] recolorToFind;
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
    @Export("recolorToReplace")
    short[] recolorToReplace;
-   @ObfuscatedName("y")
+   @ObfuscatedName("u")
    @Export("textureToFind")
    short[] textureToFind;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @Export("textureToReplace")
    short[] textureToReplace;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1899287589
+      intValue = 768700099
    )
-   @Export("sizeX")
-   public int sizeX;
-   @ObfuscatedName("i")
+   @Export("width")
+   public int width;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -2057232489
+      intValue = -1278775147
    )
-   @Export("sizeY")
-   public int sizeY;
-   @ObfuscatedName("l")
+   @Export("length")
+   public int length;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1161808807
+      intValue = -404119069
    )
-   @Export("interactType")
-   public int interactType;
-   @ObfuscatedName("m")
-   @Export("boolean1")
-   public boolean boolean1;
-   @ObfuscatedName("q")
+   @Export("clipType")
+   public int clipType;
+   @ObfuscatedName("s")
+   @Export("blocksProjectile")
+   public boolean blocksProjectile;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1320550455
+      intValue = -679410545
    )
    @Export("int1")
    public int int1;
-   @ObfuscatedName("b")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 542423197
+      intValue = -918718619
    )
-   @Export("clipType")
-   int clipType;
-   @ObfuscatedName("h")
+   @Export("contouredGround")
+   int contouredGround;
+   @ObfuscatedName("r")
    @Export("nonFlatShading")
    boolean nonFlatShading;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @Export("modelClipped")
    public boolean modelClipped;
-   @ObfuscatedName("v")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -334665683
+      intValue = 240236025
    )
    @Export("animationId")
    public int animationId;
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1284309911
+      intValue = -216681433
    )
-   @Export("int2")
-   public int int2;
-   @ObfuscatedName("ab")
+   @Export("decorDisplacement")
+   public int decorDisplacement;
+   @ObfuscatedName("ay")
    @ObfuscatedGetter(
-      intValue = 2045893851
+      intValue = 1652492905
    )
    @Export("ambient")
    int ambient;
-   @ObfuscatedName("ad")
+   @ObfuscatedName("ao")
    @ObfuscatedGetter(
-      intValue = 931874435
+      intValue = -1957207715
    )
    @Export("contrast")
    int contrast;
-   @ObfuscatedName("ag")
+   @ObfuscatedName("av")
    @Export("actions")
    public String[] actions;
-   @ObfuscatedName("ak")
+   @ObfuscatedName("aj")
    @ObfuscatedGetter(
-      intValue = -956559097
+      intValue = 644236959
    )
    @Export("mapIconId")
    public int mapIconId;
-   @ObfuscatedName("as")
+   @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = -1042448959
+      intValue = -758809621
    )
    @Export("mapSceneId")
    public int mapSceneId;
-   @ObfuscatedName("aq")
+   @ObfuscatedName("am")
    @Export("isRotated")
    boolean isRotated;
-   @ObfuscatedName("ax")
+   @ObfuscatedName("az")
    @Export("clipped")
    public boolean clipped;
-   @ObfuscatedName("at")
+   @ObfuscatedName("ap")
    @ObfuscatedGetter(
-      intValue = 1342124689
+      intValue = -1820328363
    )
    @Export("modelSizeX")
    int modelSizeX;
-   @ObfuscatedName("ap")
+   @ObfuscatedName("ah")
    @ObfuscatedGetter(
-      intValue = -1468073391
+      intValue = 133250809
    )
    @Export("modelSizeHeight")
    int modelSizeHeight;
-   @ObfuscatedName("an")
+   @ObfuscatedName("au")
    @ObfuscatedGetter(
-      intValue = -1186652121
+      intValue = 124548847
    )
    @Export("modelSizeY")
    int modelSizeY;
-   @ObfuscatedName("ac")
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = 1247660289
+      intValue = -1635836265
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("aw")
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = 688876963
+      intValue = -1395625125
    )
    @Export("offsetHeight")
    int offsetHeight;
-   @ObfuscatedName("al")
+   @ObfuscatedName("an")
    @ObfuscatedGetter(
-      intValue = 2050502779
+      intValue = -1035050829
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("ay")
-   @Export("boolean2")
-   public boolean boolean2;
    @ObfuscatedName("ai")
-   @Export("isSolid")
-   boolean isSolid;
-   @ObfuscatedName("af")
+   @Export("obstructsGround")
+   public boolean obstructsGround;
+   @ObfuscatedName("al")
+   @Export("isHollow")
+   boolean isHollow;
+   @ObfuscatedName("at")
    @ObfuscatedGetter(
-      intValue = 2040555547
+      intValue = 63290501
    )
-   @Export("int3")
-   public int int3;
-   @ObfuscatedName("ah")
+   @Export("supportItems")
+   public int supportItems;
+   @ObfuscatedName("ag")
    @Export("impostorIds")
    public int[] impostorIds;
-   @ObfuscatedName("az")
+   @ObfuscatedName("as")
    @ObfuscatedGetter(
-      intValue = 1929572175
+      intValue = -591302887
    )
    @Export("varpId")
    int varpId;
-   @ObfuscatedName("av")
+   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = 2109158551
+      intValue = 20833125
    )
    @Export("configId")
    int configId;
-   @ObfuscatedName("ae")
+   @ObfuscatedName("aq")
    @ObfuscatedGetter(
-      intValue = 492183817
+      intValue = -1930710191
    )
    @Export("ambientSoundId")
    public int ambientSoundId;
-   @ObfuscatedName("am")
+   @ObfuscatedName("aa")
    @ObfuscatedGetter(
-      intValue = 1274074531
+      intValue = -1763473263
    )
    @Export("int4")
    public int int4;
-   @ObfuscatedName("aa")
+   @ObfuscatedName("af")
    @ObfuscatedGetter(
-      intValue = 103125545
+      intValue = 1078581891
    )
    @Export("int5")
    public int int5;
-   @ObfuscatedName("aj")
+   @ObfuscatedName("ak")
    @ObfuscatedGetter(
-      intValue = 1679061985
+      intValue = -835661127
    )
    @Export("int6")
    public int int6;
-   @ObfuscatedName("ao")
-   public int[] field3540;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ab")
+   public int[] field3642;
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lhq;"
    )
-   IterableHashTable field3558;
+   @Export("params")
+   IterableHashTable params;
 
    static {
-      ObjectDefinition_isLowDetail = false;
+      objectCompositionLowDetail = false;
       objects = new NodeCache(4096);
-      field3512 = new NodeCache(500);
+      field3597 = new NodeCache(500);
       cachedModels = new NodeCache(30);
-      field3521 = new NodeCache(30);
-      field3508 = new ModelData[4];
+      field3599 = new NodeCache(30);
+      field3600 = new ModelData[4];
    }
 
    ObjectComposition() {
       this.name = "null";
-      this.sizeX = 1;
-      this.sizeY = 1;
-      this.interactType = 2;
-      this.boolean1 = true;
+      this.width = 1;
+      this.length = 1;
+      this.clipType = 2;
+      this.blocksProjectile = true;
       this.int1 = -1;
-      this.clipType = -1;
+      this.contouredGround = -1;
       this.nonFlatShading = false;
       this.modelClipped = false;
       this.animationId = -1;
-      this.int2 = 16;
+      this.decorDisplacement = 16;
       this.ambient = 0;
       this.contrast = 0;
       this.actions = new String[5];
@@ -288,9 +284,9 @@ public class ObjectComposition extends CacheableNode {
       this.offsetX = 0;
       this.offsetHeight = 0;
       this.offsetY = 0;
-      this.boolean2 = false;
-      this.isSolid = false;
-      this.int3 = -1;
+      this.obstructsGround = false;
+      this.isHollow = false;
+      this.supportItems = -1;
       this.varpId = -1;
       this.configId = -1;
       this.ambientSoundId = -1;
@@ -299,10 +295,10 @@ public class ObjectComposition extends CacheableNode {
       this.int6 = 0;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1705964802"
+      garbageValue = "1856089620"
    )
    @Export("post")
    void post() {
@@ -319,16 +315,16 @@ public class ObjectComposition extends CacheableNode {
          }
       }
 
-      if(this.int3 == -1) {
-         this.int3 = this.interactType != 0?1:0;
+      if(this.supportItems == -1) {
+         this.supportItems = this.clipType != 0?1:0;
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lgh;I)V",
-      garbageValue = "1607095283"
+      signature = "(Lgb;I)V",
+      garbageValue = "120730341"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -342,10 +338,10 @@ public class ObjectComposition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(Lgh;IB)V",
-      garbageValue = "0"
+      signature = "(Lgb;IB)V",
+      garbageValue = "1"
    )
    @Export("loadData")
    void loadData(Buffer var1, int var2) {
@@ -354,7 +350,7 @@ public class ObjectComposition extends CacheableNode {
       if(var2 == 1) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
-            if(this.objectModels != null && !ObjectDefinition_isLowDetail) {
+            if(this.objectModels != null && !objectCompositionLowDetail) {
                var1.offset += 3 * var3;
             } else {
                this.objectTypes = new int[var3];
@@ -371,7 +367,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 5) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
-            if(this.objectModels != null && !ObjectDefinition_isLowDetail) {
+            if(this.objectModels != null && !objectCompositionLowDetail) {
                var1.offset += var3 * 2;
             } else {
                this.objectTypes = null;
@@ -383,18 +379,18 @@ public class ObjectComposition extends CacheableNode {
             }
          }
       } else if(var2 == 14) {
-         this.sizeX = var1.readUnsignedByte();
+         this.width = var1.readUnsignedByte();
       } else if(var2 == 15) {
-         this.sizeY = var1.readUnsignedByte();
+         this.length = var1.readUnsignedByte();
       } else if(var2 == 17) {
-         this.interactType = 0;
-         this.boolean1 = false;
+         this.clipType = 0;
+         this.blocksProjectile = false;
       } else if(var2 == 18) {
-         this.boolean1 = false;
+         this.blocksProjectile = false;
       } else if(var2 == 19) {
          this.int1 = var1.readUnsignedByte();
       } else if(var2 == 21) {
-         this.clipType = 0;
+         this.contouredGround = 0;
       } else if(var2 == 22) {
          this.nonFlatShading = true;
       } else if(var2 == 23) {
@@ -405,9 +401,9 @@ public class ObjectComposition extends CacheableNode {
             this.animationId = -1;
          }
       } else if(var2 == 27) {
-         this.interactType = 1;
+         this.clipType = 1;
       } else if(var2 == 28) {
-         this.int2 = var1.readUnsignedByte();
+         this.decorDisplacement = var1.readUnsignedByte();
       } else if(var2 == 29) {
          this.ambient = var1.readByte();
       } else if(var2 == 39) {
@@ -456,11 +452,11 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 72) {
          this.offsetY = var1.readShort();
       } else if(var2 == 73) {
-         this.boolean2 = true;
+         this.obstructsGround = true;
       } else if(var2 == 74) {
-         this.isSolid = true;
+         this.isHollow = true;
       } else if(var2 == 75) {
-         this.int3 = var1.readUnsignedByte();
+         this.supportItems = var1.readUnsignedByte();
       } else if(var2 != 77 && var2 != 92) {
          if(var2 == 78) {
             this.ambientSoundId = var1.readUnsignedShort();
@@ -470,17 +466,17 @@ public class ObjectComposition extends CacheableNode {
             this.int6 = var1.readUnsignedShort();
             this.int4 = var1.readUnsignedByte();
             var3 = var1.readUnsignedByte();
-            this.field3540 = new int[var3];
+            this.field3642 = new int[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field3540[var4] = var1.readUnsignedShort();
+               this.field3642[var4] = var1.readUnsignedShort();
             }
          } else if(var2 == 81) {
-            this.clipType = var1.readUnsignedByte() * 256;
+            this.contouredGround = var1.readUnsignedByte() * 256;
          } else if(var2 == 82) {
             this.mapIconId = var1.readUnsignedShort();
          } else if(var2 == 249) {
-            this.field3558 = ItemContainer.readStringIntParameters(var1, this.field3558);
+            this.params = class2.readStringIntParameters(var1, this.params);
          }
       } else {
          this.varpId = var1.readUnsignedShort();
@@ -516,16 +512,16 @@ public class ObjectComposition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "-2062698873"
+      garbageValue = "-1289064119"
    )
-   public final boolean method4662(int var1) {
+   public final boolean method5025(int var1) {
       if(this.objectTypes != null) {
          for(int var4 = 0; var4 < this.objectTypes.length; ++var4) {
             if(this.objectTypes[var4] == var1) {
-               return field3551.tryLoadRecord(this.objectModels[var4] & 65535, 0);
+               return class21.field315.tryLoadRecord(this.objectModels[var4] & 65535, 0);
             }
          }
 
@@ -538,36 +534,36 @@ public class ObjectComposition extends CacheableNode {
          boolean var2 = true;
 
          for(int var3 = 0; var3 < this.objectModels.length; ++var3) {
-            var2 &= field3551.tryLoadRecord(this.objectModels[var3] & 65535, 0);
+            var2 &= class21.field315.tryLoadRecord(this.objectModels[var3] & 65535, 0);
          }
 
          return var2;
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "-26054"
+      signature = "(I)Z",
+      garbageValue = "-874269186"
    )
-   public final boolean method4663() {
+   public final boolean method4992() {
       if(this.objectModels == null) {
          return true;
       } else {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < this.objectModels.length; ++var2) {
-            var1 &= field3551.tryLoadRecord(this.objectModels[var2] & 65535, 0);
+            var1 &= class21.field315.tryLoadRecord(this.objectModels[var2] & 65535, 0);
          }
 
          return var1;
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II[[IIIII)Lel;",
-      garbageValue = "-1567857566"
+      signature = "(II[[IIIIB)Len;",
+      garbageValue = "-50"
    )
    @Export("getModel")
    public final Renderable getModel(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
@@ -588,7 +584,7 @@ public class ObjectComposition extends CacheableNode {
          if(!this.nonFlatShading) {
             var9 = var10.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
          } else {
-            var10.field1718 = (short)(this.ambient + 64);
+            var10.field1730 = (short)(this.ambient + 64);
             var10.contrast = (short)(this.contrast + 768);
             var10.computeNormals();
             var9 = var10;
@@ -598,26 +594,26 @@ public class ObjectComposition extends CacheableNode {
       }
 
       if(this.nonFlatShading) {
-         var9 = ((ModelData)var9).method2468();
+         var9 = ((ModelData)var9).method2593();
       }
 
-      if(this.clipType >= 0) {
+      if(this.contouredGround >= 0) {
          if(var9 instanceof Model) {
-            var9 = ((Model)var9).method2518(var3, var4, var5, var6, true, this.clipType);
+            var9 = ((Model)var9).method2685(var3, var4, var5, var6, true, this.contouredGround);
          } else if(var9 instanceof ModelData) {
-            var9 = ((ModelData)var9).method2440(var3, var4, var5, var6, true, this.clipType);
+            var9 = ((ModelData)var9).method2661(var3, var4, var5, var6, true, this.contouredGround);
          }
       }
 
       return (Renderable)var9;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(II[[IIIII)Lef;",
-      garbageValue = "-922704609"
+      signature = "(II[[IIIII)Lek;",
+      garbageValue = "751473866"
    )
-   public final Model method4665(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
+   public final Model method5024(int var1, int var2, int[][] var3, int var4, int var5, int var6) {
       long var7;
       if(this.objectTypes == null) {
          var7 = (long)(var2 + (this.id << 10));
@@ -625,7 +621,7 @@ public class ObjectComposition extends CacheableNode {
          var7 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
-      Model var9 = (Model)field3521.get(var7);
+      Model var9 = (Model)field3599.get(var7);
       if(var9 == null) {
          ModelData var10 = this.getModel(var1, var2);
          if(var10 == null) {
@@ -633,22 +629,22 @@ public class ObjectComposition extends CacheableNode {
          }
 
          var9 = var10.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
-         field3521.put(var9, var7);
+         field3599.put(var9, var7);
       }
 
-      if(this.clipType >= 0) {
-         var9 = var9.method2518(var3, var4, var5, var6, true, this.clipType);
+      if(this.contouredGround >= 0) {
+         var9 = var9.method2685(var3, var4, var5, var6, true, this.contouredGround);
       }
 
       return var9;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II[[IIIILjj;II)Lef;",
-      garbageValue = "-1814334045"
+      signature = "(II[[IIIILkf;II)Lek;",
+      garbageValue = "-546189586"
    )
-   public final Model method4666(int var1, int var2, int[][] var3, int var4, int var5, int var6, Sequence var7, int var8) {
+   public final Model method5000(int var1, int var2, int[][] var3, int var4, int var5, int var6, Sequence var7, int var8) {
       long var9;
       if(this.objectTypes == null) {
          var9 = (long)(var2 + (this.id << 10));
@@ -656,7 +652,7 @@ public class ObjectComposition extends CacheableNode {
          var9 = (long)(var2 + (var1 << 3) + (this.id << 10));
       }
 
-      Model var11 = (Model)field3521.get(var9);
+      Model var11 = (Model)field3599.get(var9);
       if(var11 == null) {
          ModelData var12 = this.getModel(var1, var2);
          if(var12 == null) {
@@ -664,20 +660,20 @@ public class ObjectComposition extends CacheableNode {
          }
 
          var11 = var12.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
-         field3521.put(var11, var9);
+         field3599.put(var11, var9);
       }
 
-      if(var7 == null && this.clipType == -1) {
+      if(var7 == null && this.contouredGround == -1) {
          return var11;
       } else {
          if(var7 != null) {
-            var11 = var7.method4838(var11, var8, var2);
+            var11 = var7.transformObjectModel(var11, var8, var2);
          } else {
-            var11 = var11.method2509(true);
+            var11 = var11.toSharedModel(true);
          }
 
-         if(this.clipType >= 0) {
-            var11 = var11.method2518(var3, var4, var5, var6, false, this.clipType);
+         if(this.contouredGround >= 0) {
+            var11 = var11.method2685(var3, var4, var5, var6, false, this.contouredGround);
          }
 
          return var11;
@@ -686,8 +682,8 @@ public class ObjectComposition extends CacheableNode {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIB)Ldm;",
-      garbageValue = "-1"
+      signature = "(III)Ldi;",
+      garbageValue = "601657225"
    )
    @Export("getModel")
    final ModelData getModel(int var1, int var2) {
@@ -717,27 +713,27 @@ public class ObjectComposition extends CacheableNode {
                var7 += 65536;
             }
 
-            var3 = (ModelData)field3512.get((long)var7);
+            var3 = (ModelData)field3597.get((long)var7);
             if(var3 == null) {
-               var3 = ModelData.method2428(field3551, var7 & 65535, 0);
+               var3 = ModelData.method2594(class21.field315, var7 & 65535, 0);
                if(var3 == null) {
                   return null;
                }
 
                if(var4) {
-                  var3.method2429();
+                  var3.method2616();
                }
 
-               field3512.put(var3, (long)var7);
+               field3597.put(var3, (long)var7);
             }
 
             if(var5 > 1) {
-               field3508[var6] = var3;
+               field3600[var6] = var3;
             }
          }
 
          if(var5 > 1) {
-            var3 = new ModelData(field3508, var5);
+            var3 = new ModelData(field3600, var5);
          }
       } else {
          int var9 = -1;
@@ -759,18 +755,18 @@ public class ObjectComposition extends CacheableNode {
             var5 += 65536;
          }
 
-         var3 = (ModelData)field3512.get((long)var5);
+         var3 = (ModelData)field3597.get((long)var5);
          if(var3 == null) {
-            var3 = ModelData.method2428(field3551, var5 & 65535, 0);
+            var3 = ModelData.method2594(class21.field315, var5 & 65535, 0);
             if(var3 == null) {
                return null;
             }
 
             if(var10) {
-               var3.method2429();
+               var3.method2616();
             }
 
-            field3512.put(var3, (long)var5);
+            field3597.put(var3, (long)var5);
          }
       }
 
@@ -787,19 +783,19 @@ public class ObjectComposition extends CacheableNode {
          var11 = true;
       }
 
-      ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, this.recolorToFind == null, this.textureToFind == null, true);
+      ModelData var8 = new ModelData(var3, var2 == 0 && !var4 && !var11, null == this.recolorToFind, this.textureToFind == null, true);
       if(var1 == 4 && var2 > 3) {
-         var8.method2425(256);
-         var8.method2426(45, 0, -45);
+         var8.method2600(256);
+         var8.method2607(45, 0, -45);
       }
 
       var2 &= 3;
       if(var2 == 1) {
-         var8.method2460();
+         var8.method2603();
       } else if(var2 == 2) {
-         var8.method2452();
+         var8.method2604();
       } else if(var2 == 3) {
-         var8.method2474();
+         var8.method2665();
       }
 
       if(this.recolorToFind != null) {
@@ -810,33 +806,33 @@ public class ObjectComposition extends CacheableNode {
 
       if(this.textureToFind != null) {
          for(var7 = 0; var7 < this.textureToFind.length; ++var7) {
-            var8.method2437(this.textureToFind[var7], this.textureToReplace[var7]);
+            var8.method2609(this.textureToFind[var7], this.textureToReplace[var7]);
          }
       }
 
       if(var4) {
-         var8.method2487(this.modelSizeX, this.modelSizeHeight, this.modelSizeY);
+         var8.method2610(this.modelSizeX, this.modelSizeHeight, this.modelSizeY);
       }
 
       if(var11) {
-         var8.method2426(this.offsetX, this.offsetHeight, this.offsetY);
+         var8.method2607(this.offsetX, this.offsetHeight, this.offsetY);
       }
 
       return var8;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)Ljf;",
-      garbageValue = "1746208980"
+      signature = "(B)Lje;",
+      garbageValue = "0"
    )
    @Export("getImpostor")
    public final ObjectComposition getImpostor() {
       int var1 = -1;
       if(this.varpId != -1) {
-         var1 = class36.getVarbit(this.varpId);
+         var1 = World.getVarbit(this.varpId);
       } else if(this.configId != -1) {
-         var1 = class222.widgetSettings[this.configId];
+         var1 = class237.clientVarps[this.configId];
       }
 
       int var2;
@@ -846,40 +842,53 @@ public class ObjectComposition extends CacheableNode {
          var2 = this.impostorIds[this.impostorIds.length - 1];
       }
 
-      return var2 != -1?CacheFile.getObjectDefinition(var2):null;
+      return var2 != -1?Spotanim.getObjectDefinition(var2):null;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "1466930188"
+      garbageValue = "589971710"
    )
-   public int method4668(int var1, int var2) {
-      return GraphicsObject.method1615(this.field3558, var1, var2);
+   public int method4998(int var1, int var2) {
+      return class297.method5284(this.params, var1, var2);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-1283434496"
+      garbageValue = "-1862333596"
    )
-   public String method4685(int var1, String var2) {
-      return class192.method3599(this.field3558, var1, var2);
+   public String method4991(int var1, String var2) {
+      IterableHashTable var4 = this.params;
+      String var3;
+      if(var4 == null) {
+         var3 = var2;
+      } else {
+         ObjectNode var5 = (ObjectNode)var4.get((long)var1);
+         if(var5 == null) {
+            var3 = var2;
+         } else {
+            var3 = (String)var5.value;
+         }
+      }
+
+      return var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1733650970"
+      garbageValue = "151396871"
    )
-   public boolean method4670() {
+   public boolean method5008() {
       if(this.impostorIds == null) {
-         return this.ambientSoundId != -1 || this.field3540 != null;
+         return this.ambientSoundId != -1 || this.field3642 != null;
       } else {
          for(int var1 = 0; var1 < this.impostorIds.length; ++var1) {
             if(this.impostorIds[var1] != -1) {
-               ObjectComposition var2 = CacheFile.getObjectDefinition(this.impostorIds[var1]);
-               if(var2.ambientSoundId != -1 || var2.field3540 != null) {
+               ObjectComposition var2 = Spotanim.getObjectDefinition(this.impostorIds[var1]);
+               if(var2.ambientSoundId != -1 || var2.field3642 != null) {
                   return true;
                }
             }
@@ -887,23 +896,5 @@ public class ObjectComposition extends CacheableNode {
 
          return false;
       }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-762498911"
-   )
-   public static void method4706() {
-      class293.classInfos = new CombatInfoList();
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-655005255"
-   )
-   public static boolean method4664(char var0) {
-      return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

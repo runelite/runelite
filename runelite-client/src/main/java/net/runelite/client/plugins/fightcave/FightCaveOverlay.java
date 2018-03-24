@@ -31,19 +31,19 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
 @Slf4j
 public class FightCaveOverlay extends Overlay
 {
+	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
+
 	private final Client client;
 	private final FightCavePlugin plugin;
 
@@ -51,7 +51,7 @@ public class FightCaveOverlay extends Overlay
 	private BufferedImage protectFromMissilesImg;
 
 	@Inject
-	FightCaveOverlay(@Nullable Client client, FightCavePlugin plugin)
+	FightCaveOverlay(Client client, FightCavePlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);
@@ -60,18 +60,22 @@ public class FightCaveOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		JadAttack attack = plugin.getAttack();
-		if (attack == null || client.isPrayerActive(attack.getPrayer()))
+		if (attack == null)
 		{
 			return null;
 		}
 		BufferedImage prayerImage = getPrayerImage(attack);
 		ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
-		imagePanelComponent.setTitle("Switch!");
-		imagePanelComponent.setImage(prayerImage);
-		return imagePanelComponent.render(graphics, parent);
+		imagePanelComponent.setTitle("TzTok-Jad");
+		imagePanelComponent.getImages().add(prayerImage);
+		if (!client.isPrayerActive(attack.getPrayer()))
+		{
+			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
+		}
+		return imagePanelComponent.render(graphics);
 	}
 
 	private BufferedImage getPrayerImage(JadAttack attack)
@@ -104,8 +108,10 @@ public class FightCaveOverlay extends Overlay
 		BufferedImage image = null;
 		try
 		{
-			InputStream in = FightCaveOverlay.class.getResourceAsStream(path);
-			image = ImageIO.read(in);
+			synchronized (ImageIO.class)
+			{
+				image = ImageIO.read(FightCaveOverlay.class.getResourceAsStream(path));
+			}
 		}
 		catch (IOException e)
 		{

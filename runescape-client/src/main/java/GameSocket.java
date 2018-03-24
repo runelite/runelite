@@ -6,63 +6,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fj")
 @Implements("GameSocket")
 public class GameSocket implements Runnable {
-   @ObfuscatedName("cu")
-   public static char field2186;
-   @ObfuscatedName("a")
-   Thread field2191;
-   @ObfuscatedName("w")
-   OutputStream field2183;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1892310589
-   )
-   int field2192;
-   @ObfuscatedName("k")
-   byte[] field2185;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 985169115
-   )
-   int field2187;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1331862449
-   )
-   int field2184;
    @ObfuscatedName("t")
-   IOException field2182;
-   @ObfuscatedName("f")
-   boolean field2189;
+   Thread field2223;
+   @ObfuscatedName("q")
+   OutputStream field2222;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 453998783
+   )
+   int field2225;
+   @ObfuscatedName("a")
+   byte[] field2224;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -885760093
+   )
+   int field2226;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -94509961
+   )
+   int field2221;
+   @ObfuscatedName("e")
+   IOException field2227;
+   @ObfuscatedName("x")
+   boolean field2228;
 
    GameSocket(OutputStream var1, int var2) {
-      this.field2187 = 0;
-      this.field2184 = 0;
-      this.field2183 = var1;
-      this.field2192 = var2 + 1;
-      this.field2185 = new byte[this.field2192];
-      this.field2191 = new Thread(this);
-      this.field2191.setDaemon(true);
-      this.field2191.start();
+      this.field2226 = 0;
+      this.field2221 = 0;
+      this.field2222 = var1;
+      this.field2225 = var2 + 1;
+      this.field2224 = new byte[this.field2225];
+      this.field2223 = new Thread(this);
+      this.field2223.setDaemon(true);
+      this.field2223.start();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1927080309"
+      signature = "(B)Z",
+      garbageValue = "-39"
    )
-   boolean method3118() {
-      if(this.field2189) {
+   boolean method3381() {
+      if(this.field2228) {
          try {
-            this.field2183.close();
-            if(this.field2182 == null) {
-               this.field2182 = new IOException("");
+            this.field2222.close();
+            if(this.field2227 == null) {
+               this.field2227 = new IOException("");
             }
          } catch (IOException var2) {
-            if(this.field2182 == null) {
-               this.field2182 = new IOException(var2);
+            if(this.field2227 == null) {
+               this.field2227 = new IOException(var2);
             }
          }
 
@@ -72,37 +70,37 @@ public class GameSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "1788497738"
+      garbageValue = "-1112849919"
    )
    @Export("read")
    void read(byte[] var1, int var2, int var3) throws IOException {
       if(var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
          synchronized(this) {
-            if(this.field2182 != null) {
-               throw new IOException(this.field2182.toString());
+            if(this.field2227 != null) {
+               throw new IOException(this.field2227.toString());
             } else {
                int var5;
-               if(this.field2187 <= this.field2184) {
-                  var5 = this.field2192 - this.field2184 + this.field2187 - 1;
+               if(this.field2226 <= this.field2221) {
+                  var5 = this.field2225 - this.field2221 + this.field2226 - 1;
                } else {
-                  var5 = this.field2187 - this.field2184 - 1;
+                  var5 = this.field2226 - this.field2221 - 1;
                }
 
                if(var5 < var3) {
                   throw new IOException("");
                } else {
-                  if(var3 + this.field2184 <= this.field2192) {
-                     System.arraycopy(var1, var2, this.field2185, this.field2184, var3);
+                  if(var3 + this.field2221 <= this.field2225) {
+                     System.arraycopy(var1, var2, this.field2224, this.field2221, var3);
                   } else {
-                     int var6 = this.field2192 - this.field2184;
-                     System.arraycopy(var1, var2, this.field2185, this.field2184, var6);
-                     System.arraycopy(var1, var6 + var2, this.field2185, 0, var3 - var6);
+                     int var6 = this.field2225 - this.field2221;
+                     System.arraycopy(var1, var2, this.field2224, this.field2221, var6);
+                     System.arraycopy(var1, var6 + var2, this.field2224, 0, var3 - var6);
                   }
 
-                  this.field2184 = (var3 + this.field2184) % this.field2192;
+                  this.field2221 = (var3 + this.field2221) % this.field2225;
                   this.notifyAll();
                }
             }
@@ -112,19 +110,19 @@ public class GameSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "0"
+      garbageValue = "-86"
    )
-   void method3125() {
+   void method3373() {
       synchronized(this) {
-         this.field2189 = true;
+         this.field2228 = true;
          this.notifyAll();
       }
 
       try {
-         this.field2191.join();
+         this.field2223.join();
       } catch (InterruptedException var3) {
          ;
       }
@@ -136,14 +134,14 @@ public class GameSocket implements Runnable {
          int var1;
          synchronized(this) {
             while(true) {
-               if(this.field2182 != null) {
+               if(this.field2227 != null) {
                   return;
                }
 
-               if(this.field2187 <= this.field2184) {
-                  var1 = this.field2184 - this.field2187;
+               if(this.field2226 <= this.field2221) {
+                  var1 = this.field2221 - this.field2226;
                } else {
-                  var1 = this.field2192 - this.field2187 + this.field2184;
+                  var1 = this.field2225 - this.field2226 + this.field2221;
                }
 
                if(var1 > 0) {
@@ -151,13 +149,13 @@ public class GameSocket implements Runnable {
                }
 
                try {
-                  this.field2183.flush();
+                  this.field2222.flush();
                } catch (IOException var11) {
-                  this.field2182 = var11;
+                  this.field2227 = var11;
                   return;
                }
 
-               if(this.method3118()) {
+               if(this.method3381()) {
                   return;
                }
 
@@ -170,25 +168,25 @@ public class GameSocket implements Runnable {
          }
 
          try {
-            if(var1 + this.field2187 <= this.field2192) {
-               this.field2183.write(this.field2185, this.field2187, var1);
+            if(var1 + this.field2226 <= this.field2225) {
+               this.field2222.write(this.field2224, this.field2226, var1);
             } else {
-               int var7 = this.field2192 - this.field2187;
-               this.field2183.write(this.field2185, this.field2187, var7);
-               this.field2183.write(this.field2185, 0, var1 - var7);
+               int var7 = this.field2225 - this.field2226;
+               this.field2222.write(this.field2224, this.field2226, var7);
+               this.field2222.write(this.field2224, 0, var1 - var7);
             }
          } catch (IOException var10) {
             IOException var2 = var10;
             synchronized(this) {
-               this.field2182 = var2;
+               this.field2227 = var2;
                return;
             }
          }
 
          synchronized(this) {
-            this.field2187 = (var1 + this.field2187) % this.field2192;
+            this.field2226 = (var1 + this.field2226) % this.field2225;
          }
-      } while(!this.method3118());
+      } while(!this.method3381());
 
    }
 }

@@ -61,8 +61,8 @@ public class Mapper
 
 		finalm.reduce();
 		
-		// map unexecuted methods
-		mapUnexecutedMethods(finalm);
+		// map unexecuted methods (their mappings have not yet been merged)
+		while (mapUnexecutedMethods(finalm));
 
 		finalm.buildClasses();
 
@@ -199,10 +199,16 @@ public class Mapper
 		}
 	}
 
-	private void mapUnexecutedMethods(ParallelExecutorMapping mapping)
+	/**
+	 * execute and map already mapped methods that have not yet been "executed",
+	 * and apply their mappings
+	 * @param mapping
+	 * @return
+	 */
+	private boolean mapUnexecutedMethods(ParallelExecutorMapping mapping)
 	{
 		// map has already been reduced
-
+		boolean mapped = false;
 		for (Object o : mapping.getMap().keySet())
 		{
 			Mapping m = mapping.getMappings(o).iterator().next();
@@ -224,7 +230,10 @@ public class Mapper
 			logger.debug("Wasn't executed {}", m);
 
 			ParallelExecutorMapping ma = MappingExecutorUtil.map(m1, m2);
+			m.wasExecuted = true;
+			mapped = true;
 			mapping.merge(ma);
 		}
+		return mapped;
 	}
 }

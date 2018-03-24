@@ -24,199 +24,260 @@
  */
 package net.runelite.api;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum Varbits
 {
 	/*
 	 * If chatbox is transparent or not
 	 */
-	TRANSPARANT_CHATBOX(4608, 1055, 9, 9),
-	SPLIT_CHAT(287, 0, 0),
+	TRANSPARANT_CHATBOX(4608),
 
 	/**
 	 * Runecraft pouches
 	 */
-	POUCH_SMALL(603, 486, 0, 2),
-	POUCH_MEDIUM(604, 486, 3, 8),
-	POUCH_LARGE(605, 486, 9, 17),
-	POUCH_GIANT(606, 486, 18, 29),
+	POUCH_SMALL(603),
+	POUCH_MEDIUM(604),
+	POUCH_LARGE(605),
+	POUCH_GIANT(606),
 
 	/**
 	 * Runepouch
 	 */
-	RUNE_POUCH_RUNE1(29, 1139, 0, 5),
-	RUNE_POUCH_RUNE2(1622, 1139, 6, 11),
-	RUNE_POUCH_RUNE3(1623, 1139, 12, 17),
-	RUNE_POUCH_AMOUNT1(1624, 1139, 18, 31),
-	RUNE_POUCH_AMOUNT2(1625, 1140, 0, 13),
-	RUNE_POUCH_AMOUNT3(1626, 1140, 14, 27),
+	RUNE_POUCH_RUNE1(29),
+	RUNE_POUCH_RUNE2(1622),
+	RUNE_POUCH_RUNE3(1623),
+	RUNE_POUCH_AMOUNT1(1624),
+	RUNE_POUCH_AMOUNT2(1625),
+	RUNE_POUCH_AMOUNT3(1626),
 
 	/**
 	 * Prayers
 	 */
-	PRAYER_THICK_SKIN(4104, 83, 0, 0),
-	PRAYER_BURST_OF_STRENGTH(4105, 83, 1, 1),
-	PRAYER_CLARITY_OF_THOUGHT(4106, 83, 2, 2),
-	PRAYER_SHARP_EYE(4122, 83, 18, 18),
-	PRAYER_MYSTIC_WILL(4123, 83, 19, 19),
-	PRAYER_ROCK_SKIN(4107, 83, 3, 3),
-	PRAYER_SUPERHUMAN_STRENGTH(4108, 83, 4, 4),
-	PRAYER_IMPROVED_REFLEXES(4109, 83, 5, 5),
-	PRAYER_RAPID_RESTORE(4110, 83, 6, 6),
-	PRAYER_RAPID_HEAL(4111, 83, 7, 7),
-	PRAYER_PROTECT_ITEM(4112, 83, 8, 8),
-	PRAYER_HAWK_EYE(4124, 83, 20, 20),
-	PRAYER_MYSTIC_LORE(4125, 83, 21, 21),
-	PRAYER_STEEL_SKIN(4113, 83, 9, 9),
-	PRAYER_ULTIMATE_STRENGTH(4114, 83, 10, 10),
-	PRAYER_INCREDIBLE_REFLEXES(4115, 83, 11, 11),
-	PRAYER_PROTECT_FROM_MAGIC(4116, 83, 12, 12),
-	PRAYER_PROTECT_FROM_MISSILES(4117, 83, 13, 13),
-	PRAYER_PROTECT_FROM_MELEE(4118, 83, 14, 14),
-	PRAYER_EAGLE_EYE(4126, 83, 22, 22),
-	PRAYER_MYSTIC_MIGHT(4127, 83, 23, 23),
-	PRAYER_RETRIBUTION(4119, 83, 15, 15),
-	PRAYER_REDEMPTION(4120, 83, 16, 16),
-	PRAYER_SMITE(4121, 83, 17, 17),
-	PRAYER_CHIVALRY(4128, 83, 25, 25),
-	PRAYER_PIETY(4129, 83, 26, 26),
-	PRAYER_PRESERVE(5466, 83, 28, 28),
+	PRAYER_THICK_SKIN(4104),
+	PRAYER_BURST_OF_STRENGTH(4105),
+	PRAYER_CLARITY_OF_THOUGHT(4106),
+	PRAYER_SHARP_EYE(4122),
+	PRAYER_MYSTIC_WILL(4123),
+	PRAYER_ROCK_SKIN(4107),
+	PRAYER_SUPERHUMAN_STRENGTH(4108),
+	PRAYER_IMPROVED_REFLEXES(4109),
+	PRAYER_RAPID_RESTORE(4110),
+	PRAYER_RAPID_HEAL(4111),
+	PRAYER_PROTECT_ITEM(4112),
+	PRAYER_HAWK_EYE(4124),
+	PRAYER_MYSTIC_LORE(4125),
+	PRAYER_STEEL_SKIN(4113),
+	PRAYER_ULTIMATE_STRENGTH(4114),
+	PRAYER_INCREDIBLE_REFLEXES(4115),
+	PRAYER_PROTECT_FROM_MAGIC(4116),
+	PRAYER_PROTECT_FROM_MISSILES(4117),
+	PRAYER_PROTECT_FROM_MELEE(4118),
+	PRAYER_EAGLE_EYE(4126),
+	PRAYER_MYSTIC_MIGHT(4127),
+	PRAYER_RETRIBUTION(4119),
+	PRAYER_REDEMPTION(4120),
+	PRAYER_SMITE(4121),
+	PRAYER_CHIVALRY(4128),
+	PRAYER_PIETY(4129),
+	PRAYER_PRESERVE(5466),
+	PRAYER_RIGOUR(5464),
+	PRAYER_AUGURY(5465),
 
 	/**
-	 * Special Attack
+	 * Diary Entries
 	 */
-	SPECIAL_ATTACK_PERCENT(300, 0, 16),
-	SPECIAL_ATTACK_ENABLED(301, 0, 0),
+	DIARY_ARDOUGNE_EASY(4458),
+	DIARY_ARDOUGNE_MEDIUM(4459),
+	DIARY_ARDOUGNE_HARD(4460),
+	DIARY_ARDOUGNE_ELITE(4461),
 
-	/**
-	 * Poison
-	 * Venom - 1,000,000 (6dmg/hit) - 1,000,008 (20 dmg/hit)
-	 */
-	POISON(102, 0, 5),
-	VENOM(102, 6, 9),
+	DIARY_DESERT_EASY(4483),
+	DIARY_DESERT_MEDIUM(4484),
+	DIARY_DESERT_HARD(4485),
+	DIARY_DESERT_ELITE(4486),
 
-	/**
-	 * Attack Style
-	 */
-	ATTACK_STYLE(43, 0, 7),
+	DIARY_FALADOR_EASY(4462),
+	DIARY_FALADOR_MEDIUM(4463),
+	DIARY_FALADOR_HARD(4464),
+	DIARY_FALADOR_ELITE(4465),
+
+	DIARY_FREMENNIK_EASY(4491),
+	DIARY_FREMENNIK_MEDIUM(4492),
+	DIARY_FREMENNIK_HARD(4493),
+	DIARY_FREMENNIK_ELITE(4494),
+
+	DIARY_KANDARIN_EASY(4475),
+	DIARY_KANDARIN_MEDIUM(4476),
+	DIARY_KANDARIN_HARD(4477),
+	DIARY_KANDARIN_ELITE(4478),
+
+	DIARY_KARAMJA_EASY(3578),
+	DIARY_KARAMJA_MEDIUM(3599),
+	DIARY_KARAMJA_HARD(3611),
+	DIARY_KARAMJA_ELITE(4566),
+
+	DIARY_LUMBRIDGE_EASY(4495),
+	DIARY_LUMBRIDGE_MEDIUM(4496),
+	DIARY_LUMBRIDGE_HARD(4497),
+	DIARY_LUMBRIDGE_ELITE(4498),
+
+	DIARY_MORYTANIA_EASY(4487),
+	DIARY_MORYTANIA_MEDIUM(4488),
+	DIARY_MORYTANIA_HARD(4489),
+	DIARY_MORYTANIA_ELITE(4490),
+
+	DIARY_VARROCK_EASY(4479),
+	DIARY_VARROCK_MEDIUM(4480),
+	DIARY_VARROCK_HARD(4481),
+	DIARY_VARROCK_ELITE(4482),
+
+	DIARY_WESTERN_EASY(4471),
+	DIARY_WESTERN_MEDIUM(4472),
+	DIARY_WESTERN_HARD(4473),
+	DIARY_WESTERN_ELITE(4474),
+
+	DIARY_WILDERNESS_EASY(4466),
+	DIARY_WILDERNESS_MEDIUM(4467),
+	DIARY_WILDERNESS_HARD(4468),
+	DIARY_WILDERNESS_ELITE(4469),
 
 	/**
 	 * Equipped weapon type
 	 */
-	EQUIPPED_WEAPON_TYPE(357, 843, 0, 5),
+	EQUIPPED_WEAPON_TYPE(357),
 
 	/**
 	 * Defensive casting mode
 	 */
-	DEFENSIVE_CASTING_MODE(2668, 439, 8, 8),
+	DEFENSIVE_CASTING_MODE(2668),
 
 	/**
 	 * Options
 	 */
-	SIDE_PANELS(4607, 1055, 8, 8);
+	SIDE_PANELS(4607),
+
+	/**
+	 * Herbiboar Trails
+	 */
+	HB_TRAIL_31303(5737),
+	HB_TRAIL_31306(5738),
+	HB_TRAIL_31309(5739),
+	HB_TRAIL_31312(5740),
+	HB_TRAIL_31315(5741),
+	HB_TRAIL_31318(5742),
+	HB_TRAIL_31321(5743),
+	HB_TRAIL_31324(5744),
+	HB_TRAIL_31327(5745),
+	HB_TRAIL_31330(5746),
+
+	HB_TRAIL_31333(5768),
+	HB_TRAIL_31336(5769),
+	HB_TRAIL_31339(5770),
+	HB_TRAIL_31342(5771),
+	HB_TRAIL_31345(5772),
+	HB_TRAIL_31348(5773),
+	HB_TRAIL_31351(5774),
+	HB_TRAIL_31354(5775),
+	HB_TRAIL_31357(5776),
+	HB_TRAIL_31360(5777),
+
+	HB_TRAIL_31363(5747),
+	HB_TRAIL_31366(5748),
+	HB_TRAIL_31369(5749),
+	HB_TRAIL_31372(5750),
+
+	HB_FINISH(5766),
+	HB_STARTED(5767), //not working
+
+	/**
+	 * Barbarian Assault
+	 */
+	IN_GAME_BA(3923),
+
+	/**
+	 * Motherlode mine sack
+	 */
+	SACK_NUMBER(5558),
+
+	/**
+	 * Experience tracker
+	 */
+	EXPERIENCE_TRACKER_POSITION(4692),
+	EXPERIENCE_TRACKER_COUNTER(4697),
+	EXPERIENCE_TRACKER_PROGRESS_BAR(4698),
+
+	/**
+	 * Experience drop color
+	 */
+	EXPERIENCE_DROP_COLOR(4695),
+
+	/**
+	 * Tithe Farm
+	 */
+	TITHE_FARM_SACK_AMOUNT(4900),
+	TITHE_FARM_SACK_ICON(5370),
+	TITHE_FARM_POINTS(4893),
+
+	/**
+	 * Raids
+	 */
+	IN_RAID(5432),
+	TOTAL_POINTS(5431),
+	PERSONAL_POINTS(5422),
+
+	/**
+	 * Nightmare Zone
+	 */
+	NMZ_ABSORPTION(3956),
+	NMZ_POINTS(3949),
+
+	/**
+	 * Blast Furnace
+	 */
+	BLAST_FURNACE_COPPER_ORE(959),
+	BLAST_FURNACE_TIN_ORE(950),
+	BLAST_FURNACE_IRON_ORE(951),
+	BLAST_FURNACE_COAL(949),
+	BLAST_FURNACE_MITHRIL_ORE(952),
+	BLAST_FURNACE_ADAMANTITE_ORE(953),
+	BLAST_FURNACE_RUNITE_ORE(954),
+	BLAST_FURNACE_SILVER_ORE(956),
+	BLAST_FURNACE_GOLD_ORE(955),
+
+	BLAST_FURNACE_BRONZE_BAR(941),
+	BLAST_FURNACE_IRON_BAR(942),
+	BLAST_FURNACE_STEEL_BAR(943),
+	BLAST_FURNACE_MITHRIL_BAR(944),
+	BLAST_FURNACE_ADAMANTITE_BAR(945),
+	BLAST_FURNACE_RUNITE_BAR(946),
+	BLAST_FURNACE_SILVER_BAR(948),
+	BLAST_FURNACE_GOLD_BAR(947),
+
+	BLAST_FURNACE_COFFER(5357),
+
+	/**
+	 * Pyramid plunder
+	 */
+	PYRAMID_PLUNDER_TIMER(2375),
+	PYRAMID_PLUNDER_ROOM(2377),
+
+	/**
+	 * Multicombat area
+	 */
+	MULTICOMBAT_AREA(4605),
+
+	/**
+	 * Kingdom Management
+	 */
+	KINGDOM_FAVOR(72),
+	KINGDOM_COFFER(74);
 
 	/**
 	 * varbit id
 	 */
 	private final int id;
-
-	/**
-	 * index into settings
-	 */
-	private final int index;
-	private final int leastSignificantBit;
-	private final int mostSignificantBit;
-
-	private Varbits(int index, int leastSignificantBit, int mostSignificantBit)
-	{
-		this(-1, index, leastSignificantBit, mostSignificantBit);
-	}
-
-	private Varbits(int id, int index, int leastSignificantBit, int mostSignificantBit)
-	{
-		if (mostSignificantBit < leastSignificantBit)
-		{
-			throw new IllegalStateException("MSB < LSB");
-		}
-
-		this.id = id;
-		this.index = index;
-		this.leastSignificantBit = leastSignificantBit;
-		this.mostSignificantBit = mostSignificantBit;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public int getLeastSignificantBit()
-	{
-		return leastSignificantBit;
-	}
-
-	public int getMostSignificantBit()
-	{
-		return mostSignificantBit;
-	}
-
-	/**
-	 * Get the value of this varbit from the given int
-	 *
-	 * @param value
-	 * @return
-	 */
-	public int get(int value)
-	{
-		int mask = getMax() - 1;
-
-		return (value >> leastSignificantBit) & mask;
-	}
-
-	/**
-	 * Set the value of this varbit to a given int
-	 *
-	 * @param varbit The int to set the value on
-	 * @param value The value to set
-	 * @return
-	 */
-	public int set(int varbit, int value)
-	{
-		int mask = getMax() - 1;
-
-		value &= mask; // Ensure new value is in range
-
-		mask <<= leastSignificantBit; // Align mask to the correct place
-
-		varbit &= ~mask; // And off existing value
-
-		value <<= leastSignificantBit; // Align new value
-		varbit |= value;
-		return varbit;
-	}
-
-	/**
-	 * Get the maximum possible value for this varbit
-	 *
-	 * @return
-	 */
-	public int getMax()
-	{
-		return 1 << getNumberOfBits();
-	}
-
-	/**
-	 * Get the number of bits of storage in this varbit
-	 *
-	 * @return
-	 */
-	public int getNumberOfBits()
-	{
-		// leastSignificantBit and mostSignificantBit are inclusive
-		return (mostSignificantBit - leastSignificantBit) + 1;
-	}
 }

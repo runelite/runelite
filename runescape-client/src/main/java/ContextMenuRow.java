@@ -4,56 +4,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("cv")
 @Implements("ContextMenuRow")
 public class ContextMenuRow {
-   @ObfuscatedName("z")
-   @Export("highMemory")
-   protected static boolean highMemory;
-   @ObfuscatedName("jy")
+   @ObfuscatedName("cg")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lju;"
    )
-   static Widget field1299;
-   @ObfuscatedName("a")
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("t")
+   @Export("option")
+   String option;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 571443005
+      intValue = 1856524257
    )
    @Export("param0")
    int param0;
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 715253505
+      intValue = 1992101739
    )
    @Export("param1")
    int param1;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1066703259
+      intValue = -1540753369
    )
    @Export("type")
    int type;
-   @ObfuscatedName("k")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1578872715
+      intValue = 1066373001
    )
    @Export("identifier")
    int identifier;
-   @ObfuscatedName("u")
-   @Export("option")
-   String option;
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "933459213"
-   )
-   public static void method1663() {
-      class299.field3867 = null;
-      class299.offsetsY = null;
-      Item.field1387 = null;
-      class276.field3727 = null;
-      FaceNormal.field2025 = null;
-      Bounds.spritePixels = null;
-   }
 }

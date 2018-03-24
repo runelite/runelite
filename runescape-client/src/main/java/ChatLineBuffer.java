@@ -4,18 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cz")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "[Lbv;"
+      signature = "[Lbo;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1771803705
+      intValue = -1577513953
    )
    @Export("length")
    int length;
@@ -24,10 +24,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
-      garbageValue = "1230793549"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbo;",
+      garbageValue = "1"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -55,73 +55,35 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)Lbv;",
-      garbageValue = "-2012333335"
+      signature = "(II)Lbo;",
+      garbageValue = "-2048842757"
    )
    @Export("getMessage")
    MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1107799616"
+      garbageValue = "758473611"
    )
    @Export("size")
    int size() {
       return this.length;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("gs")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "98"
+      garbageValue = "-94"
    )
-   static void method1851() {
-      if(class91.field1347) {
-         class91.field1316 = null;
-         class91.field1317 = null;
-         class234.runeSprites = null;
-         class91.field1315 = null;
-         class91.field1319 = null;
-         class91.logoSprite = null;
-         class278.titlemuteSprite = null;
-         CombatInfoListHolder.field1267 = null;
-         class91.field1333 = null;
-         FriendLoginUpdate.field760 = null;
-         class221.slFlagSprites = null;
-         class7.slArrowSprites = null;
-         class37.slStarSprites = null;
-         class160.field2151 = null;
-         class218.field2696 = null;
-         class91.field1325 = null;
-         class2.field11 = null;
-         Item.field1386 = null;
-         class36.field478 = null;
-         class186.field2532 = null;
-         class89.field1302 = null;
-         BoundingBox.field238 = null;
-         class214.field2620 = 1;
-         class214.field2623 = null;
-         class61.field692 = -1;
-         class282.field3754 = -1;
-         class214.field2625 = 0;
-         IndexFile.field2181 = false;
-         Timer.field2159 = 2;
-         class27.sendConInfo(true);
-         class91.field1347 = false;
+   static void method2054() {
+      if(Client.field967) {
+         class62.method1112(WorldMapData.localPlayer, false);
       }
-   }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lca;B)V",
-      garbageValue = "30"
-   )
-   public static final void method1858(TaskDataProvider var0) {
-      AbstractSoundSystem.soundTaskDataProvider = var0;
    }
 }

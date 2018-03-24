@@ -78,5 +78,6 @@ public class ExperienceTest
 	public void testGetCombatLevel()
 	{
 		Assert.assertEquals(126, Experience.getCombatLevel(99, 99, 99, 99, 70, 42, 98));
+		Assert.assertEquals(40, Experience.getCombatLevel(27, 22, 1, 36, 64, 45, 1));
 	}
 }

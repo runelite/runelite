@@ -4,18 +4,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("go")
+@ObfuscatedName("hr")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lhx;"
    )
    @Export("node")
    Node node;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lhx;"
    )
    @Export("current")
    Node current;
@@ -26,17 +26,17 @@ public class CombatInfoList implements Iterable {
       this.node.previous = this.node;
    }
 
-   @ObfuscatedName("a")
-   public void method3703() {
+   @ObfuscatedName("t")
+   public void method4008() {
       while(this.node.next != this.node) {
          this.node.next.unlink();
       }
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgn;)V"
+      signature = "(Lhx;)V"
    )
    @Export("addFirst")
    public void addFirst(Node var1) {
@@ -50,9 +50,9 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgn;)V"
+      signature = "(Lhx;)V"
    )
    @Export("addLast")
    public void addLast(Node var1) {
@@ -66,9 +66,9 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lhx;"
    )
    @Export("removeLast")
    public Node removeLast() {
@@ -81,18 +81,18 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lhx;"
    )
    @Export("last")
    public Node last() {
       return this.previousOrLast((Node)null);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgn;)Lgn;"
+      signature = "(Lhx;)Lhx;"
    )
    @Export("previousOrLast")
    Node previousOrLast(Node var1) {
@@ -112,9 +112,9 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lhx;"
    )
    @Export("previous")
    public Node previous() {
@@ -128,21 +128,21 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @Export("isEmpty")
    public boolean isEmpty() {
       return this.node.next == this.node;
    }
 
    public Iterator iterator() {
-      return new class199(this);
+      return new class211(this);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lgn;Lgn;)V"
+      signature = "(Lhx;Lhx;)V"
    )
-   public static void method3717(Node var0, Node var1) {
+   public static void method3992(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

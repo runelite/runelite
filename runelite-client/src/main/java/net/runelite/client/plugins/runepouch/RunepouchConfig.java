@@ -31,21 +31,11 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "runepouch",
-	name = "Runepouch",
+	name = "Rune Pouch",
 	description = "Configuration for the Runepouch plugin"
 )
 public interface RunepouchConfig extends Config
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not Runepouch information is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		keyName = "fontcolor",
 		name = "Font Color",
@@ -64,5 +54,15 @@ public interface RunepouchConfig extends Config
 	default boolean showIcons()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showOnlyOnHover",
+		name = "Show only on hover",
+		description = "Show the runes only when hovered"
+	)
+	default boolean showOnlyOnHover()
+	{
+		return false;
 	}
 }

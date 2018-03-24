@@ -37,6 +37,14 @@ public @interface PluginDescriptor
 {
 	String name();
 
+	boolean enabledByDefault() default true;
+
+	/**
+	 * Whether or not plugin is hidden from configuration panel
+	 * @return
+	 */
+	boolean hidden() default false;
+
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;

@@ -30,17 +30,14 @@ import static net.runelite.cache.script.Opcodes.*;
 
 public class Instructions
 {
-	private static final Map<Integer, Instruction> instructions = new HashMap<>();
-	private static final Map<String, Instruction> instructionsByName = new HashMap<>();
+	private final Map<Integer, Instruction> instructions = new HashMap<>();
+	private final Map<String, Instruction> instructionsByName = new HashMap<>();
 
-	public static void init()
+	public void init()
 	{
-		instructions.clear();
-		instructionsByName.clear();
-
 		add(LOAD_INT, "load_int", 0, 1);
-		add(GET_SETTINGS, "get_settings", 0, 1);
-		add(PUT_SETTINGS, "put_settings", 0, 1);
+		add(GET_VARP, "get_varp", 0, 1);
+		add(PUT_VARP, "put_varp", 0, 1);
 		add(LOAD_STRING, "load_string", 0, 0, 0, 1);
 		add(JUMP, "jump", 0, 0);
 		add(IF_ICMPNE, "if_icmpne", 2, 0);
@@ -466,16 +463,16 @@ public class Instructions
 		add(5504, 2, 0);
 		add(5505, 0, 1);
 		add(GET_MAPANGLE, "get_mapangle", 0, 1);
-		add(5530, 1, 0);
-		add(5531, 0, 1);
+		add(SET_CAMERA_FOCAL_POINT_HEIGHT, "set_camera_focal_point_height", 1, 0);
+		add(GET_CAMERA_FOCAL_POINT_HEIGHT, "get_camera_focal_point_height", 0, 1);
 		// 5600-5700
 		add(CANCEL_LOGIN, "cancel_login", 0, 0);
 		// 5700-6300
 		add(6200, 2, 0);
-		add(6201, 2, 0);
+		add(SET_ZOOM_DISTANCE, "set_zoom_distance", 2, 0);
 		add(6202, 4, 0);
 		add(GET_VIEWPORT_SIZE, "get_viewport_size", 0, 2);
-		add(6204, 0, 2);
+		add(GET_ZOOM_DISTANCE, "get_zoom_distance", 0, 2);
 		add(6205, 0, 2);
 		// 6300-6600
 		add(LOAD_WORLDS, "load_worlds", 0, 1);
@@ -485,6 +482,7 @@ public class Instructions
 		add(6507, 4, 0);
 		add(GET_WORLD_BY_INDEX, "get_world_by_index", 1, 4, 0, 2);
 		add(6512, 1, 0);
+		add(GET_IS_MOBILE, "get_is_mobile", 0, 1);
 		// 6600-6700
 		add(6600, 0, 0);
 		add(6601, 1, 0, 0, 1);
@@ -536,7 +534,7 @@ public class Instructions
 		add(6699, 0, 1);
 	}
 
-	private static void add(int opcode, String name, int ipops, int ipushes, int spops, int spushes)
+	protected void add(int opcode, String name, int ipops, int ipushes, int spops, int spushes)
 	{
 		Instruction i = new Instruction(opcode);
 		i.setName(name);
@@ -555,27 +553,27 @@ public class Instructions
 		}
 	}
 
-	private static void add(int opcode, int ipops, int ipushes)
+	protected void add(int opcode, int ipops, int ipushes)
 	{
 		add(opcode, null, ipops, ipushes, 0, 0);
 	}
 
-	private static void add(int opcode, int ipops, int ipushes, int spops, int spushes)
+	protected void add(int opcode, int ipops, int ipushes, int spops, int spushes)
 	{
 		add(opcode, null, ipops, ipushes, spops, spushes);
 	}
 
-	private static void add(int opcode, String name, int ipops, int ipushes)
+	protected void add(int opcode, String name, int ipops, int ipushes)
 	{
 		add(opcode, name, ipops, ipushes, 0, 0);
 	}
 
-	public static Instruction find(int opcode)
+	public Instruction find(int opcode)
 	{
 		return instructions.get(opcode);
 	}
 
-	public static Instruction find(String name)
+	public Instruction find(String name)
 	{
 		return instructionsByName.get(name);
 	}

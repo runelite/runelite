@@ -1,60 +1,54 @@
 import java.util.Iterator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hz")
 public class class211 implements Iterator {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhr;"
    )
-   @Export("queue")
-   IterableDualNodeQueue queue;
-   @ObfuscatedName("w")
+   CombatInfoList field2616;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lhx;"
    )
-   CacheableNode field2605;
-   @ObfuscatedName("e")
+   Node field2617;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lhx;"
    )
-   CacheableNode field2607;
+   Node field2618;
 
    @ObfuscatedSignature(
-      signature = "(Lhh;)V"
+      signature = "(Lhr;)V"
    )
-   class211(IterableDualNodeQueue var1) {
-      this.field2607 = null;
-      this.queue = var1;
-      this.field2605 = this.queue.sentinel.previous;
-      this.field2607 = null;
+   class211(CombatInfoList var1) {
+      this.field2618 = null;
+      this.field2616 = var1;
+      this.field2617 = this.field2616.node.next;
+      this.field2618 = null;
    }
 
    public Object next() {
-      CacheableNode var1 = this.field2605;
-      if(var1 == this.queue.sentinel) {
+      Node var1 = this.field2617;
+      if(var1 == this.field2616.node) {
          var1 = null;
-         this.field2605 = null;
+         this.field2617 = null;
       } else {
-         this.field2605 = var1.previous;
+         this.field2617 = var1.next;
       }
 
-      this.field2607 = var1;
+      this.field2618 = var1;
       return var1;
    }
 
    public boolean hasNext() {
-      return this.queue.sentinel != this.field2605;
+      return this.field2616.node != this.field2617;
    }
 
    public void remove() {
-      if(this.field2607 == null) {
-         throw new IllegalStateException();
-      } else {
-         this.field2607.unlinkDual();
-         this.field2607 = null;
-      }
+      this.field2618.unlink();
+      this.field2618 = null;
    }
 }

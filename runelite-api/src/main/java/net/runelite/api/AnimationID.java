@@ -46,6 +46,7 @@ public final class AnimationID
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
 	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
 	public static final int HUNTER_LAY_NETTRAP = 5215; //setting up net trap
+	public static final int HUNTER_LAY_MANIACAL_MONKEY_BOULDER_TRAP = 7259; // setting up maniacal monkey boulder trap
 	public static final int HUNTER_CHECK_BIRD_SNARE = 5207;
 	public static final int HUNTER_CHECK_BOX_TRAP = 5212;
 	public static final int HERBLORE_MAKE_TAR = 5249;
@@ -75,10 +76,12 @@ public final class AnimationID
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
 	public static final int FISHING_NET = 621;
-	public static final int FISHING_POLE_INITIAL = 622; //initial swing of pole
 	public static final int FISHING_POLE_CAST = 623; // pole is in the water
 	public static final int FISHING_CAGE = 619;
 	public static final int FISHING_HARPOON = 618;
+	public static final int FISHING_BARBTAIL_HARPOON = 5108;
+	public static final int FISHING_DRAGON_HARPOON = 7401;
+	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
@@ -102,6 +105,8 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
+	public static final int BURYING_BONES = 827;
+	public static final int LOOKING_INTO = 832;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;

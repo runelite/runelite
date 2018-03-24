@@ -31,54 +31,104 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.client.events.ResizeableChanged;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
 @Singleton
-public class OverlayRenderer
+@Slf4j
+public class OverlayRenderer extends MouseListener implements KeyListener
 {
-	private static final int BORDER_TOP = 25;
-	private static final int BORDER_LEFT = 5;
+	private static final int BORDER_LEFT_RESIZABLE = 5;
+	private static final int BORDER_TOP_RESIZABLE = 20;
+	private static final int FRAME_OFFSET = 4;
+	private static final int BORDER_LEFT_FIXED = BORDER_LEFT_RESIZABLE + FRAME_OFFSET;
+	private static final int BORDER_TOP_FIXED = BORDER_TOP_RESIZABLE + FRAME_OFFSET;
 	private static final int BORDER_RIGHT = 2;
 	private static final int BORDER_BOTTOM = 2;
 	private static final int PADDING = 2;
+	private static final Dimension SNAP_CORNER_SIZE = new Dimension(80, 80);
+	private static final Color SNAP_CORNER_COLOR = new Color(0, 255, 255, 50);
+	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
+	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
+	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
+	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
+	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
+
+	private final PluginManager pluginManager;
+	private final Provider<Client> clientProvider;
+	private final InfoBoxOverlay infoBoxOverlay;
+	private final ConfigManager configManager;
+	private final TooltipOverlay tooltipOverlay;
+	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
+	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
+	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
+
+	// Overlay movement variables
+	private final Point overlayOffset = new Point();
+	private final Point mousePosition = new Point();
+	private Overlay movedOverlay;
+	private boolean inOverlayDraggingMode;
+
+	// Overlay state validation
+	private Rectangle viewportBounds;
+	private Rectangle chatboxBounds;
+	private boolean chatboxHidden;
+	private boolean isResizeable;
+	private OverlayBounds snapCorners;
+	private final Map<OverlayLayer, List<Overlay>> overlayLayerOverlayMap = Collections
+		.synchronizedMap(new HashMap<>());
 
 	@Inject
-	PluginManager pluginManager;
-
-	@Inject
-	Provider<Client> clientProvider;
-
-	@Inject
-	InfoBoxOverlay infoBoxOverlay;
-
-	@Inject
-	TooltipOverlay tooltipOverlay;
-
-	private final List<Overlay> overlays = new ArrayList<>();
-	private BufferedImage surface;
-	private Graphics2D surfaceGraphics;
-
-	@Subscribe
-	public void onResizableChanged(ResizeableChanged event)
+	private OverlayRenderer(
+		final Provider<Client> clientProvider,
+		final PluginManager pluginManager,
+		final MouseManager mouseManager,
+		final KeyManager keyManager,
+		final TooltipOverlay tooltipOverlay,
+		final InfoBoxOverlay infoBoxOverlay,
+		final ConfigManager configManager)
 	{
-		updateSurface();
+		this.clientProvider = clientProvider;
+		this.pluginManager = pluginManager;
+		this.tooltipOverlay = tooltipOverlay;
+		this.infoBoxOverlay = infoBoxOverlay;
+		this.configManager = configManager;
+		keyManager.registerKeyListener(this);
+		mouseManager.registerMouseListener(this);
 	}
 
 	@Subscribe
@@ -91,39 +141,97 @@ public class OverlayRenderer
 			return;
 		}
 
-		if (event.getGameState().equals(GameState.LOGIN_SCREEN) || event.getGameState().equals(GameState.LOGGED_IN))
+		if (event.getGameState().equals(GameState.LOGGED_IN))
 		{
-			refreshPlugins();
-			updateSurface();
+			rebuildOverlays();
 		}
 	}
 
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
-		if (event.isLoaded())
-		{
-			overlays.addAll(event.getPlugin().getOverlays());
-		}
-		else
-		{
-			overlays.removeAll(event.getPlugin().getOverlays());
-		}
-
-		sortOverlays(overlays);
+		rebuildOverlays();
 	}
 
-	private void refreshPlugins()
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
 	{
-		overlays.clear();
-		overlays.addAll(Stream
+		if (!event.isFocused())
+		{
+			inOverlayDraggingMode = false;
+		}
+	}
+
+	private void rebuildOverlays()
+	{
+		final List<Overlay> overlays = Stream
 			.concat(
 				pluginManager.getPlugins()
 					.stream()
+					.filter(pluginManager::isPluginEnabled)
 					.flatMap(plugin -> plugin.getOverlays().stream()),
 				Stream.of(infoBoxOverlay, tooltipOverlay))
-			.collect(Collectors.toList()));
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
+
 		sortOverlays(overlays);
+		allOverlays.clear();
+		allOverlays.addAll(overlays);
+
+		final Client client = clientProvider.get();
+
+		for (final Overlay overlay : overlays)
+		{
+			final Point location = loadOverlayLocation(overlay);
+
+			if (location != null
+				&& client.getCanvas() != null
+				&& !client.getCanvas().contains(location))
+			{
+				overlay.setPreferredLocation(null);
+				saveOverlayLocation(overlay);
+			}
+			else
+			{
+				overlay.setPreferredLocation(location);
+			}
+
+			final OverlayPosition position = loadOverlayPosition(overlay);
+			overlay.setPreferredPosition(position);
+		}
+
+		rebuildOverlayLayers();
+	}
+
+	private void rebuildOverlayLayers()
+	{
+		overlayLayerOverlayMap.clear();
+
+		for (final Overlay overlay : allOverlays)
+		{
+			OverlayLayer layer = overlay.getLayer();
+
+			if (overlay.getPreferredLocation() != null && overlay.getPreferredPosition() == null)
+			{
+				// When UNDER_WIDGET overlays are in preferred locations, move to
+				// ABOVE_WIDGETS so that it can draw over interfaces
+				if (layer == OverlayLayer.UNDER_WIDGETS)
+				{
+					layer = OverlayLayer.ABOVE_WIDGETS;
+				}
+			}
+
+			overlayLayerOverlayMap.compute(layer, (key, value) ->
+			{
+				if (value == null)
+				{
+					value = new ArrayList<>();
+				}
+
+				value.add(overlay);
+				return value;
+			});
+		}
 	}
 
 	static void sortOverlays(List<Overlay> overlays)
@@ -148,146 +256,389 @@ public class OverlayRenderer
 		});
 	}
 
-	private void updateSurface()
+	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
+		final Client client = clientProvider.get();
+		final List<Overlay> overlays = overlayLayerOverlayMap.get(layer);
+
+		if (client == null
+			|| overlays == null
+			|| overlays.isEmpty()
+			|| client.getViewportWidget() == null
+			|| client.getGameState() != GameState.LOGGED_IN
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		{
+			return;
+		}
+
+		if (shouldInvalidateBounds())
+		{
+			snapCorners = buildSnapCorners();
+		}
+
+		// Create copy of snap corners because overlays will modify them
+		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
+
+		OverlayUtil.setGraphicProperties(graphics);
+
+		// Draw snap corners
+		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null)
+		{
+			final OverlayBounds translatedSnapCorners = snapCorners.translated(
+				-SNAP_CORNER_SIZE.width,
+				-SNAP_CORNER_SIZE.height);
+
+			final Color previous = graphics.getColor();
+
+			for (final Rectangle corner : translatedSnapCorners.getBounds())
+			{
+				graphics.setColor(corner.contains(mousePosition) ? SNAP_CORNER_ACTIVE_COLOR : SNAP_CORNER_COLOR);
+				graphics.fill(corner);
+			}
+
+			graphics.setColor(previous);
+		}
+
+		for (Overlay overlay : overlays)
+		{
+			OverlayPosition overlayPosition = overlay.getPosition();
+
+			if (overlay.getPreferredPosition() != null)
+			{
+				overlayPosition = overlay.getPreferredPosition();
+			}
+
+			if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !isResizeable)
+			{
+				// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
+				// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
+				// drawing over each other.
+				overlayPosition = OverlayPosition.BOTTOM_RIGHT;
+			}
+
+			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
+			{
+				safeRender(overlay, graphics, new Point());
+			}
+			else
+			{
+				final Point location = overlay.getBounds().getLocation();
+				final Dimension dimension = overlay.getBounds().getSize();
+
+				// If the final position is not modified, layout it
+				if (overlay.getPreferredLocation() == null || overlay.getPreferredPosition() != null)
+				{
+					final Rectangle snapCorner = snapCorners.forPosition(overlayPosition);
+					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension);
+					location.setLocation(snapCorner.getX() + translation.x, snapCorner.getY() + translation.y);
+					final Point padding = OverlayUtil.padPosition(overlayPosition, dimension, PADDING);
+					snapCorner.translate(padding.x, padding.y);
+				}
+				else
+				{
+					location.setLocation(overlay.getPreferredLocation());
+				}
+
+				safeRender(overlay, graphics, location);
+				dimension.setSize(overlay.getBounds().getSize());
+
+				if (dimension.width == 0 && dimension.height == 0)
+				{
+					continue;
+				}
+
+				if (inOverlayDraggingMode)
+				{
+					final Color previous = graphics.getColor();
+					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
+					graphics.drawRect(location.x, location.y, dimension.width - 1, dimension.height - 1);
+					graphics.setColor(previous);
+				}
+			}
+		}
+	}
+
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		if (!inOverlayDraggingMode)
+		{
+			return mouseEvent;
+		}
+
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
+		for (Overlay overlay : allOverlays)
+		{
+			if (overlay.getBounds().contains(mousePoint))
+			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					overlay.setPreferredLocation(null);
+					overlay.setPreferredPosition(null);
+					rebuildOverlayLayers();
+				}
+				else
+				{
+					mousePoint.translate(-overlay.getBounds().x, -overlay.getBounds().y);
+					overlayOffset.setLocation(mousePoint);
+					movedOverlay = overlay;
+				}
+
+				mouseEvent.consume();
+				break;
+			}
+		}
+
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		if (!inOverlayDraggingMode)
+		{
+			return mouseEvent;
+		}
+
 		final Client client = clientProvider.get();
 
 		if (client == null)
 		{
-			return;
+			return mouseEvent;
 		}
 
-		final Dimension size = client.getCanvas().getSize();
-		final BufferedImage temp = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D subGraphics = temp.createGraphics();
-		subGraphics.setBackground(new Color(0, 0, 0, 0));
-		OverlayUtil.setGraphicProperties(subGraphics);
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+		final Rectangle canvasRect = new Rectangle(client.getRealDimensions());
 
-		surface = temp;
-
-		if (surfaceGraphics != null)
+		if (!canvasRect.contains(mousePoint))
 		{
-			surfaceGraphics.dispose();
+			return mouseEvent;
 		}
 
-		surfaceGraphics = subGraphics;
+		if (movedOverlay != null)
+		{
+			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
+			movedOverlay.setPreferredPosition(null);
+			movedOverlay.setPreferredLocation(mousePoint);
+			rebuildOverlayLayers();
+			mouseEvent.consume();
+		}
+
+		return mouseEvent;
 	}
 
-	public void render(Graphics2D graphics)
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
-		final Client client = clientProvider.get();
-
-		if (client == null || surface == null || overlays.isEmpty())
+		if (movedOverlay != null)
 		{
-			return;
+			mousePosition.setLocation(-1, -1);
+			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
+
+			for (Rectangle snapCorner : snapCorners.getBounds())
+			{
+				if (snapCorner.contains(mouseEvent.getPoint()))
+				{
+					OverlayPosition position = snapCorners.fromBounds(snapCorner);
+					if (position == movedOverlay.getPosition())
+					{
+						// overlay moves back to default position
+						position = null;
+					}
+					movedOverlay.setPreferredPosition(position);
+					movedOverlay.setPreferredLocation(null); // from dragging
+					break;
+				}
+			}
+
+			saveOverlayPosition(movedOverlay);
+			saveOverlayLocation(movedOverlay);
+			rebuildOverlayLayers();
+			movedOverlay = null;
+			mouseEvent.consume();
 		}
 
-		final Widget viewport = client.getViewportWidget();
-		final Rectangle bounds = viewport != null
-			? new Rectangle(viewport.getBounds())
-			: new Rectangle(0, 0, surface.getWidth(), surface.getHeight());
-
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
-		final Rectangle chatboxBounds = chatbox != null
-				? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
-
-		OverlayUtil.setGraphicProperties(graphics);
-		final Point topLeftPoint = new Point();
-		topLeftPoint.move(BORDER_LEFT, BORDER_TOP);
-		final Point topRightPoint = new Point();
-		topRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP);
-		final Point bottomLeftPoint = new Point();
-		bottomLeftPoint.move(BORDER_LEFT, bounds.y + bounds.height - BORDER_BOTTOM);
-		final Point bottomRightPoint = new Point();
-		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
-		final Point rightChatboxPoint = new Point();
-		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT,bounds.y + bounds.height - BORDER_BOTTOM);
-
-		overlays.stream()
-			.filter(overlay -> shouldDrawOverlay(client, overlay))
-			.forEach(overlay ->
-			{
-				OverlayPosition overlayPosition = overlay.getPosition();
-				if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !client.isResized())
-				{
-					// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
-					// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
-					// drawing over each other.
-					overlayPosition = OverlayPosition.BOTTOM_RIGHT;
-				}
-				final Point subPosition = new Point();
-				switch (overlayPosition)
-				{
-					case BOTTOM_LEFT:
-						subPosition.setLocation(bottomLeftPoint);
-						break;
-					case BOTTOM_RIGHT:
-						subPosition.setLocation(bottomRightPoint);
-						break;
-					case TOP_LEFT:
-						subPosition.setLocation(topLeftPoint);
-						break;
-					case TOP_RIGHT:
-						subPosition.setLocation(topRightPoint);
-						break;
-					case ABOVE_CHATBOX_RIGHT:
-						subPosition.setLocation(rightChatboxPoint);
-						break;
-				}
-
-				if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
-				{
-					safeRender(overlay, graphics, new Point());
-				}
-				else
-				{
-					final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
-					if (dimension.width == 0 && dimension.height == 0)
-					{
-						return;
-					}
-
-					final BufferedImage clippedImage = surface.getSubimage(0, 0, dimension.width, dimension.height);
-
-					switch (overlayPosition)
-					{
-						case BOTTOM_LEFT:
-							bottomLeftPoint.x += dimension.width + (dimension.width == 0 ? 0 : PADDING);
-							break;
-						case BOTTOM_RIGHT:
-							bottomRightPoint.x -= dimension.width + (dimension.width == 0 ? 0 : PADDING);
-							break;
-						case TOP_LEFT:
-							topLeftPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
-							break;
-						case TOP_RIGHT:
-							topRightPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
-							break;
-						case ABOVE_CHATBOX_RIGHT:
-							rightChatboxPoint.y -= dimension.height + (dimension.height == 0 ? 0 : PADDING);
-							break;
-					}
-
-					final Point transformed = OverlayUtil.transformPosition(overlayPosition, dimension);
-					graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
-					surfaceGraphics.clearRect(0, 0, (int) dimension.getWidth(), (int) dimension.getHeight());
-				}
-			});
+		return mouseEvent;
 	}
 
-	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.isAltDown())
+		{
+			inOverlayDraggingMode = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (!e.isAltDown())
+		{
+			inOverlayDraggingMode = false;
+		}
+	}
+
+	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
-		final Dimension dimension = entity.render(subGraphics, point);
+		subGraphics.translate(point.x, point.y);
+		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();
-		return dimension;
+		overlay.setBounds(new Rectangle(point, dimension));
 	}
 
-	private boolean shouldDrawOverlay(Client client, Overlay overlay)
+	private boolean shouldInvalidateBounds()
 	{
-		return client != null
-			&& (overlay.isDrawOverLoginScreen() || client.getGameState() == GameState.LOGGED_IN)
-			&& (overlay.isDrawOverClickToPlayScreen() || client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) == null)
-			&& (overlay.isDrawOverBankScreen() || client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) == null);
+		final Client client = clientProvider.get();
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
+		final boolean resizeableChanged = isResizeable != client.isResized();
+		boolean changed = false;
+
+		if (resizeableChanged)
+		{
+			isResizeable = client.isResized();
+			changed = true;
+		}
+
+		final boolean chatboxBoundsChanged = chatbox == null || !chatbox.getBounds().equals(chatboxBounds);
+
+		if (chatboxBoundsChanged)
+		{
+			chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
+			changed = true;
+		}
+
+		final boolean chatboxHiddenChanged = chatboxHidden != (chatbox == null || chatbox.isHidden());
+
+		if (chatboxHiddenChanged)
+		{
+			chatboxHidden = chatbox == null || chatbox.isHidden();
+			changed = true;
+		}
+
+		final boolean viewportChanged = !client.getViewportWidget().getBounds().equals(viewportBounds);
+
+		if (viewportChanged)
+		{
+			viewportBounds = client.getViewportWidget().getBounds();
+			changed = true;
+		}
+
+		return changed;
+	}
+
+	private OverlayBounds buildSnapCorners()
+	{
+		final Point topLeftPoint = new Point(
+			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
+			isResizeable ? BORDER_TOP_RESIZABLE : BORDER_TOP_FIXED);
+
+		final Point topRightPoint = new Point(
+			viewportBounds.x + viewportBounds.width - BORDER_RIGHT,
+			BORDER_TOP_FIXED);
+
+		final Point bottomLeftPoint = new Point(
+			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		final Point bottomRightPoint = new Point(
+			viewportBounds.x + viewportBounds.width - BORDER_RIGHT,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		final Point rightChatboxPoint = new Point(
+			viewportBounds.x + chatboxBounds.width - BORDER_RIGHT,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		// Check to see if chat box is minimized
+		if (isResizeable && chatboxHidden)
+		{
+			rightChatboxPoint.y += chatboxBounds.height;
+			bottomLeftPoint.y += chatboxBounds.height;
+		}
+
+		return new OverlayBounds(
+			new Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
+			new Rectangle(topRightPoint, SNAP_CORNER_SIZE),
+			new Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
+			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
+			new Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE));
+	}
+
+	private void saveOverlayLocation(final Overlay overlay)
+	{
+		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
+		if (overlay.getPreferredLocation() != null)
+		{
+			configManager.setConfiguration(
+				runeliteGroupName,
+				key,
+				overlay.getPreferredLocation());
+		}
+		else
+		{
+			configManager.unsetConfiguration(
+				runeliteGroupName,
+				key);
+		}
+	}
+
+	private void saveOverlayPosition(final Overlay overlay)
+	{
+		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
+		if (overlay.getPreferredPosition() != null)
+		{
+			configManager.setConfiguration(
+				runeliteGroupName,
+				key,
+				overlay.getPreferredPosition());
+		}
+		else
+		{
+			configManager.unsetConfiguration(
+				runeliteGroupName,
+				key);
+		}
+	}
+
+	private Point loadOverlayLocation(final Overlay overlay)
+	{
+		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
+		return configManager.getConfiguration(runeliteGroupName, key, Point.class);
+	}
+
+	private OverlayPosition loadOverlayPosition(final Overlay overlay)
+	{
+		final String locationKey = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
+		return configManager.getConfiguration(runeliteGroupName, locationKey, OverlayPosition.class);
+	}
+
+	public void provideScreenshot(BufferedImage image)
+	{
+		Consumer<BufferedImage> consumer;
+		while ((consumer = screenshotRequests.poll()) != null)
+		{
+			try
+			{
+				consumer.accept(image);
+			}
+			catch (Exception ex)
+			{
+				log.warn("error in screenshot callback", ex);
+			}
+		}
+	}
+
+	public void requestScreenshot(Consumer<BufferedImage> consumer)
+	{
+		screenshotRequests.add(consumer);
 	}
 }

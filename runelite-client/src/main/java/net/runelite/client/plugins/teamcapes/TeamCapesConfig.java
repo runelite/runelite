@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Mathieu Bernier <https://github.com/Matsyir>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,19 +29,20 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "teamcapes",
+	keyName = "teamCapes",
 	name = "Team Capes",
-	description = "Configuration for the team capes plugin"
+	description = "Configuration for the team cape plugin"
 )
 public interface TeamCapesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not team cape info is displayed"
+		keyName = "minimumCapeCount",
+		name = "Minimum Cape Count",
+		description = "Configures the minimum number of team capes which must be present before being displayed.",
+		position = 0
 	)
-	default boolean enabled()
+	default int getMinimumCapeCount()
 	{
-		return false;
+		return 1;
 	}
 }

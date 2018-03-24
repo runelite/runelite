@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether or not the fishing plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showIcons",
 		name = "Display Fish icons",
 		description = "Configures whether icons or text is displayed"
@@ -145,4 +135,33 @@ public interface FishingConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "showInfernalEel",
+		name = "Show Infernal Eel",
+		description = "Configures whether infernal eel is displayed"
+	)
+	default boolean showInfernalEel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showKarambwanji",
+		name = "Show Karambwanji",
+		description = "Configures whether karambwanji is displayed"
+	)
+	default boolean showKarambwanji()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showKarambwan",
+		name = "Show Karambwan",
+		description = "Configures whether karambwan is displayed"
+	)
+	default boolean showKarambwan()
+	{
+		return true;
+	}
 }

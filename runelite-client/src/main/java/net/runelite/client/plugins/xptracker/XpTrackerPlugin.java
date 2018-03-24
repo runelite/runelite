@@ -25,90 +25,187 @@
 package net.runelite.client.plugins.xptracker;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
-import net.runelite.api.Client;
-import net.runelite.api.Skill;
-import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.events.GameStateChanged;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
-import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.Skill;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
+import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
+import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
+import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
-	name = "XP tracker plugin"
+	name = "XP Tracker"
 )
+@Slf4j
 public class XpTrackerPlugin extends Plugin
 {
-	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall
+	@Inject
+	private PluginToolbar pluginToolbar;
 
 	@Inject
-	ClientUI ui;
+	private Client client;
 
 	@Inject
-	Client client;
+	private SkillIconManager skillIconManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
-	private final SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
+
+	private final Map<Skill, SkillXPInfo> xpInfos = new HashMap<>();
+
+	private WorldResult worlds;
+	private XpWorldType lastWorldType;
+	private String lastUsername;
+
+	private final XpClient xpClient = new XpClient();
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(XpTrackerService.class).to(XpTrackerServiceImpl.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		xpPanel = injector.getInstance(XpPanel.class);
-		navButton = new NavigationButton(
-			"XP Tracker",
-			ImageIO.read(getClass().getResourceAsStream("xp.png")),
-			() -> xpPanel);
+		WorldClient worldClient = new WorldClient();
+		try
+		{
+			worlds = worldClient.lookupWorlds();
+			log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
+		}
+		catch (IOException e)
+		{
+			log.warn("Error looking up worlds list", e);
+		}
 
-		ui.getPluginToolbar().addNavigation(navButton);
+		xpPanel = new XpPanel(this, client, skillIconManager);
+
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("xp.png"));
+		}
+
+		navButton = NavigationButton.builder()
+			.name("XP Tracker")
+			.icon(icon)
+			.panel(xpPanel)
+			.build();
+
+		pluginToolbar.addNavigation(navButton);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		// reset on world hop or logging in
-		switch (event.getGameState())
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			case HOPPING:
-			case LOGGING_IN:
-				xpPanel.resetAllSkillXpHr();
+			// LOGGED_IN is triggered between region changes too.
+			// Check that the username changed or the world type changed.
+			World world = worlds.findWorld(client.getWorld());
+
+			if (world == null)
+			{
+				log.warn("Logged into nonexistent world {}?", client.getWorld());
+				return;
+			}
+
+			XpWorldType type = worldSetToType(world.getTypes());
+
+			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
+			{
+				// Reset
+				log.debug("World change: {} -> {}, {} -> {}",
+					lastUsername, client.getUsername(), lastWorldType, type);
+
+				lastUsername = client.getUsername();
+				lastWorldType = type;
+				xpPanel.resetAllInfoBoxes();
+			}
 		}
+		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			Player local = client.getLocalPlayer();
+			String username = local != null ? local.getName() : null;
+			if (username != null)
+			{
+				log.debug("Submitting xp track for {}", username);
+
+				executor.submit(() ->
+				{
+					try
+					{
+						xpClient.update(username);
+					}
+					catch (IOException ex)
+					{
+						log.warn("error submitting xp track", ex);
+					}
+				});
+			}
+		}
+	}
+
+	private XpWorldType worldSetToType(EnumSet<WorldType> types)
+	{
+		XpWorldType xpType = NORMAL;
+		for (WorldType type : types)
+		{
+			XpWorldType t = XpWorldType.of(type);
+			if (t != NORMAL)
+			{
+				xpType = t;
+			}
+		}
+		return xpType;
+	}
+
+	public SkillXPInfo getSkillXpInfo(Skill skill)
+	{
+		return xpInfos.computeIfAbsent(skill, s -> new SkillXPInfo(s));
 	}
 
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
 	{
-		Skill skill = event.getSkill();
-		int skillIdx = skill.ordinal();
-
-		//To catch login ExperienceChanged event.
-		if (xpInfos[skillIdx] != null)
-		{
-			xpInfos[skillIdx].update(client.getSkillExperience(skill));
-		}
-		else
-		{
-			xpInfos[skillIdx] = new SkillXPInfo(client.getSkillExperience(skill),
-				skill);
-		}
+		xpPanel.updateSkillExperience(event.getSkill());
 	}
 
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void updateXp()
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
-		xpPanel.updateAllSkillXpHr();
+		xpPanel.updateAllInfoBoxes();
 	}
-
-	public SkillXPInfo[] getXpInfos()
-	{
-		return xpInfos;
-	}
-
 }

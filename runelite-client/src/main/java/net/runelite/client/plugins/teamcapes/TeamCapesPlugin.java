@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.teamcapes;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -34,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -44,26 +43,22 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Team capes plugin"
+	name = "Team Capes",
+	enabledByDefault = false
 )
 public class TeamCapesPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	TeamCapesConfig config;
+	private TeamCapesConfig config;
 
 	@Inject
-	TeamCapesOverlay teamCapesOverlay;
+	private TeamCapesOverlay teamCapesOverlay;
 
+	// Hashmap of team capes: Key is the teamCape #, Value is the count of teamcapes in the area.
 	private Map<Integer, Integer> teams = new HashMap<>();
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(TeamCapesOverlay.class);
-	}
 
 	@Provides
 	TeamCapesConfig provideConfig(ConfigManager configManager)
@@ -77,13 +72,19 @@ public class TeamCapesPlugin extends Plugin
 		return teamCapesOverlay;
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		teams.clear();
+	}
+
 	@Schedule(
 		period = 1800,
 		unit = ChronoUnit.MILLIS
 	)
 	public void update()
 	{
-		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -104,6 +105,7 @@ public class TeamCapesPlugin extends Plugin
 				}
 			}
 		}
+
 		// Sort teams by value in descending order and then by key in ascending order, limited to 5 entries
 		teams = teams.entrySet().stream()
 					.sorted(

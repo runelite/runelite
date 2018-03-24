@@ -34,10 +34,12 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
-import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -54,8 +56,8 @@ public class RunepouchOverlay extends Overlay
 	{
 		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
 	};
+	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
-	private final RuneImageCache runeImageCache = new RuneImageCache();
 
 	private final QueryRunner queryRunner;
 	private final Client client;
@@ -63,25 +65,23 @@ public class RunepouchOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 
 	@Inject
+	private ItemManager itemManager;
+
+	@Inject
 	RunepouchOverlay(QueryRunner queryRunner, Client client, RunepouchConfig config, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.tooltipManager = tooltipManager;
 		this.queryRunner = queryRunner;
 		this.client = client;
 		this.config = config;
-		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
-		Query query = new InventoryItemQuery().idEquals(ItemID.RUNE_POUCH);
+		Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
 		WidgetItem[] items = queryRunner.runQuery(query);
 		if (items.length == 0)
 		{
@@ -100,6 +100,7 @@ public class RunepouchOverlay extends Overlay
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		StringBuilder tooltipBuilder = new StringBuilder();
+
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
@@ -112,40 +113,75 @@ public class RunepouchOverlay extends Overlay
 
 			Varbits runeVarbit = RUNE_VARBITS[i];
 			int runeId = client.getSetting(runeVarbit);
-
-			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
-				location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
-
-			graphics.setColor(config.fontColor());
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
-				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
+			Runes rune = Runes.getRune(runeId);
+			if (rune == null)
+			{
+				continue;
+			}
 
 			tooltipBuilder
 				.append(amount)
 				.append(" <col=ffff00>")
-				.append(runeImageCache.getName(runeId))
+				.append(rune.getName())
 				.append("</col></br>");
+
+			if (config.showOnlyOnHover())
+			{
+				continue;
+			}
+
+			graphics.setColor(Color.black);
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 6),
+				location.getY() + 14 + (graphics.getFontMetrics().getHeight() - 1) * i);
+
+			graphics.setColor(config.fontColor());
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
+				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
 			if (!config.showIcons())
 			{
 				continue;
 			}
 
-			BufferedImage runeImg = runeImageCache.getImage(runeId);
-			if (runeImg != null)
+			BufferedImage image = getRuneImage(rune);
+			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
-					runeImg);
+					new Point(location.getX(), location.getY() + graphics.getFontMetrics().getHeight() * i),
+					getRuneImage(rune));
 			}
 		}
 
-		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		String tooltip = tooltipBuilder.toString();
+
+		if (!tooltip.isEmpty() && runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			tooltipManager.add(new Tooltip(tooltipBuilder.toString()));
+			tooltipManager.add(new Tooltip(tooltip));
 		}
 		return null;
+	}
+
+	private BufferedImage getRuneImage(Runes rune)
+	{
+		BufferedImage runeImg = rune.getImage();
+		if (runeImg != null)
+		{
+			return runeImg;
+		}
+
+		runeImg = itemManager.getImage(rune.getItemId());
+		if (runeImg == null)
+		{
+			return null;
+		}
+
+		BufferedImage resizedImg = new BufferedImage(IMAGE_SIZE.width, IMAGE_SIZE.height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImg.createGraphics();
+		g.drawImage(runeImg, 0, 0, IMAGE_SIZE.width, IMAGE_SIZE.height, null);
+		g.dispose();
+
+		rune.setImage(resizedImg);
+		return resizedImg;
 	}
 
 	private static String formatNumber(int amount)

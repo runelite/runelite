@@ -3,35 +3,35 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("hj")
 @Implements("NodeCache")
 public final class NodeCache {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lhh;"
    )
-   CacheableNode field2578;
-   @ObfuscatedName("w")
+   CacheableNode field2622;
+   @ObfuscatedName("q")
    @Export("capacity")
    int capacity;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @Export("remainingCapacity")
    int remainingCapacity;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lhp;"
    )
    @Export("table")
    HashTable table;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lgm;"
    )
    @Export("list")
    Node2LinkedList list;
 
    public NodeCache(int var1) {
-      this.field2578 = new CacheableNode();
+      this.field2622 = new CacheableNode();
       this.list = new Node2LinkedList();
       this.capacity = var1;
       this.remainingCapacity = var1;
@@ -44,9 +44,9 @@ public final class NodeCache {
       this.table = new HashTable(var2);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(J)Lgi;"
+      signature = "(J)Lhh;"
    )
    @Export("get")
    public CacheableNode get(long var1) {
@@ -58,7 +58,7 @@ public final class NodeCache {
       return var3;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @Export("remove")
    public void remove(long var1) {
       CacheableNode var3 = (CacheableNode)this.table.get(var1);
@@ -70,9 +70,9 @@ public final class NodeCache {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgi;J)V"
+      signature = "(Lhh;J)V"
    )
    @Export("put")
    public void put(CacheableNode var1, long var2) {
@@ -80,7 +80,7 @@ public final class NodeCache {
          CacheableNode var4 = this.list.pop();
          var4.unlink();
          var4.unlinkDual();
-         if(var4 == this.field2578) {
+         if(var4 == this.field2622) {
             var4 = this.list.pop();
             var4.unlink();
             var4.unlinkDual();
@@ -93,12 +93,12 @@ public final class NodeCache {
       this.list.push(var1);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @Export("reset")
    public void reset() {
       this.list.clear();
       this.table.clear();
-      this.field2578 = new CacheableNode();
+      this.field2622 = new CacheableNode();
       this.remainingCapacity = this.capacity;
    }
 }

@@ -26,9 +26,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -38,7 +35,7 @@ public class ConfigLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 
-	private static URL configURL;
+	private static final String CONFIG_RESOURCE = "/jav_config.ws";
 
 	public static final String CODEBASE = "codebase";
 	public static final String INITIAL_JAR = "initial_jar";
@@ -49,22 +46,9 @@ public class ConfigLoader
 	private final Map<String, String> properties = new HashMap<>(),
 		appletProperties = new HashMap<>();
 
-	static
-	{
-		try
-		{
-			configURL = new URL("http://oldschool1.runescape.com/jav_config.ws"); // https redirects us to rs3
-		}
-		catch (MalformedURLException ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-
 	public void fetch() throws IOException
 	{
-		URLConnection conn = configURL.openConnection();
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream())))
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CONFIG_RESOURCE))))
 		{
 			String str;
 

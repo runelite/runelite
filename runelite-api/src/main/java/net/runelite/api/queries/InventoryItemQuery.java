@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,67 +25,22 @@
 package net.runelite.api.queries;
 
 import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.Query;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-public class InventoryItemQuery extends WidgetItemQuery
+public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
 {
-	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS =
-	{
-		WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER,
-		WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
-		WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER,
-		WidgetInfo.INVENTORY
-	};
-
 	@Override
-	public WidgetItem[] result(Client client)
+	public Item[] result(Client client)
 	{
-		Collection<WidgetItem> widgetItems = getInventoryItems(client);
-		if (widgetItems != null)
+		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+		if (container == null)
 		{
-			return widgetItems.stream()
-				.filter(Objects::nonNull)
-				.filter(predicate)
-				.toArray(WidgetItem[]::new);
+			return null;
 		}
-		return new WidgetItem[0];
+		return container.getItems();
 	}
 
-	private Collection<WidgetItem> getInventoryItems(Client client)
-	{
-		Collection<WidgetItem> widgetItems = new ArrayList<>();
-		for (WidgetInfo widgetInfo : INVENTORY_WIDGET_INFOS)
-		{
-			Widget inventory = client.getWidget(widgetInfo);
-			if (inventory == null || inventory.isHidden())
-			{
-				continue;
-			}
-			if (widgetInfo == WidgetInfo.INVENTORY)
-			{
-				widgetItems.addAll(inventory.getWidgetItems());
-				break;
-			}
-			else
-			{
-				Widget[] children = inventory.getDynamicChildren();
-				for (int i = 0; i < children.length; i++)
-				{
-					// set bounds to same size as default inventory
-					Rectangle bounds = children[i].getBounds();
-					bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
-					widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), i, bounds));
-				}
-				break;
-			}
-		}
-		return widgetItems;
-	}
 }

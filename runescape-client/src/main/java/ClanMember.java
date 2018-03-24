@@ -1,68 +1,113 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("ki")
 @Implements("ClanMember")
-public class ClanMember extends Node {
-   @ObfuscatedName("fm")
-   static byte[][] field842;
-   @ObfuscatedName("a")
-   @Export("username")
-   String username;
-   @ObfuscatedName("w")
-   String field840;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 65229773
-   )
-   @Export("world")
-   int world;
-   @ObfuscatedName("k")
-   @Export("rank")
-   byte rank;
-
-   @ObfuscatedName("a")
+public class ClanMember extends ChatPlayer {
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-1118490454"
+      signature = "Lkx;"
    )
-   static boolean method1118(int var0, int var1) {
-      return var0 != 4 || var1 < 8;
+   class303 field3822;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lkx;"
+   )
+   class303 field3823;
+
+   ClanMember() {
+      this.field3822 = class303.field3850;
+      this.field3823 = class303.field3850;
    }
 
-   @ObfuscatedName("hi")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lhz;B)Z",
-      garbageValue = "73"
+      signature = "(I)V",
+      garbageValue = "-2118717872"
    )
-   static final boolean method1117(Widget var0) {
-      if(var0.tableActions == null) {
-         return false;
-      } else {
-         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
-            int var2 = class278.method4994(var0, var1);
-            int var3 = var0.field2837[var1];
-            if(var0.tableActions[var1] == 2) {
-               if(var2 >= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 3) {
-               if(var2 <= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 4) {
-               if(var3 == var2) {
-                  return false;
-               }
-            } else if(var2 != var3) {
-               return false;
-            }
-         }
+   void method5227() {
+      this.field3822 = class303.field3850;
+   }
 
-         return true;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1963475027"
+   )
+   public final boolean method5229() {
+      if(this.field3822 == class303.field3850) {
+         this.method5230();
       }
+
+      return this.field3822 == class303.field3846;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1860606292"
+   )
+   void method5230() {
+      this.field3822 = WallObject.friendManager.field1229.isMember(super.name)?class303.field3846:class303.field3847;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "10"
+   )
+   void method5231() {
+      this.field3823 = class303.field3850;
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-2084775830"
+   )
+   public final boolean method5244() {
+      if(this.field3823 == class303.field3850) {
+         this.method5232();
+      }
+
+      return this.field3823 == class303.field3846;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "264907422"
+   )
+   void method5232() {
+      this.field3823 = WallObject.friendManager.field1233.isMember(super.name)?class303.field3846:class303.field3847;
+   }
+
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
+      garbageValue = "3"
+   )
+   static String method5226(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.socketType == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.socketType == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.socketType == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.socketType == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.socketType == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(Projectile.sessionToken != null) {
+         var3 = "/p=" + Projectile.sessionToken;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + Enum.field3558 + var3 + "/";
    }
 }

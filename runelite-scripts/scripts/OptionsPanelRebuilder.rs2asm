@@ -1,0 +1,455 @@
+.id                 909
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      15
+.string_var_count   0
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551298
+   get_enum_value        
+   istore                 2
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551306
+   get_enum_value        
+   istore                 3
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551301
+   get_enum_value        
+   istore                 4
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551308
+   get_enum_value        
+   istore                 5
+   load_int               103
+   load_int               105
+   load_int               1135
+   iload                  1
+   get_enum_value        
+   istore                 6
+   load_int               103
+   load_int               105
+   load_int               1136
+   iload                  1
+   get_enum_value        
+   istore                 7
+   load_int               0
+   istore                 8
+   load_int               0
+   istore                 9
+   load_int               0
+   istore                 10
+   load_int               0
+   istore                 11
+   load_int               0
+   istore                 12
+   load_int               0
+   istore                 13
+   get_varbit             4606
+   load_int               0
+   if_icmpne              LABEL52
+   jump                   LABEL198
+LABEL52:
+   get_varbit             4606
+   load_int               2
+   if_icmpeq              LABEL56
+   jump                   LABEL70
+LABEL56:
+   load_int               256
+   load_int               180
+   6200                  
+   load_int               256
+   load_int               180
+   set_zoom_distance     
+   load_int               0
+   load_int               0
+   load_int               0
+   load_int               0
+   6202                  
+   load_int               50
+   set_camera_focal_point_height
+   jump                   LABEL83
+LABEL70:
+   load_int               256
+   load_int               256
+   6200                  
+   load_int               256
+   load_int               256
+   set_zoom_distance     
+   load_int               256
+   load_int               256
+   load_int               256
+   load_int               256
+   6202                  
+   load_int               50
+   set_camera_focal_point_height
+LABEL83:
+   iload                  2
+   load_int               -1
+   if_icmpne              LABEL87
+   jump                   LABEL197
+LABEL87:
+   iload                  3
+   load_int               -1
+   if_icmpne              LABEL91
+   jump                   LABEL197
+LABEL91:
+   get_viewport_size     
+   istore                 9
+   istore                 8
+   iload                  8
+   iload                  9
+   load_int               0
+   load_int               0
+   iload                  2
+   widget_put_size_widget
+   iload                  8
+   iload                  9
+   load_int               0
+   load_int               0
+   iload                  3
+   widget_put_size_widget
+   iload                  4
+   load_int               -1
+   if_icmpne              LABEL110
+   jump                   LABEL187
+LABEL110:
+   iload                  5
+   load_int               -1
+   if_icmpne              LABEL114
+   jump                   LABEL187
+LABEL114:
+   iload                  0
+   widget_get_width_widget
+   istore                 10
+   iload                  0
+   widget_get_height_widget
+   istore                 11
+   iload                  10
+   iload                  8
+   isub                  
+   istore                 12
+   iload                  11
+   iload                  9
+   isub                  
+   istore                 13
+   iload                  12
+   load_int               0
+   if_icmplt              LABEL132
+   jump                   LABEL134
+LABEL132:
+   load_int               0
+   istore                 12
+LABEL134:
+   iload                  13
+   load_int               0
+   if_icmplt              LABEL138
+   jump                   LABEL140
+LABEL138:
+   load_int               0
+   istore                 13
+LABEL140:
+   iload                  6
+   iload                  12
+   load_int               2
+   idiv                  
+   isub                  
+   iload                  7
+   iload                  13
+   load_int               2
+   idiv                  
+   isub                  
+   istore                 7
+   istore                 6
+   iload                  6
+   load_int               0
+   if_icmplt              LABEL156
+   jump                   LABEL158
+LABEL156:
+   load_int               0
+   istore                 6
+LABEL158:
+   iload                  7
+   load_int               0
+   if_icmplt              LABEL162
+   jump                   LABEL164
+LABEL162:
+   load_int               0
+   istore                 7
+LABEL164:
+   iload                  6
+   iload                  7
+   load_int               1
+   load_int               1
+   iload                  4
+   widget_put_size_widget
+   iload                  6
+   iload                  7
+   load_int               1
+   load_int               1
+   iload                  5
+   widget_put_size_widget
+   iload                  1
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551307
+   get_enum_value        
+   iload                  5
+   iload                  6
+   iload                  7
+   invoke                 910
+   jump                   LABEL197
+LABEL187:
+   iload                  1
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551307
+   get_enum_value        
+   iload                  3
+   load_int               0
+   load_int               0
+   invoke                 910
+LABEL197:
+   jump                   LABEL293
+LABEL198:
+   load_int               0
+   load_int               0
+   6200                  
+   load_int               0
+   load_int               0
+   load_int               0
+   load_int               0
+   6202                  
+   get_varc               73
+   load_int               195
+   load_string            "fixedOuterZoomLimit"
+   runelite_callback
+   if_icmpge              LABEL210
+   jump                   LABEL226
+LABEL210:
+   get_varc               73
+   load_int               700
+   load_string            "fixedInnerZoomLimit"
+   runelite_callback
+   if_icmple              LABEL214
+   jump                   LABEL226
+LABEL214:
+   get_varc               74
+   load_int               175
+   load_string            "resizableOuterZoomLimit"
+   runelite_callback
+   if_icmpge              LABEL218
+   jump                   LABEL226
+LABEL218:
+   get_varc               74
+   load_int               715
+   load_string            "resizableInnerZoomLimit"
+   runelite_callback
+   if_icmple              LABEL222
+   jump                   LABEL226
+LABEL222:
+   get_varc               73
+   get_varc               74
+   invoke                 42
+   jump                   LABEL229
+LABEL226:
+   load_int               256
+   load_int               320
+   invoke                 42
+LABEL229:
+   get_viewport_size     
+   istore                 9
+   istore                 8
+   iload                  2
+   load_int               -1
+   if_icmpne              LABEL236
+   jump                   LABEL293
+LABEL236:
+   iload                  3
+   load_int               -1
+   if_icmpne              LABEL240
+   jump                   LABEL293
+LABEL240:
+   iload                  8
+   iload                  9
+   load_int               0
+   load_int               0
+   iload                  2
+   widget_put_size_widget
+   iload                  8
+   iload                  9
+   load_int               0
+   load_int               0
+   iload                  3
+   widget_put_size_widget
+   iload                  4
+   load_int               -1
+   if_icmpne              LABEL256
+   jump                   LABEL283
+LABEL256:
+   iload                  5
+   load_int               -1
+   if_icmpne              LABEL260
+   jump                   LABEL283
+LABEL260:
+   iload                  6
+   iload                  7
+   load_int               1
+   load_int               1
+   iload                  4
+   widget_put_size_widget
+   iload                  6
+   iload                  7
+   load_int               1
+   load_int               1
+   iload                  5
+   widget_put_size_widget
+   iload                  1
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551307
+   get_enum_value        
+   iload                  5
+   iload                  6
+   iload                  7
+   invoke                 910
+   jump                   LABEL293
+LABEL283:
+   iload                  1
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551307
+   get_enum_value        
+   iload                  3
+   load_int               0
+   load_int               0
+   invoke                 910
+LABEL293:
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551309
+   get_enum_value        
+   istore                 14
+   iload                  14
+   load_int               -1
+   if_icmpne              LABEL303
+   jump                   LABEL347
+LABEL303:
+   invoke                 1972
+   load_int               0
+   if_icmpeq              LABEL307
+   jump                   LABEL341
+LABEL307:
+   iload                  14
+   widget_get_index_widget
+   load_int               1
+   if_icmpeq              LABEL312
+   jump                   LABEL341
+LABEL312:
+   get_varc               173
+   load_int               -2
+   if_icmpeq              LABEL316
+   jump                   LABEL323
+LABEL316:
+   load_int               512
+   load_int               0
+   load_int               0
+   load_int               1
+   iload                  14
+   widget_put_size_widget
+   jump                   LABEL340
+LABEL323:
+   get_varc               173
+   load_int               -3
+   if_icmpeq              LABEL327
+   jump                   LABEL334
+LABEL327:
+   load_int               0
+   load_int               0
+   load_int               1
+   load_int               1
+   iload                  14
+   widget_put_size_widget
+   jump                   LABEL340
+LABEL334:
+   load_int               512
+   load_int               334
+   load_int               0
+   load_int               0
+   iload                  14
+   widget_put_size_widget
+LABEL340:
+   jump                   LABEL347
+LABEL341:
+   load_int               512
+   load_int               334
+   load_int               0
+   load_int               0
+   iload                  14
+   widget_put_size_widget
+LABEL347:
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551311
+   get_enum_value        
+   istore                 14
+   iload                  14
+   load_int               -1
+   if_icmpne              LABEL357
+   jump                   LABEL390
+LABEL357:
+   load_int               73
+   load_int               73
+   iload                  1
+   load_int               10551303
+   get_enum_value        
+   widget_get_index_widget
+   load_int               1
+   if_icmpeq              LABEL366
+   jump                   LABEL384
+LABEL366:
+   get_varbit             4692
+   load_int               0
+   if_icmpne              LABEL370
+   jump                   LABEL377
+LABEL370:
+   load_int               0
+   load_int               0
+   load_int               2
+   load_int               0
+   iload                  14
+   widget_put_position_widget
+   jump                   LABEL383
+LABEL377:
+   load_int               0
+   load_int               36
+   load_int               2
+   load_int               0
+   iload                  14
+   widget_put_position_widget
+LABEL383:
+   jump                   LABEL390
+LABEL384:
+   load_int               0
+   load_int               0
+   load_int               2
+   load_int               0
+   iload                  14
+   widget_put_position_widget
+LABEL390:
+   iload                  0
+   iload                  1
+   invoke                 920
+   return                

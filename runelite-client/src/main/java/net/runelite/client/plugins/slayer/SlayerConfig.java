@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface SlayerConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether slayer plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "infobox",
 		name = "Task InfoBox",
 		description = "Display task information in an InfoBox"
@@ -63,6 +53,26 @@ public interface SlayerConfig extends Config
 	default boolean showItemOverlay()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "superiornotification",
+		name = "Superior foe notification",
+		description = "Toggles notifications on superior foe encounters"
+	)
+	default boolean showSuperiorNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "statTimeout",
+		name = "InfoBox Expiry (minutes)",
+		description = "Set the time until the InfoBox expires"
+	)
+	default int statTimeout()
+	{
+		return 5;
 	}
 
 	// Stored data

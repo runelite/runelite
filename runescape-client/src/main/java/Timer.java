@@ -1,47 +1,67 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("fr")
 @Implements("Timer")
 public abstract class Timer {
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -994769483
-   )
-   public static int field2159;
-
-   @ObfuscatedName("a")
+   @ObfuscatedName("bt")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-515402785"
+      signature = "[Llk;"
    )
-   public abstract void vmethod3074();
+   @Export("slFlagSprites")
+   static IndexedSprite[] slFlagSprites;
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "501278963"
-   )
-   public abstract int vmethod3075(int var1, int var2);
-
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "89"
+      garbageValue = "2"
    )
-   public static void method3079() {
-      MouseInput var0 = MouseInput.mouse;
-      synchronized(MouseInput.mouse) {
-         MouseInput.mouseCurrentButton = MouseInput.MouseHandler_currentButton;
-         MouseInput.field679 = MouseInput.mouseX;
-         MouseInput.field682 = MouseInput.mouseY * -1460687225;
-         MouseInput.mouseLastButton = MouseInput.MouseHandler_lastButton;
-         MouseInput.mouseLastPressedX = MouseInput.MouseHandler_lastPressedX;
-         MouseInput.mouseLastPressedY = MouseInput.MouseHandler_lastPressedY;
-         MouseInput.mouseLastPressedTimeMillis = MouseInput.MouseHandler_lastPressedTimeMillis;
-         MouseInput.MouseHandler_lastButton = 0;
+   public abstract void vmethod3325();
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1292093981"
+   )
+   public abstract int vmethod3323(int var1, int var2);
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)[Lkg;",
+      garbageValue = "193530572"
+   )
+   public static Parameters[] method3332() {
+      return new Parameters[]{Parameters.field3808, Parameters.field3801, Parameters.field3803, Parameters.field3797, Parameters.field3800, Parameters.field3805, Parameters.field3794, Parameters.field3806, Parameters.field3802, Parameters.field3798, Parameters.field3795, Parameters.field3799, Parameters.field3809, Parameters.field3807, Parameters.field3796, Parameters.field3804};
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1973381285"
+   )
+   public static void method3330(int var0, int var1) {
+      Varbit var2 = VerticalAlignment.method4748(var0);
+      int var3 = var2.configId;
+      int var4 = var2.leastSignificantBit;
+      int var5 = var2.mostSignificantBit;
+      int var6 = class237.varpsMasks[var5 - var4];
+      if(var1 < 0 || var1 > var6) {
+         var1 = 0;
       }
+
+      var6 <<= var4;
+      class237.clientVarps[var3] = class237.clientVarps[var3] & ~var6 | var1 << var4 & var6;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "0"
+   )
+   public static void method3331() {
+      Sequence.sequences.reset();
+      Sequence.skeletons.reset();
    }
 }

@@ -28,18 +28,19 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
-
 import net.runelite.http.service.util.InstantConverter;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
 
 @SpringBootApplication
+@EnableScheduling
 public class SpringBootWebApplicationTest
 {
 	@Bean("Runelite SQL2O")
@@ -47,7 +48,7 @@ public class SpringBootWebApplicationTest
 	{
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/runelite", "root", "", new NoQuirks(converters));
+		return new Sql2o("jdbc:mysql://192.168.1.2/runelite", "runelite", "runelite", new NoQuirks(converters));
 	}
 
 	@Bean("Runelite Cache SQL2O")
@@ -55,7 +56,15 @@ public class SpringBootWebApplicationTest
 	{
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/cache", "root", "", new NoQuirks(converters));
+		return new Sql2o("jdbc:mysql://192.168.1.2/cache", "runelite", "runelite", new NoQuirks(converters));
+	}
+
+	@Bean("Runelite XP Tracker SQL2O")
+	Sql2o xpSql2o() throws NamingException
+	{
+		Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o("jdbc:mysql://192.168.1.2/xptracker", "runelite", "runelite", new NoQuirks(converters));
 	}
 
 	@Test

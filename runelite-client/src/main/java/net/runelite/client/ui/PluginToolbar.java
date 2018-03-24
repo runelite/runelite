@@ -24,76 +24,60 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-import javax.swing.JToolBar;
+import com.google.common.eventbus.EventBus;
+import java.util.Comparator;
+import java.util.TreeSet;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.client.events.PluginToolbarButtonAdded;
+import net.runelite.client.events.PluginToolbarButtonRemoved;
 
-public class PluginToolbar extends JToolBar
+/**
+ * Plugin toolbar buttons holder.
+ */
+@Singleton
+public class PluginToolbar
 {
-	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
+	private final EventBus eventBus;
+	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
 
-	private final ClientUI ui;
-	private final List<NavigationButton> buttons = new ArrayList<>();
-
-	private NavigationButton current;
-
-	public PluginToolbar(ClientUI ui)
+	@Inject
+	private PluginToolbar(final EventBus eventBus)
 	{
-		super(JToolBar.VERTICAL);
-		this.ui = ui;
-
-		super.setFloatable(false);
-		super.setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		super.setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		super.setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		super.setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
+		this.eventBus = eventBus;
 	}
 
-	public void addNavigation(NavigationButton button)
+	/**
+	 * Add navigation.
+	 *
+	 * @param button the button
+	 */
+	public void addNavigation(final NavigationButton button)
 	{
-		button.addActionListener((ae) -> onClick(button));
-		button.setToolTipText(button.getName());
-
-		buttons.add(button);
-		add(button);
-		revalidate();
-	}
-
-	public void removeNavigation(NavigationButton button)
-	{
-		buttons.remove(button);
-		remove(button);
-		revalidate();
-	}
-
-	private void onClick(NavigationButton button)
-	{
-		Supplier<PluginPanel> panelSupplier = button.getPanelSupplier();
-		if (panelSupplier == null)
+		if (buttons.contains(button))
 		{
 			return;
 		}
 
-		if (current != null)
+		if (buttons.add(button))
 		{
-			current.setSelected(false);
+			int index = buttons.headSet(button).size();
+			eventBus.post(new PluginToolbarButtonAdded(button, index));
 		}
+	}
 
-		if (current == button)
+	/**
+	 * Remove navigation.
+	 *
+	 * @param button the button
+	 */
+	public void removeNavigation(final NavigationButton button)
+	{
+		int index = buttons.headSet(button).size();
+
+		if (buttons.remove(button))
 		{
-			ui.contract();
-			current = null;
-		}
-		else
-		{
-
-			PluginPanel pluginPanel = panelSupplier.get();
-			ui.expand(pluginPanel);
-
-			current = button;
-			current.setSelected(true);
+			eventBus.post(new PluginToolbarButtonRemoved(button, index));
 		}
 	}
 }

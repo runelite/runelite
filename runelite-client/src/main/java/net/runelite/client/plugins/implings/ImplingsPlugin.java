@@ -25,11 +25,10 @@
 package net.runelite.client.plugins.implings;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -39,18 +38,12 @@ import net.runelite.client.ui.overlay.Overlay;
  * @author robin
  */
 @PluginDescriptor(
-	name = "Implings plugin"
+	name = "Implings"
 )
 public class ImplingsPlugin extends Plugin
 {
 	@Inject
-	ImplingsOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(ImplingsOverlay.class);
-	}
+	private ImplingsOverlay overlay;
 
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)

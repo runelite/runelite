@@ -37,16 +37,16 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Report Button Utilities"
+	name = "Report Button"
 )
 @Slf4j
 public class ReportButtonPlugin extends Plugin
@@ -60,10 +60,10 @@ public class ReportButtonPlugin extends Plugin
 	private boolean ready;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ReportButtonConfig config;
+	private ReportButtonConfig config;
 
 	@Provides
 	ReportButtonConfig provideConfig(ConfigManager configManager)

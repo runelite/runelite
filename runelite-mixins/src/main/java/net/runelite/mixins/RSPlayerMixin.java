@@ -36,6 +36,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSPlayer;
 
 @Mixin(RSPlayer.class)
@@ -48,7 +49,14 @@ public abstract class RSPlayerMixin implements RSPlayer
 	@Override
 	public String getName()
 	{
-		String name = getRSName();
+		final RSName rsName = getRsName();
+
+		if (rsName == null)
+		{
+			return null;
+		}
+
+		String name = rsName.getName();
 
 		if (name == null)
 		{
@@ -72,15 +80,11 @@ public abstract class RSPlayerMixin implements RSPlayer
 		int localX = getX();
 		int localY = getY();
 
-		// models are orientated north (1024) and there are 2048 angles total
-		int orientation = (getOrientation() + 1024) % 2048;
+		int orientation = getOrientation();
 
 		List<Triangle> triangles = model.getTriangles();
 
-		if (orientation != 0)
-		{
-			triangles = rotate(triangles, orientation);
-		}
+		triangles = rotate(triangles, orientation);
 
 		List<Polygon> polys = new ArrayList<Polygon>();
 		for (Triangle triangle : triangles)

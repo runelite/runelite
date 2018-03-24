@@ -24,17 +24,26 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 
 @Mixin(RSModel.class)
 public abstract class RSModelMixin implements RSModel
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Override
 	@Inject
 	public List<Vertex> getVertices()
@@ -45,7 +54,7 @@ public abstract class RSModelMixin implements RSModel
 
 		List<Vertex> vertices = new ArrayList<Vertex>();
 
-		for (int i = 0; i < verticesX.length; ++i)
+		for (int i = 0; i < getVerticesCount(); ++i)
 		{
 			Vertex v = new Vertex(
 				verticesX[i],
@@ -67,9 +76,9 @@ public abstract class RSModelMixin implements RSModel
 		int[] trianglesZ = getTrianglesZ();
 
 		List<Vertex> vertices = getVertices();
-		List<Triangle> triangles = new ArrayList<Triangle>(trianglesX.length);
+		List<Triangle> triangles = new ArrayList<Triangle>(getTrianglesCount());
 
-		for (int i = 0; i < trianglesX.length; ++i)
+		for (int i = 0; i < getTrianglesCount(); ++i)
 		{
 			int triangleX = trianglesX[i];
 			int triangleY = trianglesY[i];
@@ -84,5 +93,50 @@ public abstract class RSModelMixin implements RSModel
 		}
 
 		return triangles;
+	}
+
+	@Override
+	@Inject
+	public Polygon getConvexHull(int localX, int localY, int orientation)
+	{
+		List<Vertex> vertices = getVertices();
+
+		// rotate vertices
+		for (int i = 0; i < vertices.size(); ++i)
+		{
+			Vertex v = vertices.get(i);
+			vertices.set(i, v.rotate(orientation));
+		}
+
+		List<Point> points = new ArrayList<Point>();
+
+		for (Vertex v : vertices)
+		{
+			// Compute canvas location of vertex
+			Point p = Perspective.worldToCanvas(client,
+				localX - v.getX(),
+				localY - v.getZ(),
+				-v.getY());
+			if (p != null)
+			{
+				points.add(p);
+			}
+		}
+
+		// Run Jarvis march algorithm
+		points = Jarvis.convexHull(points);
+		if (points == null)
+		{
+			return null;
+		}
+
+		// Convert to a polygon
+		Polygon p = new Polygon();
+		for (Point point : points)
+		{
+			p.addPoint(point.getX(), point.getY());
+		}
+
+		return p;
 	}
 }

@@ -392,6 +392,17 @@ public class CodeVisitor extends MethodVisitor
 	}
 
 	@Override
+	public void visitLineNumber(int line, Label start)
+	{
+		net.runelite.asm.attributes.code.Label label = code.getInstructions().findLabel(start);
+
+		if (label != null)
+		{
+			label.setLineNumber(line);
+		}
+	}
+
+	@Override
 	public void visitMaxs(int maxStack, int maxLocals)
 	{
 		code.setMaxStack(maxStack);

@@ -24,6 +24,9 @@
  */
 package net.runelite.client.config;
 
+import java.awt.Dimension;
+import net.runelite.api.Constants;
+
 @ConfigGroup(
 	keyName = "runelite",
 	name = "RuneLite",
@@ -32,20 +35,32 @@ package net.runelite.client.config;
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(
-		keyName = "chatCommandsRecolorEnabled",
-		name = "Enable chat commands recolor",
-		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
+		keyName = "gameSize",
+		name = "Game size",
+		description = "The game will resize to this resolution upon starting the client"
 	)
-	default boolean chatCommandsRecolorEnabled()
+	default Dimension gameSize()
 	{
-		return true;
+		return Constants.GAME_FIXED_SIZE;
+	}
+
+	@ConfigItem(
+		keyName = "lockWindowSize",
+		name = "Lock window size",
+		description = "Determines if the window resizing is allowed or not"
+	)
+	default boolean lockWindowSize()
+	{
+		return false;
 	}
 
 	@ConfigItem(
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use Runelite's custom window title and borders.",
-		confirmationWarining = "Please restart your client after changing this setting"
+		confirmationWarining = "Please restart your client after changing this setting",
+		warnOnEnable = true,
+		warnOnDisable = true
 	)
 	default boolean enableCustomChrome()
 	{
@@ -53,16 +68,52 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
-		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
-		+ "of your computer. Are you sure you want to do this?",
-		warnOnEnable = true
+		keyName = "gameAlwaysOnTop",
+		name = "Enable client always on top",
+		description = "The game will always be on the top of the screen"
 	)
-	default boolean enablePlugins()
+	default boolean gameAlwaysOnTop()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notificationTray",
+		name = "Enable tray notifications",
+		description = "Enables tray notifications"
+	)
+	default boolean enableTrayNotifications()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "notificationSound",
+		name = "Enable sound on notifications",
+		description = "Enables the playing of a beep sound when notifications are displayed"
+	)
+	default boolean enableNotificationSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles idle notifications for when the client is focused"
+	)
+	default boolean sendNotificationsWhenFocused()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notificationRequestFocus",
+		name = "Request focus on notification",
+		description = "Toggles window focus request"
+	)
+	default boolean requestFocusOnNotification()
+	{
+		return true;
 	}
 }

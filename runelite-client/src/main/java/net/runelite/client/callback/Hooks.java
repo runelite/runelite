@@ -26,44 +26,70 @@ package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
+import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
-import net.runelite.api.Point;
 import net.runelite.api.Projectile;
-import net.runelite.api.Skill;
-import net.runelite.api.Tile;
+import net.runelite.api.Region;
+import net.runelite.api.RenderOverview;
+import net.runelite.api.TextureProvider;
+import net.runelite.api.WorldMapManager;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.SetMessage;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.events.*;
-import net.runelite.client.game.DeathChecker;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class Hooks
 {
+	// must be public as the mixins use it
+	public static final Logger log = LoggerFactory.getLogger(Hooks.class);
+
 	private static final long CHECK = 600; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
-	private static final EventBus eventBus = injector.getInstance(EventBus.class);
+	public static final EventBus eventBus = injector.getInstance(EventBus.class);
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
-	private static final DeathChecker death = new DeathChecker(client, eventBus);
+	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
+	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final GameTick tick = new GameTick();
+
+	private static Dimension lastStretchedDimensions;
+	private static BufferedImage stretchedImage;
+	private static Graphics2D stretchedGraphics;
 
 	private static long lastCheck;
 
@@ -80,30 +106,188 @@ public class Hooks
 
 		try
 		{
-			death.check();
+			// tick pending scheduled tasks
+			scheduler.tick();
+
+			// cull infoboxes
+			infoBoxManager.cull();
+
+			chatMessageManager.process();
+
+			checkWorldMap();
 		}
 		catch (Exception ex)
 		{
-			log.warn("error during death check", ex);
+			log.warn("error during main loop tasks", ex);
+		}
+	}
+
+	/**
+	 * When the world map opens it loads about ~100mb of data into memory, which
+	 * represents about half of the total memory allocated by the client.
+	 * This gets cached and never released, which causes GC pressure which can affect
+	 * performance. This method reinitailzies the world map cache, which allows the
+	 * data to be garbage collecged, and causes the map data from disk each time
+	 * is it opened.
+	 */
+	private static void checkWorldMap()
+	{
+		Widget widget = client.getWidget(WORLD_MAP, 0);
+		if (widget != null)
+		{
+			return;
 		}
 
-		// tick pending scheduled tasks
-		scheduler.tick();
+		RenderOverview renderOverview = client.getRenderOverview();
+		if (renderOverview == null)
+		{
+			return;
+		}
 
-		// cull infoboxes
-		infoBoxManager.cull();
+		WorldMapManager manager = renderOverview.getWorldMapManager();
 
-		chatMessageManager.process();
+		if (manager != null && manager.isLoaded())
+		{
+			log.debug("World map was closed, reinitializing");
+			renderOverview.initializeWorldMap(renderOverview.getWorldMapData());
+		}
+	}
+
+	public static MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMousePressed(mouseEvent);
+	}
+
+	public static MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseReleased(mouseEvent);
+	}
+
+	public static MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseClicked(mouseEvent);
+	}
+
+	public static MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseEntered(mouseEvent);
+	}
+
+	public static MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseExited(mouseEvent);
+	}
+
+	public static MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseDragged(mouseEvent);
+	}
+
+	public static MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseManager.processMouseMoved(mouseEvent);
+	}
+
+	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	{
+		return mouseManager.processMouseWheelMoved(event);
+	}
+
+	public static void keyPressed(KeyEvent keyEvent)
+	{
+		keyManager.processKeyPressed(keyEvent);
+	}
+
+	public static void keyReleased(KeyEvent keyEvent)
+	{
+		keyManager.processKeyReleased(keyEvent);
+	}
+
+	public static void keyTyped(KeyEvent keyEvent)
+	{
+		keyManager.processKeyTyped(keyEvent);
+	}
+
+	public static void focusGained(KeyFocusListener l, FocusEvent focusEvent)
+	{
+		FocusChanged focusChanged = new FocusChanged();
+		focusChanged.setFocused(true);
+
+		eventBus.post(focusChanged);
+	}
+
+	public static void focusLost(KeyFocusListener l, FocusEvent focusEvent)
+	{
+		FocusChanged focusChanged = new FocusChanged();
+		focusChanged.setFocused(false);
+
+		eventBus.post(focusChanged);
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
-		final BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
+		if (graphics == null)
+		{
+			return;
+		}
+
+		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
 		{
-			renderer.render(graphics2d);
+			renderer.render(graphics2d, OverlayLayer.ALWAYS_ON_TOP);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
+
+		// Stretch the game image if the user has that enabled
+		if (!client.isResized() && client.isStretchedEnabled())
+		{
+			Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions))
+			{
+				/*
+					Reuse the resulting image instance to avoid creating an extreme amount of objects
+				 */
+				stretchedImage = new BufferedImage(stretchedDimensions.width, stretchedDimensions.height, BufferedImage.TYPE_INT_RGB);
+
+				if (stretchedGraphics != null)
+				{
+					stretchedGraphics.dispose();
+				}
+				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
+
+				lastStretchedDimensions = stretchedDimensions;
+			}
+
+			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					client.isStretchedFast()
+							? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+							: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
+
+			image = stretchedImage;
+		}
+
+		// Draw the image onto the game canvas
+		graphics.drawImage(image, 0, 0, client.getCanvas());
+
+		renderer.provideScreenshot(image);
+	}
+
+	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	{
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		BufferedImage image = (BufferedImage) bufferProvider.getImage();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+
+		try
+		{
+			renderer.render(graphics2d, OverlayLayer.ABOVE_SCENE);
 		}
 		catch (Exception ex)
 		{
@@ -111,106 +295,35 @@ public class Hooks
 		}
 	}
 
-	/**
-	 *
-	 * @param name Hook-name that was used in the @Hook-annotation.
-	 * @param idx The index if hooked to an array. -1 if not hooked to an
-	 * array.
-	 * @param object The object where the hook was placed in, NOT the
-	 * variable that was hooked to.
-	 */
-	public static void callHook(String name, int idx, Object object)
+	public static void drawAboveOverheads(TextureProvider textureProvider, int var1)
 	{
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				Skill[] possibleSkills = Skill.values();
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		BufferedImage image = (BufferedImage) bufferProvider.getImage();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
-				// We subtract one here because 'Overall' isn't considered a skill that's updated.
-				if (idx < possibleSkills.length - 1)
-				{
-					Skill updatedSkill = possibleSkills[idx];
-					experienceChanged.setSkill(updatedSkill);
-					eventBus.post(experienceChanged);
-				}
-				break;
-			}
-			case "mapRegionsChanged":
-			{
-				MapRegionChanged regionChanged = new MapRegionChanged();
-				regionChanged.setIndex(idx);
-				eventBus.post(regionChanged);
-				break;
-			}
-			case "playerMenuOptionsChanged":
-			{
-				PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
-				optionsChanged.setIndex(idx);
-				eventBus.post(optionsChanged);
-				break;
-			}
-			case "animationChanged":
-			{
-				Actor actor = (Actor) object;
-				AnimationChanged animationChange = new AnimationChanged();
-				animationChange.setActor(actor);
-				eventBus.post(animationChange);
-				break;
-			}
-			case "gameStateChanged":
-			{
-				GameStateChanged gameStateChange = new GameStateChanged();
-				gameStateChange.setGameState(client.getGameState());
-				eventBus.post(gameStateChange);
-				break;
-			}
-			case "varbitChanged":
-			{
-				VarbitChanged varbitChanged = new VarbitChanged();
-				eventBus.post(varbitChanged);
-				break;
-			}
-			case "clanMembersChanged":
-			{
-				ClanMembersChanged clanMembersChanged = new ClanMembersChanged();
-				eventBus.post(clanMembersChanged);
-				break;
-			}
-			case "resizeChanged":
-			{
-				//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
-				ResizeableChanged resizeableChanged = new ResizeableChanged();
-				resizeableChanged.setResized(client.isResized());
-				eventBus.post(resizeableChanged);
-				break;
-			}
-			case "gameObjectsChanged":
-				if (idx != -1) // this happens from the field assignment
-				{
-					// GameObject that was changed.
-					GameObject go = ((Tile) object).getGameObjects()[idx];
-					if (go != null)
-					{
-						GameObjectsChanged gameObjectsChanged = new GameObjectsChanged();
-						gameObjectsChanged.setGameObject(go);
-						eventBus.post(gameObjectsChanged);
-					}
-				}
-				break;
-			default:
-				log.warn("Unknown event {} triggered on {}", name, object);
-				return;
+		try
+		{
+			renderer.render(graphics2d, OverlayLayer.UNDER_WIDGETS);
 		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
+	}
 
-		if (object != null)
+	public static void drawAfterWidgets()
+	{
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		BufferedImage image = (BufferedImage) bufferProvider.getImage();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+
+		try
 		{
-			log.trace("Event {} (idx {}) triggered on {}", name, idx, object);
+			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
 		}
-		else
+		catch (Exception ex)
 		{
-			log.trace("Event {} (idx {}) triggered", name, idx);
+			log.warn("Error during overlay rendering", ex);
 		}
 	}
 
@@ -224,9 +337,6 @@ public class Hooks
 			menuAction -= 2000;
 		}
 
-		log.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
-			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, actionParam, widgetId);
-
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
 		menuOptionClicked.setActionParam(actionParam);
 		menuOptionClicked.setMenuOption(menuOption);
@@ -235,22 +345,12 @@ public class Hooks
 		menuOptionClicked.setId(id);
 		menuOptionClicked.setWidgetId(widgetId);
 
+		log.debug("Menu action clicked: {}", menuOptionClicked);
+
 		eventBus.post(menuOptionClicked);
 	}
 
-	public static void addMenuEntry(String option, String target, int type, int identifier, int param0, int param1)
-	{
-		if (log.isTraceEnabled())
-		{
-			log.trace("Menu entry added {} {}", option, target);
-		}
-
-		MenuEntryAdded menuEntry = new MenuEntryAdded(option, target, type, identifier, param0, param1);
-
-		eventBus.post(menuEntry);
-	}
-
-	public static void addChatMessage(int type, String sender, String message, String clan)
+	public static void addChatMessage(int type, String name, String message, String sender)
 	{
 		if (log.isDebugEnabled())
 		{
@@ -258,7 +358,7 @@ public class Hooks
 		}
 
 		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, sender, message, clan);
+		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
 
 		eventBus.post(chatMessage);
 	}
@@ -276,11 +376,11 @@ public class Hooks
 	 */
 	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
 	{
-		Point position = new Point(targetX, targetY);
+		LocalPoint position = new LocalPoint(targetX, targetY);
 		ProjectileMoved projectileMoved = new ProjectileMoved();
 		projectileMoved.setProjectile(projectile);
 		projectileMoved.setPosition(position);
-		projectileMoved.setPlane(targetZ);
+		projectileMoved.setZ(targetZ);
 		eventBus.post(projectileMoved);
 	}
 
@@ -299,5 +399,15 @@ public class Hooks
 	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
 	{
 		eventBus.post(tick);
+	}
+
+	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
+	{
+		if (healthRatio == 0)
+		{
+			ActorDeath death = new ActorDeath();
+			death.setActor(actor);
+			eventBus.post(death);
+		}
 	}
 }

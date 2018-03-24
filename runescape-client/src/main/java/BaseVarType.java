@@ -4,83 +4,95 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("l")
 @Implements("BaseVarType")
 public enum BaseVarType implements Enumerated {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lu;"
+      signature = "Ll;"
    )
    @Export("INTEGER")
-   INTEGER(0, 0, Integer.class, new class2()),
-   @ObfuscatedName("w")
+   INTEGER(1, 0, Integer.class, new class2()),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lu;"
+      signature = "Ll;"
    )
    @Export("LONG")
-   LONG(1, 1, Long.class, new class3()),
-   @ObfuscatedName("e")
+   LONG(0, 1, Long.class, new class3()),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lu;"
+      signature = "Ll;"
    )
    @Export("STRING")
    STRING(2, 2, String.class, new class5());
 
-   @ObfuscatedName("op")
+   @ObfuscatedName("iz")
    @ObfuscatedGetter(
-      intValue = -920203399
+      intValue = 366527293
    )
-   static int field21;
-   @ObfuscatedName("n")
-   static int[] field28;
-   @ObfuscatedName("bz")
+   static int field26;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -845345371
-   )
-   static int field31;
-   @ObfuscatedName("ea")
-   @ObfuscatedSignature(
-      signature = "Ljm;"
-   )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 826185209
+      intValue = -26102371
    )
    @Export("id2")
    final int id2;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -436300871
+      intValue = -100019199
    )
    @Export("id")
    final int id;
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/Class;La;)V"
+      signature = "(IILjava/lang/Class;Lt;)V"
    )
    BaseVarType(int var3, int var4, Class var5, class0 var6) {
       this.id2 = var3;
       this.id = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1035813094"
+      signature = "(B)I",
+      garbageValue = "64"
    )
    public int rsOrdinal() {
       return this.id;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1407958579"
+      signature = "(B)[Lji;",
+      garbageValue = "-16"
    )
-   static int method12(int var0) {
-      ChatLineBuffer var1 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
-      return var1 == null?0:var1.size();
+   static VerticalAlignment[] method12() {
+      return new VerticalAlignment[]{VerticalAlignment.field3439, VerticalAlignment.field3438, VerticalAlignment.field3437};
+   }
+
+   @ObfuscatedName("ih")
+   @ObfuscatedSignature(
+      signature = "(IIIIIS)V",
+      garbageValue = "12691"
+   )
+   static final void method13(int var0, int var1, int var2, int var3, int var4) {
+      class38.scrollbarSprites[0].method5806(var0, var1);
+      class38.scrollbarSprites[1].method5806(var0, var3 + var1 - 16);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1 + 16, 16, var3 - 32, Client.field911);
+      int var5 = var3 * (var3 - 32) / var4;
+      if(var5 < 8) {
+         var5 = 8;
+      }
+
+      int var6 = (var3 - 32 - var5) * var2 / (var4 - var3);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var0, var6 + var1 + 16, 16, var5, Client.field1042);
+      Rasterizer2D.method5707(var0, var6 + var1 + 16, var5, Client.field914);
+      Rasterizer2D.method5707(var0 + 1, var6 + var1 + 16, var5, Client.field914);
+      Rasterizer2D.method5718(var0, var6 + var1 + 16, 16, Client.field914);
+      Rasterizer2D.method5718(var0, var6 + var1 + 17, 16, Client.field914);
+      Rasterizer2D.method5707(var0 + 15, var6 + var1 + 16, var5, Client.field907);
+      Rasterizer2D.method5707(var0 + 14, var6 + var1 + 17, var5 - 1, Client.field907);
+      Rasterizer2D.method5718(var0, var6 + var5 + var1 + 15, 16, Client.field907);
+      Rasterizer2D.method5718(var0 + 1, var5 + var6 + var1 + 14, 15, Client.field907);
    }
 }

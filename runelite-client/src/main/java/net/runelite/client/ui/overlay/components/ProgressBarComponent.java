@@ -62,7 +62,7 @@ public class ProgressBarComponent
 	@Setter
 	private int height = 16;
 
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		FontMetrics metrics = graphics.getFontMetrics();
 
@@ -72,8 +72,8 @@ public class ProgressBarComponent
 
 		if (Strings.isNullOrEmpty(text))
 		{
-			DecimalFormat df = new DecimalFormat("#.00");
-			textToWrite = df.format(progress) + "%";
+			DecimalFormat df = new DecimalFormat("#0");
+			textToWrite = df.format(Math.floor(progress)) + "%";
 		}
 		else
 		{
@@ -95,7 +95,7 @@ public class ProgressBarComponent
 		textComponent.setPosition(new Point(progressTextX, progressTextY));
 		textComponent.setColor(fontColor);
 		textComponent.setText(textToWrite);
-		textComponent.render(graphics, parent);
+		textComponent.render(graphics);
 
 		return new Dimension(width, height);
 	}

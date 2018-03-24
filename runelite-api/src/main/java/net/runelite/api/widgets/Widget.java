@@ -34,13 +34,23 @@ public interface Widget
 
 	int getType();
 
+	void setType(int type);
+
 	int getContentType();
+
+	void setContentType(int contentType);
+
+	int getConfig();
+
+	void setConfig(int config);
 
 	Widget getParent();
 
 	int getParentId();
 
 	Widget getChild(int index);
+
+	Widget[] getChildren();
 
 	Widget[] getDynamicChildren();
 
@@ -62,21 +72,42 @@ public interface Widget
 
 	int getTextColor();
 
+	void setTextColor(int textColor);
+
 	String getName();
+
+	void setName(String name);
 
 	int getModelId();
 
 	int getSpriteId();
 
+	void setSpriteId(int spriteId);
+
+	/**
+	 * @return True if this widget or any of it's parents are hidden
+	 */
 	boolean isHidden();
 
+	/**
+	 * @return True if this widget, regardless of it's parent's state
+	 */
+	boolean isSelfHidden();
+
+	/**
+	 * Sets if this element is hidden as returned by isSelfHidden()
+	 */
 	void setHidden(boolean hidden);
 
 	Point getCanvasLocation();
 
 	int getWidth();
 
+	void setWidth(int width);
+
 	int getHeight();
+
+	void setHeight(int height);
 
 	Rectangle getBounds();
 
@@ -89,4 +120,28 @@ public interface Widget
 	int getItemQuantity();
 	
 	boolean contains(Point point);
+
+	int getScrollX();
+
+	void setScrollX(int scrollX);
+
+	int getScrollY();
+
+	void setScrollY(int scrollY);
+
+	int getOriginalX();
+
+	void setOriginalX(int originalX);
+
+	int getOriginalY();
+
+	void setOriginalY(int originalY);
+
+	int getPaddingX();
+
+	void setPaddingX(int paddingX);
+
+	int getPaddingY();
+
+	void setPaddingY(int paddingY);
 }

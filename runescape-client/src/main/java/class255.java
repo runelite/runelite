@@ -1,54 +1,24 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iw")
-public class class255 extends CacheableNode {
-   @ObfuscatedName("a")
+@ObfuscatedName("iz")
+public final class class255 {
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "(Ljc;Ljc;B)V",
+      garbageValue = "-123"
    )
-   public static IndexDataBase field3405;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lgu;"
-   )
-   public static NodeCache field3403;
-   @ObfuscatedName("e")
-   public boolean field3404;
-
-   static {
-      field3403 = new NodeCache(64);
+   public static void method4546(IndexDataBase var0, IndexDataBase var1) {
+      CombatInfo2.field3525 = var0;
+      class229.field2678 = var1;
    }
 
-   public class255() {
-      this.field3404 = false;
-   }
-
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgh;I)V",
-      garbageValue = "849384138"
+      signature = "(Lek;IIIII)V",
+      garbageValue = "983917042"
    )
-   public void method4470(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4471(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Lgh;II)V",
-      garbageValue = "1255619838"
-   )
-   void method4471(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3404 = true;
-      }
-
+   static final void method4545(Model var0, int var1, int var2, int var3, int var4) {
+      class7.boundingBoxes.addFirst(new BoundingBox3D(var0, var1, var2, var3, var4));
    }
 }

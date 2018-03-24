@@ -24,7 +24,7 @@
  */
 package net.runelite.cache;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -34,15 +34,16 @@ import java.util.Collections;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.exporters.SpriteExporter;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
+import net.runelite.cache.definitions.providers.SpriteProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
-public class SpriteManager
+public class SpriteManager implements SpriteProvider
 {
 	private final Store store;
-	private final Multimap<Integer, SpriteDefinition> sprites = HashMultimap.create();
+	private final Multimap<Integer, SpriteDefinition> sprites = LinkedListMultimap.create();
 
 	public SpriteManager(Store store)
 	{
@@ -107,5 +108,11 @@ public class SpriteManager
 
 			exporter.exportTo(png);
 		}
+	}
+
+	@Override
+	public SpriteDefinition provide(int spriteId, int frameId)
+	{
+		return findSprite(spriteId, frameId);
 	}
 }

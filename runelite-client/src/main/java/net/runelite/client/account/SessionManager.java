@@ -25,22 +25,27 @@
 package net.runelite.client.account;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.account.AccountClient;
+import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.ws.messages.LoginResponse;
 
 @Singleton
 @Slf4j
@@ -52,14 +57,19 @@ public class SessionManager
 	@Getter
 	private AccountSession accountSession;
 
-	@Inject
-	private EventBus eventBus;
-
-	@Inject
+	private final EventBus eventBus;
 	private ConfigManager configManager;
+	private ScheduledExecutorService executor;
+	private final AccountClient loginClient = new AccountClient();
 
 	@Inject
-	private ScheduledExecutorService executor;
+	public SessionManager(ConfigManager configManager, EventBus eventBus, ScheduledExecutorService executor)
+	{
+		this.configManager = configManager;
+		this.eventBus = eventBus;
+		this.executor = executor;
+		eventBus.register(this);
+	}
 
 	public void loadSession()
 	{
@@ -94,7 +104,7 @@ public class SessionManager
 		openSession(session);
 	}
 
-	public void saveSession()
+	private void saveSession()
 	{
 		if (accountSession == null)
 		{
@@ -113,7 +123,7 @@ public class SessionManager
 		}
 	}
 
-	public void deleteSession()
+	private void deleteSession()
 	{
 		SESSION_FILE.delete();
 	}
@@ -122,12 +132,12 @@ public class SessionManager
 	 * Set the given session as the active session and open a socket to the
 	 * server with the given session
 	 *
-	 * @param session
+	 * @param session session
 	 */
-	public void openSession(AccountSession session)
+	private void openSession(AccountSession session)
 	{
 		// If the ws session already exists, don't need to do anything
-		if (wsclient == null || !wsclient.getSession().equals(session))
+		if (wsclient == null || !wsclient.checkSession(session))
 		{
 			if (wsclient != null)
 			{
@@ -150,7 +160,7 @@ public class SessionManager
 		eventBus.post(new SessionOpen());
 	}
 
-	public void closeSession()
+	private void closeSession()
 	{
 		if (wsclient != null)
 		{
@@ -165,11 +175,64 @@ public class SessionManager
 
 		log.debug("Logging out of account {}", accountSession.getUsername());
 
+		AccountClient client = new AccountClient(accountSession.getUuid());
+		try
+		{
+			client.logout();
+		}
+		catch (IOException ex)
+		{
+			log.warn("Unable to logout of session", ex);
+		}
+
 		accountSession = null; // No more account
 
 		// Restore config
 		configManager.switchSession(null);
 
 		eventBus.post(new SessionClose());
+	}
+
+	public void login()
+	{
+		final OAuthResponse login;
+
+		try
+		{
+			login = loginClient.login();
+		}
+		catch (IOException ex)
+		{
+			log.warn("Unable to get oauth url", ex);
+			return;
+		}
+
+		// Create new session
+		openSession(new AccountSession(login.getUid(), Instant.now()));
+
+		// Navigate to login link
+		LinkBrowser.browse(login.getOauthUrl());
+	}
+
+	@Subscribe
+	public void onLogin(LoginResponse loginResponse)
+	{
+		log.debug("Now logged in as {}", loginResponse.getUsername());
+
+		AccountSession session = getAccountSession();
+		session.setUsername(loginResponse.getUsername());
+
+		// Open session, again, now that we have a username
+		// This triggers onSessionOpen
+		openSession(session);
+
+		// Save session to disk
+		saveSession();
+	}
+
+	public void logout()
+	{
+		closeSession();
+		deleteSession();
 	}
 }

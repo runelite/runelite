@@ -24,103 +24,13 @@
  */
 package net.runelite.http.service.cache.beans;
 
+import lombok.Data;
+
+@Data
 public class FileEntry
 {
 	private int id;
 	private int archiveId;
 	private int fileId;
 	private int nameHash;
-
-	@Override
-	public String toString()
-	{
-		return "FileEntry{" + "id=" + id + ", archiveId=" + archiveId + ", fileId=" + fileId + ", nameHash=" + nameHash + '}';
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 5;
-		hash = 67 * hash + this.id;
-		hash = 67 * hash + this.archiveId;
-		hash = 67 * hash + this.fileId;
-		hash = 67 * hash + this.nameHash;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final FileEntry other = (FileEntry) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.archiveId != other.archiveId)
-		{
-			return false;
-		}
-		if (this.fileId != other.fileId)
-		{
-			return false;
-		}
-		if (this.nameHash != other.nameHash)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getArchiveId()
-	{
-		return archiveId;
-	}
-
-	public void setArchiveId(int archiveId)
-	{
-		this.archiveId = archiveId;
-	}
-
-	public int getFileId()
-	{
-		return fileId;
-	}
-
-	public void setFileId(int fileId)
-	{
-		this.fileId = fileId;
-	}
-
-	public int getNameHash()
-	{
-		return nameHash;
-	}
-
-	public void setNameHash(int nameHash)
-	{
-		this.nameHash = nameHash;
-	}
-
 }

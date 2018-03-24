@@ -27,22 +27,20 @@ package net.runelite.client.ui;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 
 @Slf4j
 final class ClientPanel extends JPanel
 {
-	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
-
 	public ClientPanel(@Nullable Applet client)
 	{
-		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setSize(Constants.GAME_FIXED_SIZE);
+		setMinimumSize(Constants.GAME_FIXED_SIZE);
+		setPreferredSize(Constants.GAME_FIXED_SIZE);
 		setLayout(new BorderLayout());
 		setBackground(Color.black);
 
@@ -52,7 +50,7 @@ final class ClientPanel extends JPanel
 		}
 
 		client.setLayout(null);
-		client.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+		client.setSize(Constants.GAME_FIXED_SIZE);
 
 		client.init();
 		client.start();

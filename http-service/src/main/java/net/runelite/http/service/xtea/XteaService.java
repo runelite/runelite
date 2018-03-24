@@ -32,7 +32,6 @@ import net.runelite.cache.fs.Container;
 import net.runelite.cache.util.Djb2;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
-import net.runelite.http.service.cache.CacheDAO;
 import net.runelite.http.service.cache.CacheService;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
@@ -71,18 +70,15 @@ public class XteaService
 		+ ") ENGINE=InnoDB";
 
 	private final Sql2o sql2o;
-	private final Sql2o cacheSql2o;
 	private final CacheService cacheService;
 
 	@Autowired
 	public XteaService(
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		@Qualifier("Runelite Cache SQL2O") Sql2o cacheSql2o,
 		CacheService cacheService
 	)
 	{
 		this.sql2o = sql2o;
-		this.cacheSql2o = cacheSql2o;
 		this.cacheService = cacheService;
 
 		try (Connection con = sql2o.beginTransaction())
@@ -105,11 +101,9 @@ public class XteaService
 	@RequestMapping(method = POST)
 	public void submit(@RequestBody XteaRequest xteaRequest)
 	{
-		try (Connection con = sql2o.beginTransaction();
-			Connection cacheCon = cacheSql2o.open())
+		try (Connection con = sql2o.beginTransaction())
 		{
-			CacheDAO cacheDao = new CacheDAO();
-			CacheEntry cache = cacheDao.findMostRecent(cacheCon);
+			CacheEntry cache = cacheService.findMostRecent();
 
 			if (cache == null)
 			{
@@ -141,7 +135,7 @@ public class XteaService
 					continue;
 				}
 
-				if (!checkKeys(cacheCon, cache, region, keys))
+				if (!checkKeys(cache, region, keys))
 				{
 					continue;
 				}
@@ -166,9 +160,9 @@ public class XteaService
 		try (Connection con = sql2o.open())
 		{
 			List<XteaEntry> entries = con.createQuery(
-				"select t1.region, t1.time, t1.rev, t1.key1, t1.key2, t1.key3, t1.key4 from xtea t1 "
-				+ "inner join ( select region,max(time) as time from xtea group by region ) t2 "
-				+ "on t1.region = t2.region and t1.time = t2.time")
+				"select t1.region, t1.time, t2.rev, t2.key1, t2.key2, t2.key3, t2.key4 from " +
+					"(select region,max(time) as time from xtea group by region) t1 " +
+					"join xtea t2 on t1.region = t2.region and t1.time = t2.time")
 				.executeAndFetch(XteaEntry.class);
 
 			return entries.stream()
@@ -198,7 +192,7 @@ public class XteaService
 		return entryToKey(entry);
 	}
 
-	private boolean checkKeys(Connection con, CacheEntry cache, int regionId, int[] keys)
+	private boolean checkKeys(CacheEntry cache, int regionId, int[] keys)
 	{
 		int x = regionId >>> 8;
 		int y = regionId & 0xFF;
@@ -211,8 +205,7 @@ public class XteaService
 			.toString();
 		int archiveNameHash = Djb2.hash(archiveName);
 
-		CacheDAO cacheDao = new CacheDAO();
-		ArchiveEntry archiveEntry = cacheDao.findArchiveByName(con, cache, IndexType.MAPS, archiveNameHash);
+		ArchiveEntry archiveEntry = cacheService.findArchiveForTypeAndName(cache, IndexType.MAPS, archiveNameHash);
 		if (archiveEntry == null)
 		{
 			throw new InternalServerErrorException("Unable to find archive for region");

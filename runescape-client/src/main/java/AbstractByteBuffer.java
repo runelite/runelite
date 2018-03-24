@@ -1,53 +1,52 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gd")
+@ObfuscatedName("gr")
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @Export("directBufferUnavailable")
    static boolean directBufferUnavailable;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 924680797
-   )
-   static int field2534;
 
    static {
       directBufferUnavailable = false;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)[B",
-      garbageValue = "1971888309"
+      signature = "(B)[B",
+      garbageValue = "38"
    )
    @Export("get")
    abstract byte[] get();
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-1446419567"
+      garbageValue = "-818307234"
    )
    @Export("put")
    abstract void put(byte[] var1);
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IZII)V",
-      garbageValue = "-1628995904"
+      signature = "(IIII)I",
+      garbageValue = "1208547636"
    )
-   public static final void method3518(int var0, boolean var1, int var2) {
-      if(var0 >= 8000 && var0 <= 48000) {
-         ScriptState.sampleRate = var0;
-         ContextMenuRow.highMemory = var1;
-         class218.priority = var2;
-      } else {
-         throw new IllegalArgumentException();
-      }
+   public static int method3787(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1778319270"
+   )
+   public static int method3789(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
    }
 }

@@ -4,48 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ih")
+@ObfuscatedName("js")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Ljc;"
    )
    @Export("underlay_ref")
    public static IndexDataBase underlay_ref;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lhj;"
    )
    @Export("underlays")
-   static NodeCache underlays;
-   @ObfuscatedName("e")
+   public static NodeCache underlays;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1882661743
+      intValue = -163427309
    )
    @Export("rgbColor")
    int rgbColor;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1784433545
+      intValue = -550501809
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 167744801
+      intValue = 859393341
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -272353301
+      intValue = -550857779
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -982635371
+      intValue = -1855312121
    )
    @Export("hueMultiplier")
    public int hueMultiplier;
@@ -58,20 +58,20 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.rgbColor = 0;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "3532"
+      signature = "(I)V",
+      garbageValue = "965353580"
    )
    @Export("post")
    void post() {
       this.setHSL(this.rgbColor);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgh;II)V",
-      garbageValue = "91986373"
+      signature = "(Lgb;IB)V",
+      garbageValue = "5"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -85,10 +85,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lgh;III)V",
-      garbageValue = "-2104836165"
+      signature = "(Lgb;III)V",
+      garbageValue = "-1891981621"
    )
    @Export("decode")
    void decode(Buffer var1, int var2, int var3) {
@@ -98,10 +98,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(IB)V",
-      garbageValue = "-11"
+      garbageValue = "1"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -129,27 +129,27 @@ public class FloorUnderlayDefinition extends CacheableNode {
       double var12 = 0.0D;
       double var14 = 0.0D;
       double var16 = (var10 + var8) / 2.0D;
-      if(var10 != var8) {
+      if(var8 != var10) {
          if(var16 < 0.5D) {
-            var14 = (var10 - var8) / (var10 + var8);
+            var14 = (var10 - var8) / (var8 + var10);
          }
 
          if(var16 >= 0.5D) {
             var14 = (var10 - var8) / (2.0D - var10 - var8);
          }
 
-         if(var10 == var2) {
+         if(var2 == var10) {
             var12 = (var4 - var6) / (var10 - var8);
          } else if(var10 == var4) {
-            var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-         } else if(var6 == var10) {
+            var12 = 2.0D + (var6 - var2) / (var10 - var8);
+         } else if(var10 == var6) {
             var12 = 4.0D + (var2 - var4) / (var10 - var8);
          }
       }
 
       var12 /= 6.0D;
-      this.saturation = (int)(256.0D * var14);
-      this.lightness = (int)(256.0D * var16);
+      this.saturation = (int)(var14 * 256.0D);
+      this.lightness = (int)(var16 * 256.0D);
       if(this.saturation < 0) {
          this.saturation = 0;
       } else if(this.saturation > 255) {
@@ -163,9 +163,9 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       if(var16 > 0.5D) {
-         this.hueMultiplier = (int)(512.0D * (1.0D - var16) * var14);
+         this.hueMultiplier = (int)(var14 * (1.0D - var16) * 512.0D);
       } else {
-         this.hueMultiplier = (int)(512.0D * var16 * var14);
+         this.hueMultiplier = (int)(var14 * var16 * 512.0D);
       }
 
       if(this.hueMultiplier < 1) {
@@ -175,21 +175,54 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.hue = (int)((double)this.hueMultiplier * var12);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "455051354"
+      signature = "(Llk;I)V",
+      garbageValue = "1457148802"
    )
-   static void method4509(boolean var0) {
-      class91.loginMessage1 = "";
-      class91.loginMessage2 = "Enter your username/email & password.";
-      class91.loginMessage3 = "";
-      class91.loginIndex = 2;
-      if(var0) {
-         class91.password = "";
+   static final void method4830(IndexedSprite var0) {
+      short var1 = 256;
+
+      int var2;
+      for(var2 = 0; var2 < class27.field365.length; ++var2) {
+         class27.field365[var2] = 0;
       }
 
-      class231.method4201();
-      MouseInput.method959();
+      int var3;
+      for(var2 = 0; var2 < 5000; ++var2) {
+         var3 = (int)(Math.random() * 128.0D * (double)var1);
+         class27.field365[var3] = (int)(Math.random() * 256.0D);
+      }
+
+      int var4;
+      int var5;
+      for(var2 = 0; var2 < 20; ++var2) {
+         for(var3 = 1; var3 < var1 - 1; ++var3) {
+            for(var4 = 1; var4 < 127; ++var4) {
+               var5 = var4 + (var3 << 7);
+               SceneTilePaint.field1943[var5] = (class27.field365[var5 + 128] + class27.field365[var5 - 128] + class27.field365[var5 + 1] + class27.field365[var5 - 1]) / 4;
+            }
+         }
+
+         int[] var8 = class27.field365;
+         class27.field365 = SceneTilePaint.field1943;
+         SceneTilePaint.field1943 = var8;
+      }
+
+      if(var0 != null) {
+         var2 = 0;
+
+         for(var3 = 0; var3 < var0.height; ++var3) {
+            for(var4 = 0; var4 < var0.width; ++var4) {
+               if(var0.pixels[var2++] != 0) {
+                  var5 = var4 + var0.offsetX + 16;
+                  int var6 = var3 + var0.offsetY + 16;
+                  int var7 = var5 + (var6 << 7);
+                  class27.field365[var7] = 0;
+               }
+            }
+         }
+      }
+
    }
 }

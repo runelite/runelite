@@ -25,76 +25,46 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.Collection;
-import java.util.concurrent.ExecutionException;
-import javax.annotation.Nullable;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.SwingWorker;
-import javax.swing.border.EmptyBorder;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
 public class DevToolsPanel extends PluginPanel
 {
-	private JButton renderPlayersBtn = new JButton();
-	private JButton renderNpcsBtn = new JButton();
-	private JButton renderGroundItemsBtn = new JButton();
-	private JButton renderGroundObjectsBtn = new JButton();
-	private JButton renderGameObjectsBtn = new JButton();
-	private JButton renderWallsBtn = new JButton();
-	private JButton renderDecorBtn = new JButton();
-	private JButton renderInventoryBtn = new JButton();
-
-	private JLabel textLbl = new JLabel();
-	private JLabel textColorLbl = new JLabel();
-	private JLabel nameLbl = new JLabel();
-	private JLabel modelLbl = new JLabel();
-	private JLabel textureLbl = new JLabel();
-	private JLabel typeLbl = new JLabel();
-	private JLabel contentTypeLbl = new JLabel();
-
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
 	private final SettingsTracker settingsTracker;
 
+	private WidgetInspector widgetInspector;
+
 	@Inject
-	public DevToolsPanel(@Nullable Client client, DevToolsPlugin plugin)
+	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector)
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
+		this.widgetInspector = widgetInspector;
 
 		settingsTracker = new SettingsTracker(client);
-		final JPanel borderedWrap = new JPanel();
-		borderedWrap.setLayout(new BorderLayout(0, 3));
-		borderedWrap.add(createOptionsPanel(), BorderLayout.NORTH);
-		borderedWrap.add(createWidgetTreePanel(), BorderLayout.CENTER);
-		add(borderedWrap);
+		add(createOptionsPanel());
 	}
 
 	private JPanel createOptionsPanel()
 	{
-		JPanel container = new JPanel();
-		container.setLayout(new GridLayout(5, 2, 3, 3));
+		final JPanel container = new JPanel();
+		container.setLayout(new GridLayout(0, 2, 3, 3));
 
-		renderPlayersBtn = new JButton("Players");
+		final JButton renderPlayersBtn = new JButton("Players");
 		renderPlayersBtn.addActionListener(e ->
 		{
 			highlightButton(renderPlayersBtn);
@@ -102,7 +72,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderPlayersBtn);
 
-		renderNpcsBtn = new JButton("NPCs");
+		final JButton renderNpcsBtn = new JButton("NPCs");
 		renderNpcsBtn.addActionListener(e ->
 		{
 			highlightButton(renderNpcsBtn);
@@ -110,7 +80,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderNpcsBtn);
 
-		renderGroundItemsBtn = new JButton("Ground Items");
+		final JButton renderGroundItemsBtn = new JButton("Ground Items");
 		renderGroundItemsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundItemsBtn);
@@ -118,7 +88,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderGroundItemsBtn);
 
-		renderGroundObjectsBtn = new JButton("Ground Objects");
+		final JButton renderGroundObjectsBtn = new JButton("Ground Objects");
 		renderGroundObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundObjectsBtn);
@@ -126,7 +96,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderGroundObjectsBtn);
 
-		renderGameObjectsBtn = new JButton("Game Objects");
+		final JButton renderGameObjectsBtn = new JButton("Game Objects");
 		renderGameObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGameObjectsBtn);
@@ -134,7 +104,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderGameObjectsBtn);
 
-		renderWallsBtn = new JButton("Walls");
+		final JButton renderWallsBtn = new JButton("Walls");
 		renderWallsBtn.addActionListener(e ->
 		{
 			highlightButton(renderWallsBtn);
@@ -142,7 +112,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderWallsBtn);
 
-		renderDecorBtn = new JButton("Decorations");
+		final JButton renderDecorBtn = new JButton("Decorations");
 		renderDecorBtn.addActionListener(e ->
 		{
 			highlightButton(renderDecorBtn);
@@ -150,7 +120,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderDecorBtn);
 
-		renderInventoryBtn = new JButton("Inventory");
+		final JButton renderInventoryBtn = new JButton("Inventory");
 		renderInventoryBtn.addActionListener(e ->
 		{
 			highlightButton(renderInventoryBtn);
@@ -158,120 +128,110 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderInventoryBtn);
 
-		JButton settingsSnapshotBtn = new JButton("Get Settings");
+		final JButton renderProjectilesBtn = new JButton("Projectiles");
+		renderProjectilesBtn.addActionListener(e ->
+		{
+			highlightButton(renderProjectilesBtn);
+			plugin.toggleProjectiles();
+		});
+		container.add(renderProjectilesBtn);
+
+		final JPanel boundsDebugPanel = createBoundsDebugMultiButton();
+		container.add(boundsDebugPanel);
+
+		final JButton settingsSnapshotBtn = new JButton("Get Settings");
 		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
 		container.add(settingsSnapshotBtn);
 
-		JButton settingsClearBtn = new JButton("Clear Settings");
+		final JButton settingsClearBtn = new JButton("Clear Settings");
 		settingsClearBtn.addActionListener(settingsTracker::clear);
 		container.add(settingsClearBtn);
 
-		return container;
-	}
-
-	private JPanel createWidgetTreePanel()
-	{
-		JPanel container = new JPanel();
-		container.setLayout(new BorderLayout(0, 3));
-
-		JTree tree = new JTree(new DefaultMutableTreeNode());
-		tree.setRootVisible(false);
-		tree.setShowsRootHandles(true);
-		tree.getSelectionModel().addTreeSelectionListener(e ->
+		final JButton renderLocationBtn = new JButton("Location");
+		renderLocationBtn.addActionListener(e ->
 		{
-			Object selected = tree.getLastSelectedPathComponent();
-			if (selected instanceof WidgetTreeNode)
-			{
-				WidgetTreeNode node = (WidgetTreeNode) selected;
-				Widget widget = node.getWidget();
-				plugin.currentWidget = widget;
-				plugin.itemIndex = widget.getItemId();
-				setWidgetInfo(widget);
-				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
-			}
-			else if (selected instanceof WidgetItemNode)
-			{
-				WidgetItemNode node = (WidgetItemNode) selected;
-				plugin.itemIndex = node.getWidgetItem().getIndex();
-				log.debug("Set item index to {}", plugin.itemIndex);
-			}
+			highlightButton(renderLocationBtn);
+			plugin.toggleLocation();
 		});
+		container.add(renderLocationBtn);
 
-		JScrollPane scrollPane = new JScrollPane(tree);
-		container.add(scrollPane, BorderLayout.CENTER);
-
-		JButton refreshWidgetsBtn = new JButton("Refresh Widgets");
-		refreshWidgetsBtn.addActionListener(e ->
+		final JButton widgetInspectorBtn = new JButton("Inspector");
+		widgetInspectorBtn.addActionListener(e ->
 		{
-			new SwingWorker<DefaultMutableTreeNode, Void>()
-			{
-				@Override
-				protected DefaultMutableTreeNode doInBackground() throws Exception
-				{
-					return refreshWidgets();
-				}
-
-				@Override
-				protected void done()
-				{
-					try
-					{
-						tree.setModel(new DefaultTreeModel(get()));
-					}
-					catch (InterruptedException | ExecutionException ex)
-					{
-						throw new RuntimeException(ex);
-					}
-				}
-			}.execute();
+			widgetInspector.setVisible(true);
+			widgetInspector.toFront();
+			widgetInspector.repaint();
 		});
-
-		JPanel btnContainer = new JPanel();
-		btnContainer.setLayout(new BorderLayout());
-		btnContainer.add(refreshWidgetsBtn);
-		container.add(btnContainer, BorderLayout.NORTH);
-
-		JPanel infoContainer = new JPanel();
-		infoContainer.setLayout(new GridLayout(0, 1));
-
-		textLbl = new JLabel("Text: ");
-		textColorLbl = new JLabel("Text Color: ");
-		nameLbl = new JLabel("Name: ");
-		modelLbl = new JLabel("Model ID: ");
-		textureLbl = new JLabel("Texture ID: ");
-		typeLbl = new JLabel("Type: ");
-		contentTypeLbl = new JLabel("Content Type: ");
-
-		infoContainer.add(textLbl);
-		infoContainer.add(textColorLbl);
-		infoContainer.add(nameLbl);
-		infoContainer.add(modelLbl);
-		infoContainer.add(textureLbl);
-		infoContainer.add(typeLbl);
-		infoContainer.add(contentTypeLbl);
-
-		JScrollPane infoScrollPane = new JScrollPane(infoContainer);
-		infoScrollPane.setBorder(new EmptyBorder(6, 6, 6, 6));
-		container.add(infoScrollPane, BorderLayout.SOUTH);
+		container.add(widgetInspectorBtn);
 
 		return container;
 	}
 
-	private void setWidgetInfo(Widget widget)
+	private JPanel createBoundsDebugMultiButton()
 	{
-		if (widget == null)
+		ImageIcon bBox2DIcon;
+		ImageIcon bBox3DIcon;
+		ImageIcon clickBoxIcon;
+		ImageIcon bBox3DMousoverIcon;
+
+		try
 		{
-			return;
+			synchronized (ImageIO.class)
+			{
+				bBox2DIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("2D_bounding_box.png")));
+				bBox3DIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("3D_bounding_box.png")));
+				clickBoxIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("2D_clickbox_geometry.png")));
+				bBox3DMousoverIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("mouseover_3D_bounding_box.png")));
+			}
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to load bounding box images", ex);
+			return new JPanel();
 		}
 
-		textLbl.setText("Text: " + widget.getText().trim());
-		textColorLbl.setText("Text Color: " + widget.getTextColor());
-		nameLbl.setText("Name: " + widget.getName().trim());
-		modelLbl.setText("Model ID: " + widget.getModelId());
-		textureLbl.setText("Sprite ID: " + widget.getSpriteId());
-		typeLbl.setText("Type: " + widget.getType()
-			+ " Parent " + (widget.getParentId() == -1 ? -1 : TO_GROUP(widget.getParentId()) + "." + TO_CHILD(widget.getParentId())));
-		contentTypeLbl.setText("Content Type: " + widget.getContentType() + " Hidden " + widget.isHidden());
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(1, 4));
+		JButton bBox2DButton = new JButton(bBox2DIcon);
+		bBox2DButton.addActionListener(e ->
+		{
+			client.setDrawBoundingBoxes2D(!client.getDrawBoundingBoxes2D());
+			highlightButton(bBox2DButton);
+		});
+		buttonPanel.add(bBox2DButton);
+
+		JButton bBox3DButton = new JButton(bBox3DIcon);
+		bBox3DButton.addActionListener(e ->
+		{
+			client.setDrawBoundingBoxes3D(!client.getDrawBoundingBoxes3D());
+			highlightButton(bBox3DButton);
+		});
+		buttonPanel.add(bBox3DButton);
+
+		JButton clickBoxButton = new JButton(clickBoxIcon);
+		clickBoxButton.addActionListener(e ->
+		{
+			client.setdrawObjectGeometry2D(!client.getdrawObjectGeometry2D());
+			highlightButton(clickBoxButton);
+		});
+		buttonPanel.add(clickBoxButton);
+
+		JButton mouseoverModeButton = new JButton(client.getBoundingBoxAlwaysOnMode() ? bBox3DIcon : bBox3DMousoverIcon);
+		mouseoverModeButton.addActionListener(e ->
+		{
+			client.setBoundingBoxAlwaysOnMode(!client.getBoundingBoxAlwaysOnMode());
+			if (client.getBoundingBoxAlwaysOnMode())
+			{
+				mouseoverModeButton.setIcon(bBox3DIcon);
+			}
+			else
+			{
+				mouseoverModeButton.setIcon(bBox3DMousoverIcon);
+			}
+		});
+		buttonPanel.add(mouseoverModeButton);
+
+		return buttonPanel;
 	}
 
 	private void highlightButton(JButton button)
@@ -285,90 +245,4 @@ public class DevToolsPanel extends PluginPanel
 			button.setBackground(Color.GREEN);
 		}
 	}
-
-	private DefaultMutableTreeNode refreshWidgets()
-	{
-		Widget[] rootWidgets = client.getWidgetRoots();
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-
-		plugin.currentWidget = null;
-		plugin.itemIndex = -1;
-
-		for (Widget widget : rootWidgets)
-		{
-			DefaultMutableTreeNode childNode = addWidget("R", widget);
-			if (childNode != null)
-			{
-				root.add(childNode);
-			}
-		}
-
-		return root;
-	}
-
-	private DefaultMutableTreeNode addWidget(String type, Widget widget)
-	{
-		if (widget == null || widget.isHidden())
-		{
-			return null;
-		}
-
-		DefaultMutableTreeNode node = new WidgetTreeNode(type, widget);
-
-		Widget[] childComponents = widget.getDynamicChildren();
-		if (childComponents != null)
-		{
-			for (Widget component : childComponents)
-			{
-				DefaultMutableTreeNode childNode = addWidget("D", component);
-				if (childNode != null)
-				{
-					node.add(childNode);
-				}
-			}
-		}
-
-		childComponents = widget.getStaticChildren();
-		if (childComponents != null)
-		{
-			for (Widget component : childComponents)
-			{
-				DefaultMutableTreeNode childNode = addWidget("S", component);
-				if (childNode != null)
-				{
-					node.add(childNode);
-				}
-			}
-		}
-
-		childComponents = widget.getNestedChildren();
-		if (childComponents != null)
-		{
-			for (Widget component : childComponents)
-			{
-				DefaultMutableTreeNode childNode = addWidget("N", component);
-				if (childNode != null)
-				{
-					node.add(childNode);
-				}
-			}
-		}
-
-		Collection<WidgetItem> items = widget.getWidgetItems();
-		if (items != null)
-		{
-			for (WidgetItem item : items)
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				node.add(new WidgetItemNode(item));
-			}
-		}
-
-		return node;
-	}
-
 }

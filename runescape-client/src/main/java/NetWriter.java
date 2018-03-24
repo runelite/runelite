@@ -5,199 +5,206 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cx")
+@ObfuscatedName("cn")
 @Implements("NetWriter")
 public class NetWriter {
-   @ObfuscatedName("lj")
+   @ObfuscatedName("ry")
    @ObfuscatedSignature(
-      signature = "Lcc;"
+      signature = "Ljo;"
    )
-   @Export("chatMessages")
-   static Varcs chatMessages;
-   @ObfuscatedName("a")
+   public static class265 field1467;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfx;"
+      signature = "Lfy;"
    )
    @Export("rssocket")
-   class159 rssocket;
-   @ObfuscatedName("w")
+   class169 rssocket;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lhr;"
    )
    @Export("packetBufferNodes")
    CombatInfoList packetBufferNodes;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 999396265
+      intValue = -940639699
    )
-   int field1447;
-   @ObfuscatedName("k")
+   int field1466;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgb;"
    )
    @Export("buffer")
    Buffer buffer;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgv;"
    )
-   ISAACCipher field1449;
-   @ObfuscatedName("z")
+   public ISAACCipher field1456;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgy;"
+      signature = "Lgz;"
    )
    @Export("packetBuffer")
    PacketBuffer packetBuffer;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lfq;"
+      signature = "Lfx;"
    )
    @Export("serverPacket")
    ServerPacket serverPacket;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 76115971
+      intValue = -128388001
    )
    @Export("packetLength")
    int packetLength;
+   @ObfuscatedName("p")
+   boolean field1453;
    @ObfuscatedName("g")
-   boolean field1446;
-   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 161796479
+      intValue = 339242091
    )
-   int field1453;
-   @ObfuscatedName("x")
+   int field1464;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1800346697
+      intValue = 1776343601
    )
-   int field1455;
+   int field1462;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lfx;"
+   )
+   ServerPacket field1463;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lfq;"
-   )
-   ServerPacket field1456;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lfq;"
+      signature = "Lfx;"
    )
    ServerPacket field1457;
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lfq;"
+      signature = "Lfx;"
    )
-   ServerPacket field1458;
+   ServerPacket field1465;
 
    NetWriter() {
       this.packetBufferNodes = new CombatInfoList();
-      this.field1447 = 0;
+      this.field1466 = 0;
       this.buffer = new Buffer(5000);
       this.packetBuffer = new PacketBuffer(40000);
       this.serverPacket = null;
       this.packetLength = 0;
-      this.field1446 = true;
-      this.field1453 = 0;
-      this.field1455 = 0;
+      this.field1453 = true;
+      this.field1464 = 0;
+      this.field1462 = 0;
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-50"
-   )
-   final void method1866() {
-      this.packetBufferNodes.method3703();
-      this.field1447 = 0;
-   }
-
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2055952884"
+      garbageValue = "-919473424"
    )
-   final void method1861() throws IOException {
-      if(this.rssocket != null && this.field1447 > 0) {
+   final void method2067() {
+      this.packetBufferNodes.method4008();
+      this.field1466 = 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1518589991"
+   )
+   final void method2077() throws IOException {
+      if(this.rssocket != null && this.field1466 > 0) {
          this.buffer.offset = 0;
 
          while(true) {
             PacketNode var1 = (PacketNode)this.packetBufferNodes.last();
-            if(var1 == null || var1.field2434 > this.buffer.payload.length - this.buffer.offset) {
-               this.rssocket.vmethod3082(this.buffer.payload, 0, this.buffer.offset);
-               this.field1455 = 0;
+            if(var1 == null || var1.field2470 > this.buffer.payload.length - this.buffer.offset) {
+               this.rssocket.vmethod3340(this.buffer.payload, 0, this.buffer.offset);
+               this.field1462 = 0;
                break;
             }
 
-            this.buffer.putBytes(var1.packetBuffer.payload, 0, var1.field2434);
-            this.field1447 -= var1.field2434;
+            this.buffer.putBytes(var1.packetBuffer.payload, 0, var1.field2470);
+            this.field1466 -= var1.field2470;
             var1.unlink();
-            var1.packetBuffer.method3339();
-            var1.method3173();
+            var1.packetBuffer.method3520();
+            var1.method3437();
          }
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfg;I)V",
-      garbageValue = "1473607656"
+      signature = "(Lgd;I)V",
+      garbageValue = "1565767417"
    )
-   final void method1862(PacketNode var1) {
+   public final void method2073(PacketNode var1) {
       this.packetBufferNodes.addFirst(var1);
-      var1.field2434 = var1.packetBuffer.offset;
+      var1.field2470 = var1.packetBuffer.offset;
       var1.packetBuffer.offset = 0;
-      this.field1447 += var1.field2434;
+      this.field1466 += var1.field2470;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfx;I)V",
-      garbageValue = "-1706923990"
+      signature = "(Lfy;B)V",
+      garbageValue = "95"
    )
    @Export("setSocket")
-   void setSocket(class159 var1) {
+   void setSocket(class169 var1) {
       this.rssocket = var1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2108953885"
+      garbageValue = "628252784"
    )
    @Export("close")
    void close() {
       if(this.rssocket != null) {
-         this.rssocket.vmethod3081();
+         this.rssocket.vmethod3339();
          this.rssocket = null;
       }
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1646680552"
+      signature = "(B)V",
+      garbageValue = "-2"
    )
-   void method1873() {
+   void method2082() {
       this.rssocket = null;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Lfx;",
-      garbageValue = "1992473480"
+      signature = "(I)Lfy;",
+      garbageValue = "-1809034759"
    )
    @Export("getSocket")
-   class159 getSocket() {
+   class169 getSocket() {
       return this.rssocket;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(Lef;IIIII)V",
-      garbageValue = "-6183940"
+      signature = "(Ldo;I)V",
+      garbageValue = "-1882317415"
    )
-   public static final void method1879(Model var0, int var1, int var2, int var3, int var4) {
-      class7.boundingBoxes.addFirst(new BoundingBox3D(var0, var1, var2, var3, var4));
+   static final void method2084(TaskDataNode var0) {
+      var0.field1628 = false;
+      if(var0.data != null) {
+         var0.data.int1 = 0;
+      }
+
+      for(TaskDataNode var1 = var0.vmethod4354(); var1 != null; var1 = var0.vmethod4356()) {
+         method2084(var1);
+      }
+
    }
 }

@@ -29,13 +29,20 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
 import net.runelite.http.api.item.ItemClient;
@@ -43,31 +50,44 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @Singleton
+@Slf4j
 public class ItemManager
 {
+	@Value
+	private static class ImageKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final boolean stackable;
+	}
+
 	/**
 	 * not yet looked up
 	 */
-
 	static final ItemPrice EMPTY = new ItemPrice();
+
 	/**
 	 * has no price
 	 */
 	static final ItemPrice NONE = new ItemPrice();
 
 	private final Client client;
+	private final ScheduledExecutorService scheduledExecutorService;
+
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
-	private final LoadingCache<Integer, ItemPrice> itemPrices;
-	private final LoadingCache<Integer, BufferedImage> itemImages;
+	private final LoadingCache<Integer, ItemPrice> itemPriceCache;
+	private final LoadingCache<ImageKey, BufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 
 	@Inject
 	public ItemManager(@Nullable Client client, ScheduledExecutorService executor)
 	{
 		this.client = client;
-		itemPrices = CacheBuilder.newBuilder()
-			.maximumSize(512L)
+		this.scheduledExecutorService = executor;
+
+		itemPriceCache = CacheBuilder.newBuilder()
+			.maximumSize(1024L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
 			.build(new ItemPriceLoader(executor, itemClient));
 
@@ -84,14 +104,14 @@ public class ItemManager
 			});
 
 		itemImages = CacheBuilder.newBuilder()
-			.maximumSize(200)
+			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<Integer, BufferedImage>()
+			.build(new CacheLoader<ImageKey, BufferedImage>()
 			{
 				@Override
-				public BufferedImage load(Integer itemId) throws Exception
+				public BufferedImage load(ImageKey key) throws Exception
 				{
-					return loadImage(itemId);
+					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
 			});
 
@@ -116,14 +136,72 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPriceAsync(int itemId)
 	{
-		ItemPrice itemPrice = itemPrices.getIfPresent(itemId);
+		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
 			return itemPrice == NONE ? null : itemPrice;
 		}
 
-		itemPrices.refresh(itemId);
+		itemPriceCache.refresh(itemId);
 		return null;
+	}
+
+	/**
+	 * Look up bulk item prices asynchronously
+	 *
+	 * @param itemIds array of item Ids
+	 * @return a future called with the looked up prices
+	 */
+	public CompletableFuture<ItemPrice[]> getItemPriceBatch(List<Integer> itemIds)
+	{
+		final List<Integer> lookup = new ArrayList<>();
+		final List<ItemPrice> existing = new ArrayList<>();
+		for (int itemId : itemIds)
+		{
+			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
+			if (itemPrice != null)
+			{
+				existing.add(itemPrice);
+			}
+			else
+			{
+				lookup.add(itemId);
+			}
+		}
+		// All cached?
+		if (lookup.isEmpty())
+		{
+			return CompletableFuture.completedFuture(existing.toArray(new ItemPrice[existing.size()]));
+		}
+
+		final CompletableFuture<ItemPrice[]> future = new CompletableFuture<>();
+		scheduledExecutorService.execute(() ->
+		{
+			try
+			{
+				// Do a query for the items not in the cache
+				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
+				if (itemPrices != null)
+				{
+					for (int itemId : lookup)
+					{
+						itemPriceCache.put(itemId, NONE);
+					}
+					for (ItemPrice itemPrice : itemPrices)
+					{
+						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
+					}
+					// Append these to the already cached items
+					Arrays.stream(itemPrices).forEach(existing::add);
+				}
+				future.complete(existing.toArray(new ItemPrice[existing.size()]));
+			}
+			catch (Exception ex)
+			{
+				future.completeExceptionally(ex);
+			}
+		});
+		return future;
 	}
 
 	/**
@@ -135,14 +213,20 @@ public class ItemManager
 	 */
 	public ItemPrice getItemPrice(int itemId) throws IOException
 	{
-		ItemPrice itemPrice = itemPrices.getIfPresent(itemId);
+		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
 		{
 			return itemPrice == NONE ? null : itemPrice;
 		}
 
 		itemPrice = itemClient.lookupItemPrice(itemId);
-		itemPrices.put(itemId, itemPrice);
+		if (itemPrice == null)
+		{
+			itemPriceCache.put(itemId, NONE);
+			return null;
+		}
+
+		itemPriceCache.put(itemId, itemPrice);
 		return itemPrice;
 	}
 
@@ -171,49 +255,40 @@ public class ItemManager
 	}
 
 	/**
-	 * Convert a quantity to stack size
-	 *
-	 * @param quantity
-	 * @return
-	 */
-	public static String quantityToStackSize(int quantity)
-	{
-		if (quantity >= 10_000_000)
-		{
-			return quantity / 1_000_000 + "M";
-		}
-
-		if (quantity >= 100_000)
-		{
-			return quantity / 1_000 + "K";
-		}
-
-		return "" + quantity;
-	}
-
-	/**
 	 * Loads item sprite from game, makes transparent, and generates image
 	 *
 	 * @param itemId
 	 * @return
 	 */
-	private BufferedImage loadImage(int itemId)
+	private BufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, 1, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
+		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
 		return sprite.toBufferedImage();
 	}
 
 	/**
-	 * Get item sprite image as BufferedImage
+	 * Get item sprite image
 	 *
 	 * @param itemId
 	 * @return
 	 */
 	public BufferedImage getImage(int itemId)
 	{
+		return getImage(itemId, 1, false);
+	}
+
+	/**
+	 * Get item sprite image as BufferedImage
+	 *
+	 * @param itemId
+	 * @param quantity
+	 * @return
+	 */
+	public BufferedImage getImage(int itemId, int quantity, boolean stackable)
+	{
 		try
 		{
-			return itemImages.get(itemId);
+			return itemImages.get(new ImageKey(itemId, quantity, stackable));
 		}
 		catch (ExecutionException ex)
 		{

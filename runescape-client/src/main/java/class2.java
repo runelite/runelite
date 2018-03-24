@@ -3,134 +3,85 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("i")
 final class class2 implements class0 {
-   @ObfuscatedName("qj")
-   @ObfuscatedSignature(
-      signature = "Lcf;"
-   )
-   @Export("preferences")
-   static Preferences preferences;
-   @ObfuscatedName("j")
+   @ObfuscatedName("pm")
    @ObfuscatedGetter(
-      intValue = -1053906661
+      intValue = -1025540231
    )
    static int field15;
-   @ObfuscatedName("v")
-   static int[] field11;
-   @ObfuscatedName("ep")
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ljc;"
+   )
+   @Export("seq_ref")
+   public static IndexDataBase seq_ref;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1580798333
+      intValue = -355445119
    )
-   static int field13;
-
-   @ObfuscatedName("a")
+   public static int field13;
+   @ObfuscatedName("mq")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1926875836"
+      signature = "[Lig;"
    )
-   static int method4(int var0, int var1) {
-      Overlay var2 = Varcs.getOverlayDefinition(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else if(var2.texture >= 0) {
-         int var3 = FrameMap.method2686(Graphics3D.textureLoader.getAverageTextureRGB(var2.texture), 96);
-         return Graphics3D.colorPalette[var3] | -16777216;
-      } else if(var2.color == 16711935) {
-         return var1;
-      } else {
-         int var4 = var2.hue;
-         int var5 = var2.saturation;
-         int var6 = var2.lightness;
-         if(var6 > 179) {
-            var5 /= 2;
-         }
+   static Widget[] field14;
 
-         if(var6 > 192) {
-            var5 /= 2;
-         }
-
-         if(var6 > 217) {
-            var5 /= 2;
-         }
-
-         if(var6 > 243) {
-            var5 /= 2;
-         }
-
-         int var7 = (var5 / 32 << 7) + var6 / 2 + (var4 / 4 << 10);
-         int var8 = FrameMap.method2686(var7, 96);
-         return Graphics3D.colorPalette[var8] | -16777216;
-      }
-   }
-
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lib;IIIZI)V",
-      garbageValue = "-2029809003"
+      signature = "(Lgb;Lhq;I)Lhq;",
+      garbageValue = "2056780711"
    )
-   public static void method3(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
-      class214.field2620 = 1;
-      class214.field2623 = var0;
-      class61.field692 = var1;
-      class282.field3754 = var2;
-      class214.field2625 = var3;
-      IndexFile.field2181 = var4;
-      Timer.field2159 = 10000;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(ILck;ZI)I",
-      garbageValue = "-1051441397"
-   )
-   static int method5(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
-      } else {
-         var3 = var2?class139.field2008:AttackOption.field1306;
+   @Export("readStringIntParameters")
+   static final IterableHashTable readStringIntParameters(Buffer var0, IterableHashTable var1) {
+      int var2 = var0.readUnsignedByte();
+      int var3;
+      if(var1 == null) {
+         int var4 = var2 - 1;
+         var4 |= var4 >>> 1;
+         var4 |= var4 >>> 2;
+         var4 |= var4 >>> 4;
+         var4 |= var4 >>> 8;
+         var4 |= var4 >>> 16;
+         var3 = var4 + 1;
+         var1 = new IterableHashTable(var3);
       }
 
-      int var4;
-      if(var0 == 1300) {
-         var4 = class82.intStack[--class82.intStackSize] - 1;
-         if(var4 >= 0 && var4 <= 9) {
-            var3.setAction(var4, class82.scriptStringStack[--class35.scriptStringStackSize]);
-            return 1;
+      for(var3 = 0; var3 < var2; ++var3) {
+         boolean var7 = var0.readUnsignedByte() == 1;
+         int var5 = var0.read24BitInt();
+         Object var6;
+         if(var7) {
+            var6 = new ObjectNode(var0.readString());
          } else {
-            --class35.scriptStringStackSize;
-            return 1;
+            var6 = new IntegerNode(var0.readInt());
          }
-      } else if(var0 == 1301) {
-         class82.intStackSize -= 2;
-         var4 = class82.intStack[class82.intStackSize];
-         int var5 = class82.intStack[class82.intStackSize + 1];
-         var3.dragParent = TextureProvider.getWidgetChild(var4, var5);
-         return 1;
-      } else if(var0 == 1302) {
-         var3.field2889 = class82.intStack[--class82.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1303) {
-         var3.field2835 = class82.intStack[--class82.intStackSize];
-         return 1;
-      } else if(var0 == 1304) {
-         var3.field2884 = class82.intStack[--class82.intStackSize];
-         return 1;
-      } else if(var0 == 1305) {
-         var3.name = class82.scriptStringStack[--class35.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1306) {
-         var3.selectedAction = class82.scriptStringStack[--class35.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1307) {
-         var3.actions = null;
-         return 1;
-      } else {
-         return 2;
+
+         var1.put((Node)var6, (long)var5);
       }
+
+      return var1;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-269067806"
+   )
+   static final void method4(String var0) {
+      MapIconReference.method757("Please remove " + var0 + " from your ignore list first");
+   }
+
+   @ObfuscatedName("jz")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1408401932"
+   )
+   static final void method3() {
+      for(int var0 = 0; var0 < class93.playerIndexesCount; ++var0) {
+         Player var1 = Client.cachedPlayers[class93.playerIndices[var0]];
+         var1.method1206();
+      }
+
    }
 }
