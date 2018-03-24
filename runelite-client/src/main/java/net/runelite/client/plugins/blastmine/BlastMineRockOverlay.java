@@ -84,11 +84,8 @@ public class BlastMineRockOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.enabled())
-		{
-			plugin.getRocks().removeIf(rock -> (rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) || (rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
-			drawRocks(graphics);
-		}
+		plugin.getRocks().removeIf(rock -> (rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) || (rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
+		drawRocks(graphics);
 		return null;
 	}
 

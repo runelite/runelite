@@ -65,11 +65,6 @@ class BlastMineOreCountOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
 
 		imagePanelComponent.getImages().clear();

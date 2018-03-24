@@ -39,17 +39,6 @@ public interface BlastMinePluginConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the Blast Mine plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
 		keyName = "showOreOverlay",
 		name = "Show ore overlay",
 		description = "Configures whether or not the ore count overlay is displayed"
@@ -60,7 +49,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 1,
 		keyName = "showRockIconOverlay",
 		name = "Show icons overlay",
 		description = "Configures whether or not the icon overlay is displayed"
@@ -71,7 +60,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 2,
 		keyName = "showTimerOverlay",
 		name = "Show timer overlay",
 		description = "Configures whether or not the timer overlay is displayed"
@@ -82,7 +71,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 3,
 		keyName = "showWarningOverlay",
 		name = "Show explosion warning",
 		description = "Configures whether or not the explosion warning overlay is displayed"
@@ -93,7 +82,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 4,
 		keyName = "hexTimerColor",
 		name = "Timer color",
 		description = "Color of timer overlay"
@@ -104,7 +93,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 5,
 		keyName = "hexWarningColor",
 		name = "Warning color",
 		description = "Color of warning overlay"

@@ -52,9 +52,6 @@ import java.util.Set;
 public class BlastMinePlugin extends Plugin
 {
 	@Inject
-	private BlastMinePluginConfig config;
-
-	@Inject
 	private BlastMineRockOverlay blastMineRockOverlay;
 
 	@Inject
@@ -84,11 +81,6 @@ public class BlastMinePlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		GameObject gameObject = event.getGameObject();
 
 		BlastMineRock newRock = new BlastMineRock(gameObject);
