@@ -27,6 +27,7 @@ package net.runelite.client.plugins.instancemap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,6 +42,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.BackgroundComponent;
 
 @Singleton
 class InstanceMapOverlay extends Overlay
@@ -76,6 +78,7 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private volatile BufferedImage mapImage;
 	private volatile boolean showMap = false;
+	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 
 	@Inject
 	InstanceMapOverlay(Client client)
@@ -84,6 +87,7 @@ class InstanceMapOverlay extends Overlay
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		backgroundComponent.setFill(false);
 	}
 
 	public boolean isMapShown()
@@ -161,6 +165,8 @@ class InstanceMapOverlay extends Overlay
 		}
 
 		graphics.drawImage(image, 0, 0, null);
+		backgroundComponent.setRectangle(new Rectangle(0, 0, image.getWidth(), image.getHeight()));
+		backgroundComponent.render(graphics);
 
 		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
