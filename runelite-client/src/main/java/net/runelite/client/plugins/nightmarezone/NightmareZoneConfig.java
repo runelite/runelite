@@ -61,7 +61,7 @@ public interface NightmareZoneConfig extends Config
 	@ConfigItem(
 		keyName = "recurrentdamagenotification",
 		name = "Recurrent damage notification",
-		description = "Toggles notifications when a recurrent damge power-up appears",
+		description = "Toggles notifications when a recurrent damage power-up appears",
 		position = 3
 	)
 	default boolean recurrentDamageNotification()

@@ -110,7 +110,7 @@ public class NightmareZonePlugin extends Plugin
 			return;
 		}
 
-		String msg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+		String msg = Text.removeTags(event.getMessage()); //remove color
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
 			if (config.overloadNotification())
@@ -118,30 +118,30 @@ public class NightmareZonePlugin extends Plugin
 				notifier.notify("Your overload has worn off");
 			}
 		}
-		else if (msg.startsWith("A power-up has spawned:"))
+		else if (msg.contains("A power-up has spawned:"))
 		{
-			if (msg.endsWith("Power surge"))
+			if (msg.contains("Power surge"))
 			{
 				if (config.powerSurgeNotification())
 				{
 					notifier.notify(msg);
 				}
 			}
-			else if (msg.endsWith("Recurrent damage"))
+			else if (msg.contains("Recurrent damage"))
 			{
 				if (config.recurrentDamageNotification())
 				{
 					notifier.notify(msg);
 				}
 			}
-			else if (msg.endsWith("Ultimate force"))
+			else if (msg.contains("Ultimate force"))
 			{
 				if (config.ultimateForceNotification())
 				{
 					notifier.notify(msg);
 				}
 			}
-			else if (msg.endsWith("Zapper"))
+			else if (msg.contains("Zapper"))
 			{
 				if (config.zapperNotification())
 				{
