@@ -31,7 +31,7 @@ public class SkillStat extends Stat
 {
 	private final Skill skill;
 
-	public SkillStat(Skill skill)
+	SkillStat(Skill skill)
 	{
 		super(skill.getName());
 		this.skill = skill;
