@@ -131,7 +131,6 @@ public class GrandExchangePlugin extends Plugin
 
 										if (!button.isSelected())
 										{
-											button.setSelected(true);
 											button.getOnSelect().run();
 										}
 
