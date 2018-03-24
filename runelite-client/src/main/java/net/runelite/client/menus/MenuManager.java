@@ -293,8 +293,7 @@ public class MenuManager
 			}
 		}
 
-		String target = event.getMenuTarget();
-		String username = target.split("[<>]")[2]; // <col=ffffff>username<col=40ff00>  (level-42)
+		String username = event.getName();
 
 		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
 		playerMenuOptionClicked.setMenuOption(event.getMenuOption());
