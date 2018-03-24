@@ -400,6 +400,11 @@ public class MixinInjector
 				{
 					name = "rl$$" + (isInit ? "init" : "clinit");
 				}
+				String numberlessName = name;
+				for (int i = 1; cf.findMethod(name, method.getDescriptor()) != null; i++)
+				{
+					name = numberlessName + i;
+				}
 
 				Method copy = new Method(cf, name, method.getDescriptor());
 				moveCode(copy, method.getCode());
