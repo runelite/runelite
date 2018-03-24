@@ -41,7 +41,7 @@ public class BoostIndicator extends InfoBox
 
 	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config)
 	{
-		super(image);
+		super(image, Type.BOOST);
 		this.config = config;
 		this.client = client;
 		this.skill = skill;

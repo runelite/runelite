@@ -26,16 +26,34 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import lombok.Getter;
 
 public abstract class InfoBox
 {
+	public enum Type
+	{
+		DEFAULT,
+		MISCELLANEOUS,
+		BOOST,
+	}
+
 	private final BufferedImage image;
 
 	private String tooltip;
 
+	@Getter
+	private Type type;
+
 	public InfoBox(BufferedImage image)
 	{
 		this.image = image;
+		this.type = Type.DEFAULT;
+	}
+
+	public InfoBox(BufferedImage image, Type type)
+	{
+		this.image = image;
+		this.type = type;
 	}
 
 	public BufferedImage getImage()

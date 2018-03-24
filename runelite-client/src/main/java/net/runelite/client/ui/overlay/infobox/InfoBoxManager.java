@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay.infobox;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -44,6 +45,7 @@ public class InfoBoxManager
 		Preconditions.checkNotNull(infoBox);
 		log.debug("Adding InfoBox {}", infoBox);
 		infoBoxes.add(infoBox);
+		infoBoxes.sort(Comparator.comparing(InfoBox::getType));
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
