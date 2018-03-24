@@ -25,7 +25,10 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.BufferProvider;
+import net.runelite.mapping.Import;
 
 public interface RSBufferProvider extends BufferProvider
 {
+	@Import("setRaster")
+	void setRaster();
 }
