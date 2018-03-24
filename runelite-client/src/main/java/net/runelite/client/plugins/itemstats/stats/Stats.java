@@ -24,53 +24,32 @@
  */
 package net.runelite.client.plugins.itemstats.stats;
 
-import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
 public class Stats
 {
-	public static final Stat ATTACK, DEFENCE, STRENGTH, HITPOINTS, RANGED, PRAYER, MAGIC, COOKING, WOODCUTTING, FLETCHING;
-	public static final Stat FISHING, FIREMAKING, CRAFTING, SMITHING, MINING, HERBLORE, AGILITY, THIEVING, SLAYER, FARMING;
-	public static final Stat RUNECRAFT, HUNTER, CONSTRUCTION, RUN_ENERGY;
-
-	static
-	{
-		ATTACK = new SkillStat(Skill.ATTACK);
-		DEFENCE = new SkillStat(Skill.DEFENCE);
-		STRENGTH = new SkillStat(Skill.STRENGTH);
-		HITPOINTS = new SkillStat(Skill.HITPOINTS);
-		RANGED = new SkillStat(Skill.RANGED);
-		PRAYER = new SkillStat(Skill.PRAYER);
-		MAGIC = new SkillStat(Skill.MAGIC);
-		COOKING = new SkillStat(Skill.COOKING);
-		WOODCUTTING = new SkillStat(Skill.WOODCUTTING);
-		FLETCHING = new SkillStat(Skill.FLETCHING);
-		FISHING = new SkillStat(Skill.FISHING);
-		FIREMAKING = new SkillStat(Skill.FIREMAKING);
-		CRAFTING = new SkillStat(Skill.CRAFTING);
-		SMITHING = new SkillStat(Skill.SMITHING);
-		MINING = new SkillStat(Skill.MINING);
-		HERBLORE = new SkillStat(Skill.HERBLORE);
-		AGILITY = new SkillStat(Skill.AGILITY);
-		THIEVING = new SkillStat(Skill.THIEVING);
-		SLAYER = new SkillStat(Skill.SLAYER);
-		FARMING = new SkillStat(Skill.FARMING);
-		RUNECRAFT = new SkillStat(Skill.RUNECRAFT);
-		HUNTER = new SkillStat(Skill.HUNTER);
-		CONSTRUCTION = new SkillStat(Skill.CONSTRUCTION);
-		RUN_ENERGY = new Stat("Run Energy")
-		{
-			@Override
-			public int getValue(Client client)
-			{
-				return client.getEnergy();
-			}
-
-			@Override
-			public int getMaximum(Client client)
-			{
-				return 100;
-			}
-		};
-	}
+	public static final Stat ATTACK = new SkillStat(Skill.ATTACK);
+	public static final Stat DEFENCE = new SkillStat(Skill.DEFENCE);
+	public static final Stat STRENGTH = new SkillStat(Skill.STRENGTH);
+	public static final Stat HITPOINTS = new SkillStat(Skill.HITPOINTS);
+	public static final Stat RANGED = new SkillStat(Skill.RANGED);
+	public static final Stat PRAYER = new SkillStat(Skill.PRAYER);
+	public static final Stat MAGIC = new SkillStat(Skill.MAGIC);
+	public static final Stat COOKING = new SkillStat(Skill.COOKING);
+	public static final Stat WOODCUTTING = new SkillStat(Skill.WOODCUTTING);
+	public static final Stat FLETCHING = new SkillStat(Skill.FLETCHING);
+	public static final Stat FISHING = new SkillStat(Skill.FISHING);
+	public static final Stat FIREMAKING = new SkillStat(Skill.FIREMAKING);
+	public static final Stat CRAFTING = new SkillStat(Skill.CRAFTING);
+	public static final Stat SMITHING = new SkillStat(Skill.SMITHING);
+	public static final Stat MINING = new SkillStat(Skill.MINING);
+	public static final Stat HERBLORE = new SkillStat(Skill.HERBLORE);
+	public static final Stat AGILITY = new SkillStat(Skill.AGILITY);
+	public static final Stat THIEVING = new SkillStat(Skill.THIEVING);
+	public static final Stat SLAYER = new SkillStat(Skill.SLAYER);
+	public static final Stat FARMING = new SkillStat(Skill.FARMING);
+	public static final Stat RUNECRAFT = new SkillStat(Skill.RUNECRAFT);
+	public static final Stat HUNTER = new SkillStat(Skill.HUNTER);
+	public static final Stat CONSTRUCTION = new SkillStat(Skill.CONSTRUCTION);
+	public static final Stat RUN_ENERGY = new EnergyStat();
 }
