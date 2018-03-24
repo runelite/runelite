@@ -78,8 +78,6 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 			// Check if left click
 			if (e.getButton() == MouseEvent.BUTTON1)
 			{
-				e.consume();
-
 				Point mousePos = client.getMouseCanvasPosition();
 
 				for (Map.Entry<Rectangle, String> entry : plugin.getHiddenBoxes().entrySet())
@@ -87,6 +85,7 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 					if (entry.getKey().contains(mousePos.getX(), mousePos.getY()))
 					{
 						plugin.updateList(entry.getValue(), true);
+						e.consume();
 						return e;
 					}
 				}
@@ -96,6 +95,7 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 					if (entry.getKey().contains(mousePos.getX(), mousePos.getY()))
 					{
 						plugin.updateList(entry.getValue(), false);
+						e.consume();
 						return e;
 					}
 				}
