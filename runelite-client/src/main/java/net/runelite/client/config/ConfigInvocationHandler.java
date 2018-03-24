@@ -112,7 +112,7 @@ class ConfigInvocationHandler implements InvocationHandler
 				}
 			}
 
-			manager.setConfiguration(group.keyName(), item.keyName(), args[0].toString());
+			manager.setConfiguration(group.keyName(), item.keyName(), args[0]);
 			return null;
 		}
 	}
