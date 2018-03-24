@@ -28,9 +28,9 @@ import net.runelite.api.Client;
 
 public class EnergyStat extends Stat
 {
-	EnergyStat()
+	public EnergyStat(String name)
 	{
-		super("Run Energy");
+		super(name);
 	}
 
 	@Override
