@@ -54,6 +54,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
@@ -446,6 +447,21 @@ public class ClientUI
 
 		frame.requestFocus();
 		giveClientFocus();
+	}
+
+	/**
+	 * Get offset of game canvas in game window
+	 * @return game canvas offset
+	 */
+	public Point getCanvasOffset()
+	{
+		if (client instanceof Client)
+		{
+			final java.awt.Point point = SwingUtilities.convertPoint(((Client) client).getCanvas(), 0, 0, frame);
+			return new Point(point.x, point.y);
+		}
+
+		return new Point(0, 0);
 	}
 
 	private void expand(PluginPanel panel)
