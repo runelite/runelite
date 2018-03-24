@@ -33,10 +33,13 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.annotation.Nullable;
@@ -155,6 +158,18 @@ public class ClientUI
 				frame.setResizable(!config.lockWindowSize());
 			}
 
+			if (event.getKey().equals("maximized"))
+			{
+				if (config.maximized())
+				{
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				}
+				else
+				{
+					frame.setExtendedState(JFrame.NORMAL);
+				}
+			}
+
 			if (!event.getKey().equals("gameSize"))
 			{
 				return;
@@ -182,15 +197,24 @@ public class ClientUI
 			}
 
 			final Dimension size = new Dimension(width, height);
+			final Dimension clientSize = client.getSize();
 
-			client.setSize(size);
-			client.setPreferredSize(size);
-			client.getParent().setPreferredSize(size);
-			client.getParent().setSize(size);
-
-			if (frame.isVisible())
+			// When resizing from the desktop, Java seems to already pack(). Calling it again puts the frame to the
+			// previous size. Thus, (try) to only resize and call pack() when the user sets the size manually from
+			// the sidebar.
+			if (event.getOldValue() == null ||
+					clientSize.height != size.height ||
+					clientSize.width != size.width)
 			{
-				frame.pack();
+				client.setSize(size);
+				client.setPreferredSize(size);
+				client.getParent().setPreferredSize(size);
+				client.getParent().setSize(size);
+
+				if (frame.isVisible())
+				{
+					frame.pack();
+				}
 			}
 		});
 	}
@@ -319,6 +343,28 @@ public class ClientUI
 
 			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
+
+			frame.addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentResized(ComponentEvent e)
+				{
+					if (!config.rememberResize())
+					{
+						return;
+					}
+
+					// Don't save when maximized so that restoring the window on next startup will go to the
+					// previous size
+					if (client != null && (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH)
+					{
+						config.gameSize(client.getSize());
+					}
+				}
+			});
+
+			frame.addWindowStateListener(e ->
+					config.maximized((e.getNewState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH));
 		});
 	}
 
