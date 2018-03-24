@@ -60,14 +60,14 @@ public class NavigationButton
 	private boolean selected;
 
 	/**
-	 * On select action of the button.
-	 */
-	private Runnable onSelect;
-
-	/**
 	 * On click action of the button.
 	 */
 	private Runnable onClick;
+
+	/**
+	 * On select action of the button.
+	 */
+	private Runnable onSelect;
 
 	/**
 	 * Plugin panel, used when expanding and contracting sidebar.
