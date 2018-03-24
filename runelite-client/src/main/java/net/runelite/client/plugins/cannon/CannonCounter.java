@@ -34,7 +34,7 @@ public class CannonCounter extends Counter
 
 	public CannonCounter(BufferedImage img, CannonPlugin plugin)
 	{
-		super(img, String.valueOf(plugin.getCballsLeft()));
+		super(img, plugin, String.valueOf(plugin.getCballsLeft()));
 		this.plugin = plugin;
 	}
 
