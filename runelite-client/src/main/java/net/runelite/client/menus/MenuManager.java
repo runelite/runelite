@@ -93,7 +93,7 @@ public class MenuManager
 
 	public void removeNpcMenuOption(String option)
 	{
-		npcMenuOptions.remove(option);
+		npcMenuOptions.remove(npcMenuOptions);
 
 		// remove this option from all npc compositions
 		Client client = clientProvider.get();
