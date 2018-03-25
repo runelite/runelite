@@ -84,6 +84,12 @@ public class MenuManager
 
 		// add to surrounding npcs
 		Client client = clientProvider.get();
+
+		if (client == null)
+		{
+			return;
+		}
+
 		for (NPC npc : client.getNpcs())
 		{
 			NPCComposition composition = npc.getComposition();
@@ -97,6 +103,12 @@ public class MenuManager
 
 		// remove this option from all npc compositions
 		Client client = clientProvider.get();
+
+		if (client == null)
+		{
+			return;
+		}
+
 		for (NPC npc : client.getNpcs())
 		{
 			NPCComposition composition = npc.getComposition();
@@ -129,6 +141,12 @@ public class MenuManager
 	private boolean menuContainsCustomMenu(WidgetMenuOption customMenuOption)
 	{
 		Client client = clientProvider.get();
+
+		if (client == null)
+		{
+			return false;
+		}
+
 		for (MenuEntry menuEntry : client.getMenuEntries())
 		{
 			String option = menuEntry.getOption();
@@ -147,10 +165,15 @@ public class MenuManager
 	{
 		int widgetId = event.getActionParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+		Client client = clientProvider.get();
+
+		if (client == null)
+		{
+			return;
+		}
+
 		for (WidgetMenuOption currentMenu : options)
 		{
-			Client client = clientProvider.get();
-
 			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
@@ -307,6 +330,11 @@ public class MenuManager
 	{
 		Client client = clientProvider.get();
 
+		if (client == null)
+		{
+			return;
+		}
+
 		client.getPlayerOptions()[playerOptionIndex] = menuText;
 		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
 		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE.getId();
@@ -318,8 +346,12 @@ public class MenuManager
 	{
 		Client client = clientProvider.get();
 
-		client.getPlayerOptions()[playerOptionIndex] = null;
+		if (client == null)
+		{
+			return;
+		}
 
+		client.getPlayerOptions()[playerOptionIndex] = null;
 		playerMenuIndexMap.remove(playerOptionIndex);
 	}
 
@@ -331,8 +363,8 @@ public class MenuManager
 	private int findEmptyPlayerMenuIndex()
 	{
 		int index = IDX_LOWER;
-
 		Client client = clientProvider.get();
+
 		if (client == null)
 		{
 			return IDX_UPPER;
