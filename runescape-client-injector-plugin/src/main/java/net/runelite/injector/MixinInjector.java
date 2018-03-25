@@ -45,6 +45,7 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.CheckCast;
@@ -73,6 +74,7 @@ public class MixinInjector
 	private static final Type FIELDHOOK = new Type("Lnet/runelite/api/mixins/FieldHook;");
 
 	private static final String MIXIN_BASE = "net.runelite.mixins";
+	private static final String ASSERTION_FIELD = "$assertionsDisabled";
 
 	private final Inject inject;
 
@@ -184,10 +186,22 @@ public class MixinInjector
 			{
 				for (Field field : mixinCf.getFields())
 				{
-					Annotation inject = field.getAnnotations().find(INJECT);
-					if (inject == null)
+					// Always inject $assertionsEnabled if its missing.
+					if (ASSERTION_FIELD.equals(field.getName()))
 					{
-						continue;
+						if (cf.findField(ASSERTION_FIELD, Type.BOOLEAN) != null)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						Annotation inject = field.getAnnotations().find(INJECT);
+
+						if (inject == null)
+						{
+							continue;
+						}
 					}
 
 					Field copy = new Field(cf, field.getName(), field.getType());
@@ -666,6 +680,14 @@ public class MixinInjector
 						fi.getField().getName(),
 						fi.getField().getType()
 					));
+				}
+			}
+			else if (i instanceof PushConstantInstruction)
+			{
+				PushConstantInstruction pi = (PushConstantInstruction) i;
+				if (mixinCf.getPoolClass().equals(pi.getConstant()))
+				{
+					pi.setConstant(cf.getPoolClass());
 				}
 			}
 
