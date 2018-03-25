@@ -37,112 +37,179 @@ public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "swapPickpocket",
-		name = "Pickpocket",
-		description = "Swap Talk-to with Pickpocket on NPC<br>Example: Man, Woman"
+		keyName = "swapBank",
+		name = "Bank",
+		description = "Swap Talk-to with Bank on NPCs<br>Example: Banker"
 	)
-	default boolean swapPickpocket()
+	default boolean swapBank()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 1,
-		keyName = "swapBanker",
-		name = "Bank",
-		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
+		keyName = "swapExchange",
+		name = "Exchange",
+		description = "Swap Talk-to with Exchange on NPCs<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
 	)
-	default boolean swapBank()
+	default boolean swapExchange()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 2,
-		keyName = "swapExchange",
-		name = "Exchange",
-		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
+		keyName = "swapTrade",
+		name = "Trade",
+		description = "Swap Talk-to with Trade on NPCs<br>Example: Shop keeper, Shop assistant"
 	)
-	default boolean swapExchange()
+	default boolean swapTrade()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 3,
-		keyName = "swapHarpoon",
-		name = "Harpoon",
-		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
+		keyName = "swapPay",
+		name = "Pay",
+		description = "Swap Talk-to with Pay on NPCs<br>Example: Elstan, Heskel, Fayeth"
 	)
-	default boolean swapHarpoon()
+	default boolean swapPay()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 4,
-		keyName = "swapTrade",
-		name = "Trade",
-		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
+		keyName = "swapPickpocket",
+		name = "Pickpocket",
+		description = "Swap Talk-to with Pickpocket on NPCs<br>Example: Man, Woman"
 	)
-	default boolean swapTrade()
+	default boolean swapPickpocket()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 5,
 		keyName = "swapTravel",
 		name = "Travel",
-		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
+		description = "Swap Talk-to with Travel, Pay-fare, Take-boat, Charter, Tickets on NPCs<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
 	)
 	default boolean swapTravel()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 6,
-		keyName = "swapPay",
-		name = "Pay",
-		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
+		keyName = "swapKitten",
+		name = "Kitten",
+		description = "Swap Talk-to with Kitten on Gertrude<br>Also hides Investigate on Watchtower"
 	)
-	default boolean swapPay()
+	default boolean swapKitten()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 7,
-		keyName = "swapHome",
-		name = "Home",
-		description = "Swap Enter with Home on Portal"
+		keyName = "swapSlayerMaster",
+		name = "Slayer Master",
+		description = "Select left click option for Slayer masters"
 	)
-	default boolean swapHome()
+	default SlayerMaster swapSlayerMaster()
 	{
-		return true;
+		return SlayerMaster.DEFAULT;
+	}
+	enum SlayerMaster
+	{
+		DEFAULT("Talk-to"),
+		ASSIGNMENT("Assignment"),
+		TRADE("Trade"),
+		REWARDS("Rewards");
+
+		private final String name;
+		SlayerMaster(String name)
+		{
+			this.name = name;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+		public boolean isSet()
+		{
+			return this != DEFAULT;
+		}
 	}
 
 	@ConfigItem(
 		position = 8,
-		keyName = "swapLastDestination",
-		name = "Last-destination (XXX)",
-		description = "Swap Zanaris with Last-destination on Fairy ring"
+		keyName = "swapSawmillOperator",
+		name = "Sawmill",
+		description = "Select left click option for Sawmill operators"
 	)
-	default boolean swapLastDestination()
+	default SawmillOperator swapSawmillOperator()
 	{
-		return true;
+		return SawmillOperator.DEFAULT;
+	}
+	enum SawmillOperator
+	{
+		DEFAULT("Talk-to"),
+		BUY_PLANK("Buy-plank"),
+		TRADE("Trade");
+
+		private final String name;
+		SawmillOperator(String name)
+		{
+			this.name = name;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+		public boolean isSet()
+		{
+			return this != DEFAULT;
+		}
 	}
 
 	@ConfigItem(
 		position = 9,
-		keyName = "swapBoxTrap",
-		name = "Reset",
-		description = "Swap Check with Reset on box trap"
+		keyName = "swapShantay",
+		name = "Shantay",
+		description = "Select left click option for Shantay"
 	)
-	default boolean swapBoxTrap()
+	default Shantay swapShantay()
 	{
-		return true;
+		return Shantay.DEFAULT;
+	}
+	enum Shantay
+	{
+		DEFAULT("Talk-to"),
+		TRADE("Trade"),
+		BUY_PASS("Buy-pass");
+
+		private final String name;
+		Shantay(String name)
+		{
+			this.name = name;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+		public boolean isSet()
+		{
+			return this != DEFAULT;
+		}
 	}
 
 	@ConfigItem(
@@ -153,39 +220,117 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapCatacombEntrance()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 11,
-		keyName = "swapTeleportItem",
-		name = "Teleport item",
-		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
+		keyName = "swapHarpoon",
+		name = "Harpoon",
+		description = "Swap Cage, Big Net with Harpoon on Fishing spots"
 	)
-	default boolean swapTeleportItem()
+	default boolean swapHarpoon()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 12,
-		keyName = "swapSilverSickle",
-		name = "Silver sickle(b)",
-		description = "Swap Wield with Cast Bloom on Silver sickle(b)"
+		keyName = "swapBoxTrap",
+		name = "Reset Box trap",
+		description = "Swap Take, Check, Dismantle with Lay, Reset, Investigate on Box traps"
 	)
-	default boolean swapSilverSickle()
+	default boolean swapBoxTrap()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		position = 13,
 		keyName = "swapBones",
-		name = "Bury",
+		name = "Use Bones",
 		description = "Swap Bury with Use on Bones"
 	)
 	default boolean swapBones()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "hideChopDown",
+		name = "Hide Chop down",
+		description = "Hide Chop down on trees unless you have an axe"
+	)
+	default boolean hideChopDown()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "swapHousePortal",
+		name = "House Portal",
+		description = "Select left click option for House Portals"
+	)
+	default HousePortal swapHousePortal()
+	{
+		return HousePortal.DEFAULT;
+	}
+	enum HousePortal
+	{
+		DEFAULT("Enter"),
+		HOME("Home"),
+		BUILD_MODE("Build mode"),
+		FRIENDS_HOUSE("Friend's house");
+
+		private final String name;
+		HousePortal(String name)
+		{
+			this.name = name;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+		public boolean isSet()
+		{
+			return this != DEFAULT;
+		}
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "swapFairyRing",
+		name = "Fairy Ring",
+		description = "Select left click option for Fairy Rings"
+	)
+	default FairyRing swapFairyRing()
+	{
+		return FairyRing.DEFAULT;
+	}
+	enum FairyRing
+	{
+		DEFAULT("Zanaris"),
+		CONFIGURE("Configure"),
+		LAST_DESTINATION("Last-destination");
+
+		private final String name;
+		FairyRing(String name)
+		{
+			this.name = name;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+		public boolean isSet()
+		{
+			return this != DEFAULT;
+		}
 	}
 }
