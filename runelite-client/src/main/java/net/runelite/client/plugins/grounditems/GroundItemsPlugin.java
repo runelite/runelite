@@ -37,12 +37,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -54,6 +56,8 @@ import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GroundItemDespawned;
+import net.runelite.api.events.GroundItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -67,8 +71,12 @@ import net.runelite.http.api.item.ItemPrice;
 @PluginDescriptor(
 	name = "Ground Items"
 )
+@Slf4j
 public class GroundItemsPlugin extends Plugin
 {
+	// Used when getting High Alchemy value - multiplied by general store price.
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Rectangle, String> hiddenBoxes = new HashMap<>();
 
@@ -95,9 +103,6 @@ public class GroundItemsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -106,6 +111,8 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private GroundItemsOverlay overlay;
 
+	@Getter(AccessLevel.PACKAGE)
+	private final List<GroundItem> groundItems = new CopyOnWriteArrayList<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
@@ -125,7 +132,6 @@ public class GroundItemsPlugin extends Plugin
 	protected void startUp()
 	{
 		reset();
-
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
 	}
@@ -135,6 +141,13 @@ public class GroundItemsPlugin extends Plugin
 	{
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
+		groundItems.clear();
+		highlightedItems.invalidateAll();
+		highlightedItems = null;
+		hiddenItems.invalidateAll();
+		hiddenItems = null;
+		hiddenItemList = null;
+		highlightedItemsList = null;
 	}
 
 	@Subscribe
@@ -143,6 +156,43 @@ public class GroundItemsPlugin extends Plugin
 		if (event.getGroup().equals("grounditems"))
 		{
 			reset();
+		}
+	}
+
+	@Subscribe
+	public void onGroundItemSpawned(final GroundItemSpawned event)
+	{
+		final Item item = event.getGroundItem();
+		final int itemId = item.getId();
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
+		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+
+		final GroundItem groundItem = GroundItem.builder()
+			.id(itemId)
+			.location(event.getTile().getWorldLocation())
+			.itemId(realItemId)
+			.quantity(item.getQuantity())
+			.name(itemComposition.getName())
+			.haPrice(alchPrice * item.getQuantity())
+			.build();
+
+		groundItems.add(groundItem);
+
+		// Required for preserving the correct order later
+		groundItem.setIndex(groundItems.indexOf(groundItem));
+	}
+
+	@Subscribe
+	public void onGroundItemDespawned(final GroundItemDespawned event)
+	{
+		if (groundItems.removeIf(item -> item.getLocation().equals(event.getTile().getWorldLocation())))
+		{
+			// Required for updating the order
+			for (GroundItem groundItem : groundItems)
+			{
+				groundItem.setIndex(groundItems.indexOf(groundItem));
+			}
 		}
 	}
 
@@ -219,20 +269,9 @@ public class GroundItemsPlugin extends Plugin
 			ItemPrice itemPrice = getItemPrice(itemComposition);
 			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
 			int cost = quantity * price;
+			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()));
 
-			Color color = null;
-
-			if (cost >= GroundItemsOverlay.LOW_VALUE)
-			{
-				color = overlay.getCostColor(cost);
-			}
-
-			if (isHighlighted(itemComposition.getName()))
-			{
-				color = config.highlightedColor();
-			}
-
-			if (color != null)
+			if (!color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";

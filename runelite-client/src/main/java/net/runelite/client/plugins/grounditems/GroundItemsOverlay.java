@@ -29,44 +29,38 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.Node;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Region;
-import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.grounditems.GroundItem.GroundItemKey;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
 public class GroundItemsOverlay extends Overlay
 {
-	private static final int REGION_SIZE = 104;
+	private static final int MAX_DISTANCE = 2500;
 	// We must offset the text on the z-axis such that
 	// it doesn't obscure the ground items below it.
 	private static final int OFFSET_Z = 20;
 	// The game won't send anything higher than this value to the plugin -
 	// so we replace any item quantity higher with "Lots" instead.
 	private static final int MAX_QUANTITY = 65535;
-	// The max distance in tiles between the player and the item.
-	private static final int MAX_RANGE = 18;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
 	// Threshold for highlighting items as blue.
@@ -77,21 +71,32 @@ public class GroundItemsOverlay extends Overlay
 	private static final int HIGH_VALUE = 1_000_000;
 	// Threshold for highlighting items as pink.
 	private static final int INSANE_VALUE = 10_000_000;
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
-
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
 
-	private Rectangle itemHiddenBox;
-	private Rectangle itemHighlightBox;
+	private static final Collector<GroundItem, ?, Map<GroundItemKey, GroundItem>> GROUND_ITEM_MAP_COLLECTOR = Collectors
+		.toMap
+			((item) -> new GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), ((a, b) ->
+				GroundItem.builder()
+					.index(b.getIndex())
+					.id(b.getId())
+					.itemId(b.getItemId())
+					.name(b.getName())
+					.location(b.getLocation())
+					.localLocation(b.getLocalLocation())
+					.haPrice(a.getHaPrice() + b.getHaPrice())
+					.gePrice(a.getGePrice() + b.getGePrice())
+					.quantity(a.getQuantity() + b.getQuantity())
+					.build()));
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final TextComponent textComponent = new TextComponent();
+	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
 	private ItemManager itemManager;
@@ -109,239 +114,192 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
-		FontMetrics fm = graphics.getFontMetrics();
+		final FontMetrics fm = graphics.getFontMetrics();
+		final Player player = client.getLocalPlayer();
 
-		Player player = client.getLocalPlayer();
 		if (player == null || client.getViewportWidget() == null)
 		{
 			return null;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
+		offsetMap.clear();
+		final LocalPoint localLocation = player.getLocalLocation();
 
-		int z = client.getPlane();
-		LocalPoint from = player.getLocalLocation();
-
-		int lowerX = max(0, from.getRegionX() - MAX_RANGE);
-		int lowerY = max(0, from.getRegionY() - MAX_RANGE);
-
-		int upperX = min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
-		int upperY = min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
-
-		// Clear boxes
-		if (plugin.isHotKeyPressed())
-		{
-			plugin.getHiddenBoxes().clear();
-			plugin.getHighlightBoxes().clear();
-		}
-
-		for (int x = lowerX; x <= upperX; ++x)
-		{
-			for (int y = lowerY; y <= upperY; ++y)
+		plugin.getGroundItems().stream()
+			.filter(item ->
 			{
-				Tile tile = tiles[z][x][y];
-				if (tile == null)
+				final boolean hidden = plugin.isHidden(item.getName());
+
+				if (!plugin.isHotKeyPressed() && hidden)
 				{
-					continue;
+					return false;
 				}
 
-				ItemLayer itemLayer = tile.getItemLayer();
-				if (itemLayer == null)
+				final boolean highlighted = plugin.isHighlighted(item.getName());
+
+				if (config.showHighlightedOnly() && !plugin.isHotKeyPressed() && !highlighted)
 				{
-					continue;
+					return false;
 				}
 
-				Node current = itemLayer.getBottom();
-				Map<Integer, Integer> items = new LinkedHashMap<>();
-				// adds the items on the ground to the ArrayList to be drawn
-				while (current instanceof Item)
+				final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
+
+				if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
 				{
-					Item item = (Item) current;
-					int itemId = item.getId();
-					int itemQuantity = item.getQuantity();
-					ItemComposition itemDefinition = itemManager.getItemComposition(itemId);
-
-					Integer currentQuantity = items.get(itemId);
-
-					if ((config.showHighlightedOnly() ? plugin.isHighlighted(itemDefinition.getName()) : !plugin.isHidden(itemDefinition.getName())) || plugin.isHotKeyPressed())
-					{
-						if (itemDefinition.getNote() != -1)
-						{
-							itemId = itemDefinition.getLinkedNoteId();
-						}
-
-						int quantity = currentQuantity == null
-							? itemQuantity
-							: currentQuantity + itemQuantity;
-
-						ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
-
-						int gePrice, alchPrice;
-
-						if (itemId == COINS)
-						{
-							gePrice = quantity;
-							alchPrice = quantity;
-						}
-						else
-						{
-							gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
-							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
-						}
-						if (plugin.isHighlighted(itemDefinition.getName()) ||
-							gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
-							(alchPrice >= config.getHideUnderHAValue())))
-						{
-							items.put(itemId, quantity);
-						}
-					}
-
-					current = current.getNext();
+					return false;
 				}
 
-				// The bottom item is drawn first
-				List<Integer> itemIds = new ArrayList<>(items.keySet());
-				Collections.reverse(itemIds);
+				item.setLocalLocation(groundPoint);
 
-				for (int i = 0; i < itemIds.size(); ++i)
+				if (item.getItemId() == COINS)
 				{
-					Point point = itemLayer.getCanvasLocation(itemLayer.getHeight() + OFFSET_Z);
-					// if the item is offscreen, don't bother drawing it
-					if (point == null)
+					item.setHaPrice(item.getQuantity());
+					item.setGePrice(item.getQuantity());
+				}
+				else
+				{
+					final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
+					item.setGePrice(itemPrice != null ? itemPrice.getPrice() * item.getQuantity() : 0);
+				}
+
+				return true;
+			})
+			.collect(GROUND_ITEM_MAP_COLLECTOR)
+			.values()
+			.stream()
+			.sorted((left, right) -> Integer.compare(right.getIndex(), left.getIndex()))
+			.forEach(item ->
+			{
+				final boolean highlighted = plugin.isHighlighted(item.getName());
+
+				if (!plugin.isHotKeyPressed() && !highlighted
+					&& ((item.getGePrice() > 0 && item.getGePrice() < config.getHideUnderGeValue())
+					|| item.getHaPrice() < config.getHideUnderHAValue()))
+				{
+					return;
+				}
+
+				final boolean hidden = plugin.isHidden(item.getName());
+				final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(), highlighted);
+				itemStringBuilder.append(item.getName());
+
+				if (item.getQuantity() > 1)
+				{
+					if (item.getQuantity() >= MAX_QUANTITY)
 					{
-						continue;
+						itemStringBuilder.append(" (Lots!)");
 					}
-
-					int itemId = itemIds.get(i);
-					int quantity = items.get(itemId);
-					ItemComposition item = itemManager.getItemComposition(itemId);
-
-					if (item == null)
+					else
 					{
-						continue;
-					}
-
-					itemStringBuilder.append(item.getName());
-					if (quantity > 1)
-					{
-						if (quantity >= MAX_QUANTITY)
-						{
-							itemStringBuilder.append(" (Lots!)");
-						}
-						else
-						{
-							itemStringBuilder.append(" (").append(quantity).append(")");
-						}
-					}
-
-					// sets item ID to unnoted version, if noted
-					if (item.getNote() != -1)
-					{
-						itemId = item.getLinkedNoteId();
-					}
-
-					Color textColor = config.defaultColor(); // Color to use when drawing the ground item
-					ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
-					if (itemPrice != null && config.showGEPrice())
-					{
-						int cost = itemPrice.getPrice() * quantity;
-
-						textColor = getCostColor(cost);
-
-						itemStringBuilder.append(" (EX: ")
-							.append(StackFormatter.quantityToStackSize(cost))
-							.append(" gp)");
-					}
-
-					if (config.showHAValue())
-					{
-						itemStringBuilder.append(" (HA: ")
-							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity)
-							.append(" gp)");
-					}
-
-					if (plugin.isHighlighted(item.getName()))
-					{
-						textColor = config.highlightedColor();
-					}
-
-					String itemString = itemStringBuilder.toString();
-					itemStringBuilder.setLength(0);
-
-					int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
-					int screenY = point.getY() - (STRING_GAP * i);
-
-					// Drawing the shadow for the text, 1px on both x and y
-					graphics.setColor(Color.BLACK);
-					graphics.drawString(itemString, screenX + 1, screenY + 1);
-					// Drawing the text itself
-					graphics.setColor(textColor);
-					graphics.drawString(itemString, screenX, screenY);
-
-					if (plugin.isHotKeyPressed())
-					{
-						// Hidden box
-						itemHiddenBox = new Rectangle
-						(
-							screenX + fm.stringWidth(itemString),
-							screenY - (fm.getHeight() / 2) - fm.getDescent(),
-							RECTANGLE_SIZE,
-							fm.getHeight() / 2
-						);
-						plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
-
-						// Highlight box
-						itemHighlightBox = new Rectangle
-						(
-							screenX + fm.stringWidth(itemString) + RECTANGLE_SIZE + 2,
-							screenY - (fm.getHeight() / 2) - fm.getDescent(),
-							RECTANGLE_SIZE,
-							fm.getHeight() / 2
-						);
-						plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
-
-						Point mousePos = client.getMouseCanvasPosition();
-						boolean mouseInHiddenBox = itemHiddenBox.contains(mousePos.getX(), mousePos.getY());
-						boolean mouseInHighlightBox = itemHighlightBox.contains(mousePos.getX(), mousePos.getY());
-
-						// Draw hidden box
-						drawRectangle(graphics, itemHiddenBox, mouseInHiddenBox ? Color.RED : textColor, plugin.isHidden(item.getName()), true);
-
-						// Draw highlight box
-						drawRectangle(graphics, itemHighlightBox, mouseInHighlightBox ? Color.GREEN : textColor, plugin.isHighlighted(item.getName()), false);
+						itemStringBuilder.append(" (").append(item.getQuantity()).append(")");
 					}
 				}
-			}
-		}
+
+				if (config.showGEPrice() && item.getGePrice() > 0)
+				{
+					itemStringBuilder.append(" (EX: ")
+						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+						.append(" gp)");
+				}
+
+				if (config.showHAValue() && item.getHaPrice() > 0)
+				{
+					itemStringBuilder.append(" (HA: ")
+						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+						.append(" gp)");
+				}
+
+				final String itemString = itemStringBuilder.toString();
+				itemStringBuilder.setLength(0);
+
+				final Point textPoint = Perspective.getCanvasTextLocation(client,
+					graphics,
+					item.getLocalLocation(),
+					itemString, OFFSET_Z);
+
+				if (textPoint == null)
+				{
+					return;
+				}
+
+				final int offset = offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+				final int textX = textPoint.getX();
+				final int textY = textPoint.getY() - (STRING_GAP * offset);
+
+				textComponent.setText(itemString);
+				textComponent.setColor(color);
+				textComponent.setPosition(new java.awt.Point(textX, textY));
+				textComponent.render(graphics);
+
+				if (plugin.isHotKeyPressed())
+				{
+					final int stringWidth = fm.stringWidth(itemString);
+					final int stringHeight = fm.getHeight();
+					final int descent = fm.getDescent();
+
+					// Hidden box
+					final Rectangle itemHiddenBox = new Rectangle(
+						textX + stringWidth,
+						textY - (stringHeight / 2) - descent,
+						RECTANGLE_SIZE,
+						stringHeight / 2);
+
+					plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
+
+					// Highlight box
+					final Rectangle itemHighlightBox = new Rectangle(
+						textX + stringWidth + RECTANGLE_SIZE + 2,
+						textY - (stringHeight / 2) - descent,
+						RECTANGLE_SIZE,
+						stringHeight / 2);
+
+					plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
+
+					final Point mousePos = client.getMouseCanvasPosition();
+					boolean mouseInHiddenBox = itemHiddenBox.contains(mousePos.getX(), mousePos.getY());
+					boolean mouseInHighlightBox = itemHighlightBox.contains(mousePos.getX(), mousePos.getY());
+
+					// Draw hidden box
+					drawRectangle(graphics, itemHiddenBox, mouseInHiddenBox ? Color.RED : color, hidden, true);
+
+					// Draw highlight box
+					drawRectangle(graphics, itemHighlightBox, mouseInHighlightBox ? Color.GREEN : color, highlighted, false);
+				}
+			});
 
 		return null;
 	}
 
-	Color getCostColor(int cost)
+	Color getCostColor(int cost, boolean highlighted)
 	{
+		if (highlighted)
+		{
+			return config.highlightedColor();
+		}
+
 		// set the color according to rarity, if possible
 		if (cost >= INSANE_VALUE) // 10,000,000 gp
 		{
 			return config.insaneValueColor();
 		}
-		else if (cost >= HIGH_VALUE) // 1,000,000 gp
+
+		if (cost >= HIGH_VALUE) // 1,000,000 gp
 		{
 			return config.highValueColor();
 		}
-		else if (cost >= MEDIUM_VALUE) // 100,000 gp
+
+		if (cost >= MEDIUM_VALUE) // 100,000 gp
 		{
 			return config.mediumValueColor();
 		}
-		else if (cost >= LOW_VALUE) // 20,000 gp
+
+		if (cost >= LOW_VALUE) // 20,000 gp
 		{
 			return config.lowValueColor();
 		}
-		else
-		{
-			return config.defaultColor();
-		}
+
+		return config.defaultColor();
 	}
 
 	private void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
@@ -360,23 +318,23 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setColor(Color.WHITE);
 		// Minus symbol
 		graphics.drawLine
-		(
-			rect.x + 2,
-			rect.y + (RECTANGLE_SIZE / 2),
-			rect.x + RECTANGLE_SIZE - 2,
-			rect.y + (RECTANGLE_SIZE / 2)
-		);
+			(
+				rect.x + 2,
+				rect.y + (RECTANGLE_SIZE / 2),
+				rect.x + RECTANGLE_SIZE - 2,
+				rect.y + (RECTANGLE_SIZE / 2)
+			);
 
 		if (!hiddenBox)
 		{
 			// Plus symbol
 			graphics.drawLine
-			(
-				rect.x + (RECTANGLE_SIZE / 2),
-				rect.y + 2,
-				rect.x + (RECTANGLE_SIZE / 2),
-				rect.y + RECTANGLE_SIZE - 2
-			);
+				(
+					rect.x + (RECTANGLE_SIZE / 2),
+					rect.y + 2,
+					rect.x + (RECTANGLE_SIZE / 2),
+					rect.y + RECTANGLE_SIZE - 2
+				);
 		}
 
 	}

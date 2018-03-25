@@ -34,10 +34,14 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.Node;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GroundItemSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 
@@ -131,6 +135,18 @@ public class RegionTileManager
 					objectSpawned.setTile(tile);
 					objectSpawned.setGameObject(object);
 					eventBus.post(objectSpawned);
+				});
+
+			Optional.ofNullable(tile.getItemLayer())
+				.map(ItemLayer::getBottom)
+				.ifPresent(bottom ->
+				{
+					Node currentNode = bottom;
+					while (currentNode instanceof Item)
+					{
+						eventBus.post(new GroundItemSpawned(tile, (Item) currentNode));
+						currentNode = currentNode.getNext();
+					}
 				});
 		});
 
