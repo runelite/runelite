@@ -75,12 +75,14 @@ public class WSService
 	@OnClose
 	public void onClose(Session session, CloseReason resaon)
 	{
+		SessionManager.remove(session);
 		logger.info("Close session {}", session);
 	}
 
 	@OnError
 	public void onError(Session session, Throwable ex)
 	{
+		SessionManager.remove(session);
 		logger.warn("Error in session {}", session, ex);
 	}
 
