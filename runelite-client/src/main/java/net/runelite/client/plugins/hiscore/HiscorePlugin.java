@@ -31,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -58,6 +59,7 @@ public class HiscorePlugin extends Plugin
 	@Inject
 	private PluginToolbar pluginToolbar;
 
+	@Nullable
 	@Inject
 	private Client client;
 
@@ -175,6 +177,11 @@ public class HiscorePlugin extends Plugin
 	
 	private void addMenuEntry(String refOption, String newOption, boolean after)
 	{
+		if (client == null)
+		{
+			return;
+		}
+		
 		MenuEntry[] entries = client.getMenuEntries();
 
 		List<MenuEntry> list = new ArrayList<>(entries.length + 1);
