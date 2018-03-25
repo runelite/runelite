@@ -30,12 +30,16 @@ import org.junit.Test;
 public class ExperienceTest
 {
 	private static final int XP_FOR_99 = 13_034_431;
+	private static final int XP_FOR_126 = 188_884_740;
 
 	@Test
 	public void testGetXpForLevel()
 	{
 		int xp = Experience.getXpForLevel(99);
 		Assert.assertEquals(XP_FOR_99, xp);
+
+		xp = Experience.getXpForLevel(126);
+		Assert.assertEquals(XP_FOR_126, xp);
 
 		xp = Experience.getXpForLevel(1);
 		Assert.assertEquals(0, xp);
@@ -56,22 +60,29 @@ public class ExperienceTest
 	@Test
 	public void testGetLevelForXp()
 	{
-		int level;
-
-		level = Experience.getLevelForXp(XP_FOR_99);
-		Assert.assertEquals(99, level);
-
-		level = Experience.getLevelForXp(XP_FOR_99 + 1);
+		int level = Experience.getLevelForXp(XP_FOR_99);
 		Assert.assertEquals(99, level);
 
 		level = Experience.getLevelForXp(XP_FOR_99 - 1);
 		Assert.assertEquals(98, level);
 
+		level = Experience.getLevelForXp(XP_FOR_126);
+		Assert.assertEquals(126, level);
+
+		level = Experience.getLevelForXp(XP_FOR_126 - 1);
+		Assert.assertEquals(125, level);
+
+		level = Experience.getLevelForXp(Integer.MAX_VALUE);
+		Assert.assertEquals(126, level);
+
 		level = Experience.getLevelForXp(0);
 		Assert.assertEquals(1, level);
+	}
 
-		level = Experience.getLevelForXp(200_000_000);
-		Assert.assertEquals(126, level);
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetLevelForNegativeXP()
+	{
+		Experience.getLevelForXp(-1);
 	}
 
 	@Test
