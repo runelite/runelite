@@ -282,7 +282,14 @@ public enum Varbits
 	 * Kingdom Management
 	 */
 	KINGDOM_FAVOR(72),
-	KINGDOM_COFFER(74);
+	KINGDOM_COFFER(74),
+
+	/**
+	 * Daily Tasks (Collection availability)
+	 */
+	DAILY_HERB_BOX(3961),
+	DAILY_STAVES(4539),
+	DAILY_ESSENCE(4547);
 
 	/**
 	 * varbit id
