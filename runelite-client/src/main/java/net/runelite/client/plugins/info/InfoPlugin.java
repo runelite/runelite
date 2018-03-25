@@ -32,7 +32,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.TitleToolbar;
 
 @PluginDescriptor(
 	name = "Info Panel",
@@ -42,9 +41,6 @@ public class InfoPlugin extends Plugin
 {
 	@Inject
 	private PluginToolbar pluginToolbar;
-
-	@Inject
-	private TitleToolbar titleToolbar;
 
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
@@ -70,11 +66,6 @@ public class InfoPlugin extends Plugin
 			.build();
 
 		pluginToolbar.addNavigation(navButton);
-
-		if (!runeLiteConfig.enableCustomChrome())
-		{
-			titleToolbar.refresh();
-		}
 	}
 
 	@Override

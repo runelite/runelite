@@ -50,6 +50,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -250,11 +251,6 @@ public class ClientUI
 	@Subscribe
 	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
 	{
-		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
-		{
-			return;
-		}
-
 		SwingUtilities.invokeLater(() ->
 		{
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
@@ -266,11 +262,6 @@ public class ClientUI
 	@Subscribe
 	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
 	{
-		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
-		{
-			return;
-		}
-
 		SwingUtilities.invokeLater(() -> titleToolbar.removeComponent(event.getButton()));
 	}
 
@@ -297,6 +288,7 @@ public class ClientUI
 
 			// Create main window
 			frame = new JFrame();
+			frame.setLayout(new BorderLayout());
 
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
@@ -328,7 +320,7 @@ public class ClientUI
 			container.add(pluginToolbar);
 
 			titleToolbar = new ClientTitleToolbar();
-			frame.add(container);
+			frame.add(container, BorderLayout.CENTER);
 		});
 	}
 
@@ -390,6 +382,14 @@ public class ClientUI
 						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
 					}
 				});
+			}
+			else
+			{
+				JPanel topBar = new JPanel(new BorderLayout());
+				topBar.setBorder(new EmptyBorder(2, 2, 2, 5));
+				topBar.add(titleToolbar, BorderLayout.EAST);
+
+				frame.add(topBar, BorderLayout.NORTH);
 			}
 
 			frame.pack();
