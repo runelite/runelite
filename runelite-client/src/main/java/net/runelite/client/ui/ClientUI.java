@@ -45,6 +45,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -81,24 +82,32 @@ public class ClientUI
 {
 	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
 	public static final BufferedImage ICON;
+	private static final BufferedImage SIDEBAR_OPEN;
+	private static final BufferedImage SIDEBAR_CLOSE;
 
 	static
 	{
-		BufferedImage icon = null;
+		BufferedImage icon;
+		BufferedImage sidebarOpen;
+		BufferedImage sidebarClose;
 
 		try
 		{
 			synchronized (ImageIO.class)
 			{
 				icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+				sidebarOpen = ImageIO.read(ClientUI.class.getResourceAsStream("open.png"));
+				sidebarClose = ImageIO.read(ClientUI.class.getResourceAsStream("close.png"));
 			}
 		}
 		catch (IOException e)
 		{
-			log.warn("Client icon failed to load", e);
+			throw new RuntimeException(e);
 		}
 
 		ICON = icon;
+		SIDEBAR_OPEN = sidebarOpen;
+		SIDEBAR_CLOSE = sidebarClose;
 	}
 
 	@Getter
@@ -116,6 +125,11 @@ public class ClientUI
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
+	private boolean sidebarOpen;
+	private JPanel container;
+	private PluginPanel lastPluginPanel;
+	private NavigationButton sidebarNavigationButton;
+	private JButton sidebarNavigationJButton;
 
 	@Inject
 	private ClientUI(
@@ -130,11 +144,6 @@ public class ClientUI
 		this.eventBus = eventBus;
 	}
 
-	/**
-	 * On config changed.
-	 *
-	 * @param event the event
-	 */
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -212,24 +221,28 @@ public class ClientUI
 					return;
 				}
 
-				if (currentButton != null)
-				{
-					currentButton.setSelected(false);
-				}
+				boolean doClose = currentButton != null && currentButton == jButton && currentButton.isSelected();
 
-				if (currentNavButton != null)
-				{
-					currentNavButton.setSelected(false);
-				}
-
-				if (currentButton == jButton && currentNavButton == navButton)
+				if (doClose)
 				{
 					contract();
+					currentButton.setSelected(false);
+					currentNavButton.setSelected(false);
 					currentButton = null;
 					currentNavButton = null;
 				}
 				else
 				{
+					if (currentButton != null)
+					{
+						currentButton.setSelected(false);
+					}
+
+					if (currentNavButton != null)
+					{
+						currentNavButton.setSelected(false);
+					}
+
 					currentButton = jButton;
 					currentNavButton = navButton;
 					currentButton.setSelected(true);
@@ -319,7 +332,7 @@ public class ClientUI
 					&& client instanceof Client
 					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
 
-			final JPanel container = new JPanel();
+			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 			container.add(new ClientPanel(client));
 
@@ -330,8 +343,6 @@ public class ClientUI
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
-			container.add(pluginToolbar);
-
 			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
 		});
@@ -397,6 +408,7 @@ public class ClientUI
 				});
 			}
 
+			// Show frame
 			frame.pack();
 			SwingUtil.revalidateMinimumSize(frame);
 			frame.setLocationRelativeTo(frame.getOwner());
@@ -404,8 +416,22 @@ public class ClientUI
 			frame.toFront();
 			requestFocus();
 			giveClientFocus();
-
 			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
+			// Create hide sidebar button
+			sidebarNavigationButton = NavigationButton
+				.builder()
+				.icon(SIDEBAR_CLOSE)
+				.onClick(this::toggleSidebar)
+				.build();
+
+			sidebarNavigationJButton = SwingUtil.createSwingButton(
+				sidebarNavigationButton,
+				0,
+				null);
+
+			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
+			toggleSidebar();
 		});
 
 		eventBus.post(new ClientUILoaded());
@@ -480,8 +506,90 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
-	private void expand(PluginPanel panel)
+	private void toggleSidebar()
 	{
+		// Toggle sidebar open
+		boolean isSidebarOpen = sidebarOpen;
+		sidebarOpen = !sidebarOpen;
+
+		// Select/deselect buttons
+		if (currentButton != null)
+		{
+			currentButton.setSelected(sidebarOpen);
+		}
+
+		if (currentNavButton != null)
+		{
+			currentNavButton.setSelected(sidebarOpen);
+		}
+
+		if (isSidebarOpen)
+		{
+			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
+			sidebarNavigationJButton.setToolTipText("Open SideBar");
+
+			// Save last panel and close current one
+			lastPluginPanel = pluginPanel;
+			contract();
+
+			// Remove plugin toolbar
+			container.remove(pluginToolbar);
+		}
+		else
+		{
+			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_CLOSE));
+			sidebarNavigationJButton.setToolTipText("Close SideBar");
+
+			// Try to restore last panel
+			expand(lastPluginPanel);
+
+			// Add plugin toolbar back
+			container.add(pluginToolbar);
+		}
+
+		// Revalidate sizes of affected Swing components
+		container.revalidate();
+		container.repaint();
+		giveClientFocus();
+
+		if (sidebarOpen)
+		{
+			// If sidebar is now open, check if expanded width after opening the sidebar will be higher
+			// than screen width, and if not, change the frame size to be original size + sidebar size
+			if (SwingUtil.isInScreenBounds(
+				frame.getLocationOnScreen().x + frame.getWidth() + pluginToolbar.getWidth(),
+				frame.getLocationOnScreen().y))
+			{
+				frame.setSize(frame.getWidth() + pluginToolbar.getWidth(), frame.getHeight());
+			}
+
+			SwingUtil.revalidateMinimumSize(frame);
+		}
+		else
+		{
+			SwingUtil.revalidateMinimumSize(frame);
+
+			// If size of the frame is smaller than screen size (e.g, not fullscreen) change the frame width
+			// to be frame width - sidebar width, as sidebar is now hidden
+			if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+			{
+				frame.setSize(frame.getWidth() - pluginToolbar.getWidth(), frame.getHeight());
+			}
+		}
+	}
+
+	private void expand(@Nullable PluginPanel panel)
+	{
+		if (panel == null)
+		{
+			return;
+		}
+
+		if (!sidebarOpen)
+		{
+			toggleSidebar();
+		}
+
 		if (pluginPanel != null)
 		{
 			navContainer.remove(0);
@@ -489,7 +597,7 @@ public class ClientUI
 		else
 		{
 			if (SwingUtil.isInScreenBounds(
-				frame.getLocationOnScreen().y + frame.getWidth() + PANEL_EXPANDED_WIDTH,
+				frame.getLocationOnScreen().x + frame.getWidth() + PANEL_EXPANDED_WIDTH,
 				frame.getLocationOnScreen().y))
 			{
 				frame.setSize(frame.getWidth() + PANEL_EXPANDED_WIDTH, frame.getHeight());
@@ -514,6 +622,11 @@ public class ClientUI
 
 	private void contract()
 	{
+		if (pluginPanel == null)
+		{
+			return;
+		}
+
 		boolean wasMinimumWidth = frame.getWidth() == frame.getMinimumSize().width;
 		pluginPanel.onDeactivate();
 		navContainer.remove(0);
