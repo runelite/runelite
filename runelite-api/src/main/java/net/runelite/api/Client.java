@@ -344,4 +344,6 @@ public interface Client extends GameEngine
 	 * @return world
 	 */
 	World createWorld();
+
+	SpritePixels drawInstanceMap(int z);
 }
