@@ -113,6 +113,7 @@ public class ClientUI
 	private ClientPluginToolbar pluginToolbar;
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
+	private NavigationButton currentNavButton;
 
 	@Inject
 	private ClientUI(
@@ -200,9 +201,9 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (jButton) ->
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (navButton, jButton) ->
 			{
-				final PluginPanel panel = event.getButton().getPanel();
+				final PluginPanel panel = navButton.getPanel();
 
 				if (panel == null)
 				{
@@ -214,15 +215,23 @@ public class ClientUI
 					currentButton.setSelected(false);
 				}
 
-				if (currentButton == jButton)
+				if (currentNavButton != null)
+				{
+					currentNavButton.setSelected(false);
+				}
+
+				if (currentButton == jButton && currentNavButton == navButton)
 				{
 					contract();
 					currentButton = null;
+					currentNavButton = null;
 				}
 				else
 				{
 					currentButton = jButton;
+					currentNavButton = navButton;
 					currentButton.setSelected(true);
+					currentNavButton.setSelected(true);
 					expand(panel);
 				}
 			});
