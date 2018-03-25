@@ -58,10 +58,7 @@ public abstract class ScriptVMMixin implements RSClient
 	{
 		if (opcode == RUNELITE_EXECUTE)
 		{
-			if (currentScript.getInstructions()[currentScriptPC] != RUNELITE_EXECUTE)
-			{
-				throw new AssertionError("currentScriptPC is wrong");
-			}
+			assert currentScript.getInstructions()[currentScriptPC] == RUNELITE_EXECUTE;
 
 			int stringStackSize = client.getStringStackSize();
 			String stringOp = client.getStringStack()[--stringStackSize];
