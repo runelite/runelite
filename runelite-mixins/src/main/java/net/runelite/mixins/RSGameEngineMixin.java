@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import java.awt.Canvas;
-import net.runelite.api.GameEngine;
-import net.runelite.api.KeyFocusListener;
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
+import net.runelite.rs.api.RSGameEngine;
 
-public interface RSGameEngine extends GameEngine, KeyFocusListener
+@Mixin(RSGameEngine.class)
+public abstract class RSGameEngineMixin implements RSGameEngine
 {
-	@Import("canvas")
-	Canvas getCanvas();
+	@Inject
+	private Thread thread;
+
+	@Inject
+	@Override
+	public Thread getClientThread()
+	{
+		return thread;
+	}
+
+	@Inject
+	@Override
+	public boolean isClientThread()
+	{
+		return thread == Thread.currentThread();
+	}
+
+	@Copy("run")
+	public abstract void rs$run();
+
+	@Replace("run")
+	public void rl$run()
+	{
+		thread = Thread.currentThread();
+		rs$run();
+	}
 }
