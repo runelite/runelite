@@ -141,11 +141,11 @@ public class HiscorePlugin extends Plugin
 	{
 		String option = event.getOption();
 
-		if (option.equals("Message") ||
-			option.equals("Delete") ||
-			option.equals("Add ignore") ||
-			option.equals("Remove friend") ||
-			option.equals("Remove ignore"))
+		if ((option.equals("Message") && config.privateMessageOption()) ||
+			(option.equals("Delete") && config.listOption()) ||
+			(option.equals("Add ignore") && config.chatOption()) ||
+			(option.equals("Remove friend") && config.chatOption()) ||
+			(option.equals("Remove ignore") && config.chatOption()))
 		{
 			addMenuEntry(option, LOOKUP, true);
 		}
