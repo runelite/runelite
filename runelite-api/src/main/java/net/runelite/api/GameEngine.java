@@ -29,4 +29,8 @@ import java.awt.Canvas;
 public interface GameEngine
 {
 	Canvas getCanvas();
+
+	Thread getClientThread();
+
+	boolean isClientThread();
 }
