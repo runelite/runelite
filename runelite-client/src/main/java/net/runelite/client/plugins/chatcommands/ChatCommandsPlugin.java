@@ -28,7 +28,6 @@ package net.runelite.client.plugins.chatcommands;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -50,6 +49,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
@@ -65,7 +65,6 @@ import net.runelite.http.api.item.SearchResult;
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
@@ -249,7 +248,7 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(NUMBER_FORMATTER.format(itemPrice.getPrice()));
+				.append(StackFormatter.formatNumber(itemPrice.getPrice()));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
@@ -259,7 +258,7 @@ public class ChatCommandsPlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(NUMBER_FORMATTER.format(alchPrice));
+					.append(StackFormatter.formatNumber(alchPrice));
 			}
 
 			String response = builder.build();
