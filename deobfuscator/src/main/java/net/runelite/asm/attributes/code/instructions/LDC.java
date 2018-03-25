@@ -68,7 +68,7 @@ public class LDC extends Instruction implements PushConstantInstruction
 		if (object instanceof net.runelite.asm.pool.Class)
 		{
 			net.runelite.asm.pool.Class cl = (net.runelite.asm.pool.Class) object;
-			org.objectweb.asm.Type type = org.objectweb.asm.Type.getType("L" + cl.getName().replace('.', '/') + ";");
+			org.objectweb.asm.Type type = org.objectweb.asm.Type.getType("L" + cl.getName() + ";");
 			visitor.visitLdcInsn(type);
 		}
 		else if (object.equals(0d))
