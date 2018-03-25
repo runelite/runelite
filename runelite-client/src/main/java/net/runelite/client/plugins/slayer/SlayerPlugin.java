@@ -113,7 +113,15 @@ public class SlayerPlugin extends Plugin
 			&& !config.taskName().isEmpty())
 		{
 			setTask(config.taskName(), config.amount());
-		}
+		} 
+                if (config.streak() != -1)
+                {
+                        setStreak(config.streak());
+                }
+                if (config.points() != -1)
+                {
+                        setPoints(config.points());
+                }	
 	}
 
 	@Override
