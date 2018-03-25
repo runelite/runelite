@@ -480,6 +480,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
 	{
+		assert isClientThread();
 		int zoom = get3dZoom();
 		set3dZoom(scale);
 		try
