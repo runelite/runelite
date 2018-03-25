@@ -25,8 +25,8 @@
 package net.runelite.rs.api;
 
 import java.util.Map;
-import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
@@ -425,7 +425,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("rasterProvider")
 	@Override
-	BufferProvider getBufferProvider();
+	RSBufferProvider getBufferProvider();
 
 	@Import("mouseIdleTicks")
 	@Override
@@ -532,4 +532,13 @@ public interface RSClient extends RSGameEngine, Client
 	@Construct
 	@Override
 	RSWorld createWorld();
+
+	@Import("minimapSprite")
+	RSSpritePixels getMinimapSprite();
+
+	@Import("minimapSprite")
+	void setMinimapSprite(SpritePixels spritePixels);
+
+	@Import("drawObject")
+	void drawObject(int z, int x, int y, int randomColor1, int randomColor2);
 }

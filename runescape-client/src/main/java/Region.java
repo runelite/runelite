@@ -963,7 +963,8 @@ public class Region {
    }
 
    @ObfuscatedName("at")
-   public void method2927(int[] var1, int var2, int var3, int var4, int var5, int var6) {
+   @Export("drawTile")
+   public void drawTile(int[] var1, int var2, int var3, int var4, int var5, int var6) {
       Tile var7 = this.tiles[var4][var5][var6];
       if(var7 != null) {
          SceneTilePaint var8 = var7.paint;
