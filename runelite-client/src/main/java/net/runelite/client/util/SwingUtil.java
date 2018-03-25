@@ -42,7 +42,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
@@ -261,7 +261,7 @@ public class SwingUtil
 	public static JButton createSwingButton(
 		@Nonnull final NavigationButton navigationButton,
 		int iconSize,
-		@Nullable final Consumer<JButton> specialCallback)
+		@Nullable final BiConsumer<NavigationButton, JButton> specialCallback)
 	{
 
 		final BufferedImage scaledImage = iconSize > 0
@@ -278,7 +278,7 @@ public class SwingUtil
 		{
 			if (specialCallback != null)
 			{
-				specialCallback.accept(button);
+				specialCallback.accept(navigationButton, button);
 			}
 
 			if (navigationButton.getOnClick() != null)
@@ -301,16 +301,7 @@ public class SwingUtil
 			button.setComponentPopupMenu(popupMenu);
 		}
 
-		navigationButton.setOnSelect(() ->
-		{
-			button.setSelected(navigationButton.isSelected());
-
-			if (navigationButton.isSelected())
-			{
-				button.doClick();
-			}
-		});
-
+		navigationButton.setOnSelect(button::doClick);
 		return button;
 	}
 
