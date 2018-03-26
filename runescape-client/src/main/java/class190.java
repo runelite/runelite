@@ -659,13 +659,13 @@ public class class190 {
 
                         ScriptEvent var36;
                         if(var9.onVarTransmitListener != null && Client.field1033 > var9.field2945) {
-                           if(var9.configTriggers != null && Client.field1033 - var9.field2945 <= 32) {
+                           if(var9.varTransmitTriggers != null && Client.field1033 - var9.field2945 <= 32) {
                               label1202:
                               for(var47 = var9.field2945; var47 < Client.field1033; ++var47) {
                                  var22 = Client.field1032[var47 & 31];
 
-                                 for(var23 = 0; var23 < var9.configTriggers.length; ++var23) {
-                                    if(var22 == var9.configTriggers[var23]) {
+                                 for(var23 = 0; var23 < var9.varTransmitTriggers.length; ++var23) {
+                                    if(var22 == var9.varTransmitTriggers[var23]) {
                                        var36 = new ScriptEvent();
                                        var36.widget = var9;
                                        var36.objs = var9.onVarTransmitListener;
