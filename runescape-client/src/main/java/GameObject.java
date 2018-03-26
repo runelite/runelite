@@ -182,7 +182,7 @@ public final class GameObject {
       } else if(var0 == 1418) {
          var3.onChatTransmitListener = var8;
       } else if(var0 == 1419) {
-         var3.field2920 = var8;
+         var3.onKeyListener = var8;
       } else if(var0 == 1420) {
          var3.field2921 = var8;
       } else if(var0 == 1421) {

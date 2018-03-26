@@ -519,7 +519,8 @@ public class Widget extends Node {
    @Export("onChatTransmitListener")
    public Object[] onChatTransmitListener;
    @ObfuscatedName("dg")
-   public Object[] field2920;
+   @Export("onKeyListener")
+   public Object[] onKeyListener;
    @ObfuscatedName("dx")
    public Object[] field2921;
    @ObfuscatedName("di")
