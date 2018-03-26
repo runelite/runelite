@@ -170,7 +170,7 @@ public final class GameObject {
       } else if(var0 == 1412) {
          var3.mouseHoverListener = var8;
       } else if(var0 == 1414) {
-         var3.tableListenerArgs = var8;
+         var3.onInvTransmitListener = var8;
          var3.tableModTriggers = var5;
       } else if(var0 == 1415) {
          var3.skillListenerArgs = var8;

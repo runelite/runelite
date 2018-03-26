@@ -484,8 +484,8 @@ public class Widget extends Node {
    @Export("configTriggers")
    public int[] configTriggers;
    @ObfuscatedName("dy")
-   @Export("tableListenerArgs")
-   public Object[] tableListenerArgs;
+   @Export("onInvTransmitListener")
+   public Object[] onInvTransmitListener;
    @ObfuscatedName("dn")
    @Export("tableModTriggers")
    public int[] tableModTriggers;
@@ -1102,7 +1102,7 @@ public class Widget extends Node {
       this.onTargetLeaveListener = this.decodeListener(var1);
       this.onTargetEnterListener = this.decodeListener(var1);
       this.onVarTransmitListener = this.decodeListener(var1);
-      this.tableListenerArgs = this.decodeListener(var1);
+      this.onInvTransmitListener = this.decodeListener(var1);
       this.skillListenerArgs = this.decodeListener(var1);
       this.renderListener = this.decodeListener(var1);
       this.field2917 = this.decodeListener(var1);

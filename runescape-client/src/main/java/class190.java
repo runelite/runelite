@@ -684,7 +684,7 @@ public class class190 {
                            var9.field2945 = Client.field1033;
                         }
 
-                        if(var9.tableListenerArgs != null && Client.field1035 > var9.field2946) {
+                        if(var9.onInvTransmitListener != null && Client.field1035 > var9.field2946) {
                            if(var9.tableModTriggers != null && Client.field1035 - var9.field2946 <= 32) {
                               label1178:
                               for(var47 = var9.field2946; var47 < Client.field1035; ++var47) {
@@ -694,7 +694,7 @@ public class class190 {
                                     if(var22 == var9.tableModTriggers[var23]) {
                                        var36 = new ScriptEvent();
                                        var36.widget = var9;
-                                       var36.objs = var9.tableListenerArgs;
+                                       var36.objs = var9.onInvTransmitListener;
                                        Client.field1045.addFront(var36);
                                        break label1178;
                                     }
@@ -703,7 +703,7 @@ public class class190 {
                            } else {
                               var35 = new ScriptEvent();
                               var35.widget = var9;
-                              var35.objs = var9.tableListenerArgs;
+                              var35.objs = var9.onInvTransmitListener;
                               Client.field1045.addFront(var35);
                            }
 
