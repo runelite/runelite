@@ -154,6 +154,8 @@ public interface Client extends GameEngine
 
 	int[] getVarps();
 
+	Varcs getVarcs();
+
 	int getSetting(Setting setting);
 
 	int getSetting(Varbits varbit);
