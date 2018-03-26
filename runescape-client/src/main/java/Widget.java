@@ -459,8 +459,8 @@ public class Widget extends Node {
    @ObfuscatedName("dp")
    public Object[] field2902;
    @ObfuscatedName("da")
-   @Export("mouseEnterListener")
-   public Object[] mouseEnterListener;
+   @Export("onMouseOverListener")
+   public Object[] onMouseOverListener;
    @ObfuscatedName("dr")
    @Export("mouseHoverListener")
    public Object[] mouseHoverListener;
@@ -1095,7 +1095,7 @@ public class Widget extends Node {
       this.field2895 = var1.readUnsignedByte() == 1;
       this.selectedAction = var1.readString();
       this.onLoadListener = this.decodeListener(var1);
-      this.mouseEnterListener = this.decodeListener(var1);
+      this.onMouseOverListener = this.decodeListener(var1);
       this.mouseExitListener = this.decodeListener(var1);
       this.field2807 = this.decodeListener(var1);
       this.field2908 = this.decodeListener(var1);

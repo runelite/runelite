@@ -149,7 +149,7 @@ public final class GameObject {
       } else if(var0 == 1402) {
          var3.field2901 = var8;
       } else if(var0 == 1403) {
-         var3.mouseEnterListener = var8;
+         var3.onMouseOverListener = var8;
       } else if(var0 == 1404) {
          var3.mouseExitListener = var8;
       } else if(var0 == 1405) {
