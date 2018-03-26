@@ -701,9 +701,9 @@ public class FileRequest extends CacheableNode {
                                  } else {
                                     var51.calculateBoundsCylinder();
                                     if(var10.field2874) {
-                                       var51.method2703(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2866, var22 + var23 + var10.field2867, var24 + var10.field2867, var10.modelZoom);
+                                       var51.method2703(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.offsetX2d, var22 + var23 + var10.field2867, var24 + var10.field2867, var10.modelZoom);
                                     } else {
-                                       var51.method2702(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2866, var22 + var23 + var10.field2867, var24 + var10.field2867);
+                                       var51.method2702(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.offsetX2d, var22 + var23 + var10.field2867, var24 + var10.field2867);
                                     }
                                  }
                               }
