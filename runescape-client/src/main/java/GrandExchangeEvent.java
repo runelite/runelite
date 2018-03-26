@@ -120,10 +120,10 @@ public class GrandExchangeEvent {
          return 1;
       } else if(var0 != 1801) {
          if(var0 == 1802) {
-            if(var3.name == null) {
+            if(var3.opBase == null) {
                class81.scriptStringStack[++class316.scriptStringStackSize - 1] = "";
             } else {
-               class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.name;
+               class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.opBase;
             }
 
             return 1;

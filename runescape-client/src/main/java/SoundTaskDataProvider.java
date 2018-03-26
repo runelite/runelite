@@ -143,7 +143,7 @@ public class SoundTaskDataProvider implements class101 {
          var3.dragDeadTime = class81.intStack[--class5.intStackSize];
          return 1;
       } else if(var0 == 1305) {
-         var3.name = class81.scriptStringStack[--class316.scriptStringStackSize];
+         var3.opBase = class81.scriptStringStack[--class316.scriptStringStackSize];
          return 1;
       } else if(var0 == 1306) {
          var3.targetVerb = class81.scriptStringStack[--class316.scriptStringStackSize];

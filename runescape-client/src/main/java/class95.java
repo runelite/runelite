@@ -185,7 +185,7 @@ public class class95 {
             var4 = GrandExchangeEvent.getWidgetClickMask(var0);
             boolean var19 = (var4 >> 21 & 1) != 0;
             if(var19 && (class150.field2100 & 32) == 32) {
-               class169.addMenuEntry(Client.field1006, Client.field1074 + " " + "->" + " " + var0.name, 58, 0, var0.index, var0.id);
+               class169.addMenuEntry(Client.field1006, Client.field1074 + " " + "->" + " " + var0.opBase, 58, 0, var0.index, var0.id);
             }
          } else {
             for(var13 = 9; var13 >= 5; --var13) {
@@ -199,13 +199,13 @@ public class class95 {
                }
 
                if(var14 != null) {
-                  class169.addMenuEntry(var14, var0.name, 1007, var13 + 1, var0.index, var0.id);
+                  class169.addMenuEntry(var14, var0.opBase, 1007, var13 + 1, var0.index, var0.id);
                }
             }
 
             var3 = class21.method172(var0);
             if(var3 != null) {
-               class169.addMenuEntry(var3, var0.name, 25, 0, var0.index, var0.id);
+               class169.addMenuEntry(var3, var0.opBase, 25, 0, var0.index, var0.id);
             }
 
             for(var4 = 4; var4 >= 0; --var4) {
@@ -219,7 +219,7 @@ public class class95 {
                }
 
                if(var15 != null) {
-                  class169.addMenuEntry(var15, var0.name, 57, var4 + 1, var0.index, var0.id);
+                  class169.addMenuEntry(var15, var0.opBase, 57, var4 + 1, var0.index, var0.id);
                }
             }
 

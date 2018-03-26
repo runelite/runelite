@@ -418,8 +418,8 @@ public class Widget extends Node {
    @Export("clickMask")
    public int clickMask;
    @ObfuscatedName("ci")
-   @Export("name")
-   public String name;
+   @Export("opBase")
+   public String opBase;
    @ObfuscatedName("cc")
    @Export("actions")
    public String[] actions;
@@ -704,7 +704,7 @@ public class Widget extends Node {
       this.paddingX = 0;
       this.paddingY = 0;
       this.clickMask = 0;
-      this.name = "";
+      this.opBase = "";
       this.dragParent = null;
       this.dragDeadZone = 0;
       this.dragDeadTime = 0;
@@ -1092,7 +1092,7 @@ public class Widget extends Node {
       }
 
       this.clickMask = var1.read24BitInt();
-      this.name = var1.readString();
+      this.opBase = var1.readString();
       int var2 = var1.readUnsignedByte();
       if(var2 > 0) {
          this.actions = new String[var2];

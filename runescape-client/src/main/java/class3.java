@@ -424,7 +424,7 @@ final class class3 implements class0 {
                         }
 
                         if(var23.hasScript) {
-                           Client.field1074 = var23.name + class37.getColTags(16777215);
+                           Client.field1074 = var23.opBase + class37.getColTags(16777215);
                         } else {
                            Client.field1074 = class37.getColTags(65280) + var23.spellName + class37.getColTags(16777215);
                         }
