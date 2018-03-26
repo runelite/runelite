@@ -39,6 +39,8 @@ public @interface PluginDescriptor
 
 	boolean enabledByDefault() default true;
 
+	String description() default "";
+
 	/**
 	 * Whether or not plugin is hidden from configuration panel
 	 * @return
