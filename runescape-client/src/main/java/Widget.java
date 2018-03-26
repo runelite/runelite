@@ -528,7 +528,8 @@ public class Widget extends Node {
    @Export("onClanTransmitListener")
    public Object[] onClanTransmitListener;
    @ObfuscatedName("dv")
-   public Object[] field2923;
+   @Export("onMiscTransmitListener")
+   public Object[] onMiscTransmitListener;
    @ObfuscatedName("dz")
    public Object[] field2924;
    @ObfuscatedName("ds")

@@ -771,10 +771,10 @@ public class class190 {
                            Client.field1045.addFront(var35);
                         }
 
-                        if(Client.field981 > var9.field2944 && var9.field2923 != null) {
+                        if(Client.field981 > var9.field2944 && var9.onMiscTransmitListener != null) {
                            var35 = new ScriptEvent();
                            var35.widget = var9;
-                           var35.objs = var9.field2923;
+                           var35.objs = var9.onMiscTransmitListener;
                            Client.field1045.addFront(var35);
                         }
 

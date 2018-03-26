@@ -188,7 +188,7 @@ public final class GameObject {
       } else if(var0 == 1421) {
          var3.onClanTransmitListener = var8;
       } else if(var0 == 1422) {
-         var3.field2923 = var8;
+         var3.onMiscTransmitListener = var8;
       } else if(var0 == 1423) {
          var3.field2924 = var8;
       } else if(var0 == 1424) {
