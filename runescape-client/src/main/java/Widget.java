@@ -525,7 +525,8 @@ public class Widget extends Node {
    @Export("onFriendTransmitListener")
    public Object[] onFriendTransmitListener;
    @ObfuscatedName("di")
-   public Object[] field2922;
+   @Export("onClanTransmitListener")
+   public Object[] onClanTransmitListener;
    @ObfuscatedName("dv")
    public Object[] field2923;
    @ObfuscatedName("dz")
