@@ -38,12 +38,16 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "XP Globes"
 )
+@PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
 {
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
@@ -60,6 +64,9 @@ public class XpGlobesPlugin extends Plugin
 
 	@Inject
 	private XpGlobesOverlay overlay;
+
+	@Inject
+	private XpTrackerService xpTrackerService;
 
 	@Provides
 	XpGlobesConfig getConfig(ConfigManager configManager)
@@ -90,7 +97,8 @@ public class XpGlobesPlugin extends Plugin
 
 		int startingXp = Experience.getXpForLevel(currentLevel);
 		int goalXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
-
+		double xpPerHour = xpTrackerService.getXpPerHour(skill);
+		int actionsLeft = xpTrackerService.getActionsLeft(skill);
 		if (cachedGlobe != null)
 		{
 			cachedGlobe.setSkill(skill);
@@ -99,13 +107,14 @@ public class XpGlobesPlugin extends Plugin
 			cachedGlobe.setGoalXp(goalXp);
 			cachedGlobe.setTime(Instant.now());
 			cachedGlobe.setSkillProgressRadius(startingXp, currentXp, goalXp);
-
+			cachedGlobe.setXpPerHour(xpPerHour);
+			cachedGlobe.setActionsLeft(actionsLeft);
 			this.addXpGlobe(globeCache[skillIdx], MAXIMUM_SHOWN_GLOBES);
 		}
 		else
 		{
 			//dont draw non cached globes, this is triggered on login to setup all of the initial values
-			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp);
+			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp, xpPerHour, actionsLeft);
 		}
 	}
 

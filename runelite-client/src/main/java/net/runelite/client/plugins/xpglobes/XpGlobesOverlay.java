@@ -222,25 +222,47 @@ public class XpGlobesOverlay extends Overlay
 		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
 
+		String xpPerHour = decimalFormat.format(mouseOverSkill.getXpPerHour());
+		String actionsLeft = decimalFormat.format(mouseOverSkill.getActionsLeft());//Integer.toString(mouseOverSkill.getActionsLeft());
 		PanelComponent xpTooltip = new PanelComponent();
 		xpTooltip.setPosition(new java.awt.Point(x, y));
 		xpTooltip.setWidth(TOOLTIP_RECT_SIZE_X);
 
 		List<PanelComponent.Line> lines = xpTooltip.getLines();
-		lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));
-		lines.add(new PanelComponent.Line("Current xp:", Color.ORANGE, skillCurrentXp, Color.WHITE));
+		if (config.enableSkillName())
+		{
+			lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));
+		}
+		if (config.enableCurrentXp())
+		{
+			lines.add(new PanelComponent.Line("Current xp:", Color.ORANGE, skillCurrentXp, Color.WHITE));
+		}
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
 			String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
-			lines.add(new PanelComponent.Line("Xp to level:", Color.ORANGE, skillXpToLvl, Color.WHITE));
+			if (config.enableXpToLevel())
+			{
+				lines.add(new PanelComponent.Line("Xp to level:", Color.ORANGE, skillXpToLvl, Color.WHITE));
+			}
 
-			//Create progress bar for skill.
-			ProgressBarComponent progressBar = new ProgressBarComponent();
-			double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
-				mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
-			progressBar.setProgress(progress);
+			if (config.enableProgressBar())
+			{
+				//Create progress bar for skill.
+				ProgressBarComponent progressBar = new ProgressBarComponent();
+				double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
+						mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
+				progressBar.setProgress(progress);
 
-			xpTooltip.setProgressBar(progressBar);
+				xpTooltip.setProgressBar(progressBar);
+			}
+		}
+		if (config.enableXpPerHour())
+		{
+			lines.add(new PanelComponent.Line("Xp/hr:", Color.ORANGE, xpPerHour, Color.WHITE));
+		}
+		if (config.enableActionsLeft())
+		{
+			lines.add(new PanelComponent.Line("Actions left:", Color.ORANGE, actionsLeft, Color.WHITE));
 		}
 
 		xpTooltip.render(graphics);

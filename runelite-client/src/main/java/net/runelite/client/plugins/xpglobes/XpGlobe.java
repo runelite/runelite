@@ -37,13 +37,17 @@ public class XpGlobe
 	private int goalXp;
 	private Instant time;
 	private double skillProgressRadius;
+	private double xpPerHour;
+	private int actionsLeft;
 
-	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp)
+	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp, double xpPerHour, int actionsLeft)
 	{
 		this.skill = skill;
 		this.currentXp = currentXp;
 		this.currentLevel = currentLevel;
 		this.goalXp = goalXp;
+		this.xpPerHour = xpPerHour;
+		this.actionsLeft = actionsLeft;
 	}
 
 	public Skill getSkill()
@@ -123,4 +127,25 @@ public class XpGlobe
 	{
 		this.time = time;
 	}
+
+	public double getXpPerHour()
+	{
+		return xpPerHour;
+	}
+
+	public void setXpPerHour(double xpPerHour)
+	{
+		this.xpPerHour = xpPerHour;
+	}
+
+	public int getActionsLeft()
+	{
+		return actionsLeft;
+	}
+
+	public void setActionsLeft(int actionsLeft)
+	{
+		this.actionsLeft = actionsLeft;
+	}
+
 }
