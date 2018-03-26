@@ -139,7 +139,7 @@ public class DailyTasksPlugin extends Plugin
 	private boolean checkCanCollectEssence()
 	{
 		int value = client.getSetting(Varbits.DAILY_ESSENCE);
-		return value < 0; // 1 = can't claim
+		return value == 0; // 1 = can't claim
 	}
 
 	private void cacheColors()
