@@ -174,7 +174,7 @@ public final class GameObject {
          var3.invTransmitTriggers = var5;
       } else if(var0 == 1415) {
          var3.onStatTransmitListener = var8;
-         var3.skillTriggers = var5;
+         var3.statTransmitTriggers = var5;
       } else if(var0 == 1416) {
          var3.onTargetEnterListener = var8;
       } else if(var0 == 1417) {

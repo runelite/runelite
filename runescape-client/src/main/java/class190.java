@@ -711,13 +711,13 @@ public class class190 {
                         }
 
                         if(var9.onStatTransmitListener != null && Client.field1037 > var9.field2947) {
-                           if(var9.skillTriggers != null && Client.field1037 - var9.field2947 <= 32) {
+                           if(var9.statTransmitTriggers != null && Client.field1037 - var9.field2947 <= 32) {
                               label1154:
                               for(var47 = var9.field2947; var47 < Client.field1037; ++var47) {
                                  var22 = Client.field894[var47 & 31];
 
-                                 for(var23 = 0; var23 < var9.skillTriggers.length; ++var23) {
-                                    if(var22 == var9.skillTriggers[var23]) {
+                                 for(var23 = 0; var23 < var9.statTransmitTriggers.length; ++var23) {
+                                    if(var22 == var9.statTransmitTriggers[var23]) {
                                        var36 = new ScriptEvent();
                                        var36.widget = var9;
                                        var36.objs = var9.onStatTransmitListener;
