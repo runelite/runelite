@@ -301,8 +301,6 @@ public class ClientUI
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
 
-			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
-
 			frame.setTitle(properties.getTitle());
 			frame.setIconImage(ICON);
 			frame.getLayeredPane().setCursor(Cursor.getDefaultCursor()); // Prevent substance from using a resize cursor for pointing
@@ -399,6 +397,8 @@ public class ClientUI
 			frame.toFront();
 			requestFocus();
 			giveClientFocus();
+
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
 		});
 
 		eventBus.post(new ClientUILoaded());
