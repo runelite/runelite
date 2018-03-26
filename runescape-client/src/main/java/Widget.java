@@ -542,7 +542,8 @@ public class Widget extends Node {
    @Export("onStockTransmitListener")
    public Object[] onStockTransmitListener;
    @ObfuscatedName("ek")
-   public Object[] field2820;
+   @Export("onCamFinishedListener")
+   public Object[] onCamFinishedListener;
    @ObfuscatedName("ej")
    @Export("dynamicValues")
    public int[][] dynamicValues;

@@ -196,7 +196,7 @@ public final class GameObject {
       } else if(var0 == 1425) {
          var3.onStockTransmitListener = var8;
       } else if(var0 == 1426) {
-         var3.field2820 = var8;
+         var3.onCamFinishedListener = var8;
       } else {
          if(var0 != 1427) {
             return 2;

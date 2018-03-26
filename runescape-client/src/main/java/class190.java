@@ -764,10 +764,10 @@ public class class190 {
                            Client.field1045.addFront(var35);
                         }
 
-                        if(Client.field913 > var9.field2944 && var9.field2820 != null) {
+                        if(Client.field913 > var9.field2944 && var9.onCamFinishedListener != null) {
                            var35 = new ScriptEvent();
                            var35.widget = var9;
-                           var35.objs = var9.field2820;
+                           var35.objs = var9.onCamFinishedListener;
                            Client.field1045.addFront(var35);
                         }
 
