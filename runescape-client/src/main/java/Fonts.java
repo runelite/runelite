@@ -73,10 +73,10 @@ public class Fonts {
    static void method5482() {
       if(Client.spellSelected) {
          Widget var0 = CollisionData.getWidgetChild(Resampler.field1597, Client.field1050);
-         if(var0 != null && var0.field2807 != null) {
+         if(var0 != null && var0.onTargetLeaveListener != null) {
             ScriptEvent var1 = new ScriptEvent();
             var1.widget = var0;
-            var1.objs = var0.field2807;
+            var1.objs = var0.onTargetLeaveListener;
             class25.runScript(var1, 500000);
          }
 
