@@ -150,7 +150,7 @@ public class GZipDecompressor {
       } else if(var0 == 1109) {
          class5.intStackSize -= 6;
          var3.offsetX2d = class81.intStack[class5.intStackSize];
-         var3.field2867 = class81.intStack[class5.intStackSize + 1];
+         var3.offsetY2d = class81.intStack[class5.intStackSize + 1];
          var3.rotationX = class81.intStack[class5.intStackSize + 2];
          var3.rotationZ = class81.intStack[class5.intStackSize + 3];
          var3.rotationY = class81.intStack[class5.intStackSize + 4];

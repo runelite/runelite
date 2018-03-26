@@ -318,7 +318,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 2006437099
    )
-   public int field2867;
+   @Export("offsetY2d")
+   public int offsetY2d;
    @ObfuscatedName("bx")
    @ObfuscatedGetter(
       intValue = 89578305
@@ -686,7 +687,7 @@ public class Widget extends Node {
       this.field2838 = -1;
       this.field2865 = -1;
       this.offsetX2d = 0;
-      this.field2867 = 0;
+      this.offsetY2d = 0;
       this.rotationX = 0;
       this.rotationZ = 0;
       this.rotationY = 0;
@@ -1045,7 +1046,7 @@ public class Widget extends Node {
          }
 
          this.offsetX2d = var1.readShort();
-         this.field2867 = var1.readShort();
+         this.offsetY2d = var1.readShort();
          this.rotationX = var1.readUnsignedShort();
          this.rotationZ = var1.readUnsignedShort();
          this.rotationY = var1.readUnsignedShort();

@@ -553,7 +553,7 @@ public class AbstractSoundSystem {
          var3.rotationZ = var6.yan2d;
          var3.rotationY = var6.zan2d;
          var3.offsetX2d = var6.offsetX2d;
-         var3.field2867 = var6.offsetY2d;
+         var3.offsetY2d = var6.offsetY2d;
          var3.modelZoom = var6.zoom2d;
          if(var0 == 1205) {
             var3.field2864 = 0;

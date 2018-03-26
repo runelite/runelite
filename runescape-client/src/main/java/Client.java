@@ -4868,7 +4868,7 @@ public final class Client extends GameEngine implements class302 {
                   var65.rotationZ = var73.yan2d;
                   var65.rotationY = var73.zan2d;
                   var65.offsetX2d = var73.offsetX2d;
-                  var65.field2867 = var73.offsetY2d;
+                  var65.offsetY2d = var73.offsetY2d;
                   var65.modelZoom = var73.zoom2d;
                   if(var73.isStackable == 1) {
                      var65.field2864 = 1;
