@@ -400,7 +400,7 @@ final class class3 implements class0 {
                      var23 = CollisionData.getWidgetChild(var1, var0);
                      if(var23 != null) {
                         Fonts.method5482();
-                        var10 = GrandExchangeEvent.getWidgetConfig(var23);
+                        var10 = GrandExchangeEvent.getWidgetClickMask(var23);
                         var24 = var10 >> 11 & 63;
                         int var12 = var23.itemId;
                         Widget var13 = CollisionData.getWidgetChild(var1, var0);
@@ -839,7 +839,7 @@ final class class3 implements class0 {
                                        var11 = WorldMapManager.method644(var25);
                                     }
 
-                                    if(var11 && class81.method1814(GrandExchangeEvent.getWidgetConfig(var25), var3 - 1)) {
+                                    if(var11 && class81.method1814(GrandExchangeEvent.getWidgetClickMask(var25), var3 - 1)) {
                                        PacketNode var18;
                                        if(var3 == 1) {
                                           var18 = class33.method382(ClientPacket.field2380, Client.field1072.field1456);

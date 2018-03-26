@@ -1129,7 +1129,7 @@ public class WorldMapRegion {
       if(var0 == 2800) {
          int[] var4 = class81.intStack;
          int var5 = ++class5.intStackSize - 1;
-         int var7 = GrandExchangeEvent.getWidgetConfig(var3);
+         int var7 = GrandExchangeEvent.getWidgetClickMask(var3);
          int var6 = var7 >> 11 & 63;
          var4[var5] = var6;
          return 1;

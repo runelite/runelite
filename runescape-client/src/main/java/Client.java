@@ -3247,7 +3247,7 @@ public final class Client extends GameEngine implements class302 {
                                                             var33 = 0;
                                                          }
 
-                                                         if(class154.method3149(GrandExchangeEvent.getWidgetConfig(var43))) {
+                                                         if(class154.method3149(GrandExchangeEvent.getWidgetClickMask(var43))) {
                                                             var6 = field998;
                                                             var7 = field1090;
                                                             var43.itemIds[var7] = var43.itemIds[var6];
@@ -5809,7 +5809,7 @@ public final class Client extends GameEngine implements class302 {
                      var5 = menuActionParams0[var2];
                      var20 = menuActionParams1[var2];
                      Widget var16 = GZipDecompressor.getWidget(var20);
-                     if(class153.method3142(GrandExchangeEvent.getWidgetConfig(var16)) || class154.method3149(GrandExchangeEvent.getWidgetConfig(var16))) {
+                     if(class153.method3142(GrandExchangeEvent.getWidgetClickMask(var16)) || class154.method3149(GrandExchangeEvent.getWidgetClickMask(var16))) {
                         if(MapIconReference.field574 != null && !field960 && menuOptionCount > 0 && !this.method1270()) {
                            class153.method3140(field957, field958);
                         }

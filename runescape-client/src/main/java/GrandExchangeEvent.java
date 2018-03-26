@@ -114,7 +114,7 @@ public class GrandExchangeEvent {
       if(var0 == 1800) {
          int[] var4 = class81.intStack;
          int var5 = ++class5.intStackSize - 1;
-         int var7 = getWidgetConfig(var3);
+         int var7 = getWidgetClickMask(var3);
          int var6 = var7 >> 11 & 63;
          var4[var5] = var6;
          return 1;
@@ -148,9 +148,9 @@ public class GrandExchangeEvent {
       signature = "(Lig;I)I",
       garbageValue = "400254367"
    )
-   @Export("getWidgetConfig")
-   static int getWidgetConfig(Widget var0) {
+   @Export("getWidgetClickMask")
+   static int getWidgetClickMask(Widget var0) {
       IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.value:var0.config;
+      return var1 != null?var1.value:var0.clickMask;
    }
 }

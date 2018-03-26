@@ -97,11 +97,11 @@ public class class95 {
                   WorldComparator.field261 = var0;
                   if(var0.itemIds[var13] > 0) {
                      ItemComposition var8 = class81.getItemDefinition(var0.itemIds[var13] - 1);
-                     if(Client.itemSelectionState == 1 && method2041(GrandExchangeEvent.getWidgetConfig(var0))) {
+                     if(Client.itemSelectionState == 1 && method2041(GrandExchangeEvent.getWidgetClickMask(var0))) {
                         if(var0.id != SoundTaskDataProvider.field619 || var13 != VarCString.selectedItemIndex) {
                            class169.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class37.getColTags(16748608) + var8.name, 31, var8.id, var13, var0.id);
                         }
-                     } else if(Client.spellSelected && method2041(GrandExchangeEvent.getWidgetConfig(var0))) {
+                     } else if(Client.spellSelected && method2041(GrandExchangeEvent.getWidgetClickMask(var0))) {
                         if((class150.field2100 & 16) == 16) {
                            class169.addMenuEntry(Client.field1006, Client.field1074 + " " + "->" + " " + class37.getColTags(16748608) + var8.name, 32, var8.id, var13, var0.id);
                         }
@@ -116,7 +116,7 @@ public class class95 {
                         }
 
                         int var18;
-                        if(method2041(GrandExchangeEvent.getWidgetConfig(var0))) {
+                        if(method2041(GrandExchangeEvent.getWidgetClickMask(var0))) {
                            for(var18 = 4; var18 >= 3; --var18) {
                               if(var10 != var18) {
                                  MessageNode.method1180(var0, var8, var13, var18, false);
@@ -124,11 +124,11 @@ public class class95 {
                            }
                         }
 
-                        if(Renderable.method3047(GrandExchangeEvent.getWidgetConfig(var0))) {
+                        if(Renderable.method3047(GrandExchangeEvent.getWidgetClickMask(var0))) {
                            class169.addMenuEntry("Use", class37.getColTags(16748608) + var8.name, 38, var8.id, var13, var0.id);
                         }
 
-                        if(method2041(GrandExchangeEvent.getWidgetConfig(var0))) {
+                        if(method2041(GrandExchangeEvent.getWidgetClickMask(var0))) {
                            for(var18 = 2; var18 >= 0; --var18) {
                               if(var18 != var10) {
                                  MessageNode.method1180(var0, var8, var13, var18, false);
@@ -182,7 +182,7 @@ public class class95 {
 
       if(var0.hasScript) {
          if(Client.spellSelected) {
-            var4 = GrandExchangeEvent.getWidgetConfig(var0);
+            var4 = GrandExchangeEvent.getWidgetClickMask(var0);
             boolean var19 = (var4 >> 21 & 1) != 0;
             if(var19 && (class150.field2100 & 32) == 32) {
                class169.addMenuEntry(Client.field1006, Client.field1074 + " " + "->" + " " + var0.name, 58, 0, var0.index, var0.id);
@@ -190,7 +190,7 @@ public class class95 {
          } else {
             for(var13 = 9; var13 >= 5; --var13) {
                String var14;
-               if(!class81.method1814(GrandExchangeEvent.getWidgetConfig(var0), var13) && var0.onOpListener == null) {
+               if(!class81.method1814(GrandExchangeEvent.getWidgetClickMask(var0), var13) && var0.onOpListener == null) {
                   var14 = null;
                } else if(var0.actions != null && var0.actions.length > var13 && var0.actions[var13] != null && var0.actions[var13].trim().length() != 0) {
                   var14 = var0.actions[var13];
@@ -210,7 +210,7 @@ public class class95 {
 
             for(var4 = 4; var4 >= 0; --var4) {
                String var15;
-               if(!class81.method1814(GrandExchangeEvent.getWidgetConfig(var0), var4) && var0.onOpListener == null) {
+               if(!class81.method1814(GrandExchangeEvent.getWidgetClickMask(var0), var4) && var0.onOpListener == null) {
                   var15 = null;
                } else if(var0.actions != null && var0.actions.length > var4 && var0.actions[var4] != null && var0.actions[var4].trim().length() != 0) {
                   var15 = var0.actions[var4];
@@ -223,7 +223,7 @@ public class class95 {
                }
             }
 
-            var5 = GrandExchangeEvent.getWidgetConfig(var0);
+            var5 = GrandExchangeEvent.getWidgetClickMask(var0);
             boolean var17 = (var5 & 1) != 0;
             if(var17) {
                class169.addMenuEntry("Continue", "", 30, 0, var0.index, var0.id);

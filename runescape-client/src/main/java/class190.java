@@ -164,7 +164,7 @@ public class class190 {
    static final void method3504(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       for(int var8 = 0; var8 < var0.length; ++var8) {
          Widget var9 = var0[var8];
-         if(var9 != null && (!var9.hasScript || var9.type == 0 || var9.mouseActionsPresent || GrandExchangeEvent.getWidgetConfig(var9) != 0 || var9 == Client.field1020 || var9.contentType == 1338) && var9.parentId == var1) {
+         if(var9 != null && (!var9.hasScript || var9.type == 0 || var9.mouseActionsPresent || GrandExchangeEvent.getWidgetClickMask(var9) != 0 || var9 == Client.field1020 || var9.contentType == 1338) && var9.parentId == var1) {
             if(var9.hasScript) {
                boolean var10 = var9.isHidden;
                if(var10) {
@@ -538,7 +538,7 @@ public class class190 {
                      }
 
                      if(Client.draggedWidget != null && var9 != Client.draggedWidget && var44) {
-                        var22 = GrandExchangeEvent.getWidgetConfig(var9);
+                        var22 = GrandExchangeEvent.getWidgetClickMask(var9);
                         boolean var21 = (var22 >> 20 & 1) != 0;
                         if(var21) {
                            Client.draggedOnWidget = var9;

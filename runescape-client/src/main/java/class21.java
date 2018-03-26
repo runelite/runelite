@@ -163,7 +163,7 @@ public class class21 {
       garbageValue = "-664294595"
    )
    static String method172(Widget var0) {
-      int var2 = GrandExchangeEvent.getWidgetConfig(var0);
+      int var2 = GrandExchangeEvent.getWidgetClickMask(var0);
       int var1 = var2 >> 11 & 63;
       return var1 == 0?null:(var0.targetVerb != null && var0.targetVerb.trim().length() != 0?var0.targetVerb :null);
    }

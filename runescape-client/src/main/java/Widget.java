@@ -415,8 +415,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 881095157
    )
-   @Export("config")
-   public int config;
+   @Export("clickMask")
+   public int clickMask;
    @ObfuscatedName("ci")
    @Export("name")
    public String name;
@@ -703,7 +703,7 @@ public class Widget extends Node {
       this.textShadowed = false;
       this.paddingX = 0;
       this.paddingY = 0;
-      this.config = 0;
+      this.clickMask = 0;
       this.name = "";
       this.dragParent = null;
       this.dragDeadZone = 0;
@@ -805,22 +805,22 @@ public class Widget extends Node {
          this.itemQuantities = new int[this.originalWidth * this.originalHeight];
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
-            this.config |= 268435456;
+            this.clickMask |= 268435456;
          }
 
          var5 = var1.readUnsignedByte();
          if(var5 == 1) {
-            this.config |= 1073741824;
+            this.clickMask |= 1073741824;
          }
 
          var6 = var1.readUnsignedByte();
          if(var6 == 1) {
-            this.config |= Integer.MIN_VALUE;
+            this.clickMask |= Integer.MIN_VALUE;
          }
 
          int var7 = var1.readUnsignedByte();
          if(var7 == 1) {
-            this.config |= 536870912;
+            this.clickMask |= 536870912;
          }
 
          this.paddingX = var1.readUnsignedByte();
@@ -847,7 +847,7 @@ public class Widget extends Node {
             String var10 = var1.readString();
             if(var10.length() > 0) {
                this.configActions[var8] = var10;
-               this.config |= 1 << var8 + 23;
+               this.clickMask |= 1 << var8 + 23;
             }
          }
       }
@@ -931,7 +931,7 @@ public class Widget extends Node {
          this.paddingY = var1.readShort();
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
-            this.config |= 1073741824;
+            this.clickMask |= 1073741824;
          }
 
          this.configActions = new String[5];
@@ -940,7 +940,7 @@ public class Widget extends Node {
             String var11 = var1.readString();
             if(var11.length() > 0) {
                this.configActions[var5] = var11;
-               this.config |= 1 << var5 + 23;
+               this.clickMask |= 1 << var5 + 23;
             }
          }
       }
@@ -953,7 +953,7 @@ public class Widget extends Node {
          this.targetVerb = var1.readString();
          this.spellName = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
-         this.config |= var4 << 11;
+         this.clickMask |= var4 << 11;
       }
 
       if(this.field2853 == 1 || this.field2853 == 4 || this.field2853 == 5 || this.field2853 == 6) {
@@ -978,11 +978,11 @@ public class Widget extends Node {
       }
 
       if(this.field2853 == 1 || this.field2853 == 4 || this.field2853 == 5) {
-         this.config |= 4194304;
+         this.clickMask |= 4194304;
       }
 
       if(this.field2853 == 6) {
-         this.config |= 1;
+         this.clickMask |= 1;
       }
 
    }
@@ -1091,7 +1091,7 @@ public class Widget extends Node {
          this.field2851 = var1.readUnsignedByte() == 1;
       }
 
-      this.config = var1.read24BitInt();
+      this.clickMask = var1.read24BitInt();
       this.name = var1.readString();
       int var2 = var1.readUnsignedByte();
       if(var2 > 0) {
