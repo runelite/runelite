@@ -6005,13 +6005,13 @@ public final class Client extends GameEngine implements class302 {
 
          if(MouseInput.mouseCurrentButton == 0) {
             if(draggingWidget) {
-               if(draggedWidget.field2907 != null) {
+               if(draggedWidget.onDragCompleteListener != null) {
                   var8 = new ScriptEvent();
                   var8.widget = draggedWidget;
                   var8.field782 = var6;
                   var8.field789 = var7;
                   var8.field785 = draggedOnWidget;
-                  var8.objs = draggedWidget.field2907;
+                  var8.objs = draggedWidget.onDragCompleteListener;
                   class25.runScript(var8, 500000);
                }
 
