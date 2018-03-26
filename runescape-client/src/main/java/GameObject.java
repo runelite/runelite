@@ -168,7 +168,7 @@ public final class GameObject {
       } else if(var0 == 1411) {
          var3.field2900 = var8;
       } else if(var0 == 1412) {
-         var3.mouseHoverListener = var8;
+         var3.onMouseRepeatListener = var8;
       } else if(var0 == 1414) {
          var3.onInvTransmitListener = var8;
          var3.tableModTriggers = var5;

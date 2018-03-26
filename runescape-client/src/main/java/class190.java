@@ -627,13 +627,13 @@ public class class190 {
                            }
                         }
 
-                        if(var9.field2942 && var44 && var9.mouseHoverListener != null) {
+                        if(var9.field2942 && var44 && var9.onMouseRepeatListener != null) {
                            var35 = new ScriptEvent();
                            var35.boolean1 = true;
                            var35.widget = var9;
                            var35.field782 = MouseInput.mouseLastX - var43;
                            var35.field789 = MouseInput.mouseLastY - var11;
-                           var35.objs = var9.mouseHoverListener;
+                           var35.objs = var9.onMouseRepeatListener;
                            Client.field1045.addFront(var35);
                         }
 
