@@ -685,13 +685,13 @@ public class class190 {
                         }
 
                         if(var9.onInvTransmitListener != null && Client.field1035 > var9.field2946) {
-                           if(var9.tableModTriggers != null && Client.field1035 - var9.field2946 <= 32) {
+                           if(var9.invTransmitTriggers != null && Client.field1035 - var9.field2946 <= 32) {
                               label1178:
                               for(var47 = var9.field2946; var47 < Client.field1035; ++var47) {
                                  var22 = Client.interfaceItemTriggers[var47 & 31];
 
-                                 for(var23 = 0; var23 < var9.tableModTriggers.length; ++var23) {
-                                    if(var22 == var9.tableModTriggers[var23]) {
+                                 for(var23 = 0; var23 < var9.invTransmitTriggers.length; ++var23) {
+                                    if(var22 == var9.invTransmitTriggers[var23]) {
                                        var36 = new ScriptEvent();
                                        var36.widget = var9;
                                        var36.objs = var9.onInvTransmitListener;
