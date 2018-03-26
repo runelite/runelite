@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cas <https://github.com/casvandongen>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,48 +24,44 @@
  */
 package net.runelite.client.plugins.agilityplugin;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 
-@ConfigGroup(
-	keyName = "agility",
-	name = "Agility",
-	description = "Configuration for the Agility plugin"
-)
-public interface AgilityConfig extends Config
+@Getter
+@Setter
+public class AgilitySession
 {
-	@ConfigItem(
-		keyName = "showLapCount",
-		name = "Show Lap count",
-		description = "Enable/disable the lap counter",
-		position = 1
-	)
-	default boolean showLapCount()
+	private final Courses course;
+	private Instant lastLapCompleted;
+	private int totalLaps;
+	private int lapsTillLevel;
+
+	public AgilitySession(Courses course)
 	{
-		return true;
+		this.course = course;
 	}
 
-	@ConfigItem(
-		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
-		description = "Time until the lap counter hides/resets",
-		position = 2
-	)
-	default int lapTimeout()
+	public void incrementLapCount(Client client)
 	{
-		return 5;
+		Instant now = Instant.now();
+
+		lastLapCompleted = now;
+		++totalLaps;
+
+		int currentExp = client.getSkillExperience(Skill.AGILITY);
+		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
+		int remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
+
+		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
 	}
 
-	@ConfigItem(
-		keyName = "overlayColor",
-		name = "Overlay Color",
-		description = "Color of Agility overlay",
-		position = 3
-	)
-	default Color getOverlayColor()
+	public void resetLapCount()
 	{
-		return Color.GREEN;
+		totalLaps = 0;
+		lapsTillLevel = 0;
 	}
 }

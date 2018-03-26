@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cas <https://github.com/casvandongen>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,48 +24,51 @@
  */
 package net.runelite.client.plugins.agilityplugin;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
 
-@ConfigGroup(
-	keyName = "agility",
-	name = "Agility",
-	description = "Configuration for the Agility plugin"
-)
-public interface AgilityConfig extends Config
+public enum Courses
 {
-	@ConfigItem(
-		keyName = "showLapCount",
-		name = "Show Lap count",
-		description = "Enable/disable the lap counter",
-		position = 1
-	)
-	default boolean showLapCount()
+	GNOME(86.5, 46),
+	DRAYNOR(120.0, 79),
+	AL_KARID(180.0, 30),
+	PYRAMID(722.0, 300),
+	VARROCK(238.0, 125),
+	PENGUIN(540.0, 65),
+	BARBARIAN(139.5, 60),
+	CANIFIS(240.0, 175),
+	APE_ATOLL(580.0, 300),
+	FALADOR(440, 180),
+	WILDERNESS(571.0, 499),
+	SEERS(570.0, 435),
+	POLLNIVEACH(890.0, 540),
+	RELLEKA(780.0, 475),
+	ARDOUGNE(793.0, 529);
+
+	private final static Map<Integer, Courses> courseXps = new HashMap<>();
+
+	@Getter
+	private final double totalXp;
+
+	private final int lastObstacleXp;
+
+	static
 	{
-		return true;
+		for (Courses course : values())
+		{
+			courseXps.put(course.lastObstacleXp, course);
+		}
 	}
 
-	@ConfigItem(
-		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
-		description = "Time until the lap counter hides/resets",
-		position = 2
-	)
-	default int lapTimeout()
+	Courses(double totalXp, int lastObstacleXp)
 	{
-		return 5;
+		this.totalXp = totalXp;
+		this.lastObstacleXp = lastObstacleXp;
 	}
 
-	@ConfigItem(
-		keyName = "overlayColor",
-		name = "Overlay Color",
-		description = "Color of Agility overlay",
-		position = 3
-	)
-	default Color getOverlayColor()
+	public static Courses getCourse(int exp)
 	{
-		return Color.GREEN;
+		return courseXps.get(exp);
 	}
 }
