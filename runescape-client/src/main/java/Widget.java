@@ -438,7 +438,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -91992637
    )
-   public int field2894;
+   @Export("dragDeadTime")
+   public int dragDeadTime;
    @ObfuscatedName("cz")
    @Export("dragRenderBehavior")
    public boolean dragRenderBehavior;
@@ -705,7 +706,7 @@ public class Widget extends Node {
       this.name = "";
       this.dragParent = null;
       this.field2817 = 0;
-      this.field2894 = 0;
+      this.dragDeadTime = 0;
       this.dragRenderBehavior = false;
       this.targetVerb = "";
       this.mouseActionsPresent = false;
@@ -1101,7 +1102,7 @@ public class Widget extends Node {
       }
 
       this.field2817 = var1.readUnsignedByte();
-      this.field2894 = var1.readUnsignedByte();
+      this.dragDeadTime = var1.readUnsignedByte();
       this.dragRenderBehavior = var1.readUnsignedByte() == 1;
       this.targetVerb = var1.readString();
       this.onLoadListener = this.decodeListener(var1);

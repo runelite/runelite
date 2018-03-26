@@ -5987,7 +5987,7 @@ public final class Client extends GameEngine implements class302 {
          int var3 = var1 - field1028;
          int var4 = var2 - field944;
          int var5 = draggedWidget.field2817;
-         if(MapLabel.field446 > draggedWidget.field2894 && (var3 > var5 || var3 < -var5 || var4 > var5 || var4 < -var5)) {
+         if(MapLabel.field446 > draggedWidget.dragDeadTime && (var3 > var5 || var3 < -var5 || var4 > var5 || var4 < -var5)) {
             draggingWidget = true;
          }
 

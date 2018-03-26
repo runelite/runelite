@@ -140,7 +140,7 @@ public class SoundTaskDataProvider implements class101 {
          var3.field2817 = class81.intStack[--class5.intStackSize];
          return 1;
       } else if(var0 == 1304) {
-         var3.field2894 = class81.intStack[--class5.intStackSize];
+         var3.dragDeadTime = class81.intStack[--class5.intStackSize];
          return 1;
       } else if(var0 == 1305) {
          var3.name = class81.scriptStringStack[--class316.scriptStringStackSize];
