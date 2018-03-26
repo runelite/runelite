@@ -205,7 +205,7 @@ public final class GameObject {
          var3.onResizeListener = var8;
       }
 
-      var3.mouseActionsPresent = true;
+      var3.hasListener = true;
       return 1;
    }
 }

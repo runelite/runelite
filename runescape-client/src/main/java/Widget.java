@@ -450,8 +450,8 @@ public class Widget extends Node {
    @Export("targetVerb")
    public String targetVerb;
    @ObfuscatedName("ca")
-   @Export("mouseActionsPresent")
-   public boolean mouseActionsPresent;
+   @Export("hasListener")
+   public boolean hasListener;
    @ObfuscatedName("cf")
    @Export("onLoadListener")
    public Object[] onLoadListener;
@@ -722,7 +722,7 @@ public class Widget extends Node {
       this.dragDeadTime = 0;
       this.dragRenderBehavior = false;
       this.targetVerb = "";
-      this.mouseActionsPresent = false;
+      this.hasListener = false;
       this.field2932 = -1;
       this.spellName = "";
       this.tooltip = "Ok";
@@ -1163,7 +1163,7 @@ public class Widget extends Node {
             }
          }
 
-         this.mouseActionsPresent = true;
+         this.hasListener = true;
          return var3;
       }
    }

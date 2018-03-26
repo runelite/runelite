@@ -164,7 +164,7 @@ public class class190 {
    static final void method3504(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       for(int var8 = 0; var8 < var0.length; ++var8) {
          Widget var9 = var0[var8];
-         if(var9 != null && (!var9.hasScript || var9.type == 0 || var9.mouseActionsPresent || GrandExchangeEvent.getWidgetClickMask(var9) != 0 || var9 == Client.field1020 || var9.contentType == 1338) && var9.parentId == var1) {
+         if(var9 != null && (!var9.hasScript || var9.type == 0 || var9.hasListener || GrandExchangeEvent.getWidgetClickMask(var9) != 0 || var9 == Client.field1020 || var9.contentType == 1338) && var9.parentId == var1) {
             if(var9.hasScript) {
                boolean var10 = var9.isHidden;
                if(var10) {
@@ -551,7 +551,7 @@ public class class190 {
                         Client.field1098 = var11;
                      }
 
-                     if(var9.mouseActionsPresent) {
+                     if(var9.hasListener) {
                         ScriptEvent var35;
                         if(var44 && Client.mouseWheelRotation != 0 && var9.onScrollWheelListener != null) {
                            var35 = new ScriptEvent();
