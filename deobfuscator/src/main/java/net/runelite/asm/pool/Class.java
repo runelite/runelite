@@ -31,12 +31,13 @@ public class Class
 	public Class(String name)
 	{
 		assert !name.startsWith("L") || !name.endsWith(";");
-		this.name = name;
+		this.name = name.replace('.', '/');
 	}
 
 	public Class(String name, int dimms)
 	{
 		assert !name.startsWith("L") && !name.endsWith(";");
+		name = name.replace('.', '/');
 
 		while (dimms-- > 0)
 		{

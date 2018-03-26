@@ -31,7 +31,6 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.text.NumberFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,11 +39,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.StackFormatter;
 
 @Slf4j
 class GrandExchangeItemPanel extends JPanel
 {
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	GrandExchangeItemPanel(BufferedImage icon, String name, int itemID, int gePrice, Double
@@ -106,7 +105,7 @@ class GrandExchangeItemPanel extends JPanel
 		JLabel gePriceLabel = new JLabel();
 		if (gePrice > 0)
 		{
-			gePriceLabel.setText(NUMBER_FORMATTER.format(gePrice) + " gp");
+			gePriceLabel.setText(StackFormatter.formatNumber(gePrice) + " gp");
 		}
 		else
 		{
@@ -117,7 +116,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(NUMBER_FORMATTER.format(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
 		haPriceLabel.setForeground(Color.orange);
 		rightPanel.add(haPriceLabel);
 

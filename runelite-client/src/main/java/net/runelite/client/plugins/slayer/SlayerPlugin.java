@@ -49,6 +49,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -96,6 +97,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private String taskName;
 	private int amount;
 	private TaskCounter counter;
@@ -108,20 +112,21 @@ public class SlayerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (client.getGameState() == GameState.LOGGED_IN
-			&& config.amount() != -1
-			&& !config.taskName().isEmpty())
-		{
-			setTask(config.taskName(), config.amount());
-		} 
-                if (config.streak() != -1)
-                {
-                        setStreak(config.streak());
-                }
-                if (config.points() != -1)
-                {
-                        setPoints(config.points());
-                }	
+			if (client.getGameState() == GameState.LOGGED_IN
+				&& config.amount() != -1
+				&& !config.taskName().isEmpty())
+			{
+		    	clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
+			} 
+			if (config.streak() != -1)
+			{
+				setStreak(config.streak());
+			}
+			if (config.points() != -1)
+			{
+				setPoints(config.points());
+			}	
+			
 	}
 
 	@Override
@@ -315,7 +320,7 @@ public class SlayerPlugin extends Plugin
 
 		if (config.showInfobox())
 		{
-			addCounter();
+			clientThread.invokeLater(this::addCounter);
 		}
 		else
 		{

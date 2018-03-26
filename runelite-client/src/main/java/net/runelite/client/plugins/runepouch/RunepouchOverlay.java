@@ -148,7 +148,7 @@ public class RunepouchOverlay extends Overlay
 			{
 				OverlayUtil.renderImageLocation(graphics,
 					new Point(location.getX(), location.getY() + graphics.getFontMetrics().getHeight() * i),
-					getRuneImage(rune));
+					image);
 			}
 		}
 

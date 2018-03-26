@@ -114,7 +114,7 @@ public class TrapOverlay extends Overlay
 					drawTimerOnTrap(graphics, trap, colorEmpty, colorEmptyBorder, colorEmpty, colorEmptyBorder);
 					break;
 				case FULL:
-					drawCircleOnTrap(graphics, trap, colorFull, colorFullBorder);
+					drawTimerOnTrap(graphics, trap, colorFull, colorFullBorder, colorFull, colorFullBorder);
 					break;
 				case TRANSITION:
 					drawCircleOnTrap(graphics, trap, colorTrans, colorTransBorder);

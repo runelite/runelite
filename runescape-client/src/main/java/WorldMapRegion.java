@@ -204,7 +204,7 @@ public class WorldMapRegion {
          if(Size.method190(this.field459, this.field460, var1) == null) {
             class33 var5 = this.method400(this.field459, this.field460, var3);
             SpritePixels var6 = new SpritePixels(this.field464 * 64, this.field464 * 64);
-            var6.method5833();
+            var6.setRaster();
             if(this.field461 != null) {
                this.method395(var2, var3, var4, var5);
             } else {
