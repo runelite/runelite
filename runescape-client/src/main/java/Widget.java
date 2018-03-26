@@ -440,7 +440,8 @@ public class Widget extends Node {
    )
    public int field2894;
    @ObfuscatedName("cz")
-   public boolean field2895;
+   @Export("dragRenderBehavior")
+   public boolean dragRenderBehavior;
    @ObfuscatedName("cn")
    @Export("targetVerb")
    public String targetVerb;
@@ -705,7 +706,7 @@ public class Widget extends Node {
       this.dragParent = null;
       this.field2817 = 0;
       this.field2894 = 0;
-      this.field2895 = false;
+      this.dragRenderBehavior = false;
       this.targetVerb = "";
       this.mouseActionsPresent = false;
       this.field2932 = -1;
@@ -1101,7 +1102,7 @@ public class Widget extends Node {
 
       this.field2817 = var1.readUnsignedByte();
       this.field2894 = var1.readUnsignedByte();
-      this.field2895 = var1.readUnsignedByte() == 1;
+      this.dragRenderBehavior = var1.readUnsignedByte() == 1;
       this.targetVerb = var1.readString();
       this.onLoadListener = this.decodeListener(var1);
       this.onMouseOverListener = this.decodeListener(var1);

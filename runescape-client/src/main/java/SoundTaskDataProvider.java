@@ -134,7 +134,7 @@ public class SoundTaskDataProvider implements class101 {
          var3.dragParent = CollisionData.getWidgetChild(var4, var5);
          return 1;
       } else if(var0 == 1302) {
-         var3.field2895 = class81.intStack[--class5.intStackSize] == 1;
+         var3.dragRenderBehavior = class81.intStack[--class5.intStackSize] == 1;
          return 1;
       } else if(var0 == 1303) {
          var3.field2817 = class81.intStack[--class5.intStackSize];

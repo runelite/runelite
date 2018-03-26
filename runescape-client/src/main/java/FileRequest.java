@@ -111,7 +111,7 @@ public class FileRequest extends CacheableNode {
             int var15;
             int var16;
             if(var10 == Client.draggedWidget) {
-               if(var1 != -1412584499 && !var10.field2895) {
+               if(var1 != -1412584499 && !var10.dragRenderBehavior) {
                   class2.field14 = var0;
                   ItemContainer.field746 = var6;
                   WorldComparator.field262 = var7;
@@ -143,7 +143,7 @@ public class FileRequest extends CacheableNode {
                   var13 = var16;
                }
 
-               if(!var10.field2895) {
+               if(!var10.dragRenderBehavior) {
                   var14 = 128;
                }
             }
