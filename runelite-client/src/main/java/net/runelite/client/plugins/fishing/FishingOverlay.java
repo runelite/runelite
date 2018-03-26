@@ -27,7 +27,6 @@ package net.runelite.client.plugins.fishing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -60,7 +59,7 @@ class FishingOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		FishingSession session = plugin.getSession();
 
@@ -107,6 +106,6 @@ class FishingOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

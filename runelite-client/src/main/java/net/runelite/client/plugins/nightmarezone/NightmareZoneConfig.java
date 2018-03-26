@@ -48,10 +48,43 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "powersurgenotification",
+		name = "Power surge notification",
+		description = "Toggles notifications when a power surge power-up appears",
+		position = 2
+	)
+	default boolean powerSurgeNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "recurrentdamagenotification",
+		name = "Recurrent damage notification",
+		description = "Toggles notifications when a recurrent damage power-up appears",
+		position = 3
+	)
+	default boolean recurrentDamageNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "zappernotification",
+		name = "Zapper notification",
+		description = "Toggles notifications when a zapper power-up appears",
+		position = 4
+	)
+	default boolean zapperNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "overloadnotification",
 		name = "Overload notification",
 		description = "Toggles notifications when your overload runs out",
-		position = 2
+		position = 5
 	)
 	default boolean overloadNotification()
 	{
@@ -62,7 +95,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 3
+		position = 6
 	)
 	default boolean absorptionNotification()
 	{
@@ -73,7 +106,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 4
+		position = 7
 	)
 	default int absorptionThreshold()
 	{
@@ -84,7 +117,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 5
+		position = 8
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -95,7 +128,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 6
+		position = 9
 	)
 	default Color absorptionColorBelowThreshold()
 	{

@@ -58,14 +58,14 @@ public class InfoBoxComponent implements RenderableEntity
 	private BufferedImage image;
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(bounds);
-		backgroundComponent.render(graphics, parent);
+		backgroundComponent.render(graphics);
 
 		if (Objects.nonNull(image))
 		{
@@ -80,7 +80,7 @@ public class InfoBoxComponent implements RenderableEntity
 		textComponent.setPosition(new Point(
 			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
 			BOX_SIZE - SEPARATOR));
-		textComponent.render(graphics, parent);
+		textComponent.render(graphics);
 		return new Dimension(BOX_SIZE, BOX_SIZE);
 	}
 }

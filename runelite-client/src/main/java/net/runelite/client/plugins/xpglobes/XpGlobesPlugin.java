@@ -27,6 +27,7 @@ package net.runelite.client.plugins.xpglobes;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +40,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -133,6 +135,10 @@ public class XpGlobesPlugin extends Plugin
 		return xpGlobes.size();
 	}
 
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
 	public void removeExpiredXpGlobes()
 	{
 		if (!xpGlobes.isEmpty())

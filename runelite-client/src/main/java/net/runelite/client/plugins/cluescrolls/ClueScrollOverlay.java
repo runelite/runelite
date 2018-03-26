@@ -28,7 +28,6 @@ package net.runelite.client.plugins.cluescrolls;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -56,7 +55,7 @@ public class ClueScrollOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (clue == null)
 		{
@@ -90,6 +89,6 @@ public class ClueScrollOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

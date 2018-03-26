@@ -71,7 +71,7 @@ public class ImplingsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids.keySet()));
 		NPC[] implings = queryRunner.runQuery(implingQuery);

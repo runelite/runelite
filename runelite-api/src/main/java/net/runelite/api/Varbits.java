@@ -216,6 +216,13 @@ public enum Varbits
 	EXPERIENCE_DROP_COLOR(4695),
 
 	/**
+	 * Tithe Farm
+	 */
+	TITHE_FARM_SACK_AMOUNT(4900),
+	TITHE_FARM_SACK_ICON(5370),
+	TITHE_FARM_POINTS(4893),
+
+	/**
 	 * Raids
 	 */
 	IN_RAID(5432),
@@ -259,9 +266,30 @@ public enum Varbits
 	PYRAMID_PLUNDER_ROOM(2377),
 
 	/**
+	 * Spicy stew ingredients
+	 */
+	SPICY_STEW_RED_SPICES(1879),
+	SPICY_STEW_YELLOW_SPICES(1880),
+	SPICY_STEW_BROWN_SPICES(1881),
+	SPICY_STEW_ORANGE_SPICES(1882),
+
+	/**
 	 * Multicombat area
 	 */
-	MULTICOMBAT_AREA(4605);
+	MULTICOMBAT_AREA(4605),
+
+	/**
+	 * Kingdom Management
+	 */
+	KINGDOM_FAVOR(72),
+	KINGDOM_COFFER(74),
+
+	/**
+	 * Daily Tasks (Collection availability)
+	 */
+	DAILY_HERB_BOX(3961),
+	DAILY_STAVES(4539),
+	DAILY_ESSENCE(4547);
 
 	/**
 	 * varbit id

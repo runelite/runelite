@@ -170,7 +170,7 @@ public class ConfigManager
 		}
 	}
 
-	private void loadFromFile()
+	private synchronized void loadFromFile()
 	{
 		properties.clear();
 
@@ -216,7 +216,7 @@ public class ConfigManager
 		}
 	}
 
-	private void saveToFile() throws IOException
+	private synchronized void saveToFile() throws IOException
 	{
 		propertiesFile.getParentFile().mkdirs();
 
@@ -314,14 +314,19 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			try
+			final Runnable task = () ->
 			{
-				client.unset(groupName + "." + key);
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to set configuration item", ex);
-			}
+				try
+				{
+					client.unset(groupName + "." + key);
+				}
+				catch (IOException ex)
+				{
+					log.warn("unable to set configuration item", ex);
+				}
+			};
+
+			executor.execute(task);
 		}
 
 		Runnable task = () ->

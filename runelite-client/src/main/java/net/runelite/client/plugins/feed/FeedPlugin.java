@@ -125,7 +125,7 @@ public class FeedPlugin extends Plugin
 		unit = ChronoUnit.MINUTES,
 		asynchronous = true
 	)
-	private void updateFeedTask()
+	public void updateFeedTask()
 	{
 		updateFeed();
 	}

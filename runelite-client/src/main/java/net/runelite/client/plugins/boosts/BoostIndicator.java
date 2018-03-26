@@ -29,7 +29,9 @@ import java.awt.image.BufferedImage;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
 public class BoostIndicator extends InfoBox
 {
@@ -39,13 +41,14 @@ public class BoostIndicator extends InfoBox
 	@Getter
 	private final Skill skill;
 
-	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config)
+	public BoostIndicator(Skill skill, BufferedImage image, Plugin plugin, Client client, BoostsConfig config)
 	{
-		super(image);
+		super(image, plugin);
 		this.config = config;
 		this.client = client;
 		this.skill = skill;
 		setTooltip(skill.getName() + " boost");
+		setPriority(InfoBoxPriority.HIGH);
 	}
 
 	@Override

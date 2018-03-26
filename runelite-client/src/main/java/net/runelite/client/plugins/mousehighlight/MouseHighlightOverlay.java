@@ -27,10 +27,13 @@ package net.runelite.client.plugins.mousehighlight;
 import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.VarClient;
+import net.runelite.api.Varcs;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -50,7 +53,7 @@ class MouseHighlightOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (client.isMenuOpen())
 		{
@@ -87,6 +90,22 @@ class MouseHighlightOverlay extends Overlay
 				{
 					return null;
 				}
+		}
+
+		final int widgetId = menuEntry.getParam1();
+		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+		final int childId = WidgetInfo.TO_CHILD(widgetId);
+		final Widget widget = client.getWidget(groupId, childId);
+
+		if (widget != null)
+		{
+			// If this varc is set, some CS is showing tooltip
+			Varcs varcs = client.getVarcs();
+			int tooltipTimeout = varcs.getIntVar(VarClient.TOOLTIP_TIMEOUT);
+			if (tooltipTimeout > client.getGameCycle())
+			{
+				return null;
+			}
 		}
 
 		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));

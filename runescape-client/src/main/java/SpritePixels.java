@@ -81,7 +81,8 @@ public final class SpritePixels extends Rasterizer2D {
    }
 
    @ObfuscatedName("i")
-   public void method5833() {
+   @Export("setRaster")
+   public void setRaster() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
    }
 

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -42,12 +41,11 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.StackFormatter;
 
 @Slf4j
 class XpPanel extends PluginPanel
 {
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
-
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
@@ -145,7 +143,7 @@ class XpPanel extends PluginPanel
 		String numberStr;
 		if (number < 100000)
 		{
-			numberStr = NUMBER_FORMATTER.format(number);
+			numberStr = StackFormatter.formatNumber(number);
 		}
 		else
 		{

@@ -55,8 +55,8 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -480,6 +480,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
 	{
+		assert isClientThread();
 		int zoom = get3dZoom();
 		set3dZoom(scale);
 		try

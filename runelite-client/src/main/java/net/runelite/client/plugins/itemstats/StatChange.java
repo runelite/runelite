@@ -33,9 +33,30 @@ import net.runelite.client.plugins.itemstats.stats.Stat;
 @Data
 public class StatChange
 {
+	/**
+	 * The stat which will be boosted (or damaged).
+	 */
 	private Stat stat;
+
+	/**
+	 * Relative change that will occur if the stat boost is applied now.
+	 * Should be a number prefixed by "+" or "-".
+	 */
 	private String relative;
-	private String absolute;
+
+	/**
+	 * Theoretical change that can occur before boost cap is enforced.
+	 * Should be a number prefixed by "+" or "-".
+	 */
 	private String theoretical;
+
+	/**
+	 * Absolute total of the stat after applying the boost.
+	 */
+	private String absolute;
+
+	/**
+	 * How beneficial this stat boost will be to the player.
+	 */
 	private Positivity positivity;
 }

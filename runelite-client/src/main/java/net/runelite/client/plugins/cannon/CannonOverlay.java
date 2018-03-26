@@ -60,7 +60,7 @@ class CannonOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
 		{
@@ -88,7 +88,7 @@ class CannonOverlay extends Overlay
 				textComponent.setText(String.valueOf(plugin.getCballsLeft()));
 				textComponent.setPosition(new java.awt.Point(cannonLoc.getX(), cannonLoc.getY()));
 				textComponent.setColor(plugin.getStateColor());
-				textComponent.render(graphics, parent);
+				textComponent.render(graphics);
 			}
 
 			if (config.showDoubleHitSpot())

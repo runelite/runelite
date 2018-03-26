@@ -26,16 +26,22 @@ package net.runelite.client.plugins.agilityplugin;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -49,6 +55,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Agility"
@@ -57,11 +64,25 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class AgilityPlugin extends Plugin
 {
 	@Getter
-	private final HashMap<TileObject, Tile> obstacles = new HashMap<>();
+	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
 	@Inject
 	@Getter
 	private AgilityOverlay overlay;
+
+	@Inject
+	private LapCounterOverlay lapOverlay;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private AgilityConfig config;
+
+	@Getter
+	private AgilitySession session;
+
+	private int lastAgilityXp;
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -70,9 +91,60 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Override
+	public Collection<Overlay> getOverlays()
+	{
+		return Arrays.asList(overlay, lapOverlay);
+	}
+
+	@Override
 	protected void shutDown() throws Exception
 	{
 		obstacles.clear();
+		session = null;
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGIN_SCREEN:
+				session = null;
+		}
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event)
+	{
+		if (event.getSkill() != AGILITY || !config.showLapCount())
+		{
+			return;
+		}
+
+		// Determine how much EXP was actually gained
+		int agilityXp = client.getSkillExperience(AGILITY);
+		int skillGained = agilityXp - lastAgilityXp;
+		lastAgilityXp = agilityXp;
+
+		// Get course
+		Courses course = Courses.getCourse(skillGained);
+		if (course == null)
+		{
+			return;
+		}
+
+		if (session != null && session.getCourse() == course)
+		{
+			session.incrementLapCount(client);
+		}
+		else
+		{
+			session = new AgilitySession(course);
+			// New course found, reset lap count and set new course
+			session.resetLapCount();
+			session.incrementLapCount(client);
+		}
 	}
 
 	// This code, brought to you, in part, by the letters C and V

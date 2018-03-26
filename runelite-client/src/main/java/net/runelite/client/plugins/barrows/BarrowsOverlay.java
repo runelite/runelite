@@ -27,7 +27,6 @@ package net.runelite.client.plugins.barrows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -61,7 +60,7 @@ class BarrowsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Player local = client.getLocalPlayer();
 

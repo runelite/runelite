@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.instancemap;
+package net.runelite.client.plugins.kingdomofmiscellania;
 
-/**
- * Used to represent the wall as a 4x4 set of pixels with an offset
- */
-class WallShape
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.util.StackFormatter;
+
+public class KingdomCounter extends Counter
 {
-	private final int[][] pixels;
-	private final WallOffset offset;
+	private final KingdomPlugin plugin;
 
-	public WallShape(int[][] pixels, WallOffset offset)
+	public KingdomCounter(BufferedImage image, KingdomPlugin plugin)
 	{
-		this.pixels = pixels;
-		this.offset = offset;
+		super(image, plugin, String.valueOf(plugin.getFavor()));
+		this.plugin = plugin;
 	}
 
-	public int[][] getPixels()
+	@Override
+	public String getText()
 	{
-		return pixels;
+		return KingdomPlugin.getFavorPercent(plugin.getFavor()) + "%";
 	}
 
-	public WallOffset getOffset()
+	@Override
+	public String getTooltip()
 	{
-		return offset;
+		return String.format("Favor: " + plugin.getFavor() + "/127" + "</br>"
+			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer()));
 	}
-
 }

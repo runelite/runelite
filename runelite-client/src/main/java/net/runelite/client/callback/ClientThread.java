@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.instancemap;
+package net.runelite.client.callback;
 
-import static net.runelite.client.plugins.instancemap.InstanceMapOverlay.TILE_SIZE;
+import com.google.inject.Inject;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 
-enum WallOffset
+@Singleton
+@Slf4j
+public class ClientThread
 {
-	TOP_LEFT(-TILE_SIZE / 2, -TILE_SIZE / 2),
-	TOP_RIGHT(TILE_SIZE / 2, -TILE_SIZE / 2),
-	BOTTOM_LEFT(-TILE_SIZE / 2, TILE_SIZE / 2),
-	BOTTOM_RIGHT(TILE_SIZE / 2, TILE_SIZE / 2),
-	RIGHT(TILE_SIZE / 2, 0),
-	LEFT(-TILE_SIZE / 2, 0),
-	NONE(0, 0);
+	private ConcurrentLinkedQueue<Runnable> invokes = new ConcurrentLinkedQueue<>();
 
-	public final int xOffset;
-	public final int yOffset;
+	@Inject
+	private Client client;
 
-	WallOffset(int xOffset, int yOffset)
+	public void invokeLater(Runnable r)
 	{
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
+		if (client.isClientThread())
+		{
+			r.run();
+			return;
+		}
+		invokes.add(r);
+	}
+
+	void invoke()
+	{
+		assert client.isClientThread();
+		Iterator<Runnable> ir = invokes.iterator();
+		for (; ir.hasNext(); )
+		{
+			Runnable r = ir.next();
+			ir.remove();
+			try
+			{
+				r.run();
+			}
+			catch (ThreadDeath d)
+			{
+				throw d;
+			}
+			catch (Throwable e)
+			{
+				log.warn("Exception in invokeLater", e);
+			}
+		}
 	}
 }

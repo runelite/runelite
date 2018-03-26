@@ -27,7 +27,6 @@ package net.runelite.client.plugins.attackindicator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -48,7 +47,7 @@ public class AttackIndicatorOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final String attackStyleString = plugin.getAttackStyle().getName();
 
@@ -56,6 +55,6 @@ public class AttackIndicatorOverlay extends Overlay
 		panelComponent.setTitle(attackStyleString);
 		panelComponent.setWidth(COMPONENT_WIDTH);
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

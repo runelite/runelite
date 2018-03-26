@@ -105,16 +105,42 @@ public class NightmareZonePlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER
-				|| !isInNightmareZone()
-				|| !config.overloadNotification())
+				|| !isInNightmareZone())
 		{
 			return;
 		}
 
-		String msg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+		String msg = Text.removeTags(event.getMessage()); //remove color
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
-			notifier.notify("Your overload has worn off");
+			if (config.overloadNotification())
+			{
+				notifier.notify("Your overload has worn off");
+			}
+		}
+		else if (msg.contains("A power-up has spawned:"))
+		{
+			if (msg.contains("Power surge"))
+			{
+				if (config.powerSurgeNotification())
+				{
+					notifier.notify(msg);
+				}
+			}
+			else if (msg.contains("Recurrent damage"))
+			{
+				if (config.recurrentDamageNotification())
+				{
+					notifier.notify(msg);
+				}
+			}
+			else if (msg.contains("Zapper"))
+			{
+				if (config.zapperNotification())
+				{
+					notifier.notify(msg);
+				}
+			}
 		}
 	}
 

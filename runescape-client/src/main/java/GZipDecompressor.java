@@ -223,7 +223,7 @@ public class GZipDecompressor {
 
             return 1;
          } else if(var0 == 1121) {
-            class270.method4793(var3.id, var3.index);
+            VarCInt.method4793(var3.id, var3.index);
             Client.field1012 = var3;
             GameEngine.method1053(var3);
             return 1;

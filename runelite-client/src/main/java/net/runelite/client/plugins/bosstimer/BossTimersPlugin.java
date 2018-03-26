@@ -69,7 +69,7 @@ public class BossTimersPlugin extends Plugin
 
 		log.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
 
-		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()));
+		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
 		timer.setTooltip(boss.getName());
 		infoBoxManager.addInfoBox(timer);
 	}

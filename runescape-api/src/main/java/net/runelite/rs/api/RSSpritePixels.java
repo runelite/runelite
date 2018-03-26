@@ -44,4 +44,7 @@ public interface RSSpritePixels extends SpritePixels
 	@Import("pixels")
 	@Override
 	int[] getPixels();
+
+	@Import("setRaster")
+	void setRaster();
 }

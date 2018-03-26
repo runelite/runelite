@@ -71,7 +71,7 @@ public class class132 {
       ObjectComposition.field3597.reset();
       ObjectComposition.cachedModels.reset();
       ObjectComposition.field3599.reset();
-      class271.method4800();
+      VarCString.method4800();
       ItemComposition.items.reset();
       ItemComposition.itemModelCache.reset();
       ItemComposition.itemSpriteCache.reset();

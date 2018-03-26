@@ -63,7 +63,7 @@ public class ImagePanelComponent implements RenderableEntity
 	private Point position = new Point();
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final Dimension dimension = new Dimension();
 		final FontMetrics metrics = graphics.getFontMetrics();
@@ -101,7 +101,7 @@ public class ImagePanelComponent implements RenderableEntity
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
-		backgroundComponent.render(graphics, parent);
+		backgroundComponent.render(graphics);
 
 		// Render title
 		if (!Strings.isNullOrEmpty(title))
@@ -110,12 +110,12 @@ public class ImagePanelComponent implements RenderableEntity
 			titleComponent.setText(title);
 			titleComponent.setColor(titleColor);
 			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, y));
-			titleComponent.render(graphics, parent);
+			titleComponent.render(graphics);
 			y += SEPARATOR;
 		}
 
 		// Render all images
-		int imageOffsetX = ((width - imageWidth) / 2) - (SEPARATOR / 2);
+		int imageOffsetX = ((width - imageWidth) / 2);
 		for (final BufferedImage image : images)
 		{
 			graphics.drawImage(image, imageOffsetX + ((imageWidth / images.size()) - image.getWidth()) / 2, y, null);

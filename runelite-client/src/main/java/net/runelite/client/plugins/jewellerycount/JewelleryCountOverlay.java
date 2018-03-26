@@ -58,7 +58,7 @@ class JewelleryCountOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
@@ -78,7 +78,7 @@ class JewelleryCountOverlay extends Overlay
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x + 31 - chargesWidth, bounds.y + 34));
 			textComponent.setText(chargesQty);
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return null;
@@ -92,7 +92,8 @@ class JewelleryCountOverlay extends Overlay
 		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
 			WidgetInfo.EQUIPMENT_AMULET,
 			WidgetInfo.EQUIPMENT_RING,
-			WidgetInfo.EQUIPMENT_GLOVES
+			WidgetInfo.EQUIPMENT_GLOVES,
+			WidgetInfo.EQUIPMENT_WEAPON
 		);
 		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
 

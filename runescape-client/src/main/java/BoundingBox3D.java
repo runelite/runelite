@@ -110,7 +110,8 @@ public final class BoundingBox3D extends BoundingBox {
       signature = "(IIIIII)V",
       garbageValue = "-1386515520"
    )
-   static final void method57(int var0, int var1, int var2, int var3, int var4) {
+   @Export("drawObject")
+   static final void drawObject(int var0, int var1, int var2, int var3, int var4) {
       int var5 = class38.region.getWallObjectHash(var0, var1, var2);
       int var6;
       int var7;

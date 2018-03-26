@@ -49,7 +49,7 @@ public class LocationOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!plugin.isToggleLocation())
 		{
@@ -76,6 +76,6 @@ public class LocationOverlay extends Overlay
 		}
 
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

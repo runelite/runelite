@@ -24,12 +24,11 @@
  */
 package net.runelite.client.plugins.instancemap;
 
-import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
-import net.runelite.api.Point;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseWheelListener;
@@ -38,6 +37,9 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 {
 	@Inject
 	private InstanceMapPlugin plugin;
+
+	@Inject
+	private InstanceMapOverlay overlay;
 
 	@Override
 	public void keyTyped(KeyEvent event)
@@ -48,7 +50,7 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if (!plugin.isMapShown())
+		if (!overlay.isMapShown())
 		{
 			return;
 		}
@@ -69,7 +71,7 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Override
 	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
-		if (!plugin.isMapShown())
+		if (!overlay.isMapShown() || isNotWithinOverlay(event.getPoint()))
 		{
 			return event;
 		}
@@ -92,7 +94,7 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Override
 	public MouseEvent mouseClicked(MouseEvent event)
 	{
-		if (!plugin.isMapShown() || !isWithinOverlay(event.getX(), event.getY()))
+		if (!overlay.isMapShown() || isNotWithinOverlay(event.getPoint()))
 		{
 			return event;
 		}
@@ -104,7 +106,7 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Override
 	public MouseEvent mousePressed(MouseEvent event)
 	{
-		if (!plugin.isMapShown() || !isWithinOverlay(event.getX(), event.getY()))
+		if (!overlay.isMapShown() || isNotWithinOverlay(event.getPoint()))
 		{
 			return event;
 		}
@@ -113,17 +115,8 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 		return event;
 	}
 
-	private boolean isWithinOverlay(int x, int y)
+	private boolean isNotWithinOverlay(final Point point)
 	{
-		Dimension dimm = plugin.getOverlaySize();
-
-		if (dimm == null)
-		{
-			return false;
-		}
-
-		final Point offset =  plugin.getMapOffset();
-		return (x >= offset.getX() && x <= offset.getX() + dimm.width &&
-				y >= offset.getY() && y <= offset.getY() + dimm.height);
+		return !overlay.getBounds().contains(point);
 	}
 }
