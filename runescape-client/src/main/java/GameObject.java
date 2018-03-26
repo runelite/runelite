@@ -178,7 +178,7 @@ public final class GameObject {
       } else if(var0 == 1416) {
          var3.onTargetEnterListener = var8;
       } else if(var0 == 1417) {
-         var3.scrollListener = var8;
+         var3.onScrollWheelListener = var8;
       } else if(var0 == 1418) {
          var3.field2919 = var8;
       } else if(var0 == 1419) {

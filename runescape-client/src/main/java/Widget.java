@@ -508,8 +508,8 @@ public class Widget extends Node {
    @Export("onOpListener")
    public Object[] onOpListener;
    @ObfuscatedName("dk")
-   @Export("scrollListener")
-   public Object[] scrollListener;
+   @Export("onScrollWheelListener")
+   public Object[] onScrollWheelListener;
    @ObfuscatedName("de")
    public Object[] field2919;
    @ObfuscatedName("dg")
@@ -1120,7 +1120,7 @@ public class Widget extends Node {
       this.onHoldListener = this.decodeListener(var1);
       this.onDragListener = this.decodeListener(var1);
       this.onDragCompleteListener = this.decodeListener(var1);
-      this.scrollListener = this.decodeListener(var1);
+      this.onScrollWheelListener = this.decodeListener(var1);
       this.configTriggers = this.decodeTransmitList(var1);
       this.tableModTriggers = this.decodeTransmitList(var1);
       this.skillTriggers = this.decodeTransmitList(var1);

@@ -490,7 +490,7 @@ public class class190 {
                      if(!var9.noClickThrough) {
                         if(var9.field2951 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
                            for(var53 = (ScriptEvent)Client.field1045.getFront(); var53 != null; var53 = (ScriptEvent)Client.field1045.getNext()) {
-                              if(var53.boolean1 && var53.widget.scrollListener == var53.objs) {
+                              if(var53.boolean1 && var53.widget.onScrollWheelListener == var53.objs) {
                                  var53.unlink();
                               }
                            }
@@ -553,12 +553,12 @@ public class class190 {
 
                      if(var9.mouseActionsPresent) {
                         ScriptEvent var35;
-                        if(var44 && Client.mouseWheelRotation != 0 && var9.scrollListener != null) {
+                        if(var44 && Client.mouseWheelRotation != 0 && var9.onScrollWheelListener != null) {
                            var35 = new ScriptEvent();
                            var35.boolean1 = true;
                            var35.widget = var9;
                            var35.field789 = Client.mouseWheelRotation;
-                           var35.objs = var9.scrollListener;
+                           var35.objs = var9.onScrollWheelListener;
                            Client.field1045.addFront(var35);
                         }
 
