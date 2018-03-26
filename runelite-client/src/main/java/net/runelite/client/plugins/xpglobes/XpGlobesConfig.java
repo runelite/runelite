@@ -30,17 +30,17 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "xpglobes",
-		name = "XP Globes",
-		description = "Configuration for the XP globes plugin"
+	keyName = "xpglobes",
+	name = "XP Globes",
+	description = "Configuration for the XP globes plugin"
 )
 public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
-			keyName = "enableTooltips",
-			name = "Enable Tooltips",
-			description = "Configures whether or not to show tooltips",
-			position = 0
+		keyName = "enableTooltips",
+		name = "Enable Tooltips",
+		description = "Configures whether or not to show tooltips",
+		position = 0
 	)
 	default boolean enableTooltips()
 	{
@@ -48,10 +48,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Progress arc color",
-			name = "Progress arc color",
-			description = "Change the color of the progress arc in the xp orb",
-			position = 1
+		keyName = "Progress arc color",
+		name = "Progress arc color",
+		description = "Change the color of the progress arc in the xp orb",
+		position = 1
 	)
 	default Color progressArcColor()
 	{
@@ -59,10 +59,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Progress orb outline color",
-			name = "Progress orb outline color",
-			description = "Change the color of the progress orb outline",
-			position = 2
+		keyName = "Progress orb outline color",
+		name = "Progress orb outline color",
+		description = "Change the color of the progress orb outline",
+		position = 2
 	)
 	default Color progressOrbOutLineColor()
 	{
@@ -70,10 +70,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Progress orb background color",
-			name = "Progress orb background color",
-			description = "Change the color of the progress orb background",
-			position = 3
+		keyName = "Progress orb background color",
+		name = "Progress orb background color",
+		description = "Change the color of the progress orb background",
+		position = 3
 	)
 	default Color progressOrbBackgroundColor()
 	{
@@ -81,10 +81,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Progress arc width",
-			name = "Progress arc width",
-			description = "Change the stroke width of the progress arc",
-			position = 4
+		keyName = "Progress arc width",
+		name = "Progress arc width",
+		description = "Change the stroke width of the progress arc",
+		position = 4
 	)
 	default int progressArcStrokeWidth()
 	{
@@ -92,10 +92,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Orb size",
-			name = "Size of orbs",
-			description = "Change the size of the xp orbs",
-			position = 5
+		keyName = "Orb size",
+		name = "Size of orbs",
+		description = "Change the size of the xp orbs",
+		position = 5
 	)
 	default int xpOrbSize()
 	{
@@ -103,10 +103,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Center orbs",
-			name = "Center orbs",
-			description = "Where to center the xp orbs around",
-			position = 6
+		keyName = "Center orbs",
+		name = "Center orbs",
+		description = "Where to center the xp orbs around",
+		position = 6
 	)
 	default OrbCentering centerOrbs()
 	{
@@ -114,10 +114,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "disable99s",
-			name = "Disable lvl99 Orbs",
-			description = "Disables all Orbs for skills leveled to 99",
-			position = 7
+		keyName = "disable99s",
+		name = "Disable lvl99 Orbs",
+		description = "Disables all Orbs for skills leveled to 99",
+		position = 7
 	)
 	default boolean disable99s()
 	{
