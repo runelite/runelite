@@ -736,10 +736,10 @@ public class class190 {
                            var9.field2947 = Client.field1037;
                         }
 
-                        if(Client.chatCycle > var9.field2944 && var9.field2919 != null) {
+                        if(Client.chatCycle > var9.field2944 && var9.onChatTransmitListener != null) {
                            var35 = new ScriptEvent();
                            var35.widget = var9;
-                           var35.objs = var9.field2919;
+                           var35.objs = var9.onChatTransmitListener;
                            Client.field1045.addFront(var35);
                         }
 
