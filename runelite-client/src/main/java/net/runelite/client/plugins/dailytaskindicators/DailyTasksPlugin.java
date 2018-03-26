@@ -45,7 +45,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Daily Task Indicator",
+	name = "Daily Task Indicators",
 	enabledByDefault = false
 )
 @Slf4j
