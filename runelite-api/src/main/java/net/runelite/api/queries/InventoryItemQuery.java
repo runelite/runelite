@@ -24,18 +24,22 @@
  */
 package net.runelite.api.queries;
 
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Query;
 
+@RequiredArgsConstructor
 public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
 {
+	private final InventoryID inventory;
+
 	@Override
 	public Item[] result(Client client)
 	{
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer container = client.getItemContainer(inventory);
 		if (container == null)
 		{
 			return null;
