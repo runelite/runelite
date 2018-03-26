@@ -166,7 +166,7 @@ public final class GameObject {
       } else if(var0 == 1410) {
          var3.field2907 = var8;
       } else if(var0 == 1411) {
-         var3.field2900 = var8;
+         var3.onClickRepeatListener = var8;
       } else if(var0 == 1412) {
          var3.onMouseRepeatListener = var8;
       } else if(var0 == 1414) {

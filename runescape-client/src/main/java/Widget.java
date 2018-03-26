@@ -454,7 +454,8 @@ public class Widget extends Node {
    @Export("onClickListener")
    public Object[] onClickListener;
    @ObfuscatedName("ck")
-   public Object[] field2900;
+   @Export("onClickRepeatListener")
+   public Object[] onClickRepeatListener;
    @ObfuscatedName("db")
    public Object[] field2901;
    @ObfuscatedName("dp")
@@ -1110,7 +1111,7 @@ public class Widget extends Node {
       this.onOpListener = this.decodeListener(var1);
       this.onMouseRepeatListener = this.decodeListener(var1);
       this.onClickListener = this.decodeListener(var1);
-      this.field2900 = this.decodeListener(var1);
+      this.onClickRepeatListener = this.decodeListener(var1);
       this.field2901 = this.decodeListener(var1);
       this.field2902 = this.decodeListener(var1);
       this.field2906 = this.decodeListener(var1);
