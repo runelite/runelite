@@ -146,7 +146,7 @@ public class SoundTaskDataProvider implements class101 {
          var3.name = class81.scriptStringStack[--class316.scriptStringStackSize];
          return 1;
       } else if(var0 == 1306) {
-         var3.selectedAction = class81.scriptStringStack[--class316.scriptStringStackSize];
+         var3.targetVerb = class81.scriptStringStack[--class316.scriptStringStackSize];
          return 1;
       } else if(var0 == 1307) {
          var3.actions = null;

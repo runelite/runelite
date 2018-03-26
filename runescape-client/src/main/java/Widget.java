@@ -442,8 +442,8 @@ public class Widget extends Node {
    @ObfuscatedName("cz")
    public boolean field2895;
    @ObfuscatedName("cn")
-   @Export("selectedAction")
-   public String selectedAction;
+   @Export("targetVerb")
+   public String targetVerb;
    @ObfuscatedName("ca")
    @Export("mouseActionsPresent")
    public boolean mouseActionsPresent;
@@ -706,7 +706,7 @@ public class Widget extends Node {
       this.field2817 = 0;
       this.field2894 = 0;
       this.field2895 = false;
-      this.selectedAction = "";
+      this.targetVerb = "";
       this.mouseActionsPresent = false;
       this.field2932 = -1;
       this.spellName = "";
@@ -947,7 +947,7 @@ public class Widget extends Node {
       }
 
       if(this.field2853 == 2 || this.type == 2) {
-         this.selectedAction = var1.readString();
+         this.targetVerb = var1.readString();
          this.spellName = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
          this.config |= var4 << 11;
@@ -1102,7 +1102,7 @@ public class Widget extends Node {
       this.field2817 = var1.readUnsignedByte();
       this.field2894 = var1.readUnsignedByte();
       this.field2895 = var1.readUnsignedByte() == 1;
-      this.selectedAction = var1.readString();
+      this.targetVerb = var1.readString();
       this.onLoadListener = this.decodeListener(var1);
       this.onMouseOverListener = this.decodeListener(var1);
       this.onMouseLeaveListener = this.decodeListener(var1);
