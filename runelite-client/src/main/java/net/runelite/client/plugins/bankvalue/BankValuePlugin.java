@@ -36,7 +36,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Bank Value")
+@PluginDescriptor(
+	name = "Bank Value",
+	tags = "evaluator"
+)
 public class BankValuePlugin extends Plugin
 {
 	@Inject

@@ -32,7 +32,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Item Stats"
+	name = "Item Stats",
+	tags = "tooltips"
 )
 public class ItemStatPlugin extends Plugin
 {

@@ -54,7 +54,8 @@ import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_
 import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 
 @PluginDescriptor(
-	name = "Attack Indicators"
+	name = "Attack Indicators",
+	tags = "combat styles overlay"
 )
 @Slf4j
 public class AttackIndicatorPlugin extends Plugin

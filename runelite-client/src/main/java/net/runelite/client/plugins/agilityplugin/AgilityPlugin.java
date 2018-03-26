@@ -51,7 +51,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Agility"
+	name = "Agility",
+	tags = "training rooftops arena courses"
 )
 @Slf4j
 public class AgilityPlugin extends Plugin
