@@ -78,7 +78,7 @@ class FishingSpotOverlay extends Overlay
 				BufferedImage fishImage = getFishImage(spot);
 				if (fishImage != null)
 				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker());
+					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker(), npc.getLogicalHeight());
 				}
 			}
 			else
