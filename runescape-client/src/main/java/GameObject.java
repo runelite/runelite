@@ -143,7 +143,7 @@ public final class GameObject {
       }
 
       if(var0 == 1400) {
-         var3.field2899 = var8;
+         var3.onClickListener = var8;
       } else if(var0 == 1401) {
          var3.field2902 = var8;
       } else if(var0 == 1402) {
