@@ -1093,24 +1093,24 @@ public class Widget extends Node {
       this.field2894 = var1.readUnsignedByte();
       this.field2895 = var1.readUnsignedByte() == 1;
       this.selectedAction = var1.readString();
-      this.field2898 = this.method4463(var1);
-      this.mouseEnterListener = this.method4463(var1);
-      this.mouseExitListener = this.method4463(var1);
-      this.field2807 = this.method4463(var1);
-      this.field2908 = this.method4463(var1);
-      this.configListenerArgs = this.method4463(var1);
-      this.tableListenerArgs = this.method4463(var1);
-      this.skillListenerArgs = this.method4463(var1);
-      this.renderListener = this.method4463(var1);
-      this.field2917 = this.method4463(var1);
-      this.mouseHoverListener = this.method4463(var1);
-      this.field2899 = this.method4463(var1);
-      this.field2900 = this.method4463(var1);
-      this.field2901 = this.method4463(var1);
-      this.field2902 = this.method4463(var1);
-      this.field2906 = this.method4463(var1);
-      this.field2907 = this.method4463(var1);
-      this.scrollListener = this.method4463(var1);
+      this.field2898 = this.decodeListener(var1);
+      this.mouseEnterListener = this.decodeListener(var1);
+      this.mouseExitListener = this.decodeListener(var1);
+      this.field2807 = this.decodeListener(var1);
+      this.field2908 = this.decodeListener(var1);
+      this.configListenerArgs = this.decodeListener(var1);
+      this.tableListenerArgs = this.decodeListener(var1);
+      this.skillListenerArgs = this.decodeListener(var1);
+      this.renderListener = this.decodeListener(var1);
+      this.field2917 = this.decodeListener(var1);
+      this.mouseHoverListener = this.decodeListener(var1);
+      this.field2899 = this.decodeListener(var1);
+      this.field2900 = this.decodeListener(var1);
+      this.field2901 = this.decodeListener(var1);
+      this.field2902 = this.decodeListener(var1);
+      this.field2906 = this.decodeListener(var1);
+      this.field2907 = this.decodeListener(var1);
+      this.scrollListener = this.decodeListener(var1);
       this.configTriggers = this.method4464(var1);
       this.tableModTriggers = this.method4464(var1);
       this.skillTriggers = this.method4464(var1);
@@ -1121,7 +1121,8 @@ public class Widget extends Node {
       signature = "(Lgb;I)[Ljava/lang/Object;",
       garbageValue = "1325399982"
    )
-   Object[] method4463(Buffer var1) {
+   @Export("decodeListener")
+   Object[] decodeListener(Buffer var1) {
       int var2 = var1.readUnsignedByte();
       if(var2 == 0) {
          return null;
