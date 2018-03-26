@@ -147,7 +147,7 @@ public final class GameObject {
       } else if(var0 == 1401) {
          var3.field2902 = var8;
       } else if(var0 == 1402) {
-         var3.field2901 = var8;
+         var3.onReleaseListener = var8;
       } else if(var0 == 1403) {
          var3.onMouseOverListener = var8;
       } else if(var0 == 1404) {

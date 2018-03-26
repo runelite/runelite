@@ -593,13 +593,13 @@ public class class190 {
 
                         if(var9.field2875 && !var45) {
                            var9.field2875 = false;
-                           if(var9.field2901 != null) {
+                           if(var9.onReleaseListener != null) {
                               var35 = new ScriptEvent();
                               var35.boolean1 = true;
                               var35.widget = var9;
                               var35.field782 = MouseInput.mouseLastX - var43;
                               var35.field789 = MouseInput.mouseLastY - var11;
-                              var35.objs = var9.field2901;
+                              var35.objs = var9.onReleaseListener;
                               Client.field1047.addFront(var35);
                            }
                         }
