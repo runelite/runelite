@@ -710,7 +710,7 @@ public class class190 {
                            var9.field2946 = Client.field1035;
                         }
 
-                        if(var9.skillListenerArgs != null && Client.field1037 > var9.field2947) {
+                        if(var9.onStatTransmitListener != null && Client.field1037 > var9.field2947) {
                            if(var9.skillTriggers != null && Client.field1037 - var9.field2947 <= 32) {
                               label1154:
                               for(var47 = var9.field2947; var47 < Client.field1037; ++var47) {
@@ -720,7 +720,7 @@ public class class190 {
                                     if(var22 == var9.skillTriggers[var23]) {
                                        var36 = new ScriptEvent();
                                        var36.widget = var9;
-                                       var36.objs = var9.skillListenerArgs;
+                                       var36.objs = var9.onStatTransmitListener;
                                        Client.field1045.addFront(var36);
                                        break label1154;
                                     }
@@ -729,7 +729,7 @@ public class class190 {
                            } else {
                               var35 = new ScriptEvent();
                               var35.widget = var9;
-                              var35.objs = var9.skillListenerArgs;
+                              var35.objs = var9.onStatTransmitListener;
                               Client.field1045.addFront(var35);
                            }
 
