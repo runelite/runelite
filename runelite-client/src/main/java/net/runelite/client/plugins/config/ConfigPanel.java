@@ -158,6 +158,7 @@ public class ConfigPanel extends PluginPanel
 				{
 					final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
 					final String pluginName = plugin.getClass().getAnnotation(PluginDescriptor.class).name();
+					final String pluginTags = pluginName + " " + plugin.getClass().getAnnotation(PluginDescriptor.class).tags();
 
 					final JPanel groupPanel = buildGroupPanel();
 					groupPanel.add(new JLabel(pluginName), BorderLayout.CENTER);
@@ -172,7 +173,7 @@ public class ConfigPanel extends PluginPanel
 					final JButton toggleButton = buildToggleButton(plugin);
 					buttonPanel.add(toggleButton);
 
-					newChildren.put(pluginName, groupPanel);
+					newChildren.put(pluginTags, groupPanel);
 				});
 
 
