@@ -65,7 +65,7 @@ final class class3 implements class0 {
          var8.packetBuffer.method3582(SoundTaskDataProvider.field619);
          var8.packetBuffer.putShort(BaseVarType.field26);
          var8.packetBuffer.method3619(KeyFocusListener.keyPressed[82]?1:0);
-         var8.packetBuffer.method3573(class271.selectedItemIndex);
+         var8.packetBuffer.method3573(VarCString.selectedItemIndex);
          var8.packetBuffer.method3573(PlayerComposition.baseY + var1);
          Client.field1072.method2073(var8);
       } else if(var2 == 2) {
@@ -152,7 +152,7 @@ final class class3 implements class0 {
                var9.packetBuffer.method3573(var3);
                var9.packetBuffer.method3519(BaseVarType.field26);
                var9.packetBuffer.putByte(KeyFocusListener.keyPressed[82]?1:0);
-               var9.packetBuffer.method3570(class271.selectedItemIndex);
+               var9.packetBuffer.method3570(VarCString.selectedItemIndex);
                Client.field1072.method2073(var9);
             }
          } else if(var2 == 8) {
@@ -254,7 +254,7 @@ final class class3 implements class0 {
                   Client.destinationY = var1;
                   var9 = class33.method382(ClientPacket.field2357, Client.field1072.field1456);
                   var9.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
-                  var9.packetBuffer.putShort(class271.selectedItemIndex);
+                  var9.packetBuffer.putShort(VarCString.selectedItemIndex);
                   var9.packetBuffer.method3519(BaseVarType.field26);
                   var9.packetBuffer.method3584(SoundTaskDataProvider.field619);
                   var9.packetBuffer.method3519(var3);
@@ -284,7 +284,7 @@ final class class3 implements class0 {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = class33.method382(ClientPacket.field2377, Client.field1072.field1456);
-               var8.packetBuffer.method3573(class271.selectedItemIndex);
+               var8.packetBuffer.method3573(VarCString.selectedItemIndex);
                var8.packetBuffer.method3570(PlayerComposition.baseY + var1);
                var8.packetBuffer.putInt(SoundTaskDataProvider.field619);
                var8.packetBuffer.putShortLE(KeyFocusListener.keyPressed[82]?1:0);
@@ -473,7 +473,7 @@ final class class3 implements class0 {
                         }
                      } else if(var2 == 30) {
                         if(Client.field1012 == null) {
-                           class270.method4793(var1, var0);
+                           VarCInt.method4793(var1, var0);
                            Client.field1012 = CollisionData.getWidgetChild(var1, var0);
                            GameEngine.method1053(Client.field1012);
                         }
@@ -481,7 +481,7 @@ final class class3 implements class0 {
                         var8 = class33.method382(ClientPacket.field2407, Client.field1072.field1456);
                         var8.packetBuffer.method3584(var1);
                         var8.packetBuffer.putShort(BaseVarType.field26);
-                        var8.packetBuffer.putShort(class271.selectedItemIndex);
+                        var8.packetBuffer.putShort(VarCString.selectedItemIndex);
                         var8.packetBuffer.method3713(SoundTaskDataProvider.field619);
                         var8.packetBuffer.putShort(var0);
                         var8.packetBuffer.putShort(var3);
@@ -550,7 +550,7 @@ final class class3 implements class0 {
                            Fonts.method5482();
                            var23 = GZipDecompressor.getWidget(var1);
                            Client.itemSelectionState = 1;
-                           class271.selectedItemIndex = var0;
+                           VarCString.selectedItemIndex = var0;
                            SoundTaskDataProvider.field619 = var1;
                            BaseVarType.field26 = var3;
                            GameEngine.method1053(var23);

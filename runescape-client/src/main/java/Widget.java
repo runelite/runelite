@@ -445,7 +445,8 @@ public class Widget extends Node {
    @Export("selectedAction")
    public String selectedAction;
    @ObfuscatedName("ca")
-   public boolean field2878;
+   @Export("mouseActionsPresent")
+   public boolean mouseActionsPresent;
    @ObfuscatedName("cf")
    public Object[] field2898;
    @ObfuscatedName("cp")
@@ -696,7 +697,7 @@ public class Widget extends Node {
       this.field2894 = 0;
       this.field2895 = false;
       this.selectedAction = "";
-      this.field2878 = false;
+      this.mouseActionsPresent = false;
       this.field2932 = -1;
       this.spellName = "";
       this.tooltip = "Ok";
@@ -1136,7 +1137,7 @@ public class Widget extends Node {
             }
          }
 
-         this.field2878 = true;
+         this.mouseActionsPresent = true;
          return var3;
       }
    }

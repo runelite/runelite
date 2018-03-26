@@ -622,7 +622,7 @@ public class class47 {
       garbageValue = "1642824812"
    )
    public static void method756(IndexDataBase var0) {
-      class271.field3485 = var0;
+      VarCString.field3485 = var0;
    }
 
    @ObfuscatedName("b")

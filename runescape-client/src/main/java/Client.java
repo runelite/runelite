@@ -1696,8 +1696,8 @@ public final class Client extends GameEngine implements class302 {
       garbageValue = "52"
    )
    protected final void vmethod1535() {
-      if(BoundingBox.chatMessages.changed()) {
-         BoundingBox.chatMessages.serialize();
+      if(BoundingBox.varcs.changed()) {
+         BoundingBox.varcs.serialize();
       }
 
       if(WidgetNode.mouseRecorder != null) {
@@ -2740,7 +2740,7 @@ public final class Client extends GameEngine implements class302 {
                      }
                   }
 
-                  BoundingBox.chatMessages.reset();
+                  BoundingBox.varcs.reset();
                   field1016 = -1;
                   if(widgetRoot != -1) {
                      var28 = widgetRoot;
@@ -3635,7 +3635,7 @@ public final class Client extends GameEngine implements class302 {
                                                 ++field1096[var4];
                                              }
 
-                                             BoundingBox.chatMessages.process();
+                                             BoundingBox.varcs.process();
                                              var4 = ++MouseInput.mouseIdleTicks - 1;
                                              var6 = class153.method3139();
                                              PacketNode var28;

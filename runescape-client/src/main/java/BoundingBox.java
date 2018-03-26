@@ -10,8 +10,8 @@ public abstract class BoundingBox extends Node {
    @ObfuscatedSignature(
       signature = "Lcy;"
    )
-   @Export("chatMessages")
-   static Varcs chatMessages;
+   @Export("varcs")
+   static Varcs varcs;
    @ObfuscatedName("g")
    @Export("floorHues")
    static int[] floorHues;
