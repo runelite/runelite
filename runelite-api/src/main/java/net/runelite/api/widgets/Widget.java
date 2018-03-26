@@ -40,9 +40,9 @@ public interface Widget
 
 	void setContentType(int contentType);
 
-	int getConfig();
+	int setClickMask();
 
-	void setConfig(int config);
+	void setClickMask(int mask);
 
 	Widget getParent();
 
