@@ -33,11 +33,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
@@ -51,13 +51,58 @@ public class PanelComponent implements RenderableEntity
 
 	@Data
 	@AllArgsConstructor
-	@RequiredArgsConstructor
 	public static class Line
 	{
-		private final String left;
+		private boolean wrapWords;
+		private String left;
 		private Color leftColor = Color.WHITE;
-		private final String right;
+		private String right = "";
 		private Color rightColor = Color.WHITE;
+
+		public Line(String left)
+		{
+			this.left = left;
+		}
+
+		public Line(boolean wrapWords, String left)
+		{
+			this.wrapWords = wrapWords;
+			this.left = left;
+		}
+
+		public Line(String left, Color leftColor)
+		{
+			this.left = left;
+			this.leftColor = leftColor;
+		}
+
+		public Line(boolean wrapWords, String left, Color leftColor)
+		{
+			this.wrapWords = wrapWords;
+			this.left = left;
+			this.leftColor = leftColor;
+		}
+
+		public Line(String left, String right)
+		{
+			this.left = left;
+			this.right = right;
+		}
+
+		public Line(boolean wrapWords, String left, String right)
+		{
+			this.wrapWords = wrapWords;
+			this.left = left;
+			this.right = right;
+		}
+
+		public Line(String left, Color leftColor, String right, Color rightColor)
+		{
+			this.left = left;
+			this.leftColor = leftColor;
+			this.right = right;
+			this.rightColor = rightColor;
+		}
 	}
 
 	@Setter
@@ -84,6 +129,50 @@ public class PanelComponent implements RenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		final FontMetrics metrics = graphics.getFontMetrics();
+
+		// Do word wrapping
+		ListIterator<Line> iterator = lines.listIterator();
+		while (iterator.hasNext())
+		{
+			Line line = iterator.next();
+
+			if (line.wrapWords)
+			{
+				iterator.remove();
+
+				int maxWidth = width;
+				if (line.right.length() > 0)
+				{
+					maxWidth /= 2;
+				}
+				maxWidth -= LEFT_BORDER + RIGHT_BORDER;
+
+				List<String> leftSplitLines = lineBreakText(line.getLeft(), maxWidth, metrics);
+				List<String> rightSplitLines = lineBreakText(line.getRight(), maxWidth, metrics);
+
+				int lineCount = Math.max(leftSplitLines.size(), rightSplitLines.size());
+
+				for (int i = 0; i < lineCount; i++)
+				{
+					String left = "";
+					String right = "";
+
+					if (i < leftSplitLines.size())
+					{
+						left = leftSplitLines.get(i);
+					}
+
+					if (i < rightSplitLines.size())
+					{
+						right = rightSplitLines.get(i);
+					}
+
+					iterator.add(new Line(false, left, line.getLeftColor(), right, line.getRightColor()));
+				}
+			}
+		}
+
 		final Dimension dimension = new Dimension();
 		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size() + (Objects.isNull(progressBar) ? 0 : 1);
 		int height = elementNumber == 0 ? 0 :
@@ -96,8 +185,6 @@ public class PanelComponent implements RenderableEntity
 		{
 			return null;
 		}
-
-		final FontMetrics metrics = graphics.getFontMetrics();
 
 		// Calculate panel dimensions
 		int y = position.y + TOP_BORDER + metrics.getHeight();
@@ -145,5 +232,37 @@ public class PanelComponent implements RenderableEntity
 		}
 
 		return dimension;
+	}
+
+	private List<String> lineBreakText(String text, int maxWidth, FontMetrics metrics)
+	{
+		List<String> lines = new ArrayList<>();
+
+		int pos = 0;
+		String[] words = text.split(" ");
+		String line = "";
+
+		while (pos < words.length)
+		{
+			String newLine = pos > 0 && !line.isEmpty()
+					? line + " " + words[pos]
+					: words[pos];
+			int width = metrics.stringWidth(newLine);
+
+			if (width >= maxWidth)
+			{
+				lines.add(line);
+				line = "";
+			}
+			else
+			{
+				line = newLine;
+				pos++;
+			}
+		}
+
+		lines.add(line);
+
+		return lines;
 	}
 }
