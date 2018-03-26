@@ -539,7 +539,8 @@ public class Widget extends Node {
    @ObfuscatedName("dm")
    public Object[] field2926;
    @ObfuscatedName("eb")
-   public Object[] field2873;
+   @Export("onStockTransmitListener")
+   public Object[] onStockTransmitListener;
    @ObfuscatedName("ek")
    public Object[] field2820;
    @ObfuscatedName("ej")

@@ -757,10 +757,10 @@ public class class190 {
                            Client.field1045.addFront(var35);
                         }
 
-                        if(Client.field1057 > var9.field2944 && var9.field2873 != null) {
+                        if(Client.field1057 > var9.field2944 && var9.onStockTransmitListener != null) {
                            var35 = new ScriptEvent();
                            var35.widget = var9;
-                           var35.objs = var9.field2873;
+                           var35.objs = var9.onStockTransmitListener;
                            Client.field1045.addFront(var35);
                         }
 

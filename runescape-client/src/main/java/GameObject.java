@@ -194,7 +194,7 @@ public final class GameObject {
       } else if(var0 == 1424) {
          var3.onSubChangeListener = var8;
       } else if(var0 == 1425) {
-         var3.field2873 = var8;
+         var3.onStockTransmitListener = var8;
       } else if(var0 == 1426) {
          var3.field2820 = var8;
       } else {
