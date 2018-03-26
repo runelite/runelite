@@ -71,10 +71,10 @@ public interface RSWidget extends Widget
 	@Import("text")
 	String getRSText();
 
-	@Import("name")
+	@Import("opBase")
 	String getRSName();
 
-	@Import("name")
+	@Import("opBase")
 	void setRSName(String name);
 
 	@Import("text")
