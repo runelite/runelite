@@ -1111,9 +1111,9 @@ public class Widget extends Node {
       this.field2906 = this.decodeListener(var1);
       this.field2907 = this.decodeListener(var1);
       this.scrollListener = this.decodeListener(var1);
-      this.configTriggers = this.method4464(var1);
-      this.tableModTriggers = this.method4464(var1);
-      this.skillTriggers = this.method4464(var1);
+      this.configTriggers = this.decodeTransmitList(var1);
+      this.tableModTriggers = this.decodeTransmitList(var1);
+      this.skillTriggers = this.decodeTransmitList(var1);
    }
 
    @ObfuscatedName("b")
@@ -1148,7 +1148,8 @@ public class Widget extends Node {
       signature = "(Lgb;I)[I",
       garbageValue = "341288288"
    )
-   int[] method4464(Buffer var1) {
+   @Export("decodeTransmitList")
+   int[] decodeTransmitList(Buffer var1) {
       int var2 = var1.readUnsignedByte();
       if(var2 == 0) {
          return null;
