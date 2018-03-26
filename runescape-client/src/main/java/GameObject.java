@@ -184,7 +184,7 @@ public final class GameObject {
       } else if(var0 == 1419) {
          var3.onKeyListener = var8;
       } else if(var0 == 1420) {
-         var3.field2921 = var8;
+         var3.onFriendTransmitListener = var8;
       } else if(var0 == 1421) {
          var3.field2922 = var8;
       } else if(var0 == 1422) {

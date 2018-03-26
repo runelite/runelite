@@ -522,7 +522,8 @@ public class Widget extends Node {
    @Export("onKeyListener")
    public Object[] onKeyListener;
    @ObfuscatedName("dx")
-   public Object[] field2921;
+   @Export("onFriendTransmitListener")
+   public Object[] onFriendTransmitListener;
    @ObfuscatedName("di")
    public Object[] field2922;
    @ObfuscatedName("dv")

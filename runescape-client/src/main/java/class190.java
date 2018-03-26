@@ -743,10 +743,10 @@ public class class190 {
                            Client.field1045.addFront(var35);
                         }
 
-                        if(Client.field1039 > var9.field2944 && var9.field2921 != null) {
+                        if(Client.field1039 > var9.field2944 && var9.onFriendTransmitListener != null) {
                            var35 = new ScriptEvent();
                            var35.widget = var9;
-                           var35.objs = var9.field2921;
+                           var35.objs = var9.onFriendTransmitListener;
                            Client.field1045.addFront(var35);
                         }
 
