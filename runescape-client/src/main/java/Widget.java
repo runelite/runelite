@@ -638,7 +638,8 @@ public class Widget extends Node {
    @Export("noClickThrough")
    public boolean noClickThrough;
    @ObfuscatedName("eh")
-   public boolean field2951;
+   @Export("noScrollThrough")
+   public boolean noScrollThrough;
 
    static {
       field2811 = new NodeCache(200);
@@ -739,7 +740,7 @@ public class Widget extends Node {
       this.boundsIndex = -1;
       this.loopCycle = -1;
       this.noClickThrough = false;
-      this.field2951 = false;
+      this.noScrollThrough = false;
    }
 
    @ObfuscatedName("a")

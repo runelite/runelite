@@ -488,7 +488,7 @@ public class class190 {
                   if(var9.hasScript) {
                      ScriptEvent var53;
                      if(!var9.noClickThrough) {
-                        if(var9.field2951 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
+                        if(var9.noScrollThrough && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
                            for(var53 = (ScriptEvent)Client.field1045.getFront(); var53 != null; var53 = (ScriptEvent)Client.field1045.getNext()) {
                               if(var53.boolean1 && var53.widget.onScrollWheelListener == var53.objs) {
                                  var53.unlink();

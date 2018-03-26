@@ -86,7 +86,7 @@ public class WidgetNode extends Node {
          var4.noClickThrough = class81.intStack[--class5.intStackSize] == 1;
          return 1;
       } else if(var0 == 1006) {
-         var4.field2951 = class81.intStack[--class5.intStackSize] == 1;
+         var4.noScrollThrough = class81.intStack[--class5.intStackSize] == 1;
          return 1;
       } else {
          return 2;
