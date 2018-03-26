@@ -153,7 +153,7 @@ public final class GameObject {
       } else if(var0 == 1404) {
          var3.onMouseLeaveListener = var8;
       } else if(var0 == 1405) {
-         var3.field2906 = var8;
+         var3.onDragListener = var8;
       } else if(var0 == 1406) {
          var3.onTargetLeaveListener = var8;
       } else if(var0 == 1407) {

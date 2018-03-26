@@ -5994,12 +5994,12 @@ public final class Client extends GameEngine implements class302 {
          int var6 = var1 - field1025 + field1020.scrollX;
          int var7 = var2 - field1098 + field1020.scrollY;
          ScriptEvent var8;
-         if(draggedWidget.field2906 != null && draggingWidget) {
+         if(draggedWidget.onDragListener != null && draggingWidget) {
             var8 = new ScriptEvent();
             var8.widget = draggedWidget;
             var8.field782 = var6;
             var8.field789 = var7;
-            var8.objs = draggedWidget.field2906;
+            var8.objs = draggedWidget.onDragListener;
             class25.runScript(var8, 500000);
          }
 
