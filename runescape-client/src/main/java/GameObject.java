@@ -176,7 +176,7 @@ public final class GameObject {
          var3.skillListenerArgs = var8;
          var3.skillTriggers = var5;
       } else if(var0 == 1416) {
-         var3.field2908 = var8;
+         var3.onTargetEnterListener = var8;
       } else if(var0 == 1417) {
          var3.scrollListener = var8;
       } else if(var0 == 1418) {
