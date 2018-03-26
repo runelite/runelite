@@ -116,7 +116,7 @@ public class SlayerPlugin extends Plugin
 				&& config.amount() != -1
 				&& !config.taskName().isEmpty())
 			{
-		    	clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
+				clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
 			} 
 			if (config.streak() != -1)
 			{
