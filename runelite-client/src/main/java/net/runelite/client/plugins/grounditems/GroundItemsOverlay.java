@@ -99,7 +99,7 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 
-		plugin.getCollectedGroundItems().forEach(item ->
+		plugin.getCollectedGroundItems().values().forEach(item ->
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 

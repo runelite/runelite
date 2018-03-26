@@ -28,6 +28,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -35,6 +36,7 @@ import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -89,20 +91,6 @@ public class GroundItemsPlugin extends Plugin
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
-	// Collects similar ground items
-	private static final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> GROUND_ITEM_MAP_COLLECTOR = Collectors
-		.toMap
-			((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), ((a, b) ->
-				GroundItem.builder()
-					.index(b.getIndex())
-					.id(b.getId())
-					.itemId(b.getItemId())
-					.name(b.getName())
-					.location(b.getLocation())
-					.haPrice(a.getHaPrice() + b.getHaPrice())
-					.gePrice(a.getGePrice() + b.getGePrice())
-					.quantity(a.getQuantity() + b.getQuantity())
-					.build()));
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Rectangle, String> hiddenBoxes = new HashMap<>();
@@ -139,10 +127,22 @@ public class GroundItemsPlugin extends Plugin
 	private GroundItemsOverlay overlay;
 
 	@Getter
-	private final List<GroundItem> collectedGroundItems = new ArrayList<>();
+	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final List<GroundItem> groundItems = new ArrayList<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
+
+	// Collects similar ground items
+	private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
+		.toMap
+			((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
+				{
+					b.setHaPrice(a.getHaPrice() + b.getHaPrice());
+					b.setGePrice(a.getGePrice() + b.getGePrice());
+					b.setQuantity(a.getQuantity() + b.getQuantity());
+					return b;
+				},
+				() -> collectedGroundItems);
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -220,7 +220,6 @@ public class GroundItemsPlugin extends Plugin
 		final int upperY = Math.min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
 
 		groundItems.clear();
-		int index = 0;
 
 		for (int x = lowerX; x <= upperX; ++x)
 		{
@@ -254,10 +253,6 @@ public class GroundItemsPlugin extends Plugin
 					if (groundItem != null)
 					{
 						groundItems.add(groundItem);
-
-						// Required for preserving the correct order later
-						groundItem.setIndex(index);
-						index++;
 					}
 				}
 			}
@@ -265,12 +260,7 @@ public class GroundItemsPlugin extends Plugin
 
 		// Group ground items together and sort them properly
 		collectedGroundItems.clear();
-		groundItems.stream()
-			.collect(GROUND_ITEM_MAP_COLLECTOR)
-			.values()
-			.stream()
-			.sorted((left, right) -> Integer.compare(right.getIndex(), left.getIndex()))
-			.collect(Collectors.toCollection(() -> collectedGroundItems));
+		Lists.reverse(groundItems).stream().collect(groundItemMapCollector);
 	}
 
 	@Nullable

@@ -33,7 +33,6 @@ import net.runelite.api.coords.WorldPoint;
 @Builder
 class GroundItem
 {
-	private int index;
 	private int id;
 	private int itemId;
 	private String name;
