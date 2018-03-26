@@ -93,17 +93,17 @@ public class FontName {
                }
             }
 
-            if(class270.field3481 == null) {
-               class270.field3481 = new class110(class229.field2675, class243.field2953);
+            if(VarCInt.field3481 == null) {
+               VarCInt.field3481 = new class110(class229.field2675, class243.field2953);
             }
 
-            if(class229.field2673.method4286(class178.field2258, WorldComparator.field258, class270.field3481, 22050)) {
+            if(class229.field2673.method4286(class178.field2258, WorldComparator.field258, VarCInt.field3481, 22050)) {
                class229.field2673.method4169();
                class229.field2673.method4220(class229.field2677);
                class229.field2673.method4171(class178.field2258, class85.field1294);
                class229.field2674 = 0;
                class178.field2258 = null;
-               class270.field3481 = null;
+               VarCInt.field3481 = null;
                class229.field2672 = null;
                return true;
             }
@@ -113,7 +113,7 @@ public class FontName {
          class229.field2673.method4172();
          class229.field2674 = 0;
          class178.field2258 = null;
-         class270.field3481 = null;
+         VarCInt.field3481 = null;
          class229.field2672 = null;
       }
 

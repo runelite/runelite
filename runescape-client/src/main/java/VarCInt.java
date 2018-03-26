@@ -1,8 +1,10 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jq")
-public class class270 extends CacheableNode {
+@Implements("VarCInt")
+public class VarCInt extends CacheableNode {
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Ljc;"
@@ -25,7 +27,7 @@ public class class270 extends CacheableNode {
       field3478 = new NodeCache(64);
    }
 
-   public class270() {
+   public VarCInt() {
       this.field3477 = false;
    }
 

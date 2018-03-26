@@ -49,18 +49,18 @@ public class Varcs {
       int var1;
       byte[] var4;
       for(var1 = 0; var1 < this.varcs.length; ++var1) {
-         class270 var3 = (class270)class270.field3478.get((long)var1);
-         class270 var2;
+         VarCInt var3 = (VarCInt) VarCInt.field3478.get((long)var1);
+         VarCInt var2;
          if(var3 != null) {
             var2 = var3;
          } else {
-            var4 = class270.field3480.getConfigData(19, var1);
-            var3 = new class270();
+            var4 = VarCInt.field3480.getConfigData(19, var1);
+            var3 = new VarCInt();
             if(var4 != null) {
                var3.method4790(new Buffer(var4));
             }
 
-            class270.field3478.put(var3, (long)var1);
+            VarCInt.field3478.put(var3, (long)var1);
             var2 = var3;
          }
 
@@ -70,18 +70,18 @@ public class Varcs {
       this.varcstringSerials = new boolean[this.varcstrings.length];
 
       for(var1 = 0; var1 < this.varcstrings.length; ++var1) {
-         class271 var6 = (class271)class271.field3482.get((long)var1);
-         class271 var5;
+         VarCString var6 = (VarCString) VarCString.field3482.get((long)var1);
+         VarCString var5;
          if(var6 != null) {
             var5 = var6;
          } else {
-            var4 = class271.field3485.getConfigData(15, var1);
-            var6 = new class271();
+            var4 = VarCString.field3485.getConfigData(15, var1);
+            var6 = new VarCString();
             if(var4 != null) {
                var6.method4797(new Buffer(var4));
             }
 
-            class271.field3482.put(var6, (long)var1);
+            VarCString.field3482.put(var6, (long)var1);
             var5 = var6;
          }
 

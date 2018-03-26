@@ -265,11 +265,11 @@ public class class88 {
                   class199.method3797(Client.configsIndex);
                   PendingSpawn.method1647(Client.configsIndex);
                   IndexData var17 = Client.configsIndex;
-                  class270.field3480 = var17;
+                  VarCInt.field3480 = var17;
                   class47.method756(Client.configsIndex);
                   IndexData var18 = Client.configsIndex;
                   class278.field3551 = var18;
-                  BoundingBox.chatMessages = new Varcs();
+                  BoundingBox.varcs = new Varcs();
                   IndexData var19 = Client.configsIndex;
                   IndexData var20 = WorldMapRegion.indexSprites;
                   IndexData var21 = Client.indexCache13;

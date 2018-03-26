@@ -205,7 +205,7 @@ public final class GameObject {
          var3.field2926 = var8;
       }
 
-      var3.field2878 = true;
+      var3.mouseActionsPresent = true;
       return 1;
    }
 }

@@ -98,7 +98,7 @@ public class class95 {
                   if(var0.itemIds[var13] > 0) {
                      ItemComposition var8 = class81.getItemDefinition(var0.itemIds[var13] - 1);
                      if(Client.itemSelectionState == 1 && method2041(GrandExchangeEvent.getWidgetConfig(var0))) {
-                        if(var0.id != SoundTaskDataProvider.field619 || var13 != class271.selectedItemIndex) {
+                        if(var0.id != SoundTaskDataProvider.field619 || var13 != VarCString.selectedItemIndex) {
                            class169.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class37.getColTags(16748608) + var8.name, 31, var8.id, var13, var0.id);
                         }
                      } else if(Client.spellSelected && method2041(GrandExchangeEvent.getWidgetConfig(var0))) {

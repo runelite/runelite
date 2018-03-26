@@ -435,7 +435,7 @@ public class FileRequest extends CacheableNode {
                                  var26 = var10.itemIds[var30] - 1;
                                  if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == MapIconReference.field574 && var30 == Client.field998) {
                                     SpritePixels var36;
-                                    if(Client.itemSelectionState == 1 && var30 == class271.selectedItemIndex && var10.id == SoundTaskDataProvider.field619) {
+                                    if(Client.itemSelectionState == 1 && var30 == VarCString.selectedItemIndex && var10.id == SoundTaskDataProvider.field619) {
                                        var36 = class25.createSprite(var26, var10.itemQuantities[var30], 2, 0, 2, false);
                                     } else {
                                        var36 = class25.createSprite(var26, var10.itemQuantities[var30], 1, 3153952, 2, false);

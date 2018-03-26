@@ -76,14 +76,14 @@ public class class153 extends class297 {
             }
 
             class178.field2258 = null;
-            class270.field3481 = null;
+            VarCInt.field3481 = null;
          }
       } catch (Exception var2) {
          var2.printStackTrace();
          class229.field2673.method4172();
          class229.field2674 = 0;
          class178.field2258 = null;
-         class270.field3481 = null;
+         VarCInt.field3481 = null;
          class229.field2672 = null;
       }
 

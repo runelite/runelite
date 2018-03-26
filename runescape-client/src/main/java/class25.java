@@ -313,14 +313,14 @@ public class class25 {
 
                                                                                                                                                                         class81.SHAPE_VERTICES[var21][var23] = class81.intStack[class5.intStackSize + 1];
                                                                                                                                                                      } else if(var7 == 47) {
-                                                                                                                                                                        var34 = BoundingBox.chatMessages.getVarcString(var30[var19]);
+                                                                                                                                                                        var34 = BoundingBox.varcs.getVarcString(var30[var19]);
                                                                                                                                                                         if(var34 == null) {
                                                                                                                                                                            var34 = "null";
                                                                                                                                                                         }
 
                                                                                                                                                                         class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var34;
                                                                                                                                                                      } else if(var7 == 48) {
-                                                                                                                                                                        BoundingBox.chatMessages.putVarcString(var30[var19], class81.scriptStringStack[--class316.scriptStringStackSize]);
+                                                                                                                                                                        BoundingBox.varcs.putVarcString(var30[var19], class81.scriptStringStack[--class316.scriptStringStackSize]);
                                                                                                                                                                      } else {
                                                                                                                                                                         if(var7 != 60) {
                                                                                                                                                                            throw new IllegalStateException();
@@ -333,10 +333,10 @@ public class class25 {
                                                                                                                                                                         }
                                                                                                                                                                      }
                                                                                                                                                                   } else {
-                                                                                                                                                                     BoundingBox.chatMessages.putVarc(var30[var19], class81.intStack[--class5.intStackSize]);
+                                                                                                                                                                     BoundingBox.varcs.putVarc(var30[var19], class81.intStack[--class5.intStackSize]);
                                                                                                                                                                   }
                                                                                                                                                                } else {
-                                                                                                                                                                  class81.intStack[++class5.intStackSize - 1] = BoundingBox.chatMessages.getVarc(var30[var19]);
+                                                                                                                                                                  class81.intStack[++class5.intStackSize - 1] = BoundingBox.varcs.getVarc(var30[var19]);
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var21 = var30[var19];
