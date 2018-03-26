@@ -825,12 +825,12 @@ final class class3 implements class0 {
                                  var24 = var23.itemId;
                                  Widget var25 = CollisionData.getWidgetChild(var1, var0);
                                  if(var25 != null) {
-                                    if(var25.field2917 != null) {
+                                    if(var25.onOpListener != null) {
                                        ScriptEvent var17 = new ScriptEvent();
                                        var17.widget = var25;
                                        var17.field784 = var3;
                                        var17.string = var5;
-                                       var17.objs = var25.field2917;
+                                       var17.objs = var25.onOpListener;
                                        class25.runScript(var17, 500000);
                                     }
 

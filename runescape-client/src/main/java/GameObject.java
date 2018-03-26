@@ -162,7 +162,7 @@ public final class GameObject {
       } else if(var0 == 1408) {
          var3.onTimerListener = var8;
       } else if(var0 == 1409) {
-         var3.field2917 = var8;
+         var3.onOpListener = var8;
       } else if(var0 == 1410) {
          var3.field2907 = var8;
       } else if(var0 == 1411) {

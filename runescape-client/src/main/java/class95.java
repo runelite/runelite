@@ -190,7 +190,7 @@ public class class95 {
          } else {
             for(var13 = 9; var13 >= 5; --var13) {
                String var14;
-               if(!class81.method1814(GrandExchangeEvent.getWidgetConfig(var0), var13) && var0.field2917 == null) {
+               if(!class81.method1814(GrandExchangeEvent.getWidgetConfig(var0), var13) && var0.onOpListener == null) {
                   var14 = null;
                } else if(var0.actions != null && var0.actions.length > var13 && var0.actions[var13] != null && var0.actions[var13].trim().length() != 0) {
                   var14 = var0.actions[var13];
@@ -210,7 +210,7 @@ public class class95 {
 
             for(var4 = 4; var4 >= 0; --var4) {
                String var15;
-               if(!class81.method1814(GrandExchangeEvent.getWidgetConfig(var0), var4) && var0.field2917 == null) {
+               if(!class81.method1814(GrandExchangeEvent.getWidgetConfig(var0), var4) && var0.onOpListener == null) {
                   var15 = null;
                } else if(var0.actions != null && var0.actions.length > var4 && var0.actions[var4] != null && var0.actions[var4].trim().length() != 0) {
                   var15 = var0.actions[var4];
