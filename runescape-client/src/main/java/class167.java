@@ -311,10 +311,10 @@ public class class167 {
             }
 
             ScriptEvent var5;
-            if(var1 == 0 && var3.field2924 != null) {
+            if(var1 == 0 && var3.onDialogAbortListener != null) {
                var5 = new ScriptEvent();
                var5.widget = var3;
-               var5.objs = var3.field2924;
+               var5.objs = var3.onDialogAbortListener;
                class25.runScript(var5, 500000);
             }
 
