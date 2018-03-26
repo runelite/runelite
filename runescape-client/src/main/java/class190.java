@@ -639,13 +639,13 @@ public class class190 {
 
                         if(var9.field2942 && !var44) {
                            var9.field2942 = false;
-                           if(var9.mouseExitListener != null) {
+                           if(var9.onMouseLeaveListener != null) {
                               var35 = new ScriptEvent();
                               var35.boolean1 = true;
                               var35.widget = var9;
                               var35.field782 = MouseInput.mouseLastX - var43;
                               var35.field789 = MouseInput.mouseLastY - var11;
-                              var35.objs = var9.mouseExitListener;
+                              var35.objs = var9.onMouseLeaveListener;
                               Client.field1047.addFront(var35);
                            }
                         }
