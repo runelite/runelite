@@ -88,7 +88,8 @@ class JewelleryCountOverlay extends Overlay
 		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
 			WidgetInfo.EQUIPMENT_AMULET,
 			WidgetInfo.EQUIPMENT_RING,
-			WidgetInfo.EQUIPMENT_GLOVES
+			WidgetInfo.EQUIPMENT_GLOVES,
+			WidgetInfo.EQUIPMENT_WEAPON
 		);
 		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
 
