@@ -496,8 +496,8 @@ public class Widget extends Node {
    @Export("skillTriggers")
    public int[] skillTriggers;
    @ObfuscatedName("dd")
-   @Export("renderListener")
-   public Object[] renderListener;
+   @Export("onTimerListener")
+   public Object[] onTimerListener;
    @ObfuscatedName("du")
    public Object[] field2917;
    @ObfuscatedName("dk")
@@ -1104,7 +1104,7 @@ public class Widget extends Node {
       this.onVarTransmitListener = this.decodeListener(var1);
       this.onInvTransmitListener = this.decodeListener(var1);
       this.onStatTransmitListener = this.decodeListener(var1);
-      this.renderListener = this.decodeListener(var1);
+      this.onTimerListener = this.decodeListener(var1);
       this.field2917 = this.decodeListener(var1);
       this.mouseHoverListener = this.decodeListener(var1);
       this.field2899 = this.decodeListener(var1);

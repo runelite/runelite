@@ -650,10 +650,10 @@ public class class190 {
                            }
                         }
 
-                        if(var9.renderListener != null) {
+                        if(var9.onTimerListener != null) {
                            var35 = new ScriptEvent();
                            var35.widget = var9;
-                           var35.objs = var9.renderListener;
+                           var35.objs = var9.onTimerListener;
                            Client.field1046.addFront(var35);
                         }
 

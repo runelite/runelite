@@ -160,7 +160,7 @@ public final class GameObject {
          var3.onVarTransmitListener = var8;
          var3.configTriggers = var5;
       } else if(var0 == 1408) {
-         var3.renderListener = var8;
+         var3.onTimerListener = var8;
       } else if(var0 == 1409) {
          var3.field2917 = var8;
       } else if(var0 == 1410) {
