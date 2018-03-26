@@ -534,7 +534,8 @@ public class Widget extends Node {
    @Export("onDialogAbortListener")
    public Object[] onDialogAbortListener;
    @ObfuscatedName("ds")
-   public Object[] field2925;
+   @Export("onSubChangeListener")
+   public Object[] onSubChangeListener;
    @ObfuscatedName("dm")
    public Object[] field2926;
    @ObfuscatedName("eb")

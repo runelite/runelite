@@ -318,7 +318,7 @@ public class class167 {
                class25.runScript(var5, 500000);
             }
 
-            if(var1 == 1 && var3.field2925 != null) {
+            if(var1 == 1 && var3.onSubChangeListener != null) {
                if(var3.index >= 0) {
                   Widget var6 = GZipDecompressor.getWidget(var3.id);
                   if(var6 == null || var6.children == null || var3.index >= var6.children.length || var3 != var6.children[var3.index]) {
@@ -328,7 +328,7 @@ public class class167 {
 
                var5 = new ScriptEvent();
                var5.widget = var3;
-               var5.objs = var3.field2925;
+               var5.objs = var3.onSubChangeListener;
                class25.runScript(var5, 500000);
             }
          }
