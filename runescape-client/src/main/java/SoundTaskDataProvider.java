@@ -137,7 +137,7 @@ public class SoundTaskDataProvider implements class101 {
          var3.dragRenderBehavior = class81.intStack[--class5.intStackSize] == 1;
          return 1;
       } else if(var0 == 1303) {
-         var3.field2817 = class81.intStack[--class5.intStackSize];
+         var3.dragDeadZone = class81.intStack[--class5.intStackSize];
          return 1;
       } else if(var0 == 1304) {
          var3.dragDeadTime = class81.intStack[--class5.intStackSize];

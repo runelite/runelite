@@ -433,7 +433,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -568409323
    )
-   public int field2817;
+   @Export("dragDeadZone")
+   public int dragDeadZone;
    @ObfuscatedName("cl")
    @ObfuscatedGetter(
       intValue = -91992637
@@ -705,7 +706,7 @@ public class Widget extends Node {
       this.config = 0;
       this.name = "";
       this.dragParent = null;
-      this.field2817 = 0;
+      this.dragDeadZone = 0;
       this.dragDeadTime = 0;
       this.dragRenderBehavior = false;
       this.targetVerb = "";
@@ -1101,7 +1102,7 @@ public class Widget extends Node {
          }
       }
 
-      this.field2817 = var1.readUnsignedByte();
+      this.dragDeadZone = var1.readUnsignedByte();
       this.dragDeadTime = var1.readUnsignedByte();
       this.dragRenderBehavior = var1.readUnsignedByte() == 1;
       this.targetVerb = var1.readString();
