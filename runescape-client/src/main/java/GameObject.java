@@ -202,7 +202,7 @@ public final class GameObject {
             return 2;
          }
 
-         var3.field2926 = var8;
+         var3.onResizeListener = var8;
       }
 
       var3.mouseActionsPresent = true;

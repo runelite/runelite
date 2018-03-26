@@ -537,7 +537,8 @@ public class Widget extends Node {
    @Export("onSubChangeListener")
    public Object[] onSubChangeListener;
    @ObfuscatedName("dm")
-   public Object[] field2926;
+   @Export("onResizeListener")
+   public Object[] onResizeListener;
    @ObfuscatedName("eb")
    @Export("onStockTransmitListener")
    public Object[] onStockTransmitListener;
