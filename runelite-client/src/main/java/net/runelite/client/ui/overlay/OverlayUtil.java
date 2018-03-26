@@ -95,7 +95,7 @@ public class OverlayUtil
 		}
 	}
 
-	public static void renderActorOverlayImage(Graphics2D graphics, Actor actor, BufferedImage image, Color color)
+	public static void renderActorOverlayImage(Graphics2D graphics, Actor actor, BufferedImage image, Color color, int zOffset)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
 		if (poly != null)
@@ -103,7 +103,7 @@ public class OverlayUtil
 			renderPolygon(graphics, poly, color);
 		}
 
-		Point imageLocation = actor.getCanvasImageLocation(graphics, image, actor.getLogicalHeight());
+		Point imageLocation = actor.getCanvasImageLocation(graphics, image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
