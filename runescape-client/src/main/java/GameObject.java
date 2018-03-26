@@ -157,7 +157,7 @@ public final class GameObject {
       } else if(var0 == 1406) {
          var3.onTargetLeaveListener = var8;
       } else if(var0 == 1407) {
-         var3.configListenerArgs = var8;
+         var3.onVarTransmitListener = var8;
          var3.configTriggers = var5;
       } else if(var0 == 1408) {
          var3.renderListener = var8;

@@ -658,7 +658,7 @@ public class class190 {
                         }
 
                         ScriptEvent var36;
-                        if(var9.configListenerArgs != null && Client.field1033 > var9.field2945) {
+                        if(var9.onVarTransmitListener != null && Client.field1033 > var9.field2945) {
                            if(var9.configTriggers != null && Client.field1033 - var9.field2945 <= 32) {
                               label1202:
                               for(var47 = var9.field2945; var47 < Client.field1033; ++var47) {
@@ -668,7 +668,7 @@ public class class190 {
                                     if(var22 == var9.configTriggers[var23]) {
                                        var36 = new ScriptEvent();
                                        var36.widget = var9;
-                                       var36.objs = var9.configListenerArgs;
+                                       var36.objs = var9.onVarTransmitListener;
                                        Client.field1045.addFront(var36);
                                        break label1202;
                                     }
@@ -677,7 +677,7 @@ public class class190 {
                            } else {
                               var35 = new ScriptEvent();
                               var35.widget = var9;
-                              var35.objs = var9.configListenerArgs;
+                              var35.objs = var9.onVarTransmitListener;
                               Client.field1045.addFront(var35);
                            }
 

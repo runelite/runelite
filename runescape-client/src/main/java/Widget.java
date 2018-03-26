@@ -478,8 +478,8 @@ public class Widget extends Node {
    @Export("onTargetLeaveListener")
    public Object[] onTargetLeaveListener;
    @ObfuscatedName("dq")
-   @Export("configListenerArgs")
-   public Object[] configListenerArgs;
+   @Export("onVarTransmitListener")
+   public Object[] onVarTransmitListener;
    @ObfuscatedName("dt")
    @Export("configTriggers")
    public int[] configTriggers;
@@ -1101,7 +1101,7 @@ public class Widget extends Node {
       this.onMouseLeaveListener = this.decodeListener(var1);
       this.onTargetLeaveListener = this.decodeListener(var1);
       this.onTargetEnterListener = this.decodeListener(var1);
-      this.configListenerArgs = this.decodeListener(var1);
+      this.onVarTransmitListener = this.decodeListener(var1);
       this.tableListenerArgs = this.decodeListener(var1);
       this.skillListenerArgs = this.decodeListener(var1);
       this.renderListener = this.decodeListener(var1);
