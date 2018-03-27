@@ -112,12 +112,21 @@ public class SlayerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (client.getGameState() == GameState.LOGGED_IN
-			&& config.amount() != -1
-			&& !config.taskName().isEmpty())
-		{
-			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
-		}
+			if (client.getGameState() == GameState.LOGGED_IN
+				&& config.amount() != -1
+				&& !config.taskName().isEmpty())
+			{
+				clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
+			} 
+			if (config.streak() != -1)
+			{
+				setStreak(config.streak());
+			}
+			if (config.points() != -1)
+			{
+				setPoints(config.points());
+			}	
+			
 	}
 
 	@Override
