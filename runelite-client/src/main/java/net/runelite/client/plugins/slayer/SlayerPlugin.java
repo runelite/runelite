@@ -116,6 +116,8 @@ public class SlayerPlugin extends Plugin
 			&& config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
+			setPoints(config.points());
+			setStreak(config.streak());
 			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
@@ -149,6 +151,8 @@ public class SlayerPlugin extends Plugin
 					&& !config.taskName().isEmpty()
 					&& loginFlag == true)
 				{
+					setPoints(config.points());
+					setStreak(config.streak());
 					setTask(config.taskName(), config.amount());
 					loginFlag = false;
 				}
