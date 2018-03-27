@@ -163,7 +163,7 @@ public class ClueScrollPlugin extends Plugin
 
 			if (objectId != -1)
 			{
-				GameObjectQuery query = new GameObjectQuery().idEquals();
+				GameObjectQuery query = new GameObjectQuery().idEquals(objectId);
 				objectsToMark = queryRunner.runQuery(query);
 			}
 		}
