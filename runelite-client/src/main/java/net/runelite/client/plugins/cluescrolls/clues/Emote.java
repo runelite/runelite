@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Query;
+import lombok.Getter;
+import static net.runelite.api.SpriteID.*;
 
-@RequiredArgsConstructor
-public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
+@Getter
+public enum Emote
 {
-	private final InventoryID inventory;
+	BULL_ROARER("Bull Roarer", -1),
+	YES("Yes", EMOTE_YES),
+	NO("No", EMOTE_NO),
+	THINK("Think", EMOTE_THINK),
+	BOW("Bow", EMOTE_BOW),
+	ANGRY("Angry", EMOTE_ANGRY),
+	CRY("Cry", EMOTE_CRY),
+	LAUGH("Laugh", EMOTE_LAUGH),
+	CHEER("Cheer", EMOTE_CHEER),
+	WAVE("Wave", EMOTE_WAVE),
+	BECKON("Beckon", EMOTE_BECKON),
+	DANCE("Dance", EMOTE_DANCE),
+	CLAP("Clap", EMOTE_CLAP),
+	PANIC("Panic", EMOTE_PANIC),
+	JIG("Jig", EMOTE_JIG),
+	SPIN("Spin", EMOTE_SPIN),
+	HEADBANG("Headbang", EMOTE_HEADBANG),
+	JUMP_FOR_JOY("Jump for Joy", EMOTE_JUMP_FOR_JOY),
+	RASPBERRY("Raspberry", EMOTE_RASPBERRY),
+	YAWN("Yawn", EMOTE_YAWN),
+	SALUTE("Salute", EMOTE_SALUTE),
+	SHRUG("Shrug", EMOTE_SHRUG),
+	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
+	GOBLIN_SALUTE("Goblin Salute", EMOTE_GOBLIN_SALUTE),
+	SLAP_HEAD("Slap Head", EMOTE_SLAP_HEAD),
+	STOMP("Stomp", EMOTE_STOMP),
+	FLAP("Flap", EMOTE_FLAP),
+	PUSH_UP("Push up", EMOTE_PUSH_UP);
 
-	@Override
-	public Item[] result(Client client)
+	private String name;
+	private int spriteId;
+
+	Emote(String name, int spriteId)
 	{
-		ItemContainer container = client.getItemContainer(inventory);
-		if (container == null)
-		{
-			return null;
-		}
-		return container.getItems();
+		this.name = name;
+		this.spriteId = spriteId;
 	}
 
+	public boolean hasSprite()
+	{
+		return spriteId != -1;
+	}
 }

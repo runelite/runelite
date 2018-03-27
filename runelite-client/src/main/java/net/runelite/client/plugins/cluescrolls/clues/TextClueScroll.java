@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Query;
-
-@RequiredArgsConstructor
-public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
+public interface TextClueScroll
 {
-	private final InventoryID inventory;
-
-	@Override
-	public Item[] result(Client client)
-	{
-		ItemContainer container = client.getItemContainer(inventory);
-		if (container == null)
-		{
-			return null;
-		}
-		return container.getItems();
-	}
-
+	String getText();
 }

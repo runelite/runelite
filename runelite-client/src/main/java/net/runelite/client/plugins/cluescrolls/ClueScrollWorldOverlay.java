@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,78 +22,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fishing;
+package net.runelite.client.plugins.cluescrolls;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import net.runelite.api.GraphicID;
-import net.runelite.api.NPC;
-import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
-class FishingSpotOverlay extends Overlay
+public class ClueScrollWorldOverlay extends Overlay
 {
-	private final FishingPlugin plugin;
-	private final FishingConfig config;
+	public static final int IMAGE_Z_OFFSET = 30;
+
+	public static final BufferedImage EMOTE_IMAGE;
+	public static final BufferedImage CLUE_SCROLL_IMAGE;
+	public static final BufferedImage SPADE_IMAGE;
+
+	public static final Color CLICKBOX_BORDER_COLOR = Color.ORANGE;
+	public static final Color CLICKBOX_HOVER_BORDER_COLOR = CLICKBOX_BORDER_COLOR.darker();
+	public static final Color CLICKBOX_FILL_COLOR = new Color(0, 255, 0, 20);
+
+	private final ClueScrollPlugin plugin;
+
+	static
+	{
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
+				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
+				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Inject
-	ItemManager itemManager;
-
-	@Inject
-	public FishingSpotOverlay(FishingPlugin plugin, FishingConfig config)
+	public ClueScrollWorldOverlay(ClueScrollPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		NPC[] fishingSpots = plugin.getFishingSpots();
-		if (fishingSpots == null)
+		ClueScroll clue = plugin.getClue();
+
+		if (clue != null)
 		{
-			return null;
-		}
-
-		for (NPC npc : fishingSpots)
-		{
-			FishingSpot spot = FishingSpot.getSpot(npc.getId());
-
-			if (spot == null)
-			{
-				continue;
-			}
-
-			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
-			if (config.showIcons())
-			{
-				BufferedImage fishImage = getFishImage(spot);
-				if (fishImage != null)
-				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker(), npc.getLogicalHeight());
-				}
-			}
-			else
-			{
-				String text = spot.getName();
-				OverlayUtil.renderActorOverlay(graphics, npc, text, color.darker());
-			}
+			clue.makeWorldOverlayHint(graphics, plugin);
 		}
 
 		return null;
-	}
-
-	private BufferedImage getFishImage(FishingSpot spot)
-	{
-		BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
-		return fishImage;
 	}
 }
