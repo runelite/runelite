@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class ClueScrollOverlay extends Overlay
@@ -45,6 +46,7 @@ public class ClueScrollOverlay extends Overlay
 	public ClueScrollOverlay(ClueScrollPlugin plugin)
 	{
 		this.plugin = plugin;
+		setPriority(OverlayPriority.LOW);
 	}
 
 	@Override
