@@ -15,7 +15,8 @@ public class class23 {
    @ObfuscatedGetter(
       intValue = -562717215
    )
-   static int field331;
+   @Export("menuWidth")
+   static int menuWidth;
 
    @ObfuscatedName("gl")
    @ObfuscatedSignature(

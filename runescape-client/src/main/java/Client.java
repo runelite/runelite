@@ -5765,16 +5765,16 @@ public final class Client extends GameEngine implements class302 {
                if(var19 != 1 && (class153.middleMouseMovesCamera || var19 != 4)) {
                   var2 = MouseInput.mouseLastX;
                   var14 = MouseInput.mouseLastY;
-                  if(var2 < TextureProvider.menuX - 10 || var2 > TextureProvider.menuX + class23.field331 + 10 || var14 < class90.menuY - 10 || var14 > class90.menuY + MapIconReference.field571 + 10) {
+                  if(var2 < TextureProvider.menuX - 10 || var2 > TextureProvider.menuX + class23.menuWidth + 10 || var14 < class90.menuY - 10 || var14 > class90.menuY + MapIconReference.menuHeight + 10) {
                      isMenuOpen = false;
-                     GameCanvas.method846(TextureProvider.menuX, class90.menuY, class23.field331, MapIconReference.field571);
+                     GameCanvas.method846(TextureProvider.menuX, class90.menuY, class23.menuWidth, MapIconReference.menuHeight);
                   }
                }
 
                if(var19 == 1 || !class153.middleMouseMovesCamera && var19 == 4) {
                   var2 = TextureProvider.menuX;
                   var14 = class90.menuY;
-                  var15 = class23.field331;
+                  var15 = class23.menuWidth;
                   var5 = MouseInput.mouseLastPressedX;
                   var20 = MouseInput.mouseLastPressedY;
                   var7 = -1;
@@ -5799,7 +5799,7 @@ public final class Client extends GameEngine implements class302 {
                   }
 
                   isMenuOpen = false;
-                  GameCanvas.method846(TextureProvider.menuX, class90.menuY, class23.field331, MapIconReference.field571);
+                  GameCanvas.method846(TextureProvider.menuX, class90.menuY, class23.menuWidth, MapIconReference.menuHeight);
                }
             } else {
                var2 = menuOptionCount - 1;
@@ -5914,8 +5914,8 @@ public final class Client extends GameEngine implements class302 {
       isMenuOpen = true;
       TextureProvider.menuX = var5;
       class90.menuY = var6;
-      class23.field331 = var3;
-      MapIconReference.field571 = menuOptionCount * 15 + 22;
+      class23.menuWidth = var3;
+      MapIconReference.menuHeight = menuOptionCount * 15 + 22;
    }
 
    @ObfuscatedName("is")

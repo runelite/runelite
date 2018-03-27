@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -139,6 +140,16 @@ public interface Client extends GameEngine
 	void setMenuEntries(MenuEntry[] entries);
 
 	boolean isMenuOpen();
+
+	int getMenuX();
+
+	int getMenuY();
+
+	int getMenuWidth();
+
+	int getMenuHeight();
+
+	Rectangle getMenuBounds();
 
 	int getMapAngle();
 

@@ -22,7 +22,8 @@ public class MapIconReference {
    @ObfuscatedGetter(
       intValue = 1362734343
    )
-   static int field571;
+   @Export("menuHeight")
+   static int menuHeight;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1987459455
