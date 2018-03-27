@@ -52,6 +52,8 @@ public class PlayerIndicatorsService
 			return;
 		}
 
+		final Player localPlayer = client.getLocalPlayer();
+
 		for (Player player : client.getPlayers())
 		{
 			if (player == null || player.getName() == null)
@@ -75,6 +77,10 @@ public class PlayerIndicatorsService
 			else if (config.drawClanMemberNames() && isClanMember)
 			{
 				consumer.accept(player, config.getClanMemberColor());
+			}
+			else if (config.drawTeamMemberNames() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			{
+				consumer.accept(player, config.getTeamMemberColor());
 			}
 			else if (config.drawNonClanMemberNames() && !isClanMember)
 			{
