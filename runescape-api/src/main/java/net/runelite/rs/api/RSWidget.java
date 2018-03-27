@@ -43,11 +43,11 @@ public interface RSWidget extends Widget
 	@Import("parentId")
 	int getRSParentId();
 
-	@Import("config")
-	int getConfig();
+	@Import("clickMask")
+	int setClickMask();
 
-	@Import("config")
-	void setConfig(int config);
+	@Import("clickMask")
+	void setClickMask(int mask);
 
 	@Import("boundsIndex")
 	int getBoundsIndex();
@@ -71,10 +71,10 @@ public interface RSWidget extends Widget
 	@Import("text")
 	String getRSText();
 
-	@Import("name")
+	@Import("opBase")
 	String getRSName();
 
-	@Import("name")
+	@Import("opBase")
 	void setRSName(String name);
 
 	@Import("text")

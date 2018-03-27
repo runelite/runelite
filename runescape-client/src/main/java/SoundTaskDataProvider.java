@@ -134,19 +134,19 @@ public class SoundTaskDataProvider implements class101 {
          var3.dragParent = CollisionData.getWidgetChild(var4, var5);
          return 1;
       } else if(var0 == 1302) {
-         var3.field2895 = class81.intStack[--class5.intStackSize] == 1;
+         var3.dragRenderBehavior = class81.intStack[--class5.intStackSize] == 1;
          return 1;
       } else if(var0 == 1303) {
-         var3.field2817 = class81.intStack[--class5.intStackSize];
+         var3.dragDeadZone = class81.intStack[--class5.intStackSize];
          return 1;
       } else if(var0 == 1304) {
-         var3.field2894 = class81.intStack[--class5.intStackSize];
+         var3.dragDeadTime = class81.intStack[--class5.intStackSize];
          return 1;
       } else if(var0 == 1305) {
-         var3.name = class81.scriptStringStack[--class316.scriptStringStackSize];
+         var3.opBase = class81.scriptStringStack[--class316.scriptStringStackSize];
          return 1;
       } else if(var0 == 1306) {
-         var3.selectedAction = class81.scriptStringStack[--class316.scriptStringStackSize];
+         var3.targetVerb = class81.scriptStringStack[--class316.scriptStringStackSize];
          return 1;
       } else if(var0 == 1307) {
          var3.actions = null;

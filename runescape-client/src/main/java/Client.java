@@ -3247,7 +3247,7 @@ public final class Client extends GameEngine implements class302 {
                                                             var33 = 0;
                                                          }
 
-                                                         if(class154.method3149(GrandExchangeEvent.getWidgetConfig(var43))) {
+                                                         if(class154.method3149(GrandExchangeEvent.getWidgetClickMask(var43))) {
                                                             var6 = field998;
                                                             var7 = field1090;
                                                             var43.itemIds[var7] = var43.itemIds[var6];
@@ -4867,8 +4867,8 @@ public final class Client extends GameEngine implements class302 {
                   var65.rotationX = var73.xan2d;
                   var65.rotationZ = var73.yan2d;
                   var65.rotationY = var73.zan2d;
-                  var65.field2866 = var73.offsetX2d;
-                  var65.field2867 = var73.offsetY2d;
+                  var65.offsetX2d = var73.offsetX2d;
+                  var65.offsetY2d = var73.offsetY2d;
                   var65.modelZoom = var73.zoom2d;
                   if(var73.isStackable == 1) {
                      var65.field2864 = 1;
@@ -5809,7 +5809,7 @@ public final class Client extends GameEngine implements class302 {
                      var5 = menuActionParams0[var2];
                      var20 = menuActionParams1[var2];
                      Widget var16 = GZipDecompressor.getWidget(var20);
-                     if(class153.method3142(GrandExchangeEvent.getWidgetConfig(var16)) || class154.method3149(GrandExchangeEvent.getWidgetConfig(var16))) {
+                     if(class153.method3142(GrandExchangeEvent.getWidgetClickMask(var16)) || class154.method3149(GrandExchangeEvent.getWidgetClickMask(var16))) {
                         if(MapIconReference.field574 != null && !field960 && menuOptionCount > 0 && !this.method1270()) {
                            class153.method3140(field957, field958);
                         }
@@ -5986,32 +5986,32 @@ public final class Client extends GameEngine implements class302 {
 
          int var3 = var1 - field1028;
          int var4 = var2 - field944;
-         int var5 = draggedWidget.field2817;
-         if(MapLabel.field446 > draggedWidget.field2894 && (var3 > var5 || var3 < -var5 || var4 > var5 || var4 < -var5)) {
+         int var5 = draggedWidget.dragDeadZone;
+         if(MapLabel.field446 > draggedWidget.dragDeadTime && (var3 > var5 || var3 < -var5 || var4 > var5 || var4 < -var5)) {
             draggingWidget = true;
          }
 
          int var6 = var1 - field1025 + field1020.scrollX;
          int var7 = var2 - field1098 + field1020.scrollY;
          ScriptEvent var8;
-         if(draggedWidget.field2906 != null && draggingWidget) {
+         if(draggedWidget.onDragListener != null && draggingWidget) {
             var8 = new ScriptEvent();
             var8.widget = draggedWidget;
             var8.field782 = var6;
             var8.field789 = var7;
-            var8.objs = draggedWidget.field2906;
+            var8.objs = draggedWidget.onDragListener;
             class25.runScript(var8, 500000);
          }
 
          if(MouseInput.mouseCurrentButton == 0) {
             if(draggingWidget) {
-               if(draggedWidget.field2907 != null) {
+               if(draggedWidget.onDragCompleteListener != null) {
                   var8 = new ScriptEvent();
                   var8.widget = draggedWidget;
                   var8.field782 = var6;
                   var8.field789 = var7;
                   var8.field785 = draggedOnWidget;
-                  var8.objs = draggedWidget.field2907;
+                  var8.objs = draggedWidget.onDragCompleteListener;
                   class25.runScript(var8, 500000);
                }
 

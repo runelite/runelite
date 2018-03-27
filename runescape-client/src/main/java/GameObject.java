@@ -143,69 +143,69 @@ public final class GameObject {
       }
 
       if(var0 == 1400) {
-         var3.field2899 = var8;
+         var3.onClickListener = var8;
       } else if(var0 == 1401) {
-         var3.field2902 = var8;
+         var3.onHoldListener = var8;
       } else if(var0 == 1402) {
-         var3.field2901 = var8;
+         var3.onReleaseListener = var8;
       } else if(var0 == 1403) {
-         var3.mouseEnterListener = var8;
+         var3.onMouseOverListener = var8;
       } else if(var0 == 1404) {
-         var3.mouseExitListener = var8;
+         var3.onMouseLeaveListener = var8;
       } else if(var0 == 1405) {
-         var3.field2906 = var8;
+         var3.onDragListener = var8;
       } else if(var0 == 1406) {
-         var3.field2807 = var8;
+         var3.onTargetLeaveListener = var8;
       } else if(var0 == 1407) {
-         var3.configListenerArgs = var8;
-         var3.configTriggers = var5;
+         var3.onVarTransmitListener = var8;
+         var3.varTransmitTriggers = var5;
       } else if(var0 == 1408) {
-         var3.renderListener = var8;
+         var3.onTimerListener = var8;
       } else if(var0 == 1409) {
-         var3.field2917 = var8;
+         var3.onOpListener = var8;
       } else if(var0 == 1410) {
-         var3.field2907 = var8;
+         var3.onDragCompleteListener = var8;
       } else if(var0 == 1411) {
-         var3.field2900 = var8;
+         var3.onClickRepeatListener = var8;
       } else if(var0 == 1412) {
-         var3.mouseHoverListener = var8;
+         var3.onMouseRepeatListener = var8;
       } else if(var0 == 1414) {
-         var3.tableListenerArgs = var8;
-         var3.tableModTriggers = var5;
+         var3.onInvTransmitListener = var8;
+         var3.invTransmitTriggers = var5;
       } else if(var0 == 1415) {
-         var3.skillListenerArgs = var8;
-         var3.skillTriggers = var5;
+         var3.onStatTransmitListener = var8;
+         var3.statTransmitTriggers = var5;
       } else if(var0 == 1416) {
-         var3.field2908 = var8;
+         var3.onTargetEnterListener = var8;
       } else if(var0 == 1417) {
-         var3.scrollListener = var8;
+         var3.onScrollWheelListener = var8;
       } else if(var0 == 1418) {
-         var3.field2919 = var8;
+         var3.onChatTransmitListener = var8;
       } else if(var0 == 1419) {
-         var3.field2920 = var8;
+         var3.onKeyListener = var8;
       } else if(var0 == 1420) {
-         var3.field2921 = var8;
+         var3.onFriendTransmitListener = var8;
       } else if(var0 == 1421) {
-         var3.field2922 = var8;
+         var3.onClanTransmitListener = var8;
       } else if(var0 == 1422) {
-         var3.field2923 = var8;
+         var3.onMiscTransmitListener = var8;
       } else if(var0 == 1423) {
-         var3.field2924 = var8;
+         var3.onDialogAbortListener = var8;
       } else if(var0 == 1424) {
-         var3.field2925 = var8;
+         var3.onSubChangeListener = var8;
       } else if(var0 == 1425) {
-         var3.field2873 = var8;
+         var3.onStockTransmitListener = var8;
       } else if(var0 == 1426) {
-         var3.field2820 = var8;
+         var3.onCamFinishedListener = var8;
       } else {
          if(var0 != 1427) {
             return 2;
          }
 
-         var3.field2926 = var8;
+         var3.onResizeListener = var8;
       }
 
-      var3.mouseActionsPresent = true;
+      var3.hasListener = true;
       return 1;
    }
 }

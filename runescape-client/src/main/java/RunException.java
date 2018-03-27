@@ -35,7 +35,7 @@ public class RunException extends RuntimeException {
       garbageValue = "1"
    )
    static Widget method3217(Widget var0) {
-      int var1 = GrandExchangeOffer.method124(GrandExchangeEvent.getWidgetConfig(var0));
+      int var1 = GrandExchangeOffer.method124(GrandExchangeEvent.getWidgetClickMask(var0));
       if(var1 == 0) {
          return null;
       } else {

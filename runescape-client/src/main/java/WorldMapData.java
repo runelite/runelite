@@ -454,10 +454,10 @@ public class WorldMapData {
 
             for(int var2 = 0; var2 < var1.length; ++var2) {
                Widget var3 = var1[var2];
-               if(var3.field2898 != null) {
+               if(var3.onLoadListener != null) {
                   ScriptEvent var4 = new ScriptEvent();
                   var4.widget = var3;
-                  var4.objs = var3.field2898;
+                  var4.objs = var3.onLoadListener;
                   class25.runScript(var4, 5000000);
                }
             }

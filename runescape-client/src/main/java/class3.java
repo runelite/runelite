@@ -400,14 +400,14 @@ final class class3 implements class0 {
                      var23 = CollisionData.getWidgetChild(var1, var0);
                      if(var23 != null) {
                         Fonts.method5482();
-                        var10 = GrandExchangeEvent.getWidgetConfig(var23);
+                        var10 = GrandExchangeEvent.getWidgetClickMask(var23);
                         var24 = var10 >> 11 & 63;
                         int var12 = var23.itemId;
                         Widget var13 = CollisionData.getWidgetChild(var1, var0);
-                        if(var13 != null && var13.field2908 != null) {
+                        if(var13 != null && var13.onTargetEnterListener != null) {
                            ScriptEvent var14 = new ScriptEvent();
                            var14.widget = var13;
-                           var14.objs = var13.field2908;
+                           var14.objs = var13.onTargetEnterListener;
                            class25.runScript(var14, 500000);
                         }
 
@@ -424,7 +424,7 @@ final class class3 implements class0 {
                         }
 
                         if(var23.hasScript) {
-                           Client.field1074 = var23.name + class37.getColTags(16777215);
+                           Client.field1074 = var23.opBase + class37.getColTags(16777215);
                         } else {
                            Client.field1074 = class37.getColTags(65280) + var23.spellName + class37.getColTags(16777215);
                         }
@@ -825,12 +825,12 @@ final class class3 implements class0 {
                                  var24 = var23.itemId;
                                  Widget var25 = CollisionData.getWidgetChild(var1, var0);
                                  if(var25 != null) {
-                                    if(var25.field2917 != null) {
+                                    if(var25.onOpListener != null) {
                                        ScriptEvent var17 = new ScriptEvent();
                                        var17.widget = var25;
                                        var17.field784 = var3;
                                        var17.string = var5;
-                                       var17.objs = var25.field2917;
+                                       var17.objs = var25.onOpListener;
                                        class25.runScript(var17, 500000);
                                     }
 
@@ -839,7 +839,7 @@ final class class3 implements class0 {
                                        var11 = WorldMapManager.method644(var25);
                                     }
 
-                                    if(var11 && class81.method1814(GrandExchangeEvent.getWidgetConfig(var25), var3 - 1)) {
+                                    if(var11 && class81.method1814(GrandExchangeEvent.getWidgetClickMask(var25), var3 - 1)) {
                                        PacketNode var18;
                                        if(var3 == 1) {
                                           var18 = class33.method382(ClientPacket.field2380, Client.field1072.field1456);

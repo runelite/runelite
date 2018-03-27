@@ -46,12 +46,12 @@ public class class197 {
       if(var0 == 1927) {
          if(class81.field1263 >= 10) {
             throw new RuntimeException();
-         } else if(var3.field2926 == null) {
+         } else if(var3.onResizeListener == null) {
             return 0;
          } else {
             ScriptEvent var4 = new ScriptEvent();
             var4.widget = var3;
-            var4.objs = var3.field2926;
+            var4.objs = var3.onResizeListener;
             var4.field786 = class81.field1263 + 1;
             Client.field1045.addFront(var4);
             return 1;

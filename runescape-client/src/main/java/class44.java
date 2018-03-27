@@ -160,10 +160,10 @@ public class class44 {
          Client.field1061 = var0;
       }
 
-      if(var3 && var0.field2926 != null && (var4 != var0.width || var5 != var0.height)) {
+      if(var3 && var0.onResizeListener != null && (var4 != var0.width || var5 != var0.height)) {
          ScriptEvent var6 = new ScriptEvent();
          var6.widget = var0;
-         var6.objs = var0.field2926;
+         var6.objs = var0.onResizeListener;
          Client.field1045.addFront(var6);
       }
 

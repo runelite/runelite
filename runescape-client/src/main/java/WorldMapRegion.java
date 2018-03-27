@@ -1129,16 +1129,16 @@ public class WorldMapRegion {
       if(var0 == 2800) {
          int[] var4 = class81.intStack;
          int var5 = ++class5.intStackSize - 1;
-         int var7 = GrandExchangeEvent.getWidgetConfig(var3);
+         int var7 = GrandExchangeEvent.getWidgetClickMask(var3);
          int var6 = var7 >> 11 & 63;
          var4[var5] = var6;
          return 1;
       } else if(var0 != 2801) {
          if(var0 == 2802) {
-            if(var3.name == null) {
+            if(var3.opBase == null) {
                class81.scriptStringStack[++class316.scriptStringStackSize - 1] = "";
             } else {
-               class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.name;
+               class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.opBase;
             }
 
             return 1;

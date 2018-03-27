@@ -312,12 +312,14 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1526297981
    )
-   public int field2866;
+   @Export("offsetX2d")
+   public int offsetX2d;
    @ObfuscatedName("bz")
    @ObfuscatedGetter(
       intValue = 2006437099
    )
-   public int field2867;
+   @Export("offsetY2d")
+   public int offsetY2d;
    @ObfuscatedName("bx")
    @ObfuscatedGetter(
       intValue = 89578305
@@ -415,11 +417,11 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 881095157
    )
-   @Export("config")
-   public int config;
+   @Export("clickMask")
+   public int clickMask;
    @ObfuscatedName("ci")
-   @Export("name")
-   public String name;
+   @Export("opBase")
+   public String opBase;
    @ObfuscatedName("cc")
    @Export("actions")
    public String[] actions;
@@ -433,93 +435,116 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -568409323
    )
-   public int field2817;
+   @Export("dragDeadZone")
+   public int dragDeadZone;
    @ObfuscatedName("cl")
    @ObfuscatedGetter(
       intValue = -91992637
    )
-   public int field2894;
+   @Export("dragDeadTime")
+   public int dragDeadTime;
    @ObfuscatedName("cz")
-   public boolean field2895;
+   @Export("dragRenderBehavior")
+   public boolean dragRenderBehavior;
    @ObfuscatedName("cn")
-   @Export("selectedAction")
-   public String selectedAction;
+   @Export("targetVerb")
+   public String targetVerb;
    @ObfuscatedName("ca")
-   @Export("mouseActionsPresent")
-   public boolean mouseActionsPresent;
+   @Export("hasListener")
+   public boolean hasListener;
    @ObfuscatedName("cf")
-   public Object[] field2898;
+   @Export("onLoadListener")
+   public Object[] onLoadListener;
    @ObfuscatedName("cp")
-   public Object[] field2899;
+   @Export("onClickListener")
+   public Object[] onClickListener;
    @ObfuscatedName("ck")
-   public Object[] field2900;
+   @Export("onClickRepeatListener")
+   public Object[] onClickRepeatListener;
    @ObfuscatedName("db")
-   public Object[] field2901;
+   @Export("onReleaseListener")
+   public Object[] onReleaseListener;
    @ObfuscatedName("dp")
-   public Object[] field2902;
+   @Export("onHoldListener")
+   public Object[] onHoldListener;
    @ObfuscatedName("da")
-   @Export("mouseEnterListener")
-   public Object[] mouseEnterListener;
+   @Export("onMouseOverListener")
+   public Object[] onMouseOverListener;
    @ObfuscatedName("dr")
-   @Export("mouseHoverListener")
-   public Object[] mouseHoverListener;
+   @Export("onMouseRepeatListener")
+   public Object[] onMouseRepeatListener;
    @ObfuscatedName("dj")
-   @Export("mouseExitListener")
-   public Object[] mouseExitListener;
+   @Export("onMouseLeaveListener")
+   public Object[] onMouseLeaveListener;
    @ObfuscatedName("dh")
-   public Object[] field2906;
+   @Export("onDragListener")
+   public Object[] onDragListener;
    @ObfuscatedName("dc")
-   public Object[] field2907;
+   @Export("onDragCompleteListener")
+   public Object[] onDragCompleteListener;
    @ObfuscatedName("dl")
-   public Object[] field2908;
+   @Export("onTargetEnterListener")
+   public Object[] onTargetEnterListener;
    @ObfuscatedName("df")
-   public Object[] field2807;
+   @Export("onTargetLeaveListener")
+   public Object[] onTargetLeaveListener;
    @ObfuscatedName("dq")
-   @Export("configListenerArgs")
-   public Object[] configListenerArgs;
+   @Export("onVarTransmitListener")
+   public Object[] onVarTransmitListener;
    @ObfuscatedName("dt")
-   @Export("configTriggers")
-   public int[] configTriggers;
+   @Export("varTransmitTriggers")
+   public int[] varTransmitTriggers;
    @ObfuscatedName("dy")
-   @Export("tableListenerArgs")
-   public Object[] tableListenerArgs;
+   @Export("onInvTransmitListener")
+   public Object[] onInvTransmitListener;
    @ObfuscatedName("dn")
-   @Export("tableModTriggers")
-   public int[] tableModTriggers;
+   @Export("invTransmitTriggers")
+   public int[] invTransmitTriggers;
    @ObfuscatedName("do")
-   @Export("skillListenerArgs")
-   public Object[] skillListenerArgs;
+   @Export("onStatTransmitListener")
+   public Object[] onStatTransmitListener;
    @ObfuscatedName("dw")
-   @Export("skillTriggers")
-   public int[] skillTriggers;
+   @Export("statTransmitTriggers")
+   public int[] statTransmitTriggers;
    @ObfuscatedName("dd")
-   @Export("renderListener")
-   public Object[] renderListener;
+   @Export("onTimerListener")
+   public Object[] onTimerListener;
    @ObfuscatedName("du")
-   public Object[] field2917;
+   @Export("onOpListener")
+   public Object[] onOpListener;
    @ObfuscatedName("dk")
-   @Export("scrollListener")
-   public Object[] scrollListener;
+   @Export("onScrollWheelListener")
+   public Object[] onScrollWheelListener;
    @ObfuscatedName("de")
-   public Object[] field2919;
+   @Export("onChatTransmitListener")
+   public Object[] onChatTransmitListener;
    @ObfuscatedName("dg")
-   public Object[] field2920;
+   @Export("onKeyListener")
+   public Object[] onKeyListener;
    @ObfuscatedName("dx")
-   public Object[] field2921;
+   @Export("onFriendTransmitListener")
+   public Object[] onFriendTransmitListener;
    @ObfuscatedName("di")
-   public Object[] field2922;
+   @Export("onClanTransmitListener")
+   public Object[] onClanTransmitListener;
    @ObfuscatedName("dv")
-   public Object[] field2923;
+   @Export("onMiscTransmitListener")
+   public Object[] onMiscTransmitListener;
    @ObfuscatedName("dz")
-   public Object[] field2924;
+   @Export("onDialogAbortListener")
+   public Object[] onDialogAbortListener;
    @ObfuscatedName("ds")
-   public Object[] field2925;
+   @Export("onSubChangeListener")
+   public Object[] onSubChangeListener;
    @ObfuscatedName("dm")
-   public Object[] field2926;
+   @Export("onResizeListener")
+   public Object[] onResizeListener;
    @ObfuscatedName("eb")
-   public Object[] field2873;
+   @Export("onStockTransmitListener")
+   public Object[] onStockTransmitListener;
    @ObfuscatedName("ek")
-   public Object[] field2820;
+   @Export("onCamFinishedListener")
+   public Object[] onCamFinishedListener;
    @ObfuscatedName("ej")
    @Export("dynamicValues")
    public int[][] dynamicValues;
@@ -613,7 +638,8 @@ public class Widget extends Node {
    @Export("noClickThrough")
    public boolean noClickThrough;
    @ObfuscatedName("eh")
-   public boolean field2951;
+   @Export("noScrollThrough")
+   public boolean noScrollThrough;
 
    static {
       field2811 = new NodeCache(200);
@@ -671,8 +697,8 @@ public class Widget extends Node {
       this.field2876 = -1;
       this.field2838 = -1;
       this.field2865 = -1;
-      this.field2866 = 0;
-      this.field2867 = 0;
+      this.offsetX2d = 0;
+      this.offsetY2d = 0;
       this.rotationX = 0;
       this.rotationZ = 0;
       this.rotationY = 0;
@@ -690,14 +716,14 @@ public class Widget extends Node {
       this.textShadowed = false;
       this.paddingX = 0;
       this.paddingY = 0;
-      this.config = 0;
-      this.name = "";
+      this.clickMask = 0;
+      this.opBase = "";
       this.dragParent = null;
-      this.field2817 = 0;
-      this.field2894 = 0;
-      this.field2895 = false;
-      this.selectedAction = "";
-      this.mouseActionsPresent = false;
+      this.dragDeadZone = 0;
+      this.dragDeadTime = 0;
+      this.dragRenderBehavior = false;
+      this.targetVerb = "";
+      this.hasListener = false;
       this.field2932 = -1;
       this.spellName = "";
       this.tooltip = "Ok";
@@ -714,7 +740,7 @@ public class Widget extends Node {
       this.boundsIndex = -1;
       this.loopCycle = -1;
       this.noClickThrough = false;
-      this.field2951 = false;
+      this.noScrollThrough = false;
    }
 
    @ObfuscatedName("a")
@@ -792,22 +818,22 @@ public class Widget extends Node {
          this.itemQuantities = new int[this.originalWidth * this.originalHeight];
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
-            this.config |= 268435456;
+            this.clickMask |= 268435456;
          }
 
          var5 = var1.readUnsignedByte();
          if(var5 == 1) {
-            this.config |= 1073741824;
+            this.clickMask |= 1073741824;
          }
 
          var6 = var1.readUnsignedByte();
          if(var6 == 1) {
-            this.config |= Integer.MIN_VALUE;
+            this.clickMask |= Integer.MIN_VALUE;
          }
 
          int var7 = var1.readUnsignedByte();
          if(var7 == 1) {
-            this.config |= 536870912;
+            this.clickMask |= 536870912;
          }
 
          this.paddingX = var1.readUnsignedByte();
@@ -834,7 +860,7 @@ public class Widget extends Node {
             String var10 = var1.readString();
             if(var10.length() > 0) {
                this.configActions[var8] = var10;
-               this.config |= 1 << var8 + 23;
+               this.clickMask |= 1 << var8 + 23;
             }
          }
       }
@@ -918,7 +944,7 @@ public class Widget extends Node {
          this.paddingY = var1.readShort();
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
-            this.config |= 1073741824;
+            this.clickMask |= 1073741824;
          }
 
          this.configActions = new String[5];
@@ -927,7 +953,7 @@ public class Widget extends Node {
             String var11 = var1.readString();
             if(var11.length() > 0) {
                this.configActions[var5] = var11;
-               this.config |= 1 << var5 + 23;
+               this.clickMask |= 1 << var5 + 23;
             }
          }
       }
@@ -937,10 +963,10 @@ public class Widget extends Node {
       }
 
       if(this.field2853 == 2 || this.type == 2) {
-         this.selectedAction = var1.readString();
+         this.targetVerb = var1.readString();
          this.spellName = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
-         this.config |= var4 << 11;
+         this.clickMask |= var4 << 11;
       }
 
       if(this.field2853 == 1 || this.field2853 == 4 || this.field2853 == 5 || this.field2853 == 6) {
@@ -965,11 +991,11 @@ public class Widget extends Node {
       }
 
       if(this.field2853 == 1 || this.field2853 == 4 || this.field2853 == 5) {
-         this.config |= 4194304;
+         this.clickMask |= 4194304;
       }
 
       if(this.field2853 == 6) {
-         this.config |= 1;
+         this.clickMask |= 1;
       }
 
    }
@@ -1030,8 +1056,8 @@ public class Widget extends Node {
             this.modelId = -1;
          }
 
-         this.field2866 = var1.readShort();
-         this.field2867 = var1.readShort();
+         this.offsetX2d = var1.readShort();
+         this.offsetY2d = var1.readShort();
          this.rotationX = var1.readUnsignedShort();
          this.rotationZ = var1.readUnsignedShort();
          this.rotationY = var1.readUnsignedShort();
@@ -1078,8 +1104,8 @@ public class Widget extends Node {
          this.field2851 = var1.readUnsignedByte() == 1;
       }
 
-      this.config = var1.read24BitInt();
-      this.name = var1.readString();
+      this.clickMask = var1.read24BitInt();
+      this.opBase = var1.readString();
       int var2 = var1.readUnsignedByte();
       if(var2 > 0) {
          this.actions = new String[var2];
@@ -1089,31 +1115,31 @@ public class Widget extends Node {
          }
       }
 
-      this.field2817 = var1.readUnsignedByte();
-      this.field2894 = var1.readUnsignedByte();
-      this.field2895 = var1.readUnsignedByte() == 1;
-      this.selectedAction = var1.readString();
-      this.field2898 = this.method4463(var1);
-      this.mouseEnterListener = this.method4463(var1);
-      this.mouseExitListener = this.method4463(var1);
-      this.field2807 = this.method4463(var1);
-      this.field2908 = this.method4463(var1);
-      this.configListenerArgs = this.method4463(var1);
-      this.tableListenerArgs = this.method4463(var1);
-      this.skillListenerArgs = this.method4463(var1);
-      this.renderListener = this.method4463(var1);
-      this.field2917 = this.method4463(var1);
-      this.mouseHoverListener = this.method4463(var1);
-      this.field2899 = this.method4463(var1);
-      this.field2900 = this.method4463(var1);
-      this.field2901 = this.method4463(var1);
-      this.field2902 = this.method4463(var1);
-      this.field2906 = this.method4463(var1);
-      this.field2907 = this.method4463(var1);
-      this.scrollListener = this.method4463(var1);
-      this.configTriggers = this.method4464(var1);
-      this.tableModTriggers = this.method4464(var1);
-      this.skillTriggers = this.method4464(var1);
+      this.dragDeadZone = var1.readUnsignedByte();
+      this.dragDeadTime = var1.readUnsignedByte();
+      this.dragRenderBehavior = var1.readUnsignedByte() == 1;
+      this.targetVerb = var1.readString();
+      this.onLoadListener = this.decodeListener(var1);
+      this.onMouseOverListener = this.decodeListener(var1);
+      this.onMouseLeaveListener = this.decodeListener(var1);
+      this.onTargetLeaveListener = this.decodeListener(var1);
+      this.onTargetEnterListener = this.decodeListener(var1);
+      this.onVarTransmitListener = this.decodeListener(var1);
+      this.onInvTransmitListener = this.decodeListener(var1);
+      this.onStatTransmitListener = this.decodeListener(var1);
+      this.onTimerListener = this.decodeListener(var1);
+      this.onOpListener = this.decodeListener(var1);
+      this.onMouseRepeatListener = this.decodeListener(var1);
+      this.onClickListener = this.decodeListener(var1);
+      this.onClickRepeatListener = this.decodeListener(var1);
+      this.onReleaseListener = this.decodeListener(var1);
+      this.onHoldListener = this.decodeListener(var1);
+      this.onDragListener = this.decodeListener(var1);
+      this.onDragCompleteListener = this.decodeListener(var1);
+      this.onScrollWheelListener = this.decodeListener(var1);
+      this.varTransmitTriggers = this.decodeTransmitList(var1);
+      this.invTransmitTriggers = this.decodeTransmitList(var1);
+      this.statTransmitTriggers = this.decodeTransmitList(var1);
    }
 
    @ObfuscatedName("b")
@@ -1121,7 +1147,8 @@ public class Widget extends Node {
       signature = "(Lgb;I)[Ljava/lang/Object;",
       garbageValue = "1325399982"
    )
-   Object[] method4463(Buffer var1) {
+   @Export("decodeListener")
+   Object[] decodeListener(Buffer var1) {
       int var2 = var1.readUnsignedByte();
       if(var2 == 0) {
          return null;
@@ -1137,7 +1164,7 @@ public class Widget extends Node {
             }
          }
 
-         this.mouseActionsPresent = true;
+         this.hasListener = true;
          return var3;
       }
    }
@@ -1147,7 +1174,8 @@ public class Widget extends Node {
       signature = "(Lgb;I)[I",
       garbageValue = "341288288"
    )
-   int[] method4464(Buffer var1) {
+   @Export("decodeTransmitList")
+   int[] decodeTransmitList(Buffer var1) {
       int var2 = var1.readUnsignedByte();
       if(var2 == 0) {
          return null;
