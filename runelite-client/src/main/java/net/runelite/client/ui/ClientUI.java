@@ -250,28 +250,34 @@ public class ClientUI
 	@Subscribe
 	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
 	{
-		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
-		{
-			return;
-		}
-
 		SwingUtilities.invokeLater(() ->
 		{
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
 			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
-			titleToolbar.addComponent(event.getButton(), button);
+
+			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			{
+				titleToolbar.addComponent(event.getButton(), button);
+				return;
+			}
+
+			pluginToolbar.addComponent(-1, event.getButton(), button);
 		});
 	}
 
 	@Subscribe
 	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
 	{
-		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
+		SwingUtilities.invokeLater(() ->
 		{
-			return;
-		}
+			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			{
+				titleToolbar.removeComponent(event.getButton());
+				return;
+			}
 
-		SwingUtilities.invokeLater(() -> titleToolbar.removeComponent(event.getButton()));
+			pluginToolbar.removeComponent(event.getButton());
+		});
 	}
 
 	/**
