@@ -50,13 +50,22 @@ public class ClientPluginToolbar extends JToolBar
 		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
 		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
 		setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
+		addSeparator();
 	}
 
 	public void addComponent(final int index, final NavigationButton button, final Component component)
 	{
 		if (componentMap.put(button, component) == null)
 		{
-			add(component, index);
+			if (index < 0)
+			{
+				add(component);
+			}
+			else
+			{
+				add(component, index);
+			}
+
 			revalidate();
 			repaint();
 		}
