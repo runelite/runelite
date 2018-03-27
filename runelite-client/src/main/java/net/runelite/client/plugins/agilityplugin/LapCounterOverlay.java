@@ -31,6 +31,7 @@ import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class LapCounterOverlay extends Overlay
@@ -44,6 +45,7 @@ public class LapCounterOverlay extends Overlay
 	LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
+		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
 	}
