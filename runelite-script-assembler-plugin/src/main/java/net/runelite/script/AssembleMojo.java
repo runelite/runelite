@@ -73,12 +73,6 @@ public class AssembleMojo extends AbstractMojo
 
 			try (FileInputStream fin = new FileInputStream(scriptFile))
 			{
-				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
-				if (!hashFile.exists())
-				{
-					throw new MojoExecutionException("Unable to find hash file for " + scriptFile);
-				}
-
 				ScriptDefinition script = assembler.assemble(fin);
 				byte[] packedScript = saver.save(script);
 
@@ -86,7 +80,16 @@ public class AssembleMojo extends AbstractMojo
 				Files.write(packedScript, targetFile);
 
 				// Copy hash file
-				Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
+
+				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
+				if (hashFile.exists())
+				{
+					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
+				}
+				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
+				{
+					throw new MojoExecutionException("Unable to find hash file for " + scriptFile);
+				}
 
 				++count;
 			}
