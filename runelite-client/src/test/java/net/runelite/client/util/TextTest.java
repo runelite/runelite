@@ -24,6 +24,7 @@
  */
 package net.runelite.client.util;
 
+import net.runelite.api.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

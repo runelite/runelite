@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.client.util.Text;
+import net.runelite.api.Text;
 
 class OpponentInfoOverlay extends Overlay
 {

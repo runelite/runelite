@@ -32,6 +32,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.Text;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
@@ -138,7 +139,7 @@ public class HiscorePlugin extends Plugin
 					throw new RuntimeException(e);
 				}
 
-				hiscorePanel.lookup(event.getMenuTarget());
+				hiscorePanel.lookup(Text.removeTags(event.getMenuTarget()));
 			});
 		}
 	}

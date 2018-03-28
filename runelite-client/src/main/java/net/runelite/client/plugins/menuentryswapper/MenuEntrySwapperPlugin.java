@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Text;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PostItemComposition;
@@ -52,7 +53,6 @@ import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
