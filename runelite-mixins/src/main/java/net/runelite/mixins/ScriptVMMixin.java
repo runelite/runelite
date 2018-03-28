@@ -24,6 +24,8 @@
  */
 package net.runelite.mixins;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.runelite.api.Client;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.mixins.Copy;
@@ -63,6 +65,38 @@ public abstract class ScriptVMMixin implements RSClient
 			int stringStackSize = client.getStringStackSize();
 			String stringOp = client.getStringStack()[--stringStackSize];
 			client.setStringStackSize(stringStackSize);
+
+			if ("debug".equals(stringOp))
+			{
+				int intStackSize = client.getIntStackSize();
+
+				String fmt = client.getStringStack()[--stringStackSize];
+				StringBuffer out = new StringBuffer();
+				Matcher m = Pattern.compile("%(.)").matcher(fmt);
+				for (; m.find(); )
+				{
+					m.appendReplacement(out, "");
+					switch (m.group(1).charAt(0))
+					{
+						case 'i':
+						case 'd':
+							out.append(client.getIntStack()[--intStackSize]);
+							break;
+						case 's':
+							out.append(client.getStringStack()[--stringStackSize]);
+							break;
+						default:
+							out.append(m.group(0)).append("=unknown");
+					}
+				}
+				m.appendTail(out);
+
+				Hooks.log.debug(out.toString());
+
+				client.setStringStackSize(stringStackSize);
+				client.setIntStackSize(intStackSize);
+				return true;
+			}
 
 			ScriptCallbackEvent event = new ScriptCallbackEvent();
 			event.setScript(currentScript);
