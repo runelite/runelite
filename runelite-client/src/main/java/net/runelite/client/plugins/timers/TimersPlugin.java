@@ -239,6 +239,28 @@ public class TimersPlugin extends Plugin
 			createGameTimer(ANTIDOTEPLUS);
 			return;
 		}
+
+		if (config.showAntiPoison()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIPOISON1
+			|| event.getId() == ItemID.ANTIPOISON2
+			|| event.getId() == ItemID.ANTIPOISON3
+			|| event.getId() == ItemID.ANTIPOISON4))
+		{
+			createGameTimer(ANTIPOISON);
+			return;
+		}
+
+		if (config.showSuperantipoison()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.SUPERANTIPOISON1
+			|| event.getId() == ItemID.SUPERANTIPOISON2
+			|| event.getId() == ItemID.SUPERANTIPOISON3
+			|| event.getId() == ItemID.SUPERANTIPOISON4))
+		{
+			createGameTimer(SUPERANTIPOISON);
+			return;
+		}
 	}
 
 	@Subscribe
