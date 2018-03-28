@@ -6,10 +6,8 @@ import net.runelite.client.input.KeyManager;
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
-public class ItemPricesListener implements KeyListener {
-
-    private static final int HOTKEY = KeyEvent.VK_ALT;
-
+public class ItemPricesListener implements KeyListener
+{
     @Inject
     KeyManager keyManager;
 
@@ -26,7 +24,7 @@ public class ItemPricesListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == HOTKEY)
+        if (e.getKeyCode() == KeyEvent.VK_ALT)
         {
             plugin.showPrices = true;
         }
@@ -36,7 +34,7 @@ public class ItemPricesListener implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e)
     {
-        if (e.getKeyCode() == HOTKEY)
+        if (e.getKeyCode() == KeyEvent.VK_ALT)
         {
             plugin.showPrices = false;
         }
