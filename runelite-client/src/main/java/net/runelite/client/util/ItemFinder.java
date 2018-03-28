@@ -70,7 +70,7 @@ public class ItemFinder
 			}
 
 			//todo: make this work with multiples of the same item in inputIDs
-			if(match == Match.ALL_ITEMS && !foundIDs.containsAll(inputIDs))
+			if (match == Match.ALL_ITEMS && !foundIDs.containsAll(inputIDs))
 			{
 				foundItems = Collections.emptyList();
 			}
