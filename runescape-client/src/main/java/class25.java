@@ -190,7 +190,7 @@ public class class25 {
                   }
 
                   if(var21 == -2147483640) {
-                     var21 = var0.field780;
+                     var21 = var0.pressedKey;
                   }
 
                   if(var21 == -2147483639) {
