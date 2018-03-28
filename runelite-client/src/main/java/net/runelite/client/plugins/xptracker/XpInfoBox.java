@@ -39,7 +39,6 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
@@ -140,11 +139,12 @@ class XpInfoBox extends JPanel
 		iconBarPanel.add(levelLabel, BorderLayout.LINE_END);
 
 		// Create pane for grouping skill icon and level label
-		final JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.add(skillIcon, new Integer(1));
-		layeredPane.add(levelLabel, new Integer(2));
-		layeredPane.setPreferredSize(ICON_BOUNDS.getSize());
-		iconBarPanel.add(layeredPane, BorderLayout.LINE_START);
+		final JLabel iconLabel = new JLabel();
+		iconLabel.add(skillIcon);
+		iconLabel.setPreferredSize(ICON_BOUNDS.getSize());
+		iconBarPanel.add(iconLabel, BorderLayout.LINE_START);
+
+
 
 		// Create progress bar
 		progressBar.setStringPainted(true);
