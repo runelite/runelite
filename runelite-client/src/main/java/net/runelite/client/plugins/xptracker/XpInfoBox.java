@@ -222,8 +222,8 @@ class XpInfoBox extends JPanel
 					panel.add(this);
 					panel.revalidate();
 				}
-
-				levelLabel.setText(String.valueOf(xpInfo.getLevel()));
+				
+				levelLabel.setText(String.valueOf(xpInfo.getLevel() + 1));
 				xpGained.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
 				xpLeft.setText(XpPanel.formatLine(xpInfo.getXpRemaining(), "xp left"));
 				actionsLeft.setText(XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions left"));
