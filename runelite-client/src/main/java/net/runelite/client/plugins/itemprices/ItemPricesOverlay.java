@@ -58,51 +58,57 @@ class ItemPricesOverlay extends Overlay
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final ItemPricesPlugin plugin;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	@Inject
-	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager)
+	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager, ItemPricesPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 		this.tooltipManager = tooltipManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.isMenuOpen())
+		if (plugin.showPrices || !config.showOnALT())
 		{
-			return null;
-		}
 
-		final MenuEntry[] menuEntries = client.getMenuEntries();
-		final int last = menuEntries.length - 1;
+			if (client.isMenuOpen())
+			{
+				return null;
+			}
 
-		if (last < 0)
-		{
-			return null;
-		}
+			final MenuEntry[] menuEntries = client.getMenuEntries();
+			final int last = menuEntries.length - 1;
 
-		final MenuEntry menuEntry = menuEntries[last];
-		final MenuAction action = menuEntry.getType();
-		final int widgetId = menuEntry.getParam1();
-		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+			if (last < 0)
+			{
+				return null;
+			}
 
-		// Tooltip action type handling
-		switch (action)
-		{
-			case WIDGET_DEFAULT:
-			case ITEM_USE:
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
-				// Item tooltip values
+			final MenuEntry menuEntry = menuEntries[last];
+			final MenuAction action = menuEntry.getType();
+			final int widgetId = menuEntry.getParam1();
+			final int groupId = WidgetInfo.TO_GROUP(widgetId);
+			String testvar = menuEntry.getOption();
+
+			// Tooltip action type handling
+			switch (action)
+			{
+				case WIDGET_DEFAULT:
+				case ITEM_USE:
+				case ITEM_FIRST_OPTION:
+				case ITEM_SECOND_OPTION:
+				case ITEM_THIRD_OPTION:
+				case ITEM_FOURTH_OPTION:
+				case ITEM_FIFTH_OPTION:
+					// Item tooltip values
 				switch (groupId)
 				{
 					case WidgetID.INVENTORY_GROUP_ID:
@@ -122,8 +128,10 @@ class ItemPricesOverlay extends Overlay
 						break;
 				}
 				break;
+			}
 		}
 		return null;
+
 	}
 
 	private String makeValueTooltip(MenuEntry menuEntry)
