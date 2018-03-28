@@ -144,4 +144,6 @@ public interface Widget
 	int getPaddingY();
 
 	void setPaddingY(int paddingY);
+
+	String[] getActions();
 }
