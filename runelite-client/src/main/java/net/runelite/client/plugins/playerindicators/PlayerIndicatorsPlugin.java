@@ -25,12 +25,16 @@
 package net.runelite.client.plugins.playerindicators;
 
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import javax.inject.Inject;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -38,11 +42,15 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
+
 	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
 
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
+
+	@Inject
+	private PlayerIndicatorsService playerIndicatorsService;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -54,5 +62,37 @@ public class PlayerIndicatorsPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Sets.newHashSet(playerIndicatorsOverlay, playerIndicatorsMinimapOverlay);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		playerIndicatorsService.updateConfig(false);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		playerIndicatorsService.updateConfig(true);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("playerindicators")
+			|| event.getGroup().equals("runelite")
+			|| event.getGroup().equals("minimap"))
+		{
+			playerIndicatorsService.updateConfig(false);
+		}
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void updatePlayerNames()
+	{
+		playerIndicatorsService.updatePlayers();
 	}
 }
