@@ -3172,9 +3172,9 @@ public final class Client extends GameEngine implements class302 {
                      if(rights >= 2 && KeyFocusListener.keyPressed[82] && class85.currentPressedKey == 66) {
                         String var26 = class61.method1092();
                         class249.clientInstance.method923(var26);
-                     } else if(field923 != 1 || Size.field341 <= 0) {
+                     } else if(field923 != 1 || Size.currentTypedKey <= 0) {
                         field1069[field869] = class85.currentPressedKey;
-                        field1068[field869] = Size.field341;
+                        field1068[field869] = Size.currentTypedKey;
                         ++field869;
                      }
                   }

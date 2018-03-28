@@ -380,7 +380,7 @@ public class class195 {
                               boolean var10 = false;
 
                               for(int var11 = 0; var11 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var11) {
-                                 if(Size.field341 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var11)) {
+                                 if(Size.currentTypedKey == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var11)) {
                                     var10 = true;
                                     break;
                                  }
@@ -403,7 +403,7 @@ public class class195 {
                                  }
 
                                  if(var10 && class90.username.length() < 320) {
-                                    class90.username = class90.username + Size.field341;
+                                    class90.username = class90.username + Size.currentTypedKey;
                                  }
                               } else if(class90.field1351 == 1) {
                                  if(class85.currentPressedKey == 85 && class90.password.length() > 0) {
@@ -433,7 +433,7 @@ public class class195 {
                                  }
 
                                  if(var10 && class90.password.length() < 20) {
-                                    class90.password = class90.password + Size.field341;
+                                    class90.password = class90.password + Size.currentTypedKey;
                                  }
                               }
                            }
@@ -496,7 +496,7 @@ public class class195 {
                               var23 = false;
 
                               for(var24 = 0; var24 < "1234567890".length(); ++var24) {
-                                 if(Size.field341 == "1234567890".charAt(var24)) {
+                                 if(Size.currentTypedKey == "1234567890".charAt(var24)) {
                                     var23 = true;
                                     break;
                                  }
@@ -529,7 +529,7 @@ public class class195 {
                                  }
 
                                  if(var23 && Coordinates.field2779.length() < 6) {
-                                    Coordinates.field2779 = Coordinates.field2779 + Size.field341;
+                                    Coordinates.field2779 = Coordinates.field2779 + Size.currentTypedKey;
                                  }
                               }
                            }
@@ -550,7 +550,7 @@ public class class195 {
                               var23 = false;
 
                               for(var24 = 0; var24 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var24) {
-                                 if(Size.field341 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var24)) {
+                                 if(Size.currentTypedKey == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var24)) {
                                     var23 = true;
                                     break;
                                  }
@@ -569,7 +569,7 @@ public class class195 {
                                  }
 
                                  if(var23 && class90.username.length() < 320) {
-                                    class90.username = class90.username + Size.field341;
+                                    class90.username = class90.username + Size.currentTypedKey;
                                  }
                               }
                            }

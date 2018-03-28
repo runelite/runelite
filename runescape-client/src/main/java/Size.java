@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -23,7 +24,8 @@ public class Size {
    )
    public static final Size field334;
    @ObfuscatedName("cv")
-   public static char field341;
+   @Export("currentTypedKey")
+   public static char currentTypedKey;
    @ObfuscatedName("dk")
    @ObfuscatedGetter(
       intValue = 1746983793
