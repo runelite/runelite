@@ -137,6 +137,7 @@ class XpInfoBox extends JPanel
 		levelLabel.setForeground(Color.YELLOW);
 		levelLabel.setBounds(ICON_BOUNDS);
 		levelLabel.setOpaque(false);
+		iconBarPanel.add(levelLabel, BorderLayout.LINE_END);
 
 		// Create pane for grouping skill icon and level label
 		final JLayeredPane layeredPane = new JLayeredPane();
