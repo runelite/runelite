@@ -27,15 +27,15 @@ package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.vars.AccountType;
+import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -60,7 +60,7 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, check;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -71,13 +71,14 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = false;
+		cacheColors();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = false;
 	}
 
 	@Subscribe
@@ -97,32 +98,20 @@ public class DailyTasksPlugin extends Plugin
 			{
 				hasSentEssenceMsg = false;
 			}
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		switch (event.getGameState())
-		{
-			case HOPPING:
-			case LOGGED_IN:
-				//load the varbits on first available tick
-				check = true;
-				break;
+			else if (event.getKey().equals("showSand"))
+			{
+				hasSentSandMsg = false;
+			}
+			else if (event.getKey().equals("showEcto"))
+			{
+				hasSentEctoMsg = false;
+			}
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!check)
-		{
-			return;
-		}
-		
-		check = false;
-
 		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
 		{
 			sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
@@ -140,13 +129,24 @@ public class DailyTasksPlugin extends Plugin
 			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
 			hasSentEssenceMsg = true;
 		}
+
+		if (config.showSand() && !hasSentSandMsg && checkCanCollectSand())
+		{
+			sendChatMessage("You have buckets of sand waiting to be collected from Bert.");
+			hasSentSandMsg = true;
+		}
+
+		if (config.showEcto() && !hasSentEctoMsg && checkCanCollectEcto())
+		{
+			sendChatMessage("You have bonemeal and buckets of slime waiting to be collected from Robin.");
+			hasSentEctoMsg = true;
+		}
 	}
 
 	private boolean checkCanCollectHerbBox()
 	{
-		// Exclude ironmen from herb box notifications
 		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return client.getAccountType() == AccountType.NORMAL && value < 15; // < 15 can claim
+		return value < 15; // < 15 can claim
 	}
 
 	private boolean checkCanCollectStaves()
@@ -159,6 +159,33 @@ public class DailyTasksPlugin extends Plugin
 	{
 		int value = client.getVar(Varbits.DAILY_ESSENCE);
 		return value == 0; // 1 = can't claim
+	}
+
+	private boolean checkCanCollectSand()
+	{
+		int value = client.getVar(Varbits.DAILY_SAND);
+		return value == 0; // 1 = can't claim
+	}
+
+	private boolean checkCanCollectEcto()
+	{
+		int value = client.getVar(Varbits.DAILY_ECTO);
+		if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
+			|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
+			|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+	private void cacheColors()
+	{
+		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.GAME).refreshAll();
 	}
 
 	private void sendChatMessage(String chatMessage)

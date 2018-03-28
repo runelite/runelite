@@ -67,4 +67,26 @@ public interface DailyTasksConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showSand",
+		name = "Show Claimable Sand",
+		description = "Configures whether or not to show a message for daily buckets of sand",
+		position = 4
+	)
+	default boolean showSand()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showEcto",
+		name = "Show Claimable Bonemeal & Slime",
+		description = "Configures whether or not to show a message for daily bonemeal and slime",
+		position = 5
+	)
+	default boolean showEcto()
+	{
+		return true;
+	}
 }
