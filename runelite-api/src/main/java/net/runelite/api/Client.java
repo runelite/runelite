@@ -160,6 +160,8 @@ public interface Client extends GameEngine
 
 	int getSetting(Varbits varbit);
 
+	HashTable getWidgetFlags();
+
 	HashTable getComponentTable();
 
 	GrandExchangeOffer[] getGrandExchangeOffers();
