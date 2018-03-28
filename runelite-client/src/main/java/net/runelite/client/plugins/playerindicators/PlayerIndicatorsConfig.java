@@ -167,4 +167,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "showClanRankIcons",
+		name = "Show clan member rank icons next to names",
+		description = "Configures whether or not icons representing rank are shown next to player names"
+	)
+	default boolean showClanRankIcons()
+	{
+		return true;
+	}
 }
