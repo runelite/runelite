@@ -51,7 +51,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.Player;
 import net.runelite.api.PlayerNameMask;
 import net.runelite.api.events.SetMessage;
-import net.runelite.client.util.Text;
+import net.runelite.api.Text;
 
 @Singleton
 @Slf4j
@@ -113,7 +113,7 @@ public class PlayerIndicatorsService
 		{
 			if (player != null && player.getName() != null)
 			{
-				player.setName(Text.removeTags(player.getName()));
+				player.setName(player.getName());
 			}
 		}
 
@@ -228,11 +228,11 @@ public class PlayerIndicatorsService
 	private void injectData(final Player player, final Color color)
 	{
 		final StringBuilder stringBuilder = new StringBuilder();
-		final String strippedName = Text.removeTags(player.getName());
+		final String playerName = player.getName();
 
 		if (config.showClanRankIcons() && player.isClanMember())
 		{
-			final ClanMemberRank clanMemberRank = clanRanksCache.getUnchecked(strippedName);
+			final ClanMemberRank clanMemberRank = clanRanksCache.getUnchecked(playerName);
 
 			if (clanMemberRank != ClanMemberRank.UNRANKED)
 			{
@@ -244,7 +244,7 @@ public class PlayerIndicatorsService
 		}
 		
 		stringBuilder.append("<col=").append(parseColor(color)).append(">");
-		player.setName(stringBuilder.toString() + strippedName);
+		player.setName(stringBuilder.toString() + playerName);
 	}
 
 	private static String parseColor(final Color color)

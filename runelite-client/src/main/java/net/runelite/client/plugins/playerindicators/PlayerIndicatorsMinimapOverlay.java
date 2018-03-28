@@ -35,7 +35,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.util.Text;
 
 @Singleton
 public class PlayerIndicatorsMinimapOverlay extends Overlay
@@ -66,7 +65,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		final String name = Text.removeTags(actor.getName());
+		final String name = actor.getName();
 		final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
 		if (minimapLocation != null)
