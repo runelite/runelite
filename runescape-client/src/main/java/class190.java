@@ -784,7 +784,7 @@ public class class190 {
                               ScriptEvent var37 = new ScriptEvent();
                               var37.widget = var9;
                               var37.pressedKey = Client.field1069[var47];
-                              var37.field781 = Client.field1068[var47];
+                              var37.typedKey = Client.field1068[var47];
                               var37.objs = var9.onKeyListener;
                               Client.field1045.addFront(var37);
                            }
