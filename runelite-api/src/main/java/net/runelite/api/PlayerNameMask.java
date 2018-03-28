@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,24 +24,10 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
-
-public interface Player extends Actor
+public class PlayerNameMask
 {
-	@Override
-	int getCombatLevel();
-
-	String getCleanName();
-
-	void setName(String name);
-
-	PlayerComposition getPlayerComposition();
-
-	Polygon[] getPolygons();
-
-	int getTeam();
-
-	boolean isClanMember();
-
-	boolean isFriend();
+	public static final int DRAW_FRIEND_NAME = 1;
+	public static final int DRAW_CLAN_NAME = 2;
+	public static final int DRAW_ALL_EXCEPT_OWN_NAME = 4;
+	public static final int DRAW_OWN_NAME = 8;
 }

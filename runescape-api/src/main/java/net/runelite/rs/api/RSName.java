@@ -30,4 +30,10 @@ public interface RSName
 {
 	@Import("name")
 	String getName();
+
+	@Import("cleanName")
+	String getCleanName();
+
+	@Import("name")
+	void setName(String name);
 }

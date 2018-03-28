@@ -68,6 +68,34 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
+	public String getCleanName()
+	{
+		final RSName rsName = getRsName();
+
+		if (rsName == null)
+		{
+			return null;
+		}
+
+		return rsName.getCleanName();
+	}
+
+	@Inject
+	@Override
+	public void setName(String name)
+	{
+		final RSName rsName = getRsName();
+
+		if (rsName == null)
+		{
+			return;
+		}
+
+		rsName.setName(name);
+	}
+
+	@Inject
+	@Override
 	public Polygon[] getPolygons()
 	{
 		Model model = getModel();
