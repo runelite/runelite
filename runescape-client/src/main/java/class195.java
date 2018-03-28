@@ -234,7 +234,7 @@ public class class195 {
                   boolean var19 = false;
 
                   while(class290.method5196()) {
-                     if(class85.field1295 == 84) {
+                     if(class85.currentPressedKey == 84) {
                         var19 = true;
                      }
                   }
@@ -386,7 +386,7 @@ public class class195 {
                                  }
                               }
 
-                              if(class85.field1295 == 13) {
+                              if(class85.currentPressedKey == 13) {
                                  class90.loginIndex = 0;
                                  class90.username = "";
                                  class90.password = "";
@@ -394,11 +394,11 @@ public class class195 {
                                  Coordinates.field2779 = "";
                                  class90.field1350 = true;
                               } else if(class90.field1351 == 0) {
-                                 if(class85.field1295 == 85 && class90.username.length() > 0) {
+                                 if(class85.currentPressedKey == 85 && class90.username.length() > 0) {
                                     class90.username = class90.username.substring(0, class90.username.length() - 1);
                                  }
 
-                                 if(class85.field1295 == 84 || class85.field1295 == 80) {
+                                 if(class85.currentPressedKey == 84 || class85.currentPressedKey == 80) {
                                     class90.field1351 = 1;
                                  }
 
@@ -406,15 +406,15 @@ public class class195 {
                                     class90.username = class90.username + Size.field341;
                                  }
                               } else if(class90.field1351 == 1) {
-                                 if(class85.field1295 == 85 && class90.password.length() > 0) {
+                                 if(class85.currentPressedKey == 85 && class90.password.length() > 0) {
                                     class90.password = class90.password.substring(0, class90.password.length() - 1);
                                  }
 
-                                 if(class85.field1295 == 84 || class85.field1295 == 80) {
+                                 if(class85.currentPressedKey == 84 || class85.currentPressedKey == 80) {
                                     class90.field1351 = 0;
                                  }
 
-                                 if(class85.field1295 == 84) {
+                                 if(class85.currentPressedKey == 84) {
                                     class90.username = class90.username.trim();
                                     if(class90.username.length() == 0) {
                                        class93.method1974("", "Please enter your username/email address.", "");
@@ -502,18 +502,18 @@ public class class195 {
                                  }
                               }
 
-                              if(class85.field1295 == 13) {
+                              if(class85.currentPressedKey == 13) {
                                  class90.loginIndex = 0;
                                  class90.username = "";
                                  class90.password = "";
                                  class80.field1251 = 0;
                                  Coordinates.field2779 = "";
                               } else {
-                                 if(class85.field1295 == 85 && Coordinates.field2779.length() > 0) {
+                                 if(class85.currentPressedKey == 85 && Coordinates.field2779.length() > 0) {
                                     Coordinates.field2779 = Coordinates.field2779.substring(0, Coordinates.field2779.length() - 1);
                                  }
 
-                                 if(class85.field1295 == 84) {
+                                 if(class85.currentPressedKey == 84) {
                                     Coordinates.field2779.trim();
                                     if(Coordinates.field2779.length() != 6) {
                                        class93.method1974("", "Please enter a 6-digit PIN.", "");
@@ -556,14 +556,14 @@ public class class195 {
                                  }
                               }
 
-                              if(class85.field1295 == 13) {
+                              if(class85.currentPressedKey == 13) {
                                  class47.method752(true);
                               } else {
-                                 if(class85.field1295 == 85 && class90.username.length() > 0) {
+                                 if(class85.currentPressedKey == 85 && class90.username.length() > 0) {
                                     class90.username = class90.username.substring(0, class90.username.length() - 1);
                                  }
 
-                                 if(class85.field1295 == 84) {
+                                 if(class85.currentPressedKey == 84) {
                                     GroundObject.method2672();
                                     return;
                                  }
@@ -584,7 +584,7 @@ public class class195 {
 
                                     return;
                                  }
-                              } while(class85.field1295 != 84 && class85.field1295 != 13);
+                              } while(class85.currentPressedKey != 84 && class85.currentPressedKey != 13);
 
                               class47.method752(true);
                            }
@@ -592,9 +592,9 @@ public class class195 {
                      }
                   } else {
                      while(class290.method5196()) {
-                        if(class85.field1295 == 84) {
+                        if(class85.currentPressedKey == 84) {
                            class47.method752(false);
-                        } else if(class85.field1295 == 13) {
+                        } else if(class85.currentPressedKey == 13) {
                            class90.loginIndex = 0;
                         }
                      }

@@ -86,7 +86,7 @@ public class class290 {
          if(KeyFocusListener.field610 == KeyFocusListener.field611) {
             return false;
          } else {
-            class85.field1295 = KeyFocusListener.field605[KeyFocusListener.field611];
+            class85.currentPressedKey = KeyFocusListener.field605[KeyFocusListener.field611];
             Size.field341 = KeyFocusListener.field601[KeyFocusListener.field611];
             KeyFocusListener.field611 = KeyFocusListener.field611 + 1 & 127;
             return true;

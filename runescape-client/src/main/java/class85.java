@@ -17,7 +17,8 @@ public class class85 {
    @ObfuscatedGetter(
       intValue = -2124586831
    )
-   public static int field1295;
+   @Export("currentPressedKey")
+   public static int currentPressedKey;
    @ObfuscatedName("du")
    @ObfuscatedGetter(
       intValue = 855908717
