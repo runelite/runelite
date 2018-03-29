@@ -29,7 +29,5 @@ import lombok.Data;
 @Data
 public class WidgetOpened
 {
-	private int parentId;
 	private int groupId;
-	private int autoClose;
 }
