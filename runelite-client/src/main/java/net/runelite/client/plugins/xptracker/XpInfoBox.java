@@ -69,12 +69,14 @@ class XpInfoBox extends JPanel
 	private final JPanel iconBarPanel = new JPanel();
 	private final JPanel statsPanel = new JPanel();
 
+	private final JPanel progressBarChild = new JPanel(new BorderLayout());
 	private final JProgressBar progressBar = new JProgressBar();
 	private final JLabel xpHr = new JLabel();
 	private final JLabel xpGained = new JLabel();
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
+	private final JLabel nextLevelLabel = new JShadowedLabel();
 	private final JButton skillIcon = new JButton();
 
 	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
@@ -132,11 +134,15 @@ class XpInfoBox extends JPanel
 		skillIcon.setFocusPainted(false);
 
 		// Create level label
-		levelLabel.setHorizontalAlignment(JLabel.CENTER);
+		levelLabel.setHorizontalAlignment(JLabel.LEFT);
 		levelLabel.setForeground(Color.YELLOW);
 		levelLabel.setBounds(ICON_BOUNDS);
 		levelLabel.setOpaque(false);
-		iconBarPanel.add(levelLabel, BorderLayout.LINE_END);
+
+		nextLevelLabel.setHorizontalAlignment(JLabel.RIGHT);
+		nextLevelLabel.setForeground(Color.YELLOW);
+		nextLevelLabel.setBounds(ICON_BOUNDS);
+		nextLevelLabel.setOpaque(false);
 
 		// Create pane for grouping skill icon and level label
 		final JLabel iconLabel = new JLabel();
@@ -144,7 +150,9 @@ class XpInfoBox extends JPanel
 		iconLabel.setPreferredSize(ICON_BOUNDS.getSize());
 		iconBarPanel.add(iconLabel, BorderLayout.LINE_START);
 
-
+		progressBarChild.setOpaque(false);
+		progressBarChild.add(levelLabel, BorderLayout.WEST);
+		progressBarChild.add(nextLevelLabel, BorderLayout.EAST);
 
 		// Create progress bar
 		progressBar.setStringPainted(true);
@@ -153,6 +161,8 @@ class XpInfoBox extends JPanel
 		progressBar.setMaximum(100);
 		progressBar.setBackground(Color.RED);
 		progressBar.addMouseListener(panelMouseListener);
+		progressBar.setLayout( new BorderLayout());
+		progressBar.add(progressBarChild);
 		iconBarPanel.add(progressBar, BorderLayout.CENTER);
 
 		container.add(iconBarPanel, BorderLayout.NORTH);
@@ -223,7 +233,8 @@ class XpInfoBox extends JPanel
 					panel.revalidate();
 				}
 				
-				levelLabel.setText("Next level: " + (String.valueOf(xpInfo.getLevel() + 1)));
+				levelLabel.setText(String.valueOf(xpInfo.getLevel()));
+				nextLevelLabel.setText(String.valueOf(xpInfo.getLevel() + 1));
 				xpGained.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
 				xpLeft.setText(XpPanel.formatLine(xpInfo.getXpRemaining(), "xp left"));
 				actionsLeft.setText(XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions left"));
