@@ -49,7 +49,7 @@ public class ItemPricesPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
-	boolean showPrices = false;
+	boolean showPricesWhenAltIsPushed = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -80,7 +80,7 @@ public class ItemPricesPlugin extends Plugin
 	{
 		if (!focusChanged.isFocused())
 		{
-			showPrices = false;
+			showPricesWhenAltIsPushed = false;
 		}
 	}
 }

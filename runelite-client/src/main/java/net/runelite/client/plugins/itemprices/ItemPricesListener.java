@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 
 public class ItemPricesListener implements KeyListener
 {
-	@Inject
-	KeyManager keyManager;
 
 	@Inject
 	private ItemPricesPlugin plugin;
@@ -26,7 +24,7 @@ public class ItemPricesListener implements KeyListener
 	{
 		if (e.getKeyCode() == KeyEvent.VK_ALT)
 		{
-			plugin.showPrices = true;
+			plugin.showPricesWhenAltIsPushed = true;
 		}
 	}
 
@@ -36,7 +34,7 @@ public class ItemPricesListener implements KeyListener
 	{
 		if (e.getKeyCode() == KeyEvent.VK_ALT)
 		{
-			plugin.showPrices = false;
+			plugin.showPricesWhenAltIsPushed = false;
 		}
 	}
 }

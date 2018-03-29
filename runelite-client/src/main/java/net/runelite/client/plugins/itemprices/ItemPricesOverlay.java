@@ -76,7 +76,10 @@ class ItemPricesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.showPrices || !config.showOnALT())
+		// if the setting to rely on alt (showOnAltSetting) is enabled then this if statement depend only on
+		// showPricesWhenAltIsPushed where showPricesWhenAltIsPushed is enabled on alt push
+		// if the setting (showOnAltSetting) is disabled then this if statement will always be true
+		if (plugin.showPricesWhenAltIsPushed || !config.showOnAltSetting())
 		{
 
 			if (client.isMenuOpen())
@@ -96,7 +99,6 @@ class ItemPricesOverlay extends Overlay
 			final MenuAction action = menuEntry.getType();
 			final int widgetId = menuEntry.getParam1();
 			final int groupId = WidgetInfo.TO_GROUP(widgetId);
-			String testvar = menuEntry.getOption();
 
 			// Tooltip action type handling
 			switch (action)
