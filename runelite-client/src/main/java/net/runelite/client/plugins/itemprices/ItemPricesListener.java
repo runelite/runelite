@@ -1,8 +1,6 @@
 package net.runelite.client.plugins.itemprices;
 
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
-
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
