@@ -4,103 +4,101 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fz")
+@ObfuscatedName("fc")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
-   @ObfuscatedName("h")
-   static int[] field2140;
-   @ObfuscatedName("t")
-   long[] field2138;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1506442905
-   )
-   int field2135;
+   @ObfuscatedName("c")
+   long[] field2163;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1369393305
+      intValue = 1212311813
+   )
+   int field2164;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 129880059
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = -8038848451047001839L
+      longValue = 6835645320849853117L
    )
-   long field2137;
-   @ObfuscatedName("l")
+   long field2165;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -2022492181
+      intValue = 2014396193
    )
-   int field2134;
-   @ObfuscatedName("b")
+   int field2166;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 520579797
+      intValue = 187947181
    )
-   int field2139;
+   int field2167;
 
    MilliTimer() {
-      this.field2138 = new long[10];
-      this.field2135 = 256;
+      this.field2163 = new long[10];
+      this.field2164 = 256;
       this.sleepTime = 1;
-      this.field2134 = 0;
-      this.field2137 = WorldMapRegion.method465();
+      this.field2166 = 0;
+      this.field2165 = ScriptVarType.method28();
 
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2138[var1] = this.field2137;
+         this.field2163[var1] = this.field2165;
       }
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "2"
+      signature = "(I)V",
+      garbageValue = "-1752267901"
    )
-   public void vmethod3325() {
+   public void vmethod3302() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2138[var1] = 0L;
+         this.field2163[var1] = 0L;
       }
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1292093981"
+      signature = "(IIB)I",
+      garbageValue = "112"
    )
-   public int vmethod3323(int var1, int var2) {
-      int var3 = this.field2135;
+   public int vmethod3312(int var1, int var2) {
+      int var3 = this.field2164;
       int var4 = this.sleepTime;
-      this.field2135 = 300;
+      this.field2164 = 300;
       this.sleepTime = 1;
-      this.field2137 = WorldMapRegion.method465();
-      if(this.field2138[this.field2139] == 0L) {
-         this.field2135 = var3;
+      this.field2165 = ScriptVarType.method28();
+      if(0L == this.field2163[this.field2167]) {
+         this.field2164 = var3;
          this.sleepTime = var4;
-      } else if(this.field2137 > this.field2138[this.field2139]) {
-         this.field2135 = (int)((long)(var1 * 2560) / (this.field2137 - this.field2138[this.field2139]));
+      } else if(this.field2165 > this.field2163[this.field2167]) {
+         this.field2164 = (int)((long)(var1 * 2560) / (this.field2165 - this.field2163[this.field2167]));
       }
 
-      if(this.field2135 < 25) {
-         this.field2135 = 25;
+      if(this.field2164 < 25) {
+         this.field2164 = 25;
       }
 
-      if(this.field2135 > 256) {
-         this.field2135 = 256;
-         this.sleepTime = (int)((long)var1 - (this.field2137 - this.field2138[this.field2139]) / 10L);
+      if(this.field2164 > 256) {
+         this.field2164 = 256;
+         this.sleepTime = (int)((long)var1 - (this.field2165 - this.field2163[this.field2167]) / 10L);
       }
 
       if(this.sleepTime > var1) {
          this.sleepTime = var1;
       }
 
-      this.field2138[this.field2139] = this.field2137;
-      this.field2139 = (this.field2139 + 1) % 10;
+      this.field2163[this.field2167] = this.field2165;
+      this.field2167 = (this.field2167 + 1) % 10;
       int var5;
       if(this.sleepTime > 1) {
          for(var5 = 0; var5 < 10; ++var5) {
-            if(this.field2138[var5] != 0L) {
-               this.field2138[var5] += (long)this.sleepTime;
+            if(this.field2163[var5] != 0L) {
+               this.field2163[var5] += (long)this.sleepTime;
             }
          }
       }
@@ -109,95 +107,13 @@ public class MilliTimer extends Timer {
          this.sleepTime = var2;
       }
 
-      class93.method1982((long)this.sleepTime);
+      class163.method3223((long)this.sleepTime);
 
-      for(var5 = 0; this.field2134 < 256; this.field2134 += this.field2135) {
+      for(var5 = 0; this.field2166 < 256; this.field2166 += this.field2164) {
          ++var5;
       }
 
-      this.field2134 &= 255;
+      this.field2166 &= 255;
       return var5;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "1335151755"
-   )
-   static char method3187(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
-      }
-
-      return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Ljc;Ljc;Ljava/lang/String;Ljava/lang/String;B)Lkm;",
-      garbageValue = "20"
-   )
-   public static Font method3182(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
-      int var4 = var0.getFile(var2);
-      int var5 = var0.getChild(var4, var3);
-      return AbstractSoundSystem.method2222(var0, var1, var4, var5);
    }
 }

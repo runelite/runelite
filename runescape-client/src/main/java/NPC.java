@@ -1,33 +1,24 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cq")
 @Implements("NPC")
 public final class NPC extends Actor {
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1287585829
-   )
-   static int field1282;
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Ljd;"
+      signature = "Ljk;"
    )
    @Export("composition")
    NPCComposition composition;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(IBI)V",
-      garbageValue = "1003370521"
+      garbageValue = "-1919876101"
    )
-   final void method1890(int var1, byte var2) {
+   final void method1825(int var1, byte var2) {
       int var3 = super.pathX[0];
       int var4 = super.pathY[0];
       if(var1 == 0) {
@@ -66,7 +57,7 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && class158.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && ISAACCipher.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -85,13 +76,13 @@ public final class NPC extends Actor {
       super.pathTraversed[0] = var2;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(IIZI)V",
-      garbageValue = "2075608925"
+      garbageValue = "1641490636"
    )
-   final void method1895(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class158.getAnimation(super.animation).priority == 1) {
+   final void method1827(int var1, int var2, boolean var3) {
+      if(super.animation != -1 && ISAACCipher.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -117,25 +108,25 @@ public final class NPC extends Actor {
       }
 
       super.queueSize = 0;
-      super.field1196 = 0;
-      super.field1195 = 0;
+      super.field1194 = 0;
+      super.field1208 = 0;
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      super.x = super.field1139 * 64 + super.pathX[0] * 128;
-      super.y = super.field1139 * 64 + super.pathY[0] * 128;
+      super.x = super.field1153 * 64 + super.pathX[0] * 128;
+      super.y = super.field1153 * 64 + super.pathY[0] * 128;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)Lek;",
-      garbageValue = "22"
+      signature = "(B)Led;",
+      garbageValue = "-83"
    )
    protected final Model getModel() {
       if(this.composition == null) {
          return null;
       } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class158.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || super.poseAnimation == super.idlePoseAnimation && var1 != null?null:class158.getAnimation(super.poseAnimation);
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?ISAACCipher.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?ISAACCipher.getAnimation(super.poseAnimation):null;
          Model var3 = this.composition.getModel(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
@@ -143,16 +134,16 @@ public final class NPC extends Actor {
             var3.calculateBoundsCylinder();
             super.logicalHeight = var3.modelHeight;
             if(super.graphic != -1 && super.spotAnimFrame != -1) {
-               Model var4 = MapLabel.getSpotAnimType(super.graphic).getModel(super.spotAnimFrame);
+               Model var4 = class249.getSpotAnimType(super.graphic).getModel(super.spotAnimFrame);
                if(var4 != null) {
-                  var4.offsetBy(0, -super.field1178, 0);
+                  var4.offsetBy(0, -super.field1191, 0);
                   Model[] var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                }
             }
 
-            if(this.composition.field3710 == 1) {
-               var3.field1849 = true;
+            if(this.composition.field3702 == 1) {
+               var3.field1850 = true;
             }
 
             return var3;
@@ -160,104 +151,67 @@ public final class NPC extends Actor {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1675922393"
+      garbageValue = "1859897197"
    )
    @Export("hasConfig")
    final boolean hasConfig() {
       return this.composition != null;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIIB)V",
-      garbageValue = "32"
+      signature = "(BI)C",
+      garbageValue = "41649249"
    )
-   public static void method1904(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
-
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+   public static char method1838(byte var0) {
+      int var1 = var0 & 255;
+      if(var1 == 0) {
+         throw new IllegalArgumentException("");
+      } else {
+         if(var1 >= 128 && var1 < 160) {
+            char var2 = class314.cp1252AsciiExtension[var1 - 128];
+            if(var2 == 0) {
+               var2 = '?';
             }
+
+            var1 = var2;
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method1904(var0, var1, var2, var5 - 1);
-         method1904(var0, var1, var5 + 1, var3);
+         return (char)var1;
       }
-
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-569249719"
+      signature = "(IIIIB)V",
+      garbageValue = "-82"
    )
-   public static void method1902() {
-      try {
-         File var0 = new File(class167.userHome, "random.dat");
-         int var2;
-         if(var0.exists()) {
-            class167.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         } else {
-            label38:
-            for(int var1 = 0; var1 < class169.field2186.length; ++var1) {
-               for(var2 = 0; var2 < class19.cacheLocations.length; ++var2) {
-                  File var3 = new File(class19.cacheLocations[var2] + class169.field2186[var1] + File.separatorChar + "random.dat");
-                  if(var3.exists()) {
-                     class167.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label38;
-                  }
+   static final void method1839(int var0, int var1, int var2, int var3) {
+      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
+         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
+            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
+               class62.field725[0][var5][var4] = 127;
+               if(var0 == var5 && var5 > 0) {
+                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5 - 1][var4];
+               }
+
+               if(var0 + var2 == var5 && var5 < 103) {
+                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5 + 1][var4];
+               }
+
+               if(var4 == var1 && var4 > 0) {
+                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5][var4 - 1];
+               }
+
+               if(var4 == var3 + var1 && var4 < 103) {
+                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5][var4 + 1];
                }
             }
          }
-
-         if(class167.randomDat == null) {
-            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
-            var2 = var4.read();
-            var4.seek(0L);
-            var4.write(var2);
-            var4.seek(0L);
-            var4.close();
-            class167.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         }
-      } catch (IOException var5) {
-         ;
       }
 
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ILjc;IIIZI)V",
-      garbageValue = "2094308115"
-   )
-   public static void method1903(int var0, IndexDataBase var1, int var2, int var3, int var4, boolean var5) {
-      class229.field2674 = 1;
-      class229.field2672 = var1;
-      class171.field2199 = var2;
-      class229.field2676 = var3;
-      class229.field2677 = var4;
-      class85.field1294 = var5;
-      class2.field13 = var0;
    }
 }

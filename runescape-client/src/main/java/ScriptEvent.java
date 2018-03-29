@@ -4,116 +4,135 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("bq")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("t")
+   @ObfuscatedName("dn")
+   @ObfuscatedSignature(
+      signature = "Ljs;"
+   )
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
+   @ObfuscatedName("c")
    @Export("objs")
    Object[] objs;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("boolean1")
    boolean boolean1;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lig;"
+      signature = "Lib;"
    )
    @Export("widget")
    Widget widget;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -219484955
+      intValue = 2113154709
    )
-   int field782;
-   @ObfuscatedName("l")
+   int field783;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1092709369
+      intValue = -788634243
    )
-   int field789;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 89189973
-   )
-   int field784;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   Widget field785;
+   int field778;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -182394341
+      intValue = -1822359363
+   )
+   int field791;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   Widget field784;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1358472503
    )
    @Export("pressedKey")
    int pressedKey;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 141229905
+      intValue = -1152280539
    )
    @Export("typedKey")
    int typedKey;
-   @ObfuscatedName("g")
+   @ObfuscatedName("r")
    @Export("string")
    String string;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1106261651
+      intValue = 1116840587
    )
-   int field786;
-   @ObfuscatedName("o")
+   int field788;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Liw;"
+      signature = "Liz;"
    )
-   class245 field779;
+   class245 field789;
 
    public ScriptEvent() {
-      this.field779 = class245.field2959;
+      this.field789 = class245.field2958;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "([Ljava/lang/Object;B)V",
-      garbageValue = "53"
+      garbageValue = "-54"
    )
-   public void method1153(Object[] var1) {
+   public void method1102(Object[] var1) {
       this.objs = var1;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Liw;I)V",
-      garbageValue = "244103375"
+      signature = "(Liz;I)V",
+      garbageValue = "-1705286435"
    )
-   public void method1152(class245 var1) {
-      this.field779 = var1;
+   public void method1099(class245 var1) {
+      this.field789 = var1;
    }
 
-   @ObfuscatedName("ex")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lju;Ljava/lang/String;B)V",
-      garbageValue = "-26"
+      signature = "(IB)Ljk;",
+      garbageValue = "-113"
    )
-   static void method1158(IndexData var0, String var1) {
-      class64 var2 = new class64(var0, var1);
-      Client.field1023.add(var2);
+   @Export("getNpcDefinition")
+   public static NPCComposition getNpcDefinition(int var0) {
+      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = NPCComposition.NpcDefinition_indexCache.getConfigData(9, var0);
+         var1 = new NPCComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         var1.post();
+         NPCComposition.npcs.put(var1, (long)var0);
+         return var1;
+      }
    }
 
-   @ObfuscatedName("ka")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "-64"
+      signature = "(II)Llf;",
+      garbageValue = "2026232087"
    )
-   static String method1157(String var0) {
-      Permission[] var1 = new Permission[]{Permission.field3341, Permission.field3345, Permission.field3344, Permission.field3342, Permission.field3340, Permission.field3343};
-      Permission[] var2 = var1;
+   public static class320 method1103(int var0) {
+      class320[] var1 = new class320[]{class320.field3932, class320.field3931, class320.field3930};
+      class320[] var2 = var1;
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
-         Permission var4 = var2[var3];
-         if(var4.field3346 != -1 && var0.startsWith(class157.method3168(var4.field3346))) {
-            var0 = var0.substring(6 + Integer.toString(var4.field3346).length());
-            break;
+         class320 var4 = var2[var3];
+         if(var0 == var4.field3929) {
+            return var4;
          }
       }
 
-      return var0;
+      return null;
    }
 }

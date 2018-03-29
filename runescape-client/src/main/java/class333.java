@@ -2,105 +2,105 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lg")
+@ObfuscatedName("lw")
 public class class333 {
-   @ObfuscatedName("b")
-   String field4003;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Ljc;"
-   )
-   IndexDataBase field4005;
    @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -264227029
+   String field3998;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Ljm;"
    )
-   int field4004;
+   IndexDataBase field4000;
    @ObfuscatedName("p")
-   boolean field4006;
+   @ObfuscatedGetter(
+      intValue = -534960787
+   )
+   int field3995;
+   @ObfuscatedName("w")
+   boolean field4001;
 
    @ObfuscatedSignature(
-      signature = "(Ljc;)V"
+      signature = "(Ljm;)V"
    )
    class333(IndexDataBase var1) {
-      this.field4004 = 0;
-      this.field4006 = false;
-      this.field4005 = var1;
+      this.field3995 = 0;
+      this.field4001 = false;
+      this.field4000 = var1;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1677725568"
+      garbageValue = "-452363258"
    )
-   void method5974(String var1) {
+   void method5994(String var1) {
       if(var1 != null && !var1.isEmpty()) {
-         if(var1 != this.field4003) {
-            this.field4003 = var1;
-            this.field4004 = 0;
-            this.field4006 = false;
-            this.method5981();
+         if(var1 != this.field3998) {
+            this.field3998 = var1;
+            this.field3995 = 0;
+            this.field4001 = false;
+            this.method5995();
          }
       }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "84"
-   )
-   int method5981() {
-      if(this.field4004 < 25) {
-         if(!this.field4005.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, this.field4003)) {
-            return this.field4004;
-         }
-
-         this.field4004 = 25;
-      }
-
-      if(this.field4004 == 25) {
-         if(!this.field4005.tryLoadRecordByNames(this.field4003, MapCacheArchiveNames.AREA.name)) {
-            return 25 + this.field4005.archiveLoadPercentByName(this.field4003) * 25 / 100;
-         }
-
-         this.field4004 = 50;
-      }
-
-      if(this.field4004 == 50) {
-         if(this.field4005.method4584(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4003) && !this.field4005.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field4003)) {
-            return 50;
-         }
-
-         this.field4004 = 75;
-      }
-
-      if(this.field4004 == 75) {
-         if(!this.field4005.tryLoadRecordByNames(this.field4003, MapCacheArchiveNames.LABELS.name)) {
-            return 75;
-         }
-
-         this.field4004 = 100;
-         this.field4006 = true;
-      }
-
-      return this.field4004;
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-325319175"
+      signature = "(I)I",
+      garbageValue = "344420033"
    )
-   boolean method5973() {
-      return this.field4006;
+   int method5995() {
+      if(this.field3995 < 25) {
+         if(!this.field4000.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_MAP.name, this.field3998)) {
+            return this.field3995;
+         }
+
+         this.field3995 = 25;
+      }
+
+      if(this.field3995 == 25) {
+         if(!this.field4000.tryLoadRecordByNames(this.field3998, MapCacheArchiveNames.AREA.name)) {
+            return 25 + this.field4000.archiveLoadPercentByName(this.field3998) * 25 / 100;
+         }
+
+         this.field3995 = 50;
+      }
+
+      if(this.field3995 == 50) {
+         if(this.field4000.method4571(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field3998) && !this.field4000.tryLoadRecordByNames(MapCacheArchiveNames.COMPOSITE_TEXTURE.name, this.field3998)) {
+            return 50;
+         }
+
+         this.field3995 = 75;
+      }
+
+      if(this.field3995 == 75) {
+         if(!this.field4000.tryLoadRecordByNames(this.field3998, MapCacheArchiveNames.LABELS.name)) {
+            return 75;
+         }
+
+         this.field3995 = 100;
+         this.field4001 = true;
+      }
+
+      return this.field3995;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "2"
+      signature = "(I)Z",
+      garbageValue = "-1758694332"
    )
-   int method5977() {
-      return this.field4004;
+   boolean method5999() {
+      return this.field4001;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-924662176"
+   )
+   int method5997() {
+      return this.field3995;
    }
 }

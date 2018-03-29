@@ -1,7 +1,7 @@
-import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedList;
@@ -11,18 +11,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ef")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-   @ObfuscatedName("ah")
-   static Image field2091;
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @Export("thread")
    final Thread thread;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("isClosed")
    volatile boolean isClosed;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("requests")
    Queue requests;
 
@@ -33,10 +31,10 @@ public class UrlRequester implements Runnable {
       this.thread.start();
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Lep;",
-      garbageValue = "-737179090"
+      signature = "(Ljava/net/URL;S)Les;",
+      garbageValue = "1536"
    )
    @Export("request")
    public UrlRequest request(URL var1) {
@@ -48,10 +46,10 @@ public class UrlRequester implements Runnable {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1131325535"
+      garbageValue = "288850234"
    )
    @Export("close")
    public void close() {
@@ -116,33 +114,18 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            GroundObject.processClientError((String)null, var17);
+            UrlRequest.processClientError((String)null, var17);
          }
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "310634821"
+      signature = "(Ljava/net/Socket;III)Lfr;",
+      garbageValue = "650936836"
    )
-   @Export("nextPowerOfTwo")
-   public static int nextPowerOfTwo(int var0) {
-      var0 = (var0 & 1431655765) + (var0 >>> 1 & 1431655765);
-      var0 = (var0 >>> 2 & 858993459) + (var0 & 858993459);
-      var0 = var0 + (var0 >>> 4) & 252645135;
-      var0 += var0 >>> 8;
-      var0 += var0 >>> 16;
-      return var0 & 255;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2029928225"
-   )
-   static void method3085() {
-      ItemContainer.itemContainers = new HashTable(32);
+   public static class169 method3107(Socket var0, int var1, int var2) throws IOException {
+      return new class171(var0, var1, var2);
    }
 }

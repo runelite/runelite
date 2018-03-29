@@ -2,122 +2,122 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("db")
+@ObfuscatedName("do")
 public class class104 extends Node {
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @Export("payload")
    static byte[] payload;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @Export("position")
    static int position;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @Export("bitPosition")
    static int bitPosition;
-   @ObfuscatedName("g")
+   @ObfuscatedName("r")
    @Export("blockSize0")
    static int blockSize0;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @Export("blockSize1")
    static int blockSize1;
-   @ObfuscatedName("o")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lcp;"
+      signature = "[Lcn;"
    )
    @Export("codeBooks")
    static CodeBook[] codeBooks;
-   @ObfuscatedName("c")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "[Lda;"
+      signature = "[Lde;"
    )
    @Export("floors")
    static Floor1[] floors;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "[Ldq;"
+      signature = "[Ldr;"
    )
    @Export("residues")
    static Residue[] residues;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "[Ldw;"
+      signature = "[Ldi;"
    )
    @Export("mappings")
    static Mapping[] mappings;
-   @ObfuscatedName("j")
+   @ObfuscatedName("m")
    @Export("modeBlockFlags")
    static boolean[] modeBlockFlags;
-   @ObfuscatedName("k")
+   @ObfuscatedName("b")
    @Export("modeMappings")
    static int[] modeMappings;
-   @ObfuscatedName("z")
-   static boolean field1489;
-   @ObfuscatedName("r")
-   static float[] field1504;
-   @ObfuscatedName("y")
-   static float[] field1501;
    @ObfuscatedName("h")
-   static float[] field1516;
-   @ObfuscatedName("m")
-   static float[] field1500;
-   @ObfuscatedName("ay")
-   static float[] field1510;
-   @ObfuscatedName("ao")
-   static float[] field1495;
-   @ObfuscatedName("av")
-   static float[] field1512;
-   @ObfuscatedName("aj")
-   static int[] field1513;
-   @ObfuscatedName("ae")
-   static int[] field1506;
-   @ObfuscatedName("t")
-   byte[][] field1511;
+   static boolean field1518;
    @ObfuscatedName("q")
-   int field1485;
-   @ObfuscatedName("i")
-   int field1486;
-   @ObfuscatedName("a")
-   int field1487;
-   @ObfuscatedName("l")
-   int field1488;
-   @ObfuscatedName("b")
-   boolean field1514;
-   @ObfuscatedName("w")
-   float[] field1502;
+   static float[] field1519;
+   @ObfuscatedName("g")
+   static float[] field1526;
+   @ObfuscatedName("y")
+   static float[] field1505;
    @ObfuscatedName("s")
-   int field1490;
-   @ObfuscatedName("d")
-   int field1508;
-   @ObfuscatedName("f")
-   boolean field1505;
-   @ObfuscatedName("am")
-   byte[] field1509;
-   @ObfuscatedName("az")
-   int field1484;
+   static float[] field1523;
+   @ObfuscatedName("ac")
+   static float[] field1525;
    @ObfuscatedName("ap")
-   int field1517;
+   static float[] field1528;
+   @ObfuscatedName("al")
+   static float[] field1529;
+   @ObfuscatedName("ai")
+   static int[] field1530;
+   @ObfuscatedName("ab")
+   static int[] field1531;
+   @ObfuscatedName("c")
+   byte[][] field1512;
+   @ObfuscatedName("i")
+   int field1502;
+   @ObfuscatedName("o")
+   int field1506;
+   @ObfuscatedName("j")
+   int field1504;
+   @ObfuscatedName("k")
+   int field1511;
+   @ObfuscatedName("x")
+   boolean field1532;
+   @ObfuscatedName("t")
+   float[] field1516;
+   @ObfuscatedName("v")
+   int field1527;
+   @ObfuscatedName("n")
+   int field1521;
+   @ObfuscatedName("u")
+   boolean field1522;
+   @ObfuscatedName("ak")
+   byte[] field1503;
+   @ObfuscatedName("as")
+   int field1533;
+   @ObfuscatedName("aa")
+   int field1534;
 
    static {
-      field1489 = false;
+      field1518 = false;
    }
 
    class104(byte[] var1) {
-      this.method2159(var1);
+      this.method2128(var1);
    }
 
-   @ObfuscatedName("l")
-   void method2159(byte[] var1) {
+   @ObfuscatedName("k")
+   void method2128(byte[] var1) {
       Buffer var2 = new Buffer(var1);
-      this.field1485 = var2.readInt();
-      this.field1486 = var2.readInt();
-      this.field1487 = var2.readInt();
-      this.field1488 = var2.readInt();
-      if(this.field1488 < 0) {
-         this.field1488 = ~this.field1488;
-         this.field1514 = true;
+      this.field1502 = var2.readInt();
+      this.field1506 = var2.readInt();
+      this.field1504 = var2.readInt();
+      this.field1511 = var2.readInt();
+      if(this.field1511 < 0) {
+         this.field1511 = ~this.field1511;
+         this.field1532 = true;
       }
 
       int var3 = var2.readInt();
-      this.field1511 = new byte[var3][];
+      this.field1512 = new byte[var3][];
 
       for(int var4 = 0; var4 < var3; ++var4) {
          int var5 = 0;
@@ -130,16 +130,16 @@ public class class104 extends Node {
 
          byte[] var7 = new byte[var5];
          var2.readBytes(var7, 0, var5);
-         this.field1511[var4] = var7;
+         this.field1512[var4] = var7;
       }
 
    }
 
-   @ObfuscatedName("e")
-   float[] method2170(int var1) {
-      setBytes(this.field1511[var1], 0);
+   @ObfuscatedName("z")
+   float[] method2130(int var1) {
+      setBytes(this.field1512[var1], 0);
       getBit();
-      int var2 = getInt(class248.ilog(modeMappings.length - 1));
+      int var2 = getInt(TotalQuantityComparator.ilog(modeMappings.length - 1));
       boolean var3 = modeBlockFlags[var2];
       int var4 = var3?blockSize1:blockSize0;
       boolean var5 = false;
@@ -182,9 +182,9 @@ public class class104 extends Node {
       boolean var15 = !floors[var17].decodedFloor();
       boolean var45 = var15;
 
-      for(var17 = 0; var17 < var14.field1631; ++var17) {
-         Residue var18 = residues[var14.field1632[var17]];
-         float[] var19 = field1504;
+      for(var17 = 0; var17 < var14.field1642; ++var17) {
+         Residue var18 = residues[var14.field1643[var17]];
+         float[] var19 = field1519;
          var18.decodeResidue(var19, var4 >> 1, var45);
       }
 
@@ -192,19 +192,19 @@ public class class104 extends Node {
       if(!var15) {
          var17 = var14.mux;
          var40 = var14.submapFloors[var17];
-         floors[var40].computeFloor(field1504, var4 >> 1);
+         floors[var40].computeFloor(field1519, var4 >> 1);
       }
 
       int var42;
       if(var15) {
          for(var17 = var4 >> 1; var17 < var4; ++var17) {
-            field1504[var17] = 0.0F;
+            field1519[var17] = 0.0F;
          }
       } else {
          var17 = var4 >> 1;
          var40 = var4 >> 2;
          var42 = var4 >> 3;
-         float[] var43 = field1504;
+         float[] var43 = field1519;
 
          int var21;
          for(var21 = 0; var21 < var17; ++var21) {
@@ -215,10 +215,10 @@ public class class104 extends Node {
             var43[var21] = -var43[var4 - var21 - 1];
          }
 
-         float[] var44 = var3?field1510:field1501;
-         float[] var22 = var3?field1495:field1516;
-         float[] var23 = var3?field1512:field1500;
-         int[] var24 = var3?field1506:field1513;
+         float[] var44 = var3?field1525:field1526;
+         float[] var22 = var3?field1528:field1505;
+         float[] var23 = var3?field1529:field1523;
+         int[] var24 = var3?field1531:field1530;
 
          int var25;
          float var26;
@@ -249,7 +249,7 @@ public class class104 extends Node {
             var43[var25 * 4 + 1] = (var27 - var29) * var30 + (var26 - var28) * var31;
          }
 
-         var25 = class248.ilog(var4 - 1);
+         var25 = TotalQuantityComparator.ilog(var4 - 1);
 
          int var47;
          int var48;
@@ -348,71 +348,71 @@ public class class104 extends Node {
 
          for(var47 = var8; var47 < var9; ++var47) {
             var27 = (float)Math.sin(((double)(var47 - var8) + 0.5D) / (double)var10 * 0.5D * 3.141592653589793D);
-            field1504[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
+            field1519[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
          }
 
          for(var47 = var11; var47 < var12; ++var47) {
             var27 = (float)Math.sin(((double)(var47 - var11) + 0.5D) / (double)var13 * 0.5D * 3.141592653589793D + 1.5707963267948966D);
-            field1504[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
+            field1519[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
          }
       }
 
       float[] var41 = null;
-      if(this.field1490 > 0) {
-         var40 = var4 + this.field1490 >> 2;
+      if(this.field1527 > 0) {
+         var40 = var4 + this.field1527 >> 2;
          var41 = new float[var40];
          int var20;
-         if(!this.field1505) {
-            for(var42 = 0; var42 < this.field1508; ++var42) {
-               var20 = var42 + (this.field1490 >> 1);
-               var41[var42] += this.field1502[var20];
+         if(!this.field1522) {
+            for(var42 = 0; var42 < this.field1521; ++var42) {
+               var20 = var42 + (this.field1527 >> 1);
+               var41[var42] += this.field1516[var20];
             }
          }
 
          if(!var15) {
             for(var42 = var8; var42 < var4 >> 1; ++var42) {
                var20 = var41.length - (var4 >> 1) + var42;
-               var41[var20] += field1504[var42];
+               var41[var20] += field1519[var42];
             }
          }
       }
 
-      float[] var46 = this.field1502;
-      this.field1502 = field1504;
-      field1504 = var46;
-      this.field1490 = var4;
-      this.field1508 = var12 - (var4 >> 1);
-      this.field1505 = var15;
+      float[] var46 = this.field1516;
+      this.field1516 = field1519;
+      field1519 = var46;
+      this.field1527 = var4;
+      this.field1521 = var12 - (var4 >> 1);
+      this.field1522 = var15;
       return var41;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "([I)Ldp;"
+      signature = "([I)Lda;"
    )
-   RawAudioNode method2176(int[] var1) {
+   RawAudioNode method2152(int[] var1) {
       if(var1 != null && var1[0] <= 0) {
          return null;
       } else {
-         if(this.field1509 == null) {
-            this.field1490 = 0;
-            this.field1502 = new float[blockSize1];
-            this.field1509 = new byte[this.field1486];
-            this.field1484 = 0;
-            this.field1517 = 0;
+         if(this.field1503 == null) {
+            this.field1527 = 0;
+            this.field1516 = new float[blockSize1];
+            this.field1503 = new byte[this.field1506];
+            this.field1533 = 0;
+            this.field1534 = 0;
          }
 
-         for(; this.field1517 < this.field1511.length; ++this.field1517) {
+         for(; this.field1534 < this.field1512.length; ++this.field1534) {
             if(var1 != null && var1[0] <= 0) {
                return null;
             }
 
-            float[] var2 = this.method2170(this.field1517);
+            float[] var2 = this.method2130(this.field1534);
             if(var2 != null) {
-               int var3 = this.field1484;
+               int var3 = this.field1533;
                int var4 = var2.length;
-               if(var4 > this.field1486 - var3) {
-                  var4 = this.field1486 - var3;
+               if(var4 > this.field1506 - var3) {
+                  var4 = this.field1506 - var3;
                }
 
                for(int var5 = 0; var5 < var4; ++var5) {
@@ -421,25 +421,25 @@ public class class104 extends Node {
                      var6 = ~var6 >> 31;
                   }
 
-                  this.field1509[var3++] = (byte)(var6 - 128);
+                  this.field1503[var3++] = (byte)(var6 - 128);
                }
 
                if(var1 != null) {
-                  var1[0] -= var3 - this.field1484;
+                  var1[0] -= var3 - this.field1533;
                }
 
-               this.field1484 = var3;
+               this.field1533 = var3;
             }
          }
 
-         this.field1502 = null;
-         byte[] var7 = this.field1509;
-         this.field1509 = null;
-         return new RawAudioNode(this.field1485, var7, this.field1487, this.field1488, this.field1514);
+         this.field1516 = null;
+         byte[] var7 = this.field1503;
+         this.field1503 = null;
+         return new RawAudioNode(this.field1502, var7, this.field1504, this.field1511, this.field1532);
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @Export("float32Unpack")
    static float float32Unpack(int var0) {
       int var1 = var0 & 2097151;
@@ -452,7 +452,7 @@ public class class104 extends Node {
       return (float)((double)var1 * Math.pow(2.0D, (double)(var3 - 788)));
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("setBytes")
    static void setBytes(byte[] var0, int var1) {
       payload = var0;
@@ -460,7 +460,7 @@ public class class104 extends Node {
       bitPosition = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("getBit")
    static int getBit() {
       int var0 = payload[position] >> bitPosition & 1;
@@ -470,7 +470,7 @@ public class class104 extends Node {
       return var0;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @Export("getInt")
    static int getInt(int var0) {
       int var1 = 0;
@@ -495,12 +495,12 @@ public class class104 extends Node {
       return var1;
    }
 
-   @ObfuscatedName("b")
-   static void method2160(byte[] var0) {
+   @ObfuscatedName("x")
+   static void method2129(byte[] var0) {
       setBytes(var0, 0);
       blockSize0 = 1 << getInt(4);
       blockSize1 = 1 << getInt(4);
-      field1504 = new float[blockSize1];
+      field1519 = new float[blockSize1];
 
       int var1;
       int var2;
@@ -519,46 +519,37 @@ public class class104 extends Node {
             var6[var7 * 2 + 1] = -((float)Math.sin((double)(var7 * 4) * 3.141592653589793D / (double)var2));
          }
 
-         float[] var18 = new float[var3];
+         float[] var12 = new float[var3];
 
          for(int var8 = 0; var8 < var4; ++var8) {
-            var18[var8 * 2] = (float)Math.cos((double)(var8 * 2 + 1) * 3.141592653589793D / (double)(var2 * 2));
-            var18[var8 * 2 + 1] = (float)Math.sin((double)(var8 * 2 + 1) * 3.141592653589793D / (double)(var2 * 2));
+            var12[var8 * 2] = (float)Math.cos((double)(var8 * 2 + 1) * 3.141592653589793D / (double)(var2 * 2));
+            var12[var8 * 2 + 1] = (float)Math.sin((double)(var8 * 2 + 1) * 3.141592653589793D / (double)(var2 * 2));
          }
 
-         float[] var19 = new float[var4];
+         float[] var13 = new float[var4];
 
          for(int var9 = 0; var9 < var5; ++var9) {
-            var19[var9 * 2] = (float)Math.cos((double)(var9 * 4 + 2) * 3.141592653589793D / (double)var2);
-            var19[var9 * 2 + 1] = -((float)Math.sin((double)(var9 * 4 + 2) * 3.141592653589793D / (double)var2));
+            var13[var9 * 2] = (float)Math.cos((double)(var9 * 4 + 2) * 3.141592653589793D / (double)var2);
+            var13[var9 * 2 + 1] = -((float)Math.sin((double)(var9 * 4 + 2) * 3.141592653589793D / (double)var2));
          }
 
-         int[] var20 = new int[var5];
-         int var10 = class248.ilog(var5 - 1);
+         int[] var14 = new int[var5];
+         int var10 = TotalQuantityComparator.ilog(var5 - 1);
 
          for(int var11 = 0; var11 < var5; ++var11) {
-            int var15 = var11;
-            int var16 = var10;
-
-            int var17;
-            for(var17 = 0; var16 > 0; --var16) {
-               var17 = var17 << 1 | var15 & 1;
-               var15 >>>= 1;
-            }
-
-            var20[var11] = var17;
+            var14[var11] = class27.method239(var11, var10);
          }
 
          if(var1 != 0) {
-            field1510 = var6;
-            field1495 = var18;
-            field1512 = var19;
-            field1506 = var20;
+            field1525 = var6;
+            field1528 = var12;
+            field1529 = var13;
+            field1531 = var14;
          } else {
-            field1501 = var6;
-            field1516 = var18;
-            field1500 = var19;
-            field1513 = var20;
+            field1526 = var6;
+            field1505 = var12;
+            field1523 = var13;
+            field1530 = var14;
          }
       }
 
@@ -600,40 +591,40 @@ public class class104 extends Node {
       modeBlockFlags = new boolean[var5];
       modeMappings = new int[var5];
 
-      for(int var21 = 0; var21 < var5; ++var21) {
-         modeBlockFlags[var21] = getBit() != 0;
+      for(int var15 = 0; var15 < var5; ++var15) {
+         modeBlockFlags[var15] = getBit() != 0;
          getInt(16);
          getInt(16);
-         modeMappings[var21] = getInt(8);
+         modeMappings[var15] = getInt(8);
       }
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljc;)Z"
+      signature = "(Ljm;)Z"
    )
-   static boolean method2162(IndexDataBase var0) {
-      if(!field1489) {
+   static boolean method2131(IndexDataBase var0) {
+      if(!field1518) {
          byte[] var1 = var0.getConfigData(0, 0);
          if(var1 == null) {
             return false;
          }
 
-         method2160(var1);
-         field1489 = true;
+         method2129(var1);
+         field1518 = true;
       }
 
       return true;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljc;II)Ldb;"
+      signature = "(Ljm;II)Ldo;"
    )
    @Export("getInstrument")
    static class104 getInstrument(IndexDataBase var0, int var1, int var2) {
-      if(!method2162(var0)) {
+      if(!method2131(var0)) {
          var0.tryLoadRecord(var1, var2);
          return null;
       } else {

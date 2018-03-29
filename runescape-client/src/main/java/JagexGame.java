@@ -1,50 +1,54 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("ic")
 @Implements("JagexGame")
 public enum JagexGame implements Enumerated {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lin;"
+      signature = "Lic;"
    )
-   field3364("runescape", "RuneScape", 0),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lin;"
-   )
-   field3361("stellardawn", "Stellar Dawn", 1),
+   field3348("runescape", "RuneScape", 0),
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lin;"
+      signature = "Lic;"
    )
-   field3360("game3", "Game 3", 2),
-   @ObfuscatedName("a")
+   field3349("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lin;"
+      signature = "Lic;"
    )
-   field3365("game4", "Game 4", 3),
-   @ObfuscatedName("l")
+   field3354("game3", "Game 3", 2),
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lin;"
+      signature = "Lic;"
    )
-   field3362("game5", "Game 5", 4),
-   @ObfuscatedName("b")
+   field3350("game4", "Game 4", 3),
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lin;"
+      signature = "Lic;"
    )
-   field3363("oldscape", "RuneScape 2007", 5);
+   field3351("game5", "Game 5", 4),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lic;"
+   )
+   field3352("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "Liv;"
+   )
+   static BuildType field3355;
+   @ObfuscatedName("z")
    @Export("name")
    public final String name;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1898258613
+      intValue = 1985086691
    )
    @Export("id")
    final int id;
@@ -54,39 +58,12 @@ public enum JagexGame implements Enumerated {
       this.id = var5;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "64"
+      signature = "(I)I",
+      garbageValue = "-1780726447"
    )
    public int rsOrdinal() {
       return this.id;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1290719922"
-   )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(SoundTaskDataProvider.NetCache_socket != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            SoundTaskDataProvider.NetCache_socket.vmethod3340(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               SoundTaskDataProvider.NetCache_socket.vmethod3339();
-            } catch (Exception var3) {
-               ;
-            }
-
-            ++class264.field3413;
-            SoundTaskDataProvider.NetCache_socket = null;
-         }
-
-      }
    }
 }

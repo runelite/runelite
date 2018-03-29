@@ -4,78 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ji")
+@ObfuscatedName("jd")
 @Implements("VerticalAlignment")
 public enum VerticalAlignment implements Enumerated {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lji;"
+      signature = "Ljd;"
    )
-   field3438(1, 0),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lji;"
-   )
-   field3439(0, 1),
+   field3432(2, 0),
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lji;"
+      signature = "Ljd;"
    )
-   field3437(2, 2);
+   field3435(0, 1),
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ljd;"
+   )
+   field3434(1, 2);
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -893377425
+      intValue = 1410778253
    )
    @Export("value")
    public final int value;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1129689051
+      intValue = -1378554303
    )
-   final int field3441;
+   final int field3436;
 
    VerticalAlignment(int var3, int var4) {
       this.value = var3;
-      this.field3441 = var4;
+      this.field3436 = var4;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "64"
+      signature = "(I)I",
+      garbageValue = "-1780726447"
    )
    public int rsOrdinal() {
-      return this.field3441;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(II)Ljr;",
-      garbageValue = "646736533"
-   )
-   public static Varbit method4748(int var0) {
-      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Varbit.varbit_ref.getConfigData(14, var0);
-         var1 = new Varbit();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Varbit.varbits.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-454617599"
-   )
-   public static boolean method4747(char var0) {
-      return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
+      return this.field3436;
    }
 }

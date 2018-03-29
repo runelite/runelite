@@ -4,127 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cy")
 public class class81 {
-   @ObfuscatedName("l")
-   static int[] field1254;
-   @ObfuscatedName("b")
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1519128555
+   )
+   @Export("indexedSpriteHeight")
+   static int indexedSpriteHeight;
+   @ObfuscatedName("k")
+   static int[] field1270;
+   @ObfuscatedName("x")
    @Export("SHAPE_VERTICES")
    static int[][] SHAPE_VERTICES;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @Export("intStack")
    static int[] intStack;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @Export("scriptStringStack")
    static String[] scriptStringStack;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1799584561
+      intValue = -1641541167
    )
    @Export("scriptStackCount")
    static int scriptStackCount;
-   @ObfuscatedName("o")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lby;"
+      signature = "[Lbb;"
    )
    @Export("scriptStack")
    static ScriptState[] scriptStack;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   static Widget field1260;
-   @ObfuscatedName("u")
-   static Calendar field1262;
-   @ObfuscatedName("j")
-   static final String[] field1264;
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
+   static Calendar field1268;
+   @ObfuscatedName("m")
+   static final String[] field1277;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1435432191
+      intValue = -1498081639
    )
-   static int field1263;
-   @ObfuscatedName("fu")
-   static byte[][] field1253;
+   static int field1278;
 
    static {
-      field1254 = new int[5];
+      field1270 = new int[5];
       SHAPE_VERTICES = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1262 = Calendar.getInstance();
-      field1264 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      field1263 = 0;
+      field1268 = Calendar.getInstance();
+      field1277 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field1278 = 0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IB)Ljy;",
-      garbageValue = "2"
+      signature = "(I)[Lgk;",
+      garbageValue = "-1070839783"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.items.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemComposition.item_ref.getConfigData(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
+   public static class183[] method1786() {
+      return new class183[]{class183.field2484, class183.field2489, class183.field2482, class183.field2490, class183.field2481, class183.field2485, class183.field2486, class183.field2487, class183.field2488, class183.field2483};
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1812522594"
+   )
+   public static final void method1796() {
+      while(true) {
+         BoundingBox var0 = (BoundingBox)class7.boundingBoxes.removeLast();
+         if(var0 == null) {
+            return;
          }
 
-         var1.post();
-         if(var1.notedTemplate != -1) {
-            var1.updateNote(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
-         }
-
-         if(var1.notedId != -1) {
-            var1.method5043(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
-
-         if(var1.int3 != -1) {
-            var1.method5073(getItemDefinition(var1.int3), getItemDefinition(var1.int2));
-         }
-
-         if(!UnitPriceComparator.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.isTradable = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = -1;
-            var1.int1 = 0;
-            if(var1.field3694 != null) {
-               boolean var3 = false;
-
-               for(Node var4 = var1.field3694.getHead(); var4 != null; var4 = var1.field3694.getTail()) {
-                  class278 var5 = class88.method1916((int)var4.hash);
-                  if(var5.field3552) {
-                     var4.unlink();
-                  } else {
-                     var3 = true;
-                  }
-               }
-
-               if(!var3) {
-                  var1.field3694 = null;
-               }
-            }
-         }
-
-         ItemComposition.items.put(var1, (long)var0);
-         return var1;
+         var0.vmethod63();
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "1877894027"
+      signature = "(I)V",
+      garbageValue = "-501563263"
    )
-   public static boolean method1814(int var0, int var1) {
-      return (var0 >> var1 + 1 & 1) != 0;
+   public static void method1763() {
+      FloorUnderlayDefinition.underlays.reset();
    }
 }

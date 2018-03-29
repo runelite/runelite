@@ -1,142 +1,147 @@
-import java.util.Iterator;
+import java.awt.Image;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("y")
 @Implements("Size")
 public class Size {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lh;"
+      signature = "Ly;"
    )
-   public static final Size field343;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lh;"
-   )
-   public static final Size field335;
+   public static final Size field347;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lh;"
+      signature = "Ly;"
    )
-   public static final Size field334;
-   @ObfuscatedName("cv")
-   @Export("currentTypedKey")
-   public static char currentTypedKey;
-   @ObfuscatedName("dk")
-   @ObfuscatedGetter(
-      intValue = 1746983793
-   )
-   static int field342;
-   @ObfuscatedName("id")
+   public static final Size field346;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Ly;"
    )
-   static TextureProvider field336;
-   @ObfuscatedName("a")
-   final String field338;
-   @ObfuscatedName("l")
+   public static final Size field344;
+   @ObfuscatedName("ah")
+   static Image field348;
+   @ObfuscatedName("fg")
+   @Export("mapRegions")
+   static int[] mapRegions;
+   @ObfuscatedName("fi")
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
+   @ObfuscatedName("j")
+   final String field345;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1560505711
+      intValue = -397925001
    )
-   final int field337;
-   @ObfuscatedName("b")
+   final int field349;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1767971937
+      intValue = -516149199
    )
-   final int field339;
-   @ObfuscatedName("e")
+   final int field352;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -193283801
+      intValue = -154420731
    )
-   final int field340;
+   final int field342;
 
    static {
-      field343 = new Size("SMALL", 1, 0, 4);
-      field335 = new Size("MEDIUM", 0, 1, 2);
-      field334 = new Size("LARGE", 2, 2, 0);
+      field347 = new Size("SMALL", 0, 0, 4);
+      field346 = new Size("MEDIUM", 2, 1, 2);
+      field344 = new Size("LARGE", 1, 2, 0);
    }
 
    Size(String var1, int var2, int var3, int var4) {
-      this.field338 = var1;
-      this.field337 = var2;
-      this.field339 = var3;
-      this.field340 = var4;
+      this.field345 = var1;
+      this.field349 = var2;
+      this.field352 = var3;
+      this.field342 = var4;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(FB)Z",
-      garbageValue = "0"
+      garbageValue = "70"
    )
-   boolean method189(float var1) {
-      return var1 >= (float)this.field340;
+   boolean method192(float var1) {
+      return var1 >= (float)this.field342;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIIB)Lla;",
-      garbageValue = "1"
+      signature = "(IIII)Lla;",
+      garbageValue = "1811050241"
    )
-   static SpritePixels method190(int var0, int var1, int var2) {
-      class213 var3 = WorldMapRegion.field457;
+   static SpritePixels method194(int var0, int var1, int var2) {
+      class213 var3 = WorldMapRegion.field470;
       long var4 = (long)(var2 << 16 | var0 << 8 | var1);
-      return (SpritePixels)var3.method3951(var4);
+      return (SpritePixels)var3.method3945(var4);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-14098"
+      signature = "(II)Ly;",
+      garbageValue = "2038821774"
    )
-   static void method194() {
-      Iterator var0 = class95.messages.iterator();
+   static Size method199(int var0) {
+      Size[] var1 = new Size[]{field347, field346, field344};
+      Size[] var2 = var1;
 
-      while(var0.hasNext()) {
-         MessageNode var1 = (MessageNode)var0.next();
-         var1.method1169();
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         Size var4 = var2[var3];
+         if(var0 == var4.field352) {
+            return var4;
+         }
       }
 
+      return null;
    }
 
-   @ObfuscatedName("hk")
+   @ObfuscatedName("js")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZB)V",
-      garbageValue = "-71"
+      signature = "(Lib;IIZB)V",
+      garbageValue = "14"
    )
-   static final void method193(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            Client.menuBooleanArray[Client.menuOptionCount] = var6;
-            ++Client.menuOptionCount;
-         }
-
+   static void method191(Widget var0, int var1, int var2, boolean var3) {
+      int var4 = var0.width;
+      int var5 = var0.height;
+      if(var0.dynamicWidth == 0) {
+         var0.width = var0.originalWidth;
+      } else if(var0.dynamicWidth == 1) {
+         var0.width = var1 - var0.originalWidth;
+      } else if(var0.dynamicWidth == 2) {
+         var0.width = var0.originalWidth * var1 >> 14;
       }
-   }
 
-   @ObfuscatedName("jy")
-   @ObfuscatedSignature(
-      signature = "(Lgb;II)V",
-      garbageValue = "-376561332"
-   )
-   static void method188(Buffer var0, int var1) {
-      BuildType.method4551(var0.payload, var1);
-      if(class167.randomDat != null) {
-         try {
-            class167.randomDat.seek(0L);
-            class167.randomDat.write(var0.payload, var1, 24);
-         } catch (Exception var3) {
-            ;
-         }
+      if(var0.buttonType == 0) {
+         var0.height = var0.originalHeight;
+      } else if(var0.buttonType == 1) {
+         var0.height = var2 - var0.originalHeight;
+      } else if(var0.buttonType == 2) {
+         var0.height = var2 * var0.originalHeight >> 14;
+      }
+
+      if(var0.dynamicWidth == 4) {
+         var0.width = var0.field2901 * var0.height / var0.field2892;
+      }
+
+      if(var0.buttonType == 4) {
+         var0.height = var0.width * var0.field2892 / var0.field2901;
+      }
+
+      if(var0.contentType == 1337) {
+         Client.field1026 = var0;
+      }
+
+      if(var3 && var0.onResizeListener != null && (var4 != var0.width || var5 != var0.height)) {
+         ScriptEvent var6 = new ScriptEvent();
+         var6.widget = var0;
+         var6.objs = var0.onResizeListener;
+         Client.field1054.addFront(var6);
       }
 
    }

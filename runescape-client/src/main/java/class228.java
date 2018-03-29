@@ -1,71 +1,72 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hd")
+@ObfuscatedName("hx")
 public class class228 {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -611187595
+   @ObfuscatedName("el")
+   @ObfuscatedSignature(
+      signature = "Lkw;"
    )
-   static int field2669;
-   @ObfuscatedName("aj")
-   static int[] field2670;
-   @ObfuscatedName("t")
-   byte[] field2671;
-   @ObfuscatedName("q")
-   byte[] field2661;
+   @Export("fontBold12")
+   static Font fontBold12;
+   @ObfuscatedName("c")
+   byte[] field2674;
    @ObfuscatedName("i")
+   byte[] field2668;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 308446449
+      intValue = -2081667259
    )
-   int field2662;
-   @ObfuscatedName("a")
+   int field2669;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -249965263
+      intValue = -983114885
    )
-   int field2667;
-   @ObfuscatedName("l")
+   int field2670;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1961455951
+      intValue = 1868928017
    )
-   int field2664;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 277493449
-   )
-   int field2666;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1111787581
-   )
-   int field2660;
+   int field2675;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 446302239
+      intValue = 1934327607
    )
-   int field2665;
+   int field2672;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1052578933
+   )
+   int field2673;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 136276765
+      intValue = -822011699
    )
-   int field2663;
+   int field2667;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -182592645
+   )
+   int field2671;
 
-   @ObfuscatedName("fi")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1705878866"
+      signature = "(ILfa;Ljs;S)V",
+      garbageValue = "-15333"
    )
-   static final void method4140() {
-      int var0 = class93.playerIndexesCount;
-      int[] var1 = class93.playerIndices;
-
-      for(int var2 = 0; var2 < var0; ++var2) {
-         Player var3 = Client.cachedPlayers[var1[var2]];
-         if(var3 != null) {
-            MapCacheArchiveNames.method592(var3, 1);
-         }
+   static void method4120(int var0, IndexFile var1, IndexData var2) {
+      FileSystem var3 = new FileSystem();
+      var3.type = 1;
+      var3.hash = (long)var0;
+      var3.index = var1;
+      var3.data = var2;
+      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
       }
 
+      class55.method829();
    }
 }

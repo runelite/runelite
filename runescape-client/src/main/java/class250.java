@@ -1,11 +1,15 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ib")
+@ObfuscatedName("it")
 public class class250 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Llk;"
+      signature = "(I)V",
+      garbageValue = "-2020284291"
    )
-   static IndexedSprite field3014;
+   public static void method4519() {
+      NPCComposition.npcs.reset();
+      NPCComposition.npcModelCache.reset();
+   }
 }

@@ -1,132 +1,127 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("al")
+@ObfuscatedName("aw")
 @Implements("MapIcon")
 public class MapIcon {
-   @ObfuscatedName("qp")
-   @ObfuscatedSignature(
-      signature = "Lcb;"
-   )
-   @Export("preferences")
-   static Preferences preferences;
-   @ObfuscatedName("t")
+   @ObfuscatedName("at")
+   protected static boolean field508;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 11101833
+      intValue = 1180295891
    )
    @Export("areaId")
    public final int areaId;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   public final Coordinates field510;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lim;"
    )
-   public final Coordinates field511;
-   @ObfuscatedName("a")
+   public final Coordinates field512;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   public final Coordinates field506;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 685445531
+      intValue = -1988251845
    )
-   final int field512;
-   @ObfuscatedName("l")
+   final int field507;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -241289191
+      intValue = -1249163721
    )
-   final int field513;
-   @ObfuscatedName("b")
+   final int field504;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lah;"
    )
-   final MapLabel field516;
-   @ObfuscatedName("e")
+   final MapLabel field509;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1475020631
+      intValue = -369339579
    )
    @Export("screenX")
    int screenX;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -840678659
+      intValue = -1335900661
    )
    @Export("screenY")
    int screenY;
 
    @ObfuscatedSignature(
-      signature = "(ILik;Lik;Lah;)V"
+      signature = "(ILim;Lim;Lah;)V"
    )
    MapIcon(int var1, Coordinates var2, Coordinates var3, MapLabel var4) {
       this.areaId = var1;
-      this.field511 = var2;
-      this.field510 = var3;
-      this.field516 = var4;
+      this.field506 = var2;
+      this.field512 = var3;
+      this.field509 = var4;
       Area var5 = Area.mapAreaType[this.areaId];
       SpritePixels var6 = var5.getMapIcon(false);
       if(var6 != null) {
-         this.field512 = var6.width;
-         this.field513 = var6.height;
+         this.field507 = var6.width;
+         this.field504 = var6.height;
       } else {
-         this.field512 = 0;
-         this.field513 = 0;
+         this.field507 = 0;
+         this.field504 = 0;
       }
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "1466409005"
+      garbageValue = "-1655949603"
    )
-   boolean method585(int var1, int var2) {
-      return this.method580(var1, var2)?true:this.method581(var1, var2);
+   boolean method563(int var1, int var2) {
+      return this.method562(var1, var2)?true:this.method573(var1, var2);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "-1680059413"
+      garbageValue = "-453936994"
    )
-   boolean method580(int var1, int var2) {
+   boolean method562(int var1, int var2) {
       Area var3 = Area.mapAreaType[this.areaId];
       switch(var3.horizontalAlignment.value) {
       case 0:
-         if(var1 < this.screenX - this.field512 / 2 || var1 > this.field512 / 2 + this.screenX) {
-            return false;
+         if(var1 >= this.screenX && var1 < this.screenX + this.field507) {
+            break;
          }
-         break;
+
+         return false;
       case 1:
-         if(var1 < this.screenX || var1 >= this.screenX + this.field512) {
-            return false;
+         if(var1 >= this.screenX - this.field507 / 2 && var1 <= this.field507 / 2 + this.screenX) {
+            break;
          }
-         break;
+
+         return false;
       case 2:
-         if(var1 <= this.screenX - this.field512 || var1 > this.screenX) {
+         if(var1 <= this.screenX - this.field507 || var1 > this.screenX) {
             return false;
          }
       }
 
       switch(var3.verticalAlignment.value) {
       case 0:
-         if(var2 >= this.screenY - this.field513 / 2 && var2 <= this.field513 / 2 + this.screenY) {
+         if(var2 >= this.screenY - this.field504 / 2 && var2 <= this.field504 / 2 + this.screenY) {
             break;
          }
 
          return false;
       case 1:
-         if(var2 > this.screenY - this.field513 && var2 <= this.screenY) {
-            break;
+         if(var2 < this.screenY || var2 >= this.screenY + this.field504) {
+            return false;
          }
-
-         return false;
+         break;
       case 2:
-         if(var2 < this.screenY || var2 >= this.field513 + this.screenY) {
+         if(var2 <= this.screenY - this.field504 || var2 > this.screenY) {
             return false;
          }
       }
@@ -134,136 +129,258 @@ public class MapIcon {
       return true;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "1183710462"
+      garbageValue = "-1305894451"
    )
-   boolean method581(int var1, int var2) {
-      return this.field516 == null?false:(var1 >= this.screenX - this.field516.field441 / 2 && var1 <= this.field516.field441 / 2 + this.screenX?var2 >= this.screenY && var2 <= this.field516.field442 + this.screenY:false);
+   boolean method573(int var1, int var2) {
+      return this.field509 == null?false:(var1 >= this.screenX - this.field509.field446 / 2 && var1 <= this.field509.field446 / 2 + this.screenX?var2 >= this.screenY && var2 <= this.field509.field452 + this.screenY:false);
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lfd;III)Ldr;",
-      garbageValue = "-347674077"
+      signature = "(I)V",
+      garbageValue = "-1815085214"
    )
-   public static final AbstractSoundSystem method590(Signlink var0, int var1, int var2) {
-      if(AbstractSoundSystem.sampleRate == 0) {
-         throw new IllegalStateException();
-      } else if(var1 >= 0 && var1 < 2) {
-         if(var2 < 256) {
-            var2 = 256;
-         }
-
-         try {
-            AbstractSoundSystem var3 = AbstractSoundSystem.soundTaskDataProvider.vmethod2122();
-            var3.samples = new int[256 * (AbstractSoundSystem.audioHighMemory?2:1)];
-            var3.field1535 = var2;
-            var3.vmethod2240();
-            var3.offset = (var2 & -1024) + 1024;
-            if(var3.offset > 16384) {
-               var3.offset = 16384;
-            }
-
-            var3.create(var3.offset);
-            if(class190.field2496 > 0 && AbstractSoundSystem.task == null) {
-               AbstractSoundSystem.task = new SoundTask();
-               CombatInfo1.field1203 = Executors.newScheduledThreadPool(1);
-               CombatInfo1.field1203.scheduleAtFixedRate(AbstractSoundSystem.task, 0L, 10L, TimeUnit.MILLISECONDS);
-            }
-
-            if(AbstractSoundSystem.task != null) {
-               if(AbstractSoundSystem.task.systems[var1] != null) {
-                  throw new IllegalArgumentException();
-               }
-
-               AbstractSoundSystem.task.systems[var1] = var3;
-            }
-
-            return var3;
-         } catch (Throwable var4) {
-            return new AbstractSoundSystem();
-         }
-      } else {
-         throw new IllegalArgumentException();
-      }
+   static void method570() {
+      class62.field722 = 99;
+      class62.tileUnderlayIds = new byte[4][104][104];
+      class62.tileOverlayIds = new byte[4][104][104];
+      class62.tileOverlayPath = new byte[4][104][104];
+      RunException.overlayRotations = new byte[4][104][104];
+      class62.field721 = new int[4][105][105];
+      class62.field725 = new byte[4][105][105];
+      class62.field719 = new int[105][105];
+      AttackOption.floorHues = new int[104];
+      class1.floorSaturations = new int[104];
+      class204.field2613 = new int[104];
+      class57.floorMultiplier = new int[104];
+      FrameMap.field1973 = new int[104];
    }
 
-   @ObfuscatedName("fb")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "42"
+      signature = "(Led;IIIIB)V",
+      garbageValue = "0"
    )
-   static final void method588() {
-      if(class195.soundSystem1 != null) {
-         class195.soundSystem1.method2210();
-      }
-
-      if(WorldComparator.soundSystem0 != null) {
-         WorldComparator.soundSystem0.method2210();
-      }
-
+   public static final void method575(Model var0, int var1, int var2, int var3, int var4) {
+      class7.boundingBoxes.addFirst(new BoundingBox3D(var0, var1, var2, var3, var4));
    }
 
-   @ObfuscatedName("fx")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "868520532"
+      signature = "([Lbz;II[I[IB)V",
+      garbageValue = "107"
    )
-   static void method591(int var0) {
-      Client.field1059 = 0L;
-      if(var0 >= 2) {
-         Client.isResized = true;
-      } else {
-         Client.isResized = false;
-      }
+   static void method574(World[] var0, int var1, int var2, int[] var3, int[] var4) {
+      if(var1 < var2) {
+         int var5 = var1 - 1;
+         int var6 = var2 + 1;
+         int var7 = (var2 + var1) / 2;
+         World var8 = var0[var7];
+         var0[var7] = var0[var1];
+         var0[var1] = var8;
 
-      if(SoundTaskDataProvider.method838() == 1) {
-         class249.clientInstance.method911(765, 503);
-      } else {
-         class249.clientInstance.method911(7680, 2160);
-      }
+         while(var5 < var6) {
+            boolean var9 = true;
 
-      if(Client.gameState >= 25) {
-         PacketNode var1 = class33.method382(ClientPacket.field2427, Client.field1072.field1456);
-         var1.packetBuffer.putByte(SoundTaskDataProvider.method838());
-         var1.packetBuffer.putShort(WallObject.canvasWidth);
-         var1.packetBuffer.putShort(GameEngine.canvasHeight);
-         Client.field1072.method2073(var1);
-      }
+            int var10;
+            int var11;
+            int var12;
+            do {
+               --var6;
 
-   }
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var6].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var6].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
 
-   @ObfuscatedName("gk")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1954515034"
-   )
-   static final void method589(boolean var0) {
-      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
-         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method5141()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field1139 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field1078[var4][var5] == Client.field1043) {
-                     continue;
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var6].method1614()?1:0;
+                     var12 = var8.method1614()?1:0;
+                  } else {
+                     var11 = var0[var6].id;
+                     var12 = var8.id;
                   }
 
-                  Client.field1078[var4][var5] = Client.field1043;
-               }
+                  if(var12 != var11) {
+                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
 
-               if(!var2.composition.field3738) {
-                  var3 -= Integer.MIN_VALUE;
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
                }
+            } while(var9);
 
-               var2.field1141 = Client.gameCycle;
-               class38.region.method2877(Ignore.plane, var2.x, var2.y, class149.getTileHeight(var2.field1139 * 64 - 64 + var2.x, var2.field1139 * 64 - 64 + var2.y, Ignore.plane), var2.field1139 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1165);
+            var9 = true;
+
+            do {
+               ++var5;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var5].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var5].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var5].method1614()?1:0;
+                     var12 = var8.method1614()?1:0;
+                  } else {
+                     var11 = var0[var5].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var12 != var11) {
+                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            if(var5 < var6) {
+               World var13 = var0[var5];
+               var0[var5] = var0[var6];
+               var0[var6] = var13;
             }
          }
+
+         method574(var0, var1, var6, var3, var4);
+         method574(var0, var6 + 1, var2, var3, var4);
+      }
+
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(IIIZIZI)V",
+      garbageValue = "296316541"
+   )
+   static void method568(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
+      if(var0 < var1) {
+         int var6 = (var0 + var1) / 2;
+         int var7 = var0;
+         World var8 = FaceNormal.worldList[var6];
+         FaceNormal.worldList[var6] = FaceNormal.worldList[var1];
+         FaceNormal.worldList[var1] = var8;
+
+         for(int var9 = var0; var9 < var1; ++var9) {
+            World var11 = FaceNormal.worldList[var9];
+            int var12 = WorldMapType1.method278(var11, var8, var2, var3);
+            int var10;
+            if(var12 != 0) {
+               if(var3) {
+                  var10 = -var12;
+               } else {
+                  var10 = var12;
+               }
+            } else if(var4 == -1) {
+               var10 = 0;
+            } else {
+               int var13 = WorldMapType1.method278(var11, var8, var4, var5);
+               if(var5) {
+                  var10 = -var13;
+               } else {
+                  var10 = var13;
+               }
+            }
+
+            if(var10 <= 0) {
+               World var14 = FaceNormal.worldList[var9];
+               FaceNormal.worldList[var9] = FaceNormal.worldList[var7];
+               FaceNormal.worldList[var7++] = var14;
+            }
+         }
+
+         FaceNormal.worldList[var1] = FaceNormal.worldList[var7];
+         FaceNormal.worldList[var7] = var8;
+         method568(var0, var7 - 1, var2, var3, var4, var5);
+         method568(var7 + 1, var1, var2, var3, var4, var5);
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;II)V",
+      garbageValue = "-1999677866"
+   )
+   static final void method577(String var0, int var1) {
+      PacketNode var2 = FaceNormal.method3078(ClientPacket.field2389, Client.field902.field1475);
+      var2.packetBuffer.putByte(Projectile.getLength(var0) + 1);
+      var2.packetBuffer.putShortLE(var1);
+      var2.packetBuffer.putString(var0);
+      Client.field902.method2036(var2);
+   }
+
+   @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "131759429"
+   )
+   protected static final void method576() {
+      RunException.timer.vmethod3302();
+
+      int var0;
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field667[var0] = 0L;
+      }
+
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field664[var0] = 0L;
+      }
+
+      GameEngine.field668 = 0;
+   }
+
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "([Lib;Lib;ZI)V",
+      garbageValue = "887549315"
+   )
+   static void method578(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      Tile.method2679(var0, var1.id, var3, var4, var2);
+      if(var1.children != null) {
+         Tile.method2679(var1.children, var1.id, var3, var4, var2);
+      }
+
+      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
+      if(var5 != null) {
+         BoundingBox.method61(var5.id, var3, var4, var2);
+      }
+
+      if(var1.contentType == 1337) {
+         ;
       }
 
    }

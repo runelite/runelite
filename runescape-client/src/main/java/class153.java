@@ -2,118 +2,68 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("eh")
 public class class153 extends class297 {
-   @ObfuscatedName("l")
-   @Export("indexedSpriteOffsetYs")
-   static int[] indexedSpriteOffsetYs;
-   @ObfuscatedName("ch")
-   @Export("middleMouseMovesCamera")
-   static boolean middleMouseMovesCamera;
-   @ObfuscatedName("t")
-   final boolean field2112;
+   @ObfuscatedName("c")
+   final boolean field2131;
 
    public class153(boolean var1) {
-      this.field2112 = var1;
+      this.field2131 = var1;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lkp;Lkp;S)I",
-      garbageValue = "15100"
+      signature = "(Lke;Lke;I)I",
+      garbageValue = "-1176040343"
    )
-   int method3135(ChatPlayer var1, ChatPlayer var2) {
-      return var1.world != 0 && var2.world != 0?(this.field2112?var1.field3842 - var2.field3842:var2.field3842 - var1.field3842):this.method5273(var1, var2);
+   int method3151(ChatPlayer var1, ChatPlayer var2) {
+      return var1.world != 0 && var2.world != 0?(this.field2131?var1.field3839 - var2.field3839:var2.field3839 - var1.field3839):this.method5288(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3135((ChatPlayer)var1, (ChatPlayer)var2);
+      return this.method3151((ChatPlayer)var1, (ChatPlayer)var2);
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "207807694"
+      signature = "(B)V",
+      garbageValue = "108"
    )
-   public static boolean method3142(int var0) {
-      return (var0 >> 28 & 1) != 0;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1662595663"
-   )
-   public static int method3139() {
-      return KeyFocusListener.keyboardIdleTicks;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1094569564"
-   )
-   public static void method3134() {
-      try {
-         if(class229.field2674 == 1) {
-            int var0 = class229.field2673.method4198();
-            if(var0 > 0 && class229.field2673.method4209()) {
-               var0 -= class2.field13;
-               if(var0 < 0) {
-                  var0 = 0;
-               }
-
-               class229.field2673.method4220(var0);
-               return;
-            }
-
-            class229.field2673.method4172();
-            class229.field2673.method4238();
-            if(class229.field2672 != null) {
-               class229.field2674 = 2;
-            } else {
-               class229.field2674 = 0;
-            }
-
-            class178.field2258 = null;
-            VarCInt.field3481 = null;
+   static void method3155() {
+      for(class80 var0 = (class80)class80.field1261.getFront(); var0 != null; var0 = (class80)class80.field1261.getNext()) {
+         if(var0.field1252 != null) {
+            var0.method1732();
          }
-      } catch (Exception var2) {
-         var2.printStackTrace();
-         class229.field2673.method4172();
-         class229.field2674 = 0;
-         class178.field2258 = null;
-         VarCInt.field3481 = null;
-         class229.field2672 = null;
       }
 
    }
 
-   @ObfuscatedName("hs")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1558845220"
+      signature = "(III)I",
+      garbageValue = "2029250245"
    )
-   static final boolean method3144(int var0) {
-      if(var0 < 0) {
-         return false;
+   @Export("adjustHSLListness0")
+   static final int adjustHSLListness0(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1;
       } else {
-         int var1 = Client.menuTypes[var0];
-         if(var1 >= 2000) {
-            var1 -= 2000;
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         return var1 == 1007;
+         return (var0 & 65408) + var1;
       }
-   }
-
-   @ObfuscatedName("ia")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "25"
-   )
-   static void method3140(int var0, int var1) {
-      class66.method1149(WorldMapDecoration.topContextMenuRow, var0, var1);
-      WorldMapDecoration.topContextMenuRow = null;
    }
 }

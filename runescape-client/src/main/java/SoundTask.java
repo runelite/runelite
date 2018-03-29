@@ -7,14 +7,14 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dh")
 @Implements("SoundTask")
 public class SoundTask implements Runnable {
-   @ObfuscatedName("ra")
+   @ObfuscatedName("mo")
    @ObfuscatedGetter(
-      intValue = 678574761
+      intValue = 640825907
    )
-   static int field1569;
-   @ObfuscatedName("t")
+   static int field1582;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "[Ldr;"
+      signature = "[Ldz;"
    )
    @Export("systems")
    volatile AbstractSoundSystem[] systems;
@@ -28,12 +28,33 @@ public class SoundTask implements Runnable {
          for(int var1 = 0; var1 < 2; ++var1) {
             AbstractSoundSystem var2 = this.systems[var1];
             if(var2 != null) {
-               var2.method2210();
+               var2.method2222();
             }
          }
       } catch (Exception var4) {
-         GroundObject.processClientError((String)null, var4);
+         UrlRequest.processClientError((String)null, var4);
       }
 
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljm;B)V",
+      garbageValue = "-4"
+   )
+   public static void method2259(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-593472705"
+   )
+   static final int method2260(int var0, int var1) {
+      int var2 = var0 + var1 * 57;
+      var2 ^= var2 << 13;
+      int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
    }
 }
