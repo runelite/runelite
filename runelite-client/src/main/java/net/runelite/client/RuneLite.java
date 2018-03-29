@@ -87,7 +87,7 @@ public class RuneLite
 
 	@Inject
 	private DiscordService discordService;
-	
+
 	@Inject
 	private ClientSessionManager clientSessionManager;
 
@@ -171,14 +171,14 @@ public class RuneLite
 		// to main settings
 		pluginManager.loadDefaultPluginConfiguration();
 
-		// Start plugins
-		pluginManager.startCorePlugins();
-		
 		// Start client session
 		clientSessionManager.start();
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
+
+		// Start plugins
+		pluginManager.startCorePlugins();
 
 		// Refresh title toolbar
 		titleToolbar.refresh();
