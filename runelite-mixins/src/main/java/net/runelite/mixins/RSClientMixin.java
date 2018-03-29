@@ -73,6 +73,8 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -507,25 +509,28 @@ public abstract class RSClientMixin implements RSClient
 		client.setMenuEntries(entries);
 	}
 
-	@Copy("openWidget")
-	public static WidgetNode rs$openWidget(int parentId, int groupId, int autoClose)
+	@Copy("loadWidget")
+	public static boolean rs$loadWidget(int widgetId)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("openWidget")
-	public static WidgetNode rl$openWidget(int parentId, int groupId, int autoClose)
+	@Replace("loadWidget")
+	public static boolean rl$loadWidget(int widgetId)
 	{
-		MenuEntry[] entries = client.getMenuEntries();
-		WidgetNode widgetNode = rs$openWidget(parentId, groupId, autoClose);
-		client.setMenuEntries(entries);
+		RSWidget[][] widgets = client.getWidgets();
+		boolean loadedBefore = widgets != null && widgets[widgetId] != null;
 
-		WidgetOpened event = new WidgetOpened();
-		event.setParentId(parentId);
-		event.setGroupId(groupId);
-		event.setAutoClose(autoClose);
-		eventBus.post(event);
-		return widgetNode;
+		boolean loaded = rs$loadWidget(widgetId);
+
+		if (!loadedBefore && loaded)
+		{
+			WidgetOpened event = new WidgetOpened();
+			event.setGroupId(widgetId);
+			eventBus.post(event);
+		}
+
+		return loaded;
 	}
 
 	@FieldHook("skillExperiences")
