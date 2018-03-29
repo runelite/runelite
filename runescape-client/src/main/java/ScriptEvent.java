@@ -43,12 +43,14 @@ public class ScriptEvent extends Node {
    @ObfuscatedGetter(
       intValue = -182394341
    )
-   int field780;
+   @Export("pressedKey")
+   int pressedKey;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 141229905
    )
-   int field781;
+   @Export("typedKey")
+   int typedKey;
    @ObfuscatedName("g")
    @Export("string")
    String string;
