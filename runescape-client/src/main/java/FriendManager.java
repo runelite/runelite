@@ -282,7 +282,8 @@ public class FriendManager {
       signature = "(II)V",
       garbageValue = "-472965224"
    )
-   static void method1721(int var0) {
+   @Export("runWidgetOnLoadListener")
+   static void runWidgetOnLoadListener(int var0) {
       if(var0 != -1) {
          if(Name.loadWidget(var0)) {
             Widget[] var1 = class189.widgets[var0];
