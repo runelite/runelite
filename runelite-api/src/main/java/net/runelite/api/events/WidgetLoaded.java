@@ -27,7 +27,7 @@ package net.runelite.api.events;
 import lombok.Data;
 
 @Data
-public class WidgetOpened
+public class WidgetLoaded
 {
 	private int groupId;
 }
