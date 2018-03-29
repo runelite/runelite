@@ -4914,7 +4914,7 @@ public final class Client extends GameEngine implements class302 {
                widgetRoot = var23;
                this.method1347(false);
                class251.method4520(var23);
-               FriendManager.method1721(widgetRoot);
+               FriendManager.runWidgetOnLoadListener(widgetRoot);
 
                for(var5 = 0; var5 < 100; ++var5) {
                   field1060[var5] = true;
@@ -5273,7 +5273,7 @@ public final class Client extends GameEngine implements class302 {
                   widgetRoot = var5;
                   this.method1347(false);
                   class251.method4520(widgetRoot);
-                  FriendManager.method1721(widgetRoot);
+                  FriendManager.runWidgetOnLoadListener(widgetRoot);
 
                   for(var31 = 0; var31 < 100; ++var31) {
                      field1060[var31] = true;
@@ -5306,7 +5306,7 @@ public final class Client extends GameEngine implements class302 {
 
                      BoundingBox3D.method62();
                      MapIcon.method578(class189.widgets[var31 >> 16], var70, false);
-                     FriendManager.method1721(var8);
+                     FriendManager.runWidgetOnLoadListener(var8);
                      if(widgetRoot != -1) {
                         DState.method3500(widgetRoot, 1);
                      }
@@ -5921,7 +5921,7 @@ public final class Client extends GameEngine implements class302 {
 
                BoundingBox3D.method62();
                MapIcon.method578(class189.widgets[var23 >> 16], var33, false);
-               FriendManager.method1721(var5);
+               FriendManager.runWidgetOnLoadListener(var5);
                if(widgetRoot != -1) {
                   DState.method3500(widgetRoot, 1);
                }
