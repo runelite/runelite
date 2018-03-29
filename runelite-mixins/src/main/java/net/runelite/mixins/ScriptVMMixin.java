@@ -25,7 +25,8 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Client;
-import net.runelite.api.events.ScriptEvent;
+import net.runelite.api.ScriptEvent;
+import net.runelite.api.ScriptStackFrame;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -34,7 +35,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.client.callback.Hooks;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSScript;
-import net.runelite.rs.api.RSScriptEvent;
+import net.runelite.rs.api.RSScriptState;
 
 import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
 
@@ -52,6 +53,58 @@ public abstract class ScriptVMMixin implements RSClient
 	@Inject
 	private static int currentScriptPC;
 
+	@Inject
+	private static ScriptEvent currentEvent;
+
+	// This is shadowed in RSScriptEventMixin
+	@Inject
+	private static boolean scriptEventTracing;
+
+	@Inject
+	@Override
+	public void setScriptEventTracingEnabled(boolean enabled)
+	{
+		scriptEventTracing = enabled;
+	}
+
+	@Inject
+	@Override
+	public boolean isScriptRunning()
+	{
+		return currentEvent != null;
+	}
+
+	@Inject
+	@Override
+	public ScriptEvent getCurrentScriptEvent()
+	{
+		return currentEvent;
+	}
+
+	@Inject
+	@Override
+	public ScriptStackFrame[] getScriptStackTrace()
+	{
+		if (currentScript == null)
+		{
+			return null;
+		}
+
+		int len = getScriptStackCount();
+		ScriptStackFrame[] out = new ScriptStackFrame[len + 1];
+
+		RSScriptState[] states = getScriptStack();
+		for (int i = 0; i < len; i++)
+		{
+			RSScriptState frame = states[(len - 1) - i];
+			out[i + 1] = new ScriptStackFrame(frame.getScript(), frame.getPC());
+		}
+
+		out[0] = new ScriptStackFrame(currentScript, currentScriptPC);
+
+		return out;
+	}
+
 	// Call is injected into runScript by the ScriptVM raw injector
 	@Inject
 	static boolean vmExecuteOpcode(int opcode)
@@ -64,7 +117,7 @@ public abstract class ScriptVMMixin implements RSClient
 			String stringOp = client.getStringStack()[--stringStackSize];
 			client.setStringStackSize(stringStackSize);
 
-			ScriptEvent event = new ScriptEvent();
+			net.runelite.api.events.ScriptEvent event = new net.runelite.api.events.ScriptEvent();
 			event.setScript(currentScript);
 			event.setEventName(stringOp);
 			Hooks.eventBus.post(event);
@@ -74,16 +127,17 @@ public abstract class ScriptVMMixin implements RSClient
 	}
 
 	@Copy("runScript")
-	static void rs$runScript(RSScriptEvent event, int maxExecutionTime)
+	static void rs$runScript(ScriptEvent event, int maxExecutionTime)
 	{
 		throw new RuntimeException();
 	}
 
 	@Replace("runScript")
-	static void rl$runScript(RSScriptEvent event, int maxExecutionTime)
+	static void rl$runScript(ScriptEvent event, int maxExecutionTime)
 	{
 		try
 		{
+			currentEvent = event;
 			rs$runScript(event, maxExecutionTime);
 		}
 		finally

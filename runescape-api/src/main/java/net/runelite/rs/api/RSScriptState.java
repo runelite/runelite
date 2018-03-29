@@ -24,17 +24,13 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
 
-public interface RSScriptEvent extends RSNode, ScriptEvent
+public interface RSScriptState
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
+	@Import("invokedFromScript")
+	RSScript getScript();
 
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	@Import("invokedFromPc")
+	int getPC();
 }

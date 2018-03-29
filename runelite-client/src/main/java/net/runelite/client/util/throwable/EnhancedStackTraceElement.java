@@ -22,19 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.util.throwable;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
+import java.lang.reflect.Method;
 
-public interface RSScriptEvent extends RSNode, ScriptEvent
+public interface EnhancedStackTraceElement
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
+	/**
+	 * May return null for init or clinit
+	 */
+	Method getMethod();
 
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	Class<?> getDeclaringClass();
+
+	String getMethodName();
+
+	Class<?> getReturnType();
+
+	Class<?>[] getParameterTypes();
+
+	String getFileName();
+
+	int getBytecodeIndex();
+
+	int getLineNumber();
+
+	StackTraceElement toStackTraceElement();
 }

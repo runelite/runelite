@@ -22,19 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
+import lombok.Value;
 
-public interface RSScriptEvent extends RSNode, ScriptEvent
+@Value
+public class ScriptStackFrame
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
-
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	private final Script script;
+	private final int pc;
 }

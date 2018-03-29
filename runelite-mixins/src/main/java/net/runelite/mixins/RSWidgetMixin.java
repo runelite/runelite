@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.runelite.api.ExceptionWithScriptStack;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
@@ -53,6 +54,28 @@ public abstract class RSWidgetMixin implements RSWidget
 
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Shadow("scriptEventTracing")
+	private static boolean scriptEventTracing;
+
+	@Inject
+	private ExceptionWithScriptStack widgetTrace;
+
+	@Inject
+	@Override
+	public ExceptionWithScriptStack getTrace()
+	{
+		return widgetTrace;
+	}
+
+	@Inject
+	RSWidgetMixin()
+	{
+		if (scriptEventTracing)
+		{
+			this.widgetTrace = new ExceptionWithScriptStack(client);
+		}
+	}
 
 	@Inject
 	@Override
@@ -417,5 +440,11 @@ public abstract class RSWidgetMixin implements RSWidget
 		}
 
 		broadcastHidden(isSelfHidden());
+	}
+
+	@Inject
+	public String toString()
+	{
+		return String.format("%d:%d", TO_GROUP(getId()), TO_CHILD(getId()));
 	}
 }

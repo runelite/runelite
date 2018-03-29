@@ -317,6 +317,14 @@ public interface Client extends GameEngine
 
 	Preferences getPreferences();
 
+	boolean isScriptRunning();
+
+	ScriptStackFrame[] getScriptStackTrace();
+
+	ScriptEvent getCurrentScriptEvent();
+
+	void setScriptEventTracingEnabled(boolean enabled);
+	
 	void setCameraPitchRelaxerEnabled(boolean enabled);
 
 	RenderOverview getRenderOverview();

@@ -22,19 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.util.throwable;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
-
-public interface RSScriptEvent extends RSNode, ScriptEvent
+public class JVMUnsupportedException extends Exception
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
+	public JVMUnsupportedException(String message)
+	{
+		super(message);
+	}
 
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	public JVMUnsupportedException(String message, Throwable t)
+	{
+		super(message, t);
+	}
 }

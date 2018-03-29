@@ -22,19 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.util.throwable;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
+import java.lang.reflect.Constructor;
 
-public interface RSScriptEvent extends RSNode, ScriptEvent
+public abstract class ThrowableUtil
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
+	/**
+	 * Returns an instance of ThrowableUtil or throws if the JVM is not supported
+	 */
+	public static ThrowableUtil getInstance() throws JVMUnsupportedException
+	{
+		String vendor = System.getProperty("java.vendor");
+		String version = System.getProperty("java.version");
+		String vstr = "JVM \"" + version + "\" by \"" + vendor + "\" is not supported";
+		if ("Oracle Corporation".equals(vendor) && version.startsWith("1.8.0"))
+		{
+			try
+			{
+				Constructor ctor = Class.forName("net.runelite.client.util.throwable.oracle8.Oracle8ThrowableUtil").getDeclaredConstructor();
+				ctor.setAccessible(true);
+				return (ThrowableUtil) ctor.newInstance();
+			}
+			catch (ThreadDeath d)
+			{
+				throw d;
+			}
+			catch (Throwable f)
+			{
+				throw new JVMUnsupportedException(vstr, f);
+			}
+		}
+		throw new JVMUnsupportedException(vstr);
+	}
 
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	/**
+	 * Uses black magic to get extra data from a stack trace
+	 */
+	public abstract EnhancedStackTraceElement[] getEnhancedStackTrace(Throwable t) throws JVMUnsupportedException;
 }

@@ -52,6 +52,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.TraceFormatter;
 
 @Slf4j
 class WidgetInspector extends JFrame
@@ -65,7 +66,7 @@ class WidgetInspector extends JFrame
 	private final JCheckBox alwaysOnTop;
 
 	@Inject
-	WidgetInspector(DevToolsPlugin plugin, Client client, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
+	WidgetInspector(DevToolsPlugin plugin, Client client, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus, TraceFormatter traceFormatter)
 	{
 		this.plugin = plugin;
 		this.client = client;
@@ -135,6 +136,15 @@ class WidgetInspector extends JFrame
 		onConfigChanged(null);
 		bottomPanel.add(alwaysOnTop);
 
+		final JButton creationStackTrace = new JButton("Print widget stack trace");
+		creationStackTrace.addActionListener(l ->
+		{
+			if (plugin.currentWidget != null)
+			{
+				traceFormatter.printStackTrace(plugin.currentWidget.getTrace());
+			}
+		});
+		bottomPanel.add(creationStackTrace);
 
 		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, infoScrollPane);
 		add(split, BorderLayout.CENTER);

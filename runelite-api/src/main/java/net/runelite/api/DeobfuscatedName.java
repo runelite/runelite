@@ -22,19 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface RSScriptEvent extends RSNode, ScriptEvent
+@Retention(RetentionPolicy.RUNTIME)
+@Target(
+	{
+		ElementType.FIELD, ElementType.METHOD, ElementType.TYPE
+	})
+public @interface DeobfuscatedName
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
-
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	String className();
+	String methodName();
+	String fileName();
+	int lineNo();
 }

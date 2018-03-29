@@ -22,19 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.mapping.Import;
-import net.runelite.api.ScriptEvent;
+import lombok.Getter;
 
-public interface RSScriptEvent extends RSNode, ScriptEvent
+public class ExceptionWithScriptStack extends Exception
 {
-	@Import("objs")
-	@Override
-	Object[] getArguments();
+	@Getter
+	private ScriptStackFrame[] scriptStack;
 
-	@Import("widget")
-	@Override
-	Widget getWidget();
+	@Getter
+	private ScriptEvent sourceEvent;
+
+	public ExceptionWithScriptStack(Client client)
+	{
+		super();
+		init(client);
+	}
+
+	public ExceptionWithScriptStack(Client client, Throwable cause)
+	{
+		super(cause);
+		init(client);
+	}
+
+	public ExceptionWithScriptStack(Client client, String message)
+	{
+		super(message);
+		init(client);
+	}
+
+	public ExceptionWithScriptStack(Client client, String message, Throwable cause)
+	{
+		super(message, cause);
+		init(client);
+	}
+
+	private void init(Client client)
+	{
+		scriptStack = client.getScriptStackTrace();
+		sourceEvent = client.getCurrentScriptEvent();
+	}
 }

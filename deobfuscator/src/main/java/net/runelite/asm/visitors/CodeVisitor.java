@@ -182,11 +182,9 @@ public class CodeVisitor extends MethodVisitor
 			}
 			case ICONST_1:
 			{
-			{
 				Instruction i = new LDC(code.getInstructions(), 1);
 				code.getInstructions().addInstruction(i);
 				break;
-			}
 			}
 			case ICONST_2:
 			{
