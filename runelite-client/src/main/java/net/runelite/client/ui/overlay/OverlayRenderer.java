@@ -377,6 +377,8 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					overlay.setPreferredLocation(null);
 					overlay.setPreferredPosition(null);
+					saveOverlayPosition(overlay);
+					saveOverlayLocation(overlay);
 					rebuildOverlayLayers();
 				}
 				else
