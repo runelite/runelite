@@ -1,0 +1,55 @@
+---
+# Spring database configuration
+spring:
+  datasource:
+    runelite:
+      url: jdbc:mysql://localhost:3306/runelite
+      driver-class-name: com.mysql.jdbc.Driver
+      username: runelite
+      password: runelite
+      maxActive: 50
+      maxIdle: 30
+      maxWaitMillis: 10000
+      test-on-borrow: true
+      validation-query: /* ping */
+    runelite-cache2:
+      url: jdbc:mysql://localhost:3306/runelite-cache2
+      driver-class-name: com.mysql.jdbc.Driver
+      username: runelite
+      password: runelite
+      maxActive: 50
+      maxIdle: 30
+      maxWaitMillis: 10000
+      test-on-borrow: true
+      validation-query: /* ping */
+    runelite-tracker:
+      url: jdbc:mysql://localhost:3306/runelite-tracker
+      driver-class-name: com.mysql.jdbc.Driver
+      username: runelite
+      password: runelite
+      maxActive: 50
+      maxIdle: 30
+      maxWaitMillis: 10000
+      test-on-borrow: true
+      validation-query: /* ping */
+
+# Server configuration
+server:
+  port: 8080
+debug: true
+
+# RuneLite properties
+oauth:
+  client-id: moo
+  client-secret: cow
+minio:
+  endpoint: http://10.96.22.171:9000
+  accesskey: AM54M27O4WZK65N6F8IP
+  secretkey: /PZCxzmsJzwCHYlogcymuprniGCaaLUOET2n6yMP
+  bucket: runelite
+runelite:
+  twitter:
+    consumerkey: moo
+    secretkey: cow
+    listid: 968949795153948673
+---

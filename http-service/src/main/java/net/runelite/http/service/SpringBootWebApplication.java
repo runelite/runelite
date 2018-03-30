@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
@@ -39,11 +36,15 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.service.util.InstantConverter;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
@@ -91,37 +92,53 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		};
 	}
 
-	private Context getContext() throws NamingException
+	@Bean(name = "runelite")
+	@Primary
+	@ConfigurationProperties(prefix = "spring.datasource.runelite")
+	public DataSource runeliteDataSource()
 	{
-		Context initCtx = new InitialContext();
-		return (Context) initCtx.lookup("java:comp/env");
+		return DataSourceBuilder.create().build();
+	}
+
+	@Bean(name = "runelite-cache2")
+	@ConfigurationProperties(prefix = "spring.datasource.runelite-cache2")
+	public DataSource runeliteCache2DataSource()
+	{
+		return DataSourceBuilder.create().build();
+	}
+
+	@Bean(name = "runelite-tracker")
+	@ConfigurationProperties(prefix = "spring.datasource.runelite-tracker")
+	public DataSource runeliteTrackerDataSource()
+	{
+		return DataSourceBuilder.create().build();
 	}
 
 	@Bean("Runelite SQL2O")
-	Sql2o sql2o() throws NamingException
+	Sql2o sql2o(@Qualifier("runelite") DataSource runeliteDataSource)
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite");
+		log.info("Using {} runelite data source", runeliteDataSource);
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(dataSource, new NoQuirks(converters));
+		return new Sql2o(runeliteDataSource, new NoQuirks(converters));
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	Sql2o cacheSql2o() throws NamingException
+	Sql2o cacheSql2o(@Qualifier("runelite-cache2") DataSource runeliteCache2DataSource)
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-cache2");
+		log.info("Using {} runelite-cache2 data source", runeliteCache2DataSource);
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(dataSource, new NoQuirks(converters));
+		return new Sql2o(runeliteCache2DataSource, new NoQuirks(converters));
 	}
 
 	@Bean("Runelite XP Tracker SQL2O")
-	Sql2o trackerSql2o() throws NamingException
+	Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource runeliteTrackerDataSource)
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-tracker");
+		log.info("Using {} runelite-tracker data source", runeliteTrackerDataSource);
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(dataSource, new NoQuirks(converters));
+		return new Sql2o(runeliteTrackerDataSource, new NoQuirks(converters));
 	}
 
 	@Override

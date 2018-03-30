@@ -58,6 +58,21 @@
 			<version>${spring.boot.version}</version>
 			<optional>true</optional>
 		</dependency>
+		<!--
+		Don't use spring dbcp because of default behaviour of autocommit being wrong.
+		HikariCP has jdbc-url instead of url, so it do not works properly when deployed to Tomcat and when running
+		as .jar so use dbcp2.
+		-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.43</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -118,12 +133,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.43</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
 			<version>3.7.0</version>
@@ -157,6 +166,13 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
