@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
@@ -46,13 +47,15 @@ import net.runelite.client.util.QueryRunner;
 
 class ItemChargesOverlay extends Overlay
 {
+	private final Client client;
 	private final QueryRunner queryRunner;
 
 	@Inject
-	ItemChargesOverlay(QueryRunner queryRunner)
+	ItemChargesOverlay(Client client, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.client = client;
 		this.queryRunner = queryRunner;
 	}
 
@@ -63,7 +66,9 @@ class ItemChargesOverlay extends Overlay
 
 		for (WidgetItem item : getChargeCountWidgetItems())
 		{
-			Integer charges = ChargeCounts.getCharges(item.getId());
+			int itemId = item.getId();
+			String itemName = client.getItemDefinition(itemId).getName();
+			Integer charges = ChargeCounts.getCharges(itemId, itemName);
 
 			if (charges == null)
 			{

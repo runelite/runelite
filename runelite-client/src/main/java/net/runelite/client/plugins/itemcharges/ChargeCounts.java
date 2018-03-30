@@ -24,132 +24,39 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeSet;
+import com.google.common.collect.TreeRangeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.runelite.api.ItemID;
 
 public class ChargeCounts
 {
-	private static final Map<Integer, Integer> MAP = new HashMap<>();
+	private static final RangeSet<Integer> EXCLUDED_RANGES = TreeRangeSet.create();
 
 	static
 	{
-		MAP.put(ItemID.AMULET_OF_GLORY6, 6);
-		MAP.put(ItemID.AMULET_OF_GLORY5, 5);
-		MAP.put(ItemID.AMULET_OF_GLORY4, 4);
-		MAP.put(ItemID.AMULET_OF_GLORY3, 3);
-		MAP.put(ItemID.AMULET_OF_GLORY2, 2);
-		MAP.put(ItemID.AMULET_OF_GLORY1, 1);
-
-		MAP.put(ItemID.AMULET_OF_GLORY_T6, 6);
-		MAP.put(ItemID.AMULET_OF_GLORY_T5, 5);
-		MAP.put(ItemID.AMULET_OF_GLORY_T4, 4);
-		MAP.put(ItemID.AMULET_OF_GLORY_T3, 3);
-		MAP.put(ItemID.AMULET_OF_GLORY_T2, 2);
-		MAP.put(ItemID.AMULET_OF_GLORY_T1, 1);
-
-		MAP.put(ItemID.RING_OF_DUELING8, 8);
-		MAP.put(ItemID.RING_OF_DUELING7, 7);
-		MAP.put(ItemID.RING_OF_DUELING6, 6);
-		MAP.put(ItemID.RING_OF_DUELING5, 5);
-		MAP.put(ItemID.RING_OF_DUELING4, 4);
-		MAP.put(ItemID.RING_OF_DUELING3, 3);
-		MAP.put(ItemID.RING_OF_DUELING2, 2);
-		MAP.put(ItemID.RING_OF_DUELING1, 1);
-
-		MAP.put(ItemID.GAMES_NECKLACE8, 8);
-		MAP.put(ItemID.GAMES_NECKLACE7, 7);
-		MAP.put(ItemID.GAMES_NECKLACE6, 6);
-		MAP.put(ItemID.GAMES_NECKLACE5, 5);
-		MAP.put(ItemID.GAMES_NECKLACE4, 4);
-		MAP.put(ItemID.GAMES_NECKLACE3, 3);
-		MAP.put(ItemID.GAMES_NECKLACE2, 2);
-		MAP.put(ItemID.GAMES_NECKLACE1, 1);
-
-		MAP.put(ItemID.RING_OF_WEALTH_5, 5);
-		MAP.put(ItemID.RING_OF_WEALTH_4, 4);
-		MAP.put(ItemID.RING_OF_WEALTH_3, 3);
-		MAP.put(ItemID.RING_OF_WEALTH_2, 2);
-		MAP.put(ItemID.RING_OF_WEALTH_1, 1);
-
-		MAP.put(ItemID.SLAYER_RING_6, 6);
-		MAP.put(ItemID.SLAYER_RING_5, 5);
-		MAP.put(ItemID.SLAYER_RING_4, 4);
-		MAP.put(ItemID.SLAYER_RING_3, 3);
-		MAP.put(ItemID.SLAYER_RING_2, 2);
-		MAP.put(ItemID.SLAYER_RING_1, 1);
-
-		MAP.put(ItemID.SKILLS_NECKLACE6, 6);
-		MAP.put(ItemID.SKILLS_NECKLACE5, 5);
-		MAP.put(ItemID.SKILLS_NECKLACE4, 4);
-		MAP.put(ItemID.SKILLS_NECKLACE3, 3);
-		MAP.put(ItemID.SKILLS_NECKLACE2, 2);
-		MAP.put(ItemID.SKILLS_NECKLACE1, 1);
-
-		MAP.put(ItemID.COMBAT_BRACELET6, 6);
-		MAP.put(ItemID.COMBAT_BRACELET5, 5);
-		MAP.put(ItemID.COMBAT_BRACELET4, 4);
-		MAP.put(ItemID.COMBAT_BRACELET3, 3);
-		MAP.put(ItemID.COMBAT_BRACELET2, 2);
-		MAP.put(ItemID.COMBAT_BRACELET1, 1);
-
-		MAP.put(ItemID.DIGSITE_PENDANT_5, 5);
-		MAP.put(ItemID.DIGSITE_PENDANT_4, 4);
-		MAP.put(ItemID.DIGSITE_PENDANT_3, 3);
-		MAP.put(ItemID.DIGSITE_PENDANT_2, 2);
-		MAP.put(ItemID.DIGSITE_PENDANT_1, 1);
-
-		MAP.put(ItemID.NECKLACE_OF_PASSAGE5, 5);
-		MAP.put(ItemID.NECKLACE_OF_PASSAGE4, 4);
-		MAP.put(ItemID.NECKLACE_OF_PASSAGE3, 3);
-		MAP.put(ItemID.NECKLACE_OF_PASSAGE2, 2);
-		MAP.put(ItemID.NECKLACE_OF_PASSAGE1, 1);
-
-		MAP.put(ItemID.BURNING_AMULET5, 5);
-		MAP.put(ItemID.BURNING_AMULET4, 4);
-		MAP.put(ItemID.BURNING_AMULET3, 3);
-		MAP.put(ItemID.BURNING_AMULET2, 2);
-		MAP.put(ItemID.BURNING_AMULET1, 1);
-
-		MAP.put(ItemID.RING_OF_RETURNING5, 5);
-		MAP.put(ItemID.RING_OF_RETURNING4, 4);
-		MAP.put(ItemID.RING_OF_RETURNING3, 3);
-		MAP.put(ItemID.RING_OF_RETURNING2, 2);
-		MAP.put(ItemID.RING_OF_RETURNING1, 1);
-
-		MAP.put(ItemID.TELEPORT_CRYSTAL_5, 5);
-		MAP.put(ItemID.TELEPORT_CRYSTAL_4, 4);
-		MAP.put(ItemID.TELEPORT_CRYSTAL_3, 3);
-		MAP.put(ItemID.TELEPORT_CRYSTAL_2, 2);
-		MAP.put(ItemID.TELEPORT_CRYSTAL_1, 1);
-
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_8, 8);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_7, 7);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_6, 6);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_5, 5);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_4, 4);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_3, 3);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_2, 2);
-		MAP.put(ItemID.PHARAOHS_SCEPTRE_1, 1);
-
-		MAP.put(ItemID.WATERSKIN4, 4);
-		MAP.put(ItemID.WATERSKIN3, 3);
-		MAP.put(ItemID.WATERSKIN2, 2);
-		MAP.put(ItemID.WATERSKIN1, 1);
-
-		MAP.put(ItemID.IMPINABOX2, 2);
-		MAP.put(ItemID.IMPINABOX1, 1);
-
-		MAP.put(ItemID.ENCHANTED_LYRE5, 5);
-		MAP.put(ItemID.ENCHANTED_LYRE4, 4);
-		MAP.put(ItemID.ENCHANTED_LYRE3, 3);
-		MAP.put(ItemID.ENCHANTED_LYRE2, 2);
-		MAP.put(ItemID.ENCHANTED_LYRE1, 1);
+		EXCLUDED_RANGES.add(Range.closed(ItemID.SHAYZIEN_GLOVES_1, ItemID.SHAYZIEN_PLATEBODY_5));
+		EXCLUDED_RANGES.add(Range.closed(ItemID.SHAYZIEN_SUPPLY_GLOVES_1, ItemID.SHAYZIEN_SUPPLY_PLATEBODY_5));
 	}
 
-	public static Integer getCharges(int itemId)
+	public static Integer getCharges(int itemId, String itemName)
 	{
-		return MAP.get(itemId);
+		if (EXCLUDED_RANGES.contains(itemId))
+		{
+			return null;
+		}
+
+		// Regex only looks for digits and an ending parenthesis,
+		// to catch items like Amulet of glory (t6).
+		Matcher matcher = Pattern.compile("[0-9]+\\)$").matcher(itemName);
+		if (matcher.find())
+		{
+			String match = matcher.group();
+			return Integer.parseInt(match.substring(0, match.length() - 1));
+		}
+
+		return null;
 	}
 }
