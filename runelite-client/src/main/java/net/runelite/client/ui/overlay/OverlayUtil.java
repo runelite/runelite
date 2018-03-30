@@ -144,6 +144,28 @@ public class OverlayUtil
 		}
 	}
 
+	public static void renderTilePointOverlay(Graphics2D graphics, Client client, LocalPoint point, String text, Color color)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, point);
+
+		if (poly != null)
+		{
+			renderPolygon(graphics, poly, color);
+		}
+
+		Point minimapLocation = Perspective.worldToMiniMap(client, point.getX(), point.getY());
+		if (minimapLocation != null)
+		{
+			renderMinimapLocation(graphics, minimapLocation, color);
+		}
+
+		Point textLocation = Perspective.getCanvasTextLocation(client, graphics, point, text, 0);
+		if (textLocation != null)
+		{
+			renderTextLocation(graphics, textLocation, text, color);
+		}
+	}
+
 	public static void renderTileOverlay(Client client, Graphics2D graphics, LocalPoint localLocation, BufferedImage image, Color color)
 	{
 		Polygon poly = Perspective.getCanvasTilePoly(client, localLocation);

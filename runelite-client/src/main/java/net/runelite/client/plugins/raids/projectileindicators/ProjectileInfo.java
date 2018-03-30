@@ -22,59 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raids.projectileindicators;
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.api.ProjectileID;
 
-import net.runelite.api.coords.LocalPoint;
-
-import java.time.Duration;
-
-public interface Projectile extends Renderable
+public enum ProjectileInfo
 {
-	int getId();
+	LIZARDMAN_SHAMAN_AOE(ProjectileID.LIZARDMAN_SHAMAN_AOE),
+	VASA_RANGED_AOE(ProjectileID.VASA_RANGED_AOE),
+	TEKTON_METEOR_AOE(ProjectileID.TEKTON_METEOR_AOE);
 
-	Actor getInteracting();
+	/**
+	 * The id of the projectile to trigger this AoE warning
+	 */
+	private final int id;
 
-	LocalPoint getTarget();
+	private static final Map<Integer, ProjectileInfo> map = new HashMap<>();
 
-	int getTargetZ();
+	static
+	{
+		for (ProjectileInfo aoe : values())
+		{
+			map.put(aoe.id, aoe);
+		}
+	}
 
-	int getX1();
+	ProjectileInfo(int id)
+	{
+		this.id = id;
+	}
 
-	int getY1();
+	public int getId()
+	{
+		return id;
+	}
 
-	int getFloor();
-
-	int getHeight();
-
-	int getEndHeight();
-
-	int getStartMovementCycle();
-
-	int getSpawnCycle();
-
-	int getCycleLength();
-
-	Duration getLength();
-
-	int getEndCycle();
-
-	int getRemainingCycles();
-
-	int getSlope();
-
-	int getStartHeight();
-
-	double getX();
-
-	double getY();
-
-	double getZ();
-
-	double getScalar();
-
-	double getVelocityX();
-
-	double getVelocityY();
-
-	double getVelocityZ();
+	public static ProjectileInfo getById(int id)
+	{
+		return map.get(id);
+	}
 }

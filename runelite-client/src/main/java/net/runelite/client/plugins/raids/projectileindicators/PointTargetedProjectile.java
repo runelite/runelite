@@ -22,59 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raids.projectileindicators;
+
+import java.time.Instant;
 
 import net.runelite.api.coords.LocalPoint;
 
-import java.time.Duration;
-
-public interface Projectile extends Renderable
+/**
+ * Projectiles that target a point rather than an Actor
+ */
+public class PointTargetedProjectile
 {
-	int getId();
+	private final Instant startTime;
+	private final LocalPoint targetPoint;
+	private final ProjectileInfo projectileInfo;
 
-	Actor getInteracting();
+	public PointTargetedProjectile(Instant startTime, LocalPoint targetPoint, ProjectileInfo projectileInfo)
+	{
+		this.startTime = startTime;
+		this.targetPoint = targetPoint;
+		this.projectileInfo = projectileInfo;
+	}
 
-	LocalPoint getTarget();
+	public Instant getStartTime()
+	{
+		return startTime;
+	}
 
-	int getTargetZ();
+	public LocalPoint getTargetPoint()
+	{
+		return targetPoint;
+	}
 
-	int getX1();
-
-	int getY1();
-
-	int getFloor();
-
-	int getHeight();
-
-	int getEndHeight();
-
-	int getStartMovementCycle();
-
-	int getSpawnCycle();
-
-	int getCycleLength();
-
-	Duration getLength();
-
-	int getEndCycle();
-
-	int getRemainingCycles();
-
-	int getSlope();
-
-	int getStartHeight();
-
-	double getX();
-
-	double getY();
-
-	double getZ();
-
-	double getScalar();
-
-	double getVelocityX();
-
-	double getVelocityY();
-
-	double getVelocityZ();
+	public ProjectileInfo getProjectileInfo()
+	{
+		return projectileInfo;
+	}
 }

@@ -144,4 +144,26 @@ public interface RaidsConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(
+			position = 8,
+			keyName = "projectileIndicators",
+			name = "Enable projectile indicators",
+			description = "Enable projectile indicators"
+	)
+	default boolean isProjectileIndicatorsEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 8,
+			keyName = "projectileIndicatorsOutline",
+			name = "Enable projectile indicators outline",
+			description = "Enable projectile indicators"
+	)
+	default boolean isOutlineEnabled()
+	{
+		return true;
+	}
 }

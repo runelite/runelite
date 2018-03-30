@@ -34,7 +34,9 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -47,12 +49,16 @@ import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Point;
+import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -65,6 +71,9 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.raids.projectileindicators.PointTargetedProjectile;
+import net.runelite.client.plugins.raids.projectileindicators.ProjectileIndicatorsOverlay;
+import net.runelite.client.plugins.raids.projectileindicators.ProjectileInfo;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
@@ -112,6 +121,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsPointsOverlay pointsOverlay;
 
 	@Inject
+	private ProjectileIndicatorsOverlay projectileIndicatorsOverlay;
+
+	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Getter
@@ -129,6 +141,8 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private ArrayList<String> layoutWhitelist = new ArrayList<>();
 
+	private final Map<Projectile, PointTargetedProjectile> projectiles = new HashMap<>();
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -144,7 +158,7 @@ public class RaidsPlugin extends Plugin
 	@Override
 	public List<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, pointsOverlay);
+		return Arrays.asList(overlay, pointsOverlay, projectileIndicatorsOverlay);
 	}
 
 	@Override
@@ -639,5 +653,38 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return raidsIcon;
+	}
+
+	public Map<Projectile, PointTargetedProjectile> getProjectiles()
+	{
+		return projectiles;
+	}
+
+	/**
+	 * Called when a projectile is set to move towards a point. For
+	 * projectiles that target the ground, like AoE projectiles from
+	 * Lizardman Shamans, this is only called once
+	 *
+	 * @param event Projectile moved event
+	 */
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved event)
+	{
+		Projectile projectile = event.getProjectile();
+
+		// Point targeted projectiles do not target any actors
+		if (projectile.getInteracting() != null)
+		{
+			return;
+		}
+
+		int projectileId = projectile.getId();
+		ProjectileInfo projectileInfo = ProjectileInfo.getById(projectileId);
+		if (projectileInfo != null)
+		{
+			LocalPoint targetPoint = event.getPosition();
+			PointTargetedProjectile pointTargetedProjectile = new PointTargetedProjectile(Instant.now(), targetPoint, projectileInfo);
+			projectiles.put(projectile, pointTargetedProjectile);
+		}
 	}
 }
