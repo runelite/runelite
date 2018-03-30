@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +24,9 @@
  */
 package net.runelite.api;
 
-import java.util.Collection;
-
-public interface HashTable
+public interface IntegerNode extends Node
 {
-	Node get(long value);
+	int getValue();
 
-	Collection<Node> getNodes();
+	void setValue(int value);
 }

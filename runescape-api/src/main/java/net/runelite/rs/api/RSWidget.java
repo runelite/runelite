@@ -66,6 +66,7 @@ public interface RSWidget extends Widget
 	int getModelType();
 
 	@Import("actions")
+	@Override
 	String[] getActions();
 
 	@Import("text")
