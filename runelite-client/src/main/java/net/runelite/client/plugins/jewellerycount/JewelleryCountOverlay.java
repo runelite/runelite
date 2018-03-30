@@ -63,7 +63,7 @@ class JewelleryCountOverlay extends Overlay
 
 		for (WidgetItem item : getJewelleryWidgetItems())
 		{
-			JewelleryCharges charges = JewelleryCharges.getCharges(item.getId());
+			Integer charges = JewelleryCharges.getCharges(item.getId());
 
 			if (charges == null)
 			{
@@ -73,7 +73,7 @@ class JewelleryCountOverlay extends Overlay
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(charges.getCharges()));
+			textComponent.setText(String.valueOf(charges));
 			textComponent.render(graphics);
 		}
 
