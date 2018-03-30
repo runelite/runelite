@@ -188,4 +188,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 14,
+			keyName = "swapHunterTrap",
+			name = "Lay hunter trap",
+			description = "Swap take with lay on hunter traps"
+	)
+	default boolean swapHunterTrap()
+	{
+		return true;
+	}
 }
