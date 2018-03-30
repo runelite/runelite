@@ -32,9 +32,10 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -61,6 +62,7 @@ public class DailyTasksPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg;
+	private int prevHerbVarbVal, prevStavesVarbVal, prevEssVarbVal, prevSandVarbVal, prevEctoVarbVal;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -72,13 +74,13 @@ public class DailyTasksPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = false;
+		prevHerbVarbVal = 15;
+		prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = 0;
 		cacheColors();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = false;
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			new VarbitChanged(); // force a change
+		}
 	}
 
 	@Subscribe
@@ -110,7 +112,7 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
 		{
@@ -146,41 +148,42 @@ public class DailyTasksPlugin extends Plugin
 	private boolean checkCanCollectHerbBox()
 	{
 		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return value < 15; // < 15 can claim
+		return prevHerbVarbVal == value ? (prevHerbVarbVal = value) < 15 : false;
 	}
 
 	private boolean checkCanCollectStaves()
 	{
 		int value = client.getVar(Varbits.DAILY_STAVES);
-		return value == 0; // 1 = can't claim
+		return prevStavesVarbVal == value ? (prevStavesVarbVal = value) == 0 : false;
 	}
 
 	private boolean checkCanCollectEssence()
 	{
 		int value = client.getVar(Varbits.DAILY_ESSENCE);
-		return value == 0; // 1 = can't claim
+		return prevEssVarbVal == value ? (prevEssVarbVal = value) == 0 : false;
 	}
 
 	private boolean checkCanCollectSand()
 	{
 		int value = client.getVar(Varbits.DAILY_SAND);
-		return value == 0; // 1 = can't claim
+		return prevSandVarbVal == value ? (prevSandVarbVal = value) == 0 : false;
 	}
 
 	private boolean checkCanCollectEcto()
 	{
 		int value = client.getVar(Varbits.DAILY_ECTO);
-		if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
-			|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
-			|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
+		if (value != prevEctoVarbVal)
 		{
-			return true;
-		}
-		else
-		{
-			return false;
+			prevEctoVarbVal = value;
+			if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
+				|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
+				|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
+			{
+				return true;
+			}
 		}
 
+		return false;
 	}
 
 	private void cacheColors()
