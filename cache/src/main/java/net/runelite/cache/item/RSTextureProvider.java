@@ -28,7 +28,7 @@ import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.providers.SpriteProvider;
 import net.runelite.cache.definitions.providers.TextureProvider;
 
-class RSTextureProvider
+public class RSTextureProvider
 {
 	private final SpriteProvider spriteProvider;
 	TextureDefinition[] textures;
