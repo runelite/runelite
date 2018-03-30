@@ -63,6 +63,7 @@ class OpponentInfoOverlay extends Overlay
 
 	private final Client client;
 	private final NPC[] clientNpcs;
+	private final OpponentInfoConfig config;
 
 	private Integer lastMaxHealth;
 	private DecimalFormat df = new DecimalFormat("0.0");
@@ -74,12 +75,13 @@ class OpponentInfoOverlay extends Overlay
 	private NPC lastOpponent;
 
 	@Inject
-	OpponentInfoOverlay(Client client)
+	OpponentInfoOverlay(Client client, OpponentInfoConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.clientNpcs = client.getCachedNPCs();
+		this.config = config;
 	}
 
 	private Actor getOpponent()
@@ -97,6 +99,7 @@ class OpponentInfoOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Actor opponent = getOpponent();
+		boolean isMulti = client.getSetting(Varbits.MULTICOMBAT_AREA) == 1;
 
 		// If opponent is null, try to use last opponent
 		if (opponent == null)
@@ -125,14 +128,28 @@ class OpponentInfoOverlay extends Overlay
 			lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
 
 			Actor opponentsOpponent = opponent.getInteracting();
-			if (opponentsOpponent != null
-					&& (opponentsOpponent != client.getLocalPlayer() || client.getSetting(Varbits.MULTICOMBAT_AREA) == 1))
+
+			if (opponentsOpponent == null)
 			{
-				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
+				opponentsOpponentName = null;
 			}
 			else
 			{
-				opponentsOpponentName = null;
+				switch (config.showOpponentsOpponent())
+				{
+					case MULTI:
+						opponentsOpponentName = isMulti ? Text.removeTags(opponentsOpponent.getName()) : null;
+						break;
+					case SINGLE:
+						opponentsOpponentName = !isMulti ? Text.removeTags(opponentsOpponent.getName()) : null;
+						break;
+					case NEVER:
+						opponentsOpponentName = null;
+						break;
+					default:
+						opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
+						break;
+				}
 			}
 		}
 
