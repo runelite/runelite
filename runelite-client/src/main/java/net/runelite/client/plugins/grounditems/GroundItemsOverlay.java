@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -94,6 +95,8 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
+
+		plugin.checkItems();
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 		offsetMap.clear();
