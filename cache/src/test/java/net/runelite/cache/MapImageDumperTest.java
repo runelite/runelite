@@ -30,6 +30,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Region;
+import net.runelite.cache.region.RegionLoader;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class MapImageDumperTest
 
 	@Test
 	@Ignore
-	public void extract() throws IOException
+	public void dumpMap() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
@@ -66,6 +67,33 @@ public class MapImageDumperTest
 
 				ImageIO.write(image, "png", imageFile);
 				logger.info("Wrote image {}", imageFile);
+			}
+		}
+	}
+
+	@Test
+	@Ignore
+	public void dumpRegions() throws Exception
+	{
+		File base = StoreLocation.LOCATION,
+			outDir = folder.newFolder();
+
+		try (Store store = new Store(base))
+		{
+			store.load();
+
+			RegionLoader regionLoader = new RegionLoader(store);
+			regionLoader.loadRegions();
+
+			MapImageDumper dumper = new MapImageDumper(store);
+			dumper.load();
+
+			int z = 0;
+			for (Region region : regionLoader.getRegions())
+			{
+				File imageFile = new File(outDir, "img-" + z + "-" + region.getRegionID() + ".png");
+				BufferedImage image = dumper.drawRegion(region, z);
+				ImageIO.write(image, "png", imageFile);
 			}
 		}
 	}
