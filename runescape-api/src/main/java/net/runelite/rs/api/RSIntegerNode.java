@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.rs.api;
 
-import java.util.Collection;
+import net.runelite.api.IntegerNode;
+import net.runelite.mapping.Import;
 
-public interface HashTable
+public interface RSIntegerNode extends RSNode, IntegerNode
 {
-	Node get(long value);
+	@Import("value")
+	@Override
+	int getValue();
 
-	Collection<Node> getNodes();
+	@Import("value")
+	@Override
+	void setValue(int value);
 }

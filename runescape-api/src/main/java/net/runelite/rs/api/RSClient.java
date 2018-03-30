@@ -273,6 +273,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
+	@Import("widgetFlags")
+	@Override
+	RSHashTable getWidgetFlags();
+
 	@Import("componentTable")
 	@Override
 	RSHashTable getComponentTable();
