@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +67,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -104,6 +105,7 @@ public class GroundItemsPlugin extends Plugin
 
 	private List<String> hiddenItemList = new ArrayList<>();
 	private List<String> highlightedItemsList = new ArrayList<>();
+	private boolean dirty;
 
 	@Inject
 	private GroundItemInputListener inputListener;
@@ -199,14 +201,21 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
+	public void onItemLayerChanged(ItemLayerChanged event)
+	{
+		dirty = true;
+	}
+
+	void checkItems()
 	{
 		final Player player = client.getLocalPlayer();
 
-		if (player == null || client.getViewportWidget() == null)
+		if (!dirty || player == null || client.getViewportWidget() == null)
 		{
 			return;
 		}
+
+		dirty = false;
 
 		final Region region = client.getRegion();
 		final Tile[][][] tiles = region.getTiles();
@@ -330,6 +339,8 @@ public class GroundItemsPlugin extends Plugin
 			.maximumSize(512L)
 			.expireAfterAccess(10, TimeUnit.MINUTES)
 			.build(new WildcardMatchLoader(hiddenItemList));
+
+		dirty = true;
 	}
 
 	private ItemPrice getItemPrice(ItemComposition itemComposition)
