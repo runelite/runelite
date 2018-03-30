@@ -99,13 +99,13 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 
-		plugin.getCollectedGroundItems().values().forEach(item ->
+		for (GroundItem item : plugin.getCollectedGroundItems().values())
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
 			{
-				return;
+				continue;
 			}
 
 			final boolean highlighted = plugin.isHighlighted(item.getName());
@@ -114,7 +114,7 @@ public class GroundItemsOverlay extends Overlay
 				&& ((item.getGePrice() > 0 && item.getGePrice() < config.getHideUnderGeValue())
 				|| item.getHaPrice() < config.getHideUnderHAValue()))
 			{
-				return;
+				continue;
 			}
 
 			final boolean hidden = plugin.isHidden(item.getName());
@@ -158,7 +158,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (textPoint == null)
 			{
-				return;
+				continue;
 			}
 
 			final int offset = offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
@@ -204,7 +204,7 @@ public class GroundItemsOverlay extends Overlay
 				// Draw highlight box
 				drawRectangle(graphics, itemHighlightBox, mouseInHighlightBox ? Color.GREEN : color, highlighted, false);
 			}
-		});
+		}
 
 		return null;
 	}
