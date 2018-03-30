@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -44,12 +44,12 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-class JewelleryCountOverlay extends Overlay
+class ItemChargesOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
 
 	@Inject
-	JewelleryCountOverlay(QueryRunner queryRunner)
+	ItemChargesOverlay(QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -61,9 +61,9 @@ class JewelleryCountOverlay extends Overlay
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getJewelleryWidgetItems())
+		for (WidgetItem item : getChargeCountWidgetItems())
 		{
-			Integer charges = JewelleryCharges.getCharges(item.getId());
+			Integer charges = ChargeCounts.getCharges(item.getId());
 
 			if (charges == null)
 			{
@@ -80,7 +80,7 @@ class JewelleryCountOverlay extends Overlay
 		return null;
 	}
 
-	private Collection<WidgetItem> getJewelleryWidgetItems()
+	private Collection<WidgetItem> getChargeCountWidgetItems()
 	{
 		Query inventoryQuery = new InventoryWidgetItemQuery();
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
@@ -93,9 +93,9 @@ class JewelleryCountOverlay extends Overlay
 		);
 		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
 
-		Collection<WidgetItem> jewellery = new ArrayList<>();
-		jewellery.addAll(Arrays.asList(inventoryWidgetItems));
-		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
-		return jewellery;
+		Collection<WidgetItem> widgetItems = new ArrayList<>();
+		widgetItems.addAll(Arrays.asList(inventoryWidgetItems));
+		widgetItems.addAll(Arrays.asList(equipmentWidgetItems));
+		return widgetItems;
 	}
 }

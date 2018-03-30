@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
@@ -30,12 +30,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Jewellery Count"
+	name = "Item Charges"
 )
-public class JewelleryCountPlugin extends Plugin
+public class ItemChargesPlugin extends Plugin
 {
 	@Inject
-	private JewelleryCountOverlay overlay;
+	private ItemChargesOverlay overlay;
 
 	@Override
 	public Overlay getOverlay()
