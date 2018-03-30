@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.agilityplugin;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
@@ -129,7 +130,7 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(skillGained);
-		if (course == null)
+		if (course == null || !Ints.contains(client.getMapRegions(), course.getRegionId()))
 		{
 			return;
 		}
