@@ -264,9 +264,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (client == null
 			|| overlays == null
 			|| overlays.isEmpty()
-			|| client.getViewportWidget() == null
 			|| client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+			|| client.getViewportWidget() == null)
 		{
 			return;
 		}
