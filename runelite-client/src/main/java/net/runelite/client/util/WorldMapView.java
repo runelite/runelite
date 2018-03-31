@@ -36,96 +36,68 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
 
 @Slf4j
 public class WorldMapView
 {
-	private static LoadingCache<Integer, BufferedImage> regions;
-
 	private static final int REGION_GRAPHIC_SIZE = 256;
 	private static final int REGION_TILE_SIZE = 64;
 
+	private static final LoadingCache<Integer, BufferedImage> regions = CacheBuilder.newBuilder()
+		.maximumSize(9)
+		.expireAfterAccess(1, TimeUnit.MINUTES)
+		.build(
+			new CacheLoader<Integer, BufferedImage>()
+			{
+				public BufferedImage load(Integer key) throws IOException
+				{
+					try
+					{
+						return ImageIO.read(WorldMapView.class.getResourceAsStream("/world_map/img-0-" + key + ".png"));
+					}
+					catch (IllegalArgumentException | IOException e)
+					{
+						throw new IOException("No map image found");
+					}
+				}
+			});
+
+
 	@Getter
+	@Setter
 	private WorldPoint center;
 
 	@Getter
+	@Setter
 	private float zoom;
 
 	@Getter
+	@Setter
 	private int graphicsWidth;
 
 	@Getter
+	@Setter
 	private int graphicsHeight;
 
-
-	public void setCenter(WorldPoint center)
-	{
-		this.center = center;
-		updateCalculations();
-	}
-
-	public void setZoom(float zoom)
-	{
-		this.zoom = zoom;
-		updateCalculations();
-	}
-
-	public void setGraphicsWidth(int graphicsWidth)
-	{
-		this.graphicsWidth = graphicsWidth;
-		updateCalculations();
-	}
-
-	public void setGraphicsHeight(int graphicsHeight)
-	{
-		this.graphicsHeight = graphicsHeight;
-		updateCalculations();
-	}
+	@Getter
+	@Setter
+	private float pixelsPerTile;
 
 	private int regionSizeScaled;
 	private Point tileOffset;
-	@Getter
-	private float pixelsPerTile;
 	private Point graphicalOffset;
 	private Point graphicalCenter;
 
-	private void updateCalculations()
-	{
-		//Calculate region graphical size.
-		regionSizeScaled = (int) (REGION_GRAPHIC_SIZE * zoom);
-		//How far from top left of region this tile is
-		tileOffset = new Point(center.getX() % REGION_TILE_SIZE, center.getY() % REGION_TILE_SIZE);
-		//Graphical size of tileOffset
-		pixelsPerTile = regionSizeScaled / (float)REGION_TILE_SIZE;
-		graphicalOffset = new Point((int)(tileOffset.x * pixelsPerTile), (int)(tileOffset.y * pixelsPerTile));
-		graphicalCenter = new Point(graphicsWidth / 2, graphicsHeight / 2);
-	}
-
-
-	@Inject
-	public WorldMapView()
-	{
-		if (regions == null)
-		{
-			regions = CacheBuilder.newBuilder()
-				.maximumSize(1685)
-				.expireAfterAccess(1, TimeUnit.MINUTES)
-				.build(
-					new CacheLoader<Integer, BufferedImage>()
-					{
-						public BufferedImage load(Integer key) throws IOException
-						{
-							return ImageIO.read(WorldMapView.class.getResourceAsStream("/world_map/img-0-" + key + ".png"));
-						}
-					});
-		}
-	}
-
-	private static BufferedImage getMapRegion(Point worldPoint)
+	/**
+	 * Loads a map image for a single map region from disk
+	 * @param worldPoint The Point (in world coordinates) of the region to load
+	 * @return the BufferedImage from disk if it exists, otherwise null
+	 */
+	private static BufferedImage loadMapRegion(Point worldPoint)
 	{
 		try
 		{
@@ -142,30 +114,65 @@ public class WorldMapView
 		}
 	}
 
-	public Point[] worldPointsToGraphicsPoint(WorldPoint[] worldPoints)
+	/**
+	 * Updates a few simple calculations used by various methods.
+	 * Functions that use these variables are responsible for calling
+	 * this function to ensure they are up to date.
+	 */
+	private void updateCalculations()
 	{
+		//Calculate region graphical size.
+		regionSizeScaled = (int) (REGION_GRAPHIC_SIZE * zoom);
+		//How far from top left of region this tile is
+		tileOffset = new Point(center.getX() % REGION_TILE_SIZE, center.getY() % REGION_TILE_SIZE);
+		//Graphical size of tileOffset
+		pixelsPerTile = regionSizeScaled / (float)REGION_TILE_SIZE;
+		graphicalOffset = new Point((int)(tileOffset.x * pixelsPerTile), (int)(tileOffset.y * pixelsPerTile));
+		graphicalCenter = new Point(graphicsWidth / 2, graphicsHeight / 2);
+	}
+
+
+	public Point[] worldPointsToGraphicsPoint(WorldPoint... worldPoints)
+	{
+		updateCalculations();
 		Point[] retPoints = new Point[worldPoints.length];
 		for (int i = 0; i < worldPoints.length; i++)
 		{
-			retPoints[i] = worldPointToGraphicsPoint(worldPoints[i]);
+			retPoints[i] = worldPointToGraphicsPointNoCalculations(worldPoints[i]);
 		}
 		return  retPoints;
 	}
 
 	/**
-	 *
+	 * Convert a WorldPoint to a graphical position on the currently displayed map.
+	 * This will return the correct Point even if it is not visible on the current map.
 	 * @param worldPoint A WorldPoint to calculate the graphical position for
 	 * @return the graphical coordinates of the specified point.
 	 */
 	public Point worldPointToGraphicsPoint(WorldPoint worldPoint)
+	{
+		updateCalculations();
+		return worldPointToGraphicsPointNoCalculations(worldPoint);
+	}
+
+	/**
+	 * Convert points without updatingCalculations.
+	 * This method is only to be called when the calculations are already known
+	 * to be correct
+	 * @param worldPoint A WorldPoint to calculate the graphical position for
+	 * @return the graphical coordinates of the specified point.
+	 */
+	private Point worldPointToGraphicsPointNoCalculations(WorldPoint worldPoint)
 	{
 		Point difference = new Point((int) ((worldPoint.getX() - center.getX()) * pixelsPerTile), (int) ((center.getY() - worldPoint.getY()) * pixelsPerTile));
 		difference.translate(graphicalCenter.x, graphicalCenter.y);
 		return difference;
 	}
 
-	public BufferedImage getMapImage()
+	public BufferedImage buildMapImage()
 	{
+		updateCalculations();
+
 		BufferedImage mapImage = new BufferedImage(graphicsWidth, graphicsHeight, BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = mapImage.createGraphics();
 
@@ -195,7 +202,7 @@ public class WorldMapView
 
 			while (drawingDestionation.y < graphicsHeight)
 			{
-				BufferedImage image = getMapRegion(drawingWorldPoint);
+				BufferedImage image = loadMapRegion(drawingWorldPoint);
 				graphics.drawImage(image, drawingDestionation.x, drawingDestionation.y, drawingDestionation.width, drawingDestionation.height, null);
 
 				drawingDestionation.translate(0, regionSizeScaled);

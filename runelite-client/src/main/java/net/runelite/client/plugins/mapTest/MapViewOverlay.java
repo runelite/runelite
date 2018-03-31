@@ -27,8 +27,10 @@ package net.runelite.client.plugins.mapTest;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class MapViewOverlay extends Overlay
@@ -57,19 +59,14 @@ public class MapViewOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.mapTestEnabled())
-		{
-			return null;
-		}
-
 		graphics.drawImage(image, 0, 0, null);
 		graphics.setColor(Color.WHITE);
 		int pixelsPerTile = (int) plugin.getMapView().getPixelsPerTile();
 		graphics.fillRect(image.getWidth() / 2, image.getHeight() / 2, pixelsPerTile, pixelsPerTile);
 
-//		Point mapMarker = plugin.getMapView().worldPointToGraphicsPoint(new WorldPoint(3220, 3219, 0));
-//		graphics.setColor(Color.CYAN);
-//		graphics.fillOval(mapMarker.x, mapMarker.y, pixelsPerTile, pixelsPerTile);
+		Point mapMarker = plugin.getMapView().worldPointToGraphicsPoint(new WorldPoint(config.mapTestMarkerCoords().width, config.mapTestMarkerCoords().height, 0));
+		graphics.setColor(Color.CYAN);
+		graphics.fillOval(mapMarker.x, mapMarker.y, pixelsPerTile, pixelsPerTile);
 
 		return config.mapTestDisplay();
 	}

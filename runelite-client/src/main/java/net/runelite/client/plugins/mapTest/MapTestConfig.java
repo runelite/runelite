@@ -37,17 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface MapTestConfig extends Config
 {
 	@ConfigItem(
-		keyName = "mapTestEnabled",
-		name = "Enabled",
-		description = "",
-		position = 1
-	)
-	default boolean mapTestEnabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "mapTestCoords",
 		name = "Coordinates",
 		description = "Coordinates to display",
@@ -78,5 +67,16 @@ public interface MapTestConfig extends Config
 	default int mapTestZoom()
 	{
 		return 100;
+	}
+
+	@ConfigItem(
+		keyName = "mapTestMarkerCoords",
+		name = "Map Marker",
+		description = "Coordinates to display a mark on the map",
+		position = 5
+	)
+	default Dimension mapTestMarkerCoords()
+	{
+		return new Dimension(3225, 3217);
 	}
 }

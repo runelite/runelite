@@ -72,7 +72,7 @@ public class MapTestPlugin extends Plugin
 		mapView.setGraphicsHeight(config.mapTestDisplay().height);
 		mapView.setGraphicsWidth(config.mapTestDisplay().width);
 
-		BufferedImage image = mapView.getMapImage();
+		BufferedImage image = mapView.buildMapImage();
 		overlay.setImage(image);
 	}
 
@@ -84,6 +84,9 @@ public class MapTestPlugin extends Plugin
 		mapView.setZoom(config.mapTestZoom() / 100f);
 		mapView.setGraphicsHeight(config.mapTestDisplay().height);
 		mapView.setGraphicsWidth(config.mapTestDisplay().width);
+
+		BufferedImage image = mapView.buildMapImage();
+		overlay.setImage(image);
 	}
 
 	@Override
