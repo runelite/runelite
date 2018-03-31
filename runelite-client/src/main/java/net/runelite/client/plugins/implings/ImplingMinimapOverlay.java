@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,12 +24,9 @@
  */
 package net.runelite.client.plugins.implings;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -37,19 +34,15 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-/**
- *
- * @author robin
- */
-public class ImplingsOverlay extends Overlay
+public class ImplingMinimapOverlay extends Overlay
 {
 	private final ImplingsPlugin plugin;
 
 	@Inject
-	private ImplingsOverlay(ImplingsPlugin plugin)
+	private ImplingMinimapOverlay(ImplingsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
 	}
 
@@ -64,32 +57,13 @@ public class ImplingsOverlay extends Overlay
 
 		for (NPC imp : imps)
 		{
-			if (imp == null || imp.getName() == null)
+			Point minimapLocation = imp.getMinimapLocation();
+			if (minimapLocation != null)
 			{
-				continue;
+				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, plugin.getIds().get(imp.getId()));
 			}
-
-			//Spawns have the name "null", so they get changed to "Spawn"
-			String text = imp.getName().equals("null") ? "Spawn" : imp.getName();
-			drawImp(graphics, imp, text, plugin.getIds().get(imp.getId()));
 		}
 
 		return null;
 	}
-
-	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
-	{
-		Polygon poly = actor.getCanvasTilePoly();
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
-
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());
-		if (textLocation != null)
-		{
-			OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
-		}
-	}
-
 }
