@@ -45,6 +45,8 @@ public class ChargeCounts
 	private static final RangeSet<Integer> EXCLUDED_ITEMS = TreeRangeSet.create();
 	/** Potions which lack a Drink menu action but can hold multiple doses. */
 	private static final RangeSet<Integer> UNDRINKABLE_POTIONS = TreeRangeSet.create();
+	/** Non-empty fruit baskets and vegetable sacks. */
+	private static final RangeSet<Integer> BASKETS_AND_SACKS = TreeRangeSet.create();
 
 	static
 	{
@@ -58,6 +60,10 @@ public class ChargeCounts
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.COMPOST_POTION4, ItemID.COMPOST_POTION1));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.GUTHIX_BALANCE4, ItemID.GUTHIX_BALANCE1));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.REJUVENATION_POTION_4, ItemID.REJUVENATION_POTION_1));
+
+		BASKETS_AND_SACKS.add(Range.closed(ItemID.APPLES1, ItemID.BANANAS5));
+		BASKETS_AND_SACKS.add(Range.closed(ItemID.POTATOES1, ItemID.CABBAGES10));
+		BASKETS_AND_SACKS.add(Range.closed(ItemID.TOMATOES1, ItemID.TOMATOES5));
 	}
 
 	/**
@@ -75,11 +81,13 @@ public class ChargeCounts
 		}
 
 		List<String> actions = Arrays.asList(item.getInventoryActions());
-		boolean isOther = !actions.contains("Rub") && !actions.contains("Drink") && !UNDRINKABLE_POTIONS.contains(item.getId());
+		boolean isOther = !actions.contains("Rub") && !actions.contains("Drink")
+				&& !UNDRINKABLE_POTIONS.contains(item.getId()) && !BASKETS_AND_SACKS.contains(item.getId());
 
 		if (config.showTeleportCharges() && actions.contains("Rub")
 				|| config.showDrinkablePotionDoses() && actions.contains("Drink")
 				|| config.showUndrinkablePotionDoses() && UNDRINKABLE_POTIONS.contains(item.getId())
+				|| config.showBasketAndSackCounts() && BASKETS_AND_SACKS.contains(item.getId())
 				|| config.showOtherCharges() && isOther)
 		{
 			Matcher matcher = Pattern.compile(CHARGES_REGEX).matcher(item.getName());

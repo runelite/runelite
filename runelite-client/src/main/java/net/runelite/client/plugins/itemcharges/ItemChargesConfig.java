@@ -45,10 +45,21 @@ public interface ItemChargesConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showBasketAndSackCounts",
+			name = "Show basket & sack counts",
+			description = "Show number of items remaining in fruit baskets and vegetable sacks",
+			position = 4
+	)
+	default boolean showBasketAndSackCounts()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 			keyName = "showOtherCharges",
 			name = "Show other charges",
 			description = "Show number of \"charges\" remaining on other types of items",
-			position = 4
+			position = 5
 	)
 	default boolean showOtherCharges()
 	{
