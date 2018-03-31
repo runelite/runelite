@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +41,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
 class ItemChargesOverlay extends Overlay
@@ -48,6 +49,8 @@ class ItemChargesOverlay extends Overlay
 	private final Client client;
 	private final ItemChargesConfig config;
 	private final QueryRunner queryRunner;
+
+	private TextComponent textComponent = new TextComponent();
 
 	@Inject
 	private ItemChargesOverlay(Client client, ItemChargesConfig config, QueryRunner queryRunner)
@@ -75,17 +78,15 @@ class ItemChargesOverlay extends Overlay
 			}
 
 			final Rectangle bounds = widgetItem.getCanvasBounds();
-			final int x = bounds.x, y = bounds.y + 16;
-
-			graphics.setColor(Color.BLACK); // Text shadow
-			graphics.drawString(String.valueOf(charges), x + 1, y + 1);
-			graphics.setColor(Color.WHITE); // Text surface
-			graphics.drawString(String.valueOf(charges), x, y);
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			textComponent.setText(String.valueOf(charges));
+			textComponent.render(graphics);
 		}
 
 		return null;
 	}
 
+	/** Get WidgetItems for any visible inventory or equipment screens. */
 	private Collection<WidgetItem> getWidgetItems()
 	{
 		final WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(new InventoryWidgetItemQuery());
