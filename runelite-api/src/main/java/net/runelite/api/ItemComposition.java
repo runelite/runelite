@@ -81,4 +81,22 @@ public interface ItemComposition
 	 * @return true if stackable, false otherwise
 	 */
 	boolean isStackable();
+
+	/**
+	 * Returns the menu actions the item has in a players' inventory
+	 *
+	 * @return the inventory menu actions
+	 */
+	String[] getInventoryActions();
+
+	/**
+	 * Returns the menu action index of the shift-click action
+	 *
+	 * @return menu index of the shift-click action
+	 */
+	int getShiftClickActionIndex();
+
+	void setShiftClickActionIndex(int shiftclickActionIndex);
+
+	void resetShiftClickActionIndex();
 }
