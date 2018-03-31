@@ -81,14 +81,14 @@ public class ChargeCounts
 		}
 
 		List<String> actions = Arrays.asList(item.getInventoryActions());
-		boolean isOther = !actions.contains("Rub") && !actions.contains("Drink")
+		boolean isMisc = !actions.contains("Rub") && !actions.contains("Drink")
 				&& !UNDRINKABLE_POTIONS.contains(item.getId()) && !BASKETS_AND_SACKS.contains(item.getId());
 
-		if (config.showTeleportCharges() && actions.contains("Rub")
+		if (config.showTeleportCharges() && (actions.contains("Rub") || actions.contains("Activate") || actions.contains("Play"))
 				|| config.showDrinkablePotionDoses() && actions.contains("Drink")
 				|| config.showUndrinkablePotionDoses() && UNDRINKABLE_POTIONS.contains(item.getId())
 				|| config.showBasketAndSackCounts() && BASKETS_AND_SACKS.contains(item.getId())
-				|| config.showOtherCharges() && isOther)
+				|| config.showMiscItemCharges() && isMisc)
 		{
 			Matcher matcher = Pattern.compile(CHARGES_REGEX).matcher(item.getName());
 			if (matcher.find())

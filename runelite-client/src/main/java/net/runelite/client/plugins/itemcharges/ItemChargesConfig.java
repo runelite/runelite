@@ -14,12 +14,12 @@ public interface ItemChargesConfig extends Config
 	@ConfigItem(
 			keyName = "showTeleportCharges",
 			name = "Show teleport charges",
-			description = "Show number of teleports remaining on items like amulets and rings",
+			description = "Show number of teleports remaining on applicable items",
 			position = 1
 	)
 	default boolean showTeleportCharges()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -52,17 +52,17 @@ public interface ItemChargesConfig extends Config
 	)
 	default boolean showBasketAndSackCounts()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-			keyName = "showOtherCharges",
-			name = "Show other charges",
-			description = "Show number of \"charges\" remaining on other types of items",
+			keyName = "showMiscItemCharges",
+			name = "Show miscellaneous item charges",
+			description = "Show number of \"charges\" remaining on other types of items (eg. Abyssal bracelet, Ogre bellows, Imp-in-a-box)",
 			position = 5
 	)
-	default boolean showOtherCharges()
+	default boolean showMiscItemCharges()
 	{
-		return false;
+		return true;
 	}
 }
