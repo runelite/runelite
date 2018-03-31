@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,16 +34,13 @@ import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
 class ItemChargesOverlay extends Overlay
@@ -53,7 +50,7 @@ class ItemChargesOverlay extends Overlay
 	private final QueryRunner queryRunner;
 
 	@Inject
-	ItemChargesOverlay(Client client, ItemChargesConfig config, QueryRunner queryRunner)
+	private ItemChargesOverlay(Client client, ItemChargesConfig config, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -67,10 +64,10 @@ class ItemChargesOverlay extends Overlay
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem widgetItem : getChargeCountWidgetItems())
+		for (WidgetItem widgetItem : getWidgetItems())
 		{
-			ItemComposition item = client.getItemDefinition(widgetItem.getId());
-			Integer charges = ChargeCounts.getCharges(item, config);
+			final ItemComposition item = client.getItemDefinition(widgetItem.getId());
+			final Integer charges = ChargeCounts.getCharges(item, config);
 
 			if (charges == null)
 			{
@@ -78,29 +75,23 @@ class ItemChargesOverlay extends Overlay
 			}
 
 			final Rectangle bounds = widgetItem.getCanvasBounds();
-			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(charges));
-			textComponent.render(graphics);
+			final int x = bounds.x, y = bounds.y + 16;
+
+			graphics.setColor(Color.BLACK); // Text shadow
+			graphics.drawString(String.valueOf(charges), x + 1, y + 1);
+			graphics.setColor(Color.WHITE); // Text surface
+			graphics.drawString(String.valueOf(charges), x, y);
 		}
 
 		return null;
 	}
 
-	private Collection<WidgetItem> getChargeCountWidgetItems()
+	private Collection<WidgetItem> getWidgetItems()
 	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+		final WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(new InventoryWidgetItemQuery());
+		final WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(new EquipmentItemQuery());
 
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
-			WidgetInfo.EQUIPMENT_AMULET,
-			WidgetInfo.EQUIPMENT_RING,
-			WidgetInfo.EQUIPMENT_GLOVES,
-			WidgetInfo.EQUIPMENT_WEAPON
-		);
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
-
-		Collection<WidgetItem> widgetItems = new ArrayList<>();
+		final Collection<WidgetItem> widgetItems = new ArrayList<>();
 		widgetItems.addAll(Arrays.asList(inventoryWidgetItems));
 		widgetItems.addAll(Arrays.asList(equipmentWidgetItems));
 		return widgetItems;

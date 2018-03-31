@@ -88,8 +88,8 @@ public class ChargeCounts
 			return null;
 		}
 
-		List<String> actions = Arrays.asList(item.getInventoryActions());
-		boolean isMisc = !actions.contains("Rub") && !actions.contains("Activate") && !actions.contains("Play")
+		final List<String> actions = Arrays.asList(item.getInventoryActions());
+		final boolean isMisc = !actions.contains("Rub") && !actions.contains("Activate") && !actions.contains("Play")
 				&& !actions.contains("Drink") && !UNDRINKABLE_POTIONS.contains(item.getId()) && !actions.contains("Remove-one");
 
 		if (config.showTeleportCharges() && (actions.contains("Rub") || actions.contains("Activate") || actions.contains("Play"))
@@ -98,7 +98,7 @@ public class ChargeCounts
 				|| config.showBasketAndSackCounts() && actions.contains("Remove-one")
 				|| config.showMiscItemCharges() && isMisc)
 		{
-			Matcher matcher = CHARGES_REGEX.matcher(item.getName());
+			final Matcher matcher = CHARGES_REGEX.matcher(item.getName());
 			if (matcher.find())
 			{
 				return Integer.parseInt(matcher.group(1));
