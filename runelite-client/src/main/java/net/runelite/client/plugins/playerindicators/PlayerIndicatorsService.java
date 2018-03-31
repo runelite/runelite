@@ -100,14 +100,8 @@ public class PlayerIndicatorsService
 		this.client = client;
 	}
 
-	public void updateConfig(boolean reset)
+	public void invalidatePlayerNames()
 	{
-		// Update mod icons
-		if (modIconsLength == 0 && client.getGameState().compareTo(GameState.LOGIN_SCREEN) >= 0)
-		{
-			loadClanChatIcons();
-		}
-
 		// Reset player names
 		for (Player player : client.getPlayers())
 		{
@@ -117,36 +111,45 @@ public class PlayerIndicatorsService
 			}
 		}
 
-		// Reset clan rank cache
-		if (reset)
+		// Refresh chat box
+		client.refreshChat();
+	}
+
+	public void invalidateClanRanksCache()
+	{
+		// Invalidate clan cache
+		clanRanksCache.invalidateAll();
+	}
+
+	public void updateConfig()
+	{
+		// Update mod icons
+		if (modIconsLength == 0 && client.getGameState().compareTo(GameState.LOGGED_IN) >= 0)
 		{
-			clanRanksCache.invalidateAll();
+			loadClanChatIcons();
 		}
 
 		// Update mask
 		int baseMask = 0;
 
-		if (!reset)
+		if (config.drawFriendNames())
 		{
-			if (config.drawFriendNames())
-			{
-				baseMask |= PlayerNameMask.DRAW_FRIEND_NAME;
-			}
+			baseMask |= PlayerNameMask.DRAW_FRIEND_NAME;
+		}
 
-			if (config.drawClanMemberNames())
-			{
-				baseMask |= PlayerNameMask.DRAW_CLAN_NAME;
-			}
+		if (config.drawClanMemberNames())
+		{
+			baseMask |= PlayerNameMask.DRAW_CLAN_NAME;
+		}
 
-			if (config.drawOwnName())
-			{
-				baseMask |= PlayerNameMask.DRAW_OWN_NAME;
-			}
+		if (config.drawOwnName())
+		{
+			baseMask |= PlayerNameMask.DRAW_OWN_NAME;
+		}
 
-			if (config.drawNonOwnNames())
-			{
-				baseMask |= PlayerNameMask.DRAW_ALL_EXCEPT_OWN_NAME;
-			}
+		if (config.drawNonOwnNames())
+		{
+			baseMask |= PlayerNameMask.DRAW_ALL_EXCEPT_OWN_NAME;
 		}
 
 		client.setPlayerNameMask(baseMask);
@@ -160,15 +163,6 @@ public class PlayerIndicatorsService
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.drawOwnName()
-			&& !config.drawClanMemberNames()
-			&& !config.drawFriendNames()
-			&& !config.drawNonOwnNames()
-			&& !config.drawTeamMemberNames())
-		{
-			return;
-		}
-
 		final Player localPlayer = client.getLocalPlayer();
 
 		for (Player player : client.getPlayers())
