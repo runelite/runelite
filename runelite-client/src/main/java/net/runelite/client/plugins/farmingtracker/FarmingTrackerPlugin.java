@@ -53,6 +53,7 @@ public class FarmingTrackerPlugin extends Plugin
 		}
 
 		panel = injector.getInstance(FarmingTrackerPanel.class);
+		panel.initPanel();
 
 		navButton = NavigationButton.builder()
 			.name("Farming Tracker")

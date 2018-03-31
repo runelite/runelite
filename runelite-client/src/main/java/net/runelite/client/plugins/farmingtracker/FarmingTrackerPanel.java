@@ -24,12 +24,98 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.util.Enumeration;
+import java.util.Objects;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import net.runelite.client.plugins.farmingtracker.data.PatchType;
 import net.runelite.client.ui.PluginPanel;
 
 class FarmingTrackerPanel extends PluginPanel
 {
+	private final String BTN_CONTAINER = "BTN_CONTAINER";
+
+	private JPanel panel;
+	private ButtonGroup patchBtnGroup;
+
 	FarmingTrackerPanel()
 	{
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout(0, 5));
 
+		add(panel);
+	}
+
+	void initPanel()
+	{
+		JPanel buttonContainer = new JPanel();
+		buttonContainer.setName(BTN_CONTAINER);
+		buttonContainer.setLayout(new GridLayout(0, 4, 3, 3));
+
+		patchBtnGroup = new ButtonGroup();
+
+		for (PatchType patchType : PatchType.values())
+		{
+			buttonContainer.add(createPatchTypeButton(patchType));
+		}
+
+		panel.add(buttonContainer, BorderLayout.NORTH);
+	}
+
+	private JToggleButton createPatchTypeButton(PatchType patchType)
+	{
+		JToggleButton farmingPatchBtn = new JToggleButton(patchType.getShortName());
+		farmingPatchBtn.addActionListener(e -> switchTypeInfoView(patchType));
+
+		farmingPatchBtn.setFocusPainted(false);
+		farmingPatchBtn.setActionCommand(patchType.getFullName());
+		farmingPatchBtn.setToolTipText(patchType.getFullName());
+
+		patchBtnGroup.add(farmingPatchBtn);
+
+		return farmingPatchBtn;
+	}
+
+	private void switchTypeInfoView(PatchType patchType)
+	{
+		for (Component component : panel.getComponents())
+		{
+			if (Objects.equals(component.getName(), BTN_CONTAINER))
+			{
+				continue;
+			}
+
+			panel.remove(component);
+		}
+
+		highlightButton(patchType);
+
+		panel.revalidate();
+		panel.repaint();
+	}
+
+	private void highlightButton(PatchType patchType)
+	{
+		for (Enumeration<AbstractButton> buttons = patchBtnGroup.getElements(); buttons.hasMoreElements(); )
+		{
+			AbstractButton button = buttons.nextElement();
+
+			if (button.getActionCommand().equals(patchType.getFullName()))
+			{
+				button.setSelected(true);
+				button.setBackground(Color.GREEN);
+			}
+			else
+			{
+				button.setSelected(false);
+				button.setBackground(null);
+			}
+		}
 	}
 }
