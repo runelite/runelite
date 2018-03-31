@@ -879,7 +879,8 @@ public class ItemComposition extends CacheableNode {
       signature = "(I)I",
       garbageValue = "2048414108"
    )
-   public int method5069() {
+   @Export("getShiftClickActionIndex")
+   public int getShiftClickActionIndex() {
       return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(this.inventoryActions[this.team] != null?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
    }
 
