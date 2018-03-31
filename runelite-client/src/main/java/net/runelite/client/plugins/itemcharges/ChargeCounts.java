@@ -39,7 +39,7 @@ import net.runelite.api.ItemID;
 public class ChargeCounts
 {
 	/** Regex only looks for digits and a closing parenthesis, to match items like Amulet of glory (t6). */
-	private static final String CHARGES_REGEX = "[0-9]+\\)$";
+	private static final String CHARGES_REGEX = "(\\d+)\\)";
 
 	/** Non-chargeable items which would otherwise be matched by CHARGES_REGEX. */
 	private static final RangeSet<Integer> EXCLUDED_ITEMS = TreeRangeSet.create();
@@ -50,8 +50,20 @@ public class ChargeCounts
 
 	static
 	{
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.SHEEP_BONES_1, ItemID.SHEEP_BONES_4));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.RUNE_HERALDIC_HELM, ItemID.RUNE_HERALDIC_HELM_8494));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.STEEL_HERALDIC_HELM, ItemID.STEEL_HERALDIC_HELM_8712));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.RUNE_KITESHIELD_8714, ItemID.RUNE_KITESHIELD_8744));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.STEEL_KITESHIELD_8746, ItemID.STEEL_KITESHIELD_8776));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.MYSTERIOUS_EMBLEM_TIER_2, ItemID.MYSTERIOUS_EMBLEM_TIER_10));
+		EXCLUDED_ITEMS.add(Range.singleton(ItemID.RICKTORS_DIARY_7));
 		EXCLUDED_ITEMS.add(Range.closed(ItemID.SHAYZIEN_GLOVES_1, ItemID.SHAYZIEN_PLATEBODY_5));
 		EXCLUDED_ITEMS.add(Range.closed(ItemID.SHAYZIEN_SUPPLY_GLOVES_1, ItemID.SHAYZIEN_SUPPLY_PLATEBODY_5));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.SHAYZIEN_SUPPLY_SET_1, ItemID.SHAYZIEN_SUPPLY_SET_5));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.TORN_CLUE_SCROLL_PART_1, ItemID.TORN_CLUE_SCROLL_PART_3));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.RAW_PYSK_FISH_0, ItemID.PSYKK_BAT_6));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.ADAMANT_HERALDIC_HELM, ItemID.ADAMANT_HERALDIC_HELM_22189));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.ADAMANT_KITESHIELD_22127, ItemID.ADAMANT_KITESHIELD_22157));
 
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.SERUM_207_4, ItemID.SERUM_207_1));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.SERUM_208_4, ItemID.SERUM_208_1));
@@ -59,6 +71,8 @@ public class ChargeCounts
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.SACRED_OIL4, ItemID.SACRED_OIL1));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.COMPOST_POTION4, ItemID.COMPOST_POTION1));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.GUTHIX_BALANCE4, ItemID.GUTHIX_BALANCE1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.HEALING_VIAL4, ItemID.HEALING_VIAL1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.VIAL_OF_TEARS_1, ItemID.VIAL_OF_TEARS_FULL));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.REJUVENATION_POTION_4, ItemID.REJUVENATION_POTION_1));
 
 		BASKETS_AND_SACKS.add(Range.closed(ItemID.APPLES1, ItemID.BANANAS5));
@@ -93,8 +107,7 @@ public class ChargeCounts
 			Matcher matcher = Pattern.compile(CHARGES_REGEX).matcher(item.getName());
 			if (matcher.find())
 			{
-				String match = matcher.group();
-				return Integer.parseInt(match.substring(0, match.length() - 1));
+				return Integer.parseInt(matcher.group(1));
 			}
 		}
 

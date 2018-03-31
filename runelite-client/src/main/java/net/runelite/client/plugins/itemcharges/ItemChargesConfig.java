@@ -58,7 +58,7 @@ public interface ItemChargesConfig extends Config
 	@ConfigItem(
 			keyName = "showMiscItemCharges",
 			name = "Show miscellaneous item charges",
-			description = "Show number of \"charges\" remaining on other types of items (eg. Abyssal bracelet, Ogre bellows, Imp-in-a-box)",
+			description = "Show number of \"charges\" remaining on other types of items (eg. Waterskin, Ogre bellows, Imp-in-a-box)",
 			position = 5
 	)
 	default boolean showMiscItemCharges()
