@@ -24,57 +24,25 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
-import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.farmingtracker.data.PatchType;
 
-@PluginDescriptor(
-	name = "Farming Tracker"
+@ConfigGroup(
+	keyName = "farmingTracker",
+	name = "Farming Tracker",
+	description = "Configuration for the farming tracker"
 )
-public class FarmingTrackerPlugin extends Plugin
+public interface FarmingTrackerConfig extends Config
 {
-	@Inject
-	private PluginToolbar pluginToolbar;
-
-	private FarmingTrackerPanel panel;
-	private NavigationButton navButton;
-
-	@Provides
-	FarmingTrackerConfig provideConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "defaultPatch",
+		name = "Default patch",
+		description = "Default patch on opening the panel"
+	)
+	default PatchType defaultPatch()
 	{
-		return configManager.getConfig(FarmingTrackerConfig.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("farming.png"));
-		}
-
-		panel = injector.getInstance(FarmingTrackerPanel.class);
-		panel.initPanel();
-
-		navButton = NavigationButton.builder()
-			.name("Farming Tracker")
-			.icon(icon)
-			.panel(panel)
-			.build();
-
-		pluginToolbar.addNavigation(navButton);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		pluginToolbar.removeNavigation(navButton);
+		return PatchType.HERB;
 	}
 }

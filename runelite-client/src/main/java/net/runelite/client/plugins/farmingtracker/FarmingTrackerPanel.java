@@ -30,6 +30,7 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.Enumeration;
 import java.util.Objects;
+import javax.inject.Inject;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -39,10 +40,14 @@ import net.runelite.client.ui.PluginPanel;
 
 class FarmingTrackerPanel extends PluginPanel
 {
+	@Inject
+	private FarmingTrackerConfig config;
+
 	private final String BTN_CONTAINER = "BTN_CONTAINER";
 
 	private JPanel panel;
 	private ButtonGroup patchBtnGroup;
+	private boolean hasPanelBeenActivated = false;
 
 	FarmingTrackerPanel()
 	{
@@ -50,6 +55,18 @@ class FarmingTrackerPanel extends PluginPanel
 		panel.setLayout(new BorderLayout(0, 5));
 
 		add(panel);
+	}
+
+	@Override
+	public void onActivate()
+	{
+		super.onActivate();
+
+		if (!hasPanelBeenActivated)
+		{
+			hasPanelBeenActivated = true;
+			switchTypeInfoView(config.defaultPatch());
+		}
 	}
 
 	void initPanel()
