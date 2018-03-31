@@ -39,14 +39,12 @@ import net.runelite.api.ItemID;
 public class ChargeCounts
 {
 	/** Regex only looks for digits and a closing parenthesis, to match items like Amulet of glory (t6). */
-	private static final String CHARGES_REGEX = "(\\d+)\\)";
+	private static final Pattern CHARGES_REGEX = Pattern.compile("(\\d+)\\)");
 
 	/** Non-chargeable items which would otherwise be matched by CHARGES_REGEX. */
 	private static final RangeSet<Integer> EXCLUDED_ITEMS = TreeRangeSet.create();
 	/** Potions which lack a Drink menu action but can hold multiple doses. */
 	private static final RangeSet<Integer> UNDRINKABLE_POTIONS = TreeRangeSet.create();
-	/** Non-empty fruit baskets and vegetable sacks. */
-	private static final RangeSet<Integer> BASKETS_AND_SACKS = TreeRangeSet.create();
 
 	static
 	{
@@ -74,10 +72,6 @@ public class ChargeCounts
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.HEALING_VIAL4, ItemID.HEALING_VIAL1));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.VIAL_OF_TEARS_1, ItemID.VIAL_OF_TEARS_FULL));
 		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.REJUVENATION_POTION_4, ItemID.REJUVENATION_POTION_1));
-
-		BASKETS_AND_SACKS.add(Range.closed(ItemID.APPLES1, ItemID.BANANAS5));
-		BASKETS_AND_SACKS.add(Range.closed(ItemID.POTATOES1, ItemID.CABBAGES10));
-		BASKETS_AND_SACKS.add(Range.closed(ItemID.TOMATOES1, ItemID.TOMATOES5));
 	}
 
 	/**
@@ -95,16 +89,16 @@ public class ChargeCounts
 		}
 
 		List<String> actions = Arrays.asList(item.getInventoryActions());
-		boolean isMisc = !actions.contains("Rub") && !actions.contains("Drink")
-				&& !UNDRINKABLE_POTIONS.contains(item.getId()) && !BASKETS_AND_SACKS.contains(item.getId());
+		boolean isMisc = !actions.contains("Rub") && !actions.contains("Activate") && !actions.contains("Play")
+				&& !actions.contains("Drink") && !UNDRINKABLE_POTIONS.contains(item.getId()) && !actions.contains("Remove-one");
 
 		if (config.showTeleportCharges() && (actions.contains("Rub") || actions.contains("Activate") || actions.contains("Play"))
 				|| config.showDrinkablePotionDoses() && actions.contains("Drink")
 				|| config.showUndrinkablePotionDoses() && UNDRINKABLE_POTIONS.contains(item.getId())
-				|| config.showBasketAndSackCounts() && BASKETS_AND_SACKS.contains(item.getId())
+				|| config.showBasketAndSackCounts() && actions.contains("Remove-one")
 				|| config.showMiscItemCharges() && isMisc)
 		{
-			Matcher matcher = Pattern.compile(CHARGES_REGEX).matcher(item.getName());
+			Matcher matcher = CHARGES_REGEX.matcher(item.getName());
 			if (matcher.find())
 			{
 				return Integer.parseInt(matcher.group(1));
