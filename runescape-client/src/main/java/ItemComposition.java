@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -333,6 +334,10 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-2098822871"
    )
    @Export("post")
+   @Hook(
+       value = "postItemComposition",
+       end = true
+   )
    void post() {
    }
 
