@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -333,6 +334,10 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-2098822871"
    )
    @Export("post")
+   @Hook(
+       value = "postItemComposition",
+       end = true
+   )
    void post() {
    }
 
@@ -879,7 +884,8 @@ public class ItemComposition extends CacheableNode {
       signature = "(I)I",
       garbageValue = "2048414108"
    )
-   public int method5069() {
+   @Export("getShiftClickActionIndex")
+   public int getShiftClickActionIndex() {
       return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(this.inventoryActions[this.team] != null?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
    }
 
