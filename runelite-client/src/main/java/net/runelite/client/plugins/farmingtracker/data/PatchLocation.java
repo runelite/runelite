@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.farmingtracker.data;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.NULL_12605;
@@ -283,4 +285,19 @@ public enum PatchLocation
 	private final PatchType patchType;
 	private final int patchObjectId;
 	private final FarmingTick farmingTick;
+
+	public static Set<PatchLocation> findByPatchType(PatchType patchType)
+	{
+		Set<PatchLocation> patchLocations = new HashSet<>();
+
+		for (PatchLocation patchLocation : PatchLocation.values())
+		{
+			if (patchLocation.getPatchType().equals(patchType))
+			{
+				patchLocations.add(patchLocation);
+			}
+		}
+
+		return patchLocations;
+	}
 }

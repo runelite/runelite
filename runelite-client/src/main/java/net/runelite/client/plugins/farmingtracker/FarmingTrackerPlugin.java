@@ -28,7 +28,9 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import static net.runelite.api.ItemID.WEEDS;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
@@ -41,6 +43,9 @@ public class FarmingTrackerPlugin extends Plugin
 {
 	@Inject
 	private PluginToolbar pluginToolbar;
+
+	@Inject
+	private ItemManager itemManager;
 
 	private FarmingTrackerPanel panel;
 	private NavigationButton navButton;
@@ -61,7 +66,7 @@ public class FarmingTrackerPlugin extends Plugin
 		}
 
 		panel = injector.getInstance(FarmingTrackerPanel.class);
-		panel.initPanel();
+		panel.initPanel(itemManager.getImage(WEEDS));
 
 		navButton = NavigationButton.builder()
 			.name("Farming Tracker")

@@ -28,20 +28,27 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.ScrollPaneConstants;
 import net.runelite.client.plugins.farmingtracker.data.PatchType;
+import net.runelite.client.plugins.farmingtracker.ui.PatchList;
 import net.runelite.client.ui.PluginPanel;
 
 class FarmingTrackerPanel extends PluginPanel
 {
 	@Inject
 	private FarmingTrackerConfig config;
+
+	private Map<String, PatchList> patchListMap = new HashMap<>();
 
 	private final String BTN_CONTAINER = "BTN_CONTAINER";
 
@@ -51,6 +58,8 @@ class FarmingTrackerPanel extends PluginPanel
 
 	FarmingTrackerPanel()
 	{
+		getScrollPane().setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 5));
 
@@ -69,7 +78,7 @@ class FarmingTrackerPanel extends PluginPanel
 		}
 	}
 
-	void initPanel()
+	void initPanel(BufferedImage bufferedImage)
 	{
 		JPanel buttonContainer = new JPanel();
 		buttonContainer.setName(BTN_CONTAINER);
@@ -80,6 +89,9 @@ class FarmingTrackerPanel extends PluginPanel
 		for (PatchType patchType : PatchType.values())
 		{
 			buttonContainer.add(createPatchTypeButton(patchType));
+
+			final PatchList patchList = new PatchList(patchType, bufferedImage);
+			patchListMap.put(patchType.name(), patchList);
 		}
 
 		panel.add(buttonContainer, BorderLayout.NORTH);
@@ -112,6 +124,9 @@ class FarmingTrackerPanel extends PluginPanel
 		}
 
 		highlightButton(patchType);
+
+		PatchList patchList = patchListMap.get(patchType.name());
+		panel.add(patchList.getContainer(), BorderLayout.CENTER);
 
 		panel.revalidate();
 		panel.repaint();
