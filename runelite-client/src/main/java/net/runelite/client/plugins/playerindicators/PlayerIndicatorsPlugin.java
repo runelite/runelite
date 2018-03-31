@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
@@ -76,30 +77,41 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		playerIndicatorsService.updateConfig(false);
+		playerIndicatorsService.invalidatePlayerNames();
+		playerIndicatorsService.updateConfig();
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		playerIndicatorsService.updateConfig(true);
+		playerIndicatorsService.invalidatePlayerNames();
+		playerIndicatorsService.invalidateClanRanksCache();
+		client.setPlayerNameMask(0);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("playerindicators")
-			|| event.getGroup().equals("runelite")
-			|| event.getGroup().equals("minimap"))
+		if (event.getGroup().equals("playerindicators"))
 		{
-			playerIndicatorsService.updateConfig(false);
+			playerIndicatorsService.invalidatePlayerNames();
+			playerIndicatorsService.updateConfig();
 		}
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onGameStateChanged(GameStateChanged event)
 	{
-		playerIndicatorsService.updateConfig(false);
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			playerIndicatorsService.updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onClanChanged(ClanChanged event)
+	{
+		playerIndicatorsService.invalidateClanRanksCache();
 	}
 
 	@Subscribe
