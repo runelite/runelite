@@ -171,6 +171,7 @@ public class HunterPlugin extends Plugin
 				if (myTrap != null)
 				{
 					myTrap.setState(HunterTrap.State.FULL);
+					myTrap.resetTimer();
 					lastActionTime = Instant.now();
 
 					if (config.maniacalMonkeyNotify() && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)

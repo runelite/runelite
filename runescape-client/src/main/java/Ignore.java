@@ -1,62 +1,36 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kt")
+@ObfuscatedName("kx")
 @Implements("Ignore")
 public class Ignore extends Nameable {
-   @ObfuscatedName("ii")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 591646507
+      intValue = -1817700977
    )
-   @Export("plane")
-   static int plane;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 335077035
-   )
-   int field3839;
+   int field3837;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lkt;B)I",
-      garbageValue = "-58"
+      signature = "(Lkx;B)I",
+      garbageValue = "8"
    )
-   int method5380(Ignore var1) {
-      return this.field3839 - var1.field3839;
+   int method5389(Ignore var1) {
+      return this.field3837 - var1.field3837;
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(Lkv;I)I",
-      garbageValue = "-1435662815"
+      signature = "(Lku;B)I",
+      garbageValue = "0"
    )
-   public int vmethod5444(Nameable var1) {
-      return this.method5380((Ignore)var1);
+   public int vmethod5454(Nameable var1) {
+      return this.method5389((Ignore)var1);
    }
 
    public int compareTo(Object var1) {
-      return this.method5380((Ignore)var1);
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(B)Llk;",
-      garbageValue = "-32"
-   )
-   static IndexedSprite method5387() {
-      IndexedSprite var0 = new IndexedSprite();
-      var0.originalWidth = class332.indexedSpriteWidth;
-      var0.originalHeight = class332.indexedSpriteHeight;
-      var0.offsetX = class90.indexedSpriteOffsetXs[0];
-      var0.offsetY = class153.indexedSpriteOffsetYs[0];
-      var0.width = class332.indexSpriteWidths[0];
-      var0.height = GrandExchangeOffer.indexedSpriteHeights[0];
-      var0.palette = class332.indexedSpritePalette;
-      var0.pixels = ClassInfo.spritePixels[0];
-      class316.method5605();
-      return var0;
+      return this.method5389((Ignore)var1);
    }
 }

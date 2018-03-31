@@ -3,125 +3,122 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bc")
 public final class class62 {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @Export("tileHeights")
    static int[][][] tileHeights;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("tileSettings")
    static byte[][][] tileSettings;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1324987623
+      intValue = 724759005
    )
-   static int field705;
-   @ObfuscatedName("a")
+   static int field722;
+   @ObfuscatedName("j")
    @Export("tileUnderlayIds")
    static byte[][][] tileUnderlayIds;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @Export("tileOverlayIds")
    static byte[][][] tileOverlayIds;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @Export("tileOverlayPath")
    static byte[][][] tileOverlayPath;
-   @ObfuscatedName("x")
-   static byte[][][] field704;
    @ObfuscatedName("p")
-   static int[][] field714;
-   @ObfuscatedName("u")
-   static int[][][] field709;
+   static byte[][][] field725;
    @ObfuscatedName("w")
-   static final int[] field713;
-   @ObfuscatedName("s")
-   static final int[] field715;
-   @ObfuscatedName("d")
-   static final int[] field722;
-   @ObfuscatedName("f")
-   static final int[] field716;
-   @ObfuscatedName("r")
-   static final int[] field717;
+   static int[][] field719;
+   @ObfuscatedName("l")
+   static int[][][] field721;
+   @ObfuscatedName("t")
+   static final int[] field727;
+   @ObfuscatedName("v")
+   static final int[] field731;
+   @ObfuscatedName("n")
+   static final int[] field730;
+   @ObfuscatedName("u")
+   static final int[] field726;
+   @ObfuscatedName("q")
+   static final int[] field723;
+   @ObfuscatedName("g")
+   static final int[] field732;
    @ObfuscatedName("y")
-   static final int[] field718;
-   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 497605019
+      intValue = 1852317337
    )
-   static int field719;
-   @ObfuscatedName("m")
+   static int field734;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1404865251
+      intValue = -1017419369
    )
-   static int field720;
-   @ObfuscatedName("ck")
-   @ObfuscatedSignature(
-      signature = "Lju;"
-   )
-   @Export("indexTextures")
-   static IndexData indexTextures;
-   @ObfuscatedName("fj")
-   @ObfuscatedSignature(
-      signature = "[Lla;"
-   )
-   @Export("mapMarkers")
-   static SpritePixels[] mapMarkers;
-   @ObfuscatedName("gh")
-   @ObfuscatedGetter(
-      intValue = -1517107375
-   )
-   @Export("cameraYaw")
-   static int cameraYaw;
+   static int field735;
 
    static {
       tileHeights = new int[4][105][105];
       tileSettings = new byte[4][104][104];
-      field705 = 99;
-      field713 = new int[]{1, 2, 4, 8};
-      field715 = new int[]{16, 32, 64, 128};
-      field722 = new int[]{1, 0, -1, 0};
-      field716 = new int[]{0, -1, 0, 1};
-      field717 = new int[]{1, -1, -1, 1};
-      field718 = new int[]{-1, -1, 1, 1};
-      field719 = (int)(Math.random() * 17.0D) - 8;
-      field720 = (int)(Math.random() * 33.0D) - 16;
+      field722 = 99;
+      field727 = new int[]{1, 2, 4, 8};
+      field731 = new int[]{16, 32, 64, 128};
+      field730 = new int[]{1, 0, -1, 0};
+      field726 = new int[]{0, -1, 0, 1};
+      field723 = new int[]{1, -1, -1, 1};
+      field732 = new int[]{-1, -1, 1, 1};
+      field734 = (int)(Math.random() * 17.0D) - 8;
+      field735 = (int)(Math.random() * 33.0D) - 16;
    }
 
-   @ObfuscatedName("gh")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lbi;ZB)V",
-      garbageValue = "8"
+      signature = "(B)Llq;",
+      garbageValue = "-32"
    )
-   static void method1112(Player var0, boolean var1) {
-      if(var0 != null && var0.hasConfig() && !var0.hidden) {
-         int var2 = var0.field837 << 14;
-         var0.isLowDetail = false;
-         if((Client.lowMemory && class93.playerIndexesCount > 50 || class93.playerIndexesCount > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
-            var0.isLowDetail = true;
-         }
+   public static IndexedSprite method1088() {
+      IndexedSprite var0 = new IndexedSprite();
+      var0.originalWidth = class332.indexedSpriteWidth;
+      var0.originalHeight = class81.indexedSpriteHeight;
+      var0.offsetX = GameCanvas.indexedSpriteOffsetXs[0];
+      var0.offsetY = class332.indexedSpriteOffsetYs[0];
+      var0.width = class25.indexSpriteWidths[0];
+      var0.height = class332.indexedSpriteHeights[0];
+      var0.palette = class332.indexedSpritePalette;
+      var0.pixels = class332.spritePixels[0];
+      FileSystem.method4544();
+      return var0;
+   }
 
-         int var3 = var0.x >> 7;
-         int var4 = var0.y >> 7;
-         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-            if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
-               var0.isLowDetail = false;
-               var0.field822 = class149.getTileHeight(var0.x, var0.y, Ignore.plane);
-               var0.field1141 = Client.gameCycle;
-               class38.region.method2878(Ignore.plane, var0.x, var0.y, var0.field822, 60, var0, var0.angle, var2, var0.field815, var0.field814, var0.field829, var0.field841);
-            } else {
-               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
-                  if(Client.field1078[var3][var4] == Client.field1043) {
-                     return;
-                  }
+   @ObfuscatedName("ga")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-631058441"
+   )
+   static final void method1086() {
+      int var0 = class93.playerIndexesCount;
+      int[] var1 = class93.playerIndices;
 
-                  Client.field1078[var3][var4] = Client.field1043;
-               }
-
-               var0.field822 = class149.getTileHeight(var0.x, var0.y, Ignore.plane);
-               var0.field1141 = Client.gameCycle;
-               class38.region.method2877(Ignore.plane, var0.x, var0.y, var0.field822, 60, var0, var0.angle, var2, var0.field1165);
-            }
+      for(int var2 = 0; var2 < var0; ++var2) {
+         Player var3 = Client.cachedPlayers[var1[var2]];
+         if(var3 != null) {
+            WorldMapType1.method300(var3, 1);
          }
       }
 
+   }
+
+   @ObfuscatedName("kv")
+   @ObfuscatedSignature(
+      signature = "(Lib;IIII)V",
+      garbageValue = "-2037169622"
+   )
+   static final void method1068(Widget var0, int var1, int var2, int var3) {
+      class236 var4 = var0.method4475(false);
+      if(var4 != null) {
+         if(Client.field1087 < 3) {
+            MouseRecorder.compass.method5886(var1, var2, var4.field2765, var4.field2763, 25, 25, Client.mapAngle, 256, var4.field2766, var4.field2768);
+         } else {
+            Rasterizer2D.method5759(var1, var2, 0, var4.field2766, var4.field2768);
+         }
+
+      }
    }
 }

@@ -1,22 +1,24 @@
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("es")
 @Implements("UrlRequest")
 public class UrlRequest {
-   @ObfuscatedName("l")
-   public static File field2092;
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @Export("url")
    final URL url;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("isDone0")
    volatile boolean isDone0;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("response0")
    volatile byte[] response0;
 
@@ -24,152 +26,155 @@ public class UrlRequest {
       this.url = var1;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-1954067076"
+      garbageValue = "853197112"
    )
    @Export("isDone")
    public boolean isDone() {
       return this.isDone0;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)[B",
-      garbageValue = "-93586350"
+      signature = "(B)[B",
+      garbageValue = "30"
    )
    @Export("getResponse")
    public byte[] getResponse() {
       return this.response0;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)Lgd;",
-      garbageValue = "529797464"
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
+      garbageValue = "-68"
    )
-   public static PacketNode method3096() {
-      PacketNode var0;
-      if(PacketNode.field2473 == 0) {
-         var0 = new PacketNode();
+   @Export("processClientError")
+   public static void processClientError(String var0, Throwable var1) {
+      if(var1 != null) {
+         var1.printStackTrace();
       } else {
-         var0 = PacketNode.packetBufferNodes[--PacketNode.field2473];
-      }
+         try {
+            String var2 = "";
+            if(var1 != null) {
+               Throwable var4 = var1;
+               String var5;
+               if(var1 instanceof RunException) {
+                  RunException var6 = (RunException)var1;
+                  var5 = var6.field2184 + " | ";
+                  var4 = var6.parent;
+               } else {
+                  var5 = "";
+               }
 
-      var0.clientPacket = null;
-      var0.field2469 = 0;
-      var0.packetBuffer = new PacketBuffer(5000);
-      return var0;
-   }
+               StringWriter var18 = new StringWriter();
+               PrintWriter var7 = new PrintWriter(var18);
+               var4.printStackTrace(var7);
+               var7.close();
+               String var8 = var18.toString();
+               BufferedReader var9 = new BufferedReader(new StringReader(var8));
+               String var10 = var9.readLine();
 
-   @ObfuscatedName("hy")
-   @ObfuscatedSignature(
-      signature = "(Ljd;IIII)V",
-      garbageValue = "-21726711"
-   )
-   static final void method3097(NPCComposition var0, int var1, int var2, int var3) {
-      if(Client.menuOptionCount < 400) {
-         if(var0.configs != null) {
-            var0 = var0.transform();
-         }
-
-         if(var0 != null) {
-            if(var0.field3738) {
-               if(!var0.field3732 || Client.field1016 == var1) {
-                  String var4 = var0.name;
-                  if(var0.combatLevel != 0) {
-                     var4 = var4 + class245.method4529(var0.combatLevel, WorldMapData.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
-                  }
-
-                  if(var0.field3732 && Client.field993) {
-                     class169.addMenuEntry("Examine", class37.getColTags(16776960) + var4, 1003, var1, var2, var3);
-                  }
-
-                  if(Client.itemSelectionState == 1) {
-                     class169.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class37.getColTags(16776960) + var4, 7, var1, var2, var3);
-                  } else if(Client.spellSelected) {
-                     if((class150.field2100 & 2) == 2) {
-                        class169.addMenuEntry(Client.field1006, Client.field1074 + " " + "->" + " " + class37.getColTags(16776960) + var4, 8, var1, var2, var3);
+               label64:
+               while(true) {
+                  while(true) {
+                     String var11 = var9.readLine();
+                     if(var11 == null) {
+                        var5 = var5 + "| " + var10;
+                        var2 = var5;
+                        break label64;
                      }
-                  } else {
-                     int var5 = var0.field3732 && Client.field993?2000:0;
-                     String[] var6 = var0.actions;
-                     int var7;
-                     int var8;
-                     if(var6 != null) {
-                        for(var7 = 4; var7 >= 0; --var7) {
-                           if(var6[var7] != null && !var6[var7].equalsIgnoreCase("Attack")) {
-                              var8 = 0;
-                              if(var7 == 0) {
-                                 var8 = var5 + 9;
-                              }
 
-                              if(var7 == 1) {
-                                 var8 = var5 + 10;
-                              }
-
-                              if(var7 == 2) {
-                                 var8 = var5 + 11;
-                              }
-
-                              if(var7 == 3) {
-                                 var8 = var5 + 12;
-                              }
-
-                              if(var7 == 4) {
-                                 var8 = var5 + 13;
-                              }
-
-                              class169.addMenuEntry(var6[var7], class37.getColTags(16776960) + var4, var8, var1, var2, var3);
-                           }
+                     int var12 = var11.indexOf(40);
+                     int var13 = var11.indexOf(41, var12 + 1);
+                     if(var12 >= 0 && var13 >= 0) {
+                        String var14 = var11.substring(var12 + 1, var13);
+                        int var15 = var14.indexOf(".java:");
+                        if(var15 >= 0) {
+                           var14 = var14.substring(0, var15) + var14.substring(var15 + 5);
+                           var5 = var5 + var14 + ' ';
+                           continue;
                         }
+
+                        var11 = var11.substring(0, var12);
                      }
 
-                     if(var6 != null) {
-                        for(var7 = 4; var7 >= 0; --var7) {
-                           if(var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
-                              short var9 = 0;
-                              if(AttackOption.AttackOption_hidden != Client.npcAttackOption) {
-                                 if(Client.npcAttackOption == AttackOption.AttackOption_alwaysRightClick || AttackOption.AttackOption_dependsOnCombatLevels == Client.npcAttackOption && var0.combatLevel > WorldMapData.localPlayer.combatLevel) {
-                                    var9 = 2000;
-                                 }
-
-                                 var8 = 0;
-                                 if(var7 == 0) {
-                                    var8 = var9 + 9;
-                                 }
-
-                                 if(var7 == 1) {
-                                    var8 = var9 + 10;
-                                 }
-
-                                 if(var7 == 2) {
-                                    var8 = var9 + 11;
-                                 }
-
-                                 if(var7 == 3) {
-                                    var8 = var9 + 12;
-                                 }
-
-                                 if(var7 == 4) {
-                                    var8 = var9 + 13;
-                                 }
-
-                                 class169.addMenuEntry(var6[var7], class37.getColTags(16776960) + var4, var8, var1, var2, var3);
-                              }
-                           }
-                        }
-                     }
-
-                     if(!var0.field3732 || !Client.field993) {
-                        class169.addMenuEntry("Examine", class37.getColTags(16776960) + var4, 1003, var1, var2, var3);
-                     }
+                     var11 = var11.trim();
+                     var11 = var11.substring(var11.lastIndexOf(32) + 1);
+                     var11 = var11.substring(var11.lastIndexOf(9) + 1);
+                     var5 = var5 + var11 + ' ';
                   }
-
                }
             }
+
+            if(var0 != null) {
+               if(var1 != null) {
+                  var2 = var2 + " | ";
+               }
+
+               var2 = var2 + var0;
+            }
+
+            System.out.println("Error: " + var2);
+            var2 = var2.replace(':', '.');
+            var2 = var2.replace('@', '_');
+            var2 = var2.replace('&', '_');
+            var2 = var2.replace('#', '_');
+            if(RunException.field2178 == null) {
+               return;
+            }
+
+            URL var3 = new URL(RunException.field2178.getCodeBase(), "clienterror.ws?c=" + RunException.revision + "&u=" + RunException.field2176 + "&v1=" + class241.javaVendor + "&v2=" + Signlink.javaVersion + "&e=" + var2);
+            DataInputStream var17 = new DataInputStream(var3.openStream());
+            var17.read();
+            var17.close();
+         } catch (Exception var16) {
+            ;
          }
+
       }
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-688323112"
+   )
+   public static void method3108() {
+      try {
+         if(class229.field2680 == 1) {
+            int var0 = class229.field2679.method4145();
+            if(var0 > 0 && class229.field2679.method4169()) {
+               var0 -= BoundingBox3D.field249;
+               if(var0 < 0) {
+                  var0 = 0;
+               }
+
+               class229.field2679.method4144(var0);
+               return;
+            }
+
+            class229.field2679.method4150();
+            class229.field2679.method4148();
+            if(class61.field714 != null) {
+               class229.field2680 = 2;
+            } else {
+               class229.field2680 = 0;
+            }
+
+            GrandExchangeOffer.field292 = null;
+            WorldComparator.field260 = null;
+         }
+      } catch (Exception var2) {
+         var2.printStackTrace();
+         class229.field2679.method4150();
+         class229.field2680 = 0;
+         GrandExchangeOffer.field292 = null;
+         WorldComparator.field260 = null;
+         class61.field714 = null;
+      }
+
    }
 }

@@ -55,8 +55,8 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
@@ -64,7 +64,7 @@ import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetOpened;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -480,6 +480,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
 	{
+		assert isClientThread();
 		int zoom = get3dZoom();
 		set3dZoom(scale);
 		try
@@ -506,25 +507,26 @@ public abstract class RSClientMixin implements RSClient
 		client.setMenuEntries(entries);
 	}
 
-	@Copy("openWidget")
-	public static WidgetNode rs$openWidget(int parentId, int groupId, int autoClose)
+	@Copy("runWidgetOnLoadListener")
+	public static void rs$runWidgetOnLoadListener(int groupId)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("openWidget")
-	public static WidgetNode rl$openWidget(int parentId, int groupId, int autoClose)
+	@Replace("runWidgetOnLoadListener")
+	public static void rl$runWidgetOnLoadListener(int groupId)
 	{
-		MenuEntry[] entries = client.getMenuEntries();
-		WidgetNode widgetNode = rs$openWidget(parentId, groupId, autoClose);
-		client.setMenuEntries(entries);
+		rs$runWidgetOnLoadListener(groupId);
 
-		WidgetOpened event = new WidgetOpened();
-		event.setParentId(parentId);
-		event.setGroupId(groupId);
-		event.setAutoClose(autoClose);
-		eventBus.post(event);
-		return widgetNode;
+		RSWidget[][] widgets = client.getWidgets();
+		boolean loaded = widgets != null && widgets[groupId] != null;
+
+		if (loaded)
+		{
+			WidgetLoaded event = new WidgetLoaded();
+			event.setGroupId(groupId);
+			eventBus.post(event);
+		}
 	}
 
 	@FieldHook("skillExperiences")

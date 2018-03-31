@@ -1,91 +1,84 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("an")
+@ObfuscatedName("ae")
 public class class38 {
-   @ObfuscatedName("ec")
-   @ObfuscatedGetter(
-      intValue = -593025733
-   )
-   @Export("baseX")
-   static int baseX;
-   @ObfuscatedName("fz")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lew;"
+      signature = "[Llq;"
    )
-   @Export("region")
-   static Region region;
-   @ObfuscatedName("fv")
-   @ObfuscatedSignature(
-      signature = "[Llk;"
-   )
-   @Export("scrollbarSprites")
-   static IndexedSprite[] scrollbarSprites;
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(II)Ljf;",
-      garbageValue = "1152972080"
-   )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class241.identKit_ref.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         KitDefinition.identKits.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
+   @Export("titlemuteSprite")
+   static IndexedSprite[] titlemuteSprite;
    @ObfuscatedName("q")
+   static int[] field489;
+   @ObfuscatedName("bn")
    @ObfuscatedSignature(
-      signature = "(Lla;IIII)V",
-      garbageValue = "1118821020"
+      signature = "Lbn;"
    )
-   static void method550(SpritePixels var0, int var1, int var2, int var3) {
-      class213 var4 = WorldMapRegion.field457;
-      long var6 = (long)(var3 << 16 | var1 << 8 | var2);
-      var4.method3954(var0, var6, var0.pixels.length * 4);
-   }
+   @Export("mouseRecorder")
+   static MouseRecorder mouseRecorder;
 
-   @ObfuscatedName("jc")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-181624143"
+      signature = "([BI)V",
+      garbageValue = "2133478144"
    )
-   static void method549() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.first(); var0 != null; var0 = (WidgetNode)Client.componentTable.next()) {
-         int var1 = var0.id;
-         if(Script.loadWidget(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
-
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(var3[var4] != null) {
-                  var2 = var3[var4].hasScript;
-                  break;
-               }
-            }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = GZipDecompressor.getWidget(var4);
-               if(var5 != null) {
-                  GameEngine.method1053(var5);
+   static synchronized void method531(byte[] var0) {
+      if(var0.length == 100 && class195.field2572 < 1000) {
+         class195.field2575[++class195.field2572 - 1] = var0;
+      } else if(var0.length == 5000 && class195.field2577 < 250) {
+         class195.field2576[++class195.field2577 - 1] = var0;
+      } else if(var0.length == 30000 && class195.field2574 < 50) {
+         class195.field2573[++class195.field2574 - 1] = var0;
+      } else {
+         if(class195.field2578 != null) {
+            for(int var1 = 0; var1 < PacketNode.field2491.length; ++var1) {
+               if(var0.length == PacketNode.field2491[var1] && GrandExchangeEvents.field265[var1] < class195.field2578[var1].length) {
+                  class195.field2578[var1][GrandExchangeEvents.field265[var1]++] = var0;
+                  return;
                }
             }
          }
-      }
 
+      }
+   }
+
+   @ObfuscatedName("gk")
+   @ObfuscatedSignature(
+      signature = "(Lkn;IIII)V",
+      garbageValue = "-503372841"
+   )
+   @Export("queueAnimationSound")
+   static void queueAnimationSound(Sequence var0, int var1, int var2, int var3) {
+      if(Client.queuedSoundEffectCount < 50 && Client.field1034 != 0) {
+         if(var0.field3759 != null && var1 < var0.field3759.length) {
+            int var4 = var0.field3759[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var5;
+               Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var6;
+               Client.unknownSoundValues2[Client.queuedSoundEffectCount] = 0;
+               Client.audioEffects[Client.queuedSoundEffectCount] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.soundLocations[Client.queuedSoundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
+               ++Client.queuedSoundEffectCount;
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("ks")
+   @ObfuscatedSignature(
+      signature = "(Lib;IS)Ljava/lang/String;",
+      garbageValue = "-1598"
+   )
+   static String method529(Widget var0, int var1) {
+      int var3 = class45.getWidgetClickMask(var0);
+      boolean var2 = (var3 >> var1 + 1 & 1) != 0;
+      return !var2 && var0.onOpListener == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
    }
 }

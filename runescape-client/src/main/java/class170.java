@@ -1,26 +1,15 @@
-import java.io.File;
 import java.util.Hashtable;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fp")
 public class class170 {
-   @ObfuscatedName("t")
-   static boolean field2194;
-   @ObfuscatedName("q")
-   static File field2189;
-   @ObfuscatedName("i")
-   static Hashtable field2190;
-   @ObfuscatedName("ci")
-   @ObfuscatedSignature(
-      signature = "Lfy;"
-   )
-   @Export("rssocket")
-   static class169 rssocket;
+   @ObfuscatedName("c")
+   static boolean field2220;
+   @ObfuscatedName("o")
+   static Hashtable field2219;
 
    static {
-      field2194 = false;
-      field2190 = new Hashtable(16);
+      field2220 = false;
+      field2219 = new Hashtable(16);
    }
 }

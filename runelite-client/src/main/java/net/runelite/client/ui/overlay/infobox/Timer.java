@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import net.runelite.client.plugins.Plugin;
 
 public class Timer extends InfoBox
 {
@@ -37,9 +38,9 @@ public class Timer extends InfoBox
 	private final Instant endTime;
 	private final Duration duration;
 
-	public Timer(long period, ChronoUnit unit, BufferedImage image)
+	public Timer(long period, ChronoUnit unit, BufferedImage image, Plugin plugin)
 	{
-		super(image);
+		super(image, plugin);
 
 		Preconditions.checkArgument(period > 0, "negative period!");
 

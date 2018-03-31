@@ -4,33 +4,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hh")
 @Implements("HashTableIterator")
 public class HashTableIterator implements Iterator {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lhq;"
+      signature = "Lhz;"
    )
    @Export("table")
    IterableHashTable table;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhg;"
    )
    @Export("tail")
    Node tail;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("index")
    int index;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lhg;"
    )
    @Export("head")
    Node head;
 
    @ObfuscatedSignature(
-      signature = "(Lhq;)V"
+      signature = "(Lhz;)V"
    )
    HashTableIterator(IterableHashTable var1) {
       this.head = null;
@@ -38,12 +38,29 @@ public class HashTableIterator implements Iterator {
       this.reset();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @Export("reset")
    void reset() {
       this.tail = this.table.buckets[0].next;
       this.index = 1;
       this.head = null;
+   }
+
+   public boolean hasNext() {
+      if(this.table.buckets[this.index - 1] != this.tail) {
+         return true;
+      } else {
+         while(this.index < this.table.size) {
+            if(this.table.buckets[this.index++].next != this.table.buckets[this.index - 1]) {
+               this.tail = this.table.buckets[this.index - 1].next;
+               return true;
+            }
+
+            this.tail = this.table.buckets[this.index - 1];
+         }
+
+         return false;
+      }
    }
 
    public Object next() {
@@ -65,23 +82,6 @@ public class HashTableIterator implements Iterator {
          this.tail = var1.next;
          this.head = var1;
          return var1;
-      }
-   }
-
-   public boolean hasNext() {
-      if(this.table.buckets[this.index - 1] != this.tail) {
-         return true;
-      } else {
-         while(this.index < this.table.size) {
-            if(this.table.buckets[this.index++].next != this.table.buckets[this.index - 1]) {
-               this.tail = this.table.buckets[this.index - 1].next;
-               return true;
-            }
-
-            this.tail = this.table.buckets[this.index - 1];
-         }
-
-         return false;
       }
    }
 

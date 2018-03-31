@@ -49,6 +49,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -96,6 +97,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private String taskName;
 	private int amount;
 	private TaskCounter counter;
@@ -112,7 +116,9 @@ public class SlayerPlugin extends Plugin
 			&& config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
-			setTask(config.taskName(), config.amount());
+			setPoints(config.points());
+			setStreak(config.streak());
+			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
 
@@ -145,6 +151,8 @@ public class SlayerPlugin extends Plugin
 					&& !config.taskName().isEmpty()
 					&& loginFlag == true)
 				{
+					setPoints(config.points());
+					setStreak(config.streak());
 					setTask(config.taskName(), config.amount());
 					loginFlag = false;
 				}
@@ -307,7 +315,7 @@ public class SlayerPlugin extends Plugin
 
 		if (config.showInfobox())
 		{
-			addCounter();
+			clientThread.invokeLater(this::addCounter);
 		}
 		else
 		{
@@ -361,7 +369,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		counter = new TaskCounter(taskImg, amount);
+		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format("<col=ff7700>%s</br><col=ffff00>Pts:</col> %s</br><col=ffff00>Streak:</col> %s",
 			capsString(taskName), points, streak));
 

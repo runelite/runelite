@@ -4,37 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jt")
+@ObfuscatedName("jr")
 @Implements("IndexStoreActionHandler")
 public class IndexStoreActionHandler implements Runnable {
-   @ObfuscatedName("q")
+   @ObfuscatedName("oa")
+   static boolean field3392;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lhf;"
+      signature = "Lhl;"
    )
    @Export("IndexStoreActionHandler_requestQueue")
    public static Deque IndexStoreActionHandler_requestQueue;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhf;"
+      signature = "Lhl;"
    )
    @Export("IndexStoreActionHandler_responseQueue")
    public static Deque IndexStoreActionHandler_responseQueue;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 620701449
+      intValue = 1328621685
    )
-   static int field3398;
-   @ObfuscatedName("l")
+   public static int field3389;
+   @ObfuscatedName("j")
    @Export("IndexStoreActionHandler_lock")
-   static Object IndexStoreActionHandler_lock;
-   @ObfuscatedName("b")
+   public static Object IndexStoreActionHandler_lock;
+   @ObfuscatedName("k")
    @Export("IndexStoreActionHandler_thread")
    static Thread IndexStoreActionHandler_thread;
+   @ObfuscatedName("e")
+   static boolean field3388;
 
    static {
       IndexStoreActionHandler_requestQueue = new Deque();
       IndexStoreActionHandler_responseQueue = new Deque();
-      field3398 = 0;
+      field3389 = 0;
       IndexStoreActionHandler_lock = new Object();
    }
 
@@ -50,13 +54,13 @@ public class IndexStoreActionHandler implements Runnable {
             Object var14;
             if(var1 != null) {
                if(var1.type == 0) {
-                  var1.index.write((int)var1.hash, var1.field3367, var1.field3367.length);
+                  var1.index.write((int)var1.hash, var1.field3356, var1.field3356.length);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      var1.unlink();
                   }
                } else if(var1.type == 1) {
-                  var1.field3367 = var1.index.read((int)var1.hash);
+                  var1.field3356 = var1.index.read((int)var1.hash);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      IndexStoreActionHandler_responseQueue.addFront(var1);
@@ -65,45 +69,45 @@ public class IndexStoreActionHandler implements Runnable {
 
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3398 <= 1) {
-                     field3398 = 0;
+                  if(field3389 <= 1) {
+                     field3389 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  field3398 = 600;
+                  field3389 = 600;
                }
             } else {
-               class93.method1982(100L);
+               class163.method3223(100L);
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3398 <= 1) {
-                     field3398 = 0;
+                  if(field3389 <= 1) {
+                     field3389 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  --field3398;
+                  --field3389;
                }
             }
          }
       } catch (Exception var13) {
-         GroundObject.processClientError((String)null, var13);
+         UrlRequest.processClientError((String)null, var13);
       }
    }
 
-   @ObfuscatedName("ge")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-89"
+      signature = "(II)V",
+      garbageValue = "985642245"
    )
-   static final void method4675(int var0, int var1) {
-      if(Client.hintArrowTargetType == 2) {
-         class25.worldToScreen((Client.hintArrowX - class38.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - PlayerComposition.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
-         if(Client.screenX > -1 && Client.gameCycle % 20 < 10) {
-            class234.headIconsHint[0].drawAt(var0 + Client.screenX - 12, Client.screenY + var1 - 28);
-         }
-
-      }
+   public static void method4660(int var0) {
+      class229.field2680 = 1;
+      class61.field714 = null;
+      class229.field2682 = -1;
+      class152.field2129 = -1;
+      Varcs.field1431 = 0;
+      class313.field3910 = false;
+      BoundingBox3D.field249 = var0;
    }
 }

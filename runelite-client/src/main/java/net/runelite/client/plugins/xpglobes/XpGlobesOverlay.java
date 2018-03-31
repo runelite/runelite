@@ -121,7 +121,6 @@ public class XpGlobesOverlay extends Overlay
 				renderProgressCircle(graphics, xpGlobe, startDrawX, DEFAULT_START_Y);
 				startDrawX += MINIMUM_STEP + config.xpOrbSize();
 			}
-			plugin.removeExpiredXpGlobes();
 		}
 
 		return null;

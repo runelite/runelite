@@ -161,7 +161,6 @@ public class HiscorePlugin extends Plugin
 				{
 					if (!navButton.isSelected())
 					{
-						navButton.setSelected(true);
 						navButton.getOnSelect().run();
 					}
 				});

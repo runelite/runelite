@@ -1,5 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("mq")
+@ObfuscatedName("mh")
 public interface class338 {
 }

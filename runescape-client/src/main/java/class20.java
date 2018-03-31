@@ -1,106 +1,79 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("n")
 public class class20 {
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-85"
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1701648215
    )
-   public static void method164() {
-      MouseInput var0 = MouseInput.mouse;
-      synchronized(MouseInput.mouse) {
-         MouseInput.mouseCurrentButton = MouseInput.MouseHandler_currentButton;
-         MouseInput.mouseLastX = MouseInput.mouseX;
-         MouseInput.mouseLastY = MouseInput.mouseY;
-         MouseInput.mouseLastButton = MouseInput.MouseHandler_lastButton;
-         MouseInput.mouseLastPressedX = MouseInput.MouseHandler_lastPressedX;
-         MouseInput.mouseLastPressedY = MouseInput.MouseHandler_lastPressedY;
-         MouseInput.mouseLastPressedTimeMillis = MouseInput.MouseHandler_lastPressedTimeMillis;
-         MouseInput.MouseHandler_lastButton = 0;
-      }
+   public static int field319;
+   @ObfuscatedName("fm")
+   @ObfuscatedSignature(
+      signature = "[Lla;"
+   )
+   @Export("headIconsPk")
+   static SpritePixels[] headIconsPk;
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(IS)Lbk;",
+      garbageValue = "-13006"
+   )
+   static MessageNode method170(int var0) {
+      return (MessageNode)class95.messages.get((long)var0);
    }
 
-   @ObfuscatedName("ea")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "594976654"
+      signature = "(Llq;I)V",
+      garbageValue = "1209692311"
    )
-   @Export("setGameState")
-   static void setGameState(int var0) {
-      if(var0 != Client.gameState) {
-         if(Client.gameState == 0) {
-            class249.clientInstance.method1011();
-         }
+   static final void method169(IndexedSprite var0) {
+      short var1 = 256;
 
-         if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.loginState = 0;
-            Client.field884 = 0;
-            Client.field848 = 0;
-            Client.field898.method5205(var0);
-            if(var0 != 20) {
-               Player.method1218(false);
-            }
-         }
-
-         if(var0 != 20 && var0 != 40 && MapLabel.field445 != null) {
-            MapLabel.field445.vmethod3339();
-            MapLabel.field445 = null;
-         }
-
-         if(Client.gameState == 25) {
-            Client.field905 = 0;
-            Client.field901 = 0;
-            Client.field902 = 1;
-            Client.field934 = 0;
-            Client.field1087 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               GrandExchangeEvents.method80(FileRequest.indexCache10, WorldMapRegion.indexSprites, true, Client.gameState == 11?4:0);
-            } else if(var0 == 11) {
-               GrandExchangeEvents.method80(FileRequest.indexCache10, WorldMapRegion.indexSprites, false, 4);
-            } else if(class90.field1340) {
-               class90.field1324 = null;
-               class250.field3014 = null;
-               class241.runeSprites = null;
-               Item.field1387 = null;
-               class237.field2773 = null;
-               class252.logoSprite = null;
-               class90.titlemuteSprite = null;
-               FaceNormal.field2035 = null;
-               class90.field1326 = null;
-               class264.field3430 = null;
-               Timer.slFlagSprites = null;
-               class28.slArrowSprites = null;
-               WorldMapType2.slStarSprites = null;
-               class156.field2117 = null;
-               MapLabel.field448 = null;
-               class233.field2754 = null;
-               MilliTimer.field2140 = null;
-               ItemContainer.field750 = null;
-               class27.field365 = null;
-               SceneTilePaint.field1943 = null;
-               class228.field2670 = null;
-               class55.field626 = null;
-               class229.field2674 = 1;
-               class229.field2672 = null;
-               class171.field2199 = -1;
-               class229.field2676 = -1;
-               class229.field2677 = 0;
-               class85.field1294 = false;
-               class2.field13 = 2;
-               JagexGame.sendConInfo(true);
-               class90.field1340 = false;
-            }
-         } else {
-            GrandExchangeEvents.method80(FileRequest.indexCache10, WorldMapRegion.indexSprites, true, 0);
-         }
-
-         Client.gameState = var0;
+      int var2;
+      for(var2 = 0; var2 < BaseVarType.field30.length; ++var2) {
+         BaseVarType.field30[var2] = 0;
       }
+
+      int var3;
+      for(var2 = 0; var2 < 5000; ++var2) {
+         var3 = (int)(Math.random() * 128.0D * (double)var1);
+         BaseVarType.field30[var3] = (int)(Math.random() * 256.0D);
+      }
+
+      int var4;
+      int var5;
+      for(var2 = 0; var2 < 20; ++var2) {
+         for(var3 = 1; var3 < var1 - 1; ++var3) {
+            for(var4 = 1; var4 < 127; ++var4) {
+               var5 = var4 + (var3 << 7);
+               class5.field34[var5] = (BaseVarType.field30[var5 + 128] + BaseVarType.field30[var5 - 128] + BaseVarType.field30[var5 + 1] + BaseVarType.field30[var5 - 1]) / 4;
+            }
+         }
+
+         int[] var8 = BaseVarType.field30;
+         BaseVarType.field30 = class5.field34;
+         class5.field34 = var8;
+      }
+
+      if(var0 != null) {
+         var2 = 0;
+
+         for(var3 = 0; var3 < var0.height; ++var3) {
+            for(var4 = 0; var4 < var0.width; ++var4) {
+               if(var0.pixels[var2++] != 0) {
+                  var5 = var4 + var0.offsetX + 16;
+                  int var6 = var3 + var0.offsetY + 16;
+                  int var7 = var5 + (var6 << 7);
+                  BaseVarType.field30[var7] = 0;
+               }
+            }
+         }
+      }
+
    }
 }

@@ -484,7 +484,7 @@ public class Inject
 		java.lang.Class<?> rsApiType;
 		try
 		{
-			rsApiType = java.lang.Class.forName(API_PACKAGE_BASE + cf.getName());
+			rsApiType = java.lang.Class.forName(API_PACKAGE_BASE + cf.getName().replace("/", "."));
 		}
 		catch (ClassNotFoundException ex)
 		{
@@ -527,11 +527,12 @@ public class Inject
 	
 	ClassFile findVanillaForInterface(java.lang.Class<?> clazz)
 	{
+		String className = clazz.getName().replace('.', '/');
 		for (ClassFile cf : getVanilla().getClasses())
 		{
 			for (net.runelite.asm.pool.Class cl : cf.getInterfaces().getInterfaces())
 			{
-				if (cl.getName().equals(clazz.getName().replace('.', '/')))
+				if (cl.getName().equals(className))
 				{
 					return cf;
 				}

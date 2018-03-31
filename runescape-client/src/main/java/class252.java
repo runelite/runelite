@@ -2,12 +2,12 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("ia")
 public class class252 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Llk;"
+      signature = "Ljm;"
    )
-   @Export("logoSprite")
-   static IndexedSprite logoSprite;
+   @Export("objects_ref")
+   public static IndexDataBase objects_ref;
 }

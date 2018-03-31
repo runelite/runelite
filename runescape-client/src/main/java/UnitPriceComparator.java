@@ -5,22 +5,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("h")
 @Implements("UnitPriceComparator")
 final class UnitPriceComparator implements Comparator {
-   @ObfuscatedName("l")
+   @ObfuscatedName("pu")
    @ObfuscatedGetter(
-      intValue = -1462483621
+      intValue = -276451405
    )
-   static int field297;
-   @ObfuscatedName("x")
-   @Export("isMembersWorld")
-   public static boolean isMembersWorld;
-
-   @ObfuscatedName("t")
+   static int field294;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lu;Lu;I)I",
-      garbageValue = "-262344594"
+      signature = "Ljm;"
+   )
+   @Export("seq_ref")
+   public static IndexDataBase seq_ref;
+   @ObfuscatedName("x")
+   @Export("audioHighMemory")
+   public static boolean audioHighMemory;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljm;"
+   )
+   @Export("widgetIndex")
+   public static IndexDataBase widgetIndex;
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ll;Ll;I)I",
+      garbageValue = "215643968"
    )
    int method126(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.grandExchangeOffer.price < var2.grandExchangeOffer.price?-1:(var2.grandExchangeOffer.price == var1.grandExchangeOffer.price?0:1);
@@ -34,74 +46,59 @@ final class UnitPriceComparator implements Comparator {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-64"
-   )
-   @Export("getSmoothNoise2D")
-   static final int getSmoothNoise2D(int var0, int var1) {
-      int var2 = MouseRecorder.method1159(var0 - 1, var1 - 1) + MouseRecorder.method1159(var0 + 1, var1 - 1) + MouseRecorder.method1159(var0 - 1, 1 + var1) + MouseRecorder.method1159(1 + var0, 1 + var1);
-      int var3 = MouseRecorder.method1159(var0 - 1, var1) + MouseRecorder.method1159(var0 + 1, var1) + MouseRecorder.method1159(var0, var1 - 1) + MouseRecorder.method1159(var0, 1 + var1);
-      int var4 = MouseRecorder.method1159(var0, var1);
-      return var2 / 16 + var3 / 8 + var4 / 4;
-   }
-
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "-1161178324"
+      signature = "(Ljm;I)V",
+      garbageValue = "-105858561"
    )
-   @Export("getLength")
-   public static int getLength(String var0) {
-      return var0.length() + 1;
+   public static void method128(IndexDataBase var0) {
+      Enum.EnumDefinition_indexCache = var0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILcj;ZB)I",
-      garbageValue = "9"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "-1984723451"
    )
-   static int method139(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 == 2700) {
-         var3 = GZipDecompressor.getWidget(class81.intStack[--class5.intStackSize]);
-         class81.intStack[++class5.intStackSize - 1] = var3.itemId;
-         return 1;
-      } else if(var0 == 2701) {
-         var3 = GZipDecompressor.getWidget(class81.intStack[--class5.intStackSize]);
-         if(var3.itemId != -1) {
-            class81.intStack[++class5.intStackSize - 1] = var3.itemQuantity;
-         } else {
-            class81.intStack[++class5.intStackSize - 1] = 0;
-         }
-
-         return 1;
-      } else if(var0 == 2702) {
-         int var5 = class81.intStack[--class5.intStackSize];
-         WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var5);
-         if(var4 != null) {
-            class81.intStack[++class5.intStackSize - 1] = 1;
-         } else {
-            class81.intStack[++class5.intStackSize - 1] = 0;
-         }
-
-         return 1;
-      } else if(var0 == 2706) {
-         class81.intStack[++class5.intStackSize - 1] = Client.widgetRoot;
-         return 1;
-      } else {
-         return 2;
-      }
+   public static int method139(String var0) {
+      return var0.length() + 2;
    }
 
-   @ObfuscatedName("hx")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-301186038"
+      garbageValue = "-913678176"
    )
-   static void method130() {
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
+   public static void method140() {
+      Widget.field2808.reset();
+      Widget.Widget_cachedModels.reset();
+      Widget.Widget_cachedFonts.reset();
+      Widget.field2858.reset();
+   }
+
+   @ObfuscatedName("io")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIII)V",
+      garbageValue = "1886255408"
+   )
+   static final void method138(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      if(Name.loadWidget(var0)) {
+         Client.field1095 = null;
+         VarCString.gameDraw(class189.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         if(Client.field1095 != null) {
+            VarCString.gameDraw(Client.field1095, -1412584499, var1, var2, var3, var4, WorldMapManager.field537, SoundTask.field1582, var7);
+            Client.field1095 = null;
+         }
+
+      } else {
+         if(var7 != -1) {
+            Client.field1060[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.field1060[var8] = true;
+            }
+         }
+
+      }
    }
 }

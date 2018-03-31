@@ -2,73 +2,78 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ke")
+@ObfuscatedName("kz")
 public class class304 extends NameableContainer {
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Llu;"
+      signature = "Llq;"
    )
-   final JagexLoginType field3853;
-   @ObfuscatedName("g")
+   static IndexedSprite field3848;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Llo;"
+   )
+   final JagexLoginType field3845;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 768810271
+      intValue = 1990407931
    )
-   int field3851;
-   @ObfuscatedName("n")
+   int field3846;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lhn;"
+      signature = "Lhd;"
    )
-   public class220 field3852;
+   public class220 field3847;
 
    @ObfuscatedSignature(
-      signature = "(Llu;)V"
+      signature = "(Llo;)V"
    )
    public class304(JagexLoginType var1) {
       super(400);
-      this.field3851 = 1;
-      this.field3852 = new class220();
-      this.field3853 = var1;
+      this.field3846 = 1;
+      this.field3847 = new class220();
+      this.field3845 = var1;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)Lkv;",
-      garbageValue = "-21"
+      signature = "(I)Lku;",
+      garbageValue = "437342171"
    )
-   Nameable vmethod5446() {
+   Nameable vmethod5462() {
       return new Friend();
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)[Lkv;",
-      garbageValue = "-827789091"
-   )
-   Nameable[] vmethod5470(int var1) {
-      return new Friend[var1];
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lkb;ZS)Z",
-      garbageValue = "20540"
+      signature = "(II)[Lku;",
+      garbageValue = "-1281183690"
    )
-   public boolean method5416(Name var1, boolean var2) {
-      Friend var3 = (Friend)this.method5301(var1);
+   Nameable[] vmethod5463(int var1) {
+      return new Friend[var1];
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Lko;ZI)Z",
+      garbageValue = "-695219581"
+   )
+   public boolean method5415(Name var1, boolean var2) {
+      Friend var3 = (Friend)this.method5317(var1);
       return var3 == null?false:!var2 || var3.world != 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgb;II)V",
-      garbageValue = "908033582"
+      signature = "(Lgp;II)V",
+      garbageValue = "-1858683533"
    )
-   public void method5412(Buffer var1, int var2) {
+   public void method5420(Buffer var1, int var2) {
       while(true) {
          if(var1.offset < var2) {
             boolean var3 = var1.readUnsignedByte() == 1;
-            Name var4 = new Name(var1.readString(), this.field3853);
-            Name var5 = new Name(var1.readString(), this.field3853);
+            Name var4 = new Name(var1.readString(), this.field3845);
+            Name var5 = new Name(var1.readString(), this.field3845);
             int var6 = var1.readUnsignedShort();
             int var7 = var1.readUnsignedByte();
             int var8 = var1.readUnsignedByte();
@@ -81,27 +86,38 @@ public class class304 extends NameableContainer {
             }
 
             var1.readString();
-            if(var4 != null && var4.method5418()) {
-               Friend var11 = (Friend)this.method5302(var3?var5:var4);
-               if(var11 != null) {
-                  this.method5352(var11, var4, var5);
-                  if(var6 != var11.world) {
-                     boolean var12 = true;
+            if(var4 != null && var4.method5450()) {
+               Friend var11 = (Friend)this.method5319(var4);
+               if(var3) {
+                  Friend var12 = (Friend)this.method5319(var5);
+                  if(var12 != null) {
+                     if(var11 != null) {
+                        this.method5321(var12);
+                     } else {
+                        var11 = var12;
+                     }
+                  }
+               }
 
-                     for(class308 var13 = (class308)this.field3852.method4084(); var13 != null; var13 = (class308)this.field3852.method4085()) {
-                        if(var13.field3872.equals(var4)) {
-                           if(var6 != 0 && var13.field3873 == 0) {
-                              var13.method4093();
-                              var12 = false;
-                           } else if(var6 == 0 && var13.field3873 != 0) {
-                              var13.method4093();
-                              var12 = false;
+               if(var11 != null) {
+                  this.method5326(var11, var4, var5);
+                  if(var6 != var11.world) {
+                     boolean var14 = true;
+
+                     for(class308 var13 = (class308)this.field3847.method4061(); var13 != null; var13 = (class308)this.field3847.method4062()) {
+                        if(var13.field3865.equals(var4)) {
+                           if(var6 != 0 && var13.field3866 == 0) {
+                              var13.method4069();
+                              var14 = false;
+                           } else if(var6 == 0 && var13.field3866 != 0) {
+                              var13.method4069();
+                              var14 = false;
                            }
                         }
                      }
 
-                     if(var12) {
-                        this.field3852.method4083(new class308(var4, var6));
+                     if(var14) {
+                        this.field3847.method4067(new class308(var4, var6));
                      }
                   }
                } else {
@@ -109,53 +125,45 @@ public class class304 extends NameableContainer {
                      continue;
                   }
 
-                  var11 = (Friend)this.method5307(var4, var5);
+                  var11 = (Friend)this.method5323(var4, var5);
                }
 
                if(var6 != var11.world) {
-                  var11.field3842 = ++this.field3851 - 1;
+                  var11.field3839 = ++this.field3846 - 1;
                   if(var11.world == -1 && var6 == 0) {
-                     var11.field3842 = -(var11.field3842 * 410700773) * -1324713491;
+                     var11.field3839 = -(var11.field3839 * 1320922141) * 806385205;
                   }
 
                   var11.world = var6;
                }
 
                var11.rank = var7;
-               var11.field3862 = var9;
-               var11.field3861 = var10;
+               var11.field3854 = var9;
+               var11.field3855 = var10;
                continue;
             }
 
             throw new IllegalStateException();
          }
 
-         this.method5309();
+         this.method5333();
          return;
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)[Llk;",
-      garbageValue = "1678133732"
+      signature = "([BII)I",
+      garbageValue = "1564177834"
    )
-   static IndexedSprite[] method5411() {
-      IndexedSprite[] var0 = new IndexedSprite[class332.indexedSpriteCount];
+   public static int method5427(byte[] var0, int var1) {
+      int var3 = -1;
 
-      for(int var1 = 0; var1 < class332.indexedSpriteCount; ++var1) {
-         IndexedSprite var2 = var0[var1] = new IndexedSprite();
-         var2.originalWidth = class332.indexedSpriteWidth;
-         var2.originalHeight = class332.indexedSpriteHeight;
-         var2.offsetX = class90.indexedSpriteOffsetXs[var1];
-         var2.offsetY = class153.indexedSpriteOffsetYs[var1];
-         var2.width = class332.indexSpriteWidths[var1];
-         var2.height = GrandExchangeOffer.indexedSpriteHeights[var1];
-         var2.palette = class332.indexedSpritePalette;
-         var2.pixels = ClassInfo.spritePixels[var1];
+      for(int var4 = 0; var4 < var1; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
       }
 
-      class316.method5605();
-      return var0;
+      var3 = ~var3;
+      return var3;
    }
 }

@@ -27,8 +27,4 @@ package net.runelite.api;
 public interface Region
 {
 	Tile[][][] getTiles();
-
-	int[][] getTileMask2d();
-
-	int[][] getTileRotation2d();
 }

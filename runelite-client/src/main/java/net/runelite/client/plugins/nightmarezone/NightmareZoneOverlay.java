@@ -39,6 +39,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.StackFormatter;
 
 class NightmareZoneOverlay extends Overlay
 {
@@ -99,7 +100,7 @@ class NightmareZoneOverlay extends Overlay
 		panelComponent.getLines().add(new PanelComponent.Line(
 				"Points: ",
 				Color.WHITE,
-				Integer.toString(client.getSetting(Varbits.NMZ_POINTS)),
+				StackFormatter.formatNumber(client.getSetting(Varbits.NMZ_POINTS)),
 				Color.WHITE
 		));
 
@@ -132,7 +133,7 @@ class NightmareZoneOverlay extends Overlay
 
 	private void addAbsorptionCounter(int startValue)
 	{
-		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), startValue, config.absorptionThreshold());
+		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), plugin, startValue, config.absorptionThreshold());
 		absorptionCounter.setAboveThresholdColor(config.absorptionColorAboveThreshold());
 		absorptionCounter.setBelowThresholdColor(config.absorptionColorBelowThreshold());
 		infoBoxManager.addInfoBox(absorptionCounter);

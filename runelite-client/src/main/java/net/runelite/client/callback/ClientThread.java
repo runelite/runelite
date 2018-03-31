@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.callback;
 
-import lombok.Data;
+import com.google.inject.Inject;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 
-@Data
-public class WidgetOpened
+@Singleton
+@Slf4j
+public class ClientThread
 {
-	private int parentId;
-	private int groupId;
-	private int autoClose;
+	private ConcurrentLinkedQueue<Runnable> invokes = new ConcurrentLinkedQueue<>();
+
+	@Inject
+	private Client client;
+
+	public void invokeLater(Runnable r)
+	{
+		if (client.isClientThread())
+		{
+			r.run();
+			return;
+		}
+		invokes.add(r);
+	}
+
+	void invoke()
+	{
+		assert client.isClientThread();
+		Iterator<Runnable> ir = invokes.iterator();
+		for (; ir.hasNext(); )
+		{
+			Runnable r = ir.next();
+			ir.remove();
+			try
+			{
+				r.run();
+			}
+			catch (ThreadDeath d)
+			{
+				throw d;
+			}
+			catch (Throwable e)
+			{
+				log.warn("Exception in invokeLater", e);
+			}
+		}
+	}
 }

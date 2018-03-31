@@ -26,14 +26,15 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import net.runelite.client.plugins.Plugin;
 
 public class Counter extends InfoBox
 {
 	private String text;
 
-	public Counter(BufferedImage image, String text)
+	public Counter(BufferedImage image, Plugin plugin, String text)
 	{
-		super(image);
+		super(image, plugin);
 		this.text = text;
 	}
 

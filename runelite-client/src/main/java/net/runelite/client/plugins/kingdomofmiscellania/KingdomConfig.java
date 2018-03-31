@@ -43,7 +43,7 @@ public interface KingdomConfig extends Config
 	)
 	default boolean showOnlyInKingdom()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -54,7 +54,7 @@ public interface KingdomConfig extends Config
 	)
 	default boolean showWhenLow()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(

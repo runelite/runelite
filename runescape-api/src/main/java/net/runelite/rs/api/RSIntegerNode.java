@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.instancemap;
+package net.runelite.rs.api;
 
-/**
- * Used to represent the wall as a 4x4 set of pixels with an offset
- */
-class WallShape
+import net.runelite.api.IntegerNode;
+import net.runelite.mapping.Import;
+
+public interface RSIntegerNode extends RSNode, IntegerNode
 {
-	private final int[][] pixels;
-	private final WallOffset offset;
+	@Import("value")
+	@Override
+	int getValue();
 
-	public WallShape(int[][] pixels, WallOffset offset)
-	{
-		this.pixels = pixels;
-		this.offset = offset;
-	}
-
-	public int[][] getPixels()
-	{
-		return pixels;
-	}
-
-	public WallOffset getOffset()
-	{
-		return offset;
-	}
-
+	@Import("value")
+	@Override
+	void setValue(int value);
 }

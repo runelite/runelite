@@ -7,224 +7,224 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ku")
+@ObfuscatedName("kb")
 @Implements("NameableContainer")
 public abstract class NameableContainer {
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1595816575
+      intValue = 1280829289
    )
-   final int field3837;
-   @ObfuscatedName("l")
+   final int field3833;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -2061584545
+      intValue = -263697855
    )
    @Export("count")
    int count;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "[Lkv;"
+      signature = "[Lku;"
    )
    @Export("nameables")
    Nameable[] nameables;
-   @ObfuscatedName("e")
-   HashMap field3836;
-   @ObfuscatedName("x")
-   HashMap field3833;
+   @ObfuscatedName("z")
+   HashMap field3830;
    @ObfuscatedName("p")
-   Comparator field3838;
+   HashMap field3831;
+   @ObfuscatedName("w")
+   Comparator field3835;
 
    NameableContainer(int var1) {
       this.count = 0;
-      this.field3838 = null;
-      this.field3837 = var1;
-      this.nameables = this.vmethod5470(var1);
-      this.field3836 = new HashMap(var1 / 8);
-      this.field3833 = new HashMap(var1 / 8);
+      this.field3835 = null;
+      this.field3833 = var1;
+      this.nameables = this.vmethod5463(var1);
+      this.field3830 = new HashMap(var1 / 8);
+      this.field3831 = new HashMap(var1 / 8);
    }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(B)Lkv;",
-      garbageValue = "-21"
-   )
-   abstract Nameable vmethod5446();
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)[Lkv;",
-      garbageValue = "-827789091"
-   )
-   abstract Nameable[] vmethod5470(int var1);
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "506073622"
+      signature = "(I)Lku;",
+      garbageValue = "437342171"
    )
-   public void method5297() {
+   abstract Nameable vmethod5462();
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)[Lku;",
+      garbageValue = "-1281183690"
+   )
+   abstract Nameable[] vmethod5463(int var1);
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1949425142"
+   )
+   public void method5351() {
       this.count = 0;
       Arrays.fill(this.nameables, (Object)null);
-      this.field3836.clear();
-      this.field3833.clear();
+      this.field3830.clear();
+      this.field3831.clear();
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1834734088"
+      garbageValue = "-1726610153"
    )
    @Export("getCount")
    public int getCount() {
       return this.count;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "0"
+      signature = "(I)Z",
+      garbageValue = "-101234171"
    )
-   public boolean method5375() {
-      return this.field3837 == this.count;
+   public boolean method5315() {
+      return this.count == this.field3833;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lkb;I)Z",
-      garbageValue = "-1903116212"
+      signature = "(Lko;B)Z",
+      garbageValue = "78"
    )
    @Export("isMember")
    public boolean isMember(Name var1) {
-      return !var1.method5418()?false:(this.field3836.containsKey(var1)?true:this.field3833.containsKey(var1));
+      return !var1.method5450()?false:(this.field3830.containsKey(var1)?true:this.field3831.containsKey(var1));
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lkb;I)Lkv;",
-      garbageValue = "827343278"
+      signature = "(Lko;I)Lku;",
+      garbageValue = "-1671660530"
    )
-   public Nameable method5301(Name var1) {
-      Nameable var2 = this.method5302(var1);
-      return var2 != null?var2:this.method5300(var1);
+   public Nameable method5317(Name var1) {
+      Nameable var2 = this.method5319(var1);
+      return var2 != null?var2:this.method5359(var1);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lkb;I)Lkv;",
-      garbageValue = "-1251202405"
+      signature = "(Lko;I)Lku;",
+      garbageValue = "1565981457"
    )
-   Nameable method5302(Name var1) {
-      return !var1.method5418()?null:(Nameable)this.field3836.get(var1);
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lkb;B)Lkv;",
-      garbageValue = "-31"
-   )
-   Nameable method5300(Name var1) {
-      return !var1.method5418()?null:(Nameable)this.field3833.get(var1);
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lkb;I)Z",
-      garbageValue = "-1384023392"
-   )
-   public final boolean method5304(Name var1) {
-      Nameable var2 = this.method5302(var1);
-      if(var2 == null) {
-         return false;
-      } else {
-         this.method5305(var2);
-         return true;
-      }
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Lkv;B)V",
-      garbageValue = "-48"
-   )
-   final void method5305(Nameable var1) {
-      int var2 = this.method5346(var1);
-      if(var2 != -1) {
-         this.method5366(var2);
-         this.method5312(var1);
-      }
+   Nameable method5319(Name var1) {
+      return !var1.method5450()?null:(Nameable)this.field3830.get(var1);
    }
 
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lkb;I)Lkv;",
-      garbageValue = "-587451177"
+      signature = "(Lko;I)Lku;",
+      garbageValue = "1058550691"
    )
-   Nameable method5336(Name var1) {
-      return this.method5307(var1, (Name)null);
+   Nameable method5359(Name var1) {
+      return !var1.method5450()?null:(Nameable)this.field3831.get(var1);
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lkb;Lkb;B)Lkv;",
-      garbageValue = "51"
+      signature = "(Lko;I)Z",
+      garbageValue = "-1439538729"
    )
-   Nameable method5307(Name var1, Name var2) {
-      if(this.method5301(var1) != null) {
+   public final boolean method5345(Name var1) {
+      Nameable var2 = this.method5319(var1);
+      if(var2 == null) {
+         return false;
+      } else {
+         this.method5321(var2);
+         return true;
+      }
+   }
+
+   @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "(Lku;I)V",
+      garbageValue = "-2023066402"
+   )
+   final void method5321(Nameable var1) {
+      int var2 = this.method5327(var1);
+      if(var2 != -1) {
+         this.method5346(var2);
+         this.method5328(var1);
+      }
+   }
+
+   @ObfuscatedName("ap")
+   @ObfuscatedSignature(
+      signature = "(Lko;I)Lku;",
+      garbageValue = "1156446856"
+   )
+   Nameable method5322(Name var1) {
+      return this.method5323(var1, (Name)null);
+   }
+
+   @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "(Lko;Lko;B)Lku;",
+      garbageValue = "9"
+   )
+   Nameable method5323(Name var1, Name var2) {
+      if(this.method5319(var1) != null) {
          throw new IllegalStateException();
       } else {
-         Nameable var3 = this.vmethod5446();
+         Nameable var3 = this.vmethod5462();
          var3.method5263(var1, var2);
-         this.method5313(var3);
-         this.method5314(var3);
+         this.method5372(var3);
+         this.method5329(var3);
          return var3;
       }
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(II)Lkv;",
-      garbageValue = "-1978992979"
+      signature = "(II)Lku;",
+      garbageValue = "-1380247516"
    )
    @Export("get")
    public final Nameable get(int var1) {
       if(var1 >= 0 && var1 < this.count) {
          return this.nameables[var1];
       } else {
-         throw new ArrayIndexOutOfBoundsException();
+         throw new ArrayIndexOutOfBoundsException(var1);
       }
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("ab")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-642707680"
+      signature = "(B)V",
+      garbageValue = "-110"
    )
-   public final void method5309() {
-      if(this.field3838 == null) {
+   public final void method5333() {
+      if(this.field3835 == null) {
          Arrays.sort(this.nameables, 0, this.count);
       } else {
-         Arrays.sort(this.nameables, 0, this.count, this.field3838);
+         Arrays.sort(this.nameables, 0, this.count, this.field3835);
       }
 
    }
 
-   @ObfuscatedName("ae")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(Lkv;Lkb;Lkb;I)V",
-      garbageValue = "2120391441"
+      signature = "(Lku;Lko;Lko;I)V",
+      garbageValue = "-1981507025"
    )
-   final void method5352(Nameable var1, Name var2, Name var3) {
-      this.method5312(var1);
+   final void method5326(Nameable var1, Name var2, Name var3) {
+      this.method5328(var1);
       var1.method5263(var2, var3);
-      this.method5314(var1);
+      this.method5329(var1);
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(Lkv;I)I",
-      garbageValue = "-2106574063"
+      signature = "(Lku;I)I",
+      garbageValue = "-666196517"
    )
-   final int method5346(Nameable var1) {
+   final int method5327(Nameable var1) {
       for(int var2 = 0; var2 < this.count; ++var2) {
          if(this.nameables[var2] == var1) {
             return var2;
@@ -234,50 +234,53 @@ public abstract class NameableContainer {
       return -1;
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(Lkv;B)V",
-      garbageValue = "7"
+      signature = "(Lku;S)V",
+      garbageValue = "-12156"
    )
-   final void method5312(Nameable var1) {
-      if(this.field3836.remove(var1.name) == null) {
+   final void method5328(Nameable var1) {
+      if(this.field3830.remove(var1.name) == null) {
          throw new IllegalStateException();
       } else {
-         if(var1.field3825 != null) {
-            this.field3833.remove(var1.field3825);
+         if(var1.field3822 != null) {
+            this.field3831.remove(var1.field3822);
          }
 
       }
    }
 
-   @ObfuscatedName("ap")
+   @ObfuscatedName("ah")
    @ObfuscatedSignature(
-      signature = "(Lkv;I)V",
-      garbageValue = "-280144468"
+      signature = "(Lku;B)V",
+      garbageValue = "60"
    )
-   final void method5313(Nameable var1) {
+   final void method5372(Nameable var1) {
       this.nameables[++this.count - 1] = var1;
    }
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(Lkv;B)V",
-      garbageValue = "-35"
+      signature = "(Lku;B)V",
+      garbageValue = "118"
    )
-   final void method5314(Nameable var1) {
-      this.field3836.put(var1.name, var1);
-      if(var1.field3825 != null) {
-         this.field3833.put(var1.field3825, var1);
+   final void method5329(Nameable var1) {
+      this.field3830.put(var1.name, var1);
+      if(var1.field3822 != null) {
+         Nameable var2 = (Nameable)this.field3831.put(var1.field3822, var1);
+         if(var2 != null && var2 != var1) {
+            var2.field3822 = null;
+         }
       }
 
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1715049339"
+      signature = "(IB)V",
+      garbageValue = "41"
    )
-   final void method5366(int var1) {
+   final void method5346(int var1) {
       --this.count;
       if(var1 < this.count) {
          System.arraycopy(this.nameables, var1 + 1, this.nameables, var1, this.count - var1);
@@ -285,35 +288,26 @@ public abstract class NameableContainer {
 
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-155787685"
+      garbageValue = "-1408308019"
    )
-   public final void method5318() {
-      this.field3838 = null;
+   public final void method5334() {
+      this.field3835 = null;
    }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ae")
    @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;B)V",
-      garbageValue = "-28"
+      signature = "(Ljava/util/Comparator;I)V",
+      garbageValue = "1218205876"
    )
-   public final void method5338(Comparator var1) {
-      if(this.field3838 == null) {
-         this.field3838 = var1;
-      } else if(this.field3838 instanceof class297) {
-         ((class297)this.field3838).method5272(var1);
+   public final void method5377(Comparator var1) {
+      if(this.field3835 == null) {
+         this.field3835 = var1;
+      } else if(this.field3835 instanceof class297) {
+         ((class297)this.field3835).method5287(var1);
       }
 
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II)I",
-      garbageValue = "-1135493564"
-   )
-   public static int method5378(CharSequence var0, int var1) {
-      return IndexData.parseInt(var0, var1, true);
    }
 }

@@ -54,6 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -380,8 +381,9 @@ public class ScreenshotPlugin extends Plugin
 				clientUi.paint(graphics);
 
 				// Evaluate the position of the game inside the frame
-				gameOffsetX = 6;
-				gameOffsetY = 0;
+				final Point canvasOffset = clientUi.getCanvasOffset();
+				gameOffsetX = canvasOffset.getX();
+				gameOffsetY = canvasOffset.getY();
 			}
 
 			// Draw the game onto the screenshot
