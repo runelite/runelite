@@ -73,4 +73,8 @@ public interface RSItemComposition extends ItemComposition
 	@Import("inventoryActions")
 	@Override
 	String[] getInventoryActions();
+
+	@Import("getShiftClickActionIndex")
+	@Override
+	int getShiftClickActionIndex();
 }

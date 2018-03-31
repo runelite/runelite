@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api.events;
 
-package net.runelite.mixins;
+import lombok.Data;
+import net.runelite.api.ItemComposition;
 
-import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Replace;
-import net.runelite.rs.api.RSItemComposition;
-
-@Mixin(RSItemComposition.class)
-public abstract class RSItemCompositionMixin implements RSItemComposition
+@Data
+public class PostItemComposition
 {
-	private static final int DEFAULT_CUSTOM_SHIFT_CLICK_INDEX = -2;
-
-	@Inject
-	private int shiftClickActionIndex = DEFAULT_CUSTOM_SHIFT_CLICK_INDEX;
-
-	@Inject
-	RSItemCompositionMixin()
-	{
-	}
-
-	@Inject
-	@Override
-	public boolean isStackable()
-	{
-		return getIsStackable() != 0;
-	}
-
-	@Inject
-	@Override
-	public void setShiftClickActionIndex(int shiftClickActionIndex)
-	{
-		this.shiftClickActionIndex = shiftClickActionIndex;
-	}
-
-	@Copy("getShiftClickActionIndex")
-	abstract int rs$getShiftClickActionIndex();
-
-	@Replace("getShiftClickActionIndex")
-	public int getShiftClickActionIndex()
-	{
-		return shiftClickActionIndex == DEFAULT_CUSTOM_SHIFT_CLICK_INDEX ? rs$getShiftClickActionIndex() : shiftClickActionIndex;
-	}
-
-	@Inject
-	@Override
-	public void resetShiftClickActionIndex()
-	{
-		shiftClickActionIndex = DEFAULT_CUSTOM_SHIFT_CLICK_INDEX;
-	}
+	private ItemComposition itemComposition;
 }

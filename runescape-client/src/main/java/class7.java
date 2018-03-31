@@ -359,7 +359,7 @@ public class class7 {
                                           if(Client.field1001) {
                                              var29 = Client.field1002 || KeyFocusListener.keyPressed[81];
                                              if(var29) {
-                                                var28 = var26.method5069();
+                                                var28 = var26.getShiftClickActionIndex();
                                              }
                                           }
 

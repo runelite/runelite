@@ -88,4 +88,15 @@ public interface ItemComposition
 	 * @return the inventory menu actions
 	 */
 	String[] getInventoryActions();
+
+	/**
+	 * Returns the menu action index of the shift-click action
+	 *
+	 * @return menu index of the shift-click action
+	 */
+	int getShiftClickActionIndex();
+
+	void setShiftClickActionIndex(int shiftclickActionIndex);
+
+	void resetShiftClickActionIndex();
 }

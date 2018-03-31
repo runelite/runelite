@@ -207,16 +207,19 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 	}
 
 	static class ResizableViewport
 	{
+		static final int INVENTORY_TAB = 54;
 		static final int PRAYER_TAB = 56;
 	}
 
 	static class ResizableViewportBottomLine
 	{
+		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 	}
 

@@ -38,6 +38,7 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -255,5 +256,13 @@ public abstract class RSTileMixin implements RSTile
 				eventBus.post(gameObjectsChanged);
 			}
 		}
+	}
+
+	@FieldHook("itemLayer")
+	@Inject
+	public void itemLayerChanged(int idx)
+	{
+		ItemLayerChanged itemLayerChanged = new ItemLayerChanged(this);
+		eventBus.post(itemLayerChanged);
 	}
 }
