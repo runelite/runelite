@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
@@ -48,14 +49,16 @@ import net.runelite.client.util.QueryRunner;
 class ItemChargesOverlay extends Overlay
 {
 	private final Client client;
+	private final ItemChargesConfig config;
 	private final QueryRunner queryRunner;
 
 	@Inject
-	ItemChargesOverlay(Client client, QueryRunner queryRunner)
+	ItemChargesOverlay(Client client, ItemChargesConfig config, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.config = config;
 		this.queryRunner = queryRunner;
 	}
 
@@ -64,18 +67,17 @@ class ItemChargesOverlay extends Overlay
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getChargeCountWidgetItems())
+		for (WidgetItem widgetItem : getChargeCountWidgetItems())
 		{
-			int itemId = item.getId();
-			String itemName = client.getItemDefinition(itemId).getName();
-			Integer charges = ChargeCounts.getCharges(itemId, itemName);
+			ItemComposition item = client.getItemDefinition(widgetItem.getId());
+			Integer charges = ChargeCounts.getCharges(item, config);
 
 			if (charges == null)
 			{
 				continue;
 			}
 
-			final Rectangle bounds = item.getCanvasBounds();
+			final Rectangle bounds = widgetItem.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(String.valueOf(charges));

@@ -27,34 +27,67 @@ package net.runelite.client.plugins.itemcharges;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 import com.google.common.collect.TreeRangeSet;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 
 public class ChargeCounts
 {
-	private static final RangeSet<Integer> EXCLUDED_RANGES = TreeRangeSet.create();
+	/** Regex only looks for digits and a closing parenthesis, to match items like Amulet of glory (t6). */
+	private static final String CHARGES_REGEX = "[0-9]+\\)$";
+
+	/** Non-chargeable items which would otherwise be matched by CHARGES_REGEX. */
+	private static final RangeSet<Integer> EXCLUDED_ITEMS = TreeRangeSet.create();
+	/** Potions which lack a Drink menu action but can hold multiple doses. */
+	private static final RangeSet<Integer> UNDRINKABLE_POTIONS = TreeRangeSet.create();
 
 	static
 	{
-		EXCLUDED_RANGES.add(Range.closed(ItemID.SHAYZIEN_GLOVES_1, ItemID.SHAYZIEN_PLATEBODY_5));
-		EXCLUDED_RANGES.add(Range.closed(ItemID.SHAYZIEN_SUPPLY_GLOVES_1, ItemID.SHAYZIEN_SUPPLY_PLATEBODY_5));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.SHAYZIEN_GLOVES_1, ItemID.SHAYZIEN_PLATEBODY_5));
+		EXCLUDED_ITEMS.add(Range.closed(ItemID.SHAYZIEN_SUPPLY_GLOVES_1, ItemID.SHAYZIEN_SUPPLY_PLATEBODY_5));
+
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.SERUM_207_4, ItemID.SERUM_207_1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.SERUM_208_4, ItemID.SERUM_208_1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.OLIVE_OIL4, ItemID.OLIVE_OIL1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.SACRED_OIL4, ItemID.SACRED_OIL1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.COMPOST_POTION4, ItemID.COMPOST_POTION1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.GUTHIX_BALANCE4, ItemID.GUTHIX_BALANCE1));
+		UNDRINKABLE_POTIONS.add(Range.closed(ItemID.REJUVENATION_POTION_4, ItemID.REJUVENATION_POTION_1));
 	}
 
-	public static Integer getCharges(int itemId, String itemName)
+	/**
+	 * Get the number of charges remaining on a given item according to its name,
+	 * returning null for items which aren't chargeable or which are filtered out
+	 * by the user's plugin settings.
+	 *
+	 * @return Number of charges remaining, or null if no count should be shown.
+	 */
+	public static Integer getCharges(ItemComposition item, ItemChargesConfig config)
 	{
-		if (EXCLUDED_RANGES.contains(itemId))
+		if (EXCLUDED_ITEMS.contains(item.getId()))
 		{
 			return null;
 		}
 
-		// Regex only looks for digits and an ending parenthesis,
-		// to catch items like Amulet of glory (t6).
-		Matcher matcher = Pattern.compile("[0-9]+\\)$").matcher(itemName);
-		if (matcher.find())
+		List<String> actions = Arrays.asList(item.getInventoryActions());
+		boolean isOther = !actions.contains("Rub") && !actions.contains("Drink") && !UNDRINKABLE_POTIONS.contains(item.getId());
+
+		if (config.showTeleportCharges() && actions.contains("Rub")
+				|| config.showDrinkablePotionDoses() && actions.contains("Drink")
+				|| config.showUndrinkablePotionDoses() && UNDRINKABLE_POTIONS.contains(item.getId())
+				|| config.showOtherCharges() && isOther)
 		{
-			String match = matcher.group();
-			return Integer.parseInt(match.substring(0, match.length() - 1));
+			Matcher matcher = Pattern.compile(CHARGES_REGEX).matcher(item.getName());
+			if (matcher.find())
+			{
+				String match = matcher.group();
+				return Integer.parseInt(match.substring(0, match.length() - 1));
+			}
 		}
 
 		return null;

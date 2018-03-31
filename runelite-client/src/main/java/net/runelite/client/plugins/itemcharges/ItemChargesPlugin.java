@@ -25,6 +25,9 @@
 package net.runelite.client.plugins.itemcharges;
 
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -35,7 +38,16 @@ import net.runelite.client.ui.overlay.Overlay;
 public class ItemChargesPlugin extends Plugin
 {
 	@Inject
+	private ItemChargesConfig config;
+
+	@Inject
 	private ItemChargesOverlay overlay;
+
+	@Provides
+	ItemChargesConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ItemChargesConfig.class);
+	}
 
 	@Override
 	public Overlay getOverlay()
