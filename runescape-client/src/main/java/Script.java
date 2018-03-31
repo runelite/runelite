@@ -4,116 +4,125 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("cx")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lhj;"
    )
-   static NodeCache field1433;
-   @ObfuscatedName("q")
+   static NodeCache field1449;
+   @ObfuscatedName("i")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 2115928073
+      intValue = 2007836195
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 950532213
+      intValue = -986383027
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1929874997
+      intValue = 155988455
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1572978431
+      intValue = 1556061907
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "[Lhq;"
+      signature = "[Lhz;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1433 = new NodeCache(128);
+      field1449 = new NodeCache(128);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)[Lhq;",
-      garbageValue = "552036554"
+      signature = "(II)[Lhz;",
+      garbageValue = "1575567631"
    )
-   IterableHashTable[] method2042(int var1) {
+   IterableHashTable[] method2009(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljc;IB)Lho;",
-      garbageValue = "1"
+      signature = "(ILcx;ZS)I",
+      garbageValue = "-23132"
    )
-   static class233 method2048(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.takeRecordFlat(var1);
-      return var2 == null?null:new class233(var2);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IS)Z",
-      garbageValue = "-18399"
-   )
-   @Export("loadWidget")
-   public static boolean loadWidget(int var0) {
-      if(WorldComparator.validInterfaces[var0]) {
-         return true;
-      } else if(!Widget.widgetIndex.containsFile(var0)) {
-         return false;
+   static int method2018(int var0, Script var1, boolean var2) {
+      int var3 = -1;
+      Widget var4;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class81.intStack[--SceneTilePaint.intStackSize];
+         var4 = class3.getWidget(var3);
       } else {
-         int var1 = Widget.widgetIndex.fileCount(var0);
-         if(var1 == 0) {
-            WorldComparator.validInterfaces[var0] = true;
-            return true;
-         } else {
-            if(Widget.widgets[var0] == null) {
-               Widget.widgets[var0] = new Widget[var1];
-            }
+         var4 = var2?class336.field4073:class61.field713;
+      }
 
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(Widget.widgets[var0][var2] == null) {
-                  byte[] var3 = Widget.widgetIndex.getConfigData(var0, var2);
-                  if(var3 != null) {
-                     Widget.widgets[var0][var2] = new Widget();
-                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
-                     if(var3[0] == -1) {
-                        Widget.widgets[var0][var2].decodeActive(new Buffer(var3));
-                     } else {
-                        Widget.widgets[var0][var2].decode(new Buffer(var3));
-                     }
-                  }
-               }
-            }
-
-            WorldComparator.validInterfaces[var0] = true;
-            return true;
+      if(var0 == 1000) {
+         SceneTilePaint.intStackSize -= 4;
+         var4.originalX = class81.intStack[SceneTilePaint.intStackSize];
+         var4.originalY = class81.intStack[SceneTilePaint.intStackSize + 1];
+         var4.dynamicX = class81.intStack[SceneTilePaint.intStackSize + 2];
+         var4.dynamicY = class81.intStack[SceneTilePaint.intStackSize + 3];
+         WorldMapType1.method274(var4);
+         BoundingBox.clientInstance.widgetMethod0(var4);
+         if(var3 != -1 && var4.type == 0) {
+            MapIcon.method578(class189.widgets[var3 >> 16], var4, false);
          }
+
+         return 1;
+      } else if(var0 == 1001) {
+         SceneTilePaint.intStackSize -= 4;
+         var4.originalWidth = class81.intStack[SceneTilePaint.intStackSize];
+         var4.originalHeight = class81.intStack[SceneTilePaint.intStackSize + 1];
+         var4.dynamicWidth = class81.intStack[SceneTilePaint.intStackSize + 2];
+         var4.buttonType = class81.intStack[SceneTilePaint.intStackSize + 3];
+         WorldMapType1.method274(var4);
+         BoundingBox.clientInstance.widgetMethod0(var4);
+         if(var3 != -1 && var4.type == 0) {
+            MapIcon.method578(class189.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1003) {
+         boolean var5 = class81.intStack[--SceneTilePaint.intStackSize] == 1;
+         if(var5 != var4.isHidden) {
+            var4.isHidden = var5;
+            WorldMapType1.method274(var4);
+         }
+
+         return 1;
+      } else if(var0 == 1005) {
+         var4.noClickThrough = class81.intStack[--SceneTilePaint.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1006) {
+         var4.noScrollThrough = class81.intStack[--SceneTilePaint.intStackSize] == 1;
+         return 1;
+      } else {
+         return 2;
       }
    }
 }

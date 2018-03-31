@@ -25,17 +25,52 @@
 
 package net.runelite.mixins;
 
+import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.rs.api.RSItemComposition;
 
 @Mixin(RSItemComposition.class)
 public abstract class RSItemCompositionMixin implements RSItemComposition
 {
+	private static final int DEFAULT_CUSTOM_SHIFT_CLICK_INDEX = -2;
+
+	@Inject
+	private int shiftClickActionIndex = DEFAULT_CUSTOM_SHIFT_CLICK_INDEX;
+
+	@Inject
+	RSItemCompositionMixin()
+	{
+	}
+
 	@Inject
 	@Override
 	public boolean isStackable()
 	{
 		return getIsStackable() != 0;
+	}
+
+	@Inject
+	@Override
+	public void setShiftClickActionIndex(int shiftClickActionIndex)
+	{
+		this.shiftClickActionIndex = shiftClickActionIndex;
+	}
+
+	@Copy("getShiftClickActionIndex")
+	abstract int rs$getShiftClickActionIndex();
+
+	@Replace("getShiftClickActionIndex")
+	public int getShiftClickActionIndex()
+	{
+		return shiftClickActionIndex == DEFAULT_CUSTOM_SHIFT_CLICK_INDEX ? rs$getShiftClickActionIndex() : shiftClickActionIndex;
+	}
+
+	@Inject
+	@Override
+	public void resetShiftClickActionIndex()
+	{
+		shiftClickActionIndex = DEFAULT_CUSTOM_SHIFT_CLICK_INDEX;
 	}
 }

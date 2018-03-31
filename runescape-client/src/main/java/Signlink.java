@@ -1,5 +1,4 @@
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -8,37 +7,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fl")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("t")
-   @Export("javaVendor")
-   public static String javaVendor;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("javaVersion")
    public static String javaVersion;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ljk;"
-   )
-   @Export("currentRequest")
-   public static FileRequest currentRequest;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lfb;"
+      signature = "Lfy;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lfb;"
+      signature = "Lfy;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @Export("closed")
    boolean closed;
 
@@ -46,11 +36,11 @@ public class Signlink implements Runnable {
       this.currentTask = null;
       this.cachedTask = null;
       this.closed = false;
-      javaVendor = "Unknown";
+      class241.javaVendor = "Unknown";
       javaVersion = "1.6";
 
       try {
-         javaVendor = System.getProperty("java.vendor");
+         class241.javaVendor = System.getProperty("java.vendor");
          javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
          ;
@@ -63,10 +53,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "20397"
+      signature = "(I)V",
+      garbageValue = "-1671380125"
    )
    @Export("join")
    public final void join() {
@@ -83,10 +73,10 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;I)Lfb;",
-      garbageValue = "-158789734"
+      signature = "(IIILjava/lang/Object;B)Lfy;",
+      garbageValue = "121"
    )
    @Export("newTask")
    final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -107,20 +97,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lfb;",
-      garbageValue = "-1431825632"
+      signature = "(Ljava/lang/String;II)Lfy;",
+      garbageValue = "-2098334584"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.newTask(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Lfb;",
-      garbageValue = "1525855689"
+      signature = "(Ljava/lang/Runnable;IB)Lfy;",
+      garbageValue = "-27"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
@@ -176,185 +166,69 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfy;ZB)V",
-      garbageValue = "119"
+      signature = "(B)V",
+      garbageValue = "-32"
    )
-   public static void method3223(class169 var0, boolean var1) {
-      if(SoundTaskDataProvider.NetCache_socket != null) {
-         try {
-            SoundTaskDataProvider.NetCache_socket.vmethod3339();
-         } catch (Exception var6) {
-            ;
-         }
-
-         SoundTaskDataProvider.NetCache_socket = null;
-      }
-
-      SoundTaskDataProvider.NetCache_socket = var0;
-      JagexGame.sendConInfo(var1);
-      class264.NetCache_responseHeaderBuffer.offset = 0;
-      currentRequest = null;
-      CacheFile.NetCache_responseArchiveBuffer = null;
-      class264.field3424 = 0;
-
-      while(true) {
-         FileRequest var2 = (FileRequest)class264.NetCache_pendingPriorityResponses.first();
-         if(var2 == null) {
-            while(true) {
-               var2 = (FileRequest)class264.NetCache_pendingResponses.first();
-               if(var2 == null) {
-                  if(class264.field3427 != 0) {
-                     try {
-                        Buffer var7 = new Buffer(4);
-                        var7.putByte(4);
-                        var7.putByte(class264.field3427);
-                        var7.putShort(0);
-                        SoundTaskDataProvider.NetCache_socket.vmethod3340(var7.payload, 0, 4);
-                     } catch (IOException var5) {
-                        try {
-                           SoundTaskDataProvider.NetCache_socket.vmethod3339();
-                        } catch (Exception var4) {
-                           ;
-                        }
-
-                        ++class264.field3413;
-                        SoundTaskDataProvider.NetCache_socket = null;
-                     }
-                  }
-
-                  class264.field3417 = 0;
-                  class151.field2101 = WorldMapRegion.method465();
-                  return;
-               }
-
-               class264.NetCache_pendingWritesQueue.setHead(var2);
-               class264.NetCache_pendingWrites.put(var2, var2.hash);
-               ++class264.NetCache_pendingWritesCount;
-               --class264.NetCache_pendingResponsesCount;
-            }
-         }
-
-         class264.NetCache_pendingPriorityWrites.put(var2, var2.hash);
-         ++class264.NetCache_pendingPriorityWritesCount;
-         --class264.NetCache_pendingPriorityResponsesCount;
+   static final void method3246() {
+      if(!class132.Viewport_false0) {
+         int var0 = Region.pitchSin;
+         int var1 = Region.pitchCos;
+         int var2 = Region.yawSin;
+         int var3 = Region.yawCos;
+         byte var4 = 50;
+         short var5 = 3500;
+         int var6 = (class132.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var7 = (class132.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var8 = (class132.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var9 = (class132.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var10 = Graphics3D.method2813(var7, var4, var1, var0);
+         int var11 = Graphics3D.method2814(var7, var4, var1, var0);
+         var7 = var10;
+         var10 = Graphics3D.method2813(var9, var5, var1, var0);
+         int var12 = Graphics3D.method2814(var9, var5, var1, var0);
+         var9 = var10;
+         var10 = Graphics3D.method2811(var6, var11, var3, var2);
+         var11 = Graphics3D.method2812(var6, var11, var3, var2);
+         var6 = var10;
+         var10 = Graphics3D.method2811(var8, var12, var3, var2);
+         var12 = Graphics3D.method2812(var8, var12, var3, var2);
+         class132.field1915 = (var6 + var10) / 2;
+         AbstractSoundSystem.field1570 = (var7 + var9) / 2;
+         class132.field1918 = (var12 + var11) / 2;
+         class18.field306 = (var10 - var6) / 2;
+         Item.field1406 = (var9 - var7) / 2;
+         class132.field1917 = (var12 - var11) / 2;
+         class25.field357 = Math.abs(class18.field306);
+         ChatLineBuffer.field1470 = Math.abs(Item.field1406);
+         GameSocket.field2258 = Math.abs(class132.field1917);
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("kn")
    @ObfuscatedSignature(
-      signature = "(Lju;IIIBZI)V",
-      garbageValue = "1973532283"
+      signature = "(IIIILla;Lir;I)V",
+      garbageValue = "-148931943"
    )
-   @Export("requestNetFile")
-   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class264.NetCache_pendingPriorityWrites.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class264.NetCache_pendingPriorityResponses.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class264.NetCache_pendingWrites.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  --class264.NetCache_pendingWritesCount;
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               }
-
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class264.NetCache_pendingResponses.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               } else {
-                  class264.NetCache_pendingWritesQueue.push(var8);
-                  class264.NetCache_pendingWrites.put(var8, var6);
-                  ++class264.NetCache_pendingWritesCount;
-               }
-
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(CII)I",
-      garbageValue = "17419889"
-   )
-   static int method3237(char var0, int var1) {
-      int var2 = var0 << 4;
-      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-         var0 = Character.toLowerCase(var0);
-         var2 = (var0 << 4) + 1;
-      }
-
-      return var2;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(ILcj;ZI)I",
-      garbageValue = "509896006"
-   )
-   static int method3242(int var0, Script var1, boolean var2) {
-      Widget var3 = GZipDecompressor.getWidget(class81.intStack[--class5.intStackSize]);
-      if(var0 == 2600) {
-         class81.intStack[++class5.intStackSize - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 2601) {
-         class81.intStack[++class5.intStackSize - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 2602) {
-         class81.scriptStringStack[++class316.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 2603) {
-         class81.intStack[++class5.intStackSize - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 2604) {
-         class81.intStack[++class5.intStackSize - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 2605) {
-         class81.intStack[++class5.intStackSize - 1] = var3.modelZoom;
-         return 1;
-      } else if(var0 == 2606) {
-         class81.intStack[++class5.intStackSize - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 2607) {
-         class81.intStack[++class5.intStackSize - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 2608) {
-         class81.intStack[++class5.intStackSize - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 2609) {
-         class81.intStack[++class5.intStackSize - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 2610) {
-         class81.intStack[++class5.intStackSize - 1] = var3.field2952;
-         return 1;
-      } else if(var0 == 2611) {
-         class81.intStack[++class5.intStackSize - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 2612) {
-         class81.intStack[++class5.intStackSize - 1] = var3.field2879;
-         return 1;
-      } else if(var0 == 2613) {
-         class81.intStack[++class5.intStackSize - 1] = var3.field2808.rsOrdinal();
-         return 1;
+   @Export("worldToMinimap")
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapAngle & 2047;
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var3 * var9 - var8 * var2 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = var5.field2765 / 2 - 25;
+         int var15 = (int)(Math.sin(var12) * (double)var14);
+         int var16 = (int)(Math.cos(var12) * (double)var14);
+         byte var17 = 20;
+         MapLabel.mapedge.method5887(var15 + (var0 + var5.field2765 / 2 - var17 / 2), var5.field2763 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
       } else {
-         return 2;
+         BaseVarType.drawDot(var0, var1, var2, var3, var4, var5);
       }
+
    }
 }

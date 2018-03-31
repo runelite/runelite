@@ -1,14 +1,20 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("lt")
+@ObfuscatedName("lb")
 public class class315 {
-   @ObfuscatedName("i")
-   static final char[] field3916;
-   @ObfuscatedName("a")
-   static final char[] field3919;
+   @ObfuscatedName("o")
+   public static final char[] field3917;
+   @ObfuscatedName("j")
+   public static final char[] field3914;
+   @ObfuscatedName("bb")
+   @ObfuscatedGetter(
+      intValue = -1566964165
+   )
+   static int field3918;
 
    static {
-      field3916 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
-      field3919 = new char[]{'[', ']', '#'};
+      field3917 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
+      field3914 = new char[]{'[', ']', '#'};
    }
 }

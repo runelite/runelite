@@ -22,14 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.rs.api;
 
-import lombok.Data;
+import net.runelite.api.IntegerNode;
+import net.runelite.mapping.Import;
 
-@Data
-public class WidgetOpened
+public interface RSIntegerNode extends RSNode, IntegerNode
 {
-	private int parentId;
-	private int groupId;
-	private int autoClose;
+	@Import("value")
+	@Override
+	int getValue();
+
+	@Import("value")
+	@Override
+	void setValue(int value);
 }

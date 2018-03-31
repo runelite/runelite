@@ -1,104 +1,45 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hi")
 public class class229 {
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Ljc;"
+      signature = "Ljm;"
    )
-   static IndexDataBase field2678;
+   public static IndexDataBase field2684;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ljc;"
+      signature = "Ljm;"
    )
-   static IndexDataBase field2675;
-   @ObfuscatedName("a")
+   public static IndexDataBase field2678;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Lht;"
    )
-   public static class230 field2673;
-   @ObfuscatedName("l")
+   public static class230 field2679;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1957132757
+      intValue = 1824623133
    )
-   public static int field2674;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Ljc;"
-   )
-   public static IndexDataBase field2672;
-   @ObfuscatedName("x")
+   public static int field2680;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 693748113
+      intValue = -1615138323
    )
-   public static int field2676;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -331877721
-   )
-   public static int field2677;
+   public static int field2682;
 
    static {
-      field2674 = 0;
+      field2680 = 0;
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)[Lcq;",
-      garbageValue = "-379017910"
-   )
-   static AttackOption[] method4159() {
-      return new AttackOption[]{AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_hidden};
-   }
-
-   @ObfuscatedName("l")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1021619853"
+      garbageValue = "-183321219"
    )
-   static void method4165() {
-      class93.playerIndexesCount = 0;
-
-      for(int var0 = 0; var0 < 2048; ++var0) {
-         class93.field1405[var0] = null;
-         class93.field1393[var0] = 1;
-      }
-
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "([BZB)Ljava/lang/Object;",
-      garbageValue = "6"
-   )
-   @Export("byteArrayToObject")
-   public static Object byteArrayToObject(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         if(var0.length > 136 && !AbstractByteBuffer.directBufferUnavailable) {
-            try {
-               DirectByteBuffer var2 = new DirectByteBuffer();
-               var2.put(var0);
-               return var2;
-            } catch (Throwable var3) {
-               AbstractByteBuffer.directBufferUnavailable = true;
-            }
-         }
-
-         return var0;
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "998148305"
-   )
-   static final void method4163(String var0) {
-      MapIconReference.method757("Please remove " + var0 + " from your friend list first");
+   static void method4142() {
+      ItemContainer.itemContainers = new HashTable(32);
    }
 }

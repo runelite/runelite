@@ -1,23 +1,25 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iv")
+@ObfuscatedName("ih")
 public class class237 {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @Export("varpsMasks")
    static int[] varpsMasks;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("serverVarps")
    public static int[] serverVarps;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("clientVarps")
    public static int[] clientVarps;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lla;"
+   @ObfuscatedName("ig")
+   @ObfuscatedGetter(
+      intValue = 1180254661
    )
-   static SpritePixels field2773;
+   @Export("plane")
+   static int plane;
 
    static {
       varpsMasks = new int[32];
@@ -30,5 +32,23 @@ public class class237 {
 
       serverVarps = new int[2000];
       clientVarps = new int[2000];
+   }
+
+   @ObfuscatedName("hw")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "121"
+   )
+   static boolean method4379() {
+      return (Client.field975 & 8) != 0;
+   }
+
+   @ObfuscatedName("kz")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "6"
+   )
+   public static boolean method4377() {
+      return Client.rights >= 2;
    }
 }

@@ -28,5 +28,7 @@ import java.util.Collection;
 
 public interface HashTable
 {
+	Node get(long value);
+
 	Collection<Node> getNodes();
 }

@@ -1,64 +1,52 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jv")
+@ObfuscatedName("jn")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Ljc;"
+      signature = "Ljm;"
    )
    @Export("EnumDefinition_indexCache")
-   static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("q")
+   public static IndexDataBase EnumDefinition_indexCache;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lhj;"
    )
    @Export("EnumDefinition_cached")
-   static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1741970031
-   )
-   static int field3563;
-   @ObfuscatedName("by")
-   @ObfuscatedGetter(
-      intValue = 422817245
-   )
-   static int field3558;
-   @ObfuscatedName("i")
+   public static NodeCache EnumDefinition_cached;
+   @ObfuscatedName("o")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1864046515
+      intValue = 1280776805
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1289242389
+      intValue = -263499207
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("g")
+   @ObfuscatedName("r")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -66,18 +54,18 @@ public class Enum extends CacheableNode {
       EnumDefinition_cached = new NodeCache(64);
    }
 
-   Enum() {
+   public Enum() {
       this.defaultString = "null";
       this.size = 0;
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgb;B)V",
-      garbageValue = "1"
+      signature = "(Lgp;I)V",
+      garbageValue = "-52449897"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -88,10 +76,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lgb;II)V",
-      garbageValue = "1867564346"
+      signature = "(Lgp;II)V",
+      garbageValue = "1608594237"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -128,75 +116,12 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-99"
+      signature = "(I)I",
+      garbageValue = "575314488"
    )
-   public int method4938() {
+   public int method4949() {
       return this.size;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/io/File;",
-      garbageValue = "1403469468"
-   )
-   public static File method4950(String var0) {
-      if(!class170.field2194) {
-         throw new RuntimeException("");
-      } else {
-         File var1 = (File)class170.field2190.get(var0);
-         if(var1 != null) {
-            return var1;
-         } else {
-            File var2 = new File(class170.field2189, var0);
-            RandomAccessFile var3 = null;
-
-            try {
-               File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
-                  throw new RuntimeException("");
-               } else {
-                  var3 = new RandomAccessFile(var2, "rw");
-                  int var5 = var3.read();
-                  var3.seek(0L);
-                  var3.write(var5);
-                  var3.seek(0L);
-                  var3.close();
-                  class170.field2190.put(var0, var2);
-                  return var2;
-               }
-            } catch (Exception var8) {
-               try {
-                  if(var3 != null) {
-                     var3.close();
-                     var3 = null;
-                  }
-               } catch (Exception var7) {
-                  ;
-               }
-
-               throw new RuntimeException();
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("gi")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-126"
-   )
-   static void method4949() {
-      int var0 = class93.playerIndexesCount;
-      int[] var1 = class93.playerIndices;
-
-      for(int var2 = 0; var2 < var0; ++var2) {
-         if(var1[var2] != Client.field890 && var1[var2] != Client.localInteractingIndex) {
-            class62.method1112(Client.cachedPlayers[var1[var2]], true);
-         }
-      }
-
    }
 }

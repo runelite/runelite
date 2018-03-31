@@ -2,33 +2,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ks")
+@ObfuscatedName("kt")
 @Implements("Friend")
 public class Friend extends ChatPlayer {
-   @ObfuscatedName("t")
-   boolean field3862;
-   @ObfuscatedName("q")
-   boolean field3861;
+   @ObfuscatedName("c")
+   boolean field3854;
+   @ObfuscatedName("i")
+   boolean field3855;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lks;B)I",
-      garbageValue = "1"
+      signature = "(Lkt;B)I",
+      garbageValue = "-65"
    )
-   int method5438(Friend var1) {
-      return super.world == Client.world && Client.world != var1.world?-1:(Client.world == var1.world && super.world != Client.world?1:(super.world != 0 && var1.world == 0?-1:(var1.world != 0 && super.world == 0?1:(this.field3862 && !var1.field3862?-1:(!this.field3862 && var1.field3862?1:(this.field3861 && !var1.field3861?-1:(!this.field3861 && var1.field3861?1:(super.world != 0?super.field3842 - var1.field3842:var1.field3842 - super.field3842))))))));
+   int method5459(Friend var1) {
+      return super.world == Client.world && Client.world != var1.world?-1:(Client.world == var1.world && super.world != Client.world?1:(super.world != 0 && var1.world == 0?-1:(var1.world != 0 && super.world == 0?1:(this.field3854 && !var1.field3854?-1:(!this.field3854 && var1.field3854?1:(this.field3855 && !var1.field3855?-1:(!this.field3855 && var1.field3855?1:(super.world != 0?super.field3839 - var1.field3839:var1.field3839 - super.field3839))))))));
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(Lkv;I)I",
-      garbageValue = "-1435662815"
+      signature = "(Lku;B)I",
+      garbageValue = "0"
    )
-   public int vmethod5444(Nameable var1) {
-      return this.method5438((Friend)var1);
+   public int vmethod5454(Nameable var1) {
+      return this.method5459((Friend)var1);
    }
 
    public int compareTo(Object var1) {
-      return this.method5438((Friend)var1);
+      return this.method5459((Friend)var1);
    }
 }

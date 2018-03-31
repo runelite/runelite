@@ -1,36 +1,80 @@
-import java.util.Iterator;
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bj")
+@ObfuscatedName("bp")
 public final class class61 {
-   @ObfuscatedName("pc")
-   @ObfuscatedGetter(
-      intValue = 1238668055
-   )
-   static int field701;
-   @ObfuscatedName("i")
-   public static String field699;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 214541341
-   )
-   static int field698;
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "603406969"
+      signature = "Ljm;"
    )
-   static String method1092() {
-      String var0 = "";
+   public static IndexDataBase field714;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lla;"
+   )
+   static SpritePixels field715;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   static Widget field713;
+   @ObfuscatedName("fx")
+   @ObfuscatedSignature(
+      signature = "[Llq;"
+   )
+   @Export("mapscene")
+   static IndexedSprite[] mapscene;
 
-      MessageNode var2;
-      for(Iterator var1 = class95.messages.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "([BZS)Ljava/lang/Object;",
+      garbageValue = "174"
+   )
+   @Export("byteArrayToObject")
+   public static Object byteArrayToObject(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !AbstractByteBuffer.directBufferUnavailable) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.directBufferUnavailable = true;
+            }
+         }
+
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("ft")
+   @ObfuscatedSignature(
+      signature = "(ZB)V",
+      garbageValue = "14"
+   )
+   static final void method1058(boolean var0) {
+      if(var0) {
+         Client.field1041 = class90.field1344?class158.field2150:class158.field2156;
+      } else {
+         Client.field1041 = class46.preferences.preferences.containsKey(Integer.valueOf(SceneTilePaint.method2873(class90.username)))?class158.field2157:class158.field2153;
       }
 
-      return var0;
+   }
+
+   @ObfuscatedName("ik")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "1863552416"
+   )
+   static final void method1055(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1060[var4] = true;
+         }
+      }
+
    }
 }

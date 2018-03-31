@@ -1,22 +1,36 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ee")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "[Ldm;"
+      signature = "Ljm;"
+   )
+   @Export("SpotAnimationDefinition_modelIndexCache")
+   static IndexDataBase SpotAnimationDefinition_modelIndexCache;
+   @ObfuscatedName("jf")
+   @ObfuscatedGetter(
+      intValue = -425019147
+   )
+   @Export("menuY")
+   static int menuY;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "[Ldy;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Ljc;Ljc;IZ)V"
+      signature = "(Ljm;Ljm;IZ)V",
+      garbageValue = "0"
    )
-   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -35,13 +49,7 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13;
-            if(var4) {
-               var13 = var2.getChild(0, var11);
-            } else {
-               var13 = var2.getChild(var11, 0);
-            }
-
+            byte[] var13 = var2.getChild(var11, 0);
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -51,25 +59,59 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "-1079763849"
+      garbageValue = "1944805564"
    )
-   public boolean method3052(int var1) {
+   public boolean method3079(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "63"
+      signature = "(Ljs;IIIBZB)V",
+      garbageValue = "36"
    )
-   static void method3056(int var0, int var1) {
-      long var2 = (long)((var0 << 16) + var1);
-      FileRequest var4 = (FileRequest)class264.NetCache_pendingWrites.get(var2);
-      if(var4 != null) {
-         class264.NetCache_pendingWritesQueue.setHead(var4);
+   @Export("requestNetFile")
+   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      FileRequest var8 = (FileRequest)class264.NetCache_pendingPriorityWrites.get(var6);
+      if(var8 == null) {
+         var8 = (FileRequest)class264.NetCache_pendingPriorityResponses.get(var6);
+         if(var8 == null) {
+            var8 = (FileRequest)class264.NetCache_pendingWrites.get(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.unlinkDual();
+                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
+                  --class264.NetCache_pendingWritesCount;
+                  ++class264.NetCache_pendingPriorityWritesCount;
+               }
+
+            } else {
+               if(!var5) {
+                  var8 = (FileRequest)class264.NetCache_pendingResponses.get(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
+               if(var5) {
+                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
+                  ++class264.NetCache_pendingPriorityWritesCount;
+               } else {
+                  class264.NetCache_pendingWritesQueue.push(var8);
+                  class264.NetCache_pendingWrites.put(var8, var6);
+                  ++class264.NetCache_pendingWritesCount;
+               }
+
+            }
+         }
       }
    }
 }

@@ -38,6 +38,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
@@ -54,6 +55,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
@@ -412,5 +414,12 @@ public class Hooks
 			death.setActor(actor);
 			eventBus.post(death);
 		}
+	}
+
+	public static void postItemComposition(ItemComposition itemComposition)
+	{
+		PostItemComposition event = new PostItemComposition();
+		event.setItemComposition(itemComposition);
+		eventBus.post(event);
 	}
 }

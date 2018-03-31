@@ -4,111 +4,99 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fm")
+@ObfuscatedName("fx")
 public class class171 extends class169 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("eq")
    @ObfuscatedGetter(
-      intValue = 870607291
+      intValue = -1238115095
    )
-   public static int field2199;
-   @ObfuscatedName("t")
-   Socket field2197;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lfl;"
-   )
-   class163 field2195;
+   static int field2225;
+   @ObfuscatedName("c")
+   Socket field2224;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lfj;"
+      signature = "Lfs;"
    )
-   GameSocket field2198;
+   class163 field2223;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lfw;"
+   )
+   GameSocket field2222;
 
-   public class171(Socket var1, int var2, int var3) throws IOException {
-      this.field2197 = var1;
-      this.field2197.setSoTimeout(30000);
-      this.field2197.setTcpNoDelay(true);
-      this.field2197.setReceiveBufferSize(65536);
-      this.field2197.setSendBufferSize(65536);
-      this.field2195 = new class163(this.field2197.getInputStream(), var2);
-      this.field2198 = new GameSocket(this.field2197.getOutputStream(), var3);
+   class171(Socket var1, int var2, int var3) throws IOException {
+      this.field2224 = var1;
+      this.field2224.setSoTimeout(30000);
+      this.field2224.setTcpNoDelay(true);
+      this.field2224.setReceiveBufferSize(65536);
+      this.field2224.setSendBufferSize(65536);
+      this.field2223 = new class163(this.field2224.getInputStream(), var2);
+      this.field2222 = new GameSocket(this.field2224.getOutputStream(), var3);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(IB)Z",
-      garbageValue = "1"
+      garbageValue = "-41"
    )
-   public boolean vmethod3337(int var1) throws IOException {
-      return this.field2195.method3190(var1);
+   public boolean vmethod3338(int var1) throws IOException {
+      return this.field2223.method3207(var1);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1714062859"
+      garbageValue = "8917861"
    )
-   public int vmethod3336() throws IOException {
-      return this.field2195.method3191();
+   public int vmethod3316() throws IOException {
+      return this.field2223.method3208();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-79385341"
+      garbageValue = "-1719250034"
    )
-   public int vmethod3335() throws IOException {
-      return this.field2195.method3192();
+   public int vmethod3315() throws IOException {
+      return this.field2223.method3211();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "([BIII)I",
-      garbageValue = "-1560304317"
+      garbageValue = "903617518"
    )
-   public int vmethod3338(byte[] var1, int var2, int var3) throws IOException {
-      return this.field2195.method3193(var1, var2, var3);
+   public int vmethod3318(byte[] var1, int var2, int var3) throws IOException {
+      return this.field2223.method3210(var1, var2, var3);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-796507680"
+      garbageValue = "-1130563356"
    )
-   public void vmethod3340(byte[] var1, int var2, int var3) throws IOException {
-      this.field2198.read(var1, var2, var3);
+   public void vmethod3320(byte[] var1, int var2, int var3) throws IOException {
+      this.field2222.read(var1, var2, var3);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2082122029"
+      garbageValue = "-1801563331"
    )
-   public void vmethod3339() {
-      this.field2198.method3373();
+   public void vmethod3325() {
+      this.field2222.method3353();
 
       try {
-         this.field2197.close();
+         this.field2224.close();
       } catch (IOException var2) {
          ;
       }
 
-      this.field2195.method3198();
+      this.field2223.method3222();
    }
 
    protected void finalize() {
-      this.vmethod3339();
-   }
-
-   @ObfuscatedName("go")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-124432457"
-   )
-   static void method3303() {
-      if(WorldMapData.localPlayer.x >> 7 == Client.destinationX && WorldMapData.localPlayer.y >> 7 == Client.destinationY) {
-         Client.destinationX = 0;
-      }
-
+      this.vmethod3325();
    }
 }

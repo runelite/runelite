@@ -1,51 +1,45 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("q")
 public class class22 extends class28 {
-   @ObfuscatedName("ps")
-   @ObfuscatedGetter(
-      intValue = -1976808445
-   )
-   static int field322;
-   @ObfuscatedName("o")
-   static int[] floorLightness;
-   @ObfuscatedName("aj")
-   static java.awt.Font field320;
+   @ObfuscatedName("q")
+   @Export("userHome")
+   public static String userHome;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lgb;Lgb;I)V",
-      garbageValue = "-1208095563"
+      signature = "(Lgp;Lgp;I)V",
+      garbageValue = "-1880953807"
    )
    void method176(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
       if(var3 != class37.field481.field483) {
          throw new IllegalStateException("");
       } else {
-         super.field381 = var2.readUnsignedByte();
-         super.field382 = var2.readUnsignedByte();
-         super.field379 = var2.readUnsignedShort();
-         super.field378 = var2.readUnsignedShort();
+         super.field392 = var2.readUnsignedByte();
+         super.field391 = var2.readUnsignedByte();
          super.field390 = var2.readUnsignedShort();
-         super.field385 = var2.readUnsignedShort();
-         super.field382 = Math.min(super.field382, 4);
-         super.field383 = new short[1][64][64];
-         super.field384 = new short[super.field382][64][64];
-         super.field389 = new byte[super.field382][64][64];
-         super.field386 = new byte[super.field382][64][64];
-         super.decorations = new WorldMapDecoration[super.field382][64][64][];
+         super.field387 = var2.readUnsignedShort();
+         super.field386 = var2.readUnsignedShort();
+         super.field389 = var2.readUnsignedShort();
+         super.field391 = Math.min(super.field391, 4);
+         super.field388 = new short[1][64][64];
+         super.field393 = new short[super.field391][64][64];
+         super.field394 = new byte[super.field391][64][64];
+         super.field395 = new byte[super.field391][64][64];
+         super.decorations = new WorldMapDecoration[super.field391][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class36.field477.field474) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
-            if(var4 == super.field390 && var5 == super.field385) {
+            if(var4 == super.field386 && var5 == super.field389) {
                for(int var6 = 0; var6 < 64; ++var6) {
                   for(int var7 = 0; var7 < 64; ++var7) {
-                     this.method234(var6, var7, var1);
+                     this.method241(var6, var7, var1);
                   }
                }
 
@@ -56,96 +50,90 @@ public class class22 extends class28 {
       }
    }
 
-   public int hashCode() {
-      return super.field390 | super.field385 << 8;
-   }
-
    public boolean equals(Object var1) {
       if(!(var1 instanceof class22)) {
          return false;
       } else {
          class22 var2 = (class22)var1;
-         return super.field390 == var2.field390 && var2.field385 == super.field385;
+         return super.field386 == var2.field386 && var2.field389 == super.field389;
       }
    }
 
-   @ObfuscatedName("ju")
+   public int hashCode() {
+      return super.field386 | super.field389 << 8;
+   }
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([Lig;II)V",
-      garbageValue = "1933870798"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "1"
    )
-   static final void method183(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null && var3.parentId == var1) {
-            boolean var4;
-            if(var3.hasScript) {
-               var4 = var3.isHidden;
-               if(var4) {
-                  continue;
-               }
-            }
+   static String method186(int var0) {
+      return "<img=" + var0 + ">";
+   }
 
-            int var5;
-            if(var3.type == 0) {
-               if(!var3.hasScript) {
-                  var4 = var3.isHidden;
-                  if(var4 && var3 != class28.field377) {
-                     continue;
-                  }
-               }
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "609703079"
+   )
+   @Export("getSmoothNoise")
+   static final int getSmoothNoise(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = class44.getSmoothNoise2D(var3, var5);
+      int var8 = class44.getSmoothNoise2D(var3 + 1, var5);
+      int var9 = class44.getSmoothNoise2D(var3, var5 + 1);
+      int var10 = class44.getSmoothNoise2D(var3 + 1, var5 + 1);
+      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var11 = ((65536 - var12) * var7 >> 16) + (var8 * var12 >> 16);
+      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
+      int var13 = ((65536 - var14) * var9 >> 16) + (var14 * var10 >> 16);
+      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
+      int var15 = ((65536 - var16) * var11 >> 16) + (var16 * var13 >> 16);
+      return var15;
+   }
 
-               method183(var0, var3.id);
-               if(var3.children != null) {
-                  method183(var3.children, var3.id);
-               }
-
-               WidgetNode var7 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var7 != null) {
-                  var5 = var7.id;
-                  if(Script.loadWidget(var5)) {
-                     method183(Widget.widgets[var5], -1);
-                  }
-               }
-            }
-
-            if(var3.type == 6) {
-               if(var3.field2838 != -1 || var3.field2865 != -1) {
-                  var4 = class57.method887(var3);
-                  if(var4) {
-                     var5 = var3.field2865;
-                  } else {
-                     var5 = var3.field2838;
-                  }
-
-                  if(var5 != -1) {
-                     Sequence var6 = class158.getAnimation(var5);
-
-                     for(var3.field2940 += Client.field910; var3.field2940 > var6.frameLengths[var3.field2939]; GameEngine.method1053(var3)) {
-                        var3.field2940 -= var6.frameLengths[var3.field2939];
-                        ++var3.field2939;
-                        if(var3.field2939 >= var6.frameIDs.length) {
-                           var3.field2939 -= var6.frameStep;
-                           if(var3.field2939 < 0 || var3.field2939 >= var6.frameIDs.length) {
-                              var3.field2939 = 0;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               if(var3.field2815 != 0 && !var3.hasScript) {
-                  int var8 = var3.field2815 >> 16;
-                  var5 = var3.field2815 << 16 >> 16;
-                  var8 *= Client.field910;
-                  var5 *= Client.field910;
-                  var3.rotationX = var8 + var3.rotationX & 2047;
-                  var3.rotationZ = var5 + var3.rotationZ & 2047;
-                  GameEngine.method1053(var3);
-               }
-            }
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(ILcx;ZB)I",
+      garbageValue = "26"
+   )
+   static int method185(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class336.field4073:class61.field713;
+      if(var0 == 1700) {
+         class81.intStack[++SceneTilePaint.intStackSize - 1] = var3.itemId;
+         return 1;
+      } else if(var0 == 1701) {
+         if(var3.itemId != -1) {
+            class81.intStack[++SceneTilePaint.intStackSize - 1] = var3.itemQuantity;
+         } else {
+            class81.intStack[++SceneTilePaint.intStackSize - 1] = 0;
          }
-      }
 
+         return 1;
+      } else if(var0 == 1702) {
+         class81.intStack[++SceneTilePaint.intStackSize - 1] = var3.index;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "583198239"
+   )
+   static final void method187(int var0, int var1) {
+      if(Client.hintArrowTargetType == 2) {
+         Player.worldToScreen((Client.hintArrowX - PacketNode.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - BaseVarType.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
+         if(Client.screenX > -1 && Client.gameCycle % 20 < 10) {
+            class47.headIconsHint[0].drawAt(var0 + Client.screenX - 12, Client.screenY + var1 - 28);
+         }
+
+      }
    }
 }

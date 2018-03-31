@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +27,32 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Collections;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
+import net.runelite.client.menus.MenuManager;
+import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
@@ -41,16 +60,161 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {
+	private static final String CONFIGURE = "Configure";
+	private static final String SAVE = "Save";
+	private static final String MENU_TARGET = "Shift-click";
+
+	private static final String CONFIG_GROUP = "shiftclick";
+	private static final String ITEM_KEY_PREFIX = "item_";
+
+	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
+		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
+
+	private static final WidgetMenuOption FIXED_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
+		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
+
+	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
+
+	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
+
+	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+
+	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+
 	@Inject
 	private Client client;
 
 	@Inject
 	private MenuEntrySwapperConfig config;
 
+	@Inject
+	private ShiftClickConfigurationOverlay overlay;
+
+	@Inject
+	private ShiftClickInputListener inputListener;
+
+	@Inject
+	private ConfigManager configManager;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private MenuManager menuManager;
+
+	@Getter
+	private boolean configuringShiftClick = false;
+
+	@Setter
+	private boolean shiftModifier = false;
+
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MenuEntrySwapperConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
+
+	@Override
+	public void startUp()
+	{
+		if (config.shiftClickCustomization())
+		{
+			enableCustomization();
+		}
+	}
+
+	@Override
+	public void shutDown()
+	{
+		disableCustomization();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("shiftClickCustomization"))
+		{
+			if (config.shiftClickCustomization())
+			{
+				enableCustomization();
+			}
+			else
+			{
+				disableCustomization();
+			}
+		}
+	}
+
+	private Integer getSwapConfig(int itemId)
+	{
+		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		if (config == null || config.isEmpty())
+		{
+			return null;
+		}
+
+		return Integer.parseInt(config);
+	}
+
+	private void setSwapConfig(int itemId, int index)
+	{
+		configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
+	}
+
+	private void unsetSwapConfig(int itemId)
+	{
+		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+	}
+
+	private void enableCustomization()
+	{
+		keyManager.registerKeyListener(inputListener);
+		refreshShiftClickCustomizationMenus();
+	}
+
+	private void disableCustomization()
+	{
+		keyManager.unregisterKeyListener(inputListener);
+		mouseManager.unregisterMouseListener(inputListener);
+		removeShiftClickCustomizationMenus();
+		configuringShiftClick = false;
+	}
+
+	@Subscribe
+	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
+	{
+		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
+		{
+			configuringShiftClick = event.getMenuOption().equals(CONFIGURE);
+			refreshShiftClickCustomizationMenus();
+
+			if (configuringShiftClick)
+			{
+				mouseManager.registerMouseListener(inputListener);
+			}
+			else
+			{
+				mouseManager.unregisterMouseListener(inputListener);
+			}
+		}
 	}
 
 	@Subscribe
@@ -61,8 +225,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		String option = event.getOption().toLowerCase();
-		String target = event.getTarget();
+		int itemId = event.getIdentifier();
+		String option = Text.removeTags(event.getOption()).toLowerCase();
+		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
 		if (option.equals("talk-to"))
 		{
@@ -144,6 +309,31 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		{
+			Integer customOption = getSwapConfig(itemId);
+
+			if (customOption != null && customOption == -1)
+			{
+				swap("use", option, target, true);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onPostItemComposition(PostItemComposition event)
+	{
+		ItemComposition itemComposition = event.getItemComposition();
+		Integer option = getSwapConfig(itemComposition.getId());
+
+		if (option != null)
+		{
+			itemComposition.setShiftClickActionIndex(option);
+
+			// Update our cached item composition too
+			ItemComposition ourItemComposition = itemManager.getItemComposition(itemComposition.getId());
+			ourItemComposition.setShiftClickActionIndex(option);
+		}
 	}
 
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
@@ -151,21 +341,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 		for (int i = entries.length - 1; i >= 0; i--)
 		{
 			MenuEntry entry = entries[i];
+			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
+			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
+
 			if (strict)
 			{
-				if (entry.getOption().toLowerCase().equals(option) && entry.getTarget().equals(target))
+				if (entryOption.equals(option) && entryTarget.equals(target))
 				{
 					return i;
 				}
 			}
 			else
 			{
-				if (entry.getOption().toLowerCase().contains(option) && entry.getTarget().equals(target))
+				if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
 				{
 					return i;
 				}
 			}
 		}
+
 		return -1;
 	}
 
@@ -184,5 +378,82 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			client.setMenuEntries(entries);
 		}
+	}
+
+	public void cycleItemShiftClickAction(WidgetItem item, int mouseClick)
+	{
+		ItemComposition itemComposition = client.getItemDefinition(item.getId());
+
+		if (mouseClick == MouseEvent.BUTTON1)
+		{
+			String[] actions = itemComposition.getInventoryActions();
+			int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
+			int nextActionIndex = getNextActionIndex(actions, shiftClickActionIndex);
+			setSwapConfig(item.getId(), nextActionIndex);
+			itemComposition.setShiftClickActionIndex(nextActionIndex);
+		}
+		else if (mouseClick == MouseEvent.BUTTON3)
+		{
+			unsetSwapConfig(item.getId());
+			itemComposition.resetShiftClickActionIndex();
+		}
+	}
+
+	private int getNextActionIndex(String[] actions, int currentIndex)
+	{
+		int size = actions.length;
+		int index = currentIndex + 1;
+
+		for (int i = index; i < index + size; i++)
+		{
+			if (i == size)
+			{
+				// -1 is used for "Use" which is not in actions
+				return -1;
+			}
+
+			index = i % size;
+
+			if (actions[index] == null)
+			{
+				continue;
+			}
+
+			break;
+		}
+
+		return index;
+	}
+
+	private void removeShiftClickCustomizationMenus()
+	{
+		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);
+		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_SAVE);
+		menuManager.removeManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
+		menuManager.removeManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE);
+		menuManager.removeManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
+		menuManager.removeManagedCustomMenu(RESIZABLE_INVENTORY_TAB_SAVE);
+	}
+
+	private void refreshShiftClickCustomizationMenus()
+	{
+		removeShiftClickCustomizationMenus();
+		if (configuringShiftClick)
+		{
+			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_SAVE);
+			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE);
+			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_SAVE);
+		}
+		else
+		{
+			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);
+			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
+			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
+		}
+	}
+
+	Collection<WidgetItem> getInventoryItems()
+	{
+		return Collections.unmodifiableCollection(client.getWidget(WidgetInfo.INVENTORY).getWidgetItems());
 	}
 }

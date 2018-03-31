@@ -3,56 +3,51 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kv")
+@ObfuscatedName("ku")
 @Implements("Nameable")
 public class Nameable implements Comparable {
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ljc;"
-   )
-   public static IndexDataBase field3824;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lkb;"
+      signature = "Lko;"
    )
    @Export("name")
    Name name;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lkb;"
+      signature = "Lko;"
    )
-   Name field3825;
+   Name field3822;
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(I)Lkb;",
-      garbageValue = "1593357386"
+      signature = "(I)Lko;",
+      garbageValue = "1291806181"
    )
-   public Name method5246() {
+   public Name method5260() {
       return this.name;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "233820255"
+      garbageValue = "-2050568132"
    )
-   public String method5264() {
+   public String method5278() {
       return this.name == null?"":this.name.getName();
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "2083165839"
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "-1"
    )
-   public String method5247() {
-      return this.field3825 == null?"":this.field3825.getName();
+   public String method5262() {
+      return this.field3822 == null?"":this.field3822.getName();
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(Lkb;Lkb;B)V",
+      signature = "(Lko;Lko;B)V",
       garbageValue = "1"
    )
    void method5263(Name var1, Name var2) {
@@ -60,31 +55,100 @@ public class Nameable implements Comparable {
          throw new NullPointerException();
       } else {
          this.name = var1;
-         this.field3825 = var2;
+         this.field3822 = var2;
       }
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(Lkv;I)I",
-      garbageValue = "-1435662815"
+      signature = "(Lku;B)I",
+      garbageValue = "0"
    )
-   public int vmethod5444(Nameable var1) {
-      return this.name.method5420(var1.name);
+   public int vmethod5454(Nameable var1) {
+      return this.name.method5441(var1.name);
    }
 
    public int compareTo(Object var1) {
-      return this.vmethod5444((Nameable)var1);
+      return this.vmethod5454((Nameable)var1);
    }
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2135777349"
+      signature = "(CII)C",
+      garbageValue = "-849451379"
    )
-   public static void method5271() {
-      class281.field3573.reset();
-      class281.field3584.reset();
-      class281.field3590.reset();
+   public static char method5284(char var0, int var1) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
+         }
+
+         if(var0 == 199) {
+            return 'C';
+         }
+
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
+         }
+
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
+         }
+
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
+         }
+
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
+         }
+
+         if(var0 == 221) {
+            return 'Y';
+         }
+
+         if(var0 == 223) {
+            return 's';
+         }
+
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
+         }
+
+         if(var0 == 231) {
+            return 'c';
+         }
+
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
+         }
+
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
+         }
+
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
+         }
+
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
+         }
+
+         if(var0 == 253 || var0 == 255) {
+            return 'y';
+         }
+      }
+
+      return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;B)Z",
+      garbageValue = "0"
+   )
+   public static boolean method5280(CharSequence var0) {
+      return RunException.method3229(var0, 10, true);
    }
 }

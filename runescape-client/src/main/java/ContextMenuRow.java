@@ -4,40 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cc")
 @Implements("ContextMenuRow")
 public class ContextMenuRow {
-   @ObfuscatedName("cg")
+   @ObfuscatedName("er")
    @ObfuscatedSignature(
-      signature = "Lju;"
+      signature = "Lfr;"
    )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-   @ObfuscatedName("t")
-   @Export("option")
-   String option;
-   @ObfuscatedName("q")
+   static class169 field1324;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1856524257
+      intValue = -1258169607
    )
    @Export("param0")
    int param0;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1992101739
+      intValue = 1974902623
    )
    @Export("param1")
    int param1;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1540753369
+      intValue = -1708739253
    )
    @Export("type")
    int type;
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1066373001
+      intValue = 1947125179
    )
    @Export("identifier")
    int identifier;
+   @ObfuscatedName("k")
+   @Export("option")
+   String option;
 }

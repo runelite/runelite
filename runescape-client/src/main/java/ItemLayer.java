@@ -4,187 +4,140 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("dt")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1254525043
+      intValue = 1302142755
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 68132991
+      intValue = -1176722639
    )
    @Export("x")
    int x;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1274282831
+      intValue = 496517009
    )
    @Export("y")
    int y;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lek;"
    )
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lek;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lek;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 2143649393
+      intValue = -122810767
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -27647469
+      intValue = -1294947835
    )
    @Export("height")
    int height;
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(ILiw;I)I",
-      garbageValue = "-646919406"
-   )
-   public static int method2591(int var0, class245 var1) {
-      return (var0 + 40000 << 8) + var1.field2961;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Ljc;Ljc;Ljc;Lhk;I)Z",
-      garbageValue = "-2138447228"
-   )
-   public static boolean method2590(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2, class230 var3) {
-      WorldComparator.field258 = var0;
-      class243.field2953 = var1;
-      class229.field2675 = var2;
-      class229.field2673 = var3;
-      return true;
-   }
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Lbd;II[I[II)V",
-      garbageValue = "687808026"
+      signature = "(Ljava/lang/String;II)Z",
+      garbageValue = "2065823381"
    )
-   static void method2592(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
-         int var5 = var1 - 1;
-         int var6 = var2 + 1;
-         int var7 = (var2 + var1) / 2;
-         World var8 = var0[var7];
-         var0[var7] = var0[var1];
-         var0[var1] = var8;
+   public static boolean method2580(String var0, int var1) {
+      return WorldMapType2.method553(var0, var1, "openjs");
+   }
 
-         while(var5 < var6) {
-            boolean var9 = true;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lgp;IIIIIII)V",
+      garbageValue = "-1873681428"
+   )
+   @Export("loadTerrain")
+   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class62.tileSettings[var1][var2][var3] = 0;
 
-            int var10;
-            int var11;
-            int var12;
-            do {
-               --var6;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var6].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var6].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].method1690()?1:0;
-                     var12 = var8.method1690()?1:0;
-                  } else {
-                     var11 = var0[var6].id;
-                     var12 = var8.id;
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class62.tileHeights[0][var2];
+                  int var11 = var2 + var4 + 932731;
+                  int var12 = var3 + var5 + 556238;
+                  int var13 = class22.getSmoothNoise(45365 + var11, var12 + 91923, 4) - 128 + (class22.getSmoothNoise(10294 + var11, var12 + 37821, 2) - 128 >> 1) + (class22.getSmoothNoise(var11, var12, 1) - 128 >> 2);
+                  var13 = (int)((double)var13 * 0.3D) + 35;
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
                   }
 
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
+                  var8[var3] = -var13 * 8;
+               } else {
+                  class62.tileHeights[var1][var2][var3] = class62.tileHeights[var1 - 1][var2][var3] - 240;
                }
-            } while(var9);
+               break;
+            }
 
-            var9 = true;
-
-            do {
-               ++var5;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var5].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var5].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].method1690()?1:0;
-                     var12 = var8.method1690()?1:0;
-                  } else {
-                     var11 = var0[var5].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
+            if(var7 == 1) {
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
                }
-            } while(var9);
 
-            if(var5 < var6) {
-               World var13 = var0[var5];
-               var0[var5] = var0[var6];
-               var0[var6] = var13;
+               if(var1 == 0) {
+                  class62.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class62.tileHeights[var1][var2][var3] = class62.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class62.tileOverlayIds[var1][var2][var3] = var0.readByte();
+               class62.tileOverlayPath[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               RunException.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class62.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class62.tileUnderlayIds[var1][var2][var3] = (byte)(var7 - 81);
             }
          }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
 
-         method2592(var0, var1, var6, var3, var4);
-         method2592(var0, var6 + 1, var2, var3, var4);
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
       }
 
    }

@@ -1,148 +1,211 @@
-import java.io.IOException;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hu")
 public class class231 extends Node {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1057810265
-   )
-   int field2726;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lho;"
-   )
-   class233 field2727;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Ldp;"
-   )
-   RawAudioNode field2713;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhd;"
-   )
-   class228 field2714;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -87976117
-   )
-   int field2715;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1718307031
-   )
-   int field2716;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1049364983
-   )
-   int field2717;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 245633695
-   )
-   int field2718;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1330286871
-   )
-   int field2712;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1741517933
-   )
-   int field2720;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1435443303
-   )
-   int field2721;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -432039263
-   )
-   int field2722;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1394928909
-   )
-   int field2719;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -731777075
-   )
-   int field2730;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1699483843
-   )
-   int field2711;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 20847529
-   )
-   int field2729;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1994946973
-   )
-   int field2724;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 904762329
-   )
-   int field2728;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Ldy;"
-   )
-   class115 field2723;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1036505937
+      intValue = 1502365467
    )
    int field2725;
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lhp;"
+   )
+   class233 field2715;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lda;"
+   )
+   RawAudioNode field2716;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
+   class228 field2717;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -786331147
+      intValue = 679331173
+   )
+   int field2718;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1634464667
+   )
+   int field2719;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1086755291
+   )
+   int field2720;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -648378935
+   )
+   int field2721;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1742274145
+   )
+   int field2722;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 358698043
+   )
+   int field2723;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -367859909
+   )
+   int field2724;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 108138415
    )
    int field2731;
-
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1677657369
+   )
+   int field2726;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1676073617
+   )
+   int field2727;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1773765779
+   )
+   int field2728;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1364188571
+   )
+   int field2729;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1983755585
+   )
+   int field2733;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1021949373
+   )
+   int field2730;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-656771161"
+      signature = "Ldx;"
    )
-   void method4292() {
-      this.field2727 = null;
-      this.field2713 = null;
-      this.field2714 = null;
-      this.field2723 = null;
+   class115 field2732;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 804264015
+   )
+   int field2714;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 597221979
+   )
+   int field2734;
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-115"
+   )
+   void method4259() {
+      this.field2715 = null;
+      this.field2716 = null;
+      this.field2717 = null;
+      this.field2732 = null;
    }
 
-   @ObfuscatedName("gv")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "-118"
+      signature = "(I)V",
+      garbageValue = "-1608218808"
    )
-   @Export("flush")
-   static final void flush(boolean var0) {
-      MapIcon.method588();
-      ++Client.field1072.field1462;
-      if(Client.field1072.field1462 >= 50 || var0) {
-         Client.field1072.field1462 = 0;
-         if(!Client.socketError && Client.field1072.getSocket() != null) {
-            PacketNode var1 = class33.method382(ClientPacket.field2431, Client.field1072.field1456);
-            Client.field1072.method2073(var1);
+   static void method4261() {
+      for(class80 var0 = (class80)class80.field1261.getFront(); var0 != null; var0 = (class80)class80.field1261.getNext()) {
+         if(var0.field1260 != null) {
+            GameCanvas.field632.method2062(var0.field1260);
+            var0.field1260 = null;
+         }
 
-            try {
-               Client.field1072.method2077();
-            } catch (IOException var3) {
-               Client.socketError = true;
+         if(var0.field1254 != null) {
+            GameCanvas.field632.method2062(var0.field1254);
+            var0.field1254 = null;
+         }
+      }
+
+      class80.field1261.clear();
+   }
+
+   @ObfuscatedName("hs")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "-2034954348"
+   )
+   static final void method4260(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      PendingSpawn var9 = null;
+
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+            var9 = var10;
+            break;
+         }
+      }
+
+      if(var9 == null) {
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
+         class289.method5205(var9);
+         Client.pendingSpawns.addFront(var9);
+      }
+
+      var9.id = var4;
+      var9.field1142 = var5;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
+   }
+
+   @ObfuscatedName("jx")
+   @ObfuscatedSignature(
+      signature = "(Lib;IIB)V",
+      garbageValue = "24"
+   )
+   static final void method4258(Widget var0, int var1, int var2) {
+      if(Client.draggedWidget == null && !Client.isMenuOpen) {
+         if(var0 != null) {
+            Widget var4 = NetWriter.method2045(var0);
+            if(var4 == null) {
+               var4 = var0.dragParent;
+            }
+
+            if(var4 != null) {
+               Client.draggedWidget = var0;
+               var4 = NetWriter.method2045(var0);
+               if(var4 == null) {
+                  var4 = var0.dragParent;
+               }
+
+               Client.field1028 = var4;
+               Client.field1029 = var1;
+               Client.field1030 = var2;
+               WorldMapRegion.field453 = 0;
+               Client.draggingWidget = false;
+               int var5 = class36.method520();
+               if(var5 != -1) {
+                  BoundingBox3DDrawMode.method68(var5);
+               }
+
+               return;
             }
          }
 
