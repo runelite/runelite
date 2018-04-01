@@ -57,7 +57,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.api.Text;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Slayer"

@@ -31,10 +31,6 @@ public interface Player extends Actor
 	@Override
 	int getCombatLevel();
 
-	String getCleanName();
-
-	void setName(String name);
-
 	PlayerComposition getPlayerComposition();
 
 	Polygon[] getPolygons();
