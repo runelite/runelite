@@ -38,7 +38,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ScriptEvent;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
@@ -109,7 +109,7 @@ public class BankTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptEvent event)
+	public void onScriptEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
 
