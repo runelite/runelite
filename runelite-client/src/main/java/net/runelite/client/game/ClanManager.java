@@ -65,8 +65,8 @@ public class ClanManager
 
 	private int modIconsLength;
 
-	@Inject
-	private Provider<Client> clientProvider;
+	private final Provider<Client> clientProvider;
+	private final BufferedImage[] clanChatImages = new BufferedImage[CLANCHAT_IMAGES.length];
 
 	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
 		.maximumSize(100)
@@ -93,9 +93,41 @@ public class ClanManager
 			}
 		});
 
+	@Inject
+	public ClanManager(Provider<Client> clientProvider)
+	{
+		this.clientProvider = clientProvider;
+
+		int i = 0;
+		for (String resource : CLANCHAT_IMAGES)
+		{
+			try
+			{
+				final BufferedImage bufferedImage = rgbaToIndexedBufferedImage(ImageIO
+					.read(ClanManager.class.getResource(resource)));
+				clanChatImages[i] = bufferedImage;
+			}
+			catch (IOException e)
+			{
+				log.warn("unable to load clan image", e);
+			}
+
+			++i;
+		}
+	}
+
 	public ClanMemberRank getRank(String playerName)
 	{
 		return clanRanksCache.getUnchecked(playerName);
+	}
+
+	public BufferedImage getClanImage(final ClanMemberRank clanMemberRank)
+	{
+		if (clanMemberRank == ClanMemberRank.UNRANKED)
+		{
+			return null;
+		}
+		return clanChatImages[clanMemberRank.getValue()];
 	}
 
 	public int getIconNumber(final ClanMemberRank clanMemberRank)
@@ -129,9 +161,9 @@ public class ClanManager
 			final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + CLANCHAT_IMAGES.length);
 			int curPosition = newModIcons.length - CLANCHAT_IMAGES.length;
 
-			for (String resource : CLANCHAT_IMAGES)
+			for (BufferedImage image : clanChatImages)
 			{
-				IndexedSprite sprite = createIndexedSprite(client, resource);
+				IndexedSprite sprite = createIndexedSprite(client, image);
 				newModIcons[curPosition++] = sprite;
 			}
 
@@ -150,12 +182,8 @@ public class ClanManager
 		return cleaned.replace('\u00A0', ' ');
 	}
 
-
-	private static IndexedSprite createIndexedSprite(final Client client, final String imagePath) throws IOException
+	private static IndexedSprite createIndexedSprite(final Client client, final BufferedImage bufferedImage) throws IOException
 	{
-		final BufferedImage bufferedImage = rgbaToIndexedBufferedImage(ImageIO
-			.read(ClanManager.class.getResource(imagePath)));
-
 		final IndexColorModel indexedCM = (IndexColorModel) bufferedImage.getColorModel();
 
 		final int width = bufferedImage.getWidth();
