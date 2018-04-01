@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,24 +24,42 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
-
-public interface Player extends Actor
+/**
+ * A set of utilities to use when dealing with text.
+ */
+public class Text
 {
-	@Override
-	int getCombatLevel();
 
-	String getCleanName();
+	/**
+	 * Removes all tags from the given `str`.
+	 *
+	 * @param str The string to remove tags from.
+	 * @return The given `str` with all tags removed from it.
+	 */
+	public static String removeTags(String str)
+	{
+		StringBuilder builder = new StringBuilder(str.length());
+		boolean inTag = false;
 
-	void setName(String name);
+		for (int i = 0; i < str.length(); i++)
+		{
+			char currentChar = str.charAt(i);
 
-	PlayerComposition getPlayerComposition();
+			if (currentChar == '<')
+			{
+				inTag = true;
+			}
+			else if (currentChar == '>')
+			{
+				inTag = false;
+			}
+			else if (!inTag)
+			{
+				builder.append(currentChar);
+			}
+		}
 
-	Polygon[] getPolygons();
+		return builder.toString();
+	}
 
-	int getTeam();
-
-	boolean isClanMember();
-
-	boolean isFriend();
 }
