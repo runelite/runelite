@@ -238,11 +238,6 @@ public class Opcodes
 	public static final int ITEM_PRICE = 3115;
 	public static final int SEND_BUG_REPORT = 3116;
 	public static final int SET_SHIFT_DROP_ENABLED = 3117;
-	public static final int SET_DRAW_FRIEND_NAME = 3120;
-	public static final int SET_DRAW_CLAN_NAME = 3121;
-	public static final int SET_DRAW_ALL_EXCEPT_OWN_NAME = 3122;
-	public static final int SET_DRAW_OWN_NAME = 3123;
-	public static final int SET_DRAW_NO_NAMES = 3124;
 	public static final int PLAY_SOUND_EFFECT = 3200;
 	public static final int GET_GAMECYCLE = 3300;
 	public static final int GET_ITEMCONTAINER_ITEMID = 3301;

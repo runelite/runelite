@@ -55,7 +55,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default Color getOwnNameColor()
 	{
-		return Color.WHITE;
+		return new Color(0, 184, 212);
 	}
 
 	@ConfigItem(
@@ -104,50 +104,28 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "drawTeamMemberNames",
-		name = "Draw team member names",
-		description = "Configures whether or not names of player's team members should be drawn"
+		keyName = "drawNonClanMemberNames",
+		name = "Draw non-clan member names",
+		description = "Configures whether or not names of non-clan members should be drawn"
 	)
-	default boolean drawTeamMemberNames()
+	default boolean drawNonClanMemberNames()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		position = 7,
-		keyName = "teamMemberColor",
-		name = "Team member color",
-		description = "Color of team member names"
-	)
-	default Color getTeamMemberColor()
-	{
-		return new Color(19, 110, 247);
-	}
-
-	@ConfigItem(
-		position = 8,
-		keyName = "drawOthers",
-		name = "Draw names of others",
-		description = "Configures whether or not names of everyone except you should be drawn"
-	)
-	default boolean drawNonOwnNames()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 9,
 		keyName = "nonClanMemberColor",
 		name = "Non-clan member color",
 		description = "Color of non-clan member names"
 	)
-	default Color getNonOwnColor()
+	default Color getNonClanMemberColor()
 	{
-		return Color.WHITE;
+		return Color.RED;
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 8,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles",
 		description = "Configures whether or not tiles under players with rendered names should be drawn"
@@ -158,7 +136,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 9,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -166,16 +144,5 @@ public interface PlayerIndicatorsConfig extends Config
 	default boolean drawMinimapNames()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		position = 12,
-		keyName = "showClanRankIcons",
-		name = "Show clan member rank icons next to names",
-		description = "Configures whether or not icons representing rank are shown next to player names"
-	)
-	default boolean showClanRankIcons()
-	{
-		return true;
 	}
 }

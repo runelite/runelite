@@ -30,7 +30,6 @@ import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Text;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 import net.runelite.api.mixins.Inject;
@@ -64,35 +63,7 @@ public abstract class RSPlayerMixin implements RSPlayer
 			return null;
 		}
 
-		return Text.removeTags(name.replace('\u00A0', ' '));
-	}
-
-	@Inject
-	@Override
-	public String getCleanName()
-	{
-		final RSName rsName = getRsName();
-
-		if (rsName == null)
-		{
-			return null;
-		}
-
-		return rsName.getCleanName();
-	}
-
-	@Inject
-	@Override
-	public void setName(String name)
-	{
-		final RSName rsName = getRsName();
-
-		if (rsName == null)
-		{
-			return;
-		}
-
-		rsName.setName(name);
+		return name.replace('\u00A0', ' ');
 	}
 
 	@Inject

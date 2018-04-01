@@ -350,8 +350,4 @@ public interface Client extends GameEngine
 	World createWorld();
 
 	SpritePixels drawInstanceMap(int z);
-
-	void setPlayerNameMask(int mask);
-
-	int getPlayerNameMask();
 }

@@ -538,38 +538,38 @@ public class class90 {
                         var3 = 1;
                      } else if(var0 == 3120) {
                         if(class81.intStack[--SceneTilePaint.intStackSize] == 1) {
-                           Client.playerNameMask |= 1;
+                           Client.field975 |= 1;
                         } else {
-                           Client.playerNameMask &= -2;
+                           Client.field975 &= -2;
                         }
 
                         var3 = 1;
                      } else if(var0 == 3121) {
                         if(class81.intStack[--SceneTilePaint.intStackSize] == 1) {
-                           Client.playerNameMask |= 2;
+                           Client.field975 |= 2;
                         } else {
-                           Client.playerNameMask &= -3;
+                           Client.field975 &= -3;
                         }
 
                         var3 = 1;
                      } else if(var0 == 3122) {
                         if(class81.intStack[--SceneTilePaint.intStackSize] == 1) {
-                           Client.playerNameMask |= 4;
+                           Client.field975 |= 4;
                         } else {
-                           Client.playerNameMask &= -5;
+                           Client.field975 &= -5;
                         }
 
                         var3 = 1;
                      } else if(var0 == 3123) {
                         if(class81.intStack[--SceneTilePaint.intStackSize] == 1) {
-                           Client.playerNameMask |= 8;
+                           Client.field975 |= 8;
                         } else {
-                           Client.playerNameMask &= -9;
+                           Client.field975 &= -9;
                         }
 
                         var3 = 1;
                      } else if(var0 == 3124) {
-                        Client.playerNameMask = 0;
+                        Client.field975 = 0;
                         var3 = 1;
                      } else if(var0 == 3125) {
                         Client.field937 = class81.intStack[--SceneTilePaint.intStackSize] == 1;
