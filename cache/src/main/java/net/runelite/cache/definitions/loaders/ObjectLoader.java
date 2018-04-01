@@ -24,13 +24,12 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ObjectLoader
 {
@@ -53,6 +52,8 @@ public class ObjectLoader
 
 			processOp(opcode, def, is);
 		}
+
+		post(def);
 
 		return def;
 	}
@@ -373,6 +374,32 @@ public class ObjectLoader
 		else
 		{
 			logger.warn("Unrecognized opcode {}", opcode);
+		}
+	}
+
+
+	private void post(ObjectDefinition def)
+	{
+		if (def.getAnInt2088() == -1)
+		{
+			def.setAnInt2088(0);
+			if (def.getObjectModels() != null && (def.getObjectTypes() == null || def.getObjectTypes()[0] == 10))
+			{
+				def.setAnInt2088(1);
+			}
+
+			for (int var1 = 0; var1 < 5; ++var1)
+			{
+				if (def.getActions()[var1] != null)
+				{
+					def.setAnInt2088(1);
+				}
+			}
+		}
+
+		if (def.getAnInt2106() == -1)
+		{
+			def.setAnInt2106(def.getInteractType() != 0 ? 1 : 0);
 		}
 	}
 }
