@@ -550,4 +550,10 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("drawObject")
 	void drawObject(int z, int x, int y, int randomColor1, int randomColor2);
+
+	@Construct
+	RSScriptEvent createScriptEvent();
+
+	@Import("runScript")
+	void runScript(RSScriptEvent ev, int ex);
 }

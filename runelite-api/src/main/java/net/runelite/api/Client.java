@@ -352,4 +352,6 @@ public interface Client extends GameEngine
 	World createWorld();
 
 	SpritePixels drawInstanceMap(int z);
+
+	void runScript(int id, Object... args);
 }
