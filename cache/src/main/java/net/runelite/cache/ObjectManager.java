@@ -27,9 +27,10 @@ package net.runelite.cache;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.exporters.ObjectExporter;
 import net.runelite.cache.definitions.loaders.ObjectLoader;
@@ -44,7 +45,7 @@ import net.runelite.cache.util.Namer;
 public class ObjectManager
 {
 	private final Store store;
-	private final List<ObjectDefinition> objects = new ArrayList<>();
+	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
 	private final Namer namer = new Namer();
 
 	public ObjectManager(Store store)
@@ -66,20 +67,25 @@ public class ObjectManager
 		for (FSFile f : files.getFiles())
 		{
 			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
-			objects.add(def);
+			objects.put(f.getFileId(), def);
 		}
 	}
 
-	public List<ObjectDefinition> getObjects()
+	public Collection<ObjectDefinition> getObjects()
 	{
-		return Collections.unmodifiableList(objects);
+		return Collections.unmodifiableCollection(objects.values());
+	}
+
+	public ObjectDefinition getObject(int id)
+	{
+		return objects.get(id);
 	}
 
 	public void dump(File out) throws IOException
 	{
 		out.mkdirs();
 
-		for (ObjectDefinition def : objects)
+		for (ObjectDefinition def : objects.values())
 		{
 			ObjectExporter exporter = new ObjectExporter(def);
 
@@ -100,7 +106,7 @@ public class ObjectManager
 			fw.println("");
 			fw.println("public final class ObjectID");
 			fw.println("{");
-			for (ObjectDefinition def : objects)
+			for (ObjectDefinition def : objects.values())
 			{
 				String name;
 				if (def.getName().equalsIgnoreCase("NULL"))

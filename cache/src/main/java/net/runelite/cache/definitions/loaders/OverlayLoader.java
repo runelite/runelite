@@ -69,6 +69,8 @@ public class OverlayLoader
 			}
 		}
 
+		def.calculateHsl();
+
 		return def;
 	}
 }
