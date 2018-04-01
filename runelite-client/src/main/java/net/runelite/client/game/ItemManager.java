@@ -37,8 +37,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +74,7 @@ public class ItemManager
 	 */
 	static final ItemPrice NONE = new ItemPrice();
 
-	private final Client client;
+	private final Provider<Client> client;
 	private final ScheduledExecutorService scheduledExecutorService;
 
 	private final ItemClient itemClient = new ItemClient();
@@ -84,7 +84,7 @@ public class ItemManager
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 
 	@Inject
-	public ItemManager(@Nullable Client client, ScheduledExecutorService executor)
+	public ItemManager(Provider<Client> client, ScheduledExecutorService executor)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
@@ -126,7 +126,7 @@ public class ItemManager
 				@Override
 				public ItemComposition load(Integer key) throws Exception
 				{
-					return client.getItemDefinition(key);
+					return client.get().getItemDefinition(key);
 				}
 			});
 	}
@@ -274,7 +274,8 @@ public class ItemManager
 	 */
 	private BufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
+		SpritePixels sprite = client.get().createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
+			stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
 		return sprite.toBufferedImage();
 	}
 
