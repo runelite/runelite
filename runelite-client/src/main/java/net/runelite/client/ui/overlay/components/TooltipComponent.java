@@ -33,7 +33,6 @@ import java.awt.Rectangle;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.api.IndexedSprite;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class TooltipComponent implements RenderableEntity
@@ -57,8 +56,6 @@ public class TooltipComponent implements RenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		// Tooltip size
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int textDescent = metrics.getDescent();
