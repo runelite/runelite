@@ -57,14 +57,6 @@ public class GroundItemsOverlay extends Overlay
 	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
-	// Threshold for highlighting items as blue.
-	private static final int LOW_VALUE = 20_000;
-	// Threshold for highlighting items as green.
-	private static final int MEDIUM_VALUE = 100_000;
-	// Threshold for highlighting items as amber.
-	private static final int HIGH_VALUE = 1_000_000;
-	// Threshold for highlighting items as pink.
-	private static final int INSANE_VALUE = 10_000_000;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
 
@@ -225,22 +217,22 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		// set the color according to rarity, if possible
-		if (cost >= INSANE_VALUE) // 10,000,000 gp
+		if (cost >= config.insaneValuePrice())
 		{
 			return config.insaneValueColor();
 		}
 
-		if (cost >= HIGH_VALUE) // 1,000,000 gp
+		if (cost >= config.highValuePrice())
 		{
 			return config.highValueColor();
 		}
 
-		if (cost >= MEDIUM_VALUE) // 100,000 gp
+		if (cost >= config.mediumValuePrice())
 		{
 			return config.mediumValueColor();
 		}
 
-		if (cost >= LOW_VALUE) // 20,000 gp
+		if (cost >= config.lowValuePrice())
 		{
 			return config.lowValueColor();
 		}
