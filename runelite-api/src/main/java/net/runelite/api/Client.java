@@ -41,6 +41,8 @@ public interface Client extends GameEngine
 
 	NPC[] getCachedNPCs();
 
+	Player[] getCachedPlayers();
+
 	int getBoostedSkillLevel(Skill skill);
 
 	int getRealSkillLevel(Skill skill);

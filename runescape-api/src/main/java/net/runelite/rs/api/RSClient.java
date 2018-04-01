@@ -163,6 +163,7 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getPlayerIndices();
 
 	@Import("cachedPlayers")
+	@Override
 	RSPlayer[] getCachedPlayers();
 
 	@Import("localInteractingIndex")
