@@ -29,8 +29,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -412,13 +412,9 @@ public class ConfigPanel extends PluginPanel
 			{
 				JTextField textField = new JTextField("", TEXT_FIELD_WIDTH);
 				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
-				textField.addFocusListener(new FocusListener()
-				{
-					@Override
-					public void focusGained(FocusEvent e)
-					{
-					}
 
+				textField.addFocusListener(new FocusAdapter()
+				{
 					@Override
 					public void focusLost(FocusEvent e)
 					{
@@ -426,6 +422,13 @@ public class ConfigPanel extends PluginPanel
 						textField.setToolTipText(textField.getText());
 					}
 				});
+
+				textField.addActionListener(e ->
+				{
+					changeConfiguration(textField, cd, cid);
+					textField.setToolTipText(textField.getText());
+				});
+
 				textField.setToolTipText(textField.getText());
 				item.add(textField, BorderLayout.EAST);
 			}
