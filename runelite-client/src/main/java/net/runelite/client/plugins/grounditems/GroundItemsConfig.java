@@ -50,6 +50,17 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "alwaysShowUntradeable",
+		name = "Always show untradeable items",
+		description = "Configures whether or not untradeable items ignore hiding under settings",
+		position = 1
+	)
+	default boolean alwaysShowUntradeable()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showGEPrice",
 		name = "Show Grand Exchange Prices",
 		description = "Configures whether or not to draw GE prices alongside ground items",
