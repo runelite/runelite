@@ -88,6 +88,13 @@ class PatchRow extends JPanel
 		setStatus(patchRowData.getTimeLeft());
 	}
 
+	public void setCleared(BufferedImage bufferedImage)
+	{
+		setImage(bufferedImage);
+		setSeed(SeedStatus.EMPTY.getStageName());
+		setStatus("");
+	}
+
 	private void setImage(BufferedImage bufferedImage)
 	{
 		iconLbl.setIcon(new ImageIcon(bufferedImage));

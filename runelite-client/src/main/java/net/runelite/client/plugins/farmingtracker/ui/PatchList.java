@@ -92,4 +92,13 @@ public class PatchList extends JPanel
 
 		patchRow.setPlanted(bufferedImage);
 	}
+
+	public void setCleared(PatchLocation patchLocation, BufferedImage bufferedImage)
+	{
+		final PatchRow patchRow = patchRows.get(patchLocation.name());
+
+		patchRow.setPatchRowData(null);
+
+		patchRow.setCleared(bufferedImage);
+	}
 }

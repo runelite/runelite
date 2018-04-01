@@ -129,6 +129,11 @@ public class FarmingTrackerPlugin extends Plugin
 	{
 		String message = event.getMessage();
 
+		if (message.equals("The herb patch is now empty.") || message.equals("The hops patch is now empty."))
+		{
+			handlePatchCleared();
+		}
+
 		if (event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
@@ -137,6 +142,12 @@ public class FarmingTrackerPlugin extends Plugin
 		if (message.startsWith(CHAT_MESSAGE_PLANTED_SEED))
 		{
 			handlePlantedSeed(message);
+		}
+		else if (message.equals("You have successfully cleared this patch for new crops.")
+			|| message.equals("The allotment is now empty.")
+			|| message.equals("You dig up the tree stump."))
+		{
+			handlePatchCleared();
 		}
 	}
 
@@ -157,6 +168,19 @@ public class FarmingTrackerPlugin extends Plugin
 
 				patchList.setPlanted(clickedOnPatch, bufferedImage, seed);
 			}
+		}
+	}
+
+	private void handlePatchCleared()
+	{
+		if (clickedOnPatch != null)
+		{
+			final Map<String, PatchList> patchListMap = panel.getPatchListMap();
+			final PatchList patchList = patchListMap.get(clickedOnPatch.getPatchType().name());
+
+			BufferedImage bufferedImage = itemManager.getImage(WEEDS);
+
+			patchList.setCleared(clickedOnPatch, bufferedImage);
 		}
 	}
 
