@@ -44,11 +44,22 @@ public interface GroundItemsConfig extends Config
 		keyName = "showHighlightedOnly",
 		name = "Show Highlighted items only",
 		description = "Configures whether or not to draw items only on your highlighted list",
-		position = 1
+		position = 0
 	)
 	default boolean showHighlightedOnly()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "dontHideUntradeables",
+		name = "Do not hide untradeables",
+		description = "Configures whether or not untradeable items ignore hiding under settings",
+		position = 1
+	)
+	default boolean dontHideUntradeables()
+	{
+		return true;
 	}
 
 	@ConfigItem(
