@@ -137,9 +137,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "nonClanMemberColor",
-		name = "Non-clan member color",
-		description = "Color of non-clan member names"
+		keyName = "othersColor",
+		name = "Others color",
+		description = "Color of other player's names"
 	)
 	default Color getNonOwnColor()
 	{
@@ -175,6 +175,17 @@ public interface PlayerIndicatorsConfig extends Config
 		description = "Configures whether or not icons representing rank are shown next to player names"
 	)
 	default boolean showClanRankIcons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "recolourChatNames",
+		name = "Recolour chat names",
+		description = "Configures whether recolouring of chat names based on previous options is enabled or not"
+	)
+	default boolean recolourChatNames()
 	{
 		return true;
 	}

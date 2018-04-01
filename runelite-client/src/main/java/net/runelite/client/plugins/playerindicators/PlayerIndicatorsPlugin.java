@@ -62,6 +62,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	private PlayerIndicatorsService playerIndicatorsService;
 
+	@Inject
+	private PlayerIndicatorsConfig playerIndicatorsConfig;
+
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -120,6 +123,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
+		}
+
+		if (!playerIndicatorsConfig.recolourChatNames() && setMessage.getType() == ChatMessageType.PUBLIC)
+		{
+			setMessage.getMessageNode().setName((setMessage.getName().replaceAll("<col=[^>]+>", "")));
 		}
 
 		if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
