@@ -300,6 +300,11 @@ public class Instructions
 		add(ITEM_PRICE, "item_price", 1, 0);
 		add(SEND_BUG_REPORT, "send_bug_report", 1, 0, 2, 0);
 		add(SET_SHIFT_DROP_ENABLED, "set_shift_drop_enabled", 1, 0);
+		add(SET_DRAW_FRIEND_NAME, "set_draw_friend_name", 1, 0);
+		add(SET_DRAW_CLAN_NAME, "set_draw_clan_name", 1, 0);
+		add(SET_DRAW_ALL_EXCEPT_OWN_NAME, "set_draw_all_except_own_name", 1, 0);
+		add(SET_DRAW_OWN_NAME, "set_draw_own_name", 1, 0);
+		add(SET_DRAW_NO_NAMES, "set_draw_no_names", 1, 0);
 		// 3200-3300
 		add(PLAY_SOUND_EFFECT, "play_sound_effect", 3, 0);
 		add(3201, 1, 0);

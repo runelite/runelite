@@ -40,7 +40,7 @@ public class class237 {
       garbageValue = "121"
    )
    static boolean method4379() {
-      return (Client.field975 & 8) != 0;
+      return (Client.playerNameMask & 8) != 0;
    }
 
    @ObfuscatedName("kz")

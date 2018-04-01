@@ -189,20 +189,20 @@ public class World {
          if(var1 < var75 && var0.field1154 == Client.gameCycle) {
             var10 = (Player)var0;
             boolean var9;
-            if(Client.field975 == 0) {
+            if(Client.playerNameMask == 0) {
                var9 = false;
             } else if(var10 != WorldComparator.localPlayer) {
-               boolean var77 = (Client.field975 & 4) != 0;
+               boolean var77 = (Client.playerNameMask & 4) != 0;
                boolean var78 = var77;
                boolean var13;
                if(!var77) {
-                  var13 = (Client.field975 & 1) != 0;
+                  var13 = (Client.playerNameMask & 1) != 0;
                   var78 = var13 && var10.isFriend();
                }
 
                var13 = var78;
                if(!var78) {
-                  boolean var79 = (Client.field975 & 2) != 0;
+                  boolean var79 = (Client.playerNameMask & 2) != 0;
                   var13 = var79 && var10.isClanMember();
                }
 

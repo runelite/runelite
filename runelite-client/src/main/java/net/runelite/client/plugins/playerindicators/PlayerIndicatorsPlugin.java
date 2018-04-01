@@ -25,12 +25,24 @@
 package net.runelite.client.plugins.playerindicators;
 
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.events.ClanChanged;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SetMessage;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -39,10 +51,16 @@ import net.runelite.client.ui.overlay.Overlay;
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
 
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
+
+	@Inject
+	private PlayerIndicatorsService playerIndicatorsService;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -54,5 +72,79 @@ public class PlayerIndicatorsPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Sets.newHashSet(playerIndicatorsOverlay, playerIndicatorsMinimapOverlay);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		playerIndicatorsService.invalidatePlayerNames();
+		playerIndicatorsService.updateConfig();
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		playerIndicatorsService.invalidatePlayerNames();
+		playerIndicatorsService.invalidateClanRanksCache();
+		client.setPlayerNameMask(0);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("playerindicators"))
+		{
+			playerIndicatorsService.invalidatePlayerNames();
+			playerIndicatorsService.updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			playerIndicatorsService.updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onClanChanged(ClanChanged event)
+	{
+		playerIndicatorsService.invalidateClanRanksCache();
+	}
+
+	@Subscribe
+	public void onSetMessage(SetMessage setMessage)
+	{
+		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
+		{
+			playerIndicatorsService.insertClanRankIcon(setMessage);
+		}
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void updatePlayerNames()
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
+		if (clanChatTitleWidget != null)
+		{
+			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
+		}
+
+		playerIndicatorsService.updatePlayers();
 	}
 }

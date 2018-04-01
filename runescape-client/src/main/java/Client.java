@@ -951,7 +951,8 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedGetter(
       intValue = -1162998275
    )
-   static int field975;
+   @Export("playerNameMask")
+   static int playerNameMask;
    @ObfuscatedName("js")
    @ObfuscatedGetter(
       intValue = -764738135
@@ -1333,7 +1334,7 @@ public final class Client extends GameEngine implements class302 {
       localInteractingIndex = -1;
       field973 = 0;
       field974 = true;
-      field975 = 0;
+      playerNameMask = 0;
       field976 = 0;
       field995 = new int[1000];
       playerMenuTypes = new int[]{44, 45, 46, 47, 48, 49, 50, 51};
