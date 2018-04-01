@@ -137,9 +137,9 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "nonClanMemberColor",
-		name = "Non-clan member color",
-		description = "Color of non-clan member names"
+		keyName = "othersColor",
+		name = "Others color",
+		description = "Color of other player's names"
 	)
 	default Color getNonOwnColor()
 	{
