@@ -41,6 +41,7 @@ class GroundItem
 	private int height;
 	private int haPrice;
 	private int gePrice;
+	private boolean tradeable;
 
 	@Value
 	static class GroundItemKey
