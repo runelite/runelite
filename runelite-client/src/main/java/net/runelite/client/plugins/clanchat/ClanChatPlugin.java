@@ -24,9 +24,6 @@
  */
 package net.runelite.client.plugins.clanchat;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -36,13 +33,10 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -51,6 +45,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -69,35 +64,13 @@ public class ClanChatPlugin extends Plugin
 		"General_clan_rank.png", "Owner_clan_rank.png"
 	};
 
-
-	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
-		.maximumSize(100)
-		.expireAfterWrite(1, TimeUnit.MINUTES)
-		.build(new CacheLoader<String, ClanMemberRank>()
-		{
-			@Override
-			public ClanMemberRank load(String key) throws Exception
-			{
-				final ClanMember[] clanMembersArr = client.getClanMembers();
-
-				if (clanMembersArr == null || clanMembersArr.length == 0)
-				{
-					return ClanMemberRank.UNRANKED;
-				}
-
-				return Arrays.stream(clanMembersArr)
-					.filter(Objects::nonNull)
-					.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
-					.map(ClanMember::getRank)
-					.findAny()
-					.orElse(ClanMemberRank.UNRANKED);
-			}
-		});
-
 	private int modIconsLength;
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClanManager clanManager;
 
 	@Override
 	protected void startUp() throws Exception
@@ -106,12 +79,6 @@ public class ClanChatPlugin extends Plugin
 		{
 			loadClanChatIcons();
 		}
-	}
-
-	@Override
-	protected void shutDown()
-	{
-		clanRanksCache.invalidateAll();
 	}
 
 	@Subscribe
@@ -233,8 +200,7 @@ public class ClanChatPlugin extends Plugin
 
 	private void insertClanRankIcon(final SetMessage message)
 	{
-		final String playerName = sanitize(message.getName());
-		final ClanMemberRank rank = clanRanksCache.getUnchecked(playerName);
+		final ClanMemberRank rank = clanManager.getRank(message.getName());
 
 		if (rank != null && rank != ClanMemberRank.UNRANKED)
 		{
@@ -248,11 +214,5 @@ public class ClanChatPlugin extends Plugin
 	private int getIconNumber(final ClanMemberRank clanMemberRank)
 	{
 		return modIconsLength - CLANCHAT_IMAGES.length + clanMemberRank.getValue();
-	}
-
-	private static String sanitize(String lookup)
-	{
-		final String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
-		return cleaned.replace('\u00A0', ' ');
 	}
 }
