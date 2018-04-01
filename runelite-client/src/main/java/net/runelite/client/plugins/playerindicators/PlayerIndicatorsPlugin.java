@@ -25,10 +25,31 @@
 package net.runelite.client.plugins.playerindicators;
 
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
+import net.runelite.api.ClanMemberRank;
+import static net.runelite.api.ClanMemberRank.UNRANKED;
+import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.FOLLOW;
+import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
+import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
+import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
+import static net.runelite.api.MenuAction.TRADE;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -39,10 +60,19 @@ import net.runelite.client.ui.overlay.Overlay;
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	@Inject
+	private PlayerIndicatorsConfig config;
+
+	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
 
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ClanManager clanManager;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -54,5 +84,89 @@ public class PlayerIndicatorsPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Sets.newHashSet(playerIndicatorsOverlay, playerIndicatorsMinimapOverlay);
+	}
+
+	@Subscribe
+	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
+	{
+		int type = menuEntryAdded.getType();
+		int identifier = menuEntryAdded.getIdentifier();
+		if (type == FOLLOW.getId() || type == TRADE.getId()
+			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+			|| type == PLAYER_FIRST_OPTION.getId()
+			|| type == PLAYER_SECOND_OPTION.getId()
+			|| type == PLAYER_THIRD_OPTION.getId()
+			|| type == PLAYER_FOURTH_OPTION.getId()
+			|| type == PLAYER_FIFTH_OPTION.getId()
+			|| type == PLAYER_SIXTH_OPTION.getId()
+			|| type == PLAYER_SEVENTH_OPTION.getId()
+			|| type == PLAYER_EIGTH_OPTION.getId())
+		{
+			final Player localPlayer = client.getLocalPlayer();
+			Player[] players = client.getCachedPlayers();
+			Player player = null;
+
+			if (identifier >= 0 && identifier < players.length)
+			{
+				player = players[identifier];
+			}
+
+			if (player == null)
+			{
+				return;
+			}
+
+			int image = -1;
+			Color color = null;
+
+			if (config.drawFriendNames() && player.isFriend())
+			{
+				color = config.getFriendNameColor();
+			}
+			else if (config.drawClanMemberNames() && player.isClanMember())
+			{
+				color = config.getClanMemberColor();
+
+				ClanMemberRank rank = clanManager.getRank(player.getName());
+				if (rank != UNRANKED)
+				{
+					image = clanManager.getIconNumber(rank);
+				}
+			}
+			else if (config.drawTeamMemberNames() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			{
+				color = config.getTeamMemberColor();
+			}
+			else if (config.drawNonClanMemberNames() && !player.isClanMember())
+			{
+				color = config.getNonClanMemberColor();
+			}
+
+			if (image != -1 || color != null)
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+
+				if (color != null)
+				{
+					// strip out existing <col...
+					String target = lastEntry.getTarget();
+					int idx = target.indexOf('>');
+					if (idx != -1)
+					{
+						target = target.substring(idx + 1);
+					}
+
+					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
+				}
+
+				if (image != -1)
+				{
+					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
+				}
+
+				client.setMenuEntries(menuEntries);
+			}
+		}
 	}
 }
