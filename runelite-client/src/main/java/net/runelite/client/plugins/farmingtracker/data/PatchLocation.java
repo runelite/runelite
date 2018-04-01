@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import static net.runelite.api.ObjectID.NULL_12605;
 import static net.runelite.api.ObjectID.NULL_12606;
 import static net.runelite.api.ObjectID.NULL_12607;
@@ -94,6 +96,9 @@ import static net.runelite.api.ObjectID.NULL_8555;
 import static net.runelite.api.ObjectID.NULL_8556;
 import static net.runelite.api.ObjectID.NULL_8557;
 import static net.runelite.api.ObjectID.NULL_9372;
+import net.runelite.api.Query;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.queries.GameObjectQuery;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_10;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_160;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_20;
@@ -110,6 +115,7 @@ import static net.runelite.client.plugins.farmingtracker.data.PatchType.HERB;
 import static net.runelite.client.plugins.farmingtracker.data.PatchType.HOP;
 import static net.runelite.client.plugins.farmingtracker.data.PatchType.SPECIAL;
 import static net.runelite.client.plugins.farmingtracker.data.PatchType.TREE;
+import net.runelite.client.util.QueryRunner;
 
 @Getter
 @AllArgsConstructor
@@ -299,5 +305,45 @@ public enum PatchLocation
 		}
 
 		return patchLocations;
+	}
+
+	public static PatchLocation findByPatchObjectId(int objectId)
+	{
+		for (PatchLocation patchLocation : PatchLocation.values())
+		{
+			if (patchLocation.getPatchObjectId() == objectId)
+			{
+				return patchLocation;
+			}
+		}
+
+		return null;
+	}
+
+	public static PatchLocation findByWorldLocation(Client client, QueryRunner queryRunner, int x, int y)
+	{
+		PatchLocation patchLocation = queryOnWorldLocation(client, queryRunner, x, y);
+
+		if (patchLocation == null)
+		{
+			patchLocation = queryOnWorldLocation(client, queryRunner, x + 1, y + 1);
+		}
+
+		return patchLocation;
+	}
+
+	private static PatchLocation queryOnWorldLocation(Client client, QueryRunner queryRunner, int x, int y)
+	{
+		WorldPoint worldPoint = WorldPoint.fromRegion(client, x, y, client.getPlane());
+
+		Query gameObjectQuery = new GameObjectQuery().atWorldLocation(worldPoint);
+		GameObject[] gameObjects = queryRunner.runQuery(gameObjectQuery);
+
+		if (gameObjects.length != 0)
+		{
+			return findByPatchObjectId(gameObjects[0].getId());
+		}
+
+		return null;
 	}
 }

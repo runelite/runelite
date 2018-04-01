@@ -34,11 +34,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
+import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.SeedStatus;
 
 class PatchRow extends JPanel
 {
+	@Getter
+	@Setter
+	private PatchRowData patchRowData;
+
 	private final JLabel iconLbl = new JLabel();
 	private final JLabel seedNameLbl = new JLabel();
 	private final JLabel statusLbl = new JLabel();
@@ -72,6 +79,13 @@ class PatchRow extends JPanel
 
 		gridBag.setConstraints(infoPanel, gbc);
 		container.add(infoPanel);
+	}
+
+	public void setPlanted(BufferedImage bufferedImage)
+	{
+		setImage(bufferedImage);
+		setSeed(patchRowData.getSeed().getName());
+		setStatus(patchRowData.getTimeLeft());
 	}
 
 	private void setImage(BufferedImage bufferedImage)

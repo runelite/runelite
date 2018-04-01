@@ -24,17 +24,31 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import static net.runelite.api.ItemID.WEEDS;
+import net.runelite.api.MenuAction;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
+import net.runelite.client.plugins.farmingtracker.data.Seed;
+import net.runelite.client.plugins.farmingtracker.ui.PatchList;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Farming Tracker"
@@ -47,8 +61,18 @@ public class FarmingTrackerPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private Client client;
+
+	@Inject
+	private QueryRunner queryRunner;
+
 	private FarmingTrackerPanel panel;
 	private NavigationButton navButton;
+
+	private PatchLocation clickedOnPatch;
+
+	private final String CHAT_MESSAGE_PLANTED_SEED = "You plant ";
 
 	@Provides
 	FarmingTrackerConfig provideConfig(ConfigManager configManager)
@@ -81,5 +105,66 @@ public class FarmingTrackerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		pluginToolbar.removeNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		Set<String> firstOptions = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		firstOptions.addAll(Arrays.asList("pick", "harvest", "cure", "prune", "clear"));
+
+		if ((menuOptionClicked.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION && firstOptions.contains(menuOptionClicked.getMenuOption())) || menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		{
+			PatchLocation patchLocation = PatchLocation.findByWorldLocation(client, queryRunner, menuOptionClicked.getId() & 127, menuOptionClicked.getId() >> 7 & 127);
+
+			if (patchLocation != null)
+			{
+				clickedOnPatch = patchLocation;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		String message = event.getMessage();
+
+		if (event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		if (message.startsWith(CHAT_MESSAGE_PLANTED_SEED))
+		{
+			handlePlantedSeed(message);
+		}
+	}
+
+	private void handlePlantedSeed(String message)
+	{
+		String seedName = getSeedNameFromMessage(message);
+
+		if (clickedOnPatch != null)
+		{
+			Seed seed = Seed.findByName(seedName, clickedOnPatch.getPatchType());
+
+			if (seed != null)
+			{
+				final Map<String, PatchList> patchListMap = panel.getPatchListMap();
+				final PatchList patchList = patchListMap.get(clickedOnPatch.getPatchType().name());
+
+				BufferedImage bufferedImage = itemManager.getImage(seed.getSpriteId());
+
+				patchList.setPlanted(clickedOnPatch, bufferedImage, seed);
+			}
+		}
+	}
+
+	private String getSeedNameFromMessage(String message)
+	{
+		String[] sentences = message.split(CHAT_MESSAGE_PLANTED_SEED);
+		String[] words = sentences[1].split(" ");
+
+		return words[1];
 	}
 }

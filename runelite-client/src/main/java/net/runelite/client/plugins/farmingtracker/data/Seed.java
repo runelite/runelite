@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.farmingtracker.data;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -147,4 +149,34 @@ public enum Seed
 	private final int spriteId;
 	private final FarmingTick farmingTick;
 	private final int totalStages;
+
+	public static Seed findByName(String seedName, PatchType patchType)
+	{
+		Set<Seed> availableSeeds = findSeedForPatchType(patchType);
+
+		for (Seed seed : availableSeeds)
+		{
+			if (seed.getName().equalsIgnoreCase(seedName))
+			{
+				return seed;
+			}
+		}
+
+		return null;
+	}
+
+	private static Set<Seed> findSeedForPatchType(PatchType patchType)
+	{
+		Set<Seed> seeds = new HashSet<>();
+
+		for (Seed seed : Seed.values())
+		{
+			if (seed.getPatchType().equals(patchType))
+			{
+				seeds.add(seed);
+			}
+		}
+
+		return seeds;
+	}
 }

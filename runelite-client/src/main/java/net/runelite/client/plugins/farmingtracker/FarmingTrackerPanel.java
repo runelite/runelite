@@ -39,6 +39,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
+import lombok.Getter;
 import net.runelite.client.plugins.farmingtracker.data.PatchType;
 import net.runelite.client.plugins.farmingtracker.ui.PatchList;
 import net.runelite.client.ui.PluginPanel;
@@ -48,6 +49,7 @@ class FarmingTrackerPanel extends PluginPanel
 	@Inject
 	private FarmingTrackerConfig config;
 
+	@Getter
 	private Map<String, PatchList> patchListMap = new HashMap<>();
 
 	private final String BTN_CONTAINER = "BTN_CONTAINER";
