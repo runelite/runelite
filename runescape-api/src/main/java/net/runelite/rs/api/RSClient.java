@@ -251,6 +251,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getViewportWidth();
 
+	@Import("Viewport_xOffset")
+	@Override
+	int getViewportXOffset();
+
+	@Import("Viewport_yOffset")
+	@Override
+	int getViewportYOffset();
+
 	@Import("isResized")
 	@Override
 	boolean isResized();

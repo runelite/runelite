@@ -317,7 +317,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
 			{
-				safeRender(overlay, graphics, new Point());
+				safeRender(client, overlay, layer, graphics, new Point());
 			}
 			else
 			{
@@ -338,7 +338,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					location.setLocation(overlay.getPreferredLocation());
 				}
 
-				safeRender(overlay, graphics, location);
+				safeRender(client, overlay, layer, graphics, location);
 				dimension.setSize(overlay.getBounds().getSize());
 
 				if (dimension.width == 0 && dimension.height == 0)
@@ -488,9 +488,16 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
-	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
+	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
+		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
+		{
+			subGraphics.setClip(client.getViewportXOffset(),
+				client.getViewportYOffset(),
+				client.getViewportWidth(),
+				client.getViewportHeight());
+		}
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();

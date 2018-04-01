@@ -76,6 +76,10 @@ public interface Client extends GameEngine
 
 	int getViewportWidth();
 
+	int getViewportXOffset();
+
+	int getViewportYOffset();
+
 	int getScale();
 
 	Point getMouseCanvasPosition();
