@@ -293,6 +293,7 @@ public class GroundItemsPlugin extends Plugin
 			.quantity(item.getQuantity())
 			.name(itemComposition.getName())
 			.haPrice(alchPrice * item.getQuantity())
+			.tradeable(itemComposition.isTradeable())
 			.build();
 
 

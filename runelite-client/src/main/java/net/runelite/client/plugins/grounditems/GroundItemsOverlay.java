@@ -138,12 +138,18 @@ public class GroundItemsOverlay extends Overlay
 				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
 			}
 
-			// Do not display items that are under HA or GE price and are not highlighted
-			if (!plugin.isHotKeyPressed() && !highlighted
-				&& ((item.getGePrice() > 0 && item.getGePrice() < config.getHideUnderGeValue())
-				|| item.getHaPrice() < config.getHideUnderHAValue()))
+			if (!plugin.isHotKeyPressed() && !highlighted)
 			{
-				continue;
+				// Check if item is under config threshold
+				final boolean underThreshold = item.getGePrice() < config.getHideUnderGeValue()
+					|| item.getHaPrice() < config.getHideUnderHAValue();
+
+				// If item is under threshold an we are either not always showing untradeables or item is tradeable
+				// do not display item
+				if (underThreshold && (!config.dontHideUntradeables() || item.isTradeable()))
+				{
+					continue;
+				}
 			}
 
 			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
