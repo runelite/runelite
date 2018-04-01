@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-public class PlayerNameMask
+/**
+ * A set of utilities to use when dealing with text.
+ */
+public class Text
 {
-	public static final int DRAW_FRIEND_NAME = 1;
-	public static final int DRAW_CLAN_NAME = 2;
-	public static final int DRAW_ALL_EXCEPT_OWN_NAME = 4;
-	public static final int DRAW_OWN_NAME = 8;
+
+	/**
+	 * Removes all tags from the given `str`.
+	 *
+	 * @param str The string to remove tags from.
+	 * @return The given `str` with all tags removed from it.
+	 */
+	public static String removeTags(String str)
+	{
+		StringBuilder builder = new StringBuilder(str.length());
+		boolean inTag = false;
+
+		for (int i = 0; i < str.length(); i++)
+		{
+			char currentChar = str.charAt(i);
+
+			if (currentChar == '<')
+			{
+				inTag = true;
+			}
+			else if (currentChar == '>')
+			{
+				inTag = false;
+			}
+			else if (!inTag)
+			{
+				builder.append(currentChar);
+			}
+		}
+
+		return builder.toString();
+	}
+
 }

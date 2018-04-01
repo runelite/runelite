@@ -55,7 +55,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default Color getOwnNameColor()
 	{
-		return Color.WHITE;
+		return new Color(0, 184, 212);
 	}
 
 	@ConfigItem(
@@ -110,7 +110,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean drawTeamMemberNames()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -126,11 +126,11 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "drawOthers",
-		name = "Draw names of others",
-		description = "Configures whether or not names of everyone except you should be drawn"
+		keyName = "drawNonClanMemberNames",
+		name = "Draw non-clan member names",
+		description = "Configures whether or not names of non-clan members should be drawn"
 	)
-	default boolean drawNonOwnNames()
+	default boolean drawNonClanMemberNames()
 	{
 		return false;
 	}
@@ -141,9 +141,9 @@ public interface PlayerIndicatorsConfig extends Config
 		name = "Non-clan member color",
 		description = "Color of non-clan member names"
 	)
-	default Color getNonOwnColor()
+	default Color getNonClanMemberColor()
 	{
-		return Color.WHITE;
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -166,16 +166,5 @@ public interface PlayerIndicatorsConfig extends Config
 	default boolean drawMinimapNames()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		position = 12,
-		keyName = "showClanRankIcons",
-		name = "Show clan member rank icons next to names",
-		description = "Configures whether or not icons representing rank are shown next to player names"
-	)
-	default boolean showClanRankIcons()
-	{
-		return true;
 	}
 }

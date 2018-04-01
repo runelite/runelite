@@ -70,7 +70,7 @@ import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.api.Text;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric"
