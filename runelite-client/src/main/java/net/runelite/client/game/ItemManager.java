@@ -27,6 +27,7 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,8 +44,10 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -126,6 +129,15 @@ public class ItemManager
 					return client.getItemDefinition(key);
 				}
 			});
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			itemCompositions.invalidateAll();
+		}
 	}
 
 	/**
