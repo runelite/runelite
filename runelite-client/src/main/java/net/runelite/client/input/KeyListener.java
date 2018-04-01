@@ -24,6 +24,6 @@
  */
 package net.runelite.client.input;
 
-public interface KeyListener extends java.awt.event.KeyListener
+public interface KeyListener extends java.awt.event.KeyListener, PrioritizedListener
 {
 }

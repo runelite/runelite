@@ -25,21 +25,17 @@
 package net.runelite.client.input;
 
 import java.awt.event.KeyEvent;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
 import javax.inject.Singleton;
 
 @Singleton
 public class KeyManager
 {
-	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+	private final Set<KeyListener> keyListeners = new PrioritizedListenerList<>();
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
-		if (!keyListeners.contains(keyListener))
-		{
-			keyListeners.add(keyListener);
-		}
+		keyListeners.add(keyListener);
 	}
 
 	public void unregisterKeyListener(KeyListener keyListener)

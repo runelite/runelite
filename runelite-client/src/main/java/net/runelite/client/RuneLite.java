@@ -43,6 +43,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.input.HorizontalScrollFix;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -96,6 +97,9 @@ public class RuneLite
 
 	@Inject
 	private TitleToolbar titleToolbar;
+
+	@Inject
+	private HorizontalScrollFix horizontalScrollFix;
 
 	Client client;
 
