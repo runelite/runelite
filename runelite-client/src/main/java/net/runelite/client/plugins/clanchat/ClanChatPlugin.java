@@ -72,7 +72,7 @@ public class ClanChatPlugin extends Plugin
 
 	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
 		.maximumSize(100)
-		.expireAfterAccess(1, TimeUnit.MINUTES)
+		.expireAfterWrite(1, TimeUnit.MINUTES)
 		.build(new CacheLoader<String, ClanMemberRank>()
 		{
 			@Override
