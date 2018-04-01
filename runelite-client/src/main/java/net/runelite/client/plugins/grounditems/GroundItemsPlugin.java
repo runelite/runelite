@@ -195,8 +195,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			groundItems.clear();
-			collectedGroundItems.clear();
+			dirty = true;
 		}
 	}
 
