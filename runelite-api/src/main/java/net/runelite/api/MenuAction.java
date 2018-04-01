@@ -254,6 +254,9 @@ public enum MenuAction
 	 * Menu action injected by runelite for its menu items.
 	 */
 	RUNELITE(1500),
+
+	FOLLOW(2046),
+	TRADE(2047),
 	
 	/**
 	 * Menu action triggered when the id is not defined in this class.

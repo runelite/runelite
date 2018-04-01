@@ -55,22 +55,22 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.drawMinimapNames())
-		{
-			playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-		}
-
+		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		final String name = actor.getName();
-		final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+		final String name = actor.getName().replace('\u00A0', ' ');
 
-		if (minimapLocation != null)
+		if (config.drawMinimapNames())
 		{
-			OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+			}
 		}
 	}
 }

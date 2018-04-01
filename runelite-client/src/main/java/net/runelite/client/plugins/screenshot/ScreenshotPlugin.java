@@ -78,7 +78,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
-import net.runelite.api.Text;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;

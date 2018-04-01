@@ -28,11 +28,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -42,35 +45,61 @@ public class PlayerIndicatorsOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
+	private final ClanManager clanManager;
 
 	@Inject
-	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
+		ClanManager clanManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.clanManager = clanManager;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
+		setPriority(OverlayPriority.HIGH);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.drawTiles())
-		{
-			playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-		}
-
+		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
 		return null;
 	}
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		Polygon poly = actor.getCanvasTilePoly();
-
-		if (poly != null)
+		if (config.drawTiles())
 		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
+			Polygon poly = actor.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
+
+		String name = actor.getName().replace('\u00A0', ' ');
+		int offset = actor.getLogicalHeight() + 40;
+		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
+
+		if (textLocation != null)
+		{
+			if (actor.isClanMember())
+			{
+				ClanMemberRank rank = clanManager.getRank(name);
+				if (rank != ClanMemberRank.UNRANKED)
+				{
+					BufferedImage clanchatImage = clanManager.getClanImage(rank);
+					if (clanchatImage != null)
+					{
+						int width = clanchatImage.getWidth();
+						Point imageLocation = new Point(textLocation.getX() - width / 2, textLocation.getY() - clanchatImage.getHeight());
+						OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
+
+						// move text
+						textLocation = new Point(textLocation.getX() + width / 2, textLocation.getY());
+					}
+				}
+			}
+			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 		}
 	}
 }
