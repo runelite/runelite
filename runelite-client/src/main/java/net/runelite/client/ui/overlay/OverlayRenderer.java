@@ -34,7 +34,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -225,7 +224,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			{
 				if (value == null)
 				{
-					value = new ArrayList<>();
+					value = new CopyOnWriteArrayList<>();
 				}
 
 				value.add(overlay);
