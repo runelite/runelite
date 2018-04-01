@@ -66,6 +66,10 @@ public interface RSItemComposition extends ItemComposition
 	@Override
 	boolean isMembers();
 
+	@Import("isTradable")
+	@Override
+	boolean isTradeable();
+
 	/**
 	 * You probably want {@link #isStackable}
 	 * <p>
