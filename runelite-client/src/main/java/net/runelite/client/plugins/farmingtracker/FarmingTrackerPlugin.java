@@ -33,10 +33,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import static net.runelite.api.AnimationID.FARMING_HARVEST_FLOWER;
+import static net.runelite.api.AnimationID.IDLE;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.WEEDS;
 import net.runelite.api.MenuAction;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
@@ -71,6 +75,8 @@ public class FarmingTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 
 	private PatchLocation clickedOnPatch;
+	private ObjectComposition previousPatchObject;
+	private int previousAnimation;
 
 	private final String CHAT_MESSAGE_PLANTED_SEED = "You plant ";
 
@@ -149,6 +155,41 @@ public class FarmingTrackerPlugin extends Plugin
 		{
 			handlePatchCleared();
 		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		if (event.getActor() != client.getLocalPlayer() || clickedOnPatch == null)
+		{
+			return;
+		}
+
+		ObjectComposition currentPatch = client.getObjectDefinition(clickedOnPatch.getPatchObjectId()).getImpostor();
+
+		switch(event.getActor().getAnimation())
+		{
+			case FARMING_HARVEST_FLOWER:
+				previousPatchObject = currentPatch;
+				previousAnimation = FARMING_HARVEST_FLOWER;
+				break;
+			case IDLE:
+				handleHarvest(currentPatch);
+				break;
+		}
+	}
+
+	private void handleHarvest(ObjectComposition currentPatch)
+	{
+		if (previousPatchObject == null || currentPatch.getId() == previousPatchObject.getId() || previousAnimation != FARMING_HARVEST_FLOWER)
+		{
+			return;
+		}
+
+		handlePatchCleared();
+
+		previousAnimation = -1;
+		previousPatchObject = null;
 	}
 
 	private void handlePlantedSeed(String message)
