@@ -26,6 +26,8 @@ package net.runelite.api;
 
 public interface ObjectComposition
 {
+	int getId();
+
 	String getName();
 
 	String[] getActions();
