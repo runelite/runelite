@@ -105,8 +105,18 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final boolean highlighted = plugin.isHighlighted(item.getName());
-			final boolean hidden = plugin.isHidden(item.getName());
+
+			// Update GE price for item
+			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
+
+			if (itemPrice != null && itemPrice.getPrice() > 0)
+			{
+				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
+			}
+
+			// Determine if item is highlighted or hidden
+			final boolean highlighted = plugin.isHighlighted(item.getName(), item.getHaPrice(), item.getGePrice());
+			final boolean hidden = plugin.isHidden(item.getName(), item.getHaPrice(), item.getGePrice());
 
 			if (!plugin.isHotKeyPressed())
 			{
@@ -123,24 +133,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			// Update GE price for item
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
-
-			if (itemPrice != null && itemPrice.getPrice() > 0)
-			{
-				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
-			}
-
-			// Do not display items that are under HA or GE price and are not highlighted
-			if (!plugin.isHotKeyPressed() && !highlighted
-				&& ((item.getGePrice() > 0 && item.getGePrice() < config.getHideUnderGeValue())
-				|| item.getHaPrice() < config.getHideUnderHAValue()))
-			{
-				continue;
-			}
-
-			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
-				highlighted, hidden);
+			final Color color = plugin.getCostColor(highlighted, hidden, item.getHaPrice(), item.getGePrice());
 			itemStringBuilder.append(item.getName());
 
 			if (item.getQuantity() > 1)
@@ -227,42 +220,6 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	Color getCostColor(int cost, boolean highlighted, boolean hidden)
-	{
-		if (hidden)
-		{
-			return Color.GRAY;
-		}
-
-		if (highlighted)
-		{
-			return config.highlightedColor();
-		}
-
-		// set the color according to rarity, if possible
-		if (cost >= config.insaneValuePrice())
-		{
-			return config.insaneValueColor();
-		}
-
-		if (cost >= config.highValuePrice())
-		{
-			return config.highValueColor();
-		}
-
-		if (cost >= config.mediumValuePrice())
-		{
-			return config.mediumValueColor();
-		}
-
-		if (cost >= config.lowValuePrice())
-		{
-			return config.lowValueColor();
-		}
-
-		return config.defaultColor();
 	}
 
 	private void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
