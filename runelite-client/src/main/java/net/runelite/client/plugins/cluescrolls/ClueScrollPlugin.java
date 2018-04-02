@@ -28,7 +28,6 @@ package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.eventbus.Subscribe;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
@@ -90,7 +89,7 @@ public class ClueScrollPlugin extends Plugin
 	private Set<Integer> equippedItems;
 
 	@Getter
-	private Instant clueTimeout;
+	private long clueTimeoutNanoTime;
 
 	@Inject
 	@Getter
@@ -190,7 +189,7 @@ public class ClueScrollPlugin extends Plugin
 			// If clue window isn't open, and we don't have a map clue in inventory,
 			// but we have recorded the player having a clue,
 			// wait for WAIT_DURATION before discarding the knowledge of the player having a clue.
-			if (Instant.now().compareTo(clueTimeout.plus(WAIT_DURATION)) < 0)
+			if (System.nanoTime() >= clueTimeoutNanoTime + WAIT_DURATION.toNanos())
 			{
 				return;
 			}
@@ -201,7 +200,7 @@ public class ClueScrollPlugin extends Plugin
 		if (clue != null)
 		{
 			this.clue = clue;
-			this.clueTimeout = Instant.now();
+			this.clueTimeoutNanoTime = System.nanoTime();
 		}
 	}
 

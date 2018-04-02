@@ -27,7 +27,6 @@ package net.runelite.client.plugins.agilityplugin;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -57,19 +56,19 @@ public class LapCounterOverlay extends Overlay
 
 		if (!config.showLapCount() ||
 			session == null ||
-			session.getLastLapCompleted() == null ||
+			session.getLastLapCompletedNanoTime() == 0 ||
 			session.getCourse() == null)
 		{
 			return null;
 		}
 
 		Duration lapTimeout = Duration.ofMinutes(config.lapTimeout());
-		Duration sinceLap = Duration.between(session.getLastLapCompleted(), Instant.now());
+		Duration sinceLap = Duration.ofNanos(System.nanoTime() - session.getLastLapCompletedNanoTime());
 
 		if (sinceLap.compareTo(lapTimeout) >= 0)
 		{
 			// timeout session
-			session.setLastLapCompleted(null);
+			session.setLastLapCompletedNanoTime(0);
 			return null;
 		}
 

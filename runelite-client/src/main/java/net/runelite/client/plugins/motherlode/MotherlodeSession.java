@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.motherlode;
 
 import java.time.Duration;
-import java.time.Instant;
 
 public class MotherlodeSession
 {
@@ -33,26 +32,26 @@ public class MotherlodeSession
 
 	private int perHour;
 
-	private Instant lastPayDirtMined;
+	private long lastPayDirtMinedNanoTime;
 	private int totalMined;
 
-	private Instant recentPayDirtMined;
+	private long recentPayDirtMinedNanoTime;
 	private int recentMined;
 
 	public void incrementPayDirtMined()
 	{
-		Instant now = Instant.now();
+		long nanoTime = System.nanoTime();
 
-		lastPayDirtMined = now;
+		lastPayDirtMinedNanoTime = System.nanoTime();
 		++totalMined;
 
 		if (recentMined == 0)
 		{
-			recentPayDirtMined = now;
+			recentPayDirtMinedNanoTime = nanoTime;
 		}
 		++recentMined;
 
-		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
+		Duration timeSinceStart = Duration.ofNanos(System.nanoTime() - recentPayDirtMinedNanoTime);
 		if (!timeSinceStart.isZero())
 		{
 			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
@@ -61,7 +60,7 @@ public class MotherlodeSession
 
 	public void resetRecent()
 	{
-		recentPayDirtMined = null;
+		recentPayDirtMinedNanoTime = 0;
 		recentMined = 0;
 	}
 
@@ -70,9 +69,9 @@ public class MotherlodeSession
 		return perHour;
 	}
 
-	public Instant getLastPayDirtMined()
+	public long getLastPayDirtMinedNanoTime()
 	{
-		return lastPayDirtMined;
+		return lastPayDirtMinedNanoTime;
 	}
 
 	public int getTotalMined()
@@ -80,9 +79,9 @@ public class MotherlodeSession
 		return totalMined;
 	}
 
-	public Instant getRecentPayDirtMined()
+	public long getRecentPayDirtMinedNanoTime()
 	{
-		return recentPayDirtMined;
+		return recentPayDirtMinedNanoTime;
 	}
 
 	public int getRecentMined()

@@ -28,7 +28,6 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
@@ -129,16 +128,16 @@ public class IdleNotifierPlugin extends Plugin
 	private IdleNotifierConfig config;
 
 	private Actor lastOpponent;
-	private Instant lastAnimating;
-	private Instant lastInteracting;
+	private long lastAnimatingNanoTime;
+	private long lastInteractingNanoTime;
 	private boolean notifyIdle = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
 
-	private Instant sixHourWarningTime;
-	private boolean ready;
+	private long sixHourWarningNanoTime;
+	private boolean resetSixHourWarning;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -249,7 +248,7 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		lastInteracting = null;
+		lastInteractingNanoTime = 0;
 
 		GameState state = gameStateChanged.getGameState();
 
@@ -258,13 +257,13 @@ public class IdleNotifierPlugin extends Plugin
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
-				ready = true;
+				resetSixHourWarning = true;
 				break;
 			case LOGGED_IN:
-				if (ready)
+				if (resetSixHourWarning)
 				{
-					sixHourWarningTime = Instant.now().plus(SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION);
-					ready = false;
+					sixHourWarningNanoTime = System.nanoTime() + SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION.toNanos();
+					resetSixHourWarning = false;
 				}
 				break;
 		}
@@ -373,12 +372,12 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (lastOpponent != null && opponent == lastOpponent)
 		{
-			lastInteracting = Instant.now();
+			lastInteractingNanoTime = System.nanoTime();
 		}
 
-		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
+		if (lastInteractingNanoTime > 0 && System.nanoTime() >= lastInteractingNanoTime + waitDuration.toNanos())
 		{
-			lastInteracting = null;
+			lastInteractingNanoTime = 0;
 			return true;
 		}
 
@@ -406,12 +405,12 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean check6hrLogout()
 	{
-		if (sixHourWarningTime == null)
+		if (sixHourWarningNanoTime == 0)
 		{
 			return false;
 		}
 
-		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
+		if (System.nanoTime() >= sixHourWarningNanoTime)
 		{
 			if (notify6HourLogout)
 			{
@@ -431,18 +430,18 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		if (notifyIdle)
 		{
-			if (lastAnimating != null)
+			if (lastAnimatingNanoTime > 0)
 			{
-				if (Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
+				if (System.nanoTime() >= lastAnimatingNanoTime + waitDuration.toNanos())
 				{
 					notifyIdle = false;
-					lastAnimating = null;
+					lastAnimatingNanoTime = 0;
 					return true;
 				}
 			}
 			else if (local.getAnimation() == IDLE)
 			{
-				lastAnimating = Instant.now();
+				lastAnimatingNanoTime = System.nanoTime();
 			}
 		}
 
@@ -453,10 +452,10 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		// Reset animation idle timer
 		notifyIdle = false;
-		lastAnimating = null;
+		lastAnimatingNanoTime = 0;
 
 		// Reset combat idle timer
 		lastOpponent = null;
-		lastInteracting = null;
+		lastInteractingNanoTime = 0;
 	}
 }

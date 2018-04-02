@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.tithefarm;
 
 import java.time.Duration;
-import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameObject;
@@ -37,7 +36,7 @@ class TitheFarmPlant
 
 	@Getter
 	@Setter
-	private Instant planted;
+	private long plantedNanoTime;
 
 	@Getter
 	private final TitheFarmPlantState state;
@@ -53,7 +52,7 @@ class TitheFarmPlant
 
 	TitheFarmPlant(TitheFarmPlantState state, TitheFarmPlantType type, GameObject gameObject)
 	{
-		this.planted = Instant.now();
+		this.plantedNanoTime = System.nanoTime();
 		this.state = state;
 		this.type = type;
 		this.gameObject = gameObject;
@@ -62,7 +61,7 @@ class TitheFarmPlant
 
 	public double getPlantTimeRelative()
 	{
-		Duration duration = Duration.between(planted, Instant.now());
+		Duration duration = Duration.ofNanos(System.nanoTime() - plantedNanoTime);
 		return duration.compareTo(PLANT_TIME) < 0 ? (double) duration.toMillis() / PLANT_TIME.toMillis() : 1;
 	}
 }

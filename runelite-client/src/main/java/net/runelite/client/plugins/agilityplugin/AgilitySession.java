@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.agilityplugin;
 
-import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -36,7 +35,7 @@ import net.runelite.api.Skill;
 public class AgilitySession
 {
 	private final Courses course;
-	private Instant lastLapCompleted;
+	private long lastLapCompletedNanoTime;
 	private int totalLaps;
 	private int lapsTillLevel;
 
@@ -47,9 +46,7 @@ public class AgilitySession
 
 	public void incrementLapCount(Client client)
 	{
-		Instant now = Instant.now();
-
-		lastLapCompleted = now;
+		lastLapCompletedNanoTime = System.nanoTime();
 		++totalLaps;
 
 		int currentExp = client.getSkillExperience(Skill.AGILITY);

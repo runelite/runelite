@@ -117,7 +117,7 @@ public class TitheFarmPlugin extends Plugin
 			if (oldPlant.getState() != TitheFarmPlantState.WATERED && newPlant.getState() == TitheFarmPlantState.WATERED)
 			{
 				log.debug("Updated plant (watered)");
-				newPlant.setPlanted(oldPlant.getPlanted());
+				newPlant.setPlantedNanoTime(oldPlant.getPlantedNanoTime());
 				plants.remove(oldPlant);
 				plants.add(newPlant);
 			}

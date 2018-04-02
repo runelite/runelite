@@ -25,14 +25,13 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Round
 {
-	private final Instant roundStartTime;
+	private final long roundStartNanoTime;
 	@Getter
 	private final Role roundRole;
 	@Getter
@@ -52,16 +51,16 @@ public class Round
 	public Round(Role role)
 	{
 		this.roundRole = role;
-		this.roundStartTime = Instant.now().plusMillis(1200);
+		this.roundStartNanoTime = System.nanoTime() + Duration.ofMillis(1200).toNanos();
 	}
 
 	public long getRoundTime()
 	{
-		return Duration.between(roundStartTime, Instant.now()).getSeconds();
+		return Duration.ofNanos(System.nanoTime() - roundStartNanoTime).getSeconds();
 	}
 
 	public long getTimeToChange()
 	{
-		return 30 + (Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
+		return 30 + (getRoundTime() % 30);
 	}
 }
