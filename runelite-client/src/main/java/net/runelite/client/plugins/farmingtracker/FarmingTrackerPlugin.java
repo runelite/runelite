@@ -40,7 +40,6 @@ import static net.runelite.api.AnimationID.IDLE;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import static net.runelite.api.ItemID.WEEDS;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.AnimationChanged;
@@ -62,6 +61,7 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.QueryRunner;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Farming Tracker"
@@ -89,6 +89,7 @@ public class FarmingTrackerPlugin extends Plugin
 
 	private PatchLocation clickedOnPatch;
 	private ObjectComposition previousPatchObject;
+	private String menuTargetHardWood;
 	private int previousAnimation;
 	private int tickedAtEpoch = 0;
 
@@ -149,6 +150,13 @@ public class FarmingTrackerPlugin extends Plugin
 			if (patchLocation != null)
 			{
 				clickedOnPatch = patchLocation;
+
+				if (patchLocation.equals(PatchLocation.FOSSIL_ISLAND_TREE_HARDWOOD_EAST)
+					|| patchLocation.equals(PatchLocation.FOSSIL_ISLAND_TREE_HARDWOOD_MIDDLE)
+					|| patchLocation.equals(PatchLocation.FOSSIL_ISLAND_TREE_HARDWOOD_WEST))
+				{
+					menuTargetHardWood = Text.removeTags(menuOptionClicked.getMenuTarget());
+				}
 			}
 		}
 	}
@@ -168,7 +176,11 @@ public class FarmingTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (message.startsWith(CHAT_MESSAGE_PLANTED_SEED))
+		if (message.equals("You plant the plantpot in the hardwood tree patch."))
+		{
+			handlePlantedSaplingHardwood();
+		}
+		else if (message.startsWith(CHAT_MESSAGE_PLANTED_SEED))
 		{
 			handlePlantedSeed(message);
 		}
@@ -274,29 +286,53 @@ public class FarmingTrackerPlugin extends Plugin
 
 			if (seed != null)
 			{
-				final Map<String, PatchList> patchListMap = panel.getPatchListMap();
-				final PatchList patchList = patchListMap.get(clickedOnPatch.getPatchType().name());
-
-				BufferedImage bufferedImage = itemManager.getImage(seed.getSpriteId());
-
-				PatchRowData patchRowData = new PatchRowData(seed, SeedStatus.ALIVE, 1, "Calculating...");
-
-				patchList.setPlanted(clickedOnPatch, bufferedImage, patchRowData);
-
-				handleConfig(patchRowData, clickedOnPatch, FarmingTimer.getEpochTime());
+				updatePatchList(seed, new PatchRowData(seed, SeedStatus.ALIVE, 1, "Calculating..."));
 			}
 		}
+	}
+
+	private void handlePlantedSaplingHardwood()
+	{
+		if (clickedOnPatch != null && menuTargetHardWood != null)
+		{
+			Seed seed = Seed.findByName(menuTargetHardWood.split(" sapling")[0], clickedOnPatch.getPatchType());
+
+			if (seed != null)
+			{
+				updatePatchList(seed, new PatchRowData(seed, SeedStatus.ALIVE, 1, "Calculating..."));
+			}
+		}
+
+		menuTargetHardWood = null;
 	}
 
 	private void handlePatchCleared()
 	{
 		if (clickedOnPatch != null)
 		{
-			final Map<String, PatchList> patchListMap = panel.getPatchListMap();
-			final PatchList patchList = patchListMap.get(clickedOnPatch.getPatchType().name());
+			updatePatchList(null, null);
+		}
+	}
 
-			BufferedImage bufferedImage = itemManager.getImage(WEEDS);
+	private void updatePatchList(Seed seed, PatchRowData patchRowData)
+	{
+		final Map<String, PatchList> patchListMap = panel.getPatchListMap();
+		final PatchList patchList = patchListMap.get(clickedOnPatch.getPatchType().name());
 
+		BufferedImage bufferedImage = weeds;
+		if (seed != null)
+		{
+			bufferedImage = itemManager.getImage(seed.getSpriteId());
+		}
+
+		if (patchRowData != null)
+		{
+			patchList.setPlanted(clickedOnPatch, bufferedImage, patchRowData);
+
+			handleConfig(patchRowData, clickedOnPatch, FarmingTimer.getEpochTime());
+		}
+		else
+		{
 			patchList.setCleared(clickedOnPatch, bufferedImage);
 
 			handleConfig(null, clickedOnPatch, 0);
