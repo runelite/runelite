@@ -51,6 +51,7 @@ import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
@@ -316,7 +317,7 @@ public class MenuManager
 			}
 		}
 
-		String username = event.getName();
+		String username = Text.removeLevels(Text.removeTags(event.getMenuTarget()));
 
 		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
 		playerMenuOptionClicked.setMenuOption(event.getMenuOption());
