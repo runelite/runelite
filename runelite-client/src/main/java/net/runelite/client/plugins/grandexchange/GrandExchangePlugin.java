@@ -88,6 +88,8 @@ public class GrandExchangePlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
+		//test
+
 		panel = injector.getInstance(GrandExchangePanel.class);
 
 		BufferedImage icon;
