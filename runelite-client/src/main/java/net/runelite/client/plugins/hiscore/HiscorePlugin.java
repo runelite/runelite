@@ -194,7 +194,7 @@ public class HiscorePlugin extends Plugin
 
 				newEntry.setOption(newOption);
 				newEntry.setTarget(entry.getTarget());
-				newEntry.setType(MenuAction.RUNELITE);
+				newEntry.setType(MenuAction.RUNELITE.getId());
 				newEntry.setIdentifier(entry.getIdentifier());
 				newEntry.setParam0(entry.getParam0());
 				newEntry.setParam1(entry.getParam1());
