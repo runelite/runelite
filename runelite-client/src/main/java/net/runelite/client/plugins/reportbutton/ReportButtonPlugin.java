@@ -40,6 +40,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -63,12 +64,34 @@ public class ReportButtonPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private ReportButtonConfig config;
 
 	@Provides
 	ReportButtonConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ReportButtonConfig.class);
+	}
+
+	@Override
+	public void startUp()
+	{
+		clientThread.invokeLater(this::updateReportButtonTime);
+	}
+
+	@Override
+	public void shutDown()
+	{
+		clientThread.invokeLater(() ->
+		{
+			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
+			if (reportButton != null)
+			{
+				reportButton.setText("Report");
+			}
+		});
 	}
 
 	@Subscribe
@@ -97,7 +120,12 @@ public class ReportButtonPlugin extends Plugin
 		period = 1,
 		unit = ChronoUnit.SECONDS
 	)
-	public void updateReportButtonTime()
+	public void updateSchedule()
+	{
+		updateReportButtonTime();
+	}
+
+	private void updateReportButtonTime()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -130,12 +158,12 @@ public class ReportButtonPlugin extends Plugin
 		}
 	}
 
-	public String getLocalTime()
+	private String getLocalTime()
 	{
 		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
 
-	public String getLoginTime()
+	private String getLoginTime()
 	{
 		if (loginTime == null)
 		{
@@ -147,13 +175,13 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
-	public String getUTCTime()
+	private String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
 		return time.format(DATE_TIME_FORMAT);
 	}
 
-	public String getJagexTime()
+	private String getJagexTime()
 	{
 		LocalTime time = LocalTime.now(JAGEX);
 		return time.format(DATE_TIME_FORMAT);
