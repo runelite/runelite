@@ -47,6 +47,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -132,7 +133,7 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
-			lookup(event.getName());
+			lookup(Text.removeLevels(Text.removeTags(event.getMenuTarget())));
 		}
 	}
 	
