@@ -279,21 +279,6 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-		final String name = itemComposition.getName();
-
-		final boolean hidden = isHidden(name);
-
-		if (!isHotKeyPressed() && hidden)
-		{
-			return null;
-		}
-
-		final boolean highlighted = isHighlighted(name);
-
-		if (config.showHighlightedOnly() && !isHotKeyPressed() && !highlighted)
-		{
-			return null;
-		}
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -304,16 +289,12 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice * item.getQuantity())
 			.build();
 
-		// Set the correct item price
+
+		// Update item price in case it is coins
 		if (realItemId == COINS)
 		{
-			groundItem.setHaPrice(item.getQuantity());
-			groundItem.setGePrice(item.getQuantity());
-		}
-		else
-		{
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(realItemId);
-			groundItem.setGePrice(itemPrice != null ? itemPrice.getPrice() * item.getQuantity() : 0);
+			groundItem.setHaPrice(groundItem.getQuantity());
+			groundItem.setGePrice(groundItem.getQuantity());
 		}
 
 		return groundItem;
