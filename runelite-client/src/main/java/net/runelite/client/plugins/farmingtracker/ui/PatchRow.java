@@ -40,7 +40,7 @@ import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
 import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.SeedStatus;
 
-class PatchRow extends JPanel
+public class PatchRow extends JPanel
 {
 	@Getter
 	@Setter
@@ -93,6 +93,11 @@ class PatchRow extends JPanel
 		setImage(bufferedImage);
 		setSeed(SeedStatus.EMPTY.getStageName());
 		setStatus("");
+	}
+
+	public void updateRemainingTime()
+	{
+		setStatus(patchRowData.getTimeLeft());
 	}
 
 	private void setImage(BufferedImage bufferedImage)

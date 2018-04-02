@@ -25,9 +25,9 @@
 package net.runelite.client.plugins.farmingtracker.data;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class PatchRowData
 {
@@ -35,4 +35,27 @@ public class PatchRowData
 	private SeedStatus seedStatus;
 	private int currentStage;
 	private String timeLeft;
+
+	public void applyFarmingTick()
+	{
+		if (!seedStatus.equals(SeedStatus.ALIVE))
+		{
+			return;
+		}
+
+		if (currentStage == seed.getTotalStages())
+		{
+			seedStatus = SeedStatus.FINISHED;
+			timeLeft = seedStatus.getStageName();
+		}
+		else if (currentStage < seed.getTotalStages())
+		{
+			currentStage++;
+		}
+	}
+
+	public int getStagesLeft()
+	{
+		return seed.getTotalStages() - currentStage;
+	}
 }

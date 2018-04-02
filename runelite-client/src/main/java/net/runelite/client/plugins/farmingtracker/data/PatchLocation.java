@@ -320,6 +320,21 @@ public enum PatchLocation
 		return null;
 	}
 
+	public static Set<PatchLocation> findByFarmingTick(FarmingTick farmingTick)
+	{
+		Set<PatchLocation> patchLocations = new HashSet<>();
+
+		for (PatchLocation patchLocation : PatchLocation.values())
+		{
+			if (patchLocation.getFarmingTick() == farmingTick)
+			{
+				patchLocations.add(patchLocation);
+			}
+		}
+
+		return patchLocations;
+	}
+
 	public static PatchLocation findByWorldLocation(Client client, QueryRunner queryRunner, int x, int y)
 	{
 		PatchLocation patchLocation = queryOnWorldLocation(client, queryRunner, x, y);

@@ -33,6 +33,7 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
+import net.runelite.client.plugins.farmingtracker.FarmingTimer;
 import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
 import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.PatchType;
@@ -44,6 +45,7 @@ public class PatchList extends JPanel
 	@Getter
 	private final JPanel container = new JPanel();
 
+	@Getter
 	private final Map<String, PatchRow> patchRows = new HashMap<>();
 
 	public PatchList(PatchType patchType, BufferedImage bufferedImage)
@@ -100,5 +102,26 @@ public class PatchList extends JPanel
 		patchRow.setPatchRowData(null);
 
 		patchRow.setCleared(bufferedImage);
+	}
+
+	public void updateRemainingTime(PatchLocation patchLocation, int epoch)
+	{
+		final PatchRow patchRow = patchRows.get(patchLocation.name());
+
+		PatchRowData patchRowData = patchRow.getPatchRowData();
+
+		if (patchRowData == null)
+		{
+			return;
+		}
+
+		if (patchRowData.getSeedStatus().equals(SeedStatus.ALIVE))
+		{
+			String remainingTime = FarmingTimer.getGrowthTimeLeft(epoch, patchLocation.getFarmingTick().getTick(), patchRowData.getStagesLeft());
+
+			patchRowData.setTimeLeft(remainingTime);
+		}
+
+		patchRow.updateRemainingTime();
 	}
 }

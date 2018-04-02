@@ -27,6 +27,7 @@ package net.runelite.client.plugins.farmingtracker;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -47,9 +48,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.farmingtracker.data.FarmingTick;
 import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
+import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.Seed;
 import net.runelite.client.plugins.farmingtracker.ui.PatchList;
+import net.runelite.client.plugins.farmingtracker.ui.PatchRow;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.QueryRunner;
@@ -77,6 +82,7 @@ public class FarmingTrackerPlugin extends Plugin
 	private PatchLocation clickedOnPatch;
 	private ObjectComposition previousPatchObject;
 	private int previousAnimation;
+	private int tickedAtEpoch = 0;
 
 	private final String CHAT_MESSAGE_PLANTED_SEED = "You plant ";
 
@@ -167,7 +173,7 @@ public class FarmingTrackerPlugin extends Plugin
 
 		ObjectComposition currentPatch = client.getObjectDefinition(clickedOnPatch.getPatchObjectId()).getImpostor();
 
-		switch(event.getActor().getAnimation())
+		switch (event.getActor().getAnimation())
 		{
 			case FARMING_HARVEST_FLOWER:
 				previousPatchObject = currentPatch;
@@ -176,6 +182,41 @@ public class FarmingTrackerPlugin extends Plugin
 			case IDLE:
 				handleHarvest(currentPatch);
 				break;
+		}
+	}
+
+	@Schedule(
+		period = 600,
+		unit = ChronoUnit.MILLIS
+	)
+	public void runFarmingTickChecker()
+	{
+		int epoch = FarmingTimer.getEpochTime();
+
+		for (FarmingTick farmingTick : FarmingTick.values())
+		{
+			if ((tickedAtEpoch == 0 || epoch > tickedAtEpoch + 100) && FarmingTimer.isFarmingTick(epoch, farmingTick.getTick()))
+			{
+				tickedAtEpoch = epoch;
+				handleFarmingTickPassed(farmingTick);
+			}
+		}
+	}
+
+	@Schedule(
+		period = 10,
+		unit = ChronoUnit.SECONDS
+	)
+	public void updateRemainingTime()
+	{
+		int epoch = FarmingTimer.getEpochTime();
+		final Map<String, PatchList> patchListMap = panel.getPatchListMap();
+
+		for (PatchLocation patchLocation : PatchLocation.values())
+		{
+			final PatchList patchList = patchListMap.get(patchLocation.getPatchType().name());
+
+			patchList.updateRemainingTime(patchLocation, epoch);
 		}
 	}
 
@@ -231,5 +272,24 @@ public class FarmingTrackerPlugin extends Plugin
 		String[] words = sentences[1].split(" ");
 
 		return words[1];
+	}
+
+	private void handleFarmingTickPassed(FarmingTick farmingTick)
+	{
+		final Map<String, PatchList> patchListMap = panel.getPatchListMap();
+
+		for (PatchLocation patchLocation : PatchLocation.findByFarmingTick(farmingTick))
+		{
+			final PatchList patchList = patchListMap.get(patchLocation.getPatchType().name());
+			final PatchRow patchRow = patchList.getPatchRows().get(patchLocation.name());
+			final PatchRowData patchRowData = patchRow.getPatchRowData();
+
+			if (patchRowData == null)
+			{
+				continue;
+			}
+
+			patchRowData.applyFarmingTick();
+		}
 	}
 }
