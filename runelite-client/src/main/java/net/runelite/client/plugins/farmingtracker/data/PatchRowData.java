@@ -97,7 +97,7 @@ public class PatchRowData
 		{
 			stage = calculateCurrentStage(Integer.parseInt(values[2]), seed);
 
-			if (stage == seed.getTotalStages())
+			if (stage > seed.getTotalStages())
 			{
 				seedStatus = SeedStatus.FINISHED;
 				timeLeft = SeedStatus.FINISHED.getStageName();
@@ -109,11 +109,13 @@ public class PatchRowData
 
 	private static int calculateCurrentStage(int plantedEpoch, Seed seed)
 	{
-		int timePerTick = seed.getFarmingTick().getTick() * 60;
+		FarmingTick farmingTick = seed.getFarmingTick();
+
+		int timePerTick = farmingTick.getTick() * 60;
 		int timeElapsedSincePlanting = (FarmingTimer.getEpochTime() - plantedEpoch) + (plantedEpoch % timePerTick);
 		int farmingTicksPassed = (timeElapsedSincePlanting / timePerTick) + 1;
 
-		if (farmingTicksPassed >= seed.getTotalStages())
+		if (farmingTicksPassed >= (seed.getTotalStages() + 1))
 		{
 			return seed.getTotalStages();
 		}

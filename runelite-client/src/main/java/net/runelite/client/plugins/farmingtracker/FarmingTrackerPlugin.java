@@ -402,6 +402,8 @@ public class FarmingTrackerPlugin extends Plugin
 				continue;
 			}
 
+			handleConfig(patchRowData, patchLocation, Integer.parseInt(configValue.substring(configValue.lastIndexOf(",") + 1)));
+
 			final Map<String, PatchList> patchListMap = panel.getPatchListMap();
 			final PatchList patchList = patchListMap.get(patchLocation.getPatchType().name());
 
