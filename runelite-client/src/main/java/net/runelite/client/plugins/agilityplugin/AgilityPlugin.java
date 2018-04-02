@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -112,6 +111,10 @@ public class AgilityPlugin extends Plugin
 			case HOPPING:
 			case LOGIN_SCREEN:
 				session = null;
+				break;
+			case LOADING:
+				obstacles.clear();
+				break;
 		}
 	}
 
@@ -231,14 +234,4 @@ public class AgilityPlugin extends Plugin
 			obstacles.put(newObject, tile);
 		}
 	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			obstacles.clear();
-		}
-	}
-
 }
