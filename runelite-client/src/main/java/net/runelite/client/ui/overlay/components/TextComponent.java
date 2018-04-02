@@ -54,7 +54,7 @@ public class TextComponent implements RenderableEntity
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 

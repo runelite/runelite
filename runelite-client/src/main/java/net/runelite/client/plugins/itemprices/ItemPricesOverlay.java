@@ -26,8 +26,6 @@ package net.runelite.client.plugins.itemprices;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.text.NumberFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -52,8 +50,6 @@ class ItemPricesOverlay extends Overlay
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
-
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
@@ -76,7 +72,7 @@ class ItemPricesOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (client.isMenuOpen())
 		{
@@ -92,7 +88,7 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		final MenuEntry menuEntry = menuEntries[last];
-		final MenuAction action = menuEntry.getType();
+		final MenuAction action = MenuAction.of(menuEntry.getType());
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
 
@@ -177,11 +173,11 @@ class ItemPricesOverlay extends Overlay
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
 		{
-			return NUMBER_FORMATTER.format(qty) + " gp";
+			return StackFormatter.formatNumber(qty) + " gp";
 		}
 		else if (id == ItemID.PLATINUM_TOKEN)
 		{
-			return NUMBER_FORMATTER.format(qty * 1000) + " gp";
+			return StackFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
 		final ItemComposition itemDef = itemManager.getItemComposition(id);
@@ -231,8 +227,12 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (haValue > 0)
 		{
-			itemStringBuilder.append(gePrice > 0 ? ", " : "")
-				.append("HA: ")
+			if (gePrice > 0)
+			{
+				itemStringBuilder.append("</br>");
+			}
+
+			itemStringBuilder.append("HA: ")
 				.append(StackFormatter.quantityToStackSize(haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)

@@ -4,239 +4,191 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("gs")
 @Implements("DState")
 public final class DState {
-   @ObfuscatedName("t")
-   final int field2508;
-   @ObfuscatedName("q")
-   final int field2522;
+   @ObfuscatedName("c")
+   final int field2560;
    @ObfuscatedName("i")
-   final int field2533;
-   @ObfuscatedName("a")
-   final int field2507;
-   @ObfuscatedName("l")
-   final int field2509;
-   @ObfuscatedName("b")
-   final int field2510;
-   @ObfuscatedName("e")
+   final int field2528;
+   @ObfuscatedName("o")
+   final int field2529;
+   @ObfuscatedName("j")
+   final int field2530;
+   @ObfuscatedName("k")
+   final int field2531;
+   @ObfuscatedName("x")
+   final int field2551;
+   @ObfuscatedName("z")
    @Export("strm")
    byte[] strm;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 525616163
+      intValue = 1543513409
    )
    @Export("next_in")
    int next_in;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 971531347
+      intValue = 1949852487
    )
    @Export("total_out_lo32")
    int total_out_lo32;
-   @ObfuscatedName("g")
+   @ObfuscatedName("r")
    @Export("out")
    byte[] out;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1335106213
+      intValue = -154623411
    )
    @Export("next_out")
    int next_out;
-   @ObfuscatedName("o")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1455918493
+      intValue = -1002899189
    )
-   int field2516;
-   @ObfuscatedName("c")
+   int field2550;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -298831381
+      intValue = -1544859891
    )
    @Export("total_out_hi32")
    int total_out_hi32;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @Export("out_ch")
    byte out_ch;
-   @ObfuscatedName("u")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 2079174113
+      intValue = -2142325623
    )
    @Export("out_len")
    int out_len;
-   @ObfuscatedName("j")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1479894515
+      intValue = 1463448079
    )
    @Export("total_in_hi32")
    int total_in_hi32;
-   @ObfuscatedName("k")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 854766513
+      intValue = 425024153
    )
    @Export("total_in_lo32")
    int total_in_lo32;
-   @ObfuscatedName("z")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -541752279
+      intValue = -1870090557
    )
    @Export("blockSize100k")
    int blockSize100k;
-   @ObfuscatedName("w")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 718324555
+      intValue = 171055811
    )
-   int field2523;
-   @ObfuscatedName("s")
+   int field2534;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1355174209
+      intValue = -586650107
    )
    @Export("tPos")
    int tPos;
-   @ObfuscatedName("d")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1949573
+      intValue = 1768844759
    )
    @Export("k0")
    int k0;
-   @ObfuscatedName("f")
-   int[] field2539;
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
+   int[] field2548;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1037737565
+      intValue = -168965799
    )
    @Export("nblock_used")
    int nblock_used;
-   @ObfuscatedName("y")
-   int[] field2528;
-   @ObfuscatedName("m")
+   @ObfuscatedName("g")
+   int[] field2545;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -885546241
+      intValue = 1270772263
    )
    @Export("nInUse")
    int nInUse;
-   @ObfuscatedName("ay")
+   @ObfuscatedName("ac")
    @Export("inUse")
    boolean[] inUse;
-   @ObfuscatedName("ao")
-   boolean[] field2531;
-   @ObfuscatedName("av")
+   @ObfuscatedName("ap")
+   boolean[] field2553;
+   @ObfuscatedName("al")
    @Export("seqToUnseq")
    byte[] seqToUnseq;
-   @ObfuscatedName("aj")
-   byte[] field2521;
-   @ObfuscatedName("ae")
-   int[] field2534;
-   @ObfuscatedName("am")
-   byte[] field2535;
-   @ObfuscatedName("az")
-   byte[] field2536;
-   @ObfuscatedName("ap")
-   byte[][] field2537;
+   @ObfuscatedName("ai")
+   byte[] field2555;
+   @ObfuscatedName("ab")
+   int[] field2556;
+   @ObfuscatedName("ak")
+   byte[] field2557;
+   @ObfuscatedName("as")
+   byte[] field2558;
+   @ObfuscatedName("aa")
+   byte[][] field2559;
    @ObfuscatedName("ah")
-   int[][] field2538;
-   @ObfuscatedName("au")
-   int[][] field2505;
-   @ObfuscatedName("ax")
-   int[][] field2519;
-   @ObfuscatedName("ar")
-   int[] field2541;
-   @ObfuscatedName("an")
+   int[][] field2549;
+   @ObfuscatedName("ao")
+   int[][] field2561;
+   @ObfuscatedName("am")
+   int[][] field2562;
+   @ObfuscatedName("aq")
+   int[] field2533;
+   @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = 495435411
+      intValue = -1305417289
    )
-   int field2542;
+   int field2564;
 
    DState() {
-      this.field2508 = 4096;
-      this.field2522 = 16;
-      this.field2533 = 258;
-      this.field2507 = 6;
-      this.field2509 = 50;
-      this.field2510 = 18002;
+      this.field2560 = 4096;
+      this.field2528 = 16;
+      this.field2529 = 258;
+      this.field2530 = 6;
+      this.field2531 = 50;
+      this.field2551 = 18002;
       this.next_in = 0;
       this.next_out = 0;
-      this.field2539 = new int[256];
-      this.field2528 = new int[257];
+      this.field2548 = new int[256];
+      this.field2545 = new int[257];
       this.inUse = new boolean[256];
-      this.field2531 = new boolean[16];
+      this.field2553 = new boolean[16];
       this.seqToUnseq = new byte[256];
-      this.field2521 = new byte[4096];
-      this.field2534 = new int[16];
-      this.field2535 = new byte[18002];
-      this.field2536 = new byte[18002];
-      this.field2537 = new byte[6][258];
-      this.field2538 = new int[6][258];
-      this.field2505 = new int[6][258];
-      this.field2519 = new int[6][258];
-      this.field2541 = new int[6];
+      this.field2555 = new byte[4096];
+      this.field2556 = new int[16];
+      this.field2557 = new byte[18002];
+      this.field2558 = new byte[18002];
+      this.field2559 = new byte[6][258];
+      this.field2549 = new int[6][258];
+      this.field2561 = new int[6][258];
+      this.field2562 = new int[6][258];
+      this.field2533 = new int[6];
    }
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
-   )
-   static void method3517() {
-      if(Signlink.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-         KeyFocusListener.KeyHandler_keyCodes[186] = 57;
-         KeyFocusListener.KeyHandler_keyCodes[187] = 27;
-         KeyFocusListener.KeyHandler_keyCodes[188] = 71;
-         KeyFocusListener.KeyHandler_keyCodes[189] = 26;
-         KeyFocusListener.KeyHandler_keyCodes[190] = 72;
-         KeyFocusListener.KeyHandler_keyCodes[191] = 73;
-         KeyFocusListener.KeyHandler_keyCodes[192] = 58;
-         KeyFocusListener.KeyHandler_keyCodes[219] = 42;
-         KeyFocusListener.KeyHandler_keyCodes[220] = 74;
-         KeyFocusListener.KeyHandler_keyCodes[221] = 43;
-         KeyFocusListener.KeyHandler_keyCodes[222] = 59;
-         KeyFocusListener.KeyHandler_keyCodes[223] = 28;
-      } else {
-         KeyFocusListener.KeyHandler_keyCodes[44] = 71;
-         KeyFocusListener.KeyHandler_keyCodes[45] = 26;
-         KeyFocusListener.KeyHandler_keyCodes[46] = 72;
-         KeyFocusListener.KeyHandler_keyCodes[47] = 73;
-         KeyFocusListener.KeyHandler_keyCodes[59] = 57;
-         KeyFocusListener.KeyHandler_keyCodes[61] = 27;
-         KeyFocusListener.KeyHandler_keyCodes[91] = 42;
-         KeyFocusListener.KeyHandler_keyCodes[92] = 74;
-         KeyFocusListener.KeyHandler_keyCodes[93] = 43;
-         KeyFocusListener.KeyHandler_keyCodes[192] = 28;
-         KeyFocusListener.KeyHandler_keyCodes[222] = 58;
-         KeyFocusListener.KeyHandler_keyCodes[520] = 59;
+   @ObfuscatedName("i")
+   static final void method3499(long var0) {
+      try {
+         Thread.sleep(var0);
+      } catch (InterruptedException var3) {
+         ;
       }
 
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("ju")
    @ObfuscatedSignature(
-      signature = "([BB)[B",
-      garbageValue = "122"
+      signature = "(IIB)V",
+      garbageValue = "92"
    )
-   @Export("decodeContainer")
-   static final byte[] decodeContainer(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.readInt();
-      if(var3 < 0 || IndexDataBase.field3380 != 0 && var3 > IndexDataBase.field3380) {
-         throw new RuntimeException();
-      } else if(var2 == 0) {
-         byte[] var4 = new byte[var3];
-         var1.readBytes(var4, 0, var3);
-         return var4;
-      } else {
-         int var6 = var1.readInt();
-         if(var6 < 0 || IndexDataBase.field3380 != 0 && var6 > IndexDataBase.field3380) {
-            throw new RuntimeException();
-         } else {
-            byte[] var5 = new byte[var6];
-            if(var2 == 1) {
-               class188.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
-            } else {
-               IndexDataBase.gzip.decompress(var1, var5);
-            }
-
-            return var5;
-         }
+   static final void method3500(int var0, int var1) {
+      if(Name.loadWidget(var0)) {
+         class251.method4522(class189.widgets[var0], var1);
       }
    }
 }

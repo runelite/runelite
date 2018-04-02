@@ -1,21 +1,41 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kc")
+@ObfuscatedName("kf")
 public class class292 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("je")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "739325609"
+      signature = "(Lib;IIB)V",
+      garbageValue = "95"
    )
-   public static int method5197(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+   static void method5207(Widget var0, int var1, int var2) {
+      if(var0.dynamicX == 0) {
+         var0.relativeX = var0.originalX;
+      } else if(var0.dynamicX == 1) {
+         var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
+      } else if(var0.dynamicX == 2) {
+         var0.relativeX = var1 - var0.width - var0.originalX;
+      } else if(var0.dynamicX == 3) {
+         var0.relativeX = var0.originalX * var1 >> 14;
+      } else if(var0.dynamicX == 4) {
+         var0.relativeX = (var1 - var0.width) / 2 + (var0.originalX * var1 >> 14);
+      } else {
+         var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
       }
 
-      return var2;
+      if(var0.dynamicY == 0) {
+         var0.relativeY = var0.originalY;
+      } else if(var0.dynamicY == 1) {
+         var0.relativeY = (var2 - var0.height) / 2 + var0.originalY;
+      } else if(var0.dynamicY == 2) {
+         var0.relativeY = var2 - var0.height - var0.originalY;
+      } else if(var0.dynamicY == 3) {
+         var0.relativeY = var2 * var0.originalY >> 14;
+      } else if(var0.dynamicY == 4) {
+         var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
+      } else {
+         var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
+      }
+
    }
 }

@@ -63,7 +63,7 @@ public class BindNeckOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showBindNeck())
 		{
@@ -82,7 +82,7 @@ public class BindNeckOverlay extends Overlay
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(text);
 			textComponent.setColor(color);
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return null;

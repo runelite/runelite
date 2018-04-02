@@ -34,7 +34,10 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -48,6 +51,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -60,6 +64,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
@@ -87,12 +92,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final Provider<Client> clientProvider;
 	private final InfoBoxOverlay infoBoxOverlay;
 	private final ConfigManager configManager;
+	private final RuneLiteConfig runeLiteConfig;
 	private final TooltipOverlay tooltipOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
-	private final List<Overlay> overlaysAboveScene = new CopyOnWriteArrayList<>(),
-		overlaysUnderWidgets = new CopyOnWriteArrayList<>(),
-		overlaysAboveWidgets = new CopyOnWriteArrayList<>(),
-		overlaysOnTop = new CopyOnWriteArrayList<>();
 	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
 	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
@@ -104,9 +106,12 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	// Overlay state validation
 	private Rectangle viewportBounds;
+	private Rectangle chatboxBounds;
 	private boolean chatboxHidden;
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
+	private final Map<OverlayLayer, List<Overlay>> overlayLayerOverlayMap = Collections
+		.synchronizedMap(new HashMap<>());
 
 	@Inject
 	private OverlayRenderer(
@@ -116,13 +121,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final KeyManager keyManager,
 		final TooltipOverlay tooltipOverlay,
 		final InfoBoxOverlay infoBoxOverlay,
-		final ConfigManager configManager)
+		final ConfigManager configManager,
+		final RuneLiteConfig runeLiteConfig)
 	{
 		this.clientProvider = clientProvider;
 		this.pluginManager = pluginManager;
 		this.tooltipOverlay = tooltipOverlay;
 		this.infoBoxOverlay = infoBoxOverlay;
 		this.configManager = configManager;
+		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 	}
@@ -149,26 +156,18 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		rebuildOverlays();
 	}
 
-	private List<Overlay> getOverlaysForLayer(OverlayLayer layer)
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
 	{
-		switch (layer)
+		if (!event.isFocused())
 		{
-			case ABOVE_SCENE:
-				return overlaysAboveScene;
-			case UNDER_WIDGETS:
-				return overlaysUnderWidgets;
-			case ABOVE_WIDGETS:
-				return overlaysAboveWidgets;
-			case ALWAYS_ON_TOP:
-				return overlaysOnTop;
-			default:
-				throw new IllegalStateException();
+			inOverlayDraggingMode = false;
 		}
 	}
 
 	private void rebuildOverlays()
 	{
-		List<Overlay> overlays = Stream
+		final List<Overlay> overlays = Stream
 			.concat(
 				pluginManager.getPlugins()
 					.stream()
@@ -179,7 +178,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			.collect(Collectors.toList());
 
 		sortOverlays(overlays);
-
 		allOverlays.clear();
 		allOverlays.addAll(overlays);
 
@@ -210,10 +208,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	private void rebuildOverlayLayers()
 	{
-		overlaysAboveScene.clear();
-		overlaysUnderWidgets.clear();
-		overlaysAboveWidgets.clear();
-		overlaysOnTop.clear();
+		overlayLayerOverlayMap.clear();
 
 		for (final Overlay overlay : allOverlays)
 		{
@@ -229,8 +224,16 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 			}
 
-			List<Overlay> overlayLayer = getOverlaysForLayer(layer);
-			overlayLayer.add(overlay);
+			overlayLayerOverlayMap.compute(layer, (key, value) ->
+			{
+				if (value == null)
+				{
+					value = new CopyOnWriteArrayList<>();
+				}
+
+				value.add(overlay);
+				return value;
+			});
 		}
 	}
 
@@ -259,18 +262,19 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
 		final Client client = clientProvider.get();
-		List<Overlay> overlays = getOverlaysForLayer(layer);
+		final List<Overlay> overlays = overlayLayerOverlayMap.get(layer);
 
 		if (client == null
+			|| overlays == null
 			|| overlays.isEmpty()
-			|| client.getViewportWidget() == null
 			|| client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+			|| client.getViewportWidget() == null)
 		{
 			return;
 		}
 
-		if (shouldInvalidateOverlays())
+		if (shouldInvalidateBounds())
 		{
 			snapCorners = buildSnapCorners();
 		}
@@ -278,12 +282,20 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		// Create copy of snap corners because overlays will modify them
 		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
 
+		// Set font based on configuration
+		graphics.setFont(runeLiteConfig.useSmallFont()
+			? FontManager.getRunescapeSmallFont()
+			: FontManager.getRunescapeFont());
+
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
 		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null)
 		{
-			final OverlayBounds translatedSnapCorners = translateSnapCorners(snapCorners);
+			final OverlayBounds translatedSnapCorners = snapCorners.translated(
+				-SNAP_CORNER_SIZE.width,
+				-SNAP_CORNER_SIZE.height);
+
 			final Color previous = graphics.getColor();
 
 			for (final Rectangle corner : translatedSnapCorners.getBounds())
@@ -304,7 +316,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				overlayPosition = overlay.getPreferredPosition();
 			}
 
-			if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !client.isResized())
+			if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !isResizeable)
 			{
 				// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
 				// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
@@ -314,7 +326,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
 			{
-				safeRender(overlay, graphics, new Point());
+				safeRender(client, overlay, layer, graphics, new Point());
 			}
 			else
 			{
@@ -335,13 +347,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					location.setLocation(overlay.getPreferredLocation());
 				}
 
-				final Dimension overlayDimension = MoreObjects.firstNonNull(
-					safeRender(overlay, graphics, location),
-					new Dimension());
+				safeRender(client, overlay, layer, graphics, location);
+				dimension.setSize(overlay.getBounds().getSize());
 
-				overlay.setBounds(new Rectangle(location, overlayDimension));
-
-				if (overlayDimension.width == 0 && overlayDimension.height == 0)
+				if (dimension.width == 0 && dimension.height == 0)
 				{
 					continue;
 				}
@@ -376,6 +385,8 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					overlay.setPreferredLocation(null);
 					overlay.setPreferredPosition(null);
+					saveOverlayPosition(overlay);
+					saveOverlayLocation(overlay);
 					rebuildOverlayLayers();
 				}
 				else
@@ -435,7 +446,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (movedOverlay != null)
 		{
 			mousePosition.setLocation(-1, -1);
-			final OverlayBounds snapCorners = translateSnapCorners(buildSnapCorners());
+			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
 
 			for (Rectangle snapCorner : snapCorners.getBounds())
 			{
@@ -486,33 +497,49 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
-	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
+	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
+		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
+		{
+			subGraphics.setClip(client.getViewportXOffset(),
+				client.getViewportYOffset(),
+				client.getViewportWidth(),
+				client.getViewportHeight());
+		}
 		subGraphics.translate(point.x, point.y);
-		final Dimension dimension = entity.render(subGraphics, point);
+		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();
-		return dimension;
+		overlay.setBounds(new Rectangle(point, dimension));
 	}
 
-	private boolean shouldInvalidateOverlays()
+	private boolean shouldInvalidateBounds()
 	{
 		final Client client = clientProvider.get();
-		final Widget widget = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
 		final boolean resizeableChanged = isResizeable != client.isResized();
+		boolean changed = false;
 
 		if (resizeableChanged)
 		{
 			isResizeable = client.isResized();
-			return true;
+			changed = true;
 		}
 
-		final boolean chatboxHiddenChanged = chatboxHidden != (widget != null && widget.isHidden());
+		final boolean chatboxBoundsChanged = chatbox == null || !chatbox.getBounds().equals(chatboxBounds);
+
+		if (chatboxBoundsChanged)
+		{
+			chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
+			changed = true;
+		}
+
+		final boolean chatboxHiddenChanged = chatboxHidden != (chatbox == null || chatbox.isHidden());
 
 		if (chatboxHiddenChanged)
 		{
-			chatboxHidden = widget != null && widget.isHidden();
-			return true;
+			chatboxHidden = chatbox == null || chatbox.isHidden();
+			changed = true;
 		}
 
 		final boolean viewportChanged = !client.getViewportWidget().getBounds().equals(viewportBounds);
@@ -520,34 +547,36 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (viewportChanged)
 		{
 			viewportBounds = client.getViewportWidget().getBounds();
-			return true;
+			changed = true;
 		}
 
-		return false;
+		return changed;
 	}
 
 	private OverlayBounds buildSnapCorners()
 	{
-		final Client client = clientProvider.get();
-
-		final Rectangle bounds = viewportBounds != null
-			? viewportBounds
-			: new Rectangle(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
-
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
-		final Rectangle chatboxBounds = chatbox != null
-			? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
-
 		final Point topLeftPoint = new Point(
 			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
 			isResizeable ? BORDER_TOP_RESIZABLE : BORDER_TOP_FIXED);
-		final Point topRightPoint = new Point(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP_FIXED);
-		final Point bottomLeftPoint = new Point(isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED, bounds.y + bounds.height - BORDER_BOTTOM);
-		final Point bottomRightPoint = new Point(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
-		final Point rightChatboxPoint = new Point(bounds.x + chatboxBounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
+
+		final Point topRightPoint = new Point(
+			viewportBounds.x + viewportBounds.width - BORDER_RIGHT,
+			BORDER_TOP_FIXED);
+
+		final Point bottomLeftPoint = new Point(
+			isResizeable ? BORDER_LEFT_RESIZABLE : BORDER_LEFT_FIXED,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		final Point bottomRightPoint = new Point(
+			viewportBounds.x + viewportBounds.width - BORDER_RIGHT,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
+
+		final Point rightChatboxPoint = new Point(
+			viewportBounds.x + chatboxBounds.width - BORDER_RIGHT,
+			viewportBounds.y + viewportBounds.height - BORDER_BOTTOM);
 
 		// Check to see if chat box is minimized
-		if (chatbox != null && isResizeable && chatboxHidden)
+		if (isResizeable && chatboxHidden)
 		{
 			rightChatboxPoint.y += chatboxBounds.height;
 			bottomLeftPoint.y += chatboxBounds.height;
@@ -559,22 +588,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			new Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
 			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
 			new Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE));
-	}
-
-	private OverlayBounds translateSnapCorners(OverlayBounds snapCorners)
-	{
-		return new OverlayBounds(
-			snapCorners.getTopLeft(),
-			translate(snapCorners.getTopRight(), -SNAP_CORNER_SIZE.width, 0),
-			translate(snapCorners.getBottomLeft(), 0, -SNAP_CORNER_SIZE.height),
-			translate(snapCorners.getBottomRight(), -SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height),
-			translate(snapCorners.getAboveChatboxRight(), -SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height));
-	}
-
-	private static Rectangle translate(Rectangle rectangle, int dx, int dy)
-	{
-		rectangle.translate(dx, dy);
-		return rectangle;
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)

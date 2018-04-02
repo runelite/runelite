@@ -30,11 +30,14 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
-import net.runelite.client.ui.FontManager;
+import net.runelite.api.coords.LocalPoint;
 
 
 /**
@@ -72,6 +75,15 @@ public class OverlayUtil
 		graphics.drawString(text, x, y);
 	}
 
+	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
+	{
+		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, graphics, localPoint, image, zOffset);
+		if (imageLocation != null)
+		{
+			renderImageLocation(graphics, imageLocation, image);
+		}
+	}
+
 	public static void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
 		int x = imgLoc.getX();
@@ -95,7 +107,7 @@ public class OverlayUtil
 		}
 	}
 
-	public static void renderActorOverlayImage(Graphics2D graphics, Actor actor, BufferedImage image, Color color)
+	public static void renderActorOverlayImage(Graphics2D graphics, Actor actor, BufferedImage image, Color color, int zOffset)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
 		if (poly != null)
@@ -103,7 +115,7 @@ public class OverlayUtil
 			renderPolygon(graphics, poly, color);
 		}
 
-		Point imageLocation = actor.getCanvasImageLocation(graphics, image, actor.getLogicalHeight());
+		Point imageLocation = actor.getCanvasImageLocation(graphics, image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -131,9 +143,38 @@ public class OverlayUtil
 		}
 	}
 
+	public static void renderTileOverlay(Client client, Graphics2D graphics, LocalPoint localLocation, BufferedImage image, Color color)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, localLocation);
+		if (poly != null)
+		{
+			renderPolygon(graphics, poly, color);
+		}
+
+		renderImageLocation(client, graphics, localLocation, image, 0);
+	}
+
+	public static void renderHoverableArea(Graphics2D graphics, Area area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
+	{
+		if (area != null)
+		{
+			if (area.contains(mousePosition.getX(), mousePosition.getY()))
+			{
+				graphics.setColor(borderHoverColor);
+			}
+			else
+			{
+				graphics.setColor(borderColor);
+			}
+
+			graphics.draw(area);
+			graphics.setColor(fillColor);
+			graphics.fill(area);
+		}
+	}
+
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
-		graphics.setFont(FontManager.getRunescapeFont());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 

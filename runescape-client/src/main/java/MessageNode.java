@@ -5,49 +5,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bk")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("t")
+   @ObfuscatedName("iz")
    @ObfuscatedGetter(
-      intValue = 639798369
+      intValue = -766276273
+   )
+   static int field813;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1758157563
    )
    @Export("id")
    int id;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2147285637
+      intValue = 2090519135
    )
    @Export("tick")
    int tick;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1684620931
+      intValue = 1642637665
    )
    @Export("type")
    int type;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @Export("name")
    String name;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lkb;"
+      signature = "Lko;"
    )
-   Name field811;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lkx;"
-   )
-   class303 field804;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lkx;"
-   )
-   class303 field807;
+   Name field803;
    @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lkj;"
+   )
+   class303 field808;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lkj;"
+   )
+   class303 field809;
+   @ObfuscatedName("p")
    @Export("sender")
    String sender;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @Export("value")
    String value;
 
@@ -56,22 +61,21 @@ public class MessageNode extends CacheableNode {
       end = true
    )
    MessageNode(int var1, String var2, String var3, String var4) {
-      this.field804 = class303.field3850;
-      this.field807 = class303.field3850;
-      int var5 = ++class95.field1422 - 1;
-      this.id = var5;
+      this.field808 = class303.field3842;
+      this.field809 = class303.field3842;
+      this.id = SceneTilePaint.method2872();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
-      this.method1172();
+      this.method1115();
       this.sender = var3;
       this.value = var4;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "127"
+      garbageValue = "124"
    )
    @Export("setMessage")
    @Hook(
@@ -79,198 +83,159 @@ public class MessageNode extends CacheableNode {
       end = true
    )
    void setMessage(int var1, String var2, String var3, String var4) {
-      int var5 = ++class95.field1422 - 1;
-      this.id = var5;
+      this.id = SceneTilePaint.method2872();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
-      this.method1172();
+      this.method1115();
       this.sender = var3;
       this.value = var4;
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-23"
-   )
-   void method1166() {
-      this.field804 = class303.field3850;
-   }
-
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "678327261"
-   )
-   final boolean method1174() {
-      if(this.field804 == class303.field3850) {
-         this.method1168();
-      }
-
-      return this.field804 == class303.field3846;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "210198800"
+      garbageValue = "1953083949"
    )
-   void method1168() {
-      this.field804 = WallObject.friendManager.field1229.isMember(this.field811)?class303.field3846:class303.field3847;
+   void method1131() {
+      this.field808 = class303.field3842;
    }
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "23456187"
-   )
-   void method1169() {
-      this.field807 = class303.field3850;
-   }
-
-   @ObfuscatedName("b")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "169274032"
+      garbageValue = "-859249780"
    )
-   final boolean method1186() {
-      if(this.field807 == class303.field3850) {
-         this.method1171();
+   final boolean method1110() {
+      if(this.field808 == class303.field3842) {
+         this.method1111();
       }
 
-      return this.field807 == class303.field3846;
+      return this.field808 == class303.field3841;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-259911886"
+      garbageValue = "1432437519"
    )
-   void method1171() {
-      this.field807 = WallObject.friendManager.field1233.isMember(this.field811)?class303.field3846:class303.field3847;
+   void method1111() {
+      this.field808 = RunException.friendManager.field1250.isMember(this.field803)?class303.field3841:class303.field3843;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1469431463"
+   )
+   void method1107() {
+      this.field809 = class303.field3842;
    }
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "50"
+      signature = "(B)Z",
+      garbageValue = "60"
    )
-   final void method1172() {
+   final boolean method1113() {
+      if(this.field809 == class303.field3842) {
+         this.method1114();
+      }
+
+      return this.field809 == class303.field3841;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-359402641"
+   )
+   void method1114() {
+      this.field809 = RunException.friendManager.field1249.isMember(this.field803)?class303.field3841:class303.field3843;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-839214170"
+   )
+   final void method1115() {
       if(this.name != null) {
-         this.field811 = new Name(ScriptEvent.method1157(this.name), KeyFocusListener.loginType);
+         this.field803 = new Name(MapIconReference.method747(this.name), Client.loginType);
       } else {
-         this.field811 = null;
+         this.field803 = null;
       }
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lgz;B)V",
-      garbageValue = "15"
+      signature = "(CI)B",
+      garbageValue = "-728270429"
    )
-   @Export("initializeGPI")
-   static final void initializeGPI(PacketBuffer var0) {
-      var0.bitAccess();
-      int var1 = Client.localInteractingIndex;
-      Player var2 = WorldMapData.localPlayer = Client.cachedPlayers[var1] = new Player();
-      var2.field837 = var1;
-      int var3 = var0.getBits(30);
-      byte var4 = (byte)(var3 >> 28);
-      int var5 = var3 >> 14 & 16383;
-      int var6 = var3 & 16383;
-      var2.pathX[0] = var5 - class38.baseX;
-      var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
-      var2.pathY[0] = var6 - PlayerComposition.baseY;
-      var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);
-      Ignore.plane = var2.field836 = var4;
-      if(class93.field1405[var1] != null) {
-         var2.decodeApperance(class93.field1405[var1]);
+   @Export("charToByteCp1252")
+   public static byte charToByteCp1252(char var0) {
+      byte var1;
+      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+         var1 = (byte)var0;
+      } else if(var0 == 8364) {
+         var1 = -128;
+      } else if(var0 == 8218) {
+         var1 = -126;
+      } else if(var0 == 402) {
+         var1 = -125;
+      } else if(var0 == 8222) {
+         var1 = -124;
+      } else if(var0 == 8230) {
+         var1 = -123;
+      } else if(var0 == 8224) {
+         var1 = -122;
+      } else if(var0 == 8225) {
+         var1 = -121;
+      } else if(var0 == 710) {
+         var1 = -120;
+      } else if(var0 == 8240) {
+         var1 = -119;
+      } else if(var0 == 352) {
+         var1 = -118;
+      } else if(var0 == 8249) {
+         var1 = -117;
+      } else if(var0 == 338) {
+         var1 = -116;
+      } else if(var0 == 381) {
+         var1 = -114;
+      } else if(var0 == 8216) {
+         var1 = -111;
+      } else if(var0 == 8217) {
+         var1 = -110;
+      } else if(var0 == 8220) {
+         var1 = -109;
+      } else if(var0 == 8221) {
+         var1 = -108;
+      } else if(var0 == 8226) {
+         var1 = -107;
+      } else if(var0 == 8211) {
+         var1 = -106;
+      } else if(var0 == 8212) {
+         var1 = -105;
+      } else if(var0 == 732) {
+         var1 = -104;
+      } else if(var0 == 8482) {
+         var1 = -103;
+      } else if(var0 == 353) {
+         var1 = -102;
+      } else if(var0 == 8250) {
+         var1 = -101;
+      } else if(var0 == 339) {
+         var1 = -100;
+      } else if(var0 == 382) {
+         var1 = -98;
+      } else if(var0 == 376) {
+         var1 = -97;
+      } else {
+         var1 = 63;
       }
 
-      class93.playerIndexesCount = 0;
-      class93.playerIndices[++class93.playerIndexesCount - 1] = var1;
-      class93.field1394[var1] = 0;
-      class93.field1398 = 0;
-
-      for(int var7 = 1; var7 < 2048; ++var7) {
-         if(var1 != var7) {
-            int var8 = var0.getBits(18);
-            int var9 = var8 >> 16;
-            int var10 = var8 >> 8 & 597;
-            int var11 = var8 & 597;
-            class93.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
-            class93.Players_orientations[var7] = 0;
-            class93.Players_targetIndices[var7] = -1;
-            class93.field1399[++class93.field1398 - 1] = var7;
-            class93.field1394[var7] = 0;
-         }
-      }
-
-      var0.byteAccess();
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "([BIIB)Ljava/lang/String;",
-      garbageValue = "31"
-   )
-   @Export("getString")
-   public static String getString(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class314.cp1252AsciiExtension[var6 - 128];
-               if(var7 == 0) {
-                  var7 = '?';
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
-   }
-
-   @ObfuscatedName("ib")
-   @ObfuscatedSignature(
-      signature = "(Lig;Ljy;IIZI)V",
-      garbageValue = "-1236962070"
-   )
-   static final void method1180(Widget var0, ItemComposition var1, int var2, int var3, boolean var4) {
-      String[] var5 = var1.inventoryActions;
-      byte var6 = -1;
-      String var7 = null;
-      if(var5 != null && var5[var3] != null) {
-         if(var3 == 0) {
-            var6 = 33;
-         } else if(var3 == 1) {
-            var6 = 34;
-         } else if(var3 == 2) {
-            var6 = 35;
-         } else if(var3 == 3) {
-            var6 = 36;
-         } else {
-            var6 = 37;
-         }
-
-         var7 = var5[var3];
-      } else if(var3 == 4) {
-         var6 = 37;
-         var7 = "Drop";
-      }
-
-      if(var6 != -1 && var7 != null) {
-         Size.method193(var7, class37.getColTags(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
-      }
-
+      return var1;
    }
 }

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.boosts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -69,7 +68,7 @@ class BoostsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent = new PanelComponent();
 		boolean overlayActive = false;
@@ -97,7 +96,7 @@ class BoostsOverlay extends Overlay
 			{
 				if (indicator == null)
 				{
-					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
+					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), plugin, client, config);
 					indicators[skill.ordinal()] = indicator;
 				}
 
@@ -153,7 +152,7 @@ class BoostsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.getLines().isEmpty() ? null : panelComponent.render(graphics, parent);
+		return panelComponent.getLines().isEmpty() ? null : panelComponent.render(graphics);
 	}
 
 	private Color getTextColor(int boost)

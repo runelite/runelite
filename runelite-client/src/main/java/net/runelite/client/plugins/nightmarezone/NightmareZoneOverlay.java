@@ -27,7 +27,6 @@ package net.runelite.client.plugins.nightmarezone;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -40,6 +39,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.StackFormatter;
 
 class NightmareZoneOverlay extends Overlay
 {
@@ -70,7 +70,7 @@ class NightmareZoneOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!plugin.isInNightmareZone() || !config.moveOverlay())
 		{
@@ -100,11 +100,11 @@ class NightmareZoneOverlay extends Overlay
 		panelComponent.getLines().add(new PanelComponent.Line(
 				"Points: ",
 				Color.WHITE,
-				Integer.toString(client.getSetting(Varbits.NMZ_POINTS)),
+				StackFormatter.formatNumber(client.getSetting(Varbits.NMZ_POINTS)),
 				Color.WHITE
 		));
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 
 	private void renderAbsorptionCounter()
@@ -133,7 +133,7 @@ class NightmareZoneOverlay extends Overlay
 
 	private void addAbsorptionCounter(int startValue)
 	{
-		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), startValue, config.absorptionThreshold());
+		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), plugin, startValue, config.absorptionThreshold());
 		absorptionCounter.setAboveThresholdColor(config.absorptionColorAboveThreshold());
 		absorptionCounter.setBelowThresholdColor(config.absorptionColorBelowThreshold());
 		infoBoxManager.addInfoBox(absorptionCounter);

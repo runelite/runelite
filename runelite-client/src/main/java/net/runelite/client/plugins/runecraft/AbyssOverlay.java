@@ -83,7 +83,7 @@ class AbyssOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showRifts())
 		{

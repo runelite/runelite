@@ -78,7 +78,7 @@ public class XpGlobesOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		//if this is null there is no reason to draw e.g. switching between resizable and fixed
 		Widget viewportWidget = client.getViewportWidget();
@@ -118,15 +118,14 @@ public class XpGlobesOverlay extends Overlay
 
 			for (XpGlobe xpGlobe : xpChangedQueue)
 			{
-				renderProgressCircle(graphics, point, xpGlobe, startDrawX, DEFAULT_START_Y);
+				renderProgressCircle(graphics, xpGlobe, startDrawX, DEFAULT_START_Y);
 				startDrawX += MINIMUM_STEP + config.xpOrbSize();
 			}
-			plugin.removeExpiredXpGlobes();
 		}
 
 		return null;
 	}
-	private void renderProgressCircle(Graphics2D graphics, java.awt.Point parent, XpGlobe skillToDraw, int x, int y)
+	private void renderProgressCircle(Graphics2D graphics, XpGlobe skillToDraw, int x, int y)
 	{
 		double radiusCurrentXp = skillToDraw.getSkillProgressRadius();
 		double radiusToGoalXp = 360; //draw a circle
@@ -158,7 +157,7 @@ public class XpGlobesOverlay extends Overlay
 
 		if (config.enableTooltips())
 		{
-			drawTooltipIfMouseover(graphics, parent, skillToDraw, backgroundCircle);
+			drawTooltipIfMouseover(graphics, skillToDraw, backgroundCircle);
 		}
 	}
 
@@ -201,7 +200,7 @@ public class XpGlobesOverlay extends Overlay
 		);
 	}
 
-	private void drawTooltipIfMouseover(Graphics2D graphics, java.awt.Point parent, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
+	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
 	{
 		Point mouse = client.getMouseCanvasPosition();
 		int mouseX = mouse.getX();
@@ -243,6 +242,6 @@ public class XpGlobesOverlay extends Overlay
 			xpTooltip.setProgressBar(progressBar);
 		}
 
-		xpTooltip.render(graphics, parent);
+		xpTooltip.render(graphics);
 	}
 }

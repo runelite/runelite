@@ -27,7 +27,6 @@ package net.runelite.client.plugins.woodcutting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.stream.IntStream;
@@ -74,7 +73,7 @@ class WoodcuttingOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		WoodcuttingSession session = plugin.getSession();
 
@@ -121,6 +120,6 @@ class WoodcuttingOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

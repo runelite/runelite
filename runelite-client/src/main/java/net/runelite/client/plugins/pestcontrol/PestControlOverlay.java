@@ -25,16 +25,10 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
-import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
-import static net.runelite.client.plugins.pestcontrol.Portal.RED;
-import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -45,6 +39,10 @@ import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
+import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
+import static net.runelite.client.plugins.pestcontrol.Portal.RED;
+import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -56,22 +54,19 @@ public class PestControlOverlay extends Overlay
 	private final QueryRunner queryRunner;
 	private final Client client;
 
-	private final PestControlPlugin plugin;
-
 	// Pest control game
 	private Game game;
 
 	@Inject
-	public PestControlOverlay(QueryRunner queryRunner, Client client, PestControlPlugin plugin)
+	public PestControlOverlay(QueryRunner queryRunner, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.queryRunner = queryRunner;
 		this.client = client;
-		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		// See if we are in a game or not
 		if (client.getWidget(WidgetInfo.PESTCONTROL_BLUE_SHIELD) == null)
@@ -89,12 +84,6 @@ public class PestControlOverlay extends Overlay
 		{
 			log.debug("Pest control game has started");
 			game = new Game();
-		}
-
-		Font font = plugin.getFont();
-		if (font != null)
-		{
-			graphics.setFont(font);
 		}
 
 		renderSpinners(graphics);

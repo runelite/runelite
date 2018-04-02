@@ -4,72 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("eu")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -424206917
+      intValue = -741509819
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 617121731
+      intValue = 27940365
    )
    @Export("x")
    int x;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1068652143
+      intValue = 1351166039
    )
    @Export("y")
    int y;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 199958707
+      intValue = -1505419439
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -511589499
+      intValue = -1448452761
    )
    @Export("rotation")
    int rotation;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1260026643
+      intValue = -2067639295
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -780068063
+      intValue = -1364887827
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lek;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lek;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("g")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -146473983
+      intValue = 2129795425
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 146815971
+      intValue = -1116667243
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
@@ -77,5 +77,26 @@ public final class DecorativeObject {
    DecorativeObject() {
       this.hash = 0;
       this.renderInfoBitPacked = 0;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "28"
+   )
+   public static void method3096() {
+      Varbit.varbits.reset();
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "1058550691"
+   )
+   static byte[] method3097(byte[] var0) {
+      int var1 = var0.length;
+      byte[] var2 = new byte[var1];
+      System.arraycopy(var0, 0, var2, 0, var1);
+      return var2;
    }
 }

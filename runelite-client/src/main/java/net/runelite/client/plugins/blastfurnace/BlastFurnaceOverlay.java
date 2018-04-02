@@ -26,7 +26,6 @@ package net.runelite.client.plugins.blastfurnace;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -53,7 +52,7 @@ class BlastFurnaceOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (plugin.getConveyorBelt() == null)
 		{
@@ -74,7 +73,7 @@ class BlastFurnaceOverlay extends Overlay
 			imagePanelComponent.getImages().add(getImage(varbit.getItemID(), amount));
 		}
 
-		return imagePanelComponent.render(graphics, parent);
+		return imagePanelComponent.render(graphics);
 	}
 
 	private BufferedImage getImage(int itemID, int amount)

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.pyramidplunder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -52,7 +51,7 @@ public class PyramidPlunderOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		Widget pyramidPlunderInfo = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
 
@@ -79,7 +78,7 @@ public class PyramidPlunderOverlay extends Overlay
 			"Room: ", String.valueOf(client.getSetting(Varbits.PYRAMID_PLUNDER_ROOM)) + "/8"
 		));
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 
 	public void showWidget()

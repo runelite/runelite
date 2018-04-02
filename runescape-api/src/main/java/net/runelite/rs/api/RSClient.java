@@ -25,8 +25,8 @@
 package net.runelite.rs.api;
 
 import java.util.Map;
-import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
@@ -80,6 +80,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("clientVarps")
 	@Override
 	int[] getVarps();
+
+	@Import("varcs")
+	@Override
+	RSVarcs getVarcs();
 
 	@Import("energy")
 	@Override
@@ -159,6 +163,7 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getPlayerIndices();
 
 	@Import("cachedPlayers")
+	@Override
 	RSPlayer[] getCachedPlayers();
 
 	@Import("localInteractingIndex")
@@ -247,6 +252,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getViewportWidth();
 
+	@Import("Viewport_xOffset")
+	@Override
+	int getViewportXOffset();
+
+	@Import("Viewport_yOffset")
+	@Override
+	int getViewportYOffset();
+
 	@Import("isResized")
 	@Override
 	boolean isResized();
@@ -268,6 +281,10 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
+
+	@Import("widgetFlags")
+	@Override
+	RSHashTable getWidgetFlags();
 
 	@Import("componentTable")
 	@Override
@@ -425,7 +442,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("rasterProvider")
 	@Override
-	BufferProvider getBufferProvider();
+	RSBufferProvider getBufferProvider();
 
 	@Import("mouseIdleTicks")
 	@Override
@@ -532,4 +549,19 @@ public interface RSClient extends RSGameEngine, Client
 	@Construct
 	@Override
 	RSWorld createWorld();
+
+	@Import("minimapSprite")
+	RSSpritePixels getMinimapSprite();
+
+	@Import("minimapSprite")
+	void setMinimapSprite(SpritePixels spritePixels);
+
+	@Import("drawObject")
+	void drawObject(int z, int x, int y, int randomColor1, int randomColor2);
+
+	@Construct
+	RSScriptEvent createScriptEvent();
+
+	@Import("runScript")
+	void runScript(RSScriptEvent ev, int ex);
 }

@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -53,6 +54,7 @@ import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColor;
@@ -81,7 +83,7 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
@@ -105,6 +107,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private RaidsOverlay overlay;
+
+	@Inject
+	private RaidsPointsOverlay pointsOverlay;
 
 	@Inject
 	private LayoutSolver layoutSolver;
@@ -137,9 +142,9 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public List<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, pointsOverlay);
 	}
 
 	@Override
@@ -203,6 +208,22 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		if (!inRaidChambers || event.isHidden())
+		{
+			return;
+		}
+
+		Widget widget = event.getWidget();
+
+		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
+		{
+			widget.setHidden(true);
+		}
+	}
+
+	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
 		boolean setting = client.getSetting(Varbits.IN_RAID) == 1;
@@ -257,7 +278,7 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(getRaidsIcon(), Instant.now());
+				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -305,27 +326,6 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 		}
-	}
-
-	public void repositionPointsBox()
-	{
-		Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
-		int x = widget.getParent().getWidth() - widget.getWidth() - 2;
-		int y = widget.getOriginalY();
-
-		if (client.getSetting(Varbits.EXPERIENCE_TRACKER_POSITION) == 0)
-		{
-			Widget area = client.getWidget(WidgetInfo.EXPERIENCE_TRACKER_BOTTOM_BAR);
-
-			if (area != null)
-			{
-				y = area.getOriginalY() + 2;
-				area.setRelativeY(y + widget.getHeight());
-			}
-		}
-
-		widget.setRelativeX(x);
-		widget.setRelativeY(y);
 	}
 
 	private void updateInfoBoxState()

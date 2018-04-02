@@ -4,55 +4,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("b")
 @Implements("GrandExchangeOffer")
 public class GrandExchangeOffer {
-   @ObfuscatedName("on")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lla;"
+      signature = "Liu;"
    )
-   @Export("minimapSprite")
-   static SpritePixels minimapSprite;
-   @ObfuscatedName("e")
-   @Export("indexedSpriteHeights")
-   static int[] indexedSpriteHeights;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1094681987
-   )
-   public static int field284;
-   @ObfuscatedName("bj")
-   static String field290;
-   @ObfuscatedName("t")
+   public static Track1 field292;
+   @ObfuscatedName("c")
    @Export("state")
    byte state;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1830026537
+      intValue = 1681843795
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -185808529
+      intValue = 1202645115
    )
    @Export("price")
    public int price;
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1716879073
+      intValue = 774757347
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("l")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1627042683
+      intValue = -1825065405
    )
    @Export("quantitySold")
    public int quantitySold;
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2125956321
+      intValue = 2074004771
    )
    @Export("spent")
    public int spent;
@@ -61,7 +50,7 @@ public class GrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgb;Z)V",
+      signature = "(Lgp;Z)V",
       garbageValue = "0"
    )
    public GrandExchangeOffer(Buffer var1, boolean var2) {
@@ -76,39 +65,39 @@ public class GrandExchangeOffer {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1534869825"
+      garbageValue = "-2098724091"
    )
    @Export("status")
    public int status() {
       return this.state & 7;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1695031298"
+      signature = "(B)I",
+      garbageValue = "64"
    )
    @Export("type")
    public int type() {
       return (this.state & 8) == 8?1:0;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1066687601"
+      signature = "(IB)V",
+      garbageValue = "8"
    )
-   void method106(int var1) {
+   void method114(int var1) {
       this.state &= -8;
       this.state = (byte)(this.state | var1 & 7);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1573795457"
+      garbageValue = "83382116"
    )
-   void method107(int var1) {
+   void method115(int var1) {
       this.state &= -9;
       if(var1 == 1) {
          this.state = (byte)(this.state | 8);
@@ -116,53 +105,31 @@ public class GrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("hp")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1688664144"
+      signature = "(B)V",
+      garbageValue = "50"
    )
-   public static int method124(int var0) {
-      return var0 >> 17 & 7;
+   static void method124() {
+      class45.method670();
+      Client.menuOptions[0] = "Cancel";
+      Client.menuTargets[0] = "";
+      Client.menuTypes[0] = 1006;
+      Client.menuBooleanArray[0] = false;
+      Client.menuOptionCount = 1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("kj")
    @ObfuscatedSignature(
-      signature = "(IZIZB)V",
-      garbageValue = "-17"
+      signature = "(IIIZI)V",
+      garbageValue = "2066232354"
    )
-   static void method117(int var0, boolean var1, int var2, boolean var3) {
-      if(World.worldList != null) {
-         WorldMapType1.method286(0, World.worldList.length - 1, var0, var1, var2, var3);
-      }
-
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-822209613"
-   )
-   @Export("adjustHSLListness0")
-   static final int adjustHSLListness0(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 65408) + var1;
-      }
+   public static void method125(int var0, int var1, int var2, boolean var3) {
+      PacketNode var4 = FaceNormal.method3078(ClientPacket.field2373, Client.field902.field1475);
+      var4.packetBuffer.method3670(var3?Client.field1009:0);
+      var4.packetBuffer.method3544(var2);
+      var4.packetBuffer.method3554(var1);
+      var4.packetBuffer.method3554(var0);
+      Client.field902.method2036(var4);
    }
 }

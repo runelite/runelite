@@ -30,10 +30,13 @@ import static java.lang.Math.max;
 public class Experience
 {
 	/**
-	 * Maximum level under 200m xp
+	 * Maximum virtual skill level at 200m xp
 	 */
 	public static final int MAX_VIRT_LEVEL = 126;
 
+	/**
+	 * Total xp requirements of each skill level
+	 */
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
 
 	static
@@ -49,6 +52,12 @@ public class Experience
 		}
 	}
 
+	/**
+	 * Gets the total quantity of xp required to hit a skill level.
+	 *
+	 * @param level Level between 1 and 126 (inclusive).
+	 * @return Positive quantity of xp.
+	 */
 	public static int getXpForLevel(int level)
 	{
 		if (level < 1 || level > MAX_VIRT_LEVEL)
@@ -60,11 +69,17 @@ public class Experience
 		return XP_FOR_LEVEL[level - 1];
 	}
 
+	/**
+	 * Gets the skill level reached with a total quantity of xp.
+	 *
+	 * @param xp Positive quantity of xp.
+	 * @return Level between 1 and 126 (inclusive).
+	 */
 	public static int getLevelForXp(int xp)
 	{
 		if (xp < 0)
 		{
-			throw new IllegalArgumentException("XP must not be negative");
+			throw new IllegalArgumentException("XP (" + xp + ") must not be negative");
 		}
 
 		int low = 0;
@@ -92,6 +107,11 @@ public class Experience
 		return high + 1;
 	}
 
+	/**
+	 * Calculates a high-precision combat level without integer rounding.
+	 *
+	 * @return Combat level between 1.15 and ~126.1 (assuming non-virtual levels).
+	 */
 	public static double getCombatLevelPrecise(int attackLevel, int strengthLevel,
 		int defenceLevel, int hitpointsLevel, int magicLevel,
 		int rangeLevel, int prayerLevel)
@@ -105,6 +125,11 @@ public class Experience
 		return base + max(melee, max(range, magic));
 	}
 
+	/**
+	 * Calculates a regular combat level.
+	 *
+	 * @return Combat level between 1 and 126 (assuming non-virtual levels).
+	 */
 	public static int getCombatLevel(int attackLevel, int strengthLevel,
 		int defenceLevel, int hitpointsLevel, int magicLevel,
 		int rangeLevel, int prayerLevel)

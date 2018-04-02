@@ -54,6 +54,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
@@ -113,6 +114,7 @@ public class ClientUI
 	private ClientPluginToolbar pluginToolbar;
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
+	private NavigationButton currentNavButton;
 
 	@Inject
 	private ClientUI(
@@ -200,9 +202,9 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (jButton) ->
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (navButton, jButton) ->
 			{
-				final PluginPanel panel = event.getButton().getPanel();
+				final PluginPanel panel = navButton.getPanel();
 
 				if (panel == null)
 				{
@@ -214,15 +216,23 @@ public class ClientUI
 					currentButton.setSelected(false);
 				}
 
-				if (currentButton == jButton)
+				if (currentNavButton != null)
+				{
+					currentNavButton.setSelected(false);
+				}
+
+				if (currentButton == jButton && currentNavButton == navButton)
 				{
 					contract();
 					currentButton = null;
+					currentNavButton = null;
 				}
 				else
 				{
 					currentButton = jButton;
+					currentNavButton = navButton;
 					currentButton.setSelected(true);
+					currentNavButton.setSelected(true);
 					expand(panel);
 				}
 			});
@@ -240,28 +250,34 @@ public class ClientUI
 	@Subscribe
 	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
 	{
-		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
-		{
-			return;
-		}
-
 		SwingUtilities.invokeLater(() ->
 		{
 			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
 			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
-			titleToolbar.addComponent(event.getButton(), button);
+
+			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			{
+				titleToolbar.addComponent(event.getButton(), button);
+				return;
+			}
+
+			pluginToolbar.addComponent(-1, event.getButton(), button);
 		});
 	}
 
 	@Subscribe
 	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
 	{
-		if (!config.enableCustomChrome() && !SwingUtil.isCustomTitlePanePresent(frame))
+		SwingUtilities.invokeLater(() ->
 		{
-			return;
-		}
+			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
+			{
+				titleToolbar.removeComponent(event.getButton());
+				return;
+			}
 
-		SwingUtilities.invokeLater(() -> titleToolbar.removeComponent(event.getButton()));
+			pluginToolbar.removeComponent(event.getButton());
+		});
 	}
 
 	/**
@@ -290,8 +306,6 @@ public class ClientUI
 
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
-
-			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
 
 			frame.setTitle(properties.getTitle());
 			frame.setIconImage(ICON);
@@ -389,6 +403,8 @@ public class ClientUI
 			frame.toFront();
 			requestFocus();
 			giveClientFocus();
+
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
 		});
 
 		eventBus.post(new ClientUILoaded());
@@ -446,6 +462,21 @@ public class ClientUI
 
 		frame.requestFocus();
 		giveClientFocus();
+	}
+
+	/**
+	 * Get offset of game canvas in game window
+	 * @return game canvas offset
+	 */
+	public Point getCanvasOffset()
+	{
+		if (client instanceof Client)
+		{
+			final java.awt.Point point = SwingUtilities.convertPoint(((Client) client).getCanvas(), 0, 0, frame);
+			return new Point(point.x, point.y);
+		}
+
+		return new Point(0, 0);
 	}
 
 	private void expand(PluginPanel panel)

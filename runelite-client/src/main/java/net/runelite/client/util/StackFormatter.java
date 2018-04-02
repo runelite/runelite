@@ -143,6 +143,34 @@ public class StackFormatter
 	}
 
 	/**
+	 * Specialization of format.
+	 *
+	 * @param number the long number to format
+	 * @return the formatted String
+	 * @exception        ArithmeticException if rounding is needed with rounding
+	 *                   mode being set to RoundingMode.UNNECESSARY
+	 * @see java.text.Format#format
+	 */
+	public static String formatNumber(final long number)
+	{
+		return NUMBER_FORMATTER.format(number);
+	}
+
+	/**
+	 * Specialization of format.
+	 *
+	 * @param number the double number to format
+	 * @return the formatted String
+	 * @exception        ArithmeticException if rounding is needed with rounding
+	 *                   mode being set to RoundingMode.UNNECESSARY
+	 * @see java.text.Format#format
+	 */
+	public static String formatNumber(double number)
+	{
+		return NUMBER_FORMATTER.format(number);
+	}
+
+	/**
 	 * Calculates, given a string with a value denominator (ex. 20K)
 	 * the multiplier that the denominator represents (in this case 1000).
 	 *

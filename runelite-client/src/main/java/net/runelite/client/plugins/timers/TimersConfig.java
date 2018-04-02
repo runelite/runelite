@@ -224,4 +224,24 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showAntipoison",
+		name = "Antipoison timer",
+		description = "Configures whether Antipoison timer is displayed"
+	)
+	default boolean showAntiPoison()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSuperantipoison",
+		name = "Superantipoison timer",
+		description = "Configures whether Superantipoison timer is displayed"
+	)
+	default boolean showSuperantipoison()
+	{
+		return true;
+	}
 }

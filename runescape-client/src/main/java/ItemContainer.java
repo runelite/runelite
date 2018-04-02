@@ -4,26 +4,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bb")
+@ObfuscatedName("by")
 @Implements("ItemContainer")
 public class ItemContainer extends Node {
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lhp;"
+      signature = "Lhy;"
    )
    @Export("itemContainers")
    static HashTable itemContainers;
-   @ObfuscatedName("f")
-   static int[] field750;
-   @ObfuscatedName("mr")
+   @ObfuscatedName("eo")
    @ObfuscatedGetter(
-      intValue = -1149056761
+      intValue = -1133885729
    )
-   static int field746;
-   @ObfuscatedName("q")
+   static int field756;
+   @ObfuscatedName("jh")
+   @ObfuscatedGetter(
+      intValue = -334036713
+   )
+   static int field754;
+   @ObfuscatedName("i")
    @Export("itemIds")
    int[] itemIds;
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @Export("stackSizes")
    int[] stackSizes;
 
@@ -34,19 +37,5 @@ public class ItemContainer extends Node {
    ItemContainer() {
       this.itemIds = new int[]{-1};
       this.stackSizes = new int[]{0};
-   }
-
-   @ObfuscatedName("hn")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1947681682"
-   )
-   static final void method1148(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field904[var4] = true;
-         }
-      }
-
    }
 }

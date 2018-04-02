@@ -31,6 +31,8 @@ import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -38,24 +40,27 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.TooltipComponent;
 
+@Singleton
+@Slf4j
 public class TooltipOverlay extends Overlay
 {
+	private static final int OFFSET = 24;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
 	private final Provider<Client> clientProvider;
 
 	@Inject
-	public TooltipOverlay(TooltipManager tooltipManager, Provider<Client> clientProvider)
+	public TooltipOverlay(Provider<Client> clientProvider, TooltipManager tooltipManager)
 	{
+		this.clientProvider = clientProvider;
+		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		this.tooltipManager = tooltipManager;
-		this.clientProvider = clientProvider;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		final List<Tooltip> tooltips = tooltipManager.getTooltips();
 
@@ -64,53 +69,55 @@ public class TooltipOverlay extends Overlay
 			return null;
 		}
 
-		Rectangle lastLocation = null;
+		final Client client = clientProvider.get();
+		final Rectangle clientCanvasBounds = new Rectangle(client.getRealDimensions());
+		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET);
+		final Rectangle bounds = new Rectangle(getBounds());
+		bounds.setLocation(mousePosition);
+
+		if (!clientCanvasBounds.contains(bounds))
+		{
+			final int clientX = (int) clientCanvasBounds.getMaxX();
+			final int clientY = (int) clientCanvasBounds.getMaxY();
+			final int boundsX = (int) bounds.getMaxX();
+			final int boundsY = (int) bounds.getMaxY();
+
+			if (boundsY > clientY)
+			{
+				graphics.translate(0, -bounds.height - OFFSET);
+			}
+
+			if (boundsX > clientX)
+			{
+				graphics.translate(-bounds.width, 0);
+			}
+		}
+
+		final Rectangle newBounds = new Rectangle(-1, -1, 0, 0);
 
 		for (Tooltip tooltip : tooltips)
 		{
-			final Client client = clientProvider.get();
 			final TooltipComponent tooltipComponent = new TooltipComponent();
 			tooltipComponent.setModIcons(client.getModIcons());
 			tooltipComponent.setText(tooltip.getText());
 
-			final Point position = new Point();
-
-			if (tooltip.isFollowMouse())
+			if (newBounds.contains(mousePosition))
 			{
-				final net.runelite.api.Point mouseCanvasPosition = client != null
-					? client.getMouseCanvasPosition()
-					: new net.runelite.api.Point(0, 0);
-
-				position.setLocation(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
-			}
-			else
-			{
-				position.setLocation(tooltip.getPosition());
+				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET + newBounds.height);
 			}
 
-			// check if this tooltip would overlap the last
-			if (lastLocation != null && lastLocation.contains(position))
-			{
-				// shift tooltip above previous
-				position.translate(0, -lastLocation.height - PADDING);
-			}
+			tooltipComponent.setPosition(mousePosition);
+			final Dimension dimension = tooltipComponent.render(graphics);
 
-			// render tooltip
-			tooltipComponent.setPosition(position);
-			final Dimension thisSize = tooltipComponent.render(graphics, parent);
-
-			// update tooltip bounding rect
-			if (lastLocation == null)
-			{
-				lastLocation = new Rectangle(position, thisSize);
-			}
-			else
-			{
-				lastLocation.setSize(new Dimension(Math.max(lastLocation.width, thisSize.width), lastLocation.height + thisSize.height + PADDING));
-			}
+			// Create incremental tooltip newBounds
+			newBounds.x = newBounds.x != -1 ? Math.min(newBounds.x, mousePosition.x) : mousePosition.x;
+			newBounds.y = newBounds.y != -1 ? Math.min(newBounds.y, mousePosition.y) : mousePosition.y;
+			newBounds.height += dimension.height + PADDING;
+			newBounds.width = Math.max(newBounds.width, dimension.width);
 		}
 
 		tooltipManager.clear();
-		return null;
+		return newBounds.getSize();
 	}
 }

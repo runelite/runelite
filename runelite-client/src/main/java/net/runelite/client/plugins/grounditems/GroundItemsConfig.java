@@ -196,10 +196,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "lowValuePrice",
+		name = "Low value price",
+		description = "Configures the start price for low value items",
+		position = 14
+	)
+	default int lowValuePrice()
+	{
+		return 20000;
+	}
+
+	@ConfigItem(
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 14
+		position = 15
 	)
 	default Color mediumValueColor()
 	{
@@ -207,10 +218,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "mediumValuePrice",
+		name = "Medium value price",
+		description = "Configures the start price for medium value items",
+		position = 16
+	)
+	default int mediumValuePrice()
+	{
+		return 100000;
+	}
+
+	@ConfigItem(
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 15
+		position = 17
 	)
 	default Color highValueColor()
 	{
@@ -218,13 +240,35 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highValuePrice",
+		name = "High value price",
+		description = "Configures the start price for high value items",
+		position = 18
+	)
+	default int highValuePrice()
+	{
+		return 1000000;
+	}
+
+	@ConfigItem(
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 16
+		position = 19
 	)
 	default Color insaneValueColor()
 	{
 		return Color.decode("#FF66B2");
+	}
+
+	@ConfigItem(
+		keyName = "insaneValuePrice",
+		name = "Insane value price",
+		description = "Configures the start price for insane value items",
+		position = 20
+	)
+	default int insaneValuePrice()
+	{
+		return 10000000;
 	}
 }

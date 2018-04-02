@@ -26,6 +26,7 @@ package net.runelite.api.widgets;
 
 public class WidgetConfig
 {
+	public static final int SHOW_MENU_OPTION_NINE = 1 << 9;
 	public static final int DRAG_ON = 1 << 17;
 	public static final int DRAG = 1 << 20;
 }

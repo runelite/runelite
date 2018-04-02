@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
+import net.runelite.client.plugins.itemstats.special.SpicyStew;
 import net.runelite.client.plugins.itemstats.potions.SuperRestore;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
@@ -41,12 +42,12 @@ import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 public class ItemStatChanges
 {
 
-	public ItemStatChanges()
+	ItemStatChanges()
 	{
 		init();
 	}
 
-	final void init()
+	private void init()
 	{
 		add(food(-5), POISON_KARAMBWAN);
 		add(food(1), POTATO, ONION, CABBAGE, POT_OF_CREAM, CHOPPED_ONION);
@@ -104,7 +105,7 @@ public class ItemStatChanges
 		add(boost(STRENGTH, perc(.10, 3)), STRENGTH_POTION1, STRENGTH_POTION2, STRENGTH_POTION3, STRENGTH_POTION4);
 		add(boost(DEFENCE, perc(.10, 3)), DEFENCE_POTION1, DEFENCE_POTION2, DEFENCE_POTION3, DEFENCE_POTION4);
 		add(boost(MAGIC, 4), MAGIC_POTION1, MAGIC_POTION2, MAGIC_POTION3, MAGIC_POTION4);
-		add(boost(RANGED, perc(.10, 3)), RANGING_POTION1, RANGING_POTION2, RANGING_POTION3, RANGING_POTION4);
+		add(boost(RANGED, perc(.10, 4)), RANGING_POTION1, RANGING_POTION2, RANGING_POTION3, RANGING_POTION4);
 		add(combo(2, boost(ATTACK, perc(.10, 3)), boost(STRENGTH, perc(.10, 3))), COMBAT_POTION1, COMBAT_POTION2, COMBAT_POTION3, COMBAT_POTION4);
 		add(boost(ATTACK, perc(.15, 5)), SUPER_ATTACK1, SUPER_ATTACK2, SUPER_ATTACK3, SUPER_ATTACK4);
 		add(boost(STRENGTH, perc(.15, 5)), SUPER_STRENGTH1, SUPER_STRENGTH2, SUPER_STRENGTH3, SUPER_STRENGTH4);
@@ -147,10 +148,11 @@ public class ItemStatChanges
 		add(combo(2, heal(HITPOINTS, 11), boost(AGILITY, 5), heal(RUN_ENERGY, 10)), SUMMER_PIE, HALF_A_SUMMER_PIE);
 
 		// Other
+		add(new SpicyStew(), SPICY_STEW);
 		add(boost(MAGIC, perc(.10, 1)), IMBUED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(DEFENCE, -1)), JANGERBERRIES);
 
-		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet(effects.values()).size());
+		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
 
 	private final Map<Integer, Effect> effects = new HashMap<>();

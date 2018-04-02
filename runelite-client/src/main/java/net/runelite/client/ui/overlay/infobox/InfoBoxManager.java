@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ComparisonChain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
 @Slf4j
@@ -44,18 +46,24 @@ public class InfoBoxManager
 		Preconditions.checkNotNull(infoBox);
 		log.debug("Adding InfoBox {}", infoBox);
 		infoBoxes.add(infoBox);
+
+		refreshInfoBoxes();
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
 	{
 		log.debug("Removing InfoBox {}", infoBox);
 		infoBoxes.remove(infoBox);
+
+		refreshInfoBoxes();
 	}
 
 	public void removeIf(Predicate<InfoBox> filter)
 	{
-		log.debug("Removing InfoBoxs for filter {}", filter);
+		log.debug("Removing InfoBoxes for filter {}", filter);
 		infoBoxes.removeIf(filter);
+
+		refreshInfoBoxes();
 	}
 
 	public List<InfoBox> getInfoBoxes()
@@ -65,6 +73,7 @@ public class InfoBoxManager
 
 	public void cull()
 	{
+		boolean culled = false;
 		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext();)
 		{
 			InfoBox box = it.next();
@@ -73,7 +82,22 @@ public class InfoBoxManager
 			{
 				log.debug("Culling InfoBox {}", box);
 				it.remove();
+				culled = true;
 			}
 		}
+
+		if (culled)
+		{
+			refreshInfoBoxes();
+		}
+	}
+
+	private void refreshInfoBoxes()
+	{
+		Collections.sort(infoBoxes, (b1, b2) -> ComparisonChain
+			.start()
+			.compare(b1.getPriority(), b2.getPriority())
+			.compare(b1.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name(), b2.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name())
+			.result());
 	}
 }

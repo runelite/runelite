@@ -7,162 +7,108 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ce")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lla;"
-   )
-   static SpritePixels field1387;
-   @ObfuscatedName("t")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1828584981
+      intValue = -1725687583
+   )
+   static int field1406;
+   @ObfuscatedName("u")
+   static int[] field1408;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -575635587
    )
    @Export("id")
    int id;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -717567387
+      intValue = -1957266407
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)Lek;",
-      garbageValue = "22"
+      signature = "(B)Led;",
+      garbageValue = "-83"
    )
    protected final Model getModel() {
-      return class81.getItemDefinition(this.id).getModel(this.quantity);
+      return GameObject.getItemDefinition(this.id).getModel(this.quantity);
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IILfv;Lfa;I)Z",
-      garbageValue = "1955889612"
+      signature = "(II)Lji;",
+      garbageValue = "154626736"
    )
-   static final boolean method1972(int var0, int var1, class178 var2, CollisionData var3) {
-      int var4 = var0;
-      int var5 = var1;
-      byte var6 = 64;
-      byte var7 = 64;
-      int var8 = var0 - var6;
-      int var9 = var1 - var7;
-      class177.field2249[var6][var7] = 99;
-      class177.field2250[var6][var7] = 0;
-      byte var10 = 0;
-      int var11 = 0;
-      class177.field2251[var10] = var0;
-      byte var10001 = var10;
-      int var18 = var10 + 1;
-      class177.field2253[var10001] = var1;
-      int[][] var12 = var3.flags;
-
-      while(var18 != var11) {
-         var4 = class177.field2251[var11];
-         var5 = class177.field2253[var11];
-         var11 = var11 + 1 & 4095;
-         int var16 = var4 - var8;
-         int var17 = var5 - var9;
-         int var13 = var4 - var3.x;
-         int var14 = var5 - var3.y;
-         if(var2.vmethod3427(2, var4, var5, var3)) {
-            UnitPriceComparator.field297 = var4;
-            TotalQuantityComparator.field282 = var5;
-            return true;
+   public static class279 method1926(int var0) {
+      class279 var1 = (class279)class279.field3550.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class279.field3549.getConfigData(34, var0);
+         var1 = new class279();
+         if(var2 != null) {
+            var1.method4925(new Buffer(var2));
          }
 
-         int var15 = class177.field2250[var16][var17] + 1;
-         if(var16 > 0 && class177.field2249[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0) {
-            class177.field2251[var18] = var4 - 1;
-            class177.field2253[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16 - 1][var17] = 2;
-            class177.field2250[var16 - 1][var17] = var15;
-         }
-
-         if(var16 < 126 && class177.field2249[var16 + 1][var17] == 0 && (var12[var13 + 2][var14] & 19136899) == 0 && (var12[var13 + 2][var14 + 1] & 19136992) == 0) {
-            class177.field2251[var18] = var4 + 1;
-            class177.field2253[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16 + 1][var17] = 8;
-            class177.field2250[var16 + 1][var17] = var15;
-         }
-
-         if(var17 > 0 && class177.field2249[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136782) == 0 && (var12[var13 + 1][var14 - 1] & 19136899) == 0) {
-            class177.field2251[var18] = var4;
-            class177.field2253[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16][var17 - 1] = 1;
-            class177.field2250[var16][var17 - 1] = var15;
-         }
-
-         if(var17 < 126 && class177.field2249[var16][var17 + 1] == 0 && (var12[var13][var14 + 2] & 19136824) == 0 && (var12[var13 + 1][var14 + 2] & 19136992) == 0) {
-            class177.field2251[var18] = var4;
-            class177.field2253[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16][var17 + 1] = 4;
-            class177.field2250[var16][var17 + 1] = var15;
-         }
-
-         if(var16 > 0 && var17 > 0 && class177.field2249[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14] & 19136830) == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13][var14 - 1] & 19136911) == 0) {
-            class177.field2251[var18] = var4 - 1;
-            class177.field2253[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16 - 1][var17 - 1] = 3;
-            class177.field2250[var16 - 1][var17 - 1] = var15;
-         }
-
-         if(var16 < 126 && var17 > 0 && class177.field2249[var16 + 1][var17 - 1] == 0 && (var12[var13 + 1][var14 - 1] & 19136911) == 0 && (var12[var13 + 2][var14 - 1] & 19136899) == 0 && (var12[var13 + 2][var14] & 19136995) == 0) {
-            class177.field2251[var18] = var4 + 1;
-            class177.field2253[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16 + 1][var17 - 1] = 9;
-            class177.field2250[var16 + 1][var17 - 1] = var15;
-         }
-
-         if(var16 > 0 && var17 < 126 && class177.field2249[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136830) == 0 && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
-            class177.field2251[var18] = var4 - 1;
-            class177.field2253[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16 - 1][var17 + 1] = 6;
-            class177.field2250[var16 - 1][var17 + 1] = var15;
-         }
-
-         if(var16 < 126 && var17 < 126 && class177.field2249[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
-            class177.field2251[var18] = var4 + 1;
-            class177.field2253[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class177.field2249[var16 + 1][var17 + 1] = 12;
-            class177.field2250[var16 + 1][var17 + 1] = var15;
-         }
+         var1.method4924();
+         class279.field3550.put(var1, (long)var0);
+         return var1;
       }
-
-      UnitPriceComparator.field297 = var4;
-      TotalQuantityComparator.field282 = var5;
-      return false;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)Lla;",
-      garbageValue = "-56"
+      signature = "(I)Z",
+      garbageValue = "1063167102"
    )
-   static SpritePixels method1973() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class332.indexedSpriteWidth;
-      var0.maxHeight = class332.indexedSpriteHeight;
-      var0.offsetX = class90.indexedSpriteOffsetXs[0];
-      var0.offsetY = class153.indexedSpriteOffsetYs[0];
-      var0.width = class332.indexSpriteWidths[0];
-      var0.height = GrandExchangeOffer.indexedSpriteHeights[0];
-      int var1 = var0.height * var0.width;
-      byte[] var2 = ClassInfo.spritePixels[0];
-      var0.pixels = new int[var1];
+   public static boolean method1927() {
+      return class229.field2680 != 0?true:class229.field2679.method4169();
+   }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.pixels[var3] = class332.indexedSpritePalette[var2[var3] & 255];
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "52"
+   )
+   public static String method1925(String var0) {
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
+      byte var3 = 2;
+
+      for(int var4 = 0; var4 < var1; ++var4) {
+         char var5 = var0.charAt(var4);
+         if(var3 == 0) {
+            var5 = Character.toLowerCase(var5);
+         } else if(var3 == 2 || Character.isUpperCase(var5)) {
+            char var6;
+            if(var5 != 181 && var5 != 131) {
+               var6 = Character.toTitleCase(var5);
+            } else {
+               var6 = var5;
+            }
+
+            var5 = var6;
+         }
+
+         if(Character.isLetter(var5)) {
+            var3 = 0;
+         } else if(var5 != '.' && var5 != '?' && var5 != '!') {
+            if(Character.isSpaceChar(var5)) {
+               if(var3 != 2) {
+                  var3 = 1;
+               }
+            } else {
+               var3 = 1;
+            }
+         } else {
+            var3 = 2;
+         }
+
+         var2[var4] = var5;
       }
 
-      class316.method5605();
-      return var0;
+      return new String(var2);
    }
 }

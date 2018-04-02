@@ -34,6 +34,7 @@ public class WidgetID
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int EQUIPMENT_GROUP_ID = 387;
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
+	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
 	public static final int PESTRCONTROL_GROUP_ID = 408;
@@ -76,6 +77,7 @@ public class WidgetID
 	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
+	public static final int TITHE_FARM_GROUP_ID = 241;
 
 	static class WorldMap
 	{
@@ -174,6 +176,12 @@ public class WidgetID
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
+	static class Emotes
+	{
+		static final int EMOTE_WINDOW = 0;
+		static final int EMOTE_CONTAINER = 1;
+	}
+
 	static class Cluescroll
 	{
 		static final int CLUE_TEXT = 2;
@@ -199,16 +207,19 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 	}
 
 	static class ResizableViewport
 	{
+		static final int INVENTORY_TAB = 54;
 		static final int PRAYER_TAB = 56;
 	}
 
 	static class ResizableViewportBottomLine
 	{
+		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 	}
 

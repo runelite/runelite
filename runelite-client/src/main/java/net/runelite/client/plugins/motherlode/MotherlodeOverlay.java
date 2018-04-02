@@ -28,7 +28,6 @@ import com.google.common.collect.Sets;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
@@ -72,7 +71,7 @@ class MotherlodeOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		MotherlodeSession session = plugin.getSession();
 
@@ -114,6 +113,6 @@ class MotherlodeOverlay extends Overlay
 			: ""
 		));
 
-		return panelComponent.render(graphics, parent);
+		return panelComponent.render(graphics);
 	}
 }

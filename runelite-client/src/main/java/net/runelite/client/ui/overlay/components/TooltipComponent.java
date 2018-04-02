@@ -33,7 +33,6 @@ import java.awt.Rectangle;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.api.IndexedSprite;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class TooltipComponent implements RenderableEntity
@@ -55,10 +54,8 @@ public class TooltipComponent implements RenderableEntity
 	private IndexedSprite[] modIcons;
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		// Tooltip size
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int textDescent = metrics.getDescent();
@@ -83,17 +80,6 @@ public class TooltipComponent implements RenderableEntity
 		// Tooltip position
 		int x = position.x;
 		int y = position.y;
-		x = x - tooltipWidth - OFFSET * 2;
-		if (x < 0)
-		{
-			x = 0;
-		}
-
-		y = y - tooltipHeight - OFFSET * 2;
-		if (y < 0)
-		{
-			y = 0;
-		}
 
 		// Render tooltip - background
 		final Rectangle tooltipBackground = new Rectangle(x, y,
@@ -101,7 +87,7 @@ public class TooltipComponent implements RenderableEntity
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(tooltipBackground);
-		backgroundComponent.render(graphics, parent);
+		backgroundComponent.render(graphics);
 		graphics.setColor(Color.WHITE);
 
 		// Render tooltip - text - line by line
@@ -125,7 +111,7 @@ public class TooltipComponent implements RenderableEntity
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
 					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-					textComponent.render(graphics, parent);
+					textComponent.render(graphics);
 
 					lineX += metrics.stringWidth(text);
 
@@ -162,7 +148,7 @@ public class TooltipComponent implements RenderableEntity
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
 						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-						textComponent.render(graphics, parent);
+						textComponent.render(graphics);
 
 						lineX += metrics.stringWidth(text);
 					}
@@ -176,7 +162,7 @@ public class TooltipComponent implements RenderableEntity
 			textComponent.setColor(nextColor);
 			textComponent.setText(line.substring(begin, line.length()));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return new Dimension(tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);

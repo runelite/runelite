@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timers;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
@@ -53,6 +54,7 @@ import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
 import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
 import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -237,6 +239,28 @@ public class TimersPlugin extends Plugin
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
+			return;
+		}
+
+		if (config.showAntiPoison()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIPOISON1
+			|| event.getId() == ItemID.ANTIPOISON2
+			|| event.getId() == ItemID.ANTIPOISON3
+			|| event.getId() == ItemID.ANTIPOISON4))
+		{
+			createGameTimer(ANTIPOISON);
+			return;
+		}
+
+		if (config.showSuperantipoison()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.SUPERANTIPOISON1
+			|| event.getId() == ItemID.SUPERANTIPOISON2
+			|| event.getId() == ItemID.SUPERANTIPOISON3
+			|| event.getId() == ItemID.SUPERANTIPOISON4))
+		{
+			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
 	}
@@ -450,7 +474,7 @@ public class TimersPlugin extends Plugin
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer);
+		TimerTimer t = new TimerTimer(timer, this);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 	}

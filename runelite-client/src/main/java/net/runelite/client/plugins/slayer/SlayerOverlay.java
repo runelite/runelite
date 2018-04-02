@@ -75,6 +75,8 @@ class SlayerOverlay extends Overlay
 		ItemID.PURPLE_SLAYER_HELMET_I,
 		ItemID.RED_SLAYER_HELMET,
 		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.ENCHANTED_GEM,
 		ItemID.ETERNAL_GEM
@@ -91,7 +93,7 @@ class SlayerOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!config.showItemOverlay())
 		{
@@ -122,7 +124,7 @@ class SlayerOverlay extends Overlay
 			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
 				? bounds.height
 				: graphics.getFontMetrics().getHeight())));
-			textComponent.render(graphics, parent);
+			textComponent.render(graphics);
 		}
 
 		return null;

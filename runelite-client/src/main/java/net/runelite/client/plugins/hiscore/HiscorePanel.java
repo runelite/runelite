@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.hiscore;
 
-import java.awt.event.MouseAdapter;
-import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,10 +33,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -58,10 +56,39 @@ import javax.swing.event.MouseInputAdapter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
+import static net.runelite.http.api.hiscore.HiscoreSkill.AGILITY;
+import static net.runelite.http.api.hiscore.HiscoreSkill.ATTACK;
+import static net.runelite.http.api.hiscore.HiscoreSkill.BOUNTY_HUNTER_HUNTER;
+import static net.runelite.http.api.hiscore.HiscoreSkill.BOUNTY_HUNTER_ROGUE;
+import static net.runelite.http.api.hiscore.HiscoreSkill.CLUE_SCROLL_ALL;
+import static net.runelite.http.api.hiscore.HiscoreSkill.CONSTRUCTION;
+import static net.runelite.http.api.hiscore.HiscoreSkill.COOKING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.CRAFTING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.DEFENCE;
+import static net.runelite.http.api.hiscore.HiscoreSkill.FARMING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.FIREMAKING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.FISHING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.FLETCHING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.HERBLORE;
+import static net.runelite.http.api.hiscore.HiscoreSkill.HITPOINTS;
+import static net.runelite.http.api.hiscore.HiscoreSkill.HUNTER;
+import static net.runelite.http.api.hiscore.HiscoreSkill.LAST_MAN_STANDING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.MAGIC;
+import static net.runelite.http.api.hiscore.HiscoreSkill.MINING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.OVERALL;
+import static net.runelite.http.api.hiscore.HiscoreSkill.PRAYER;
+import static net.runelite.http.api.hiscore.HiscoreSkill.RANGED;
+import static net.runelite.http.api.hiscore.HiscoreSkill.RUNECRAFT;
+import static net.runelite.http.api.hiscore.HiscoreSkill.SLAYER;
+import static net.runelite.http.api.hiscore.HiscoreSkill.SMITHING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.STRENGTH;
+import static net.runelite.http.api.hiscore.HiscoreSkill.THIEVING;
+import static net.runelite.http.api.hiscore.HiscoreSkill.WOODCUTTING;
 import net.runelite.http.api.hiscore.Skill;
 
 @Slf4j
@@ -69,8 +96,6 @@ public class HiscorePanel extends PluginPanel
 {
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
-
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
 
 	private static final HiscoreSkill[] SKILL_PANEL_ORDER = new HiscoreSkill[]
 	{
@@ -290,8 +315,8 @@ public class HiscorePanel extends PluginPanel
 					result.getPrayer().getLevel()
 				);
 				text = "Skill: Combat" + System.lineSeparator()
-					+ "Exact Combat Level: " + NUMBER_FORMATTER.format(combatLevel) + System.lineSeparator()
-					+ "Experience: " + NUMBER_FORMATTER.format(result.getAttack().getExperience()
+					+ "Exact Combat Level: " + StackFormatter.formatNumber(combatLevel) + System.lineSeparator()
+					+ "Experience: " + StackFormatter.formatNumber(result.getAttack().getExperience()
 					+ result.getStrength().getExperience() + result.getDefence().getExperience()
 					+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 					+ result.getRanged().getExperience() + result.getPrayer().getExperience());
@@ -299,28 +324,28 @@ public class HiscorePanel extends PluginPanel
 			}
 			case "Clue Scrolls (all)":
 			{
-				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getClueScrollAll().getRank());
+				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
 				text = "Total Clue Scrolls Completed" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Rogue":
 			{
-				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getBountyHunterRogue().getRank());
+				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
 				text = "Bounty Hunter - Rogue Kills" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Hunter":
 			{
-				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getBountyHunterHunter().getRank());
+				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
 				text = "Bounty Hunter - Hunter Kills" + System.lineSeparator()
 						+ "Rank: " + rank;
 				break;
 			}
 			case "Last Man Standing":
 			{
-				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(result.getLastManStanding().getRank());
+				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
 				text = "Last Man Standing" + System.lineSeparator()
 						+ "Rank: " + rank;
 				break;
@@ -328,8 +353,8 @@ public class HiscorePanel extends PluginPanel
 			case "Overall":
 			{
 				Skill requestedSkill = result.getSkill(skill);
-				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
-				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getExperience());
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
 					+ "Experience: " + exp;
@@ -338,8 +363,8 @@ public class HiscorePanel extends PluginPanel
 			default:
 			{
 				Skill requestedSkill = result.getSkill(skill);
-				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getRank());
-				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : NUMBER_FORMATTER.format(requestedSkill.getExperience());
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
 				String remainingXp;
 				if (requestedSkill.getRank() == -1)
 				{
@@ -348,7 +373,7 @@ public class HiscorePanel extends PluginPanel
 				else
 				{
 					int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? NUMBER_FORMATTER.format(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
 				}
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()

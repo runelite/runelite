@@ -42,10 +42,11 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -76,6 +77,12 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Inject
 	private NpcMinimapOverlay npcMinimapOverlay;
 
+	@Inject
+	private NpcIndicatorsInput inputListener;
+
+	@Inject
+	private KeyManager keyManager;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<Integer> npcTags = new HashSet<>();
 
@@ -84,6 +91,8 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, String> highlightedNpcs = new HashMap<>();
+
+	private boolean hotKeyPressed = false;
 
 	private void toggleTag(int npcId)
 	{
@@ -101,8 +110,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (config.isTagEnabled())
-			menuManager.addNpcMenuOption(TAG);
+		keyManager.registerKeyListener(inputListener);
 	}
 
 	@Override
@@ -110,19 +118,17 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		npcTags.clear();
 		taggedNpcs.clear();
-		menuManager.removeNpcMenuOption(TAG);
+		keyManager.unregisterKeyListener(inputListener);
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onFocusChanged(FocusChanged focusChanged)
 	{
-		if (!event.getGroup().equals("npcindicators"))
-			return;
-
-		if (config.isTagEnabled())
-			menuManager.addNpcMenuOption(TAG);
-		else
-			menuManager.removeNpcMenuOption(TAG);
+		// If you somehow manage to right click while holding shift, then click off screen
+		if (!focusChanged.isFocused() && hotKeyPressed)
+		{
+			updateNpcMenuOptions(false);
+		}
 	}
 
 	@Subscribe
@@ -207,5 +213,24 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		return composition;
+	}
+
+	void updateNpcMenuOptions(boolean pressed)
+	{
+		if (!config.isTagEnabled())
+		{
+			return;
+		}
+
+		if (pressed)
+		{
+			menuManager.addNpcMenuOption(TAG);
+		}
+		else
+		{
+			menuManager.removeNpcMenuOption(TAG);
+		}
+
+		hotKeyPressed = pressed;
 	}
 }

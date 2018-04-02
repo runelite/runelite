@@ -66,7 +66,9 @@ public enum GameTimer
 	SANFEW("sanfew", "Sanfew serum", 6, ChronoUnit.MINUTES),
 	OVERLOAD_RAID("overloadraid", "Overload", 5, ChronoUnit.MINUTES),
 	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 290, ChronoUnit.SECONDS),
-	GOD_WARS_ALTAR("altar", "God wars altar", 10, ChronoUnit.MINUTES);
+	GOD_WARS_ALTAR("altar", "God wars altar", 10, ChronoUnit.MINUTES),
+	ANTIPOISON("antipoison", "Antipoison", 90, ChronoUnit.SECONDS),
+	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS);
 
 	@Getter
 	private final String imageResource;

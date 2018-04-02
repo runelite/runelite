@@ -27,7 +27,6 @@ package net.runelite.client.plugins.prayflick;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.time.Duration;
 import java.time.Instant;
@@ -61,7 +60,7 @@ public class PrayerFlickOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point point)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (!prayersActive) //If there are no prayers active we don't need to be flicking
 		{
