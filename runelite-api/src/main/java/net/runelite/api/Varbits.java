@@ -202,6 +202,7 @@ public enum Varbits
 	 * Motherlode mine sack
 	 */
 	SACK_NUMBER(5558),
+	SACK_UPGRADED(5556),
 
 	/**
 	 * Experience tracker
