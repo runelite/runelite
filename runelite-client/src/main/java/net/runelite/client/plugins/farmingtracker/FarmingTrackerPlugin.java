@@ -85,6 +85,7 @@ public class FarmingTrackerPlugin extends Plugin
 
 	private FarmingTrackerPanel panel;
 	private NavigationButton navButton;
+	private BufferedImage weeds;
 
 	private PatchLocation clickedOnPatch;
 	private ObjectComposition previousPatchObject;
@@ -108,10 +109,11 @@ public class FarmingTrackerPlugin extends Plugin
 		synchronized (ImageIO.class)
 		{
 			icon = ImageIO.read(getClass().getResourceAsStream("farming.png"));
+			weeds = ImageIO.read(getClass().getResourceAsStream("weeds.png"));
 		}
 
 		panel = injector.getInstance(FarmingTrackerPanel.class);
-		panel.initPanel(itemManager.getImage(WEEDS));
+		panel.initPanel(weeds);
 
 		navButton = NavigationButton.builder()
 			.name("Farming Tracker")
