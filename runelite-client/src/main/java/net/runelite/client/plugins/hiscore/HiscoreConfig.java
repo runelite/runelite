@@ -45,37 +45,4 @@ public interface HiscoreConfig extends Config
 	{
 		return true;
 	}
-	
-	@ConfigItem(
-		position = 2,
-		keyName = "listOption",
-		name = "List player option",
-		description = "Add Lookup option to players in friends and ignore list"
-	)
-	default boolean listOption()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "chatOption",
-		name = "Chat player option",
-		description = "Add Lookup option to players in chat"
-	)
-	default boolean chatOption()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "privateMessageOption",
-		name = "Private message player option",
-		description = "Add Lookup option to private messages"
-	)
-	default boolean privateMessageOption()
-	{
-		return true;
-	}
 }
