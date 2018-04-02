@@ -61,5 +61,49 @@ public class Text
 
 		return builder.toString();
 	}
+	
+	/**
+	 * Removes all levels from the given `str`.
+	 *
+	 * @param str The string to remove levels from.
+	 * @return The given `str` with all levels removed from it.
+	 */
+	public static String removeLevels(String str)
+	{
+		StringBuilder builder = new StringBuilder(str.length());
+		boolean inLevel = false;
 
+		for (int i = 0; i < str.length(); i++)
+		{
+			char currentChar = str.charAt(i);
+
+			if (currentChar == '(')
+			{
+				inLevel = true;
+			}
+			else if (currentChar == ')')
+			{
+				inLevel = false;
+			}
+			else if (!inLevel)
+			{
+				builder.append(currentChar);
+			}
+		}
+		
+		String output = builder.toString();
+		
+		// Remove trailing spaces
+		int i;
+		for (i = output.length() - 1; i >= 0; i--)
+		{
+			if (output.charAt(i) != ' ')
+			{
+				output = output.substring(0, i + 1);
+				break;
+			}
+		}
+		
+		return output;
+	}
 }
