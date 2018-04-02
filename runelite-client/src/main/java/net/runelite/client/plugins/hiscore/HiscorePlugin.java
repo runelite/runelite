@@ -143,10 +143,10 @@ public class HiscorePlugin extends Plugin
 
 		if (config.playerOption() &&
 			(option.equals("Message") ||
-			 option.equals("Delete") ||
-			 option.equals("Add ignore") ||
-			 option.equals("Remove friend") ||
-			 option.equals("Remove ignore")))
+			option.equals("Delete") ||
+			option.equals("Add ignore") ||
+			option.equals("Remove friend") ||
+			option.equals("Remove ignore")))
 		{
 			addMenuEntry(option, LOOKUP, true);
 		}
