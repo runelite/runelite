@@ -236,9 +236,14 @@ public class FarmingTrackerPlugin extends Plugin
 	{
 		int epoch = FarmingTimer.getEpochTime();
 
+		if (tickedAtEpoch != 0 && epoch < tickedAtEpoch + 100)
+		{
+			return;
+		}
+
 		for (FarmingTick farmingTick : FarmingTick.values())
 		{
-			if ((tickedAtEpoch == 0 || epoch > tickedAtEpoch + 100) && FarmingTimer.isFarmingTick(epoch, farmingTick.getTick()))
+			if (FarmingTimer.isFarmingTick(epoch, farmingTick.getTick()))
 			{
 				tickedAtEpoch = epoch;
 				handleFarmingTickPassed(farmingTick);
