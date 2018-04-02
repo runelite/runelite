@@ -39,7 +39,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -90,7 +89,6 @@ public class GroundItemsOverlay extends Overlay
 
 		plugin.checkItems();
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 

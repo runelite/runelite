@@ -116,4 +116,14 @@ public interface RuneLiteConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "useSmallFont",
+		name = "Use smaller font for in-game overlays",
+		description = "Toggles between small and regular RuneScape font for in-game overlays"
+	)
+	default boolean useSmallFont()
+	{
+		return false;
+	}
 }
