@@ -28,7 +28,7 @@ import java.time.Instant;
 
 public class FarmingTimer
 {
-	static int getEpochTime()
+	public static int getEpochTime()
 	{
 		return (int) Instant.now().getEpochSecond() - 1475251210;
 	}

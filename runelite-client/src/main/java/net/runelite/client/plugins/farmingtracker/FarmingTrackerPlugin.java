@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.imageio.ImageIO;
@@ -38,11 +39,13 @@ import static net.runelite.api.AnimationID.FARMING_HARVEST_FLOWER;
 import static net.runelite.api.AnimationID.IDLE;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.WEEDS;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -52,6 +55,7 @@ import net.runelite.client.plugins.farmingtracker.data.FarmingTick;
 import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
 import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.Seed;
+import net.runelite.client.plugins.farmingtracker.data.SeedStatus;
 import net.runelite.client.plugins.farmingtracker.ui.PatchList;
 import net.runelite.client.plugins.farmingtracker.ui.PatchRow;
 import net.runelite.client.task.Schedule;
@@ -76,6 +80,9 @@ public class FarmingTrackerPlugin extends Plugin
 	@Inject
 	private QueryRunner queryRunner;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private FarmingTrackerPanel panel;
 	private NavigationButton navButton;
 
@@ -85,6 +92,8 @@ public class FarmingTrackerPlugin extends Plugin
 	private int tickedAtEpoch = 0;
 
 	private final String CHAT_MESSAGE_PLANTED_SEED = "You plant ";
+	private final String CONFIG_GROUP = "farmingTracker";
+	private String lastUsername;
 
 	@Provides
 	FarmingTrackerConfig provideConfig(ConfigManager configManager)
@@ -111,6 +120,12 @@ public class FarmingTrackerPlugin extends Plugin
 			.build();
 
 		pluginToolbar.addNavigation(navButton);
+
+		//Reload the config on enabling the plugin
+		if (client != null && client.getGameState() == GameState.LOGGED_IN)
+		{
+			loadConfig();
+		}
 	}
 
 	@Override
@@ -185,6 +200,20 @@ public class FarmingTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			if (!Objects.equals(client.getUsername(), lastUsername))
+			{
+				lastUsername = client.getUsername();
+
+				loadConfig();
+			}
+		}
+	}
+
 	@Schedule(
 		period = 600,
 		unit = ChronoUnit.MILLIS
@@ -248,7 +277,11 @@ public class FarmingTrackerPlugin extends Plugin
 
 				BufferedImage bufferedImage = itemManager.getImage(seed.getSpriteId());
 
-				patchList.setPlanted(clickedOnPatch, bufferedImage, seed);
+				PatchRowData patchRowData = new PatchRowData(seed, SeedStatus.ALIVE, 1, "Calculating...");
+
+				patchList.setPlanted(clickedOnPatch, bufferedImage, patchRowData);
+
+				handleConfig(patchRowData, clickedOnPatch, FarmingTimer.getEpochTime());
 			}
 		}
 	}
@@ -263,6 +296,8 @@ public class FarmingTrackerPlugin extends Plugin
 			BufferedImage bufferedImage = itemManager.getImage(WEEDS);
 
 			patchList.setCleared(clickedOnPatch, bufferedImage);
+
+			handleConfig(null, clickedOnPatch, 0);
 		}
 	}
 
@@ -290,6 +325,46 @@ public class FarmingTrackerPlugin extends Plugin
 			}
 
 			patchRowData.applyFarmingTick();
+		}
+	}
+
+	private void handleConfig(PatchRowData patchRowData, PatchLocation patchLocation, int timePlanted)
+	{
+		if (patchRowData == null)
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, patchLocation.name());
+		}
+		else
+		{
+			configManager.setConfiguration(CONFIG_GROUP, patchLocation.name(), patchRowData.objectToConfigString(timePlanted));
+		}
+	}
+
+	private void loadConfig()
+	{
+		for (PatchLocation patchLocation : PatchLocation.values())
+		{
+			String configValue = configManager.getConfiguration(CONFIG_GROUP, patchLocation.name());
+
+			if (configValue == null)
+			{
+				continue;
+			}
+
+			PatchRowData patchRowData = PatchRowData.configStringToObject(configValue);
+
+			if (patchRowData == null)
+			{
+				handleConfig(null, patchLocation, 0);
+				continue;
+			}
+
+			final Map<String, PatchList> patchListMap = panel.getPatchListMap();
+			final PatchList patchList = patchListMap.get(patchLocation.getPatchType().name());
+
+			BufferedImage bufferedImage = itemManager.getImage(patchRowData.getSeed().getSpriteId());
+
+			patchList.setPlanted(patchLocation, bufferedImage, patchRowData);
 		}
 	}
 }

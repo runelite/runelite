@@ -26,7 +26,10 @@ package net.runelite.client.plugins.farmingtracker.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.plugins.farmingtracker.FarmingTimer;
 
+@Slf4j
 @Data
 @AllArgsConstructor
 public class PatchRowData
@@ -57,5 +60,81 @@ public class PatchRowData
 	public int getStagesLeft()
 	{
 		return seed.getTotalStages() - currentStage;
+	}
+
+	public String objectToConfigString(int timePlanted)
+	{
+		return seed.name() + "," + seedStatus.name() + "," + timePlanted;
+	}
+
+	public static PatchRowData configStringToObject(String configValue)
+	{
+		String[] values = configValue.split(",");
+
+		if (values.length != 3)
+		{
+			log.warn("The config values are incomplete {}", configValue);
+			return null;
+		}
+
+		Seed seed = getEnumFromString(Seed.class, values[0]);
+		SeedStatus seedStatus = getEnumFromString(SeedStatus.class, values[1]);
+
+		if (seed == null || seedStatus == null)
+		{
+			return null;
+		}
+
+		int stage;
+		String timeLeft = "Calculating...";
+
+		if (seedStatus.equals(SeedStatus.FINISHED))
+		{
+			stage = seed.getTotalStages();
+			timeLeft = SeedStatus.FINISHED.getStageName();
+		}
+		else
+		{
+			stage = calculateCurrentStage(Integer.parseInt(values[2]), seed);
+
+			if (stage == seed.getTotalStages())
+			{
+				seedStatus = SeedStatus.FINISHED;
+				timeLeft = SeedStatus.FINISHED.getStageName();
+			}
+		}
+
+		return new PatchRowData(seed, seedStatus, stage, timeLeft);
+	}
+
+	private static int calculateCurrentStage(int plantedEpoch, Seed seed)
+	{
+		int timePerTick = seed.getFarmingTick().getTick() * 60;
+		int timeElapsedSincePlanting = (FarmingTimer.getEpochTime() - plantedEpoch) + (plantedEpoch % timePerTick);
+		int farmingTicksPassed = (timeElapsedSincePlanting / timePerTick) + 1;
+
+		if (farmingTicksPassed >= seed.getTotalStages())
+		{
+			return seed.getTotalStages();
+		}
+
+		return farmingTicksPassed;
+	}
+
+	private static <T extends Enum<T>> T getEnumFromString(Class<T> enumClass, String enumName)
+	{
+		if (enumClass != null && enumName != null)
+		{
+			try
+			{
+				return Enum.valueOf(enumClass, enumName.trim().toUpperCase());
+			}
+			catch (IllegalArgumentException ex)
+			{
+				log.warn("Unable to convert the string {} to the enum {}. Error: {}", enumName, enumClass, ex);
+			}
+		}
+
+		return null;
 	}
 }

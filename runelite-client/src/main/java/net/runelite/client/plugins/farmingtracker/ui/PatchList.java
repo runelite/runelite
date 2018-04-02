@@ -33,7 +33,9 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.farmingtracker.FarmingTimer;
+import net.runelite.client.plugins.farmingtracker.FarmingTrackerPlugin;
 import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
 import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.PatchType;
@@ -86,11 +88,11 @@ public class PatchList extends JPanel
 		add(container);
 	}
 
-	public void setPlanted(PatchLocation patchLocation, BufferedImage bufferedImage, Seed seed)
+	public void setPlanted(PatchLocation patchLocation, BufferedImage bufferedImage, PatchRowData patchRowData)
 	{
 		final PatchRow patchRow = patchRows.get(patchLocation.name());
 
-		patchRow.setPatchRowData(new PatchRowData(seed, SeedStatus.ALIVE, 1, "Calculating..."));
+		patchRow.setPatchRowData(patchRowData);
 
 		patchRow.setPlanted(bufferedImage);
 	}
