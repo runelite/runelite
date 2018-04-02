@@ -24,9 +24,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 
@@ -82,22 +80,25 @@ class SkillAbbreviations
 	 */
 	private static String getFullNameStartingWith(String abbrev)
 	{
-		List<Skill> matches = new ArrayList<>();
-		for (Skill skill : Skill.class.getEnumConstants())
+		Skill singleMatch = null;
+		for (Skill skill : Skill.values())
 		{
 			if (skill.getName().toUpperCase().startsWith(abbrev.toUpperCase()))
 			{
-				matches.add(skill);
+				if (singleMatch != null)
+				{
+					return abbrev;
+				}
+
+				singleMatch = skill;
 			}
 		}
 
-		if (matches.size() == 1)
-		{
-			return matches.get(0).getName();
-		}
-		else
+		if (singleMatch == null)
 		{
 			return abbrev;
 		}
+
+		return singleMatch.getName();
 	}
 }
