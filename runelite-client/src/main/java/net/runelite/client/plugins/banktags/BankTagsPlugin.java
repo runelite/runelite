@@ -28,8 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
@@ -43,6 +41,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -75,6 +74,9 @@ public class BankTagsPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private ChatboxInputManager chatboxInputManager;
 
 	private String getTags(int itemId)
 	{
@@ -212,11 +214,9 @@ public class BankTagsPlugin extends Plugin
 			int itemId = item.getId();
 			String itemName = itemManager.getItemComposition(itemId).getName();
 			String initialValue = getTags(itemId);
-			SwingUtilities.invokeLater(() ->
+
+			chatboxInputManager.openInputWindow(itemName + " Tags", initialValue, (newTags) ->
 			{
-				String newTags = (String) JOptionPane.showInputDialog(client.getCanvas(), null,
-					"Edit " + itemName + " Tags", JOptionPane.PLAIN_MESSAGE, null, null,
-					initialValue);
 				if (newTags == null)
 				{
 					return;
