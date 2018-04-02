@@ -64,6 +64,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
@@ -91,6 +92,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final Provider<Client> clientProvider;
 	private final InfoBoxOverlay infoBoxOverlay;
 	private final ConfigManager configManager;
+	private final RuneLiteConfig runeLiteConfig;
 	private final TooltipOverlay tooltipOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
 	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
@@ -119,13 +121,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final KeyManager keyManager,
 		final TooltipOverlay tooltipOverlay,
 		final InfoBoxOverlay infoBoxOverlay,
-		final ConfigManager configManager)
+		final ConfigManager configManager,
+		final RuneLiteConfig runeLiteConfig)
 	{
 		this.clientProvider = clientProvider;
 		this.pluginManager = pluginManager;
 		this.tooltipOverlay = tooltipOverlay;
 		this.infoBoxOverlay = infoBoxOverlay;
 		this.configManager = configManager;
+		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 	}
@@ -277,6 +281,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		// Create copy of snap corners because overlays will modify them
 		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
+
+		// Set font based on configuration
+		graphics.setFont(runeLiteConfig.useSmallFont()
+			? FontManager.getRunescapeSmallFont()
+			: FontManager.getRunescapeFont());
 
 		OverlayUtil.setGraphicProperties(graphics);
 

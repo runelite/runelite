@@ -38,7 +38,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.ui.FontManager;
 
 
 /**
@@ -176,7 +175,6 @@ public class OverlayUtil
 
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
-		graphics.setFont(FontManager.getRunescapeFont());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
