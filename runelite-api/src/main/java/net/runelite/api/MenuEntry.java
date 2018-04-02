@@ -24,12 +24,15 @@
  */
 package net.runelite.api;
 
+import lombok.Data;
+
+@Data
 public class MenuEntry
 {
 	private String option;
 	private String target;
 	private int identifier;
-	private MenuAction type;
+	private int type;
 	private int param0;
 	private int param1;
 
@@ -37,66 +40,6 @@ public class MenuEntry
 	public String toString()
 	{
 		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
-	}
-
-	public String getOption()
-	{
-		return option;
-	}
-
-	public void setOption(String option)
-	{
-		this.option = option;
-	}
-
-	public String getTarget()
-	{
-		return target;
-	}
-
-	public void setTarget(String target)
-	{
-		this.target = target;
-	}
-
-	public int getIdentifier()
-	{
-		return identifier;
-	}
-
-	public void setIdentifier(int identifier)
-	{
-		this.identifier = identifier;
-	}
-
-	public MenuAction getType()
-	{
-		return type;
-	}
-
-	public void setType(MenuAction type)
-	{
-		this.type = type;
-	}
-
-	public int getParam0()
-	{
-		return param0;
-	}
-
-	public void setParam0(int param0)
-	{
-		this.param0 = param0;
-	}
-
-	public int getParam1()
-	{
-		return param1;
-	}
-
-	public void setParam1(int param1)
-	{
-		this.param1 = param1;
 	}
 
 }
