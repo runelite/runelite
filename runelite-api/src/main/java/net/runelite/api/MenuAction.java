@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum MenuAction
 {
 	/**
@@ -257,11 +260,21 @@ public enum MenuAction
 
 	FOLLOW(2046),
 	TRADE(2047),
-	
+
 	/**
 	 * Menu action triggered when the id is not defined in this class.
 	 */
 	UNKNOWN(-1);
+
+	private static final Map<Integer, MenuAction> map = new HashMap<>();
+
+	static
+	{
+		for (MenuAction menuAction : values())
+		{
+			map.put(menuAction.getId(), menuAction);
+		}
+	}
 
 	private final int id;
 
@@ -277,13 +290,6 @@ public enum MenuAction
 
 	public static MenuAction of(int id)
 	{
-		for (MenuAction action : values())
-		{
-			if (action.id == id)
-			{
-				return action;
-			}
-		}
-		return UNKNOWN;
+		return map.getOrDefault(id, UNKNOWN);
 	}
 }
