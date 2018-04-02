@@ -35,9 +35,9 @@ import javax.swing.JPanel;
 /**
  * Client title toolbar component.
  */
-public class ClientTitleToolbar extends JPanel
+class ClientTitleToolbar extends JPanel
 {
-	public static final int TITLEBAR_SIZE = 23;
+	static final int TITLEBAR_SIZE = 23;
 	private static final int ITEM_PADDING = 4;
 
 	private final Map<NavigationButton, Component> componentMap = new HashMap<>();
@@ -45,7 +45,7 @@ public class ClientTitleToolbar extends JPanel
 	/**
 	 * Instantiates a new Client title toolbar.
 	 */
-	public ClientTitleToolbar()
+	ClientTitleToolbar()
 	{
 		// The only other layout manager that would manage it's preferred size without padding
 		// was the GroupLayout manager, which doesn't work with dynamic layouts like this one.

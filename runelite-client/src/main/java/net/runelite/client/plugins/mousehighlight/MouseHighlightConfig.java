@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders;
+package net.runelite.client.plugins.mousehighlight;
 
-import net.runelite.cache.definitions.OverlayDefinition;
-import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class OverlayLoader
+@ConfigGroup(
+	keyName = "mousehighlight",
+	name = "Mouse Tooltips",
+	description = "Configures the Mouse Tooltips plugin"
+)
+public interface MouseHighlightConfig extends Config
 {
-	private static final Logger logger = LoggerFactory.getLogger(OverlayLoader.class);
-
-	public OverlayDefinition load(int id, byte[] b)
+	@ConfigItem(
+		position = 0,
+		keyName = "uiTooltip",
+		name = "Interface Tooltips",
+		description = "Whether or not tooltips are shown on interfaces"
+	)
+	default boolean uiTooltip()
 	{
-		OverlayDefinition def = new OverlayDefinition();
-		InputStream is = new InputStream(b);
+		return true;
+	}
 
-		def.setId(id);
-
-		for (;;)
-		{
-			int opcode = is.readUnsignedByte();
-			if (opcode == 0)
-			{
-				break;
-			}
-
-			if (opcode == 1)
-			{
-				int color = is.read24BitInt();
-				def.setRgbColor(color);
-			}
-			else if (opcode == 2)
-			{
-				int texture = is.readUnsignedByte();
-				def.setTexture(texture);
-			}
-			else if (opcode == 5)
-			{
-				def.setHideUnderlay(false);
-			}
-			else if (opcode == 7)
-			{
-				int secondaryColor = is.read24BitInt();
-				def.setSecondaryRgbColor(secondaryColor);
-			}
-		}
-
-		def.calculateHsl();
-
-		return def;
+	@ConfigItem(
+		position = 1,
+		keyName = "chatboxTooltip",
+		name = "Chatbox Tooltips",
+		description = "Whether or not tooltips are shown over the chatbox"
+	)
+	default boolean chatboxTooltip()
+	{
+		return true;
 	}
 }

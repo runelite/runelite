@@ -64,16 +64,37 @@ public abstract class RSIndexDataBaseMixin implements RSIndexDataBase
 			return rsData;
 		}
 
-		HashCode rsDataHash = Hashing.sha256().hashBytes(rsData);
-
-		String rsHash = BaseEncoding.base16().encode(rsDataHash.asBytes());
-
 		InputStream in2 = getClass().getResourceAsStream("/runelite/" + indexData.getIndex() + "/" + archiveId + ".hash");
+		if (rsData == null)
+		{
+			if (in2 != null)
+			{
+				log.warn("Hash file for non existing archive {}/{}", indexData.getIndex(), archiveId);
+				return null;
+			}
+
+			log.debug("Adding archive {}/{}", indexData.getIndex(), archiveId);
+
+			try
+			{
+				return ByteStreams.toByteArray(in);
+			}
+			catch (IOException ex)
+			{
+				log.warn("error loading archive replacement", ex);
+			}
+
+			return null;
+		}
 		if (in2 == null)
 		{
 			log.warn("Missing hash file for {}/{}", indexData.getIndex(), archiveId);
 			return rsData;
 		}
+
+		HashCode rsDataHash = Hashing.sha256().hashBytes(rsData);
+
+		String rsHash = BaseEncoding.base16().encode(rsDataHash.asBytes());
 
 		try
 		{

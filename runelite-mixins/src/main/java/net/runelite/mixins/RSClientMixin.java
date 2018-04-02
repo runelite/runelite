@@ -56,6 +56,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.BoostedLevelChanged;
+import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -326,7 +327,7 @@ public abstract class RSClientMixin implements RSClient
 			entry.setOption(menuOptions[i]);
 			entry.setTarget(menuTargets[i]);
 			entry.setIdentifier(menuIdentifiers[i]);
-			entry.setType(MenuAction.of(menuTypes[i]));
+			entry.setType(menuTypes[i]);
 			entry.setParam0(params0[i]);
 			entry.setParam1(params1[i]);
 		}
@@ -350,7 +351,7 @@ public abstract class RSClientMixin implements RSClient
 			menuOptions[count] = entry.getOption();
 			menuTargets[count] = entry.getTarget();
 			menuIdentifiers[count] = entry.getIdentifier();
-			menuTypes[count] = entry.getType().getId();
+			menuTypes[count] = entry.getType();
 			params0[count] = entry.getParam0();
 			params1[count] = entry.getParam1();
 			++count;
@@ -652,5 +653,12 @@ public abstract class RSClientMixin implements RSClient
 		ResizeableChanged resizeableChanged = new ResizeableChanged();
 		resizeableChanged.setResized(client.isResized());
 		eventBus.post(resizeableChanged);
+	}
+
+	@FieldHook("clanMemberManager")
+	@Inject
+	public static void clanMemberManagerChanged(int idx)
+	{
+		eventBus.post(new ClanChanged(client.getClanMemberManager() != null));
 	}
 }

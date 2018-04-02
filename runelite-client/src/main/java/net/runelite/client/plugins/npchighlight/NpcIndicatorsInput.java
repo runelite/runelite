@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders;
+package net.runelite.client.plugins.npchighlight;
 
-import net.runelite.cache.definitions.OverlayDefinition;
-import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.awt.event.KeyEvent;
+import javax.inject.Inject;
+import net.runelite.client.input.KeyListener;
 
-public class OverlayLoader
+public class NpcIndicatorsInput implements KeyListener
 {
-	private static final Logger logger = LoggerFactory.getLogger(OverlayLoader.class);
+	private static final int HOTKEY = KeyEvent.VK_SHIFT;
 
-	public OverlayDefinition load(int id, byte[] b)
+	@Inject
+	private NpcIndicatorsPlugin plugin;
+
+	@Override
+	public void keyTyped(KeyEvent e)
 	{
-		OverlayDefinition def = new OverlayDefinition();
-		InputStream is = new InputStream(b);
 
-		def.setId(id);
+	}
 
-		for (;;)
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == HOTKEY)
 		{
-			int opcode = is.readUnsignedByte();
-			if (opcode == 0)
-			{
-				break;
-			}
-
-			if (opcode == 1)
-			{
-				int color = is.read24BitInt();
-				def.setRgbColor(color);
-			}
-			else if (opcode == 2)
-			{
-				int texture = is.readUnsignedByte();
-				def.setTexture(texture);
-			}
-			else if (opcode == 5)
-			{
-				def.setHideUnderlay(false);
-			}
-			else if (opcode == 7)
-			{
-				int secondaryColor = is.read24BitInt();
-				def.setSecondaryRgbColor(secondaryColor);
-			}
+			plugin.updateNpcMenuOptions(true);
 		}
+	}
 
-		def.calculateHsl();
-
-		return def;
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == HOTKEY)
+		{
+			plugin.updateNpcMenuOptions(false);
+		}
 	}
 }

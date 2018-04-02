@@ -34,6 +34,8 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -50,6 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.ClientUI;
 
@@ -63,6 +66,8 @@ class WidgetInspector extends JFrame
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
 	private final JCheckBox alwaysOnTop;
+
+	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
 	@Inject
 	WidgetInspector(DevToolsPlugin plugin, Client client, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
@@ -261,5 +266,21 @@ class WidgetInspector extends JFrame
 	private void refreshInfo()
 	{
 		infoTableModel.setWidget(plugin.currentWidget);
+	}
+
+	public static WidgetInfo getWidgetInfo(int packedId)
+	{
+		if (widgetIdMap.size() == 0)
+		{
+			//Initialize map here so it doesn't create the index
+			//until it's actually needed.
+			WidgetInfo[] widgets = WidgetInfo.values();
+			for (WidgetInfo w : widgets)
+			{
+				widgetIdMap.put(w.getPackedId(), w);
+			}
+		}
+
+		return widgetIdMap.get(packedId);
 	}
 }

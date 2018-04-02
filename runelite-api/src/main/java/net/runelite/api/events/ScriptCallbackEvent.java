@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders;
+package net.runelite.api.events;
 
-import net.runelite.cache.definitions.OverlayDefinition;
-import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Data;
+import net.runelite.api.Script;
 
-public class OverlayLoader
+@Data
+public class ScriptCallbackEvent
 {
-	private static final Logger logger = LoggerFactory.getLogger(OverlayLoader.class);
-
-	public OverlayDefinition load(int id, byte[] b)
-	{
-		OverlayDefinition def = new OverlayDefinition();
-		InputStream is = new InputStream(b);
-
-		def.setId(id);
-
-		for (;;)
-		{
-			int opcode = is.readUnsignedByte();
-			if (opcode == 0)
-			{
-				break;
-			}
-
-			if (opcode == 1)
-			{
-				int color = is.read24BitInt();
-				def.setRgbColor(color);
-			}
-			else if (opcode == 2)
-			{
-				int texture = is.readUnsignedByte();
-				def.setTexture(texture);
-			}
-			else if (opcode == 5)
-			{
-				def.setHideUnderlay(false);
-			}
-			else if (opcode == 7)
-			{
-				int secondaryColor = is.read24BitInt();
-				def.setSecondaryRgbColor(secondaryColor);
-			}
-		}
-
-		def.calculateHsl();
-
-		return def;
-	}
+	private Script script;
+	private String eventName;
 }

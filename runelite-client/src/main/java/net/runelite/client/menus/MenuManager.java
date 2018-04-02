@@ -183,7 +183,7 @@ public class MenuManager
 				menuEntry.setOption(currentMenu.getMenuOption());
 				menuEntry.setParam1(widgetId);
 				menuEntry.setTarget(currentMenu.getMenuTarget());
-				menuEntry.setType(MenuAction.RUNELITE);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
 
 				client.setMenuEntries(menuEntries);
 			}

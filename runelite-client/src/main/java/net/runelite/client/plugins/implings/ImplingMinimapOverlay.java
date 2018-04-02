@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders;
+package net.runelite.client.plugins.implings;
 
-import net.runelite.cache.definitions.OverlayDefinition;
-import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.api.NPC;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class OverlayLoader
+public class ImplingMinimapOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(OverlayLoader.class);
+	private final ImplingsPlugin plugin;
 
-	public OverlayDefinition load(int id, byte[] b)
+	@Inject
+	private ImplingMinimapOverlay(ImplingsPlugin plugin)
 	{
-		OverlayDefinition def = new OverlayDefinition();
-		InputStream is = new InputStream(b);
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.plugin = plugin;
+	}
 
-		def.setId(id);
-
-		for (;;)
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		NPC[] imps = plugin.getImplings();
+		if (imps == null)
 		{
-			int opcode = is.readUnsignedByte();
-			if (opcode == 0)
-			{
-				break;
-			}
+			return null;
+		}
 
-			if (opcode == 1)
+		for (NPC imp : imps)
+		{
+			Point minimapLocation = imp.getMinimapLocation();
+			if (minimapLocation != null)
 			{
-				int color = is.read24BitInt();
-				def.setRgbColor(color);
-			}
-			else if (opcode == 2)
-			{
-				int texture = is.readUnsignedByte();
-				def.setTexture(texture);
-			}
-			else if (opcode == 5)
-			{
-				def.setHideUnderlay(false);
-			}
-			else if (opcode == 7)
-			{
-				int secondaryColor = is.read24BitInt();
-				def.setSecondaryRgbColor(secondaryColor);
+				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, plugin.getIds().get(imp.getId()));
 			}
 		}
 
-		def.calculateHsl();
-
-		return def;
+		return null;
 	}
 }

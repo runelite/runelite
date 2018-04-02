@@ -43,13 +43,15 @@ class MouseHighlightOverlay extends Overlay
 {
 	private final TooltipManager tooltipManager;
 	private final Client client;
+	private final MouseHighlightConfig config;
 
 	@Inject
-	MouseHighlightOverlay(Client client, TooltipManager tooltipManager)
+	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
+		this.config = config;
 	}
 
 	@Override
@@ -96,6 +98,16 @@ class MouseHighlightOverlay extends Overlay
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
 		final int childId = WidgetInfo.TO_CHILD(widgetId);
 		final Widget widget = client.getWidget(groupId, childId);
+
+		if (!config.uiTooltip() && widget != null)
+		{
+			return null;
+		}
+
+		if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+		{
+			return null;
+		}
 
 		if (widget != null)
 		{
