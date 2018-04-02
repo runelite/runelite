@@ -33,9 +33,7 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Getter;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.farmingtracker.FarmingTimer;
-import net.runelite.client.plugins.farmingtracker.FarmingTrackerPlugin;
 import net.runelite.client.plugins.farmingtracker.data.PatchLocation;
 import net.runelite.client.plugins.farmingtracker.data.PatchRowData;
 import net.runelite.client.plugins.farmingtracker.data.PatchType;
@@ -119,7 +117,8 @@ public class PatchList extends JPanel
 
 		if (patchRowData.getSeedStatus().equals(SeedStatus.ALIVE))
 		{
-			String remainingTime = FarmingTimer.getGrowthTimeLeft(epoch, patchLocation.getFarmingTick().getTick(), patchRowData.getStagesLeft());
+			Seed seed = patchRowData.getSeed();
+			String remainingTime = FarmingTimer.getGrowthTimeLeft(epoch, seed.getFarmingTick().getTick(), patchRowData.getStagesLeft());
 
 			patchRowData.setTimeLeft(remainingTime);
 		}
