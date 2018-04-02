@@ -276,7 +276,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("home", option, target, true);
 		}
-		else if (config.swapLastDestination() && option.equals("zanaris"))
+		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
 		{
 			swap("last-destination (", option, target, false);
 		}
