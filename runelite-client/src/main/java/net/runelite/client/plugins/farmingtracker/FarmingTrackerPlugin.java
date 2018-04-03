@@ -30,7 +30,6 @@ import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.imageio.ImageIO;
@@ -83,6 +82,8 @@ public class FarmingTrackerPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	private final Set<String> firstOptions = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+
 	private FarmingTrackerPanel panel;
 	private NavigationButton navButton;
 	private BufferedImage weeds;
@@ -106,6 +107,8 @@ public class FarmingTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		firstOptions.addAll(Arrays.asList("pick", "harvest", "cure", "prune", "clear"));
+
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
@@ -134,15 +137,13 @@ public class FarmingTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		lastUsername = null;
 		pluginToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		Set<String> firstOptions = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-		firstOptions.addAll(Arrays.asList("pick", "harvest", "cure", "prune", "clear"));
-
 		if ((menuOptionClicked.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION && firstOptions.contains(menuOptionClicked.getMenuOption())) || menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
 		{
 			PatchLocation patchLocation = PatchLocation.findByWorldLocation(client, queryRunner, menuOptionClicked.getId() & 127, menuOptionClicked.getId() >> 7 & 127);
@@ -166,7 +167,7 @@ public class FarmingTrackerPlugin extends Plugin
 	{
 		String message = event.getMessage();
 
-		if (message.equals("The herb patch is now empty.") || message.equals("The hops patch is now empty."))
+		if (event.getType() == ChatMessageType.SERVER && message.equals("The herb patch is now empty.") || message.equals("The hops patch is now empty."))
 		{
 			handlePatchCleared();
 		}
@@ -217,14 +218,11 @@ public class FarmingTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() != GameState.LOGIN_SCREEN && event.getGameState() == GameState.LOGGED_IN && !client.getUsername().equals(lastUsername))
 		{
-			if (!Objects.equals(client.getUsername(), lastUsername))
-			{
-				lastUsername = client.getUsername();
+			lastUsername = client.getUsername();
 
-				loadConfig();
-			}
+			loadConfig();
 		}
 	}
 

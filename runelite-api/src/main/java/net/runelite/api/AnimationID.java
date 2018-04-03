@@ -127,6 +127,6 @@ public final class AnimationID
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
 
-	// Arcuees spellbook
-	public static final int MAGIC_ARCUEES_RESURRECT_CROPS = 7118;
+	// Arceuus spellbook
+	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
 }
