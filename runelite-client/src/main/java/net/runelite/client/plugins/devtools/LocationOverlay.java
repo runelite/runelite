@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -60,6 +61,10 @@ public class LocationOverlay extends Overlay
 
 		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
 
+		int regionX = localWorld.getX() >> 6;
+		int regionY = localWorld.getY() >> 6;
+		int regionID = regionX << 8 | regionY;
+
 		panelComponent.getLines().add(new PanelComponent.Line(
 			"Tile",
 			localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane()
@@ -70,11 +75,10 @@ public class LocationOverlay extends Overlay
 			int region = client.getMapRegions()[i];
 
 			panelComponent.getLines().add(new PanelComponent.Line(
-				(i == 0) ? "Map region" : " ",
-				String.valueOf(region)
+				(i == 0) ? "Map regions" : " ", new Color(255, 255, 255, 255),
+				String.valueOf(region), (region == regionID) ? new Color(0, 255, 0, 255) : new Color(255, 255, 255, 255)
 			));
 		}
-
 
 		return panelComponent.render(graphics);
 	}
