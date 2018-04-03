@@ -62,6 +62,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -660,5 +661,19 @@ public abstract class RSClientMixin implements RSClient
 	public static void clanMemberManagerChanged(int idx)
 	{
 		eventBus.post(new ClanChanged(client.getClanMemberManager() != null));
+	}
+
+	@FieldHook("isMenuOpen")
+	@Inject
+	public static void menuOpened(int opened)
+	{
+		if (!client.isMenuOpen())
+		{
+			return;
+		}
+
+		MenuOpened event = new MenuOpened();
+		event.setMenuEntries(client.getMenuEntries());
+		eventBus.post(event);
 	}
 }
