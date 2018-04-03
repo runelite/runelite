@@ -108,7 +108,7 @@ import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_3
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_40;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_5;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_560;
-import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_569;
+import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_640;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_8;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_80;
 import static net.runelite.client.plugins.farmingtracker.data.PatchType.ALLOTMENT;
@@ -186,9 +186,9 @@ public enum PatchLocation
 	/**
 	 * Fossil Island
 	 */
-	FOSSIL_ISLAND_TREE_HARDWOOD_EAST("Fossil Island - Hardwoord(East)", SPECIAL, NULL_30482, TICK_560, TICK_569),
-	FOSSIL_ISLAND_TREE_HARDWOOD_MIDDLE("Fossil Island - Hardwoord(Middle)", SPECIAL, NULL_30480, TICK_560, TICK_569),
-	FOSSIL_ISLAND_TREE_HARDWOOD_WEST("Fossil Island - Hardwoord(West)", SPECIAL, NULL_30481, TICK_560, TICK_569),
+	FOSSIL_ISLAND_TREE_HARDWOOD_EAST("Fossil Island - Hardwoord(East)", SPECIAL, NULL_30482, TICK_560, TICK_640),
+	FOSSIL_ISLAND_TREE_HARDWOOD_MIDDLE("Fossil Island - Hardwoord(Middle)", SPECIAL, NULL_30480, TICK_560, TICK_640),
+	FOSSIL_ISLAND_TREE_HARDWOOD_WEST("Fossil Island - Hardwoord(West)", SPECIAL, NULL_30481, TICK_560, TICK_640),
 	FOSSIL_ISLAND_GIANT_SEAWEED_N("Fossil Island - Underwater(North)", SPECIAL, NULL_30500, TICK_10),
 	FOSSIL_ISLAND_GIANT_SEAWEED_S("Fossil Island - Underwater(South)", SPECIAL, NULL_30501, TICK_10),
 

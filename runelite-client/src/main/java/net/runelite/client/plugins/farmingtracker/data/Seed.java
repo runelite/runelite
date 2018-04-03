@@ -36,7 +36,7 @@ import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_3
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_40;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_5;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_560;
-import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_569;
+import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_640;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_8;
 import static net.runelite.client.plugins.farmingtracker.data.FarmingTick.TICK_80;
 import static net.runelite.client.plugins.farmingtracker.data.PatchType.ALLOTMENT;
@@ -138,7 +138,7 @@ public enum Seed
 	TEAK("Teak", SPECIAL, ItemID.TEAK_LOGS, TICK_560, 8),
 	GRAPE("Grape", SPECIAL, ItemID.GRAPES, TICK_8, 6),
 	BITTERCAP_MUSHROOM("Bittercap", SPECIAL, ItemID.MUSHROOM, TICK_40, 6), //Detected
-	MAHOGANY("Mahogany", SPECIAL, ItemID.MAHOGANY_LOGS, TICK_569, 9),
+	MAHOGANY("Mahogany", SPECIAL, ItemID.MAHOGANY_LOGS, TICK_640, 9),
 	CACTUS("Cactus", SPECIAL, ItemID.CACTUS_SPINE, TICK_80, 7),
 	BELLADONNA("Belladonna", SPECIAL, ItemID.CAVE_NIGHTSHADE, TICK_80, 4), //Detected
 	CALQUAT("Calquat", SPECIAL, ItemID.CALQUAT_FRUIT, TICK_160, 8),

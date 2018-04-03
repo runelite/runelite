@@ -85,8 +85,11 @@ public enum FarmingTick
 	/**
 	 * Special: mahogany
 	 */
-	TICK_569(569);
+	TICK_640(640);
 
+	/**
+	 * A tick is a farming growth cycle measured in minutes
+	 */
 	private final int tick;
 }
 
