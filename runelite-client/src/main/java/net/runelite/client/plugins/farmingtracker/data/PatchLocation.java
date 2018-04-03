@@ -27,6 +27,8 @@ package net.runelite.client.plugins.farmingtracker.data;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -297,7 +299,7 @@ public enum PatchLocation
 
 	public static Set<PatchLocation> findByPatchType(PatchType patchType)
 	{
-		Set<PatchLocation> patchLocations = new HashSet<>();
+		SortedSet<PatchLocation> patchLocations = new TreeSet<>();
 
 		for (PatchLocation patchLocation : PatchLocation.values())
 		{
