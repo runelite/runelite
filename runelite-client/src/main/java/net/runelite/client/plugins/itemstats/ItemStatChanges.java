@@ -90,6 +90,15 @@ public class ItemStatChanges
 		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967 /* Draynor Manor */);
 		add(combo(2, food(4), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
 
+		// Dorgeshuun Cuisine
+		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,
+				GRUBS__LA_MODE, MUSHROOMS, ROAST_FROG);
+		add(food(3), LOACH);
+		// FROG_SPAWN (3~6?)
+		// COOKED_SLIMY_EEL (6~10?)
+		// CAVE_EEL (7~11?)
+		add(food(10), EEL_SUSHI);
+
 		// Alcoholic Gnome Cocktails
 		add(combo(2, food(5), boost(STRENGTH, 6), heal(ATTACK, -4)), PREMADE_WIZ_BLZD, WIZARD_BLIZZARD);
 		add(combo(2, food(5), boost(STRENGTH, 4), heal(ATTACK, -3)), PREMADE_SGG, SHORT_GREEN_GUY);
