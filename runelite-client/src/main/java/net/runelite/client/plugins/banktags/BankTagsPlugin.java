@@ -254,7 +254,8 @@ public class BankTagsPlugin extends Plugin
 				}
 				Widget bankItemWidget = bankItemWidgets[inventoryIndex];
 				String[] actions = bankItemWidget.getActions();
-				if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length)
+				if (actions == null || EDIT_TAGS_MENU_INDEX - 1 >= actions.length
+						|| itemId != bankItemWidget.getItemId())
 				{
 					return;
 				}
