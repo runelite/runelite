@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.IntegerNode;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
@@ -155,6 +156,13 @@ public class BankTagsPlugin extends Plugin
 				String itemName = stringStack[stringStackSize - 2];
 				String searchInput = stringStack[stringStackSize - 1];
 
+				ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+				if (itemComposition.getPlaceholderTemplateId() != -1)
+				{
+					// if the item is a placeholder then get the item id for the normal item
+					itemId = itemComposition.getPlaceholderId();
+				}
+
 				String tagsConfig = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 				if (tagsConfig == null || tagsConfig.length() == 0)
 				{
@@ -211,8 +219,20 @@ public class BankTagsPlugin extends Plugin
 			{
 				return;
 			}
-			int itemId = item.getId();
-			String itemName = itemManager.getItemComposition(itemId).getName();
+			ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+			int itemId;
+			if (itemComposition.getPlaceholderTemplateId() != -1)
+			{
+				// if the item is a placeholder then get the item id for the normal item
+				itemId = itemComposition.getPlaceholderId();
+			}
+			else
+			{
+				itemId = item.getId();
+			}
+
+			String itemName = itemComposition.getName();
+
 			String initialValue = getTags(itemId);
 
 			chatboxInputManager.openInputWindow(itemName + " Tags", initialValue, (newTags) ->
