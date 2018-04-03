@@ -50,6 +50,14 @@ public interface RSItemComposition extends ItemComposition
 	@Override
 	int getLinkedNoteId();
 
+	@Import("placeholderId")
+	@Override
+	int getPlaceholderId();
+
+	@Import("placeholderTemplateId")
+	@Override
+	int getPlaceholderTemplateId();
+
 	@Import("price")
 	@Override
 	int getPrice();
