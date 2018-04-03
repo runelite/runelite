@@ -55,6 +55,9 @@ public class DevToolsPlugin extends Plugin
 	@Inject
 	private LocationOverlay locationOverlay;
 
+	@Inject
+	private BorderOverlay borderOverlay;
+
 	private boolean togglePlayers;
 	private boolean toggleNpcs;
 	private boolean toggleGroundItems;
@@ -65,6 +68,8 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleInventory;
 	private boolean toggleProjectiles;
 	private boolean toggleLocation;
+	private boolean toggleChunkBorders;
+	private boolean toggleMapSquares;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -110,7 +115,7 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, locationOverlay);
+		return Arrays.asList(overlay, locationOverlay, borderOverlay);
 	}
 
 	Font getFont()
@@ -168,6 +173,10 @@ public class DevToolsPlugin extends Plugin
 		toggleLocation = !toggleLocation;
 	}
 
+	void toggleChunkBorders() { toggleChunkBorders = !toggleChunkBorders; }
+
+	void toggleMapSquares() { toggleMapSquares = !toggleMapSquares; }
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -217,4 +226,8 @@ public class DevToolsPlugin extends Plugin
 	{
 		return toggleLocation;
 	}
+
+	boolean isToggleChunkBorders() { return toggleChunkBorders; }
+
+	boolean isToggleMapSquares() { return toggleMapSquares; }
 }
