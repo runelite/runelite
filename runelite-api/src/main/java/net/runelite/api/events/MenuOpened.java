@@ -22,46 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+package net.runelite.api.events;
 
-import java.awt.event.KeyEvent;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.input.KeyListener;
+import lombok.Data;
+import net.runelite.api.MenuEntry;
 
-public class ShiftClickInputListener implements KeyListener
+@Data
+public class MenuOpened
 {
-	@Inject
-	private ClientThread clientThread;
+	private MenuEntry[] menuEntries;
 
-	@Inject
-	private Client client;
-
-	@Inject
-	private MenuEntrySwapperPlugin plugin;
-
-	@Override
-	public void keyTyped(KeyEvent event)
+	public MenuEntry getFirstEntry()
 	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent event)
-	{
-		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (menuEntries.length > 0)
 		{
-			plugin.setShiftModifier(true);
+			return menuEntries[menuEntries.length - 1];
 		}
-	}
 
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			plugin.setShiftModifier(false);
-		}
+		return null;
 	}
 }
