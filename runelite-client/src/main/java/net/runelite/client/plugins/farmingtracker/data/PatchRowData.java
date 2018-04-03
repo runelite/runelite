@@ -97,10 +97,15 @@ public class PatchRowData
 		{
 			stage = calculateCurrentStage(Integer.parseInt(values[2]), seed);
 
-			if (stage > seed.getTotalStages())
+			if (stage >= seed.getTotalStages())
 			{
 				seedStatus = SeedStatus.FINISHED;
 				timeLeft = SeedStatus.FINISHED.getStageName();
+				stage = seed.getTotalStages();
+			}
+			else
+			{
+				stage++;
 			}
 		}
 
@@ -113,14 +118,8 @@ public class PatchRowData
 
 		int timePerTick = farmingTick.getTick() * 60;
 		int timeElapsedSincePlanting = (FarmingTimer.getEpochTime() - plantedEpoch) + (plantedEpoch % timePerTick);
-		int farmingTicksPassed = (timeElapsedSincePlanting / timePerTick) + 1;
 
-		if (farmingTicksPassed >= (seed.getTotalStages() + 1))
-		{
-			return seed.getTotalStages();
-		}
-
-		return farmingTicksPassed;
+		return timeElapsedSincePlanting / timePerTick;
 	}
 
 	private static <T extends Enum<T>> T getEnumFromString(Class<T> enumClass, String enumName)
