@@ -53,8 +53,9 @@ public class GrandExchangeAveragePlugin extends Plugin {
             return;
         }
 
-        int itemPrice = averagePrice.getAveragePrice(itemId);
-        System.out.println("Average price: " + itemPrice);
+        int itemPrice = averagePrice.getTradedPrice(itemId);
+
+        offerWindow.appendPrice(itemPrice);
 
     }
 }

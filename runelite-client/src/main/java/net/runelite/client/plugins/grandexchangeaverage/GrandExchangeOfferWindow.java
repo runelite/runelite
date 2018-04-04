@@ -14,6 +14,8 @@ class GrandExchangeOfferWindow {
     private final Client client;
     private final GrandExchangeAverageConfig config;
 
+    private String changedText;
+    private int storedItemPrice;
 
     @Inject
     GrandExchangeOfferWindow(Client client, GrandExchangeAverageConfig config)
@@ -37,11 +39,7 @@ class GrandExchangeOfferWindow {
         Widget[] children = widgetGrandExchangeOfferElements.getDynamicChildren();
         Widget widgetGrandExchangeOfferTitle = children[25];
 
-        if(widgetGrandExchangeOfferTitle.getType() != 4) {
-            return false;
-        }
-
-        return true;
+        return widgetGrandExchangeOfferTitle.getType() == 4;
     }
 
     public int getItemId() {
@@ -63,5 +61,30 @@ class GrandExchangeOfferWindow {
 
         return children[21].getItemId();
 
+    }
+
+    public void appendPrice(int itemPrice) {
+
+        //Widget IDs in Grand Exchange interface has the same ID for some reason.
+        Widget widgetGrandExchangeOfferText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
+
+        if (widgetGrandExchangeOfferText == null ||
+                widgetGrandExchangeOfferText.isHidden() ||
+                itemPrice <= 0)
+        {
+            return;
+        }
+        String defaultText = widgetGrandExchangeOfferText.getText();
+
+        if(defaultText.contains("Actively traded price"))
+        {
+            return;
+        }
+
+        String newText = defaultText +
+                "<br>" +
+                "Actively traded price: " + itemPrice;
+
+        widgetGrandExchangeOfferText.setText(newText);
     }
 }
