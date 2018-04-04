@@ -26,12 +26,11 @@ package net.runelite.client.plugins.grandexchangeaverage;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "grandexchangeaverage",
-	name = "Grand Exchange Average Price",
-	description = "Shows the currently average price of an buy/sell item.")
+		keyName = "grandexchangeaverage",
+		name = "Grand Exchange Average Price",
+		description = "Shows the currently average price of an buy/sell item.")
 
 public interface GrandExchangeAverageConfig extends Config
 {

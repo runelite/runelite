@@ -15,52 +15,53 @@ import javax.inject.Inject;
 
 @Slf4j
 @PluginDescriptor(name = "Grand Exchange Average")
-public class GrandExchangeAveragePlugin extends Plugin {
+public class GrandExchangeAveragePlugin extends Plugin
+{
 
-    @Inject
-    private GrandExchangeAverageConfig config;
+	@Inject
+	private GrandExchangeAverageConfig config;
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private GrandExchangeAverageOfferWindow offerWindow;
+	@Inject
+	private GrandExchangeAverageOfferWindow offerWindow;
 
-    @Inject
-    private GrandExchangeAveragePrice averagePrice;
+	@Inject
+	private GrandExchangeAveragePrice averagePrice;
 
-    @Provides
-    GrandExchangeAverageConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(GrandExchangeAverageConfig.class);
-    }
+	@Provides
+	GrandExchangeAverageConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(GrandExchangeAverageConfig.class);
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick event)
-    {
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
 
-        Widget widgetGrandExchangeContainer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_CONTAINER);
+		Widget widgetGrandExchangeContainer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_CONTAINER);
 
-        if (widgetGrandExchangeContainer == null || widgetGrandExchangeContainer.isHidden())
-        {
-            return;
-        }
+		if (widgetGrandExchangeContainer == null || widgetGrandExchangeContainer.isHidden())
+		{
+			return;
+		}
 
-        if(!offerWindow.isOpen())
-        {
-            return;
-        }
+		if (!offerWindow.isOpen())
+		{
+			return;
+		}
 
-        //Get the ID of the item currently in focus.
-        int itemId = offerWindow.getItemId();
-        if(itemId == -1)
-        {
-            return;
-        }
+		//Get the ID of the item currently in focus.
+		int itemId = offerWindow.getItemId();
+		if (itemId == -1)
+		{
+			return;
+		}
 
-        //Get the price.
-        int itemPrice = averagePrice.getTradedPrice(itemId);
-        offerWindow.appendPrice(itemPrice);
+		//Get the price.
+		int itemPrice = averagePrice.getTradedPrice(itemId);
+		offerWindow.appendPrice(itemPrice);
 
-    }
+	}
 }
