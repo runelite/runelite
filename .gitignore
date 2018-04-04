@@ -8,3 +8,4 @@ project.properties
 .project
 .settings/
 .classpath
+http-api/src/main/java/net/runelite/http/api/RuneLiteAPI.java

@@ -173,9 +173,15 @@ public class DevToolsPlugin extends Plugin
 		toggleLocation = !toggleLocation;
 	}
 
-	void toggleChunkBorders() { toggleChunkBorders = !toggleChunkBorders; }
+	void toggleChunkBorders()
+	{
+		toggleChunkBorders = !toggleChunkBorders;
+	}
 
-	void toggleMapSquares() { toggleMapSquares = !toggleMapSquares; }
+	void toggleMapSquares()
+	{
+		toggleMapSquares = !toggleMapSquares;
+	}
 
 	boolean isTogglePlayers()
 	{
@@ -227,7 +233,13 @@ public class DevToolsPlugin extends Plugin
 		return toggleLocation;
 	}
 
-	boolean isToggleChunkBorders() { return toggleChunkBorders; }
+	boolean isToggleChunkBorders()
+	{
+		return toggleChunkBorders;
+	}
 
-	boolean isToggleMapSquares() { return toggleMapSquares; }
+	boolean isToggleMapSquares()
+	{
+		return toggleMapSquares;
+	}
 }
