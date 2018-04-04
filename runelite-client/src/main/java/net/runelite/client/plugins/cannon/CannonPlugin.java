@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -46,11 +48,14 @@ import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
+import net.runelite.api.Query;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -60,6 +65,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Cannon"
@@ -68,6 +74,13 @@ public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
+
+	private final Set<Integer> cannonParts = Sets.newHashSet(
+			ItemID.CANNON_BASE,
+			ItemID.CANNON_STAND,
+			ItemID.CANNON_BARRELS,
+			ItemID.CANNON_FURNACE
+	);
 
 	private CannonCounter counter;
 
@@ -91,6 +104,9 @@ public class CannonPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private QueryRunner queryRunner;
 
 	@Inject
 	private Notifier notifier;
@@ -120,6 +136,25 @@ public class CannonPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(cannonOverlay, cannonSpotOverlay);
+	}
+
+	boolean hasCannon()
+	{
+
+		Query inventoryQuery = new InventoryWidgetItemQuery();
+		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+
+		int partCount = 0;
+		for (WidgetItem item : inventoryWidgetItems)
+		{
+			if (cannonParts.contains(item.getId()))
+			{
+				partCount++;
+			}
+		}
+
+		return partCount >= 4;
+
 	}
 
 	@Override
