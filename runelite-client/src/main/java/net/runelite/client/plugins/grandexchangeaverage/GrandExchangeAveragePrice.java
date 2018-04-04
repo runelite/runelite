@@ -36,6 +36,7 @@ public class GrandExchangeAveragePrice {
     }
 
     //Gets the price of an item using ItemManager.
+    // UNUSED ATM
     public int getPrice(int itemId) {
 
         //If we already checked the price of this item, do not do it again.
