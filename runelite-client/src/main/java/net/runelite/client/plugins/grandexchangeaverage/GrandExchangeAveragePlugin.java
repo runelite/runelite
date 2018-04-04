@@ -10,8 +10,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.grandexchangeaverage.GrandExchangeOfferText;
-import net.runelite.client.plugins.grandexchangeaverage.GrandExchangeOfferTitle;
+
 import javax.inject.Inject;
 
 @Slf4j
@@ -21,10 +20,10 @@ public class GrandExchangeAveragePlugin extends Plugin {
     private Client client;
 
     @Inject
-    private GrandExchangeOfferTitle offerTitle;
+    private GrandExchangeOfferWindow offerWindow;
 
     @Inject
-    private GrandExchangeOfferText offerText;
+    private GrandExchangeAveragePrice averagePrice;
 
     @Provides
     GrandExchangeAverageConfig getConfig(ConfigManager configManager)
@@ -35,17 +34,27 @@ public class GrandExchangeAveragePlugin extends Plugin {
     @Subscribe
     public void onGameTick(GameTick event)
     {
-        Widget widgetGrandExchangeOfferTitle = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TITLE);
+        Widget widgetGrandExchangeContainer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_CONTAINER);
 
-        if (widgetGrandExchangeOfferTitle == null || widgetGrandExchangeOfferTitle.isHidden())
+        if (widgetGrandExchangeContainer == null || widgetGrandExchangeContainer.isHidden())
         {
             return;
         }
 
-        log.debug("Found Offer Title!");
-        //offerTitle.save();
+        if(!offerWindow.isOpen())
+        {
+            return;
+        }
 
-        //int averagePrice = getGEAveragePrice(offerTitle);
+        //offerWindow.saveTitle();
+        int itemId = offerWindow.getItemId();
+        if(itemId == -1)
+        {
+            return;
+        }
+
+        int itemPrice = averagePrice.getAveragePrice(itemId);
+        System.out.println("Average price: " + itemPrice);
 
     }
 }

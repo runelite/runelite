@@ -141,7 +141,8 @@ public class WidgetID
 
 	static class GrandExchange
 	{
-		static final int INVENTORY_ITEM_CONTAINER = 0;
+        static final int CONTAINER = 1;
+        static final int INVENTORY_ITEM_CONTAINER = 0;
 		static final int OFFER_TITLE_CONTAINER = 24;
 		static final int OFFER_TEXT_CONTAINER = 25;
 	}
