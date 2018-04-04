@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2018, diblaze <https://github.com/diblaze>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
