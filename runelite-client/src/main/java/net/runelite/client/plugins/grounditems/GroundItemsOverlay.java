@@ -195,23 +195,22 @@ public class GroundItemsOverlay extends Overlay
 			{
 				final int stringWidth = fm.stringWidth(itemString);
 				final int stringHeight = fm.getHeight();
-				final int descent = fm.getDescent();
 
 				// Hidden box
 				final Rectangle itemHiddenBox = new Rectangle(
 					textX + stringWidth,
-					textY - (stringHeight / 2) - descent,
+					textY - (RECTANGLE_SIZE + stringHeight) / 2,
 					RECTANGLE_SIZE,
-					stringHeight / 2);
+					RECTANGLE_SIZE);
 
 				plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
 
 				// Highlight box
 				final Rectangle itemHighlightBox = new Rectangle(
 					textX + stringWidth + RECTANGLE_SIZE + 2,
-					textY - (stringHeight / 2) - descent,
+					textY - (RECTANGLE_SIZE + stringHeight) / 2,
 					RECTANGLE_SIZE,
-					stringHeight / 2);
+					RECTANGLE_SIZE);
 
 				plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
 
