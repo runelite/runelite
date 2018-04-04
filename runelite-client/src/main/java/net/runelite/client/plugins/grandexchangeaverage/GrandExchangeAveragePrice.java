@@ -35,8 +35,10 @@ public class GrandExchangeAveragePrice {
         this.config = config;
     }
 
+    //Gets the price of an item using ItemManager.
     public int getPrice(int itemId) {
 
+        //If we already checked the price of this item, do not do it again.
         if(storedItemId == itemId)
         {
             return storedItemPrice;
@@ -53,19 +55,23 @@ public class GrandExchangeAveragePrice {
         }
     }
 
+    //Gets the price of an item using OSBuddy Exchange API.
     public int getTradedPrice(int itemId)
     {
+        //If we already checked the price of this item, do not do it again.
         if(storedItemId == itemId)
         {
             return storedItemPrice;
         }
 
-        //http://api.rsbuddy.com/grandExchange?a=guidePrice&i=12625
+        //http://api.rsbuddy.com/grandExchange?a=guidePrice&i=ITEMID
+        //Create a new request to OSBuddy API.
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("http://api.rsbuddy.com/grandExchange?a=guidePrice&i=" + itemId)
                 .build();
 
+        //Send the request sync.
         Response response;
         try {
             response = client.newCall(request).execute();
@@ -74,6 +80,7 @@ public class GrandExchangeAveragePrice {
             return -1;
         }
 
+        //Parse the JSON.
         JsonObject priceObject;
         try {
             priceObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
@@ -82,6 +89,7 @@ public class GrandExchangeAveragePrice {
             return -1;
         }
 
+        //Grab the overall price.
         int averagePrice = priceObject.get("overall").getAsInt();
 
         storedItemId = itemId;

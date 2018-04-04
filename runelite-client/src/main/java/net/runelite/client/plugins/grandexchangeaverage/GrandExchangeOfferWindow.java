@@ -26,20 +26,21 @@ class GrandExchangeOfferWindow {
 
 
     public boolean isOpen() {
-        //Widget IDs in Grand Exchange interface has the same ID for some reason.
-        Widget widgetGrandExchangeOfferElements = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TITLE);
+        //Find the Offer Container.
+        Widget widgetGrandExchangeOfferContainer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 
-        if (widgetGrandExchangeOfferElements == null ||
-                widgetGrandExchangeOfferElements.isHidden())
+        //Return false if not opened.
+        if (widgetGrandExchangeOfferContainer == null ||
+                widgetGrandExchangeOfferContainer.isHidden())
         {
             return false;
         }
 
-        //The title we want is 25th child.
-        Widget[] children = widgetGrandExchangeOfferElements.getDynamicChildren();
-        Widget widgetGrandExchangeOfferTitle = children[25];
+        //Get the first child which contains the title text.
+        Widget[] children = widgetGrandExchangeOfferContainer.getDynamicChildren();
+        Widget widgetGrandExchangeOfferContainerTitle = children[1];
 
-        return widgetGrandExchangeOfferTitle.getType() == 4;
+        return widgetGrandExchangeOfferContainerTitle.getText().contains("Set up offer");
     }
 
     public int getItemId() {
@@ -54,6 +55,8 @@ class GrandExchangeOfferWindow {
 
         //The title we want is 21th child.
         Widget[] children = widgetGrandExchangeOfferElements.getDynamicChildren();
+
+        //If itemid is -1 or 6512 (both invalid)
         if(children[21].getItemId() == -1 || children[21].getItemId() == 6512)
         {
             return -1;
@@ -74,8 +77,11 @@ class GrandExchangeOfferWindow {
         {
             return;
         }
+
+        //Get the item description.
         String defaultText = widgetGrandExchangeOfferText.getText();
 
+        //If we have already changed the text, don't do it again.
         if(defaultText.contains("Actively traded price"))
         {
             return;

@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 
 public interface GrandExchangeAverageConfig extends Config
 {
-	/*
-	@ConfigItem(
-		keyName = "showGE",
-		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)")
-	default boolean showGE()
-	{
-		return true;
-	}
-	*/
 
 
 }
