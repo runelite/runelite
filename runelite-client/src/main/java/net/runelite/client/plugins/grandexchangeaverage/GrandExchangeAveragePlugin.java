@@ -8,7 +8,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -25,7 +24,7 @@ public class GrandExchangeAveragePlugin extends Plugin {
     private Client client;
 
     @Inject
-    private GrandExchangeOfferWindow offerWindow;
+    private GrandExchangeAverageOfferWindow offerWindow;
 
     @Inject
     private GrandExchangeAveragePrice averagePrice;

@@ -8,7 +8,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
 @Slf4j
-class GrandExchangeOfferWindow {
+class GrandExchangeAverageOfferWindow {
 
 
     private final Client client;
@@ -18,7 +18,7 @@ class GrandExchangeOfferWindow {
     private int storedItemPrice;
 
     @Inject
-    GrandExchangeOfferWindow(Client client, GrandExchangeAverageConfig config)
+    GrandExchangeAverageOfferWindow(Client client, GrandExchangeAverageConfig config)
     {
         this.client = client;
         this.config = config;
