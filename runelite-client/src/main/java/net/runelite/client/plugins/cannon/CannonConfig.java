@@ -39,7 +39,8 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showEmptyCannonNotification",
 		name = "Empty cannon notification",
-		description = "Configures whether to notify you that the cannon is empty"
+		description = "Configures whether to notify you that the cannon is empty",
+		position = 0
 	)
 	default boolean showEmptyCannonNotification()
 	{
@@ -47,19 +48,10 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showInfobox",
-		name = "Show Cannonball infobox",
-		description = "Configures whether to show the cannonballs in an infobox"
-	)
-	default boolean showInfobox()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "showDoubleHitSpot",
 		name = "Show double hit spots",
-		description = "Configures whether to show the NPC double hit spot"
+		description = "Configures whether to show the NPC double hit spot",
+		position = 1
 	)
 	default boolean showDoubleHitSpot()
 	{
@@ -67,22 +59,36 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showInfobox",
+		name = "Show cannonball infobox",
+		description = "Configures whether to show the cannonballs in an infobox",
+		position = 2
+	)
+	default boolean showInfobox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showCannonSpotsPermissions",
+		name = "Show cannon spots",
+		description = "Configures whether to show common cannon spots or not",
+		position = 3
+	)
+	default CannonSpotPermission showCannonSpotsPermissions()
+	{
+		return CannonSpotPermission.HOLDING_CANNON;
+	}
+
+	@ConfigItem(
 		keyName = "highlightDoubleHitColor",
-		name = "Color of double hit spots",
-		description = "Configures the highlight color of double hit spots"
+		name = "Double hit spots color",
+		description = "Configures the highlight color of double hit spots",
+		position = 4
 	)
 	default Color highlightDoubleHitColor()
 	{
 		return Color.RED;
 	}
 
-	@ConfigItem(
-		keyName = "showCannonSpots",
-		name = "Show common cannon spots",
-		description = "Configures whether to show common cannon spots or not"
-	)
-	default boolean showCannonSpots()
-	{
-		return true;
-	}
 }

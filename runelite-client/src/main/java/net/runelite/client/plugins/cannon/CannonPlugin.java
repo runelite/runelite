@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
@@ -53,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
@@ -126,6 +128,9 @@ public class CannonPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hasCannon;
+
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
 	{
@@ -138,7 +143,7 @@ public class CannonPlugin extends Plugin
 		return Arrays.asList(cannonOverlay, cannonSpotOverlay);
 	}
 
-	boolean hasCannon()
+	private boolean hasCannon()
 	{
 
 		Query inventoryQuery = new InventoryWidgetItemQuery();
@@ -192,7 +197,7 @@ public class CannonPlugin extends Plugin
 	)
 	public void checkSpots()
 	{
-		if (!config.showCannonSpots())
+		if (config.showCannonSpotsPermissions() == CannonSpotPermission.NEVER)
 		{
 			return;
 		}
@@ -224,6 +229,12 @@ public class CannonPlugin extends Plugin
 				cannon = gameObject;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		hasCannon = hasCannon();
 	}
 
 	@Subscribe
