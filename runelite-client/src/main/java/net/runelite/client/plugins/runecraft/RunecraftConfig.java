@@ -205,4 +205,14 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "hightlightDarkMage",
+		name = "Highlight Dark Mage NPC",
+		description = "Configures whether to highlight the Dark Mage when pouches are degraded"
+	)
+	default boolean hightlightDarkMage()
+	{
+		return true;
+	}
 }
