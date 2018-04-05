@@ -258,7 +258,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lha;"
    )
-   IterableHashTable field3671;
+   @Export("params")
+   IterableHashTable params;
    @ObfuscatedName("bp")
    @Export("isTradable")
    public boolean isTradable;
@@ -486,7 +487,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 149) {
             this.placeholderTemplateId = var1.readUnsignedShort();
          } else if(var2 == 249) {
-            this.field3671 = class28.readStringIntParameters(var1, this.field3671);
+            this.params = class28.readStringIntParameters(var1, this.params);
          }
       }
 
@@ -873,7 +874,7 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "3631"
    )
    public int method5068(int var1, int var2) {
-      IterableHashTable var4 = this.field3671;
+      IterableHashTable var4 = this.params;
       int var3;
       if(var4 == null) {
          var3 = var2;
@@ -895,7 +896,7 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "1"
    )
    public String method5069(int var1, String var2) {
-      return WorldMapType1.method309(this.field3671, var1, var2);
+      return WorldMapType1.method309(this.params, var1, var2);
    }
 
    @ObfuscatedName("f")
