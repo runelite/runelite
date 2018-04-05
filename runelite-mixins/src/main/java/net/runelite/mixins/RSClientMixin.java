@@ -190,8 +190,6 @@ public abstract class RSClientMixin implements RSClient
 		return getWidget(groupId, childId);
 	}
 
-
-
 	@Inject
 	@Override
 	public Widget[] getGroup(int groupId)
