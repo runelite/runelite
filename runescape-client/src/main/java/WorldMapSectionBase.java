@@ -3,49 +3,49 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ay")
+@ObfuscatedName("au")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Las;I)V",
-      garbageValue = "269119455"
+      signature = "(Lah;I)V",
+      garbageValue = "634115433"
    )
-   void vmethod751(WorldMapData var1);
+   void vmethod767(WorldMapData var1);
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "520265099"
+      signature = "(IIIB)Z",
+      garbageValue = "29"
    )
    @Export("containsCoord")
    boolean containsCoord(int var1, int var2, int var3);
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIS)Z",
-      garbageValue = "9376"
+      signature = "(III)Z",
+      garbageValue = "230864345"
    )
-   boolean vmethod758(int var1, int var2);
+   boolean vmethod768(int var1, int var2);
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "174791792"
+      signature = "(IIIB)[I",
+      garbageValue = "40"
    )
-   int[] vmethod754(int var1, int var2, int var3);
+   int[] vmethod753(int var1, int var2, int var3);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIB)Lim;",
-      garbageValue = "-64"
+      signature = "(IIB)Lix;",
+      garbageValue = "-31"
    )
-   Coordinates vmethod777(int var1, int var2);
+   Coordinates vmethod758(int var1, int var2);
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgp;I)V",
-      garbageValue = "-314407075"
+      signature = "(Lgc;I)V",
+      garbageValue = "-2042290425"
    )
-   void vmethod756(Buffer var1);
+   void vmethod754(Buffer var1);
 }

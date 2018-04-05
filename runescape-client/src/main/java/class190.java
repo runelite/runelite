@@ -1,75 +1,41 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gv")
+@ObfuscatedName("gr")
 public class class190 {
-   @ObfuscatedName("u")
-   @Export("osName")
-   public static String osName;
-   @ObfuscatedName("gf")
-   @ObfuscatedGetter(
-      intValue = 1680759683
-   )
-   static int field2522;
-
-   @ObfuscatedName("i")
+   @ObfuscatedName("df")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "82"
+      signature = "Ljn;"
    )
-   public static void method3486() {
-      KeyFocusListener var0 = KeyFocusListener.keyboard;
-      synchronized(KeyFocusListener.keyboard) {
-         ++KeyFocusListener.keyboardIdleTicks;
-         KeyFocusListener.field615 = KeyFocusListener.field617;
-         KeyFocusListener.field593 = 0;
-         int var1;
-         if(KeyFocusListener.field610 < 0) {
-            for(var1 = 0; var1 < 112; ++var1) {
-               KeyFocusListener.keyPressed[var1] = false;
-            }
+   @Export("indexScripts")
+   static IndexData indexScripts;
 
-            KeyFocusListener.field610 = KeyFocusListener.field609;
-         } else {
-            while(KeyFocusListener.field609 != KeyFocusListener.field610) {
-               var1 = KeyFocusListener.field616[KeyFocusListener.field609];
-               KeyFocusListener.field609 = KeyFocusListener.field609 + 1 & 127;
-               if(var1 < 0) {
-                  KeyFocusListener.keyPressed[~var1] = false;
-               } else {
-                  if(!KeyFocusListener.keyPressed[var1] && KeyFocusListener.field593 < KeyFocusListener.field613.length - 1) {
-                     KeyFocusListener.field613[++KeyFocusListener.field593 - 1] = var1;
-                  }
-
-                  KeyFocusListener.keyPressed[var1] = true;
-               }
-            }
-         }
-
-         if(KeyFocusListener.field593 > 0) {
-            KeyFocusListener.keyboardIdleTicks = 0;
-         }
-
-         KeyFocusListener.field617 = KeyFocusListener.field606;
-      }
-   }
-
-   @ObfuscatedName("kk")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-77523360"
+      garbageValue = "-277343420"
    )
-   static final void method3487() {
-      for(int var0 = 0; var0 < class93.playerIndexesCount; ++var0) {
-         Player var1 = Client.cachedPlayers[class93.playerIndices[var0]];
-         var1.method1166();
+   static void method3488() {
+      class95.field1449 = new int[2000];
+      int var0 = 0;
+      int var1 = 240;
+
+      int var3;
+      for(byte var2 = 12; var0 < 16; var1 -= var2) {
+         var3 = class27.method248((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)((float)var0 * 0.425F / 16.0F + 0.075F));
+         class95.field1449[var0] = var3;
+         ++var0;
       }
 
-      GameCanvas.method824();
-      if(class33.clanMemberManager != null) {
-         class33.clanMemberManager.method5468();
+      var1 = 48;
+
+      for(int var5 = var1 / 6; var0 < class95.field1449.length; var1 -= var5) {
+         var3 = var0 * 2;
+
+         for(int var4 = class27.method248((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var3 && var0 < class95.field1449.length; ++var0) {
+            class95.field1449[var0] = var4;
+         }
       }
 
    }

@@ -2,20 +2,20 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fm")
+@ObfuscatedName("fy")
 @Implements("Timer")
 public abstract class Timer {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1752267901"
+      signature = "(S)V",
+      garbageValue = "-28027"
    )
-   public abstract void vmethod3302();
+   public abstract void vmethod3326();
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "112"
+      signature = "(III)I",
+      garbageValue = "-164425450"
    )
-   public abstract int vmethod3312(int var1, int var2);
+   public abstract int vmethod3328(int var1, int var2);
 }

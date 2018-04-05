@@ -4,72 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("es")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -741509819
+      intValue = 1568519555
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 27940365
+      intValue = -60030067
    )
    @Export("x")
    int x;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1351166039
+      intValue = -519278479
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1505419439
+      intValue = -1094507869
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1448452761
+      intValue = 885515339
    )
    @Export("rotation")
    int rotation;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -2067639295
+      intValue = 2056488293
    )
    @Export("offsetX")
    int offsetX;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1364887827
+      intValue = -717533729
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Led;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Led;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2129795425
+      intValue = 121355007
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1116667243
+      intValue = 1338434239
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
@@ -80,23 +80,54 @@ public final class DecorativeObject {
    }
 
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "28"
-   )
-   public static void method3096() {
-      Varbit.varbits.reset();
+   static final void method3082(long var0) {
+      try {
+         Thread.sleep(var0);
+      } catch (InterruptedException var3) {
+         ;
+      }
+
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "1058550691"
+      signature = "(I)V",
+      garbageValue = "-2107841261"
    )
-   static byte[] method3097(byte[] var0) {
-      int var1 = var0.length;
-      byte[] var2 = new byte[var1];
-      System.arraycopy(var0, 0, var2, 0, var1);
-      return var2;
+   public static void method3081() {
+      KeyFocusListener var0 = KeyFocusListener.keyboard;
+      synchronized(KeyFocusListener.keyboard) {
+         ++KeyFocusListener.keyboardIdleTicks;
+         KeyFocusListener.field620 = KeyFocusListener.field623;
+         KeyFocusListener.field638 = 0;
+         int var1;
+         if(KeyFocusListener.field627 < 0) {
+            for(var1 = 0; var1 < 112; ++var1) {
+               KeyFocusListener.keyPressed[var1] = false;
+            }
+
+            KeyFocusListener.field627 = KeyFocusListener.field626;
+         } else {
+            while(KeyFocusListener.field627 != KeyFocusListener.field626) {
+               var1 = KeyFocusListener.field625[KeyFocusListener.field626];
+               KeyFocusListener.field626 = KeyFocusListener.field626 + 1 & 127;
+               if(var1 < 0) {
+                  KeyFocusListener.keyPressed[~var1] = false;
+               } else {
+                  if(!KeyFocusListener.keyPressed[var1] && KeyFocusListener.field638 < KeyFocusListener.field630.length - 1) {
+                     KeyFocusListener.field630[++KeyFocusListener.field638 - 1] = var1;
+                  }
+
+                  KeyFocusListener.keyPressed[var1] = true;
+               }
+            }
+         }
+
+         if(KeyFocusListener.field638 > 0) {
+            KeyFocusListener.keyboardIdleTicks = 0;
+         }
+
+         KeyFocusListener.field623 = KeyFocusListener.field631;
+      }
    }
 }

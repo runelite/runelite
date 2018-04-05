@@ -1,80 +1,58 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bp")
+@ObfuscatedName("bn")
 public final class class61 {
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Ljm;"
+   @ObfuscatedName("rk")
+   @ObfuscatedGetter(
+      intValue = 1419176443
    )
-   public static IndexDataBase field714;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lla;"
-   )
-   static SpritePixels field715;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   static Widget field713;
-   @ObfuscatedName("fx")
-   @ObfuscatedSignature(
-      signature = "[Llq;"
-   )
-   @Export("mapscene")
-   static IndexedSprite[] mapscene;
+   static int field737;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([BZS)Ljava/lang/Object;",
-      garbageValue = "174"
+      signature = "(I)V",
+      garbageValue = "-1879272439"
    )
-   @Export("byteArrayToObject")
-   public static Object byteArrayToObject(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         if(var0.length > 136 && !AbstractByteBuffer.directBufferUnavailable) {
-            try {
-               DirectByteBuffer var2 = new DirectByteBuffer();
-               var2.put(var0);
-               return var2;
-            } catch (Throwable var3) {
-               AbstractByteBuffer.directBufferUnavailable = true;
-            }
+   static void method1071() {
+      for(class80 var0 = (class80)class80.field1263.getFront(); var0 != null; var0 = (class80)class80.field1263.getNext()) {
+         if(var0.field1266 != null) {
+            MouseInput.field727.method2060(var0.field1266);
+            var0.field1266 = null;
          }
 
-         return var0;
-      }
-   }
-
-   @ObfuscatedName("ft")
-   @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "14"
-   )
-   static final void method1058(boolean var0) {
-      if(var0) {
-         Client.field1041 = class90.field1344?class158.field2150:class158.field2156;
-      } else {
-         Client.field1041 = class46.preferences.preferences.containsKey(Integer.valueOf(SceneTilePaint.method2873(class90.username)))?class158.field2157:class158.field2153;
-      }
-
-   }
-
-   @ObfuscatedName("ik")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1863552416"
-   )
-   static final void method1055(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1060[var4] = true;
+         if(var0.field1271 != null) {
+            MouseInput.field727.method2060(var0.field1271);
+            var0.field1271 = null;
          }
       }
 
+      class80.field1263.clear();
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-541446928"
+   )
+   static int method1072(int var0, int var1) {
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
+   }
+
+   @ObfuscatedName("fq")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "16"
+   )
+   static void method1070() {
+      PacketNode var0 = WorldMapRectangle.method280(ClientPacket.field2404, Client.field957.field1484);
+      PacketBuffer var1 = var0.packetBuffer;
+      int var2 = Client.isResized?2:1;
+      var1.putByte(var2);
+      var0.packetBuffer.putShort(MapLabel.canvasWidth);
+      var0.packetBuffer.putShort(FloorUnderlayDefinition.canvasHeight);
+      Client.field957.method2052(var0);
    }
 }

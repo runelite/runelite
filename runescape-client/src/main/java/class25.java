@@ -3,63 +3,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("s")
+@ObfuscatedName("c")
 public class class25 {
-   @ObfuscatedName("x")
-   @Export("indexSpriteWidths")
-   static int[] indexSpriteWidths;
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -400098911
+      intValue = -1458031421
    )
-   static int field357;
-   @ObfuscatedName("bp")
+   int field375;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "[Lla;"
+      signature = "Lix;"
    )
-   static SpritePixels[] field356;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -424882495
-   )
-   int field355;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lim;"
-   )
-   Coordinates field354;
+   Coordinates field374;
 
    @ObfuscatedSignature(
-      signature = "(ILim;)V"
+      signature = "(ILix;)V"
    )
    class25(int var1, Coordinates var2) {
-      this.field355 = var1;
-      this.field354 = var2;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IZIZI)V",
-      garbageValue = "-1708710488"
-   )
-   static void method201(int var0, boolean var1, int var2, boolean var3) {
-      if(FaceNormal.worldList != null) {
-         MapIcon.method568(0, FaceNormal.worldList.length - 1, var0, var1, var2, var3);
-      }
-
+      this.field375 = var1;
+      this.field374 = var2;
    }
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1929042985"
+      signature = "(II)V",
+      garbageValue = "-640028135"
    )
-   static void method200() {
-      if(class90.Login_isUsernameRemembered && class90.username != null && class90.username.length() > 0) {
-         class90.field1367 = 1;
-      } else {
-         class90.field1367 = 0;
-      }
+   public static void method200(int var0) {
+      MouseInput.mouseIdleTicks = var0;
+   }
 
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-114"
+   )
+   public static void method201() {
+      Widget.field2817.reset();
+      Widget.Widget_cachedModels.reset();
+      Widget.Widget_cachedFonts.reset();
+      Widget.field2819.reset();
+   }
+
+   @ObfuscatedName("jw")
+   @ObfuscatedSignature(
+      signature = "(Lin;IIII)V",
+      garbageValue = "2109013568"
+   )
+   static final void method202(Widget var0, int var1, int var2, int var3) {
+      class236 var4 = var0.method4425(false);
+      if(var4 != null) {
+         if(Client.field1099 < 3) {
+            class7.compass.method5875(var1, var2, var4.field2773, var4.field2772, 25, 25, Client.mapAngle, 256, var4.field2774, var4.field2771);
+         } else {
+            Rasterizer2D.method5737(var1, var2, 0, var4.field2774, var4.field2771);
+         }
+
+      }
    }
 }
