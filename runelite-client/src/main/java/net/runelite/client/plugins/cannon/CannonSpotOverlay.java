@@ -64,7 +64,13 @@ public class CannonSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showCannonSpots() || plugin.isCannonPlaced())
+
+		if (!plugin.isHasCannon() && config.showCannonSpotsPermissions() == CannonSpotPermission.HOLDING_CANNON)
+		{
+			return null;
+		}
+
+		if (config.showCannonSpotsPermissions() == CannonSpotPermission.NEVER || plugin.isCannonPlaced())
 		{
 			return null;
 		}
