@@ -278,14 +278,14 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1225254787
    )
-   @Export("int2")
-   public int int2;
+   @Export("placeholderId")
+   public int placeholderId;
    @ObfuscatedName("bk")
    @ObfuscatedGetter(
       intValue = 1532023061
    )
-   @Export("int3")
-   public int int3;
+   @Export("placeholderTemplateId")
+   public int placeholderTemplateId;
 
    static {
       items = new NodeCache(64);
@@ -330,8 +330,8 @@ public class ItemComposition extends CacheableNode {
       this.isTradable = false;
       this.unnotedId = -1;
       this.notedId = -1;
-      this.int2 = -1;
-      this.int3 = -1;
+      this.placeholderId = -1;
+      this.placeholderTemplateId = -1;
    }
 
    @ObfuscatedName("k")
@@ -482,9 +482,9 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 140) {
             this.notedId = var1.readUnsignedShort();
          } else if(var2 == 148) {
-            this.int2 = var1.readUnsignedShort();
+            this.placeholderId = var1.readUnsignedShort();
          } else if(var2 == 149) {
-            this.int3 = var1.readUnsignedShort();
+            this.placeholderTemplateId = var1.readUnsignedShort();
          } else if(var2 == 249) {
             this.field3671 = class28.readStringIntParameters(var1, this.field3671);
          }

@@ -127,8 +127,8 @@ public class WorldMapDecoration {
             if(var20 == null) {
                return null;
             }
-         } else if(var9.int3 != -1) {
-            var20 = createSprite(var9.int2, var1, 0, 0, 0, false);
+         } else if(var9.placeholderTemplateId != -1) {
+            var20 = createSprite(var9.placeholderId, var1, 0, 0, 0, false);
             if(var20 == null) {
                return null;
             }
@@ -145,7 +145,7 @@ public class WorldMapDecoration {
          Graphics3D.Rasterizer3D_method1();
          Graphics3D.method2780(16, 16);
          Graphics3D.rasterGouraudLowRes = false;
-         if(var9.int3 != -1) {
+         if(var9.placeholderTemplateId != -1) {
             var20.drawAt(0, 0);
          }
 
