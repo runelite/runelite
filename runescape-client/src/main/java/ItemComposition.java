@@ -126,8 +126,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1952862061
    )
-   @Export("team")
-   int team;
+   @Export("shiftClickIndex")
+   int shiftClickIndex;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = 265594253
@@ -306,7 +306,7 @@ public class ItemComposition extends CacheableNode {
       this.isMembers = false;
       this.groundActions = new String[]{null, null, "Take", null, null};
       this.inventoryActions = new String[]{null, null, null, null, "Drop"};
-      this.team = -2;
+      this.shiftClickIndex = -2;
       this.maleModel = -1;
       this.maleModel1 = -1;
       this.maleOffset = 0;
@@ -436,7 +436,7 @@ public class ItemComposition extends CacheableNode {
                this.textToReplaceWith[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 42) {
-            this.team = var1.readByte();
+            this.shiftClickIndex = var1.readByte();
          } else if(var2 == 65) {
             this.isTradable = true;
          } else if(var2 == 78) {
@@ -905,6 +905,6 @@ public class ItemComposition extends CacheableNode {
    )
    @Export("getShiftClickActionIndex")
    public int getShiftClickActionIndex() {
-      return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(this.inventoryActions[this.team] != null?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
+      return this.shiftClickIndex != -1 && this.inventoryActions != null?(this.shiftClickIndex >= 0?(this.inventoryActions[this.shiftClickIndex] != null?this.shiftClickIndex :-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
    }
 }
