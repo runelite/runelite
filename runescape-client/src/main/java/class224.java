@@ -1,17 +1,17 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hs")
+@ObfuscatedName("hv")
 public abstract class class224 extends CacheableNode {
-   @ObfuscatedName("i")
-   final int field2660;
+   @ObfuscatedName("k")
+   final int field2669;
 
    class224(int var1) {
-      this.field2660 = var1;
+      this.field2669 = var1;
    }
 
-   @ObfuscatedName("c")
-   abstract Object vmethod4085();
+   @ObfuscatedName("o")
+   abstract Object vmethod4084();
 
-   @ObfuscatedName("i")
-   abstract boolean vmethod4088();
+   @ObfuscatedName("k")
+   abstract boolean vmethod4087();
 }

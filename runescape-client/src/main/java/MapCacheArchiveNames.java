@@ -6,39 +6,49 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ax")
 @Implements("MapCacheArchiveNames")
 public class MapCacheArchiveNames {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lax;"
    )
    @Export("DETAILS")
    public static final MapCacheArchiveNames DETAILS;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lax;"
    )
    @Export("COMPOSITE_MAP")
    public static final MapCacheArchiveNames COMPOSITE_MAP;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lax;"
    )
    @Export("COMPOSITE_TEXTURE")
    public static final MapCacheArchiveNames COMPOSITE_TEXTURE;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lax;"
    )
    @Export("AREA")
    public static final MapCacheArchiveNames AREA;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Lax;"
    )
    @Export("LABELS")
    public static final MapCacheArchiveNames LABELS;
-   @ObfuscatedName("bj")
-   static String field520;
-   @ObfuscatedName("x")
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "Llu;"
+   )
+   @Export("rasterProvider")
+   public static BufferProvider rasterProvider;
+   @ObfuscatedName("dm")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
+   @ObfuscatedName("m")
    @Export("name")
    public final String name;
 
@@ -52,5 +62,18 @@ public class MapCacheArchiveNames {
 
    MapCacheArchiveNames(String var1) {
       this.name = var1;
+   }
+
+   @ObfuscatedName("je")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1463056378"
+   )
+   static final void method588() {
+      for(int var0 = 0; var0 < class93.playerIndexesCount; ++var0) {
+         Player var1 = Client.cachedPlayers[class93.playerIndices[var0]];
+         var1.method1191();
+      }
+
    }
 }

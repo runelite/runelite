@@ -3,39 +3,34 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fi")
 public class class167 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @Export("jagexClDat")
    static File jagexClDat;
-   @ObfuscatedName("k")
-   public static File field2206;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Ldq;"
+      signature = "Ldy;"
    )
    @Export("randomDat")
-   public static CacheFile randomDat;
-   @ObfuscatedName("e")
+   static CacheFile randomDat;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ldq;"
+      signature = "Ldy;"
    )
    @Export("dat2File")
    public static CacheFile dat2File;
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ldq;"
+      signature = "Ldy;"
    )
    @Export("idx255File")
    public static CacheFile idx255File;
-   @ObfuscatedName("l")
+   @ObfuscatedName("bq")
    @ObfuscatedSignature(
-      signature = "[Ldq;"
+      signature = "Lll;"
    )
-   @Export("idxFiles")
-   public static CacheFile[] idxFiles;
-   @ObfuscatedName("h")
-   public static String[] field2214;
+   static IndexedSprite field2223;
 
    static {
       randomDat = null;
@@ -43,69 +38,86 @@ public class class167 {
       idx255File = null;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("gi")
    @ObfuscatedSignature(
-      signature = "(Ljm;I)V",
-      garbageValue = "-766944462"
-   )
-   public static void method3254(IndexDataBase var0) {
-      class279.field3549 = var0;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-787694628"
+      signature = "(IIIIIIIB)V",
+      garbageValue = "-37"
    )
    static final void method3256(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int[] var7 = Region.method2929(var0, var1, var2);
-      int[] var8 = Region.method2929(var3, var4, var5);
-      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
-   }
+      if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
+         if(Client.lowMemory && var0 != BoundingBox3DDrawMode.plane) {
+            return;
+         }
 
-   @ObfuscatedName("jd")
-   @ObfuscatedSignature(
-      signature = "(Lib;B)Z",
-      garbageValue = "112"
-   )
-   static final boolean method3248(Widget var0) {
-      if(var0.tableActions == null) {
-         return false;
-      } else {
-         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
-            int var2 = class47.method713(var0, var1);
-            int var3 = var0.field2928[var1];
-            if(var0.tableActions[var1] == 2) {
-               if(var2 >= var3) {
-                  return false;
+         int var7 = 0;
+         boolean var8 = true;
+         boolean var9 = false;
+         boolean var10 = false;
+         if(var1 == 0) {
+            var7 = class255.region.getWallObjectHash(var0, var2, var3);
+         }
+
+         if(var1 == 1) {
+            var7 = class255.region.method2879(var0, var2, var3);
+         }
+
+         if(var1 == 2) {
+            var7 = class255.region.method2888(var0, var2, var3);
+         }
+
+         if(var1 == 3) {
+            var7 = class255.region.getGroundObjectHash(var0, var2, var3);
+         }
+
+         int var11;
+         if(var7 != 0) {
+            var11 = class255.region.getObjectFlags(var0, var2, var3, var7);
+            int var13 = var7 >> 14 & 32767;
+            int var14 = var11 & 31;
+            int var15 = var11 >> 6 & 3;
+            ObjectComposition var12;
+            if(var1 == 0) {
+               class255.region.removeBoundaryObject(var0, var2, var3);
+               var12 = GameCanvas.getObjectDefinition(var13);
+               if(var12.clipType != 0) {
+                  Client.collisionMaps[var0].removeWall(var2, var3, var14, var15, var12.blocksProjectile);
                }
-            } else if(var0.tableActions[var1] == 3) {
-               if(var2 <= var3) {
-                  return false;
+            }
+
+            if(var1 == 1) {
+               class255.region.removeWallDecoration(var0, var2, var3);
+            }
+
+            if(var1 == 2) {
+               class255.region.method3035(var0, var2, var3);
+               var12 = GameCanvas.getObjectDefinition(var13);
+               if(var2 + var12.width > 103 || var3 + var12.width > 103 || var2 + var12.length > 103 || var3 + var12.length > 103) {
+                  return;
                }
-            } else if(var0.tableActions[var1] == 4) {
-               if(var3 == var2) {
-                  return false;
+
+               if(var12.clipType != 0) {
+                  Client.collisionMaps[var0].removeObject(var2, var3, var12.width, var12.length, var15, var12.blocksProjectile);
                }
-            } else if(var3 != var2) {
-               return false;
+            }
+
+            if(var1 == 3) {
+               class255.region.removeFloorDecoration(var0, var2, var3);
+               var12 = GameCanvas.getObjectDefinition(var13);
+               if(var12.clipType == 1) {
+                  Client.collisionMaps[var0].method3401(var2, var3);
+               }
             }
          }
 
-         return true;
-      }
-   }
+         if(var4 >= 0) {
+            var11 = var0;
+            if(var0 < 3 && (class62.tileSettings[1][var2][var3] & 2) == 2) {
+               var11 = var0 + 1;
+            }
 
-   @ObfuscatedName("kx")
-   @ObfuscatedSignature(
-      signature = "([BII)V",
-      garbageValue = "1075413476"
-   )
-   static void method3253(byte[] var0, int var1) {
-      if(Client.field896 == null) {
-         Client.field896 = new byte[24];
+            class254.method4508(var0, var11, var2, var3, var4, var5, var6, class255.region, Client.collisionMaps[var0]);
+         }
       }
 
-      class205.method3845(var0, var1, Client.field896, 0, 24);
    }
 }

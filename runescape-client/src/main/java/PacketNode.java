@@ -4,126 +4,71 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gg")
+@ObfuscatedName("gh")
 @Implements("PacketNode")
 public class PacketNode extends Node {
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "[Lgg;"
+      signature = "[Lgh;"
    )
    @Export("packetBufferNodes")
    static PacketNode[] packetBufferNodes;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 2071439673
+      intValue = -72182589
    )
-   static int field2496;
-   @ObfuscatedName("z")
-   public static int[] field2491;
-   @ObfuscatedName("ef")
-   @ObfuscatedGetter(
-      intValue = -854639313
-   )
-   @Export("baseX")
-   static int baseX;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lfd;"
-   )
-   @Export("clientPacket")
-   ClientPacket clientPacket;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1823057557
-   )
-   int field2492;
+   static int field2502;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgf;"
+      signature = "Lfl;"
+   )
+   @Export("clientPacket")
+   public ClientPacket clientPacket;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -434098959
+   )
+   public int field2503;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
    )
    @Export("packetBuffer")
    public PacketBuffer packetBuffer;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 847533503
+      intValue = 1932772265
    )
-   public int field2494;
+   public int field2505;
 
    static {
       packetBufferNodes = new PacketNode[300];
-      field2496 = 0;
+      field2502 = 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-353960817"
+      garbageValue = "-1599528097"
    )
-   public void method3431() {
-      if(field2496 < packetBufferNodes.length) {
-         packetBufferNodes[++field2496 - 1] = this;
+   public void method3436() {
+      if(field2502 < packetBufferNodes.length) {
+         packetBufferNodes[++field2502 - 1] = this;
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(CB)Z",
-      garbageValue = "84"
+      signature = "(Ljf;IIIZB)V",
+      garbageValue = "11"
    )
-   public static boolean method3430(char var0) {
-      return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
-   }
-
-   @ObfuscatedName("it")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "0"
-   )
-   static String method3438(int var0) {
-      return var0 < 0?"":(Client.menuTargets[var0].length() > 0?Client.menuOptions[var0] + " " + Client.menuTargets[var0]:Client.menuOptions[var0]);
-   }
-
-   @ObfuscatedName("jj")
-   @ObfuscatedSignature(
-      signature = "(Lib;I)V",
-      garbageValue = "-1857951930"
-   )
-   static final void method3437(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 324) {
-         if(Client.field1072 == -1) {
-            Client.field1072 = var0.spriteId;
-            Client.field924 = var0.field2855;
-         }
-
-         if(Client.field1118.isFemale) {
-            var0.spriteId = Client.field1072;
-         } else {
-            var0.spriteId = Client.field924;
-         }
-
-      } else if(var1 == 325) {
-         if(Client.field1072 == -1) {
-            Client.field1072 = var0.spriteId;
-            Client.field924 = var0.field2855;
-         }
-
-         if(Client.field1118.isFemale) {
-            var0.spriteId = Client.field924;
-         } else {
-            var0.spriteId = Client.field1072;
-         }
-
-      } else if(var1 == 327) {
-         var0.rotationX = 150;
-         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 0;
-      } else if(var1 == 328) {
-         var0.rotationX = 150;
-         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 1;
-      }
+   public static void method3442(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
+      class229.field2687 = 1;
+      class185.field2511 = var0;
+      VertexNormal.field1931 = var1;
+      GrandExchangeEvents.field284 = var2;
+      class86.field1330 = var3;
+      class229.field2692 = var4;
+      class2.field11 = 10000;
    }
 }

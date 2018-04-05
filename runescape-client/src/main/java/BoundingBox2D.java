@@ -4,36 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("w")
+@ObfuscatedName("u")
 @Implements("BoundingBox2D")
 public final class BoundingBox2D extends BoundingBox {
-   @ObfuscatedName("c")
+   @ObfuscatedName("of")
+   @ObfuscatedSignature(
+      signature = "Lld;"
+   )
+   @Export("minimapSprite")
+   static SpritePixels minimapSprite;
+   @ObfuscatedName("pl")
    @ObfuscatedGetter(
-      intValue = -1546245765
+      intValue = -681479473
+   )
+   static int field248;
+   @ObfuscatedName("u")
+   public static short[] field246;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 423493109
    )
    @Export("xMin")
    final int xMin;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1442306253
+      intValue = 1699475659
    )
    @Export("yMin")
    final int yMin;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 768200023
+      intValue = -76157077
    )
    @Export("xMax")
    final int xMax;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1880251377
+      intValue = 1224011697
    )
    @Export("yMax")
    final int yMax;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1912374301
+      intValue = 349392343
    )
    @Export("color")
    final int color;
@@ -46,52 +59,49 @@ public final class BoundingBox2D extends BoundingBox {
       this.color = var5;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-254890889"
+      garbageValue = "45976309"
    )
-   final void vmethod63() {
+   public final void vmethod46() {
       Rasterizer2D.drawRectangle(this.xMin + Rasterizer2D.draw_region_x, this.yMin + Rasterizer2D.drawingAreaTop, this.xMax - this.xMin, this.yMax - this.yMin, this.color);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IB)Ljf;",
-      garbageValue = "73"
+      signature = "(I)[Lga;",
+      garbageValue = "-1823861162"
    )
-   public static class281 method49(int var0) {
-      class281 var1 = (class281)class281.field3566.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class281.field3576.getConfigData(32, var0);
-         var1 = new class281();
-         if(var2 != null) {
-            var1.method4977(new Buffer(var2));
-         }
-
-         class281.field3566.put(var1, (long)var0);
-         return var1;
-      }
+   static LoginPacket[] method37() {
+      return new LoginPacket[]{LoginPacket.field2485, LoginPacket.field2486, LoginPacket.field2483, LoginPacket.field2488};
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("fm")
    @ObfuscatedSignature(
-      signature = "(I)Lgg;",
-      garbageValue = "-2114697654"
+      signature = "(B)V",
+      garbageValue = "12"
    )
-   public static PacketNode method44() {
-      PacketNode var0;
-      if(PacketNode.field2496 == 0) {
-         var0 = new PacketNode();
-      } else {
-         var0 = PacketNode.packetBufferNodes[--PacketNode.field2496];
+   static final void method36() {
+      if(class71.soundSystem1 != null) {
+         class71.soundSystem1.method2197();
       }
 
-      var0.clientPacket = null;
-      var0.field2492 = 0;
-      var0.packetBuffer = new PacketBuffer(5000);
-      return var0;
+      if(class155.soundSystem0 != null) {
+         class155.soundSystem0.method2197();
+      }
+
+   }
+
+   @ObfuscatedName("kj")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-965946678"
+   )
+   static void method32() {
+      if(Client.field960 == 1) {
+         Client.field1061 = true;
+      }
+
    }
 }

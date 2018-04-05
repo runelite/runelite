@@ -6,35 +6,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("ff")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("ai")
-   static java.awt.Font field2249;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 2044766501
-   )
-   @Export("index")
-   int index;
-   @ObfuscatedName("o")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Ldq;"
+      signature = "Ldy;"
    )
    @Export("dataFile")
    CacheFile dataFile;
-   @ObfuscatedName("j")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ldq;"
+      signature = "Ldy;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -254096491
+      intValue = -1621000493
+   )
+   @Export("index")
+   int index;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1067051891
    )
    @Export("maxSize")
    int maxSize;
@@ -44,7 +42,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdq;Ldq;I)V"
+      signature = "(ILdy;Ldy;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -56,10 +54,10 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "674251084"
+      garbageValue = "-1580679217"
    )
    @Export("read")
    public byte[] read(int var1) {
@@ -103,7 +101,7 @@ public final class IndexFile {
                      int var10 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                      int var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                      int var12 = IndexStore_buffer[7] & 255;
-                     if(var9 == var1 && var10 == var7 && var12 == this.index) {
+                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
                         if(var11 >= 0 && (long)var11 <= this.dataFile.length() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
                               var5[var6++] = IndexStore_buffer[var13 + 8];
@@ -132,10 +130,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I[BII)Z",
-      garbageValue = "278561773"
+      garbageValue = "-1692563454"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -154,10 +152,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I[BIZB)Z",
-      garbageValue = "67"
+      signature = "(I[BIZI)Z",
+      garbageValue = "-1703245934"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -199,7 +197,7 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label146: {
+                  label145: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
@@ -208,7 +206,7 @@ public final class IndexFile {
                         try {
                            this.dataFile.read(IndexStore_buffer, 0, 8);
                         } catch (EOFException var16) {
-                           break label146;
+                           break label145;
                         }
 
                         var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
@@ -271,6 +269,28 @@ public final class IndexFile {
          } catch (IOException var17) {
             return false;
          }
+      }
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(II)Ljk;",
+      garbageValue = "-698481764"
+   )
+   @Export("getKitDefinition")
+   public static KitDefinition getKitDefinition(int var0) {
+      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = KitDefinition.identKit_ref.getConfigData(3, var0);
+         var1 = new KitDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         KitDefinition.identKits.put(var1, (long)var0);
+         return var1;
       }
    }
 }

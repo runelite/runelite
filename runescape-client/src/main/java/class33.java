@@ -1,121 +1,91 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("af")
 public final class class33 {
-   @ObfuscatedName("oh")
-   @ObfuscatedSignature(
-      signature = "Lki;"
-   )
-   @Export("clanMemberManager")
-   static ClanMemberManager clanMemberManager;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Ljm;"
-   )
-   static IndexDataBase field441;
    @ObfuscatedName("i")
-   final int[] field444;
+   @ObfuscatedSignature(
+      signature = "Lll;"
+   )
+   @Export("logoSprite")
+   static IndexedSprite logoSprite;
+   @ObfuscatedName("k")
+   final int[] field464;
 
    class33() {
-      this.field444 = new int[4096];
+      this.field464 = new int[4096];
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lad;I)V",
-      garbageValue = "-1673673141"
+      signature = "(Lar;B)V",
+      garbageValue = "5"
    )
-   final void method377(class44 var1) {
+   final void method407(class44 var1) {
       for(int var2 = 0; var2 < 64; ++var2) {
          for(int var3 = 0; var3 < 64; ++var3) {
-            this.field444[var2 * 64 + var3] = var1.method659(var2, var3) | -16777216;
+            this.field464[var2 * 64 + var3] = var1.method655(var2, var3) | -16777216;
          }
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-37520770"
+      signature = "(IIB)I",
+      garbageValue = "-47"
    )
-   final int method376(int var1, int var2) {
-      return this.field444[var1 * 64 + var2];
+   final int method402(int var1, int var2) {
+      return this.field464[var1 * 64 + var2];
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)[B",
-      garbageValue = "1218769080"
+      signature = "(Ljf;B)V",
+      garbageValue = "-3"
    )
-   public static byte[] method378() {
-      byte[] var0 = new byte[24];
-
-      try {
-         class167.randomDat.seek(0L);
-         class167.randomDat.read(var0);
-
-         int var1;
-         for(var1 = 0; var1 < 24 && var0[var1] == 0; ++var1) {
-            ;
-         }
-
-         if(var1 >= 24) {
-            throw new IOException();
-         }
-      } catch (Exception var4) {
-         for(int var2 = 0; var2 < 24; ++var2) {
-            var0[var2] = -1;
-         }
-      }
-
-      return var0;
+   public static void method409(IndexDataBase var0) {
+      Enum.EnumDefinition_indexCache = var0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1637554704"
+      signature = "(B)V",
+      garbageValue = "53"
    )
-   static void method385(String var0, String var1, String var2) {
-      class90.loginMessage1 = var0;
-      class90.loginMessage2 = var1;
-      class90.loginMessage3 = var2;
-   }
-
-   @ObfuscatedName("fd")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1404896621"
-   )
-   static final void method384() {
-      if(Tile.soundSystem1 != null) {
-         Tile.soundSystem1.method2222();
-      }
-
-      if(OwnWorldComparator.soundSystem0 != null) {
-         OwnWorldComparator.soundSystem0.method2222();
-      }
-
-   }
-
-   @ObfuscatedName("ip")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "19"
-   )
-   static final void method379(int var0) {
-      if(var0 >= 0) {
-         int var1 = Client.menuActionParams0[var0];
-         int var2 = Client.menuActionParams1[var0];
-         int var3 = Client.menuTypes[var0];
-         int var4 = Client.menuIdentifiers[var0];
-         String var5 = Client.menuOptions[var0];
-         String var6 = Client.menuTargets[var0];
-         class177.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.mouseLastPressedX, MouseInput.mouseLastPressedY);
+   static final void method408() {
+      if(!class132.Viewport_false0) {
+         int var0 = Region.pitchSin;
+         int var1 = Region.pitchCos;
+         int var2 = Region.yawSin;
+         int var3 = Region.yawCos;
+         byte var4 = 50;
+         short var5 = 3500;
+         int var6 = (class132.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var7 = (class132.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var8 = (class132.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var9 = (class132.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var10 = Graphics3D.method2779(var7, var4, var1, var0);
+         int var11 = Graphics3D.method2803(var7, var4, var1, var0);
+         var7 = var10;
+         var10 = Graphics3D.method2779(var9, var5, var1, var0);
+         int var12 = Graphics3D.method2803(var9, var5, var1, var0);
+         var9 = var10;
+         var10 = Graphics3D.method2800(var6, var11, var3, var2);
+         var11 = Graphics3D.method2812(var6, var11, var3, var2);
+         var6 = var10;
+         var10 = Graphics3D.method2800(var8, var12, var3, var2);
+         var12 = Graphics3D.method2812(var8, var12, var3, var2);
+         class132.field1919 = (var6 + var10) / 2;
+         class132.field1923 = (var7 + var9) / 2;
+         class132.field1924 = (var11 + var12) / 2;
+         class132.field1925 = (var10 - var6) / 2;
+         class37.field502 = (var9 - var7) / 2;
+         Resampler.field1629 = (var12 - var11) / 2;
+         class20.field336 = Math.abs(class132.field1925);
+         class132.field1926 = Math.abs(class37.field502);
+         IndexStoreActionHandler.field3399 = Math.abs(Resampler.field1629);
       }
    }
 }

@@ -1,32 +1,30 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fc")
 public class class156 extends class297 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljf;"
    )
-   @Export("item_ref")
-   public static IndexDataBase item_ref;
-   @ObfuscatedName("c")
-   final boolean field2140;
+   static IndexDataBase field2167;
+   @ObfuscatedName("o")
+   final boolean field2165;
 
    public class156(boolean var1) {
-      this.field2140 = var1;
+      this.field2165 = var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lke;Lke;I)I",
-      garbageValue = "-612730371"
+      signature = "(Lkv;Lkv;S)I",
+      garbageValue = "-31797"
    )
-   int method3173(ChatPlayer var1, ChatPlayer var2) {
-      return var2.rank != var1.rank?(this.field2140?var1.rank - var2.rank:var2.rank - var1.rank):this.method5288(var1, var2);
+   int method3167(ChatPlayer var1, ChatPlayer var2) {
+      return var2.rank != var1.rank?(this.field2165?var1.rank - var2.rank:var2.rank - var1.rank):this.method5282(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method3173((ChatPlayer)var1, (ChatPlayer)var2);
+      return this.method3167((ChatPlayer)var1, (ChatPlayer)var2);
    }
 }

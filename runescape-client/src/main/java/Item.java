@@ -4,111 +4,93 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cc")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("cw")
    @ObfuscatedGetter(
-      intValue = -1725687583
+      intValue = 2021382965
    )
-   static int field1406;
-   @ObfuscatedName("u")
-   static int[] field1408;
-   @ObfuscatedName("c")
+   @Export("currentPressedKey")
+   public static int currentPressedKey;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -575635587
+      intValue = -880558037
    )
    @Export("id")
    int id;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1957266407
+      intValue = -1734971795
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)Led;",
-      garbageValue = "-83"
+      signature = "(I)Lei;",
+      garbageValue = "1329079562"
    )
    protected final Model getModel() {
-      return GameObject.getItemDefinition(this.id).getModel(this.quantity);
+      return class47.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)Lji;",
-      garbageValue = "154626736"
+      signature = "(Ljf;Ljf;Ljf;I)V",
+      garbageValue = "2123410925"
    )
-   public static class279 method1926(int var0) {
-      class279 var1 = (class279)class279.field3550.get((long)var0);
+   public static void method1951(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
+      Sequence.seq_ref = var0;
+      Sequence.skel_ref = var1;
+      Sequence.skin_ref = var2;
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(IB)Lef;",
+      garbageValue = "-10"
+   )
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class279.field3549.getConfigData(34, var0);
-         var1 = new class279();
-         if(var2 != null) {
-            var1.method4925(new Buffer(var2));
-         }
+         IndexDataBase var3 = Sequence.skel_ref;
+         IndexDataBase var4 = Sequence.skin_ref;
+         boolean var5 = true;
+         int[] var6 = var3.getChilds(var0);
 
-         var1.method4924();
-         class279.field3550.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1063167102"
-   )
-   public static boolean method1927() {
-      return class229.field2680 != 0?true:class229.field2679.method4169();
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "52"
-   )
-   public static String method1925(String var0) {
-      int var1 = var0.length();
-      char[] var2 = new char[var1];
-      byte var3 = 2;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         char var5 = var0.charAt(var4);
-         if(var3 == 0) {
-            var5 = Character.toLowerCase(var5);
-         } else if(var3 == 2 || Character.isUpperCase(var5)) {
-            char var6;
-            if(var5 != 181 && var5 != 131) {
-               var6 = Character.toTitleCase(var5);
+         for(int var7 = 0; var7 < var6.length; ++var7) {
+            byte[] var8 = var3.getChild(var0, var6[var7]);
+            if(var8 == null) {
+               var5 = false;
             } else {
-               var6 = var5;
-            }
-
-            var5 = var6;
-         }
-
-         if(Character.isLetter(var5)) {
-            var3 = 0;
-         } else if(var5 != '.' && var5 != '?' && var5 != '!') {
-            if(Character.isSpaceChar(var5)) {
-               if(var3 != 2) {
-                  var3 = 1;
+               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+               byte[] var10 = var4.getChild(var9, 0);
+               if(var10 == null) {
+                  var5 = false;
                }
-            } else {
-               var3 = 1;
             }
-         } else {
-            var3 = 2;
          }
 
-         var2[var4] = var5;
-      }
+         Frames var2;
+         if(!var5) {
+            var2 = null;
+         } else {
+            try {
+               var2 = new Frames(var3, var4, var0, false);
+            } catch (Exception var12) {
+               var2 = null;
+            }
+         }
 
-      return new String(var2);
+         if(var2 != null) {
+            Sequence.skeletons.put(var2, (long)var0);
+         }
+
+         return var2;
+      }
    }
 }

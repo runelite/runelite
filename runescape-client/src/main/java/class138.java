@@ -1,41 +1,59 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ex")
 public class class138 {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIIB)V",
-      garbageValue = "1"
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      longValue = 8571598183286101587L
    )
-   static void method3065(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   static long field2048;
+   @ObfuscatedName("dy")
+   @ObfuscatedGetter(
+      intValue = 1707259621
+   )
+   @Export("myWorldPort")
+   static int myWorldPort;
+   @ObfuscatedName("ev")
+   @ObfuscatedGetter(
+      intValue = 1602829299
+   )
+   @Export("baseX")
+   static int baseX;
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
-            }
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "2131638771"
+   )
+   static final void method3049(int var0, int var1, int var2) {
+      int var3;
+      for(var3 = 0; var3 < 8; ++var3) {
+         for(int var4 = 0; var4 < 8; ++var4) {
+            class62.tileHeights[var0][var3 + var1][var4 + var2] = 0;
          }
+      }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method3065(var0, var1, var2, var5 - 1);
-         method3065(var0, var1, var5 + 1, var3);
+      if(var1 > 0) {
+         for(var3 = 1; var3 < 8; ++var3) {
+            class62.tileHeights[var0][var1][var3 + var2] = class62.tileHeights[var0][var1 - 1][var3 + var2];
+         }
+      }
+
+      if(var2 > 0) {
+         for(var3 = 1; var3 < 8; ++var3) {
+            class62.tileHeights[var0][var3 + var1][var2] = class62.tileHeights[var0][var3 + var1][var2 - 1];
+         }
+      }
+
+      if(var1 > 0 && class62.tileHeights[var0][var1 - 1][var2] != 0) {
+         class62.tileHeights[var0][var1][var2] = class62.tileHeights[var0][var1 - 1][var2];
+      } else if(var2 > 0 && class62.tileHeights[var0][var1][var2 - 1] != 0) {
+         class62.tileHeights[var0][var1][var2] = class62.tileHeights[var0][var1][var2 - 1];
+      } else if(var1 > 0 && var2 > 0 && class62.tileHeights[var0][var1 - 1][var2 - 1] != 0) {
+         class62.tileHeights[var0][var1][var2] = class62.tileHeights[var0][var1 - 1][var2 - 1];
       }
 
    }
