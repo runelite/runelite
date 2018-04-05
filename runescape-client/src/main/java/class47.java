@@ -660,7 +660,7 @@ public class class47 {
             var1.isTradable = false;
             var1.groundActions = null;
             var1.inventoryActions = null;
-            var1.team = -1;
+            var1.shiftClickIndex = -1;
             var1.int1 = 0;
             if(var1.field3671 != null) {
                boolean var3 = false;
