@@ -27,7 +27,6 @@ package net.runelite.rs.api;
 import java.util.Map;
 
 import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
