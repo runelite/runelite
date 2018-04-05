@@ -1,155 +1,68 @@
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ah")
+@ObfuscatedName("aq")
 @Implements("MapLabel")
 public class MapLabel {
-   @ObfuscatedName("pa")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1665951815
+      intValue = 843972681
    )
-   static int field451;
-   @ObfuscatedName("de")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
-   )
-   @Export("indexScripts")
-   static IndexData indexScripts;
-   @ObfuscatedName("fp")
-   @ObfuscatedSignature(
-      signature = "Lla;"
-   )
-   @Export("mapedge")
-   static SpritePixels mapedge;
-   @ObfuscatedName("c")
+   @Export("canvasWidth")
+   public static int canvasWidth;
+   @ObfuscatedName("o")
    @Export("text")
    String text;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -767310791
+      intValue = -1110346963
    )
-   int field446;
-   @ObfuscatedName("o")
+   int field470;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1470146063
+      intValue = -279191477
    )
-   int field452;
-   @ObfuscatedName("j")
+   int field469;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ly;"
+      signature = "Le;"
    )
    @Export("fontSize")
    Size fontSize;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IILy;)V"
+      signature = "(Ljava/lang/String;IILe;)V"
    )
    MapLabel(String var1, int var2, int var3, Size var4) {
       this.text = var1;
-      this.field446 = var2;
-      this.field452 = var3;
+      this.field470 = var2;
+      this.field469 = var3;
       this.fontSize = var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljm;Ljm;B)I",
-      garbageValue = "-13"
+      signature = "(I)I",
+      garbageValue = "-950710445"
    )
-   static int method388(IndexDataBase var0, IndexDataBase var1) {
-      int var2 = 0;
-      if(var0.tryLoadRecordByNames("title.jpg", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("logo", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("logo_deadman_mode", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("titlebox", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("titlebutton", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("runes", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("title_mute", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("options_radio_buttons,0", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("options_radio_buttons,2", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("options_radio_buttons,4", "")) {
-         ++var2;
-      }
-
-      if(var1.tryLoadRecordByNames("options_radio_buttons,6", "")) {
-         ++var2;
-      }
-
-      var1.tryLoadRecordByNames("sl_back", "");
-      var1.tryLoadRecordByNames("sl_flags", "");
-      var1.tryLoadRecordByNames("sl_arrows", "");
-      var1.tryLoadRecordByNames("sl_stars", "");
-      var1.tryLoadRecordByNames("sl_button", "");
-      return var2;
+   static final int method410() {
+      return class132.Viewport_mouseY;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("hj")
    @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "1"
+      signature = "(IIIII)V",
+      garbageValue = "1373634048"
    )
-   static long method387() {
-      try {
-         URL var0 = new URL(ClientPacket.method3421("services", false) + "m=accountappeal/login.ws");
-         URLConnection var1 = var0.openConnection();
-         var1.setRequestProperty("connection", "close");
-         var1.setDoInput(true);
-         var1.setDoOutput(true);
-         var1.setConnectTimeout(5000);
-         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
-         var2.write("data1=req");
-         var2.flush();
-         InputStream var3 = var1.getInputStream();
-         Buffer var4 = new Buffer(new byte[1000]);
-
-         do {
-            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
-            if(var5 == -1) {
-               var4.offset = 0;
-               long var7 = var4.readLong();
-               return var7;
-            }
-
-            var4.offset += var5;
-         } while(var4.offset < 1000);
-
-         return 0L;
-      } catch (Exception var9) {
-         return 0L;
+   static final void method411(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1072[var4] = true;
+         }
       }
+
    }
 }

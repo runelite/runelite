@@ -4,83 +4,78 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("dq")
 @Implements("Resampler")
 public class Resampler {
-   @ObfuscatedName("j")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -554086911
+      intValue = -1844476667
+   )
+   static int field1629;
+   @ObfuscatedName("q")
+   static String[] field1627;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1205267741
    )
    @Export("storedSampleRateRatio")
    int storedSampleRateRatio;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -144966917
+      intValue = 1382949503
    )
    @Export("playbackSampleRateRatio")
    int playbackSampleRateRatio;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @Export("resampleTable")
    int[][] resampleTable;
 
    public Resampler(int var1, int var2) {
       if(var2 != var1) {
-         int var4 = var1;
-         int var5 = var2;
-         if(var2 > var1) {
-            var4 = var2;
-            var5 = var1;
-         }
-
-         while(var5 != 0) {
-            int var6 = var4 % var5;
-            var4 = var5;
-            var5 = var6;
-         }
-
-         var1 /= var4;
-         var2 /= var4;
+         int var3 = class36.method538(var1, var2);
+         var1 /= var3;
+         var2 /= var3;
          this.storedSampleRateRatio = var1;
          this.playbackSampleRateRatio = var2;
          this.resampleTable = new int[var1][14];
 
-         for(int var7 = 0; var7 < var1; ++var7) {
-            int[] var8 = this.resampleTable[var7];
-            double var9 = 6.0D + (double)var7 / (double)var1;
-            int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
-            if(var11 < 0) {
-               var11 = 0;
+         for(int var4 = 0; var4 < var1; ++var4) {
+            int[] var5 = this.resampleTable[var4];
+            double var6 = 6.0D + (double)var4 / (double)var1;
+            int var8 = (int)Math.floor(var6 - 7.0D + 1.0D);
+            if(var8 < 0) {
+               var8 = 0;
             }
 
-            int var12 = (int)Math.ceil(7.0D + var9);
-            if(var12 > 14) {
-               var12 = 14;
+            int var9 = (int)Math.ceil(var6 + 7.0D);
+            if(var9 > 14) {
+               var9 = 14;
             }
 
-            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
-               double var15 = 3.141592653589793D * ((double)var11 - var9);
-               double var17 = var13;
-               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
-                  var17 = var13 * (Math.sin(var15) / var15);
+            for(double var10 = (double)var2 / (double)var1; var8 < var9; ++var8) {
+               double var12 = 3.141592653589793D * ((double)var8 - var6);
+               double var14 = var10;
+               if(var12 < -1.0E-4D || var12 > 1.0E-4D) {
+                  var14 = var10 * (Math.sin(var12) / var12);
                }
 
-               var17 *= 0.54D + 0.46D * Math.cos(((double)var11 - var9) * 0.2243994752564138D);
-               var8[var11] = (int)Math.floor(65536.0D * var17 + 0.5D);
+               var14 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var8 - var6));
+               var5[var8] = (int)Math.floor(65536.0D * var14 + 0.5D);
             }
          }
 
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "-1285236461"
+      signature = "([BB)[B",
+      garbageValue = "85"
    )
    @Export("resampleIfNecessary")
    byte[] resampleIfNecessary(byte[] var1) {
       if(this.resampleTable != null) {
-         int var2 = (int)((long)var1.length * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio) + 14;
+         int var2 = (int)((long)this.playbackSampleRateRatio * (long)var1.length / (long)this.storedSampleRateRatio) + 14;
          int[] var3 = new int[var2];
          int var4 = 0;
          int var5 = 0;
@@ -92,7 +87,7 @@ public class Resampler {
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
-               var3[var4 + var9] += var7 * var8[var9];
+               var3[var9 + var4] += var8[var9] * var7;
             }
 
             var5 += this.playbackSampleRateRatio;
@@ -118,55 +113,29 @@ public class Resampler {
       return var1;
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "4117"
-   )
-   int method2286(int var1) {
-      if(this.resampleTable != null) {
-         var1 = (int)((long)var1 * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio);
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "201385874"
+      garbageValue = "1986061764"
    )
-   int method2290(int var1) {
+   int method2302(int var1) {
       if(this.resampleTable != null) {
-         var1 = (int)((long)var1 * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio) + 6;
+         var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio);
       }
 
       return var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1281656114"
+      signature = "(IB)I",
+      garbageValue = "9"
    )
-   static int method2295(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+   int method2303(int var1) {
+      if(this.resampleTable != null) {
+         var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio) + 6;
       }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
+      return var1;
    }
 }

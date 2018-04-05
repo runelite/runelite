@@ -1,23 +1,20 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ed")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("dh")
-   @ObfuscatedSignature(
-      signature = "Ljs;"
-   )
-   @Export("indexCache15")
-   static IndexData indexCache15;
-   @ObfuscatedName("ci")
+   @ObfuscatedName("pb")
    @ObfuscatedGetter(
-      intValue = -9892427
+      intValue = -1667513523
+   )
+   static int field2051;
+   @ObfuscatedName("cs")
+   @ObfuscatedGetter(
+      intValue = -1062304309
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -26,17 +23,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)Led;",
-      garbageValue = "-83"
+      signature = "(I)Lei;",
+      garbageValue = "1329079562"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cr")
+   @ObfuscatedName("cf")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
@@ -49,53 +46,43 @@ public abstract class Renderable extends CacheableNode {
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldp;",
-      garbageValue = "435090535"
+      signature = "([I[IB)V",
+      garbageValue = "118"
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class167.field2206, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
+   public static void method3051(int[] var0, int[] var1) {
+      if(var0 != null && var1 != null) {
+         class195.field2584 = var0;
+         OwnWorldComparator.field866 = new int[var0.length];
+         class319.field3930 = new byte[var0.length][][];
+
+         for(int var2 = 0; var2 < class195.field2584.length; ++var2) {
+            class319.field3930[var2] = new byte[var1[var2]][];
          }
-      }
 
-      String var4 = "";
-      if(PendingSpawn.field1146 == 33) {
-         var4 = "_rc";
-      } else if(PendingSpawn.field1146 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class22.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
+      } else {
+         class195.field2584 = null;
+         OwnWorldComparator.field866 = null;
+         class319.field3930 = null;
       }
    }
 
-   @ObfuscatedName("jp")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "97"
+      signature = "(III)I",
+      garbageValue = "-1868311539"
    )
-   static final String method3069(int var0) {
-      return var0 < 999999999?Integer.toString(var0):"*";
+   static final int method3058(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
+      }
    }
 }

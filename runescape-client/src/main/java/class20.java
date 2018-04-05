@@ -1,79 +1,77 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("n")
+@ObfuscatedName("b")
 public class class20 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1701648215
+      intValue = -1478310797
    )
-   public static int field319;
-   @ObfuscatedName("fm")
+   static int field336;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "[Lla;"
+      signature = "Lak;"
    )
-   @Export("headIconsPk")
-   static SpritePixels[] headIconsPk;
+   @Export("scriptMapIconReference")
+   static MapIconReference scriptMapIconReference;
+   @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Lki;"
+   )
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("go")
+   @ObfuscatedGetter(
+      intValue = -248590319
+   )
+   @Export("cameraY")
+   static int cameraY;
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IS)Lbk;",
-      garbageValue = "-13006"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "-15"
    )
-   static MessageNode method170(int var0) {
-      return (MessageNode)class95.messages.get((long)var0);
+   @Export("addChatMessage")
+   @Hook("addChatMessage")
+   static void addChatMessage(int var0, String var1, String var2, String var3) {
+      ChatLineBuffer var4 = (ChatLineBuffer)class95.chatLineMap.get(Integer.valueOf(var0));
+      if(var4 == null) {
+         var4 = new ChatLineBuffer();
+         class95.chatLineMap.put(Integer.valueOf(var0), var4);
+      }
+
+      MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
+      class95.messages.put(var5, (long)var5.id);
+      class95.field1453.add(var5);
+      Client.chatCycle = Client.cycleCntr;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(Llq;I)V",
-      garbageValue = "1209692311"
+      signature = "(II)V",
+      garbageValue = "466845483"
    )
-   static final void method169(IndexedSprite var0) {
-      short var1 = 256;
+   @Export("runWidgetOnLoadListener")
+   static void runWidgetOnLoadListener(int var0) {
+      if(var0 != -1) {
+         if(class189.loadWidget(var0)) {
+            Widget[] var1 = MouseRecorder.widgets[var0];
 
-      int var2;
-      for(var2 = 0; var2 < BaseVarType.field30.length; ++var2) {
-         BaseVarType.field30[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         BaseVarType.field30[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class5.field34[var5] = (BaseVarType.field30[var5 + 128] + BaseVarType.field30[var5 - 128] + BaseVarType.field30[var5 + 1] + BaseVarType.field30[var5 - 1]) / 4;
-            }
-         }
-
-         int[] var8 = BaseVarType.field30;
-         BaseVarType.field30 = class5.field34;
-         class5.field34 = var8;
-      }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.width; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + var0.offsetX + 16;
-                  int var6 = var3 + var0.offsetY + 16;
-                  int var7 = var5 + (var6 << 7);
-                  BaseVarType.field30[var7] = 0;
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.onLoadListener != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.objs = var3.onLoadListener;
+                  FloorUnderlayDefinition.runScript(var4, 5000000);
                }
             }
+
          }
       }
-
    }
 }

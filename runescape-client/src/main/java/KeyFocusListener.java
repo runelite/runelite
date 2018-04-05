@@ -9,79 +9,91 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("an")
+@ObfuscatedName("ay")
 @Implements("KeyFocusListener")
 public final class KeyFocusListener implements KeyListener, FocusListener {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lan;"
+      signature = "Lay;"
    )
    @Export("keyboard")
-   static KeyFocusListener keyboard;
-   @ObfuscatedName("cm")
+   public static KeyFocusListener keyboard;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1749351287
+   )
+   @Export("scriptStringStackSize")
+   static int scriptStringStackSize;
+   @ObfuscatedName("cu")
    @Export("keyPressed")
    public static boolean[] keyPressed;
-   @ObfuscatedName("cv")
-   static int[] field616;
-   @ObfuscatedName("ch")
-   @ObfuscatedGetter(
-      intValue = 955752471
-   )
-   static int field609;
    @ObfuscatedName("ci")
-   @ObfuscatedGetter(
-      intValue = 582729975
-   )
-   static int field610;
-   @ObfuscatedName("ce")
-   static char[] field594;
-   @ObfuscatedName("cr")
-   static int[] field612;
-   @ObfuscatedName("cf")
-   public static int[] field613;
-   @ObfuscatedName("cb")
-   @ObfuscatedGetter(
-      intValue = -311840527
-   )
-   public static int field593;
+   static int[] field625;
    @ObfuscatedName("cx")
    @ObfuscatedGetter(
-      intValue = -1293966161
+      intValue = -31228335
    )
-   static int field615;
-   @ObfuscatedName("cw")
+   static int field626;
+   @ObfuscatedName("cs")
    @ObfuscatedGetter(
-      intValue = 2045583319
+      intValue = 346382549
    )
-   static int field606;
-   @ObfuscatedName("cp")
+   static int field627;
+   @ObfuscatedName("cc")
+   static char[] field632;
+   @ObfuscatedName("ca")
+   static int[] field629;
+   @ObfuscatedName("ch")
+   public static int[] field630;
+   @ObfuscatedName("cy")
    @ObfuscatedGetter(
-      intValue = 2050030589
+      intValue = -596205921
    )
-   static int field617;
+   public static int field638;
+   @ObfuscatedName("cr")
+   @ObfuscatedGetter(
+      intValue = -1196715685
+   )
+   static int field620;
+   @ObfuscatedName("ct")
+   @ObfuscatedGetter(
+      intValue = 744485953
+   )
+   static int field631;
    @ObfuscatedName("co")
    @ObfuscatedGetter(
-      intValue = -749012037
+      intValue = 122110221
+   )
+   static int field623;
+   @ObfuscatedName("cq")
+   @ObfuscatedGetter(
+      intValue = 1571022339
    )
    @Export("keyboardIdleTicks")
-   public static volatile int keyboardIdleTicks;
-   @ObfuscatedName("cs")
+   static volatile int keyboardIdleTicks;
+   @ObfuscatedName("cn")
    @Export("KeyHandler_keyCodes")
    static int[] KeyHandler_keyCodes;
+   @ObfuscatedName("dl")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   @Export("indexCache13")
+   static IndexData indexCache13;
 
    static {
       keyboard = new KeyFocusListener();
       keyPressed = new boolean[112];
-      field616 = new int[128];
-      field609 = 0;
-      field610 = 0;
-      field594 = new char[128];
-      field612 = new int[128];
-      field613 = new int[128];
-      field593 = 0;
-      field615 = 0;
-      field606 = 0;
-      field617 = 0;
+      field625 = new int[128];
+      field626 = 0;
+      field627 = 0;
+      field632 = new char[128];
+      field629 = new int[128];
+      field630 = new int[128];
+      field638 = 0;
+      field620 = 0;
+      field631 = 0;
+      field623 = 0;
       keyboardIdleTicks = 0;
       KeyHandler_keyCodes = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
    }
@@ -100,21 +112,21 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             var2 = -1;
          }
 
-         if(field610 >= 0 && var2 >= 0) {
-            field616[field610] = var2;
-            field610 = field610 + 1 & 127;
-            if(field609 == field610) {
-               field610 = -1;
+         if(field627 >= 0 && var2 >= 0) {
+            field625[field627] = var2;
+            field627 = field627 + 1 & 127;
+            if(field626 == field627) {
+               field627 = -1;
             }
          }
 
          int var3;
          if(var2 >= 0) {
-            var3 = field606 + 1 & 127;
-            if(var3 != field615) {
-               field612[field606] = var2;
-               field594[field606] = 0;
-               field606 = var3;
+            var3 = field631 + 1 & 127;
+            if(var3 != field620) {
+               field629[field631] = var2;
+               field632[field631] = 0;
+               field631 = var3;
             }
          }
 
@@ -135,11 +147,11 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             var2 = -1;
          }
 
-         if(field610 >= 0 && var2 >= 0) {
-            field616[field610] = ~var2;
-            field610 = field610 + 1 & 127;
-            if(field610 == field609) {
-               field610 = -1;
+         if(field627 >= 0 && var2 >= 0) {
+            field625[field627] = ~var2;
+            field627 = field627 + 1 & 127;
+            if(field626 == field627) {
+               field627 = -1;
             }
          }
       }
@@ -155,7 +167,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
                var3 = true;
             } else {
-               label58: {
+               label59: {
                   if(var2 != 0) {
                      char[] var7 = class314.cp1252AsciiExtension;
 
@@ -163,7 +175,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                         char var6 = var7[var5];
                         if(var2 == var6) {
                            var3 = true;
-                           break label58;
+                           break label59;
                         }
                      }
                   }
@@ -173,11 +185,11 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             }
 
             if(var3) {
-               int var4 = field606 + 1 & 127;
-               if(var4 != field615) {
-                  field612[field606] = -1;
-                  field594[field606] = var2;
-                  field606 = var4;
+               int var4 = field631 + 1 & 127;
+               if(var4 != field620) {
+                  field629[field631] = -1;
+                  field632[field631] = var2;
+                  field631 = var4;
                }
             }
          }
@@ -194,143 +206,112 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @ObfuscatedName("focusLost")
    public final synchronized void focusLost(FocusEvent var1) {
       if(keyboard != null) {
-         field610 = -1;
+         field627 = -1;
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("hw")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Throwable;Ljava/lang/String;)Lff;"
+      signature = "(Ljr;IIIB)V",
+      garbageValue = "-96"
    )
-   public static RunException method808(Throwable var0, String var1) {
-      RunException var2;
-      if(var0 instanceof RunException) {
-         var2 = (RunException)var0;
-         var2.field2184 = var2.field2184 + ' ' + var1;
-      } else {
-         var2 = new RunException(var0, var1);
-      }
-
-      return var2;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lgf;I)V",
-      garbageValue = "1314789376"
-   )
-   static final void method794(PacketBuffer var0) {
-      int var1 = 0;
-      var0.bitAccess();
-
-      int var2;
-      int var3;
-      int var4;
-      for(var2 = 0; var2 < class93.playerIndexesCount; ++var2) {
-         var3 = class93.playerIndices[var2];
-         if((class93.field1411[var3] & 1) == 0) {
-            if(var1 > 0) {
-               --var1;
-               class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-            } else {
-               var4 = var0.getBits(1);
-               if(var4 == 0) {
-                  var1 = World.method1642(var0);
-                  class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-               } else {
-                  FrameMap.decodeMovement(var0, var3);
-               }
-            }
+   static final void method811(NPCComposition var0, int var1, int var2, int var3) {
+      if(Client.menuOptionCount < 400) {
+         if(var0.configs != null) {
+            var0 = var0.transform();
          }
-      }
 
-      var0.byteAccess();
-      if(var1 != 0) {
-         throw new RuntimeException();
-      } else {
-         var0.bitAccess();
-
-         for(var2 = 0; var2 < class93.playerIndexesCount; ++var2) {
-            var3 = class93.playerIndices[var2];
-            if((class93.field1411[var3] & 1) != 0) {
-               if(var1 > 0) {
-                  --var1;
-                  class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-               } else {
-                  var4 = var0.getBits(1);
-                  if(var4 == 0) {
-                     var1 = World.method1642(var0);
-                     class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-                  } else {
-                     FrameMap.decodeMovement(var0, var3);
+         if(var0 != null) {
+            if(var0.field3724) {
+               if(!var0.field3738 || Client.field1048 == var1) {
+                  String var4 = var0.name;
+                  if(var0.combatLevel != 0) {
+                     var4 = var4 + PendingSpawn.method1653(var0.combatLevel, SoundTaskDataProvider.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
                   }
-               }
-            }
-         }
 
-         var0.byteAccess();
-         if(var1 != 0) {
-            throw new RuntimeException();
-         } else {
-            var0.bitAccess();
+                  if(var0.field3738 && Client.field1014) {
+                     TextureProvider.addMenuEntry("Examine", class45.getColTags(16776960) + var4, 1003, var1, var2, var3);
+                  }
 
-            for(var2 = 0; var2 < class93.field1416; ++var2) {
-               var3 = class93.field1418[var2];
-               if((class93.field1411[var3] & 1) != 0) {
-                  if(var1 > 0) {
-                     --var1;
-                     class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-                  } else {
-                     var4 = var0.getBits(1);
-                     if(var4 == 0) {
-                        var1 = World.method1642(var0);
-                        class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-                     } else if(ScriptVarType.decodeRegionHash(var0, var3)) {
-                        class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
+                  if(Client.itemSelectionState == 1) {
+                     TextureProvider.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class45.getColTags(16776960) + var4, 7, var1, var2, var3);
+                  } else if(Client.spellSelected) {
+                     if((class110.field1607 & 2) == 2) {
+                        TextureProvider.addMenuEntry(Client.field1092, Client.field1028 + " " + "->" + " " + class45.getColTags(16776960) + var4, 8, var1, var2, var3);
                      }
-                  }
-               }
-            }
+                  } else {
+                     int var5 = var0.field3738 && Client.field1014?2000:0;
+                     String[] var6 = var0.actions;
+                     int var7;
+                     int var8;
+                     if(var6 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var6[var7] != null && !var6[var7].equalsIgnoreCase("Attack")) {
+                              var8 = 0;
+                              if(var7 == 0) {
+                                 var8 = var5 + 9;
+                              }
 
-            var0.byteAccess();
-            if(var1 != 0) {
-               throw new RuntimeException();
-            } else {
-               var0.bitAccess();
+                              if(var7 == 1) {
+                                 var8 = var5 + 10;
+                              }
 
-               for(var2 = 0; var2 < class93.field1416; ++var2) {
-                  var3 = class93.field1418[var2];
-                  if((class93.field1411[var3] & 1) == 0) {
-                     if(var1 > 0) {
-                        --var1;
-                        class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-                     } else {
-                        var4 = var0.getBits(1);
-                        if(var4 == 0) {
-                           var1 = World.method1642(var0);
-                           class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
-                        } else if(ScriptVarType.decodeRegionHash(var0, var3)) {
-                           class93.field1411[var3] = (byte)(class93.field1411[var3] | 2);
+                              if(var7 == 2) {
+                                 var8 = var5 + 11;
+                              }
+
+                              if(var7 == 3) {
+                                 var8 = var5 + 12;
+                              }
+
+                              if(var7 == 4) {
+                                 var8 = var5 + 13;
+                              }
+
+                              TextureProvider.addMenuEntry(var6[var7], class45.getColTags(16776960) + var4, var8, var1, var2, var3);
+                           }
                         }
                      }
-                  }
-               }
 
-               var0.byteAccess();
-               if(var1 != 0) {
-                  throw new RuntimeException();
-               } else {
-                  class93.playerIndexesCount = 0;
-                  class93.field1416 = 0;
+                     if(var6 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
+                              short var9 = 0;
+                              if(Client.npcAttackOption != AttackOption.AttackOption_hidden) {
+                                 if(Client.npcAttackOption == AttackOption.AttackOption_alwaysRightClick || AttackOption.AttackOption_dependsOnCombatLevels == Client.npcAttackOption && var0.combatLevel > SoundTaskDataProvider.localPlayer.combatLevel) {
+                                    var9 = 2000;
+                                 }
 
-                  for(var2 = 1; var2 < 2048; ++var2) {
-                     class93.field1411[var2] = (byte)(class93.field1411[var2] >> 1);
-                     Player var5 = Client.cachedPlayers[var2];
-                     if(var5 != null) {
-                        class93.playerIndices[++class93.playerIndexesCount - 1] = var2;
-                     } else {
-                        class93.field1418[++class93.field1416 - 1] = var2;
+                                 var8 = 0;
+                                 if(var7 == 0) {
+                                    var8 = var9 + 9;
+                                 }
+
+                                 if(var7 == 1) {
+                                    var8 = var9 + 10;
+                                 }
+
+                                 if(var7 == 2) {
+                                    var8 = var9 + 11;
+                                 }
+
+                                 if(var7 == 3) {
+                                    var8 = var9 + 12;
+                                 }
+
+                                 if(var7 == 4) {
+                                    var8 = var9 + 13;
+                                 }
+
+                                 TextureProvider.addMenuEntry(var6[var7], class45.getColTags(16776960) + var4, var8, var1, var2, var3);
+                              }
+                           }
+                        }
+                     }
+
+                     if(!var0.field3738 || !Client.field1014) {
+                        TextureProvider.addMenuEntry("Examine", class45.getColTags(16776960) + var4, 1003, var1, var2, var3);
                      }
                   }
 
@@ -340,18 +321,38 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       }
    }
 
-   @ObfuscatedName("fm")
+   @ObfuscatedName("in")
    @ObfuscatedSignature(
-      signature = "(IZZZI)Ljs;",
-      garbageValue = "1008043309"
+      signature = "([Lin;IIIZI)V",
+      garbageValue = "602471738"
    )
-   @Export("openCacheIndex")
-   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
-      IndexFile var4 = null;
-      if(class167.dat2File != null) {
-         var4 = new IndexFile(var0, class167.dat2File, class167.idxFiles[var0], 1000000);
+   static void method787(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var6.parentId == var1) {
+            BoundingBox3D.method48(var6, var2, var3, var4);
+            BoundingBox3D.method52(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
+
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
+
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               class86.method1889(var0, var6, var4);
+            }
+         }
       }
 
-      return new IndexData(var4, GameCanvas.indexStore255, var0, var1, var2, var3);
    }
 }

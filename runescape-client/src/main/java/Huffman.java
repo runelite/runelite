@@ -3,22 +3,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gt")
+@ObfuscatedName("gk")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("ee")
-   @ObfuscatedSignature(
-      signature = "Lkw;"
-   )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("c")
+   @ObfuscatedName("at")
+   static int[] field2513;
+   @ObfuscatedName("o")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @Export("keys")
    int[] keys;
 
@@ -105,10 +101,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "([BII[BII)I",
-      garbageValue = "-16711936"
+      garbageValue = "-669173026"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -126,7 +122,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = (var10 + var12 - 1 >> 3) + var11;
+         int var13 = (var12 + var10 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -156,10 +152,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "([BI[BIII)I",
-      garbageValue = "1420059126"
+      signature = "([BI[BIIB)I",
+      garbageValue = "20"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -297,6 +293,27 @@ public class Huffman {
          }
 
          return var7 + 1 - var2;
+      }
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)Ljc;",
+      garbageValue = "888122940"
+   )
+   public static class281 method3457(int var0) {
+      class281 var1 = (class281)class281.field3568.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class281.field3585.getConfigData(32, var0);
+         var1 = new class281();
+         if(var2 != null) {
+            var1.method4965(new Buffer(var2));
+         }
+
+         class281.field3568.put(var1, (long)var0);
+         return var1;
       }
    }
 }

@@ -6,141 +6,146 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("ah")
 @Implements("WorldMapData")
 public class WorldMapData {
-   @ObfuscatedName("cq")
-   @Export("middleMouseMovesCamera")
-   static boolean middleMouseMovesCamera;
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
+   @Export("cacheLocations")
+   static String[] cacheLocations;
+   @ObfuscatedName("ch")
    @ObfuscatedGetter(
-      intValue = -54601899
+      longValue = -5942083673956606217L
+   )
+   static long field463;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 894764139
    )
    @Export("fileId")
    int fileId;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @Export("identifier")
    String identifier;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @Export("name")
    String name;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 270572153
+      intValue = 1739420637
    )
-   int field430;
-   @ObfuscatedName("k")
+   int field454;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1585681841
+      intValue = 1998719381
    )
-   int field439;
-   @ObfuscatedName("x")
+   int field451;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lix;"
    )
-   Coordinates field428;
+   Coordinates field453;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1581477657
+      intValue = -1229817577
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1600219587
+      intValue = -1070736261
    )
-   int field431;
-   @ObfuscatedName("w")
+   int field455;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1344274627
+      intValue = -440059103
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2118625715
+      intValue = -1291934753
    )
-   int field436;
-   @ObfuscatedName("d")
-   boolean field437;
+   int field457;
+   @ObfuscatedName("y")
+   boolean field458;
    @ObfuscatedName("a")
-   LinkedList field435;
+   LinkedList field459;
 
    public WorldMapData() {
       this.fileId = -1;
-      this.field430 = -1;
-      this.field439 = -1;
-      this.field428 = null;
+      this.field454 = -1;
+      this.field451 = -1;
+      this.field453 = null;
       this.minX = Integer.MAX_VALUE;
-      this.field431 = 0;
+      this.field455 = 0;
       this.minY = Integer.MAX_VALUE;
-      this.field436 = 0;
-      this.field437 = false;
+      this.field457 = 0;
+      this.field458 = false;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lgp;IB)V",
-      garbageValue = "39"
+      signature = "(Lgc;II)V",
+      garbageValue = "-1284991583"
    )
    @Export("loadMapData")
    public void loadMapData(Buffer var1, int var2) {
       this.fileId = var2;
       this.identifier = var1.readString();
       this.name = var1.readString();
-      this.field428 = new Coordinates(var1.readInt());
-      this.field430 = var1.readInt();
+      this.field453 = new Coordinates(var1.readInt());
+      this.field454 = var1.readInt();
       var1.readUnsignedByte();
-      this.field437 = var1.readUnsignedByte() == 1;
-      this.field439 = var1.readUnsignedByte();
+      this.field458 = var1.readUnsignedByte() == 1;
+      this.field451 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedByte();
-      this.field435 = new LinkedList();
+      this.field459 = new LinkedList();
 
       for(int var4 = 0; var4 < var3; ++var4) {
-         this.field435.add(this.method306(var1));
+         this.field459.add(this.method318(var1));
       }
 
-      this.method315();
+      this.method323();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lgp;I)Lay;",
-      garbageValue = "1849374991"
+      signature = "(Lgc;B)Lau;",
+      garbageValue = "-60"
    )
-   WorldMapSectionBase method306(Buffer var1) {
+   WorldMapSectionBase method318(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      class27 var3 = (class27)class44.forOrdinal(class27.method238(), var2);
+      class27 var3 = (class27)Permission.forOrdinal(class27.method243(), var2);
       Object var4 = null;
-      switch(var3.field381) {
+      switch(var3.field403) {
       case 0:
-         var4 = new WorldMapType1();
-         break;
-      case 1:
          var4 = new WorldMapType3();
          break;
-      case 2:
+      case 1:
          var4 = new WorldMapType2();
          break;
-      case 3:
+      case 2:
          var4 = new class49();
+         break;
+      case 3:
+         var4 = new WorldMapType1();
          break;
       default:
          throw new IllegalStateException("");
       }
 
-      ((WorldMapSectionBase)var4).vmethod756(var1);
+      ((WorldMapSectionBase)var4).vmethod754(var1);
       return (WorldMapSectionBase)var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(IIIB)Z",
-      garbageValue = "-14"
+      garbageValue = "1"
    )
    @Export("containsCoord")
    public boolean containsCoord(int var1, int var2, int var3) {
-      Iterator var4 = this.field435.iterator();
+      Iterator var4 = this.field459.iterator();
 
       WorldMapSectionBase var5;
       do {
@@ -154,17 +159,17 @@ public class WorldMapData {
       return true;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "124"
+      signature = "(III)Z",
+      garbageValue = "-1011288479"
    )
-   public boolean method308(int var1, int var2) {
+   public boolean method335(int var1, int var2) {
       int var3 = var1 / 64;
       int var4 = var2 / 64;
-      if(var3 >= this.minX && var3 <= this.field431) {
-         if(var4 >= this.minY && var4 <= this.field436) {
-            Iterator var5 = this.field435.iterator();
+      if(var3 >= this.minX && var3 <= this.field455) {
+         if(var4 >= this.minY && var4 <= this.field457) {
+            Iterator var5 = this.field459.iterator();
 
             WorldMapSectionBase var6;
             do {
@@ -173,7 +178,7 @@ public class WorldMapData {
                }
 
                var6 = (WorldMapSectionBase)var5.next();
-            } while(!var6.vmethod758(var1, var2));
+            } while(!var6.vmethod768(var1, var2));
 
             return true;
          } else {
@@ -184,13 +189,13 @@ public class WorldMapData {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(IIII)[I",
-      garbageValue = "694724857"
+      garbageValue = "-891314358"
    )
-   public int[] method309(int var1, int var2, int var3) {
-      Iterator var4 = this.field435.iterator();
+   public int[] method321(int var1, int var2, int var3) {
+      Iterator var4 = this.field459.iterator();
 
       WorldMapSectionBase var5;
       do {
@@ -201,16 +206,16 @@ public class WorldMapData {
          var5 = (WorldMapSectionBase)var4.next();
       } while(!var5.containsCoord(var1, var2, var3));
 
-      return var5.vmethod754(var1, var2, var3);
+      return var5.vmethod753(var1, var2, var3);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(III)Lim;",
-      garbageValue = "1095448979"
+      signature = "(IIB)Lix;",
+      garbageValue = "-45"
    )
-   public Coordinates method354(int var1, int var2) {
-      Iterator var3 = this.field435.iterator();
+   public Coordinates method322(int var1, int var2) {
+      Iterator var3 = this.field459.iterator();
 
       WorldMapSectionBase var4;
       do {
@@ -219,59 +224,59 @@ public class WorldMapData {
          }
 
          var4 = (WorldMapSectionBase)var3.next();
-      } while(!var4.vmethod758(var1, var2));
+      } while(!var4.vmethod768(var1, var2));
 
-      return var4.vmethod777(var1, var2);
+      return var4.vmethod758(var1, var2);
    }
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-18"
+      signature = "(S)V",
+      garbageValue = "4867"
    )
-   void method315() {
-      Iterator var1 = this.field435.iterator();
+   void method323() {
+      Iterator var1 = this.field459.iterator();
 
       while(var1.hasNext()) {
          WorldMapSectionBase var2 = (WorldMapSectionBase)var1.next();
-         var2.vmethod751(this);
+         var2.vmethod767(this);
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1306418936"
+      garbageValue = "1323853267"
    )
    @Export("getFileId")
    public int getFileId() {
       return this.fileId;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-2120745005"
+      garbageValue = "-471791578"
    )
-   public boolean method374() {
-      return this.field437;
+   public boolean method325() {
+      return this.field458;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "16"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-180901539"
    )
    @Export("getIdentifier")
    public String getIdentifier() {
       return this.identifier;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(B)Ljava/lang/String;",
-      garbageValue = "58"
+      garbageValue = "6"
    )
    @Export("getName")
    public String getName() {
@@ -281,215 +286,136 @@ public class WorldMapData {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1057752141"
+      garbageValue = "-717137827"
    )
-   int method316() {
-      return this.field430;
+   int method352() {
+      return this.field454;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1822856889"
+      garbageValue = "-1072606422"
    )
-   public int method352() {
-      return this.field439;
+   public int method338() {
+      return this.field451;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "0"
+      garbageValue = "10"
    )
    @Export("getMinX")
    public int getMinX() {
       return this.minX;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-357714868"
+      garbageValue = "1543967105"
    )
-   public int method319() {
-      return this.field431;
+   public int method360() {
+      return this.field455;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-352981885"
+      garbageValue = "-1778136097"
    )
    @Export("getMinY")
    public int getMinY() {
       return this.minY;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-249777036"
+      garbageValue = "473990420"
    )
-   public int method313() {
-      return this.field436;
+   public int method331() {
+      return this.field457;
    }
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-98"
+      garbageValue = "-28"
    )
-   public int method322() {
-      return this.field428.worldX;
+   public int method334() {
+      return this.field453.worldX;
    }
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "46"
-   )
-   public int method323() {
-      return this.field428.plane;
-   }
-
-   @ObfuscatedName("s")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1011483246"
+      garbageValue = "1837071779"
    )
-   public int method324() {
-      return this.field428.worldY;
+   public int method386() {
+      return this.field453.plane;
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)Lim;",
-      garbageValue = "-1301380918"
+      signature = "(I)I",
+      garbageValue = "-1438575372"
    )
-   public Coordinates method357() {
-      return new Coordinates(this.field428);
+   public int method336() {
+      return this.field453.worldY;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ILcx;ZI)I",
-      garbageValue = "-424428171"
+      signature = "(I)Lix;",
+      garbageValue = "530684756"
    )
-   static int method347(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      Enum var5;
-      if(var0 == 3400) {
-         SceneTilePaint.intStackSize -= 2;
-         var3 = class81.intStack[SceneTilePaint.intStackSize];
-         var4 = class81.intStack[SceneTilePaint.intStackSize + 1];
-         Enum var15 = (Enum)Enum.EnumDefinition_cached.get((long)var3);
-         if(var15 != null) {
-            var5 = var15;
-         } else {
-            byte[] var16 = Enum.EnumDefinition_indexCache.getConfigData(8, var3);
-            var15 = new Enum();
-            if(var16 != null) {
-               var15.decode(new Buffer(var16));
-            }
+   public Coordinates method337() {
+      return new Coordinates(this.field453);
+   }
 
-            Enum.EnumDefinition_cached.put(var15, (long)var3);
-            var5 = var15;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(Lei;IS)V",
+      garbageValue = "128"
+   )
+   public static final void method398(Model var0, int var1) {
+      for(int var2 = 0; var2 < var0.indicesCount; ++var2) {
+         if(var0.field1862[var2] != -2) {
+            int var3 = var0.indices1[var2];
+            int var4 = var0.indices2[var2];
+            int var5 = var0.indices3[var2];
+            int var6 = Model.modelViewportYs[var3];
+            int var7 = Model.modelViewportYs[var4];
+            int var8 = Model.modelViewportYs[var5];
+            method399(Model.modelViewportXs[var3], Model.modelViewportXs[var4], Model.modelViewportXs[var5], var6, var7, var8, var1);
          }
+      }
 
-         var15 = var5;
-         if(var5.valType != 's') {
-            ;
-         }
+   }
 
-         for(int var7 = 0; var7 < var15.size; ++var7) {
-            if(var4 == var15.keys[var7]) {
-               class81.scriptStringStack[++World.scriptStringStackSize - 1] = var15.stringVals[var7];
-               var15 = null;
-               break;
-            }
-         }
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)V",
+      garbageValue = "-772938940"
+   )
+   static final void method399(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
+      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
+      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
+      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
+      class149.method3104(var7, var9, var8, var10, -49088);
+   }
 
-         if(var15 != null) {
-            class81.scriptStringStack[++World.scriptStringStackSize - 1] = var15.defaultString;
-         }
-
-         return 1;
-      } else if(var0 == 3408) {
-         SceneTilePaint.intStackSize -= 4;
-         var3 = class81.intStack[SceneTilePaint.intStackSize];
-         var4 = class81.intStack[SceneTilePaint.intStackSize + 1];
-         int var11 = class81.intStack[SceneTilePaint.intStackSize + 2];
-         int var12 = class81.intStack[SceneTilePaint.intStackSize + 3];
-         Enum var8 = (Enum)Enum.EnumDefinition_cached.get((long)var11);
-         Enum var10;
-         if(var8 != null) {
-            var10 = var8;
-         } else {
-            byte[] var9 = Enum.EnumDefinition_indexCache.getConfigData(8, var11);
-            var8 = new Enum();
-            if(var9 != null) {
-               var8.decode(new Buffer(var9));
-            }
-
-            Enum.EnumDefinition_cached.put(var8, (long)var11);
-            var10 = var8;
-         }
-
-         var8 = var10;
-         if(var3 == var10.keyType && var4 == var10.valType) {
-            for(int var13 = 0; var13 < var8.size; ++var13) {
-               if(var12 == var8.keys[var13]) {
-                  if(var4 == 115) {
-                     class81.scriptStringStack[++World.scriptStringStackSize - 1] = var8.stringVals[var13];
-                  } else {
-                     class81.intStack[++SceneTilePaint.intStackSize - 1] = var8.intVals[var13];
-                  }
-
-                  var8 = null;
-                  break;
-               }
-            }
-
-            if(var8 != null) {
-               if(var4 == 115) {
-                  class81.scriptStringStack[++World.scriptStringStackSize - 1] = var8.defaultString;
-               } else {
-                  class81.intStack[++SceneTilePaint.intStackSize - 1] = var8.defaultInt;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class81.scriptStringStack[++World.scriptStringStackSize - 1] = "null";
-            } else {
-               class81.intStack[++SceneTilePaint.intStackSize - 1] = 0;
-            }
-
-            return 1;
-         }
-      } else if(var0 == 3411) {
-         var3 = class81.intStack[--SceneTilePaint.intStackSize];
-         var5 = (Enum)Enum.EnumDefinition_cached.get((long)var3);
-         Enum var14;
-         if(var5 != null) {
-            var14 = var5;
-         } else {
-            byte[] var6 = Enum.EnumDefinition_indexCache.getConfigData(8, var3);
-            var5 = new Enum();
-            if(var6 != null) {
-               var5.decode(new Buffer(var6));
-            }
-
-            Enum.EnumDefinition_cached.put(var5, (long)var3);
-            var14 = var5;
-         }
-
-         class81.intStack[++SceneTilePaint.intStackSize - 1] = var14.method4949();
-         return 1;
-      } else {
-         return 2;
+   @ObfuscatedName("is")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)V",
+      garbageValue = "-759067992"
+   )
+   static final void method400(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(class189.loadWidget(var0)) {
+         class319.method5651(MouseRecorder.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
       }
    }
 }
