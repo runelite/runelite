@@ -127,28 +127,25 @@ public class ItemStatChanges
 		add(new SuperRestore(9), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4);
 		add(heal(RUN_ENERGY, 20), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
 
-        //Raids potions (+)
-        add(combo(5, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6)), boost(RANGED, perc(.16, 6)), boost(MAGIC, perc(.16, 6)), heal(HITPOINTS, -50)), OVERLOAD_STRONG_1, OVERLOAD_STRONG_2, OVERLOAD_STRONG_3, OVERLOAD_STRONG_4);
-        add(combo(3, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), ELDER_STRONG_1, ELDER_STRONG_2, ELDER_STRONG_3, ELDER_STRONG_4);
-        add(combo(2, boost(RANGED, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), TWISTED_STRONG_1, TWISTED_STRONG_2, TWISTED_STRONG_3, TWISTED_STRONG_4);
-        add(combo(2, boost(MAGIC, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), KODAI_STRONG_1, KODAI_STRONG_2, KODAI_STRONG_3, KODAI_STRONG_4);
+        	//Raids potions (+)
+        	add(combo(5, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6)), boost(RANGED, perc(.16, 6)), boost(MAGIC, perc(.16, 6)), heal(HITPOINTS, -50)), OVERLOAD_STRONG_1, OVERLOAD_STRONG_2, OVERLOAD_STRONG_3, OVERLOAD_STRONG_4);
+        	add(combo(3, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), ELDER_STRONG_1, ELDER_STRONG_2, ELDER_STRONG_3, ELDER_STRONG_4);
+        	add(combo(2, boost(RANGED, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), TWISTED_STRONG_1, TWISTED_STRONG_2, TWISTED_STRONG_3, TWISTED_STRONG_4);
+        	add(combo(2, boost(MAGIC, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), KODAI_STRONG_1, KODAI_STRONG_2, KODAI_STRONG_3, KODAI_STRONG_4);
 
-        //Raids potions
-        add(combo(5, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5)), boost(RANGED, perc(.13, 5)), boost(MAGIC, perc(.13, 5)), heal(HITPOINTS, -50)), OVERLOAD_STANDARD_1, OVERLOAD_STANDARD_2, OVERLOAD_STANDARD_3, OVERLOAD_STANDARD_4);
-        add(combo(3, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), ELDER_STANDARD_1, ELDER_STANDARD_2, ELDER_STANDARD_3, ELDER_STANDARD_4);
-        add(combo(2, boost(RANGED, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), TWISTED_STANDARD_1 ,TWISTED_STANDARD_2, TWISTED_STANDARD_3, TWISTED_STANDARD_4);
-        add(combo(2, boost(MAGIC, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), KODAI_STANDARD_1, KODAI_STANDARD_2, KODAI_STANDARD_3, KODAI_STANDARD_4);
+        	//Raids potions
+        	add(combo(5, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5)), boost(RANGED, perc(.13, 5)), boost(MAGIC, perc(.13, 5)), heal(HITPOINTS, -50)), OVERLOAD_STANDARD_1, OVERLOAD_STANDARD_2, OVERLOAD_STANDARD_3, OVERLOAD_STANDARD_4);
+        	add(combo(3, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), ELDER_STANDARD_1, ELDER_STANDARD_2, ELDER_STANDARD_3, ELDER_STANDARD_4);
+        	add(combo(2, boost(RANGED, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), TWISTED_STANDARD_1 ,TWISTED_STANDARD_2, TWISTED_STANDARD_3, TWISTED_STANDARD_4);
+        	add(combo(2, boost(MAGIC, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), KODAI_STANDARD_1, KODAI_STANDARD_2, KODAI_STANDARD_3, KODAI_STANDARD_4);
 
-        //Raids potions (-)
-        add(combo(5, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4)), boost(RANGED, perc(.10, 4)), boost(MAGIC, perc(.10, 4)), heal(HITPOINTS, -50)), OVERLOAD_WEAK_1, OVERLOAD_WEAK_2, OVERLOAD_WEAK_3, OVERLOAD_WEAK_4);
-        add(combo(3, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), ELDER_WEAK_1,ELDER_WEAK_2, ELDER_WEAK_3, ELDER_WEAK_4);
-        add(combo(3, boost(RANGED, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), TWISTED_WEAK_1, TWISTED_WEAK_2, TWISTED_WEAK_3, TWISTED_WEAK_4);
-        add(combo(3, boost(MAGIC, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), KODAI_WEAK_1, KODAI_WEAK_2, KODAI_WEAK_3, KODAI_WEAK_4);
+        	//Raids potions (-)
+        	add(combo(5, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4)), boost(RANGED, perc(.10, 4)), boost(MAGIC, perc(.10, 4)), heal(HITPOINTS, -50)), OVERLOAD_WEAK_1, OVERLOAD_WEAK_2, OVERLOAD_WEAK_3, OVERLOAD_WEAK_4);
+        	add(combo(3, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), ELDER_WEAK_1,ELDER_WEAK_2, ELDER_WEAK_3, ELDER_WEAK_4);
+        	add(combo(3, boost(RANGED, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), TWISTED_WEAK_1, TWISTED_WEAK_2, TWISTED_WEAK_3, TWISTED_WEAK_4);
+        	add(combo(3, boost(MAGIC, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), KODAI_WEAK_1, KODAI_WEAK_2, KODAI_WEAK_3, KODAI_WEAK_4);
 
-
-
-
-        // Skill potions
+        	// Skill potions
 		add(boost(AGILITY, 3), AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4);
 		add(boost(FISHING, 3), FISHING_POTION1, FISHING_POTION2, FISHING_POTION3, FISHING_POTION4);
 		add(boost(HUNTER, 3), HUNTER_POTION1, HUNTER_POTION2, HUNTER_POTION3, HUNTER_POTION4);
