@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -359,23 +360,13 @@ public interface Client extends GameEngine
 
 	void runScript(int id, Object... args);
 
-	void setHintArrowTargetType(int value);
+    boolean hasHintArrow();
 
-	int getHintArrowTargetType();
+    void clearHintArrow();
 
-	void setHintArrowX(int value);
+    void setPlayerHintArrow(int index);
 
-	int getHintArrowX();
+    void setHintArrow(WorldPoint point);
 
-	void setHintArrowY(int value);
-
-	int getHintArrowY();
-
-	void setHintArrowNpcTargetIdx(int value);
-
-	void setHintArrowPlayerTargetIdx(int value);
-
-	int getHintArrowNpcTargetIdx();
-
-	int getHintArrowPlayerTargetIdx();
+    void setNPCHintArrow(int index);
 }

@@ -594,14 +594,4 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("hintArrowPlayerTargetIdx")
 	int getHintArrowPlayerTargetIdx();
-
-	boolean hasHintArrow();
-
-	void clearHintArrow();
-
-	void setPlayerHintArrow(int index);
-
-	void setHintArrow(WorldPoint point);
-
-	void setNPCHintArrow(int index);
 }
