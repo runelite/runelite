@@ -651,8 +651,8 @@ public class class47 {
             var1.method5059(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
          }
 
-         if(var1.int3 != -1) {
-            var1.method5076(getItemDefinition(var1.int3), getItemDefinition(var1.placeholderId));
+         if(var1.placeholderTemplateId != -1) {
+            var1.method5076(getItemDefinition(var1.placeholderTemplateId), getItemDefinition(var1.placeholderId));
          }
 
          if(!class158.isMembersWorld && var1.isMembers) {
