@@ -652,7 +652,7 @@ public class class47 {
          }
 
          if(var1.int3 != -1) {
-            var1.method5076(getItemDefinition(var1.int3), getItemDefinition(var1.int2));
+            var1.method5076(getItemDefinition(var1.int3), getItemDefinition(var1.placeholderId));
          }
 
          if(!class158.isMembersWorld && var1.isMembers) {

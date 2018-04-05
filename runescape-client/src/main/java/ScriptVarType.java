@@ -1347,8 +1347,8 @@ public class ScriptVarType implements Enumerated, class338 {
             } else if(var0 == 4208) {
                var3 = class81.intStack[--WorldComparator.intStackSize];
                var6 = class47.getItemDefinition(var3);
-               if(var6.int3 == -1 && var6.int2 >= 0) {
-                  class81.intStack[++WorldComparator.intStackSize - 1] = var6.int2;
+               if(var6.int3 == -1 && var6.placeholderId >= 0) {
+                  class81.intStack[++WorldComparator.intStackSize - 1] = var6.placeholderId;
                } else {
                   class81.intStack[++WorldComparator.intStackSize - 1] = var3;
                }
@@ -1357,8 +1357,8 @@ public class ScriptVarType implements Enumerated, class338 {
             } else if(var0 == 4209) {
                var3 = class81.intStack[--WorldComparator.intStackSize];
                var6 = class47.getItemDefinition(var3);
-               if(var6.int3 >= 0 && var6.int2 >= 0) {
-                  class81.intStack[++WorldComparator.intStackSize - 1] = var6.int2;
+               if(var6.int3 >= 0 && var6.placeholderId >= 0) {
+                  class81.intStack[++WorldComparator.intStackSize - 1] = var6.placeholderId;
                } else {
                   class81.intStack[++WorldComparator.intStackSize - 1] = var3;
                }
