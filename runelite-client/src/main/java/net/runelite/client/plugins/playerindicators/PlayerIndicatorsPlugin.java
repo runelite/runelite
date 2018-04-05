@@ -147,7 +147,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-				if (color != null)
+				if (color != null && config.colorPlayerMenu())
 				{
 					// strip out existing <col...
 					String target = lastEntry.getTarget();
@@ -160,7 +160,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
 				}
 
-				if (image != -1)
+				if (image != -1 && config.clanMenuIcons())
 				{
 					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
 				}
