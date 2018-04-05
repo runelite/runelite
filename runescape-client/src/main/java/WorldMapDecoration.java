@@ -128,7 +128,7 @@ public class WorldMapDecoration {
                return null;
             }
          } else if(var9.int3 != -1) {
-            var20 = createSprite(var9.int2, var1, 0, 0, 0, false);
+            var20 = createSprite(var9.placeholderId, var1, 0, 0, 0, false);
             if(var20 == null) {
                return null;
             }
