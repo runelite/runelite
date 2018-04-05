@@ -1,131 +1,132 @@
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("il")
 @Implements("WorldMapDecorationType")
 public enum WorldMapDecorationType implements Enumerated {
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2982(0, 0),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2995(1, 0),
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2975(2, 0),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2976(3, 0),
+   field2992(0, 0),
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2977(9, 2),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2989(4, 1),
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2979(5, 1),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2980(6, 1),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2981(7, 1),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2986(8, 1),
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2983(12, 2),
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2984(13, 2),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2974(14, 2),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2985(15, 2),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2987(16, 2),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2988(17, 2),
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2997(18, 2),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field2990(19, 2),
+   field3003(1, 0),
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2978(20, 2),
-   @ObfuscatedName("v")
+   field2986(2, 0),
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2992(21, 2),
-   @ObfuscatedName("n")
+   field2989(3, 0),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2991(10, 2),
+   field2990(9, 2),
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2991(4, 1),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2995(5, 1),
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3006(6, 1),
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2994(11, 2),
+   field2994(7, 1),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3009(8, 1),
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2996(12, 2),
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2997(13, 2),
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3007(14, 2),
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2999(15, 2),
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3000(16, 2),
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3001(17, 2),
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3002(18, 2),
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lil;"
    )
-   field2993(22, 3);
-
+   field2987(19, 2),
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3004(20, 2),
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3005(21, 2),
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2988(10, 2),
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field2993(11, 2),
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   field3008(22, 3);
+
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1470097667
+      intValue = 8449017
    )
    @Export("rsOrdinal")
    public final int rsOrdinal;
@@ -138,37 +139,62 @@ public enum WorldMapDecorationType implements Enumerated {
       this.rsOrdinal = var3;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1780726447"
+      garbageValue = "-369819377"
    )
    public int rsOrdinal() {
       return this.rsOrdinal;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)Lla;",
-      garbageValue = "-1542721077"
+      signature = "(I)Z",
+      garbageValue = "-1751832585"
    )
-   static SpritePixels method4517() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class332.indexedSpriteWidth;
-      var0.maxHeight = class81.indexedSpriteHeight;
-      var0.offsetX = GameCanvas.indexedSpriteOffsetXs[0];
-      var0.offsetY = class332.indexedSpriteOffsetYs[0];
-      var0.width = class25.indexSpriteWidths[0];
-      var0.height = class332.indexedSpriteHeights[0];
-      int var1 = var0.height * var0.width;
-      byte[] var2 = class332.spritePixels[0];
-      var0.pixels = new int[var1];
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(FaceNormal.listFetcher == null) {
+            FaceNormal.listFetcher = MapIconReference.urlRequester.request(new URL(Client.field876));
+         } else if(FaceNormal.listFetcher.isDone()) {
+            byte[] var0 = FaceNormal.listFetcher.getResponse();
+            Buffer var1 = new Buffer(var0);
+            var1.readInt();
+            World.worldCount = var1.readUnsignedShort();
+            World.worldList = new World[World.worldCount];
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.pixels[var3] = class332.indexedSpritePalette[var2[var3] & 255];
+            World var3;
+            for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
+               var3 = World.worldList[var2] = new World();
+               var3.id = var1.readUnsignedShort();
+               var3.mask = var1.readInt();
+               var3.address = var1.readString();
+               var3.activity = var1.readString();
+               var3.location = var1.readUnsignedByte();
+               var3.playerCount = var1.readShort();
+            }
+
+            WorldMapType1.method308(World.worldList, 0, World.worldList.length - 1, World.field1230, World.field1229);
+            FaceNormal.listFetcher = null;
+            return true;
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         FaceNormal.listFetcher = null;
       }
 
-      FileSystem.method4544();
-      return var0;
+      return false;
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-87"
+   )
+   public static void method4499() {
+      NPCComposition.npcs.reset();
+      NPCComposition.npcModelCache.reset();
    }
 }

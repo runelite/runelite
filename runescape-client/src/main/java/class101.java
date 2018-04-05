@@ -3,10 +3,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cz")
 public interface class101 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)Ldz;",
-      garbageValue = "-2054148329"
+      signature = "(I)Ldf;",
+      garbageValue = "978575065"
    )
-   AbstractSoundSystem vmethod2095();
+   AbstractSoundSystem vmethod2099();
 }

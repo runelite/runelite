@@ -4,60 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("ew")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 721700685
+      intValue = -1517793005
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1069278695
+      intValue = 1468676923
    )
    @Export("x")
    int x;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1402981939
+      intValue = 882823813
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -120467245
+      intValue = 774109897
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1569356951
+      intValue = 1998202247
    )
    @Export("orientationB")
    int orientationB;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Led;"
    )
    @Export("renderable1")
    public Renderable renderable1;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Led;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1091466637
+      intValue = -1042684503
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -650877531
+      intValue = 1828772819
    )
    @Export("config")
    int config;
@@ -67,48 +67,47 @@ public final class WallObject {
       this.config = 0;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "-26914"
+      signature = "(Lgc;I)Ljava/lang/String;",
+      garbageValue = "-811199669"
    )
-   @Export("nextPowerOfTwo")
-   public static int nextPowerOfTwo(int var0) {
-      --var0;
-      var0 |= var0 >>> 1;
-      var0 |= var0 >>> 2;
-      var0 |= var0 >>> 4;
-      var0 |= var0 >>> 8;
-      var0 |= var0 >>> 16;
-      return var0 + 1;
+   public static String method3061(Buffer var0) {
+      String var1;
+      try {
+         int var2 = var0.getUSmart();
+         if(var2 > 32767) {
+            var2 = 32767;
+         }
+
+         byte[] var3 = new byte[var2];
+         var0.offset += class313.huffman.decompress(var0.payload, var0.offset, var3, 0, var2);
+         String var4 = ChatPlayer.getString(var3, 0, var2);
+         var1 = var4;
+      } catch (Exception var6) {
+         var1 = "Cabbage";
+      }
+
+      return var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-875562035"
+      signature = "(IIII)I",
+      garbageValue = "-1694408174"
    )
-   static void method3074() {
-      class157.field2146 = new int[2000];
-      int var0 = 0;
-      int var1 = 240;
-
-      int var3;
-      for(byte var2 = 12; var0 < 16; var1 -= var2) {
-         var3 = Area.method4771((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)(0.075F + 0.425F * (float)var0 / 16.0F));
-         class157.field2146[var0] = var3;
-         ++var0;
-      }
-
-      var1 = 48;
-
-      for(int var5 = var1 / 6; var0 < class157.field2146.length; var1 -= var5) {
-         var3 = var0 * 2;
-
-         for(int var4 = Area.method4771((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var3 && var0 < class157.field2146.length; ++var0) {
-            class157.field2146[var0] = var4;
-         }
-      }
-
+   @Export("getSmoothNoise")
+   static final int getSmoothNoise(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = class254.getSmoothNoise2D(var3, var5);
+      int var8 = class254.getSmoothNoise2D(var3 + 1, var5);
+      int var9 = class254.getSmoothNoise2D(var3, var5 + 1);
+      int var10 = class254.getSmoothNoise2D(var3 + 1, var5 + 1);
+      int var11 = AbstractSoundSystem.method2246(var7, var8, var4, var2);
+      int var12 = AbstractSoundSystem.method2246(var9, var10, var4, var2);
+      return AbstractSoundSystem.method2246(var11, var12, var6, var2);
    }
 }

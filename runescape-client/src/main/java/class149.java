@@ -1,50 +1,39 @@
 import java.util.Comparator;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ek")
 public class class149 implements Comparator {
-   @ObfuscatedName("pb")
-   @ObfuscatedGetter(
-      intValue = -1479438809
-   )
-   static int field2123;
-   @ObfuscatedName("c")
-   final boolean field2122;
+   @ObfuscatedName("o")
+   final boolean field2141;
 
    public class149(boolean var1) {
-      this.field2122 = var1;
+      this.field2141 = var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lke;Lke;I)I",
-      garbageValue = "-180636979"
+      signature = "(Lkv;Lkv;I)I",
+      garbageValue = "-769924804"
    )
-   int method3118(ChatPlayer var1, ChatPlayer var2) {
-      return this.field2122?var1.field3839 - var2.field3839:var2.field3839 - var1.field3839;
+   int method3099(ChatPlayer var1, ChatPlayer var2) {
+      return this.field2141?var1.field3845 - var2.field3845:var2.field3845 - var1.field3845;
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method3099((ChatPlayer)var1, (ChatPlayer)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method3118((ChatPlayer)var1, (ChatPlayer)var2);
-   }
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2026906917"
+      signature = "(IIIIII)V",
+      garbageValue = "763297214"
    )
-   public static String method3123(CharSequence var0) {
-      String var1 = GraphicsObject.method1798(FileSystem.method4543(var0));
-      if(var1 == null) {
-         var1 = "";
-      }
-
-      return var1;
+   public static final void method3104(int var0, int var1, int var2, int var3, int var4) {
+      class7.boundingBoxes.addFirst(new BoundingBox2D(var0, var1, var2, var3, var4));
    }
 }

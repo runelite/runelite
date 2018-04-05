@@ -39,11 +39,13 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.item.ItemPrice;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -65,15 +67,17 @@ public class GroundItemsOverlay extends Overlay
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final TextComponent textComponent = new TextComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
+	private final ItemManager itemManager;
 
 	@Inject
-	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
+	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.itemManager = itemManager;
 	}
 
 	@Override
@@ -102,7 +106,32 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final boolean highlighted = plugin.isHighlighted(item.getName());
+			final boolean hidden = plugin.isHidden(item.getName());
 
+			if (!plugin.isHotKeyPressed())
+			{
+				// Do not display hidden items
+				if (hidden)
+				{
+					continue;
+				}
+
+				// Do not display non-highlighted items when only highlighted items should be shown
+				if (config.showHighlightedOnly() && !highlighted)
+				{
+					continue;
+				}
+			}
+
+			// Update GE price for item
+			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
+
+			if (itemPrice != null && itemPrice.getPrice() > 0)
+			{
+				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
+			}
+
+			// Do not display items that are under HA or GE price and are not highlighted
 			if (!plugin.isHotKeyPressed() && !highlighted
 				&& ((item.getGePrice() > 0 && item.getGePrice() < config.getHideUnderGeValue())
 				|| item.getHaPrice() < config.getHideUnderHAValue()))
@@ -110,7 +139,6 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final boolean hidden = plugin.isHidden(item.getName());
 			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
 				highlighted, hidden);
 			itemStringBuilder.append(item.getName());
@@ -167,23 +195,22 @@ public class GroundItemsOverlay extends Overlay
 			{
 				final int stringWidth = fm.stringWidth(itemString);
 				final int stringHeight = fm.getHeight();
-				final int descent = fm.getDescent();
 
 				// Hidden box
 				final Rectangle itemHiddenBox = new Rectangle(
 					textX + stringWidth,
-					textY - (stringHeight / 2) - descent,
+					textY - (RECTANGLE_SIZE + stringHeight) / 2,
 					RECTANGLE_SIZE,
-					stringHeight / 2);
+					RECTANGLE_SIZE);
 
 				plugin.getHiddenBoxes().put(itemHiddenBox, item.getName());
 
 				// Highlight box
 				final Rectangle itemHighlightBox = new Rectangle(
 					textX + stringWidth + RECTANGLE_SIZE + 2,
-					textY - (stringHeight / 2) - descent,
+					textY - (RECTANGLE_SIZE + stringHeight) / 2,
 					RECTANGLE_SIZE,
-					stringHeight / 2);
+					RECTANGLE_SIZE);
 
 				plugin.getHighlightBoxes().put(itemHighlightBox, item.getName());
 
