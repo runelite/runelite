@@ -252,8 +252,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -996561977
    )
-   @Export("int1")
-   public int int1;
+   @Export("team")
+   public int team;
    @ObfuscatedName("bf")
    @ObfuscatedSignature(
       signature = "Lha;"
@@ -326,7 +326,7 @@ public class ItemComposition extends CacheableNode {
       this.resizeZ = 128;
       this.ambient = 0;
       this.contrast = 0;
-      this.int1 = 0;
+      this.team = 0;
       this.isTradable = false;
       this.unnotedId = -1;
       this.notedId = -1;
@@ -476,7 +476,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 114) {
             this.contrast = var1.readByte();
          } else if(var2 == 115) {
-            this.int1 = var1.readUnsignedByte();
+            this.team = var1.readUnsignedByte();
          } else if(var2 == 139) {
             this.unnotedId = var1.readUnsignedShort();
          } else if(var2 == 140) {
@@ -546,7 +546,7 @@ public class ItemComposition extends CacheableNode {
       this.maleHeadModel2 = var2.maleHeadModel2;
       this.femaleHeadModel = var2.femaleHeadModel;
       this.femaleHeadModel2 = var2.femaleHeadModel2;
-      this.int1 = var2.int1;
+      this.team = var2.team;
       this.groundActions = var2.groundActions;
       this.inventoryActions = new String[5];
       if(var2.inventoryActions != null) {
