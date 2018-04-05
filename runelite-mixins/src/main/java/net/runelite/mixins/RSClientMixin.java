@@ -694,7 +694,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public void setHintArrowNpcTargetIdx(int index)
+	public void setNPCHintArrow(int index)
 	{
 		client.setHintArrowTargetType(1);
 		client.setHintArrowNpcTargetIdx(index);
@@ -705,7 +705,7 @@ public abstract class RSClientMixin implements RSClient
 	public void setPlayerHintArrow(int index)
 	{
 		client.setHintArrowTargetType(10);
-		client.setHintArrowNpcTargetIdx(index);
+		client.setHintArrowPlayerTargetIdx(index);
 	}
 
 	@Inject

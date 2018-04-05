@@ -373,9 +373,9 @@ public interface Client extends GameEngine
 
 	void setHintArrowNpcTargetIdx(int value);
 
-	int getHintArrowNpcTargetIdx();
+	void setHintArrowPlayerTargetIdx(int value);
 
-	void hintArrowPlayerTargetIdx(int value);
+	int getHintArrowNpcTargetIdx();
 
 	int getHintArrowPlayerTargetIdx();
 }
