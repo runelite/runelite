@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.runecraft;
 
 import java.awt.Color;
+import java.awt.Polygon;
 import java.awt.geom.Area;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
@@ -49,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -56,6 +58,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AbyssOverlay extends Overlay
 {
@@ -85,22 +88,47 @@ class AbyssOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showRifts())
+		if (config.showRifts())
 		{
-			return null;
-		}
-
-		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		for (DecorativeObject object : plugin.getAbyssObjects())
-		{
-			LocalPoint location = object.getLocalLocation();
-			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+			for (DecorativeObject object : plugin.getAbyssObjects())
 			{
-				renderRifts(graphics, object);
+				LocalPoint location = object.getLocalLocation();
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				{
+					renderRifts(graphics, object);
+				}
 			}
 		}
 
+		if (config.hightlightDarkMage())
+		{
+			highlightDarkMage(graphics);
+		}
+
 		return null;
+	}
+
+	private void highlightDarkMage(Graphics2D graphics)
+	{
+		if (!plugin.isDegradedPouchInInventory())
+		{
+			return;
+		}
+
+		NPC darkMage = plugin.getDarkMage();
+		if (darkMage == null)
+		{
+			return;
+		}
+
+		Polygon tilePoly = darkMage.getCanvasTilePoly();
+		if (tilePoly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygon(graphics, tilePoly, Color.green);
 	}
 
 	private void renderRifts(Graphics2D graphics, DecorativeObject object)
