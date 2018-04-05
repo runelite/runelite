@@ -193,7 +193,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Ghostly bones.", null, "Kill an Ankou"),
 		new CrypticClue("Search through chests found in the upstairs of houses in eastern Falador.", null, "The house is located southwest of the Falador Party Room. There are two chests in the room, search the northern chest."),
 		new CrypticClue("Let's hope you don't meet a watery death when you encounter this fiend.", null, "Kill a waterfiend."),
-		new CrypticClue("Reflection is the weakness for these eyes of evil.", "Falo the Bard", null, "Kill a basilisk"),
+		new CrypticClue("Reflection is the weakness for these eyes of evil.", null, "Kill a basilisk"),
 		new CrypticClue("Search a bookcase in Lumbridge swamp.", null, "Located in Father Urhney's house."),
 		new CrypticClue("Surround my bones in fire, ontop the wooden pyre. Finally lay me to rest, before my one last test.", null, "Kill a confused/lost barbarian to receive mangled bones. Construct and burn a pyre ship. Kill the ferocious barbarian spirit that spawns to receive a clue casket."),
 		new CrypticClue("Fiendish cooks probably won’t dig the dirty dishes.", null, "Dig by the fire in the Rogues' Den."),
