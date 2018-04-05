@@ -662,10 +662,10 @@ public class class47 {
             var1.inventoryActions = null;
             var1.shiftClickIndex = -1;
             var1.team = 0;
-            if(var1.field3671 != null) {
+            if(var1.params != null) {
                boolean var3 = false;
 
-               for(Node var4 = var1.field3671.getHead(); var4 != null; var4 = var1.field3671.getTail()) {
+               for(Node var4 = var1.params.getHead(); var4 != null; var4 = var1.params.getTail()) {
                   class278 var5 = CombatInfo2.method4877((int)var4.hash);
                   if(var5.field3550) {
                      var4.unlink();
@@ -675,7 +675,7 @@ public class class47 {
                }
 
                if(!var3) {
-                  var1.field3671 = null;
+                  var1.params = null;
                }
             }
          }
