@@ -55,6 +55,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -675,5 +676,44 @@ public abstract class RSClientMixin implements RSClient
 		MenuOpened event = new MenuOpened();
 		event.setMenuEntries(client.getMenuEntries());
 		eventBus.post(event);
+	}
+
+	@Inject
+	@Override
+	public boolean hasHintArrow()
+	{
+		return client.getHintArrowTargetType() != 0;
+	}
+
+	@Inject
+	@Override
+	public void clearHintArrow()
+	{
+		client.setHintArrowTargetType(0);
+	}
+
+	@Inject
+	@Override
+	public void setNPCHintArrow(int index)
+	{
+		client.setHintArrowTargetType(1);
+		client.setHintArrowNpcTargetIdx(index);
+	}
+
+	@Inject
+	@Override
+	public void setPlayerHintArrow(int index)
+	{
+		client.setHintArrowTargetType(10);
+		client.setHintArrowPlayerTargetIdx(index);
+	}
+
+	@Inject
+	@Override
+	public void setHintArrow(WorldPoint point)
+	{
+		client.setHintArrowTargetType(2);
+		client.setHintArrowX(point.getX());
+		client.setHintArrowY(point.getY());
 	}
 }

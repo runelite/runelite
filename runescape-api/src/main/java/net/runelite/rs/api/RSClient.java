@@ -25,9 +25,8 @@
 package net.runelite.rs.api;
 
 import java.util.Map;
-import net.runelite.api.Client;
-import net.runelite.api.SpritePixels;
-import net.runelite.api.World;
+
+import net.runelite.api.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
@@ -564,4 +563,34 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("runScript")
 	void runScript(RSScriptEvent ev, int ex);
+
+	@Import("hintArrowTargetType")
+	void setHintArrowTargetType(int value);
+
+	@Import("hintArrowType")
+	int getHintArrowTargetType();
+
+	@Import("hintArrowX")
+	void setHintArrowX(int value);
+
+	@Import("hintArrowX")
+	int getHintArrowX();
+
+	@Import("hintArrowY")
+	void setHintArrowY(int value);
+
+	@Import("hintArrowY")
+	int getHintArrowY();
+
+	@Import("hintArrowNpcTargetIdx")
+	void setHintArrowNpcTargetIdx(int value);
+
+	@Import("hintArrowNpcTargetIdx")
+	int getHintArrowNpcTargetIdx();
+
+	@Import("hintArrowPlayerTargetIdx")
+	void setHintArrowPlayerTargetIdx(int value);
+
+	@Import("hintArrowPlayerTargetIdx")
+	int getHintArrowPlayerTargetIdx();
 }
