@@ -358,4 +358,24 @@ public interface Client extends GameEngine
 	SpritePixels drawInstanceMap(int z);
 
 	void runScript(int id, Object... args);
+
+	void setHintArrowTargetType(int value);
+
+	int getHintArrowTargetType();
+
+	void setHintArrowX(int value);
+
+	int getHintArrowX();
+
+	void setHintArrowY(int value);
+
+	int getHintArrowY();
+
+	void setHintArrowNpcTargetIdx(int value);
+
+	int getHintArrowNpcTargetIdx();
+
+	void hintArrowPlayerTargetIdx(int value);
+
+	int getHintArrowPlayerTargetIdx();
 }

@@ -564,4 +564,34 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("runScript")
 	void runScript(RSScriptEvent ev, int ex);
+
+	@Import("hintArrowTargetType")
+	void setHintArrowTargetType(int value);
+
+	@Import("hintArrowType")
+	int getHintArrowTargetType();
+
+	@Import("hintArrowX")
+	void setHintArrowX(int value);
+
+	@Import("hintArrowX")
+	int getHintArrowX();
+
+	@Import("hintArrowY")
+	void setHintArrowY(int value);
+
+	@Import("hintArrowY")
+	int getHintArrowY();
+
+	@Import("hintArrowNpcTargetIdx")
+	void setHintArrowNpcTargetIdx(int value);
+
+	@Import("hintArrowNpcTargetIdx")
+	int getHintArrowNpcTargetIdx();
+
+	@Import("hintArrowPlayerTargetIdx")
+	void hintArrowPlayerTargetIdx(int value);
+
+	@Import("hintArrowPlayerTargetIdx")
+	int getHintArrowPlayerTargetIdx();
 }
