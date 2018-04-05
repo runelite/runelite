@@ -360,13 +360,13 @@ public interface Client extends GameEngine
 
 	void runScript(int id, Object... args);
 
-    boolean hasHintArrow();
+	boolean hasHintArrow();
 
-    void clearHintArrow();
+	void clearHintArrow();
 
-    void setPlayerHintArrow(int index);
+	void setPlayerHintArrow(int index);
 
-    void setHintArrow(WorldPoint point);
+	void setHintArrow(WorldPoint point);
 
-    void setNPCHintArrow(int index);
+	void setNPCHintArrow(int index);
 }
