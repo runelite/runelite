@@ -90,6 +90,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getType();
+
+		if (type >= 2000)
+		{
+			type -= 2000;
+		}
+
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
 			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
