@@ -4,49 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jn")
+@ObfuscatedName("jd")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ljf;"
    )
    @Export("EnumDefinition_indexCache")
    public static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Lhd;"
    )
    @Export("EnumDefinition_cached")
    public static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1280776805
+      intValue = 58984681
    )
    @Export("defaultInt")
    public int defaultInt;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -263499207
+      intValue = 142456961
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -59,10 +59,10 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lgp;I)V",
-      garbageValue = "-52449897"
+      signature = "(Lgc;I)V",
+      garbageValue = "-505255438"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -76,10 +76,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgp;II)V",
-      garbageValue = "1608594237"
+      signature = "(Lgc;IB)V",
+      garbageValue = "40"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -116,12 +116,21 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "575314488"
+      garbageValue = "-1726440698"
    )
-   public int method4949() {
+   public int method4957() {
       return this.size;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-1126393101"
+   )
+   public static String method4958(CharSequence var0) {
+      return VarCInt.method4785('*', var0.length());
    }
 }

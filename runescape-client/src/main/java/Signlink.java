@@ -4,31 +4,45 @@ import java.net.Socket;
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fe")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("i")
+   @ObfuscatedName("pv")
+   @ObfuscatedGetter(
+      intValue = -1554159413
+   )
+   static int field2217;
+   @ObfuscatedName("o")
+   @Export("javaVendor")
+   public static String javaVendor;
+   @ObfuscatedName("k")
    @Export("javaVersion")
    public static String javaVersion;
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lfy;"
+      signature = "Lin;"
+   )
+   static Widget field2218;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lfy;"
+      signature = "Lfo;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @Export("closed")
    boolean closed;
 
@@ -36,11 +50,11 @@ public class Signlink implements Runnable {
       this.currentTask = null;
       this.cachedTask = null;
       this.closed = false;
-      class241.javaVendor = "Unknown";
+      javaVendor = "Unknown";
       javaVersion = "1.6";
 
       try {
-         class241.javaVendor = System.getProperty("java.vendor");
+         javaVendor = System.getProperty("java.vendor");
          javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
          ;
@@ -53,10 +67,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1671380125"
+      garbageValue = "-1731504229"
    )
    @Export("join")
    public final void join() {
@@ -73,10 +87,10 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;B)Lfy;",
-      garbageValue = "121"
+      signature = "(IIILjava/lang/Object;I)Lfo;",
+      garbageValue = "-1765140513"
    )
    @Export("newTask")
    final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -97,20 +111,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lfy;",
-      garbageValue = "-2098334584"
+      signature = "(Ljava/lang/String;II)Lfo;",
+      garbageValue = "-2026285749"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.newTask(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;IB)Lfy;",
-      garbageValue = "-27"
+      signature = "(Ljava/lang/Runnable;IB)Lfo;",
+      garbageValue = "31"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
@@ -166,69 +180,124 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-32"
+      signature = "([BI)Lcr;",
+      garbageValue = "-1486560410"
    )
-   static final void method3246() {
-      if(!class132.Viewport_false0) {
-         int var0 = Region.pitchSin;
-         int var1 = Region.pitchCos;
-         int var2 = Region.yawSin;
-         int var3 = Region.yawCos;
-         byte var4 = 50;
-         short var5 = 3500;
-         int var6 = (class132.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var7 = (class132.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var8 = (class132.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var9 = (class132.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var10 = Graphics3D.method2813(var7, var4, var1, var0);
-         int var11 = Graphics3D.method2814(var7, var4, var1, var0);
-         var7 = var10;
-         var10 = Graphics3D.method2813(var9, var5, var1, var0);
-         int var12 = Graphics3D.method2814(var9, var5, var1, var0);
-         var9 = var10;
-         var10 = Graphics3D.method2811(var6, var11, var3, var2);
-         var11 = Graphics3D.method2812(var6, var11, var3, var2);
-         var6 = var10;
-         var10 = Graphics3D.method2811(var8, var12, var3, var2);
-         var12 = Graphics3D.method2812(var8, var12, var3, var2);
-         class132.field1915 = (var6 + var10) / 2;
-         AbstractSoundSystem.field1570 = (var7 + var9) / 2;
-         class132.field1918 = (var12 + var11) / 2;
-         class18.field306 = (var10 - var6) / 2;
-         Item.field1406 = (var9 - var7) / 2;
-         class132.field1917 = (var12 - var11) / 2;
-         class25.field357 = Math.abs(class18.field306);
-         ChatLineBuffer.field1470 = Math.abs(Item.field1406);
-         GameSocket.field2258 = Math.abs(class132.field1917);
+   @Export("newScript")
+   static Script newScript(byte[] var0) {
+      Script var1 = new Script();
+      Buffer var2 = new Buffer(var0);
+      var2.offset = var2.payload.length - 2;
+      int var3 = var2.readUnsignedShort();
+      int var4 = var2.payload.length - 2 - var3 - 12;
+      var2.offset = var4;
+      int var5 = var2.readInt();
+      var1.localIntCount = var2.readUnsignedShort();
+      var1.localStringCount = var2.readUnsignedShort();
+      var1.intStackCount = var2.readUnsignedShort();
+      var1.stringStackCount = var2.readUnsignedShort();
+      int var6 = var2.readUnsignedByte();
+      int var7;
+      int var8;
+      if(var6 > 0) {
+         var1.switches = var1.method2016(var6);
+
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.readUnsignedShort();
+            IterableHashTable var9 = new IterableHashTable(var8 > 0?GraphicsObject.nextPowerOfTwo(var8):1);
+            var1.switches[var7] = var9;
+
+            while(var8-- > 0) {
+               int var10 = var2.readInt();
+               int var11 = var2.readInt();
+               var9.put(new IntegerNode(var11), (long)var10);
+            }
+         }
       }
+
+      var2.offset = 0;
+      var2.getNullString();
+      var1.instructions = new int[var5];
+      var1.intOperands = new int[var5];
+      var1.stringOperands = new String[var5];
+
+      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
+         var8 = var2.readUnsignedShort();
+         if(var8 == 3) {
+            var1.stringOperands[var7] = var2.readString();
+         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+            var1.intOperands[var7] = var2.readInt();
+         } else {
+            var1.intOperands[var7] = var2.readUnsignedByte();
+         }
+      }
+
+      return var1;
    }
 
-   @ObfuscatedName("kn")
+   @ObfuscatedName("hn")
    @ObfuscatedSignature(
-      signature = "(IIIILla;Lir;I)V",
-      garbageValue = "-148931943"
+      signature = "(Lbz;IIII)V",
+      garbageValue = "1658972569"
    )
-   @Export("worldToMinimap")
-   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle & 2047;
-         int var8 = Graphics3D.SINE[var7];
-         int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
-         int var11 = var3 * var9 - var8 * var2 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = var5.field2765 / 2 - 25;
-         int var15 = (int)(Math.sin(var12) * (double)var14);
-         int var16 = (int)(Math.cos(var12) * (double)var14);
-         byte var17 = 20;
-         MapLabel.mapedge.method5887(var15 + (var0 + var5.field2765 / 2 - var17 / 2), var5.field2763 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
-      } else {
-         BaseVarType.drawDot(var0, var1, var2, var3, var4, var5);
-      }
+   static final void method3241(Player var0, int var1, int var2, int var3) {
+      if(SoundTaskDataProvider.localPlayer != var0) {
+         if(Client.menuOptionCount < 400) {
+            String var4;
+            if(var0.totalLevel == 0) {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + PendingSpawn.method1653(var0.combatLevel, SoundTaskDataProvider.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+            } else {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
+            }
 
+            int var5;
+            if(Client.itemSelectionState == 1) {
+               TextureProvider.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class45.getColTags(16777215) + var4, 14, var1, var2, var3);
+            } else if(Client.spellSelected) {
+               if((class110.field1607 & 8) == 8) {
+                  TextureProvider.addMenuEntry(Client.field1092, Client.field1028 + " " + "->" + " " + class45.getColTags(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var5 = 7; var5 >= 0; --var5) {
+                  if(Client.playerOptions[var5] != null) {
+                     short var6 = 0;
+                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
+                        if(Client.playerAttackOption == AttackOption.AttackOption_hidden) {
+                           continue;
+                        }
+
+                        if(AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || AttackOption.AttackOption_dependsOnCombatLevels == Client.playerAttackOption && var0.combatLevel > SoundTaskDataProvider.localPlayer.combatLevel) {
+                           var6 = 2000;
+                        }
+
+                        if(SoundTaskDataProvider.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == SoundTaskDataProvider.localPlayer.team) {
+                              var6 = 2000;
+                           } else {
+                              var6 = 0;
+                           }
+                        }
+                     } else if(Client.playerOptionsPriorities[var5]) {
+                        var6 = 2000;
+                     }
+
+                     boolean var7 = false;
+                     int var8 = Client.playerMenuTypes[var5] + var6;
+                     TextureProvider.addMenuEntry(Client.playerOptions[var5], class45.getColTags(16777215) + var4, var8, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
+               if(Client.menuTypes[var5] == 23) {
+                  Client.menuTargets[var5] = class45.getColTags(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
+      }
    }
 }

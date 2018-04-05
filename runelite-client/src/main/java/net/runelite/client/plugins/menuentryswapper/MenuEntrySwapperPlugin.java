@@ -27,7 +27,6 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Collections;
 import javax.inject.Inject;
@@ -36,9 +35,12 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
@@ -46,13 +48,12 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
@@ -62,7 +63,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
-	private static final String MENU_TARGET = "Shift-click";
+	private static final String RESET = "Reset";
+	private static final String MENU_TARGET = "<col=ff9040>Shift-click";
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
@@ -92,9 +94,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private MenuEntrySwapperConfig config;
 
 	@Inject
-	private ShiftClickConfigurationOverlay overlay;
-
-	@Inject
 	private ShiftClickInputListener inputListener;
 
 	@Inject
@@ -102,9 +101,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private MouseManager mouseManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -122,12 +118,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MenuEntrySwapperConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Override
@@ -191,7 +181,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void disableCustomization()
 	{
 		keyManager.unregisterKeyListener(inputListener);
-		mouseManager.unregisterMouseListener(inputListener);
 		removeShiftClickCustomizationMenus();
 		configuringShiftClick = false;
 	}
@@ -205,15 +194,126 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			configuringShiftClick = event.getMenuOption().equals(CONFIGURE);
 			refreshShiftClickCustomizationMenus();
+		}
+	}
 
-			if (configuringShiftClick)
+	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		if (!configuringShiftClick)
+		{
+			return;
+		}
+
+		MenuEntry firstEntry = event.getFirstEntry();
+		if (firstEntry == null)
+		{
+			return;
+		}
+
+		int widgetId = firstEntry.getParam1();
+		if (widgetId != WidgetInfo.INVENTORY.getId())
+		{
+			return;
+		}
+
+		int itemId = firstEntry.getIdentifier();
+		if (itemId == -1)
+		{
+			return;
+		}
+
+		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		String itemName = itemComposition.getName();
+		String option = "Use";
+		int shiftClickActionindex = itemComposition.getShiftClickActionIndex();
+		String[] inventoryActions = itemComposition.getInventoryActions();
+
+		if (shiftClickActionindex >= 0 && shiftClickActionindex < inventoryActions.length)
+		{
+			option = inventoryActions[shiftClickActionindex];
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+
+		for (MenuEntry entry : entries)
+		{
+			if (itemName.equals(Text.removeTags(entry.getTarget())))
 			{
-				mouseManager.registerMouseListener(inputListener);
+				entry.setType(MenuAction.RUNELITE.getId());
+
+				if (option.equals(entry.getOption()))
+				{
+					entry.setOption("* " + option);
+				}
 			}
-			else
+		}
+
+		final MenuEntry resetShiftClickEntry = new MenuEntry();
+		resetShiftClickEntry.setOption(RESET);
+		resetShiftClickEntry.setTarget(MENU_TARGET);
+		resetShiftClickEntry.setIdentifier(itemId);
+		resetShiftClickEntry.setParam1(widgetId);
+		resetShiftClickEntry.setType(MenuAction.RUNELITE.getId());
+		client.setMenuEntries(ArrayUtils.addAll(entries, resetShiftClickEntry));
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction() != MenuAction.RUNELITE || event.getWidgetId() != WidgetInfo.INVENTORY.getId())
+		{
+			return;
+		}
+
+		int itemId = event.getId();
+
+		if (itemId == -1)
+		{
+			return;
+		}
+
+		String option = event.getMenuOption();
+		String target = event.getMenuTarget();
+		ItemComposition itemComposition = client.getItemDefinition(itemId);
+
+		if (option.equals(RESET) && target.equals(MENU_TARGET))
+		{
+			unsetSwapConfig(itemId);
+			itemComposition.resetShiftClickActionIndex();
+			return;
+		}
+
+		if (!itemComposition.getName().equals(Text.removeTags(target)))
+		{
+			return;
+		}
+
+		int index = -1;
+		boolean valid = false;
+
+		if (option.equals("Use")) //because "Use" is not in inventoryActions
+		{
+			valid = true;
+		}
+		else
+		{
+			String[] inventoryActions = itemComposition.getInventoryActions();
+
+			for (index = 0; index < inventoryActions.length; index++)
 			{
-				mouseManager.unregisterMouseListener(inputListener);
+				if (option.equals(inventoryActions[index]))
+				{
+					valid = true;
+					break;
+				}
 			}
+		}
+
+		if (valid)
+		{
+			setSwapConfig(itemId, index);
+			itemComposition.setShiftClickActionIndex(index);
 		}
 	}
 
@@ -378,51 +478,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			client.setMenuEntries(entries);
 		}
-	}
-
-	public void cycleItemShiftClickAction(WidgetItem item, int mouseClick)
-	{
-		ItemComposition itemComposition = client.getItemDefinition(item.getId());
-
-		if (mouseClick == MouseEvent.BUTTON1)
-		{
-			String[] actions = itemComposition.getInventoryActions();
-			int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
-			int nextActionIndex = getNextActionIndex(actions, shiftClickActionIndex);
-			setSwapConfig(item.getId(), nextActionIndex);
-			itemComposition.setShiftClickActionIndex(nextActionIndex);
-		}
-		else if (mouseClick == MouseEvent.BUTTON3)
-		{
-			unsetSwapConfig(item.getId());
-			itemComposition.resetShiftClickActionIndex();
-		}
-	}
-
-	private int getNextActionIndex(String[] actions, int currentIndex)
-	{
-		int size = actions.length;
-		int index = currentIndex + 1;
-
-		for (int i = index; i < index + size; i++)
-		{
-			if (i == size)
-			{
-				// -1 is used for "Use" which is not in actions
-				return -1;
-			}
-
-			index = i % size;
-
-			if (actions[index] == null)
-			{
-				continue;
-			}
-
-			break;
-		}
-
-		return index;
 	}
 
 	private void removeShiftClickCustomizationMenus()

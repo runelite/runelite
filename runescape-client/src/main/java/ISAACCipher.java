@@ -4,42 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gr")
+@ObfuscatedName("gx")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lgp;"
-   )
-   @Export("NetCache_responseArchiveBuffer")
-   static Buffer NetCache_responseArchiveBuffer;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1944074173
+      intValue = 1478925263
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @Export("mm")
    int[] mm;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 617854919
+      intValue = 956578937
    )
-   int field2601;
-   @ObfuscatedName("p")
+   int field2613;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1095353499
+      intValue = 2042425489
    )
-   int field2602;
-   @ObfuscatedName("w")
+   int field2611;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 676371319
+      intValue = -555322193
    )
-   int field2599;
+   int field2612;
 
    public ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -49,13 +43,13 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3826();
+      this.method3812();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "35"
+      signature = "(I)I",
+      garbageValue = "782349755"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -67,12 +61,12 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-2038739260"
+      garbageValue = "710411810"
    )
-   final int method3824() {
+   final int method3813() {
       if(this.valuesRemaining == 0) {
          this.generateMoreResults();
          this.valuesRemaining = 256;
@@ -81,43 +75,43 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining - 1];
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1074465153"
+      garbageValue = "649342697"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2602 += ++this.field2599;
+      this.field2611 += ++this.field2612;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2601 ^= this.field2601 << 13;
+               this.field2613 ^= this.field2613 << 13;
             } else {
-               this.field2601 ^= this.field2601 >>> 6;
+               this.field2613 ^= this.field2613 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2601 ^= this.field2601 << 2;
+            this.field2613 ^= this.field2613 << 2;
          } else {
-            this.field2601 ^= this.field2601 >>> 16;
+            this.field2613 ^= this.field2613 >>> 16;
          }
 
-         this.field2601 += this.mm[128 + var1 & 255];
+         this.field2613 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2602 + this.field2601;
-         this.randResult[var1] = this.field2602 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2613 + this.field2611;
+         this.randResult[var1] = this.field2611 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1347687077"
+      signature = "(S)V",
+      garbageValue = "17272"
    )
-   final void method3826() {
+   final void method3812() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -245,26 +239,45 @@ public final class ISAACCipher {
       this.valuesRemaining = 256;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("gh")
    @ObfuscatedSignature(
-      signature = "(IB)Lkn;",
-      garbageValue = "22"
+      signature = "(ZI)V",
+      garbageValue = "1361069898"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = UnitPriceComparator.seq_ref.getConfigData(12, var0);
-         var1 = new Sequence();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+   static final void method3809(boolean var0) {
+      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
+         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method5123()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field1172 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field966[var4][var5] == Client.field1137) {
+                     continue;
+                  }
 
-         var1.post();
-         Sequence.sequences.put(var1, (long)var0);
-         return var1;
+                  Client.field966[var4][var5] = Client.field1137;
+               }
+
+               if(!var2.composition.field3724) {
+                  var3 -= Integer.MIN_VALUE;
+               }
+
+               var2.field1161 = Client.gameCycle;
+               class255.region.method2863(BoundingBox3DDrawMode.plane, var2.x, var2.y, class265.getTileHeight(var2.field1172 * 64 - 64 + var2.x, var2.field1172 * 64 - 64 + var2.y, BoundingBox3DDrawMode.plane), var2.field1172 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1159);
+            }
+         }
       }
+
+   }
+
+   @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "(S)Z",
+      garbageValue = "255"
+   )
+   static boolean method3821() {
+      return (Client.playerNameMask & 1) != 0;
    }
 }

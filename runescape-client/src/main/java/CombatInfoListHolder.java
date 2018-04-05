@@ -1,38 +1,45 @@
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cu")
+@ObfuscatedName("cb")
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
-   @ObfuscatedName("o")
+   @ObfuscatedName("mc")
+   @ObfuscatedGetter(
+      intValue = 343740281
+   )
+   static int field1310;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljo;"
+      signature = "Ljj;"
    )
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhm;"
    )
    @Export("combatInfo1")
    CombatInfoList combatInfo1;
 
    @ObfuscatedSignature(
-      signature = "(Ljo;)V"
+      signature = "(Ljj;)V"
    )
    CombatInfoListHolder(CombatInfo2 var1) {
       this.combatInfo1 = new CombatInfoList();
       this.combatInfo2 = var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-266560985"
+      signature = "(IIIIB)V",
+      garbageValue = "19"
    )
-   void method1818(int var1, int var2, int var3, int var4) {
+   void method1859(int var1, int var2, int var3, int var4) {
       CombatInfo1 var5 = null;
       int var6 = 0;
 
@@ -54,7 +61,7 @@ public class CombatInfoListHolder extends Node {
          }
 
       } else {
-         CombatInfoList.method3986(new CombatInfo1(var1, var2, var3, var4), var5);
+         CombatInfoList.method3987(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.last().unlink();
          }
@@ -62,12 +69,12 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(II)Lbd;",
-      garbageValue = "445097597"
+      garbageValue = "255512782"
    )
-   CombatInfo1 method1811(int var1) {
+   CombatInfo1 method1860(int var1) {
       CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.last();
       if(var2 != null && var2.cycle <= var1) {
          for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.previous(); var3 != null && var3.cycle <= var1; var3 = (CombatInfo1)this.combatInfo1.previous()) {
@@ -75,7 +82,7 @@ public class CombatInfoListHolder extends Node {
             var2 = var3;
          }
 
-         if(this.combatInfo2.field3524 + var2.int2 + var2.cycle > var1) {
+         if(this.combatInfo2.field3522 + var2.int2 + var2.cycle > var1) {
             return var2;
          } else {
             var2.unlink();
@@ -86,173 +93,116 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "-17630"
+      signature = "(B)Z",
+      garbageValue = "1"
    )
-   boolean method1810() {
+   boolean method1858() {
       return this.combatInfo1.isEmpty();
    }
 
-   @ObfuscatedName("gy")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lbg;I)V",
-      garbageValue = "666301995"
+      signature = "(ILff;Ljn;B)V",
+      garbageValue = "-52"
    )
-   static final void method1823(Actor var0) {
-      var0.poseAnimation = var0.idlePoseAnimation;
-      if(var0.queueSize == 0) {
-         var0.field1208 = 0;
+   static void method1871(int var0, IndexFile var1, IndexData var2) {
+      byte[] var3 = null;
+      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+         for(FileSystem var5 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.getFront(); var5 != null; var5 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.getNext()) {
+            if(var5.hash == (long)var0 && var1 == var5.index && var5.type == 0) {
+               var3 = var5.field3367;
+               break;
+            }
+         }
+      }
+
+      if(var3 != null) {
+         var2.load(var1, var0, var3, true);
       } else {
-         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var1 = ISAACCipher.getAnimation(var0.animation);
-            if(var0.field1194 > 0 && var1.precedenceAnimating == 0) {
-               ++var0.field1208;
-               return;
-            }
+         byte[] var8 = var1.read(var0);
+         var2.load(var1, var0, var8, true);
+      }
+   }
 
-            if(var0.field1194 <= 0 && var1.priority == 0) {
-               ++var0.field1208;
-               return;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-603347936"
+   )
+   static void method1870() {
+      class62.tileUnderlayIds = null;
+      class62.tileOverlayIds = null;
+      class62.tileOverlayPath = null;
+      class62.overlayRotations = null;
+      GZipDecompressor.field2520 = null;
+      class297.field3831 = null;
+      AttackOption.field1354 = null;
+      class55.floorHues = null;
+      class183.floorSaturations = null;
+      class253.field3314 = null;
+      class36.floorMultiplier = null;
+      AttackOption.field1356 = null;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
+      garbageValue = "59"
+   )
+   public static boolean method1865(String var0, int var1, String var2) {
+      if(var1 == 0) {
+         try {
+            if(!class57.field667.startsWith("win")) {
+               throw new Exception();
+            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
+               throw new Exception();
+            } else {
+               String var10 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+
+               for(int var4 = 0; var4 < var0.length(); ++var4) {
+                  if(var10.indexOf(var0.charAt(var4)) == -1) {
+                     throw new Exception();
+                  }
+               }
+
+               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+               return true;
             }
+         } catch (Throwable var5) {
+            return false;
+         }
+      } else if(var1 == 1) {
+         try {
+            Object var3 = class53.method820(class57.field674, var2, new Object[]{(new URL(class57.field674.getCodeBase(), var0)).toString()});
+            return var3 != null;
+         } catch (Throwable var6) {
+            return false;
+         }
+      } else if(var1 == 2) {
+         try {
+            class57.field674.getAppletContext().showDocument(new URL(class57.field674.getCodeBase(), var0), "_blank");
+            return true;
+         } catch (Exception var7) {
+            return false;
+         }
+      } else if(var1 == 3) {
+         try {
+            class53.method824(class57.field674, "loggedout");
+         } catch (Throwable var9) {
+            ;
          }
 
-         int var10 = var0.x;
-         int var2 = var0.y;
-         int var3 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1153 * 64;
-         int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1153 * 64;
-         if(var10 < var3) {
-            if(var2 < var4) {
-               var0.orientation = 1280;
-            } else if(var2 > var4) {
-               var0.orientation = 1792;
-            } else {
-               var0.orientation = 1536;
-            }
-         } else if(var10 > var3) {
-            if(var2 < var4) {
-               var0.orientation = 768;
-            } else if(var2 > var4) {
-               var0.orientation = 256;
-            } else {
-               var0.orientation = 512;
-            }
-         } else if(var2 < var4) {
-            var0.orientation = 1024;
-         } else if(var2 > var4) {
-            var0.orientation = 0;
+         try {
+            class57.field674.getAppletContext().showDocument(new URL(class57.field674.getCodeBase(), var0), "_top");
+            return true;
+         } catch (Exception var8) {
+            return false;
          }
-
-         byte var5 = var0.pathTraversed[var0.queueSize - 1];
-         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
-            int var6 = var0.orientation - var0.angle & 2047;
-            if(var6 > 1024) {
-               var6 -= 2048;
-            }
-
-            int var7 = var0.field1172;
-            if(var6 >= -256 && var6 <= 256) {
-               var7 = var0.field1158;
-            } else if(var6 >= 256 && var6 < 768) {
-               var7 = var0.field1161;
-            } else if(var6 >= -768 && var6 <= -256) {
-               var7 = var0.field1160;
-            }
-
-            if(var7 == -1) {
-               var7 = var0.field1158;
-            }
-
-            var0.poseAnimation = var7;
-            int var8 = 4;
-            boolean var9 = true;
-            if(var0 instanceof NPC) {
-               var9 = ((NPC)var0).composition.isClickable;
-            }
-
-            if(var9) {
-               if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1203 != 0) {
-                  var8 = 2;
-               }
-
-               if(var0.queueSize > 2) {
-                  var8 = 6;
-               }
-
-               if(var0.queueSize > 3) {
-                  var8 = 8;
-               }
-
-               if(var0.field1208 > 0 && var0.queueSize > 1) {
-                  var8 = 8;
-                  --var0.field1208;
-               }
-            } else {
-               if(var0.queueSize > 1) {
-                  var8 = 6;
-               }
-
-               if(var0.queueSize > 2) {
-                  var8 = 8;
-               }
-
-               if(var0.field1208 > 0 && var0.queueSize > 1) {
-                  var8 = 8;
-                  --var0.field1208;
-               }
-            }
-
-            if(var5 == 2) {
-               var8 <<= 1;
-            }
-
-            if(var8 >= 8 && var0.poseAnimation == var0.field1158 && var0.field1162 != -1) {
-               var0.poseAnimation = var0.field1162;
-            }
-
-            if(var10 != var3 || var4 != var2) {
-               if(var10 < var3) {
-                  var0.x += var8;
-                  if(var0.x > var3) {
-                     var0.x = var3;
-                  }
-               } else if(var10 > var3) {
-                  var0.x -= var8;
-                  if(var0.x < var3) {
-                     var0.x = var3;
-                  }
-               }
-
-               if(var2 < var4) {
-                  var0.y += var8;
-                  if(var0.y > var4) {
-                     var0.y = var4;
-                  }
-               } else if(var2 > var4) {
-                  var0.y -= var8;
-                  if(var0.y < var4) {
-                     var0.y = var4;
-                  }
-               }
-            }
-
-            if(var3 == var0.x && var4 == var0.y) {
-               --var0.queueSize;
-               if(var0.field1194 > 0) {
-                  --var0.field1194;
-               }
-            }
-
-         } else {
-            var0.x = var3;
-            var0.y = var4;
-            --var0.queueSize;
-            if(var0.field1194 > 0) {
-               --var0.field1194;
-            }
-
-         }
+      } else {
+         throw new IllegalArgumentException();
       }
    }
 }

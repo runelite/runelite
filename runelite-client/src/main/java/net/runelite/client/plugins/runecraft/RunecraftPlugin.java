@@ -35,18 +35,20 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameState;
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Runecraft"
@@ -58,6 +60,12 @@ public class RunecraftPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean degradedPouchInInventory;
+
+	@Getter(AccessLevel.PACKAGE)
+	private NPC darkMage;
+
 	@Inject
 	private RunecraftOverlay overlay;
 
@@ -66,6 +74,12 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
+
+	@Inject
+	private QueryRunner queryRunner;
+
+	@Inject
+	private RunecraftConfig config;
 
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
@@ -89,6 +103,8 @@ public class RunecraftPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		abyssObjects.clear();
+		darkMage = null;
+		degradedPouchInInventory = false;
 	}
 
 	@Subscribe
@@ -100,7 +116,7 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER || !config.showBindNeck())
 		{
 			return;
 		}
@@ -156,6 +172,33 @@ public class RunecraftPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			abyssObjects.clear();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		darkMage = null;
+
+		if (!config.hightlightDarkMage())
+		{
+			return;
+		}
+
+		Query inventoryQuery = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(
+			ItemID.MEDIUM_POUCH_5511,
+			ItemID.LARGE_POUCH_5513,
+			ItemID.GIANT_POUCH_5515
+		);
+
+		Item[] items = queryRunner.runQuery(inventoryQuery);
+		degradedPouchInInventory = items.length > 0;
+
+		if (degradedPouchInInventory)
+		{
+			Query darkMageQuery = new NPCQuery().idEquals(NpcID.DARK_MAGE);
+			NPC[] result = queryRunner.runQuery(darkMageQuery);
+			darkMage = result.length >= 1 ? result[0] : null;
 		}
 	}
 }
