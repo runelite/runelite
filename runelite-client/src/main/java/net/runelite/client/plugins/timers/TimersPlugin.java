@@ -214,10 +214,11 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(PRAYER_ENHANCE);
 		}
+		
 		if (!config.showSoTDspec())
-        {
-            removeGameTimer(SOTD_SPEC);
-        }
+        	{
+            		removeGameTimer(SOTD_SPEC);
+        	}
 	}
 
 	@Subscribe
