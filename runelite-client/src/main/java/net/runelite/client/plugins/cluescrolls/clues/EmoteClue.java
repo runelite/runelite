@@ -55,7 +55,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 		new EmoteClue("Bow outside the entrance to the Legends' Guild. Equip iron platelegs, an emerald amulet and an oak longbow.", new WorldPoint(2709, 4113, 0), BOW, IRON_PLATELEGS, OAK_LONGBOW, EMERALD_AMULET),
 		new EmoteClue("Bow on the ground floor of the Legend's guild. Equip Legend's cape, a dragon battleaxe and an amulet of glory.", new WorldPoint(2728, 3377, 0), BOW, CAPE_OF_LEGENDS, DRAGON_BATTLEAXE, AMULET_OF_GLORY),
 		new EmoteClue("Bow in the ticket office of the Duel Arena. Equip an iron chain body, leather chaps and coif.", new WorldPoint(3314, 3241, 0), BOW, IRON_CHAINBODY, LEATHER_CHAPS, COIF),
-		new EmoteClue("Bow at the top of the lighthouse. Beware of double agents! Equip a blue dragonhide body, blue dragonhide vambraces and no jewellery.", new WorldPoint(2511, 3641, 2), BOW, BLUE_DHIDE_BODY, BLUE_DHIDE_VAMB),
+		new EmoteClue("Bow at the top of the lighthouse. Beware of double agents! Equip a blue dragonhide body, blue dragonhide vambraces and no jewelry.", new WorldPoint(2511, 3641, 2), BOW, BLUE_DHIDE_BODY, BLUE_DHIDE_VAMB),
 		new EmoteClue("Bow upstairs in the Monastery. Equip a completed prayer book.", new WorldPoint(3136, 3513, 0), BOW, HOLY_BOOK, UNHOLY_BOOK, BOOK_OF_BALANCE),
 		new EmoteClue("Blow a kiss between the tables in Shilo Village bank. Beware of double agents! Equip a blue mystic hat, bone spear and rune plate body.", new WorldPoint(2851, 2954, 0), BLOW_KISS, MYSTIC_HAT, BONE_SPEAR, RUNE_PLATEBODY),
 		new EmoteClue("Blow a kiss in the heart of the lava maze. Equip black dragonhide chaps, a spotted cape and a rolling pin.", new WorldPoint(2417, 4454, 0), BLOW_KISS, BLACK_DHIDE_CHAPS, SPOTTED_CAPE, ROLLING_PIN),
