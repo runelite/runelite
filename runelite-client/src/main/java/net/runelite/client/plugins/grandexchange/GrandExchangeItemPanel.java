@@ -99,6 +99,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Item name
 		JLabel itemName = new JLabel();
+		itemName.setForeground(Color.WHITE);
 		itemName.setText(name);
 		rightPanel.add(itemName);
 
@@ -120,8 +121,8 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
-		haPriceLabel.setForeground(Color.orange);
+		haPriceLabel.setText("Alch: " + StackFormatter.formatNumber(haPrice.intValue()));
+		haPriceLabel.setForeground(Color.gray);
 		detailsPanel.add(haPriceLabel);
 
 		// GE limit
