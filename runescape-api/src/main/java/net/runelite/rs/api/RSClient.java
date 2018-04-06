@@ -567,7 +567,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("hintArrowTargetType")
 	void setHintArrowTargetType(int value);
 
-	@Import("hintArrowType")
+	@Import("hintArrowTargetType")
 	int getHintArrowTargetType();
 
 	@Import("hintArrowX")

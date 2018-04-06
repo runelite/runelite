@@ -70,4 +70,6 @@ public interface Actor extends Renderable
 	int getLogicalHeight();
 
 	Polygon getConvexHull();
+
+	int getIndex();
 }
