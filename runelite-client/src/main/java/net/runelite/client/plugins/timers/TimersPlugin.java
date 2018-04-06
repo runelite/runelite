@@ -309,10 +309,12 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
+
 		if (config.showSoTDspec() && event.getMessage().equals("<col=007f00>Spirits of deceased evildoers offer you their protection.</col>"))
 		{
 			createGameTimer(SOTD_SPEC);
 		}
+		
 		if (event.getMessage().equals("<col=007f00>Your protection fades away.</col>"))
 		{
 			removeGameTimer(SOTD_SPEC);
