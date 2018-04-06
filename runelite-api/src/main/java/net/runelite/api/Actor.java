@@ -72,4 +72,6 @@ public interface Actor extends Renderable
 	Polygon getConvexHull();
 
 	int getIndex();
+
+	void setIndex(int id);
 }
