@@ -42,8 +42,12 @@ import net.runelite.rs.api.RSPlayer;
 @Mixin(RSPlayer.class)
 public abstract class RSPlayerMixin implements RSPlayer
 {
+
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private int playerIndex;
 
 	@Inject
 	@Override
@@ -140,5 +144,18 @@ public abstract class RSPlayerMixin implements RSPlayer
 			rotatedTriangles.add(rotatedTriangle);
 		}
 		return rotatedTriangles;
+	}
+
+	@Inject
+	@Override
+	public int getPlayerIndex()
+	{
+		return playerIndex;
+	}
+
+	@Inject
+	public void setPlayerIndex(int index)
+	{
+		this.playerIndex = index;
 	}
 }

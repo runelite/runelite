@@ -101,7 +101,7 @@ class OpponentInfoOverlay extends Overlay
 		// If opponent is null, try to use last opponent
 		if (opponent == null)
 		{
-			if (lastOpponent != null && clientNpcs[lastOpponent.getIndex()] != lastOpponent)
+			if (lastOpponent != null && clientNpcs[lastOpponent.getNPCIndex()] != lastOpponent)
 			{
 				// lastOpponent is no longer valid
 				lastOpponent = null;

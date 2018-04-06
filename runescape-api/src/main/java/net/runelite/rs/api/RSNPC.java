@@ -34,7 +34,7 @@ public interface RSNPC extends RSActor, NPC
 	RSNPCComposition getComposition();
 
 	@Override
-	int getIndex();
+	int getNPCIndex();
 
-	void setIndex(int id);
+	void setNPCIndex(int id);
 }
