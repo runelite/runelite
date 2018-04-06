@@ -75,7 +75,7 @@ public class ItemStatChanges
 		add(food(16), MONKFISH, POTATO_WITH_CHEESE, EGG_POTATO);
 		add(food(17), MYCIL_FISH_4, KRYKET_BAT_4);
 		add(food(18), COOKED_KARAMBWAN);
-		add(food(19), CURRY, UGTHANKI_KEBAB);
+		add(food(19), CURRY, UGTHANKI_KEBAB, UGTHANKI_KEBAB_1885);
 		add(food(20), MUSHROOM_POTATO, SHARK, ROQED_FISH_5, MURNG_BAT_5);
 		add(food(21), SEA_TURTLE);
 		add(food(22), MANTA_RAY, DARK_CRAB, TUNA_POTATO);
