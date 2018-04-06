@@ -126,8 +126,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1952862061
    )
-   @Export("team")
-   int team;
+   @Export("shiftClickIndex")
+   int shiftClickIndex;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = 265594253
@@ -252,13 +252,14 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -996561977
    )
-   @Export("int1")
-   public int int1;
+   @Export("team")
+   public int team;
    @ObfuscatedName("bf")
    @ObfuscatedSignature(
       signature = "Lha;"
    )
-   IterableHashTable field3671;
+   @Export("params")
+   IterableHashTable params;
    @ObfuscatedName("bp")
    @Export("isTradable")
    public boolean isTradable;
@@ -306,7 +307,7 @@ public class ItemComposition extends CacheableNode {
       this.isMembers = false;
       this.groundActions = new String[]{null, null, "Take", null, null};
       this.inventoryActions = new String[]{null, null, null, null, "Drop"};
-      this.team = -2;
+      this.shiftClickIndex = -2;
       this.maleModel = -1;
       this.maleModel1 = -1;
       this.maleOffset = 0;
@@ -326,7 +327,7 @@ public class ItemComposition extends CacheableNode {
       this.resizeZ = 128;
       this.ambient = 0;
       this.contrast = 0;
-      this.int1 = 0;
+      this.team = 0;
       this.isTradable = false;
       this.unnotedId = -1;
       this.notedId = -1;
@@ -436,7 +437,7 @@ public class ItemComposition extends CacheableNode {
                this.textToReplaceWith[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 42) {
-            this.team = var1.readByte();
+            this.shiftClickIndex = var1.readByte();
          } else if(var2 == 65) {
             this.isTradable = true;
          } else if(var2 == 78) {
@@ -476,7 +477,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 114) {
             this.contrast = var1.readByte();
          } else if(var2 == 115) {
-            this.int1 = var1.readUnsignedByte();
+            this.team = var1.readUnsignedByte();
          } else if(var2 == 139) {
             this.unnotedId = var1.readUnsignedShort();
          } else if(var2 == 140) {
@@ -486,7 +487,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 149) {
             this.placeholderTemplateId = var1.readUnsignedShort();
          } else if(var2 == 249) {
-            this.field3671 = class28.readStringIntParameters(var1, this.field3671);
+            this.params = class28.readStringIntParameters(var1, this.params);
          }
       }
 
@@ -546,7 +547,7 @@ public class ItemComposition extends CacheableNode {
       this.maleHeadModel2 = var2.maleHeadModel2;
       this.femaleHeadModel = var2.femaleHeadModel;
       this.femaleHeadModel2 = var2.femaleHeadModel2;
-      this.int1 = var2.int1;
+      this.team = var2.team;
       this.groundActions = var2.groundActions;
       this.inventoryActions = new String[5];
       if(var2.inventoryActions != null) {
@@ -873,7 +874,7 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "3631"
    )
    public int method5068(int var1, int var2) {
-      IterableHashTable var4 = this.field3671;
+      IterableHashTable var4 = this.params;
       int var3;
       if(var4 == null) {
          var3 = var2;
@@ -895,7 +896,7 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "1"
    )
    public String method5069(int var1, String var2) {
-      return WorldMapType1.method309(this.field3671, var1, var2);
+      return WorldMapType1.method309(this.params, var1, var2);
    }
 
    @ObfuscatedName("f")
@@ -905,6 +906,6 @@ public class ItemComposition extends CacheableNode {
    )
    @Export("getShiftClickActionIndex")
    public int getShiftClickActionIndex() {
-      return this.team != -1 && this.inventoryActions != null?(this.team >= 0?(this.inventoryActions[this.team] != null?this.team:-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
+      return this.shiftClickIndex != -1 && this.inventoryActions != null?(this.shiftClickIndex >= 0?(this.inventoryActions[this.shiftClickIndex] != null?this.shiftClickIndex :-1):("Drop".equalsIgnoreCase(this.inventoryActions[4])?4:-1)):-1;
    }
 }
