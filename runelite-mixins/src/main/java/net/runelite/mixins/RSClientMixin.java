@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import net.runelite.api.*;
 
 import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
@@ -38,7 +37,28 @@ import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
+import static net.runelite.client.callback.Hooks.eventBus;
 
+import net.runelite.api.Actor;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.Node;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.Prayer;
+import net.runelite.api.Projectile;
+import net.runelite.api.Setting;
+import net.runelite.api.Skill;
+import net.runelite.api.SpritePixels;
+import net.runelite.api.Varbits;
+import net.runelite.api.WidgetNode;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
+import net.runelite.api.GameState;
+import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.IndexedSprite;
+import net.runelite.api.InventoryID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -61,9 +81,16 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.client.callback.Hooks.eventBus;
-
-import net.runelite.rs.api.*;
+import net.runelite.rs.api.RSClanMemberManager;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSDeque;
+import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSItemContainer;
+import net.runelite.rs.api.RSNPC;
+import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSPlayer;
+import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
