@@ -30,19 +30,19 @@ import net.runelite.api.Client;
 
 public class NotSimpleStatBoost extends StatBoost
 {
-    private final DeltaCalculator deltaCalculator;
+        private final DeltaCalculator deltaCalculator;
 
-    public NotSimpleStatBoost(Stat stat, boolean boost, DeltaCalculator deltaCalculator)
-    {
-        super(stat, boost);
-        this.deltaCalculator = deltaCalculator;
-    }
+        public NotSimpleStatBoost(Stat stat, boolean boost, DeltaCalculator deltaCalculator)
+        {
+                super(stat, boost);
+                this.deltaCalculator = deltaCalculator;
+        }
 
-    @Override
-    public int heals(Client client)
-    {
-        int value = getStat().getValue(client);
-        return deltaCalculator.calculateDelta(value);
-    }
+        @Override
+        public int heals(Client client)
+        {
+                int value = getStat().getValue(client);
+                return deltaCalculator.calculateDelta(value);
+        }
 
 }
