@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,11 +115,25 @@ class GrandExchangeItemPanel extends JPanel
 		gePriceLabel.setForeground(Color.GREEN);
 		rightPanel.add(gePriceLabel);
 
+		JPanel detailsPanel = new JPanel(new BorderLayout(10, 10));
+		detailsPanel.setOpaque(false);
+
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
 		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
 		haPriceLabel.setForeground(Color.orange);
-		rightPanel.add(haPriceLabel);
+		detailsPanel.add(haPriceLabel);
+
+		// GE limit
+		double limit = GrandExchangePlugin.getLimit(name);
+		String limitIndicator = limit > -1 ? StackFormatter.formatNumber(limit) : "N/A";
+
+		JLabel geLimitLabel = new JLabel();
+		geLimitLabel.setText("Limit: " + limitIndicator);
+		geLimitLabel.setForeground(Color.gray);
+		detailsPanel.add(geLimitLabel, BorderLayout.LINE_END);
+
+		rightPanel.add(detailsPanel);
 
 		add(rightPanel, BorderLayout.CENTER);
 	}
