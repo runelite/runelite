@@ -59,6 +59,23 @@ public interface ItemComposition
 	int getLinkedNoteId();
 
 	/**
+	 * Returns the item ID of the normal/placeholder counterpart. For example, if
+	 * you call this on a monkfish(ID 7946), this method will
+	 * return the ID of a placeholder monkfish(ID 17065), and vice versa.
+	 *
+	 * @return the ID that is linked to this item in normal/placeholder form.
+	 */
+	int getPlaceholderId();
+
+	/**
+	 * Returns a result that depends on whether the item is in placeholder form or
+	 * not.
+	 *
+	 * @return 14401 if placeholder, -1 if normal
+	 */
+	int getPlaceholderTemplateId();
+
+	/**
 	 * Returns the store price of the item. Even if the item cannot be found
 	 * in a store, all items have a store price from which the High and Low
 	 * Alchemy values are calculated. Multiply the price by 0.6 to get the

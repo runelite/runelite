@@ -42,6 +42,11 @@
 			<artifactId>api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>fernflower</artifactId>
+			<version>20171017</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
