@@ -2,29 +2,29 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dr")
+@ObfuscatedName("ds")
 @Implements("Residue")
 public class Residue {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @Export("type")
    int type;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @Export("begin")
    int begin;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @Export("end")
    int end;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @Export("partitionSize")
    int partitionSize;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @Export("classification")
    int classification;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @Export("classBook")
    int classBook;
    @ObfuscatedName("z")
-   int[] field1601;
+   int[] field1617;
 
    Residue() {
       this.type = class104.getInt(16);
@@ -47,15 +47,15 @@ public class Residue {
          var1[var2] = var3 << 3 | var4;
       }
 
-      this.field1601 = new int[this.classification * 8];
+      this.field1617 = new int[this.classification * 8];
 
       for(var2 = 0; var2 < this.classification * 8; ++var2) {
-         this.field1601[var2] = (var1[var2 >> 3] & 1 << (var2 & 7)) != 0?class104.getInt(8):-1;
+         this.field1617[var2] = (var1[var2 >> 3] & 1 << (var2 & 7)) != 0?class104.getInt(8):-1;
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @Export("decodeResidue")
    void decodeResidue(float[] var1, int var2, boolean var3) {
       int var4;
@@ -89,7 +89,7 @@ public class Residue {
 
                for(var10 = 0; var10 < var4; ++var10) {
                   var11 = var7[var9];
-                  int var12 = this.field1601[var8 + var11 * 8];
+                  int var12 = this.field1617[var8 + var11 * 8];
                   if(var12 >= 0) {
                      int var13 = var9 * this.partitionSize + this.begin;
                      CodeBook var14 = class104.codeBooks[var12];
@@ -98,7 +98,7 @@ public class Residue {
                         var15 = this.partitionSize / var14.dimensions;
 
                         for(int var16 = 0; var16 < var15; ++var16) {
-                           float[] var17 = var14.method2102();
+                           float[] var17 = var14.method2112();
 
                            for(int var18 = 0; var18 < var14.dimensions; ++var18) {
                               var1[var13 + var16 + var18 * var15] += var17[var18];
@@ -108,7 +108,7 @@ public class Residue {
                         var15 = 0;
 
                         while(var15 < this.partitionSize) {
-                           float[] var19 = var14.method2102();
+                           float[] var19 = var14.method2112();
 
                            for(int var20 = 0; var20 < var14.dimensions; ++var20) {
                               var1[var13 + var15] += var19[var20];

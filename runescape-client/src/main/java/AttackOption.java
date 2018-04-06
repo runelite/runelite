@@ -1,43 +1,51 @@
+import java.io.DataInputStream;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("ci")
 @Implements("AttackOption")
 public enum AttackOption implements Enumerated {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lcv;"
+      signature = "Lci;"
    )
    @Export("AttackOption_dependsOnCombatLevels")
    AttackOption_dependsOnCombatLevels(0),
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lcv;"
+      signature = "Lci;"
    )
    @Export("AttackOption_alwaysRightClick")
    AttackOption_alwaysRightClick(1),
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lcv;"
+      signature = "Lci;"
    )
    @Export("AttackOption_leftClickWhereAvailable")
    AttackOption_leftClickWhereAvailable(2),
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lcv;"
+      signature = "Lci;"
    )
    @Export("AttackOption_hidden")
    AttackOption_hidden(3);
 
+   @ObfuscatedName("u")
+   static int[][] field1354;
+   @ObfuscatedName("n")
+   static int[] field1356;
    @ObfuscatedName("r")
-   @Export("floorHues")
-   static int[] floorHues;
-   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1538586325
+      intValue = 1565234007
+   )
+   static int field1348;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -244735519
    )
    @Export("id")
    final int id;
@@ -46,57 +54,92 @@ public enum AttackOption implements Enumerated {
       this.id = var3;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1780726447"
+      garbageValue = "-369819377"
    )
    public int rsOrdinal() {
       return this.id;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lgf;I)V",
-      garbageValue = "1184301367"
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
+      garbageValue = "98048"
    )
-   static final void method1860(PacketBuffer var0) {
-      for(int var1 = 0; var1 < class93.field1421; ++var1) {
-         int var2 = class93.field1422[var1];
-         Player var3 = Client.cachedPlayers[var2];
-         int var4 = var0.readUnsignedByte();
-         if((var4 & 32) != 0) {
-            var4 += var0.readUnsignedByte() << 8;
+   @Export("processClientError")
+   public static void processClientError(String var0, Throwable var1) {
+      if(var1 != null) {
+         var1.printStackTrace();
+      } else {
+         try {
+            String var2 = "";
+            if(var1 != null) {
+               var2 = JagexGame.method4521(var1);
+            }
+
+            if(var0 != null) {
+               if(var1 != null) {
+                  var2 = var2 + " | ";
+               }
+
+               var2 = var2 + var0;
+            }
+
+            System.out.println("Error: " + var2);
+            var2 = var2.replace(':', '.');
+            var2 = var2.replace('@', '_');
+            var2 = var2.replace('&', '_');
+            var2 = var2.replace('#', '_');
+            if(RunException.field2198 == null) {
+               return;
+            }
+
+            URL var3 = new URL(RunException.field2198.getCodeBase(), "clienterror.ws?c=" + RunException.revision + "&u=" + RunException.field2194 + "&v1=" + Signlink.javaVendor + "&v2=" + Signlink.javaVersion + "&e=" + var2);
+            DataInputStream var4 = new DataInputStream(var3.openStream());
+            var4.read();
+            var4.close();
+         } catch (Exception var5) {
+            ;
          }
 
-         InvType.method4730(var0, var2, var3, var4);
       }
-
    }
 
-   @ObfuscatedName("gq")
+   @ObfuscatedName("hh")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "999965596"
+      signature = "(III)V",
+      garbageValue = "882108004"
    )
-   static void method1859(int var0) {
-      Client.field1068 = 0L;
-      if(var0 >= 2) {
-         Client.isResized = true;
-      } else {
-         Client.isResized = false;
-      }
+   static final void method1903(int var0, int var1) {
+      if(Client.menuOptionCount >= 2 || Client.itemSelectionState != 0 || Client.spellSelected) {
+         if(Client.field1017) {
+            int var2 = Client.menuOptionCount - 1;
+            String var4;
+            if(Client.itemSelectionState == 1 && Client.menuOptionCount < 2) {
+               var4 = "Use" + " " + Client.lastSelectedItemName + " " + "->";
+            } else if(Client.spellSelected && Client.menuOptionCount < 2) {
+               var4 = Client.field1092 + " " + Client.field1028 + " " + "->";
+            } else {
+               String var5;
+               if(var2 < 0) {
+                  var5 = "";
+               } else if(Client.menuTargets[var2].length() > 0) {
+                  var5 = Client.menuOptions[var2] + " " + Client.menuTargets[var2];
+               } else {
+                  var5 = Client.menuOptions[var2];
+               }
 
-      int var1 = Client.isResized?2:1;
-      if(var1 == 1) {
-         BoundingBox.clientInstance.method899(765, 503);
-      } else {
-         BoundingBox.clientInstance.method899(7680, 2160);
-      }
+               var4 = var5;
+            }
 
-      if(Client.gameState >= 25) {
-         Permission.method4535();
-      }
+            if(Client.menuOptionCount > 2) {
+               var4 = var4 + class45.getColTags(16777215) + " " + '/' + " " + (Client.menuOptionCount - 2) + " more options";
+            }
 
+            MessageNode.fontBold12.drawRandomizedMouseoverText(var4, var0 + 4, var1 + 15, 16777215, 0, Client.gameCycle / 1000);
+         }
+      }
    }
 }

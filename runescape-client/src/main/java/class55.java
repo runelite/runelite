@@ -1,166 +1,113 @@
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("bf")
 public class class55 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("qs")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Ln;"
    )
-   @Export("underlay_ref")
-   public static IndexDataBase underlay_ref;
-   @ObfuscatedName("o")
-   @Export("scriptLocalInts")
-   static int[] scriptLocalInts;
-   @ObfuscatedName("cw")
+   @Export("grandExchangeEvents")
+   static GrandExchangeEvents grandExchangeEvents;
+   @ObfuscatedName("x")
+   @Export("floorHues")
+   static int[] floorHues;
+   @ObfuscatedName("bj")
+   @Export("sessionToken")
+   static String sessionToken;
+   @ObfuscatedName("cq")
    @ObfuscatedSignature(
-      signature = "Ljs;"
+      signature = "Ljn;"
    )
-   @Export("indexCache3")
-   static IndexData indexCache3;
+   @Export("indexCache4")
+   static IndexData indexCache4;
+   @ObfuscatedName("ef")
+   @ObfuscatedSignature(
+      signature = "Lki;"
+   )
+   @Export("fontPlain11")
+   static Font fontPlain11;
+   @ObfuscatedName("jc")
+   @ObfuscatedGetter(
+      intValue = 1122519331
+   )
+   @Export("menuX")
+   static int menuX;
+   @ObfuscatedName("mk")
+   @ObfuscatedGetter(
+      intValue = 1562770555
+   )
+   static int field660;
 
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("av")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "23"
+      signature = "(Ldd;I)V",
+      garbageValue = "1460268401"
    )
-   static void method829() {
-      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if(IndexStoreActionHandler.field3389 == 0) {
-            IndexStoreActionHandler.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
-            IndexStoreActionHandler.IndexStoreActionHandler_thread.setDaemon(true);
-            IndexStoreActionHandler.IndexStoreActionHandler_thread.start();
-            IndexStoreActionHandler.IndexStoreActionHandler_thread.setPriority(5);
-         }
-
-         IndexStoreActionHandler.field3389 = 600;
-      }
-   }
-
-   @ObfuscatedName("gs")
-   @ObfuscatedSignature(
-      signature = "(Lbg;I)V",
-      garbageValue = "-613266263"
-   )
-   static final void method828(Actor var0) {
-      var0.field1181 = false;
-      Sequence var1;
-      if(var0.poseAnimation != -1) {
-         var1 = ISAACCipher.getAnimation(var0.poseAnimation);
-         if(var1 != null && var1.frameIDs != null) {
-            ++var0.poseFrameCycle;
-            if(var0.poseFrame < var1.frameIDs.length && var0.poseFrameCycle > var1.frameLengths[var0.poseFrame]) {
-               var0.poseFrameCycle = 1;
-               ++var0.poseFrame;
-               class38.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
-            }
-
-            if(var0.poseFrame >= var1.frameIDs.length) {
-               var0.poseFrameCycle = 0;
-               var0.poseFrame = 0;
-               class38.queueAnimationSound(var1, var0.poseFrame, var0.x, var0.y);
-            }
-         } else {
-            var0.poseAnimation = -1;
-         }
+   static final void method837(TaskDataNode var0) {
+      var0.field1660 = false;
+      if(var0.data != null) {
+         var0.data.int1 = 0;
       }
 
-      if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
-         if(var0.spotAnimFrame < 0) {
-            var0.spotAnimFrame = 0;
-         }
-
-         int var3 = class249.getSpotAnimType(var0.graphic).field3494;
-         if(var3 != -1) {
-            Sequence var2 = ISAACCipher.getAnimation(var3);
-            if(var2 != null && var2.frameIDs != null) {
-               ++var0.spotAnimFrameCycle;
-               if(var0.spotAnimFrame < var2.frameIDs.length && var0.spotAnimFrameCycle > var2.frameLengths[var0.spotAnimFrame]) {
-                  var0.spotAnimFrameCycle = 1;
-                  ++var0.spotAnimFrame;
-                  class38.queueAnimationSound(var2, var0.spotAnimFrame, var0.x, var0.y);
-               }
-
-               if(var0.spotAnimFrame >= var2.frameIDs.length && (var0.spotAnimFrame < 0 || var0.spotAnimFrame >= var2.frameIDs.length)) {
-                  var0.graphic = -1;
-               }
-            } else {
-               var0.graphic = -1;
-            }
-         } else {
-            var0.graphic = -1;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
-         var1 = ISAACCipher.getAnimation(var0.animation);
-         if(var1.precedenceAnimating == 1 && var0.field1194 > 0 && var0.field1196 <= Client.gameCycle && var0.field1197 < Client.gameCycle) {
-            var0.actionAnimationDisable = 1;
-            return;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-         var1 = ISAACCipher.getAnimation(var0.animation);
-         if(var1 != null && var1.frameIDs != null) {
-            ++var0.actionFrameCycle;
-            if(var0.actionFrame < var1.frameIDs.length && var0.actionFrameCycle > var1.frameLengths[var0.actionFrame]) {
-               var0.actionFrameCycle = 1;
-               ++var0.actionFrame;
-               class38.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
-            }
-
-            if(var0.actionFrame >= var1.frameIDs.length) {
-               var0.actionFrame -= var1.frameStep;
-               ++var0.field1186;
-               if(var0.field1186 >= var1.maxLoops) {
-                  var0.animation = -1;
-               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
-                  class38.queueAnimationSound(var1, var0.actionFrame, var0.x, var0.y);
-               } else {
-                  var0.animation = -1;
-               }
-            }
-
-            var0.field1181 = var1.stretches;
-         } else {
-            var0.animation = -1;
-         }
-      }
-
-      if(var0.actionAnimationDisable > 0) {
-         --var0.actionAnimationDisable;
+      for(TaskDataNode var1 = var0.vmethod4330(); var1 != null; var1 = var0.vmethod4321()) {
+         method837(var1);
       }
 
    }
 
-   @ObfuscatedName("hm")
+   @ObfuscatedName("gv")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1326421108"
+      signature = "(ZI)V",
+      garbageValue = "-708022895"
    )
-   static final void method827() {
-      Client.myPlayerIndex = 0;
-      int var0 = (WorldComparator.localPlayer.x >> 7) + PacketNode.baseX;
-      int var1 = (WorldComparator.localPlayer.y >> 7) + BaseVarType.baseY;
-      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
-         Client.myPlayerIndex = 1;
+   @Export("flush")
+   static final void flush(boolean var0) {
+      BoundingBox2D.method36();
+      ++Client.field957.field1485;
+      if(Client.field957.field1485 >= 50 || var0) {
+         Client.field957.field1485 = 0;
+         if(!Client.socketError && Client.field957.getSocket() != null) {
+            PacketNode var1 = WorldMapRectangle.method280(ClientPacket.field2452, Client.field957.field1484);
+            Client.field957.method2052(var1);
+
+            try {
+               Client.field957.method2039();
+            } catch (IOException var3) {
+               Client.socketError = true;
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("he")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-1935759111"
+   )
+   static void method834(int var0, int var1, int var2, int var3) {
+      Widget var4 = FontName.getWidgetChild(var0, var1);
+      if(var4 != null && var4.onTargetEnterListener != null) {
+         ScriptEvent var5 = new ScriptEvent();
+         var5.widget = var4;
+         var5.objs = var4.onTargetEnterListener;
+         AbstractSoundSystem.method2256(var5);
       }
 
-      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
-         Client.myPlayerIndex = 1;
-      }
-
-      if(Client.myPlayerIndex == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
-         Client.myPlayerIndex = 0;
-      }
-
+      Client.field893 = var3;
+      Client.spellSelected = true;
+      class234.field2768 = var0;
+      Client.field1025 = var1;
+      class110.field1607 = var2;
+      FontName.method5490(var4);
    }
 }

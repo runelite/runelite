@@ -2,45 +2,76 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ks")
+@ObfuscatedName("kr")
 public abstract class class297 implements Comparator {
    @ObfuscatedName("i")
-   Comparator field3826;
+   static byte[][][] field3831;
+   @ObfuscatedName("k")
+   Comparator field3832;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;I)V",
-      garbageValue = "2095282396"
+      garbageValue = "261828528"
    )
-   final void method5287(Comparator var1) {
-      if(this.field3826 == null) {
-         this.field3826 = var1;
-      } else if(this.field3826 instanceof class297) {
-         ((class297)this.field3826).method5287(var1);
+   final void method5283(Comparator var1) {
+      if(this.field3832 == null) {
+         this.field3832 = var1;
+      } else if(this.field3832 instanceof class297) {
+         ((class297)this.field3832).method5283(var1);
       }
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lku;Lku;I)I",
-      garbageValue = "1526437592"
+      signature = "(Lku;Lku;B)I",
+      garbageValue = "74"
    )
-   protected final int method5288(Nameable var1, Nameable var2) {
-      return this.field3826 == null?0:this.field3826.compare(var1, var2);
+   protected final int method5282(Nameable var1, Nameable var2) {
+      return this.field3832 == null?0:this.field3832.compare(var1, var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("ff")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1831387298"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1554152801"
    )
-   static final void method5286() {
-      Region.regionLowMemory = false;
-      Client.lowMemory = false;
+   public static String method5290(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
+            if(var4 == ' ') {
+               var2.append('+');
+            } else {
+               byte var5 = Client.charToByteCp1252(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+            }
+         } else {
+            var2.append(var4);
+         }
+      }
+
+      return var2.toString();
    }
 }

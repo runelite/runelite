@@ -84,13 +84,13 @@ public class AccountPlugin extends Plugin
 	{
 		loginButton = NavigationButton.builder()
 			.icon(LOGIN_IMAGE)
-			.tooltip("Login")
+			.tooltip("Login to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
 			.icon(LOGOUT_IMAGE)
-			.tooltip("Logout")
+			.tooltip("Logout of RuneLite")
 			.onClick(this::logoutClick)
 			.build();
 
@@ -121,7 +121,7 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-				"Are you sure you want to logout?", "Logout Confirmation",
+				"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
 				JOptionPane.YES_NO_OPTION))
 		{
 			sessionManager.logout();

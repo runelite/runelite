@@ -4,90 +4,104 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cl")
 public class class81 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("rl")
    @ObfuscatedGetter(
-      intValue = 1519128555
+      intValue = 1392282369
    )
-   @Export("indexedSpriteHeight")
-   static int indexedSpriteHeight;
-   @ObfuscatedName("k")
-   static int[] field1270;
-   @ObfuscatedName("x")
+   static int field1287;
+   @ObfuscatedName("t")
+   @Export("scriptLocalInts")
+   static int[] scriptLocalInts;
+   @ObfuscatedName("d")
+   @Export("scriptLocalStrings")
+   static String[] scriptLocalStrings;
+   @ObfuscatedName("h")
+   static int[] field1282;
+   @ObfuscatedName("m")
    @Export("SHAPE_VERTICES")
    static int[][] SHAPE_VERTICES;
    @ObfuscatedName("z")
    @Export("intStack")
    static int[] intStack;
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @Export("scriptStringStack")
    static String[] scriptStringStack;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1641541167
+      intValue = 1788554331
    )
    @Export("scriptStackCount")
    static int scriptStackCount;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lbb;"
+      signature = "[Lbo;"
    )
    @Export("scriptStack")
    static ScriptState[] scriptStack;
-   @ObfuscatedName("l")
-   static Calendar field1268;
-   @ObfuscatedName("m")
-   static final String[] field1277;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1498081639
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lin;"
    )
-   static int field1278;
+   static Widget field1285;
+   @ObfuscatedName("l")
+   static Calendar field1284;
+   @ObfuscatedName("s")
+   static final String[] field1291;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 311283157
+   )
+   static int field1288;
 
    static {
-      field1270 = new int[5];
+      field1282 = new int[5];
       SHAPE_VERTICES = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1268 = Calendar.getInstance();
-      field1277 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      field1278 = 0;
+      field1284 = Calendar.getInstance();
+      field1291 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field1288 = 0;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)[Lgk;",
-      garbageValue = "-1070839783"
+      signature = "(CB)C",
+      garbageValue = "1"
    )
-   public static class183[] method1786() {
-      return new class183[]{class183.field2484, class183.field2489, class183.field2482, class183.field2490, class183.field2481, class183.field2485, class183.field2486, class183.field2487, class183.field2488, class183.field2483};
+   static char method1849(char var0) {
+      return var0 != 181 && var0 != 131?Character.toTitleCase(var0):var0;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1812522594"
+      signature = "(IIIZIZI)V",
+      garbageValue = "-1939266148"
    )
-   public static final void method1796() {
-      while(true) {
-         BoundingBox var0 = (BoundingBox)class7.boundingBoxes.removeLast();
-         if(var0 == null) {
-            return;
+   static void method1848(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
+      if(var0 < var1) {
+         int var6 = (var0 + var1) / 2;
+         int var7 = var0;
+         World var8 = World.worldList[var6];
+         World.worldList[var6] = World.worldList[var1];
+         World.worldList[var1] = var8;
+
+         for(int var9 = var0; var9 < var1; ++var9) {
+            if(Client.method1503(World.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
+               World var10 = World.worldList[var9];
+               World.worldList[var9] = World.worldList[var7];
+               World.worldList[var7++] = var10;
+            }
          }
 
-         var0.vmethod63();
+         World.worldList[var1] = World.worldList[var7];
+         World.worldList[var7] = var8;
+         method1848(var0, var7 - 1, var2, var3, var4, var5);
+         method1848(var7 + 1, var1, var2, var3, var4, var5);
       }
-   }
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-501563263"
-   )
-   public static void method1763() {
-      FloorUnderlayDefinition.underlays.reset();
    }
 }

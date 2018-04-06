@@ -3,24 +3,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("km")
 public class class290 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(II)Ljz;",
-      garbageValue = "-2133273790"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "425058106"
    )
-   public static Varbit method5206(int var0) {
-      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Varbit.varbit_ref.getConfigData(14, var0);
-         var1 = new Varbit();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Varbit.varbits.put(var1, (long)var0);
-         return var1;
+   public static String method5208(CharSequence var0) {
+      String var1 = class252.method4505(class231.method4261(var0));
+      if(var1 == null) {
+         var1 = "";
       }
+
+      return var1;
    }
 }

@@ -1,106 +1,60 @@
-import java.io.IOException;
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("go")
 public class class189 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("dc")
    @ObfuscatedSignature(
-      signature = "[[Lib;"
+      signature = "Ljn;"
    )
-   @Export("widgets")
-   public static Widget[][] widgets;
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
 
    static {
       new HashMap();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "-20"
+      signature = "(IS)Z",
+      garbageValue = "-6542"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      class251.addChatMessage(var0, var1, var2, (String)null);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1611084027"
-   )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(class264.NetCache_socket != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            class264.NetCache_socket.vmethod3320(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class264.NetCache_socket.vmethod3325();
-            } catch (Exception var3) {
-               ;
+   @Export("loadWidget")
+   public static boolean loadWidget(int var0) {
+      if(class154.validInterfaces[var0]) {
+         return true;
+      } else if(!UrlRequest.widgetIndex.containsFile(var0)) {
+         return false;
+      } else {
+         int var1 = UrlRequest.widgetIndex.fileCount(var0);
+         if(var1 == 0) {
+            class154.validInterfaces[var0] = true;
+            return true;
+         } else {
+            if(MouseRecorder.widgets[var0] == null) {
+               MouseRecorder.widgets[var0] = new Widget[var1];
             }
 
-            ++class264.field3422;
-            class264.NetCache_socket = null;
+            for(int var2 = 0; var2 < var1; ++var2) {
+               if(MouseRecorder.widgets[var0][var2] == null) {
+                  byte[] var3 = UrlRequest.widgetIndex.getConfigData(var0, var2);
+                  if(var3 != null) {
+                     MouseRecorder.widgets[var0][var2] = new Widget();
+                     MouseRecorder.widgets[var0][var2].id = var2 + (var0 << 16);
+                     if(var3[0] == -1) {
+                        MouseRecorder.widgets[var0][var2].decodeActive(new Buffer(var3));
+                     } else {
+                        MouseRecorder.widgets[var0][var2].decode(new Buffer(var3));
+                     }
+                  }
+               }
+            }
+
+            class154.validInterfaces[var0] = true;
+            return true;
          }
-
       }
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)[Llq;",
-      garbageValue = "-1053248559"
-   )
-   static IndexedSprite[] method3485() {
-      IndexedSprite[] var0 = new IndexedSprite[WorldComparator.indexedSpriteCount];
-
-      for(int var1 = 0; var1 < WorldComparator.indexedSpriteCount; ++var1) {
-         IndexedSprite var2 = var0[var1] = new IndexedSprite();
-         var2.originalWidth = class332.indexedSpriteWidth;
-         var2.originalHeight = class81.indexedSpriteHeight;
-         var2.offsetX = GameCanvas.indexedSpriteOffsetXs[var1];
-         var2.offsetY = class332.indexedSpriteOffsetYs[var1];
-         var2.width = class25.indexSpriteWidths[var1];
-         var2.height = class332.indexedSpriteHeights[var1];
-         var2.palette = class332.indexedSpritePalette;
-         var2.pixels = class332.spritePixels[var1];
-      }
-
-      FileSystem.method4544();
-      return var0;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-455950827"
-   )
-   static final int method3482(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
    }
 }

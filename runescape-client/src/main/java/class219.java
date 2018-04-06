@@ -1,23 +1,23 @@
 import java.lang.ref.SoftReference;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hp")
 public class class219 extends class224 {
-   @ObfuscatedName("c")
-   SoftReference field2650;
+   @ObfuscatedName("o")
+   SoftReference field2659;
 
    class219(Object var1, int var2) {
       super(var2);
-      this.field2650 = new SoftReference(var1);
+      this.field2659 = new SoftReference(var1);
    }
 
-   @ObfuscatedName("c")
-   Object vmethod4085() {
-      return this.field2650.get();
+   @ObfuscatedName("o")
+   Object vmethod4084() {
+      return this.field2659.get();
    }
 
-   @ObfuscatedName("i")
-   boolean vmethod4088() {
+   @ObfuscatedName("k")
+   boolean vmethod4087() {
       return true;
    }
 }

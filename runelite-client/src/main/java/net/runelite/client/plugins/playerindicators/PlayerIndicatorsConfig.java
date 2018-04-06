@@ -167,4 +167,26 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "colorPlayerMenu",
+		name = "Color player menu",
+		description = "Color right click menu for players"
+	)
+	default boolean colorPlayerMenu()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "clanMenuIcons",
+		name = "Show clan rank in menu",
+		description = "Add clan rank to right click menu for players"
+	)
+	default boolean clanMenuIcons()
+	{
+		return true;
+	}
 }

@@ -3,25 +3,25 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hv")
+@ObfuscatedName("ht")
 @Implements("CacheableNode")
 public class CacheableNode extends Node {
-   @ObfuscatedName("cb")
-   long field2647;
-   @ObfuscatedName("cx")
+   @ObfuscatedName("cy")
+   long field2658;
+   @ObfuscatedName("cr")
    @ObfuscatedSignature(
-      signature = "Lhv;"
+      signature = "Lht;"
    )
    @Export("previous")
    public CacheableNode previous;
-   @ObfuscatedName("cw")
+   @ObfuscatedName("ct")
    @ObfuscatedSignature(
-      signature = "Lhv;"
+      signature = "Lht;"
    )
    @Export("next")
    public CacheableNode next;
 
-   @ObfuscatedName("co")
+   @ObfuscatedName("ci")
    @Export("unlinkDual")
    public void unlinkDual() {
       if(this.next != null) {
