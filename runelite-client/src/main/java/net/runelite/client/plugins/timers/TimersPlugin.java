@@ -56,6 +56,7 @@ import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
+import static net.runelite.client.plugins.timers.GameTimer.SOTD_SPEC;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -213,6 +214,11 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(PRAYER_ENHANCE);
 		}
+		
+		if (!config.showSoTDspec())
+        	{
+            		removeGameTimer(SOTD_SPEC);
+        	}
 	}
 
 	@Subscribe
@@ -302,6 +308,16 @@ public class TimersPlugin extends Plugin
 		if (config.showExSuperAntifire() && event.getMessage().equals("You drink some of your extended super antifire potion."))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
+		}
+
+		if (config.showSoTDspec() && event.getMessage().equals("<col=007f00>Spirits of deceased evildoers offer you their protection.</col>"))
+		{
+			createGameTimer(SOTD_SPEC);
+		}
+		
+		if (event.getMessage().equals("<col=007f00>Your protection fades away.</col>"))
+		{
+			removeGameTimer(SOTD_SPEC);
 		}
 
 		if (event.getMessage().equals("<col=7f007f>Your antifire potion has expired.</col>"))

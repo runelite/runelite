@@ -244,4 +244,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showSoTDspec",
+		name = "Staff of the dead spec timer",
+		description = "Configures whether Staff of the dead spec timer is displayed"
+	)
+	default boolean showSoTDspec()
+	{
+		return true;
+	}
 }
