@@ -26,23 +26,24 @@ package net.runelite.client.plugins.winemaking;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.Instant;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import static net.runelite.api.ItemID.UNFERMENTED_WINE;
 import static net.runelite.api.ItemID.UNFERMENTED_WINE_1996;
 import static net.runelite.api.ItemID.ZAMORAKS_UNFERMENTED_WINE;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Wine Making"
@@ -62,13 +63,15 @@ public class WineMakingPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private WineMakingOverlay overlay;
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private WineMakingConfig config;
 
-	@Getter
-	private Instant lastWineMade;
+	@Inject
+	private ItemManager itemManager;
+
+	private BufferedImage wineImage;
 
 	private int prevWineCount;
 
@@ -79,12 +82,27 @@ public class WineMakingPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		this.wineImage = itemManager.getImage(UNFERMENTED_WINE);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
 	}
 
 	@Subscribe 
+	void onConfigChanged(ConfigChanged event)
+	{
+		if (!config.showFermentationTimer())
+		{
+			infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (config.showFermentationTimer())
@@ -93,7 +111,10 @@ public class WineMakingPlugin extends Plugin
 
 			if (wines.length == prevWineCount + 1)
 			{
-				lastWineMade = Instant.now();
+				infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
+
+				FermentationTimer timer = new FermentationTimer(wineImage, this);
+				infoBoxManager.addInfoBox(timer);
 			}
 
 			prevWineCount = wines.length;

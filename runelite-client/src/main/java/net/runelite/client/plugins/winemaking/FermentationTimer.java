@@ -24,57 +24,17 @@
  */
 package net.runelite.client.plugins.winemaking;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.awt.image.BufferedImage;
+import java.time.temporal.ChronoUnit;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-class WineMakingOverlay extends Overlay
+class FermentationTimer extends Timer
 {
 	private static final int WINE_FERMENTATION_DURATION_SECONDS = 12;
-	
-	private final WineMakingPlugin plugin;
-	private final WineMakingConfig config;
-	
-	private final PanelComponent panelComponent = new PanelComponent();
-	private final PanelComponent.Line timeRemainingLine = new PanelComponent.Line("Time left (s)", "");
-	
-	@Inject
-	public WineMakingOverlay(Client client, WineMakingPlugin plugin, WineMakingConfig config)
-	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		this.plugin = plugin;
-		this.config = config;
-		
-		panelComponent.setTitle("Wine Timer");
-		panelComponent.getLines().add(timeRemainingLine);
-	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{	
-		if (!config.showFermentationTimer() 
-			|| plugin.getLastWineMade() == null)
-		{
-			return null;
-		}
-		
-		long elapsedSeconds = Duration.between(plugin.getLastWineMade(), Instant.now()).getSeconds();
-		
-		long remainingSeconds = WINE_FERMENTATION_DURATION_SECONDS - elapsedSeconds;
-		
-		if (remainingSeconds <= 0)
-		{
-			return null;
-		}
-		
-		timeRemainingLine.setRight(String.valueOf(remainingSeconds));
-		
-		return panelComponent.render(graphics);
+	public FermentationTimer(BufferedImage image, Plugin plugin)
+	{
+		super(WINE_FERMENTATION_DURATION_SECONDS, ChronoUnit.SECONDS, image, plugin);
 	}
 }
