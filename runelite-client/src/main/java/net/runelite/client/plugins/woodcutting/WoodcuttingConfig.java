@@ -54,4 +54,14 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showWoodcuttingStats",
+		name = "Show Woodcutting session stats",
+		description = "Configures whether to display woodcutting session stats"
+	)
+	default boolean showWoodcuttingStats()
+	{
+		return true;
+	}
 }

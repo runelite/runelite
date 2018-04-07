@@ -73,6 +73,11 @@ class MotherlodeOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.showMiningStats())
+		{
+			return null;
+		}
+
 		MotherlodeSession session = plugin.getSession();
 
 		if (session.getLastPayDirtMined() == null)
