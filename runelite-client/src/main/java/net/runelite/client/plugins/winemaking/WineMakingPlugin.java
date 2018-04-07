@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.winemaking;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -34,10 +33,8 @@ import net.runelite.api.Item;
 import static net.runelite.api.ItemID.UNFERMENTED_WINE;
 import static net.runelite.api.ItemID.UNFERMENTED_WINE_1996;
 import static net.runelite.api.ItemID.ZAMORAKS_UNFERMENTED_WINE;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -66,20 +63,11 @@ public class WineMakingPlugin extends Plugin
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	private WineMakingConfig config;
-
-	@Inject
 	private ItemManager itemManager;
 
 	private BufferedImage wineImage;
 
 	private int prevWineCount;
-
-	@Provides
-	WineMakingConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(WineMakingConfig.class);
-	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -93,31 +81,19 @@ public class WineMakingPlugin extends Plugin
 		infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
 	}
 
-	@Subscribe 
-	void onConfigChanged(ConfigChanged event)
-	{
-		if (!config.showFermentationTimer())
-		{
-			infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
-		}
-	}
-
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (config.showFermentationTimer())
+		Item[] wines = UNFERMENTED_WINE_QUERY.result(client);
+
+		if (wines.length == prevWineCount + 1)
 		{
-			Item[] wines = UNFERMENTED_WINE_QUERY.result(client);
+			infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
 
-			if (wines.length == prevWineCount + 1)
-			{
-				infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
-
-				FermentationTimer timer = new FermentationTimer(wineImage, this);
-				infoBoxManager.addInfoBox(timer);
-			}
-
-			prevWineCount = wines.length;
+			FermentationTimer timer = new FermentationTimer(wineImage, this);
+			infoBoxManager.addInfoBox(timer);
 		}
+
+		prevWineCount = wines.length;
 	}
 }
