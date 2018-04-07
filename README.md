@@ -3,7 +3,7 @@
 
 runelite is a RuneScape 2 client and reverse engineering project
 
-If you have any questions please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://discord.gg/mePCs8U) server.
+If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://discord.gg/mePCs8U) server.
 
 ## Project Layout
 
@@ -27,7 +27,7 @@ For more information visit the [RuneLite Wiki](https://github.com/runelite/runel
 ### License
 
 Most of RuneLite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
-Some of the code, like everything in runescape-client, is automatically generated, and is not licensed.
+Some of the code, like everything in runescape-client, is automatically generated and is not licensed.
 
 ## Contribute and Develop
 
