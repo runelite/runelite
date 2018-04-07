@@ -164,4 +164,14 @@ public interface FishingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showFishingStats",
+		name = "Show Fishing session stats",
+		description = "Configures whether to display the fishing session stats"
+	)
+	default boolean showFishingStats()
+	{
+		return true;
+	}
 }
