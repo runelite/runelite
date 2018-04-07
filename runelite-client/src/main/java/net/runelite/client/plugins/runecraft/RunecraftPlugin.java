@@ -192,7 +192,7 @@ public class RunecraftPlugin extends Plugin
 		);
 
 		Item[] items = queryRunner.runQuery(inventoryQuery);
-		degradedPouchInInventory = items.length > 0;
+		degradedPouchInInventory = items != null && items.length > 0;
 
 		if (degradedPouchInInventory)
 		{
