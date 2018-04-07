@@ -70,7 +70,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 		new EmoteClue("Cheer for the monks at Port Sarim. Equip a coif, steel plateskirt and a sapphire necklace.", new WorldPoint(2959, 3362, 0), CHEER, COIF, STEEL_PLATESKIRT, SAPPHIRE_NECKLACE),
 		new EmoteClue("Cheer at the top of the agility pyramid. Beware of double agents! Equip a blue mystic robe top, and any rune heraldic shield.", new WorldPoint(3043, 4697, 3), CHEER, MYSTIC_ROBE_TOP, RUNE_SHIELD_H1_10667),
 		new EmoteClue("Clap in the main exam room in the Exam Centre. Equip a white apron, green gnome boots and leather gloves.", new WorldPoint(3361, 3339, 0), CLAP, WHITE_APRON, GREEN_BOOTS, LEATHER_GLOVES),
-		new EmoteClue("Clap on the causeway to the Wizards' Tower. Equip an iron med helm, emerald ring and a white apron.", new WorldPoint(3098, 3212, 0), CLAP, IRON_MED_HELM, EMERALD_RING, WHITE_APRON),
+		new EmoteClue("Clap on the causeway to the Wizards' Tower. Equip an iron medium helmet, emerald ring and a white apron.", new WorldPoint(3098, 3212, 0), CLAP, IRON_MED_HELM, EMERALD_RING, WHITE_APRON),
 		new EmoteClue("Clap on the top level of the mill, north of East Ardougne. Equip a blue gnome robe top, HAM robe bottom and an unenchanted tiara.", new WorldPoint(2653, 3279, 0), CLAP, BLUE_ROBE_TOP, HAM_ROBE, TIARA),
 		new EmoteClue("Clap in Seers court house. Spin before you talk to me. Equip an adamant halberd, blue mystic robe bottom and a diamond ring.", new WorldPoint(2735, 3469, 0), CLAP, SPIN, ADAMANT_HALBERD, MYSTIC_ROBE_BOTTOM, DIAMOND_RING),
 		new EmoteClue("Clap in the magic axe hut. Beware of double agents. Equip only flared trousers.", new WorldPoint(3191, 3960, 0), CLAP, FLARED_TROUSERS),
