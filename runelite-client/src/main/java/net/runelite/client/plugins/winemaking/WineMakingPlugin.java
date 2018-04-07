@@ -65,15 +65,7 @@ public class WineMakingPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	private BufferedImage wineImage;
-
 	private int prevWineCount;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		this.wineImage = itemManager.getImage(UNFERMENTED_WINE);
-	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -90,6 +82,7 @@ public class WineMakingPlugin extends Plugin
 		{
 			infoBoxManager.removeIf(t -> t instanceof FermentationTimer);
 
+			BufferedImage wineImage = itemManager.getImage(UNFERMENTED_WINE);
 			FermentationTimer timer = new FermentationTimer(wineImage, this);
 			infoBoxManager.addInfoBox(timer);
 		}
