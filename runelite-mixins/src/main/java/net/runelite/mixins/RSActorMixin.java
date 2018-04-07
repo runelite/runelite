@@ -207,13 +207,15 @@ public abstract class RSActorMixin implements RSActor
 
 	@Inject
 	@Override
-	public int getIndex() {
+	public int getIndex()
+	{
 		return index;
 	}
 
 	@Inject
 	@Override
-	public void setIndex(int index) {
+	public void setIndex(int index)
+	{
 		this.index = index;
 	}
 }
