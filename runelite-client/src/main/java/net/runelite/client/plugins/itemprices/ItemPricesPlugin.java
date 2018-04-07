@@ -33,6 +33,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Item Prices",
+	tags = "tooltips grand exchange high alchemy",
 	enabledByDefault = false
 )
 public class ItemPricesPlugin extends Plugin
