@@ -254,6 +254,13 @@ public enum MenuAction
 	EXAMINE_ITEM_BANK_EQ(1007),
 
 	/**
+	 * Menu action triggered when interacting with a widget's menu option.
+	 * E.g: opening world map, enabling/disabling xp drops, setting up
+	 * quick-prayers, switching tab (Stats, Inventory, etc..).
+	 */
+	WIDGET_OPTIONS(57),
+	
+	/**
 	 * Menu action injected by runelite for its menu items.
 	 */
 	RUNELITE(1500),

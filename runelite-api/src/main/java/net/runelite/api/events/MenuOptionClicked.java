@@ -36,4 +36,15 @@ public class MenuOptionClicked
 	private MenuAction menuAction;
 	private int id;
 	private int widgetId;
+	
+	// <col=ffff>Staircase -> Staircase
+	// <col=ffffff>Zezima</col> -> Zezima
+	// <col=ffffff><img=2>Ironman BTW</col> -> Ironman BTW
+	// <col=ffffff>Zezima<col=ff0000>  (level-126) -> Zezima
+	// <col=ffffff><img=2>Ironman BTW<col=ffff00>  (level-3) -> Ironman BTW
+	public String getName()
+	{
+		String[] split = this.menuTarget.split("[<>/]");
+		return split.length > 4 ? split[split.length - 3] : (split.length == 3 ? split[split.length - 1] : this.menuTarget);
+	}
 }

@@ -28,18 +28,26 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -51,6 +59,10 @@ public class HiscorePlugin extends Plugin
 
 	@Inject
 	private PluginToolbar pluginToolbar;
+
+	@Nullable
+	@Inject
+	private Client client;
 
 	@Inject
 	private MenuManager menuManager;
@@ -117,30 +129,98 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
-			executor.execute(() ->
-			{
-				try
-				{
-					SwingUtilities.invokeAndWait(() ->
-					{
-						if (!navButton.isSelected())
-						{
-							navButton.getOnSelect().run();
-						}
-					});
-				}
-				catch (InterruptedException | InvocationTargetException e)
-				{
-					throw new RuntimeException(e);
-				}
-
-				hiscorePanel.lookup(event.getMenuTarget());
-			});
+			lookup(Text.removeLevels(Text.removeTags(event.getMenuTarget())));
 		}
 	}
+	
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		String option = event.getOption();
 
+		if (config.playerOption() &&
+			(option.equals("Message") ||
+			option.equals("Delete") ||
+			option.equals("Add ignore") ||
+			option.equals("Remove friend") ||
+			option.equals("Remove ignore")))
+		{
+			addMenuEntry(option, LOOKUP, true);
+		}
+	}
+	
+	private void lookup(String target)
+	{
+		executor.execute(() ->
+		{
+			try
+			{
+				SwingUtilities.invokeAndWait(() ->
+				{
+					if (!navButton.isSelected())
+					{
+						navButton.getOnSelect().run();
+					}
+				});
+			}
+			catch (InterruptedException | InvocationTargetException e)
+			{
+				throw new RuntimeException(e);
+			}
+
+			hiscorePanel.lookup(target);
+		});
+	}
+	
+	private void addMenuEntry(String refOption, String newOption, boolean after)
+	{
+		if (client == null)
+		{
+			return;
+		}
+		
+		MenuEntry[] entries = client.getMenuEntries();
+
+		List<MenuEntry> list = new ArrayList<>(entries.length + 1);
+
+		for (MenuEntry entry : entries)
+		{
+			if (entry.getOption().equals(refOption))
+			{
+				MenuEntry newEntry = new MenuEntry();
+
+				newEntry.setOption(newOption);
+				newEntry.setTarget(entry.getTarget());
+				newEntry.setType(MenuAction.RUNELITE.getId());
+				newEntry.setIdentifier(entry.getIdentifier());
+				newEntry.setParam0(entry.getParam0());
+				newEntry.setParam1(entry.getParam1());
+
+				if (after)
+				{
+					list.add(newEntry);
+					list.add(entry);
+				}
+				else
+				{
+					list.add(entry);
+					list.add(newEntry);
+				}
+			}
+			else
+			{
+				if (!entry.getOption().equals(newOption))
+				{
+					list.add(entry);
+				}
+			}
+		}
+
+		MenuEntry[] newEntries = list.toArray(new MenuEntry[list.size()]);
+		client.setMenuEntries(newEntries);
+	}
 }
