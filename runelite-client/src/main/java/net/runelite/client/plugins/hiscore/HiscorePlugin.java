@@ -24,22 +24,31 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -48,6 +57,13 @@ import net.runelite.client.ui.PluginToolbar;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
+	private static final String KICK_OPTION = "Kick";
+	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+
+	@Inject
+	@Nullable
+	private Client client;
 
 	@Inject
 	private PluginToolbar pluginToolbar;
@@ -117,6 +133,60 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!config.menuOption())
+		{
+			return;
+		}
+
+		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		String option = event.getOption();
+
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
+				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
+				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
+		{
+			boolean after;
+
+			if (AFTER_OPTIONS.contains(option))
+			{
+				after = true;
+			}
+			else if (BEFORE_OPTIONS.contains(option))
+			{
+				after = false;
+			}
+			else
+			{
+				return;
+			}
+
+			final MenuEntry lookup = new MenuEntry();
+			lookup.setOption(LOOKUP);
+			lookup.setTarget(event.getTarget());
+			lookup.setType(MenuAction.RUNELITE.getId());
+			lookup.setParam0(event.getActionParam0());
+			lookup.setParam1(event.getActionParam1());
+
+			insertMenuEntry(lookup, client.getMenuEntries(), after);
+		}
+	}
+
+	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
+	{
+		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
+
+		if (after)
+		{
+			int menuEntryCount = newMenu.length;
+			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
+		}
+
+		client.setMenuEntries(newMenu);
+	}
+
+	@Subscribe
 	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals(LOOKUP))
@@ -142,5 +212,4 @@ public class HiscorePlugin extends Plugin
 			});
 		}
 	}
-
 }
