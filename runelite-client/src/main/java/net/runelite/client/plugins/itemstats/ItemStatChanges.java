@@ -36,6 +36,7 @@ import static net.runelite.client.plugins.itemstats.Builders.*;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
+import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 
 @Singleton
 @Slf4j
@@ -112,13 +113,12 @@ public class ItemStatChanges
 		add(boost(DEFENCE, perc(.15, 5)), SUPER_DEFENCE1, SUPER_DEFENCE2, SUPER_DEFENCE3, SUPER_DEFENCE4);
 		add(boost(MAGIC, 3), MAGIC_ESSENCE1, MAGIC_ESSENCE2, MAGIC_ESSENCE3, MAGIC_ESSENCE4);
 		add(combo(3, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5))), SUPER_COMBAT_POTION1, SUPER_COMBAT_POTION2, SUPER_COMBAT_POTION3, SUPER_COMBAT_POTION4);
-		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), heal(DEFENCE, perc(.10, -2)), heal(HITPOINTS, perc(.12, 0))), ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
-		add(combo(2, boost(HITPOINTS, perc(.15, 2)), boost(DEFENCE, perc(.20, 2)), heal(ATTACK, perc(.10, -2)), heal(RANGED, perc(.10, -2)), heal(MAGIC, perc(.10, -2))), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3, SARADOMIN_BREW4);
+		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), heal(DEFENCE, perc(.10, -2)), heal(HITPOINTS, perc(-.12, 0))), ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
 		add(boost(RANGED, perc(.15, 5)), SUPER_RANGING_1, SUPER_RANGING_2, SUPER_RANGING_3, SUPER_RANGING_4);
 		add(boost(MAGIC, perc(.15, 5)), SUPER_MAGIC_POTION_1, SUPER_MAGIC_POTION_2, SUPER_MAGIC_POTION_3, SUPER_MAGIC_POTION_4);
-		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
+		add(new SaradominBrew(0.15, 0.2, 0.1, 2), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3, SARADOMIN_BREW4);
 
-		// Recovery potions
+        	// Recovery potions
 		add(combo(5, heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10))), RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
 		add(heal(RUN_ENERGY, 10), ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
 		add(new PrayerPotion(7), PRAYER_POTION1, PRAYER_POTION2, PRAYER_POTION3, PRAYER_POTION4);
@@ -127,7 +127,25 @@ public class ItemStatChanges
 		add(new SuperRestore(9), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4);
 		add(heal(RUN_ENERGY, 20), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
 
-		// Skill potions
+        	//Raids potions (+)
+        	add(combo(5, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6)), boost(RANGED, perc(.16, 6)), boost(MAGIC, perc(.16, 6)), heal(HITPOINTS, -50)), OVERLOAD_STRONG_1, OVERLOAD_STRONG_2, OVERLOAD_STRONG_3, OVERLOAD_STRONG_4);
+        	add(combo(3, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), ELDER_STRONG_1, ELDER_STRONG_2, ELDER_STRONG_3, ELDER_STRONG_4);
+        	add(combo(2, boost(RANGED, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), TWISTED_STRONG_1, TWISTED_STRONG_2, TWISTED_STRONG_3, TWISTED_STRONG_4);
+        	add(combo(2, boost(MAGIC, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), KODAI_STRONG_1, KODAI_STRONG_2, KODAI_STRONG_3, KODAI_STRONG_4);
+
+        	//Raids potions
+        	add(combo(5, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5)), boost(RANGED, perc(.13, 5)), boost(MAGIC, perc(.13, 5)), heal(HITPOINTS, -50)), OVERLOAD_STANDARD_1, OVERLOAD_STANDARD_2, OVERLOAD_STANDARD_3, OVERLOAD_STANDARD_4);
+        	add(combo(3, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), ELDER_STANDARD_1, ELDER_STANDARD_2, ELDER_STANDARD_3, ELDER_STANDARD_4);
+        	add(combo(2, boost(RANGED, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), TWISTED_STANDARD_1 ,TWISTED_STANDARD_2, TWISTED_STANDARD_3, TWISTED_STANDARD_4);
+        	add(combo(2, boost(MAGIC, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), KODAI_STANDARD_1, KODAI_STANDARD_2, KODAI_STANDARD_3, KODAI_STANDARD_4);
+
+        	//Raids potions (-)
+        	add(combo(5, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4)), boost(RANGED, perc(.10, 4)), boost(MAGIC, perc(.10, 4)), heal(HITPOINTS, -50)), OVERLOAD_WEAK_1, OVERLOAD_WEAK_2, OVERLOAD_WEAK_3, OVERLOAD_WEAK_4);
+        	add(combo(3, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), ELDER_WEAK_1,ELDER_WEAK_2, ELDER_WEAK_3, ELDER_WEAK_4);
+        	add(combo(3, boost(RANGED, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), TWISTED_WEAK_1, TWISTED_WEAK_2, TWISTED_WEAK_3, TWISTED_WEAK_4);
+        	add(combo(3, boost(MAGIC, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), KODAI_WEAK_1, KODAI_WEAK_2, KODAI_WEAK_3, KODAI_WEAK_4);
+
+        	// Skill potions
 		add(boost(AGILITY, 3), AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4);
 		add(boost(FISHING, 3), FISHING_POTION1, FISHING_POTION2, FISHING_POTION3, FISHING_POTION4);
 		add(boost(HUNTER, 3), HUNTER_POTION1, HUNTER_POTION2, HUNTER_POTION3, HUNTER_POTION4);
