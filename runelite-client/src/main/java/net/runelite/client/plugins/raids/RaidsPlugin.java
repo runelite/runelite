@@ -57,6 +57,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -101,6 +102,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private RaidsConfig config;
@@ -150,15 +154,23 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
+		clientThread.invokeLater(() ->
 		{
-			inRaidChambers = client.getSetting(Varbits.IN_RAID) == 1;
-			updateInfoBoxState();
-		}
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				inRaidChambers = client.getSetting(Varbits.IN_RAID) == 1;
+				updateInfoBoxState();
+			}
+		});
 
 		if (config.pointsMessage())
 		{
 			cacheColors();
+		}
+
+		if (inRaidChambers && config.pointsOverlay())
+		{
+			setDefaultPointBoxHidden(true);
 		}
 
 		updateLists();
@@ -171,6 +183,8 @@ public class RaidsPlugin extends Plugin
 		{
 			infoBoxManager.removeInfoBox(timer);
 		}
+
+		clientThread.invokeLater(() -> setDefaultPointBoxHidden(false));
 	}
 
 	@Subscribe
@@ -205,12 +219,17 @@ public class RaidsPlugin extends Plugin
 		{
 			updateList(layoutWhitelist, config.whitelistedLayouts());
 		}
+
+		if (event.getKey().equals("pointsOverlay"))
+		{
+			setDefaultPointBoxHidden(Boolean.valueOf(event.getNewValue()));
+		}
 	}
 
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		if (!inRaidChambers || event.isHidden())
+		if (!config.pointsOverlay() || !inRaidChambers || event.isHidden())
 		{
 			return;
 		}
@@ -325,6 +344,16 @@ public class RaidsPlugin extends Plugin
 						.build());
 				}
 			}
+		}
+	}
+
+	private void setDefaultPointBoxHidden(boolean hidden)
+	{
+		Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
+
+		if (widget != null)
+		{
+			widget.setHidden(hidden);
 		}
 	}
 
