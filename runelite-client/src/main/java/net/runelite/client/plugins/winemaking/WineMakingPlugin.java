@@ -48,13 +48,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class WineMakingPlugin extends Plugin
 {
-	private static final InventoryItemQuery UNFERMENTED_WINE_QUERY;
-
-	static
-	{
-		UNFERMENTED_WINE_QUERY = new InventoryItemQuery(InventoryID.INVENTORY);
-		UNFERMENTED_WINE_QUERY.idEquals(UNFERMENTED_WINE, UNFERMENTED_WINE_1996, ZAMORAKS_UNFERMENTED_WINE);
-	}
+	private static final InventoryItemQuery UNFERMENTED_WINE_QUERY = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(
+		UNFERMENTED_WINE,
+		UNFERMENTED_WINE_1996,
+		ZAMORAKS_UNFERMENTED_WINE
+	);
 
 	@Inject
 	private Client client;
