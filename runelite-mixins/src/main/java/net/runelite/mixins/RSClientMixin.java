@@ -96,6 +96,57 @@ public abstract class RSClientMixin implements RSClient
 	private static RSClient client;
 
 	@Inject
+	private static boolean interpolatePlayerAnimations;
+
+	@Inject
+	private static boolean interpolateNpcAnimations;
+
+	@Inject
+	private static boolean interpolateObjectAnimations;
+
+	@Inject
+	@Override
+	public boolean isInterpolatePlayerAnimations()
+	{
+		return interpolatePlayerAnimations;
+	}
+
+	@Inject
+	@Override
+	public void setInterpolatePlayerAnimations(boolean interpolate)
+	{
+		interpolatePlayerAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public boolean isInterpolateNpcAnimations()
+	{
+		return interpolateNpcAnimations;
+	}
+
+	@Inject
+	@Override
+	public void setInterpolateNpcAnimations(boolean interpolate)
+	{
+		interpolateNpcAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public boolean isInterpolateObjectAnimations()
+	{
+		return interpolateObjectAnimations;
+	}
+
+	@Inject
+	@Override
+	public void setInterpolateObjectAnimations(boolean interpolate)
+	{
+		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
 	@Override
 	public List<Player> getPlayers()
 	{

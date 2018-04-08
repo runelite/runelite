@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,61 +25,20 @@
 package net.runelite.mixins;
 
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSDynamicObject;
 import net.runelite.rs.api.RSModel;
-import net.runelite.rs.api.RSNPC;
-import net.runelite.rs.api.RSNPCComposition;
 
-@Mixin(RSNPC.class)
-public abstract class RSNPCMixin implements RSNPC
+@Mixin(RSDynamicObject.class)
+public abstract class RSDynamicObjectMixin implements RSDynamicObject
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
-
-	@Inject
-	private int npcIndex;
-
-	@Inject
-	@Override
-	public int getId()
-	{
-		RSNPCComposition composition = getComposition();
-		return composition == null ? -1 : composition.getId();
-	}
-
-	@Inject
-	@Override
-	public String getName()
-	{
-		RSNPCComposition composition = getComposition();
-		return composition == null ? null : composition.getName().replace('\u00A0', ' ');
-	}
-
-	@Inject
-	@Override
-	public int getCombatLevel()
-	{
-		RSNPCComposition composition = getComposition();
-		return composition == null ? -1 : composition.getCombatLevel();
-	}
-
-	@Inject
-	@Override
-	public int getIndex()
-	{
-		return npcIndex;
-	}
-
-	@Inject
-	@Override
-	public void setIndex(int id)
-	{
-		npcIndex = id;
-	}
 
 	@Copy("getModel")
 	public abstract RSModel rs$getModel();
@@ -87,28 +46,36 @@ public abstract class RSNPCMixin implements RSNPC
 	@Replace("getModel")
 	public RSModel rl$getModel()
 	{
-		if (!client.isInterpolateNpcAnimations())
-		{
-			return rs$getModel();
-		}
-		int actionFrame = getActionFrame();
-		int poseFrame = getPoseFrame();
-		int spotAnimFrame = getSpotAnimFrame();
 		try
 		{
-			// combine the frames with the frame cycle so we can access this information in the sequence methods
-			// without having to change method calls
-			setActionFrame(Integer.MIN_VALUE | getActionFrameCycle() << 16 | actionFrame);
-			setPoseFrame(Integer.MIN_VALUE | getPoseFrameCycle() << 16 | poseFrame);
-			setSpotAnimFrame(Integer.MIN_VALUE | getSpotAnimFrameCycle() << 16 | spotAnimFrame);
+			// reset frame because it may have been set from the constructor
+			// it should be set again inside the getModel method
+			int animFrame = getAnimFrame();
+			if (animFrame < 0)
+			{
+				setAnimFrame((animFrame ^ Integer.MIN_VALUE) & 0xFFFF);
+			}
 			return rs$getModel();
 		}
 		finally
 		{
-			// reset frames
-			setActionFrame(actionFrame);
-			setPoseFrame(poseFrame);
-			setSpotAnimFrame(spotAnimFrame);
+			int animFrame = getAnimFrame();
+			if (animFrame < 0)
+			{
+				setAnimFrame((animFrame ^ Integer.MIN_VALUE) & 0xFFFF);
+			}
+		}
+	}
+
+	@FieldHook("animCycleCount")
+	@Inject
+	public void onAnimCycleCountChanged(int idx)
+	{
+		if (client.isInterpolateObjectAnimations())
+		{
+			// sets the packed anim frame with the frame cycle
+			int objectFrameCycle = client.getGameCycle() - getAnimCycleCount();
+			setAnimFrame(Integer.MIN_VALUE | objectFrameCycle << 16 | getAnimFrame());
 		}
 	}
 }

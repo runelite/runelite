@@ -369,4 +369,16 @@ public interface Client extends GameEngine
 	void setHintArrow(Player player);
 
 	void setHintArrow(NPC npc);
+
+	boolean isInterpolatePlayerAnimations();
+
+	void setInterpolatePlayerAnimations(boolean interpolate);
+
+	boolean isInterpolateNpcAnimations();
+
+	void setInterpolateNpcAnimations(boolean interpolate);
+
+	boolean isInterpolateObjectAnimations();
+
+	void setInterpolateObjectAnimations(boolean interpolate);
 }
