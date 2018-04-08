@@ -334,6 +334,14 @@ public class ScreenshotPlugin extends Plugin
 		takeScreenshot(fileName, config.displayDate());
 	}
 
+	/**
+	 * Receives a WidgetInfo pointing to the middle widget of the level-up dialog,
+	 * and parses it into a shortened string for filename usage.
+	 *
+	 * @param levelUpLevel WidgetInfo pointing to the required text widget,
+	 *                     with the format "Your Skill (level is/are) now 99."
+	 * @return Shortened string in the format "Skill(99)"
+	 */
 	public String parseLevelUpWidget(WidgetInfo levelUpLevel)
 	{
 		Widget levelChild = client.getWidget(levelUpLevel);
@@ -353,6 +361,13 @@ public class ScreenshotPlugin extends Plugin
 		return skillName + "(" + skillLevel + ")";
 	}
 
+	/**
+	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
+	 * and optionally uploads it to an image-hosting service.
+	 *
+	 * @param fileName    Filename to use, without file extension.
+	 * @param displayDate Whether to show today's date on the report button as the screenshot is taken.
+	 */
 	private void takeScreenshot(String fileName, boolean displayDate)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
@@ -461,6 +476,13 @@ public class ScreenshotPlugin extends Plugin
 		});
 	}
 
+	/**
+	 * Uploads a screenshot to the Imgur image-hosting service,
+	 * and copies the image link to the clipboard.
+	 *
+	 * @param screenshotFile Image file to upload.
+	 * @throws IOException Thrown if the file cannot be read.
+	 */
 	private void uploadScreenshot(File screenshotFile) throws IOException
 	{
 		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
