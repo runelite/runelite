@@ -37,10 +37,8 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_SPRITE;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
-import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_SKILL;
 import static net.runelite.api.widgets.WidgetInfo.PACK;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
@@ -137,16 +135,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
 
-		Widget skillChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(LEVEL_UP_SKILL))).thenReturn(skillChild);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
-		when(skillChild.getText()).thenReturn("Congratulations, you just advanced a Hitpoints level.");
 		when(levelChild.getText()).thenReturn("Your Hitpoints are now 99.");
 
-		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_SKILL, LEVEL_UP_LEVEL));
+		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
@@ -161,16 +155,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
 
-		Widget skillChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(LEVEL_UP_SKILL))).thenReturn(skillChild);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
-		when(skillChild.getText()).thenReturn("Congratulations, you just advanced a Firemaking level.");
 		when(levelChild.getText()).thenReturn("Your Firemaking level is now 9.");
 
-		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_SKILL, LEVEL_UP_LEVEL));
+		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
@@ -185,16 +175,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
 
-		Widget skillChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(LEVEL_UP_SKILL))).thenReturn(skillChild);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
 
-		when(skillChild.getText()).thenReturn("Congratulations, you just advanced an Attack level.");
 		when(levelChild.getText()).thenReturn("Your Attack level is now 70.");
 
-		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_SKILL, LEVEL_UP_LEVEL));
+		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
@@ -209,16 +195,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(DIALOG_SPRITE_GROUP_ID, 0));
 
-		Widget skillChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_SPRITE))).thenReturn(skillChild);
-
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 
-		when(skillChild.getText()).thenReturn("Congratulations, you just advanced a Hunter level.");
 		when(levelChild.getText()).thenReturn("Your Hunter level is now 2.");
 
-		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_SPRITE, DIALOG_SPRITE_TEXT));
+		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);
