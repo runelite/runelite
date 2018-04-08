@@ -64,10 +64,10 @@ import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.events.TitleToolbarButtonAdded;
 import net.runelite.client.events.TitleToolbarButtonRemoved;
+import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -296,7 +296,7 @@ public class ClientUI
 			SwingUtil.setupDefaults();
 
 			// Use substance look and feel
-			SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
+			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
 
 			// Use custom UI font
 			SwingUtil.setFont(FontManager.getRunescapeFont());
