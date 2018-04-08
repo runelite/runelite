@@ -29,6 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -67,7 +68,8 @@ import net.runelite.client.events.TitleToolbarButtonRemoved;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.skin.GraphiteSkin;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -296,7 +298,8 @@ public class ClientUI
 			SwingUtil.setupDefaults();
 
 			// Use substance look and feel
-			SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
+			SubstanceCortex.GlobalScope.setSkin(new GraphiteSkin().transform(substanceColorScheme -> substanceColorScheme
+				.shiftBackground(new Color(61, 52, 41, 255), 1), "OSRS"));
 
 			// Use custom UI font
 			SwingUtil.setFont(FontManager.getRunescapeFont());
