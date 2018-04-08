@@ -102,6 +102,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 
 	private String clueType;
 	private Integer clueNumber;
@@ -264,12 +265,12 @@ public class ScreenshotPlugin extends Plugin
 		{
 			case LEVEL_UP_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_SKILL, WidgetInfo.LEVEL_UP_LEVEL);
+				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
 				break;
 			}
 			case DIALOG_SPRITE_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_SPRITE, WidgetInfo.DIALOG_SPRITE_TEXT);
+				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 				break;
 			}
 			case QUEST_COMPLETED_GROUP_ID:
@@ -333,28 +334,40 @@ public class ScreenshotPlugin extends Plugin
 		takeScreenshot(fileName, config.displayDate());
 	}
 
-	public String parseLevelUpWidget(WidgetInfo levelUpSkill, WidgetInfo levelUpLevel)
+	/**
+	 * Receives a WidgetInfo pointing to the middle widget of the level-up dialog,
+	 * and parses it into a shortened string for filename usage.
+	 *
+	 * @param levelUpLevel WidgetInfo pointing to the required text widget,
+	 *                     with the format "Your Skill (level is/are) now 99."
+	 * @return Shortened string in the format "Skill(99)"
+	 */
+	String parseLevelUpWidget(WidgetInfo levelUpLevel)
 	{
-		Widget skillChild = client.getWidget(levelUpSkill);
 		Widget levelChild = client.getWidget(levelUpLevel);
-
-		if (skillChild == null || levelChild == null)
+		if (levelChild == null)
 		{
 			return null;
 		}
 
-		// "Congratulations, you just advanced a Firemaking level."
-		String skillText = skillChild.getText();
-		// "Your Firemaking level is now 9."
-		String levelText = levelChild.getText();
+		Matcher m = LEVEL_UP_PATTERN.matcher(levelChild.getText());
+		if (!m.matches())
+		{
+			return null;
+		}
 
-		String[] splitSkillName = skillText.split(" ");
-		String skillName = splitSkillName[splitSkillName.length - 2];
-		String skillLevel = levelText.substring(levelText.lastIndexOf(" ") + 1, levelText.length() - 1);
-
+		String skillName = m.group(1);
+		String skillLevel = m.group(2);
 		return skillName + "(" + skillLevel + ")";
 	}
 
+	/**
+	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
+	 * and optionally uploads it to an image-hosting service.
+	 *
+	 * @param fileName    Filename to use, without file extension.
+	 * @param displayDate Whether to show today's date on the report button as the screenshot is taken.
+	 */
 	private void takeScreenshot(String fileName, boolean displayDate)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
@@ -463,6 +476,13 @@ public class ScreenshotPlugin extends Plugin
 		});
 	}
 
+	/**
+	 * Uploads a screenshot to the Imgur image-hosting service,
+	 * and copies the image link to the clipboard.
+	 *
+	 * @param screenshotFile Image file to upload.
+	 * @throws IOException Thrown if the file cannot be read.
+	 */
 	private void uploadScreenshot(File screenshotFile) throws IOException
 	{
 		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
