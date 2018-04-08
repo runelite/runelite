@@ -24,56 +24,34 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.PluginChanged;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginManager;
 
 @Singleton
 @Slf4j
-public class DrawHook
+public class DrawManager
 {
-	private final AtomicReference<List<DrawListener>> listenersReference = new AtomicReference<>(Collections.emptyList());
-	private final PluginManager pluginManager;
+	private final List<DrawListener> drawListeners = new CopyOnWriteArrayList<>();
 
-	@Inject
-	private DrawHook(PluginManager pluginManager)
+	public void registerDrawListener(DrawListener drawListener)
 	{
-		this.pluginManager = pluginManager;
+		if (!drawListeners.contains(drawListener))
+		{
+			drawListeners.add(drawListener);
+		}
 	}
 
-	@Subscribe
-	public void onPluginChanged(PluginChanged event)
+	public void unregisterDrawListener(DrawListener drawListener)
 	{
-		rebuildListeners();
+		drawListeners.remove(drawListener);
 	}
 
-	private void rebuildListeners()
+	public void processDrawComplete(BufferedImage image)
 	{
-		final List<DrawListener> listeners = pluginManager.getPlugins()
-			.stream()
-			.filter(pluginManager::isPluginEnabled)
-			.map(Plugin::getDrawListener)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-		listenersReference.set(listeners);
-	}
-
-
-	public void drawComplete(BufferedImage image)
-	{
-		List<DrawListener> listeners = listenersReference.get();
-
-		for (DrawListener listener : listeners)
+		for (DrawListener listener : drawListeners)
 		{
 			listener.drawComplete(image);
 		}

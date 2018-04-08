@@ -30,7 +30,6 @@ import com.google.inject.Module;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
-import net.runelite.client.ui.DrawListener;
 import net.runelite.client.ui.overlay.Overlay;
 
 public abstract class Plugin implements Module
@@ -66,10 +65,5 @@ public abstract class Plugin implements Module
 	{
 		Overlay overlay = getOverlay();
 		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
-	public DrawListener getDrawListener()
-	{
-		return null;
 	}
 }

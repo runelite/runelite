@@ -32,7 +32,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.DrawListener;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 
@@ -56,16 +56,13 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private FpsDrawListener drawListener;
 
+	@Inject
+	private DrawManager drawManager;
+
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Override
-	public DrawListener getDrawListener()
-	{
-		return drawListener;
 	}
 
 	@Subscribe
@@ -79,8 +76,21 @@ public class FpsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged event) {
+	public void onFocusChanged(FocusChanged event)
+	{
 		drawListener.onFocusChanged(event);
 		overlay.onFocusChanged(event);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		drawManager.registerDrawListener(drawListener);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		drawManager.unregisterDrawListener(drawListener);
 	}
 }

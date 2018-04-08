@@ -80,7 +80,8 @@ public class FpsOverlay extends Overlay
 		reloadConfig();
 	}
 
-	void onFocusChanged(FocusChanged event) {
+	void onFocusChanged(FocusChanged event)
+	{
 		isFocused = event.isFocused();
 		changeColor();
 	}
@@ -93,7 +94,8 @@ public class FpsOverlay extends Overlay
 		changeColor();
 	}
 
-	void changeColor() {
+	void changeColor()
+	{
 		if (alwaysEnabled || (unfocusedEnabled && !isFocused))
 		{
 			fpsValueColor = Color.red;

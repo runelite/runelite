@@ -68,14 +68,13 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
-import net.runelite.client.ui.DrawHook;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.DrawListener;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
@@ -130,7 +129,7 @@ public class ScreenshotPlugin extends Plugin
 	private TitleToolbar titleToolbar;
 
 	@Inject
-	private DrawHook renderHooks;
+	private DrawManager drawManager;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -141,12 +140,6 @@ public class ScreenshotPlugin extends Plugin
 	ScreenshotConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ScreenshotConfig.class);
-	}
-
-	@Override
-	public DrawListener getDrawListener()
-	{
-		return drawListener;
 	}
 
 	@Override
@@ -184,6 +177,7 @@ public class ScreenshotPlugin extends Plugin
 				.build();
 
 			titleToolbar.addNavigation(titleBarButton);
+			drawManager.registerDrawListener(drawListener);
 		}
 		catch (IOException ex)
 		{
@@ -195,6 +189,7 @@ public class ScreenshotPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		titleToolbar.removeNavigation(titleBarButton);
+		drawManager.unregisterDrawListener(drawListener);
 	}
 
 	@Subscribe

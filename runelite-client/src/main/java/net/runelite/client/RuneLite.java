@@ -48,7 +48,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.DrawHook;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import org.slf4j.LoggerFactory;
@@ -86,7 +86,7 @@ public class RuneLite
 	private OverlayRenderer overlayRenderer;
 
 	@Inject
-	private DrawHook drawHook;
+	private DrawManager drawManager;
 
 	@Inject
 	private SessionManager sessionManager;
@@ -165,7 +165,7 @@ public class RuneLite
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
-		eventBus.register(drawHook);
+		eventBus.register(drawManager);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(pluginManager);

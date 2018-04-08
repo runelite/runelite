@@ -65,7 +65,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
-import net.runelite.client.ui.DrawHook;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -90,7 +90,7 @@ public class Hooks
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
 	private static final GameTick tick = new GameTick();
-	private static final DrawHook renderHooks = injector.getInstance(DrawHook.class);
+	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
 
 	private static Dimension lastStretchedDimensions;
 	private static BufferedImage stretchedImage;
@@ -283,7 +283,7 @@ public class Hooks
 		// Draw the image onto the game canvas
 		graphics.drawImage(image, 0, 0, client.getCanvas());
 
-		renderHooks.drawComplete(image);
+		renderHooks.processDrawComplete(image);
 	}
 
 	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)

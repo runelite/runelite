@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.fps;
 
-import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.events.FocusChanged;
@@ -56,7 +55,8 @@ public class FpsDrawListener implements DrawListener
 		maxFPS = config.maxFPS();
 	}
 
-	void onFocusChanged(FocusChanged event) {
+	void onFocusChanged(FocusChanged event)
+	{
 		this.isFocused = event.isFocused();
 	}
 
