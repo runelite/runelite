@@ -54,6 +54,33 @@ public interface RSModel extends RSRenderable, Model
 	@Import("indices3")
 	int[] getTrianglesZ();
 
+	@Import("vertexGroups")
+	int[][] getVertexGroups();
+
+	@Import("animate")
+	void animate(int type, int[] list, int x, int y, int z);
+
+	@Import("resetBounds")
+	void resetBounds();
+
+	@Import("toSharedModel")
+	RSModel toSharedModel(boolean b);
+
+	@Import("toSharedSpotAnimModel")
+	RSModel toSharedSpotAnimModel(boolean b);
+
+	@Import("rotateY90Ccw")
+	void rotateY90Ccw();
+
+	@Import("rotateY180Ccw")
+	void rotateY180Ccw();
+
+	@Import("rotateY270Ccw")
+	void rotateY270Ccw();
+
+	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,
+								int intervalCount);
+
 	/**
 	 * Compute the convex hull of this model
 	 * @param localX

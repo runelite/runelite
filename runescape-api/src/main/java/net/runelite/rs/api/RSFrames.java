@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,26 +26,8 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSSequence
+public interface RSFrames extends RSCacheableNode
 {
-	@Import("stretches")
-	boolean getStretches();
-
-	@Import("maxLoops")
-	int getMaxLoops();
-
-	@Import("precedenceAnimating")
-	int getPrecedenceAnimating();
-
-	@Import("replyMode")
-	int getReplyMode();
-
-	@Import("interleaveLeave")
-	int[] getInterleaveLeave();
-
-	@Import("frameIDs")
-	int[] getFrameIDs();
-
-	@Import("frameLengths")
-	int[] getFrameLenths();
+	@Import("skeletons")
+	RSFrame[] getFrames();
 }
