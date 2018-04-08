@@ -154,21 +154,27 @@ public class DevToolsOverlay extends Overlay
 		for (NPC npc : npcs)
 		{
 			NPCComposition composition = npc.getComposition();
+			Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
 			if (composition.getConfigs() != null)
 			{
-				composition = composition.transform();
+				NPCComposition transformedComposition = composition.transform();
+				if (transformedComposition == null)
+				{
+					color = GRAY;
+				}
+				else
+				{
+					composition = transformedComposition;
+				}
 			}
 
-			String text = composition.getName() + " (ID: " + composition.getId() + ") (A: " + npc.getAnimation()
-					+ ") (G: " + npc.getGraphic() + ")";
-			if (npc.getCombatLevel() > 1)
-			{
-				OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
-			}
-			else
-			{
-				OverlayUtil.renderActorOverlay(graphics, npc, text, ORANGE);
-			}
+			String text = String.format("%s (ID: %d) (A: %d) (G: %d)",
+				composition.getName(),
+				composition.getId(),
+				npc.getAnimation(),
+				npc.getGraphic());
+
+			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
 	}
 
