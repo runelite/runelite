@@ -36,7 +36,6 @@ public abstract class Plugin implements Module
 {
 	protected Injector injector;
 	File file;
-	PluginClassLoader loader;
 
 	@Override
 	public void configure(Binder binder)
