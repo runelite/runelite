@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.plugins.attackstyles;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -30,10 +30,10 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "attackIndicator",
-	name = "Attack Indicators",
-	description = "Configuration for the attack indicator plugin"
+	name = "Attack Styles",
+	description = "Configuration for the attack styles plugin"
 )
-public interface AttackIndicatorConfig extends Config
+public interface AttackStylesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "warnForDefensive",
