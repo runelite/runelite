@@ -199,4 +199,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "swapChase",
+		name = "Chase",
+		description = "Allows to left click your cat to chase"
+	)
+	default boolean swapChase()
+	{
+		return true;
+	}
 }
