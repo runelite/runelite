@@ -142,17 +142,17 @@ public class ReportButtonPlugin extends Plugin
 
 		switch (config.time())
 		{
-			case UTC:
-				reportButton.setText(getUTCTime());
-				break;
-			case JAGEX:
-				reportButton.setText(getJagexTime());
-				break;
 			case LOCAL_TIME:
 				reportButton.setText(getLocalTime());
 				break;
 			case LOCAL_DATE:
 				reportButton.setText(getLocalDate());
+				break;
+			case UTC:
+				reportButton.setText(getUTCTime());
+				break;
+			case JAGEX:
+				reportButton.setText(getJagexTime());
 				break;
 			case LOGIN_TIME:
 				reportButton.setText(getLoginTime());
@@ -173,18 +173,6 @@ public class ReportButtonPlugin extends Plugin
 		return LocalDate.now().format(LOCAL_DATE_FORMAT);
 	}
 
-	private String getLoginTime()
-	{
-		if (loginTime == null)
-		{
-			return "Report";
-		}
-
-		Duration duration = Duration.between(loginTime, Instant.now());
-		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
-		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-	}
-
 	private String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
@@ -195,5 +183,17 @@ public class ReportButtonPlugin extends Plugin
 	{
 		LocalTime time = LocalTime.now(JAGEX);
 		return time.format(LOCAL_TIME_FORMAT);
+	}
+
+	private String getLoginTime()
+	{
+		if (loginTime == null)
+		{
+			return "Report";
+		}
+
+		Duration duration = Duration.between(loginTime, Instant.now());
+		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
+		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 }
