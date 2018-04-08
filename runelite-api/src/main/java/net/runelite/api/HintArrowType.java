@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,22 +24,17 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public interface Player extends Actor
+@AllArgsConstructor
+public enum HintArrowType
 {
-	@Override
-	int getCombatLevel();
+	NONE(0),
+	PLAYER(10),
+	NPC(1),
+	WORLD_POSITION(2);
 
-	PlayerComposition getPlayerComposition();
-
-	Polygon[] getPolygons();
-
-	int getTeam();
-
-	boolean isClanMember();
-
-	boolean isFriend();
-
-	int getIndex();
+	@Getter
+	private final int value;
 }

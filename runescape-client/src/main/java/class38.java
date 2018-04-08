@@ -60,7 +60,7 @@ public class class38 {
    )
    static final void method546(int var0, int var1) {
       if(Client.hintArrowTargetType == 2) {
-         SoundTask.worldToScreen((Client.hintArrowX - class138.baseX << 7) + Client.field895, (Client.hintArrowY - class23.baseY << 7) + Client.field896, Client.field1009 * 2);
+         SoundTask.worldToScreen((Client.hintArrowX - class138.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - class23.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowOffsetZ * 2);
          if(Client.screenX > -1 && Client.gameCycle % 20 < 10) {
             BoundingBox3DDrawMode.headIconsHint[0].drawAt(var0 + Client.screenX - 12, Client.screenY + var1 - 28);
          }
