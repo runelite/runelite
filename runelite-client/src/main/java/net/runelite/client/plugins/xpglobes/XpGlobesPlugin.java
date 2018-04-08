@@ -37,6 +37,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -50,9 +51,12 @@ public class XpGlobesPlugin extends Plugin
 {
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
+	private static final int SECONDS_TO_SHOW_DROP = 2;
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
+	private final List<XpDrop> xpDrops = new ArrayList<>();
+	private boolean xpDropsThisTick = false;
 
 	@Inject
 	private Client client;
@@ -76,6 +80,12 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		xpDropsThisTick = false;
+	}
+
+	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
 		Skill skill = event.getSkill();
@@ -95,6 +105,21 @@ public class XpGlobesPlugin extends Plugin
 
 		if (cachedGlobe != null)
 		{
+			if (config.enableXpDrops())
+			{
+				int deltaXp = currentXp - cachedGlobe.getCurrentXp();
+
+				if (!xpDropsThisTick)
+				{
+					xpDrops.add(new XpDrop(skill, deltaXp));
+					xpDropsThisTick = true;
+				}
+				else
+				{
+					xpDrops.get(xpDrops.size() - 1).addXpDrop(skill, deltaXp);
+				}
+			}
+
 			cachedGlobe.setSkill(skill);
 			cachedGlobe.setCurrentXp(currentXp);
 			cachedGlobe.setCurrentLevel(currentLevel);
@@ -158,9 +183,41 @@ public class XpGlobesPlugin extends Plugin
 		}
 	}
 
+
+	public List<XpDrop> getXpDrops()
+	{
+		return xpDrops;
+	}
+
+	public int getXpDropsSize()
+	{
+		return xpDrops.size();
+	}
+
+	public void removeExpiredXpDrops()
+	{
+		if (!xpDrops.isEmpty())
+		{
+			Instant currentTime = Instant.now();
+			for (Iterator<XpDrop> it = xpDrops.iterator(); it.hasNext();)
+			{
+				XpDrop drop = it.next();
+				Instant dropCreationTime = drop.getTime();
+				if (currentTime.isBefore(dropCreationTime.plusSeconds(SECONDS_TO_SHOW_DROP)))
+				{
+					//if a drop is not expired, stop checking newer drops
+					return;
+				}
+				it.remove();
+			}
+		}
+	}
+
+
 	public void resetGlobeState()
 	{
 		xpGlobes.clear();
+		xpDrops.clear();
 		globeCache = new XpGlobe[Skill.values().length - 1];
 	}
 

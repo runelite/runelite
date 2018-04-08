@@ -1,0 +1,95 @@
+package net.runelite.client.plugins.xpglobes;
+
+import net.runelite.api.Skill;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+public class XpDrop
+{
+
+    private List<Skill> skills = new ArrayList<>();
+    private int xp;
+    private float x;
+    private float y;
+    private Instant time;
+    private boolean xPositionInitialized;
+
+    private static final int DROP_DEFAULT_START_Y = 150;
+
+    public XpDrop(Skill skill, int xp)
+    {
+        this.skills.add(skill);
+        this.xp = xp;
+        this.x = 0.0f;
+        this.xPositionInitialized = false;
+        this.y = DROP_DEFAULT_START_Y;
+        this.time = Instant.now();
+    }
+
+    public void addXpDrop(Skill skill, int xpGained)
+    {
+        addSkill(skill);
+        this.xp += xpGained;
+    }
+
+    public List<Skill> getSkills()
+    {
+        return skills;
+    }
+
+    public void addSkill(Skill skill)
+    {
+        this.skills.add(skill);
+    }
+
+    public int getXp()
+    {
+        return xp;
+    }
+
+    public void setXp(int xp)
+    {
+        this.xp = xp;
+    }
+
+    public float getX()
+    {
+        return x;
+    }
+
+    public void setX(float x)
+    {
+        this.x = x;
+    }
+
+    public float getY()
+    {
+        return y;
+    }
+
+    public void setY(float y)
+    {
+        this.y = y;
+    }
+
+    public Instant getTime()
+    {
+        return time;
+    }
+
+    public void setTime(Instant time)
+    {
+        this.time = time;
+    }
+
+    public boolean isxPositionInitialized()
+    {
+        return xPositionInitialized;
+    }
+
+    public void setxPositionInitialized(boolean xPositionInitialized)
+    {
+        this.xPositionInitialized = xPositionInitialized;
+    }
+}

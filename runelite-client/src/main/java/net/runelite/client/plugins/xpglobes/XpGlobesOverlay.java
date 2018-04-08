@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -66,6 +67,9 @@ public class XpGlobesOverlay extends Overlay
 	private static final int DEFAULT_START_Y = 10;
 
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
+
+	private static final float DROP_SCROLL_SPEED = 30.0f;
+	private static final float ICON_PADDING = 5.0f;
 
 	@Inject
 	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
@@ -108,7 +112,40 @@ public class XpGlobesOverlay extends Overlay
 		{
 			return null;
 		}
-		
+
+		if (config.enableXpDrops())
+		{
+			int dropQueueSize = plugin.getXpDropsSize();
+			if (dropQueueSize > 0)
+			{
+				List<XpDrop> xpChangedQueue = plugin.getXpDrops();
+
+				for (XpDrop xpDrop : xpChangedQueue)
+				{
+					float fps = client.getFPS();
+					xpDrop.setY(xpDrop.getY() - DROP_SCROLL_SPEED * (1 / fps));
+
+					// Initializing x pos here, since string length cannot change anymore
+					if (!xpDrop.isxPositionInitialized())
+					{
+						BufferedImage icon = iconManager.getSkillImage(xpDrop.getSkills().get(0));
+
+						if (icon != null)
+						{
+							float stringWidth = graphics.getFontMetrics().stringWidth(Integer.toString(xpDrop.getXp()));
+							float iconWidth = icon.getWidth();
+							float skillsSize = xpDrop.getSkills().size();
+							xpDrop.setX((clientWidth - stringWidth - skillsSize * (ICON_PADDING - iconWidth)) / 2);
+							xpDrop.setxPositionInitialized(true);
+						}
+					}
+
+					renderXpDrop(graphics, xpDrop);
+				}
+				plugin.removeExpiredXpDrops();
+			}
+		}
+
 		int queueSize = plugin.getXpGlobesSize();
 		if (queueSize > 0)
 		{
@@ -125,6 +162,30 @@ public class XpGlobesOverlay extends Overlay
 
 		return null;
 	}
+
+	private void renderXpDrop(Graphics2D graphics, XpDrop drop)
+	{
+		graphics.drawString(Integer.toString(drop.getXp()), drop.getX(), drop.getY());
+
+		int iconX = Math.round(drop.getX());
+
+		for (Skill skill : drop.getSkills())
+		{
+			BufferedImage icon = iconManager.getSkillImage(skill);
+
+			if (icon == null)
+				break;
+
+			int iconWidth = icon.getWidth();
+			int iconHeight = icon.getHeight();
+			int iconY = Math.round(drop.getY() - iconHeight);
+
+			iconX -= iconWidth + ICON_PADDING;
+
+			graphics.drawImage(iconManager.getSkillImage(skill), iconX, iconY, null);
+		}
+	}
+
 	private void renderProgressCircle(Graphics2D graphics, XpGlobe skillToDraw, int x, int y)
 	{
 		double radiusCurrentXp = skillToDraw.getSkillProgressRadius();
