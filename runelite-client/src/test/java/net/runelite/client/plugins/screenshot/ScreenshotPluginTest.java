@@ -64,14 +64,14 @@ public class ScreenshotPluginTest
 
 	@Mock
 	@Bind
-	Client client;
+	private Client client;
 
 	@Inject
-	ScreenshotPlugin screenshotPlugin;
+	private ScreenshotPlugin screenshotPlugin;
 
 	@Mock
 	@Bind
-	ScreenshotConfig screenshotConfig;
+	private ScreenshotConfig screenshotConfig;
 
 	@Mock
 	@Bind
@@ -83,7 +83,7 @@ public class ScreenshotPluginTest
 
 	@Mock
 	@Bind
-	OverlayRenderer overlayRenderer;
+	private OverlayRenderer overlayRenderer;
 
 	@Mock
 	@Bind
@@ -102,7 +102,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testcluescroll()
+	public void testClueScroll()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", CLUE_SCROLL, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -112,7 +112,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testbarrowschest()
+	public void testBarrowsChest()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", BARROWS_CHEST, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -121,7 +121,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testraidschest()
+	public void testRaidsChest()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", RAIDS_CHEST, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -130,7 +130,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testHitpoints()
+	public void testHitpointsLevel99()
 	{
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
@@ -150,7 +150,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testFiremaking()
+	public void testFiremakingLevel9()
 	{
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
@@ -170,7 +170,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testAttack()
+	public void testAttackLevel70()
 	{
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
@@ -190,7 +190,7 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testHunter()
+	public void testHunterLevel2()
 	{
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(DIALOG_SPRITE_GROUP_ID, 0));
