@@ -31,6 +31,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.HintArrowType;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -55,6 +56,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -693,5 +695,44 @@ public abstract class RSClientMixin implements RSClient
 		MenuOpened event = new MenuOpened();
 		event.setMenuEntries(client.getMenuEntries());
 		eventBus.post(event);
+	}
+
+	@Inject
+	@Override
+	public boolean hasHintArrow()
+	{
+		return client.getHintArrowTargetType() == HintArrowType.NONE.getValue();
+	}
+
+	@Inject
+	@Override
+	public void clearHintArrow()
+	{
+		client.setHintArrowTargetType(HintArrowType.NONE.getValue());
+	}
+
+	@Inject
+	@Override
+	public void setHintArrow(NPC npc)
+	{
+		client.setHintArrowTargetType(HintArrowType.NPC.getValue());
+		client.setHintArrowNpcTargetIdx(npc.getIndex());
+	}
+
+	@Inject
+	@Override
+	public void setHintArrow(Player player)
+	{
+		client.setHintArrowTargetType(HintArrowType.PLAYER.getValue());
+		client.setHintArrowPlayerTargetIdx(player.getIndex());
+	}
+
+	@Inject
+	@Override
+	public void setHintArrow(WorldPoint point)
+	{
+		client.setHintArrowTargetType(HintArrowType.WORLD_POSITION.getValue());
+		client.setHintArrowX(point.getX());
+		client.setHintArrowY(point.getY());
 	}
 }
