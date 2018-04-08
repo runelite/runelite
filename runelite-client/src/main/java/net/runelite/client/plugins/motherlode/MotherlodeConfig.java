@@ -64,4 +64,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showMiningStats",
+		name = "Show Mining session stats",
+		description = "Configures whether to display mining session stats"
+	)
+	default boolean showMiningStats()
+	{
+		return true;
+	}
 }
