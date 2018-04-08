@@ -342,7 +342,7 @@ public class ScreenshotPlugin extends Plugin
 	 *                     with the format "Your Skill (level is/are) now 99."
 	 * @return Shortened string in the format "Skill(99)"
 	 */
-	public String parseLevelUpWidget(WidgetInfo levelUpLevel)
+	String parseLevelUpWidget(WidgetInfo levelUpLevel)
 	{
 		Widget levelChild = client.getWidget(levelUpLevel);
 		if (levelChild == null)
