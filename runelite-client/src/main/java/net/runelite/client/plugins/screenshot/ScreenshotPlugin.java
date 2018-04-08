@@ -513,7 +513,8 @@ public class ScreenshotPlugin extends Plugin
 	{
 		File playerFolder = RuneLite.SCREENSHOT_DIR;
 
-		try{
+		try
+		{
 			if (client.getLocalPlayer() != null)
 			{
 				playerFolder = new File(dirToUse, client.getLocalPlayer().getName());

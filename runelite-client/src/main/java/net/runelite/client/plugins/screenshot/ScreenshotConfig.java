@@ -107,5 +107,8 @@ public interface ScreenshotConfig extends Config
 			description = "Paste the location in the textbox",
 			position = 6
 	)
-	default String NewSaveDir(){ return ""; }
+	default String NewSaveDir()
+	{
+		return "";
+	}
 }
