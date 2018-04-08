@@ -357,6 +357,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pay-fare", option, target, true);
 				swap("charter", option, target, true);
 				swap("take-boat", option, target, true);
+				swap("fly", option, target, true);
+				swap("jatizso", option, target, true);
+				swap("neitiznot", option, target, true);
+				swap("rellekka", option, target, true);
 			}
 
 			if (config.swapPay())
@@ -417,6 +421,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("use", option, target, true);
 			}
+		}
+		else if (config.swapChase() && option.equals("pick-up"))
+		{
+			swap("chase", option, target, true);
 		}
 	}
 
