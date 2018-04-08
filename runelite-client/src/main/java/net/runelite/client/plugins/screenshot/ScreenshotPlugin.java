@@ -102,6 +102,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 
 	private String clueType;
 	private Integer clueNumber;
@@ -264,12 +265,12 @@ public class ScreenshotPlugin extends Plugin
 		{
 			case LEVEL_UP_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_SKILL, WidgetInfo.LEVEL_UP_LEVEL);
+				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
 				break;
 			}
 			case DIALOG_SPRITE_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_SPRITE, WidgetInfo.DIALOG_SPRITE_TEXT);
+				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 				break;
 			}
 			case QUEST_COMPLETED_GROUP_ID:
@@ -333,25 +334,22 @@ public class ScreenshotPlugin extends Plugin
 		takeScreenshot(fileName, config.displayDate());
 	}
 
-	public String parseLevelUpWidget(WidgetInfo levelUpSkill, WidgetInfo levelUpLevel)
+	public String parseLevelUpWidget(WidgetInfo levelUpLevel)
 	{
-		Widget skillChild = client.getWidget(levelUpSkill);
 		Widget levelChild = client.getWidget(levelUpLevel);
-
-		if (skillChild == null || levelChild == null)
+		if (levelChild == null)
 		{
 			return null;
 		}
 
-		// "Congratulations, you just advanced a Firemaking level."
-		String skillText = skillChild.getText();
-		// "Your Firemaking level is now 9."
-		String levelText = levelChild.getText();
+		Matcher m = LEVEL_UP_PATTERN.matcher(levelChild.getText());
+		if (!m.matches())
+		{
+			return null;
+		}
 
-		String[] splitSkillName = skillText.split(" ");
-		String skillName = splitSkillName[splitSkillName.length - 2];
-		String skillLevel = levelText.substring(levelText.lastIndexOf(" ") + 1, levelText.length() - 1);
-
+		String skillName = m.group(1);
+		String skillLevel = m.group(2);
 		return skillName + "(" + skillLevel + ")";
 	}
 
