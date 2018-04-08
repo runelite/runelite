@@ -127,7 +127,10 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public WorldPoint getWorldLocation()
 	{
-		return WorldPoint.fromLocal(client, getX(), getY(), client.getPlane());
+		return WorldPoint.fromLocal(client,
+			this.getPathX()[0] * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
+			this.getPathY()[0] * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
+			client.getPlane());
 	}
 
 	@Inject
