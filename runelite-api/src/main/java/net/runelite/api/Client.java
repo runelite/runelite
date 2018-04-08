@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -358,4 +359,18 @@ public interface Client extends GameEngine
 	SpritePixels drawInstanceMap(int z);
 
 	void runScript(int id, Object... args);
+
+	boolean hasHintArrow();
+
+	void clearHintArrow();
+
+	void setHintArrow(WorldPoint point, HintArrowType type);
+
+	void setHintArrow(WorldPoint point);
+
+	void setHintArrow(Player player);
+
+	void setHintArrow(NPC npc);
+
+	void setHintArrowType(HintArrowType type);
 }
