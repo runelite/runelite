@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.Quest;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
@@ -564,4 +565,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("runScript")
 	void runScript(RSScriptEvent ev, int ex);
+
+	boolean isQuestComplete(Quest quest);
+
+	int getQuestProgress(Quest quest);
 }

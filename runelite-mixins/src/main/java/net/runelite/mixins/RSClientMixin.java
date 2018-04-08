@@ -49,6 +49,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
+import net.runelite.api.Quest;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
@@ -675,5 +676,19 @@ public abstract class RSClientMixin implements RSClient
 		MenuOpened event = new MenuOpened();
 		event.setMenuEntries(client.getMenuEntries());
 		eventBus.post(event);
+	}
+
+	@Inject
+	@Override
+	public int getQuestProgress(Quest quest)
+	{
+		return quest.getSetting() == null ? client.getSetting(quest.getVarbits()) : client.getSetting(quest.getSetting());
+	}
+
+	@Inject
+	@Override
+	public boolean isQuestComplete(Quest quest)
+	{
+		return getQuestProgress(quest) == quest.getMaxValue();
 	}
 }
