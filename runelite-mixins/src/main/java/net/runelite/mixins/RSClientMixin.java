@@ -622,6 +622,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
+	@FieldHook("cachedPlayers")
 	@Inject
 	public static void cachedPlayersChanged(int idx)
 	{
