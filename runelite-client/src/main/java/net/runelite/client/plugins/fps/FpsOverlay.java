@@ -49,7 +49,7 @@ public class FpsOverlay extends Overlay
 {
 	private static final int Y_OFFSET = 14;
 	private static final int LABEL_X_OFFSET = 38;
-	private static final int VALUE_X_OFFSET = 14;
+	private static final int VALUE_X_OFFSET = 15;
 	private final FpsConfig config;
 	private final Client client;
 	private final String[] fpsNums;
