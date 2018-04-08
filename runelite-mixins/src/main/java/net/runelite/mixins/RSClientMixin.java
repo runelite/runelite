@@ -32,6 +32,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.HintArrowType;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -711,11 +712,18 @@ public abstract class RSClientMixin implements RSClient
 		client.setHintArrowTargetType(0);
 	}
 
+	@Override
+	@Inject
+	public void setHintArrowType(HintArrowType type)
+	{
+		client.setHintArrowTargetType(type.getValue());
+	}
+
 	@Inject
 	@Override
 	public void setHintArrow(NPC npc)
 	{
-		client.setHintArrowTargetType(1);
+		client.setHintArrowType(HintArrowType.NPC);
 		client.setHintArrowNpcTargetIdx(npc.getNPCIndex());
 	}
 
@@ -723,7 +731,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public void setHintArrow(Player player)
 	{
-		client.setHintArrowTargetType(10);
+		client.setHintArrowType(HintArrowType.PLAYER);
 		client.setHintArrowPlayerTargetIdx(player.getPlayerIndex());
 	}
 
@@ -731,7 +739,14 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public void setHintArrow(WorldPoint point)
 	{
-		client.setHintArrowTargetType(2);
+		client.setHintArrow(point, HintArrowType.WORLD_POSITION);
+	}
+
+	@Inject
+	@Override
+	public void setHintArrow(WorldPoint point, HintArrowType type)
+	{
+		client.setHintArrowType(type);
 		client.setHintArrowX(point.getX());
 		client.setHintArrowY(point.getY());
 	}

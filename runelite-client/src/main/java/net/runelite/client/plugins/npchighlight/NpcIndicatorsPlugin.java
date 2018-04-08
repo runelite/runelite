@@ -149,7 +149,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		for (NPC npc : client.getNpcs())
 		{
-			if (npcTags.contains(npc.getIndex()))
+			if (npcTags.contains(npc.getNPCIndex()))
 			{
 				NPCComposition composition = getComposition(npc);
 				if (composition == null || composition.getName() == null)
