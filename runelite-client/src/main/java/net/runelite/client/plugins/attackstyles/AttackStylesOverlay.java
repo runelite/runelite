@@ -22,38 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.plugins.attackstyles;
 
-import net.runelite.api.Skill;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public enum AttackStyle
+public class AttackStylesOverlay extends Overlay
 {
-	ACCURATE("Accurate", Skill.ATTACK),
-	AGGRESSIVE("Aggressive", Skill.STRENGTH),
-	DEFENSIVE("Defensive", Skill.DEFENCE),
-	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
-	RANGING("Ranging", Skill.RANGED),
-	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
-	CASTING("Casting", Skill.MAGIC),
-	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
-	OTHER("Other");
+	private static final int COMPONENT_WIDTH = 80;
 
-	private final String name;
-	private final Skill[] skills;
+	private final AttackStylesPlugin plugin;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-	AttackStyle(String name, Skill... skills)
+	@Inject
+	public AttackStylesOverlay(AttackStylesPlugin plugin)
 	{
-		this.name = name;
-		this.skills = skills;
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		this.plugin = plugin;
 	}
 
-	public String getName()
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return name;
-	}
+		final String attackStyleString = plugin.getAttackStyle().getName();
 
-	public Skill[] getSkills()
-	{
-		return skills;
+		panelComponent.setTitleColor(plugin.isWarnedSkillSelected() ? Color.RED : Color.WHITE);
+		panelComponent.setTitle(attackStyleString);
+		panelComponent.setWidth(COMPONENT_WIDTH);
+
+		return panelComponent.render(graphics);
 	}
 }

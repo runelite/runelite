@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.plugins.attackstyles;
 
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AttackIndicatorPluginTest
+public class AttackStylesPluginTest
 {
 	@Mock
 	@Bind
@@ -56,10 +56,10 @@ public class AttackIndicatorPluginTest
 
 	@Mock
 	@Bind
-	AttackIndicatorConfig attackConfig;
+	AttackStylesConfig attackConfig;
 
 	@Inject
-	AttackIndicatorPlugin attackPlugin;
+	AttackStylesPlugin attackPlugin;
 
 	@Before
 	public void before()
@@ -102,7 +102,7 @@ public class AttackIndicatorPluginTest
 	}
 
 	/*
-	 * Verify that attack style widgets are hidden when filtered with the AttackIndicatorPlugin.
+	 * Verify that attack style widgets are hidden when filtered with the AttackStylesPlugin.
 	 */
 	@Test
 	public void testHiddenWidget()
