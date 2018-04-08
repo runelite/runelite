@@ -42,6 +42,11 @@ public interface Actor extends Renderable
 
 	int getHealth();
 
+	/**
+	 * Retrieve the server location of the actor. Note that this is typically
+	 * a couple steps ahead of where the client renders the actor.
+	 * @return Returns the server location of the actor.
+	 */
 	WorldPoint getWorldLocation();
 
 	LocalPoint getLocalLocation();
