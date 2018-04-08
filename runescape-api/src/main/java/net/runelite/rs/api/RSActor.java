@@ -41,6 +41,12 @@ public interface RSActor extends RSRenderable, Actor
 	@Import("y")
 	int getY();
 
+	@Import("pathX")
+	int[] getPathX();
+
+	@Import("pathY")
+	int[] getPathY();
+
 	@Import("animation")
 	@Override
 	int getAnimation();
