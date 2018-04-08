@@ -360,7 +360,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("fly", option, target, true);
 				swap("jatizso", option, target, true);
 				swap("neitiznot", option, target, true);
-				swap("relleka", option, target, true);
+				swap("rellekka", option, target, true);
 			}
 
 			if (config.swapPay())
