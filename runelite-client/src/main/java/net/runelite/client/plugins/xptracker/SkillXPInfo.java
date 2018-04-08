@@ -66,7 +66,6 @@ class SkillXPInfo
 		}
 
 		actionExpIndex = actionExpIndex % size;
-
 		actionExps = newActionExps;
 	}
 
