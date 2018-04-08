@@ -41,6 +41,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -532,17 +535,18 @@ public class ScreenshotPlugin extends Plugin
 	private File GetDir(String dirToUse)
 	{
 		File playerFolder = RuneLite.SCREENSHOT_DIR;
+		Path path = Paths.get(dirToUse);
 
-		try
+		if (Files.exists(Paths.get(dirToUse)))
 		{
 			if (client.getLocalPlayer() != null)
 			{
 				playerFolder = new File(dirToUse, client.getLocalPlayer().getName());
 			}
 		}
-		catch (Exception ex)
+		else
 		{
-			log.warn("Could not save to that directory!", ex);
+			notifier.notify("Error saving file! Saving file to default directory.");
 		}
 
 		return playerFolder;
