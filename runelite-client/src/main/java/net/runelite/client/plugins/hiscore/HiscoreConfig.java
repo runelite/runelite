@@ -45,4 +45,15 @@ public interface HiscoreConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "menuOption",
+		name = "Menu option",
+		description = "Show Lookup option in menus"
+	)
+	default boolean menuOption()
+	{
+		return true;
+	}
 }
