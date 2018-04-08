@@ -27,7 +27,6 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
