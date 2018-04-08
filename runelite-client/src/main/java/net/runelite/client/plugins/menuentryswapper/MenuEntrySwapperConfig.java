@@ -169,28 +169,17 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "swapSilverSickle",
-		name = "Silver sickle(b)",
-		description = "Swap Wield with Cast Bloom on Silver sickle(b)"
-	)
-	default boolean swapSilverSickle()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 13,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
 	)
 	default boolean swapTeleportItem()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 13,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -201,7 +190,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 14,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
