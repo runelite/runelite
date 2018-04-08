@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Point;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -55,6 +56,9 @@ public class FpsOverlay extends Overlay
 	private final String[] fpsNums;
 	private boolean enabled;
 	private Color fpsValueColor = Color.yellow;
+	private boolean isFocused = true;
+	private boolean alwaysEnabled = false;
+	private boolean unfocusedEnabled = false;
 
 	@Inject
 	private FpsOverlay(FpsConfig config, Client client)
@@ -76,10 +80,21 @@ public class FpsOverlay extends Overlay
 		reloadConfig();
 	}
 
+	void onFocusChanged(FocusChanged event) {
+		isFocused = event.isFocused();
+		changeColor();
+	}
+
 	void reloadConfig()
 	{
 		enabled = config.drawFPS();
-		if (config.enforceFPS())
+		alwaysEnabled = config.alwaysLimitFps();
+		unfocusedEnabled = config.unfocusedLimitFps();
+		changeColor();
+	}
+
+	void changeColor() {
+		if (alwaysEnabled || (unfocusedEnabled && !isFocused))
 		{
 			fpsValueColor = Color.red;
 		}

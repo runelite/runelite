@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.fps;
 
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.client.ui.DrawListener;
 
 public class FpsDrawListener implements DrawListener
@@ -33,7 +35,9 @@ public class FpsDrawListener implements DrawListener
 	private final FpsConfig config;
 	private long lastDelay = 0;
 	private long lastMillis = 0;
-	private boolean enabled = false;
+	private boolean alwaysEnabled = false;
+	private boolean unfocusedEnabled = false;
+	private boolean isFocused = true;
 	private long maxFPS = 60;
 
 	@Inject
@@ -45,16 +49,21 @@ public class FpsDrawListener implements DrawListener
 
 	void reloadConfig()
 	{
-		enabled = config.enforceFPS();
-		lastDelay = 0;
+		alwaysEnabled = config.alwaysLimitFps();
+		unfocusedEnabled = config.unfocusedLimitFps();
+		lastDelay = 1000 / Math.max(1, config.maxFPS());
 		lastMillis = 0;
 		maxFPS = config.maxFPS();
+	}
+
+	void onFocusChanged(FocusChanged event) {
+		this.isFocused = event.isFocused();
 	}
 
 	@Override
 	public void drawComplete(BufferedImage image)
 	{
-		if (enabled)
+		if (alwaysEnabled || (unfocusedEnabled && !isFocused))
 		{
 			long now = System.currentTimeMillis();
 

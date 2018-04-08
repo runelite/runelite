@@ -46,11 +46,21 @@ public interface FpsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enforceFPS",
-		name = "Enforce FPS",
-		description = "Stay at or under the target frames per second"
+		keyName = "alwaysLimitFps",
+		name = "Always Limit FPS",
+		description = "Stay at or under the target frames per second even when focused"
 	)
-	default boolean enforceFPS()
+	default boolean alwaysLimitFps()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "unfocusedLimitFps",
+		name = "Limit FPS When Unfocused",
+		description = "Stay at or under the target frames per second when unfocused"
+	)
+	default boolean unfocusedLimitFps()
 	{
 		return false;
 	}

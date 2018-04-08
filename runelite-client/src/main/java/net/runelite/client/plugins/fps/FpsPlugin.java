@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -75,5 +76,11 @@ public class FpsPlugin extends Plugin
 			overlay.reloadConfig();
 			drawListener.reloadConfig();
 		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event) {
+		drawListener.onFocusChanged(event);
+		overlay.onFocusChanged(event);
 	}
 }
