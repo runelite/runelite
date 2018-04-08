@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,10 +42,34 @@ class SkillXPInfo
 	private int startXp = -1;
 	private int xpGained = 0;
 	private int actions = 0;
-	private int actionExp = 0;
+	// private int actionExp = 0;
 	private int nextLevelExp = 0;
 	private int startLevelExp = 0;
 	private int level = 0;
+	private boolean initalized = false;
+	private int[] actionExps = new int[1];
+	private int actionExpIndex = 0;
+
+	void withAverageSize(int size)
+	{
+		size = Math.max(1, size);
+
+		int[] oldActionExps = actionExps;
+		int[] newActionExps = new int[size];
+
+		if (initalized)
+		{
+			for (int i = 0; i < size; i++)
+			{
+				// Copy over the old values, as many as can be
+				newActionExps[i] = oldActionExps[i % oldActionExps.length];
+			}
+		}
+
+		actionExpIndex = actionExpIndex % size;
+
+		actionExps = newActionExps;
+	}
 
 	int getXpHr()
 	{
@@ -79,7 +104,20 @@ class SkillXPInfo
 
 	int getActionsRemaining()
 	{
-		return (int) Math.ceil(getXpRemaining() / (float) actionExp);
+		if (initalized)
+		{
+			long xpRemaining = getXpRemaining() * actionExps.length;
+			long actionExp = 0;
+
+			for (int i = 0; i < actionExps.length; i++)
+			{
+				actionExp += actionExps[i];
+			}
+
+			return Math.toIntExact(xpRemaining / actionExp);
+		}
+
+		return Integer.MAX_VALUE;
 	}
 
 	int getSkillProgress()
@@ -126,7 +164,25 @@ class SkillXPInfo
 			return false;
 		}
 
-		actionExp = currentXp - originalXp;
+		int actionExp = currentXp - originalXp;
+
+		if (initalized)
+		{
+			actionExps[actionExpIndex] = actionExp;
+		}
+		else
+		{
+			// So we have a decent average off the bat, lets populate all values with what we see.
+			for (int i = 0; i < actionExps.length; i++)
+			{
+				actionExps[i] = actionExp;
+			}
+
+			initalized = true;
+		}
+
+		actionExpIndex = (actionExpIndex + 1) % actionExps.length;
+
 		actions++;
 		xpGained = currentXp - startXp;
 		startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
