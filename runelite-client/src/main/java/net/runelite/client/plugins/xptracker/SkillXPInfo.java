@@ -42,11 +42,10 @@ class SkillXPInfo
 	private int startXp = -1;
 	private int xpGained = 0;
 	private int actions = 0;
-	// private int actionExp = 0;
 	private int nextLevelExp = 0;
 	private int startLevelExp = 0;
 	private int level = 0;
-	private boolean initalized = false;
+	private boolean initialized = false;
 	private int[] actionExps = new int[1];
 	private int actionExpIndex = 0;
 
@@ -57,7 +56,7 @@ class SkillXPInfo
 		int[] oldActionExps = actionExps;
 		int[] newActionExps = new int[size];
 
-		if (initalized)
+		if (initialized)
 		{
 			for (int i = 0; i < size; i++)
 			{
@@ -104,7 +103,7 @@ class SkillXPInfo
 
 	int getActionsRemaining()
 	{
-		if (initalized)
+		if (initialized)
 		{
 			long xpRemaining = getXpRemaining() * actionExps.length;
 			long actionExp = 0;
@@ -166,7 +165,7 @@ class SkillXPInfo
 
 		int actionExp = currentXp - originalXp;
 
-		if (initalized)
+		if (initialized)
 		{
 			actionExps[actionExpIndex] = actionExp;
 		}
@@ -178,7 +177,7 @@ class SkillXPInfo
 				actionExps[i] = actionExp;
 			}
 
-			initalized = true;
+			initialized = true;
 		}
 
 		actionExpIndex = (actionExpIndex + 1) % actionExps.length;
