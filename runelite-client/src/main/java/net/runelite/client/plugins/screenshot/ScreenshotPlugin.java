@@ -426,14 +426,16 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 
+			String newDir = config.NewSaveDir();
 			File playerFolder;
-			if (client.getLocalPlayer() != null)
+
+			if (newDir.equals(""))
 			{
-				playerFolder = new File(RuneLite.SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				playerFolder = GetDir(RuneLite.SCREENSHOT_DIR.getPath());
 			}
 			else
 			{
-				playerFolder = RuneLite.SCREENSHOT_DIR;
+				playerFolder = GetDir(newDir);
 			}
 
 			playerFolder.mkdirs();
@@ -505,6 +507,24 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 		});
+	}
+
+	private File GetDir(String dirToUse)
+	{
+		File playerFolder = RuneLite.SCREENSHOT_DIR;
+
+		try{
+			if (client.getLocalPlayer() != null)
+			{
+				playerFolder = new File(dirToUse, client.getLocalPlayer().getName());
+			}
+		}
+		catch (Exception ex)
+		{
+			log.warn("Could not save to that directory!", ex);
+		}
+
+		return playerFolder;
 	}
 
 	@VisibleForTesting
