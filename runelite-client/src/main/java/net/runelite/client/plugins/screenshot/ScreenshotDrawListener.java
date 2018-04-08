@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.screenshot;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
+import java.awt.image.BufferedImage;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.DrawListener;
-import net.runelite.client.ui.overlay.Overlay;
 
-public abstract class Plugin implements Module
+@Slf4j
+public class ScreenshotDrawListener implements DrawListener
 {
-	protected Injector injector;
-	File file;
-	PluginClassLoader loader;
+	private final Queue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
 
 	@Override
-	public void configure(Binder binder)
+	public void drawComplete(BufferedImage image)
 	{
+		Consumer<BufferedImage> consumer;
+		while ((consumer = screenshotRequests.poll()) != null)
+		{
+			try
+			{
+				consumer.accept(image);
+			}
+			catch (Exception ex)
+			{
+				log.warn("error in screenshot callback", ex);
+			}
+		}
 	}
 
-	protected void startUp() throws Exception
+	public void requestScreenshot(Consumer<BufferedImage> consumer)
 	{
-	}
-
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
-
-	public Overlay getOverlay()
-	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
-	public DrawListener getDrawListener()
-	{
-		return null;
+		screenshotRequests.add(consumer);
 	}
 }

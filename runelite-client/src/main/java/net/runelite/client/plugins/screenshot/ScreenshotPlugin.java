@@ -68,16 +68,17 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.DrawHook;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.DrawListener;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -114,6 +115,9 @@ public class ScreenshotPlugin extends Plugin
 	private ScreenshotConfig config;
 
 	@Inject
+	private ScreenshotDrawListener drawListener;
+
+	@Inject
 	private Notifier notifier;
 
 	@Inject
@@ -126,7 +130,7 @@ public class ScreenshotPlugin extends Plugin
 	private TitleToolbar titleToolbar;
 
 	@Inject
-	private OverlayRenderer overlayRenderer;
+	private DrawHook renderHooks;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -137,6 +141,12 @@ public class ScreenshotPlugin extends Plugin
 	ScreenshotConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ScreenshotConfig.class);
+	}
+
+	@Override
+	public DrawListener getDrawListener()
+	{
+		return drawListener;
 	}
 
 	@Override
@@ -364,7 +374,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		overlayRenderer.requestScreenshot(image ->
+		drawListener.requestScreenshot(image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
 				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)

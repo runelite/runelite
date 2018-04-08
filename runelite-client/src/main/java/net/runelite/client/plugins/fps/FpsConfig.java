@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.fps;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import net.runelite.client.ui.DrawListener;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public abstract class Plugin implements Module
+@ConfigGroup(
+	keyName = FpsPlugin.CONFIG_GROUP_KEY,
+	name = "FPS Control",
+	description = "Configuration for the fps control plugin"
+)
+public interface FpsConfig extends Config
 {
-	protected Injector injector;
-	File file;
-	PluginClassLoader loader;
-
-	@Override
-	public void configure(Binder binder)
+	@ConfigItem(
+		keyName = "drawFPS",
+		name = "Draw FPS indicator",
+		description = "Stay at or under the target FPS"
+	)
+	default boolean drawFPS()
 	{
+		return false;
 	}
 
-	protected void startUp() throws Exception
+	@ConfigItem(
+		keyName = "enforceFPS",
+		name = "Enforce FPS",
+		description = "Stay at or under the target frames per second"
+	)
+	default boolean enforceFPS()
 	{
+		return false;
 	}
 
-	protected void shutDown() throws Exception
+	@ConfigItem(
+		keyName = "maxFPS",
+		name = "FPS target",
+		description = "Desired max frames per second"
+	)
+	default int maxFPS()
 	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
-
-	public Overlay getOverlay()
-	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
-	public DrawListener getDrawListener()
-	{
-		return null;
+		return 15;
 	}
 }

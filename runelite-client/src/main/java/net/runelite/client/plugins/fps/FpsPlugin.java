@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.fps;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawListener;
 import net.runelite.client.ui.overlay.Overlay;
 
-public abstract class Plugin implements Module
+
+@PluginDescriptor(
+	name = "FPS Control",
+	enabledByDefault = false
+)
+public class FpsPlugin extends Plugin
 {
-	protected Injector injector;
-	File file;
-	PluginClassLoader loader;
+	static final String CONFIG_GROUP_KEY = "fpscontrol";
+
+	@Provides
+	FpsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FpsConfig.class);
+	}
+
+	@Inject
+	private FpsOverlay overlay;
+
+	@Inject
+	private FpsDrawListener drawListener;
 
 	@Override
-	public void configure(Binder binder)
-	{
-	}
-
-	protected void startUp() throws Exception
-	{
-	}
-
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
-
 	public Overlay getOverlay()
 	{
-		return null;
+		return overlay;
 	}
 
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
+	@Override
 	public DrawListener getDrawListener()
 	{
-		return null;
+		return drawListener;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP_KEY))
+		{
+			overlay.reloadConfig();
+			drawListener.reloadConfig();
+		}
 	}
 }

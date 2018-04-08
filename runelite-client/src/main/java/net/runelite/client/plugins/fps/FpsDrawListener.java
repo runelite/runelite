@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.fps;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import net.runelite.client.ui.DrawListener;
-import net.runelite.client.ui.overlay.Overlay;
 
-public abstract class Plugin implements Module
+public class FpsDrawListener implements DrawListener
 {
-	protected Injector injector;
-	File file;
-	PluginClassLoader loader;
+	private final FpsConfig config;
+	private long lastDelay = 0;
+	private long lastMillis = 0;
+	private boolean enabled = false;
+	private long maxFPS = 60;
+
+	@Inject
+	private FpsDrawListener(FpsConfig config)
+	{
+		this.config = config;
+		reloadConfig();
+	}
+
+	void reloadConfig()
+	{
+		enabled = config.enforceFPS();
+		lastDelay = 0;
+		lastMillis = 0;
+		maxFPS = config.maxFPS();
+	}
 
 	@Override
-	public void configure(Binder binder)
+	public void drawComplete(BufferedImage image)
 	{
-	}
+		if (enabled)
+		{
+			long now = System.currentTimeMillis();
 
-	protected void startUp() throws Exception
-	{
-	}
+			// We can't trust client.getFPS to get frame-perfect FPS knowledge.
+			long fps = 1000 / Math.min(1000, now - this.lastMillis);
+			long fpsDiff = fps - maxFPS;
 
-	protected void shutDown() throws Exception
-	{
-	}
+			// ease into it
+			if (fpsDiff > 0)
+			{
+				this.lastDelay += 2;
+			}
+			else if (fpsDiff < 0)
+			{
+				this.lastDelay -= 2;
+			}
 
-	public final Injector getInjector()
-	{
-		return injector;
-	}
+			if (this.lastDelay > 0)
+			{
+				try
+				{
+					Thread.sleep(this.lastDelay);
+				}
+				catch (InterruptedException e)
+				{
+					// Can happen on shutdown
+				}
+			}
 
-	public Overlay getOverlay()
-	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
-	public DrawListener getDrawListener()
-	{
-		return null;
+			this.lastMillis = now;
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.ui;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import net.runelite.client.ui.DrawListener;
-import net.runelite.client.ui.overlay.Overlay;
+import java.awt.image.BufferedImage;
 
-public abstract class Plugin implements Module
+public interface DrawListener
 {
-	protected Injector injector;
-	File file;
-	PluginClassLoader loader;
-
-	@Override
-	public void configure(Binder binder)
-	{
-	}
-
-	protected void startUp() throws Exception
-	{
-	}
-
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
-
-	public Overlay getOverlay()
-	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
-	}
-
-	public DrawListener getDrawListener()
-	{
-		return null;
-	}
+	void drawComplete(BufferedImage image);
 }
