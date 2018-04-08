@@ -46,6 +46,7 @@ import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
+import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -786,6 +787,9 @@ public abstract class RSClientMixin implements RSClient
 		client.setHintArrowTargetType(HintArrowType.WORLD_POSITION.getValue());
 		client.setHintArrowX(point.getX());
 		client.setHintArrowY(point.getY());
+		// position the arrow in center of the tile
+		client.setHintArrowOffsetX(LOCAL_TILE_SIZE / 2);
+		client.setHintArrowOffsetY(LOCAL_TILE_SIZE / 2);
 	}
 
 	@Copy("menuAction")
