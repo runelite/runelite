@@ -44,6 +44,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
+import static net.runelite.client.callback.Hooks.log;
+
 @PluginDescriptor(
 	name = "XP Globes"
 )
@@ -51,7 +53,6 @@ public class XpGlobesPlugin extends Plugin
 {
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
-	private static final int SECONDS_TO_SHOW_DROP = 2;
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
@@ -166,6 +167,9 @@ public class XpGlobesPlugin extends Plugin
 	)
 	public void removeExpiredXpGlobes()
 	{
+		// also remove old xp drops
+		removeExpiredXpDrops();
+
 		if (!xpGlobes.isEmpty())
 		{
 			Instant currentTime = Instant.now();
@@ -198,14 +202,12 @@ public class XpGlobesPlugin extends Plugin
 	{
 		if (!xpDrops.isEmpty())
 		{
-			Instant currentTime = Instant.now();
 			for (Iterator<XpDrop> it = xpDrops.iterator(); it.hasNext();)
 			{
 				XpDrop drop = it.next();
-				Instant dropCreationTime = drop.getTime();
-				if (currentTime.isBefore(dropCreationTime.plusSeconds(SECONDS_TO_SHOW_DROP)))
+				if (drop.getY() > -20)
 				{
-					//if a drop is not expired, stop checking newer drops
+					//if a drop is not out of screen yet, next one shouldn't be either
 					return;
 				}
 				it.remove();

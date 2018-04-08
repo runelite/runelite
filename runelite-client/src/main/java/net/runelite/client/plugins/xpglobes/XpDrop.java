@@ -1,7 +1,6 @@
 package net.runelite.client.plugins.xpglobes;
 
 import net.runelite.api.Skill;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +11,9 @@ public class XpDrop
     private int xp;
     private float x;
     private float y;
-    private Instant time;
     private boolean xPositionInitialized;
 
-    private static final int DROP_DEFAULT_START_Y = 150;
+    private static final int DROP_DEFAULT_START_Y = 140;
 
     public XpDrop(Skill skill, int xp)
     {
@@ -24,7 +22,6 @@ public class XpDrop
         this.x = 0.0f;
         this.xPositionInitialized = false;
         this.y = DROP_DEFAULT_START_Y;
-        this.time = Instant.now();
     }
 
     public void addXpDrop(Skill skill, int xpGained)
@@ -71,16 +68,6 @@ public class XpDrop
     public void setY(float y)
     {
         this.y = y;
-    }
-
-    public Instant getTime()
-    {
-        return time;
-    }
-
-    public void setTime(Instant time)
-    {
-        this.time = time;
     }
 
     public boolean isxPositionInitialized()

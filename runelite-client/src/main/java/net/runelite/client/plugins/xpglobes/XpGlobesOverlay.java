@@ -68,7 +68,7 @@ public class XpGlobesOverlay extends Overlay
 
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 
-	private static final float DROP_SCROLL_SPEED = 30.0f;
+	private static final float DROP_SCROLL_SPEED = 40.0f;
 	private static final float ICON_PADDING = 5.0f;
 
 	@Inject
