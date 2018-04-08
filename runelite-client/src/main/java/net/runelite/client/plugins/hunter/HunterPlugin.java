@@ -27,10 +27,8 @@ package net.runelite.client.plugins.hunter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -45,7 +43,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.queries.PlayerQuery;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -79,6 +76,8 @@ public class HunterPlugin extends Plugin
 
 	@Getter
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
+
+	private WorldPoint lastTickLocalPlayerLocation;
 
 	@Provides
 	HunterConfig provideConfig(ConfigManager configManager)
@@ -131,12 +130,12 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP: // Net trap placed at orange sallys
 			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
 			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
-				// Look for players that are on the same tile
-				final PlayerQuery playerQuery = new PlayerQuery().atLocalLocation(gameObject.getLocalLocation());
-				final List<Player> possiblePlayers = Arrays.asList(queryRunner.runQuery(playerQuery));
-
 				// If the player is on that tile, assume he is the one that placed the trap
-				if (possiblePlayers.contains(localPlayer))
+				// Note that a player can move and set up a trap in the same tick, and this
+				// event runs after the player movement has been updated, so we need to
+				// compare to the trap location to the last location of the player.
+				if (lastTickLocalPlayerLocation != null
+					&& gameObject.getWorldLocation().distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
 					traps.put(gameObject.getWorldLocation(), new HunterTrap(gameObject));
@@ -331,6 +330,7 @@ public class HunterPlugin extends Plugin
 			}
 		}
 
+		lastTickLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
 	@Subscribe
