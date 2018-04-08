@@ -26,7 +26,6 @@ package net.runelite.client.plugins.xptracker;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
@@ -41,11 +40,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -64,8 +61,6 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
-	static final String CONFIG_GROUP_KEY = "xp";
-
 	@Inject
 	private PluginToolbar pluginToolbar;
 
@@ -78,9 +73,6 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	@Inject
-	private XpConfig config;
-
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 
@@ -91,12 +83,6 @@ public class XpTrackerPlugin extends Plugin
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
-
-	@Provides
-	XpConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(XpConfig.class);
-	}
 
 	@Override
 	public void configure(Binder binder)
@@ -208,14 +194,7 @@ public class XpTrackerPlugin extends Plugin
 
 	public SkillXPInfo getSkillXpInfo(Skill skill)
 	{
-		return xpInfos.computeIfAbsent(skill, this::generateSkillXpInfo);
-	}
-
-	private SkillXPInfo generateSkillXpInfo(Skill skill)
-	{
-		SkillXPInfo info = new SkillXPInfo(skill);
-		info.withAverageSize(config.averageOverActions());
-		return info;
+		return xpInfos.computeIfAbsent(skill, SkillXPInfo::new);
 	}
 
 	@Subscribe
@@ -228,15 +207,5 @@ public class XpTrackerPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		xpPanel.updateAllInfoBoxes();
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(CONFIG_GROUP_KEY))
-		{
-			int size = config.averageOverActions();
-			xpInfos.values().forEach(s -> s.withAverageSize(size));
-		}
 	}
 }

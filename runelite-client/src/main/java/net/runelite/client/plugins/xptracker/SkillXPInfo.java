@@ -46,28 +46,8 @@ class SkillXPInfo
 	private int startLevelExp = 0;
 	private int level = 0;
 	private boolean initialized = false;
-	private int[] actionExps = new int[1];
+	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
-
-	void withAverageSize(int size)
-	{
-		size = Math.max(1, size);
-
-		int[] oldActionExps = actionExps;
-		int[] newActionExps = new int[size];
-
-		if (initialized)
-		{
-			for (int i = 0; i < size; i++)
-			{
-				// Copy over the old values, as many as can be
-				newActionExps[i] = oldActionExps[i % oldActionExps.length];
-			}
-		}
-
-		actionExpIndex = actionExpIndex % size;
-		actionExps = newActionExps;
-	}
 
 	int getXpHr()
 	{
