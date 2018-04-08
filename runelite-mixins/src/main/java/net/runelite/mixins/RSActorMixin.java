@@ -58,9 +58,6 @@ public abstract class RSActorMixin implements RSActor
 	private static RSClient client;
 
 	@Inject
-	private int index;
-
-	@Inject
 	@Override
 	public Actor getInteracting()
 	{
@@ -203,19 +200,5 @@ public abstract class RSActorMixin implements RSActor
 			return null;
 		}
 		return model.getConvexHull(getX(), getY(), getOrientation());
-	}
-
-	@Inject
-	@Override
-	public int getIndex()
-	{
-		return index;
-	}
-
-	@Inject
-	@Override
-	public void setIndex(int index)
-	{
-		this.index = index;
 	}
 }

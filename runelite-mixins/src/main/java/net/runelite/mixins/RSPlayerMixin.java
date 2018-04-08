@@ -47,6 +47,9 @@ public abstract class RSPlayerMixin implements RSPlayer
 	private static RSClient client;
 
 	@Inject
+	private int playerIndex;
+
+	@Inject
 	@Override
 	public String getName()
 	{
@@ -141,5 +144,18 @@ public abstract class RSPlayerMixin implements RSPlayer
 			rotatedTriangles.add(rotatedTriangle);
 		}
 		return rotatedTriangles;
+	}
+
+	@Inject
+	@Override
+	public int getPlayerIndex()
+	{
+		return playerIndex;
+	}
+
+	@Inject
+	public void setPlayerIndex(int index)
+	{
+		this.playerIndex = index;
 	}
 }

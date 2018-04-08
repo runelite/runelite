@@ -366,5 +366,7 @@ public interface Client extends GameEngine
 
 	void setHintArrow(WorldPoint point);
 
-	void setHintArrow(Actor actor);
+	void setHintArrow(Player player);
+
+	void setHintArrow(NPC npc);
 }

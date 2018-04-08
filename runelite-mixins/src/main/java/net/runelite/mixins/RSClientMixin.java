@@ -27,8 +27,14 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-
-
+import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
+import net.runelite.api.GameState;
+import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.IndexedSprite;
+import net.runelite.api.InventoryID;
+import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
@@ -37,9 +43,6 @@ import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
-import static net.runelite.client.callback.Hooks.eventBus;
-
-import net.runelite.api.Actor;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
@@ -52,13 +55,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.ClanMember;
-import net.runelite.api.GameState;
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.IndexedSprite;
-import net.runelite.api.InventoryID;
-import net.runelite.api.MenuAction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -81,6 +77,7 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
@@ -618,7 +615,7 @@ public abstract class RSClientMixin implements RSClient
 		RSNPC npc = cachedNPCs[idx];
 		if (npc != null)
 		{
-			npc.setIndex(idx);
+			npc.setNPCIndex(idx);
 		}
 	}
 
@@ -635,7 +632,7 @@ public abstract class RSClientMixin implements RSClient
 		RSPlayer player = cachedPlayers[idx];
 		if (player != null)
 		{
-			player.setIndex(idx);
+			player.setPlayerIndex(idx);
 		}
 	}
 
@@ -716,18 +713,18 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public void setHintArrow(Actor actor)
+	public void setHintArrow(NPC npc)
 	{
-		if (actor instanceof Player)
-		{
-			client.setHintArrowTargetType(10);
-			client.setHintArrowPlayerTargetIdx(actor.getIndex());
-		}
-		else
-		{
-			client.setHintArrowTargetType(1);
-			client.setHintArrowNpcTargetIdx(actor.getIndex());
-		}
+		client.setHintArrowTargetType(1);
+		client.setHintArrowNpcTargetIdx(npc.getNPCIndex());
+	}
+
+	@Inject
+	@Override
+	public void setHintArrow(Player player)
+	{
+		client.setHintArrowTargetType(10);
+		client.setHintArrowPlayerTargetIdx(player.getPlayerIndex());
 	}
 
 	@Inject

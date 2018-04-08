@@ -35,4 +35,6 @@ public interface NPC extends Actor
 	int getCombatLevel();
 
 	NPCComposition getComposition();
+
+	int getNPCIndex();
 }

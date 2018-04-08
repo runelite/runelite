@@ -32,6 +32,10 @@ import net.runelite.rs.api.RSNPCComposition;
 @Mixin(RSNPC.class)
 public abstract class RSNPCMixin implements RSNPC
 {
+
+	@Inject
+	private int npcIndex;
+
 	@Inject
 	@Override
 	public int getId()
@@ -54,5 +58,19 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		RSNPCComposition composition = getComposition();
 		return composition == null ? -1 : composition.getCombatLevel();
+	}
+
+	@Inject
+	@Override
+	public int getNPCIndex()
+	{
+		return npcIndex;
+	}
+
+	@Inject
+	@Override
+	public void setNPCIndex(int index)
+	{
+		this.npcIndex = index;
 	}
 }
