@@ -403,11 +403,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("teleport", option, target, true);
 			}
-
-			if (config.swapSilverSickle())
-			{
-				swap("cast bloom", option, target, true);
-			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
