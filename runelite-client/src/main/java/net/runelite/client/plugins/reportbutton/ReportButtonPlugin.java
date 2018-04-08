@@ -58,6 +58,7 @@ public class ReportButtonPlugin extends Plugin
 
 	private static final DateTimeFormatter LOCAL_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 	private static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter LOGIN_TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	private Instant loginTime;
 	private boolean ready;
@@ -194,6 +195,6 @@ public class ReportButtonPlugin extends Plugin
 
 		Duration duration = Duration.between(loginTime, Instant.now());
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
-		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		return time.format(LOGIN_TIME_FORMAT);
 	}
 }
