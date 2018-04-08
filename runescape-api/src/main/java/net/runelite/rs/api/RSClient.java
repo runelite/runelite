@@ -550,6 +550,18 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSWorld createWorld();
 
+	@Import("animOffsetX")
+	void setAnimOffsetX(int animOffsetX);
+
+	@Import("animOffsetY")
+	void setAnimOffsetY(int animOffsetY);
+
+	@Import("animOffsetZ")
+	void setAnimOffsetZ(int animOffsetZ);
+
+	@Import("getFrames")
+	RSFrames getFrames(int frameId);
+
 	@Import("minimapSprite")
 	RSSpritePixels getMinimapSprite();
 

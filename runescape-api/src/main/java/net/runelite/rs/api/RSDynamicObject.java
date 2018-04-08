@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,28 +24,20 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.Renderable;
 import net.runelite.mapping.Import;
 
-public interface RSSequence
+public interface RSDynamicObject extends Renderable, RSRenderable
 {
-	@Import("stretches")
-	boolean getStretches();
+	@Import("id")
+	int getId();
 
-	@Import("maxLoops")
-	int getMaxLoops();
+	@Import("animFrame")
+	int getAnimFrame();
 
-	@Import("precedenceAnimating")
-	int getPrecedenceAnimating();
+	@Import("animFrame")
+	void setAnimFrame(int frame);
 
-	@Import("replyMode")
-	int getReplyMode();
-
-	@Import("interleaveLeave")
-	int[] getInterleaveLeave();
-
-	@Import("frameIDs")
-	int[] getFrameIDs();
-
-	@Import("frameLengths")
-	int[] getFrameLenths();
+	@Import("animCycleCount")
+	int getAnimCycleCount();
 }
