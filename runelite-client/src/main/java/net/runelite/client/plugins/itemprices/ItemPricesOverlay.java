@@ -180,7 +180,13 @@ class ItemPricesOverlay extends Overlay
 			return StackFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
-		final ItemComposition itemDef = itemManager.getItemComposition(id);
+		ItemComposition itemDef = itemManager.getItemComposition(id);
+		if (itemDef.getNote() != -1)
+		{
+			id = itemDef.getLinkedNoteId();
+			itemDef = itemManager.getItemComposition(id);
+		}
+
 		// Only check prices for things with store prices
 		if (itemDef.getPrice() <= 0)
 		{
