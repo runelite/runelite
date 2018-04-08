@@ -27,7 +27,6 @@ package net.runelite.client.plugins;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import net.runelite.client.ui.overlay.Overlay;
@@ -35,7 +34,6 @@ import net.runelite.client.ui.overlay.Overlay;
 public abstract class Plugin implements Module
 {
 	protected Injector injector;
-	File file;
 
 	@Override
 	public void configure(Binder binder)
