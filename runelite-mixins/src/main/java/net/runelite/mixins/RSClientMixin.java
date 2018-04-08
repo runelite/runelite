@@ -84,6 +84,7 @@ import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSClient.class)
@@ -613,6 +614,23 @@ public abstract class RSClientMixin implements RSClient
 		if (npc != null)
 		{
 			npc.setIndex(idx);
+		}
+	}
+
+	@FieldHook("cachedPlayers")
+	@Inject
+	public static void cachedPlayersChanged(int idx)
+	{
+		RSPlayer[] cachedPlayers = client.getCachedPlayers();
+		if (idx < 0 || idx >= cachedPlayers.length)
+		{
+			return;
+		}
+
+		RSPlayer player = cachedPlayers[idx];
+		if (player != null)
+		{
+			player.setIndex(idx);
 		}
 	}
 
