@@ -48,11 +48,11 @@ public interface AttackStylesConfig extends Config
 
 	@ConfigItem(
 		keyName = "warnForDefensive",
-		name = "Warn for defensive",
-		description = "Configures whether or not users are warned for selecting a defensive combat option",
+		name = "Warn for defence",
+		description = "Show warning when a Defence skill combat option is selected",
 		position = 2
 	)
-	default boolean warnForDefensive()
+	default boolean warnForDefence()
 	{
 		return false;
 	}
@@ -60,7 +60,7 @@ public interface AttackStylesConfig extends Config
 	@ConfigItem(
 		keyName = "warnForAttack",
 		name = "Warn for attack",
-		description = "Configures whether or not users are warned for selecting an attack combat option",
+		description = "Show warning when an Attack skill combat option is selected",
 		position = 3
 	)
 	default boolean warnForAttack()
@@ -71,7 +71,7 @@ public interface AttackStylesConfig extends Config
 	@ConfigItem(
 		keyName = "warnForStrength",
 		name = "Warn for strength",
-		description = "Configures whether or not users are warned for selecting a strength combat option",
+		description = "Show warning when a Strength skill combat option is selected",
 		position = 4
 	)
 	default boolean warnForStrength()
@@ -82,7 +82,7 @@ public interface AttackStylesConfig extends Config
 	@ConfigItem(
 		keyName = "warnForRanged",
 		name = "Warn for ranged",
-		description = "Configures whether or not users are warned for selecting a ranged combat option",
+		description = "Show warning when a Ranged skill combat option is selected",
 		position = 5
 	)
 	default boolean warnForRanged()
@@ -93,7 +93,7 @@ public interface AttackStylesConfig extends Config
 	@ConfigItem(
 		keyName = "warnForMagic",
 		name = "Warn for magic",
-		description = "Configures whether or not users are warned for selecting a magic combat option",
+		description = "Show warning when a Magic skill combat option is selected",
 		position = 6
 	)
 	default boolean warnForMagic()
@@ -104,7 +104,7 @@ public interface AttackStylesConfig extends Config
 	@ConfigItem(
 		keyName = "removeWarnedStyles",
 		name = "Remove warned styles",
-		description = "Configures whether or not warned styles are removed from the combat options tab",
+		description = "Remove warned styles from the combat options tab",
 		position = 7
 	)
 	default boolean removeWarnedStyles()
