@@ -37,24 +37,33 @@ public class AttackStylesOverlay extends Overlay
 	private static final int COMPONENT_WIDTH = 80;
 
 	private final AttackStylesPlugin plugin;
+	private final AttackStylesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public AttackStylesOverlay(AttackStylesPlugin plugin)
+	public AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
 	{
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final String attackStyleString = plugin.getAttackStyle().getName();
+		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
 
-		panelComponent.setTitleColor(plugin.isWarnedSkillSelected() ? Color.RED : Color.WHITE);
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(COMPONENT_WIDTH);
+		if (warnedSkillSelected || config.alwaysShowStyle())
+		{
+			final String attackStyleString = plugin.getAttackStyle().getName();
 
-		return panelComponent.render(graphics);
+			panelComponent.setTitleColor(warnedSkillSelected ? Color.RED : Color.WHITE);
+			panelComponent.setTitle(attackStyleString);
+			panelComponent.setWidth(COMPONENT_WIDTH);
+
+			return panelComponent.render(graphics);
+		}
+
+		return null;
 	}
 }

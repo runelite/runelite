@@ -36,6 +36,17 @@ import net.runelite.client.config.ConfigItem;
 public interface AttackStylesConfig extends Config
 {
 	@ConfigItem(
+		keyName = "alwaysShowStyle",
+		name = "Always show style",
+		description = "Show attack style indicator at all times",
+		position = 1
+	)
+	default boolean alwaysShowStyle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "warnForDefensive",
 		name = "Warn for defensive",
 		description = "Configures whether or not users are warned for selecting a defensive combat option",
