@@ -194,7 +194,7 @@ public class XpTrackerPlugin extends Plugin
 
 	public SkillXPInfo getSkillXpInfo(Skill skill)
 	{
-		return xpInfos.computeIfAbsent(skill, s -> new SkillXPInfo(s));
+		return xpInfos.computeIfAbsent(skill, SkillXPInfo::new);
 	}
 
 	@Subscribe
