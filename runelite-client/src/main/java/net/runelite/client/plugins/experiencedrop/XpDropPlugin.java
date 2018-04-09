@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>, SoyChai <https://github.com/SoyChai>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -36,6 +37,11 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @PluginDescriptor(
 	name = "XP Drop"
@@ -85,20 +91,38 @@ public class XpDropPlugin extends Plugin
 		}
 
 		String text = widget.getText();
+		final Stream<Widget> siblingWidgets = Arrays.stream(widget.getParent().getDynamicChildren());
+		final List<Integer> spriteIDs = siblingWidgets.map(Widget::getSpriteId).collect(Collectors.toList());
+
 		if (text != null)
 		{
+			int color = widget.getTextColor();
+
 			switch (prayer)
 			{
 				case MELEE:
-					widget.setTextColor(config.getMeleePrayerColor().getRGB());
+					if (spriteIDs.contains(SpriteID.SKILL_ATTACK)
+						|| spriteIDs.contains(SpriteID.SKILL_STRENGTH)
+						|| spriteIDs.contains(SpriteID.SKILL_DEFENCE))
+					{
+						color = config.getMeleePrayerColor().getRGB();
+					}
 					break;
 				case RANGE:
-					widget.setTextColor(config.getRangePrayerColor().getRGB());
+					if (spriteIDs.contains(SpriteID.SKILL_RANGED))
+					{
+						color = config.getRangePrayerColor().getRGB();
+					}
 					break;
 				case MAGIC:
-					widget.setTextColor(config.getMagePrayerColor().getRGB());
+					if (spriteIDs.contains(SpriteID.SKILL_MAGIC))
+					{
+						color = config.getMagePrayerColor().getRGB();
+					}
 					break;
 			}
+
+			widget.setTextColor(color);
 		}
 	}
 
