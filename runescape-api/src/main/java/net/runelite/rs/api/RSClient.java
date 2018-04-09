@@ -550,6 +550,18 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSWorld createWorld();
 
+	@Import("animOffsetX")
+	void setAnimOffsetX(int animOffsetX);
+
+	@Import("animOffsetY")
+	void setAnimOffsetY(int animOffsetY);
+
+	@Import("animOffsetZ")
+	void setAnimOffsetZ(int animOffsetZ);
+
+	@Import("getFrames")
+	RSFrames getFrames(int frameId);
+
 	@Import("minimapSprite")
 	RSSpritePixels getMinimapSprite();
 
@@ -564,4 +576,34 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("runScript")
 	void runScript(RSScriptEvent ev, int ex);
+
+	@Import("hintArrowTargetType")
+	void setHintArrowTargetType(int value);
+
+	@Import("hintArrowTargetType")
+	int getHintArrowTargetType();
+
+	@Import("hintArrowX")
+	void setHintArrowX(int value);
+
+	@Import("hintArrowX")
+	int getHintArrowX();
+
+	@Import("hintArrowY")
+	void setHintArrowY(int value);
+
+	@Import("hintArrowY")
+	int getHintArrowY();
+
+	@Import("hintArrowNpcTargetIdx")
+	void setHintArrowNpcTargetIdx(int value);
+
+	@Import("hintArrowNpcTargetIdx")
+	int getHintArrowNpcTargetIdx();
+
+	@Import("hintArrowPlayerTargetIdx")
+	void setHintArrowPlayerTargetIdx(int value);
+
+	@Import("hintArrowPlayerTargetIdx")
+	int getHintArrowPlayerTargetIdx();
 }

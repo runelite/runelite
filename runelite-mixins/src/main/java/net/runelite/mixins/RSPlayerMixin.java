@@ -30,12 +30,15 @@ import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSPlayer;
 
@@ -44,6 +47,9 @@ public abstract class RSPlayerMixin implements RSPlayer
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private int playerIndex;
 
 	@Inject
 	@Override
@@ -140,5 +146,50 @@ public abstract class RSPlayerMixin implements RSPlayer
 			rotatedTriangles.add(rotatedTriangle);
 		}
 		return rotatedTriangles;
+	}
+
+	@Inject
+	@Override
+	public int getIndex()
+	{
+		return playerIndex;
+	}
+
+	@Inject
+	@Override
+	public void setIndex(int index)
+	{
+		this.playerIndex = index;
+	}
+
+	@Copy("getModel")
+	public abstract RSModel rs$getModel();
+
+	@Replace("getModel")
+	public RSModel rl$getModel()
+	{
+		if (!client.isInterpolatePlayerAnimations())
+		{
+			return rs$getModel();
+		}
+		int actionFrame = getActionFrame();
+		int poseFrame = getPoseFrame();
+		int spotAnimFrame = getSpotAnimFrame();
+		try
+		{
+			// combine the frames with the frame cycle so we can access this information in the sequence methods
+			// without having to change method calls
+			setActionFrame(Integer.MIN_VALUE | getActionFrameCycle() << 16 | actionFrame);
+			setPoseFrame(Integer.MIN_VALUE | getPoseFrameCycle() << 16 | poseFrame);
+			setSpotAnimFrame(Integer.MIN_VALUE | getSpotAnimFrameCycle() << 16 | spotAnimFrame);
+			return rs$getModel();
+		}
+		finally
+		{
+			// reset frames
+			setActionFrame(actionFrame);
+			setPoseFrame(poseFrame);
+			setSpotAnimFrame(spotAnimFrame);
+		}
 	}
 }

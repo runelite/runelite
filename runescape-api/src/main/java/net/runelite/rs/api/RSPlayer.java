@@ -54,4 +54,9 @@ public interface RSPlayer extends RSActor, Player
 	@Import("isFriend")
 	@Override
 	boolean isFriend();
+
+	@Override
+	int getIndex();
+
+	void setIndex(int id);
 }

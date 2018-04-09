@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.animsmoothing;
 
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSSequence
+@ConfigGroup(
+	keyName = AnimationSmoothingPlugin.CONFIG_GROUP,
+	name = "Smooth Animations",
+	description = "Configuration for the smooth animations plugin"
+)
+public interface AnimationSmoothingConfig extends Config
 {
-	@Import("stretches")
-	boolean getStretches();
 
-	@Import("maxLoops")
-	int getMaxLoops();
+	@ConfigItem(
+		keyName = "smoothPlayerAnimations",
+		name = "Smooth Player Animations",
+		description = "Configures whether the player animations are smooth or not",
+		position = 1
+	)
+	default boolean smoothPlayerAnimations()
+	{
+		return true;
+	}
 
-	@Import("precedenceAnimating")
-	int getPrecedenceAnimating();
+	@ConfigItem(
+		keyName = "smoothNpcAnimations",
+		name = "Smooth NPC Animations",
+		description = "Configures whether the npc animations are smooth or not",
+		position = 2
+	)
+	default boolean smoothNpcAnimations()
+	{
+		return true;
+	}
 
-	@Import("replyMode")
-	int getReplyMode();
+	@ConfigItem(
+		keyName = "smoothObjectAnimations",
+		name = "Smooth Object Animations",
+		description = "Configures whether the object animations are smooth or not",
+		position = 3
+	)
+	default boolean smoothObjectAnimations()
+	{
+		return true;
+	}
 
-	@Import("interleaveLeave")
-	int[] getInterleaveLeave();
-
-	@Import("frameIDs")
-	int[] getFrameIDs();
-
-	@Import("frameLengths")
-	int[] getFrameLenths();
 }

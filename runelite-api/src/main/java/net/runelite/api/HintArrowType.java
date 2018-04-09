@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public interface RSSequence
+@AllArgsConstructor
+public enum HintArrowType
 {
-	@Import("stretches")
-	boolean getStretches();
+	NONE(0),
+	PLAYER(10),
+	NPC(1),
+	WORLD_POSITION(2);
 
-	@Import("maxLoops")
-	int getMaxLoops();
-
-	@Import("precedenceAnimating")
-	int getPrecedenceAnimating();
-
-	@Import("replyMode")
-	int getReplyMode();
-
-	@Import("interleaveLeave")
-	int[] getInterleaveLeave();
-
-	@Import("frameIDs")
-	int[] getFrameIDs();
-
-	@Import("frameLengths")
-	int[] getFrameLenths();
+	@Getter
+	private final int value;
 }
