@@ -48,7 +48,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -95,9 +94,6 @@ public class RuneLite
 
 	@Inject
 	private ClientUI clientUI;
-
-	@Inject
-	private TitleToolbar titleToolbar;
 
 	@Inject
 	private ItemManager itemManager;
@@ -187,14 +183,11 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
-		// Start plugins
-		pluginManager.startCorePlugins();
-
-		// Refresh title toolbar
-		titleToolbar.refresh();
-
 		// Show UI after all plugins are loaded
 		clientUI.show();
+
+		// Start plugins
+		pluginManager.startCorePlugins();
 	}
 
 	public void shutdown()

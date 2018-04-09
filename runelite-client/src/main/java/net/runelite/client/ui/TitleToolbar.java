@@ -27,7 +27,6 @@ package net.runelite.client.ui;
 
 import com.google.common.eventbus.EventBus;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -80,23 +79,6 @@ public class TitleToolbar
 		if (buttons.remove(button))
 		{
 			eventBus.post(new TitleToolbarButtonRemoved(button, index));
-		}
-	}
-
-	/**
-	 * Refresh all buttons
-	 */
-	public void refresh()
-	{
-		final Iterator<NavigationButton> iterator = buttons.iterator();
-		int index = 0;
-
-		while (iterator.hasNext())
-		{
-			final NavigationButton button = iterator.next();
-			eventBus.post(new TitleToolbarButtonRemoved(button, index));
-			eventBus.post(new TitleToolbarButtonAdded(button, index));
-			index++;
 		}
 	}
 }
