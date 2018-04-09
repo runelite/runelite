@@ -235,7 +235,7 @@ public class BankTagsPlugin extends Plugin
 
 			String initialValue = getTags(itemId);
 
-			chatboxInputManager.openInputWindow(itemName + " Tags", initialValue, (newTags) ->
+			chatboxInputManager.openInputWindow(itemName + " tags:", initialValue, (newTags) ->
 			{
 				if (newTags == null)
 				{
