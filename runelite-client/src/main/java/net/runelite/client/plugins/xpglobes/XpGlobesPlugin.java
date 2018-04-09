@@ -26,6 +26,8 @@ package net.runelite.client.plugins.xpglobes;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -42,6 +45,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 import static net.runelite.client.callback.Hooks.log;
@@ -58,6 +62,8 @@ public class XpGlobesPlugin extends Plugin
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 	private final List<XpDrop> xpDrops = new ArrayList<>();
 	private boolean xpDropsThisTick = false;
+
+	private Font font;
 
 	@Inject
 	private Client client;
@@ -78,6 +84,21 @@ public class XpGlobesPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Override
+	protected void startUp()
+	{
+		font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, config.xpDropFontSize());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("xpDropFontSize"))
+		{
+			font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, config.xpDropFontSize());
+		}
 	}
 
 	@Subscribe
@@ -213,6 +234,11 @@ public class XpGlobesPlugin extends Plugin
 				it.remove();
 			}
 		}
+	}
+
+	public Font getFont()
+	{
+		return font;
 	}
 
 
