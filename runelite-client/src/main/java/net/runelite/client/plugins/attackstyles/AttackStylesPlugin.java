@@ -96,7 +96,7 @@ public class AttackStylesPlugin extends Plugin
 		{
 			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
 			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-			updateWarnedSkills(config.warnForDefensive(), Skill.DEFENCE);
+			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 			updateAttackStyle(
@@ -164,7 +164,7 @@ public class AttackStylesPlugin extends Plugin
 		{
 			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
 			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-			updateWarnedSkills(config.warnForDefensive(), Skill.DEFENCE);
+			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 		}
