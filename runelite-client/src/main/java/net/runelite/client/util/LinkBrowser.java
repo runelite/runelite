@@ -24,6 +24,7 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.base.Strings;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -50,6 +51,11 @@ public class LinkBrowser
 	 */
 	public static boolean browse(final String url)
 	{
+		if (Strings.isNullOrEmpty(url))
+		{
+			return false;
+		}
+
 		if (!Desktop.isDesktopSupported())
 		{
 			showMessageBox("Desktop is not supported. Press 'OK' and link will be copied to your clipboard.", url);
