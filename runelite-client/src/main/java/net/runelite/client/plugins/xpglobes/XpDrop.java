@@ -12,6 +12,7 @@ public class XpDrop
     private float x;
     private float y;
     private boolean xPositionInitialized;
+    private boolean prayerActive;
 
     private static final int DROP_DEFAULT_START_Y = 140;
 
@@ -20,8 +21,9 @@ public class XpDrop
         this.skills.add(skill);
         this.xp = xp;
         this.x = 0.0f;
-        this.xPositionInitialized = false;
         this.y = DROP_DEFAULT_START_Y;
+        this.xPositionInitialized = false;
+        this.prayerActive = false;
     }
 
     public void addXpDrop(Skill skill, int xpGained)
@@ -78,5 +80,15 @@ public class XpDrop
     public void setxPositionInitialized(boolean xPositionInitialized)
     {
         this.xPositionInitialized = xPositionInitialized;
+    }
+
+    public boolean isPrayerActive()
+    {
+        return prayerActive;
+    }
+
+    public void setPrayerActive(boolean prayerActive)
+    {
+        this.prayerActive = prayerActive;
     }
 }

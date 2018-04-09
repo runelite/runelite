@@ -166,7 +166,7 @@ public class XpGlobesOverlay extends Overlay
 	private void renderXpDrop(Graphics2D graphics, XpDrop drop)
 	{
 		graphics.setFont(plugin.getFont());
-		graphics.setColor(config.xpDropColor());
+		graphics.setColor(drop.isPrayerActive() ? config.xpDropPrayerColor() : config.xpDropColor());
 		graphics.drawString(Integer.toString(drop.getXp()), drop.getX(), drop.getY());
 
 		int iconX = Math.round(drop.getX());

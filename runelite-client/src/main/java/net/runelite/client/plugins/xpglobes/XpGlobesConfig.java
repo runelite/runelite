@@ -66,7 +66,7 @@ public interface XpGlobesConfig extends Config
 	)
 	default int xpDropFontSize()
 	{
-		return 24;
+		return 25;
 	}
 
 	@ConfigItem(
@@ -77,7 +77,7 @@ public interface XpGlobesConfig extends Config
 	)
 	default Color xpDropColor()
 	{
-		return new Color(255, 255, 255, 255);
+		return Color.WHITE;
 	}
 
 	@ConfigItem(
@@ -88,7 +88,7 @@ public interface XpGlobesConfig extends Config
 	)
 	default Color xpDropPrayerColor()
 	{
-		return new Color(255, 255, 255, 255);
+		return new Color(15, 165, 245, 255);
 	}
 
 	@ConfigItem(

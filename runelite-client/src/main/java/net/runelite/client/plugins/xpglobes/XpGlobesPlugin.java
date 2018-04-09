@@ -36,6 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -140,6 +141,11 @@ public class XpGlobesPlugin extends Plugin
 				{
 					xpDrops.get(xpDrops.size() - 1).addXpDrop(skill, deltaXp);
 				}
+
+				if (isPrayerTurnedOn(skill))
+				{
+					xpDrops.get(xpDrops.size() - 1).setPrayerActive(true);
+				}
 			}
 
 			cachedGlobe.setSkill(skill);
@@ -157,6 +163,44 @@ public class XpGlobesPlugin extends Plugin
 			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp);
 		}
 	}
+
+
+	private boolean isPrayerTurnedOn(Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+			case STRENGTH:
+			case DEFENCE:
+				if (client.isPrayerActive(Prayer.BURST_OF_STRENGTH) || client.isPrayerActive(Prayer.CLARITY_OF_THOUGHT) ||
+						client.isPrayerActive(Prayer.SUPERHUMAN_STRENGTH) || client.isPrayerActive(Prayer.IMPROVED_REFLEXES) ||
+						client.isPrayerActive(Prayer.ULTIMATE_STRENGTH) || client.isPrayerActive(Prayer.INCREDIBLE_REFLEXES) ||
+						client.isPrayerActive(Prayer.CHIVALRY) || client.isPrayerActive(Prayer.PIETY))
+				{
+					return true;
+				}
+				break;
+
+			case MAGIC:
+				if (client.isPrayerActive(Prayer.MYSTIC_WILL) || client.isPrayerActive(Prayer.MYSTIC_LORE) ||
+						client.isPrayerActive(Prayer.MYSTIC_MIGHT) || client.isPrayerActive(Prayer.AUGURY))
+				{
+					return true;
+				}
+				break;
+
+			case RANGED:
+				if (client.isPrayerActive(Prayer.SHARP_EYE) || client.isPrayerActive(Prayer.HAWK_EYE) ||
+						client.isPrayerActive(Prayer.EAGLE_EYE) || client.isPrayerActive(Prayer.RIGOUR))
+				{
+					return true;
+				}
+				break;
+		}
+
+		return false;
+	}
+
 
 	public List<XpGlobe> getXpGlobes()
 	{
