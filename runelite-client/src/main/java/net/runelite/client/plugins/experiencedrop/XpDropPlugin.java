@@ -26,6 +26,8 @@ package net.runelite.client.plugins.experiencedrop;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
@@ -37,11 +39,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @PluginDescriptor(
 	name = "XP Drop"
@@ -91,8 +88,8 @@ public class XpDropPlugin extends Plugin
 		}
 
 		String text = widget.getText();
-		final Stream<Widget> siblingWidgets = Arrays.stream(widget.getParent().getDynamicChildren());
-		final List<Integer> spriteIDs = siblingWidgets.map(Widget::getSpriteId).collect(Collectors.toList());
+		final IntStream spriteIDs =
+			Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
 
 		if (text != null)
 		{
@@ -101,21 +98,20 @@ public class XpDropPlugin extends Plugin
 			switch (prayer)
 			{
 				case MELEE:
-					if (spriteIDs.contains(SpriteID.SKILL_ATTACK)
-						|| spriteIDs.contains(SpriteID.SKILL_STRENGTH)
-						|| spriteIDs.contains(SpriteID.SKILL_DEFENCE))
+					if (spriteIDs.anyMatch(id ->
+						id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE))
 					{
 						color = config.getMeleePrayerColor().getRGB();
 					}
 					break;
 				case RANGE:
-					if (spriteIDs.contains(SpriteID.SKILL_RANGED))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED))
 					{
 						color = config.getRangePrayerColor().getRGB();
 					}
 					break;
 				case MAGIC:
-					if (spriteIDs.contains(SpriteID.SKILL_MAGIC))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC))
 					{
 						color = config.getMagePrayerColor().getRGB();
 					}
