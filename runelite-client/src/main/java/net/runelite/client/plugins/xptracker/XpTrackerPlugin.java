@@ -153,6 +153,7 @@ public class XpTrackerPlugin extends Plugin
 				lastUsername = client.getUsername();
 				lastWorldType = type;
 				xpPanel.resetAllInfoBoxes();
+				xpInfos.clear();
 			}
 		}
 		else if (event.getGameState() == GameState.LOGIN_SCREEN)
