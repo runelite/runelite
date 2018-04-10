@@ -208,10 +208,10 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 16,
 		keyName = "magpieColor",
-		name = "Ninja impling color",
+		name = "Magpie impling color",
 		description = "Text color for Magpie implings"
 	)
-	default Color getMapgieColor()
+	default Color getMagpieColor()
 	{
 		return new Color(142, 142, 19);
 	}
