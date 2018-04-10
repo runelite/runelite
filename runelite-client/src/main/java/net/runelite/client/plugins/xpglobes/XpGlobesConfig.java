@@ -66,7 +66,7 @@ public interface XpGlobesConfig extends Config
 	)
 	default int xpDropFontSize()
 	{
-		return 25;
+		return 26;
 	}
 
 	@ConfigItem(
