@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xpglobes;
+package net.runelite.client.plugins.xptracker;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
@@ -30,17 +30,28 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "xpglobes",
-	name = "XP Globes",
-	description = "Configuration for the XP globes plugin"
+	keyName = "xptracker",
+	name = "XP Tracker",
+	description = "Configuration for the XP tracker plugin"
 )
-public interface XpGlobesConfig extends Config
+public interface XpTrackerConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enableTooltips",
-		name = "Enable Tooltips",
-		description = "Configures whether or not to show tooltips",
+		keyName = "enableProgressOrbs",
+		name = "Enable progress orbs",
+		description = "Configures whether or not to progress orbs are enabled",
 		position = 0
+	)
+	default boolean enableProgressOrbs()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enableTooltips",
+		name = "Enable tooltips",
+		description = "Configures whether or not to show tooltips",
+		position = 1
 	)
 	default boolean enableTooltips()
 	{
@@ -48,21 +59,21 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress arc color",
-		name = "Progress arc color",
+		keyName = "progressOrbArcColor",
+		name = "Progress orb arc color",
 		description = "Change the color of the progress arc in the xp orb",
-		position = 1
+		position = 2
 	)
-	default Color progressArcColor()
+	default Color progressOrbArcColor()
 	{
 		return Color.ORANGE;
 	}
 
 	@ConfigItem(
-		keyName = "Progress orb outline color",
+		keyName = "progressOrbOutlineColor",
 		name = "Progress orb outline color",
 		description = "Change the color of the progress orb outline",
-		position = 2
+		position = 3
 	)
 	default Color progressOrbOutLineColor()
 	{
@@ -70,10 +81,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress orb background color",
+		keyName = "progressOrbBackgroundColor",
 		name = "Progress orb background color",
 		description = "Change the color of the progress orb background",
-		position = 3
+		position = 4
 	)
 	default Color progressOrbBackgroundColor()
 	{
@@ -81,35 +92,35 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "Progress arc width",
-		name = "Progress arc width",
+		keyName = "progressOrbArcWidth",
+		name = "Progress orb arc width",
 		description = "Change the stroke width of the progress arc",
-		position = 4
+		position = 5
 	)
-	default int progressArcStrokeWidth()
+	default int progressOrbArcStrokeWidth()
 	{
 		return 2;
 	}
 
 	@ConfigItem(
-		keyName = "Orb size",
-		name = "Size of orbs",
+		keyName = "progressOrbSize",
+		name = "Progress orb size",
 		description = "Change the size of the xp orbs",
-		position = 5
+		position = 6
 	)
-	default int xpOrbSize()
+	default int progressOrbSize()
 	{
 		return 40;
 	}
 
 	@ConfigItem(
-		keyName = "Center orbs",
-		name = "Center orbs",
+		keyName = "progressOrbPosition",
+		name = "Progress orbs positions",
 		description = "Where to center the xp orbs around",
-		position = 6
+		position = 7
 	)
-	default OrbCentering centerOrbs()
+	default ProgressOrbPosition progressOrbPosition()
 	{
-		return OrbCentering.DYNAMIC;
+		return ProgressOrbPosition.DYNAMIC;
 	}
 }

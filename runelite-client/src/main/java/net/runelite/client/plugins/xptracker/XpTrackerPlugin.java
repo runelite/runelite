@@ -27,15 +27,19 @@ package net.runelite.client.plugins.xptracker;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -44,6 +48,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,6 +67,8 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	private static final long SECONDS_TO_SHOW_GLOBE = 10;
+
 	@Inject
 	private PluginToolbar pluginToolbar;
 
@@ -74,16 +81,24 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	private NavigationButton navButton;
-	private XpPanel xpPanel;
+	@Inject
+	@Getter
+	private ProgressOrbOverlay overlay;
 
 	private final Map<Skill, SkillXPInfo> xpInfos = new HashMap<>();
+	private final XpClient xpClient = new XpClient();
 
+	private NavigationButton navButton;
+	private XpPanel xpPanel;
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
-	private final XpClient xpClient = new XpClient();
+	@Provides
+	XpTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -180,6 +195,34 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onXpChanged(ExperienceChanged event)
+	{
+		xpPanel.updateSkillExperience(event.getSkill());
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		xpPanel.updateAllInfoBoxes();
+	}
+
+	SkillXPInfo getSkillXpInfo(Skill skill)
+	{
+		return xpInfos.computeIfAbsent(skill, SkillXPInfo::new);
+	}
+
+	Stream<SkillXPInfo> getSortedXpInfos(int limit)
+	{
+		final Instant now = Instant.now();
+
+		return xpInfos.values().stream()
+			.filter(SkillXPInfo::isInitialized)
+			.filter(xpInfo -> xpInfo.getUpdatedAt() != null && now.isBefore(xpInfo.getUpdatedAt().plusSeconds(SECONDS_TO_SHOW_GLOBE)))
+			.sorted((a, b) -> b.getUpdatedAt().compareTo(a.getUpdatedAt()))
+			.limit(limit);
+	}
+
 	private XpWorldType getWorldType(int worldNum)
 	{
 		if (worlds == null)
@@ -211,22 +254,5 @@ public class XpTrackerPlugin extends Plugin
 			}
 		}
 		return xpType;
-	}
-
-	public SkillXPInfo getSkillXpInfo(Skill skill)
-	{
-		return xpInfos.computeIfAbsent(skill, SkillXPInfo::new);
-	}
-
-	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
-	{
-		xpPanel.updateSkillExperience(event.getSkill());
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		xpPanel.updateAllInfoBoxes();
 	}
 }

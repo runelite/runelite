@@ -195,21 +195,11 @@ class XpInfoBox extends JPanel
 
 	void init()
 	{
-		if (xpInfo.getStartXp() != -1)
-		{
-			return;
-		}
-
-		xpInfo.setStartXp(client.getSkillExperience(xpInfo.getSkill()));
+		xpInfo.init(client.getSkillExperience(xpInfo.getSkill()));
 	}
 
 	void update()
 	{
-		if (xpInfo.getStartXp() == -1)
-		{
-			return;
-		}
-
 		boolean updated = xpInfo.update(client.getSkillExperience(xpInfo.getSkill()));
 
 		SwingUtilities.invokeLater(() ->

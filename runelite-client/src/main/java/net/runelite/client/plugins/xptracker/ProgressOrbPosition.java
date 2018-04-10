@@ -22,9 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xpglobes;
+package net.runelite.client.plugins.xptracker;
 
-public enum OrbCentering
+public enum ProgressOrbPosition
 {
 	MIDDLE_CANVAS,
 	MIDDLE_VIEWPORT,
