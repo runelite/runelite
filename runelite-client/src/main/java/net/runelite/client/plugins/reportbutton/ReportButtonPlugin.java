@@ -27,7 +27,6 @@ package net.runelite.client.plugins.reportbutton;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -57,8 +56,8 @@ public class ReportButtonPlugin extends Plugin
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
-	private Instant loginTime;
-	private boolean ready;
+	private long loginNanoTime; // System.nanoTime() at the moment of last login
+	private boolean resetLoginTime;
 
 	@Inject
 	private Client client;
@@ -104,13 +103,13 @@ public class ReportButtonPlugin extends Plugin
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
-				ready = true;
+				resetLoginTime = true;
 				break;
 			case LOGGED_IN:
-				if (ready)
+				if (resetLoginTime)
 				{
-					loginTime = Instant.now();
-					ready = false;
+					loginNanoTime = System.nanoTime();
+					resetLoginTime = false;
 				}
 				break;
 		}
@@ -165,12 +164,13 @@ public class ReportButtonPlugin extends Plugin
 
 	private String getLoginTime()
 	{
-		if (loginTime == null)
+		long nanosSinceLogin = System.nanoTime() - loginNanoTime;
+		if (nanosSinceLogin < 0)
 		{
 			return "Report";
 		}
 
-		Duration duration = Duration.between(loginTime, Instant.now());
+		Duration duration = Duration.ofNanos(nanosSinceLogin);
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}

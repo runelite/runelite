@@ -29,7 +29,6 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
@@ -132,15 +131,15 @@ public class MotherlodePlugin extends Plugin
 	)
 	public void checkMining()
 	{
-		Instant lastPayDirtMined = session.getLastPayDirtMined();
-		if (lastPayDirtMined == null)
+		long lastPayDirtMinedNanoTime = session.getLastPayDirtMinedNanoTime();
+		if (lastPayDirtMinedNanoTime == 0)
 		{
 			return;
 		}
 
 		// reset recentPayDirtMined if you haven't mined anything recently
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceMined = Duration.between(lastPayDirtMined, Instant.now());
+		Duration sinceMined = Duration.ofNanos(System.nanoTime() - lastPayDirtMinedNanoTime);
 
 		if (sinceMined.compareTo(statTimeout) >= 0)
 		{

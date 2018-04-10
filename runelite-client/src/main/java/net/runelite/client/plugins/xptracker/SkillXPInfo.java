@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.xptracker;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalTime;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +37,7 @@ import net.runelite.api.Skill;
 class SkillXPInfo
 {
 	private final Skill skill;
-	private Instant skillTimeStart = null;
+	private long skillStartNanoTime = 0;
 	private int startXp = -1;
 	private int xpGained = 0;
 	private int actions = 0;
@@ -66,12 +65,12 @@ class SkillXPInfo
 
 	private int toHourly(int value)
 	{
-		if (skillTimeStart == null)
+		if (skillStartNanoTime == 0)
 		{
 			return 0;
 		}
 
-		long timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
+		long timeElapsedInSeconds = Duration.ofNanos(System.nanoTime() - skillStartNanoTime).getSeconds();
 		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
 	}
 
@@ -125,7 +124,7 @@ class SkillXPInfo
 
 		xpGained = 0;
 		actions = 0;
-		skillTimeStart = null;
+		skillStartNanoTime = 0;
 	}
 
 	boolean update(int currentXp)
@@ -171,9 +170,9 @@ class SkillXPInfo
 
 		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
-		if (skillTimeStart == null)
+		if (skillStartNanoTime == 0)
 		{
-			skillTimeStart = Instant.now();
+			skillStartNanoTime = System.nanoTime();
 		}
 
 		return true;

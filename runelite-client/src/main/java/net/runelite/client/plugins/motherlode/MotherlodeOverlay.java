@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Set;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
@@ -80,13 +79,13 @@ class MotherlodeOverlay extends Overlay
 
 		MotherlodeSession session = plugin.getSession();
 
-		if (session.getLastPayDirtMined() == null)
+		if (session.getLastPayDirtMinedNanoTime() == 0)
 		{
 			return null;
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
+		Duration sinceCut = Duration.ofNanos(System.nanoTime() - session.getLastPayDirtMinedNanoTime());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{

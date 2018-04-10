@@ -27,18 +27,17 @@ package net.runelite.client.plugins.pyramidplunder;
 import com.google.common.base.Preconditions;
 import java.awt.Color;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 class PyramidTimer
 {
-	private final Instant endTime;
+	private final long endNanoTime;
 
 	PyramidTimer(long period)
 	{
 		Preconditions.checkArgument(period > 0, "negative period!");
 
-		endTime = Instant.now().plus(period, ChronoUnit.SECONDS);
+		endNanoTime = System.nanoTime() + Duration.ofSeconds(period).toNanos();
 	}
 
 	public String getText()
@@ -48,7 +47,7 @@ class PyramidTimer
 			return "0:00";
 		}
 
-		Duration timeLeft = Duration.between(Instant.now(), endTime);
+		Duration timeLeft = Duration.ofNanos(endNanoTime - System.nanoTime());
 
 		int totalSeconds = (int) timeLeft.get(ChronoUnit.SECONDS);
 
@@ -60,7 +59,7 @@ class PyramidTimer
 
 	public Color getTextColor()
 	{
-		Duration timeLeft = Duration.between(Instant.now(), endTime);
+		Duration timeLeft = Duration.ofNanos(endNanoTime - System.nanoTime());
 
 		if (timeLeft.getSeconds() < 30)
 		{
@@ -72,6 +71,6 @@ class PyramidTimer
 
 	private boolean isFinished()
 	{
-		return Instant.now().isAfter(endTime);
+		return System.nanoTime() >= endNanoTime;
 	}
 }

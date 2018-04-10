@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
@@ -43,7 +42,7 @@ public class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
 	private boolean prayersActive = false;
-	private Instant startOfLastTick = Instant.now();
+	private long startOfLastTickNanoTime = System.nanoTime();
 
 	@Inject
 	public PrayerFlickOverlay(Client client)
@@ -55,7 +54,7 @@ public class PrayerFlickOverlay extends Overlay
 
 	public void onTick()
 	{
-		startOfLastTick = Instant.now(); //Reset the tick timer
+		startOfLastTickNanoTime = System.nanoTime(); //Reset the tick timer
 		prayersActive = isAnyPrayerActive(); //Check if prayers are active
 	}
 
@@ -86,7 +85,7 @@ public class PrayerFlickOverlay extends Overlay
 		int orbInnerX = (int) (bounds.getX() + 24);//x pos of the inside of the prayer orb
 		int orbInnerY = (int) (bounds.getY() - 1);//y pos of the inside of the prayer orb
 
-		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
+		long timeSinceLastTick = Duration.ofNanos(System.nanoTime() - startOfLastTickNanoTime).toMillis();
 
 		float tickProgress = timeSinceLastTick / 600f;
 		tickProgress = Math.min(tickProgress, 1);//Cap to 1, so if a tick continues past the expected 600 we don't move the indicator off the orb
