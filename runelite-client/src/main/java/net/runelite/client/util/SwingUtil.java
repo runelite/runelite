@@ -74,10 +74,15 @@ public class SwingUtil
 	 */
 	public static void setupDefaults()
 	{
+		final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		toolTipManager.setLightWeightPopupEnabled(false);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+		// Set tooltip delay to something useful
+		toolTipManager.setInitialDelay(300);
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
