@@ -44,4 +44,14 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showMapOnFirstRead",
+		name = "Show map on first read",
+		description = "Configures whether or not the map is auto-shown on first read"
+	)
+	default boolean showOnFirstRead()
+	{
+		return true;
+	}
 }

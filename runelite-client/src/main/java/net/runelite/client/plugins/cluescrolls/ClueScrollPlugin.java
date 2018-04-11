@@ -63,6 +63,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
 import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
@@ -76,6 +77,8 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
+import net.runelite.client.plugins.instancemap.InstanceMapPlugin;
+import net.runelite.client.plugins.instancemap.InstanceMapService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.QueryRunner;
@@ -83,6 +86,7 @@ import net.runelite.client.util.QueryRunner;
 @PluginDescriptor(
 	name = "Clue Scroll"
 )
+@PluginDependency(InstanceMapPlugin.class)
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
@@ -123,21 +127,24 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
 	@Inject
+	private InstanceMapService instanceMapService;
+
+	@Inject
 	private ClueScrollConfig config;
 
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
 
-	@Provides
-	ClueScrollConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ClueScrollConfig.class);
-	}
-
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(clueScrollOverlay, clueScrollEmoteOverlay, clueScrollWorldOverlay);
+	}
+
+	@Provides
+	ClueScrollConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ClueScrollConfig.class);
 	}
 
 	@Subscribe
@@ -159,7 +166,11 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		if ("check steps".equalsIgnoreCase(event.getMenuOption()))
+		{
+			checkClueData(clue);
+		}
+		else if ("Read".equals(event.getMenuOption()))
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
 
@@ -305,6 +316,11 @@ public class ClueScrollPlugin extends Plugin
 			if (clue != this.clue)
 			{
 				resetClue();
+
+				if (config.showOnFirstRead())
+				{
+					checkClueData(clue);
+				}
 			}
 
 			this.clue = clue;
@@ -325,6 +341,17 @@ public class ClueScrollPlugin extends Plugin
 		if (config.displayHintArrows())
 		{
 			client.clearHintArrow();
+		}
+
+		instanceMapService.close();
+	}
+
+	private void checkClueData(final ClueScroll clue)
+	{
+		if (clue instanceof LocationClueScroll)
+		{
+			final LocationClueScroll locationClueScroll = (LocationClueScroll) clue;
+			instanceMapService.openAt(locationClueScroll.getLocation());
 		}
 	}
 
