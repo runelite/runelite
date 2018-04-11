@@ -360,7 +360,12 @@ public enum Varbits
 	/**
 	 * The varbit that stores the players {@code AccountType}.
 	 */
-	ACCOUNT_TYPE(1777);
+	ACCOUNT_TYPE(1777),
+
+	/**
+	 * Quests
+	 */
+	QUEST_A_HAND_IN_THE_SAND(1527);
 
 	/**
 	 * The raw varbit ID.
