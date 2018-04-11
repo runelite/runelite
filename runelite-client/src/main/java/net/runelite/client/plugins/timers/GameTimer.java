@@ -42,7 +42,7 @@ public enum GameTimer
 	EXANTIFIRE("exantifire", "Extended antifire", 12, ChronoUnit.MINUTES),
 	OVERLOAD("overload", "Overload", 5, ChronoUnit.MINUTES),
 	CANNON("cannon", "Cannon", 25, ChronoUnit.MINUTES),
-	MAGICIMBUE("magicimbue", "Magic imbue", 15, ChronoUnit.SECONDS),
+	MAGICIMBUE("magicimbue", "Magic imbue", 12, ChronoUnit.SECONDS),
 	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
 	ANTIVENOMPLUS("antivenomplus", "Anti-venom+", 3, ChronoUnit.MINUTES),
