@@ -24,19 +24,19 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
-import java.awt.image.BufferedImage;
 import lombok.Data;
+import net.runelite.client.game.AsyncBufferedImage;
 
 @Data
 public class GrandExchangeItems
 {
-	private final BufferedImage icon;
+	private final AsyncBufferedImage icon;
 	private final String name;
 	private final int itemId;
 	private final int gePrice;
 	private final double haPrice;
 
-	GrandExchangeItems(BufferedImage icon, String name, int itemId, int gePrice, double haPrice)
+	GrandExchangeItems(AsyncBufferedImage icon, String name, int itemId, int gePrice, double haPrice)
 	{
 		this.icon = icon;
 		this.name = name;
