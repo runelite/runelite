@@ -25,9 +25,11 @@
 
 package net.runelite.client.plugins.dailytaskindicators;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -63,6 +65,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg;
 	private int prevHerbVarbVal, prevStavesVarbVal, prevEssVarbVal, prevSandVarbVal, prevEctoVarbVal;
+
+	private final Set<Integer> FREE_TO_PLAY_WORLDS = Sets.newHashSet(1, 8, 16, 26, 35, 81, 82, 83, 84, 85, 93, 94, 117);
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -153,37 +157,66 @@ public class DailyTasksPlugin extends Plugin
 
 	private boolean checkCanCollectStaves()
 	{
-		int value = client.getVar(Varbits.DAILY_STAVES);
-		return prevStavesVarbVal == value ? (prevStavesVarbVal = value) == 0 : false;
+		if (didCompleteDiaries(Varbits.DIARY_VARROCK_EASY, Varbits.DIARY_VARROCK_MEDIUM, Varbits.DIARY_VARROCK_HARD, Varbits.DIARY_VARROCK_ELITE))
+		{
+			int value = client.getVar(Varbits.DAILY_STAVES);
+			return prevStavesVarbVal == value ? (prevStavesVarbVal = value) == 0 : false;
+		}
+		return false;
 	}
 
 	private boolean checkCanCollectEssence()
 	{
-		int value = client.getVar(Varbits.DAILY_ESSENCE);
-		return prevEssVarbVal == value ? (prevEssVarbVal = value) == 0 : false;
+		if (didCompleteDiaries(Varbits.DIARY_ARDOUGNE_EASY, Varbits.DIARY_ARDOUGNE_MEDIUM, Varbits.DIARY_ARDOUGNE_HARD, Varbits.DIARY_ARDOUGNE_ELITE))
+		{
+			int value = client.getVar(Varbits.DAILY_ESSENCE);
+			return prevEssVarbVal == value ? (prevEssVarbVal = value) == 0 : false;
+		}
+		return false;
 	}
 
 	private boolean checkCanCollectSand()
 	{
-		int value = client.getVar(Varbits.DAILY_SAND);
-		return prevSandVarbVal == value ? (prevSandVarbVal = value) == 0 : false;
+		if (client.getVar(Varbits.QUEST_A_HAND_IN_THE_SAND) == 160 && !FREE_TO_PLAY_WORLDS.contains(client.getWorld()))
+		{
+			int value = client.getVar(Varbits.DAILY_SAND);
+			return prevSandVarbVal == value ? (prevSandVarbVal = value) == 0 : false;
+		}
+		return false;
 	}
 
 	private boolean checkCanCollectEcto()
 	{
-		int value = client.getVar(Varbits.DAILY_ECTO);
-		if (value != prevEctoVarbVal)
+		if (didCompleteDiaries(Varbits.DIARY_MORYTANIA_EASY, Varbits.DIARY_MORYTANIA_MEDIUM, Varbits.DIARY_MORYTANIA_HARD, Varbits.DIARY_MORYTANIA_ELITE))
 		{
-			prevEctoVarbVal = value;
-			if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
-				|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
-				|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
+			int value = client.getVar(Varbits.DAILY_ECTO);
+			if (value != prevEctoVarbVal)
 			{
-				return true;
+				prevEctoVarbVal = value;
+				if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
+					|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
+					|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
+				{
+					return true;
+				}
 			}
 		}
 
 		return false;
+	}
+
+	private boolean didCompleteDiaries(Varbits... dairyVarbits)
+	{
+		boolean completedDiaries = false;
+		for (Varbits varbit : dairyVarbits)
+		{
+			if (client.getVar(varbit) == 1)
+			{
+				completedDiaries = true;
+				break;
+			}
+		}
+		return completedDiaries && !FREE_TO_PLAY_WORLDS.contains(client.getWorld());
 	}
 
 	private void cacheColors()
