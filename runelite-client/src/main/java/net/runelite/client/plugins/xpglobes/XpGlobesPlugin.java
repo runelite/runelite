@@ -26,6 +26,8 @@ package net.runelite.client.plugins.xpglobes;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -34,14 +36,20 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+
+import static net.runelite.client.callback.Hooks.log;
 
 @PluginDescriptor(
 	name = "XP Globes"
@@ -53,6 +61,10 @@ public class XpGlobesPlugin extends Plugin
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
+	private final List<XpDrop> xpDrops = new ArrayList<>();
+	private boolean xpDropsThisTick = false;
+
+	private Font font;
 
 	@Inject
 	private Client client;
@@ -75,6 +87,27 @@ public class XpGlobesPlugin extends Plugin
 		return overlay;
 	}
 
+	@Override
+	protected void startUp()
+	{
+		font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, config.xpDropFontSize());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("xpDropFontSize"))
+		{
+			font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, config.xpDropFontSize());
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		xpDropsThisTick = false;
+	}
+
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
@@ -95,6 +128,26 @@ public class XpGlobesPlugin extends Plugin
 
 		if (cachedGlobe != null)
 		{
+			if (config.enableXpDrops())
+			{
+				int deltaXp = currentXp - cachedGlobe.getCurrentXp();
+
+				if (!xpDropsThisTick)
+				{
+					xpDrops.add(new XpDrop(skill, deltaXp));
+					xpDropsThisTick = true;
+				}
+				else
+				{
+					xpDrops.get(xpDrops.size() - 1).addXpDrop(skill, deltaXp);
+				}
+
+				if (isPrayerTurnedOn(skill))
+				{
+					xpDrops.get(xpDrops.size() - 1).setPrayerActive(true);
+				}
+			}
+
 			cachedGlobe.setSkill(skill);
 			cachedGlobe.setCurrentXp(currentXp);
 			cachedGlobe.setCurrentLevel(currentLevel);
@@ -110,6 +163,44 @@ public class XpGlobesPlugin extends Plugin
 			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp);
 		}
 	}
+
+
+	private boolean isPrayerTurnedOn(Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+			case STRENGTH:
+			case DEFENCE:
+				if (client.isPrayerActive(Prayer.BURST_OF_STRENGTH) || client.isPrayerActive(Prayer.CLARITY_OF_THOUGHT) ||
+						client.isPrayerActive(Prayer.SUPERHUMAN_STRENGTH) || client.isPrayerActive(Prayer.IMPROVED_REFLEXES) ||
+						client.isPrayerActive(Prayer.ULTIMATE_STRENGTH) || client.isPrayerActive(Prayer.INCREDIBLE_REFLEXES) ||
+						client.isPrayerActive(Prayer.CHIVALRY) || client.isPrayerActive(Prayer.PIETY))
+				{
+					return true;
+				}
+				break;
+
+			case MAGIC:
+				if (client.isPrayerActive(Prayer.MYSTIC_WILL) || client.isPrayerActive(Prayer.MYSTIC_LORE) ||
+						client.isPrayerActive(Prayer.MYSTIC_MIGHT) || client.isPrayerActive(Prayer.AUGURY))
+				{
+					return true;
+				}
+				break;
+
+			case RANGED:
+				if (client.isPrayerActive(Prayer.SHARP_EYE) || client.isPrayerActive(Prayer.HAWK_EYE) ||
+						client.isPrayerActive(Prayer.EAGLE_EYE) || client.isPrayerActive(Prayer.RIGOUR))
+				{
+					return true;
+				}
+				break;
+		}
+
+		return false;
+	}
+
 
 	public List<XpGlobe> getXpGlobes()
 	{
@@ -141,6 +232,9 @@ public class XpGlobesPlugin extends Plugin
 	)
 	public void removeExpiredXpGlobes()
 	{
+		// also remove old xp drops
+		removeExpiredXpDrops();
+
 		if (!xpGlobes.isEmpty())
 		{
 			Instant currentTime = Instant.now();
@@ -158,9 +252,44 @@ public class XpGlobesPlugin extends Plugin
 		}
 	}
 
+
+	public List<XpDrop> getXpDrops()
+	{
+		return xpDrops;
+	}
+
+	public int getXpDropsSize()
+	{
+		return xpDrops.size();
+	}
+
+	public void removeExpiredXpDrops()
+	{
+		if (!xpDrops.isEmpty())
+		{
+			for (Iterator<XpDrop> it = xpDrops.iterator(); it.hasNext();)
+			{
+				XpDrop drop = it.next();
+				if (drop.getY() > -20)
+				{
+					//if a drop is not out of screen yet, next one shouldn't be either
+					return;
+				}
+				it.remove();
+			}
+		}
+	}
+
+	public Font getFont()
+	{
+		return font;
+	}
+
+
 	public void resetGlobeState()
 	{
 		xpGlobes.clear();
+		xpDrops.clear();
 		globeCache = new XpGlobe[Skill.values().length - 1];
 	}
 
