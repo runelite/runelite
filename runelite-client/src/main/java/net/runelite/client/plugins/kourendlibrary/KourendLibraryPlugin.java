@@ -42,6 +42,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
@@ -68,6 +69,9 @@ public class KourendLibraryPlugin extends Plugin
 	@Inject
 	private KourendLibraryOverlay overlay;
 
+	@Inject
+	private ItemManager itemManager;
+
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 
@@ -77,6 +81,8 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		Book.fillImages(itemManager);
+
 		panel = injector.getInstance(KourendLibraryPanel.class);
 		panel.init();
 
