@@ -47,6 +47,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -75,18 +76,20 @@ public class ItemManager
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
+	private final ClientThread clientThread;
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
 	private final LoadingCache<Integer, ItemPrice> itemPriceCache;
-	private final LoadingCache<ImageKey, BufferedImage> itemImages;
+	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor)
+	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
+		this.clientThread = clientThread;
 
 		itemPriceCache = CacheBuilder.newBuilder()
 			.maximumSize(1024L)
@@ -108,10 +111,10 @@ public class ItemManager
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<ImageKey, BufferedImage>()
+			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
 			{
 				@Override
-				public BufferedImage load(ImageKey key) throws Exception
+				public AsyncBufferedImage load(ImageKey key) throws Exception
 				{
 					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
@@ -271,32 +274,55 @@ public class ItemManager
 	 * @param itemId
 	 * @return
 	 */
-	private BufferedImage loadImage(int itemId, int quantity, boolean stackable)
+	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
-			stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
-		return sprite.toBufferedImage();
+		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
+		clientThread.invokeLater(() ->
+		{
+			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
+			{
+				return false;
+			}
+			SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
+				stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
+			if (sprite == null)
+			{
+				return false;
+			}
+			sprite.toBufferedImage(img);
+			img.changed();
+			return true;
+		});
+		return img;
 	}
 
 	/**
-	 * Get item sprite image
+	 * Get item sprite image as BufferedImage.
+	 * <p>
+	 * This method may return immediately with a blank image if not called on the game thread.
+	 * The image will be filled in later. If this is used for a UI label/button, it should be added
+	 * using AsyncBufferedImage::addTo to ensure it is painted properly
 	 *
 	 * @param itemId
 	 * @return
 	 */
-	public BufferedImage getImage(int itemId)
+	public AsyncBufferedImage getImage(int itemId)
 	{
 		return getImage(itemId, 1, false);
 	}
 
 	/**
-	 * Get item sprite image as BufferedImage
+	 * Get item sprite image as BufferedImage.
+	 * <p>
+	 * This method may return immediately with a blank image if not called on the game thread.
+	 * The image will be filled in later. If this is used for a UI label/button, it should be added
+	 * using AsyncBufferedImage::addTo to ensure it is painted properly
 	 *
 	 * @param itemId
 	 * @param quantity
 	 * @return
 	 */
-	public BufferedImage getImage(int itemId, int quantity, boolean stackable)
+	public AsyncBufferedImage getImage(int itemId, int quantity, boolean stackable)
 	{
 		try
 		{
