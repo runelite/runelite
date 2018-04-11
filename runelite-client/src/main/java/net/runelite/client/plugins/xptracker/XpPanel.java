@@ -67,6 +67,7 @@ class XpPanel extends PluginPanel
 		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
 		final JButton resetButton = new JButton("Reset All");
+		resetButton.setFocusable(false);
 		resetButton.addActionListener(e -> resetAllInfoBoxes());
 
 		totalXpGained.setText(formatLine(0, "total xp gained"));

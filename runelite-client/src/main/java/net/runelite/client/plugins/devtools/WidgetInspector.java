@@ -132,6 +132,7 @@ class WidgetInspector extends JFrame
 		add(bottomPanel, BorderLayout.SOUTH);
 
 		final JButton refreshWidgetsBtn = new JButton("Refresh");
+		refreshWidgetsBtn.setFocusable(false);
 		refreshWidgetsBtn.addActionListener(e -> refreshWidgets());
 		bottomPanel.add(refreshWidgetsBtn);
 

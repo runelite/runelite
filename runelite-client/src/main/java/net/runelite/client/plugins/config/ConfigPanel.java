@@ -206,6 +206,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create edit config button and disable it by default
 		final JButton editConfigButton = new JButton(new ImageIcon(CONFIG_ICON));
+		editConfigButton.setFocusable(false);
 		editConfigButton.setPreferredSize(new Dimension(32, 0));
 		editConfigButton.setEnabled(false);
 
@@ -230,6 +231,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create enabling/disabling button
 		final JButton toggleButton = new JButton(new ImageIcon(CHECK_ICON));
+		toggleButton.setFocusable(false);
 		toggleButton.setPreferredSize(new Dimension(32, 0));
 
 		if (plugin == null)
