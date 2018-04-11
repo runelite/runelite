@@ -51,7 +51,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPA
 public class MapClue extends ClueScroll implements ObjectClueScroll
 {
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
-		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(2977, 3341, 0)),
+		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0)),
 		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0)),
 		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0)),
 		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3502, 0), CRATE_2620),
