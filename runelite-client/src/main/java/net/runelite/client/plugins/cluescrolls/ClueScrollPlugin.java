@@ -48,6 +48,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.Region;
@@ -59,6 +61,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
@@ -67,6 +70,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
 import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
@@ -82,6 +86,8 @@ import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
+import net.runelite.client.plugins.instancemap.InstanceMapPlugin;
+import net.runelite.client.plugins.instancemap.InstanceMapService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
@@ -90,10 +96,14 @@ import net.runelite.client.util.Text;
 @PluginDescriptor(
 	name = "Clue Scroll"
 )
+@PluginDependency(InstanceMapPlugin.class)
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
+	private static final String INSTANCE_MAP_PREVIEW = "Preview location";
+	private static final String READ = "Read";
+	private static final String CHECK_STEPS = "Check steps";
 
 	public static final BufferedImage CLUE_SCROLL_IMAGE;
 	public static final BufferedImage MAP_ARROW;
@@ -138,6 +148,9 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
 	@Inject
+	private InstanceMapService instanceMapService;
+
+	@Inject
 	private ClueScrollConfig config;
 
 	@Inject
@@ -165,12 +178,6 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	@Provides
-	ClueScrollConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ClueScrollConfig.class);
-	}
-
 	@Override
 	protected void shutDown() throws Exception
 	{
@@ -181,6 +188,12 @@ public class ClueScrollPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(clueScrollOverlay, clueScrollEmoteOverlay, clueScrollWorldOverlay);
+	}
+
+	@Provides
+	ClueScrollConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ClueScrollConfig.class);
 	}
 
 	@Subscribe
@@ -209,17 +222,41 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuEntryAdded(final MenuEntryAdded event)
+	{
+		if (!CHECK_STEPS.equals(event.getOption())
+			|| clueItemId == null
+			|| clueItemId != itemManager.getItemComposition(event.getIdentifier()).getId())
+		{
+			return;
+		}
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+		final MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		menuEntry.setOption(INSTANCE_MAP_PREVIEW);
+		menuEntry.setTarget(event.getTarget());
+		menuEntry.setType(MenuAction.WIDGET_SECOND_OPTION.getId());
+		client.setMenuEntries(menuEntries);
+	}
+
+	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		switch (event.getMenuOption())
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+			case INSTANCE_MAP_PREVIEW:
+				checkClueData(clue);
+				break;
+			case READ:
+				final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
 
-			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
-			{
-				clueItemId = itemComposition.getId();
-				clueItemChanged = true;
-			}
+				if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
+				{
+					clueItemId = itemComposition.getId();
+					clueItemChanged = true;
+				}
+				break;
 		}
 	}
 
@@ -395,6 +432,11 @@ public class ClueScrollPlugin extends Plugin
 			if (clue != this.clue)
 			{
 				resetClue();
+
+				if (config.showOnFirstRead())
+				{
+					checkClueData(clue);
+				}
 			}
 
 			this.clue = clue;
@@ -422,6 +464,17 @@ public class ClueScrollPlugin extends Plugin
 		if (config.displayHintArrows())
 		{
 			client.clearHintArrow();
+		}
+
+		instanceMapService.close();
+	}
+
+	private void checkClueData(final ClueScroll clue)
+	{
+		if (clue instanceof LocationClueScroll)
+		{
+			final LocationClueScroll locationClueScroll = (LocationClueScroll) clue;
+			instanceMapService.openAt(locationClueScroll.getLocation());
 		}
 	}
 
