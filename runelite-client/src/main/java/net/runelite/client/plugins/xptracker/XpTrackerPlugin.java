@@ -97,7 +97,6 @@ public class XpTrackerPlugin extends Plugin
 		try
 		{
 			worlds = worldClient.lookupWorlds();
-			log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
 		}
 		catch (IOException e)
 		{
@@ -132,24 +131,22 @@ public class XpTrackerPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			// LOGGED_IN is triggered between region changes too.
-			// Check that the username changed or the world type changed.
-			World world = worlds.findWorld(client.getWorld());
+			boolean dontCheckWorld = false;
 
-			if (world == null)
+			if (worlds == null)
 			{
-				log.warn("Logged into nonexistent world {}?", client.getWorld());
-				return;
+				dontCheckWorld = true;
 			}
 
-			XpWorldType type = worldSetToType(world.getTypes());
+			// LOGGED_IN is triggered between region changes too.
+			// Check that the username changed or the world type changed.
+			World world = dontCheckWorld ? null : worlds.findWorld(client.getWorld());
+			XpWorldType type = dontCheckWorld || world == null ? null : worldSetToType(world.getTypes());
 
-			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
+			if (!Objects.equals(client.getUsername(), lastUsername) || dontCheckWorld || lastWorldType != type)
 			{
 				// Reset
-				log.debug("World change: {} -> {}, {} -> {}",
-					lastUsername, client.getUsername(), lastWorldType, type);
-
+				log.debug("World change: {} -> {}, {} -> {}", lastUsername, client.getUsername(), lastWorldType, type);
 				lastUsername = client.getUsername();
 				lastWorldType = type;
 				xpPanel.resetAllInfoBoxes();
