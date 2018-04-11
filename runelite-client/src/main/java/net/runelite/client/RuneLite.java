@@ -31,6 +31,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import java.applet.Applet;
 import java.io.File;
 import java.util.Optional;
@@ -104,7 +105,7 @@ public class RuneLite
 	private TitleToolbar titleToolbar;
 
 	@Inject
-	private ItemManager itemManager;
+	private Provider<ItemManager> itemManager;
 
 	@Inject
 	private ClanManager clanManager;
@@ -169,8 +170,11 @@ public class RuneLite
 		eventBus.register(chatMessageManager);
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
-		eventBus.register(itemManager);
 		eventBus.register(clanManager);
+		if (client != null)
+		{
+			eventBus.register(itemManager.get());
+		}
 
 		// Load user configuration
 		configManager.load();
