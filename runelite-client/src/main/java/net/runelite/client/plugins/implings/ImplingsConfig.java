@@ -303,4 +303,15 @@ public interface ImplingsConfig extends Config
 	{
 		return Color.WHITE;
 	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "showname",
+		name = "Show name on minimap",
+		description = "Configures whether or not impling names are displayed on minimap"
+	)
+	default boolean showName()
+	{
+		return false;
+	}
 }
