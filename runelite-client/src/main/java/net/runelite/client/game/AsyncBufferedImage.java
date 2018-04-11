@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+
+package net.runelite.client.game;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
-public interface SpritePixels
+public class AsyncBufferedImage extends BufferedImage
 {
-	int DEFAULT_SHADOW_COLOR = 3153952;
-
-	void drawAt(int x, int y);
-
-	int getWidth();
-
-	int getHeight();
-
-	int[] getPixels();
+	private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
+	public AsyncBufferedImage(int width, int height, int imageType)
+	{
+		super(width, height, imageType);
+	}
 
 	/**
-	 * Covert the SpritePixels to a BufferedImage
-	 *
-	 * @return
+	 * Call when the buffer has been changed
 	 */
-	BufferedImage toBufferedImage();
-
+	public void changed()
+	{
+		for (Runnable r : listeners)
+		{
+			r.run();
+		}
+	}
 
 	/**
-	 * Writes the contents of the SpritePixels to the BufferedImage.
-	 * Width and Height must match
- 	 */
-	void toBufferedImage(BufferedImage img);
+	 * Register a function to be ran when the buffer has changed
+	 */
+	public void onChanged(Runnable r)
+	{
+		listeners.add(r);
+	}
+
+	/**
+	 * Calls setIcon on c, ensuring it is repainted when this changes
+	 */
+	public void addTo(JButton c)
+	{
+		c.setIcon(makeIcon(c));
+	}
+
+	/**
+	 * Calls setIcon on c, ensuring it is repainted when this changes
+	 */
+	public void addTo(JLabel c)
+	{
+		c.setIcon(makeIcon(c));
+	}
+
+	private ImageIcon makeIcon(JComponent c)
+	{
+		listeners.add(c::repaint);
+		return new ImageIcon(this);
+	}
 }
