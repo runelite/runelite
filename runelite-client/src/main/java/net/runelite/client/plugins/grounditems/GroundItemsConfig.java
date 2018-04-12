@@ -278,7 +278,10 @@ public interface GroundItemsConfig extends Config
 			description = "Highlights any item that can be alched for a profit over the GE price",
 			position = 21
 	)
-	default boolean highlightAlchProfit() { return false; }
+	default boolean highlightAlchProfit()
+    {
+        return false;
+    }
 
 	@ConfigItem(
 			keyName = "alchProfitColor",
@@ -286,5 +289,8 @@ public interface GroundItemsConfig extends Config
 			description = "Configures the color for profitable alchable items",
 			position = 22
 	)
-	default Color alchProfitColor() { return Color.decode("#00ffb2"); }
+	default Color alchProfitColor()
+    {
+        return Color.decode("#00ffb2");
+    }
 }
