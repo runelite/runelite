@@ -341,7 +341,6 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "-1"
    )
    @Export("menuAction")
-   @Hook("menuActionHook")
    static final void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
       if(var2 >= 2000) {
          var2 -= 2000;
