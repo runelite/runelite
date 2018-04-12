@@ -65,7 +65,7 @@ public class BankTagsPlugin extends Plugin
 
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 
-	private static final int EDIT_TAGS_MENU_INDEX = 9;
+	private static final int EDIT_TAGS_MENU_INDEX = 8;
 
 	@Inject
 	private Client client;
@@ -203,6 +203,7 @@ public class BankTagsPlugin extends Plugin
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
 			&& event.getId() == EDIT_TAGS_MENU_INDEX)
 		{
+			event.consume();
 			int inventoryIndex = event.getActionParam();
 			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 			if (bankContainer == null)
