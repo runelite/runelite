@@ -201,7 +201,8 @@ public class BankTagsPlugin extends Plugin
 	{
 		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
-			&& event.getId() == EDIT_TAGS_MENU_INDEX)
+			&& event.getId() == EDIT_TAGS_MENU_INDEX
+			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
 		{
 			event.consume();
 			int inventoryIndex = event.getActionParam();
