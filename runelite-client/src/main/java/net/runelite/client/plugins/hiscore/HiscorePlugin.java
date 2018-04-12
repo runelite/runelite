@@ -48,6 +48,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -208,7 +209,7 @@ public class HiscorePlugin extends Plugin
 					throw new RuntimeException(e);
 				}
 
-				hiscorePanel.lookup(event.getMenuTarget());
+				hiscorePanel.lookup(Text.removeTags(event.getMenuTarget()));
 			});
 		}
 	}
