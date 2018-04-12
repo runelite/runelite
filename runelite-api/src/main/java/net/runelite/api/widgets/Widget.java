@@ -40,7 +40,7 @@ public interface Widget
 
 	void setContentType(int contentType);
 
-	int setClickMask();
+	int getClickMask();
 
 	void setClickMask(int mask);
 
