@@ -10,7 +10,7 @@ today! Here are the guidelines we'd like you to follow:
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to contribute to runelite, please join our our [Discord](https://discord.gg/mePCs8U) server.
+If you have questions about how to contribute to runelite, please join our [Discord](https://discord.gg/mePCs8U) server.
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -25,7 +25,7 @@ with a fix.
 ### Submitting an Issue
 Before you submit your issue search the archive, maybe your question was already answered.
 
-If your issue appears to be a bug, and hasn't been reported, open a new issue. Help us to maximize
+If your issue appears to be a bug and hasn't been reported, open a new issue. Help us to maximize
 the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 Providing the following information will increase the chances of your issue being dealt with
 quickly:
