@@ -134,10 +134,10 @@ public class WidgetID
 
 	static class Bank
 	{
-		static final int ITEM_CONTAINER = 12;
+		static final int ITEM_CONTAINER = 23;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
-		static final int BANK_TITLE_BAR = 4;
-		static final int BANK_ITEM_COUNT = 5;
+		static final int BANK_TITLE_BAR = 15;
+		static final int BANK_ITEM_COUNT = 16;
 	}
 
 	static class GrandExchange
