@@ -152,6 +152,7 @@ public class GroundItemsOverlay extends Overlay
 
 			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
 				item.getHaPrice(),
+				item.getQuantity(),
 				highlighted, hidden);
 			itemStringBuilder.append(item.getName());
 
@@ -241,7 +242,7 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	Color getCostColor(int cost, int alchValue, boolean highlighted, boolean hidden)
+	Color getCostColor(int cost, int quantity, int alchValue, boolean highlighted, boolean hidden)
 	{
 		if (hidden)
 		{
@@ -255,7 +256,7 @@ public class GroundItemsOverlay extends Overlay
 
 		if (config.highlightAlchProfit())
 		{
-			if (cost + natureRunePrice < alchValue) return config.alchProfitColor();
+			if ((cost / quantity) + natureRunePrice < alchValue) return config.alchProfitColor();
 		}
 
 		// set the color according to rarity, if possible
