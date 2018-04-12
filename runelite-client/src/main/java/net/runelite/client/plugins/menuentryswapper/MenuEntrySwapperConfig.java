@@ -115,7 +115,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "swapPay",
-		name = "Pay2",
+		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
 	)
 	default boolean swapPay()
