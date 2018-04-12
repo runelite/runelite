@@ -50,11 +50,9 @@ public class SessionController
 	public UUID get(HttpServletRequest request)
 	{
 		UUID uuid = UUID.randomUUID();
-		String addr = request.getRemoteAddr();
 		Instant now = Instant.now();
 		SessionEntry sessionEntry = new SessionEntry();
 		sessionEntry.setUuid(uuid);
-		sessionEntry.setIp(addr);
 		sessionEntry.setStart(now);
 		sessionEntry.setLast(now);
 		sessionService.createSession(sessionEntry);
