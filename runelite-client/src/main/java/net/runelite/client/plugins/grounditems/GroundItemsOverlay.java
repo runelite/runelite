@@ -253,9 +253,9 @@ public class GroundItemsOverlay extends Overlay
 			return config.highlightedColor();
 		}
 
-		if(config.highlightAlchProfit())
+		if (config.highlightAlchProfit())
 		{
-			if(cost + natureRunePrice < alchValue) return config.alchProfitColor();
+			if (cost + natureRunePrice < alchValue) return config.alchProfitColor();
 		}
 
 		// set the color according to rarity, if possible
