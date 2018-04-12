@@ -127,19 +127,19 @@ public class DailyTasksPlugin extends Plugin
 
 	private boolean checkCanCollectHerbBox()
 	{
-		int value = client.getSetting(Varbits.DAILY_HERB_BOX);
+		int value = client.getVar(Varbits.DAILY_HERB_BOX);
 		return value < 15; // < 15 can claim
 	}
 
 	private boolean checkCanCollectStaves()
 	{
-		int value = client.getSetting(Varbits.DAILY_STAVES);
+		int value = client.getVar(Varbits.DAILY_STAVES);
 		return value == 0; // 1 = can't claim
 	}
 
 	private boolean checkCanCollectEssence()
 	{
-		int value = client.getSetting(Varbits.DAILY_ESSENCE);
+		int value = client.getVar(Varbits.DAILY_ESSENCE);
 		return value == 0; // 1 = can't claim
 	}
 

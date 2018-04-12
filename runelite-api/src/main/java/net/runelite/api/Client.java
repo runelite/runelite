@@ -163,9 +163,9 @@ public interface Client extends GameEngine
 
 	Varcs getVarcs();
 
-	int getSetting(Setting setting);
+	int getVar(Varp varp);
 
-	int getSetting(Varbits varbit);
+	int getVar(Varbits varbit);
 
 	HashTable getWidgetFlags();
 

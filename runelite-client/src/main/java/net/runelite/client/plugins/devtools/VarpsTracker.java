@@ -30,49 +30,49 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
 @Slf4j
-public class SettingsTracker
+public class VarpsTracker
 {
 	private final Client client;
 
-	private int[] widgetSettings;
+	private int[] widgetVarps;
 
-	public SettingsTracker(Client client)
+	public VarpsTracker(Client client)
 	{
 		this.client = client;
 	}
 
 	public void snapshot(ActionEvent e)
 	{
-		if (widgetSettings == null)
+		if (widgetVarps == null)
 		{
-			widgetSettings = copy(client.getVarps());
+			widgetVarps = copy(client.getVarps());
 
-			log.info("Snapshotted client and widget settings");
+			log.info("Snapshotted client and widget varps");
 			return;
 		}
 
-		int[] newWidgetSettings = client.getVarps();
+		int[] newWidgetVarps = client.getVarps();
 
-		for (int i = 0; i < Math.min(widgetSettings.length, newWidgetSettings.length); ++i)
+		for (int i = 0; i < Math.min(widgetVarps.length, newWidgetVarps.length); ++i)
 		{
-			int before = widgetSettings[i];
-			int after = newWidgetSettings[i];
+			int before = widgetVarps[i];
+			int after = newWidgetVarps[i];
 
 			if (before == after)
 			{
 				continue;
 			}
 
-			log.info("Widget setting index {} has changed from {} to {}: {} -> {}",
+			log.info("Widget varp index {} has changed from {} to {}: {} -> {}",
 				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
 		}
 
-		widgetSettings = copy(newWidgetSettings);
+		widgetVarps = copy(newWidgetVarps);
 	}
 
 	public void clear(ActionEvent e)
 	{
-		widgetSettings = null;
+		widgetVarps = null;
 	}
 
 	private static int[] copy(int[] array)

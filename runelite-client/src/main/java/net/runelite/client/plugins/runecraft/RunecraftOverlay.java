@@ -103,7 +103,7 @@ public class RunecraftOverlay extends Overlay
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(client.getSetting(varbits)));
+			textComponent.setText(String.valueOf(client.getVar(varbits)));
 			textComponent.render(graphics);
 		}
 

@@ -69,11 +69,11 @@ public class ChatMessageManager
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int setting = clientProvider.get().getSetting(Varbits.TRANSPARANT_CHATBOX);
+		int var = clientProvider.get().getVar(Varbits.TRANSPARANT_CHATBOX);
 
-		if (transparancyVarbit != setting)
+		if (transparancyVarbit != var)
 		{
-			transparancyVarbit = setting;
+			transparancyVarbit = var;
 			refreshAll();
 		}
 	}
@@ -140,7 +140,7 @@ public class ChatMessageManager
 		}
 
 		final Client client = clientProvider.get();
-		final boolean transparent = client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARANT_CHATBOX) != 0;
 		final Set<ChatColor> chatColors = colorCache.get(target.getType());
 
 		// If we do not have any colors cached, simply set clean message

@@ -105,14 +105,14 @@ public class RunepouchOverlay extends Overlay
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
 
-			int amount = client.getSetting(amountVarbit);
+			int amount = client.getVar(amountVarbit);
 			if (amount <= 0)
 			{
 				continue;
 			}
 
 			Varbits runeVarbit = RUNE_VARBITS[i];
-			int runeId = client.getSetting(runeVarbit);
+			int runeId = client.getVar(runeVarbit);
 			Runes rune = Runes.getRune(runeId);
 			if (rune == null)
 			{

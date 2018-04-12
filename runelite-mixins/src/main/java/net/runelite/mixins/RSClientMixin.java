@@ -50,10 +50,10 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
-import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Varbits;
+import net.runelite.api.Varp;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -287,17 +287,17 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public int getSetting(Setting setting)
+	public int getVar(Varp varp)
 	{
 		int[] varps = getVarps();
-		return varps[setting.getId()];
+		return varps[varp.getId()];
 	}
 
 	@Inject
 	@Override
 	public boolean isPrayerActive(Prayer prayer)
 	{
-		return getSetting(prayer.getVarbit()) == 1;
+		return getVar(prayer.getVarbit()) == 1;
 	}
 
 	/**
@@ -351,7 +351,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		if (isResized())
 		{
-			if (getSetting(Varbits.SIDE_PANELS) == 1)
+			if (getVar(Varbits.SIDE_PANELS) == 1)
 			{
 				return getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE);
 			}
@@ -711,7 +711,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@FieldHook("clientVarps")
 	@Inject
-	public static void settingsChanged(int idx)
+	public static void varpsChanged(int idx)
 	{
 		VarbitChanged varbitChanged = new VarbitChanged();
 		eventBus.post(varbitChanged);

@@ -75,7 +75,7 @@ public class PyramidPlunderOverlay extends Overlay
 		));
 
 		panelComponent.getLines().add(new PanelComponent.Line(
-			"Room: ", String.valueOf(client.getSetting(Varbits.PYRAMID_PLUNDER_ROOM)) + "/8"
+			"Room: ", String.valueOf(client.getVar(Varbits.PYRAMID_PLUNDER_ROOM)) + "/8"
 		));
 
 		return panelComponent.render(graphics);
@@ -93,7 +93,7 @@ public class PyramidPlunderOverlay extends Overlay
 
 	private void startTimer()
 	{
-		int plunderingTime = client.getSetting(Varbits.PYRAMID_PLUNDER_TIMER);
+		int plunderingTime = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
 		int timeLeft = (int) ((505 - plunderingTime) * 0.6);
 
 		timer = new PyramidTimer(timeLeft);
