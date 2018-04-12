@@ -279,9 +279,9 @@ public interface GroundItemsConfig extends Config
 			position = 21
 	)
 	default boolean highlightAlchProfit()
-    {
-        return false;
-    }
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "alchProfitColor",
@@ -290,7 +290,7 @@ public interface GroundItemsConfig extends Config
 			position = 22
 	)
 	default Color alchProfitColor()
-    {
-        return Color.decode("#00ffb2");
-    }
+	{
+		return Color.decode("#00ffb2");
+	}
 }
