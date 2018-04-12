@@ -6,7 +6,7 @@
    iload                  0
    load_int               -1
    if_icmpne              LABEL4
-   jump                   LABEL130
+   jump                   LABEL147
 LABEL4:
    widget_put_actions_null
    iload                  0
@@ -37,7 +37,7 @@ LABEL9:
    iload                  6
    load_string            "IiIiiIIII"
    widget_put_drag_release_listener
-   jump                   LABEL111
+   jump                   LABEL128
 LABEL33:
    iload                  0
    4209
@@ -65,11 +65,23 @@ LABEL38:
    iload                  6
    load_string            "IiIiiIIII"
    widget_put_drag_release_listener
-   jump                   LABEL111
+   jump                   LABEL128
 LABEL59:
    iload                  0
    iload                  1
    1200
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL66
+   jump                   LABEL72
+LABEL66:
+   load_int               1
+   load_string            "Withdraw-"
+   invoke                 2227
+   concat_string
+   widget_put_action
+   jump                   LABEL75
+LABEL72:
    load_int               1                  ; if the bank tags plugin is not active this will not get changed and thus
                                              ; overridden by the Withdraw-1 option
    load_string            "Edit-tags"        ; push menu action name
@@ -83,6 +95,7 @@ LABEL59:
    load_int               1
    load_string            "Withdraw-1"
    widget_put_action
+LABEL75:
    load_int               2
    load_string            "Withdraw-5"
    widget_put_action
@@ -91,16 +104,16 @@ LABEL59:
    widget_put_action
    get_varbit             3960
    load_int               0
-   if_icmpgt              LABEL75
-   jump                   LABEL81
-LABEL75:
+   if_icmpgt              LABEL85
+   jump                   LABEL91
+LABEL85:
    load_int               4
    load_string            "Withdraw-"
    get_varbit             3960
    int_to_string
    string_append          2
    widget_put_action
-LABEL81:
+LABEL91:
    load_int               5
    load_string            "Withdraw-X"
    widget_put_action
@@ -110,15 +123,24 @@ LABEL81:
    load_int               7
    load_string            "Withdraw-All-but-1"
    widget_put_action
+   get_varbit             6347
+   load_int               0
+   if_icmpgt              LABEL104
+   jump                   LABEL107
+LABEL104:
+   load_int               8
+   load_string            "Withdraw-1"
+   widget_put_action
+LABEL107:
    get_varbit             3755
    load_int               0
-   if_icmpeq              LABEL94
-   jump                   LABEL97
-LABEL94:
-   load_int               8
+   if_icmpeq              LABEL111
+   jump                   LABEL114
+LABEL111:
+   load_int               9
    load_string            "Placeholder"
    widget_put_action
-LABEL97:
+LABEL114:
    load_int               0
    widget_put_opacity
    load_int               285
@@ -133,7 +155,7 @@ LABEL97:
    iload                  6
    load_string            "IiIiiIIII"
    widget_put_drag_release_listener
-LABEL111:
+LABEL128:
    load_int               10
    load_string            "Examine"
    widget_put_action
@@ -152,8 +174,8 @@ LABEL111:
    load_int               0
    load_string            "IiiiIi"
    widget_put_drag_start_listener
-   jump                   LABEL142
-LABEL130:
+   jump                   LABEL159
+LABEL147:
    load_int               255
    widget_put_opacity
    load_int               6512
@@ -166,5 +188,5 @@ LABEL130:
    load_int               -1
    load_string            ""
    widget_put_drag_release_listener
-LABEL142:
+LABEL159:
    return
