@@ -210,4 +210,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 16,
+			keyName = "swapAbyss",
+			name = "Abyss Teleport",
+			description = "Swap Talk-to with Teleport on the Mage of Zamorak"
+	)
+	default boolean swapAbyss()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 16,
+			keyName = "swapRepair",
+			name = "Abyss Teleport",
+			description = "Swap Talk-to with Repair on Bob in Lumbridge"
+	)
+	default boolean swapRepair()
+	{
+		return true;
+	}
 }
