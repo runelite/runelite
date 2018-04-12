@@ -44,7 +44,7 @@ public interface RSWidget extends Widget
 	int getRSParentId();
 
 	@Import("clickMask")
-	int setClickMask();
+	int getClickMask();
 
 	@Import("clickMask")
 	void setClickMask(int mask);
