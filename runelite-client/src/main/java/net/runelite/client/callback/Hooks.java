@@ -339,7 +339,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
 		 * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -360,6 +360,8 @@ public class Hooks
 		log.debug("Menu action clicked: {}", menuOptionClicked);
 
 		eventBus.post(menuOptionClicked);
+
+		return menuOptionClicked.isConsumed();
 	}
 
 	public static void addChatMessage(int type, String name, String message, String sender)
