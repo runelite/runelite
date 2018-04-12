@@ -26,32 +26,64 @@ package net.runelite.client.ui;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 
 @Singleton
+@Slf4j
 public class DrawManager
 {
-	private final List<DrawListener> drawListeners = new CopyOnWriteArrayList<>();
+	private final List<Consumer<BufferedImage>> everyFrame = new CopyOnWriteArrayList<>();
+	private final Queue<Consumer<BufferedImage>> nextFrame = new ConcurrentLinkedQueue<>();
 
-	public void registerDrawListener(DrawListener drawListener)
+	public void registerEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
 	{
-		if (!drawListeners.contains(drawListener))
+		if (!everyFrame.contains(everyFrameListener))
 		{
-			drawListeners.add(drawListener);
+			everyFrame.add(everyFrameListener);
 		}
 	}
 
-	public void unregisterDrawListener(DrawListener drawListener)
+	public void unregisterEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
 	{
-		drawListeners.remove(drawListener);
+		everyFrame.remove(everyFrameListener);
+	}
+
+	public void requestNextFrameListener(Consumer<BufferedImage> nextFrameListener)
+	{
+		nextFrame.add(nextFrameListener);
 	}
 
 	public void processDrawComplete(BufferedImage image)
 	{
-		for (DrawListener listener : drawListeners)
+		for (Consumer<BufferedImage> everyFrameListener : everyFrame)
 		{
-			listener.drawComplete(image);
+			try
+			{
+				everyFrameListener.accept(image);
+			}
+			catch (Exception e)
+			{
+				log.error("Error in draw consumer", e);
+			}
+		}
+
+		Consumer<BufferedImage> nextFrameListener = nextFrame.poll();
+		while (nextFrameListener != null)
+		{
+			try
+			{
+				nextFrameListener.accept(image);
+			}
+			catch (Exception e)
+			{
+				log.error("Error in draw consumer", e);
+			}
+			nextFrameListener = nextFrame.poll();
 		}
 	}
 }

@@ -115,9 +115,6 @@ public class ScreenshotPlugin extends Plugin
 	private ScreenshotConfig config;
 
 	@Inject
-	private ScreenshotDrawListener drawListener;
-
-	@Inject
 	private Notifier notifier;
 
 	@Inject
@@ -180,7 +177,6 @@ public class ScreenshotPlugin extends Plugin
 				.build();
 
 			titleToolbar.addNavigation(titleBarButton);
-			drawManager.registerDrawListener(drawListener);
 		}
 		catch (IOException ex)
 		{
@@ -192,7 +188,6 @@ public class ScreenshotPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		titleToolbar.removeNavigation(titleBarButton);
-		drawManager.unregisterDrawListener(drawListener);
 	}
 
 	@Subscribe
@@ -384,7 +379,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		drawListener.requestScreenshot(image ->
+		drawManager.requestNextFrameListener(image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
 				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
