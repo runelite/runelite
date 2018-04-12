@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -68,6 +69,7 @@ public class GroundItemsOverlay extends Overlay
 	private final TextComponent textComponent = new TextComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 	private final ItemManager itemManager;
+	private int natureRunePrice;
 
 	@Inject
 	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config, ItemManager itemManager)
@@ -78,6 +80,15 @@ public class GroundItemsOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.itemManager = itemManager;
+
+		try
+		{
+			natureRunePrice = itemManager.getItemPrice(561).getPrice();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -140,6 +151,8 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
+				item.getHaPrice(),
+				item.getQuantity(),
 				highlighted, hidden);
 			itemStringBuilder.append(item.getName());
 
@@ -229,7 +242,7 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	Color getCostColor(int cost, boolean highlighted, boolean hidden)
+	Color getCostColor(int cost, int quantity, int alchValue, boolean highlighted, boolean hidden)
 	{
 		if (hidden)
 		{
@@ -239,6 +252,11 @@ public class GroundItemsOverlay extends Overlay
 		if (highlighted)
 		{
 			return config.highlightedColor();
+		}
+
+		if (config.highlightAlchProfit())
+		{
+			if ((cost / quantity) + natureRunePrice < alchValue) return config.alchProfitColor();
 		}
 
 		// set the color according to rarity, if possible
