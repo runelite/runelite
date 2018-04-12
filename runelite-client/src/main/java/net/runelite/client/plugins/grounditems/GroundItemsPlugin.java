@@ -376,7 +376,7 @@ public class GroundItemsPlugin extends Plugin
 			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
 			int cost = quantity * price;
 			int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-			Color color = overlay.getCostColor(cost, alchPrice, isHighlighted(itemComposition.getName()),
+			Color color = overlay.getCostColor(cost, quantity, alchPrice, isHighlighted(itemComposition.getName()),
 				isHidden(itemComposition.getName()));
 
 			if (!color.equals(config.defaultColor()))
