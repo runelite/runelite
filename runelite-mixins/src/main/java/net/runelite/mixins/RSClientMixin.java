@@ -77,6 +77,7 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.Hooks;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -785,5 +786,21 @@ public abstract class RSClientMixin implements RSClient
 		client.setHintArrowTargetType(HintArrowType.WORLD_POSITION.getValue());
 		client.setHintArrowX(point.getX());
 		client.setHintArrowY(point.getY());
+	}
+
+	@Copy("menuAction")
+	static void rs$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("menuAction")
+	static void rl$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+	{
+		if (Hooks.menuActionHook(var0, var1, var2, var3, var4, var5, var6, var7))
+		{
+			return;
+		}
+		rs$menuAction(var0, var1, var2, var3, var4, var5, var6, var7);
 	}
 }
