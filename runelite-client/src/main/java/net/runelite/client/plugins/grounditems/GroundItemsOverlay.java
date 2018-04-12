@@ -81,9 +81,12 @@ public class GroundItemsOverlay extends Overlay
 		this.config = config;
 		this.itemManager = itemManager;
 
-		try {
+		try
+		{
 			natureRunePrice = itemManager.getItemPrice(561).getPrice();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
