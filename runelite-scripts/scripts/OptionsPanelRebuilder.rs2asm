@@ -265,7 +265,7 @@ LABEL226:
    load_int               320
    invoke                 42
 LABEL229:
-   get_viewport_size     
+   get_viewport_size
    istore                 9
    istore                 8
    iload                  2
@@ -317,7 +317,7 @@ LABEL260:
    load_int               73
    iload                  1
    load_int               10551307
-   get_enum_value        
+   get_enum_value
    iload                  5
    iload                  6
    iload                  7
@@ -329,7 +329,7 @@ LABEL283:
    load_int               73
    iload                  1
    load_int               10551307
-   get_enum_value        
+   get_enum_value
    iload                  3
    load_int               0
    load_int               0
@@ -339,7 +339,7 @@ LABEL293:
    load_int               73
    iload                  1
    load_int               10551309
-   get_enum_value        
+   get_enum_value
    istore                 14
    iload                  14
    load_int               -1
@@ -403,22 +403,22 @@ LABEL347:
    load_int               73
    iload                  1
    load_int               10551311
-   get_enum_value        
+   get_enum_value
    istore                 14
    iload                  14
    load_int               -1
    if_icmpne              LABEL357
-   jump                   LABEL390
+   jump                   LABEL412
 LABEL357:
    load_int               73
    load_int               73
    iload                  1
    load_int               10551303
-   get_enum_value        
+   get_enum_value
    widget_get_index_widget
    load_int               1
    if_icmpeq              LABEL366
-   jump                   LABEL384
+   jump                   LABEL395
 LABEL366:
    get_varbit             4692
    load_int               0
@@ -431,24 +431,50 @@ LABEL370:
    load_int               0
    iload                  14
    widget_put_position_widget
-   jump                   LABEL383
+   jump                   LABEL394
 LABEL377:
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL381
+   jump                   LABEL388
+LABEL381:
+   load_int               8
+   load_int               36
+   load_int               2
+   load_int               0
+   iload                  14
+   widget_put_position_widget
+   jump                   LABEL394
+LABEL388:
    load_int               0
    load_int               36
    load_int               2
    load_int               0
    iload                  14
    widget_put_position_widget
-LABEL383:
-   jump                   LABEL390
-LABEL384:
+LABEL394:
+   jump                   LABEL412
+LABEL395:
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL399
+   jump                   LABEL406
+LABEL399:
+   load_int               8
+   load_int               0
+   load_int               2
+   load_int               0
+   iload                  14
+   widget_put_position_widget
+   jump                   LABEL412
+LABEL406:
    load_int               0
    load_int               0
    load_int               2
    load_int               0
    iload                  14
    widget_put_position_widget
-LABEL390:
+LABEL412:
    iload                  0
    iload                  1
    invoke                 920
