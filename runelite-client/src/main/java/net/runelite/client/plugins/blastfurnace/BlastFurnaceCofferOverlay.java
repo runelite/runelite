@@ -68,7 +68,7 @@ class BlastFurnaceCofferOverlay extends Overlay
 
 			panelComponent.getLines().add(new PanelComponent.Line(
 				"Coffer:",
-				StackFormatter.quantityToStackSize(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
+				StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp"
 			));
 		}
 		return panelComponent.render(graphics);

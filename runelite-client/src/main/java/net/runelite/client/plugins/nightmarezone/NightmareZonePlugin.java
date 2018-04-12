@@ -151,7 +151,7 @@ public class NightmareZonePlugin extends Plugin
 
 	private void checkAbsorption()
 	{
-		int absorptionPoints = client.getSetting(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
 
 		if (!absorptionNotificationSend)
 		{

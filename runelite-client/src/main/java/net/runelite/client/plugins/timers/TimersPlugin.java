@@ -106,7 +106,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
-		int raidVarb = client.getSetting(Varbits.IN_RAID);
+		int raidVarb = client.getVar(Varbits.IN_RAID);
 		if (lastRaidVarb != raidVarb)
 		{
 			removeGameTimer(OVERLOAD_RAID);
@@ -313,7 +313,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
 		{
-			if (client.getSetting(Varbits.IN_RAID) == 1)
+			if (client.getVar(Varbits.IN_RAID) == 1)
 			{
 				createGameTimer(OVERLOAD_RAID);
 			}

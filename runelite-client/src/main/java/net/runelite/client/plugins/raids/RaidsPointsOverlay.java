@@ -61,8 +61,8 @@ public class RaidsPointsOverlay extends Overlay
 			return null;
 		}
 
-		int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
-		int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
+		int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
+		int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
 		panel.getLines().clear();
 		panel.getLines().add(new PanelComponent.Line(
@@ -72,7 +72,7 @@ public class RaidsPointsOverlay extends Overlay
 			client.getLocalPlayer().getName() + ":", Color.WHITE, POINTS_FORMAT.format(personalPoints), Color.WHITE
 		));
 		panel.getLines().add(new PanelComponent.Line(
-			"Party size:", Color.WHITE, String.valueOf(client.getSetting(Varbits.RAID_PARTY_SIZE)), Color.WHITE
+			"Party size:", Color.WHITE, String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)), Color.WHITE
 		));
 
 		return panel.render(graphics);
