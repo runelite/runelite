@@ -50,10 +50,9 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into session (uuid, ip, start, last) "
-				+ "values (:uuid, :ip, :start, :last)")
+			con.createQuery("insert into session (uuid, start, last) "
+				+ "values (:uuid, :start, :last)")
 				.addParameter("uuid", session.getUuid().toString())
-				.addParameter("ip", session.getIp())
 				.addParameter("start", session.getStart())
 				.addParameter("last", session.getLast())
 				.executeUpdate();
