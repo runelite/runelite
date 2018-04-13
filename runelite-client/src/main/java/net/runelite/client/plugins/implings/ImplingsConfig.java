@@ -208,10 +208,10 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 16,
 		keyName = "magpieColor",
-		name = "Ninja impling color",
+		name = "Magpie impling color",
 		description = "Text color for Magpie implings"
 	)
-	default Color getMapgieColor()
+	default Color getMagpieColor()
 	{
 		return new Color(142, 142, 19);
 	}
@@ -302,5 +302,16 @@ public interface ImplingsConfig extends Config
 	default Color getSpawnColor()
 	{
 		return Color.WHITE;
+	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "showname",
+		name = "Show name on minimap",
+		description = "Configures whether or not impling names are displayed on minimap"
+	)
+	default boolean showName()
+	{
+		return false;
 	}
 }
