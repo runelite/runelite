@@ -351,7 +351,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("trade", option, target, true);
 			}
 
-			if　(config.claimSlime() && target.equals("robin"))
+			if (config.claimSlime() && target.equals("robin"))
 			{
 				swap("claim-slime", option, target, true);
 			}
