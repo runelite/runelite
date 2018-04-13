@@ -473,7 +473,7 @@ public abstract class class28 {
 
                var4.field1165 = var4.composition.walkingAnimation;
                var4.field1209 = var4.composition.rotate180Animation;
-               var4.field1167 = var4.composition.field3717;
+               var4.field1167 = var4.composition.rotate90RightAnimation;
                var4.field1177 = var4.composition.field3706;
                var4.idlePoseAnimation = var4.composition.standingAnimation;
                var4.field1163 = var4.composition.field3716;
