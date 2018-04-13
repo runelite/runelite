@@ -210,4 +210,47 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+	@ConfigItem(
+			position = 16,
+			keyName = "swapAbyss",
+			name = "Abyss Teleport",
+			description = "Swap Talk-to with teleport on the Mage of Zamorak"
+	)
+	default boolean swapAbyss()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "swapPass",
+			name = "Quick Pass",
+			description = "Swap Pass with Quick Pass at Cerberus and Olm"
+	)
+	default boolean swapCerberus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 18,
+			keyName = "swapBellRing",
+			name = "Bell Ring",
+			description = "Swap Ring with Quick-start at Grotesque Guardians"
+	)
+	default boolean swapBellRing()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "swapPyramid",
+			name = "Pyramid Plunder",
+			description = "Swap Talk-to with Start-minigame at Pyramid Plunder"
+	)
+	default boolean swapPyramid()
+	{
+		return true;
+	}
 }
