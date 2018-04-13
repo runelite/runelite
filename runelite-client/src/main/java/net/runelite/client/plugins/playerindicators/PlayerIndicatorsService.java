@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 @Singleton
 public class PlayerIndicatorsService
@@ -47,7 +49,7 @@ public class PlayerIndicatorsService
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.drawOwnName() && !config.drawClanMemberNames()
-			&& !config.drawFriendNames() && !config.drawNonClanMemberNames())
+			&& !config.drawFriendNames() && !config.drawNonClanMemberNames() && !config.drawAttackableNames())
 		{
 			return;
 		}
@@ -86,6 +88,36 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getNonClanMemberColor());
 			}
+			else if (config.drawAttackableNames() && isWithinLevelRange(player.getCombatLevel())) {
+				consumer.accept(player, config.getAttackableNameColor());
+			}
 		}
 	}
+
+	public boolean isWithinLevelRange(int playerCombatLevel)
+	{
+		Widget levelRange = client.getWidget(WidgetInfo.COMBAT_AREA_LEVEL_RANGE);
+		Widget wildernessLevel = client.getWidget(WidgetInfo.COMBAT_AREA_WILDERNESS_LEVEL);
+
+		int localPlayerLevel = client.getLocalPlayer().getCombatLevel();
+		int lowerLevelBound = localPlayerLevel - 15;
+		int upperLevelBound = localPlayerLevel + 15;
+
+		if (levelRange == null && wildernessLevel == null)
+		{
+			return false;
+		}
+		else if (levelRange == null)
+		{
+			lowerLevelBound = localPlayerLevel - Integer.parseInt(wildernessLevel.getText().split(" ")[1]);
+			upperLevelBound = localPlayerLevel + Integer.parseInt(wildernessLevel.getText().split(" ")[1]);
+			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+		}
+		else
+		{
+			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+		}
+
+	}
+
 }
