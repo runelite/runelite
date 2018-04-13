@@ -346,6 +346,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("exchange", option, target, true);
 			}
 
+			if (config.swapAbyss() && target.contains("mage of zamorak"))
+			{
+				swap("teleport", option, target, true);
+			}
+			if (config.swapRepair() && target.contains("bob"))
+			{
+				swap("repair", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);
