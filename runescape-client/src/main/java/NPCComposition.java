@@ -89,7 +89,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -447164707
    )
-   public int field3706;
+   @Export("rotate90LeftAnimation")
+   public int rotate90LeftAnimation;
    @ObfuscatedName("v")
    @Export("colors")
    short[] colors;
@@ -189,7 +190,7 @@ public class NPCComposition extends CacheableNode {
       this.walkingAnimation = -1;
       this.rotate180Animation = -1;
       this.rotate90RightAnimation = -1;
-      this.field3706 = -1;
+      this.rotate90LeftAnimation = -1;
       this.actions = new String[5];
       this.isMinimapVisible = true;
       this.combatLevel = -1;
@@ -265,7 +266,7 @@ public class NPCComposition extends CacheableNode {
          this.walkingAnimation = var1.readUnsignedShort();
          this.rotate180Animation = var1.readUnsignedShort();
          this.rotate90RightAnimation = var1.readUnsignedShort();
-         this.field3706 = var1.readUnsignedShort();
+         this.rotate90LeftAnimation = var1.readUnsignedShort();
       } else if(var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.readString();
          if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
