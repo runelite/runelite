@@ -39,7 +39,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLU
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
 {
 	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
 		new AnagramClue("This anagram reveals who to speak to next: A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "5"),
@@ -193,11 +193,6 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				if (!plugin.getClient().hasHintArrow())
-				{
-					plugin.getClient().setHintArrow(npc);
-				}
-
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
