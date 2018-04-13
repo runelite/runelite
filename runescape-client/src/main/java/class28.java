@@ -475,7 +475,7 @@ public abstract class class28 {
                var4.field1209 = var4.composition.field3736;
                var4.field1167 = var4.composition.field3717;
                var4.field1177 = var4.composition.field3706;
-               var4.idlePoseAnimation = var4.composition.field3712;
+               var4.idlePoseAnimation = var4.composition.standingAnimation;
                var4.field1163 = var4.composition.field3716;
                var4.field1164 = var4.composition.field3714;
                var4.method1874(SoundTaskDataProvider.localPlayer.pathX[0] + var6, SoundTaskDataProvider.localPlayer.pathY[0] + var8, var9 == 1);

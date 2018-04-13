@@ -187,7 +187,7 @@ public class UrlRequester implements Runnable {
             var3.field1209 = var3.composition.field3736;
             var3.field1167 = var3.composition.field3717;
             var3.field1177 = var3.composition.field3706;
-            var3.idlePoseAnimation = var3.composition.field3712;
+            var3.idlePoseAnimation = var3.composition.standingAnimation;
             var3.field1163 = var3.composition.field3716;
             var3.field1164 = var3.composition.field3714;
          }
