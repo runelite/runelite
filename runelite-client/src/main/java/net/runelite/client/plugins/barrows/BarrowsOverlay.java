@@ -179,11 +179,11 @@ class BarrowsOverlay extends Overlay
 
 				if (client.getSetting(brother.getKilledVarbit()) > 0)
 				{
-					graphics.setColor(Color.red);
+					graphics.setColor(config.deadBrotherLocColor());
 				}
 				else
 				{
-					graphics.setColor(Color.cyan);
+					graphics.setColor(config.brotherLocColor());
 				}
 
 				graphics.drawString(brother.getName(), minimapText.getX(), minimapText.getY());
