@@ -849,7 +849,7 @@ public final class ItemID
 	public static final int MYSTIC_AIR_STAFF = 1405;
 	public static final int MYSTIC_EARTH_STAFF = 1407;
 	public static final int IBANS_STAFF = 1409;
-	public static final int IBANS_STAFF_1410 = 1410;
+	public static final int IBANS_STAFF_BROKEN = 1410;
 	public static final int FARMERS_FORK = 1411;
 	public static final int HALBERD = 1413;
 	public static final int WARHAMMER = 1415;
