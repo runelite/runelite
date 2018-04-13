@@ -152,7 +152,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -261996981
    )
-   public int field3733;
+   @Export("rotation")
+   public int rotation;
    @ObfuscatedName("ac")
    @Export("configs")
    public int[] configs;
@@ -179,7 +180,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lha;"
    )
-   IterableHashTable field3735;
+   @Export("params")
+   IterableHashTable params;
 
    static {
       npcs = new NodeCache(64);
@@ -205,7 +207,7 @@ public class NPCComposition extends CacheableNode {
       this.ambient = 0;
       this.contrast = 0;
       this.headIcon = -1;
-      this.field3733 = 32;
+      this.rotation = 32;
       this.varpIndex = -1;
       this.varp32Index = -1;
       this.field3724 = true;
@@ -319,7 +321,7 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 102) {
          this.headIcon = var1.readUnsignedShort();
       } else if(var2 == 103) {
-         this.field3733 = var1.readUnsignedShort();
+         this.rotation = var1.readUnsignedShort();
       } else if(var2 != 106 && var2 != 118) {
          if(var2 == 107) {
             this.field3724 = false;
@@ -328,7 +330,7 @@ public class NPCComposition extends CacheableNode {
          } else if(var2 == 111) {
             this.field3738 = true;
          } else if(var2 == 249) {
-            this.field3735 = class28.readStringIntParameters(var1, this.field3735);
+            this.params = class28.readStringIntParameters(var1, this.params);
          }
       } else {
          this.varpIndex = var1.readUnsignedShort();
@@ -542,7 +544,7 @@ public class NPCComposition extends CacheableNode {
       garbageValue = "-71"
    )
    public int method5124(int var1, int var2) {
-      IterableHashTable var4 = this.field3735;
+      IterableHashTable var4 = this.params;
       int var3;
       if(var4 == null) {
          var3 = var2;
@@ -564,6 +566,6 @@ public class NPCComposition extends CacheableNode {
       garbageValue = "-820378305"
    )
    public String method5125(int var1, String var2) {
-      return WorldMapType1.method309(this.field3735, var1, var2);
+      return WorldMapType1.method309(this.params, var1, var2);
    }
 }

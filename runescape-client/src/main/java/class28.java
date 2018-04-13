@@ -466,7 +466,7 @@ public abstract class class28 {
 
                int var9 = var1.getBits(1);
                var4.field1172 = var4.composition.size;
-               var4.field1205 = var4.composition.field3733;
+               var4.field1205 = var4.composition.rotation;
                if(var4.field1205 == 0) {
                   var4.angle = 0;
                }
