@@ -289,8 +289,8 @@ public class Perspective
 		int aoeSize = size / 2;
 
 		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point southWestCorner = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
-			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
+		Point southWestCorner = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1,
+			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1);
 		// expand by size
 		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
 			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
