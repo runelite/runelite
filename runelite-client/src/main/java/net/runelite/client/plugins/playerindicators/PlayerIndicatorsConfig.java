@@ -152,7 +152,10 @@ public interface PlayerIndicatorsConfig extends Config
 		name = "Draw attackable player names",
 		description = "Configures whether or not names of attackable players should be drawn"
 	)
-	default boolean drawAttackableNames() { return false; }
+	default boolean drawAttackableNames()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		position = 11,
@@ -160,7 +163,10 @@ public interface PlayerIndicatorsConfig extends Config
 		name = "Attackable player color",
 		description = "Color of attackable player names"
 	)
-	default Color getAttackableNameColor() { return Color.YELLOW; }
+	default Color getAttackableNameColor()
+	{
+		return Color.YELLOW;
+	}
 
 	@ConfigItem(
 		position = 12,
