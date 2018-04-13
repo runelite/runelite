@@ -98,7 +98,8 @@ public class NPCComposition extends CacheableNode {
    @Export("modifiedColors")
    short[] modifiedColors;
    @ObfuscatedName("r")
-   short[] field3721;
+   @Export("textureToReplace")
+   short[] textureToReplace;
    @ObfuscatedName("j")
    short[] field3740;
    @ObfuscatedName("b")
@@ -283,11 +284,11 @@ public class NPCComposition extends CacheableNode {
          }
       } else if(var2 == 41) {
          var3 = var1.readUnsignedByte();
-         this.field3721 = new short[var3];
+         this.textureToReplace = new short[var3];
          this.field3740 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3721[var4] = (short)var1.readUnsignedShort();
+            this.textureToReplace[var4] = (short)var1.readUnsignedShort();
             this.field3740[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 60) {
@@ -404,9 +405,9 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            if(this.field3721 != null) {
-               for(var9 = 0; var9 < this.field3721.length; ++var9) {
-                  var11.method2613(this.field3721[var9], this.field3740[var9]);
+            if(this.textureToReplace != null) {
+               for(var9 = 0; var9 < this.textureToReplace.length; ++var9) {
+                  var11.method2613(this.textureToReplace[var9], this.field3740[var9]);
                }
             }
 
@@ -476,9 +477,9 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            if(this.field3721 != null) {
-               for(var4 = 0; var4 < this.field3721.length; ++var4) {
-                  var7.method2613(this.field3721[var4], this.field3740[var4]);
+            if(this.textureToReplace != null) {
+               for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
+                  var7.method2613(this.textureToReplace[var4], this.field3740[var4]);
                }
             }
 
