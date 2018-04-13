@@ -471,7 +471,7 @@ public abstract class class28 {
                   var4.angle = 0;
                }
 
-               var4.field1165 = var4.composition.field3732;
+               var4.field1165 = var4.composition.walkingAnimation;
                var4.field1209 = var4.composition.field3736;
                var4.field1167 = var4.composition.field3717;
                var4.field1177 = var4.composition.field3706;
