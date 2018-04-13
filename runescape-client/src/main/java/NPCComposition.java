@@ -146,7 +146,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 608267971
    )
-   public int field3715;
+   @Export("headIcon")
+   public int headIcon;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = -261996981
@@ -203,7 +204,7 @@ public class NPCComposition extends CacheableNode {
       this.isVisible = false;
       this.ambient = 0;
       this.contrast = 0;
-      this.field3715 = -1;
+      this.headIcon = -1;
       this.field3733 = 32;
       this.varpIndex = -1;
       this.varp32Index = -1;
@@ -316,7 +317,7 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 101) {
          this.contrast = var1.readByte();
       } else if(var2 == 102) {
-         this.field3715 = var1.readUnsignedShort();
+         this.headIcon = var1.readUnsignedShort();
       } else if(var2 == 103) {
          this.field3733 = var1.readUnsignedShort();
       } else if(var2 != 106 && var2 != 118) {

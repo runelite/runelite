@@ -345,10 +345,10 @@ public final class DState {
                var90 = var90.transform();
             }
 
-            if(var90.field3715 >= 0 && var90.field3715 < Fonts.headIconsPrayer.length) {
+            if(var90.headIcon >= 0 && var90.headIcon < Fonts.headIconsPrayer.length) {
                WorldMapDecoration.characterToScreen(var0, var0.logicalHeight + 15);
                if(Client.screenX > -1) {
-                  Fonts.headIconsPrayer[var90.field3715].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - 30);
+                  Fonts.headIconsPrayer[var90.headIcon].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - 30);
                }
             }
 
