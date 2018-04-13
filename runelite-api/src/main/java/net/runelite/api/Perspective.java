@@ -221,7 +221,7 @@ public class Perspective
 			return new Point(x, y);
 		}
 
-		return new Point(-1, -1);
+		return null;
 	}
 
 	/**
