@@ -42,7 +42,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.Emote.BULL_ROARER;
 
 @Getter
-public class EmoteClue extends ClueScroll implements TextClueScroll
+public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
 		new EmoteClue("Show your anger towards the Statue of Saradomin in Ellamaria's garden. Beware of double agents! Equip a zamorak godsword.", new WorldPoint(3230, 3478, 0), ANGRY, ZAMORAK_GODSWORD),
@@ -221,11 +221,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!plugin.getClient().hasHintArrow())
-		{
-			plugin.getClient().setHintArrow(getLocation());
-		}
-
 		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 		if (localLocation == null)
