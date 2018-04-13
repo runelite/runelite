@@ -83,6 +83,7 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 282238707
    )
+   @Export("rotate90RightAnimation")
    public int rotate90RightAnimation;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
