@@ -127,6 +127,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
+		client.clearHintArrow();
 		clue = null;
 	}
 
@@ -138,6 +139,7 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
+			client.clearHintArrow();
 			clue = null;
 			return;
 		}
@@ -200,6 +202,7 @@ public class ClueScrollPlugin extends Plugin
 		// so the clue window doesn't have to be open.
 		if (clue != null)
 		{
+			client.clearHintArrow();
 			this.clue = clue;
 			this.clueTimeout = Instant.now();
 		}

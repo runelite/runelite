@@ -218,6 +218,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
+		if (!plugin.getClient().hasHintArrow())
+		{
+			plugin.getClient().setHintArrow(getLocation());
+		}
+
 		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 		if (localLocation == null)

@@ -33,6 +33,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class ClueScrollWorldOverlay extends Overlay
@@ -70,6 +71,7 @@ public class ClueScrollWorldOverlay extends Overlay
 	public ClueScrollWorldOverlay(ClueScrollPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 	}
 
