@@ -32,22 +32,14 @@ import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
+import static net.runelite.api.MenuAction.*;
+
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.FOLLOW;
-import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
-import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
-import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
-import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
@@ -147,6 +139,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				color = config.getNonClanMemberColor();
 			}
+			else if (config.drawAttackableNames() && isWithinLevelRange(player.getCombatLevel()))
+			{
+				color = config.getAttackableNameColor();
+			}
 
 			if (image != -1 || color != null)
 			{
@@ -174,5 +170,31 @@ public class PlayerIndicatorsPlugin extends Plugin
 				client.setMenuEntries(menuEntries);
 			}
 		}
+	}
+
+	public boolean isWithinLevelRange(int playerCombatLevel)
+	{
+		Widget levelRange = client.getWidget(WidgetInfo.COMBAT_AREA_LEVEL_RANGE);
+		Widget wildernessLevel = client.getWidget(WidgetInfo.COMBAT_AREA_WILDERNESS_LEVEL);
+
+		int localPlayerLevel = client.getLocalPlayer().getCombatLevel();
+		int lowerLevelBound = localPlayerLevel - 15;
+		int upperLevelBound = localPlayerLevel + 15;
+
+		if (levelRange == null && wildernessLevel == null)
+		{
+			return false;
+		}
+		else if (levelRange == null)
+		{
+			lowerLevelBound = localPlayerLevel - Integer.parseInt(wildernessLevel.getText().split(" ")[1]);
+			upperLevelBound = localPlayerLevel + Integer.parseInt(wildernessLevel.getText().split(" ")[1]);
+			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+		}
+		else
+		{
+			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+		}
+
 	}
 }
