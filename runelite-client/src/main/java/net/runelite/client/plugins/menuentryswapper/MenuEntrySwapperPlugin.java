@@ -351,7 +351,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("trade", option, target, true);
 			}
 
-			if(config.claimSlime() && target.equals("robin"))
+			if　(config.claimSlime() && target.equals("robin"))
 			{
 				swap("claim-slime", option, target, true);
 			}
@@ -374,11 +374,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pay", option, target, true);
 			}
 		}
-		else if(config.swapTravel() && option.equals(("pass")) && target.equals("energy barrier"))
+		else if (config.swapTravel() && option.equals(("pass")) && target.equals("energy barrier"))
 		{
 			swap("pay-toll(2-ecto)", option, target, true);
 		}
-		else if(config.swapTravel() && option.equals(("open")) && target.equals("gate"))
+		else if (config.swapTravel() && option.equals(("open")) && target.equals("gate"))
 		{
 			swap("pay-toll(10gp)", option, target, true);
 		}
