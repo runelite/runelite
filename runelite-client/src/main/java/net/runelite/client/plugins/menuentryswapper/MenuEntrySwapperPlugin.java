@@ -331,7 +331,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && target.contains("H.A.M."))
+			if (config.swapPickpocket() && target.contains("h.a.m."))
 			{
 				swap("pickpocket", option, target, true);
 			}
