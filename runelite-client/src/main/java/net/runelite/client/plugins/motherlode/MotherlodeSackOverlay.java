@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
-*  Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,7 @@ package net.runelite.client.plugins.motherlode;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Color;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -40,19 +42,27 @@ class MotherlodeSackOverlay extends Overlay
 {
 	private final Client client;
 	private final MotherlodeConfig config;
+	private final MotherlodePlugin plugin;
+
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeSackOverlay(Client client, MotherlodeConfig config)
+	MotherlodeSackOverlay(Client client, MotherlodeConfig config, MotherlodePlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.isInMlm())
+		{
+			return null;
+		}
+
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
 		panelComponent.getLines().clear();
@@ -65,7 +75,21 @@ class MotherlodeSackOverlay extends Overlay
 			{
 				panelComponent.getLines().add(new PanelComponent.Line(
 					"Pay-dirt in sack:",
-					String.valueOf(client.getSetting(Varbits.SACK_NUMBER))
+					Color.WHITE,
+					String.valueOf(client.getSetting(Varbits.SACK_NUMBER)),
+						plugin.getCurSackSize() >= plugin.getMaxSackSize() ? Color.RED : Color.WHITE
+				));
+			}
+
+			if (config.showDepositsLeft())
+			{
+				Integer depositsLeft = plugin.getDepositsLeft();
+
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Deposits left:",
+					Color.WHITE,
+					depositsLeft == null ? "N/A" : String.valueOf(depositsLeft),
+					depositsLeft == null ? Color.WHITE : (depositsLeft == 0 ? Color.RED : Color.WHITE)
 				));
 			}
 		}
