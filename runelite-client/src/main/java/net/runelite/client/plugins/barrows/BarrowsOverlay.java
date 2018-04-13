@@ -177,7 +177,15 @@ class BarrowsOverlay extends Overlay
 				graphics.setColor(Color.black);
 				graphics.drawString(brother.getName(), minimapText.getX() + 1, minimapText.getY() + 1);
 
-				graphics.setColor(Color.cyan);
+				if (client.getSetting(brother.getKilledVarbit()) > 0)
+				{
+					graphics.setColor(Color.red);
+				}
+				else
+				{
+					graphics.setColor(Color.cyan);
+				}
+
 				graphics.drawString(brother.getName(), minimapText.getX(), minimapText.getY());
 			}
 		}
