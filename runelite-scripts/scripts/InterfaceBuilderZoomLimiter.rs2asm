@@ -1,0 +1,36 @@
+.id                 1044
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      5
+.string_var_count   0
+   load_int               715
+   load_string            "resizableInnerZoomLimit"
+   runelite_callback
+   load_int               175
+   load_string            "resizableOuterZoomLimit"
+   runelite_callback
+   isub
+   istore                 0
+   load_int               700
+   load_string            "fixedInnerZoomLimit"
+   runelite_callback
+   load_int               195
+   load_string            "fixedOuterZoomLimit"
+   runelite_callback
+   isub
+   istore                 1
+   load_int               17104904
+   widget_get_width_widget
+   load_int               17104909
+   widget_get_width_widget
+   isub
+   istore                 2
+   load_int               0
+   istore                 3
+   load_int               0
+   istore                 4
+   get_viewport_size
+   istore                 4
+   istore                 3
+   invoke                 1049
+   return
