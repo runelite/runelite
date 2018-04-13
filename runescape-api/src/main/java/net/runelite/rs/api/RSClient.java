@@ -595,6 +595,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("hintArrowY")
 	int getHintArrowY();
 
+	@Import("hintArrowOffsetX")
+	void setHintArrowOffsetX(int value);
+
+	@Import("hintArrowOffsetY")
+	void setHintArrowOffsetY(int value);
+
 	@Import("hintArrowNpcTargetIdx")
 	void setHintArrowNpcTargetIdx(int value);
 
