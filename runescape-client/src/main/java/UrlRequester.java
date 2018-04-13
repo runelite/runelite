@@ -181,7 +181,7 @@ public class UrlRequester implements Runnable {
 
          if((var4 & 64) != 0) {
             var3.composition = class234.getNpcDefinition(var0.readUnsignedShort());
-            var3.field1172 = var3.composition.field3720;
+            var3.field1172 = var3.composition.size;
             var3.field1205 = var3.composition.field3733;
             var3.field1165 = var3.composition.field3732;
             var3.field1209 = var3.composition.field3736;

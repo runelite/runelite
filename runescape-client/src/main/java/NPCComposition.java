@@ -44,7 +44,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1191741209
    )
-   public int field3720;
+   @Export("size")
+   public int size;
    @ObfuscatedName("i")
    @Export("models")
    int[] models;
@@ -177,7 +178,7 @@ public class NPCComposition extends CacheableNode {
 
    NPCComposition() {
       this.name = "null";
-      this.field3720 = 1;
+      this.size = 1;
       this.field3712 = -1;
       this.field3716 = -1;
       this.field3714 = -1;
@@ -247,7 +248,7 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 2) {
          this.name = var1.readString();
       } else if(var2 == 12) {
-         this.field3720 = var1.readUnsignedByte();
+         this.size = var1.readUnsignedByte();
       } else if(var2 == 13) {
          this.field3712 = var1.readUnsignedShort();
       } else if(var2 == 14) {
