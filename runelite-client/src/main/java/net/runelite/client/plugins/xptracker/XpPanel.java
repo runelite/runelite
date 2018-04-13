@@ -49,12 +49,6 @@ import okhttp3.HttpUrl;
 @Slf4j
 class XpPanel extends PluginPanel
 {
-	private static final HttpUrl.Builder XP_TRACKER_FORMAT = new HttpUrl.Builder()
-		.scheme("https")
-		.host("runelite.net")
-		.addPathSegment("xp")
-		.addPathSegment("show");
-
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
@@ -120,7 +114,11 @@ class XpPanel extends PluginPanel
 			return "";
 		}
 
-		return XP_TRACKER_FORMAT
+		return new HttpUrl.Builder()
+			.scheme("https")
+			.host("runelite.net")
+			.addPathSegment("xp")
+			.addPathSegment("show")
 			.addPathSegment(skill.getName().toLowerCase())
 			.addPathSegment(player.getName())
 			.addPathSegment("1week")
