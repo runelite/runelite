@@ -50,7 +50,8 @@ public class NPCComposition extends CacheableNode {
    @Export("models")
    int[] models;
    @ObfuscatedName("u")
-   int[] field3711;
+   @Export("additionalModels")
+   int[] additionalModels;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -245521569
@@ -299,10 +300,10 @@ public class NPCComposition extends CacheableNode {
          }
       } else if(var2 == 60) {
          var3 = var1.readUnsignedByte();
-         this.field3711 = new int[var3];
+         this.additionalModels = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3711[var4] = var1.readUnsignedShort();
+            this.additionalModels[var4] = var1.readUnsignedShort();
          }
       } else if(var2 == 93) {
          this.isMinimapVisible = false;
@@ -449,13 +450,13 @@ public class NPCComposition extends CacheableNode {
       if(this.configs != null) {
          NPCComposition var1 = this.transform();
          return var1 == null?null:var1.method5148();
-      } else if(this.field3711 == null) {
+      } else if(this.additionalModels == null) {
          return null;
       } else {
          boolean var5 = false;
 
-         for(int var2 = 0; var2 < this.field3711.length; ++var2) {
-            if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.field3711[var2], 0)) {
+         for(int var2 = 0; var2 < this.additionalModels.length; ++var2) {
+            if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.additionalModels[var2], 0)) {
                var5 = true;
             }
          }
@@ -463,10 +464,10 @@ public class NPCComposition extends CacheableNode {
          if(var5) {
             return null;
          } else {
-            ModelData[] var6 = new ModelData[this.field3711.length];
+            ModelData[] var6 = new ModelData[this.additionalModels.length];
 
-            for(int var3 = 0; var3 < this.field3711.length; ++var3) {
-               var6[var3] = ModelData.method2645(NpcDefinition_modelIndexCache, this.field3711[var3], 0);
+            for(int var3 = 0; var3 < this.additionalModels.length; ++var3) {
+               var6[var3] = ModelData.method2645(NpcDefinition_modelIndexCache, this.additionalModels[var3], 0);
             }
 
             ModelData var7;
