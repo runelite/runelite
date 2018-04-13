@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, NotFoxtrot <http://github.com/NotFoxtrot>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pyramidplunder;
+package net.runelite.client.plugins.animsmoothing;
 
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Pyramid Plunder"
+@ConfigGroup(
+	keyName = AnimationSmoothingPlugin.CONFIG_GROUP,
+	name = "Smooth Animations",
+	description = "Configuration for the smooth animations plugin"
 )
-public class PyramidPlunderPlugin extends Plugin
+public interface AnimationSmoothingConfig extends Config
 {
-	@Inject
-	private PyramidPlunderOverlay overlay;
 
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "smoothPlayerAnimations",
+		name = "Smooth Player Animations",
+		description = "Configures whether the player animations are smooth or not",
+		position = 1
+	)
+	default boolean smoothPlayerAnimations()
 	{
-		return overlay;
+		return true;
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@ConfigItem(
+		keyName = "smoothNpcAnimations",
+		name = "Smooth NPC Animations",
+		description = "Configures whether the npc animations are smooth or not",
+		position = 2
+	)
+	default boolean smoothNpcAnimations()
 	{
-		overlay.showWidget();
+		return true;
 	}
+
+	@ConfigItem(
+		keyName = "smoothObjectAnimations",
+		name = "Smooth Object Animations",
+		description = "Configures whether the object animations are smooth or not",
+		position = 3
+	)
+	default boolean smoothObjectAnimations()
+	{
+		return true;
+	}
+
 }

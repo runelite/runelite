@@ -505,17 +505,20 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedGetter(
       intValue = 70088115
    )
-   static int field1009;
+   @Export("hintArrowOffsetZ")
+   static int hintArrowOffsetZ;
    @ObfuscatedName("cb")
    @ObfuscatedGetter(
       intValue = 248662451
    )
-   static int field895;
+   @Export("hintArrowOffsetX")
+   static int hintArrowOffsetX;
    @ObfuscatedName("cv")
    @ObfuscatedGetter(
       intValue = 143076755
    )
-   static int field896;
+   @Export("hintArrowOffsetY")
+   static int hintArrowOffsetY;
    @ObfuscatedName("cu")
    @ObfuscatedSignature(
       signature = "Lci;"
@@ -1216,9 +1219,9 @@ public final class Client extends GameEngine implements class302 {
       hintArrowPlayerTargetIdx = 0;
       hintArrowX = 0;
       hintArrowY = 0;
-      field1009 = 0;
-      field895 = 0;
-      field896 = 0;
+      hintArrowOffsetZ = 0;
+      hintArrowOffsetX = 0;
+      hintArrowOffsetY = 0;
       playerAttackOption = AttackOption.AttackOption_hidden;
       npcAttackOption = AttackOption.AttackOption_hidden;
       loadingStage = 0;
@@ -5451,34 +5454,34 @@ public final class Client extends GameEngine implements class302 {
 
                if(hintArrowTargetType >= 2 && hintArrowTargetType <= 6) {
                   if(hintArrowTargetType == 2) {
-                     field895 = 64;
-                     field896 = 64;
+                     hintArrowOffsetX = 64;
+                     hintArrowOffsetY = 64;
                   }
 
                   if(hintArrowTargetType == 3) {
-                     field895 = 0;
-                     field896 = 64;
+                     hintArrowOffsetX = 0;
+                     hintArrowOffsetY = 64;
                   }
 
                   if(hintArrowTargetType == 4) {
-                     field895 = 128;
-                     field896 = 64;
+                     hintArrowOffsetX = 128;
+                     hintArrowOffsetY = 64;
                   }
 
                   if(hintArrowTargetType == 5) {
-                     field895 = 64;
-                     field896 = 0;
+                     hintArrowOffsetX = 64;
+                     hintArrowOffsetY = 0;
                   }
 
                   if(hintArrowTargetType == 6) {
-                     field895 = 64;
-                     field896 = 128;
+                     hintArrowOffsetX = 64;
+                     hintArrowOffsetY = 128;
                   }
 
                   hintArrowTargetType = 2;
                   hintArrowX = var3.readUnsignedShort();
                   hintArrowY = var3.readUnsignedShort();
-                  field1009 = var3.readUnsignedByte();
+                  hintArrowOffsetZ = var3.readUnsignedByte();
                }
 
                if(hintArrowTargetType == 10) {

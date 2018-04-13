@@ -386,7 +386,7 @@ public class ReorderPrayersPlugin extends Plugin
 				Prayer prayer = prayerOrder[index];
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 
-				int widgetConfig = prayerWidget.setClickMask();
+				int widgetConfig = prayerWidget.getClickMask();
 				if (config.unlockPrayerReordering())
 				{
 					// allow dragging of this widget

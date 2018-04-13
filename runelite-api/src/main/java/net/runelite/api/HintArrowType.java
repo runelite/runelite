@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, NotFoxtrot <http://github.com/NotFoxtrot>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pyramidplunder;
+package net.runelite.api;
 
-import com.google.common.base.Preconditions;
-import java.awt.Color;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-class PyramidTimer
+@AllArgsConstructor
+public enum HintArrowType
 {
-	private final Instant endTime;
+	NONE(0),
+	PLAYER(10),
+	NPC(1),
+	WORLD_POSITION(2);
 
-	PyramidTimer(long period)
-	{
-		Preconditions.checkArgument(period > 0, "negative period!");
-
-		endTime = Instant.now().plus(period, ChronoUnit.SECONDS);
-	}
-
-	public String getText()
-	{
-		if (isFinished())
-		{
-			return "0:00";
-		}
-
-		Duration timeLeft = Duration.between(Instant.now(), endTime);
-
-		int totalSeconds = (int) timeLeft.get(ChronoUnit.SECONDS);
-
-		int minutes = (totalSeconds % 3600) / 60;
-		int seconds = totalSeconds % 60;
-
-		return String.format("%d:%02d", minutes, seconds);
-	}
-
-	public Color getTextColor()
-	{
-		Duration timeLeft = Duration.between(Instant.now(), endTime);
-
-		if (timeLeft.getSeconds() < 30)
-		{
-			return Color.RED.brighter();
-		}
-
-		return Color.WHITE;
-	}
-
-	private boolean isFinished()
-	{
-		return Instant.now().isAfter(endTime);
-	}
+	@Getter
+	private final int value;
 }

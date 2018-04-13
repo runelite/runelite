@@ -150,8 +150,8 @@ public class ImplingsPlugin extends Plugin
 		}
 		if (config.showMagpie())
 		{
-			ids.put(NpcID.MAGPIE_IMPLING, config.getMapgieColor());
-			ids.put(NpcID.MAGPIE_IMPLING_1652, config.getMapgieColor());
+			ids.put(NpcID.MAGPIE_IMPLING, config.getMagpieColor());
+			ids.put(NpcID.MAGPIE_IMPLING_1652, config.getMagpieColor());
 		}
 		if (config.showNinja())
 		{

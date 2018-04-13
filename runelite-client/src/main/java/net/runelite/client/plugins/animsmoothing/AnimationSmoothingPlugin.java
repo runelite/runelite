@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.animsmoothing;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import java.util.Collection;
-import java.util.Collections;
-import net.runelite.client.ui.overlay.Overlay;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import javax.inject.Inject;
 
-public abstract class Plugin implements Module
+@PluginDescriptor(
+	name = "Animation Smoothing",
+	enabledByDefault = false
+)
+public class AnimationSmoothingPlugin extends Plugin
 {
-	protected Injector injector;
+	static final String CONFIG_GROUP = "animationSmoothing";
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private AnimationSmoothingConfig config;
+
+	@Provides
+	AnimationSmoothingConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(AnimationSmoothingConfig.class);
+	}
 
 	@Override
-	public void configure(Binder binder)
-	{
-	}
-
 	protected void startUp() throws Exception
 	{
+		update();
 	}
 
+	@Override
 	protected void shutDown() throws Exception
 	{
+		client.setInterpolatePlayerAnimations(false);
+		client.setInterpolateNpcAnimations(false);
+		client.setInterpolateObjectAnimations(false);
 	}
 
-	public final Injector getInjector()
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
 	{
-		return injector;
+		if (event.getGroup().equals(CONFIG_GROUP))
+		{
+			update();
+		}
 	}
 
-	public Overlay getOverlay()
+	private void update()
 	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
+		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
+		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
+		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
 	}
 }

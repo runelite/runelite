@@ -95,9 +95,16 @@ public class Hooks
 	private static Graphics2D stretchedGraphics;
 
 	private static long lastCheck;
+	private static boolean shouldProcessGameTick;
 
 	public static void clientMainLoop(Client client, boolean arg1)
 	{
+		if (shouldProcessGameTick)
+		{
+			shouldProcessGameTick = false;
+			eventBus.post(tick);
+		}
+
 		clientThread.invoke();
 
 		long now = System.currentTimeMillis();
@@ -332,7 +339,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
 		 * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -353,6 +360,8 @@ public class Hooks
 		log.debug("Menu action clicked: {}", menuOptionClicked);
 
 		eventBus.post(menuOptionClicked);
+
+		return menuOptionClicked.isConsumed();
 	}
 
 	public static void addChatMessage(int type, String name, String message, String sender)
@@ -403,7 +412,10 @@ public class Hooks
 
 	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
 	{
-		eventBus.post(tick);
+		// The NPC update event seem to run every server tick,
+		// but having the game tick event after all packets
+		// have been processed is typically more useful.
+		shouldProcessGameTick = true;
 	}
 
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)

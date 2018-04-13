@@ -232,7 +232,7 @@ public class HiscorePanel extends PluginPanel
 		details.setWrapStyleWord(true);
 		details.setLineWrap(true);
 		details.setMargin(new Insets(2, 4, 4, 4));
-		details.setRows(4);
+		details.setRows(6);
 		details.setText("");
 
 		detailsPanel.add(details, BorderLayout.CENTER);
@@ -324,9 +324,24 @@ public class HiscorePanel extends PluginPanel
 			}
 			case "Clue Scrolls (all)":
 			{
-				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-				text = "Total Clue Scrolls Completed" + System.lineSeparator()
-					+ "Rank: " + rank;
+				String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
+				String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
+				String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
+				String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
+				String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
+				String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
+				String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
+				String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
+				String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
+				String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
+				String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
+				String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+				text = "All clues: " + all + " | Rank: " + allRank + System.lineSeparator()
+					+ "Easy: " + easy + " | Rank: " + easyRank + System.lineSeparator()
+					+ "Medium: " + medium + " | Rank: " + mediumRank + System.lineSeparator()
+					+ "Hard: " + hard + " | Rank: " + hardRank + System.lineSeparator()
+					+ "Elite: " + elite + " | Rank: " + eliteRank + System.lineSeparator()
+					+ "Master: " + master + " | Rank: " + masterRank;
 				break;
 			}
 			case "Bounty Hunter - Rogue":

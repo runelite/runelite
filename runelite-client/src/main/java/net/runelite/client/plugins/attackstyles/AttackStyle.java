@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.attackstyles;
 
-import net.runelite.mapping.Import;
+import net.runelite.api.Skill;
 
-public interface RSSequence
+public enum AttackStyle
 {
-	@Import("stretches")
-	boolean getStretches();
+	ACCURATE("Accurate", Skill.ATTACK),
+	AGGRESSIVE("Aggressive", Skill.STRENGTH),
+	DEFENSIVE("Defensive", Skill.DEFENCE),
+	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
+	RANGING("Ranging", Skill.RANGED),
+	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
+	CASTING("Casting", Skill.MAGIC),
+	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
+	OTHER("Other");
 
-	@Import("maxLoops")
-	int getMaxLoops();
+	private final String name;
+	private final Skill[] skills;
 
-	@Import("precedenceAnimating")
-	int getPrecedenceAnimating();
+	AttackStyle(String name, Skill... skills)
+	{
+		this.name = name;
+		this.skills = skills;
+	}
 
-	@Import("replyMode")
-	int getReplyMode();
+	public String getName()
+	{
+		return name;
+	}
 
-	@Import("interleaveLeave")
-	int[] getInterleaveLeave();
-
-	@Import("frameIDs")
-	int[] getFrameIDs();
-
-	@Import("frameLengths")
-	int[] getFrameLenths();
+	public Skill[] getSkills()
+	{
+		return skills;
+	}
 }

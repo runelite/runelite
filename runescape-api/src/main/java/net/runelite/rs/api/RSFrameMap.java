@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.rs.api;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.mapping.Import;
 
-public class AttackIndicatorOverlay extends Overlay
+public interface RSFrameMap extends RSNode
 {
-	private static final int COMPONENT_WIDTH = 80;
+	@Import("count")
+	int getCount();
 
-	private final AttackIndicatorPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	@Import("types")
+	int[] getTypes();
 
-	@Inject
-	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin)
-	{
-		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
-		this.plugin = plugin;
-	}
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		final String attackStyleString = plugin.getAttackStyle().getName();
-
-		panelComponent.setTitleColor(plugin.isWarnedSkillSelected() ? Color.RED : Color.WHITE);
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(COMPONENT_WIDTH);
-
-		return panelComponent.render(graphics);
-	}
+	@Import("list")
+	int[][] getList();
 }

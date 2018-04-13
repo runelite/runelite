@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.rs.api;
 
-import net.runelite.api.Skill;
+import net.runelite.api.Renderable;
+import net.runelite.mapping.Import;
 
-public enum AttackStyle
+public interface RSDynamicObject extends Renderable, RSRenderable
 {
-	ACCURATE("Accurate", Skill.ATTACK),
-	AGGRESSIVE("Aggressive", Skill.STRENGTH),
-	DEFENSIVE("Defensive", Skill.DEFENCE),
-	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
-	RANGING("Ranging", Skill.RANGED),
-	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
-	CASTING("Casting", Skill.MAGIC),
-	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
-	OTHER("Other");
+	@Import("id")
+	int getId();
 
-	private final String name;
-	private final Skill[] skills;
+	@Import("animFrame")
+	int getAnimFrame();
 
-	AttackStyle(String name, Skill... skills)
-	{
-		this.name = name;
-		this.skills = skills;
-	}
+	@Import("animFrame")
+	void setAnimFrame(int frame);
 
-	public String getName()
-	{
-		return name;
-	}
-
-	public Skill[] getSkills()
-	{
-		return skills;
-	}
+	@Import("animCycleCount")
+	int getAnimCycleCount();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, NotFoxtrot <http://github.com/NotFoxtrot>
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,80 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pyramidplunder;
+package net.runelite.client.plugins.attackstyles;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class PyramidPlunderOverlay extends Overlay
+public class AttackStylesOverlay extends Overlay
 {
-	private final Client client;
+	private static final int COMPONENT_WIDTH = 80;
+
+	private final AttackStylesPlugin plugin;
+	private final AttackStylesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	private PyramidTimer timer;
-
 	@Inject
-	PyramidPlunderOverlay(Client client)
+	public AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget pyramidPlunderInfo = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
 
-		if (pyramidPlunderInfo == null)
+		if (warnedSkillSelected || config.alwaysShowStyle())
 		{
-			timer = null;
-			return null;
+			final String attackStyleString = plugin.getAttackStyle().getName();
+
+			panelComponent.setTitleColor(warnedSkillSelected ? Color.RED : Color.WHITE);
+			panelComponent.setTitle(attackStyleString);
+			panelComponent.setWidth(COMPONENT_WIDTH);
+
+			return panelComponent.render(graphics);
 		}
 
-		panelComponent.getLines().clear();
-
-		pyramidPlunderInfo.setHidden(true);
-
-		if (timer == null)
-		{
-			startTimer();
-		}
-
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Time left: ", Color.WHITE, timer.getText(), timer.getTextColor()
-		));
-
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Room: ", String.valueOf(client.getSetting(Varbits.PYRAMID_PLUNDER_ROOM)) + "/8"
-		));
-
-		return panelComponent.render(graphics);
-	}
-
-	public void showWidget()
-	{
-		Widget pyramidPlunderInfo = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
-
-		if (pyramidPlunderInfo != null)
-		{
-			pyramidPlunderInfo.setHidden(false);
-		}
-	}
-
-	private void startTimer()
-	{
-		int plunderingTime = client.getSetting(Varbits.PYRAMID_PLUNDER_TIMER);
-		int timeLeft = (int) ((505 - plunderingTime) * 0.6);
-
-		timer = new PyramidTimer(timeLeft);
+		return null;
 	}
 }

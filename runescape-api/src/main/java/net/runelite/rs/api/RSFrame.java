@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.rs.api;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import net.runelite.mapping.Import;
 
-/**
- * A classloader for external plugins
- *
- * @author Adam
- */
-public class PluginClassLoader extends URLClassLoader
+public interface RSFrame
 {
-	private final ClassLoader parent;
+	@Import("skin")
+	RSFrameMap getSkin();
 
-	public PluginClassLoader(File plugin, ClassLoader parent) throws MalformedURLException
-	{
-		super(
-			new URL[]
-			{
-				plugin.toURI().toURL()
-			},
-			null // null or else class path scanning includes everything from the main class loader
-		);
+	@Import("transformCount")
+	int getTransformCount();
 
-		this.parent = parent;
-	}
+	@Import("transformTypes")
+	int[] getTransformTypes();
 
-	@Override
-	public Class<?> loadClass(String name) throws ClassNotFoundException
-	{
-		try
-		{
-			return super.loadClass(name);
-		}
-		catch (ClassNotFoundException ex)
-		{
-			// fall back to main class loader
-			return parent.loadClass(name);
-		}
-	}
+	@Import("translator_x")
+	int[] getTranslatorX();
+
+	@Import("translator_y")
+	int[] getTranslatorY();
+
+	@Import("translator_z")
+	int[] getTranslatorZ();
+
+	@Import("showing")
+	boolean isShowing();
 }

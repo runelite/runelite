@@ -36,6 +36,9 @@ import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSFrame;
+import net.runelite.rs.api.RSFrameMap;
+import net.runelite.rs.api.RSFrames;
 import net.runelite.rs.api.RSModel;
 
 @Mixin(RSModel.class)
@@ -93,6 +96,140 @@ public abstract class RSModelMixin implements RSModel
 		}
 
 		return triangles;
+	}
+
+	@Inject
+	public void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,
+										int intervalCount)
+	{
+		if (getVertexGroups() != null)
+		{
+			if (frameId != -1)
+			{
+				RSFrame frame = frames.getFrames()[frameId];
+				RSFrameMap skin = frame.getSkin();
+				RSFrame nextFrame = null;
+				if (nextFrames != null)
+				{
+					nextFrame = nextFrames.getFrames()[nextFrameId];
+					if (nextFrame.getSkin() != skin)
+					{
+						nextFrame = null;
+					}
+				}
+
+				client.setAnimOffsetX(0);
+				client.setAnimOffsetY(0);
+				client.setAnimOffsetZ(0);
+
+				interpolateFrames(skin, frame, nextFrame, interval, intervalCount);
+				resetBounds();
+			}
+		}
+	}
+
+	@Inject
+	public void interpolateFrames(RSFrameMap skin, RSFrame frame, RSFrame nextFrame, int interval, int intervalCount)
+	{
+		if (nextFrame == null || interval == 0)
+		{
+			// if there is no next frame or interval then animate the model as we normally would
+			for (int i = 0; i < frame.getTransformCount(); i++)
+			{
+				int type = frame.getTransformTypes()[i];
+				this.animate(skin.getTypes()[type], skin.getList()[type], frame.getTranslatorX()[i],
+						frame.getTranslatorY()[i], frame.getTranslatorZ()[i]);
+			}
+		}
+		else
+		{
+			int transformIndex = 0;
+			int nextTransformIndex = 0;
+			for (int i = 0; i < skin.getCount(); i++)
+			{
+				boolean frameValid = false;
+				if (transformIndex < frame.getTransformCount()
+						&& frame.getTransformTypes()[transformIndex] == i)
+				{
+					frameValid = true;
+				}
+				boolean nextFrameValid = false;
+				if (nextTransformIndex < nextFrame.getTransformCount()
+						&& nextFrame.getTransformTypes()[nextTransformIndex] == i)
+				{
+					nextFrameValid = true;
+				}
+				if (frameValid || nextFrameValid)
+				{
+					int staticFrame = 0;
+					int type = skin.getTypes()[i];
+					if (type == 3 || type == 10)
+					{
+						staticFrame = 128;
+					}
+					int currentTranslateX = staticFrame;
+					int currentTranslateY = staticFrame;
+					int currentTranslateZ = staticFrame;
+					if (frameValid)
+					{
+						currentTranslateX = frame.getTranslatorX()[transformIndex];
+						currentTranslateY = frame.getTranslatorY()[transformIndex];
+						currentTranslateZ = frame.getTranslatorZ()[transformIndex];
+						transformIndex++;
+					}
+					int nextTranslateX = staticFrame;
+					int nextTranslateY = staticFrame;
+					int nextTranslateZ = staticFrame;
+					if (nextFrameValid)
+					{
+						nextTranslateX = nextFrame.getTranslatorX()[nextTransformIndex];
+						nextTranslateY = nextFrame.getTranslatorY()[nextTransformIndex];
+						nextTranslateZ = nextFrame.getTranslatorZ()[nextTransformIndex];
+						nextTransformIndex++;
+					}
+					int translateX;
+					int translateY;
+					int translateZ;
+					if (type == 2)
+					{
+						int deltaX = nextTranslateX - currentTranslateX & 0x3fff;
+						int deltaY = nextTranslateY - currentTranslateY & 0x3fff;
+						int deltaZ = nextTranslateZ - currentTranslateZ & 0x3fff;
+						if (deltaX >= 8192)
+						{
+							deltaX -= 16384;
+						}
+						if (deltaY >= 8192)
+						{
+							deltaY -= 16384;
+						}
+						if (deltaZ >= 8192)
+						{
+							deltaZ -= 16384;
+						}
+						translateX = currentTranslateX + deltaX * interval / intervalCount & 0x3fff;
+						translateY = currentTranslateY + deltaY * interval / intervalCount & 0x3fff;
+						translateZ = currentTranslateZ + deltaZ * interval / intervalCount & 0x3fff;
+					}
+					else if (type == 5)
+					{
+						// don't interpolate alpha transformations
+						// alpha
+						translateX = currentTranslateX;
+						translateY = 0;
+						translateZ = 0;
+					}
+					else
+					{
+						translateX = currentTranslateX + (nextTranslateX - currentTranslateX) * interval / intervalCount;
+						translateY = currentTranslateY + (nextTranslateY - currentTranslateY) * interval / intervalCount;
+						translateZ = currentTranslateZ + (nextTranslateZ - currentTranslateZ) * interval / intervalCount;
+					}
+					// use interpolated translations to animate
+					animate(type, skin.getList()[i], translateX, translateY, translateZ);
+				}
+			}
+		}
 	}
 
 	@Override

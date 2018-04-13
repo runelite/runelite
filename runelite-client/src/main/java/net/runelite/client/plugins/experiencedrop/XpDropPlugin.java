@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>, SoyChai <https://github.com/SoyChai>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,11 @@ package net.runelite.client.plugins.experiencedrop;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -85,20 +88,37 @@ public class XpDropPlugin extends Plugin
 		}
 
 		String text = widget.getText();
+		final IntStream spriteIDs =
+			Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
+
 		if (text != null)
 		{
+			int color = widget.getTextColor();
+
 			switch (prayer)
 			{
 				case MELEE:
-					widget.setTextColor(config.getMeleePrayerColor().getRGB());
+					if (spriteIDs.anyMatch(id ->
+						id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE))
+					{
+						color = config.getMeleePrayerColor().getRGB();
+					}
 					break;
 				case RANGE:
-					widget.setTextColor(config.getRangePrayerColor().getRGB());
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED))
+					{
+						color = config.getRangePrayerColor().getRGB();
+					}
 					break;
 				case MAGIC:
-					widget.setTextColor(config.getMagePrayerColor().getRGB());
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC))
+					{
+						color = config.getMagePrayerColor().getRGB();
+					}
 					break;
 			}
+
+			widget.setTextColor(color);
 		}
 	}
 

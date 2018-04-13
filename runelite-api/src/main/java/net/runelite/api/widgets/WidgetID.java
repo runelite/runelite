@@ -32,6 +32,8 @@ public class WidgetID
 	public static final int GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
+	public static final int FRIENDS_LIST_GROUP_ID = 429;
+	public static final int RAIDING_PARTY_GROUP_ID = 500;
 	public static final int EQUIPMENT_GROUP_ID = 387;
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int EMOTES_GROUP_ID = 216;
@@ -132,10 +134,10 @@ public class WidgetID
 
 	static class Bank
 	{
-		static final int ITEM_CONTAINER = 12;
+		static final int ITEM_CONTAINER = 23;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
-		static final int BANK_TITLE_BAR = 4;
-		static final int BANK_ITEM_COUNT = 5;
+		static final int BANK_TITLE_BAR = 15;
+		static final int BANK_ITEM_COUNT = 16;
 	}
 
 	static class GrandExchange
@@ -225,9 +227,10 @@ public class WidgetID
 
 	static class Chatbox
 	{
-		static final int CHATBOX_MESSAGES = 29;
-		static final int CHATBOX_REPORT_TEXT = 28;
-		static final int CHATBOX_BUTTONS = 1;
+		static final int CHATBOX_MESSAGES = 30;
+		static final int CHATBOX_REPORT_TEXT = 29;
+		static final int CHATBOX_FRAME = 1;
+		static final int CHATBOX_BUTTONS = 2;
 	}
 
 	static class Prayer

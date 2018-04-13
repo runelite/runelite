@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.plugins.attackstyles;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
@@ -49,15 +49,15 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 
 @PluginDescriptor(
-	name = "Attack Indicators"
+	name = "Attack Styles"
 )
 @Slf4j
-public class AttackIndicatorPlugin extends Plugin
+public class AttackStylesPlugin extends Plugin
 {
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
@@ -71,19 +71,19 @@ public class AttackIndicatorPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private AttackIndicatorConfig config;
+	private AttackStylesConfig config;
 
 	@Inject
-	private AttackIndicatorOverlay overlay;
+	private AttackStylesOverlay overlay;
 
 	@Provides
-	AttackIndicatorConfig provideConfig(ConfigManager configManager)
+	AttackStylesConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(AttackIndicatorConfig.class);
+		return configManager.getConfig(AttackStylesConfig.class);
 	}
 
 	@Override
-	public AttackIndicatorOverlay getOverlay()
+	public AttackStylesOverlay getOverlay()
 	{
 		return overlay;
 	}
@@ -96,7 +96,7 @@ public class AttackIndicatorPlugin extends Plugin
 		{
 			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
 			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-			updateWarnedSkills(config.warnForDefensive(), Skill.DEFENCE);
+			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 			updateAttackStyle(
@@ -164,7 +164,7 @@ public class AttackIndicatorPlugin extends Plugin
 		{
 			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
 			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-			updateWarnedSkills(config.warnForDefensive(), Skill.DEFENCE);
+			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 		}

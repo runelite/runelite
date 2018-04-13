@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>, SoyChai <https://github.com/SoyChai>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,32 @@ package net.runelite.api;
 // through the cache and widget inspector. Please add sprites as you happen to use them.
 public final class SpriteID
 {
+	public static final int SKILL_ATTACK = 197;
+	public static final int SKILL_STRENGTH = 198;
+	public static final int SKILL_DEFENCE = 199;
+	public static final int SKILL_RANGED = 200;
+	public static final int SKILL_PRAYER = 201;
+	public static final int SKILL_MAGIC = 202;
+	public static final int SKILL_HITPOINTS = 203;
+	public static final int SKILL_AGILITY = 204;
+	public static final int SKILL_HERBLORE = 205;
+	public static final int SKILL_THIEVING = 206;
+	public static final int SKILL_CRAFTING = 207;
+	public static final int SKILL_FLETCHING = 208;
+	public static final int SKILL_MINING = 209;
+	public static final int SKILL_SMITHING = 210;
+	public static final int SKILL_FISHING = 211;
+	public static final int SKILL_COOKING = 212;
+	public static final int SKILL_FIREMAKING = 213;
+	public static final int SKILL_WOODCUTTING = 214;
+	public static final int SKILL_RUNECRAFT = 215;
+	public static final int SKILL_SLAYER = 216;
+	public static final int SKILL_FARMING = 217;
+	public static final int UNKNOWN_SHOVEL = 218;
+	public static final int UNKNOWN_RAT = 219;
+	public static final int SKILL_HUNTER = 220;
+	public static final int SKILL_CONSTRUCTION = 221;
+	public static final int SKILL_TOTAL_XP = 222;
 	public static final int EMOTE_YES = 700;
 	public static final int EMOTE_NO = 701;
 	public static final int EMOTE_THINK = 702;
