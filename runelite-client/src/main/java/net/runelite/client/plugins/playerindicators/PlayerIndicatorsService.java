@@ -88,7 +88,8 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getNonClanMemberColor());
 			}
-			else if (config.drawAttackableNames() && isWithinLevelRange(player.getCombatLevel())) {
+			else if (config.drawAttackableNames() && isWithinLevelRange(player.getCombatLevel()))
+			{
 				consumer.accept(player, config.getAttackableNameColor());
 			}
 		}
