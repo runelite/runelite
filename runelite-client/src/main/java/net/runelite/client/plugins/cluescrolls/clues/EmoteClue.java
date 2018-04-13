@@ -111,7 +111,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 		new EmoteClue("Laugh at the crossroads south of the Sinclair Mansion. Equip a cowl, blue wizard robe top and an iron scimitar.", new WorldPoint(2741, 3536, 0), LAUGH, LEATHER_COWL, EARTH_RUNE, IRON_SCIMITAR),
 		new EmoteClue("Panic in the Limestone Mine. Equip bronze platelegs, a steel pickaxe and a steel medium helmet.", new WorldPoint(3372, 3498, 0), PANIC, BRONZE_PLATELEGS, STEEL_PICKAXE, STEEL_MED_HELM),
 		new EmoteClue("Panic on the pier where you catch the Fishing trawler. Have nothing equipped at all when you do.", new WorldPoint(2676, 3169, 0), PANIC),
-		new EmoteClue("Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.", new WorldPoint(3438, 3501, 0), PANIC, MITHRIL_PLATESKIRT, MAPLE_LONGBOW),
+		new EmoteClue("Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.", new WorldPoint(3504, 3576, 0), PANIC, WAVE, MITHRIL_PLATESKIRT, MAPLE_LONGBOW),
 		new EmoteClue("Panic on the Wilderness volcano bridge. Beware of double agents! Equip any headband and crozier.", new WorldPoint(3368, 3935, 0), PANIC, RED_HEADBAND, SARADOMIN_CROZIER),
 		new EmoteClue("Panic in the heart of the Haunted Woods. Beware of double agents! Have no items equipped when you do.", new WorldPoint(3611, 3492, 0), PANIC),
 		new EmoteClue("Panic by the pilot on White Wolf Mountain. Beware of double agents! Equip mithril platelegs, a ring of life, and a rune axe.", new WorldPoint(2847, 3499, 0), PANIC, MITHRIL_PLATELEGS, RING_OF_LIFE, RUNE_AXE),
