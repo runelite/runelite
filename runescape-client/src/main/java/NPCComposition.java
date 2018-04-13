@@ -134,7 +134,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 869631619
    )
-   int field3729;
+   @Export("ambient")
+   int ambient;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = -1068666911
@@ -199,7 +200,7 @@ public class NPCComposition extends CacheableNode {
       this.widthScale = 128;
       this.heightScale = 128;
       this.isVisible = false;
-      this.field3729 = 0;
+      this.ambient = 0;
       this.field3730 = 0;
       this.field3715 = -1;
       this.field3733 = 32;
@@ -310,7 +311,7 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 99) {
          this.isVisible = true;
       } else if(var2 == 100) {
-         this.field3729 = var1.readByte();
+         this.ambient = var1.readByte();
       } else if(var2 == 101) {
          this.field3730 = var1.readByte();
       } else if(var2 == 102) {
@@ -412,7 +413,7 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            var5 = var11.light(this.field3729 + 64, this.field3730 * 5 + 850, -30, -50, -30);
+            var5 = var11.light(this.ambient + 64, this.field3730 * 5 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 
