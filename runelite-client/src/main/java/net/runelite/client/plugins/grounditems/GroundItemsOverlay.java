@@ -157,9 +157,8 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.showGEPrice() && item.getGePrice() > 0)
 			{
-				itemStringBuilder.append(" (EX: ")
-					.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-					.append(" gp)");
+				String gePrice = createGePrice(item.getGePrice(), config.showEXLabel());
+				itemStringBuilder.append(gePrice);
 			}
 
 			if (config.showHAValue() && item.getHaPrice() > 0)
@@ -227,6 +226,19 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	public String createGePrice(long itemPrice, boolean showExLabel)
+	{
+		String strPrice = " ( ";
+
+		if (showExLabel)
+		{
+			strPrice += "EX: ";
+		}
+
+		strPrice += "" + StackFormatter.quantityToStackSize(itemPrice) + " gp)";
+		return strPrice;
 	}
 
 	Color getCostColor(int cost, boolean highlighted, boolean hidden)

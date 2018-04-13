@@ -92,7 +92,7 @@ class BankTitle
 
 		if (config.showGE() && gePrice != 0)
 		{
-			strCurrentTab += " (EX: " + StackFormatter.quantityToStackSize(gePrice) + ")";
+			strCurrentTab += addGePriceToCurrentTab(gePrice, config.showEXLabel());
 		}
 
 		if (config.showHA() && haPrice != 0)
@@ -102,5 +102,18 @@ class BankTitle
 
 		log.debug("Setting bank title: {}", bankTitle + strCurrentTab);
 		widgetBankTitleBar.setText(bankTitle + strCurrentTab);
+	}
+
+	public String addGePriceToCurrentTab(long gePrice, boolean showExLabel)
+	{
+		String strCurrentTab = " (";
+
+		if (showExLabel)
+		{
+			strCurrentTab += "EX: ";
+		}
+
+		strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+		return strCurrentTab;
 	}
 }
