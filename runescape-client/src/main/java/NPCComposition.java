@@ -101,7 +101,8 @@ public class NPCComposition extends CacheableNode {
    @Export("textureToReplace")
    short[] textureToReplace;
    @ObfuscatedName("j")
-   short[] field3740;
+   @Export("textureToReplaceWith")
+   short[] textureToReplaceWith;
    @ObfuscatedName("b")
    @Export("actions")
    public String[] actions;
@@ -285,11 +286,11 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 41) {
          var3 = var1.readUnsignedByte();
          this.textureToReplace = new short[var3];
-         this.field3740 = new short[var3];
+         this.textureToReplaceWith = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
             this.textureToReplace[var4] = (short)var1.readUnsignedShort();
-            this.field3740[var4] = (short)var1.readUnsignedShort();
+            this.textureToReplaceWith[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 60) {
          var3 = var1.readUnsignedByte();
@@ -407,7 +408,7 @@ public class NPCComposition extends CacheableNode {
 
             if(this.textureToReplace != null) {
                for(var9 = 0; var9 < this.textureToReplace.length; ++var9) {
-                  var11.method2613(this.textureToReplace[var9], this.field3740[var9]);
+                  var11.method2613(this.textureToReplace[var9], this.textureToReplaceWith[var9]);
                }
             }
 
@@ -479,7 +480,7 @@ public class NPCComposition extends CacheableNode {
 
             if(this.textureToReplace != null) {
                for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
-                  var7.method2613(this.textureToReplace[var4], this.field3740[var4]);
+                  var7.method2613(this.textureToReplace[var4], this.textureToReplaceWith[var4]);
                }
             }
 
