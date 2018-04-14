@@ -113,10 +113,11 @@ public class RunecraftOverlay extends Overlay
 			if(essenceInPouch == 0){
 				graphics.setColor(new Color(255,0,0,50));
 			} else if(essenceInPouch == maxEssence){
-				graphics.setColor(new Color(0,266,0,50));
+				graphics.setColor(new Color(0,255,0,50));
 			} else {
-				graphics.setColor(new Color(255,266,0,50));
+				graphics.setColor(new Color(255,255,0,50));
 			}
+			graphics.fill(bounds);
 
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(String.valueOf(essenceInPouch));
