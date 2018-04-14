@@ -53,9 +53,11 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Player-owned House"
@@ -69,7 +71,16 @@ public class PohPlugin extends Plugin
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
 
 	@Inject
+	private PohConfig config;
+
+	@Inject
 	private PohOverlay overlay;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
@@ -96,12 +107,17 @@ public class PohPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		pohObjects.clear();
+		infoBoxManager.removeIf(t -> t instanceof BurnerTimer);
 	}
 
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
 		overlay.updateConfig();
+		if (!config.showBurnerTimer())
+		{
+			infoBoxManager.removeIf(t -> t instanceof BurnerTimer);
+		}
 	}
 
 	@Subscribe
@@ -111,6 +127,16 @@ public class PohPlugin extends Plugin
 		if (BURNER_LIT.contains(gameObject.getId()) || BURNER_UNLIT.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
 		{
 			pohObjects.put(gameObject, event.getTile());
+		}
+		if (config.showBurnerTimer())
+		{
+			if (BURNER_LIT.contains(gameObject.getId()))
+			{
+				infoBoxManager.removeIf(t -> t instanceof BurnerTimer);
+				BurnerTimer timer = new BurnerTimer(config.burnerTimer(), itemManager.getImage(594));
+				timer.setTooltip("Lit Burner");
+				infoBoxManager.addInfoBox(timer);
+			}
 		}
 	}
 
