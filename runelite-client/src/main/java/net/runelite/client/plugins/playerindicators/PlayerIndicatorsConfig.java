@@ -180,7 +180,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+			position = 13,
+			keyName = "onlyPlayerMenu",
+			name = "Only color player menu",
+			description = "Only right click menu will be colored"
+	)
+	default boolean onlyPlayerMenu()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "clanMenuIcons",
 		name = "Show clan rank in menu",
 		description = "Add clan rank to right click menu for players"
