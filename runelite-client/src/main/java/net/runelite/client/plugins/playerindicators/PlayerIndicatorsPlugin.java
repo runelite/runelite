@@ -195,9 +195,13 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 		if (levelRangeWidget == null && wildernessLevelWidget == null)
 		{
+			// Add logic here if you want to see attackable players outside of combat areas
+			// if (flagfornoshow)
+			// return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+			// else return false;
 			return false;
 		}
-		else if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
+		if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
 		{
 			lowerLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[0]);
 			upperLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[1]);
