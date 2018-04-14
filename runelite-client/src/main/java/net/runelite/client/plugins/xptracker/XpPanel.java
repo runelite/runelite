@@ -37,11 +37,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
+import okhttp3.HttpUrl;
 
 @Slf4j
 class XpPanel extends PluginPanel
@@ -63,11 +66,14 @@ class XpPanel extends PluginPanel
 		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
 
 		final JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new GridLayout(3, 1));
+		infoPanel.setLayout(new GridLayout(4, 1));
 		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
 		final JButton resetButton = new JButton("Reset All");
 		resetButton.addActionListener(e -> resetAllInfoBoxes());
+
+		final JButton openTrackerButton = new JButton("Open XP tracker");
+		openTrackerButton.addActionListener(e -> LinkBrowser.browse(buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
 
 		totalXpGained.setText(formatLine(0, "total xp gained"));
 		totalXpHr.setText(formatLine(0, "total xp/hr"));
@@ -75,6 +81,7 @@ class XpPanel extends PluginPanel
 		infoPanel.add(totalXpGained);
 		infoPanel.add(totalXpHr);
 		infoPanel.add(resetButton);
+		infoPanel.add(openTrackerButton);
 		totalPanel.add(infoPanel, BorderLayout.CENTER);
 		layoutPanel.add(totalPanel, BorderLayout.NORTH);
 
@@ -98,6 +105,26 @@ class XpPanel extends PluginPanel
 		{
 			log.warn(null, e);
 		}
+	}
+
+	static String buildXpTrackerUrl(final Actor player, final Skill skill)
+	{
+		if (player == null)
+		{
+			return "";
+		}
+
+		return new HttpUrl.Builder()
+			.scheme("https")
+			.host("runelite.net")
+			.addPathSegment("xp")
+			.addPathSegment("show")
+			.addPathSegment(skill.getName().toLowerCase())
+			.addPathSegment(player.getName())
+			.addPathSegment("1week")
+			.addPathSegment("now")
+			.build()
+			.toString();
 	}
 
 	void resetAllInfoBoxes()

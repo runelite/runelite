@@ -192,6 +192,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
+				if (!plugin.getClient().hasHintArrow())
+				{
+					plugin.getClient().setHintArrow(npc);
+				}
+
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}

@@ -369,6 +369,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		// Mark dig location
 		if (getLocation() != null && getNpc() == null && objectId == -1)
 		{
+			if (!plugin.getClient().hasHintArrow())
+			{
+				plugin.getClient().setHintArrow(getLocation());
+			}
+
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 			if (localLocation != null)
@@ -382,6 +387,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
+				if (!plugin.getClient().hasHintArrow())
+				{
+					plugin.getClient().setHintArrow(npc);
+				}
+
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
@@ -395,6 +405,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			{
 				for (GameObject gameObject : plugin.getObjectsToMark())
 				{
+					if (!plugin.getClient().hasHintArrow())
+					{
+						plugin.getClient().setHintArrow(gameObject.getWorldLocation());
+					}
+
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
