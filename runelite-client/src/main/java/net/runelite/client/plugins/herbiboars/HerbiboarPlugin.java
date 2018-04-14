@@ -27,6 +27,7 @@ package net.runelite.client.plugins.herbiboars;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -98,10 +99,13 @@ public class HerbiboarPlugin extends Plugin
 	@Inject
 	private HerbiboarOverlay overlay;
 
+	@Inject
+	private HerbiboarMinimapOverlay minimapOverlay;
+
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, minimapOverlay);
 	}
 
 	@Provides
