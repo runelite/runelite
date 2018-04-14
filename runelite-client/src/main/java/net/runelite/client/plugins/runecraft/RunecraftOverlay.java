@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -78,23 +79,28 @@ public class RunecraftOverlay extends Overlay
 		for (WidgetItem item : widgetItems)
 		{
 			Varbits varbits;
+			int maxEssence;
 
 			switch (item.getId())
 			{
 				case ItemID.SMALL_POUCH:
 					varbits = Varbits.POUCH_SMALL;
+					maxEssence = 3;
 					break;
 				case ItemID.MEDIUM_POUCH:
 				case MEDIUM_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_MEDIUM;
+					maxEssence = 6;
 					break;
 				case ItemID.LARGE_POUCH:
 				case LARGE_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_LARGE;
+					maxEssence = 9;
 					break;
 				case ItemID.GIANT_POUCH:
 				case GIANT_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_GIANT;
+					maxEssence = 12;
 					break;
 				default:
 					continue;
@@ -102,8 +108,18 @@ public class RunecraftOverlay extends Overlay
 
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
+			int essenceInPouch = client.getSetting(varbits);
+
+			if(essenceInPouch == 0){
+				graphics.setColor(new Color(255,0,0,50));
+			} else if(essenceInPouch == maxEssence){
+				graphics.setColor(new Color(0,266,0,50));
+			} else {
+				graphics.setColor(new Color(255,266,0,50));
+			}
+
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(client.getSetting(varbits)));
+			textComponent.setText(String.valueOf(essenceInPouch));
 			textComponent.render(graphics);
 		}
 
