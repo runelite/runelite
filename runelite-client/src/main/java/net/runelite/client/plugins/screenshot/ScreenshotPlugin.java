@@ -163,6 +163,10 @@ public class ScreenshotPlugin extends Plugin
 					{
 						try
 						{
+							if (!RuneLite.SCREENSHOT_DIR.exists())
+							{
+								RuneLite.SCREENSHOT_DIR.mkdir();
+							}
 							Desktop.getDesktop().open(RuneLite.SCREENSHOT_DIR);
 						}
 						catch (IOException ex)
