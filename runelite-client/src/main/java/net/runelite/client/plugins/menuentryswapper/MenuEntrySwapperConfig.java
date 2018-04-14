@@ -180,6 +180,17 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 13,
+		keyName = "swapAbyssTeleport",
+		name = "Teleport to Abyss",
+		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
+	)
+	default boolean swapAbyssTeleport()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -190,7 +201,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
