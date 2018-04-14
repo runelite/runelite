@@ -392,6 +392,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("investigate", option, target, true);
 		}
+		else if (config.swapBones() && option.equals("bury"))
+		{
+			swap("chase", option, target, true);
+		}
+		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		{
+			Integer customOption = getSwapConfig(itemId);
+
+			if (customOption != null && customOption == -1)
+			{
+				swap("use", option, target, true);
+			}
+		}
+		// Put all item-related swapping after shift-click
 		else if (config.swapTeleportItem() && option.equals("wear"))
 		{
 			swap("rub", option, target, true);
@@ -407,19 +421,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
-		}
-		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
-		{
-			Integer customOption = getSwapConfig(itemId);
-
-			if (customOption != null && customOption == -1)
-			{
-				swap("use", option, target, true);
-			}
-		}
-		else if (config.swapChase() && option.equals("pick-up"))
-		{
-			swap("chase", option, target, true);
 		}
 	}
 
