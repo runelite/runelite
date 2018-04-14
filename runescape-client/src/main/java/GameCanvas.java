@@ -185,10 +185,10 @@ public final class GameCanvas extends Canvas {
                   continue;
                }
 
-               if(var23.composition.field3720 == 1 && (var23.x & 127) == 64 && (var23.y & 127) == 64) {
+               if(var23.composition.size == 1 && (var23.x & 127) == 64 && (var23.y & 127) == 64) {
                   for(var13 = 0; var13 < Client.npcIndexesCount; ++var13) {
                      var14 = Client.cachedNPCs[Client.npcIndices[var13]];
-                     if(var14 != null && var23 != var14 && var14.composition.field3720 == 1 && var23.x == var14.x && var14.y == var23.y) {
+                     if(var14 != null && var23 != var14 && var14.composition.size == 1 && var23.x == var14.x && var14.y == var23.y) {
                         KeyFocusListener.method811(var14.composition, Client.npcIndices[var13], var8, var9);
                      }
                   }
@@ -216,7 +216,7 @@ public final class GameCanvas extends Canvas {
                if((var24.x & 127) == 64 && (var24.y & 127) == 64) {
                   for(var13 = 0; var13 < Client.npcIndexesCount; ++var13) {
                      var14 = Client.cachedNPCs[Client.npcIndices[var13]];
-                     if(var14 != null && var14.composition.field3720 == 1 && var14.x == var24.x && var14.y == var24.y) {
+                     if(var14 != null && var14.composition.size == 1 && var14.x == var24.x && var14.y == var24.y) {
                         KeyFocusListener.method811(var14.composition, Client.npcIndices[var13], var8, var9);
                      }
                   }
