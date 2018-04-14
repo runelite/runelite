@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import java.awt.Desktop;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -38,6 +39,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -87,6 +90,8 @@ public class ConfigPanel extends PluginPanel
 	private static BufferedImage CONFIG_ICON;
 	private static BufferedImage UNCHECK_ICON;
 	private static BufferedImage CHECK_ICON;
+	private static BufferedImage HELP_ICON;
+	private static final String BASE_URI = "https://github.com/runelite/runelite/wiki/";
 
 	static
 	{
@@ -97,6 +102,7 @@ public class ConfigPanel extends PluginPanel
 				CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
 				UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
 				CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
+				HELP_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("help.png"));
 			}
 		}
 		catch (IOException e)
@@ -366,10 +372,21 @@ public class ConfigPanel extends PluginPanel
 	{
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
+
+		final JPanel groupPanel = buildGroupPanel();
+		add(groupPanel);
+
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		groupPanel.add(title, SwingConstants.CENTER);
+
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(1, 1, 3, 0));
+		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
+
+		final JButton helpButton = buildHelpButton(config);
+		buttonPanel.add(helpButton);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -543,5 +560,48 @@ public class ConfigPanel extends PluginPanel
 
 		revalidate();
 		getScrollPane().getVerticalScrollBar().setValue(0);
+	}
+
+	private JButton buildHelpButton(Config config)
+	{
+		// Create help button and disable it by default
+		final JButton helpButton = new JButton(new ImageIcon(HELP_ICON));
+		helpButton.setPreferredSize(new Dimension(32, 0));
+		helpButton.setEnabled(false);
+
+		// If we have configuration proxy enable the button and add edit config listener
+		if (config != null)
+		{
+			final ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
+			final boolean configEmpty = configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
+
+			if (!configEmpty)
+			{
+				helpButton.addActionListener(ae -> openHelpURI(configDescriptor));
+				helpButton.setEnabled(true);
+				helpButton.setToolTipText("Find out more about this Plugin");
+			}
+		}
+
+		return helpButton;
+	}
+
+	private void openHelpURI(ConfigDescriptor configDescriptor)
+	{
+		if (Desktop.isDesktopSupported())
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(BASE_URI);
+			stringBuilder.append(configDescriptor.getGroup().name().replace(" ", "-"));
+
+			try
+			{
+				Desktop.getDesktop().browse(new URI(stringBuilder.toString()));
+			}
+			catch (IOException | URISyntaxException e)
+			{
+				log.warn("Error with URI: ", e);
+			}
+		}
 	}
 }

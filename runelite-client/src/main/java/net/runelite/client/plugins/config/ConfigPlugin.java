@@ -67,8 +67,8 @@ public class ConfigPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
 
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
