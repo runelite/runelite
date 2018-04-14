@@ -212,7 +212,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Great demons, dragons, and spiders protect this blue rock, beneath which, you may find what you seek.", null, "Dig by the runite rock in the Lava Maze Dungeon"),
 		new CrypticClue("My giant guardians below the market streets would be fans of rock and roll, if only they could grab hold of it. Dig near my green bubbles!", null, "Dig near the cauldron by Moss Giants under Varrock Sewers"),
 		new CrypticClue("Varrock is where I reside not the land of the dead, but I am so old, I should be there instead. Let's hope your reward is as good as it says, just 1 gold one and you can have it read.", null, "Talk to Gypsy Aris, West of varrock main square."),
-		new CrypticClue("Speak to a referee.", null, "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold."),
+		new CrypticClue("Speak to a referee.", null, "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096"),
 		new CrypticClue("This crate holds a better reward than a broken arrow.", null, "Inside the Ranging Guild. Search the crate behind the northern most building."),
 		new CrypticClue("Search the drawers in the house next to the Port Sarim mage shop.", null, "House east of Betty's. Contains a cooking sink."),
 		new CrypticClue("With a name like that, you'd expect a little more than just a few scimitars.", null, "Speak to Daga on Ape Atoll."),
