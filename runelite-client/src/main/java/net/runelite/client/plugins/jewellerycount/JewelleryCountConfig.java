@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +24,36 @@
  */
 package net.runelite.client.plugins.jewellerycount;
 
-import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Jewellery Count"
+@ConfigGroup(
+	keyName = "jewelleryCount",
+	name = "Jewellery Count",
+	description = "Configuration for the Jewellery count plugin"
 )
-public class JewelleryCountPlugin extends Plugin
+public interface JewelleryCountConfig extends Config
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
-
-	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private JewelleryCountConfig config;
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "showJewelleryCount",
+		name = "Show Jewellery Count Configuration",
+		description = "Configures if jewellery count is shown",
+		position = 1
+	)
+	default boolean showJewelleryCount()
 	{
-		return overlay;
+		return true;
 	}
 
-	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "recoilNotification",
+		name = "Ring of Recoil Notification",
+		description = "Configures if the ring of recoil breaking notification is shown",
+		position = 2
+	)
+	default boolean recoilNotification()
 	{
-		return configManager.getConfig(JewelleryCountConfig.class);
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() == ChatMessageType.SERVER)
-		{
-			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
-			{
-				notifier.notify("Your Ring of Recoil has shattered");
-			}
-		}
+		return false;
 	}
 }
