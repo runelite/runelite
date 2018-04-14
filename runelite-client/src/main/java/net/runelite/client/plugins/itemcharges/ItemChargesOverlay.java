@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
-import net.runelite.api.Query;
+import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,15 +44,21 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-class JewelleryCountOverlay extends Overlay
+class ItemChargesOverlay extends Overlay
 {
+	private final Client client;
+	private final ItemChargesConfig config;
 	private final QueryRunner queryRunner;
 
+	private TextComponent textComponent = new TextComponent();
+
 	@Inject
-	JewelleryCountOverlay(QueryRunner queryRunner)
+	private ItemChargesOverlay(Client client, ItemChargesConfig config, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.client = client;
+		this.config = config;
 		this.queryRunner = queryRunner;
 	}
 
@@ -61,41 +67,34 @@ class JewelleryCountOverlay extends Overlay
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getJewelleryWidgetItems())
+		for (WidgetItem widgetItem : getWidgetItems())
 		{
-			JewelleryCharges charges = JewelleryCharges.getCharges(item.getId());
+			final ItemComposition item = client.getItemDefinition(widgetItem.getId());
+			final Integer charges = ChargeCounts.getCharges(item, config);
 
 			if (charges == null)
 			{
 				continue;
 			}
 
-			final Rectangle bounds = item.getCanvasBounds();
-			final TextComponent textComponent = new TextComponent();
+			final Rectangle bounds = widgetItem.getCanvasBounds();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(charges.getCharges()));
+			textComponent.setText(String.valueOf(charges));
 			textComponent.render(graphics);
 		}
 
 		return null;
 	}
 
-	private Collection<WidgetItem> getJewelleryWidgetItems()
+	/** Get WidgetItems for any visible inventory or equipment screens. */
+	private Collection<WidgetItem> getWidgetItems()
 	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+		final WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(new InventoryWidgetItemQuery());
+		final WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(new EquipmentItemQuery());
 
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
-			WidgetInfo.EQUIPMENT_AMULET,
-			WidgetInfo.EQUIPMENT_RING,
-			WidgetInfo.EQUIPMENT_GLOVES,
-			WidgetInfo.EQUIPMENT_WEAPON
-		);
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
-
-		Collection<WidgetItem> jewellery = new ArrayList<>();
-		jewellery.addAll(Arrays.asList(inventoryWidgetItems));
-		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
-		return jewellery;
+		final Collection<WidgetItem> widgetItems = new ArrayList<>();
+		widgetItems.addAll(Arrays.asList(inventoryWidgetItems));
+		widgetItems.addAll(Arrays.asList(equipmentWidgetItems));
+		return widgetItems;
 	}
 }

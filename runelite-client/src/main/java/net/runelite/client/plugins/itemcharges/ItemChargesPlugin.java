@@ -22,24 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.itemcharges;
 
-public enum JewelleryType
+import javax.inject.Inject;
+
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
+
+@PluginDescriptor(
+	name = "Item Charges"
+)
+public class ItemChargesPlugin extends Plugin
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL,
-	PHARAO,
-	WATERSKIN,
-	IMP_IN_A_BOX,
-	ELYRE
+	@Inject
+	private ItemChargesConfig config;
+
+	@Inject
+	private ItemChargesOverlay overlay;
+
+	@Provides
+	ItemChargesConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ItemChargesConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 }
