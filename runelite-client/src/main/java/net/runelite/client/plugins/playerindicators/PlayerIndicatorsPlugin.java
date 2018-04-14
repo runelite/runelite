@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
+
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import static net.runelite.api.MenuAction.FOLLOW;
@@ -185,27 +186,33 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	public boolean isWithinLevelRange(int playerCombatLevel)
 	{
-		Widget levelRange = client.getWidget(WidgetInfo.COMBAT_AREA_LEVEL_RANGE);
-		Widget wildernessLevel = client.getWidget(WidgetInfo.COMBAT_AREA_WILDERNESS_LEVEL);
+		Widget levelRangeWidget = client.getWidget(WidgetInfo.COMBAT_AREA_LEVEL_RANGE);
+		Widget wildernessLevelWidget = client.getWidget(WidgetInfo.COMBAT_AREA_WILDERNESS_LEVEL);
 
 		int localPlayerLevel = client.getLocalPlayer().getCombatLevel();
 		int lowerLevelBound = localPlayerLevel - 15;
 		int upperLevelBound = localPlayerLevel + 15;
 
-		if (levelRange == null && wildernessLevel == null)
+		if (levelRangeWidget == null && wildernessLevelWidget == null)
 		{
 			return false;
 		}
-		else if (levelRange == null)
+		else if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
 		{
-			lowerLevelBound = localPlayerLevel - Integer.parseInt(wildernessLevel.getText().split(" ")[1]);
-			upperLevelBound = localPlayerLevel + Integer.parseInt(wildernessLevel.getText().split(" ")[1]);
+			lowerLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[0]);
+			upperLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[1]);
+			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+		}
+		else if (levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
+		{
+			int wildernessLevel = Integer.parseInt(wildernessLevelWidget.getText().split(" ")[1]);
+			lowerLevelBound = localPlayerLevel - wildernessLevel;
+			upperLevelBound = localPlayerLevel + wildernessLevel;
 			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
 		}
 		else
 		{
 			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
 		}
-
 	}
 }
