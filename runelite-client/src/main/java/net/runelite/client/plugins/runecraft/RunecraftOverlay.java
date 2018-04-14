@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -43,81 +43,93 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-public class RunecraftOverlay extends Overlay {
-    private static final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
-    private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
-    private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
+public class RunecraftOverlay extends Overlay
+{
 
-    private final QueryRunner queryRunner;
-    private final Client client;
+	private static final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
+	private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
+	private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
-    private final RunecraftConfig config;
+	private final QueryRunner queryRunner;
+	private final Client client;
 
-    @Inject
-    RunecraftOverlay(QueryRunner queryRunner, Client client, RunecraftConfig config) {
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
-        this.queryRunner = queryRunner;
-        this.client = client;
-        this.config = config;
-    }
+	private final RunecraftConfig config;
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        if (!config.showPouch()) {
-            return null;
-        }
+	@Inject
+	RunecraftOverlay(QueryRunner queryRunner, Client client, RunecraftConfig config)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.queryRunner = queryRunner;
+		this.client = client;
+		this.config = config;
+	}
 
-        Query query = new InventoryWidgetItemQuery();
-        WidgetItem[] widgetItems = queryRunner.runQuery(query);
-        graphics.setFont(FontManager.getRunescapeSmallFont());
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.showPouch())
+		{
+			return null;
+		}
 
-        for (WidgetItem item : widgetItems) {
-            Varbits varbits;
-            int maxEssence;
+		Query query = new InventoryWidgetItemQuery();
+		WidgetItem[] widgetItems = queryRunner.runQuery(query);
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-            switch (item.getId()) {
-                case ItemID.SMALL_POUCH:
-                    varbits = Varbits.POUCH_SMALL;
-                    maxEssence = 3;
-                    break;
-                case ItemID.MEDIUM_POUCH:
-                case MEDIUM_POUCH_DAMAGED:
-                    varbits = Varbits.POUCH_MEDIUM;
-                    maxEssence = 6;
-                    break;
-                case ItemID.LARGE_POUCH:
-                case LARGE_POUCH_DAMAGED:
-                    varbits = Varbits.POUCH_LARGE;
-                    maxEssence = 9;
-                    break;
-                case ItemID.GIANT_POUCH:
-                case GIANT_POUCH_DAMAGED:
-                    varbits = Varbits.POUCH_GIANT;
-                    maxEssence = 12;
-                    break;
-                default:
-                    continue;
-            }
+		for (WidgetItem item : widgetItems)
+		{
+			Varbits varbits;
+			int maxEssence;
 
-            final Rectangle bounds = item.getCanvasBounds();
-            final TextComponent textComponent = new TextComponent();
-            int essenceInPouch = client.getSetting(varbits);
+			switch (item.getId())
+			{
+				case ItemID.SMALL_POUCH:
+					varbits = Varbits.POUCH_SMALL;
+					maxEssence = 3;
+					break;
+				case ItemID.MEDIUM_POUCH:
+				case MEDIUM_POUCH_DAMAGED:
+					varbits = Varbits.POUCH_MEDIUM;
+					maxEssence = 6;
+					break;
+				case ItemID.LARGE_POUCH:
+				case LARGE_POUCH_DAMAGED:
+					varbits = Varbits.POUCH_LARGE;
+					maxEssence = 9;
+					break;
+				case ItemID.GIANT_POUCH:
+				case GIANT_POUCH_DAMAGED:
+					varbits = Varbits.POUCH_GIANT;
+					maxEssence = 12;
+					break;
+				default:
+					continue;
+			}
 
-            if (essenceInPouch == 0) {
-                graphics.setColor(new Color(255, 0, 0, 50));
-            } else if (essenceInPouch == maxEssence) {
-                graphics.setColor(new Color(0, 255, 0, 50));
-            } else {
-                graphics.setColor(new Color(255, 255, 0, 50));
-            }
-            graphics.fill(bounds);
+			final Rectangle bounds = item.getCanvasBounds();
+			final TextComponent textComponent = new TextComponent();
+			int essenceInPouch = client.getSetting(varbits);
 
-            textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-            textComponent.setText(String.valueOf(essenceInPouch));
-            textComponent.render(graphics);
-        }
+			if (essenceInPouch == 0)
+			{
+				graphics.setColor(new Color(255, 0, 0, 50));
+			}
+			else if (essenceInPouch == maxEssence)
+			{
+				graphics.setColor(new Color(0, 255, 0, 50));
+			}
+			else
+			{
+				graphics.setColor(new Color(255, 255, 0, 50));
+			}
+			graphics.fill(bounds);
 
-        return null;
-    }
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			textComponent.setText(String.valueOf(essenceInPouch));
+			textComponent.render(graphics);
+		}
+
+		return null;
+	}
 }
