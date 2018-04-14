@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -55,7 +56,9 @@ public class ReportButtonPlugin extends Plugin
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter LOCAL_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter LOGIN_TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	private Instant loginTime;
 	private boolean ready;
@@ -140,14 +143,17 @@ public class ReportButtonPlugin extends Plugin
 
 		switch (config.time())
 		{
+			case LOCAL_TIME:
+				reportButton.setText(getLocalTime());
+				break;
+			case LOCAL_DATE:
+				reportButton.setText(getLocalDate());
+				break;
 			case UTC:
 				reportButton.setText(getUTCTime());
 				break;
 			case JAGEX:
 				reportButton.setText(getJagexTime());
-				break;
-			case LOCAL_TIME:
-				reportButton.setText(getLocalTime());
 				break;
 			case LOGIN_TIME:
 				reportButton.setText(getLoginTime());
@@ -160,7 +166,24 @@ public class ReportButtonPlugin extends Plugin
 
 	private String getLocalTime()
 	{
-		return LocalTime.now().format(DATE_TIME_FORMAT);
+		return LocalTime.now().format(LOCAL_TIME_FORMAT);
+	}
+
+	private String getLocalDate()
+	{
+		return LocalDate.now().format(LOCAL_DATE_FORMAT);
+	}
+
+	private String getUTCTime()
+	{
+		LocalTime time = LocalTime.now(UTC);
+		return time.format(LOCAL_TIME_FORMAT);
+	}
+
+	private String getJagexTime()
+	{
+		LocalTime time = LocalTime.now(JAGEX);
+		return time.format(LOCAL_TIME_FORMAT);
 	}
 
 	private String getLoginTime()
@@ -172,18 +195,6 @@ public class ReportButtonPlugin extends Plugin
 
 		Duration duration = Duration.between(loginTime, Instant.now());
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
-		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-	}
-
-	private String getUTCTime()
-	{
-		LocalTime time = LocalTime.now(UTC);
-		return time.format(DATE_TIME_FORMAT);
-	}
-
-	private String getJagexTime()
-	{
-		LocalTime time = LocalTime.now(JAGEX);
-		return time.format(DATE_TIME_FORMAT);
+		return time.format(LOGIN_TIME_FORMAT);
 	}
 }

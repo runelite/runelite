@@ -41,9 +41,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -98,8 +99,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy", Locale.US);
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+	private static final DateTimeFormatter REPORT_BUTTON_FORMAT = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter FILENAME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss", Locale.US);
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
@@ -155,7 +156,7 @@ public class ScreenshotPlugin extends Plugin
 				.tooltip("Take screenshot")
 				.icon(iconImage)
 				.onClick(() -> takeScreenshot(
-					TIME_FORMAT.format(new Date()),
+					FILENAME_FORMAT.format(LocalDateTime.now()),
 					client.getLocalPlayer() != null))
 				.popup(ImmutableMap
 					.<String, Runnable>builder()
@@ -420,7 +421,7 @@ public class ScreenshotPlugin extends Plugin
 					graphics.setFont(FontManager.getRunescapeSmallFont());
 					FontMetrics fontMetrics = graphics.getFontMetrics();
 
-					String date = DATE_FORMAT.format(new Date());
+					String date = REPORT_BUTTON_FORMAT.format(LocalDate.now());
 					int dateWidth = fontMetrics.stringWidth(date);
 					int dateHeight = fontMetrics.getHeight();
 
