@@ -41,6 +41,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
+import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -112,39 +113,90 @@ public class GrandExchangePlugin extends Plugin
 				// Check if left click + alt
 				if (e.getButton() == MouseEvent.BUTTON1 && e.isAltDown())
 				{
-					Point mousePosition = client.getMouseCanvasPosition();
 					Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 					if (inventoryWidget != null && !inventoryWidget.isHidden())
 					{
-						for (WidgetItem item : inventoryWidget.getWidgetItems())
+						if (findAndSearch(inventoryWidget.getWidgetItems().toArray(new WidgetItem[0])))
 						{
-							if (item.getCanvasBounds().contains(mousePosition.getX(), mousePosition.getY()))
-							{
-								ItemComposition itemComp = client.getItemDefinition(item.getId());
-								if (itemComp != null)
-								{
-									e.consume();
+							e.consume();
+							return super.mouseClicked(e);
+						}
+					}
 
-									SwingUtilities.invokeLater(() ->
-									{
-										panel.showSearch();
+					// Check the inventory when the bank is open aswell
+					Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+					if (bankInventoryWidget != null && !bankInventoryWidget.isHidden())
+					{
+						if (findAndSearch(bankInventoryWidget.getDynamicChildren()))
+						{
+							e.consume();
+							return super.mouseClicked(e);
+						}
+					}
 
-										if (!button.isSelected())
-										{
-											button.getOnSelect().run();
-										}
-
-										panel.getSearchPanel().priceLookup(itemComp.getName());
-									});
-								}
-
-								break;
-							}
+					Widget bankWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+					if (bankWidget != null && !bankWidget.isHidden())
+					{
+						// Use bank item query for only checking the active tab
+						if (findAndSearch(new BankItemQuery().result(client)))
+						{
+							e.consume();
+							return super.mouseClicked(e);
 						}
 					}
 				}
 
 				return super.mouseClicked(e);
+			}
+
+			private boolean findAndSearch(Widget[] widgets)
+			{
+				Point mousePosition = client.getMouseCanvasPosition();
+				for (Widget widget : widgets)
+				{
+					if (widget.getBounds().contains(mousePosition.getX(), mousePosition.getY()))
+					{
+						ItemComposition itemComposition = itemManager.getItemComposition(widget.getItemId());
+						search(itemComposition);
+						return true;
+					}
+				}
+				return false;
+			}
+
+			/**
+			 * Finds the item clicked based on the mouse location
+			 * @param items
+			 * @return true if an item is found, false otherwise
+			 */
+			private boolean findAndSearch(WidgetItem[] items)
+			{
+				Point mousePosition = client.getMouseCanvasPosition();
+				for (WidgetItem item : items)
+				{
+					if (item.getCanvasBounds().contains(mousePosition.getX(), mousePosition.getY()))
+					{
+						ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+						search(itemComposition);
+						return true;
+					}
+				}
+				return false;
+			}
+
+			private void search(ItemComposition itemComposition)
+			{
+				SwingUtilities.invokeLater(() ->
+				{
+					panel.showSearch();
+
+					if (!button.isSelected())
+					{
+						button.getOnSelect().run();
+					}
+
+					panel.getSearchPanel().priceLookup(itemComposition.getName());
+				});
 			}
 		};
 
