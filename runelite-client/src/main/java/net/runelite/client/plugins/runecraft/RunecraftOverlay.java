@@ -43,87 +43,81 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
-public class RunecraftOverlay extends Overlay
-{
-	private static final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
-	private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
-	private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
+public class RunecraftOverlay extends Overlay {
+    private static final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
+    private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
+    private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
-	private final QueryRunner queryRunner;
-	private final Client client;
+    private final QueryRunner queryRunner;
+    private final Client client;
 
-	private final RunecraftConfig config;
+    private final RunecraftConfig config;
 
-	@Inject
-	RunecraftOverlay(QueryRunner queryRunner, Client client, RunecraftConfig config)
-	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.queryRunner = queryRunner;
-		this.client = client;
-		this.config = config;
-	}
+    @Inject
+    RunecraftOverlay(QueryRunner queryRunner, Client client, RunecraftConfig config) {
+        setPosition(OverlayPosition.DYNAMIC);
+        setLayer(OverlayLayer.ABOVE_WIDGETS);
+        this.queryRunner = queryRunner;
+        this.client = client;
+        this.config = config;
+    }
 
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		if (!config.showPouch())
-		{
-			return null;
-		}
+    @Override
+    public Dimension render(Graphics2D graphics) {
+        if (!config.showPouch()) {
+            return null;
+        }
 
-		Query query = new InventoryWidgetItemQuery();
-		WidgetItem[] widgetItems = queryRunner.runQuery(query);
-		graphics.setFont(FontManager.getRunescapeSmallFont());
+        Query query = new InventoryWidgetItemQuery();
+        WidgetItem[] widgetItems = queryRunner.runQuery(query);
+        graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : widgetItems)
-		{
-			Varbits varbits;
-			int maxEssence;
+        for (WidgetItem item : widgetItems) {
+            Varbits varbits;
+            int maxEssence;
 
-			switch (item.getId())
-			{
-				case ItemID.SMALL_POUCH:
-					varbits = Varbits.POUCH_SMALL;
-					maxEssence = 3;
-					break;
-				case ItemID.MEDIUM_POUCH:
-				case MEDIUM_POUCH_DAMAGED:
-					varbits = Varbits.POUCH_MEDIUM;
-					maxEssence = 6;
-					break;
-				case ItemID.LARGE_POUCH:
-				case LARGE_POUCH_DAMAGED:
-					varbits = Varbits.POUCH_LARGE;
-					maxEssence = 9;
-					break;
-				case ItemID.GIANT_POUCH:
-				case GIANT_POUCH_DAMAGED:
-					varbits = Varbits.POUCH_GIANT;
-					maxEssence = 12;
-					break;
-				default:
-					continue;
-			}
+            switch (item.getId()) {
+                case ItemID.SMALL_POUCH:
+                    varbits = Varbits.POUCH_SMALL;
+                    maxEssence = 3;
+                    break;
+                case ItemID.MEDIUM_POUCH:
+                case MEDIUM_POUCH_DAMAGED:
+                    varbits = Varbits.POUCH_MEDIUM;
+                    maxEssence = 6;
+                    break;
+                case ItemID.LARGE_POUCH:
+                case LARGE_POUCH_DAMAGED:
+                    varbits = Varbits.POUCH_LARGE;
+                    maxEssence = 9;
+                    break;
+                case ItemID.GIANT_POUCH:
+                case GIANT_POUCH_DAMAGED:
+                    varbits = Varbits.POUCH_GIANT;
+                    maxEssence = 12;
+                    break;
+                default:
+                    continue;
+            }
 
-			final Rectangle bounds = item.getCanvasBounds();
-			final TextComponent textComponent = new TextComponent();
-			int essenceInPouch = client.getSetting(varbits);
+            final Rectangle bounds = item.getCanvasBounds();
+            final TextComponent textComponent = new TextComponent();
+            int essenceInPouch = client.getSetting(varbits);
 
-			if(essenceInPouch == 0){
-				graphics.setColor(new Color(255,0,0,50));
-			} else if(essenceInPouch == maxEssence){
-				graphics.setColor(new Color(0,255,0,50));
-			} else {
-				graphics.setColor(new Color(255,255,0,50));
-			}
-			graphics.fill(bounds);
+            if (essenceInPouch == 0) {
+                graphics.setColor(new Color(255, 0, 0, 50));
+            } else if (essenceInPouch == maxEssence) {
+                graphics.setColor(new Color(0, 255, 0, 50));
+            } else {
+                graphics.setColor(new Color(255, 255, 0, 50));
+            }
+            graphics.fill(bounds);
 
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(essenceInPouch));
-			textComponent.render(graphics);
-		}
+            textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+            textComponent.setText(String.valueOf(essenceInPouch));
+            textComponent.render(graphics);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }
