@@ -336,6 +336,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pickpocket", option, target, true);
 			}
 
+			if (config.swapAbyss() && target.contains("mage of zamorak"))
+			{
+				swap("teleport", option, target, true);
+			}
+
 			if (config.swapBank())
 			{
 				swap("bank", option, target, true);
@@ -367,6 +372,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("pay", option, target, true);
 			}
+
+			if (config.swapPyramid())
+			{
+				swap("start-minigame", option, target, true);
+			}
+
 		}
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
@@ -425,6 +436,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
 			swap("chase", option, target, true);
+		}
+
+		else if (config.swapAbyss())
+		{
+			swap("quick pass", option, target, true);
+		}
+
+		else if (config.swapBellRing())
+		{
+			swap("quick-pass", option, target, true);
 		}
 	}
 

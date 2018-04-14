@@ -70,22 +70,26 @@ public class PlayerIndicatorsService
 					consumer.accept(player, config.getOwnNameColor());
 				}
 			}
-			else if (config.drawFriendNames() && player.isFriend())
+			if (!config.onlyPlayerMenu())
 			{
-				consumer.accept(player, config.getFriendNameColor());
+				if (config.drawFriendNames() && player.isFriend() && player != localPlayer)
+				{
+					consumer.accept(player, config.getFriendNameColor());
+				}
+				else if (config.drawClanMemberNames() && isClanMember && player != localPlayer)
+				{
+					consumer.accept(player, config.getClanMemberColor());
+				}
+				else if (config.drawTeamMemberNames() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam() && player != localPlayer)
+				{
+					consumer.accept(player, config.getTeamMemberColor());
+				}
+				else if (config.drawNonClanMemberNames() && !isClanMember && player != localPlayer)
+				{
+					consumer.accept(player, config.getNonClanMemberColor());
+				}
 			}
-			else if (config.drawClanMemberNames() && isClanMember)
-			{
-				consumer.accept(player, config.getClanMemberColor());
-			}
-			else if (config.drawTeamMemberNames() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-			{
-				consumer.accept(player, config.getTeamMemberColor());
-			}
-			else if (config.drawNonClanMemberNames() && !isClanMember)
-			{
-				consumer.accept(player, config.getNonClanMemberColor());
-			}
+
 		}
 	}
 }
