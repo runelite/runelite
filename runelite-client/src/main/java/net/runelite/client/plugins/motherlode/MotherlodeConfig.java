@@ -95,4 +95,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showGemsFound",
+		name = "Show gems found",
+		description = "Shows gems found during current mining session"
+	)
+	default boolean showGemsFound()
+	{
+		return true;
+	}
 }
