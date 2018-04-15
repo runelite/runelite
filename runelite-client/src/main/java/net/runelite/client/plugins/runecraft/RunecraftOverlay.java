@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -36,10 +37,13 @@ import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
@@ -50,10 +54,19 @@ public class RunecraftOverlay extends Overlay
 	private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
 	private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
+	private static final Color RED = new Color(255, 0, 0, 50);
+	private static final Color GREEN = new Color(0, 255, 0, 50);
+	private static final Color YELLOW = new Color(255, 255, 0, 50);
+
 	private final QueryRunner queryRunner;
 	private final Client client;
 
 	private final RunecraftConfig config;
+
+	private static final Dimension IMAGE_SIZE = new Dimension(16, 16);
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	RunecraftOverlay(QueryRunner queryRunner, Client client, RunecraftConfig config)
@@ -81,6 +94,7 @@ public class RunecraftOverlay extends Overlay
 		{
 			Varbits varbits;
 			int maxEssence;
+			boolean isBroken = false;
 
 			switch (item.getId())
 			{
@@ -89,18 +103,30 @@ public class RunecraftOverlay extends Overlay
 					maxEssence = 3;
 					break;
 				case ItemID.MEDIUM_POUCH:
-				case MEDIUM_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_MEDIUM;
 					maxEssence = 6;
 					break;
+				case MEDIUM_POUCH_DAMAGED:
+					varbits = Varbits.POUCH_MEDIUM;
+					isBroken = true;
+					maxEssence = 6;
+					break;
 				case ItemID.LARGE_POUCH:
-				case LARGE_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_LARGE;
 					maxEssence = 9;
 					break;
+				case LARGE_POUCH_DAMAGED:
+					varbits = Varbits.POUCH_LARGE;
+					isBroken = true;
+					maxEssence = 9;
+					break;
 				case ItemID.GIANT_POUCH:
+					varbits = Varbits.POUCH_GIANT;
+					maxEssence = 12;
+					break;
 				case GIANT_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_GIANT;
+					isBroken = true;
 					maxEssence = 12;
 					break;
 				default:
@@ -113,19 +139,42 @@ public class RunecraftOverlay extends Overlay
 
 			if (essenceInPouch == 0)
 			{
-				graphics.setColor(new Color(255, 0, 0, 50));
+				graphics.setColor(RED);
 			}
 			else if (essenceInPouch == maxEssence)
 			{
-				graphics.setColor(new Color(0, 255, 0, 50));
+				graphics.setColor(GREEN);
 			}
 			else
 			{
-				graphics.setColor(new Color(255, 255, 0, 50));
+				graphics.setColor(YELLOW);
 			}
 			graphics.fill(bounds);
 
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			if (isBroken)
+			{
+				BufferedImage image = itemManager.getImage(ItemID.BANK_FILLER);
+				if (image != null)
+				{
+					BufferedImage resizedImg = new BufferedImage(
+							IMAGE_SIZE.width,
+							IMAGE_SIZE.height,
+							BufferedImage.TYPE_INT_ARGB
+					);
+
+					Graphics2D g = resizedImg.createGraphics();
+					g.drawImage(image, 0, 0, IMAGE_SIZE.width, IMAGE_SIZE.height, null);
+					g.dispose();
+
+					OverlayUtil.renderImageLocation(
+							graphics,
+							new net.runelite.api.Point(bounds.x + bounds.width - IMAGE_SIZE.width, bounds.y),
+							resizedImg
+					);
+				}
+			}
+
+			textComponent.setPosition(new Point(bounds.x + 2, bounds.y + 13));
 			textComponent.setText(String.valueOf(essenceInPouch));
 			textComponent.render(graphics);
 		}
