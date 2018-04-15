@@ -99,7 +99,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Speak to Ned in Draynor Village.", "Ned", new WorldPoint(3098, 3258, 0), "Ned is found north or the Draynor bank."),
 		new CrypticClue("Speak to Hans to solve the clue.", "Hans", new WorldPoint(3211, 3219, 0), "Hans can be found at Lumbridge Castle."),
 		new CrypticClue("Search the crates in Canifis.", CRATE_24344, new WorldPoint(3509, 3497, 1), "Search inside the shop, Rufus' Meat Emporium."),
-		new CrypticClue("Search the crates in the Dwarven mine.", CRATE_356, new WorldPoint(3034, 9849, 0), "Search the east of the Ice Mountain ladder entrance in the Drogo's Mining Emporium."),
+		new CrypticClue("Search the crates in the Dwarven mine.", CRATE_357, new WorldPoint(3034, 9849, 0), "Search the crate in the room east of the Ice Mountain ladder entrance in the Drogo's Mining Emporium."),
 		new CrypticClue("A crate found in the tower of a church is your next location.", NULL_10627, new WorldPoint(2612, 3304, 1), "Climb the ladder and search the crates on the 1st floor in the Church in Ardougne"),
 		new CrypticClue("Covered in shadows, the centre of the circle is where you will find the answer.", new WorldPoint(3488, 3289, 0), "Dig in the centre of Mort'ton, where the roads intersect"),
 		new CrypticClue("I lie lonely and forgotten in mid wilderness, where the dead rise from their beds. Feel free to quarrel and wind me up and dig while you shoot their heads.", new WorldPoint(3174, 3663, 0), "Directly under the crossbow respawn in the Graveyard of Shadows in level 18 Wilderness."),
