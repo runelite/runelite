@@ -43,7 +43,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
