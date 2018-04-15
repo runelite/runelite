@@ -119,6 +119,7 @@ public class HiscorePanel extends PluginPanel
 	@Nullable
 	private Client client;
 
+	private final HiscoreConfig config;
 	private final IconTextField input;
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
@@ -132,9 +133,11 @@ public class HiscorePanel extends PluginPanel
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private HiscoreResult result;
 
-	public HiscorePanel()
+	@Inject
+	public HiscorePanel(HiscoreConfig config)
 	{
 		super();
+		this.config = config;
 
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
@@ -544,7 +547,18 @@ public class HiscorePanel extends PluginPanel
 			}
 			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
 			{
-				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
+				Skill s = result.getSkill(skill);
+				int level;
+				if (config.virtualLevels())
+				{
+					level = Experience.getLevelForXp((int) s.getExperience());
+				}
+				else
+				{
+					level = s.getLevel();
+				}
+
+				label.setText(Integer.toString(level));
 			}
 		}
 
