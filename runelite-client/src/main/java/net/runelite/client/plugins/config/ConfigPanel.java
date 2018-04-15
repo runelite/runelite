@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -53,9 +54,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.WARNING_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -313,27 +311,26 @@ public class ConfigPanel extends PluginPanel
 		scrollbar.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
-	private void changeConfiguration(JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
+	private void changeConfiguration(Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		ConfigItem configItem = cid.getItem();
+
+		if (!Strings.isNullOrEmpty(configItem.warning()))
+		{
+			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result != JOptionPane.YES_OPTION)
+			{
+				openGroupConfigPanel(config, cd, configManager);
+				return;
+			}
+		}
 
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			boolean originalState = !checkbox.isSelected();
-			boolean config = originalState ? configItem.warnOnDisable() : configItem.warnOnEnable();
-			if (!configItem.confirmationWarining().isEmpty() && config)
-			{
-				int value = JOptionPane.showOptionDialog(component, configItem.confirmationWarining(),
-					"Are you sure?", YES_NO_OPTION, WARNING_MESSAGE,
-					null, new String[]{"Yes", "No"}, "No");
-				if (value != YES_OPTION)
-				{
-					checkbox.setSelected(originalState);
-					return;
-				}
-			}
-
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 
@@ -389,7 +386,7 @@ public class ConfigPanel extends PluginPanel
 			{
 				JCheckBox checkbox = new JCheckBox();
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
-				checkbox.addActionListener(ae -> changeConfiguration(checkbox, cd, cid));
+				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
 
 				item.add(checkbox, BorderLayout.EAST);
 			}
@@ -403,7 +400,7 @@ public class ConfigPanel extends PluginPanel
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+				spinner.addChangeListener(ce -> changeConfiguration(config, spinner, cd, cid));
 
 				item.add(spinner, BorderLayout.EAST);
 			}
@@ -418,14 +415,14 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void focusLost(FocusEvent e)
 					{
-						changeConfiguration(textField, cd, cid);
+						changeConfiguration(config, textField, cd, cid);
 						textField.setToolTipText(textField.getText());
 					}
 				});
 
 				textField.addActionListener(e ->
 				{
-					changeConfiguration(textField, cd, cid);
+					changeConfiguration(config, textField, cd, cid);
 					textField.setToolTipText(textField.getText());
 				});
 
@@ -451,7 +448,7 @@ public class ConfigPanel extends PluginPanel
 							@Override
 							public void windowClosing(WindowEvent e)
 							{
-								changeConfiguration(jColorChooser, cd, cid);
+								changeConfiguration(config, jColorChooser, cd, cid);
 							}
 						});
 						parent.add(jColorChooser);
@@ -517,7 +514,7 @@ public class ConfigPanel extends PluginPanel
 				{
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
-						changeConfiguration(box, cd, cid);
+						changeConfiguration(config, box, cd, cid);
 						box.setToolTipText(box.getSelectedItem().toString());
 					}
 				});
