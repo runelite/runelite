@@ -336,6 +336,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pickpocket", option, target, true);
 			}
 
+			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
+			{
+				swap("teleport", option, target, true);
+			}
+
 			if (config.swapBank())
 			{
 				swap("bank", option, target, true);
