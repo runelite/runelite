@@ -108,12 +108,12 @@ class BankCalculation
 
 			if (widgetItem.getId() == PLATINUM_TOKEN)
 			{
-				gePrice += widgetItem.getQuantity() * 1000;
-				haPrice += widgetItem.getQuantity() * 1000;
+				gePrice += widgetItem.getQuantity() * 1000L;
+				haPrice += widgetItem.getQuantity() * 1000L;
 				continue;
 			}
 
-			ItemComposition itemComposition = itemManager.getItemComposition(widgetItem.getId());
+			final ItemComposition itemComposition = itemManager.getItemComposition(widgetItem.getId());
 			itemCompositions.add(itemComposition);
 			itemMap.put(widgetItem.getId(), widgetItem);
 
@@ -152,7 +152,7 @@ class BankCalculation
 							continue; // cached no price
 						}
 
-						gePrice += itemPrice.getPrice() * itemMap.get(itemPrice.getItem().getId()).getQuantity();
+						gePrice += (long) itemPrice.getPrice() * (long) itemMap.get(itemPrice.getItem().getId()).getQuantity();
 					}
 				}
 				catch (Exception ex2)
@@ -178,8 +178,8 @@ class BankCalculation
 
 				if (price > 0)
 				{
-					haPrice += Math.round(price * HIGH_ALCHEMY_CONSTANT) *
-						itemMap.get(itemComposition.getId()).getQuantity();
+					haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
+						(long) itemMap.get(itemComposition.getId()).getQuantity();
 				}
 			}
 		}
