@@ -392,7 +392,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("investigate", option, target, true);
 		}
-		else if (config.swapBones() && option.equals("bury"))
+		else if (config.swapChase() && option.equals("pick-up"))
 		{
 			swap("chase", option, target, true);
 		}
