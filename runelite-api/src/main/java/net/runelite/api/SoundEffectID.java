@@ -50,6 +50,15 @@ public final class SoundEffectID
 	public final static int SMITH_ANVIL_TINK = 3790;
 	public final static int SMITH_ANVIL_TONK = 3791;
 
+	public final static int MAGIC_TELEPORT = 200;
+	public final static int RUBBER_CHICKEN_HIT = 354;
+	public final static int NPC_BOB_MEOW = 333;
+	public final static int NPC_DUCK_QUACK = 412;
+	public final static int NPC_DUCK_EEP = 413;
+	public final static int NCP_GOBLIN_OUCH = 462;
+	public final static int NPC_GHAST_OOH = 438;
+	public static final int NPC_DEMON_DRAMATIC_DEATH = 403;
+
 	/**
 	 * Used for random event NPCs spawning, and the imp teleport
 	 */
