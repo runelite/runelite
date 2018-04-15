@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -35,9 +36,10 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 
-public class GrandExchangeInputListener extends MouseListener
+public class GrandExchangeInputListener extends MouseListener implements KeyListener
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;
@@ -141,5 +143,29 @@ public class GrandExchangeInputListener extends MouseListener
 
 			plugin.getPanel().getSearchPanel().priceLookup(itemComposition.getName());
 		});
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.isAltDown())
+		{
+			plugin.setHotKeyPressed(true);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (!e.isAltDown())
+		{
+			plugin.setHotKeyPressed(false);
+		}
 	}
 }
