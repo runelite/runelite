@@ -53,6 +53,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_7730;
 import static net.runelite.api.NpcID.FISHING_SPOT_7731;
 import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
+import static net.runelite.api.NpcID.FISHING_SPOT_7947;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1509;
@@ -68,7 +69,7 @@ public enum FishingSpot
 	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1518, FISHING_SPOT_1521, FISHING_SPOT_1525,
 		FISHING_SPOT_1528, FISHING_SPOT_1530, FISHING_SPOT_1544,
-		FISHING_SPOT_7155, FISHING_SPOT_7469
+		FISHING_SPOT_7155, FISHING_SPOT_7469, FISHING_SPOT_7947
 	),
 	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER,
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1522,
