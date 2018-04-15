@@ -171,15 +171,26 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 12,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
-		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
+		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Chronicle"
 	)
 	default boolean swapTeleportItem()
 	{
 		return false;
 	}
-
+	
 	@ConfigItem(
 		position = 13,
+		keyName = "swapArdougneCloak",
+		name = "Ardougne Cloak teleport swap",
+		description = "If Teleport item and this is turned on, this will swap Monastery Teleport with Farm Teleport"
+	)
+	default boolean swapArdougneCloak()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -190,7 +201,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
