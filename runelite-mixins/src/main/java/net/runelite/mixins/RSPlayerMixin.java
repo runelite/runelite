@@ -148,20 +148,6 @@ public abstract class RSPlayerMixin implements RSPlayer
 		return rotatedTriangles;
 	}
 
-	@Inject
-	@Override
-	public int getIndex()
-	{
-		return playerIndex;
-	}
-
-	@Inject
-	@Override
-	public void setIndex(int index)
-	{
-		this.playerIndex = index;
-	}
-
 	@Copy("getModel")
 	public abstract RSModel rs$getModel();
 
