@@ -59,9 +59,9 @@ public class BankTagsPlugin extends Plugin
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
-		"(To show only tagged items, start your search with 'tag:')";
+		"(To show only tagged items, start your search with '#')";
 
-	private static final String TAG_SEARCH = "tag:";
+	private static final String TAG_SEARCH = "#";
 
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 
