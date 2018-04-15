@@ -362,7 +362,7 @@ public abstract class class28 {
 
                   var2 = (var3 - var8) * Client.field951 / var3;
                } else {
-                  var2 = Client.field1075;
+                  var2 = Client.soundEffectVolume;
                }
 
                if(var2 > 0) {

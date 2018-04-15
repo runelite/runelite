@@ -64,7 +64,7 @@ public class class23 {
          var3 = class81.intStack[WorldComparator.intStackSize];
          var4 = class81.intStack[WorldComparator.intStackSize + 1];
          int var5 = class81.intStack[WorldComparator.intStackSize + 2];
-         if(Client.field1075 != 0 && var4 != 0 && Client.queuedSoundEffectCount < 50) {
+         if(Client.soundEffectVolume != 0 && var4 != 0 && Client.queuedSoundEffectCount < 50) {
             Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var3;
             Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var4;
             Client.unknownSoundValues2[Client.queuedSoundEffectCount] = var5;
