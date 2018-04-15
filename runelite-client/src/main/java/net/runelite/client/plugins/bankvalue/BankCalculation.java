@@ -32,15 +32,13 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.COINS_995;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.queries.BankItemQuery;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.util.QueryRunner;
 import net.runelite.http.api.item.ItemPrice;
 
 @Slf4j
@@ -48,7 +46,7 @@ class BankCalculation
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
-	private final Client client;
+	private final QueryRunner queryRunner;
 	private final BankValueConfig config;
 	private final ItemManager itemManager;
 
@@ -65,9 +63,9 @@ class BankCalculation
 	private boolean finished;
 
 	@Inject
-	BankCalculation(Client client, ItemManager itemManager, BankValueConfig config)
+	BankCalculation(QueryRunner queryRunner, ItemManager itemManager, BankValueConfig config)
 	{
-		this.client = client;
+		this.queryRunner = queryRunner;
 		this.itemManager = itemManager;
 		this.config = config;
 	}
@@ -77,17 +75,7 @@ class BankCalculation
 	 */
 	void calculate()
 	{
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-
-		// Don't update on a search because rs seems to constantly update the title
-		if (widgetBankTitleBar == null ||
-			widgetBankTitleBar.isHidden() ||
-			widgetBankTitleBar.getText().contains("Showing"))
-		{
-			return;
-		}
-
-		WidgetItem[] widgetItems = new BankItemQuery().result(client);
+		WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
 
 		if (widgetItems.length == 0 || !isBankDifferent(widgetItems))
 		{
