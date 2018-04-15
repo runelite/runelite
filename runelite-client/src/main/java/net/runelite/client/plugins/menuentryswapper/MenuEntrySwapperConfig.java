@@ -171,7 +171,7 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 12,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
-		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Chronicle"
+		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
 	)
 	default boolean swapTeleportItem()
 	{
@@ -181,7 +181,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "swapArdougneCloak",
-		name = "Ardougne Cloak teleport swap",
+		name = "Ardougne cloak teleport swap",
 		description = "If Teleport item and this is turned on, this will swap Monastery Teleport with Farm Teleport"
 	)
 	default boolean swapArdougneCloak()
