@@ -339,6 +339,24 @@ public class Hooks
 		}
 	}
 
+	public static int getVolumeForQueuedSoundEffects()
+	{
+		int volume = client.getSoundEffectVolume();
+
+		if (volume > 0)
+		{
+			return volume;
+		}
+
+		/*
+			If the volume is = 0 and there are queued sounds,
+			those sounds must've been queued by us,
+			so let's force them to play even though audio is muted.
+		 */
+
+		return 64;
+	}
+
 	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
