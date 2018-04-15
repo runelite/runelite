@@ -35,9 +35,21 @@ import net.runelite.api.Constants;
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(
+		keyName = "rememberResize",
+		name = "Remember game size on resize",
+		description = "When resizing the window, save the game size for the next start",
+		position = 0
+	)
+	default boolean rememberResize()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",
-		description = "The game will resize to this resolution upon starting the client"
+		description = "The game will resize to this resolution upon starting the client",
+		position = 1
 	)
 	default Dimension gameSize()
 	{
@@ -45,9 +57,36 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "gameSize",
+		name = "",
+		description = ""
+	)
+	void gameSize(Dimension dim);
+
+	// Hide this config because the user should be able to maximize from their desktop
+	@ConfigItem(
+		keyName = "maximized",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default boolean maximized()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "maximized",
+		name = "",
+		description = ""
+	)
+	void maximized(boolean b);
+
+	@ConfigItem(
 		keyName = "lockWindowSize",
 		name = "Lock window size",
-		description = "Determines if the window resizing is allowed or not"
+		description = "Determines if the window resizing is allowed or not",
+		position = 2
 	)
 	default boolean lockWindowSize()
 	{
@@ -60,7 +99,8 @@ public interface RuneLiteConfig extends Config
 		description = "Use Runelite's custom window title and borders.",
 		confirmationWarining = "Please restart your client after changing this setting",
 		warnOnEnable = true,
-		warnOnDisable = true
+		warnOnDisable = true,
+		position = 3
 	)
 	default boolean enableCustomChrome()
 	{
@@ -70,7 +110,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
 		name = "Enable client always on top",
-		description = "The game will always be on the top of the screen"
+		description = "The game will always be on the top of the screen",
+		position = 4
 	)
 	default boolean gameAlwaysOnTop()
 	{
@@ -80,7 +121,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
-		description = "Enables tray notifications"
+		description = "Enables tray notifications",
+		position = 5
 	)
 	default boolean enableTrayNotifications()
 	{
@@ -90,7 +132,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationSound",
 		name = "Enable sound on notifications",
-		description = "Enables the playing of a beep sound when notifications are displayed"
+		description = "Enables the playing of a beep sound when notifications are displayed",
+		position = 6
 	)
 	default boolean enableNotificationSound()
 	{
@@ -100,7 +143,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused"
+		description = "Toggles idle notifications for when the client is focused",
+		position = 7
 	)
 	default boolean sendNotificationsWhenFocused()
 	{
@@ -110,7 +154,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationRequestFocus",
 		name = "Request focus on notification",
-		description = "Toggles window focus request"
+		description = "Toggles window focus request",
+		position = 8
 	)
 	default boolean requestFocusOnNotification()
 	{
