@@ -410,6 +410,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
+			if(config.swapArdougneCloak())
+			{
+				swap("farm teleport", option, target, true);
+			} 
+			else
+			{
+				swap("monastery teleport", option, target, true);
+			}
 		}
 		else if (option.equals("wield"))
 		{
