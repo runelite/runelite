@@ -42,6 +42,7 @@ public class Hooks
 	public static Logger log;
 
 	public static EventBus eventBus;
+	public static EventBus deferredEventBus;
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
