@@ -384,9 +384,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("last-destination (", option, target, false);
 		}
-		else if (config.swapBoxTrap() && option.equals("check"))
+		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap("reset", option, target, true);
+		}
+		else if (config.swapBoxTrap() && option.equals("take"))
+		{
+			swap("lay", option, target, true);
 		}
 		else if (config.swapCatacombEntrance() && option.equals("read"))
 		{
