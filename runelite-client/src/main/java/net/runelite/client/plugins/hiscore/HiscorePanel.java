@@ -548,8 +548,9 @@ public class HiscorePanel extends PluginPanel
 			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
 			{
 				Skill s = result.getSkill(skill);
+
 				int level;
-				if (config.virtualLevels())
+				if (config.virtualLevels() && s.getExperience() >= 0)
 				{
 					level = Experience.getLevelForXp((int) s.getExperience());
 				}
