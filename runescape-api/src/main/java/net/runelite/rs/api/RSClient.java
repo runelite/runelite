@@ -648,4 +648,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("isDynamicRegion")
 	@Override
 	boolean isInInstancedRegion();
+
+	@Import("shiftClickModeForced")
+	@Override
+	void setShiftClickModeForced(boolean shiftClickModeForced);
 }
