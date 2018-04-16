@@ -57,7 +57,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 		new EmoteClue("Bow in the ticket office of the Duel Arena. Equip an iron chain body, leather chaps and coif.", new WorldPoint(3314, 3241, 0), BOW, IRON_CHAINBODY, LEATHER_CHAPS, COIF),
 		new EmoteClue("Bow at the top of the lighthouse. Beware of double agents! Equip a blue dragonhide body, blue dragonhide vambraces and no jewelry.", new WorldPoint(2511, 3641, 2), BOW, BLUE_DHIDE_BODY, BLUE_DHIDE_VAMB),
 		new EmoteClue("Bow upstairs in the Monastery. Equip a completed prayer book.", new WorldPoint(3136, 3513, 0), BOW, HOLY_BOOK, UNHOLY_BOOK, BOOK_OF_BALANCE),
-		new EmoteClue("Blow a kiss between the tables in Shilo Village bank. Beware of double agents! Equip a blue mystic hat, bone spear and rune plate body.", new WorldPoint(2851, 2954, 0), BLOW_KISS, MYSTIC_HAT, BONE_SPEAR, RUNE_PLATEBODY),
+		new EmoteClue("Blow a kiss between the tables in Shilo Village bank. Beware of double agents! Equip a blue mystic hat, bone spear and rune platebody.", new WorldPoint(2851, 2954, 0), BLOW_KISS, MYSTIC_HAT, BONE_SPEAR, RUNE_PLATEBODY),
 		new EmoteClue("Blow a kiss in the heart of the lava maze. Equip black dragonhide chaps, a spotted cape and a rolling pin.", new WorldPoint(2417, 4454, 0), BLOW_KISS, BLACK_DHIDE_CHAPS, SPOTTED_CAPE, ROLLING_PIN),
 		new EmoteClue("Blow a kiss outside K'ril Tsutsaroth's chamber. Beware of double agents! Equip a zamorak full helm and the shadow sword.", new WorldPoint(2925, 5333, 0), BLOW_KISS, ZAMORAK_FULL_HELM, SHADOW_SWORD),
 		new EmoteClue("Cheer at the Druids' Circle. Equip a blue wizard hat, a bronze two-handed sword and HAM boots.", new WorldPoint(2925, 3484, 0), CHEER, BLUE_WIZARD_HAT, BRONZE_2H_SWORD, HAM_BOOTS),
