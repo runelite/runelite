@@ -66,7 +66,6 @@ import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
@@ -236,12 +235,12 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void loadWidgets(WidgetLoaded event)
 	{
-		if(!config.screenshotKingdom())
+		if (!config.screenshotKingdom())
 		{
 			return;
 		}
 		int widget = WidgetID.KINGDOM_GROUP_ID;
-		if(event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
+		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
 		{
 			String fileName = "Kingdom " + java.time.LocalDate.now();
 			takeScreenshot(fileName, config.displayDate());
