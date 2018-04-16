@@ -25,9 +25,28 @@
 
 package net.runelite.client.plugins.jewleryenchanting;
 
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 
-public class JewleryEnchantingPlugin extends Plugin
+@PluginDescriptor (
+		name = "Jewelery Enchanting"
+)
+public class JeweleryEnchantingPlugin extends Plugin
 {
+	
+	@Inject
+	private JeweleryEnchantingOverlay overly;
+	
+	@Inject
+	private JeweleryEnchantingConfig config;
+	
+	@Provides
+	JeweleryEnchantingConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(JeweleryEnchantingConfig.class);
+	}
 	
 }
