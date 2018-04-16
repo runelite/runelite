@@ -229,6 +229,20 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 	}
+	
+	@Subscribe
+	public void loadWidgets(WidgetLoaded event)
+	{
+		if(!config.screenshotKingdom())
+		{
+			return;
+		}
+		if(event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
+		{
+			String fileName = "Kingdom " + java.time.LocalDate.now();
+			takeScreenshot(fileName, config.displayDate());
+		}
+	}
 
 	@Subscribe
 	public void hideWidgets(WidgetHiddenChanged event)
