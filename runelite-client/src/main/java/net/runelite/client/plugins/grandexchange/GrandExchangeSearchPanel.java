@@ -212,12 +212,14 @@ class GrandExchangeSearchPanel extends JPanel
 
 
 			// Remove searching label after search is complete
-			if (ITEMS_LIST.size() > 0)
-			{
-				showSearchString(null);
-			} else {
-				showSearchString("No result found.");
-			}
+            if (ITEMS_LIST.size() > 0)
+            {
+                showSearchString(null);
+            }
+            else
+            {
+                showSearchString("No result found.");
+            }
 			ITEMS_LIST.clear();
 
 		});
