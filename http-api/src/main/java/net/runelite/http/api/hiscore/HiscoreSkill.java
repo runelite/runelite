@@ -27,29 +27,29 @@ package net.runelite.http.api.hiscore;
 public enum HiscoreSkill
 {
 	OVERALL("Overall"),
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
+	ATTACK("Attack", true),
+	DEFENCE("Defence", true),
+	STRENGTH("Strength", true),
+	HITPOINTS("Hitpoints", true),
+	RANGED("Ranged", true),
+	PRAYER("Prayer", true),
+	MAGIC("Magic", true),
+	COOKING("Cooking", true),
+	WOODCUTTING("Woodcutting", true),
+	FLETCHING("Fletching", true),
+	FISHING("Fishing", true),
+	FIREMAKING("Firemaking", true),
+	CRAFTING("Crafting", true),
+	SMITHING("Smithing", true),
+	MINING("Mining", true),
+	HERBLORE("Herblore", true),
+	AGILITY("Agility", true),
+	THIEVING("Thieving", true),
+	SLAYER("Slayer", true),
+	FARMING("Farming", true),
+	RUNECRAFT("Runecraft", true),
+	HUNTER("Hunter", true),
+	CONSTRUCTION("Construction", true),
 	CLUE_SCROLL_EASY("Clue Scrolls (easy)"),
 	CLUE_SCROLL_MEDIUM("Clue Scrolls (medium)"),
 	CLUE_SCROLL_ALL("Clue Scrolls (all)"),
@@ -61,14 +61,26 @@ public enum HiscoreSkill
 	CLUE_SCROLL_MASTER("Clue Scrolls (master)");
 
 	private final String name;
+	private final boolean virtualLevels;
 
 	HiscoreSkill(String name)
 	{
+		this(name, false);
+	}
+
+	HiscoreSkill(String name, boolean virtualLevels)
+	{
 		this.name = name;
+		this.virtualLevels = virtualLevels;
 	}
 
 	public String getName()
 	{
 		return name;
+	}
+
+	public boolean hasVirtualLevels()
+	{
+		return virtualLevels;
 	}
 }
