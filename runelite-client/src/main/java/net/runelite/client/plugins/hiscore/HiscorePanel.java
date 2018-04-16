@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
@@ -54,7 +55,9 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Player;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -112,6 +115,11 @@ public class HiscorePanel extends PluginPanel
 	@Inject
 	ScheduledExecutorService executor;
 
+	@Inject
+	@Nullable
+	private Client client;
+
+	private final HiscoreConfig config;
 	private final IconTextField input;
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
@@ -122,12 +130,14 @@ public class HiscorePanel extends PluginPanel
 
 	private List<JToggleButton> endpointButtons;
 
-	private final HiscoreClient client = new HiscoreClient();
+	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private HiscoreResult result;
 
-	public HiscorePanel()
+	@Inject
+	public HiscorePanel(HiscoreConfig config)
 	{
 		super();
+		this.config = config;
 
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
@@ -165,6 +175,29 @@ public class HiscorePanel extends PluginPanel
 		input = new IconTextField();
 		input.setIcon(search);
 		input.addActionListener(e -> executor.execute(this::lookup));
+		input.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getClickCount() != 2)
+				{
+					return;
+				}
+
+				if (client == null)
+				{
+					return;
+				}
+
+				Player localPlayer = client.getLocalPlayer();
+
+				if (localPlayer != null)
+				{
+					executor.execute(() -> lookup(localPlayer.getName()));
+				}
+			}
+		});
 		inputPanel.add(input, BorderLayout.CENTER);
 
 		c.gridx = 0;
@@ -482,7 +515,7 @@ public class HiscorePanel extends PluginPanel
 			HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
 			log.debug("Hiscore endpoint " + endpoint.name() + " selected");
 
-			result = client.lookup(lookup, endpoint);
+			result = hiscoreClient.lookup(lookup, endpoint);
 		}
 		catch (IOException ex)
 		{
@@ -514,7 +547,19 @@ public class HiscorePanel extends PluginPanel
 			}
 			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
 			{
-				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
+				Skill s = result.getSkill(skill);
+
+				int level;
+				if (config.virtualLevels() && s.getExperience() >= 0)
+				{
+					level = Experience.getLevelForXp((int) s.getExperience());
+				}
+				else
+				{
+					level = s.getLevel();
+				}
+
+				label.setText(Integer.toString(level));
 			}
 		}
 

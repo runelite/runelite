@@ -3729,7 +3729,7 @@ public final class Client extends GameEngine implements class302 {
                      var2 = npcIndices[var1];
                      NPC var22 = cachedNPCs[var2];
                      if(var22 != null) {
-                        WorldMapType3.method234(var22, var22.composition.field3720);
+                        WorldMapType3.method234(var22, var22.composition.size);
                      }
                   }
 

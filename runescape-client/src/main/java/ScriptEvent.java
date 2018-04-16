@@ -184,7 +184,7 @@ public class ScriptEvent extends Node {
             throw new RuntimeException();
          } else {
             Player var6 = Client.cachedPlayers[var1] = new Player();
-            var6.field836 = var1;
+            var6.playerId = var1;
             if(class93.field1430[var1] != null) {
                var6.decodeApperance(class93.field1430[var1]);
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.herbiboars;
 
-import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.client.plugins.Plugin;
+import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.util.Set;
 import net.runelite.client.ui.overlay.Overlay;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-@PluginDescriptor(
-	name = "Jewellery Count"
-)
-public class JewelleryCountPlugin extends Plugin
+public class HerbiboarMinimapOverlay extends Overlay
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
+	private final HerbiboarPlugin plugin;
+	private final HerbiboarConfig config;
 
 	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private JewelleryCountConfig config;
+	public HerbiboarMinimapOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.plugin = plugin;
+		this.config = config;
+	}
 
 	@Override
-	public Overlay getOverlay()
+	public Dimension render(Graphics2D graphics)
 	{
-		return overlay;
-	}
-
-	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(JewelleryCountConfig.class);
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() == ChatMessageType.SERVER)
+		if (config.isTrailShown() && plugin.isInHerbiboarArea())
 		{
-			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
+			HerbiboarTrail currentTrail = plugin.getCurrentTrail();
+			int finishId = plugin.getFinishId();
+			Set<Integer> shownTrailIds = plugin.getShownTrails();
+			plugin.getTrails().keySet().forEach((x) ->
 			{
-				notifier.notify("Your Ring of Recoil has shattered");
-			}
+				int id = x.getId();
+				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
+				{
+					OverlayUtil.renderMinimapLocation(graphics, x.getMinimapLocation(), config.getTrailColor());
+				}
+			});
 		}
+
+		return null;
 	}
 }

@@ -672,23 +672,6 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("cachedPlayers")
-	@Inject
-	public static void cachedPlayersChanged(int idx)
-	{
-		RSPlayer[] cachedPlayers = client.getCachedPlayers();
-		if (idx < 0 || idx >= cachedPlayers.length)
-		{
-			return;
-		}
-
-		RSPlayer player = cachedPlayers[idx];
-		if (player != null)
-		{
-			player.setIndex(idx);
-		}
-	}
-
 	@Inject
 	@FieldHook("grandExchangeOffers")
 	public static void onGrandExchangeOffersChanged(int idx)
@@ -777,7 +760,7 @@ public abstract class RSClientMixin implements RSClient
 	public void setHintArrow(Player player)
 	{
 		client.setHintArrowTargetType(HintArrowType.PLAYER.getValue());
-		client.setHintArrowPlayerTargetIdx(player.getIndex());
+		client.setHintArrowPlayerTargetIdx(((RSPlayer) player).getPlayerId());
 	}
 
 	@Inject

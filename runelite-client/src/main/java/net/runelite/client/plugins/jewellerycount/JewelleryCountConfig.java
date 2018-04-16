@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.jewellerycount;
 
-import net.runelite.api.Player;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSPlayer extends RSActor, Player
+@ConfigGroup(
+	keyName = "jewelleryCount",
+	name = "Jewellery Count",
+	description = "Configuration for the Jewellery count plugin"
+)
+public interface JewelleryCountConfig extends Config
 {
-	@Import("name")
-	RSName getRsName();
+	@ConfigItem(
+		keyName = "showJewelleryCount",
+		name = "Show Jewellery Count Configuration",
+		description = "Configures if jewellery count is shown",
+		position = 1
+	)
+	default boolean showJewelleryCount()
+	{
+		return true;
+	}
 
-	@Import("playerId")
-	int getPlayerId();
-
-	@Import("composition")
-	@Override
-	RSPlayerComposition getPlayerComposition();
-
-	@Import("combatLevel")
-	@Override
-	int getCombatLevel();
-
-	@Import("totalLevel")
-	int getTotalLevel();
-
-	@Import("team")
-	@Override
-	int getTeam();
-
-	@Import("isClanMember")
-	@Override
-	boolean isClanMember();
-
-	@Import("isFriend")
-	@Override
-	boolean isFriend();
+	@ConfigItem(
+		keyName = "recoilNotification",
+		name = "Ring of Recoil Notification",
+		description = "Configures if the ring of recoil breaking notification is shown",
+		position = 2
+	)
+	default boolean recoilNotification()
+	{
+		return false;
+	}
 }

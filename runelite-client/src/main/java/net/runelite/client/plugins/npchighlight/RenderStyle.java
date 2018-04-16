@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.npchighlight;
 
-import net.runelite.api.Player;
-import net.runelite.mapping.Import;
-
-public interface RSPlayer extends RSActor, Player
+public enum RenderStyle
 {
-	@Import("name")
-	RSName getRsName();
+	OFF("Off"),
+	TILE("Tile"),
+	HULL("Hull");
 
-	@Import("playerId")
-	int getPlayerId();
+	private final String name;
 
-	@Import("composition")
+	RenderStyle(String name)
+	{
+		this.name = name;
+	}
+
 	@Override
-	RSPlayerComposition getPlayerComposition();
-
-	@Import("combatLevel")
-	@Override
-	int getCombatLevel();
-
-	@Import("totalLevel")
-	int getTotalLevel();
-
-	@Import("team")
-	@Override
-	int getTeam();
-
-	@Import("isClanMember")
-	@Override
-	boolean isClanMember();
-
-	@Import("isFriend")
-	@Override
-	boolean isFriend();
+	public String toString()
+	{
+		return name;
+	}
 }

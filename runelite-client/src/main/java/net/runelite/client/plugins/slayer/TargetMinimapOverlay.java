@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, James Swindle <wilingua@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +24,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.slayer;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.client.plugins.Plugin;
+import net.runelite.api.NPC;
+import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-@PluginDescriptor(
-	name = "Jewellery Count"
-)
-public class JewelleryCountPlugin extends Plugin
+public class TargetMinimapOverlay extends Overlay
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
+	private final SlayerConfig config;
+	private final SlayerPlugin plugin;
 
 	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private JewelleryCountConfig config;
+	TargetMinimapOverlay(SlayerConfig config, SlayerPlugin plugin)
+	{
+		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+	}
 
 	@Override
-	public Overlay getOverlay()
+	public Dimension render(Graphics2D graphics)
 	{
-		return overlay;
-	}
-
-	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(JewelleryCountConfig.class);
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() == ChatMessageType.SERVER)
+		List<NPC> targets = plugin.getHighlightedTargets();
+		for (NPC target : targets)
 		{
-			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
-			{
-				notifier.notify("Your Ring of Recoil has shattered");
-			}
+			renderTargetOverlay(graphics, target, config.getTargetColor());
+		}
+
+		return null;
+	}
+
+	private void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
+	{
+		Point minimapLocation = actor.getMinimapLocation();
+		if (minimapLocation != null)
+		{
+			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
 		}
 	}
 }
