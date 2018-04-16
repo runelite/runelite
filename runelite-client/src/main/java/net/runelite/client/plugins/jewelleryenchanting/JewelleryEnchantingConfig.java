@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.jewleryenchanting;
+package net.runelite.client.plugins.jewelleryenchanting;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
@@ -35,7 +35,7 @@ import net.runelite.client.config.ConfigItem;
 		name = "Jewelery Enchanting",
 		description = "Configuration for the Jewelery Enchanting plugin"
 )
-public interface JeweleryEnchantingConfig extends Config
+public interface JewelleryEnchantingConfig extends Config
 {
 	@ConfigItem (
 			keyName = "unEnchantedColor",
@@ -45,7 +45,7 @@ public interface JeweleryEnchantingConfig extends Config
 	)
 	default Color unEnchantedColor ()
 	{
-		return new Color (255, 0, 0);
+		return new Color (0, 255, 0);
 	}
 	
 	@ConfigItem (
@@ -56,7 +56,7 @@ public interface JeweleryEnchantingConfig extends Config
 	)
 	default Color enchantedColor ()
 	{
-		return new Color (0, 255, 0);
+		return new Color (255, 0, 0);
 	}
 	
 	@ConfigItem (
@@ -135,5 +135,4 @@ public interface JeweleryEnchantingConfig extends Config
 	{
 		return true;
 	}
-	
 }

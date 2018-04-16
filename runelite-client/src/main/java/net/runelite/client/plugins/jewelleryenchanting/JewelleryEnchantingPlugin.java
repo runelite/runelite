@@ -23,30 +23,52 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.jewleryenchanting;
+package net.runelite.client.plugins.jewelleryenchanting;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor (
 		name = "Jewelery Enchanting"
 )
-public class JeweleryEnchantingPlugin extends Plugin
+public class JewelleryEnchantingPlugin extends Plugin
 {
 	
 	@Inject
-	private JeweleryEnchantingOverlay overly;
+	private JewelleryEnchantingOverlay overlay;
 	
 	@Inject
-	private JeweleryEnchantingConfig config;
+	private JewelleryEnchantingConfig config;
+	
+	@Override
+	public Overlay getOverlay ()
+	{
+		return overlay;
+	}
 	
 	@Provides
-	JeweleryEnchantingConfig getConfig(ConfigManager configManager)
+	JewelleryEnchantingConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(JeweleryEnchantingConfig.class);
+		return configManager.getConfig(JewelleryEnchantingConfig.class);
+	}
+	
+	@Subscribe
+	public void updateConfig (ConfigChanged config)
+	{
+		overlay.updateConfig ();
+	}
+	
+	@Subscribe
+	public void onMenuOptionClicked (MenuOptionClicked event)
+	{
+		overlay.onMenuOptionClicked (event);
 	}
 	
 }
