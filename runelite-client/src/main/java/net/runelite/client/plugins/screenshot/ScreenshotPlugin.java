@@ -239,6 +239,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			return;
 		}
+		int widget = WidgetID.KINGDOM_GROUP_ID;
 		if(event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
 		{
 			String fileName = "Kingdom " + java.time.LocalDate.now();
