@@ -36,10 +36,16 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor (
-		name = "Jewelery Enchanting"
+		name = "Jewellery Enchanting",
+		enabledByDefault = false
 )
 public class JewelleryEnchantingPlugin extends Plugin
 {
+	//WorldMapDecoration
+	//	createSprite (var3 is color)
+	//	Possibly need to add a field in item composition for outline color
+	//SpritePixels
+	//	method5855
 	
 	@Inject
 	private JewelleryEnchantingOverlay overlay;

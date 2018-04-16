@@ -31,108 +31,19 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup (
-		keyName = "jeweleryEchanting",
-		name = "Jewelery Enchanting",
-		description = "Configuration for the Jewelery Enchanting plugin"
+		keyName = "jewelleryEchanting",
+		name = "Jewellery Enchanting",
+		description = "Configuration for the Jewellery Enchanting plugin"
 )
 public interface JewelleryEnchantingConfig extends Config
 {
 	@ConfigItem (
 			keyName = "unEnchantedColor",
-			name = "Un-Enchanted Jewelery Color",
-			description = "The color for any un-enchanted jewelery",
-			position = 1
+			name = "Jewelery Highlight",
+			description = "The color for any un-enchanted jewelery"
 	)
 	default Color unEnchantedColor ()
 	{
-		return new Color (0, 255, 0);
-	}
-	
-	@ConfigItem (
-			keyName = "enchantedColor",
-			name = "Enchanted Jewelery Color",
-			description = "The color for any enchanted jewelery",
-			position = 2
-	)
-	default Color enchantedColor ()
-	{
-		return new Color (255, 0, 0);
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlOneEnchants",
-			name = "Show Sapphire/Opal Enchants",
-			description = "Whether or not to show enchanting for sapphires/opals",
-			position = 3
-	)
-	default boolean showLvlOneEnchants ()
-	{
-		return true;
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlTwoEnchants",
-			name = "Show Emerald/Jade Enchants",
-			description = "Whether or not to show enchanting for emeralds/jades",
-			position = 4
-	)
-	default boolean showLvlTwoEnchants ()
-	{
-		return true;
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlThreeEnchants",
-			name = "Show Ruby/Topaz Enchants",
-			description = "Whether or not to show enchanting for ruby/topaz",
-			position = 5
-	)
-	default boolean showLvlThreeEnchants ()
-	{
-		return true;
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlFourEnchants",
-			name = "Show Diamond Enchants",
-			description = "Whether or not to show enchanting for diamond",
-			position = 6
-	)
-	default boolean showLvlFourEnchants ()
-	{
-		return true;
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlFiveEnchants",
-			name = "Show Dragonstone Enchants",
-			description = "Whether or not to show enchanting for dragonstone",
-			position = 7
-	)
-	default boolean showLvlFiveEnchants ()
-	{
-		return true;
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlSixEnchants",
-			name = "Show Onyx Enchants",
-			description = "Whether or not to show enchanting for onyx",
-			position = 8
-	)
-	default boolean showLvlSixEnchants ()
-	{
-		return true;
-	}
-	
-	@ConfigItem (
-			keyName = "showLvlSevenEnchants",
-			name = "Show Zenyte Enchants",
-			description = "Whether or not to show enchanting for zenyte",
-			position = 9
-	)
-	default boolean showLvlSevenEnchants ()
-	{
-		return true;
+		return new Color (255, 255, 255);
 	}
 }

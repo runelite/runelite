@@ -33,12 +33,12 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -50,29 +50,22 @@ public class JewelleryEnchantingOverlay extends Overlay
 	
 	//Set up all the items that belongs to the different enchantment levels
 	private Map<String, int[]> unEnchantedItems = new HashMap<String, int[]> ();
-	private Map<String, int[]> enchantedItems = new HashMap<String, int[]> ();
-	private Map<String, Boolean> enchantmentConfigPrefs = new HashMap<String, Boolean> ();
 	
 	private Color unEnchantedColor;
-	private Color enchantedColor;
 	private String clickedOption;
 	
-	private final JewelleryEnchantingPlugin plugin;
 	private final JewelleryEnchantingConfig config;
 	private final Client client;
 	private final QueryRunner queryRunner;
-	private final ItemManager itemManager;
 	
 	@Inject
-	public JewelleryEnchantingOverlay (JewelleryEnchantingPlugin plugin, JewelleryEnchantingConfig config, Client client, QueryRunner queryRunner, ItemManager itemManager)
+	public JewelleryEnchantingOverlay (JewelleryEnchantingConfig config, Client client, QueryRunner queryRunner)
 	{
 		setPosition (OverlayPosition.DYNAMIC);
 		setLayer (OverlayLayer.ABOVE_WIDGETS);
-		this.plugin = plugin;
-		this.config= config;
+		this.config = config;
 		this.client = client;
 		this.queryRunner = queryRunner;
-		this.itemManager = itemManager;
 		
 		//Set up the unechanted items
 		unEnchantedItems.put ("Lvl-1 Enchant", new int[]
@@ -137,80 +130,9 @@ public class JewelleryEnchantingOverlay extends Overlay
 				ItemID.ZENYTE_BRACELET,
 				ItemID.ZENYTE_AMULET
 		});
-		//Set up the enchanted items
-		enchantedItems.put ("Lvl-1 Enchant", new int[]
-		{		//Level One Enchanted Items
-				ItemID.RING_OF_RECOIL,
-				ItemID.GAMES_NECKLACE8,
-				ItemID.BRACELET_OF_CLAY,
-				ItemID.AMULET_OF_MAGIC,
-				ItemID.RING_OF_PURSUIT,
-				ItemID.EXPEDITIOUS_BRACELET,
-				ItemID.DODGY_NECKLACE,
-				ItemID.AMULET_OF_BOUNTY
-		});
-		enchantedItems.put ("Lvl-2 Enchant", new int[]
-		{		//Level Two Enchanted Items
-				ItemID.RING_OF_DUELING8,
-				ItemID.BINDING_NECKLACE,
-				ItemID.CASTLE_WARS_BRACELET3,
-				ItemID.AMULET_OF_DEFENCE,
-				ItemID.AMULET_OF_NATURE,
-				ItemID.RING_OF_RETURNING5,
-				ItemID.NECKLACE_OF_PASSAGE5,
-				ItemID.FLAMTAER_BRACELET,
-				ItemID.AMULET_OF_CHEMISTRY
-		});
-		enchantedItems.put ("Lvl-3 Enchant", new int[]
-		{		//Level Three Enchanted Items
-				ItemID.RING_OF_FORGING,
-				ItemID.INOCULATION_BRACELET,
-				ItemID.AMULET_OF_STRENGTH,
-				ItemID.DIGSITE_PENDANT_5,
-				ItemID.EFARITAYS_AID,
-				ItemID.BRACELET_OF_SLAUGHTER,
-				ItemID.NECKLACE_OF_FAITH,
-				ItemID.BURNING_AMULET5
-		});
-		enchantedItems.put ("Lvl-4 Enchant", new int[]
-		{		//Level Four Enchanted Items
-				ItemID.RING_OF_LIFE,
-				ItemID.PHOENIX_NECKLACE,
-				ItemID.DIAMOND_BRACELET,
-				ItemID.DIAMOND_AMULET
-		});
-		enchantedItems.put ("Lvl-5 Enchant", new int[]
-		{		//Level Five Enchanted Items
-				ItemID.RING_OF_WEALTH,
-				ItemID.SKILLS_NECKLACE,
-				ItemID.COMBAT_BRACELET,
-				ItemID.AMULET_OF_GLORY
-		});
-		enchantedItems.put ("Lvl-6 Enchant", new int[]
-		{		//Level Six Enchanted Items
-				ItemID.RING_OF_STONE,
-				ItemID.BERSERKER_NECKLACE,
-				ItemID.REGEN_BRACELET,
-				ItemID.AMULET_OF_FURY
-		});
-		enchantedItems.put ("Lvl-8 Enchant", new int[]
-		{		//Level Seven Enchanted Items
-				ItemID.RING_OF_SUFFERING,
-				ItemID.NECKLACE_OF_ANGUISH,
-				ItemID.TORMENTED_BRACELET,
-				ItemID.AMULET_OF_TORTURE
-		});
-		//Set up the enchantment config preferences array
-		enchantmentConfigPrefs.put ("Lvl-1 Enchant", config.showLvlOneEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-2 Enchant", config.showLvlTwoEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-3 Enchant", config.showLvlThreeEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-4 Enchant", config.showLvlFourEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-5 Enchant", config.showLvlFiveEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-6 Enchant", config.showLvlSixEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-7 Enchant", config.showLvlSevenEnchants ());
+		
 		//Set the colors
-		unEnchantedColor = new Color (config.unEnchantedColor ().getRed (), config.unEnchantedColor ().getGreen (), config.unEnchantedColor ().getBlue (), 128);
-		enchantedColor = new Color (config.enchantedColor ().getRed (), config.enchantedColor ().getGreen (), config.enchantedColor ().getBlue (), 128);
+		unEnchantedColor = config.unEnchantedColor ();//new Color (config.unEnchantedColor ().getRed (), config.unEnchantedColor ().getGreen (), config.unEnchantedColor ().getBlue (), 128);
 	}
 	
 	//When showing border look into the outline jagex uses when "using" items
@@ -221,30 +143,25 @@ public class JewelleryEnchantingOverlay extends Overlay
 		//Make sure we only start this if the player has clicked an enchantment level
 		if (clickedOption != null)
 		{
-			//Now make sure the player want's this enchantment level to be overlayed
-			if (enchantmentConfigPrefs.get (clickedOption))
+			//Query the players inventory
+			Query inventoryQuery = new InventoryWidgetItemQuery ();
+			WidgetItem[] inventoryItems = queryRunner.runQuery (inventoryQuery);
+			//Let's make sure there is items in the players inventory
+			if (inventoryItems != null && inventoryItems.length != 0)
 			{
-				//Now query the players inventory
-				Query inventoryQuery = new InventoryWidgetItemQuery ();
-				WidgetItem[] inventoryItems = queryRunner.runQuery (inventoryQuery);
-				//Let's make sure there is items in the players inventory
-				if (inventoryItems != null && inventoryItems.length != 0)
+				//Let's loop through every item and display the overlay if it's an item for the current enchantment level
+				for (WidgetItem item : inventoryItems)
 				{
-					//Let's loop through every item and display the overlay if it's an item for the current enchantment level
-					for (WidgetItem item : inventoryItems)
+					//Check to see if this item is one of the item id's in the un-enchanted list
+					if (arrayContains (unEnchantedItems.get (clickedOption), item.getId ()))
 					{
-						//Check to see if this item is one of the item id's in the un-enchanted list
-						if (arrayContains (unEnchantedItems.get (clickedOption), item.getId ()))
-						{
-							BufferedImage itemImage = overlayColor (itemManager.getImage (item.getId ()), unEnchantedColor);
-							graphics.drawImage (itemImage, item.getCanvasLocation ().getX () + 1, item.getCanvasLocation ().getY () + 1, null);
-						}
-						//Do the same for the enchanted list
-						if (arrayContains (enchantedItems.get (clickedOption), item.getId ()))
-						{
-							BufferedImage itemImage = overlayColor (itemManager.getImage (item.getId ()), enchantedColor);
-							graphics.drawImage (itemImage, item.getCanvasLocation ().getX () + 1, item.getCanvasLocation ().getY () + 1, null);
-						}
+						//Get the item with no shadow to better draw the shadow
+						BufferedImage itemImage = client.createItemSprite (item.getId (), item.getQuantity (), 1, new Color(0,0,0).getRGB () & 0x00,
+								0, false, Constants.CLIENT_DEFAULT_ZOOM).toBufferedImage ();
+						//Get the outline image of the item
+						itemImage = getOutline (itemImage, unEnchantedColor);
+						//Draw the outlined image
+						graphics.drawImage (itemImage, item.getCanvasLocation ().getX () + 1, item.getCanvasLocation ().getY () + 1, null);
 					}
 				}
 			}
@@ -264,39 +181,32 @@ public class JewelleryEnchantingOverlay extends Overlay
 		return false;
 	}
 	
-	private static BufferedImage overlayColor(BufferedImage img, Color keyColor) {
+	//This method takes a buffered image then draws an outline around it in a new buffered image with the passed color
+	private BufferedImage getOutline (BufferedImage img, Color keyColor)
+	{
+		BufferedImage outline = new BufferedImage (img.getWidth (), img.getHeight (), img.getType ());
+		
 		for (int y = 0; y < img.getHeight(); y++)
 		{
 			for (int x = 0; x < img.getWidth(); x++)
 			{
 				//Get the current pixel at x/y
 				int col = img.getRGB (x, y);
-				//Check to see if the current pixel is not transparent
-				if ((col>>24) != 0x00)
+				//Let's check if any of the surrounding pixels are transparent and if so that means it's an outline
+				if (col != 0 && (img.getRGB (x, y + 1) == 0 || img.getRGB (x, y - 1) == 0 || img.getRGB (x + 1, y) == 0 || img.getRGB (x - 1, y) == 0))
 				{
 					//Change the current pixel to the given color
-					img.setRGB(x, y, keyColor.getRGB ());
+					outline.setRGB(x, y, keyColor.getRGB ());
 				}
 			}
 		}
-		return img;
+		return outline;
 	}
 	
 	public void updateConfig ()
 	{
-		//Clear the dictionary for the config prefs
-		enchantmentConfigPrefs.clear ();
-		//Set up the enchantment config preferences array
-		enchantmentConfigPrefs.put ("Lvl-1 Enchant", config.showLvlOneEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-2 Enchant", config.showLvlTwoEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-3 Enchant", config.showLvlThreeEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-4 Enchant", config.showLvlFourEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-5 Enchant", config.showLvlFiveEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-6 Enchant", config.showLvlSixEnchants ());
-		enchantmentConfigPrefs.put ("Lvl-7 Enchant", config.showLvlSevenEnchants ());
 		//Set the colors
-		unEnchantedColor = new Color (config.unEnchantedColor ().getRed (), config.unEnchantedColor ().getGreen (), config.unEnchantedColor ().getBlue (), 128);
-		enchantedColor = new Color (config.enchantedColor ().getRed (), config.enchantedColor ().getGreen (), config.enchantedColor ().getBlue (), 128);
+		unEnchantedColor = config.unEnchantedColor ();//new Color (config.unEnchantedColor ().getRed (), config.unEnchantedColor ().getGreen (), config.unEnchantedColor ().getBlue (), 128);
 	}
 	
 	//Find out what the player is clicking on and make sure it's a jewelry enchantment
