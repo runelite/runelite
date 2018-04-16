@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
+import static net.runelite.client.plugins.raids.RaidsPlugin.DECIMAL_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -44,6 +45,9 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	private RaidsPlugin plugin;
 
+	@Inject
+	private RaidsConfig config;
+
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
@@ -54,8 +58,7 @@ public class RaidsPointsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
-	{
+	public Dimension render(Graphics2D graphics) {
 		if (!plugin.isInRaidChambers())
 		{
 			return null;
@@ -64,17 +67,41 @@ public class RaidsPointsOverlay extends Overlay
 		int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
 		int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
 
+		double percentage = personalPoints / (totalPoints / 100.0);
+
 		panel.getLines().clear();
 		panel.getLines().add(new PanelComponent.Line(
-			"Total:", Color.WHITE, POINTS_FORMAT.format(totalPoints), Color.WHITE
+				"Total:", Color.WHITE, POINTS_FORMAT.format(totalPoints), Color.WHITE
 		));
+		// IF PLAYER WANTS PERCENTAGE
+		if (config.percentPoints())
+		{
+			// REMOVES NULL OUTPUT
+			if (personalPoints == 0 || totalPoints == 0)
+			{
+				panel.getLines().add(new PanelComponent.Line(
+						client.getLocalPlayer().getName() + ":", Color.WHITE, POINTS_FORMAT.format(personalPoints) + " (0%)", Color.WHITE
+				));
+			}
+			else
+			{
+				panel.getLines().add(new PanelComponent.Line(
+						client.getLocalPlayer().getName() + ":", Color.WHITE, POINTS_FORMAT.format(personalPoints) + " (" + DECIMAL_FORMAT.format(percentage) + "%)", Color.WHITE
+				));
+			}
+		}
+		//DOES NOT WANT PERCENTAGE
+		else
+		{
+			panel.getLines().add(new PanelComponent.Line(
+					client.getLocalPlayer().getName() + ":", Color.WHITE, POINTS_FORMAT.format(personalPoints), Color.WHITE
+			));
+		}
+		//RENDERS REGARDLESS
 		panel.getLines().add(new PanelComponent.Line(
-			client.getLocalPlayer().getName() + ":", Color.WHITE, POINTS_FORMAT.format(personalPoints), Color.WHITE
+				"Party size:", Color.WHITE, String.valueOf(client.getSetting(Varbits.RAID_PARTY_SIZE)), Color.WHITE
 		));
-		panel.getLines().add(new PanelComponent.Line(
-			"Party size:", Color.WHITE, String.valueOf(client.getSetting(Varbits.RAID_PARTY_SIZE)), Color.WHITE
-		));
-
 		return panel.render(graphics);
+
 	}
 }
