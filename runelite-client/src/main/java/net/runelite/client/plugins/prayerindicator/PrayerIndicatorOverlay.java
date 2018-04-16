@@ -117,7 +117,8 @@ public class PrayerIndicatorOverlay extends Overlay
 			{
 				if (!infoBoxManager.getInfoBoxes ().contains (indicator))
 					infoBoxManager.addInfoBox (indicator);
-			} else
+			}
+			else
 			{
 				if (infoBoxManager.getInfoBoxes ().contains (indicator))
 					infoBoxManager.removeInfoBox (indicator);
@@ -163,7 +164,8 @@ public class PrayerIndicatorOverlay extends Overlay
 				{
 					//Since the orb's alpha is at the top most value the alphaOffset needs to be set to a negative to subtract from it
 					alphaOffset = -5;
-				} else if (orbIndicatorColor.getAlpha () <= 100)
+				}
+				else if (orbIndicatorColor.getAlpha () <= 100)
 				{
 					//Since the orb's alpha is at the bottom most value the alphaOffset needs to be set to a positive to add to it
 					alphaOffset = 5;
