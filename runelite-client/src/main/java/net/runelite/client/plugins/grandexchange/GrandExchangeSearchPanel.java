@@ -117,7 +117,7 @@ class GrandExchangeSearchPanel extends JPanel
 	void priceLookup(String item)
 	{
 		searchBox.setText(item);
-		executor.execute(() -> priceLookup(true));
+		executor.execute(() -> priceLookup(false));
 	}
 
 	private void priceLookup(boolean exactMatch)
@@ -126,6 +126,8 @@ class GrandExchangeSearchPanel extends JPanel
 
 		if (Strings.isNullOrEmpty(lookup))
 		{
+			searchItemsPanel.removeAll();
+			showSearchString("Please search for an item.");
 			return;
 		}
 
@@ -196,6 +198,7 @@ class GrandExchangeSearchPanel extends JPanel
 			}
 		}
 
+
 		SwingUtilities.invokeLater(() ->
 		{
 			for (GrandExchangeItems item : ITEMS_LIST)
@@ -206,10 +209,19 @@ class GrandExchangeSearchPanel extends JPanel
 				searchItemsPanel.add(panel);
 			}
 
-			ITEMS_LIST.clear();
+
 
 			// Remove searching label after search is complete
-			showSearchString(null);
+			if (ITEMS_LIST.size() > 0)
+			{
+				showSearchString(null);
+			}
+			else
+			        {
+				showSearchString("No result found.");
+			}
+			ITEMS_LIST.clear();
+
 		});
 	}
 
