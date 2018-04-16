@@ -117,7 +117,7 @@ class GrandExchangeSearchPanel extends JPanel
 	void priceLookup(String item)
 	{
 		searchBox.setText(item);
-		executor.execute(() -> priceLookup(false));
+		executor.execute(() -> priceLookup(true));
 	}
 
 	private void priceLookup(boolean exactMatch)
