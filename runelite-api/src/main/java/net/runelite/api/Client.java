@@ -381,4 +381,6 @@ public interface Client extends GameEngine
 	boolean isInterpolateObjectAnimations();
 
 	void setInterpolateObjectAnimations(boolean interpolate);
+
+	boolean isInInstancedRegion();
 }
