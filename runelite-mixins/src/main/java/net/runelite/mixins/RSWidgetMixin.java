@@ -32,6 +32,7 @@ import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetTextChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -349,6 +350,16 @@ public abstract class RSWidgetMixin implements RSWidget
 	{
 		Rectangle bounds = getBounds();
 		return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
+	}
+
+	@FieldHook("text")
+	@Inject
+	public void onTextChanged(int idx)
+	{
+		WidgetTextChanged event = new WidgetTextChanged();
+		event.setWidget(this);
+		event.setText(getText());
+		eventBus.post(event);
 	}
 
 	@Inject
