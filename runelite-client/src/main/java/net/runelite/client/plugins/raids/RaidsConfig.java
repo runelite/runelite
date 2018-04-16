@@ -62,7 +62,10 @@ public interface RaidsConfig extends Config
 			name = "Display % of overall points",
 			description = "Display your percentage of overall points during a raid."
 	)
-	default boolean percentPoints() { return true; }
+	default boolean percentPoints()
+	{
+		return true;
+	}
 	@ConfigItem(
 			position = 3,
 			keyName = "scoutOverlay",

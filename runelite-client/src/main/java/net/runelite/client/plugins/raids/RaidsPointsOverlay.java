@@ -58,7 +58,8 @@ public class RaidsPointsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
+	public Dimension render(Graphics2D graphics)
+	{
 		if (!plugin.isInRaidChambers())
 		{
 			return null;
