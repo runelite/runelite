@@ -217,7 +217,7 @@ class GrandExchangeSearchPanel extends JPanel
 				showSearchString(null);
 			}
 			else
-			    {
+			        {
 				showSearchString("No result found.");
 			}
 			ITEMS_LIST.clear();
