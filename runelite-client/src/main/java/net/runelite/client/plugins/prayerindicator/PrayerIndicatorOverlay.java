@@ -222,38 +222,46 @@ public class PrayerIndicatorOverlay extends Overlay
 	//		Returns null if the player has neither
 	private int getPlayerPotion ()
 	{
-		//Check to see if the player has any sanfew serums in their inventory
-		Query query = new InventoryItemQuery (InventoryID.INVENTORY).idEquals (ItemID.SANFEW_SERUM1,
-				ItemID.SANFEW_SERUM2,
-				ItemID.SANFEW_SERUM3,
-				ItemID.SANFEW_SERUM4);
-		//Now fetch the query items
-		Item[] items = queryRunner.runQuery (query);
-		if (items.length != 0)
-			//The user has a sanfew serum potion so return that ID
-			return ItemID.SANFEW_SERUM1;
-		
-		//Now do the same for super restore potions
-		query = new InventoryItemQuery (InventoryID.INVENTORY).idEquals (ItemID.SUPER_RESTORE1,
-				ItemID.SUPER_RESTORE2,
-				ItemID.SUPER_RESTORE3,
-				ItemID.SUPER_RESTORE4);
-		items = queryRunner.runQuery (query);
-		if (items.length != 0)
-			return ItemID.SUPER_RESTORE1;
-		
-		//Now do the same thing for prayer potions
-		query = new InventoryItemQuery (InventoryID.INVENTORY).idEquals (ItemID.PRAYER_POTION1,
-				ItemID.PRAYER_POTION2,
-				ItemID.PRAYER_POTION3,
-				ItemID.PRAYER_POTION4,
-				ItemID.PRAYER_POTION1_20396,
-				ItemID.PRAYER_POTION2_20395,
-				ItemID.PRAYER_POTION3_20394,
-				ItemID.PRAYER_POTION4_20393);
-		items = queryRunner.runQuery (query);
-		if (items.length != 0)
-			return ItemID.PRAYER_POTION1;
+		//Make sure any null pointer exceptions are caught and dealt with
+		try
+		{
+			//Check to see if the player has any sanfew serums in their inventory
+			Query query = new InventoryItemQuery (InventoryID.INVENTORY).idEquals (ItemID.SANFEW_SERUM1,
+					ItemID.SANFEW_SERUM2,
+					ItemID.SANFEW_SERUM3,
+					ItemID.SANFEW_SERUM4);
+			//Now fetch the query items
+			Item[] items = queryRunner.runQuery (query);
+			if (items.length != 0)
+				//The user has a sanfew serum potion so return that ID
+				return ItemID.SANFEW_SERUM1;
+			
+			//Now do the same for super restore potions
+			query = new InventoryItemQuery (InventoryID.INVENTORY).idEquals (ItemID.SUPER_RESTORE1,
+					ItemID.SUPER_RESTORE2,
+					ItemID.SUPER_RESTORE3,
+					ItemID.SUPER_RESTORE4);
+			items = queryRunner.runQuery (query);
+			if (items.length != 0)
+				return ItemID.SUPER_RESTORE1;
+			
+			//Now do the same thing for prayer potions
+			query = new InventoryItemQuery (InventoryID.INVENTORY).idEquals (ItemID.PRAYER_POTION1,
+					ItemID.PRAYER_POTION2,
+					ItemID.PRAYER_POTION3,
+					ItemID.PRAYER_POTION4,
+					ItemID.PRAYER_POTION1_20396,
+					ItemID.PRAYER_POTION2_20395,
+					ItemID.PRAYER_POTION3_20394,
+					ItemID.PRAYER_POTION4_20393);
+			items = queryRunner.runQuery (query);
+			if (items.length != 0)
+				return ItemID.PRAYER_POTION1;
+		}
+		catch (NullPointerException e)
+		{
+			//Nothing really needs to be done when this happens because it just means the players inventory is empty
+		}
 		
 		//Return 0 since the player doesn't have any prayer potions
 		return -1;
