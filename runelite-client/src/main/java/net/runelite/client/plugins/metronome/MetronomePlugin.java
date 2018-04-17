@@ -28,12 +28,20 @@ package net.runelite.client.plugins.metronome;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.SoundEffectID;
+
+import net.runelite.api.*;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.attackstyles.AttackStyle;
+import net.runelite.client.plugins.attackstyles.WeaponType;
+
+import static net.runelite.api.Skill.HITPOINTS;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
 
 @PluginDescriptor(
 	name = "Metronome",
@@ -49,32 +57,117 @@ public class MetronomePlugin extends Plugin
 
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
+	private int curWeaponTickRate = 1;
+	private boolean isCasting = false;
+	private boolean isRapid = false;
+	private static final int WEAPON_SLOT = EquipmentInventorySlot.WEAPON.getSlotIdx();
+	private AttackStyle attackStyle;
 
 	@Provides
-	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
-	{
+	MetronomePluginConfiguration provideConfig(ConfigManager configManager) {
 		return configManager.getConfig(MetronomePluginConfiguration.class);
+	}
+
+	@Subscribe
+	void onItemContainerChanged(ItemContainerChanged event)
+	{
+		//Need to get the currently equipped weapon.
+		if(config.syncWithAttack()) {
+			updateIsCasting(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
+			if(!isCasting) { updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE)); }
+			updateCurrentTickRate();
+		}
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		//Need to get the currently equipped weapon.
+		if(config.syncWithAttack() && client.getGameState() == GameState.LOGGED_IN)
+		{
+			updateIsCasting(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
+			if(!isCasting) { updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE)); }
+			updateCurrentTickRate();
+		}
+	}
+
+	private void updateIsRapid(int equippedWeaponType, int attackStyleIndex)
+	{
+		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
+		if (attackStyleIndex < attackStyles.length) {
+			attackStyle = attackStyles[attackStyleIndex];
+			if (attackStyle == RANGING && attackStyleIndex == 1) {
+				isRapid = true;
+			}
+			else {
+				isRapid = false;
+			}
+		}
+	}
+
+	private void updateIsCasting(int equippedWeaponType, int attackStyleIndex)
+	{
+		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
+		if (attackStyleIndex < attackStyles.length) {
+			attackStyle = attackStyles[attackStyleIndex];
+			if (attackStyle == CASTING) {
+				isCasting = true;
+			}
+			else {
+				isCasting = false;
+			}
+		}
+	}
+
+	public void updateCurrentTickRate()
+	{
+		final ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		if(isCasting) {
+			curWeaponTickRate = 5;
+		}
+		else if (equipContainer != null) {
+			Item[] equippedItems = equipContainer.getItems();
+			if (equippedItems.length >= WEAPON_SLOT) {
+				curWeaponTickRate = getChargedWeaponFromId(equippedItems[WEAPON_SLOT].getId()).getTickRate();
+				if(isRapid) { curWeaponTickRate--;}
+			}
+		}
+		else
+		{
+			//Assuming unarmed default to 4
+			curWeaponTickRate = 4;
+		}
+	}
+
+	public weapontickrates getChargedWeaponFromId(int itemId)
+	{
+		for (weapontickrates weapon : weapontickrates.values()) {
+			if (itemId == weapon.getItemId()) return weapon;
+		}
+		return null;
 	}
 
 	@Subscribe
 	void onTick(GameTick tick)
 	{
-		if (config.tickCount() == 0)
-		{
+		if (config.tickCount() == 0 && !config.syncWithAttack()) {
 			return;
 		}
 
-		if (++tickCounter % config.tickCount() == 0)
-		{
-			if (config.enableTock() && shouldTock)
-			{
+		if (++tickCounter % (config.syncWithAttack() ? curWeaponTickRate : config.tickCount()) == 0) {
+			if (config.enableTock() && shouldTock) {
 				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
-			}
-			else
-			{
+			} else {
 				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
 			}
 			shouldTock = !shouldTock;
 		}
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event) {
+		if (!config.syncWithAttack() && event.getSkill() != HITPOINTS) { return; }
+		tickCounter = 0;
+		shouldTock = false;
 	}
 }

@@ -57,4 +57,15 @@ public interface MetronomePluginConfiguration extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "syncWithAttack",
+			name = "Sync metronome with attacks",
+			description = "Toggles to sync the metronome with your attack speed to play a tick when you should flick offensive prayers.",
+			position = 4
+	)
+	default boolean syncWithAttack()
+	{
+		return false;
+	}
 }
