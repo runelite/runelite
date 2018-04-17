@@ -96,16 +96,19 @@ class SkillXPInfo
 		return nextLevelExp - (startXp + xpGained);
 	}
 
+	// Method will return kills left based on recent monster killed if it's a combat skill.
 	int getActionsRemaining(Client client)
 	{
 		if (initialized)
 		{
 			Actor opponent = client.getLocalPlayer().getInteracting();
 			// Check if the action is a combat skill or not
-			if (Arrays.asList(COMBAT).contains(skill)) {
-				if (opponent != null) {
+			if (Arrays.asList(COMBAT).contains(skill))
+			{
+				if (opponent != null)
+				{
 					opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
-					double modifier = getCombatXPmodifier(skill,client);
+					double modifier = getCombatXPmodifier(skill, client);
 					double actionExp = (opponentHealth * modifier);
 					killsRemaining = (int)(getXpRemaining() / actionExp);
 				}
@@ -116,7 +119,8 @@ class SkillXPInfo
 				long xpRemaining = getXpRemaining() * actionExps.length;
 				long actionExp = 0;
 
-				for (int i = 0; i < actionExps.length; i++) {
+				for (int i = 0; i < actionExps.length; i++)
+				{
 					actionExp += actionExps[i];
 				}
 
@@ -128,8 +132,9 @@ class SkillXPInfo
 	}
 
 	// Calculates the xp modifier based on combat style
-	private double getCombatXPmodifier(Skill skill, Client client) {
-		final double sharedXPModifier = 4.0/3.0;
+	private double getCombatXPmodifier(Skill skill, Client client)
+	{
+		final double sharedXPModifier = 4.0 / 3.0;
 		final double longRangedXPModifier = 2.0;
 		final double defaultModifier = 4;
 		if (skill.equals(Skill.HITPOINTS))
@@ -139,12 +144,13 @@ class SkillXPInfo
 		int styleIndex = client.getSetting(Setting.ATTACK_STYLE);
 		WeaponType weaponType = WeaponType.getWeaponType(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE));
 		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED) ? sharedXPModifier :
-				weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)? longRangedXPModifier :defaultModifier;
+				weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE) ? longRangedXPModifier : defaultModifier;
 	}
 
+	// Return the text of the action, depending if it's a combat skill.
 	String getTextActionKills()
 	{
-		return Arrays.asList(COMBAT).contains(skill)?"kills left":"actions left";
+		return Arrays.asList(COMBAT).contains(skill) ? "kills left" : "actions left";
 	}
 
 	int getSkillProgress()
