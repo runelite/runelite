@@ -38,7 +38,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -100,8 +103,10 @@ public class HiscorePanel extends PluginPanel
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
 
-	private static final HiscoreSkill[] SKILL_PANEL_ORDER = new HiscoreSkill[]
-	{
+	/**
+	 * Real skills, ordered in the way they should be displayed in the panel.
+	 */
+	private static final Set<HiscoreSkill> SKILLS = new LinkedHashSet<>(Arrays.asList(
 		ATTACK, HITPOINTS, MINING,
 		STRENGTH, AGILITY, SMITHING,
 		DEFENCE, HERBLORE, FISHING,
@@ -110,7 +115,7 @@ public class HiscorePanel extends PluginPanel
 		MAGIC, FLETCHING, WOODCUTTING,
 		RUNECRAFT, SLAYER, FARMING,
 		CONSTRUCTION, HUNTER
-	};
+	));
 
 	@Inject
 	ScheduledExecutorService executor;
@@ -214,7 +219,7 @@ public class HiscorePanel extends PluginPanel
 		statsPanel.setBorder(subPanelBorder);
 
 		// For each skill on the ingame skill panel, create a Label and add it to the UI
-		for (HiscoreSkill skill : SKILL_PANEL_ORDER)
+		for (HiscoreSkill skill : SKILLS)
 		{
 			JPanel panel = makeSkillPanel(skill.getName(), skill);
 			statsPanel.add(panel);
@@ -550,7 +555,7 @@ public class HiscorePanel extends PluginPanel
 				Skill s = result.getSkill(skill);
 
 				int level;
-				if (config.virtualLevels() && skill.hasVirtualLevels())
+				if (config.virtualLevels() && SKILLS.contains(skill))
 				{
 					level = Experience.getLevelForXp((int) s.getExperience());
 				}
