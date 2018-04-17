@@ -28,10 +28,15 @@ package net.runelite.client.plugins.xptracker;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Map;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 
 @Data
 @Slf4j
@@ -46,9 +51,15 @@ class SkillXPInfo
 	private int startLevelExp = 0;
 	private int level = 0;
 	private boolean initialized = false;
+	private int opponentHealth = Integer.MAX_VALUE;
+	private int killsRemaining = 0;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
-
+	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	private static final Skill[] COMBAT = new Skill[]
+			{
+					Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS
+			};
 	int getXpHr()
 	{
 		return toHourly(xpGained);
@@ -80,22 +91,54 @@ class SkillXPInfo
 		return nextLevelExp - (startXp + xpGained);
 	}
 
-	int getActionsRemaining()
+	int getActionsRemaining(Actor opponent)
 	{
 		if (initialized)
 		{
-			long xpRemaining = getXpRemaining() * actionExps.length;
-			long actionExp = 0;
-
-			for (int i = 0; i < actionExps.length; i++)
-			{
-				actionExp += actionExps[i];
+			// Check if the action is a combat skill or not
+			if (Arrays.asList(COMBAT).contains(skill)) {
+				if (opponent != null) {
+					opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+					long actionExp = (opponentHealth * getCombatXPmodifier(skill));
+					killsRemaining = Math.toIntExact(getXpRemaining() / actionExp);
+				}
+				return killsRemaining;
 			}
+			else
+			{
+				long xpRemaining = getXpRemaining() * actionExps.length;
+				long actionExp = 0;
 
-			return Math.toIntExact(xpRemaining / actionExp);
+				for (int i = 0; i < actionExps.length; i++) {
+					actionExp += actionExps[i];
+				}
+
+				return Math.toIntExact(xpRemaining / actionExp);
+			}
 		}
 
 		return Integer.MAX_VALUE;
+	}
+
+	// Extend to work with selected combat style
+	long getCombatXPmodifier(Skill skill) {
+		if (skill.equals(Skill.HITPOINTS))
+		{
+			return (4/3);
+		}
+		return 4;
+	}
+
+	String getTextActionKills()
+	{
+		if (Arrays.asList(COMBAT).contains(skill))
+		{
+			return "kills left";
+		}
+		else
+		{
+			return "actions left";
+		}
 	}
 
 	int getSkillProgress()
