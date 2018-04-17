@@ -83,6 +83,7 @@ public class WidgetID
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
+	public static final int BARROWS_GROUP_ID = 24;
 
 	static class WorldMap
 	{
@@ -413,5 +414,11 @@ public class WidgetID
 	static class FairyRingCode
 	{
 		static final int FAIRY_QUEEN_HIDEOUT = 139;
+	}
+
+	static class Barrows
+	{
+		static final int BARROWS_BROTHERS = 8;
+		static final int BARROWS_POTENTIAL = 9;
 	}
 }

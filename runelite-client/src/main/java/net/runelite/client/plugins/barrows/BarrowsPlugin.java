@@ -27,6 +27,8 @@ package net.runelite.client.plugins.barrows;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -70,7 +72,10 @@ public class BarrowsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
 	@Inject
-	BarrowsOverlay barrowsOverlay;
+	private BarrowsOverlay barrowsOverlay;
+
+	@Inject
+	private BarrowsBrotherSlainOverlay brotherOverlay;
 
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
@@ -79,9 +84,9 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return barrowsOverlay;
+		return Arrays.asList(barrowsOverlay, brotherOverlay);
 	}
 
 	@Override
