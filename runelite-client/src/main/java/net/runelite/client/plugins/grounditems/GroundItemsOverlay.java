@@ -134,7 +134,7 @@ public class GroundItemsOverlay extends Overlay
 			// Do not display items that are under HA or GE price and are not highlighted
 			if (!plugin.isHotKeyPressed() && !highlighted
 				&& ((item.getGePrice() > 0 && item.getGePrice() < config.getHideUnderGeValue())
-				|| item.getHaPrice() < config.getHideUnderHAValue()))
+				&& item.getHaPrice() < config.getHideUnderHAValue()))
 			{
 				continue;
 			}
