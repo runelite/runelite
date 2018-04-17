@@ -1,129 +1,136 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jy")
+@ObfuscatedName("jp")
 public class class278 extends CacheableNode {
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Ljm;"
-   )
-   public static IndexDataBase field3542;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   static NodeCache field3545;
    @ObfuscatedName("o")
-   char field3544;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -129043779
+   @ObfuscatedSignature(
+      signature = "Ljf;"
    )
-   public int field3543;
+   public static IndexDataBase field3547;
    @ObfuscatedName("k")
-   public String field3546;
-   @ObfuscatedName("x")
-   boolean field3547;
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
+   static NodeCache field3546;
+   @ObfuscatedName("fp")
+   @ObfuscatedGetter(
+      intValue = 1277506421
+   )
+   static int field3551;
+   @ObfuscatedName("t")
+   char field3548;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 590235517
+   )
+   public int field3545;
+   @ObfuscatedName("h")
+   public String field3549;
+   @ObfuscatedName("m")
+   boolean field3550;
 
    static {
-      field3545 = new NodeCache(64);
+      field3546 = new NodeCache(64);
    }
 
    class278() {
-      this.field3547 = true;
+      this.field3550 = true;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2028292566"
+      garbageValue = "-1602218120"
    )
-   void method4903() {
+   void method4900() {
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgp;I)V",
-      garbageValue = "-1354491236"
+      signature = "(Lgc;I)V",
+      garbageValue = "1568600660"
    )
-   void method4905(Buffer var1) {
+   void method4901(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4909(var1, var2);
+         this.method4902(var1, var2);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lgp;IB)V",
-      garbageValue = "9"
+      signature = "(Lgc;II)V",
+      garbageValue = "-1537853184"
    )
-   void method4909(Buffer var1, int var2) {
+   void method4902(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3544 = NPC.method1838(var1.readByte());
+         byte var4 = var1.readByte();
+         int var5 = var4 & 255;
+         if(var5 == 0) {
+            throw new IllegalArgumentException("");
+         }
+
+         if(var5 >= 128 && var5 < 160) {
+            char var6 = class314.cp1252AsciiExtension[var5 - 128];
+            if(var6 == 0) {
+               var6 = '?';
+            }
+
+            var5 = var6;
+         }
+
+         char var3 = (char)var5;
+         this.field3548 = var3;
       } else if(var2 == 2) {
-         this.field3543 = var1.readInt();
+         this.field3545 = var1.readInt();
       } else if(var2 == 4) {
-         this.field3547 = false;
+         this.field3550 = false;
       } else if(var2 == 5) {
-         this.field3546 = var1.readString();
+         this.field3549 = var1.readString();
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1992436166"
+      signature = "(B)Z",
+      garbageValue = "-37"
    )
-   public boolean method4907() {
-      return this.field3544 == 's';
+   public boolean method4916() {
+      return this.field3548 == 's';
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("fj")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-398888946"
+      signature = "(Lke;IIII)V",
+      garbageValue = "402765467"
    )
-   static void method4922() {
-      class90.username = class90.username.trim();
-      if(class90.username.length() == 0) {
-         class33.method385("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-      } else {
-         long var1 = MapLabel.method387();
-         int var0;
-         if(var1 == 0L) {
-            var0 = 5;
-         } else {
-            var0 = class234.method4359(var1, class90.username);
+   @Export("queueAnimationSound")
+   static void queueAnimationSound(Sequence var0, int var1, int var2, int var3) {
+      if(Client.queuedSoundEffectCount < 50 && Client.field951 != 0) {
+         if(var0.field3759 != null && var1 < var0.field3759.length) {
+            int var4 = var0.field3759[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var5;
+               Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var6;
+               Client.unknownSoundValues2[Client.queuedSoundEffectCount] = 0;
+               Client.audioEffects[Client.queuedSoundEffectCount] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.soundLocations[Client.queuedSoundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
+               ++Client.queuedSoundEffectCount;
+            }
          }
-
-         switch(var0) {
-         case 2:
-            class33.method385("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-            class90.loginIndex = 6;
-            break;
-         case 3:
-            class33.method385("", "Error connecting to server.", "");
-            break;
-         case 4:
-            class33.method385("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
-            break;
-         case 5:
-            class33.method385("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
-            break;
-         case 6:
-            class33.method385("", "Error connecting to server.", "");
-            break;
-         case 7:
-            class33.method385("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
-         }
-
       }
    }
 }

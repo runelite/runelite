@@ -37,17 +37,6 @@ public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
-		keyName = "swapPickpocket",
-		name = "Pickpocket",
-		description = "Swap Talk-to with Pickpocket on NPC<br>Example: Man, Woman"
-	)
-	default boolean swapPickpocket()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
 		keyName = "swapBanker",
 		name = "Bank",
 		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
@@ -58,7 +47,51 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "swapBones",
+		name = "Bury",
+		description = "Swap Bury with Use on Bones"
+	)
+	default boolean swapBones()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 2,
+		keyName = "swapCatacombEntrance",
+		name = "Catacomb entrance",
+		description = "Swap Read with Investigate on Catacombs of Kourend entrance"
+	)
+	default boolean swapCatacombEntrance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "swapChase",
+		name = "Chase",
+		description = "Allows to left click your cat to chase"
+	)
+	default boolean swapChase()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "shiftClickCustomization",
+		name = "Customizable shift-click",
+		description = "Allows customization of shift-clicks on items"
+	)
+	default boolean shiftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "swapExchange",
 		name = "Exchange",
 		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
@@ -69,45 +102,12 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 6,
 		keyName = "swapHarpoon",
 		name = "Harpoon",
 		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
 	)
 	default boolean swapHarpoon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "swapTrade",
-		name = "Trade",
-		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
-	)
-	default boolean swapTrade()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "swapTravel",
-		name = "Travel",
-		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
-	)
-	default boolean swapTravel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "swapPay",
-		name = "Pay",
-		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
-	)
-	default boolean swapPay()
 	{
 		return true;
 	}
@@ -136,6 +136,28 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 9,
+		keyName = "swapPickpocket",
+		name = "Pickpocket on H.A.M.",
+		description = "Swap Talk-to with Pickpocket on H.A.M members"
+	)
+	default boolean swapPickpocket()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "swapPay",
+		name = "Pay",
+		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
+	)
+	default boolean swapPay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
 		keyName = "swapBoxTrap",
 		name = "Reset",
 		description = "Swap Check with Reset on box trap"
@@ -146,45 +168,45 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
-		keyName = "swapCatacombEntrance",
-		name = "Catacomb entrance",
-		description = "Swap Read with Investigate on Catacombs of Kourend entrance"
-	)
-	default boolean swapCatacombEntrance()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
 	)
 	default boolean swapTeleportItem()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
-		position = 12,
-		keyName = "swapSilverSickle",
-		name = "Silver sickle(b)",
-		description = "Swap Wield with Cast Bloom on Silver sickle(b)"
+		position = 13,
+		keyName = "swapAbyssTeleport",
+		name = "Teleport to Abyss",
+		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
 	)
-	default boolean swapSilverSickle()
+	default boolean swapAbyssTeleport()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		position = 13,
-		keyName = "swapBones",
-		name = "Bury",
-		description = "Swap Bury with Use on Bones"
+		position = 14,
+		keyName = "swapTrade",
+		name = "Trade",
+		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
 	)
-	default boolean swapBones()
+	default boolean swapTrade()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "swapTravel",
+		name = "Travel",
+		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
+	)
+	default boolean swapTravel()
 	{
 		return true;
 	}

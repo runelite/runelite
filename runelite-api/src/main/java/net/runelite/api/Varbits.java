@@ -202,6 +202,7 @@ public enum Varbits
 	 * Motherlode mine sack
 	 */
 	SACK_NUMBER(5558),
+	SACK_UPGRADED(5556),
 
 	/**
 	 * Experience tracker
@@ -265,6 +266,16 @@ public enum Varbits
 	 */
 	PYRAMID_PLUNDER_TIMER(2375),
 	PYRAMID_PLUNDER_ROOM(2377),
+
+	/**
+	 * Barrows
+	*/
+	BARROWS_KILLED_AHRIM(457),
+	BARROWS_KILLED_DHAROK(458),
+	BARROWS_KILLED_GUTHAN(459),
+	BARROWS_KILLED_KARIL(460),
+	BARROWS_KILLED_TORAG(461),
+	BARROWS_KILLED_VERAC(462),
 
 	/**
 	 * Spicy stew ingredients

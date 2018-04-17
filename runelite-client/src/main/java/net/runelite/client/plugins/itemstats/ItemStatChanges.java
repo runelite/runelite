@@ -36,6 +36,7 @@ import static net.runelite.client.plugins.itemstats.Builders.*;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
+import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 
 @Singleton
 @Slf4j
@@ -50,32 +51,34 @@ public class ItemStatChanges
 	private void init()
 	{
 		add(food(-5), POISON_KARAMBWAN);
-		add(food(1), POTATO, ONION, CABBAGE, POT_OF_CREAM, CHOPPED_ONION);
-		add(food(2), TOMATO, BANANA, ORANGE, PINEAPPLE_CHUNKS, PINEAPPLE_RING, SPICY_SAUCE, CHEESE, SPINACH_ROLL);
+		add(food(1), POTATO, ONION, CABBAGE, POT_OF_CREAM, CHOPPED_ONION, ANCHOVIES);
+		add(food(2), TOMATO, CHOPPED_TOMATO, BANANA, SLICED_BANANA, ORANGE, ORANGE_SLICES, ORANGE_CHUNKS,
+				PINEAPPLE_RING, PINEAPPLE_CHUNKS, SPICY_SAUCE, CHEESE, SPINACH_ROLL, LEMON, LEMON_CHUNKS, LEMON_SLICES,
+				LIME, LIME_CHUNKS, LIME_SLICES, DWELLBERRIES);
 		add(food(3), SHRIMPS, COOKED_MEAT, COOKED_CHICKEN, ROE, CAVIAR, CHOCOLATE_BAR);
-		add(food(4), SARDINE, CAKE, _23_CAKE, SLICE_OF_CAKE);
+		add(food(4), SARDINE, CAKE, _23_CAKE, SLICE_OF_CAKE, CHOCOLATEY_MILK);
 		add(food(5), BREAD, HERRING, CHOCOLATE_CAKE, _23_CHOCOLATE_CAKE, CHOCOLATE_SLICE, COOKED_RABBIT, CHILLI_CON_CARNE,
 			FRIED_MUSHROOMS, FRIED_ONIONS, REDBERRY_PIE, HALF_A_REDBERRY_PIE);
 		add(food(6), CHOCICE, MACKEREL, MEAT_PIE, HALF_A_MEAT_PIE, GUANIC_BAT_0, ROAST_BIRD_MEAT,
-			SQUARE_SANDWICH, ROLL, BAGUETTE, TRIANGLE_SANDWICH);
+			SQUARE_SANDWICH, ROLL, BAGUETTE, TRIANGLE_SANDWICH, GIANT_CARP);
 		add(food(7), TROUT, COD, PLAIN_PIZZA, _12_PLAIN_PIZZA, APPLE_PIE, HALF_AN_APPLE_PIE, ROAST_RABBIT, BAKED_POTATO,
 			PREMADE_CH_CRUNCH, CHOCCHIP_CRUNCHIES, PREMADE_SY_CRUNCH, SPICY_CRUNCHIES);
 		add(food(8), PIKE, ROAST_BEAST_MEAT, MEAT_PIZZA, _12_MEAT_PIZZA, PREMADE_WM_CRUN, WORM_CRUNCHIES, PREMADE_TD_CRUNCH,
-			TOAD_CRUNCHIES, EGG_AND_TOMATO, LECKISH_FISH_2, PRAEL_BAT_1);
+			TOAD_CRUNCHIES, EGG_AND_TOMATO, LECKISH_FISH_2, PRAEL_BAT_1, PEACH);
 		add(food(9), PREMADE_P_PUNCH, PINEAPPLE_PUNCH, PREMADE_FR_BLAST, FRUIT_BLAST, SALMON, ANCHOVY_PIZZA,
 			_12_ANCHOVY_PIZZA);
-		add(food(10), TUNA, COOKED_SWEETCORN, CRAB_MEAT, CHOPPED_TUNA, COOKED_CHOMPY);
+		add(food(10), TUNA, CRAB_MEAT, CHOPPED_TUNA, COOKED_CHOMPY);
 		add(food(11), JUG_OF_WINE, RAINBOW_FISH, STEW, PINEAPPLE_PIZZA, _12_PINEAPPLE_PIZZA, COOKED_FISHCAKE,
 			PREMADE_VEG_BATTA, VEGETABLE_BATTA, PREMADE_WM_BATTA, WORM_BATTA, PREMADE_TD_BATTA, TOAD_BATTA, PREMADE_CT_BATTA,
-			CHEESETOM_BATTA, MUSHROOM__ONION, GIRAL_BAT_2, LAVA_EEL);
+			CHEESETOM_BATTA, PREMADE_FRT_BATTA, FRUIT_BATTA, MUSHROOM__ONION, GIRAL_BAT_2, LAVA_EEL);
 		add(food(12), LOBSTER, PREMADE_WORM_HOLE, WORM_HOLE, PREMADE_VEG_BALL, VEG_BALL);
 		add(food(13), BASS, TUNA_AND_CORN);
-		add(food(14), POTATO_WITH_BUTTER, CHILLI_POTATO, SWORDFISH, PHLUXIA_BAT_3);
+		add(food(14), POTATO_WITH_BUTTER, CHILLI_POTATO, SWORDFISH, PHLUXIA_BAT_3, PUMPKIN, EASTER_EGG);
 		add(food(15), PREMADE_TTL, TANGLED_TOADS_LEGS, PREMADE_CHOC_BOMB, CHOCOLATE_BOMB);
 		add(food(16), MONKFISH, POTATO_WITH_CHEESE, EGG_POTATO);
 		add(food(17), MYCIL_FISH_4, KRYKET_BAT_4);
 		add(food(18), COOKED_KARAMBWAN);
-		add(food(19), CURRY, UGTHANKI_KEBAB);
+		add(food(19), CURRY, UGTHANKI_KEBAB, UGTHANKI_KEBAB_1885);
 		add(food(20), MUSHROOM_POTATO, SHARK, ROQED_FISH_5, MURNG_BAT_5);
 		add(food(21), SEA_TURTLE);
 		add(food(22), MANTA_RAY, DARK_CRAB, TUNA_POTATO);
@@ -84,9 +87,18 @@ public class ItemStatChanges
 		add(food(maxHP -> (int) Math.ceil(maxHP * .06)), STRAWBERRY);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .05)), WATERMELON_SLICE);
 		add(food(perc(.1, 0)), COOKED_SLIMY_EEL);
-		add(food(perc(.1, 1)), SWEETCORN, SWEETCORN_7088);
-		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967);
+		add(food(perc(.1, 1)), COOKED_SWEETCORN, SWEETCORN_7088 /* Bowl of cooked sweetcorn */);
+		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967 /* Draynor Manor */);
 		add(combo(2, food(4), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
+
+		// Dorgeshuun Cuisine
+		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,
+				GRUBS__LA_MODE, MUSHROOMS, ROAST_FROG);
+		add(food(3), LOACH);
+		// FROG_SPAWN (3~6?)
+		// COOKED_SLIMY_EEL (6~10?)
+		// CAVE_EEL (7~11?)
+		add(food(10), EEL_SUSHI);
 
 		// Alcoholic Gnome Cocktails
 		add(combo(2, food(5), boost(STRENGTH, 6), heal(ATTACK, -4)), PREMADE_WIZ_BLZD, WIZARD_BLIZZARD);
@@ -112,11 +124,10 @@ public class ItemStatChanges
 		add(boost(DEFENCE, perc(.15, 5)), SUPER_DEFENCE1, SUPER_DEFENCE2, SUPER_DEFENCE3, SUPER_DEFENCE4);
 		add(boost(MAGIC, 3), MAGIC_ESSENCE1, MAGIC_ESSENCE2, MAGIC_ESSENCE3, MAGIC_ESSENCE4);
 		add(combo(3, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5))), SUPER_COMBAT_POTION1, SUPER_COMBAT_POTION2, SUPER_COMBAT_POTION3, SUPER_COMBAT_POTION4);
-		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), heal(DEFENCE, perc(.10, -2)), heal(HITPOINTS, perc(.12, 0))), ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
-		add(combo(2, boost(HITPOINTS, perc(.15, 2)), boost(DEFENCE, perc(.20, 2)), heal(ATTACK, perc(.10, -2)), heal(RANGED, perc(.10, -2)), heal(MAGIC, perc(.10, -2))), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3, SARADOMIN_BREW4);
+		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), heal(DEFENCE, perc(.10, -2)), heal(HITPOINTS, perc(-.12, 0))), ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
+		add(new SaradominBrew(0.15, 0.2, 0.1, 2), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3, SARADOMIN_BREW4);
 		add(boost(RANGED, perc(.15, 5)), SUPER_RANGING_1, SUPER_RANGING_2, SUPER_RANGING_3, SUPER_RANGING_4);
 		add(boost(MAGIC, perc(.15, 5)), SUPER_MAGIC_POTION_1, SUPER_MAGIC_POTION_2, SUPER_MAGIC_POTION_3, SUPER_MAGIC_POTION_4);
-		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
 
 		// Recovery potions
 		add(combo(5, heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10))), RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
@@ -126,6 +137,24 @@ public class ItemStatChanges
 		add(new SuperRestore(8), SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4);
 		add(new SuperRestore(9), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4);
 		add(heal(RUN_ENERGY, 20), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
+
+		//Raids potions (+)
+		add(combo(5, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6)), boost(RANGED, perc(.16, 6)), boost(MAGIC, perc(.16, 6)), heal(HITPOINTS, -50)), OVERLOAD_1_20993, OVERLOAD_2_20994, OVERLOAD_3_20995, OVERLOAD_4_20996);
+		add(combo(3, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), ELDER_1_20921, ELDER_2_20922, ELDER_3_20923, ELDER_4_20924);
+		add(combo(2, boost(RANGED, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), TWISTED_1_20933, TWISTED_2_20934, TWISTED_3_20935, TWISTED_4_20936);
+		add(combo(2, boost(MAGIC, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), KODAI_1_20945, KODAI_2_20946, KODAI_3_20947, KODAI_4_20948);
+
+		//Raids potions
+		add(combo(5, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5)), boost(RANGED, perc(.13, 5)), boost(MAGIC, perc(.13, 5)), heal(HITPOINTS, -50)), OVERLOAD_1_20989, OVERLOAD_2_20990, OVERLOAD_3_20991, OVERLOAD_4_20992);
+		add(combo(3, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), ELDER_POTION_1, ELDER_POTION_2, ELDER_POTION_3, ELDER_POTION_4);
+		add(combo(2, boost(RANGED, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), TWISTED_POTION_1, TWISTED_POTION_2, TWISTED_POTION_3, TWISTED_POTION_4);
+		add(combo(2, boost(MAGIC, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), KODAI_POTION_1, KODAI_POTION_2, KODAI_POTION_3, KODAI_POTION_4);
+
+		//Raids potions (-)
+		add(combo(5, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4)), boost(RANGED, perc(.10, 4)), boost(MAGIC, perc(.10, 4)), heal(HITPOINTS, -50)), OVERLOAD_1_20985, OVERLOAD_2_20986, OVERLOAD_3_20987, OVERLOAD_4_20988);
+		add(combo(3, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), ELDER_1, ELDER_2, ELDER_3, ELDER_4);
+		add(combo(3, boost(RANGED, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), TWISTED_1, TWISTED_2, TWISTED_3, TWISTED_4);
+		add(combo(3, boost(MAGIC, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), KODAI_1, KODAI_2, KODAI_3, KODAI_4);
 
 		// Skill potions
 		add(boost(AGILITY, 3), AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4);

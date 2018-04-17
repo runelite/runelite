@@ -43,6 +43,8 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -96,6 +98,12 @@ public class RuneLite
 
 	@Inject
 	private TitleToolbar titleToolbar;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private ClanManager clanManager;
 
 	Client client;
 
@@ -156,6 +164,8 @@ public class RuneLite
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(pluginManager);
+		eventBus.register(itemManager);
+		eventBus.register(clanManager);
 
 		// Load user configuration
 		configManager.load();

@@ -134,8 +134,10 @@ public class GrandExchangeOfferSlot extends JPanel
 			ImageIcon newItemIcon = new ImageIcon(itemImage);
 			itemIcon.setIcon(newItemIcon);
 
-			offerState.setText(getNameForState(newOffer.getState()) + " at " + StackFormatter.formatNumber(newOffer.getPrice()) +
-				(newOffer.getTotalQuantity() > 1 ? "gp ea" : "gp"));
+			offerState.setText(getNameForState(newOffer.getState())
+				+ " at "
+				+ StackFormatter.formatNumber(newOffer.getState() == GrandExchangeOfferState.BOUGHT ? (newOffer.getSpent() / newOffer.getTotalQuantity()) : newOffer.getPrice())
+				+ (newOffer.getTotalQuantity() > 1 ? " gp ea" : " gp"));
 
 			progressBar.setMaximum(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());
@@ -149,8 +151,10 @@ public class GrandExchangeOfferSlot extends JPanel
 	{
 		switch (state)
 		{
-			case CANCELLED:
-				return "Cancelled";
+			case CANCELLED_BUY:
+				return "Buying cancelled";
+			case CANCELLED_SELL:
+				return "Selling cancelled";
 			case BUYING:
 				return "Buying";
 			case BOUGHT:
@@ -170,7 +174,8 @@ public class GrandExchangeOfferSlot extends JPanel
 	{
 		switch (state)
 		{
-			case CANCELLED:
+			case CANCELLED_BUY:
+			case CANCELLED_SELL:
 				return GE_CANCELLED_RED;
 			case BUYING:
 			case SELLING:

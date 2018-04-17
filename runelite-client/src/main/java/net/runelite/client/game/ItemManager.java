@@ -27,6 +27,7 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,15 +37,17 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -71,7 +74,7 @@ public class ItemManager
 	 */
 	static final ItemPrice NONE = new ItemPrice();
 
-	private final Client client;
+	private final Provider<Client> client;
 	private final ScheduledExecutorService scheduledExecutorService;
 
 	private final ItemClient itemClient = new ItemClient();
@@ -81,7 +84,7 @@ public class ItemManager
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 
 	@Inject
-	public ItemManager(@Nullable Client client, ScheduledExecutorService executor)
+	public ItemManager(Provider<Client> client, ScheduledExecutorService executor)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
@@ -123,9 +126,18 @@ public class ItemManager
 				@Override
 				public ItemComposition load(Integer key) throws Exception
 				{
-					return client.getItemDefinition(key);
+					return client.get().getItemDefinition(key);
 				}
 			});
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			itemCompositions.invalidateAll();
+		}
 	}
 
 	/**
@@ -262,7 +274,8 @@ public class ItemManager
 	 */
 	private BufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
+		SpritePixels sprite = client.get().createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
+			stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
 		return sprite.toBufferedImage();
 	}
 

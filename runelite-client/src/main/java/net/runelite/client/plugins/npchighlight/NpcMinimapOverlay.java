@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
+import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -59,16 +60,25 @@ public class NpcMinimapOverlay extends Overlay
 			renderNpcOverlay(graphics, npc, npcMap.get(npc), config.getNpcColor());
 		}
 
+		for (NPC npc : plugin.getTaggedNpcs())
+		{
+			renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
+		}
+
 		return null;
 	}
 
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
 	{
-		net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+		Point minimapLocation = actor.getMinimapLocation();
 		if (minimapLocation != null)
 		{
 			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
-			OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+
+			if (config.drawMinimapNames())
+			{
+				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+			}
 		}
 	}
 }

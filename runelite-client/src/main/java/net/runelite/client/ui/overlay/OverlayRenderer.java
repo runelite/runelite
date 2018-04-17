@@ -34,7 +34,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +64,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
@@ -92,6 +92,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final Provider<Client> clientProvider;
 	private final InfoBoxOverlay infoBoxOverlay;
 	private final ConfigManager configManager;
+	private final RuneLiteConfig runeLiteConfig;
 	private final TooltipOverlay tooltipOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
 	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
@@ -120,13 +121,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final KeyManager keyManager,
 		final TooltipOverlay tooltipOverlay,
 		final InfoBoxOverlay infoBoxOverlay,
-		final ConfigManager configManager)
+		final ConfigManager configManager,
+		final RuneLiteConfig runeLiteConfig)
 	{
 		this.clientProvider = clientProvider;
 		this.pluginManager = pluginManager;
 		this.tooltipOverlay = tooltipOverlay;
 		this.infoBoxOverlay = infoBoxOverlay;
 		this.configManager = configManager;
+		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 	}
@@ -225,7 +228,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			{
 				if (value == null)
 				{
-					value = new ArrayList<>();
+					value = new CopyOnWriteArrayList<>();
 				}
 
 				value.add(overlay);
@@ -264,9 +267,9 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (client == null
 			|| overlays == null
 			|| overlays.isEmpty()
-			|| client.getViewportWidget() == null
 			|| client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+			|| client.getViewportWidget() == null)
 		{
 			return;
 		}
@@ -278,7 +281,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		// Create copy of snap corners because overlays will modify them
 		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
-
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
@@ -318,7 +320,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
 			{
-				safeRender(overlay, graphics, new Point());
+				safeRender(client, overlay, layer, graphics, new Point());
 			}
 			else
 			{
@@ -339,7 +341,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					location.setLocation(overlay.getPreferredLocation());
 				}
 
-				safeRender(overlay, graphics, location);
+				safeRender(client, overlay, layer, graphics, location);
 				dimension.setSize(overlay.getBounds().getSize());
 
 				if (dimension.width == 0 && dimension.height == 0)
@@ -377,6 +379,8 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				{
 					overlay.setPreferredLocation(null);
 					overlay.setPreferredPosition(null);
+					saveOverlayPosition(overlay);
+					saveOverlayLocation(overlay);
 					rebuildOverlayLayers();
 				}
 				else
@@ -487,9 +491,27 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
-	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
+	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
+
+		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
+		{
+			subGraphics.setClip(client.getViewportXOffset(),
+				client.getViewportYOffset(),
+				client.getViewportWidth(),
+				client.getViewportHeight());
+		}
+
+		final OverlayPosition position = overlay.getPosition();
+
+		// Set font based on configuration
+		subGraphics.setFont((position == OverlayPosition.DYNAMIC
+			|| position == OverlayPosition.TOOLTIP)
+			&& runeLiteConfig.useSmallFont()
+			? FontManager.getRunescapeSmallFont()
+			: FontManager.getRunescapeFont());
+
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();

@@ -88,7 +88,7 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		final MenuEntry menuEntry = menuEntries[last];
-		final MenuAction action = menuEntry.getType();
+		final MenuAction action = MenuAction.of(menuEntry.getType());
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
 
@@ -180,7 +180,13 @@ class ItemPricesOverlay extends Overlay
 			return StackFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
-		final ItemComposition itemDef = itemManager.getItemComposition(id);
+		ItemComposition itemDef = itemManager.getItemComposition(id);
+		if (itemDef.getNote() != -1)
+		{
+			id = itemDef.getLinkedNoteId();
+			itemDef = itemManager.getItemComposition(id);
+		}
+
 		// Only check prices for things with store prices
 		if (itemDef.getPrice() <= 0)
 		{

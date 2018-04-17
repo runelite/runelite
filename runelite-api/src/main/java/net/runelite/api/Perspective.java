@@ -221,7 +221,7 @@ public class Perspective
 			return new Point(x, y);
 		}
 
-		return new Point(-1, -1);
+		return null;
 	}
 
 	/**
@@ -289,19 +289,19 @@ public class Perspective
 		int aoeSize = size / 2;
 
 		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point topLeft = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
-			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
+		Point southWestCorner = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1,
+			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1);
 		// expand by size
-		Point bottomRight = new Point(topLeft.getX() + size * LOCAL_TILE_SIZE - 1,
-			topLeft.getY() + size * LOCAL_TILE_SIZE - 1);
+		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
+			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
 		// Take the x of top left and the y of bottom right to create bottom left
-		Point bottomLeft = new Point(topLeft.getX(), bottomRight.getY());
+		Point bottomLeft = new Point(southWestCorner.getX(), northEastCorner.getY());
 		// Similarly for top right
-		Point topRight = new Point(bottomRight.getX(), topLeft.getY());
+		Point topRight = new Point(northEastCorner.getX(), southWestCorner.getY());
 
-		Point p1 = worldToCanvas(client, topLeft.getX(), topLeft.getY(), plane);
+		Point p1 = worldToCanvas(client, southWestCorner.getX(), southWestCorner.getY(), plane);
 		Point p2 = worldToCanvas(client, topRight.getX(), topRight.getY(), plane);
-		Point p3 = worldToCanvas(client, bottomRight.getX(), bottomRight.getY(), plane);
+		Point p3 = worldToCanvas(client, northEastCorner.getX(), northEastCorner.getY(), plane);
 		Point p4 = worldToCanvas(client, bottomLeft.getX(), bottomLeft.getY(), plane);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
@@ -508,8 +508,8 @@ public class Perspective
 			int minY = Math.min(Math.min(a.getY(), b.getY()), c.getY());
 
 			// For some reason, this calculation is always 4 pixels short of the actual in-client one
-			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
-			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
+			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + client.getViewportXOffset();
+			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + client.getViewportYOffset();
 
 			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
 			if (!client.isResized())

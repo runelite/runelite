@@ -38,6 +38,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
@@ -54,6 +55,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
@@ -66,6 +68,7 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.DeferredEventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +81,9 @@ public class Hooks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
-	public static final EventBus eventBus = injector.getInstance(EventBus.class);
+	public static final EventBus eventBus = injector.getInstance(EventBus.class); // symbol must match mixin Hook
+	private static final DeferredEventBus _deferredEventBus = injector.getInstance(DeferredEventBus.class);
+	public static final EventBus deferredEventBus = _deferredEventBus; // symbol must match mixin Hook
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
@@ -93,9 +98,19 @@ public class Hooks
 	private static Graphics2D stretchedGraphics;
 
 	private static long lastCheck;
+	private static boolean shouldProcessGameTick;
 
 	public static void clientMainLoop(Client client, boolean arg1)
 	{
+		if (shouldProcessGameTick)
+		{
+			shouldProcessGameTick = false;
+
+			_deferredEventBus.replay();
+
+			eventBus.post(tick);
+		}
+
 		clientThread.invoke();
 
 		long now = System.currentTimeMillis();
@@ -330,7 +345,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
 		 * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -351,6 +366,8 @@ public class Hooks
 		log.debug("Menu action clicked: {}", menuOptionClicked);
 
 		eventBus.post(menuOptionClicked);
+
+		return menuOptionClicked.isConsumed();
 	}
 
 	public static void addChatMessage(int type, String name, String message, String sender)
@@ -401,7 +418,10 @@ public class Hooks
 
 	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
 	{
-		eventBus.post(tick);
+		// The NPC update event seem to run every server tick,
+		// but having the game tick event after all packets
+		// have been processed is typically more useful.
+		shouldProcessGameTick = true;
 	}
 
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
@@ -412,5 +432,12 @@ public class Hooks
 			death.setActor(actor);
 			eventBus.post(death);
 		}
+	}
+
+	public static void postItemComposition(ItemComposition itemComposition)
+	{
+		PostItemComposition event = new PostItemComposition();
+		event.setItemComposition(itemComposition);
+		eventBus.post(event);
 	}
 }

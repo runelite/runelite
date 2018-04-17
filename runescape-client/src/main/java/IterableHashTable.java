@@ -4,31 +4,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("ha")
 @Implements("IterableHashTable")
 public final class IterableHashTable implements Iterable {
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @Export("size")
    int size;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "[Lhg;"
+      signature = "[Lhj;"
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lhg;"
+      signature = "Lhj;"
    )
    @Export("head")
    Node head;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lhg;"
+      signature = "Lhj;"
    )
    @Export("tail")
    Node tail;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @Export("index")
    int index;
 
@@ -45,9 +45,9 @@ public final class IterableHashTable implements Iterable {
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(J)Lhg;"
+      signature = "(J)Lhj;"
    )
    @Export("get")
    public Node get(long var1) {
@@ -65,9 +65,9 @@ public final class IterableHashTable implements Iterable {
       return null;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lhg;J)V"
+      signature = "(Lhj;J)V"
    )
    @Export("put")
    public void put(Node var1, long var2) {
@@ -83,7 +83,7 @@ public final class IterableHashTable implements Iterable {
       var1.hash = var2;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @Export("clear")
    public void clear() {
       for(int var1 = 0; var1 < this.size; ++var1) {
@@ -103,9 +103,9 @@ public final class IterableHashTable implements Iterable {
       this.tail = null;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "()Lhg;"
+      signature = "()Lhj;"
    )
    @Export("getHead")
    public Node getHead() {
@@ -113,9 +113,9 @@ public final class IterableHashTable implements Iterable {
       return this.getTail();
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "()Lhg;"
+      signature = "()Lhj;"
    )
    @Export("getTail")
    public Node getTail() {

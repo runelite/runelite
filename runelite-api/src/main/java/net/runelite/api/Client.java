@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -40,6 +41,8 @@ public interface Client extends GameEngine
 	List<NPC> getNpcs();
 
 	NPC[] getCachedNPCs();
+
+	Player[] getCachedPlayers();
 
 	int getBoostedSkillLevel(Skill skill);
 
@@ -75,6 +78,10 @@ public interface Client extends GameEngine
 	int getViewportHeight();
 
 	int getViewportWidth();
+
+	int getViewportXOffset();
+
+	int getViewportYOffset();
 
 	int getScale();
 
@@ -159,6 +166,8 @@ public interface Client extends GameEngine
 	int getSetting(Setting setting);
 
 	int getSetting(Varbits varbit);
+
+	HashTable getWidgetFlags();
 
 	HashTable getComponentTable();
 
@@ -348,4 +357,28 @@ public interface Client extends GameEngine
 	World createWorld();
 
 	SpritePixels drawInstanceMap(int z);
+
+	void runScript(int id, Object... args);
+
+	boolean hasHintArrow();
+
+	void clearHintArrow();
+
+	void setHintArrow(WorldPoint point);
+
+	void setHintArrow(Player player);
+
+	void setHintArrow(NPC npc);
+
+	boolean isInterpolatePlayerAnimations();
+
+	void setInterpolatePlayerAnimations(boolean interpolate);
+
+	boolean isInterpolateNpcAnimations();
+
+	void setInterpolateNpcAnimations(boolean interpolate);
+
+	boolean isInterpolateObjectAnimations();
+
+	void setInterpolateObjectAnimations(boolean interpolate);
 }

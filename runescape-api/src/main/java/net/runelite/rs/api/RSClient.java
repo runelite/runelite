@@ -163,6 +163,7 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getPlayerIndices();
 
 	@Import("cachedPlayers")
+	@Override
 	RSPlayer[] getCachedPlayers();
 
 	@Import("localInteractingIndex")
@@ -251,6 +252,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getViewportWidth();
 
+	@Import("Viewport_xOffset")
+	@Override
+	int getViewportXOffset();
+
+	@Import("Viewport_yOffset")
+	@Override
+	int getViewportYOffset();
+
 	@Import("isResized")
 	@Override
 	boolean isResized();
@@ -272,6 +281,10 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
+
+	@Import("widgetFlags")
+	@Override
+	RSHashTable getWidgetFlags();
 
 	@Import("componentTable")
 	@Override
@@ -537,6 +550,18 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSWorld createWorld();
 
+	@Import("animOffsetX")
+	void setAnimOffsetX(int animOffsetX);
+
+	@Import("animOffsetY")
+	void setAnimOffsetY(int animOffsetY);
+
+	@Import("animOffsetZ")
+	void setAnimOffsetZ(int animOffsetZ);
+
+	@Import("getFrames")
+	RSFrames getFrames(int frameId);
+
 	@Import("minimapSprite")
 	RSSpritePixels getMinimapSprite();
 
@@ -545,4 +570,46 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("drawObject")
 	void drawObject(int z, int x, int y, int randomColor1, int randomColor2);
+
+	@Construct
+	RSScriptEvent createScriptEvent();
+
+	@Import("runScript")
+	void runScript(RSScriptEvent ev, int ex);
+
+	@Import("hintArrowTargetType")
+	void setHintArrowTargetType(int value);
+
+	@Import("hintArrowTargetType")
+	int getHintArrowTargetType();
+
+	@Import("hintArrowX")
+	void setHintArrowX(int value);
+
+	@Import("hintArrowX")
+	int getHintArrowX();
+
+	@Import("hintArrowY")
+	void setHintArrowY(int value);
+
+	@Import("hintArrowY")
+	int getHintArrowY();
+
+	@Import("hintArrowOffsetX")
+	void setHintArrowOffsetX(int value);
+
+	@Import("hintArrowOffsetY")
+	void setHintArrowOffsetY(int value);
+
+	@Import("hintArrowNpcTargetIdx")
+	void setHintArrowNpcTargetIdx(int value);
+
+	@Import("hintArrowNpcTargetIdx")
+	int getHintArrowNpcTargetIdx();
+
+	@Import("hintArrowPlayerTargetIdx")
+	void setHintArrowPlayerTargetIdx(int value);
+
+	@Import("hintArrowPlayerTargetIdx")
+	int getHintArrowPlayerTargetIdx();
 }

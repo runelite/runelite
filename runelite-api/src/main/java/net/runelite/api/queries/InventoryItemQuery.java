@@ -24,6 +24,8 @@
  */
 package net.runelite.api.queries;
 
+import java.util.Arrays;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -44,7 +46,26 @@ public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
 		{
 			return null;
 		}
-		return container.getItems();
+		return Arrays.stream(container.getItems())
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(Item[]::new);
+	}
+
+	public InventoryItemQuery idEquals(int... ids)
+	{
+		predicate = and(item ->
+		{
+			for (int id : ids)
+			{
+				if (item.getId() == id)
+				{
+					return true;
+				}
+			}
+			return false;
+		});
+		return this;
 	}
 
 }

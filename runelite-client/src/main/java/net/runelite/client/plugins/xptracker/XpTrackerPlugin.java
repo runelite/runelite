@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import java.awt.image.BufferedImage;
@@ -97,7 +98,14 @@ public class XpTrackerPlugin extends Plugin
 		try
 		{
 			worlds = worldClient.lookupWorlds();
-			log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
+			if (worlds != null)
+			{
+				log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
+			}
+			else
+			{
+				log.warn("Unable to look up worlds");
+			}
 		}
 		catch (IOException e)
 		{
@@ -134,21 +142,15 @@ public class XpTrackerPlugin extends Plugin
 		{
 			// LOGGED_IN is triggered between region changes too.
 			// Check that the username changed or the world type changed.
-			World world = worlds.findWorld(client.getWorld());
-
-			if (world == null)
-			{
-				log.warn("Logged into nonexistent world {}?", client.getWorld());
-				return;
-			}
-
-			XpWorldType type = worldSetToType(world.getTypes());
+			XpWorldType type = getWorldType(client.getWorld());
 
 			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
 			{
 				// Reset
 				log.debug("World change: {} -> {}, {} -> {}",
-					lastUsername, client.getUsername(), lastWorldType, type);
+					lastUsername, client.getUsername(),
+					firstNonNull(lastWorldType, "<unknown>"),
+					firstNonNull(type, "<unknown>"));
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;
@@ -178,6 +180,25 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	private XpWorldType getWorldType(int worldNum)
+	{
+		if (worlds == null)
+		{
+			return null;
+		}
+
+		World world = worlds.findWorld(worldNum);
+
+		if (world == null)
+		{
+			log.warn("Logged into nonexistent world {}?", client.getWorld());
+			return null;
+		}
+
+		XpWorldType type = worldSetToType(world.getTypes());
+		return type;
+	}
+
 	private XpWorldType worldSetToType(EnumSet<WorldType> types)
 	{
 		XpWorldType xpType = NORMAL;
@@ -194,7 +215,7 @@ public class XpTrackerPlugin extends Plugin
 
 	public SkillXPInfo getSkillXpInfo(Skill skill)
 	{
-		return xpInfos.computeIfAbsent(skill, s -> new SkillXPInfo(s));
+		return xpInfos.computeIfAbsent(skill, SkillXPInfo::new);
 	}
 
 	@Subscribe

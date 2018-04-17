@@ -36,4 +36,10 @@ public class MenuOptionClicked
 	private MenuAction menuAction;
 	private int id;
 	private int widgetId;
+	private boolean consumed;
+
+	public void consume()
+	{
+		this.consumed = true;
+	}
 }

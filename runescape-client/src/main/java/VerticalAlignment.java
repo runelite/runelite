@@ -4,48 +4,76 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("jx")
 @Implements("VerticalAlignment")
 public enum VerticalAlignment implements Enumerated {
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Ljd;"
-   )
-   field3432(2, 0),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Ljd;"
-   )
-   field3435(0, 1),
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ljd;"
+      signature = "Ljx;"
    )
-   field3434(1, 2);
+   field3442(0, 0),
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ljx;"
+   )
+   field3440(1, 1),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ljx;"
+   )
+   field3439(2, 2);
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1410778253
+      intValue = 169303621
    )
    @Export("value")
    public final int value;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1378554303
+      intValue = -1756699981
    )
-   final int field3436;
+   final int field3443;
 
    VerticalAlignment(int var3, int var4) {
       this.value = var3;
-      this.field3436 = var4;
+      this.field3443 = var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1780726447"
+      garbageValue = "-369819377"
    )
    public int rsOrdinal() {
-      return this.field3436;
+      return this.field3443;
+   }
+
+   @ObfuscatedName("jy")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+      garbageValue = "-1513409365"
+   )
+   static String method4715(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.socketType == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.socketType == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.socketType == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.socketType == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.socketType == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(class55.sessionToken != null) {
+         var3 = "/p=" + class55.sessionToken;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + WidgetNode.field795 + var3 + "/";
    }
 }

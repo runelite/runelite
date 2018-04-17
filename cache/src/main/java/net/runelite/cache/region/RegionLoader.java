@@ -25,8 +25,9 @@
 package net.runelite.cache.region;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.LocationsDefinition;
 import net.runelite.cache.definitions.MapDefinition;
@@ -50,7 +51,7 @@ public class RegionLoader
 	private final Index index;
 	private final XteaKeyManager keyManager;
 
-	private final List<Region> regions = new ArrayList<>();
+	private final Map<Integer, Region> regions = new HashMap<>();
 	private Region lowestX = null, lowestY = null;
 	private Region highestX = null, highestY = null;
 
@@ -69,7 +70,7 @@ public class RegionLoader
 			Region region = this.loadRegionFromArchive(i);
 			if (region != null)
 			{
-				regions.add(region);
+				regions.put(i, region);
 			}
 		}
 	}
@@ -117,7 +118,7 @@ public class RegionLoader
 
 	public void calculateBounds()
 	{
-		for (Region region : regions)
+		for (Region region : regions.values())
 		{
 			if (lowestX == null || region.getBaseX() < lowestX.getBaseX())
 			{
@@ -141,9 +142,16 @@ public class RegionLoader
 		}
 	}
 
-	public List<Region> getRegions()
+	public Collection<Region> getRegions()
 	{
-		return regions;
+		return regions.values();
+	}
+
+	public Region findRegionForWorldCoordinates(int x, int y)
+	{
+		x >>>= 6;
+		y >>>= 6;
+		return regions.get((x << 8) | y);
 	}
 
 	public Region getLowestX()

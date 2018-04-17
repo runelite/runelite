@@ -31,7 +31,7 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ScriptEvent;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,7 +55,7 @@ public class ZoomPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptEvent event)
+	public void onScriptEvent(ScriptCallbackEvent event)
 	{
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();

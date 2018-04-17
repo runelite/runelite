@@ -164,6 +164,22 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(widgetInspectorBtn);
 
+		final JButton chunkBordersBtn = new JButton("Chunk borders");
+		chunkBordersBtn.addActionListener(e ->
+		{
+			highlightButton(chunkBordersBtn);
+			plugin.toggleChunkBorders();
+		});
+		container.add(chunkBordersBtn);
+
+		final JButton mapSquaresBtn = new JButton("Map squares");
+		mapSquaresBtn.addActionListener(e ->
+		{
+			highlightButton(mapSquaresBtn);
+			plugin.toggleMapSquares();
+		});
+		container.add(mapSquaresBtn);
+
 		return container;
 	}
 

@@ -1,33 +1,25 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("ef")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Lll;"
    )
-   @Export("SpotAnimationDefinition_modelIndexCache")
-   static IndexDataBase SpotAnimationDefinition_modelIndexCache;
-   @ObfuscatedName("jf")
-   @ObfuscatedGetter(
-      intValue = -425019147
-   )
-   @Export("menuY")
-   static int menuY;
-   @ObfuscatedName("c")
+   static IndexedSprite field2074;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "[Ldy;"
+      signature = "[Ldj;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Ljm;Ljm;IZ)V",
+      signature = "(Ljf;Ljf;IZ)V",
       garbageValue = "0"
    )
    public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
@@ -59,59 +51,35 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1944805564"
+      garbageValue = "1892091747"
    )
-   public boolean method3079(int var1) {
+   public boolean method3063(int var1) {
       return this.skeletons[var1].showing;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-910139558"
+   )
+   public static int method3065() {
+      return ++MouseInput.mouseIdleTicks - 1;
    }
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljs;IIIBZB)V",
-      garbageValue = "36"
+      signature = "(Lha;III)I",
+      garbageValue = "-107378961"
    )
-   @Export("requestNetFile")
-   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class264.NetCache_pendingPriorityWrites.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class264.NetCache_pendingPriorityResponses.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class264.NetCache_pendingWrites.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  --class264.NetCache_pendingWritesCount;
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               }
-
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class264.NetCache_pendingResponses.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               } else {
-                  class264.NetCache_pendingWritesQueue.push(var8);
-                  class264.NetCache_pendingWrites.put(var8, var6);
-                  ++class264.NetCache_pendingWritesCount;
-               }
-
-            }
-         }
+   static int method3062(IterableHashTable var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+         return var3 == null?var2:var3.value;
       }
    }
 }

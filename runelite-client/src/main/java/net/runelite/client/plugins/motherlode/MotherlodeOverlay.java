@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -44,12 +44,13 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class MotherlodeOverlay extends Overlay
 {
-	private static final Set<Integer> MINING_ANIMATION_IDS = Sets.newHashSet(
+	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
 		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
 		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_ORN,
@@ -65,6 +66,7 @@ class MotherlodeOverlay extends Overlay
 	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
@@ -73,6 +75,11 @@ class MotherlodeOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.isInMlm() || !config.showMiningStats())
+		{
+			return null;
+		}
+
 		MotherlodeSession session = plugin.getSession();
 
 		if (session.getLastPayDirtMined() == null)
@@ -90,15 +97,22 @@ class MotherlodeOverlay extends Overlay
 
 		panelComponent.getLines().clear();
 
-		if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
+		if (config.showMiningState())
 		{
-			panelComponent.setTitle("You are mining");
-			panelComponent.setTitleColor(Color.GREEN);
+			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
+			{
+				panelComponent.setTitle("You are mining");
+				panelComponent.setTitleColor(Color.GREEN);
+			}
+			else
+			{
+				panelComponent.setTitle("You are NOT mining");
+				panelComponent.setTitleColor(Color.RED);
+			}
 		}
 		else
 		{
-			panelComponent.setTitle("You are NOT mining");
-			panelComponent.setTitleColor(Color.RED);
+			panelComponent.setTitle(null);
 		}
 
 		panelComponent.getLines().add(new PanelComponent.Line(

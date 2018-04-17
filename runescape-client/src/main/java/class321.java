@@ -2,26 +2,31 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lr")
+@ObfuscatedName("lo")
 public class class321 implements Comparator {
-   @ObfuscatedName("c")
-   final boolean field3933;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lld;"
+   )
+   static SpritePixels field3938;
+   @ObfuscatedName("o")
+   final boolean field3937;
 
    public class321(boolean var1) {
-      this.field3933 = var1;
+      this.field3937 = var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lku;Lku;B)I",
-      garbageValue = "81"
+      signature = "(Lku;Lku;I)I",
+      garbageValue = "-1114519277"
    )
-   int method5674(Nameable var1, Nameable var2) {
-      return this.field3933?var1.vmethod5454(var2):var2.vmethod5454(var1);
+   int method5655(Nameable var1, Nameable var2) {
+      return this.field3937?var1.vmethod5448(var2):var2.vmethod5448(var1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method5674((Nameable)var1, (Nameable)var2);
+      return this.method5655((Nameable)var1, (Nameable)var2);
    }
 
    public boolean equals(Object var1) {

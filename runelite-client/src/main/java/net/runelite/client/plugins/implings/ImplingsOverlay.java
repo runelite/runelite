@@ -24,25 +24,18 @@
  */
 package net.runelite.client.plugins.implings;
 
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
-import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Point;
-import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.util.QueryRunner;
 
 /**
  *
@@ -50,105 +43,38 @@ import net.runelite.client.util.QueryRunner;
  */
 public class ImplingsOverlay extends Overlay
 {
-
-	// Impling spawns in PuroPuro. Not in NpcID.
-	private static final int STATIC_SPAWN = 1618;
-	private static final int DYNAMIC_SPAWN = 1633;
-
-	private final QueryRunner queryRunner;
-	private final ImplingsConfig config;
-
-	@Getter
-	private final Map<Integer, Color> ids = new HashMap<>();
+	private final ImplingsPlugin plugin;
 
 	@Inject
-	public ImplingsOverlay(QueryRunner queryRunner, ImplingsConfig config)
+	private ImplingsOverlay(ImplingsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.queryRunner = queryRunner;
-		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids.keySet()));
-		NPC[] implings = queryRunner.runQuery(implingQuery);
-		for (NPC imp : implings)
+		NPC[] imps = plugin.getImplings();
+		if (imps == null)
 		{
+			return null;
+		}
+
+		for (NPC imp : imps)
+		{
+			if (imp == null || imp.getName() == null)
+			{
+				continue;
+			}
+
 			//Spawns have the name "null", so they get changed to "Spawn"
 			String text = imp.getName().equals("null") ? "Spawn" : imp.getName();
-			drawImp(graphics, imp, text, ids.get(imp.getId()));
+			drawImp(graphics, imp, text, plugin.getIds().get(imp.getId()));
 		}
 
 		return null;
-	}
-
-	// I am aware this is ugly. As always, feedback is welcome
-	public void updateConfig()
-	{
-		ids.clear();
-		if (config.showBaby())
-		{
-			ids.put(NpcID.BABY_IMPLING, config.getBabyColor());
-			ids.put(NpcID.BABY_IMPLING_1645, config.getBabyColor());
-		}
-		if (config.showYoung())
-		{
-			ids.put(NpcID.YOUNG_IMPLING, config.getYoungColor());
-			ids.put(NpcID.YOUNG_IMPLING_1646, config.getYoungColor());
-		}
-		if (config.showGourmet())
-		{
-			ids.put(NpcID.GOURMET_IMPLING, config.getGourmetColor());
-			ids.put(NpcID.GOURMET_IMPLING_1647, config.getGourmetColor());
-		}
-		if (config.showEarth())
-		{
-			ids.put(NpcID.EARTH_IMPLING, config.getEarthColor());
-			ids.put(NpcID.EARTH_IMPLING_1648, config.getEarthColor());
-		}
-		if (config.showEssence())
-		{
-			ids.put(NpcID.ESSENCE_IMPLING, config.getEssenceColor());
-			ids.put(NpcID.ESSENCE_IMPLING_1649, config.getEssenceColor());
-		}
-		if (config.showEclectic())
-		{
-			ids.put(NpcID.ECLECTIC_IMPLING, config.getEclecticColor());
-			ids.put(NpcID.ECLECTIC_IMPLING_1650, config.getEclecticColor());
-		}
-		if (config.showNature())
-		{
-			ids.put(NpcID.NATURE_IMPLING, config.getNatureColor());
-			ids.put(NpcID.NATURE_IMPLING_1651, config.getNatureColor());
-		}
-		if (config.showMagpie())
-		{
-			ids.put(NpcID.MAGPIE_IMPLING, config.getMapgieColor());
-			ids.put(NpcID.MAGPIE_IMPLING_1652, config.getMapgieColor());
-		}
-		if (config.showNinja())
-		{
-			ids.put(NpcID.NINJA_IMPLING, config.getNinjaColor());
-			ids.put(NpcID.NINJA_IMPLING_1653, config.getNinjaColor());
-		}
-		if (config.showDragon())
-		{
-			ids.put(NpcID.DRAGON_IMPLING, config.getDragonColor());
-			ids.put(NpcID.DRAGON_IMPLING_1654, config.getDragonColor());
-		}
-		if (config.showLucky())
-		{
-			ids.put(NpcID.LUCKY_IMPLING, config.getLuckyColor());
-			ids.put(NpcID.LUCKY_IMPLING_7302, config.getLuckyColor());
-		}
-		if (config.showSpawn())
-		{
-			ids.put(STATIC_SPAWN, config.getSpawnColor());
-			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
-		}
 	}
 
 	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
@@ -157,12 +83,6 @@ public class ImplingsOverlay extends Overlay
 		if (poly != null)
 		{
 			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
-
-		Point minimapLocation = actor.getMinimapLocation();
-		if (minimapLocation != null)
-		{
-			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());

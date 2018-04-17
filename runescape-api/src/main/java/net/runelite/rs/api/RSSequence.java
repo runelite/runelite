@@ -42,4 +42,10 @@ public interface RSSequence
 
 	@Import("interleaveLeave")
 	int[] getInterleaveLeave();
+
+	@Import("frameIDs")
+	int[] getFrameIDs();
+
+	@Import("frameLengths")
+	int[] getFrameLenths();
 }

@@ -55,6 +55,8 @@ public class UnderlayLoader
 			}
 		}
 
+		def.calculateHsl();
+
 		return def;
 	}
 }

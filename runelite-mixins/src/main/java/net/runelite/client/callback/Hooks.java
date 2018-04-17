@@ -42,6 +42,7 @@ public class Hooks
 	public static Logger log;
 
 	public static EventBus eventBus;
+	public static EventBus deferredEventBus;
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
@@ -99,6 +100,11 @@ public class Hooks
 	}
 
 	public static void keyTyped(KeyEvent keyEvent)
+	{
+		throw new RuntimeException();
+	}
+
+	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		throw new RuntimeException();
 	}

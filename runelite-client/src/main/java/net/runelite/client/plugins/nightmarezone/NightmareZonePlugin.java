@@ -93,6 +93,11 @@ public class NightmareZonePlugin extends Plugin
 	{
 		if (!isInNightmareZone())
 		{
+			if (!absorptionNotificationSend)
+			{
+				absorptionNotificationSend = true;
+			}
+
 			return;
 		}
 		if (config.absorptionNotification())

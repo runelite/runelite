@@ -7,57 +7,57 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("TaskDataNode")
 public abstract class TaskDataNode extends Node {
    @ObfuscatedName("w")
-   volatile boolean field1638;
-   @ObfuscatedName("b")
+   volatile boolean field1660;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Ldd;"
    )
-   TaskDataNode field1639;
-   @ObfuscatedName("h")
-   int field1640;
-   @ObfuscatedName("t")
+   TaskDataNode field1658;
+   @ObfuscatedName("q")
+   int field1659;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Ldk;"
+      signature = "Ldw;"
    )
    @Export("data")
    AbstractIntegerNode0 data;
 
    protected TaskDataNode() {
-      this.field1638 = true;
+      this.field1660 = true;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "()Ldd;"
    )
-   protected abstract TaskDataNode vmethod4336();
+   protected abstract TaskDataNode vmethod4330();
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "()Ldd;"
    )
-   protected abstract TaskDataNode vmethod4337();
+   protected abstract TaskDataNode vmethod4321();
 
-   @ObfuscatedName("p")
-   protected abstract int vmethod4338();
+   @ObfuscatedName("i")
+   protected abstract int vmethod4314();
 
-   @ObfuscatedName("w")
-   protected abstract void vmethod4339(int[] var1, int var2, int var3);
+   @ObfuscatedName("u")
+   protected abstract void vmethod4317(int[] var1, int var2, int var3);
 
-   @ObfuscatedName("d")
-   protected abstract void vmethod4340(int var1);
+   @ObfuscatedName("y")
+   protected abstract void vmethod4319(int var1);
 
-   @ObfuscatedName("ay")
-   int vmethod2472() {
+   @ObfuscatedName("ae")
+   int vmethod2491() {
       return 255;
    }
 
-   @ObfuscatedName("fi")
-   final void method2487(int[] var1, int var2, int var3) {
-      if(this.field1638) {
-         this.vmethod4339(var1, var2, var3);
+   @ObfuscatedName("fn")
+   final void method2495(int[] var1, int var2, int var3) {
+      if(this.field1660) {
+         this.vmethod4317(var1, var2, var3);
       } else {
-         this.vmethod4340(var3);
+         this.vmethod4319(var3);
       }
 
    }

@@ -41,6 +41,12 @@ public interface RSActor extends RSRenderable, Actor
 	@Import("y")
 	int getY();
 
+	@Import("pathX")
+	int[] getPathX();
+
+	@Import("pathY")
+	int[] getPathY();
+
 	@Import("animation")
 	@Override
 	int getAnimation();
@@ -59,4 +65,31 @@ public interface RSActor extends RSRenderable, Actor
 	@Import("logicalHeight")
 	@Override
 	int getLogicalHeight();
+
+	@Import("actionFrame")
+	int getActionFrame();
+
+	@Import("actionFrame")
+	void setActionFrame(int frame);
+
+	@Import("actionFrameCycle")
+	int getActionFrameCycle();
+
+	@Import("poseFrame")
+	int getPoseFrame();
+
+	@Import("poseFrame")
+	void setPoseFrame(int frame);
+
+	@Import("poseFrameCycle")
+	int getPoseFrameCycle();
+
+	@Import("spotAnimFrame")
+	int getSpotAnimFrame();
+
+	@Import("spotAnimFrame")
+	void setSpotAnimFrame(int frame);
+
+	@Import("spotAnimFrameCycle")
+	int getSpotAnimFrameCycle();
 }

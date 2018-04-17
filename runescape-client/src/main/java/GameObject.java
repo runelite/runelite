@@ -4,90 +4,96 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("eb")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("c")
+   @ObfuscatedName("gf")
    @ObfuscatedGetter(
-      intValue = 700578585
+      intValue = -905114669
+   )
+   @Export("cameraZ")
+   static int cameraZ;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1716707329
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1742280241
+      intValue = 355953863
    )
    @Export("height")
    int height;
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 823892543
+      intValue = -578308445
    )
    @Export("x")
    int x;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -961737963
+      intValue = -655554511
    )
    @Export("y")
    int y;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Led;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1429840503
+      intValue = 1891180903
    )
    @Export("orientation")
    int orientation;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1576345027
+      intValue = 1077887321
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -683998103
+      intValue = 1705717825
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -314169043
+      intValue = 2017876587
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1308771995
+      intValue = 1243283353
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1014084627
+      intValue = 1689595723
    )
    @Export("drawPriority")
    int drawPriority;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 2026204851
+      intValue = -1774788285
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -374780921
+      intValue = -2055602271
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1445617631
+      intValue = 2062036631
    )
    @Export("flags")
    int flags;
@@ -97,74 +103,32 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("fx")
    @ObfuscatedSignature(
-      signature = "(IB)Ljh;",
-      garbageValue = "125"
+      signature = "(Lbz;III)V",
+      garbageValue = "-841453657"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.items.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class156.item_ref.getConfigData(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
+   static void method3083(Player var0, int var1, int var2) {
+      if(var0.animation == var1 && var1 != -1) {
+         int var3 = CombatInfo1.getAnimation(var1).replyMode;
+         if(var3 == 1) {
+            var0.actionFrame = 0;
+            var0.actionFrameCycle = 0;
+            var0.actionAnimationDisable = var2;
+            var0.field1193 = 0;
          }
 
-         var1.post();
-         if(var1.notedTemplate != -1) {
-            var1.updateNote(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
+         if(var3 == 2) {
+            var0.field1193 = 0;
          }
-
-         if(var1.notedId != -1) {
-            var1.method5058(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
-
-         if(var1.int3 != -1) {
-            var1.method5059(getItemDefinition(var1.int3), getItemDefinition(var1.int2));
-         }
-
-         if(!class154.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.isTradable = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = -1;
-            var1.int1 = 0;
-            if(var1.field3683 != null) {
-               boolean var3 = false;
-
-               for(Node var4 = var1.field3683.getHead(); var4 != null; var4 = var1.field3683.getTail()) {
-                  class278 var5 = Client.method1577((int)var4.hash);
-                  if(var5.field3547) {
-                     var4.unlink();
-                  } else {
-                     var3 = true;
-                  }
-               }
-
-               if(!var3) {
-                  var1.field3683 = null;
-               }
-            }
-         }
-
-         ItemComposition.items.put(var1, (long)var0);
-         return var1;
+      } else if(var1 == -1 || var0.animation == -1 || CombatInfo1.getAnimation(var1).forcedPriority >= CombatInfo1.getAnimation(var0.animation).forcedPriority) {
+         var0.animation = var1;
+         var0.actionFrame = 0;
+         var0.actionFrameCycle = 0;
+         var0.actionAnimationDisable = var2;
+         var0.field1193 = 0;
+         var0.field1216 = var0.queueSize;
       }
-   }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1322308763"
-   )
-   static int method3098(int var0) {
-      MessageNode var1 = (MessageNode)class95.messages.get((long)var0);
-      return var1 == null?-1:(var1.next == class95.field1434.sentinel?-1:((MessageNode)var1.next).id);
    }
 }

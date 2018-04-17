@@ -24,11 +24,9 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-import java.awt.Font;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -36,26 +34,12 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class PestControlPlugin extends Plugin
 {
-	private Font font;
-
 	@Inject
 	private PestControlOverlay overlay;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 16);
-	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	public Font getFont()
-	{
-		return font;
 	}
 }

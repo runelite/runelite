@@ -38,8 +38,12 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
@@ -54,7 +58,9 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Player;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -97,8 +103,10 @@ public class HiscorePanel extends PluginPanel
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
 
-	private static final HiscoreSkill[] SKILL_PANEL_ORDER = new HiscoreSkill[]
-	{
+	/**
+	 * Real skills, ordered in the way they should be displayed in the panel.
+	 */
+	private static final Set<HiscoreSkill> SKILLS = new LinkedHashSet<>(Arrays.asList(
 		ATTACK, HITPOINTS, MINING,
 		STRENGTH, AGILITY, SMITHING,
 		DEFENCE, HERBLORE, FISHING,
@@ -107,11 +115,16 @@ public class HiscorePanel extends PluginPanel
 		MAGIC, FLETCHING, WOODCUTTING,
 		RUNECRAFT, SLAYER, FARMING,
 		CONSTRUCTION, HUNTER
-	};
+	));
 
 	@Inject
 	ScheduledExecutorService executor;
 
+	@Inject
+	@Nullable
+	private Client client;
+
+	private final HiscoreConfig config;
 	private final IconTextField input;
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
@@ -122,12 +135,14 @@ public class HiscorePanel extends PluginPanel
 
 	private List<JToggleButton> endpointButtons;
 
-	private final HiscoreClient client = new HiscoreClient();
+	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private HiscoreResult result;
 
-	public HiscorePanel()
+	@Inject
+	public HiscorePanel(HiscoreConfig config)
 	{
 		super();
+		this.config = config;
 
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
@@ -165,6 +180,29 @@ public class HiscorePanel extends PluginPanel
 		input = new IconTextField();
 		input.setIcon(search);
 		input.addActionListener(e -> executor.execute(this::lookup));
+		input.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getClickCount() != 2)
+				{
+					return;
+				}
+
+				if (client == null)
+				{
+					return;
+				}
+
+				Player localPlayer = client.getLocalPlayer();
+
+				if (localPlayer != null)
+				{
+					executor.execute(() -> lookup(localPlayer.getName()));
+				}
+			}
+		});
 		inputPanel.add(input, BorderLayout.CENTER);
 
 		c.gridx = 0;
@@ -181,7 +219,7 @@ public class HiscorePanel extends PluginPanel
 		statsPanel.setBorder(subPanelBorder);
 
 		// For each skill on the ingame skill panel, create a Label and add it to the UI
-		for (HiscoreSkill skill : SKILL_PANEL_ORDER)
+		for (HiscoreSkill skill : SKILLS)
 		{
 			JPanel panel = makeSkillPanel(skill.getName(), skill);
 			statsPanel.add(panel);
@@ -232,7 +270,7 @@ public class HiscorePanel extends PluginPanel
 		details.setWrapStyleWord(true);
 		details.setLineWrap(true);
 		details.setMargin(new Insets(2, 4, 4, 4));
-		details.setRows(4);
+		details.setRows(6);
 		details.setText("");
 
 		detailsPanel.add(details, BorderLayout.CENTER);
@@ -324,9 +362,24 @@ public class HiscorePanel extends PluginPanel
 			}
 			case "Clue Scrolls (all)":
 			{
-				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-				text = "Total Clue Scrolls Completed" + System.lineSeparator()
-					+ "Rank: " + rank;
+				String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
+				String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
+				String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
+				String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
+				String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
+				String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
+				String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
+				String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
+				String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
+				String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
+				String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
+				String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+				text = "All clues: " + all + " | Rank: " + allRank + System.lineSeparator()
+					+ "Easy: " + easy + " | Rank: " + easyRank + System.lineSeparator()
+					+ "Medium: " + medium + " | Rank: " + mediumRank + System.lineSeparator()
+					+ "Hard: " + hard + " | Rank: " + hardRank + System.lineSeparator()
+					+ "Elite: " + elite + " | Rank: " + eliteRank + System.lineSeparator()
+					+ "Master: " + master + " | Rank: " + masterRank;
 				break;
 			}
 			case "Bounty Hunter - Rogue":
@@ -467,7 +520,7 @@ public class HiscorePanel extends PluginPanel
 			HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
 			log.debug("Hiscore endpoint " + endpoint.name() + " selected");
 
-			result = client.lookup(lookup, endpoint);
+			result = hiscoreClient.lookup(lookup, endpoint);
 		}
 		catch (IOException ex)
 		{
@@ -499,7 +552,19 @@ public class HiscorePanel extends PluginPanel
 			}
 			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
 			{
-				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
+				Skill s = result.getSkill(skill);
+
+				int level;
+				if (config.virtualLevels() && SKILLS.contains(skill))
+				{
+					level = Experience.getLevelForXp((int) s.getExperience());
+				}
+				else
+				{
+					level = s.getLevel();
+				}
+
+				label.setText(Integer.toString(level));
 			}
 		}
 
