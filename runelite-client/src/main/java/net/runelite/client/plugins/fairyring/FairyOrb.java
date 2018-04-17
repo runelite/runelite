@@ -31,7 +31,7 @@ class FairyOrb
 	private int select;
 
 	FairyOrb(char[] charCode)
-    {
+	{
 		this.charCode = charCode;
 		this.select = 0;
 	}
