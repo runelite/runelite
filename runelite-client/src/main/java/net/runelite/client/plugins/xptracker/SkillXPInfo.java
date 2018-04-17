@@ -34,8 +34,13 @@ import java.util.Map;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Setting;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.attackstyles.AttackStyle;
+import net.runelite.client.plugins.attackstyles.WeaponType;
 import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 
 @Data
@@ -91,16 +96,18 @@ class SkillXPInfo
 		return nextLevelExp - (startXp + xpGained);
 	}
 
-	int getActionsRemaining(Actor opponent)
+	int getActionsRemaining(Client client)
 	{
 		if (initialized)
 		{
+			Actor opponent = client.getLocalPlayer().getInteracting();
 			// Check if the action is a combat skill or not
 			if (Arrays.asList(COMBAT).contains(skill)) {
 				if (opponent != null) {
 					opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
-					long actionExp = (opponentHealth * getCombatXPmodifier(skill));
-					killsRemaining = Math.toIntExact(getXpRemaining() / actionExp);
+					double modifier = getCombatXPmodifier(skill,client);
+					double actionExp = (opponentHealth * modifier);
+					killsRemaining = (int)(getXpRemaining() / actionExp);
 				}
 				return killsRemaining;
 			}
@@ -120,25 +127,24 @@ class SkillXPInfo
 		return Integer.MAX_VALUE;
 	}
 
-	// Extend to work with selected combat style
-	long getCombatXPmodifier(Skill skill) {
+	// Calculates the xp modifier based on combat style
+	private double getCombatXPmodifier(Skill skill, Client client) {
+		final double sharedXPModifier = 4.0/3.0;
+		final double longRangedXPModifier = 2.0;
+		final double defaultModifier = 4;
 		if (skill.equals(Skill.HITPOINTS))
 		{
-			return (4/3);
+			return sharedXPModifier;
 		}
-		return 4;
+		int styleIndex = client.getSetting(Setting.ATTACK_STYLE);
+		WeaponType weaponType = WeaponType.getWeaponType(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE));
+		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED) ? sharedXPModifier :
+				weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)? longRangedXPModifier :defaultModifier;
 	}
 
 	String getTextActionKills()
 	{
-		if (Arrays.asList(COMBAT).contains(skill))
-		{
-			return "kills left";
-		}
-		else
-		{
-			return "actions left";
-		}
+		return Arrays.asList(COMBAT).contains(skill)?"kills left":"actions left";
 	}
 
 	int getSkillProgress()
