@@ -68,6 +68,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
+import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -143,6 +144,8 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		SCREENSHOT_DIR.mkdirs();
+
 		try
 		{
 			BufferedImage iconImage;
@@ -163,7 +166,7 @@ public class ScreenshotPlugin extends Plugin
 					{
 						try
 						{
-							Desktop.getDesktop().open(RuneLite.SCREENSHOT_DIR);
+							Desktop.getDesktop().open(SCREENSHOT_DIR);
 						}
 						catch (IOException ex)
 						{
@@ -442,11 +445,11 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null)
 			{
-				playerFolder = new File(RuneLite.SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
 			}
 			else
 			{
-				playerFolder = RuneLite.SCREENSHOT_DIR;
+				playerFolder = SCREENSHOT_DIR;
 			}
 
 			playerFolder.mkdirs();
