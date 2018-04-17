@@ -88,7 +88,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Come to the evil ledge, Yew know yew want to. Try not to get stung.", new WorldPoint(3089, 3468, 0), "Dig in Edgeville, just east of the Southern Yew tree."),
 		new CrypticClue("Look in the ground floor crates of houses in Falador.", NULL_5536, new WorldPoint(3027, 3356, 0), "The house east of the east bank."),
 		new CrypticClue("You were 3 and I was the 6th. Come speak to me.", "Vannaka", new WorldPoint(3146, 9913, 0), "Speak to Vannaka in Edgeville Dungeon."),
-		new CrypticClue("Search the crates in Draynor Manor.", CRATES_11486, new WorldPoint(3105, 3369, 2), "Top floor of the manor"),
+		new CrypticClue("Search the crates in Draynor Manor.", CRATE_11485, new WorldPoint(3105, 3369, 2), "Top floor of the manor"),
 		new CrypticClue("Search the crates near a cart in Varrock.", MILL_2571, new WorldPoint(3226, 3452, 0), "South east of Varrock Palace, south of the tree farming patch."),
 		new CrypticClue("A Guthixian ring lies between two peaks. Search the stones and you'll find what you seek.", STONES_26633, new WorldPoint(2922, 3484, 0), "Search the stones several steps west of the Guthixian stone circle in Taverley"),
 		new CrypticClue("Search the boxes in the house near the south entrance to Varrock.", BOXES_5111, new WorldPoint(3203, 3384, 0), "The first house on the left when entering the city from the southern entrance."),
@@ -264,7 +264,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Anger those who adhere to Saradomin's edicts to prevent travel.", null, "Port Sarim Docks, try to charter a ship to Entrana with armour or weapons equipped."),
 		new CrypticClue("South of a river in a town surrounded by the undead, what lies beneath the furnace?", null, "Dig in front of the Shilo Village furnace."),
 		new CrypticClue("Talk to the Squire in the White Knights' castle in Falador.", null, "The squire is located in the courtyard of the White Knights' Castle."),
-		new CrypticClue("Thanks Grandma!", null, "Tynan can be found in the north-east corner of Piscarilius House in Great Kourend."),
+		new CrypticClue("Thanks, Grandma!", null, "Tynan can be found in the north-east corner of Piscarilius House in Great Kourend."),
 		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", null, "The drawers is in Seers' Village in the house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
 		new CrypticClue("The treasure is buried in a small building full of bones. Here is a hint: it's not near a graveyard.", null, "In the western building near the Limestone quarry east of Varrock. Dig south of the box of bones in the smaller building."),
 		new CrypticClue("Search the crates in East Ardougne's general store.", null, "Located south of the Ardounge church."),
@@ -276,7 +276,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in Horvik's armoury.", null, "Horvik's in Varrock"),
 		new CrypticClue("Ghommal wishes to be impressed by how strong your equipment is.", null, "Talk to Ghommal at the Warrior's Guild while wearing sufficiently strong equipment"),
 		new CrypticClue("Shhhh!", null, "Speak to Logosia in the Arceuus House Library's ground floor."),
-		new CrypticClue("Salty Peter", null, "Talk to Konoo who is digging saltpeter in the Hosidius district in Zeah."),
+		new CrypticClue("Salty peter.", null, "Talk to Konoo who is digging saltpeter in the Hosidius district in Zeah."),
 		new CrypticClue("Talk to Zeke in Al Kharid.", null, "Zeke is the owner of the scimitar shop in Al Kharid."),
 		new CrypticClue("Guthix left his mark in a fiery lake, dig at the tip of it.", null, "Dig at the tip of the lava lake that is shaped like a Guthixian symbol, west of the Mage Arena."),
 		new CrypticClue("Search the drawers in the upstairs of a house in Catherby.", null, "Perdu's house in Catherby."),
@@ -300,7 +300,9 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("I would make a chemistry joke, but I'm afraid I wouldn't get a reaction.", null, "Talk to the Chemist in Rimmington"),
 		new CrypticClue("Show this to Hazelmere.", null, "Hazelmere is found upstairs on the island located just east of Yanille."),
 		new CrypticClue("Does one really need a fire to stay warm here?", null, "Dig next to the fire near the Volcanic Mine entrance."),
-		new CrypticClue("Search the open crate found in a small farmhouse in Hosidius. Cabbages grow outside.", null, "The house is east of the Mess in Great Kourend.")
+		new CrypticClue("Search the open crate found in a small farmhouse in Hosidius. Cabbages grow outside.", null, "The house is east of the Mess in Great Kourend."),
+		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
+		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank")
 	);
 
 	private String text;
