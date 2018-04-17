@@ -6069,6 +6069,7 @@ public final class Client extends GameEngine implements class302 {
       garbageValue = "-1938426547"
    )
    @Export("openMenu")
+   @Hook("menuOpened")
    final void openMenu(int var1, int var2) {
       int var3 = MessageNode.fontBold12.getTextWidth("Choose Option");
 
