@@ -5404,7 +5404,7 @@ public final class Client extends GameEngine implements class302 {
                   }
                }
 
-               if(WorldMapRectangle.friendManager.method1738(new Name(var62, GZipDecompressor.loginType))) {
+               if(WorldMapRectangle.friendManager.isIgnored(new Name(var62, GZipDecompressor.loginType))) {
                   var13 = true;
                }
 
@@ -5528,7 +5528,7 @@ public final class Client extends GameEngine implements class302 {
                boolean var90 = false;
                if(var82) {
                   var80 = var3.readString();
-                  if(WorldMapRectangle.friendManager.method1738(new Name(var80, GZipDecompressor.loginType))) {
+                  if(WorldMapRectangle.friendManager.isIgnored(new Name(var80, GZipDecompressor.loginType))) {
                      var90 = true;
                   }
                }
@@ -5612,7 +5612,7 @@ public final class Client extends GameEngine implements class302 {
                   }
                }
 
-               if(var31.field3352 && WorldMapRectangle.friendManager.method1738(new Name(var62, GZipDecompressor.loginType))) {
+               if(var31.field3352 && WorldMapRectangle.friendManager.isIgnored(new Name(var62, GZipDecompressor.loginType))) {
                   var15 = true;
                }
 

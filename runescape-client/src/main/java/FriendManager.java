@@ -124,7 +124,7 @@ public class FriendManager {
    )
    @Export("isFriended")
    final boolean isFriended(Name var1, boolean var2) {
-      return var1 == null?false:(var1.equals(SoundTaskDataProvider.localPlayer.name)?true:this.field1256.method5414(var1, var2));
+      return var1 == null?false: (var1.equals(SoundTaskDataProvider.localPlayer.name)?true: this.field1256.method5414(var1, var2));
    }
 
    @ObfuscatedName("z")
@@ -132,8 +132,9 @@ public class FriendManager {
       signature = "(Lkz;B)Z",
       garbageValue = "-42"
    )
-   final boolean method1738(Name var1) {
-      return var1 == null?false:this.field1254.isMember(var1);
+   @Export("isIgnored")
+   final boolean isIgnored(Name var1) {
+      return var1 == null?false: this.field1254.isMember(var1);
    }
 
    @ObfuscatedName("i")
@@ -141,13 +142,14 @@ public class FriendManager {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "-55"
    )
-   final void method1780(String var1) {
+   @Export("addToFriendsList")
+   final void addToFriendsList(String var1) {
       if(var1 != null) {
          Name var2 = new Name(var1, this.field1252);
-         if(var2.method5427()) {
+         if(var2.isCleanNameValid()) {
             StringBuilder var10000;
             String var3;
-            if(this.method1740()) {
+            if(this.isFriendsListFull()) {
                var10000 = null;
                var3 = "Your friend list is full. Max of 200 for free users, and 400 for members";
                class57.sendGameMessage(30, "", var3);
@@ -162,7 +164,7 @@ public class FriendManager {
                   var10001 = null;
                   var3 = var10000.append(" is already on your friend list").toString();
                   class57.sendGameMessage(30, "", var3);
-               } else if(this.method1738(var2)) {
+               } else if(this.isIgnored(var2)) {
                   var10000 = new StringBuilder();
                   var10001 = null;
                   var10000 = var10000.append("Please remove ").append(var1);
@@ -182,7 +184,8 @@ public class FriendManager {
       signature = "(I)Z",
       garbageValue = "1921717557"
    )
-   final boolean method1740() {
+   @Export("isFriendsListFull")
+   final boolean isFriendsListFull() {
       return this.field1256.method5305() || this.field1256.getCount() >= 200 && Client.field987 != 1;
    }
 
@@ -191,10 +194,11 @@ public class FriendManager {
       signature = "(Ljava/lang/String;B)V",
       garbageValue = "-16"
    )
-   final void method1782(String var1) {
+   @Export("addToIgnoreList")
+   final void addToIgnoreList(String var1) {
       if(var1 != null) {
          Name var2 = new Name(var1, this.field1252);
-         if(var2.method5427()) {
+         if(var2.isCleanNameValid()) {
             if(this.method1741()) {
                Size.method199();
             } else {
@@ -204,7 +208,7 @@ public class FriendManager {
                   var10000 = null;
                   var3 = "You can\'t add yourself to your own ignore list";
                   class57.sendGameMessage(30, "", var3);
-               } else if(this.method1738(var2)) {
+               } else if(this.isIgnored(var2)) {
                   class231.method4265(var1);
                } else if(this.isFriended(var2, false)) {
                   var10000 = new StringBuilder();
@@ -238,7 +242,7 @@ public class FriendManager {
    final void method1742(String var1) {
       if(var1 != null) {
          Name var2 = new Name(var1, this.field1252);
-         if(var2.method5427()) {
+         if(var2.isCleanNameValid()) {
             if(this.field1256.method5344(var2)) {
                OwnWorldComparator.method1248();
                PacketNode var3 = WorldMapRectangle.method280(ClientPacket.field2475, Client.field957.field1484);
@@ -275,7 +279,7 @@ public class FriendManager {
    final void method1743(String var1) {
       if(var1 != null) {
          Name var2 = new Name(var1, this.field1252);
-         if(var2.method5427()) {
+         if(var2.isCleanNameValid()) {
             if(this.field1254.method5344(var2)) {
                OwnWorldComparator.method1248();
                PacketNode var3 = WorldMapRectangle.method280(ClientPacket.field2470, Client.field957.field1484);

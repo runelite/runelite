@@ -30,4 +30,20 @@ public interface RSFriendManager
 {
 	@Import("isFriended")
 	boolean isFriended(RSName var1, boolean var2);
+
+
+	@Import("addToFriendsList")
+	void addToFriendsList(String var1);
+
+
+	@Import("isIgnored")
+	boolean isIgnored(RSName var1);
+
+
+	@Import("isFriendsListFull")
+	boolean isFriendsListFull();
+
+
+	@Import("addToIgnoreList")
+	void addToIgnoreList(String var1);
 }

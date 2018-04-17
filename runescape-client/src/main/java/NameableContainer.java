@@ -95,7 +95,7 @@ public abstract class NameableContainer {
    )
    @Export("isMember")
    public boolean isMember(Name var1) {
-      return !var1.method5427()?false:(this.field3837.containsKey(var1)?true:this.field3840.containsKey(var1));
+      return !var1.isCleanNameValid()?false:(this.field3837.containsKey(var1)?true:this.field3840.containsKey(var1));
    }
 
    @ObfuscatedName("j")
@@ -114,7 +114,7 @@ public abstract class NameableContainer {
       garbageValue = "2001745595"
    )
    Nameable method5327(Name var1) {
-      return !var1.method5427()?null:(Nameable)this.field3837.get(var1);
+      return !var1.isCleanNameValid()?null:(Nameable)this.field3837.get(var1);
    }
 
    @ObfuscatedName("g")
@@ -123,7 +123,7 @@ public abstract class NameableContainer {
       garbageValue = "109"
    )
    Nameable method5309(Name var1) {
-      return !var1.method5427()?null:(Nameable)this.field3840.get(var1);
+      return !var1.isCleanNameValid()?null:(Nameable)this.field3840.get(var1);
    }
 
    @ObfuscatedName("f")
