@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-public interface ItemContainer extends Node
+import lombok.Value;
+import net.runelite.api.Actor;
+import net.runelite.api.NPC;
+
+@Value
+public class NpcSpawned implements ActorSpawned
 {
-	/**
-	 * Get the items from the container
-	 * @return items
-	 */
-	Item[] getItems();
+	private final NPC npc;
+
+	@Override
+	public Actor getActor()
+	{
+		return npc;
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.util;
 
-public interface ItemContainer extends Node
+import com.google.common.eventbus.EventBus;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
+public class DeferredEventBus extends EventBus
 {
-	/**
-	 * Get the items from the container
-	 * @return items
-	 */
-	Item[] getItems();
+	private final EventBus eventBus;
+	private final Queue<Object> pendingEvents = new ConcurrentLinkedQueue<>();
+
+	@Inject
+	private DeferredEventBus(EventBus eventBus)
+	{
+		this.eventBus = eventBus;
+	}
+
+	@Override
+	public void register(Object object)
+	{
+		eventBus.register(object);
+	}
+
+	@Override
+	public void unregister(Object object)
+	{
+		eventBus.unregister(object);
+	}
+
+	@Override
+	public void post(Object object)
+	{
+		pendingEvents.add(object);
+	}
+
+	public void replay()
+	{
+		int size = pendingEvents.size();
+		while (size-- > 0)
+		{
+			Object object = pendingEvents.poll();
+			eventBus.post(object);
+		}
+	}
 }
