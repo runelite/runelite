@@ -107,7 +107,9 @@ public class WeaponChargesPlugin extends Plugin
 
 	public Integer getCharges(ChargedWeapon weapon)
 	{
-		if ((weapon == ChargedWeapon.IBANS_STAFF || weapon == ChargedWeapon.IBANS_STAFF_U) && config.ibansCharges() >= 0)
+		if ((weapon == ChargedWeapon.IBANS_STAFF ||
+				weapon == ChargedWeapon.IBANS_STAFF_U) &&
+				config.ibansCharges() >= 0)
 		{
 			return config.ibansCharges();
 		}

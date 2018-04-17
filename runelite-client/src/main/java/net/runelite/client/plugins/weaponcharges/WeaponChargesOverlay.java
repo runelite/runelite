@@ -84,7 +84,7 @@ public class WeaponChargesOverlay extends Overlay
 				final TextComponent textComponent = new TextComponent();
 				textComponent.setPosition(new Point(bounds.x + 16 - chargesStringWidth / 2, bounds.y + 24));
 				textComponent.setText(chargesString);
-				textComponent.setColor(plugin.getChargesColor(plugin.getCharges(chargedWeapon)));
+				textComponent.setColor(plugin.getChargesColor(charges));
 				textComponent.render(graphics);
 			}
 		}
