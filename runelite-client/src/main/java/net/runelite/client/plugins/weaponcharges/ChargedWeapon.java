@@ -30,17 +30,14 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
 @RequiredArgsConstructor
+@Getter
 public enum ChargedWeapon
 {
 	IBANS_STAFF("Iban's staff", ItemID.IBANS_STAFF, 120),
 	IBANS_STAFF_U("Iban's staff (u)", ItemID.IBANS_STAFF_U, 2500);
 
-	@Getter
+
 	private final String itemName;
-
-	@Getter
 	private final Integer itemId;
-
-	@Getter
 	private final Integer rechargeAmount;
 }

@@ -29,9 +29,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
@@ -44,14 +41,16 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class WeaponChargesOverlay extends Overlay
 {
 	private final WeaponChargesPlugin plugin;
 	private final QueryRunner queryRunner;
+	private final TextComponent textComponent = new TextComponent();
 
 	@Inject
-	WeaponChargesOverlay(WeaponChargesPlugin plugin, QueryRunner queryRunner)
+	private WeaponChargesOverlay(WeaponChargesPlugin plugin, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -66,26 +65,25 @@ public class WeaponChargesOverlay extends Overlay
 
 		final Query inventoryQuery = new InventoryWidgetItemQuery();
 		final Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_WEAPON);
-		final Collection<WidgetItem> itemSlots = new ArrayList<>();
-		itemSlots.addAll(Arrays.asList(queryRunner.runQuery(inventoryQuery)));
-		itemSlots.addAll(Arrays.asList(queryRunner.runQuery(equipmentQuery)));
-
+		WidgetItem[] itemSlots = ArrayUtils.addAll(queryRunner.runQuery(inventoryQuery),
+													queryRunner.runQuery(equipmentQuery));
 		for (WidgetItem item : itemSlots)
 		{
 			final ChargedWeapon chargedWeapon = plugin.getChargedWeaponFromId(item.getId());
 			if (chargedWeapon != null)
 			{
 				final Integer charges = plugin.getCharges(chargedWeapon);
-				if (charges == null) continue;
-				final String chargesString = String.valueOf(charges);
-				int chargesStringWidth = graphics.getFontMetrics().stringWidth(chargesString);
+				if (charges != null)
+				{
+					final String chargesString = String.valueOf(charges);
+					int chargesStringWidth = graphics.getFontMetrics().stringWidth(chargesString);
 
-				final Rectangle bounds = item.getCanvasBounds();
-				final TextComponent textComponent = new TextComponent();
-				textComponent.setPosition(new Point(bounds.x + 16 - chargesStringWidth / 2, bounds.y + 24));
-				textComponent.setText(chargesString);
-				textComponent.setColor(plugin.getChargesColor(charges));
-				textComponent.render(graphics);
+					final Rectangle bounds = item.getCanvasBounds();
+					textComponent.setPosition(new Point(bounds.x + 16 - chargesStringWidth / 2, bounds.y + 24));
+					textComponent.setText(chargesString);
+					textComponent.setColor(plugin.getChargesColor(charges));
+					textComponent.render(graphics);
+				}
 			}
 		}
 

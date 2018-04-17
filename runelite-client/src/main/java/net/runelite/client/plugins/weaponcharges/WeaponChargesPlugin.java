@@ -105,7 +105,7 @@ public class WeaponChargesPlugin extends Plugin
 		return overlay;
 	}
 
-	public Integer getCharges(ChargedWeapon weapon)
+	Integer getCharges(ChargedWeapon weapon)
 	{
 		if ((weapon == ChargedWeapon.IBANS_STAFF ||
 				weapon == ChargedWeapon.IBANS_STAFF_U) &&
@@ -119,7 +119,7 @@ public class WeaponChargesPlugin extends Plugin
 		}
 	}
 
-	public Color getChargesColor(int charges)
+	Color getChargesColor(int charges)
 	{
 		return charges > 100 ? Color.WHITE : Color.RED;
 	}
@@ -128,7 +128,11 @@ public class WeaponChargesPlugin extends Plugin
 	{
 		if (counter != null)
 		{
-			if (counter.getChargedWeapon() == weapon) return;
+			if (counter.getChargedWeapon() == weapon)
+			{
+				return;
+			}
+
 			removeChargesCounter();
 		}
 
@@ -147,9 +151,9 @@ public class WeaponChargesPlugin extends Plugin
 		}
 	}
 
-	private void processChargesCounter()
+	private void processChargesCounter(final ItemContainer equipmentContainer)
 	{
-		final ChargedWeapon equippedWeapon = getEquippedWeapon();
+		final ChargedWeapon equippedWeapon = getEquippedWeapon(equipmentContainer);
 		if (config.showChargesInfoBox() && equippedWeapon != null)
 		{
 			addChargesCounter(equippedWeapon);
@@ -160,22 +164,29 @@ public class WeaponChargesPlugin extends Plugin
 		}
 	}
 
-	public ChargedWeapon getChargedWeaponFromId(int itemId)
+	private void processChargesCounter()
+	{
+		processChargesCounter(client.getItemContainer(InventoryID.EQUIPMENT));
+	}
+
+	ChargedWeapon getChargedWeaponFromId(int itemId)
 	{
 		for (ChargedWeapon weapon : ChargedWeapon.values())
 		{
-			if (itemId == weapon.getItemId()) return weapon;
+			if (itemId == weapon.getItemId())
+			{
+				return weapon;
+			}
 		}
 
 		return null;
 	}
 
-	private ChargedWeapon getEquippedWeapon()
+	private ChargedWeapon getEquippedWeapon(final ItemContainer equipmentContainer)
 	{
-		final ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (equipContainer != null)
+		if (equipmentContainer != null)
 		{
-			Item[] equippedItems = equipContainer.getItems();
+			Item[] equippedItems = equipmentContainer.getItems();
 			if (equippedItems.length >= WEAPON_SLOT)
 			{
 				return getChargedWeaponFromId(equippedItems[WEAPON_SLOT].getId());
@@ -194,7 +205,11 @@ public class WeaponChargesPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		processChargesCounter();
+		final ItemContainer itemContainer = event.getItemContainer();
+		if (itemContainer == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			processChargesCounter(itemContainer);
+		}
 	}
 
 	@Subscribe
@@ -214,7 +229,10 @@ public class WeaponChargesPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER) return;
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
 
 		final String message = event.getMessage();
 
