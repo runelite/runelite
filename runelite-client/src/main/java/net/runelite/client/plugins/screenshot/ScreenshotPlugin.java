@@ -67,7 +67,6 @@ import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
