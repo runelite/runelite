@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Map;
