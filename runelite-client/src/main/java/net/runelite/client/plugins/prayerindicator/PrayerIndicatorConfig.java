@@ -30,18 +30,18 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup (
-		keyName = "prayerindicator",
-		name = "Prayer Indicator",
-		description = "Configuration for the Prayer Indicator plugin"
+	keyName = "prayerindicator",
+	name = "Prayer Indicator",
+	description = "Configuration for the Prayer Indicator plugin"
 )
 
 public interface PrayerIndicatorConfig extends Config
 {
 	
 	@ConfigItem (
-			keyName = "overOrb",
-			name = "Display Indicator On Orb",
-			description = "Configures if you want the indicator to show over the quick prayer orb"
+		keyName = "overOrb",
+		name = "Display Indicator On Orb",
+		description = "Configures if you want the indicator to show over the quick prayer orb"
 	)
 	default boolean displayOverOrb ()
 	{
@@ -49,9 +49,9 @@ public interface PrayerIndicatorConfig extends Config
 	}
 	
 	@ConfigItem (
-			keyName = "inInfoBox",
-			name = "Display Indicator In Information Box",
-			description = "Configures if you want the indicator to show in the information box alongside boosts"
+		keyName = "inInfoBox",
+		name = "Display Indicator In Information Box",
+		description = "Configures if you want the indicator to show in the information box alongside boosts"
 	)
 	default boolean inInfoBox ()
 	{

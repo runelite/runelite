@@ -28,27 +28,41 @@ package net.runelite.client.plugins.prayerindicator;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import net.runelite.api.Client;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor (
-		name = "Prayer Indicator"
+	name = "Prayer Indicator"
 )
 public class PrayerIndicatorPlugin extends Plugin
 {
 	
 	@Inject
-	private Client client;
+	private PrayerIndicatorOverlay overlay;
 	
 	@Inject
-	private PrayerIndicatorOverlay overlay;
+	private PrayerIndicatorConfig config;
+	
+	@Inject
+	private ItemManager itemManager;
+	
+	@Inject
+	private InfoBoxManager infoBoxManager;
+	
+	@Getter (AccessLevel.PACKAGE)
+	private Counter indicator;
 	
 	@Override
 	public Overlay getOverlay ()
@@ -56,31 +70,31 @@ public class PrayerIndicatorPlugin extends Plugin
 		return overlay;
 	}
 	
-	@Inject
-	private InfoBoxManager infoBoxManager;
-	
-	@Inject
-	private ItemManager itemManager;
-	
-	@Inject
-	private PrayerIndicatorConfig prayerIndicatorConfig;
-	
 	@Provides
 	PrayerIndicatorConfig getConfig (ConfigManager configManager)
 	{
-		return configManager.getConfig (PrayerIndicatorConfig.class);
+		return configManager.getConfig(PrayerIndicatorConfig.class);
+	}
+	
+	@Subscribe
+	public void onGameStateChanged (GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN && indicator == null)
+			indicator = new Counter(itemManager.getImage(ItemID.PRAYER_POTION4), this, "");
 	}
 	
 	@Subscribe
 	public void onTick (GameTick tick)
 	{
-		overlay.onTick ();
+		overlay.onTick();
 	}
 	
 	@Subscribe
 	public void onConfigChanged (ConfigChanged event)
 	{
-		overlay.onConfigChanged ();
+		if (!config.inInfoBox())
+			if (infoBoxManager.getInfoBoxes().contains (indicator))
+				infoBoxManager.removeInfoBox(indicator);
 	}
 	
 }
