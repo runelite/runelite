@@ -116,6 +116,7 @@ public class RuneLite
 		setOptions(parser.parse(args));
 
 		PROFILES_DIR.mkdirs();
+		SCREENSHOT_DIR.mkdirs();
 
 		// Setup logger
 		MDC.put("logFileName", LOGS_FILE_NAME.getAbsolutePath());
