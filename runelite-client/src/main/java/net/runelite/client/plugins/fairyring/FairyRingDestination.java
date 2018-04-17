@@ -47,9 +47,9 @@ class FairyRingDestination
 	private final String[] fairyQueenHideoutCodes = new String[]{"AIR", "DLR", "DJQ", "AJS"};
 	private String destinationCode = "";
 
-	private FairyOrb leftFairyOrb = new FairyOrb(new char[]{'A','D','C','B'});
-	private FairyOrb middleFairyOrb = new FairyOrb(new char[]{'I','L','K','J'});
-	private FairyOrb rightFairyOrb = new FairyOrb(new char[]{'P','S','R','Q'});
+	private FairyOrb leftFairyOrb = new FairyOrb(new char[]{'A', 'D', 'C', 'B'});
+	private FairyOrb middleFairyOrb = new FairyOrb(new char[]{'I', 'L', 'K', 'J'});
+	private FairyOrb rightFairyOrb = new FairyOrb(new char[]{'P', 'S', 'R', 'Q'});
 
 	void close()
 	{
@@ -88,8 +88,9 @@ class FairyRingDestination
 		Widget widgetFairyQueenHideoutCode = client.getWidget(WidgetInfo.FAIRY_QUEEN_HIDEOUT_CODE);
 
 		destinationCode = orbGetSelect();
-		for (FairyRingCodes FRC : FairyRingCodes.values()) {
-			if(destinationCode.equals(FRC.getFairyCode()))
+		for (FairyRingCodes FRC : FairyRingCodes.values())
+		{
+			if (destinationCode.equals(FRC.getFairyCode()))
 			{
 				if (widgetFairyQueenHideoutCode != null &&
 						widgetFairyQueenHideoutCode.getText().split("col")[1].contains(destinationCode) &&
@@ -121,8 +122,9 @@ class FairyRingDestination
 		{
 			String fairyQueenHideoutCode = widgetFairyQueenHideoutCode.getText().split("col")[1];
 
-			for (String hideoutCode : fairyQueenHideoutCodes) {
-				if(fairyQueenHideoutCode.contains(hideoutCode))
+			for (String hideoutCode : fairyQueenHideoutCodes)
+			{
+				if (fairyQueenHideoutCode.contains(hideoutCode))
 				{
 					orbSet(hideoutCode);
 					setNewDestination();
@@ -133,8 +135,9 @@ class FairyRingDestination
 
 		//Quick destination
 		String fairyCode = event.getMenuTarget().replace(" ", "");
-		for (FairyRingCodes FRC : FairyRingCodes.values()) {
-			if(fairyCode.contains(FRC.getFairyCode()))
+		for (FairyRingCodes FRC : FairyRingCodes.values())
+		{
+			if (fairyCode.contains(FRC.getFairyCode()))
 			{
 				orbSet(FRC.getFairyCode());
 				setNewDestination();

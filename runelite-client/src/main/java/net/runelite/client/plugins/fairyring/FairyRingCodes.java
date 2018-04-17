@@ -25,7 +25,8 @@
 
 package net.runelite.client.plugins.fairyring;
 
-public enum FairyRingCodes {
+public enum FairyRingCodes
+{
 
 	// A
 	AIQ("AIQ", "Mudskipper Point"),

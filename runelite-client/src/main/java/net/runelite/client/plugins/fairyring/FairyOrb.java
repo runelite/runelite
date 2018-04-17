@@ -30,7 +30,8 @@ class FairyOrb
 	private char[] charCode;
 	private int select;
 
-	FairyOrb(char[] charCode) {
+	FairyOrb(char[] charCode)
+    {
 		this.charCode = charCode;
 		this.select = 0;
 	}
@@ -62,7 +63,7 @@ class FairyOrb
 
 	void rotateClockwise()
 	{
-		if(++select > 3)
+		if (++select > 3)
 		{
 			select = 0;
 		}
@@ -70,7 +71,7 @@ class FairyOrb
 
 	void rotateCounterClockwise()
 	{
-		if(--select < 0)
+		if (--select < 0)
 		{
 			select = 3;
 		}
