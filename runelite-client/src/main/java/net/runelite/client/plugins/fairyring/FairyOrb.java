@@ -27,53 +27,52 @@ package net.runelite.client.plugins.fairyring;
 
 class FairyOrb
 {
-    private char[] charCode;
-    private int select;
+	private char[] charCode;
+	private int select;
 
-    FairyOrb(char[] charCode)
-    {
-        this.charCode = charCode;
-        this.select = 0;
-    }
+	FairyOrb(char[] charCode) {
+		this.charCode = charCode;
+		this.select = 0;
+	}
 
-    void setSelect(char Input)
-    {
-        select = 0;
-        for (char charCode : charCode)
-        {
-            if (Input == charCode)
-            {
-                return;
-            }
-            select++;
-        }
-        //Input not exist in the 'Orb'
-        select = 0;
-    }
+	void setSelect(char Input)
+	{
+		select = 0;
+		for (char charCode : charCode)
+		{
+			if (Input == charCode)
+			{
+				return;
+			}
+			select++;
+		}
+		//Input not exist in the 'Orb'
+		select = 0;
+	}
 
-    String getSelect()
-    {
-        return String.valueOf(charCode[select]);
-    }
+	String getSelect()
+	{
+		return String.valueOf(charCode[select]);
+	}
 
-    void reset()
-    {
-        select = 0;
-    }
+	void reset()
+	{
+		select = 0;
+	}
 
-    void rotateClockwise()
-    {
-        if(++select > 3)
-        {
-            select = 0;
-        }
-    }
+	void rotateClockwise()
+	{
+		if(++select > 3)
+		{
+			select = 0;
+		}
+	}
 
-    void rotateCounterClockwise()
-    {
-        if(--select < 0)
-        {
-            select = 3;
-        }
-    }
+	void rotateCounterClockwise()
+	{
+		if(--select < 0)
+		{
+			select = 3;
+		}
+	}
 }

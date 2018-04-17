@@ -36,28 +36,28 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(name = "Fairy Ring")
 public class FairyRingPlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private FairyRingDestination fairyRingDestination;
+	@Inject
+	private FairyRingDestination fairyRingDestination;
 
-    @Override
-    protected void shutDown()
-    {
-        fairyRingDestination.close();
-    }
+	@Override
+	protected void shutDown()
+	{
+		fairyRingDestination.close();
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick event)
-    {
-        fairyRingDestination.reset();
-    }
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		fairyRingDestination.reset();
+	}
 
-    @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked event)
-    {
-        fairyRingDestination.menuOptionClicked(event);
-    }
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		fairyRingDestination.menuOptionClicked(event);
+	}
 
 }
