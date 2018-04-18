@@ -512,7 +512,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(FontManager.getRunescapeFont());
+			subGraphics.setFont(FontManager.getRunescapeSmallFont());
 		}
 
 
