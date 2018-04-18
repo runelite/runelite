@@ -53,8 +53,10 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKFALL;
 import static net.runelite.api.ObjectID.ROCKFALL_26680;
+import net.runelite.api.Perspective;
 import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
@@ -85,6 +87,8 @@ public class MotherlodePlugin extends Plugin
 
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
+
+	private static final int UPPER_FLOOR_HEIGHT = -500;
 
 	@Inject
 	private MotherlodeOverlay overlay;
@@ -398,5 +402,16 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if the given point is "upstairs" in the mlm.
+	 * The upper floor is actually on z=0.
+	 * @param localPoint
+	 * @return
+	 */
+	boolean isUpstairs(LocalPoint localPoint)
+	{
+		return Perspective.getTileHeight(client, localPoint.getX(), localPoint.getY(), 0) < UPPER_FLOOR_HEIGHT;
 	}
 }
