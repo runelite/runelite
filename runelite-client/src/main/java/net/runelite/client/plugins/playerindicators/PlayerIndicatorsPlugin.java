@@ -31,8 +31,8 @@ import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
-
+import net.runelite.api.ClanMemberRank;
+import net.runelite.api.Client;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import static net.runelite.api.MenuAction.FOLLOW;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -46,11 +46,13 @@ import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.TRADE;
-
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
@@ -215,38 +217,21 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 	}
 
-	public int calculateWildernessLevel(WorldPoint userLocation)
+	public static int calculateWildernessLevel(WorldPoint userLocation)
 	{
 		int wildernessLevel = 0;
-		if (isInsideWilderness(new WorldPoint(2944, 3520, 0), new WorldPoint(3391, 4351, 3), userLocation))
+		if (WorldPoint.isInZone(new WorldPoint(2944, 3520, 0), new WorldPoint(3391, 4351, 3), userLocation))
 		{
 			wildernessLevel = ((userLocation.getY() - (55 * 64)) / 8) + 1;
 		}
-		else if (isInsideWilderness(new WorldPoint(3008, 10112, 0), new WorldPoint(3071, 10175, 3), userLocation))
+		else if (WorldPoint.isInZone(new WorldPoint(3008, 10112, 0), new WorldPoint(3071, 10175, 3), userLocation))
 		{
 			wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) - 1;
 		}
-		else if (isInsideWilderness(new WorldPoint(2944, 9920, 0), new WorldPoint(3391, 10879, 3), userLocation))
+		else if (WorldPoint.isInZone(new WorldPoint(2944, 9920, 0), new WorldPoint(3391, 10879, 3), userLocation))
 		{
 			wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) + 1;
 		}
 		return wildernessLevel;
-	}
-
-	public boolean isInsideWilderness(WorldPoint lowerBound, WorldPoint upperBound, WorldPoint userLocation)
-	{
-		if (userLocation.getX() < lowerBound.getX() || userLocation.getX() > upperBound.getX())
-		{
-			return false;
-		}
-		if (userLocation.getY() < lowerBound.getY() || userLocation.getY() > upperBound.getY())
-		{
-			return false;
-		}
-		if (userLocation.getPlane() < lowerBound.getPlane() || userLocation.getPlane() > upperBound.getPlane())
-		{
-			return false;
-		}
-		return true;
 	}
 }
