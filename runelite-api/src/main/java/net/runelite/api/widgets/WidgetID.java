@@ -80,6 +80,7 @@ public class WidgetID
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
+	public static final int KINGDOM_GROUP_ID = 392;
 
 	static class WorldMap
 	{
