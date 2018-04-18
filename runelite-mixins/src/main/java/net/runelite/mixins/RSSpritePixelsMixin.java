@@ -56,21 +56,32 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 	
 	@Inject
 	@Override
-	public void removeOutline(int outlineColor) {
+	public void removeOutline(int outlineColor)
+	{
 		int[] pixels = new int[this.getWidth() * this.getHeight()];
 		int pixelSpot = 0;
 		
-		for(int y = 0; y < this.getHeight(); ++y) {
-			for(int x = 0; x < this.getWidth(); ++x) {
+		for (int y = 0; y < this.getHeight(); ++y)
+		{
+			for (int x = 0; x < this.getWidth(); ++x)
+			{
 				int pixel = this.getPixels()[pixelSpot];
-				if(pixel == outlineColor) {
-					if(x > 0 && this.getPixels()[pixelSpot - 1] != 0) {
+				if (pixel == outlineColor)
+				{
+					if (x > 0 && this.getPixels()[pixelSpot - 1] != 0)
+					{
 						pixel = 0;
-					} else if(y > 0 && this.getPixels()[pixelSpot - this.getWidth()] != 0) {
+					}
+					else if (y > 0 && this.getPixels()[pixelSpot - this.getWidth()] != 0)
+					{
 						pixel = 0;
-					} else if(x < this.getWidth() - 1 && this.getPixels()[pixelSpot + 1] != 0) {
+					}
+					else if (x < this.getWidth() - 1 && this.getPixels()[pixelSpot + 1] != 0)
+					{
 						pixel = 0;
-					} else if(y < this.getHeight() - 1 && this.getPixels()[pixelSpot + this.getWidth()] != 0) {
+					}
+					else if (y < this.getHeight() - 1 && this.getPixels()[pixelSpot + this.getWidth()] != 0)
+					{
 						pixel = 0;
 					}
 				}
