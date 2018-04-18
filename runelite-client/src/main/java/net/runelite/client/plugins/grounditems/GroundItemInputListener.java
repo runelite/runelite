@@ -36,7 +36,8 @@ import net.runelite.client.input.MouseListener;
 
 public class GroundItemInputListener extends MouseListener implements KeyListener
 {
-	private static final int HOTKEY = KeyEvent.VK_ALT;
+	private static final int HOTKEY_ITEM_OPTIONS = KeyEvent.VK_ALT;
+	private static final int HOTKEY_SHOW_HIDDEN = KeyEvent.VK_CONTROL;
 
 	@Inject
 	private Client client;
@@ -53,20 +54,24 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY)
+		if (e.getKeyCode() == HOTKEY_ITEM_OPTIONS)
 		{
 			plugin.setHotKeyPressed(true);
+		}else if(e.getKeyCode() == HOTKEY_SHOW_HIDDEN){
+			plugin.setShowHiddenItems(true);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY)
+		if (e.getKeyCode() == HOTKEY_ITEM_OPTIONS)
 		{
 			plugin.setHotKeyPressed(false);
 			plugin.getHighlightBoxes().clear();
 			plugin.getHiddenBoxes().clear();
+		}else if(e.getKeyCode() == HOTKEY_SHOW_HIDDEN){
+			plugin.setShowHiddenItems(false);
 		}
 	}
 

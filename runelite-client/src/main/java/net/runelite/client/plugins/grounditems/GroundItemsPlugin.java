@@ -32,14 +32,13 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
-import java.awt.Rectangle;
+
+import java.awt.*;
+
 import static java.lang.Boolean.TRUE;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -47,6 +46,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,367 +79,388 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Ground Items"
+        name = "Ground Items"
 )
 @Slf4j
 public class GroundItemsPlugin extends Plugin
 {
-	//Size of one region
-	private static final int REGION_SIZE = 104;
-	// The max distance in tiles between the player and the item.
-	private static final int MAX_RANGE = 18;
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	// ItemID for coins
-	private static final int COINS = ItemID.COINS_995;
+    //Size of one region
+    private static final int REGION_SIZE = 104;
+    // The max distance in tiles between the player and the item.
+    private static final int MAX_RANGE = 18;
+    // Used when getting High Alchemy value - multiplied by general store price.
+    private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+    // ItemID for coins
+    private static final int COINS = ItemID.COINS_995;
 
-	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> hiddenBoxes = new HashMap<>();
+    @Getter(AccessLevel.PACKAGE)
+    private final Map<Rectangle, String> hiddenBoxes = new HashMap<>();
 
-	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> highlightBoxes = new HashMap<>();
+    @Getter(AccessLevel.PACKAGE)
+    private final Map<Rectangle, String> highlightBoxes = new HashMap<>();
 
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed;
+    @Getter(AccessLevel.PACKAGE)
+    @Setter(AccessLevel.PACKAGE)
+    private boolean hotKeyPressed;
 
-	private List<String> hiddenItemList = new ArrayList<>();
-	private List<String> highlightedItemsList = new ArrayList<>();
-	private boolean dirty;
+    @Getter(AccessLevel.PACKAGE)
+    @Setter(AccessLevel.PACKAGE)
+    private boolean showHiddenItems;
 
-	@Inject
-	private GroundItemInputListener inputListener;
+    private List<String> hiddenItemList = new ArrayList<>();
+    private List<String> highlightedItemsList = new ArrayList<>();
+    private boolean dirty;
 
-	@Inject
-	private MouseManager mouseManager;
+    @Inject
+    private GroundItemInputListener inputListener;
 
-	@Inject
-	private KeyManager keyManager;
+    @Inject
+    private MouseManager mouseManager;
 
-	@Inject
-	private Client client;
+    @Inject
+    private KeyManager keyManager;
 
-	@Inject
-	private ItemManager itemManager;
+    @Inject
+    private Client client;
 
-	@Inject
-	private GroundItemsConfig config;
+    @Inject
+    private ItemManager itemManager;
 
-	@Inject
-	private GroundItemsOverlay overlay;
+    @Inject
+    private GroundItemsConfig config;
 
-	@Getter
-	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
-	private final List<GroundItem> groundItems = new ArrayList<>();
-	private LoadingCache<String, Boolean> highlightedItems;
-	private LoadingCache<String, Boolean> hiddenItems;
+    @Inject
+    private GroundItemsOverlay overlay;
 
-	// Collects similar ground items
-	private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
-		.toMap
-			((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
-				{
-					b.setHaPrice(a.getHaPrice() + b.getHaPrice());
-					b.setGePrice(a.getGePrice() + b.getGePrice());
-					b.setQuantity(a.getQuantity() + b.getQuantity());
-					return b;
-				},
-				() -> collectedGroundItems);
+    @Getter
+    private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
+    private final List<GroundItem> groundItems = new ArrayList<>();
+    private LoadingCache<String, Boolean> highlightedItems;
+    private LoadingCache<String, Boolean> hiddenItems;
 
-	@Provides
-	GroundItemsConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(GroundItemsConfig.class);
-	}
+    // Collects similar ground items
+    private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
+            .toMap
+                    ((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
+                            {
+                                b.setHaPrice(a.getHaPrice() + b.getHaPrice());
+                                b.setGePrice(a.getGePrice() + b.getGePrice());
+                                b.setQuantity(a.getQuantity() + b.getQuantity());
+                                return b;
+                            },
+                            () -> collectedGroundItems);
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+    @Provides
+    GroundItemsConfig provideConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(GroundItemsConfig.class);
+    }
 
-	@Override
-	protected void startUp()
-	{
-		reset();
-		mouseManager.registerMouseListener(inputListener);
-		keyManager.registerKeyListener(inputListener);
-	}
+    @Override
+    public Overlay getOverlay()
+    {
+        return overlay;
+    }
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		mouseManager.unregisterMouseListener(inputListener);
-		keyManager.unregisterKeyListener(inputListener);
-		groundItems.clear();
-		collectedGroundItems.clear();
-		highlightedItems.invalidateAll();
-		highlightedItems = null;
-		hiddenItems.invalidateAll();
-		hiddenItems = null;
-		hiddenItemList = null;
-		highlightedItemsList = null;
-	}
+    @Override
+    protected void startUp()
+    {
+        reset();
+        mouseManager.registerMouseListener(inputListener);
+        keyManager.registerKeyListener(inputListener);
+    }
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("grounditems"))
-		{
-			reset();
-		}
-	}
+    @Override
+    protected void shutDown() throws Exception
+    {
+        mouseManager.unregisterMouseListener(inputListener);
+        keyManager.unregisterKeyListener(inputListener);
+        groundItems.clear();
+        collectedGroundItems.clear();
+        highlightedItems.invalidateAll();
+        highlightedItems = null;
+        hiddenItems.invalidateAll();
+        hiddenItems = null;
+        hiddenItemList = null;
+        highlightedItemsList = null;
+    }
 
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			dirty = true;
-		}
-	}
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event)
+    {
+        if (event.getGroup().equals("grounditems"))
+        {
+            reset();
+        }
+    }
 
-	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged event)
-	{
-		dirty = true;
-	}
+    @Subscribe
+    public void onGameStateChanged(final GameStateChanged event)
+    {
+        if (event.getGameState() == GameState.LOGGED_IN)
+        {
+            dirty = true;
+        }
+    }
 
-	void checkItems()
-	{
-		final Player player = client.getLocalPlayer();
+    @Subscribe
+    public void onItemLayerChanged(ItemLayerChanged event)
+    {
+        dirty = true;
+    }
 
-		if (!dirty || player == null || client.getViewportWidget() == null)
-		{
-			return;
-		}
+    void checkItems()
+    {
+        final Player player = client.getLocalPlayer();
 
-		dirty = false;
+        if (!dirty || player == null || client.getViewportWidget() == null)
+        {
+            return;
+        }
 
-		final Region region = client.getRegion();
-		final Tile[][][] tiles = region.getTiles();
-		final int z = client.getPlane();
-		final LocalPoint from = player.getLocalLocation();
+        dirty = false;
 
-		final int lowerX = Math.max(0, from.getRegionX() - MAX_RANGE);
-		final int lowerY = Math.max(0, from.getRegionY() - MAX_RANGE);
+        final Region region = client.getRegion();
+        final Tile[][][] tiles = region.getTiles();
+        final int z = client.getPlane();
+        final LocalPoint from = player.getLocalLocation();
 
-		final int upperX = Math.min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
-		final int upperY = Math.min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
+        final int lowerX = Math.max(0, from.getRegionX() - MAX_RANGE);
+        final int lowerY = Math.max(0, from.getRegionY() - MAX_RANGE);
 
-		groundItems.clear();
+        final int upperX = Math.min(from.getRegionX() + MAX_RANGE, REGION_SIZE - 1);
+        final int upperY = Math.min(from.getRegionY() + MAX_RANGE, REGION_SIZE - 1);
 
-		for (int x = lowerX; x <= upperX; ++x)
-		{
-			for (int y = lowerY; y <= upperY; ++y)
-			{
-				Tile tile = tiles[z][x][y];
-				if (tile == null)
-				{
-					continue;
-				}
+        groundItems.clear();
 
-				ItemLayer itemLayer = tile.getItemLayer();
-				if (itemLayer == null)
-				{
-					continue;
-				}
+        for (int x = lowerX; x <= upperX; ++x)
+        {
+            for (int y = lowerY; y <= upperY; ++y)
+            {
+                Tile tile = tiles[z][x][y];
+                if (tile == null)
+                {
+                    continue;
+                }
 
-				Node current = itemLayer.getBottom();
+                ItemLayer itemLayer = tile.getItemLayer();
+                if (itemLayer == null)
+                {
+                    continue;
+                }
 
-				// adds the items on the ground to the ArrayList to be drawn
-				while (current instanceof Item)
-				{
-					final Item item = (Item) current;
+                Node current = itemLayer.getBottom();
 
-					// Continue iteration
-					current = current.getNext();
+                // adds the items on the ground to the ArrayList to be drawn
+                while (current instanceof Item)
+                {
+                    final Item item = (Item) current;
 
-					// Build ground item
-					final GroundItem groundItem = buildGroundItem(tile, item);
+                    // Continue iteration
+                    current = current.getNext();
 
-					if (groundItem != null)
-					{
-						groundItems.add(groundItem);
-					}
-				}
-			}
-		}
+                    // Build ground item
+                    final GroundItem groundItem = buildGroundItem(tile, item);
 
-		// Group ground items together and sort them properly
-		collectedGroundItems.clear();
-		Lists.reverse(groundItems).stream().collect(groundItemMapCollector);
-	}
+                    if (groundItem != null)
+                    {
+                        groundItems.add(groundItem);
+                    }
+                }
+            }
+        }
 
-	@Nullable
-	private GroundItem buildGroundItem(final Tile tile, final Item item)
-	{
-		// Collect the data for the item
-		final int itemId = item.getId();
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+        // Group ground items together and sort them properly
+        collectedGroundItems.clear();
+        Lists.reverse(groundItems).stream().collect(groundItemMapCollector);
+    }
 
-		final GroundItem groundItem = GroundItem.builder()
-			.id(itemId)
-			.location(tile.getWorldLocation())
-			.itemId(realItemId)
-			.quantity(item.getQuantity())
-			.name(itemComposition.getName())
-			.haPrice(alchPrice * item.getQuantity())
-			.build();
+    @Nullable
+    private GroundItem buildGroundItem(final Tile tile, final Item item)
+    {
+        // Collect the data for the item
+        final int itemId = item.getId();
+        final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+        final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
+        final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+
+        final GroundItem groundItem = GroundItem.builder()
+                .id(itemId)
+                .location(tile.getWorldLocation())
+                .itemId(realItemId)
+                .quantity(item.getQuantity())
+                .name(itemComposition.getName())
+                .haPrice(alchPrice * item.getQuantity())
+                .build();
 
 
-		// Update item price in case it is coins
-		if (realItemId == COINS)
-		{
-			groundItem.setHaPrice(groundItem.getQuantity());
-			groundItem.setGePrice(groundItem.getQuantity());
-		}
+        // Update item price in case it is coins
+        if (realItemId == COINS)
+        {
+            groundItem.setHaPrice(groundItem.getQuantity());
+            groundItem.setGePrice(groundItem.getQuantity());
+        }
 
-		return groundItem;
-	}
+        return groundItem;
+    }
 
-	private void reset()
-	{
-		Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
+    private void reset()
+    {
+        Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
 
-		// gets the hidden items from the text box in the config
-		hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems().trim());
+        // gets the hidden items from the text box in the config
+        hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems().trim());
 
-		// gets the highlighted items from the text box in the config
-		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
+        // gets the highlighted items from the text box in the config
+        highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
 
-		highlightedItems = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new WildcardMatchLoader(highlightedItemsList));
+        highlightedItems = CacheBuilder.newBuilder()
+                .maximumSize(512L)
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .build(new WildcardMatchLoader(highlightedItemsList));
 
-		hiddenItems = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new WildcardMatchLoader(hiddenItemList));
+        hiddenItems = CacheBuilder.newBuilder()
+                .maximumSize(512L)
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .build(new WildcardMatchLoader(hiddenItemList));
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	private ItemPrice getItemPrice(ItemComposition itemComposition)
-	{
-		if (itemComposition.getNote() != -1)
-		{
-			return itemManager.getItemPriceAsync(itemComposition.getLinkedNoteId());
-		}
-		else
-		{
-			return itemManager.getItemPriceAsync(itemComposition.getId());
-		}
-	}
+    private ItemPrice getItemPrice(ItemComposition itemComposition)
+    {
+        if (itemComposition.getNote() != -1)
+        {
+            return itemManager.getItemPriceAsync(itemComposition.getLinkedNoteId());
+        } else
+        {
+            return itemManager.getItemPriceAsync(itemComposition.getId());
+        }
+    }
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take")
-			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
-		{
-			int itemId = event.getIdentifier();
-			ItemComposition itemComposition = client.getItemDefinition(itemId);
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded event)
+    {
+        if ((event.getType() == MenuAction.EXAMINE_ITEM_GROUND.getId() /* And Remove examine options */) || event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+        {
+            int itemId = event.getIdentifier();
+            ItemComposition itemComposition = client.getItemDefinition(itemId);
 
-			if (isHidden(itemComposition.getName()))
-			{
-				return;
-			}
+            boolean isHidden = isHidden(itemComposition.getName());
 
-			Region region = client.getRegion();
-			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			ItemLayer itemLayer = tile.getItemLayer();
-			if (itemLayer == null)
-			{
-				return;
-			}
+            if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId()/*event.getOption().equals("Take")*/ && !isHidden)
+            {
+                //Preserve previous behavior substitute string comparison for id ??Unknown if there is an issue from this??
+                highlightMenuEntry(event, itemId, itemComposition);
+            } else if (!showHiddenItems && isHidden)
+            {
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+                if (config.removeExamine() && event.getType() == MenuAction.EXAMINE_ITEM_GROUND.getId())
+                {
+                    //Examine action is added after the Take action, so on 2nd iteration remove the last two entries from the menu.
+                    client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 2));
+                } else if (!config.removeExamine() && config.removeTakeOption() && event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+                {
+                    //Dunno if im stupid or not but it seems the take and examine can't be removed individually,
+                    //the examine seems to disappear from the clients list after the take option has been removed?
+                    client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
+                }
+            }
+        }
 
-			int quantity = 1;
-			Node current = itemLayer.getBottom();
-			while (current instanceof Item)
-			{
-				Item item = (Item) current;
-				if (item.getId() == itemId)
-				{
-					quantity = item.getQuantity();
-				}
-				current = current.getNext();
-			}
+    }
 
-			ItemPrice itemPrice = getItemPrice(itemComposition);
-			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			int cost = quantity * price;
-			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
-				isHidden(itemComposition.getName()));
+    private void highlightMenuEntry(MenuEntryAdded event, int itemId, ItemComposition itemComposition)
+    {
+        Region region = client.getRegion();
+        Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+        ItemLayer itemLayer = tile.getItemLayer();
+        if (itemLayer == null)
+        {
+            return;
+        }
 
-			if (!color.equals(config.defaultColor()))
-			{
-				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
-				if (config.highlightMenuOption())
-				{
-					lastEntry.setOption(colTag + "Take");
-				}
-				if (config.highlightMenuItemName())
-				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(colTag + target);
-				}
-			}
+        MenuEntry[] menuEntries = client.getMenuEntries();
+        MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
-			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-			}
+        int quantity = 1;
+        Node current = itemLayer.getBottom();
+        while (current instanceof Item)
+        {
+            Item item = (Item) current;
+            if (item.getId() == itemId)
+            {
+                quantity = item.getQuantity();
+            }
+            current = current.getNext();
+        }
 
-			client.setMenuEntries(menuEntries);
-		}
-	}
+        ItemPrice itemPrice = getItemPrice(itemComposition);
+        int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+        int cost = quantity * price;
+        Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
+                isHidden(itemComposition.getName()));
 
-	void updateList(String item, boolean hiddenList)
-	{
-		List<String> items = new ArrayList<>((hiddenList) ? hiddenItemList : highlightedItemsList);
+        if (!color.equals(config.defaultColor()))
+        {
+            String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
+            String colTag = "<col=" + hexColor + ">";
+            if (config.highlightMenuOption())
+            {
+                lastEntry.setOption(colTag + "Take");
+            }
+            if (config.highlightMenuItemName())
+            {
+                String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+                lastEntry.setTarget(colTag + target);
+            }
+        }
 
-		items.removeIf(s -> s.isEmpty());
-		if (!items.removeIf(s -> s.equalsIgnoreCase(item)))
-		{
-			items.add(item);
-		}
+        if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+        {
+            lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+        }
 
-		String newList = Joiner.on(", ").join(items);
-		// This triggers the config update which updates the list
-		if (hiddenList)
-		{
-			config.setHiddenItems(newList);
-		}
-		else
-		{
-			config.setHighlightedItem(newList);
-		}
-	}
+        client.setMenuEntries(menuEntries);
+    }
 
-	public boolean isHighlighted(String item)
-	{
-		return TRUE.equals(highlightedItems.getUnchecked(item));
-	}
+    void updateList(String item, boolean hiddenList)
+    {
+        List<String> items = new ArrayList<>((hiddenList) ? hiddenItemList : highlightedItemsList);
 
-	public boolean isHidden(String item)
-	{
-		return TRUE.equals(hiddenItems.getUnchecked(item));
-	}
+        items.removeIf(s -> s.isEmpty());
+        if (!items.removeIf(s -> s.equalsIgnoreCase(item)))
+        {
+            items.add(item);
+        }
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			setHotKeyPressed(false);
-		}
-	}
+        String newList = Joiner.on(", ").join(items);
+        // This triggers the config update which updates the list
+        if (hiddenList)
+        {
+            config.setHiddenItems(newList);
+        } else
+        {
+            config.setHighlightedItem(newList);
+        }
+    }
+
+    public boolean isHighlighted(String item)
+    {
+        return TRUE.equals(highlightedItems.getUnchecked(item));
+    }
+
+    public boolean isHidden(String item)
+    {
+        return TRUE.equals(hiddenItems.getUnchecked(item));
+    }
+
+    @Subscribe
+    public void onFocusChanged(FocusChanged focusChanged)
+    {
+        if (!focusChanged.isFocused())
+        {
+            setHotKeyPressed(false);
+        }
+    }
 }
