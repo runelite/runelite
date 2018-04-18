@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, JerwuQu <marcus@ramse.se>
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
