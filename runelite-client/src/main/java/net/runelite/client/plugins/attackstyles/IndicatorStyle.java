@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,20 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import lombok.AllArgsConstructor;
 
-public class AttackStylesOverlay extends Overlay
+@AllArgsConstructor
+public enum IndicatorStyle
 {
-	private final AttackStylesPlugin plugin;
-	private final AttackStylesConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
+	OFF("Off"),
+	TEXT("Text"),
+	ICON("Icon");
 
-	@Inject
-	public AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
-	{
-		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
-		this.plugin = plugin;
-		this.config = config;
-	}
+	private final String name;
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public String toString()
 	{
-		if (config.getIndicatorStyle() != IndicatorStyle.TEXT)
-		{
-			return null;
-		}
-
-		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
-		final String attackStyleString = plugin.getAttackStyle().getName();
-
-		panelComponent.setTitleColor(warnedSkillSelected ? Color.RED : Color.WHITE);
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(graphics.getFontMetrics().stringWidth(attackStyleString) + 5);
-
-		return panelComponent.render(graphics);
+		return name;
 	}
 }

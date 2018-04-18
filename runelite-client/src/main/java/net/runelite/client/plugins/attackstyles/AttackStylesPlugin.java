@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
@@ -32,6 +31,7 @@ import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -49,23 +49,33 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.ACCURATE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.AGGRESSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+@Getter
+@Slf4j
 @PluginDescriptor(
 	name = "Attack Styles"
 )
-@Slf4j
 public class AttackStylesPlugin extends Plugin
 {
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
-	private AttackStyle attackStyle;
-	private final Set<Skill> warnedSkills = new HashSet<>();
+
 	private boolean warnedSkillSelected = false;
+
+	private AttackStyle attackStyle;
+
+	public final Set<Skill> warnedSkills = new HashSet<>();
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
+	private final AttackStyleCounter[] attackStyleCounter = new AttackStyleCounter[AttackStyle.values().length];
 
 	@Inject
 	private Client client;
@@ -75,6 +85,9 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private AttackStylesOverlay overlay;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -87,7 +100,6 @@ public class AttackStylesPlugin extends Plugin
 	{
 		return overlay;
 	}
-
 
 	@Override
 	protected void startUp() throws Exception
@@ -106,6 +118,11 @@ public class AttackStylesPlugin extends Plugin
 			updateWarning(false);
 			processWidgets();
 		}
+
+		for (AttackStyle attackStyle : AttackStyle.values())
+		{
+			attackStyleCounter[attackStyle.ordinal()] = new AttackStyleCounter(attackStyle.getImage(), this, "");
+		}
 	}
 
 	@Override
@@ -113,6 +130,7 @@ public class AttackStylesPlugin extends Plugin
 	{
 		hideWarnedStyles(false);
 		processWidgets();
+		removeCounters();
 	}
 
 	public AttackStyle getAttackStyle()
@@ -179,6 +197,7 @@ public class AttackStylesPlugin extends Plugin
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
+			updateCounter();
 		}
 	}
 
@@ -191,6 +210,7 @@ public class AttackStylesPlugin extends Plugin
 			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
 				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(true);
+			updateCounter();
 		}
 	}
 
@@ -203,6 +223,7 @@ public class AttackStylesPlugin extends Plugin
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
 				castingModeVarbit);
 			updateWarning(false);
+			updateCounter();
 		}
 	}
 
@@ -234,6 +255,15 @@ public class AttackStylesPlugin extends Plugin
 					break;
 			}
 			processWidgets();
+
+			if (config.getIndicatorStyle() == IndicatorStyle.ICON)
+			{
+				updateCounter();
+			}
+			else
+			{
+				removeCounters();
+			}
 		}
 	}
 
@@ -243,6 +273,7 @@ public class AttackStylesPlugin extends Plugin
 		if (attackStyleIndex < attackStyles.length)
 		{
 			attackStyle = attackStyles[attackStyleIndex];
+
 			if (attackStyle == null)
 			{
 				attackStyle = OTHER;
@@ -252,6 +283,64 @@ public class AttackStylesPlugin extends Plugin
 				attackStyle = DEFENSIVE_CASTING;
 			}
 		}
+	}
+
+	private void updateCounter()
+	{
+		if (config.getIndicatorStyle() != IndicatorStyle.ICON)
+		{
+			return;
+		}
+
+		removeCounters();
+
+		switch (attackStyle)
+		{
+			case CONTROLLED:
+				addCounter(ACCURATE, attackStyle.getName());
+				addCounter(AGGRESSIVE, attackStyle.getName());
+				addCounter(DEFENSIVE, attackStyle.getName());
+				break;
+			case LONGRANGE:
+				addCounter(RANGING, attackStyle.getName());
+				addCounter(DEFENSIVE, attackStyle.getName());
+				break;
+			case DEFENSIVE_CASTING:
+				addCounter(CASTING, attackStyle.getName());
+				addCounter(DEFENSIVE, attackStyle.getName());
+				break;
+			default:
+				addCounter(attackStyle, attackStyle.getName());
+				break;
+		}
+
+		for (AttackStyleCounter attackStyleCounter : attackStyleCounter)
+		{
+			if (attackStyleCounter != null)
+			{
+				if (warnedSkillSelected)
+				{
+					attackStyleCounter.setText("Alert");
+				}
+				else
+				{
+					attackStyleCounter.setText("");
+				}
+			}
+		}
+	}
+
+	private void addCounter(AttackStyle attackStyle, String tooltip)
+	{
+		int index = attackStyle.ordinal();
+
+		attackStyleCounter[index].setTooltip(tooltip);
+		infoBoxManager.addInfoBox(attackStyleCounter[index]);
+	}
+
+	private void removeCounters()
+	{
+		infoBoxManager.removeIf(entry -> entry instanceof AttackStyleCounter);
 	}
 
 	private void updateWarnedSkills(boolean enabled, Skill skill)
@@ -270,6 +359,7 @@ public class AttackStylesPlugin extends Plugin
 	private void updateWarning(boolean weaponSwitch)
 	{
 		warnedSkillSelected = false;
+
 		if (attackStyle != null)
 		{
 			for (Skill skill : attackStyle.getSkills())
@@ -291,6 +381,7 @@ public class AttackStylesPlugin extends Plugin
 	private void hideWarnedStyles(boolean enabled)
 	{
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
+
 		if (equippedWeaponType == null)
 		{
 			return;
@@ -355,17 +446,5 @@ public class AttackStylesPlugin extends Plugin
 		{
 			widget.setHidden(hidden);
 		}
-	}
-
-	@VisibleForTesting
-	Set<Skill> getWarnedSkills()
-	{
-		return warnedSkills;
-	}
-
-	@VisibleForTesting
-	Table<WeaponType, WidgetInfo, Boolean> getHiddenWidgets()
-	{
-		return widgetsToHide;
 	}
 }

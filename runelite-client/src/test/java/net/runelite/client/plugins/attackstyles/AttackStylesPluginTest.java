@@ -159,27 +159,27 @@ public class AttackStylesPluginTest
 		when(attackConfig.removeWarnedStyles()).thenReturn(false);
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
-		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
+		assertFalse(attackPlugin.getWidgetsToHide().get(WeaponType.TYPE_4,
 			WidgetInfo.COMBAT_STYLE_ONE));
-		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
+		assertFalse(attackPlugin.getWidgetsToHide().get(WeaponType.TYPE_4,
 			WidgetInfo.COMBAT_STYLE_THREE));
 	}
 
 	private boolean isAtkHidden()
 	{
-		if (attackPlugin.getHiddenWidgets().size() == 0)
+		if (attackPlugin.getWidgetsToHide().size() == 0)
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_ONE);
+		return attackPlugin.getWidgetsToHide().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_ONE);
 	}
 
 	private boolean isStrHidden()
 	{
-		if (attackPlugin.getHiddenWidgets().size() == 0)
+		if (attackPlugin.getWidgetsToHide().size() == 0)
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_TWO);
+		return attackPlugin.getWidgetsToHide().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_TWO);
 	}
 }
