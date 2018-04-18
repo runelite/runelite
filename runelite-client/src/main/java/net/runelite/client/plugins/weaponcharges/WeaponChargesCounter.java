@@ -54,7 +54,19 @@ public class WeaponChargesCounter extends Counter
 	@Override
 	public Color getTextColor()
 	{
-		Integer charges = plugin.getCharges(chargedWeapon);
-		return charges == null ? Color.MAGENTA : plugin.getChargesColor(plugin.getCharges(chargedWeapon));
+		return plugin.getChargesColor(plugin.getCharges(chargedWeapon));
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		if (plugin.getCharges(chargedWeapon) == null)
+		{
+			return "<col=ff0000>Please Check charges on your weapon";
+		}
+		else
+		{
+			return "Weapon Charges";
+		}
 	}
 }

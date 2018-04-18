@@ -119,9 +119,20 @@ public class WeaponChargesPlugin extends Plugin
 		}
 	}
 
-	Color getChargesColor(int charges)
+	Color getChargesColor(Integer charges)
 	{
-		return charges > 100 ? Color.WHITE : Color.RED;
+		if (charges == null)
+		{
+			return Color.MAGENTA;
+		}
+		else if (charges > 100)
+		{
+			return Color.WHITE;
+		}
+		else
+		{
+			return Color.RED;
+		}
 	}
 
 	private void addChargesCounter(ChargedWeapon weapon)
