@@ -715,7 +715,7 @@ public final class WorldMapManager {
    )
    static void method627(Player var0, boolean var1) {
       if(var0 != null && var0.hasConfig() && !var0.hidden) {
-         int var2 = var0.field836 << 14;
+         int var2 = var0.playerId << 14;
          var0.isLowDetail = false;
          if((Client.lowMemory && class93.playerIndexesCount > 50 || class93.playerIndexesCount > 200) && var1 && var0.idlePoseAnimation == var0.poseAnimation) {
             var0.isLowDetail = true;

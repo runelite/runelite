@@ -81,7 +81,7 @@ public class class304 extends NameableContainer {
             }
 
             var1.readString();
-            if(var4 != null && var4.method5427()) {
+            if(var4 != null && var4.isCleanNameValid()) {
                Friend var11 = (Friend)this.method5327(var4);
                if(var3) {
                   Friend var12 = (Friend)this.method5327(var5);

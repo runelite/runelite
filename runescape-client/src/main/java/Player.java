@@ -131,7 +131,8 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 727023787
    )
-   int field836;
+   @Export("playerId")
+   int playerId;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lkf;"
