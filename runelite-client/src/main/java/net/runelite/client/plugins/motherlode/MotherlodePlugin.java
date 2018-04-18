@@ -96,6 +96,9 @@ public class MotherlodePlugin extends Plugin
 	private MotherlodeSackOverlay motherlodeSackOverlay;
 
 	@Inject
+	private MotherlodeGemOverlay motherlodeGemOverlay;
+
+	@Inject
 	private MotherlodeConfig config;
 
 	@Inject
@@ -127,7 +130,7 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay);
+		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
 	}
 
 	@Override
@@ -156,17 +159,34 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!inMlm)
+		if (!inMlm || event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
 		}
 
-		if (event.getType() == ChatMessageType.FILTERED)
+		String chatMessage = event.getMessage();
+
+		switch (chatMessage)
 		{
-			if (event.getMessage().equals("You manage to mine some pay-dirt."))
-			{
+			case "You manage to mine some pay-dirt.":
 				session.incrementPayDirtMined();
-			}
+				break;
+
+			case "You just found a Diamond!":
+				session.incrementGemFound(ItemID.UNCUT_DIAMOND);
+				break;
+
+			case "You just found a Ruby!":
+				session.incrementGemFound(ItemID.UNCUT_RUBY);
+				break;
+
+			case "You just found an Emerald!":
+				session.incrementGemFound(ItemID.UNCUT_EMERALD);
+				break;
+
+			case "You just found a Sapphire!":
+				session.incrementGemFound(ItemID.UNCUT_SAPPHIRE);
+				break;
 		}
 	}
 

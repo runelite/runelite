@@ -26,15 +26,16 @@ package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.RenderingHints;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -281,6 +282,12 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
+				
+				/*
+					Fill Canvas before drawing stretched image to prevent artifacts.
+				*/
+				graphics.setColor(Color.BLACK);
+				graphics.fillRect(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
