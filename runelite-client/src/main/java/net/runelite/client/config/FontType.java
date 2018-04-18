@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,15 +27,23 @@ package net.runelite.client.config;
 import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.ui.FontManager;
+
 import java.awt.Font;
 
+@Getter
 @RequiredArgsConstructor
 public enum FontType
 {
-	Regular(FontManager.getRunescapeFont()),
-	Bold(FontManager.getRunescapeBoldFont()),
-	Small(FontManager.getRunescapeSmallFont());
+	REGULAR("Regular", FontManager.getRunescapeFont()),
+	BOLD("Bold", FontManager.getRunescapeBoldFont()),
+	SMALL("Small", FontManager.getRunescapeSmallFont());
 
-	@Getter
+	private final String name;
 	private final Font font;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

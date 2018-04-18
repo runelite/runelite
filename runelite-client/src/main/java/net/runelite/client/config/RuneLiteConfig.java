@@ -116,12 +116,12 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "fontType",
-			name = "What font to use",
-			description = "Configures what font type is used for in-game overlays."
+		keyName = "fontType",
+		name = "What font to use",
+		description = "Configures what font type is used for in-game overlays."
 	)
 	default FontType fontType()
 	{
-		return FontType.Regular;
+		return FontType.REGULAR;
 	}
 }

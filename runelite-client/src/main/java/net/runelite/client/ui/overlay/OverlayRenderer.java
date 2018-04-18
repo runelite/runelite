@@ -57,7 +57,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.FontType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.input.KeyListener;
@@ -507,34 +506,14 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
-		if ((position == OverlayPosition.DYNAMIC || position == OverlayPosition.TOOLTIP))
+		if (position == OverlayPosition.DYNAMIC)
 		{
-			switch (runeLiteConfig.fontType())
-			{
-				case Regular: subGraphics.setFont(FontType.Regular.getFont());
-					break;
-				case Bold: subGraphics.setFont(FontType.Bold.getFont());
-					break;
-				case Small: subGraphics.setFont(FontType.Small.getFont());
-					break;
-				default: subGraphics.setFont(FontType.Regular.getFont());
-					break;
-			}
+			subGraphics.setFont(runeLiteConfig.fontType().getFont());
 		}
-
-
-
-
-		/*
-		subGraphics.setFont((position == OverlayPosition.DYNAMIC
-			|| position == OverlayPosition.TOOLTIP)
-			&& runeLiteConfig.useSmallFont()
-			? FontManager.getRunescapeSmallFont()
-			: (runeLiteConfig.useBoldFont()
-				? FontManager.getRunescapeBoldFont()
-				: FontManager.getRunescapeFont()));
-		*/
-
+		else if (position == OverlayPosition.TOOLTIP)
+		{
+			subGraphics.setFont(FontManager.getRunescapeFont());
+		}
 
 
 		subGraphics.translate(point.x, point.y);
