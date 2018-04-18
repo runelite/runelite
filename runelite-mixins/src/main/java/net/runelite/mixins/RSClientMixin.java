@@ -536,14 +536,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
+	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean cachedSprite, int scale)
 	{
 		assert isClientThread();
 		int zoom = get3dZoom();
 		set3dZoom(scale);
 		try
 		{
-			return createItemSprite(itemId, quantity, border, shadowColor, stackable, noted);
+			return createItemSprite(itemId, quantity, border, shadowColor, stackable, cachedSprite);
 		}
 		finally
 		{
