@@ -30,8 +30,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.Skill;
+import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -39,6 +43,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -61,8 +66,16 @@ public class PrayerIndicatorPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 	
-	@Getter (AccessLevel.PACKAGE)
+	@Inject
+	private Client client;
+	
+	@Getter(AccessLevel.PACKAGE)
 	private Counter indicator;
+	
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isPlayerPrayerLow = false;
+	
+	private int playerPotionID = -1;
 	
 	@Override
 	public Overlay getOverlay ()
@@ -97,4 +110,35 @@ public class PrayerIndicatorPlugin extends Plugin
 				infoBoxManager.removeInfoBox(indicator);
 	}
 	
+	@Subscribe
+	public void onBoostedLevelChanged (BoostedLevelChanged boostedLevelChanged)
+	{
+		if (boostedLevelChanged.getSkill() == Skill.PRAYER)
+		{
+			//Now let's get how much prayer will be healed from a regular prayer potion
+			int potionHealing = new PrayerPotion(1).heals(client) + 6;
+			//Now that we have how much a regular prayer potion heals the player let's add onto it based
+			//	on if the player has a super restore or a sanfew serum
+			if (playerPotionID == ItemID.SUPER_RESTORE1)
+				potionHealing += 1;
+			else if (playerPotionID == ItemID.SANFEW_SERUM1)
+				potionHealing += 2;
+			
+			//Now get how many prayer points the player has and their base amount
+			int currentPrayerPoints = client.getBoostedSkillLevel(Skill.PRAYER);
+			int basePrayerPoints = client.getRealSkillLevel(Skill.PRAYER);
+			//Finally let's check to see if the player needs to drink a potion based on the potionHealing/basePrayerPoints/currentPrayerPoints
+			if ((basePrayerPoints - potionHealing) >= currentPrayerPoints)
+				isPlayerPrayerLow = true;
+			else
+				isPlayerPrayerLow = false;
+		}
+	}
+	
+	@Subscribe
+	public void onItemContainerChanged (ItemContainer container)
+	{
+		
+		System.out.println("hello");
+	}
 }
