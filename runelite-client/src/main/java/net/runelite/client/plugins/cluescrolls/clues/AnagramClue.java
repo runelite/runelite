@@ -82,7 +82,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: GOT A BOY", "Gabooty", new WorldPoint(2790, 3066, 0), "Centre of Tai Bwo Wannai", "11"),
 		new AnagramClue("This anagram reveals who to speak to next: GULAG RUN", "Uglug Nar", new WorldPoint(2442, 3051, 0), "West of Jiggig"),
 		new AnagramClue("This anagram reveals who to speak to next: GOBLETS ODD TOES", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "2"),
-		new AnagramClue("This anagram reveals who to speak to next: HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja", "33 or 0"),
+		new AnagramClue("This anagram reveals who to speak to next: HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja", "33 (or none)"),
 		new AnagramClue("This anagram reveals who to speak to next: HE DO POSE. IT IS CULTRRL, MK?", "Riki the sculptor's model", new WorldPoint(2904, 10206, 0), "East Keldagrim, south of kebab seller."),
 		new AnagramClue("This anagram reveals who to speak to next: HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Burthorpe Castle, top floor", "36"),
 		new AnagramClue("This anagram reveals who to speak to next: HIS PHOR", "Horphis", new WorldPoint(1639, 3812, 0), "Arceuus Library, Zeah", "1"),

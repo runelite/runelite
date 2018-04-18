@@ -54,6 +54,7 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
@@ -68,6 +69,7 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.DeferredEventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +82,9 @@ public class Hooks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
-	public static final EventBus eventBus = injector.getInstance(EventBus.class);
+	public static final EventBus eventBus = injector.getInstance(EventBus.class); // symbol must match mixin Hook
+	private static final DeferredEventBus _deferredEventBus = injector.getInstance(DeferredEventBus.class);
+	public static final EventBus deferredEventBus = _deferredEventBus; // symbol must match mixin Hook
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
@@ -102,6 +106,9 @@ public class Hooks
 		if (shouldProcessGameTick)
 		{
 			shouldProcessGameTick = false;
+
+			_deferredEventBus.replay();
+
 			eventBus.post(tick);
 		}
 
@@ -432,6 +439,13 @@ public class Hooks
 	{
 		PostItemComposition event = new PostItemComposition();
 		event.setItemComposition(itemComposition);
+		eventBus.post(event);
+	}
+
+	public static void menuOpened(Client client, int var1, int var2)
+	{
+		MenuOpened event = new MenuOpened();
+		event.setMenuEntries(client.getMenuEntries());
 		eventBus.post(event);
 	}
 }

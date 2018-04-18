@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api.events;
 
-package net.runelite.api;
+import net.runelite.api.Actor;
 
-/**
- * Describes the state of a Grand Exchange offer
- */
-public enum GrandExchangeOfferState
+public interface ActorDespawned
 {
-	/**
-	 * An empty slot.
-	 */
-	EMPTY,
-	/**
-	 * A cancelled buy offer
-	 */
-	CANCELLED_BUY,
-	/**
-	 * A cancelled sell offer
-	 */
-	CANCELLED_SELL,
-	/**
-	 * A buy offer that is currently in progress.
-	 */
-	BUYING,
-	/**
-	 * A buy offer that has completed.
-	 */
-	BOUGHT,
-	/**
-	 * A sell offer that is currently in progress.
-	 */
-	SELLING,
-	/**
-	 * A sell offer that has completed.
-	 */
-	SOLD;
+	Actor getActor();
 }

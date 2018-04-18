@@ -65,8 +65,11 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
-import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -79,6 +82,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.Hooks;
+import static net.runelite.client.callback.Hooks.deferredEventBus;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -105,6 +109,12 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean interpolateObjectAnimations;
+
+	@Inject
+	private static RSPlayer[] oldPlayers = new RSPlayer[2048];
+
+	@Inject
+	private static RSNPC[] oldNpcs = new RSNPC[32768];
 
 	@Inject
 	@Override
@@ -670,6 +680,42 @@ public abstract class RSClientMixin implements RSClient
 		{
 			npc.setIndex(idx);
 		}
+
+		RSNPC oldNpc = oldNpcs[idx];
+		oldNpcs[idx] = npc;
+
+		if (oldNpc != null)
+		{
+			eventBus.post(new NpcDespawned(oldNpc));
+		}
+		if (npc != null)
+		{
+			deferredEventBus.post(new NpcSpawned(npc));
+		}
+	}
+
+	@FieldHook("cachedPlayers")
+	@Inject
+	public static void cachedPlayersChanged(int idx)
+	{
+		RSPlayer[] cachedPlayers = client.getCachedPlayers();
+		if (idx < 0 || idx >= cachedPlayers.length)
+		{
+			return;
+		}
+
+		RSPlayer player = cachedPlayers[idx];
+		RSPlayer oldPlayer = oldPlayers[idx];
+		oldPlayers[idx] = player;
+
+		if (oldPlayer != null)
+		{
+			eventBus.post(new PlayerDespawned(oldPlayer));
+		}
+		if (player != null)
+		{
+			deferredEventBus.post(new PlayerSpawned(player));
+		}
 	}
 
 	@Inject
@@ -717,20 +763,6 @@ public abstract class RSClientMixin implements RSClient
 	public static void clanMemberManagerChanged(int idx)
 	{
 		eventBus.post(new ClanChanged(client.getClanMemberManager() != null));
-	}
-
-	@FieldHook("isMenuOpen")
-	@Inject
-	public static void menuOpened(int opened)
-	{
-		if (!client.isMenuOpen())
-		{
-			return;
-		}
-
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
 	}
 
 	@Inject

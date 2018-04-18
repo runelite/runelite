@@ -393,6 +393,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("reset", option, target, true);
 		}
+		else if (config.swapBoxTrap() && option.equals("take"))
+		{
+			swap("lay", option, target, true);
+		}
 		else if (config.swapCatacombEntrance() && option.equals("read"))
 		{
 			swap("investigate", option, target, true);
