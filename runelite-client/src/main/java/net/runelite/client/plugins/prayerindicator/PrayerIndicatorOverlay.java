@@ -33,37 +33,26 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemID;
-import net.runelite.api.Query;
-import net.runelite.api.Skill;
-import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.QueryRunner;
 
 public class PrayerIndicatorOverlay extends Overlay
 {
 	private Color orbIndicatorColor = new Color (0, 255, 255, 255);
 	// How much to subtract/add to the alpha of the indicator orb
 	private int alphaOffset = -10;
-	// The current ItemID of the potion the player is carrying
-	private int playerPotionID;
 	
 	private final PrayerIndicatorPlugin plugin;
 	private final Client client;
 	private final PrayerIndicatorConfig config;
 	private final InfoBoxManager infoBoxManager;
-	private final QueryRunner queryRunner;
 	
 	@Inject
-	public PrayerIndicatorOverlay (PrayerIndicatorPlugin plugin, QueryRunner queryRunner, Client client, PrayerIndicatorConfig config, InfoBoxManager infoBoxManager)
+	public PrayerIndicatorOverlay (PrayerIndicatorPlugin plugin, Client client, PrayerIndicatorConfig config, InfoBoxManager infoBoxManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -71,21 +60,12 @@ public class PrayerIndicatorOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.infoBoxManager = infoBoxManager;
-		this.queryRunner = queryRunner;
-	}
-	
-	// This method will be called every game tick and will be used to fade the orb indicator in and out
-	public void onTick ()
-	{
-		//Every game tick let's get what kind of prayer potion the player has
-		playerPotionID = getPlayerPotion();
 	}
 	
 	@Override
 	public Dimension render (Graphics2D graphics)
 	{
-		//Lets make sure the players prayer is low enough to display they need to drink
-		if (!isPlayerPrayerLow())
+		if (!plugin.isPlayerPrayerLow() || plugin.getPlayerPotionID() == -1)
 		{
 			//First remove the indicator from the info box if needed
 			if (infoBoxManager.getInfoBoxes().contains(plugin.getIndicator()))
@@ -94,17 +74,14 @@ public class PrayerIndicatorOverlay extends Overlay
 			return null;
 		}
 		
-		//Before adding it to the infoBox let's make the sure the player want's it to be there
 		if (config.inInfoBox())
 		{
 			if (!infoBoxManager.getInfoBoxes().contains(plugin.getIndicator()))
 				infoBoxManager.addInfoBox(plugin.getIndicator());
 		}
 		
-		//Before drawing the orb let's make sure the player want's it to be drawn
 		if (config.displayOverOrb())
 		{
-			//Let's get the quick xp orb widget
 			Widget quickPrayOrb = client.getWidget(WidgetInfo.QUICK_PRAYER_ORB);
 			//Make sure the prayer orb isn't deactivated
 			if (quickPrayOrb == null)
@@ -112,7 +89,6 @@ public class PrayerIndicatorOverlay extends Overlay
 				return null;
 			}
 			
-			//Get the bounds of the quick prayer orb
 			Rectangle orbBounds = quickPrayOrb.getBounds();
 			if (orbBounds.getX() <= 0)
 				return null;
@@ -125,10 +101,9 @@ public class PrayerIndicatorOverlay extends Overlay
 			//	However this time it's achieved by just adding onto the existing
 			//	x coord with the difference of the original width and offset width.
 			double orbOffsetX = (orbBounds.getX() + (orbBounds.getWidth() - orbOffsetSize));
-			//Do the same for the y coord
 			double orbOffsetY = orbBounds.getY() - 2d;
 			
-			//Every game tick add or subtract to the transparency of the orb indicator
+			//Every loop add or subtract to the transparency of the orb indicator
 			//First we need to check if the orb's alpha value is >= 1 or <= 0.5f
 			if (orbIndicatorColor.getAlpha() >= 255)
 			{
@@ -153,80 +128,8 @@ public class PrayerIndicatorOverlay extends Overlay
 			//Let's create a 2d ellipse object so we can set the x/y value as a double rather then an int for a more precise position
 			Ellipse2D.Double shape = new Ellipse2D.Double(orbOffsetX, orbOffsetY, orbOffsetSize, orbOffsetSize);
 			graphics.draw(shape);
-			
-			return new Dimension ((int) orbBounds.getWidth(), (int) orbBounds.getHeight());
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * @return Returns if the player's prayer points is low enough for their current prayer potion in their inventory to heal less or equal to their real prayer level
-	 */
-	private boolean isPlayerPrayerLow ()
-	{
-		//First let's check if the player even has a potion in their inventory
-		if (playerPotionID != -1)
-		{
-			//Now let's get how much prayer will be healed from a regular prayer potion
-			int potionHealing = new PrayerPotion(1).heals(client) + 6;
-			//Now that we have how much a regular prayer potion heals the player let's add onto it based
-			//	on if the player has a super restore or a sanfew serum
-			if (playerPotionID == ItemID.SUPER_RESTORE1)
-				potionHealing += 1;
-			else if (playerPotionID == ItemID.SANFEW_SERUM1)
-				potionHealing += 2;
-			
-			//Now get how many prayer points the player has and their base amount
-			int currentPrayerPoints = client.getBoostedSkillLevel(Skill.PRAYER);
-			int basePrayerPoints = client.getRealSkillLevel(Skill.PRAYER);
-			//Finally let's check to see if the player needs to drink a potion based on the potionHealing/basePrayerPoints/currentPrayerPoints
-			if ((basePrayerPoints - potionHealing) >= currentPrayerPoints)
-				return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Retrieves if the player currently has either a prayer potion, a super restore potion, or a sanfew serum in their inventory.
-	 * @return Either the ItemID of a Sanfew serum, Super Restore Potion, Prayer potion, or -1 in that order based on what's in their inventory
-	 */
-	private int getPlayerPotion ()
-	{
-		//Check to see if the player has any sanfew serums in their inventory
-		Query query = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(ItemID.SANFEW_SERUM1,
-				ItemID.SANFEW_SERUM2,
-				ItemID.SANFEW_SERUM3,
-				ItemID.SANFEW_SERUM4);
-		//Now fetch the query items
-		Item[] items = queryRunner.runQuery(query);
-		if (items != null && items.length != 0)
-			//The user has a sanfew serum potion so return that ID
-			return ItemID.SANFEW_SERUM1;
-		
-		//Now do the same for super restore potions
-		query = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(ItemID.SUPER_RESTORE1,
-				ItemID.SUPER_RESTORE2,
-				ItemID.SUPER_RESTORE3,
-				ItemID.SUPER_RESTORE4);
-		items = queryRunner.runQuery(query);
-		if (items.length != 0)
-			return ItemID.SUPER_RESTORE1;
-		
-		//Now do the same thing for prayer potions
-		query = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(ItemID.PRAYER_POTION1,
-				ItemID.PRAYER_POTION2,
-				ItemID.PRAYER_POTION3,
-				ItemID.PRAYER_POTION4,
-				ItemID.PRAYER_POTION1_20396,
-				ItemID.PRAYER_POTION2_20395,
-				ItemID.PRAYER_POTION3_20394,
-				ItemID.PRAYER_POTION4_20393);
-		items = queryRunner.runQuery(query);
-		if (items.length != 0)
-			return ItemID.PRAYER_POTION1;
-		
-		//Return -1 since the player doesn't have any prayer potions
-		return -1;
 	}
 }

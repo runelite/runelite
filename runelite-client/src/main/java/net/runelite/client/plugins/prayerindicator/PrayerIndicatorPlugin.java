@@ -32,13 +32,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -73,8 +74,9 @@ public class PrayerIndicatorPlugin extends Plugin
 	private Counter indicator;
 	
 	@Getter(AccessLevel.PACKAGE)
-	private boolean isPlayerPrayerLow = false;
+	private boolean playerPrayerLow = false;
 	
+	@Getter(AccessLevel.PACKAGE)
 	private int playerPotionID = -1;
 	
 	@Override
@@ -97,12 +99,6 @@ public class PrayerIndicatorPlugin extends Plugin
 	}
 	
 	@Subscribe
-	public void onTick (GameTick tick)
-	{
-		overlay.onTick();
-	}
-	
-	@Subscribe
 	public void onConfigChanged (ConfigChanged event)
 	{
 		if (!config.inInfoBox())
@@ -113,32 +109,99 @@ public class PrayerIndicatorPlugin extends Plugin
 	@Subscribe
 	public void onBoostedLevelChanged (BoostedLevelChanged boostedLevelChanged)
 	{
-		if (boostedLevelChanged.getSkill() == Skill.PRAYER)
+		if (boostedLevelChanged.getSkill() == Skill.PRAYER && playerPotionID != -1)
 		{
-			//Now let's get how much prayer will be healed from a regular prayer potion
-			int potionHealing = new PrayerPotion(1).heals(client) + 6;
-			//Now that we have how much a regular prayer potion heals the player let's add onto it based
-			//	on if the player has a super restore or a sanfew serum
-			if (playerPotionID == ItemID.SUPER_RESTORE1)
-				potionHealing += 1;
-			else if (playerPotionID == ItemID.SANFEW_SERUM1)
-				potionHealing += 2;
-			
-			//Now get how many prayer points the player has and their base amount
-			int currentPrayerPoints = client.getBoostedSkillLevel(Skill.PRAYER);
-			int basePrayerPoints = client.getRealSkillLevel(Skill.PRAYER);
-			//Finally let's check to see if the player needs to drink a potion based on the potionHealing/basePrayerPoints/currentPrayerPoints
-			if ((basePrayerPoints - potionHealing) >= currentPrayerPoints)
-				isPlayerPrayerLow = true;
-			else
-				isPlayerPrayerLow = false;
+			checkPlayerPrayer();
 		}
 	}
 	
 	@Subscribe
-	public void onItemContainerChanged (ItemContainer container)
+	public void onItemContainerChanged (ItemContainerChanged container)
 	{
+		if (container.getItemContainer().getItems() != null && container.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			//Go ahead and set potionID to -1 so if the player doesn't have a potion in their inventory the program will know this
+			int potionID = -1;
+			
+			int[] prayerIds = {
+				ItemID.PRAYER_POTION1,
+				ItemID.PRAYER_POTION2,
+				ItemID.PRAYER_POTION3,
+				ItemID.PRAYER_POTION4,
+				ItemID.PRAYER_POTION1_20396,
+				ItemID.PRAYER_POTION2_20395,
+				ItemID.PRAYER_POTION3_20394,
+				ItemID.PRAYER_POTION4_20393
+			};
+			
+			int[] superRestoreIds = {
+				ItemID.SUPER_RESTORE1,
+				ItemID.SUPER_RESTORE2,
+				ItemID.SUPER_RESTORE3,
+				ItemID.SUPER_RESTORE4
+			};
+			
+			int[] sanfewIds = {
+				ItemID.SANFEW_SERUM1,
+				ItemID.SANFEW_SERUM2,
+				ItemID.SANFEW_SERUM3,
+				ItemID.SANFEW_SERUM4
+			};
+			
+			for (Item item : container.getItemContainer().getItems())
+			{
+				if (arrayContains(sanfewIds, item.getId()))
+				{
+					potionID = ItemID.SANFEW_SERUM4;
+					//Break out of the loop because this is the best potion the player can have
+					break;
+				}
+				else if (arrayContains(superRestoreIds, item.getId()))
+				{
+					potionID = ItemID.SUPER_RESTORE4;
+				}
+				else if (potionID != ItemID.SUPER_RESTORE4 && arrayContains(prayerIds, item.getId()))
+				{
+					potionID = ItemID.PRAYER_POTION4;
+				}
+			}
+			
+			//After we set the potionID let's check if the players prayer is lower then that potion
+			if (potionID != -1)
+				checkPlayerPrayer();
+			//Now set the players potion id
+			playerPotionID = potionID;
+		}
+	}
+	
+	private boolean arrayContains (int[] array, int value)
+	{
+		for (int num : array)
+		{
+			if (num == value)
+				return true;
+		}
+		return false;
+	}
+	
+	private void checkPlayerPrayer ()
+	{
+		//Now let's get how much prayer will be healed from a regular prayer potion
+		int potionHealing = new PrayerPotion(1).heals(client) + 6;
+		//Now that we have how much a regular prayer potion heals the player let's add onto it based
+		//	on if the player has a super restore or a sanfew serum
+		if (playerPotionID == ItemID.SUPER_RESTORE1)
+			potionHealing += 1;
+		else if (playerPotionID == ItemID.SANFEW_SERUM1)
+			potionHealing += 2;
 		
-		System.out.println("hello");
+		//Now get how many prayer points the player has and their base amount
+		int currentPrayerPoints = client.getBoostedSkillLevel(Skill.PRAYER);
+		int basePrayerPoints = client.getRealSkillLevel(Skill.PRAYER);
+		//Finally let's check to see if the player needs to drink a potion based on the potionHealing/basePrayerPoints/currentPrayerPoints
+		if ((basePrayerPoints - potionHealing) >= currentPrayerPoints)
+			playerPrayerLow = true;
+		else
+			playerPrayerLow = false;
 	}
 }
