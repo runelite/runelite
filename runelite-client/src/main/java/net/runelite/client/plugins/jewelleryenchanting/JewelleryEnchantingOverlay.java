@@ -61,9 +61,8 @@ public class JewelleryEnchantingOverlay extends Overlay
 		this.client = client;
 		this.queryRunner = queryRunner;
 		
-		//Set up the unenchanted items dictionary
 		unenchantedItems.put("Lvl-1 Enchant", new int[]
-		{	//Level One Unenchanted Items
+		{
 			ItemID.SAPPHIRE_RING,
 			ItemID.SAPPHIRE_NECKLACE,
 			ItemID.SAPPHIRE_BRACELET,
@@ -75,7 +74,7 @@ public class JewelleryEnchantingOverlay extends Overlay
 			ItemID.OPAL_AMULET
 		});
 		unenchantedItems.put("Lvl-2 Enchant", new int[]
-		{	//Level Two Unenchanted Items
+		{
 			ItemID.EMERALD_RING,
 			ItemID.EMERALD_NECKLACE,
 			ItemID.EMERALD_BRACELET,
@@ -86,7 +85,7 @@ public class JewelleryEnchantingOverlay extends Overlay
 			ItemID.JADE_AMULET
 		});
 		unenchantedItems.put("Lvl-3 Enchant", new int[]
-		{	//Level Three Unenchanted Items
+		{
 			ItemID.RUBY_RING,
 			ItemID.RUBY_BRACELET,
 			ItemID.RUBY_AMULET,
@@ -97,28 +96,28 @@ public class JewelleryEnchantingOverlay extends Overlay
 			ItemID.TOPAZ_AMULET
 		});
 		unenchantedItems.put("Lvl-4 Enchant", new int[]
-		{	//Level Four Unenchanted Items
+		{
 			ItemID.DIAMOND_RING,
 			ItemID.DIAMOND_NECKLACE,
 			ItemID.DIAMOND_BRACELET,
 			ItemID.DIAMOND_AMULET
 		});
 		unenchantedItems.put("Lvl-5 Enchant", new int[]
-		{	//Level Five Unenchanted Items
+		{
 			ItemID.DRAGONSTONE_RING,
 			ItemID.DRAGON_NECKLACE,
 			ItemID.DRAGONSTONE_BRACELET,
 			ItemID.DRAGONSTONE_AMULET
 		});
 		unenchantedItems.put("Lvl-6 Enchant", new int[]
-		{	//Level Six Unenchanted Items
+		{
 			ItemID.ONYX_RING,
 			ItemID.ONYX_NECKLACE,
 			ItemID.ONYX_BRACELET,
 			ItemID.ONYX_AMULET
 		});
 		unenchantedItems.put("Lvl-7 Enchant", new int[]
-		{	//Level Seven Unenchanted Items
+		{
 			ItemID.ZENYTE_RING,
 			ItemID.ZENYTE_NECKLACE,
 			ItemID.ZENYTE_BRACELET,
@@ -146,11 +145,8 @@ public class JewelleryEnchantingOverlay extends Overlay
 				//Check to see if this item is one of the item id's in the un-enchanted list
 				if (arrayContains(unenchantedItems.get(plugin.getClickedOption()), item.getId()))
 				{
-					//Create a SpritePixels of the item
 					SpritePixels itemSprite = client.createItemSprite(item.getId(), item.getQuantity(), 1, 0, 0, false, Constants.CLIENT_DEFAULT_ZOOM);
-					//Now take the itemSprite and turn the outline on with the config color
 					itemSprite.setOutline(config.unenchantedColor().getRGB());
-					//Draw the itemSprite over the item
 					itemSprite.drawAt(item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1);
 					//Now remove the outline from the itemSprite or else the outline will keep growing
 					itemSprite.removeOutline(config.unenchantedColor().getRGB());
