@@ -44,15 +44,6 @@ public interface SpritePixels
 	 * @param outlineColor
 	 */
 	void setOutline(int outlineColor);
-	
-	/**
-	 * This will take the outline off of the sprite.
-	 * This MUST be called anytime when using the setOutline
-	 * method after being drawn or else the outline will keep
-	 * drawing on top of itself.
-	 * @param outlineColor
-	 */
-	void removeOutline(int outlineColor);
 
 	/**
 	 * Covert the SpritePixels to a BufferedImage
