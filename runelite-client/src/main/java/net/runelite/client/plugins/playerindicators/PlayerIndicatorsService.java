@@ -30,10 +30,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+
+import static net.runelite.client.plugins.playerindicators.PlayerIndicatorsPlugin.calculateWildernessLevel;
 
 @Singleton
 public class PlayerIndicatorsService
@@ -128,40 +128,4 @@ public class PlayerIndicatorsService
 			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
 		}
 	}
-
-	public int calculateWildernessLevel(WorldPoint userLocation)
-	{
-		int wildernessLevel = 0;
-		if (isInsideWilderness(new WorldPoint(2944, 3520, 0), new WorldPoint(3391, 4351, 3), userLocation))
-		{
-			wildernessLevel = ((userLocation.getY() - (55 * 64)) / 8) + 1;
-		}
-		else if (isInsideWilderness(new WorldPoint(3008, 10112, 0), new WorldPoint(3071, 10175, 3), userLocation))
-		{
-			wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) - 1;
-		}
-		else if (isInsideWilderness(new WorldPoint(2944, 9920, 0), new WorldPoint(3391, 10879, 3), userLocation))
-		{
-			wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) + 1;
-		}
-		return wildernessLevel;
-	}
-
-	public boolean isInsideWilderness(WorldPoint lowerBound, WorldPoint upperBound, WorldPoint userLocation)
-	{
-		if (userLocation.getX() < lowerBound.getX() || userLocation.getX() > upperBound.getX())
-		{
-			return false;
-		}
-		if (userLocation.getY() < lowerBound.getY() || userLocation.getY() > upperBound.getY())
-		{
-			return false;
-		}
-		if (userLocation.getPlane() < lowerBound.getPlane() || userLocation.getPlane() > upperBound.getPlane())
-		{
-			return false;
-		}
-		return true;
-	}
-
 }
