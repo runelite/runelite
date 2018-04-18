@@ -57,7 +57,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
@@ -229,6 +231,21 @@ public class ScreenshotPlugin extends Plugin
 				raidsNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+	}
+	
+	@Subscribe
+	public void loadWidgets(WidgetLoaded event)
+	{
+		if (!config.screenshotKingdom())
+		{
+			return;
+		}
+		int widget = WidgetID.KINGDOM_GROUP_ID;
+		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
+		{
+			String fileName = "Kingdom " + java.time.LocalDate.now();
+			takeScreenshot(fileName, config.displayDate());
 		}
 	}
 
