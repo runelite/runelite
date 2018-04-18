@@ -39,6 +39,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -70,6 +71,9 @@ public class GroundItemsOverlay extends Overlay
 	private final ItemManager itemManager;
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	public GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
@@ -95,6 +99,7 @@ public class GroundItemsOverlay extends Overlay
 
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
+		final boolean shouldNotify = plugin.shouldNotify();
 
 		for (GroundItem item : plugin.getCollectedGroundItems().values())
 		{
@@ -107,6 +112,10 @@ public class GroundItemsOverlay extends Overlay
 
 			final boolean highlighted = plugin.isHighlighted(item.getName());
 			final boolean hidden = plugin.isHidden(item.getName());
+			if (highlighted && shouldNotify)
+			{
+				notifier.notify("[" + client.getLocalPlayer().getName() + "] just received a drop of " + item.getName() + "!");
+			}
 
 			if (!plugin.isHotKeyPressed())
 			{

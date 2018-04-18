@@ -429,6 +429,11 @@ public class GroundItemsPlugin extends Plugin
 		return TRUE.equals(highlightedItems.getUnchecked(item));
 	}
 
+	public boolean shouldNotify()
+	{
+		return config.notifyDrop();
+	}
+
 	public boolean isHidden(String item)
 	{
 		return TRUE.equals(hiddenItems.getUnchecked(item));
