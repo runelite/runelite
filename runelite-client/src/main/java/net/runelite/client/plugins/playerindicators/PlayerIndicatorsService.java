@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -106,13 +108,9 @@ public class PlayerIndicatorsService
 
 		if (levelRangeWidget == null && wildernessLevelWidget == null)
 		{
-			// Add logic here if you want to see attackable players outside of combat areas
-			// if (flagfornoshow)
-			// return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
-			// else return false;
 			return false;
 		}
-		else if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
+		if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
 		{
 			lowerLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[0]);
 			upperLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[1]);
@@ -120,7 +118,7 @@ public class PlayerIndicatorsService
 		}
 		else if (levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
 		{
-			int wildernessLevel = Integer.parseInt(wildernessLevelWidget.getText().split(" ")[1]);
+			int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
 			lowerLevelBound = localPlayerLevel - wildernessLevel;
 			upperLevelBound = localPlayerLevel + wildernessLevel;
 			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
@@ -130,4 +128,40 @@ public class PlayerIndicatorsService
 			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
 		}
 	}
+
+	public int calculateWildernessLevel(WorldPoint userLocation)
+	{
+		int wildernessLevel = 0;
+		if (isInsideWilderness(new WorldPoint(2944, 3520, 0), new WorldPoint(3391, 4351, 3), userLocation))
+		{
+			wildernessLevel = ((userLocation.getY() - (55 * 64)) / 8) + 1;
+		}
+		else if (isInsideWilderness(new WorldPoint(3008, 10112, 0), new WorldPoint(3071, 10175, 3), userLocation))
+		{
+			wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) - 1;
+		}
+		else if (isInsideWilderness(new WorldPoint(2944, 9920, 0), new WorldPoint(3391, 10879, 3), userLocation))
+		{
+			wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) + 1;
+		}
+		return wildernessLevel;
+	}
+
+	public boolean isInsideWilderness(WorldPoint lowerBound, WorldPoint upperBound, WorldPoint userLocation)
+	{
+		if (userLocation.getX() < lowerBound.getX() || userLocation.getX() > upperBound.getX())
+		{
+			return false;
+		}
+		if (userLocation.getY() < lowerBound.getY() || userLocation.getY() > upperBound.getY())
+		{
+			return false;
+		}
+		if (userLocation.getPlane() < lowerBound.getPlane() || userLocation.getPlane() > upperBound.getPlane())
+		{
+			return false;
+		}
+		return true;
+	}
+
 }
