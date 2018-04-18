@@ -116,12 +116,12 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "useSmallFont",
-		name = "Small font in dynamic overlays",
-		description = "Toggles between small and regular RuneScape font for in-game overlays"
+			keyName = "fontType",
+			name = "What font to use",
+			description = "Configures what font type is used for in-game overlays."
 	)
-	default boolean useSmallFont()
+	default FontType fontType()
 	{
-		return true;
+		return FontType.Regular;
 	}
 }
