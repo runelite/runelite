@@ -31,8 +31,8 @@ import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
 
-import net.runelite.api.ClanMemberRank;
-import net.runelite.api.Client;
+import net.runelite.api.*;
+
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import static net.runelite.api.MenuAction.FOLLOW;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -50,8 +50,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
@@ -200,8 +198,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 		if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
 		{
-			lowerLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[0]);
-			upperLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[1]);
+			int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
+			lowerLevelBound = localPlayerLevel - wildernessLevel - 15;
+			upperLevelBound = localPlayerLevel + wildernessLevel + 15;
 			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
 		}
 		else if (levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
