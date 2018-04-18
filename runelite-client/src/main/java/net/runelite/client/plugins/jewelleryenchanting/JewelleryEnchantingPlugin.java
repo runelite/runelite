@@ -28,7 +28,8 @@ package net.runelite.client.plugins.jewelleryenchanting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import net.runelite.api.events.ConfigChanged;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -36,22 +37,16 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor (
-		name = "Jewellery Enchanting",
-		enabledByDefault = false
+	name = "Jewellery Enchanting",
+	enabledByDefault = false
 )
 public class JewelleryEnchantingPlugin extends Plugin
 {
-	//WorldMapDecoration
-	//	createSprite (var3 is color)
-	//	Possibly need to add a field in item composition for outline color
-	//SpritePixels
-	//	method5855
-	
 	@Inject
 	private JewelleryEnchantingOverlay overlay;
 	
-	@Inject
-	private JewelleryEnchantingConfig config;
+	@Getter(AccessLevel.PACKAGE)
+	private String clickedOption;
 	
 	@Override
 	public Overlay getOverlay ()
@@ -66,15 +61,11 @@ public class JewelleryEnchantingPlugin extends Plugin
 	}
 	
 	@Subscribe
-	public void updateConfig (ConfigChanged config)
-	{
-		overlay.updateConfig ();
-	}
-	
-	@Subscribe
 	public void onMenuOptionClicked (MenuOptionClicked event)
 	{
-		overlay.onMenuOptionClicked (event);
+		if (event.getMenuTarget().contains("Enchant"))
+			clickedOption = event.getMenuTarget().split(">")[1];
+		else
+			clickedOption = null;
 	}
-	
 }

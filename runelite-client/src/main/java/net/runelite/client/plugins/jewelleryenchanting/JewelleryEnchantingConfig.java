@@ -31,18 +31,18 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup (
-		keyName = "jewelleryEchanting",
-		name = "Jewellery Enchanting",
-		description = "Configuration for the Jewellery Enchanting plugin"
+	keyName = "jewelleryEchanting",
+	name = "Jewellery Enchanting",
+	description = "Configuration for the Jewellery Enchanting plugin"
 )
 public interface JewelleryEnchantingConfig extends Config
 {
 	@ConfigItem (
-			keyName = "unEnchantedColor",
-			name = "Jewelery Highlight",
-			description = "The color for any un-enchanted jewelery"
+		keyName = "unenchantedColor",
+		name = "Jewellery Highlight",
+		description = "The color for any unenchanted jewellery"
 	)
-	default Color unEnchantedColor ()
+	default Color unenchantedColor ()
 	{
 		return new Color (255, 255, 255);
 	}
