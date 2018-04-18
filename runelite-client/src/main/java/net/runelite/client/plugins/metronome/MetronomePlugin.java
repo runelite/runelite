@@ -72,9 +72,10 @@ public class MetronomePlugin extends Plugin
 	void onItemContainerChanged(ItemContainerChanged event)
 	{
 		//Need to get the currently equipped weapon.
-		if(config.syncWithAttack()) {
+		if(config.syncWithAttack())
+		{
 			updateIsCasting(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
-			if(!isCasting) { updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE)); }
+			if (!isCasting) { updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE)); }
 			updateCurrentTickRate();
 		}
 	}
@@ -86,7 +87,7 @@ public class MetronomePlugin extends Plugin
 		if(config.syncWithAttack() && client.getGameState() == GameState.LOGGED_IN)
 		{
 			updateIsCasting(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
-			if(!isCasting) { updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE)); }
+			if (!isCasting) { updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE)); }
 			updateCurrentTickRate();
 		}
 	}
@@ -94,12 +95,15 @@ public class MetronomePlugin extends Plugin
 	private void updateIsRapid(int equippedWeaponType, int attackStyleIndex)
 	{
 		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
-		if (attackStyleIndex < attackStyles.length) {
+		if (attackStyleIndex < attackStyles.length)
+		{
 			attackStyle = attackStyles[attackStyleIndex];
-			if (attackStyle == RANGING && attackStyleIndex == 1) {
+			if (attackStyle == RANGING && attackStyleIndex == 1)
+			{
 				isRapid = true;
 			}
-			else {
+			else
+				{
 				isRapid = false;
 			}
 		}
@@ -108,12 +112,15 @@ public class MetronomePlugin extends Plugin
 	private void updateIsCasting(int equippedWeaponType, int attackStyleIndex)
 	{
 		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
-		if (attackStyleIndex < attackStyles.length) {
+		if (attackStyleIndex < attackStyles.length)
+		{
 			attackStyle = attackStyles[attackStyleIndex];
-			if (attackStyle == CASTING) {
+			if (attackStyle == CASTING)
+			{
 				isCasting = true;
 			}
-			else {
+			else
+			{
 				isCasting = false;
 			}
 		}
@@ -122,27 +129,24 @@ public class MetronomePlugin extends Plugin
 	public void updateCurrentTickRate()
 	{
 		final ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-		if(isCasting) {
-			curWeaponTickRate = 5;
-		}
-		else if (equipContainer != null) {
+		if (isCasting) { curWeaponTickRate = 5; }
+		else if (equipContainer != null)
+		{
 			Item[] equippedItems = equipContainer.getItems();
-			if (equippedItems.length >= WEAPON_SLOT) {
+			if (equippedItems.length >= WEAPON_SLOT)
+			{
 				curWeaponTickRate = getChargedWeaponFromId(equippedItems[WEAPON_SLOT].getId()).getTickRate();
-				if(isRapid) { curWeaponTickRate--;}
+				if (isRapid) { curWeaponTickRate--;}
 			}
 		}
-		else
-		{
-			//Assuming unarmed default to 4
-			curWeaponTickRate = 4;
-		}
+		else { curWeaponTickRate = 4; }
 	}
 
 	public weapontickrates getChargedWeaponFromId(int itemId)
 	{
-		for (weapontickrates weapon : weapontickrates.values()) {
-			if (itemId == weapon.getItemId()) return weapon;
+		for (weapontickrates weapon : weapontickrates.values())
+		{
+			if (itemId == weapon.getItemId()) { return weapon; }
 		}
 		return null;
 	}
@@ -150,22 +154,19 @@ public class MetronomePlugin extends Plugin
 	@Subscribe
 	void onTick(GameTick tick)
 	{
-		if (config.tickCount() == 0 && !config.syncWithAttack()) {
-			return;
-		}
+		if (config.tickCount() == 0 && !config.syncWithAttack()) { return; }
 
-		if (++tickCounter % (config.syncWithAttack() ? curWeaponTickRate : config.tickCount()) == 0) {
-			if (config.enableTock() && shouldTock) {
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
-			} else {
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
-			}
+		if (++tickCounter % (config.syncWithAttack() ? curWeaponTickRate : config.tickCount()) == 0)
+		{
+			if (config.enableTock() && shouldTock) { client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP); }
+			else { client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP); }
 			shouldTock = !shouldTock;
 		}
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event) {
+	public void onExperienceChanged(ExperienceChanged event)
+	{
 		if (!config.syncWithAttack() && event.getSkill() != HITPOINTS) { return; }
 		tickCounter = 0;
 		shouldTock = false;
