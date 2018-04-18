@@ -58,6 +58,8 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 		if (e.getKeyCode() == HOTKEY_ITEM_OPTIONS)
 		{
 			plugin.setHotKeyPressed(true);
+		}else if(e.getKeyCode() == HOTKEY_SHOW_HIDDEN){
+			plugin.setShowHiddenItems(true);
 		}
 		else if (e.getKeyCode() == HOTKEY_SHOW_HIDDEN)
 		{
@@ -73,6 +75,8 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 			plugin.setHotKeyPressed(false);
 			plugin.getHighlightBoxes().clear();
 			plugin.getHiddenBoxes().clear();
+		}else if(e.getKeyCode() == HOTKEY_SHOW_HIDDEN){
+			plugin.setShowHiddenItems(false);
 		}
 		else if (e.getKeyCode() == HOTKEY_SHOW_HIDDEN)
 		{
