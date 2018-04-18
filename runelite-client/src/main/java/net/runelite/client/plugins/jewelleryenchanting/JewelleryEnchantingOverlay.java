@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.SpritePixels;
@@ -145,11 +144,9 @@ public class JewelleryEnchantingOverlay extends Overlay
 				//Check to see if this item is one of the item id's in the un-enchanted list
 				if (arrayContains(unenchantedItems.get(plugin.getClickedOption()), item.getId()))
 				{
-					SpritePixels itemSprite = client.createItemSprite(item.getId(), item.getQuantity(), 1, 0, 0, false, Constants.CLIENT_DEFAULT_ZOOM);
+					SpritePixels itemSprite = client.createItemSprite(item.getId(), item.getQuantity(), 1, 0, 0, true, 712);
 					itemSprite.setOutline(config.unenchantedColor().getRGB());
 					itemSprite.drawAt(item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1);
-					//Now remove the outline from the itemSprite or else the outline will keep growing
-					itemSprite.removeOutline(config.unenchantedColor().getRGB());
 				}
 			}
 		}
