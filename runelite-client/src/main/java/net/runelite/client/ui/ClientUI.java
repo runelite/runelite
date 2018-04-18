@@ -333,6 +333,7 @@ public class ClientUI
 
 			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
+			frame.addComponentListener(new WindowSnapper());
 		});
 	}
 
