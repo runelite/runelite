@@ -38,7 +38,7 @@ server:
   port: 8080
 debug: true
 
-# RuneLite properties
+# Access properties
 oauth:
   client-id: moo
   client-secret: cow
@@ -47,9 +47,8 @@ minio:
   accesskey: AM54M27O4WZK65N6F8IP
   secretkey: /PZCxzmsJzwCHYlogcymuprniGCaaLUOET2n6yMP
   bucket: runelite
-runelite:
-  twitter:
-    consumerkey: moo
-    secretkey: cow
-    listid: 968949795153948673
+twitter:
+  consumerkey: moo
+  secretkey: cow
+  listid: 968949795153948673
 ---
