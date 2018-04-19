@@ -45,12 +45,14 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
+import net.runelite.api.Region;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
@@ -217,13 +219,32 @@ public class ClueScrollPlugin extends Plugin
 
 			if (objectId != -1)
 			{
-				GameObjectQuery query = new GameObjectQuery().idEquals(objectId);
-				objectsToMark = queryRunner.runQuery(query);
-
-				// Set hint arrow to first object found as there can only be 1 hint arrow
-				if (objectsToMark.length >= 1)
+				if (clue instanceof LocationClueScroll)
 				{
-					client.setHintArrow(objectsToMark[0].getWorldLocation());
+					// Match object with location every time
+					final WorldPoint location = ((LocationClueScroll) clue).getLocation();
+
+					if (location != null)
+					{
+						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+						if (localLocation != null)
+						{
+							final Region region = client.getRegion();
+							final Tile[][][] tiles = region.getTiles();
+							final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+
+							objectsToMark = Arrays.stream(tile.getGameObjects())
+								.filter(object -> object != null && object.getId() == objectId)
+								.toArray(GameObject[]::new);
+
+							// Set hint arrow to first object found as there can only be 1 hint arrow
+							if (objectsToMark.length >= 1)
+							{
+								client.setHintArrow(objectsToMark[0].getWorldLocation());
+							}
+						}
+					}
 				}
 			}
 		}
