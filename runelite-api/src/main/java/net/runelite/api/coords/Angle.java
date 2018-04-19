@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.coords;
 
-import java.awt.Polygon;
-import net.runelite.api.coords.Angle;
+import lombok.Value;
+import static net.runelite.api.coords.Direction.EAST;
+import static net.runelite.api.coords.Direction.NORTH;
+import static net.runelite.api.coords.Direction.SOUTH;
+import static net.runelite.api.coords.Direction.WEST;
 
-/**
- *
- * @author Adam
- */
-public interface GameObject extends TileObject
+@Value
+public class Angle
 {
 	/**
-	 * Returns the min x,y for this game object
-	 *
-	 * @return
+	 * angle, 0-2047.
+	 * 0 is south, west is 512, south is 1024, east is 1536s
 	 */
-	Point getRegionMinLocation();
+	private final int angle;
 
 	/**
-	 * Returns the max x,y for this game object. This is different from
-	 * {@link #getRegionMinLocation()} for objects larger than 1 tile.
-	 *
+	 * Get the nearest N/S/E/W direction for this angle
 	 * @return
 	 */
-	Point getRegionMaxLocation();
-
-	Polygon getConvexHull();
-
-	Angle getOrientation();
+	public Direction getNearestDirection()
+	{
+		int round = angle >>> 9;
+		int up = angle & 256;
+		if (up != 0)
+		{
+			// round up
+			++round;
+		}
+		switch (round & 3)
+		{
+			case 0:
+				return SOUTH;
+			case 1:
+				return WEST;
+			case 2:
+				return NORTH;
+			case 3:
+				return EAST;
+			default:
+				throw new IllegalStateException();
+		}
+	}
 }

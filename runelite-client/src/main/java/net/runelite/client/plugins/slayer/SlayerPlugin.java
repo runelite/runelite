@@ -415,7 +415,7 @@ public class SlayerPlugin extends Plugin
 			return Collections.EMPTY_LIST;
 
 		List<NPC> npcs = new ArrayList<>();
-		List<String> highlightedNpcs = Arrays.asList(Task.getTask(taskName).getTargetNames());
+		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
 		highlightedNpcs.add(taskName.replaceAll("s$", ""));
 
 		for (NPC npc : client.getNpcs())

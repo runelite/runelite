@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.awt.Polygon;
-import net.runelite.api.coords.Angle;
+import net.runelite.api.coords.WorldPoint;
 
-/**
- *
- * @author Adam
- */
-public interface GameObject extends TileObject
+public interface LocationClueScroll
 {
-	/**
-	 * Returns the min x,y for this game object
-	 *
-	 * @return
-	 */
-	Point getRegionMinLocation();
-
-	/**
-	 * Returns the max x,y for this game object. This is different from
-	 * {@link #getRegionMinLocation()} for objects larger than 1 tile.
-	 *
-	 * @return
-	 */
-	Point getRegionMaxLocation();
-
-	Polygon getConvexHull();
-
-	Angle getOrientation();
+	WorldPoint getLocation();
 }

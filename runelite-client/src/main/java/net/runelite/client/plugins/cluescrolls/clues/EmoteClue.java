@@ -42,7 +42,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.Emote.BULL_ROARER;
 
 @Getter
-public class EmoteClue extends ClueScroll implements TextClueScroll
+public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
 		new EmoteClue("Show your anger towards the Statue of Saradomin in Ellamaria's garden. Beware of double agents! Equip a zamorak godsword.", new WorldPoint(3230, 3478, 0), ANGRY, ZAMORAK_GODSWORD),
@@ -96,7 +96,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 		new EmoteClue("Headbang at the top of Slayer Tower. Equip a seercull, a combat bracelet and helm of Neitiznot.", new WorldPoint(3115, 3420, 0), HEADBANG, SEERCULL, COMBAT_BRACELET, HELM_OF_NEITIZNOT),
 		new EmoteClue("Headbang in the Fight Arena pub. Equip a pirate bandana, a dragonstone necklace and and a magic longbow.", new WorldPoint(2568, 3149, 0), HEADBANG, PIRATE_BANDANA, DRAGON_NECKLACE, MAGIC_LONGBOW),
 		new EmoteClue("Dance a jig by the entrance to the Fishing Guild. Equip an emerald ring, a sapphire amulet, and a bronze chain body.", new WorldPoint(2610, 3391, 0), JIG, EMERALD_RING, SAPPHIRE_AMULET, BRONZE_CHAINBODY),
-		new EmoteClue("Dance a jig under Shantay's Awning. Bow before you talk to me. Equip a pointed blue snail helmet, an air staff and a bronze square shield.", new WorldPoint(2983, 3305, 0), JIG, BOW, BRUISE_BLUE_SNELM_3343, STAFF_OF_AIR, BRONZE_SQ_SHIELD),
+		new EmoteClue("Dance a jig under Shantay's Awning. Bow before you talk to me. Equip a pointed blue snail helmet, an air staff and a bronze square shield.", new WorldPoint(3304, 3124, 0), JIG, BOW, BRUISE_BLUE_SNELM_3343, STAFF_OF_AIR, BRONZE_SQ_SHIELD),
 		new EmoteClue("Jig at Jiggig. Beware of double agents! Equip a Rune spear, rune platelegs and any rune heraldic helm.", new WorldPoint(2477, 3047, 0), JIG, RUNE_SPEAR, RUNE_PLATELEGS, RUNE_HELM_H1),
 		new EmoteClue("Do a jig in Varrock's rune store. Equip an air tiara and a staff of water.", new WorldPoint(3253, 3401, 0), JIG, AIR_TIARA, STAFF_OF_WATER),
 		new EmoteClue("Do a jig at the barrow's chest. Beware of double agents! Equip any full barrows set.", new WorldPoint(3551, 9694, 0), JIG),
@@ -221,11 +221,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!plugin.getClient().hasHintArrow())
-		{
-			plugin.getClient().setHintArrow(getLocation());
-		}
-
 		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 		if (localLocation == null)

@@ -47,7 +47,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll, LocationClueScroll
 {
 	private static final Set<CrypticClue> CLUES = ImmutableSet.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
@@ -139,7 +139,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("46 is my number. My body is the colour of burnt orange and crawls among those with eight. Three mouths I have, yet I cannot eat. My blinking blue eye hides my grave.", new WorldPoint(3170, 3885, 0), "Sapphire respawn in the Spider's Nest, lvl 46 Wilderness. Dig under the sapphire spawn."),
 		new CrypticClue("Green is the colour of my death as the winter-guise, I swoop towards the ground.", new WorldPoint(2780, 3783, 0), "Players need to slide down to where Trollweiss grows on Trollweiss Mountain."),
 		new CrypticClue("Talk to a party-goer in Falador.", "Lucy", new WorldPoint(3046, 3382, 0), "Lucy is the bartender on the 1st [2nd for US] floor of the party room."),
-		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to brother Kojo in the Clock Tower."),
+		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to brother Kojo in the Clock Tower. Answer: 22"),
 		new CrypticClue("A great view - watch the rapidly drying hides get splashed. Check the box you are sitting on.", NULL_1838, new WorldPoint(2523, 3493, 1), "Almera's House north of Baxtorian Falls, search boxes on the 2nd floor."),
 		new CrypticClue("Search the Coffin in Edgeville.", COFFIN, new WorldPoint(3091, 3477, 0), "Search the coffin located by the Wilderness teleport lever."),
 		new CrypticClue("When no weapons are at hand, now it is time to reflect, in Saradomin's name! Redemption draws closer...", DRAWERS_350, new WorldPoint(2818, 3351, 0), "On Entrana, search the southern drawer in the house with the cooking range."),
@@ -371,11 +371,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		// Mark dig location
 		if (getLocation() != null && getNpc() == null && objectId == -1)
 		{
-			if (!plugin.getClient().hasHintArrow())
-			{
-				plugin.getClient().setHintArrow(getLocation());
-			}
-
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 			if (localLocation != null)
@@ -389,11 +384,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				if (!plugin.getClient().hasHintArrow())
-				{
-					plugin.getClient().setHintArrow(npc);
-				}
-
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
@@ -407,11 +397,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			{
 				for (GameObject gameObject : plugin.getObjectsToMark())
 				{
-					if (!plugin.getClient().hasHintArrow())
-					{
-						plugin.getClient().setHintArrow(gameObject.getWorldLocation());
-					}
-
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
