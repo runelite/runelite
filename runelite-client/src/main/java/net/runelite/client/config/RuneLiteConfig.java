@@ -122,6 +122,6 @@ public interface RuneLiteConfig extends Config
 	)
 	default FontType fontType()
 	{
-		return FontType.REGULAR;
+		return FontType.SMALL;
 	}
 }
