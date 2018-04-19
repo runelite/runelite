@@ -65,7 +65,7 @@ public class Nameable implements Comparable {
       garbageValue = "-1796643174"
    )
    public int vmethod5448(Nameable var1) {
-      return this.name.method5430(var1.name);
+      return this.name.compareCleanName(var1.name);
    }
 
    public int compareTo(Object var1) {

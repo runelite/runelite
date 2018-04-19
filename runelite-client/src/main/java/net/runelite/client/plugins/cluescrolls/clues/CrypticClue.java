@@ -47,7 +47,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll, LocationClueScroll
 {
 	private static final Set<CrypticClue> CLUES = ImmutableSet.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
@@ -254,7 +254,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the chest in the Duke of Lumbridge's bedroom.", null, "The Duke's room is on the 2nd floor in Lumbridge Castle."),
 		new CrypticClue("Talk to the Doomsayer.", null, "Doomsayer can be found just north of Lumbridge Castle entrance."),
 		new CrypticClue("Search the chests upstairs in Al Kharid Palace.", CLOSED_CHEST_375, new WorldPoint(3301, 3169, 1), "The chest is located, in the northeast corner, on the first floor of the Al Kharid Palace"),
-		new CrypticClue("Search the boxes just outside the Armour shop in East Ardounge.", null, "Outside Zenesha's Plate Mail Body Shop"),
+		new CrypticClue("Search the boxes just outside the Armour shop in East Ardougne.", BOXES_361, new WorldPoint(2654, 3299, 0), "Outside Zenesha's Plate Mail Body Shop"),
 		new CrypticClue("Surrounded by white walls and gems.", null, "Talk to Herquin, the gem store owner in Falador."),
 		new CrypticClue("Monk's residence in the far west. See robe storage device.", null, "Search the drawers upstairs in the chapel found on the southern coast of Great Kourend's Hosidius House. Directly south of the player-owned house portal."),
 		new CrypticClue("Search the drawers in Catherby's Archery shop.", DRAWERS_350, new WorldPoint(2825, 3442, 0), "Hickton's Archery Emporium in Catherby."),
@@ -371,11 +371,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		// Mark dig location
 		if (getLocation() != null && getNpc() == null && objectId == -1)
 		{
-			if (!plugin.getClient().hasHintArrow())
-			{
-				plugin.getClient().setHintArrow(getLocation());
-			}
-
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 			if (localLocation != null)
@@ -389,11 +384,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				if (!plugin.getClient().hasHintArrow())
-				{
-					plugin.getClient().setHintArrow(npc);
-				}
-
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
@@ -407,11 +397,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			{
 				for (GameObject gameObject : plugin.getObjectsToMark())
 				{
-					if (!plugin.getClient().hasHintArrow())
-					{
-						plugin.getClient().setHintArrow(gameObject.getWorldLocation());
-					}
-
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 

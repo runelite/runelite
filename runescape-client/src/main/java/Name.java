@@ -37,7 +37,8 @@ public class Name implements Comparable {
       signature = "(B)Z",
       garbageValue = "-54"
    )
-   public boolean method5427() {
+   @Export("isCleanNameValid")
+   public boolean isCleanNameValid() {
       return this.cleanName != null;
    }
 
@@ -46,7 +47,8 @@ public class Name implements Comparable {
       signature = "(Lkz;I)I",
       garbageValue = "1291402109"
    )
-   public int method5430(Name var1) {
+   @Export("compareCleanName")
+   public int compareCleanName(Name var1) {
       return this.cleanName == null?(var1.cleanName == null?0:1):(var1.cleanName == null?-1:this.cleanName.compareTo(var1.cleanName));
    }
 
@@ -68,7 +70,7 @@ public class Name implements Comparable {
    }
 
    public int compareTo(Object var1) {
-      return this.method5430((Name)var1);
+      return this.compareCleanName((Name)var1);
    }
 
    @ObfuscatedName("d")
