@@ -704,7 +704,7 @@ public class class36 {
 
             return var3;
          } else {
-            String var31;
+            String input;
             PacketNode var35;
             if(var0 < 3700) {
                if(var0 == 3600) {
@@ -748,34 +748,34 @@ public class class36 {
 
                   var3 = 1;
                } else if(var0 == 3604) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                   var5 = class81.intStack[--WorldComparator.intStackSize];
                   var35 = WorldMapRectangle.method280(ClientPacket.field2462, Client.field957.field1484);
-                  var35.packetBuffer.putByte(WorldMapRegion.getLength(var31) + 1);
+                  var35.packetBuffer.putByte(WorldMapRegion.getLength(input) + 1);
                   var35.packetBuffer.method3541(var5);
-                  var35.packetBuffer.putString(var31);
+                  var35.packetBuffer.putString(input);
                   Client.field957.method2052(var35);
                   var3 = 1;
                } else if(var0 == 3605) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  WorldMapRectangle.friendManager.addToFriendsList(var31);
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  WorldMapRectangle.friendManager.addToFriendsList(input);
                   var3 = 1;
                } else if(var0 == 3606) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  WorldMapRectangle.friendManager.method1742(var31);
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  WorldMapRectangle.friendManager.method1742(input);
                   var3 = 1;
                } else if(var0 == 3607) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  WorldMapRectangle.friendManager.addToIgnoreList(var31);
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  WorldMapRectangle.friendManager.addToIgnoreList(input);
                   var3 = 1;
                } else if(var0 == 3608) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  WorldMapRectangle.friendManager.method1743(var31);
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  WorldMapRectangle.friendManager.method1743(input);
                   var3 = 1;
                } else if(var0 == 3609) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  var31 = FontName.method5489(var31);
-                  class81.intStack[++WorldComparator.intStackSize - 1] = WorldMapRectangle.friendManager.isFriended(new Name(var31, GZipDecompressor.loginType), false)?1:0;
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  input = FontName.method5489(input);
+                  class81.intStack[++WorldComparator.intStackSize - 1] = WorldMapRectangle.friendManager.isFriended(new Name(input, GZipDecompressor.loginType), false)?1:0;
                   var3 = 1;
                } else if(var0 == 3611) {
                   if(GameEngine.clanMemberManager != null) {
@@ -824,18 +824,18 @@ public class class36 {
                   class81.intStack[++WorldComparator.intStackSize - 1] = GameEngine.clanMemberManager != null?GameEngine.clanMemberManager.field3865:0;
                   var3 = 1;
                } else if(var0 == 3617) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  GrandExchangeEvent.method80(var31);
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  GrandExchangeEvent.method80(input);
                   var3 = 1;
                } else if(var0 == 3618) {
                   class81.intStack[++WorldComparator.intStackSize - 1] = GameEngine.clanMemberManager != null?GameEngine.clanMemberManager.field3871:0;
                   var3 = 1;
                } else if(var0 == 3619) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  if(!var31.equals("")) {
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  if(!input.equals("")) {
                      PacketNode var37 = WorldMapRectangle.method280(ClientPacket.field2398, Client.field957.field1484);
-                     var37.packetBuffer.putByte(WorldMapRegion.getLength(var31));
-                     var37.packetBuffer.putString(var31);
+                     var37.packetBuffer.putByte(WorldMapRegion.getLength(input));
+                     var37.packetBuffer.putString(input);
                      Client.field957.method2052(var37);
                   }
 
@@ -864,9 +864,9 @@ public class class36 {
 
                   var3 = 1;
                } else if(var0 == 3623) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  var31 = FontName.method5489(var31);
-                  class81.intStack[++WorldComparator.intStackSize - 1] = WorldMapRectangle.friendManager.isIgnored(new Name(var31, GZipDecompressor.loginType))?1:0;
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  input = FontName.method5489(input);
+                  class81.intStack[++WorldComparator.intStackSize - 1] = WorldMapRectangle.friendManager.isIgnored(new Name(input, GZipDecompressor.loginType))?1:0;
                   var3 = 1;
                } else if(var0 == 3624) {
                   var4 = class81.intStack[--WorldComparator.intStackSize];
@@ -1200,13 +1200,13 @@ public class class36 {
                   Client.field957.method2052(var35);
                   var3 = 1;
                } else if(var0 == 5002) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                   WorldComparator.intStackSize -= 2;
                   var5 = class81.intStack[WorldComparator.intStackSize];
                   var6 = class81.intStack[WorldComparator.intStackSize + 1];
                   PacketNode var7 = WorldMapRectangle.method280(ClientPacket.field2459, Client.field957.field1484);
-                  var7.packetBuffer.putByte(WorldMapRegion.getLength(var31) + 2);
-                  var7.packetBuffer.putString(var31);
+                  var7.packetBuffer.putByte(WorldMapRegion.getLength(input) + 2);
+                  var7.packetBuffer.putString(input);
                   var7.packetBuffer.putByte(var5 - 1);
                   var7.packetBuffer.putByte(var6);
                   Client.field957.method2052(var7);
@@ -1263,119 +1263,119 @@ public class class36 {
 
                   var3 = 1;
                } else if(var0 == 5008) {
-                  var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                  input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                   var5 = class81.intStack[--WorldComparator.intStackSize];
-                  String var38 = var31.toLowerCase();
-                  byte var43 = 0;
-                  if(var38.startsWith("yellow:")) {
-                     var43 = 0;
-                     var31 = var31.substring("yellow:".length());
-                  } else if(var38.startsWith("red:")) {
-                     var43 = 1;
-                     var31 = var31.substring("red:".length());
-                  } else if(var38.startsWith("green:")) {
-                     var43 = 2;
-                     var31 = var31.substring("green:".length());
-                  } else if(var38.startsWith("cyan:")) {
-                     var43 = 3;
-                     var31 = var31.substring("cyan:".length());
-                  } else if(var38.startsWith("purple:")) {
-                     var43 = 4;
-                     var31 = var31.substring("purple:".length());
-                  } else if(var38.startsWith("white:")) {
-                     var43 = 5;
-                     var31 = var31.substring("white:".length());
-                  } else if(var38.startsWith("flash1:")) {
-                     var43 = 6;
-                     var31 = var31.substring("flash1:".length());
-                  } else if(var38.startsWith("flash2:")) {
-                     var43 = 7;
-                     var31 = var31.substring("flash2:".length());
-                  } else if(var38.startsWith("flash3:")) {
-                     var43 = 8;
-                     var31 = var31.substring("flash3:".length());
-                  } else if(var38.startsWith("glow1:")) {
-                     var43 = 9;
-                     var31 = var31.substring("glow1:".length());
-                  } else if(var38.startsWith("glow2:")) {
-                     var43 = 10;
-                     var31 = var31.substring("glow2:".length());
-                  } else if(var38.startsWith("glow3:")) {
-                     var43 = 11;
-                     var31 = var31.substring("glow3:".length());
+                  String s = input.toLowerCase();
+                  byte colour = 0;
+                  if(s.startsWith("yellow:")) {
+                     colour = 0;
+                     input = input.substring("yellow:".length());
+                  } else if(s.startsWith("red:")) {
+                     colour = 1;
+                     input = input.substring("red:".length());
+                  } else if(s.startsWith("green:")) {
+                     colour = 2;
+                     input = input.substring("green:".length());
+                  } else if(s.startsWith("cyan:")) {
+                     colour = 3;
+                     input = input.substring("cyan:".length());
+                  } else if(s.startsWith("purple:")) {
+                     colour = 4;
+                     input = input.substring("purple:".length());
+                  } else if(s.startsWith("white:")) {
+                     colour = 5;
+                     input = input.substring("white:".length());
+                  } else if(s.startsWith("flash1:")) {
+                     colour = 6;
+                     input = input.substring("flash1:".length());
+                  } else if(s.startsWith("flash2:")) {
+                     colour = 7;
+                     input = input.substring("flash2:".length());
+                  } else if(s.startsWith("flash3:")) {
+                     colour = 8;
+                     input = input.substring("flash3:".length());
+                  } else if(s.startsWith("glow1:")) {
+                     colour = 9;
+                     input = input.substring("glow1:".length());
+                  } else if(s.startsWith("glow2:")) {
+                     colour = 10;
+                     input = input.substring("glow2:".length());
+                  } else if(s.startsWith("glow3:")) {
+                     colour = 11;
+                     input = input.substring("glow3:".length());
                   } else if(Client.languageId != 0) {
-                     if(var38.startsWith("yellow:")) {
-                        var43 = 0;
-                        var31 = var31.substring("yellow:".length());
-                     } else if(var38.startsWith("red:")) {
-                        var43 = 1;
-                        var31 = var31.substring("red:".length());
-                     } else if(var38.startsWith("green:")) {
-                        var43 = 2;
-                        var31 = var31.substring("green:".length());
-                     } else if(var38.startsWith("cyan:")) {
-                        var43 = 3;
-                        var31 = var31.substring("cyan:".length());
-                     } else if(var38.startsWith("purple:")) {
-                        var43 = 4;
-                        var31 = var31.substring("purple:".length());
-                     } else if(var38.startsWith("white:")) {
-                        var43 = 5;
-                        var31 = var31.substring("white:".length());
-                     } else if(var38.startsWith("flash1:")) {
-                        var43 = 6;
-                        var31 = var31.substring("flash1:".length());
-                     } else if(var38.startsWith("flash2:")) {
-                        var43 = 7;
-                        var31 = var31.substring("flash2:".length());
-                     } else if(var38.startsWith("flash3:")) {
-                        var43 = 8;
-                        var31 = var31.substring("flash3:".length());
-                     } else if(var38.startsWith("glow1:")) {
-                        var43 = 9;
-                        var31 = var31.substring("glow1:".length());
-                     } else if(var38.startsWith("glow2:")) {
-                        var43 = 10;
-                        var31 = var31.substring("glow2:".length());
-                     } else if(var38.startsWith("glow3:")) {
-                        var43 = 11;
-                        var31 = var31.substring("glow3:".length());
+                     if(s.startsWith("yellow:")) {
+                        colour = 0;
+                        input = input.substring("yellow:".length());
+                     } else if(s.startsWith("red:")) {
+                        colour = 1;
+                        input = input.substring("red:".length());
+                     } else if(s.startsWith("green:")) {
+                        colour = 2;
+                        input = input.substring("green:".length());
+                     } else if(s.startsWith("cyan:")) {
+                        colour = 3;
+                        input = input.substring("cyan:".length());
+                     } else if(s.startsWith("purple:")) {
+                        colour = 4;
+                        input = input.substring("purple:".length());
+                     } else if(s.startsWith("white:")) {
+                        colour = 5;
+                        input = input.substring("white:".length());
+                     } else if(s.startsWith("flash1:")) {
+                        colour = 6;
+                        input = input.substring("flash1:".length());
+                     } else if(s.startsWith("flash2:")) {
+                        colour = 7;
+                        input = input.substring("flash2:".length());
+                     } else if(s.startsWith("flash3:")) {
+                        colour = 8;
+                        input = input.substring("flash3:".length());
+                     } else if(s.startsWith("glow1:")) {
+                        colour = 9;
+                        input = input.substring("glow1:".length());
+                     } else if(s.startsWith("glow2:")) {
+                        colour = 10;
+                        input = input.substring("glow2:".length());
+                     } else if(s.startsWith("glow3:")) {
+                        colour = 11;
+                        input = input.substring("glow3:".length());
                      }
                   }
 
-                  var38 = var31.toLowerCase();
-                  byte var15 = 0;
-                  if(var38.startsWith("wave:")) {
-                     var15 = 1;
-                     var31 = var31.substring("wave:".length());
-                  } else if(var38.startsWith("wave2:")) {
-                     var15 = 2;
-                     var31 = var31.substring("wave2:".length());
-                  } else if(var38.startsWith("shake:")) {
-                     var15 = 3;
-                     var31 = var31.substring("shake:".length());
-                  } else if(var38.startsWith("scroll:")) {
-                     var15 = 4;
-                     var31 = var31.substring("scroll:".length());
-                  } else if(var38.startsWith("slide:")) {
-                     var15 = 5;
-                     var31 = var31.substring("slide:".length());
+                  s = input.toLowerCase();
+                  byte effect = 0;
+                  if(s.startsWith("wave:")) {
+                     effect = 1;
+                     input = input.substring("wave:".length());
+                  } else if(s.startsWith("wave2:")) {
+                     effect = 2;
+                     input = input.substring("wave2:".length());
+                  } else if(s.startsWith("shake:")) {
+                     effect = 3;
+                     input = input.substring("shake:".length());
+                  } else if(s.startsWith("scroll:")) {
+                     effect = 4;
+                     input = input.substring("scroll:".length());
+                  } else if(s.startsWith("slide:")) {
+                     effect = 5;
+                     input = input.substring("slide:".length());
                   } else if(Client.languageId != 0) {
-                     if(var38.startsWith("wave:")) {
-                        var15 = 1;
-                        var31 = var31.substring("wave:".length());
-                     } else if(var38.startsWith("wave2:")) {
-                        var15 = 2;
-                        var31 = var31.substring("wave2:".length());
-                     } else if(var38.startsWith("shake:")) {
-                        var15 = 3;
-                        var31 = var31.substring("shake:".length());
-                     } else if(var38.startsWith("scroll:")) {
-                        var15 = 4;
-                        var31 = var31.substring("scroll:".length());
-                     } else if(var38.startsWith("slide:")) {
-                        var15 = 5;
-                        var31 = var31.substring("slide:".length());
+                     if(s.startsWith("wave:")) {
+                        effect = 1;
+                        input = input.substring("wave:".length());
+                     } else if(s.startsWith("wave2:")) {
+                        effect = 2;
+                        input = input.substring("wave2:".length());
+                     } else if(s.startsWith("shake:")) {
+                        effect = 3;
+                        input = input.substring("shake:".length());
+                     } else if(s.startsWith("scroll:")) {
+                        effect = 4;
+                        input = input.substring("scroll:".length());
+                     } else if(s.startsWith("slide:")) {
+                        effect = 5;
+                        input = input.substring("slide:".length());
                      }
                   }
 
@@ -1383,32 +1383,32 @@ public class class36 {
                   var17.packetBuffer.putByte(0);
                   var10 = var17.packetBuffer.offset;
                   var17.packetBuffer.putByte(var5);
-                  var17.packetBuffer.putByte(var43);
-                  var17.packetBuffer.putByte(var15);
-                  Nameable.method5280(var17.packetBuffer, var31);
+                  var17.packetBuffer.putByte(colour);
+                  var17.packetBuffer.putByte(effect);
+                  Nameable.method5280(var17.packetBuffer, input);
                   var17.packetBuffer.method3514(var17.packetBuffer.offset - var10);
                   Client.field957.method2052(var17);
                   var3 = 1;
                } else if(var0 == 5009) {
                   KeyFocusListener.scriptStringStackSize -= 2;
-                  var31 = class81.scriptStringStack[KeyFocusListener.scriptStringStackSize];
+                  input = class81.scriptStringStack[KeyFocusListener.scriptStringStackSize];
                   String var32 = class81.scriptStringStack[KeyFocusListener.scriptStringStackSize + 1];
                   var35 = WorldMapRectangle.method280(ClientPacket.field2390, Client.field957.field1484);
                   var35.packetBuffer.putShort(0);
                   var16 = var35.packetBuffer.offset;
-                  var35.packetBuffer.putString(var31);
+                  var35.packetBuffer.putString(input);
                   Nameable.method5280(var35.packetBuffer, var32);
                   var35.packetBuffer.method3513(var35.packetBuffer.offset - var16);
                   Client.field957.method2052(var35);
                   var3 = 1;
                } else if(var0 == 5015) {
                   if(SoundTaskDataProvider.localPlayer != null && SoundTaskDataProvider.localPlayer.name != null) {
-                     var31 = SoundTaskDataProvider.localPlayer.name.getName();
+                     input = SoundTaskDataProvider.localPlayer.name.getName();
                   } else {
-                     var31 = "";
+                     input = "";
                   }
 
-                  class81.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var31;
+                  class81.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = input;
                   var3 = 1;
                } else if(var0 == 5016) {
                   class81.intStack[++WorldComparator.intStackSize - 1] = Client.field1084;
@@ -1450,8 +1450,8 @@ public class class36 {
                      var33[var6] = var16;
                      var3 = 1;
                   } else if(var0 == 5020) {
-                     var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                     Player.method1231(var31);
+                     input = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
+                     Player.handleCommand(input);
                      var3 = 1;
                   } else if(var0 == 5021) {
                      Client.field1085 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize].toLowerCase().trim();

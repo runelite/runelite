@@ -78,7 +78,7 @@ final class class3 implements class0 {
       int var7;
       int var8;
       if(!Client.isDynamicRegion) {
-         int var2 = var1.method3555();
+         int var2 = var1.readLEUShortA();
          var3 = var1.method3554();
          var4 = var1.readUnsignedShort();
          class152.xteaKeys = new int[var4][4];
@@ -119,7 +119,7 @@ final class class3 implements class0 {
 
          class289.method5207(var3, var2, true);
       } else {
-         boolean var15 = var1.method3538() == 1;
+         boolean var15 = var1.readUByte() == 1;
          var3 = var1.method3554();
          var4 = var1.method3554();
          var5 = var1.readUnsignedShort();

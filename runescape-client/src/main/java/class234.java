@@ -268,7 +268,7 @@ public class class234 extends TaskDataNode {
             if(class90.loginIndex != 4) {
                var0.method5510("Login: ", class90.loginWindowX + 180 - 110, var19, 16777215, 0);
                var20 = 200;
-               var6 = Client.preferences.hideUsername?Enum.method4958(class90.username):class90.username;
+               var6 = Client.preferences.hideUsername?Enum.getAsterisks(class90.username):class90.username;
 
                for(var7 = var6; var0.getTextWidth(var7) > var20; var7 = var7.substring(0, var7.length() - 1)) {
                   ;
@@ -276,7 +276,7 @@ public class class234 extends TaskDataNode {
 
                var0.method5510(FontTypeFace.appendTags(var7), class90.loginWindowX + 180 - 70, var19, 16777215, 0);
                var19 += 15;
-               var0.method5510("Password: " + Enum.method4958(class90.password), class90.loginWindowX + 180 - 108, var19, 16777215, 0);
+               var0.method5510("Password: " + Enum.getAsterisks(class90.password), class90.loginWindowX + 180 - 108, var19, 16777215, 0);
                var19 += 15;
             }
          }
@@ -325,7 +325,7 @@ public class class234 extends TaskDataNode {
                var19 += 7;
                var0.method5510("Login: ", WorldComparator.field279 - 110, var19, 16777215, 0);
                var20 = 200;
-               var6 = Client.preferences.hideUsername?Enum.method4958(class90.username):class90.username;
+               var6 = Client.preferences.hideUsername?Enum.getAsterisks(class90.username):class90.username;
 
                for(var7 = var6; var0.getTextWidth(var7) > var20; var7 = var7.substring(1)) {
                   ;
@@ -333,7 +333,7 @@ public class class234 extends TaskDataNode {
 
                var0.method5510(FontTypeFace.appendTags(var7) + (class90.field1386 == 0 & Client.gameCycle % 40 < 20?class45.getColTags(16776960) + "|":""), WorldComparator.field279 - 70, var19, 16777215, 0);
                var19 += 15;
-               var0.method5510("Password: " + Enum.method4958(class90.password) + (class90.field1386 == 1 & Client.gameCycle % 40 < 20?class45.getColTags(16776960) + "|":""), WorldComparator.field279 - 108, var19, 16777215, 0);
+               var0.method5510("Password: " + Enum.getAsterisks(class90.password) + (class90.field1386 == 1 & Client.gameCycle % 40 < 20?class45.getColTags(16776960) + "|":""), WorldComparator.field279 - 108, var19, 16777215, 0);
                var19 += 15;
                var18 = 277;
                var8 = WorldComparator.field279 + -117;
@@ -383,7 +383,7 @@ public class class234 extends TaskDataNode {
                   var19 += 15;
                   var0.drawTextCentered(class90.loginMessage3, class90.loginWindowX + 180, var19, 16777215, 0);
                   var19 += 15;
-                  var0.method5510("PIN: " + Enum.method4958(class37.field501) + (Client.gameCycle % 40 < 20?class45.getColTags(16776960) + "|":""), class90.loginWindowX + 180 - 108, var19, 16777215, 0);
+                  var0.method5510("PIN: " + Enum.getAsterisks(class37.field501) + (Client.gameCycle % 40 < 20?class45.getColTags(16776960) + "|":""), class90.loginWindowX + 180 - 108, var19, 16777215, 0);
                   var19 -= 8;
                   var0.method5510("Trust this computer", class90.loginWindowX + 180 - 9, var19, 16776960, 0);
                   var19 += 15;
@@ -419,7 +419,7 @@ public class class234 extends TaskDataNode {
                   var19 += 14;
                   var0.method5510("Username/email: ", class90.loginWindowX + 180 - 145, var19, 16777215, 0);
                   var20 = 174;
-                  var6 = Client.preferences.hideUsername?Enum.method4958(class90.username):class90.username;
+                  var6 = Client.preferences.hideUsername?Enum.getAsterisks(class90.username):class90.username;
 
                   for(var7 = var6; var0.getTextWidth(var7) > var20; var7 = var7.substring(1)) {
                      ;

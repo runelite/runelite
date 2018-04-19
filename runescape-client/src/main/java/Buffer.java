@@ -824,7 +824,7 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-961576985"
    )
-   public int method3538() {
+   public int readUByte() {
       return 0 - this.payload[++this.offset - 1] & 255;
    }
 
@@ -920,7 +920,7 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "687821623"
    )
-   public int method3555() {
+   public int readLEUShortA() {
       this.offset += 2;
       return ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] - 128 & 255);
    }
@@ -1017,7 +1017,7 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1341887455"
    )
-   public int method3562() {
+   public int readIMEInt_() {
       this.offset += 4;
       return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 3] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24);
    }
@@ -1037,7 +1037,7 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-276259392"
    )
-   public int method3564() {
+   public int readIMEInt() {
       this.offset += 4;
       return ((this.payload[this.offset - 1] & 255) << 8) + ((this.payload[this.offset - 4] & 255) << 16) + (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 3] & 255) << 24);
    }

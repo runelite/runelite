@@ -497,7 +497,7 @@ public class class44 {
       signature = "(Lll;I)V",
       garbageValue = "-643534752"
    )
-   static final void method663(IndexedSprite var0) {
+   static final void method663(IndexedSprite sprite) {
       short var1 = 256;
 
       int var2;
@@ -526,14 +526,14 @@ public class class44 {
          GrandExchangeEvents.field287 = var8;
       }
 
-      if(var0 != null) {
+      if(sprite != null) {
          var2 = 0;
 
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.width; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + var0.offsetX + 16;
-                  int var6 = var3 + var0.offsetY + 16;
+         for(var3 = 0; var3 < sprite.height; ++var3) {
+            for(var4 = 0; var4 < sprite.width; ++var4) {
+               if(sprite.pixels[var2++] != 0) {
+                  var5 = var4 + sprite.offsetX + 16;
+                  int var6 = var3 + sprite.offsetY + 16;
                   int var7 = var5 + (var6 << 7);
                   MouseRecorder.field819[var7] = 0;
                }

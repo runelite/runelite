@@ -662,8 +662,8 @@ public final class Player extends Actor {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "640267046"
    )
-   static final void method1231(String var0) {
-      if(var0.equalsIgnoreCase("toggleroof")) {
+   static final void handleCommand(String command) {
+      if(command.equalsIgnoreCase("toggleroof")) {
          Client.preferences.hideRoofs = !Client.preferences.hideRoofs;
          MouseInput.method1062();
          if(Client.preferences.hideRoofs) {
@@ -673,20 +673,20 @@ public final class Player extends Actor {
          }
       }
 
-      if(var0.equalsIgnoreCase("displayfps")) {
+      if(command.equalsIgnoreCase("displayfps")) {
          Client.displayFps = !Client.displayFps;
       }
 
-      if(var0.equalsIgnoreCase("renderself")) {
+      if(command.equalsIgnoreCase("renderself")) {
          Client.field988 = !Client.field988;
       }
 
-      if(var0.equalsIgnoreCase("mouseovertext")) {
+      if(command.equalsIgnoreCase("mouseovertext")) {
          Client.field1017 = !Client.field1017;
       }
 
       if(Client.rights >= 2) {
-         if(var0.equalsIgnoreCase("aabb")) {
+         if(command.equalsIgnoreCase("aabb")) {
             if(!class7.drawBoundingBoxes3D) {
                class7.drawBoundingBoxes3D = true;
                class7.boundingBox3DDrawMode = BoundingBox3DDrawMode.ALWAYS;
@@ -698,25 +698,25 @@ public final class Player extends Actor {
             }
          }
 
-         if(var0.equalsIgnoreCase("showcoord")) {
+         if(command.equalsIgnoreCase("showcoord")) {
             Preferences.renderOverview.field4016 = !Preferences.renderOverview.field4016;
          }
 
-         if(var0.equalsIgnoreCase("fpson")) {
+         if(command.equalsIgnoreCase("fpson")) {
             Client.displayFps = true;
          }
 
-         if(var0.equalsIgnoreCase("fpsoff")) {
+         if(command.equalsIgnoreCase("fpsoff")) {
             Client.displayFps = false;
          }
 
-         if(var0.equalsIgnoreCase("gc")) {
+         if(command.equalsIgnoreCase("gc")) {
             System.gc();
          }
 
-         if(var0.equalsIgnoreCase("clientdrop")) {
+         if(command.equalsIgnoreCase("clientdrop")) {
             if(Client.field915 > 0) {
-               VarPlayerType.method4736();
+               VarPlayerType.reset();
             } else {
                Client.field918.method5211();
                class64.setGameState(40);
@@ -725,18 +725,18 @@ public final class Player extends Actor {
             }
          }
 
-         if(var0.equalsIgnoreCase("cs")) {
+         if(command.equalsIgnoreCase("cs")) {
             class57.sendGameMessage(99, "", "" + Client.field917);
          }
 
-         if(var0.equalsIgnoreCase("errortest") && Client.socketType == 2) {
+         if(command.equalsIgnoreCase("errortest") && Client.socketType == 2) {
             throw new RuntimeException();
          }
       }
 
       PacketNode var1 = WorldMapRectangle.method280(ClientPacket.field2415, Client.field957.field1484);
-      var1.packetBuffer.putByte(var0.length() + 1);
-      var1.packetBuffer.putString(var0);
+      var1.packetBuffer.putByte(command.length() + 1);
+      var1.packetBuffer.putString(command);
       Client.field957.method2052(var1);
    }
 }

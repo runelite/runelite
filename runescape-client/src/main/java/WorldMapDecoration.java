@@ -81,14 +81,14 @@ public class WorldMapDecoration {
       garbageValue = "-717116517"
    )
    @Export("createSprite")
-   public static final SpritePixels createSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if(var1 == -1) {
+   public static final SpritePixels createSprite(int var0, int amount, int var2, int var3, int var4, boolean var5) {
+      if(amount == -1) {
          var4 = 0;
-      } else if(var4 == 2 && var1 != 1) {
+      } else if(var4 == 2 && amount != 1) {
          var4 = 1;
       }
 
-      long var6 = ((long)var1 << 16) + (long)var0 + ((long)var2 << 38) + ((long)var4 << 40) + ((long)var3 << 42);
+      long var6 = ((long)amount << 16) + (long)var0 + ((long)var2 << 38) + ((long)var4 << 40) + ((long)var3 << 42);
       SpritePixels var8;
       if(!var5) {
          var8 = (SpritePixels)ItemComposition.itemSpriteCache.get(var6);
@@ -98,11 +98,11 @@ public class WorldMapDecoration {
       }
 
       ItemComposition var9 = class47.getItemDefinition(var0);
-      if(var1 > 1 && var9.countObj != null) {
+      if(amount > 1 && var9.countObj != null) {
          int var10 = -1;
 
          for(int var11 = 0; var11 < 10; ++var11) {
-            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
+            if(amount >= var9.countCo[var11] && var9.countCo[var11] != 0) {
                var10 = var9.countObj[var11];
             }
          }
@@ -123,12 +123,12 @@ public class WorldMapDecoration {
                return null;
             }
          } else if(var9.notedId != -1) {
-            var20 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
+            var20 = createSprite(var9.unnotedId, amount, var2, var3, 0, false);
             if(var20 == null) {
                return null;
             }
          } else if(var9.placeholderTemplateId != -1) {
-            var20 = createSprite(var9.placeholderId, var1, 0, 0, 0, false);
+            var20 = createSprite(var9.placeholderId, amount, 0, 0, 0, false);
             if(var20 == null) {
                return null;
             }
@@ -182,7 +182,7 @@ public class WorldMapDecoration {
          }
 
          if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            field445.method5510(PlayerComposition.method4408(var1), 0, 9, 16776960, 1);
+            field445.method5510(PlayerComposition.method4408(amount), 0, 9, 16776960, 1);
          }
 
          if(!var5) {
@@ -664,11 +664,11 @@ public class WorldMapDecoration {
             ((TextureProvider)Graphics3D.textureLoader).checkTextures(Client.field930);
             if(Client.field974) {
                if(Client.cursorState == 1) {
-                  class248.crossSprites[Client.field972 / 100].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
+                  SkillConstants.crossSprites[Client.field972 / 100].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
                }
 
                if(Client.cursorState == 2) {
-                  class248.crossSprites[Client.field972 / 100 + 4].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
+                  SkillConstants.crossSprites[Client.field972 / 100 + 4].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
                }
             }
 

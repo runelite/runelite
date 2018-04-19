@@ -168,7 +168,7 @@ public enum class27 implements Enumerated {
          return false;
       } else {
          for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
-            int var2 = class308.method5486(var0, var1);
+            int var2 = class308.executeScript(var0, var1);
             int var3 = var0.field2936[var1];
             if(var0.tableActions[var1] == 2) {
                if(var2 >= var3) {

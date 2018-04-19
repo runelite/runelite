@@ -867,7 +867,7 @@ public class class47 {
                      }
                   }
 
-                  var27[var4] = class248.method4500(var5);
+                  var27[var4] = SkillConstants.method4500(var5);
                   return 1;
                } else {
                   byte[] var24;

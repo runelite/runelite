@@ -127,31 +127,31 @@ public class class231 extends Node {
       signature = "(Ljava/lang/CharSequence;B)J",
       garbageValue = "-30"
    )
-   static long method4261(CharSequence var0) {
-      long var1 = 0L;
-      int var3 = var0.length();
+   static long encodeBase37(CharSequence string) {
+      long encoded = 0L;
+      int var3 = string.length();
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1 *= 37L;
-         char var5 = var0.charAt(var4);
-         if(var5 >= 'A' && var5 <= 'Z') {
-            var1 += (long)(var5 + 1 - 65);
-         } else if(var5 >= 'a' && var5 <= 'z') {
-            var1 += (long)(var5 + 1 - 97);
-         } else if(var5 >= '0' && var5 <= '9') {
-            var1 += (long)(var5 + 27 - 48);
+      for(int index = 0; index < var3; ++index) {
+         encoded *= 37L;
+         char character = string.charAt(index);
+         if(character >= 'A' && character <= 'Z') {
+            encoded += (long)(character + 1 - 65);
+         } else if(character >= 'a' && character <= 'z') {
+            encoded += (long)(character + 1 - 97);
+         } else if(character >= '0' && character <= '9') {
+            encoded += (long)(character + 27 - 48);
          }
 
-         if(var1 >= 177917621779460413L) {
+         if(encoded >= 177917621779460413L) {
             break;
          }
       }
 
-      while(0L == var1 % 37L && var1 != 0L) {
-         var1 /= 37L;
+      while(0L == encoded % 37L && encoded != 0L) {
+         encoded /= 37L;
       }
 
-      return var1;
+      return encoded;
    }
 
    @ObfuscatedName("v")

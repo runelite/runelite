@@ -82,7 +82,7 @@ public class Texture extends Node {
    @ObfuscatedSignature(
       signature = "(DILjf;)Z"
    )
-   boolean method2675(double var1, int var3, IndexDataBase var4) {
+   boolean method2675(double exponent, int var3, IndexDataBase var4) {
       int var5;
       for(var5 = 0; var5 < this.fileIds.length; ++var5) {
          if(var4.getRecordFlat(this.fileIds[var5]) == null) {
@@ -125,7 +125,7 @@ public class Texture extends Node {
          }
 
          for(var11 = 0; var11 < var9.length; ++var11) {
-            var9[var11] = Graphics3D.adjustRGB(var9[var11], var1);
+            var9[var11] = Graphics3D.adjustRGB(var9[var11], exponent);
          }
 
          if(var6 == 0) {

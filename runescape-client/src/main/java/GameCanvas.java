@@ -381,7 +381,7 @@ public final class GameCanvas extends Canvas {
 
             int var17;
             int var18;
-            int var20;
+            int colour;
             int var21;
             int var22;
             int var30;
@@ -392,7 +392,7 @@ public final class GameCanvas extends Canvas {
                var18 = var5;
             } else if(var10.type == 9) {
                var30 = var39;
-               var20 = var13;
+               colour = var13;
                var21 = var39 + var10.width;
                var22 = var13 + var10.height;
                if(var21 < var39) {
@@ -401,23 +401,23 @@ public final class GameCanvas extends Canvas {
                }
 
                if(var22 < var13) {
-                  var20 = var22;
+                  colour = var22;
                   var22 = var13;
                }
 
                ++var21;
                ++var22;
                var15 = var30 > var2?var30:var2;
-               var16 = var20 > var3?var20:var3;
+               var16 = colour > var3?colour:var3;
                var17 = var21 < var4?var21:var4;
                var18 = var22 < var5?var22:var5;
             } else {
                var30 = var39 + var10.width;
-               var20 = var13 + var10.height;
+               colour = var13 + var10.height;
                var15 = var39 > var2?var39:var2;
                var16 = var13 > var3?var13:var3;
                var17 = var30 < var4?var30:var4;
-               var18 = var20 < var5?var20:var5;
+               var18 = colour < var5?colour:var5;
             }
 
             if(!var10.hasScript || var15 < var17 && var16 < var18) {
@@ -433,13 +433,13 @@ public final class GameCanvas extends Canvas {
                         class20.font_p12full.method5512("Fps:" + GameEngine.FPS, var39 + var10.width, var13, 16776960, -1);
                         var13 += 15;
                         Runtime var43 = Runtime.getRuntime();
-                        var20 = (int)((var43.totalMemory() - var43.freeMemory()) / 1024L);
+                        colour = (int)((var43.totalMemory() - var43.freeMemory()) / 1024L);
                         var21 = 16776960;
-                        if(var20 > 327680 && !Client.lowMemory) {
+                        if(colour > 327680 && !Client.lowMemory) {
                            var21 = 16711680;
                         }
 
-                        class20.font_p12full.method5512("Mem:" + var20 + "k", var39 + var10.width, var13, var21, -1);
+                        class20.font_p12full.method5512("Mem:" + colour + "k", var39 + var10.width, var13, var21, -1);
                         var13 += 15;
                      }
                      continue;
@@ -460,10 +460,10 @@ public final class GameCanvas extends Canvas {
                      if(var42 != null) {
                         Rasterizer2D.setDrawRegion(var39, var13, var39 + var42.field2773, var13 + var42.field2772);
                         if(Client.field1099 != 2 && Client.field1099 != 5) {
-                           var20 = Client.mapAngle & 2047;
+                           colour = Client.mapAngle & 2047;
                            var21 = SoundTaskDataProvider.localPlayer.x / 32 + 48;
                            var22 = 464 - SoundTaskDataProvider.localPlayer.y / 32;
-                           BoundingBox2D.minimapSprite.method5875(var39, var13, var42.field2773, var42.field2772, var21, var22, var20, 256, var42.field2774, var42.field2771);
+                           BoundingBox2D.minimapSprite.method5875(var39, var13, var42.field2773, var42.field2772, var21, var22, colour, 256, var42.field2774, var42.field2771);
 
                            for(var23 = 0; var23 < Client.field1093; ++var23) {
                               var24 = Client.field1094[var23] * 4 + 2 - SoundTaskDataProvider.localPlayer.x / 32;
@@ -633,10 +633,10 @@ public final class GameCanvas extends Canvas {
                      if(var10.type == 2) {
                         var30 = 0;
 
-                        for(var20 = 0; var20 < var10.originalHeight; ++var20) {
+                        for(colour = 0; colour < var10.originalHeight; ++colour) {
                            for(var21 = 0; var21 < var10.originalWidth; ++var21) {
                               var22 = var21 * (var10.paddingX + 32) + var39;
-                              var23 = var13 + var20 * (var10.paddingY + 32);
+                              var23 = var13 + colour * (var10.paddingY + 32);
                               if(var30 < 20) {
                                  var22 += var10.xSprites[var30];
                                  var23 += var10.field2915[var30];
@@ -776,45 +776,45 @@ public final class GameCanvas extends Canvas {
                                  FontName.method5490(var10);
                               }
                            } else {
-                              String var53 = var10.text;
+                              String text = var10.text;
                               if(class27.method246(var10)) {
-                                 var20 = var10.field2841;
+                                 colour = var10.field2841;
                                  if(var10 == BoundingBox3D.field259 && var10.field2908 != 0) {
-                                    var20 = var10.field2908;
+                                    colour = var10.field2908;
                                  }
 
                                  if(var10.string1.length() > 0) {
-                                    var53 = var10.string1;
+                                    text = var10.string1;
                                  }
                               } else {
-                                 var20 = var10.textColor;
+                                 colour = var10.textColor;
                                  if(var10 == BoundingBox3D.field259 && var10.field2849 != 0) {
-                                    var20 = var10.field2849;
+                                    colour = var10.field2849;
                                  }
                               }
 
                               if(var10.hasScript && var10.itemId != -1) {
                                  ItemComposition var54 = class47.getItemDefinition(var10.itemId);
-                                 var53 = var54.name;
-                                 if(var53 == null) {
-                                    var53 = "null";
+                                 text = var54.name;
+                                 if(text == null) {
+                                    text = "null";
                                  }
 
                                  if((var54.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
-                                    var53 = class45.getColTags(16748608) + var53 + "</col>" + " " + 'x' + class169.method3290(var10.itemQuantity);
+                                    text = class45.getColTags(16748608) + text + "</col>" + " " + 'x' + class169.getShortenedAmountText(var10.itemQuantity);
                                  }
                               }
 
                               if(var10 == Client.field1033) {
-                                 var53 = "Please wait...";
-                                 var20 = var10.textColor;
+                                 text = "Please wait...";
+                                 colour = var10.textColor;
                               }
 
                               if(!var10.hasScript) {
-                                 var53 = WidgetNode.method1135(var53, var10);
+                                 text = WidgetNode.method1135(text, var10);
                               }
 
-                              var40.method5514(var53, var39, var13, var10.width, var10.height, var20, var10.textShadowed?0:-1, var10.field2885, var10.field2833, var10.field2884);
+                              var40.method5514(text, var39, var13, var10.width, var10.height, colour, var10.textShadowed?0:-1, var10.field2885, var10.field2833, var10.field2884);
                            }
                         } else if(var10.type == 5) {
                            SpritePixels var41;
@@ -837,32 +837,32 @@ public final class GameCanvas extends Canvas {
                                     FontName.method5490(var10);
                                  }
                               } else {
-                                 var20 = var41.maxWidth;
+                                 colour = var41.maxWidth;
                                  var21 = var41.maxHeight;
                                  if(!var10.spriteTiling) {
-                                    var22 = var10.width * 4096 / var20;
+                                    var22 = var10.width * 4096 / colour;
                                     if(var10.textureId != 0) {
                                        var41.method5877(var10.width / 2 + var39, var10.height / 2 + var13, var10.textureId, var22);
                                     } else if(var14 != 0) {
                                        var41.method5866(var39, var13, var10.width, var10.height, 256 - (var14 & 255));
-                                    } else if(var20 == var10.width && var21 == var10.height) {
+                                    } else if(colour == var10.width && var21 == var10.height) {
                                        var41.drawAt(var39, var13);
                                     } else {
                                        var41.method5860(var39, var13, var10.width, var10.height);
                                     }
                                  } else {
                                     Rasterizer2D.setInnerDrawRegion(var39, var13, var39 + var10.width, var13 + var10.height);
-                                    var22 = (var20 - 1 + var10.width) / var20;
+                                    var22 = (colour - 1 + var10.width) / colour;
                                     var23 = (var21 - 1 + var10.height) / var21;
 
                                     for(var24 = 0; var24 < var22; ++var24) {
                                        for(var25 = 0; var25 < var23; ++var25) {
                                           if(var10.textureId != 0) {
-                                             var41.method5877(var20 / 2 + var39 + var20 * var24, var21 / 2 + var13 + var25 * var21, var10.textureId, 4096);
+                                             var41.method5877(colour / 2 + var39 + colour * var24, var21 / 2 + var13 + var25 * var21, var10.textureId, 4096);
                                           } else if(var14 != 0) {
-                                             var41.drawAtOpacity(var39 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
+                                             var41.drawAtOpacity(var39 + colour * var24, var13 + var21 * var25, 256 - (var14 & 255));
                                           } else {
-                                             var41.drawAt(var39 + var20 * var24, var13 + var25 * var21);
+                                             var41.drawAt(var39 + colour * var24, var13 + var25 * var21);
                                           }
                                        }
                                     }
@@ -876,9 +876,9 @@ public final class GameCanvas extends Canvas {
                            if(var10.type == 6) {
                               var46 = class27.method246(var10);
                               if(var46) {
-                                 var20 = var10.field2855;
+                                 colour = var10.field2855;
                               } else {
-                                 var20 = var10.field2869;
+                                 colour = var10.field2869;
                               }
 
                               Model var47 = null;
@@ -901,13 +901,13 @@ public final class GameCanvas extends Canvas {
                                  } else {
                                     var47 = SoundTaskDataProvider.localPlayer.getModel();
                                  }
-                              } else if(var20 == -1) {
+                              } else if(colour == -1) {
                                  var47 = var10.getModel((Sequence)null, -1, var46, SoundTaskDataProvider.localPlayer.composition);
                                  if(var47 == null && Widget.field2820) {
                                     FontName.method5490(var10);
                                  }
                               } else {
-                                 Sequence var56 = CombatInfo1.getAnimation(var20);
+                                 Sequence var56 = CombatInfo1.getAnimation(colour);
                                  var47 = var10.getModel(var56, var10.field2935, var46, SoundTaskDataProvider.localPlayer.composition);
                                  if(var47 == null && Widget.field2820) {
                                     FontName.method5490(var10);
@@ -941,17 +941,17 @@ public final class GameCanvas extends Canvas {
                                     continue;
                                  }
 
-                                 var20 = 0;
+                                 colour = 0;
 
                                  for(var21 = 0; var21 < var10.originalHeight; ++var21) {
                                     for(var22 = 0; var22 < var10.originalWidth; ++var22) {
-                                       if(var10.itemIds[var20] > 0) {
-                                          var34 = class47.getItemDefinition(var10.itemIds[var20] - 1);
+                                       if(var10.itemIds[colour] > 0) {
+                                          var34 = class47.getItemDefinition(var10.itemIds[colour] - 1);
                                           String var31;
-                                          if(var34.isStackable != 1 && var10.itemQuantities[var20] == 1) {
+                                          if(var34.isStackable != 1 && var10.itemQuantities[colour] == 1) {
                                              var31 = class45.getColTags(16748608) + var34.name + "</col>";
                                           } else {
-                                             var31 = class45.getColTags(16748608) + var34.name + "</col>" + " " + 'x' + class169.method3290(var10.itemQuantities[var20]);
+                                             var31 = class45.getColTags(16748608) + var34.name + "</col>" + " " + 'x' + class169.getShortenedAmountText(var10.itemQuantities[colour]);
                                           }
 
                                           var25 = var39 + var22 * (var10.paddingX + 115);
@@ -965,19 +965,19 @@ public final class GameCanvas extends Canvas {
                                           }
                                        }
 
-                                       ++var20;
+                                       ++colour;
                                     }
                                  }
                               }
 
                               if(var10.type == 8 && var10 == class7.field234 && Client.field1115 == Client.field1021) {
                                  var30 = 0;
-                                 var20 = 0;
+                                 colour = 0;
                                  Font var32 = class20.font_p12full;
                                  String var33 = var10.text;
 
                                  String var52;
-                                 for(var33 = WidgetNode.method1135(var33, var10); var33.length() > 0; var20 = var20 + var32.verticalSpace + 1) {
+                                 for(var33 = WidgetNode.method1135(var33, var10); var33.length() > 0; colour = colour + var32.verticalSpace + 1) {
                                     var24 = var33.indexOf("<br>");
                                     if(var24 != -1) {
                                        var52 = var33.substring(0, var24);
@@ -994,7 +994,7 @@ public final class GameCanvas extends Canvas {
                                  }
 
                                  var30 += 6;
-                                 var20 += 7;
+                                 colour += 7;
                                  var24 = var39 + var10.width - 5 - var30;
                                  var25 = var13 + var10.height + 5;
                                  if(var24 < var39 + 5) {
@@ -1005,12 +1005,12 @@ public final class GameCanvas extends Canvas {
                                     var24 = var4 - var30;
                                  }
 
-                                 if(var20 + var25 > var5) {
-                                    var25 = var5 - var20;
+                                 if(colour + var25 > var5) {
+                                    var25 = var5 - colour;
                                  }
 
-                                 Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var30, var20, 16777120);
-                                 Rasterizer2D.drawRectangle(var24, var25, var30, var20, 0);
+                                 Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var30, colour, 16777120);
+                                 Rasterizer2D.drawRectangle(var24, var25, var30, colour, 0);
                                  var33 = var10.text;
                                  var26 = var25 + var32.verticalSpace + 2;
 
@@ -1031,20 +1031,20 @@ public final class GameCanvas extends Canvas {
                               if(var10.type == 9) {
                                  if(var10.field2903) {
                                     var30 = var39;
-                                    var20 = var13 + var10.height;
+                                    colour = var13 + var10.height;
                                     var21 = var39 + var10.width;
                                     var22 = var13;
                                  } else {
                                     var30 = var39;
-                                    var20 = var13;
+                                    colour = var13;
                                     var21 = var39 + var10.width;
                                     var22 = var13 + var10.height;
                                  }
 
                                  if(var10.lineWidth == 1) {
-                                    Rasterizer2D.drawLine(var30, var20, var21, var22, var10.textColor);
+                                    Rasterizer2D.drawLine(var30, colour, var21, var22, var10.textColor);
                                  } else {
-                                    class2.method2(var30, var20, var21, var22, var10.textColor, var10.lineWidth);
+                                    class2.method2(var30, colour, var21, var22, var10.textColor, var10.lineWidth);
                                  }
                               }
                            }

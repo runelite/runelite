@@ -244,7 +244,7 @@ public class CombatInfo2 extends CacheableNode {
       }
 
       if((var3 & 16) != 0) {
-         var2.field1185 = var0.method3555();
+         var2.field1185 = var0.readLEUShortA();
          if(var2.queueSize == 0) {
             var2.orientation = var2.field1185;
             var2.field1185 = -1;
@@ -282,14 +282,14 @@ public class CombatInfo2 extends CacheableNode {
             }
          }
 
-         var6 = var0.method3538();
+         var6 = var0.readUByte();
          if(var6 > 0) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var0.getUSmart();
                var9 = var0.getUSmart();
                if(var9 != 32767) {
                   var10 = var0.getUSmart();
-                  var11 = var0.method3538();
+                  var11 = var0.readUByte();
                   int var12 = var9 > 0?var0.readUnsignedShortOb1():var11;
                   var2.setCombatInfo(var8, Client.gameCycle, var9, var10, var11, var12);
                } else {
@@ -311,13 +311,13 @@ public class CombatInfo2 extends CacheableNode {
             var5 = -1;
          }
 
-         var6 = var0.method3538();
+         var6 = var0.readUByte();
          GameObject.method3083(var2, var5, var6);
       }
 
       if((var3 & 256) != 0) {
          var2.graphic = var0.method3553();
-         var5 = var0.method3563();
+         var5 = var0.readIMEInt();
          var2.field1198 = var5 >> 16;
          var2.graphicsDelay = (var5 & 65535) + Client.gameCycle;
          var2.spotAnimFrame = 0;
@@ -336,7 +336,7 @@ public class CombatInfo2 extends CacheableNode {
          Permission[] var17 = new Permission[]{Permission.field3345, Permission.field3344, Permission.field3346, Permission.field3349, Permission.field3350, Permission.field3347};
          Permission var18 = (Permission)Permission.forOrdinal(var17, var0.readUnsignedShortOb1());
          boolean var21 = var0.readUnsignedByte() == 1;
-         var9 = var0.method3538();
+         var9 = var0.readUByte();
          var10 = var0.offset;
          if(var2.name != null && var2.composition != null) {
             boolean var22 = false;
@@ -386,7 +386,7 @@ public class CombatInfo2 extends CacheableNode {
          var2.field1202 = var0.method3634();
          var2.field1166 = var0.method3553() + Client.gameCycle;
          var2.field1204 = var0.method3554() + Client.gameCycle;
-         var2.field1171 = var0.method3555();
+         var2.field1171 = var0.readLEUShortA();
          if(var2.field860) {
             var2.field1203 += var2.field861;
             var2.field1199 += var2.field837;
