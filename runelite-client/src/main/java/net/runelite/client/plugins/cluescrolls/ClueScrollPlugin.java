@@ -211,7 +211,8 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (clue instanceof ObjectClueScroll)
+		//Only set arrow on object if exact location is not known
+		if (clue instanceof ObjectClueScroll && !(clue instanceof LocationClueScroll) && ((LocationClueScroll) clue).getLocation() != null)
 		{
 			int objectId = ((ObjectClueScroll) clue).getObjectId();
 
