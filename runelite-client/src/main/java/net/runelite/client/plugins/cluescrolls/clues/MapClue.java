@@ -48,7 +48,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class MapClue extends ClueScroll implements ObjectClueScroll
+public class MapClue extends ClueScroll implements ObjectClueScroll, LocationClueScroll
 {
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
@@ -126,11 +126,6 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!plugin.getClient().hasHintArrow())
-		{
-			plugin.getClient().setHintArrow(getLocation());
-		}
-
 		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 		if (localLocation == null)
