@@ -38,6 +38,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -58,10 +59,15 @@ public class RegenMeterPlugin extends Plugin
 	@Inject
 	RegenMeterConfig config;
 
+	@Inject
+	Notifier notifier;
+
 
 	private int ticksSinceHPRegen;
 
 	private boolean wasRapidHeal;
+
+	private boolean alreadyNotified = false;
 
 	@Getter
 	private double hitpointsPercentage;
@@ -91,6 +97,7 @@ public class RegenMeterPlugin extends Plugin
 		{
 			ticksSinceHPRegen = -2; // For some reason this makes this accurate
 			ticksSinceSpecRegen = 0;
+			resetNotification();
 		}
 	}
 
@@ -101,6 +108,7 @@ public class RegenMeterPlugin extends Plugin
 		if (wasRapidHeal != isRapidHeal)
 		{
 			ticksSinceHPRegen = 0;
+			resetNotification();
 		}
 		wasRapidHeal = isRapidHeal;
 	}
@@ -140,5 +148,36 @@ public class RegenMeterPlugin extends Plugin
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
 		}
+
+		if (config.showNotification())
+		{
+			if (ticksSinceHPRegen == 0)
+			{
+				resetNotification();
+			}
+
+			double timeUntilRegen = (1 - hitpointsPercentage) * ticksPerHPRegen * 0.6d;
+			if (timeUntilRegen <= config.notificationEarliness())
+			{
+				showNotification();
+			}
+		}
+	}
+
+	private void showNotification()
+	{
+		if (!config.showNotification() || alreadyNotified)
+		{
+			return;
+		}
+
+		notifier.notify("Your health is about to regenerate!");
+
+		alreadyNotified = true;
+	}
+
+	private void resetNotification()
+	{
+		alreadyNotified = false;
 	}
 }
