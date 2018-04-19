@@ -35,6 +35,8 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -64,11 +66,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ItemLayerChanged;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.*;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -105,10 +104,15 @@ public class GroundItemsPlugin extends Plugin
 
 	private List<String> hiddenItemList = new ArrayList<>();
 	private List<String> highlightedItemsList = new ArrayList<>();
+	private boolean needToNotify = false;
+	private Integer timeSinceLastNotification = 0;
 	private boolean dirty;
 
 	@Inject
 	private GroundItemInputListener inputListener;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -133,6 +137,7 @@ public class GroundItemsPlugin extends Plugin
 	private final List<GroundItem> groundItems = new ArrayList<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
+	private Integer ticksSinceLastNotification = 0;
 
 	// Collects similar ground items
 	private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
@@ -429,9 +434,9 @@ public class GroundItemsPlugin extends Plugin
 		return TRUE.equals(highlightedItems.getUnchecked(item));
 	}
 
-	public boolean shouldNotify()
+	public void setNotify(boolean shouldNotify)
 	{
-		return config.notifyDrop();
+		needToNotify = shouldNotify;
 	}
 
 	public boolean isHidden(String item)
@@ -445,6 +450,18 @@ public class GroundItemsPlugin extends Plugin
 		if (!focusChanged.isFocused())
 		{
 			setHotKeyPressed(false);
+		}
+	}
+
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (config.notifyDrop() && needToNotify && ticksSinceLastNotification-- == 0)
+		{
+			ticksSinceLastNotification = 50;
+			needToNotify = false;
+			notifier.notify("[" + client.getLocalPlayer().getName() + "] just received a highlighted drop!");
 		}
 	}
 }
