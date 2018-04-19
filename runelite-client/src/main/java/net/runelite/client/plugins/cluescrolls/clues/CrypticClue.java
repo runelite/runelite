@@ -47,7 +47,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll, LocationClueScroll
 {
 	private static final Set<CrypticClue> CLUES = ImmutableSet.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
@@ -371,11 +371,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		// Mark dig location
 		if (getLocation() != null && getNpc() == null && objectId == -1)
 		{
-			if (!plugin.getClient().hasHintArrow())
-			{
-				plugin.getClient().setHintArrow(getLocation());
-			}
-
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 			if (localLocation != null)
@@ -389,11 +384,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				if (!plugin.getClient().hasHintArrow())
-				{
-					plugin.getClient().setHintArrow(npc);
-				}
-
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
@@ -407,11 +397,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			{
 				for (GameObject gameObject : plugin.getObjectsToMark())
 				{
-					if (!plugin.getClient().hasHintArrow())
-					{
-						plugin.getClient().setHintArrow(gameObject.getWorldLocation());
-					}
-
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 

@@ -65,6 +65,7 @@ import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
+import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
@@ -133,8 +134,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		client.clearHintArrow();
-		clue = null;
+		resetClue();
 	}
 
 	@Subscribe
@@ -182,6 +182,18 @@ public class ClueScrollPlugin extends Plugin
 		objectsToMark = null;
 		equippedItems = null;
 
+		// If we have location clue, set world location before all other types of clues
+		// to allow NPCs and objects to override it when needed
+		if (clue instanceof LocationClueScroll)
+		{
+			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
+
+			if (location != null)
+			{
+				client.setHintArrow(location);
+			}
+		}
+
 		if (clue instanceof NpcClueScroll)
 		{
 			String npc = ((NpcClueScroll) clue).getNpc();
@@ -190,6 +202,12 @@ public class ClueScrollPlugin extends Plugin
 			{
 				Query query = new NPCQuery().nameContains(npc);
 				npcsToMark = queryRunner.runQuery(query);
+
+				// Set hint arrow to first NPC found as there can only be 1 hint arrow
+				if (npcsToMark.length >= 1)
+				{
+					client.setHintArrow(npcsToMark[0]);
+				}
 			}
 		}
 
@@ -201,6 +219,12 @@ public class ClueScrollPlugin extends Plugin
 			{
 				GameObjectQuery query = new GameObjectQuery().idEquals(objectId);
 				objectsToMark = queryRunner.runQuery(query);
+
+				// Set hint arrow to first object found as there can only be 1 hint arrow
+				if (objectsToMark.length >= 1)
+				{
+					client.setHintArrow(objectsToMark[0].getWorldLocation());
+				}
 			}
 		}
 
