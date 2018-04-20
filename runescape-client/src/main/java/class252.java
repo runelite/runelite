@@ -1,8 +1,10 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("is")
 public class class252 {
    @ObfuscatedName("k")
+   @Export("decodeBase37")
    public static String decodeBase37(long encoded) {
       if(encoded > 0L && encoded < 6582952005840035281L) {
          if(0L == encoded % 37L) {

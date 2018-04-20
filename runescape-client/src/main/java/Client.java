@@ -4295,7 +4295,7 @@ public final class Client extends GameEngine implements class302 {
             Widget var70;
             if(ServerPacket.field2364 == var1.serverPacket) {
                experience = incoming.method3556();
-               skill = incoming.readIMEInt_();
+               skill = incoming.method3562();
                var6 = incoming.method3595();
                var70 = class44.getWidget(skill);
                if(experience != var70.originalX || var6 != var70.originalY || var70.dynamicX != 0 || var70.dynamicY != 0) {
@@ -4331,7 +4331,7 @@ public final class Client extends GameEngine implements class302 {
             }
 
             if(ServerPacket.field2343 == var1.serverPacket) {
-               field1084 = incoming.readUByte();
+               field1084 = incoming.method3538();
                publicChatMode = incoming.readUnsignedShortOb1();
                var1.serverPacket = null;
                return true;
@@ -4406,7 +4406,7 @@ public final class Client extends GameEngine implements class302 {
 
             if(ServerPacket.field2358 == var1.serverPacket) {
                class278.field3551 = incoming.method3636();
-               WidgetNode.field794 = incoming.readUByte();
+               WidgetNode.field794 = incoming.method3538();
                var1.serverPacket = null;
                return true;
             }
@@ -4415,7 +4415,7 @@ public final class Client extends GameEngine implements class302 {
             long var9;
             int itemCount;
             if(ServerPacket.field2335 == var1.serverPacket) {
-               experience = incoming.readIMEInt_();
+               experience = incoming.method3562();
                skill = incoming.method3553();
                if(skill == 65535) {
                   skill = -1;
@@ -4480,7 +4480,7 @@ public final class Client extends GameEngine implements class302 {
             Widget var25;
             boolean var81;
             if(ServerPacket.field2365 == var1.serverPacket) {
-               var81 = incoming.readUByte() == 1;
+               var81 = incoming.method3538() == 1;
                skill = incoming.readIMEInt();
                var25 = class44.getWidget(skill);
                if(var81 != var25.isHidden) {
@@ -4528,7 +4528,7 @@ public final class Client extends GameEngine implements class302 {
 
             if(ServerPacket.field2322 == var1.serverPacket) {
                WidgetNode.field794 = incoming.method3636();
-               class278.field3551 = incoming.readUByte();
+               class278.field3551 = incoming.method3538();
 
                while(incoming.offset < var1.packetLength) {
                   experience = incoming.readUnsignedByte();
@@ -4818,7 +4818,7 @@ public final class Client extends GameEngine implements class302 {
 
             if(ServerPacket.field2375 == var1.serverPacket) {
                experience = incoming.readUnsignedShort();
-               skill = incoming.readIMEInt_();
+               skill = incoming.method3562();
                var25 = class44.getWidget(skill);
                if(var25 != null && var25.type == 0) {
                   if(experience > var25.scrollHeight - var25.height) {
@@ -4955,9 +4955,9 @@ public final class Client extends GameEngine implements class302 {
                itemCount = incoming.readUnsignedShort();
 
                for(slot = 0; slot < itemCount; ++slot) {
-                  amount = incoming.readUByte();
+                  amount = incoming.method3538();
                   if(amount == 255) {
-                     amount = incoming.readIMEInt_();
+                     amount = incoming.method3562();
                   }
 
                   var30 = incoming.readLEUShortA();
@@ -5875,8 +5875,8 @@ public final class Client extends GameEngine implements class302 {
 
             if(ServerPacket.field2299 == var1.serverPacket) {
                class250.method4503();
-               experience = incoming.readIMEInt_();
-               skill = incoming.readUByte();
+               experience = incoming.method3562();
+               skill = incoming.method3538();
                var6 = incoming.method3636();
                skillExperiences[skill] = experience;
                boostedSkillLevels[skill] = var6;

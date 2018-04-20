@@ -662,6 +662,7 @@ public final class Player extends Actor {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "640267046"
    )
+   @Export("handleCommand")
    static final void handleCommand(String command) {
       if(command.equalsIgnoreCase("toggleroof")) {
          Client.preferences.hideRoofs = !Client.preferences.hideRoofs;

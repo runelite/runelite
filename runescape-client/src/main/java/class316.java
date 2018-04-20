@@ -1,10 +1,12 @@
 import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("la")
 public final class class316 {
    @ObfuscatedName("o")
+   @Export("BASE_37_CHARACTERS")
    public static final char[] BASE_37_CHARACTERS;
    @ObfuscatedName("i")
    static ScheduledExecutorService field3925;

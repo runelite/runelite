@@ -69,6 +69,7 @@ public class VarPlayerType extends CacheableNode {
       signature = "(I)V",
       garbageValue = "1113184025"
    )
+   @Export("reset")
    static final void reset() {
       Client.field957.close();
       Overlay.overlays.reset();

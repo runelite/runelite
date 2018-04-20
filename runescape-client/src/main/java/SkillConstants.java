@@ -1,13 +1,17 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ia")
+@Implements("SkillConstants")
 public class SkillConstants
 {
    @ObfuscatedName("k")
+   @Export("ENABLED_SKILLS")
    public static final boolean[] ENABLED_SKILLS;
    @ObfuscatedName("t")
+   @Export("SKILL_EXPERIENCE")
    public static int[] SKILL_EXPERIENCE;
    @ObfuscatedName("fk")
    @ObfuscatedSignature(

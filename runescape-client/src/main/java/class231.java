@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -127,6 +128,7 @@ public class class231 extends Node {
       signature = "(Ljava/lang/CharSequence;B)J",
       garbageValue = "-30"
    )
+   @Export("encodeBase37")
    static long encodeBase37(CharSequence string) {
       long encoded = 0L;
       int var3 = string.length();

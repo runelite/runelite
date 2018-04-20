@@ -523,6 +523,7 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(IIIIILed;IIIIII)Z"
    )
+   @Export("addRenderable")
    public boolean addRenderable(int var1, int var2, int var3, int var4, int var5, Renderable var6, int var7, int var8, int var9, int var10, int var11, int var12) {
       return var6 == null?true:this.addEntityMarker(var1, var9, var10, var11 - var9 + 1, var12 - var10 + 1, var2, var3, var4, var6, var7, true, var8, 0);
    }

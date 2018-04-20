@@ -282,14 +282,14 @@ public class CombatInfo2 extends CacheableNode {
             }
          }
 
-         var6 = var0.readUByte();
+         var6 = var0.method3538();
          if(var6 > 0) {
             for(var7 = 0; var7 < var6; ++var7) {
                var8 = var0.getUSmart();
                var9 = var0.getUSmart();
                if(var9 != 32767) {
                   var10 = var0.getUSmart();
-                  var11 = var0.readUByte();
+                  var11 = var0.method3538();
                   int var12 = var9 > 0?var0.readUnsignedShortOb1():var11;
                   var2.setCombatInfo(var8, Client.gameCycle, var9, var10, var11, var12);
                } else {
@@ -311,7 +311,7 @@ public class CombatInfo2 extends CacheableNode {
             var5 = -1;
          }
 
-         var6 = var0.readUByte();
+         var6 = var0.method3538();
          GameObject.method3083(var2, var5, var6);
       }
 
@@ -336,7 +336,7 @@ public class CombatInfo2 extends CacheableNode {
          Permission[] var17 = new Permission[]{Permission.field3345, Permission.field3344, Permission.field3346, Permission.field3349, Permission.field3350, Permission.field3347};
          Permission var18 = (Permission)Permission.forOrdinal(var17, var0.readUnsignedShortOb1());
          boolean var21 = var0.readUnsignedByte() == 1;
-         var9 = var0.readUByte();
+         var9 = var0.method3538();
          var10 = var0.offset;
          if(var2.name != null && var2.composition != null) {
             boolean var22 = false;

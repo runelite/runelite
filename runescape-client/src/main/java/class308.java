@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -31,6 +32,7 @@ public class class308 extends class221 {
       signature = "(Lin;IB)I",
       garbageValue = "-94"
    )
+   @Export("executeScript")
    static final int executeScript(Widget widget, int id) {
       if(widget.dynamicValues != null && id < widget.dynamicValues.length) {
          try {

@@ -363,7 +363,7 @@ public class class57 {
                }
 
             } else if(class183.field2497 == var0) {
-               var2 = var1.readUByte();
+               var2 = var1.method3538();
                var3 = (var2 >> 4 & 7) + WidgetNode.field794;
                var37 = (var2 & 7) + class278.field3551;
                var5 = var1.method3553();

@@ -130,6 +130,7 @@ public class Enum extends CacheableNode {
       signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
       garbageValue = "-1126393101"
    )
+   @Export("getAsterisks")
    public static String getAsterisks(CharSequence var0) {
       return VarCInt.method4785('*', var0.length());
    }

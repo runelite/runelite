@@ -1,4 +1,5 @@
 import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -100,6 +101,7 @@ public abstract class class169 {
       signature = "(II)Ljava/lang/String;",
       garbageValue = "-43531897"
    )
+   @Export("getShortenedAmountText")
    static final String getShortenedAmountText(int amount) {
       String amountString = Integer.toString(amount);
 

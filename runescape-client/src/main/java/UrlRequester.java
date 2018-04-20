@@ -211,7 +211,7 @@ public class UrlRequester implements Runnable {
          }
 
          if((var4 & 16) != 0) {
-            var5 = incoming.readUByte();
+            var5 = incoming.method3538();
             int var9;
             int var10;
             int var11;
@@ -237,7 +237,7 @@ public class UrlRequester implements Runnable {
                }
             }
 
-            var6 = incoming.readUByte();
+            var6 = incoming.method3538();
             if(var6 > 0) {
                for(var7 = 0; var7 < var6; ++var7) {
                   var8 = incoming.getUSmart();
@@ -256,7 +256,7 @@ public class UrlRequester implements Runnable {
 
          if((var4 & 1) != 0) {
             var3.graphic = incoming.readLEUShortA();
-            var5 = incoming.readIMEInt_();
+            var5 = incoming.method3562();
             var3.field1198 = var5 >> 16;
             var3.graphicsDelay = (var5 & 65535) + Client.gameCycle;
             var3.spotAnimFrame = 0;
