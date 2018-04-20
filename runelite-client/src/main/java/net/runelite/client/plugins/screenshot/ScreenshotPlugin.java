@@ -41,6 +41,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -458,14 +461,16 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 
+			String newDir = config.NewSaveDir();
 			File playerFolder;
-			if (client.getLocalPlayer() != null)
+
+			if (newDir.equals(""))
 			{
-				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				playerFolder = GetDir(RuneLite.SCREENSHOT_DIR.getPath());
 			}
 			else
 			{
-				playerFolder = SCREENSHOT_DIR;
+				playerFolder = GetDir(newDir);
 			}
 
 			playerFolder.mkdirs();
@@ -544,6 +549,29 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 		});
+	}
+
+	private File GetDir(String dirToUse)
+	{
+		File playerFolder = RuneLite.SCREENSHOT_DIR;
+
+		if (Files.exists(Paths.get(dirToUse)))
+		{
+			if (client.getLocalPlayer() != null)
+			{
+				playerFolder = new File(dirToUse, client.getLocalPlayer().getName());
+			}
+		}
+		else
+		{
+			notifier.notify("Error saving file! Saving file to default directory.");
+      if (client.getLocalPlayer() != null)
+      {
+      	playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+      }
+		}
+
+		return playerFolder;
 	}
 
 	@VisibleForTesting

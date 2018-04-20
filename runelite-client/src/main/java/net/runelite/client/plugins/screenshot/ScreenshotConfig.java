@@ -111,4 +111,15 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "ChangeDir",
+			name = "Change Save Location",
+			description = "Paste the location in the textbox",
+			position = 6
+	)
+	default String NewSaveDir()
+	{
+		return "";
+	}
 }

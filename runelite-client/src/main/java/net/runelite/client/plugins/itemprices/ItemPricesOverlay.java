@@ -58,51 +58,60 @@ class ItemPricesOverlay extends Overlay
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
+	private final ItemPricesPlugin plugin;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	@Inject
-	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager)
+	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager, ItemPricesPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 		this.tooltipManager = tooltipManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.isMenuOpen())
+		// if the setting to rely on alt (showOnAltSetting) is enabled then this if statement depend only on
+		// showPricesWhenAltIsPushed where showPricesWhenAltIsPushed is enabled on alt push
+		// if the setting (showOnAltSetting) is disabled then this if statement will always be true
+		if (plugin.showPricesWhenAltIsPushed || !config.showOnAltSetting())
 		{
-			return null;
-		}
 
-		final MenuEntry[] menuEntries = client.getMenuEntries();
-		final int last = menuEntries.length - 1;
+			if (client.isMenuOpen())
+			{
+				return null;
+			}
 
-		if (last < 0)
-		{
-			return null;
-		}
+			final MenuEntry[] menuEntries = client.getMenuEntries();
+			final int last = menuEntries.length - 1;
 
-		final MenuEntry menuEntry = menuEntries[last];
-		final MenuAction action = MenuAction.of(menuEntry.getType());
-		final int widgetId = menuEntry.getParam1();
-		final int groupId = WidgetInfo.TO_GROUP(widgetId);
 
-		// Tooltip action type handling
-		switch (action)
-		{
-			case WIDGET_DEFAULT:
-			case ITEM_USE:
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
-				// Item tooltip values
+			if (last < 0)
+			{
+				return null;
+			}
+			
+			final MenuEntry menuEntry = menuEntries[last];
+			final MenuAction action = MenuAction.of(menuEntry.getType());
+			final int widgetId = menuEntry.getParam1();
+			final int groupId = WidgetInfo.TO_GROUP(widgetId);
+
+			// Tooltip action type handling
+			switch (action)
+			{
+				case WIDGET_DEFAULT:
+				case ITEM_USE:
+				case ITEM_FIRST_OPTION:
+				case ITEM_SECOND_OPTION:
+				case ITEM_THIRD_OPTION:
+				case ITEM_FOURTH_OPTION:
+				case ITEM_FIFTH_OPTION:
+					// Item tooltip values
 				switch (groupId)
 				{
 					case WidgetID.INVENTORY_GROUP_ID:
@@ -122,8 +131,10 @@ class ItemPricesOverlay extends Overlay
 						break;
 				}
 				break;
+			}
 		}
 		return null;
+
 	}
 
 	private String makeValueTooltip(MenuEntry menuEntry)

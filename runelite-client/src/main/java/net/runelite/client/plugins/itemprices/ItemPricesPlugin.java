@@ -30,6 +30,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.input.KeyManager;
+import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.FocusChanged;
 
 @PluginDescriptor(
 	name = "Item Prices",
@@ -41,6 +44,24 @@ public class ItemPricesPlugin extends Plugin
 	private ItemPricesConfig config;
 	@Inject
 	private ItemPricesOverlay overlay;
+	@Inject
+	private  ItemPricesListener listener;
+	@Inject
+	private KeyManager keyManager;
+
+	boolean showPricesWhenAltIsPushed = false;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		keyManager.registerKeyListener(listener);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		keyManager.unregisterKeyListener(listener);
+	}
 
 	@Provides
 	ItemPricesConfig getConfig(ConfigManager configManager)
@@ -52,5 +73,14 @@ public class ItemPricesPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
+		{
+			showPricesWhenAltIsPushed = false;
+		}
 	}
 }

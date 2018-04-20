@@ -78,4 +78,15 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOnAlt",
+		name = "Show item prices on alt",
+		description = "Show the item prices when alt is pushed",
+		position = 5
+	)
+	default boolean showOnAltSetting()
+	{
+		return false;
+	}
 }
