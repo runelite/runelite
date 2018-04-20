@@ -28,51 +28,56 @@ package net.runelite.client.plugins.xptracker;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 
-@Data
 @Slf4j
+@RequiredArgsConstructor
+@EqualsAndHashCode
 class SkillXPInfo
 {
+	@Getter
 	private final Skill skill;
+
+	@Getter
+	private int level = 0;
+
+	@Getter
+	private int xpGained = 0;
+
+	@Getter
+	private int actions = 0;
+
+	@Getter
+	private Instant updatedAt = null;
+
+	@Getter
+	private boolean initialized = false;
+
 	private Instant skillTimeStart = null;
 	private int startXp = -1;
-	private int xpGained = 0;
-	private int actions = 0;
 	private int nextLevelExp = 0;
 	private int startLevelExp = 0;
-	private int level = 0;
-	private boolean initialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
+
+	int getCurrentXp()
+	{
+		return startXp + xpGained;
+	}
 
 	int getXpHr()
 	{
 		return toHourly(xpGained);
 	}
 
-	int getXpSec()
-	{
-		return getXpHr() / 3600;
-	}
-
 	int getActionsHr()
 	{
 		return toHourly(actions);
-	}
-
-	private int toHourly(int value)
-	{
-		if (skillTimeStart == null)
-		{
-			return 0;
-		}
-
-		long timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
-		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
 	}
 
 	int getXpRemaining()
@@ -116,6 +121,16 @@ class SkillXPInfo
 		return "\u221e";
 	}
 
+	void init(int startXp)
+	{
+		if (this.startXp != -1)
+		{
+			return;
+		}
+
+		this.startXp = startXp;
+	}
+
 	void reset(int currentXp)
 	{
 		if (startXp != -1)
@@ -126,6 +141,7 @@ class SkillXPInfo
 		xpGained = 0;
 		actions = 0;
 		skillTimeStart = null;
+		updatedAt = null;
 	}
 
 	boolean update(int currentXp)
@@ -176,6 +192,24 @@ class SkillXPInfo
 			skillTimeStart = Instant.now();
 		}
 
+		updatedAt = Instant.now();
+
 		return true;
+	}
+
+	private int getXpSec()
+	{
+		return getXpHr() / 3600;
+	}
+
+	private int toHourly(int value)
+	{
+		if (skillTimeStart == null)
+		{
+			return 0;
+		}
+
+		long timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
+		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
 	}
 }
