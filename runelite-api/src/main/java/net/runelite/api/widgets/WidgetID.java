@@ -80,6 +80,7 @@ public class WidgetID
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
+	public static final int KINGDOM_GROUP_ID = 392;
 
 	static class WorldMap
 	{
@@ -134,10 +135,10 @@ public class WidgetID
 
 	static class Bank
 	{
-		static final int ITEM_CONTAINER = 12;
+		static final int ITEM_CONTAINER = 23;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
-		static final int BANK_TITLE_BAR = 4;
-		static final int BANK_ITEM_COUNT = 5;
+		static final int BANK_TITLE_BAR = 15;
+		static final int BANK_ITEM_COUNT = 16;
 	}
 
 	static class GrandExchange
@@ -227,9 +228,10 @@ public class WidgetID
 
 	static class Chatbox
 	{
-		static final int CHATBOX_MESSAGES = 29;
-		static final int CHATBOX_REPORT_TEXT = 28;
-		static final int CHATBOX_BUTTONS = 1;
+		static final int CHATBOX_MESSAGES = 30;
+		static final int CHATBOX_REPORT_TEXT = 29;
+		static final int CHATBOX_FRAME = 1;
+		static final int CHATBOX_BUTTONS = 2;
 	}
 
 	static class Prayer

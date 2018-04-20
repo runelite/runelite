@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, NotFoxtrot <http://github.com/NotFoxtrot>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pyramidplunder;
+package net.runelite.api.events;
 
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import lombok.Value;
+import net.runelite.api.Actor;
+import net.runelite.api.NPC;
 
-@PluginDescriptor(
-	name = "Pyramid Plunder"
-)
-public class PyramidPlunderPlugin extends Plugin
+@Value
+public class NpcSpawned implements ActorSpawned
 {
-	@Inject
-	private PyramidPlunderOverlay overlay;
+	private final NPC npc;
 
 	@Override
-	public Overlay getOverlay()
+	public Actor getActor()
 	{
-		return overlay;
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlay.showWidget();
+		return npc;
 	}
 }

@@ -90,7 +90,7 @@ public class TooltipOverlay extends Overlay
 
 			if (boundsX > clientX)
 			{
-				graphics.translate(-bounds.width, 0);
+				graphics.translate(-bounds.width + clientCanvasBounds.width - bounds.x, 0);
 			}
 		}
 

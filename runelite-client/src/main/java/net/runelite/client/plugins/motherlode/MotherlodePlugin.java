@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
-*  Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +26,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -39,20 +40,28 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKFALL;
 import static net.runelite.api.ObjectID.ROCKFALL_26680;
+import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -68,8 +77,14 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class MotherlodePlugin extends Plugin
 {
-	private static final Set<Integer> MINE_SPOTS = Sets.newHashSet(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
-	private static final Set<Integer> ROCK_OBSTACLES = Sets.newHashSet(ROCKFALL, ROCKFALL_26680);
+	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
+	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
+	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
+			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
+	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
+
+	private static final int SACK_LARGE_SIZE = 162;
+	private static final int SACK_SIZE = 81;
 
 	@Inject
 	private MotherlodeOverlay overlay;
@@ -81,7 +96,23 @@ public class MotherlodePlugin extends Plugin
 	private MotherlodeSackOverlay motherlodeSackOverlay;
 
 	@Inject
+	private MotherlodeGemOverlay motherlodeGemOverlay;
+
+	@Inject
 	private MotherlodeConfig config;
+
+	@Inject
+	private Client client;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean inMlm;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int curSackSize;
+	@Getter(AccessLevel.PACKAGE)
+	private int maxSackSize;
+	@Getter(AccessLevel.PACKAGE)
+	private Integer depositsLeft;
 
 	private final MotherlodeSession session = new MotherlodeSession();
 
@@ -99,7 +130,7 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay);
+		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
 	}
 
 	@Override
@@ -115,14 +146,47 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (inMlm)
+		{
+			curSackSize = client.getSetting(Varbits.SACK_NUMBER);
+			boolean sackUpgraded = client.getSetting(Varbits.SACK_UPGRADED) == 1;
+			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.FILTERED)
+		if (!inMlm || event.getType() != ChatMessageType.FILTERED)
 		{
-			if (event.getMessage().equals("You manage to mine some pay-dirt."))
-			{
+			return;
+		}
+
+		String chatMessage = event.getMessage();
+
+		switch (chatMessage)
+		{
+			case "You manage to mine some pay-dirt.":
 				session.incrementPayDirtMined();
-			}
+				break;
+
+			case "You just found a Diamond!":
+				session.incrementGemFound(ItemID.UNCUT_DIAMOND);
+				break;
+
+			case "You just found a Ruby!":
+				session.incrementGemFound(ItemID.UNCUT_RUBY);
+				break;
+
+			case "You just found an Emerald!":
+				session.incrementGemFound(ItemID.UNCUT_EMERALD);
+				break;
+
+			case "You just found a Sapphire!":
+				session.incrementGemFound(ItemID.UNCUT_SAPPHIRE);
+				break;
 		}
 	}
 
@@ -132,6 +196,13 @@ public class MotherlodePlugin extends Plugin
 	)
 	public void checkMining()
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
+		depositsLeft = calculateDepositsLeft();
+
 		Instant lastPayDirtMined = session.getLastPayDirtMined();
 		if (lastPayDirtMined == null)
 		{
@@ -149,8 +220,13 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectSpanwed(WallObjectSpawned event)
+	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
 		WallObject wallObject = event.getWallObject();
 		if (MINE_SPOTS.contains(wallObject.getId()))
 		{
@@ -161,6 +237,11 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onWallObjectChanged(WallObjectChanged event)
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
 		WallObject previous = event.getPrevious();
 		WallObject wallObject = event.getWallObject();
 
@@ -174,6 +255,11 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
 		WallObject wallObject = event.getWallObject();
 		veins.remove(wallObject);
 	}
@@ -181,6 +267,11 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
 		GameObject gameObject = event.getGameObject();
 		if (ROCK_OBSTACLES.contains(gameObject.getId()))
 		{
@@ -191,6 +282,11 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onGameObjectChanged(GameObjectChanged event)
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
 		GameObject previous = event.getPrevious();
 		GameObject gameObject = event.getGameObject();
 
@@ -205,8 +301,19 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
+		if (!inMlm)
+		{
+			return;
+		}
+
 		GameObject gameObject = event.getGameObject();
 		rocks.remove(gameObject);
+	}
+
+	@Subscribe
+	public void onRegionChanged(MapRegionChanged event)
+	{
+		inMlm = checkInMlm();
 	}
 
 	@Subscribe
@@ -218,5 +325,78 @@ public class MotherlodePlugin extends Plugin
 			veins.clear();
 			rocks.clear();
 		}
+		else if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			inMlm = checkInMlm();
+		}
+	}
+
+	private Integer calculateDepositsLeft()
+	{
+		if (maxSackSize == 0) // check if maxSackSize has been initialized
+		{
+			return null;
+		}
+
+		double depositsLeft = 0;
+		int nonPayDirtItems = 0;
+
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventory == null)
+		{
+			return null;
+		}
+
+		Item[] result = inventory.getItems();
+		assert result != null;
+
+		int inventorySize = result.length;
+
+		for (Item item : result)
+		{
+			// Assume that MLM ores are being banked and exclude them from the check,
+			// so the user doesn't see the Overlay switch between deposits left and N/A.
+			//
+			// Count other items at nonPayDirtItems so depositsLeft is calculated accordingly.
+			if (item.getId() != ItemID.PAYDIRT && item.getId() != -1 && !MLM_ORE_TYPES.contains(item.getId()))
+			{
+				nonPayDirtItems += 1;
+			}
+		}
+
+		double inventorySpace = inventorySize - nonPayDirtItems;
+		double sackSizeRemaining = maxSackSize - curSackSize;
+
+		if (inventorySpace > 0 && sackSizeRemaining > 0)
+		{
+			depositsLeft = Math.ceil(sackSizeRemaining / inventorySpace);
+		}
+		else if (inventorySpace == 0)
+		{
+			return null;
+		}
+
+		return (int) depositsLeft;
+	}
+
+	private boolean checkInMlm()
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+
+		int[] currentMapRegions = client.getMapRegions();
+
+		// Verify that all regions exist in MOTHERLODE_MAP_REGIONS
+		for (int region : currentMapRegions)
+		{
+			if (!MOTHERLODE_MAP_REGIONS.contains(region))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

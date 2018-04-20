@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.plugins.herbiboars;
 
-import java.awt.Color;
+import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import javax.inject.Inject;
+import java.util.Set;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class AttackIndicatorOverlay extends Overlay
+public class HerbiboarMinimapOverlay extends Overlay
 {
-	private static final int COMPONENT_WIDTH = 80;
-
-	private final AttackIndicatorPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final HerbiboarPlugin plugin;
+	private final HerbiboarConfig config;
 
 	@Inject
-	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin)
+	public HerbiboarMinimapOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
 	{
-		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final String attackStyleString = plugin.getAttackStyle().getName();
+		if (config.isTrailShown() && plugin.isInHerbiboarArea())
+		{
+			HerbiboarTrail currentTrail = plugin.getCurrentTrail();
+			int finishId = plugin.getFinishId();
+			Set<Integer> shownTrailIds = plugin.getShownTrails();
+			plugin.getTrails().keySet().forEach((x) ->
+			{
+				int id = x.getId();
+				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
+				{
+					OverlayUtil.renderMinimapLocation(graphics, x.getMinimapLocation(), config.getTrailColor());
+				}
+			});
+		}
 
-		panelComponent.setTitleColor(plugin.isWarnedSkillSelected() ? Color.RED : Color.WHITE);
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(COMPONENT_WIDTH);
-
-		return panelComponent.render(graphics);
+		return null;
 	}
 }

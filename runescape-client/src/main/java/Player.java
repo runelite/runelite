@@ -131,7 +131,8 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 727023787
    )
-   int field836;
+   @Export("playerId")
+   int playerId;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lkf;"
@@ -353,7 +354,7 @@ public final class Player extends Actor {
    )
    @Export("getSize")
    int getSize() {
-      return this.composition != null && this.composition.transformedNpcId != -1?class234.getNpcDefinition(this.composition.transformedNpcId).field3720:1;
+      return this.composition != null && this.composition.transformedNpcId != -1?class234.getNpcDefinition(this.composition.transformedNpcId).size:1;
    }
 
    @ObfuscatedName("u")

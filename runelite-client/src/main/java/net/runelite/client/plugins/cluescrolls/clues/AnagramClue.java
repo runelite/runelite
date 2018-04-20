@@ -39,7 +39,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLU
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
 {
 	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
 		new AnagramClue("This anagram reveals who to speak to next: A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "5"),
@@ -58,8 +58,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: AREA CHEF TREK", "Father Aereck", new WorldPoint(3243, 3208, 0), "Lumbridge Church", "19 or 20"),
 		new AnagramClue("This anagram reveals who to speak to next: BAIL TRIMS", "Brimstail", new WorldPoint(2402, 3419, 0), "West of Stronghold Slayer Cave"),
 		new AnagramClue("This anagram reveals who to speak to next: BAKER CLIMB", "Brambickle", new WorldPoint(2783, 3861, 0), "Trollweiss mountain"),
+		new AnagramClue("This anagram reveals who to speak to next: BLUE GRIM GUIDED", "Lumbridge Guide", new WorldPoint(3232, 3232, 0), "Lumbridge"),
 		new AnagramClue("This anagram reveals who to speak to next: BY LOOK", "Bolkoy", new WorldPoint(2529, 3162, 0), "Tree Gnome Village general store", "13"),
-		new AnagramClue("This anagram reveals who to speak to next: MOTHERBOARD", "Lumbridge Guide", new WorldPoint(3232, 3232, 0), "Monastery south of Ardougne", "129"),
 		new AnagramClue("This anagram reveals who to speak to next: CAR IF ICES", "Sacrifice", new WorldPoint(2209, 3056, 0), "Zul-Andra"),
 		new AnagramClue("This anagram reveals who to speak to next: CAREER IN MOON", "Oneiromancer", new WorldPoint(2150, 3866, 0), "Astral altar", "25"),
 		new AnagramClue("This anagram reveals who to speak to next: C ON GAME HOC", "Gnome Coach", new WorldPoint(2395, 3486, 0), "Gnome Ball course", "6"),
@@ -82,7 +82,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: GOT A BOY", "Gabooty", new WorldPoint(2790, 3066, 0), "Centre of Tai Bwo Wannai", "11"),
 		new AnagramClue("This anagram reveals who to speak to next: GULAG RUN", "Uglug Nar", new WorldPoint(2442, 3051, 0), "West of Jiggig"),
 		new AnagramClue("This anagram reveals who to speak to next: GOBLETS ODD TOES", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "2"),
-		new AnagramClue("This anagram reveals who to speak to next: HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja", "33 or 0"),
+		new AnagramClue("This anagram reveals who to speak to next: HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja", "33 (or none)"),
 		new AnagramClue("This anagram reveals who to speak to next: HE DO POSE. IT IS CULTRRL, MK?", "Riki the sculptor's model", new WorldPoint(2904, 10206, 0), "East Keldagrim, south of kebab seller."),
 		new AnagramClue("This anagram reveals who to speak to next: HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Burthorpe Castle, top floor", "36"),
 		new AnagramClue("This anagram reveals who to speak to next: HIS PHOR", "Horphis", new WorldPoint(1639, 3812, 0), "Arceuus Library, Zeah", "1"),
@@ -99,7 +99,6 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: LARK IN DOG", "King Roald", new WorldPoint(3220, 3476, 0), "Ground floor of Varrock castle", "24"),
 		new AnagramClue("This anagram reveals who to speak to next: LOW LAG", "Gallow", new WorldPoint(1805, 3566, 0), "Vinery in the Great Kourend", "12"),
 		new AnagramClue("This anagram reveals who to speak to next: LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 0), "Gnome Stronghold Bank", "3"),
-		new AnagramClue("This anagram reveals who to speak to next: I AM SIR", "Ambassador Alvijar", new WorldPoint(2721, 5358, 0), "Allotment patch, South coast Zeah", "5"),
 		new AnagramClue("This anagram reveals who to speak to next: MAL IN TAU", "Luminata", new WorldPoint(3508, 3237, 0), "Near Burgh de Rott entrance"),
 		new AnagramClue("This anagram reveals who to speak to next: ME AM THE CALC", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena"),
 		new AnagramClue("This anagram reveals who to speak to next: MACHETE CLAM", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena", "6"),

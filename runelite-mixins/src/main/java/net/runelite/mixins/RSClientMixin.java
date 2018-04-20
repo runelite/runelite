@@ -46,6 +46,7 @@ import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
+import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -64,8 +65,11 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
-import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -77,6 +81,8 @@ import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.Hooks;
+import static net.runelite.client.callback.Hooks.deferredEventBus;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -103,6 +109,12 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean interpolateObjectAnimations;
+
+	@Inject
+	private static RSPlayer[] oldPlayers = new RSPlayer[2048];
+
+	@Inject
+	private static RSNPC[] oldNpcs = new RSNPC[32768];
 
 	@Inject
 	@Override
@@ -668,6 +680,18 @@ public abstract class RSClientMixin implements RSClient
 		{
 			npc.setIndex(idx);
 		}
+
+		RSNPC oldNpc = oldNpcs[idx];
+		oldNpcs[idx] = npc;
+
+		if (oldNpc != null)
+		{
+			eventBus.post(new NpcDespawned(oldNpc));
+		}
+		if (npc != null)
+		{
+			deferredEventBus.post(new NpcSpawned(npc));
+		}
 	}
 
 	@FieldHook("cachedPlayers")
@@ -681,9 +705,16 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		RSPlayer player = cachedPlayers[idx];
+		RSPlayer oldPlayer = oldPlayers[idx];
+		oldPlayers[idx] = player;
+
+		if (oldPlayer != null)
+		{
+			eventBus.post(new PlayerDespawned(oldPlayer));
+		}
 		if (player != null)
 		{
-			player.setIndex(idx);
+			deferredEventBus.post(new PlayerSpawned(player));
 		}
 	}
 
@@ -734,20 +765,6 @@ public abstract class RSClientMixin implements RSClient
 		eventBus.post(new ClanChanged(client.getClanMemberManager() != null));
 	}
 
-	@FieldHook("isMenuOpen")
-	@Inject
-	public static void menuOpened(int opened)
-	{
-		if (!client.isMenuOpen())
-		{
-			return;
-		}
-
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
-	}
-
 	@Inject
 	@Override
 	public boolean hasHintArrow()
@@ -775,7 +792,7 @@ public abstract class RSClientMixin implements RSClient
 	public void setHintArrow(Player player)
 	{
 		client.setHintArrowTargetType(HintArrowType.PLAYER.getValue());
-		client.setHintArrowPlayerTargetIdx(player.getIndex());
+		client.setHintArrowPlayerTargetIdx(((RSPlayer) player).getPlayerId());
 	}
 
 	@Inject
@@ -785,5 +802,24 @@ public abstract class RSClientMixin implements RSClient
 		client.setHintArrowTargetType(HintArrowType.WORLD_POSITION.getValue());
 		client.setHintArrowX(point.getX());
 		client.setHintArrowY(point.getY());
+		// position the arrow in center of the tile
+		client.setHintArrowOffsetX(LOCAL_TILE_SIZE / 2);
+		client.setHintArrowOffsetY(LOCAL_TILE_SIZE / 2);
+	}
+
+	@Copy("menuAction")
+	static void rs$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("menuAction")
+	static void rl$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
+	{
+		if (Hooks.menuActionHook(var0, var1, var2, var3, var4, var5, var6, var7))
+		{
+			return;
+		}
+		rs$menuAction(var0, var1, var2, var3, var4, var5, var6, var7);
 	}
 }

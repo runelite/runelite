@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, NotFoxtrot <http://github.com/NotFoxtrot>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,80 +22,89 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pyramidplunder;
+package net.runelite.client.plugins.motherlode;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class PyramidPlunderOverlay extends Overlay
+public class MotherlodeGemOverlay extends Overlay
 {
-	private final Client client;
+	private final MotherlodePlugin plugin;
+	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	private PyramidTimer timer;
-
 	@Inject
-	PyramidPlunderOverlay(Client client)
+	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget pyramidPlunderInfo = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+		MotherlodeSession session = plugin.getSession();
 
-		if (pyramidPlunderInfo == null)
+		if (session.getLastGemFound() == null || !plugin.isInMlm() || !config.showGemsFound())
 		{
-			timer = null;
 			return null;
 		}
 
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCut = Duration.between(session.getLastGemFound(), Instant.now());
+
+		if (sinceCut.compareTo(statTimeout) >= 0)
+		{
+			return null;
+		}
+
+		int diamondsFound = session.getDiamondsFound();
+		int rubiesFound = session.getRubiesFound();
+		int emeraldsFound = session.getEmeraldsFound();
+		int sapphiresFound = session.getSapphiresFound();
+
 		panelComponent.getLines().clear();
 
-		pyramidPlunderInfo.setHidden(true);
+		panelComponent.setTitle("Gems found");
 
-		if (timer == null)
+		if (diamondsFound > 0)
 		{
-			startTimer();
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Diamonds:",
+					Integer.toString(diamondsFound)
+			));
 		}
 
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Time left: ", Color.WHITE, timer.getText(), timer.getTextColor()
-		));
+		if (rubiesFound > 0)
+		{
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Rubies:",
+					Integer.toString(rubiesFound)
+			));
+		}
 
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Room: ", String.valueOf(client.getSetting(Varbits.PYRAMID_PLUNDER_ROOM)) + "/8"
-		));
+		if (emeraldsFound > 0)
+		{
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Emeralds:",
+					Integer.toString(emeraldsFound)
+			));
+		}
 
+		if (sapphiresFound > 0)
+		{
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Sapphires:",
+					Integer.toString(sapphiresFound)
+			));
+		}
 		return panelComponent.render(graphics);
-	}
-
-	public void showWidget()
-	{
-		Widget pyramidPlunderInfo = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
-
-		if (pyramidPlunderInfo != null)
-		{
-			pyramidPlunderInfo.setHidden(false);
-		}
-	}
-
-	private void startTimer()
-	{
-		int plunderingTime = client.getSetting(Varbits.PYRAMID_PLUNDER_TIMER);
-		int timeLeft = (int) ((505 - plunderingTime) * 0.6);
-
-		timer = new PyramidTimer(timeLeft);
 	}
 }

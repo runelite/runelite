@@ -39,7 +39,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLU
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
-public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
 {
 	private static final Set<CipherClue> CLUES = ImmutableSet.of(
 		new CipherClue("The cipher reveals who to speak to next: BMJ UIF LFCBC TFMMFS", "Ali the Kebab seller", new WorldPoint(3354, 2974, 0), "Pollnivneach", "399"),

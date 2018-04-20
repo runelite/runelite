@@ -37,7 +37,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPA
 
 @Getter
 @AllArgsConstructor
-public class CoordinateClue extends ClueScroll implements TextClueScroll
+public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private String text;
 	private WorldPoint location;
