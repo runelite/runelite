@@ -506,11 +506,19 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
-		subGraphics.setFont((position == OverlayPosition.DYNAMIC
-			|| position == OverlayPosition.TOOLTIP)
-			&& runeLiteConfig.useSmallFont()
-			? FontManager.getRunescapeSmallFont()
-			: FontManager.getRunescapeFont());
+		if (position == OverlayPosition.DYNAMIC)
+		{
+			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+		}
+		else if (position == OverlayPosition.TOOLTIP)
+		{
+			subGraphics.setFont(FontManager.getRunescapeSmallFont());
+		}
+		else
+		{
+			subGraphics.setFont(FontManager.getRunescapeFont());
+		}
+
 
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
