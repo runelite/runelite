@@ -38,19 +38,23 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
+import net.runelite.client.util.QueryRunner;
 
 public class GrandExchangeInputListener extends MouseListener implements KeyListener
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;
 	private final ItemManager itemManager;
+	private final QueryRunner queryRunner;
 
 	@Inject
-	GrandExchangeInputListener(Client client, GrandExchangePlugin plugin, ItemManager itemManager)
+	GrandExchangeInputListener(Client client, GrandExchangePlugin plugin, ItemManager itemManager,
+		QueryRunner queryRunner)
 	{
 		this.client = client;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
+		this.queryRunner = queryRunner;
 	}
 
 	@Override
@@ -84,7 +88,8 @@ public class GrandExchangeInputListener extends MouseListener implements KeyList
 			if (bankWidget != null && !bankWidget.isHidden())
 			{
 				// Use bank item query for only checking the active tab
-				if (findAndSearch(new BankItemQuery().result(client)))
+				WidgetItem[] items = queryRunner.runQuery(new BankItemQuery());
+				if (findAndSearch(items))
 				{
 					e.consume();
 					return super.mouseClicked(e);
