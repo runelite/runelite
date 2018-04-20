@@ -514,6 +514,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		{
 			subGraphics.setFont(FontManager.getRunescapeSmallFont());
 		}
+		else
+		{
+			subGraphics.setFont(FontManager.getRunescapeFont());
+		}
 
 
 		subGraphics.translate(point.x, point.y);
