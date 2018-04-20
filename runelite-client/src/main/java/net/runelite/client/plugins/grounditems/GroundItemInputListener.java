@@ -24,19 +24,21 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.Map;
-import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
 
+import javax.inject.Inject;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.Map;
+
 public class GroundItemInputListener extends MouseListener implements KeyListener
 {
-	private static final int HOTKEY = KeyEvent.VK_ALT;
+	private static final int HOTKEY_ITEM_OPTIONS = KeyEvent.VK_ALT;
+	private static final int HOTKEY_SHOW_HIDDEN = KeyEvent.VK_CONTROL;
 
 	@Inject
 	private Client client;
@@ -53,20 +55,36 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY)
+		if (e.getKeyCode() == HOTKEY_ITEM_OPTIONS)
 		{
 			plugin.setHotKeyPressed(true);
+		}
+		else if (e.getKeyCode() == HOTKEY_SHOW_HIDDEN)
+		{
+			plugin.setShowHiddenItems(true);
+		}
+		else if (e.getKeyCode() == HOTKEY_SHOW_HIDDEN)
+		{
+			plugin.setShowHiddenItems(true);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == HOTKEY)
+		if (e.getKeyCode() == HOTKEY_ITEM_OPTIONS)
 		{
 			plugin.setHotKeyPressed(false);
 			plugin.getHighlightBoxes().clear();
 			plugin.getHiddenBoxes().clear();
+		}
+		else if (e.getKeyCode() == HOTKEY_SHOW_HIDDEN)
+		{
+			plugin.setShowHiddenItems(false);
+		}
+		else if (e.getKeyCode() == HOTKEY_SHOW_HIDDEN)
+		{
+			plugin.setShowHiddenItems(false);
 		}
 	}
 

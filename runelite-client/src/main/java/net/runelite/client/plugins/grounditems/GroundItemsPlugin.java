@@ -32,43 +32,13 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
-import java.awt.Rectangle;
-import static java.lang.Boolean.TRUE;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Node;
-import net.runelite.api.Player;
-import net.runelite.api.Region;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ItemLayerChanged;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -78,8 +48,21 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.http.api.item.ItemPrice;
 
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import static java.lang.Boolean.TRUE;
+
 @PluginDescriptor(
-	name = "Ground Items"
+		name = "Ground Items"
 )
 @Slf4j
 public class GroundItemsPlugin extends Plugin
@@ -102,6 +85,10 @@ public class GroundItemsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean showHiddenItems;
 
 	private List<String> hiddenItemList = new ArrayList<>();
 	private List<String> highlightedItemsList = new ArrayList<>();
@@ -136,15 +123,15 @@ public class GroundItemsPlugin extends Plugin
 
 	// Collects similar ground items
 	private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
-		.toMap
-			((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
-				{
-					b.setHaPrice(a.getHaPrice() + b.getHaPrice());
-					b.setGePrice(a.getGePrice() + b.getGePrice());
-					b.setQuantity(a.getQuantity() + b.getQuantity());
-					return b;
-				},
-				() -> collectedGroundItems);
+			.toMap
+					((item) -> new GroundItem.GroundItemKey(item.getItemId(), item.getLocation()), Function.identity(), (a, b) ->
+							{
+								b.setHaPrice(a.getHaPrice() + b.getHaPrice());
+								b.setGePrice(a.getGePrice() + b.getGePrice());
+								b.setQuantity(a.getQuantity() + b.getQuantity());
+								return b;
+							},
+							() -> collectedGroundItems);
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -281,13 +268,13 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 
 		final GroundItem groundItem = GroundItem.builder()
-			.id(itemId)
-			.location(tile.getWorldLocation())
-			.itemId(realItemId)
-			.quantity(item.getQuantity())
-			.name(itemComposition.getName())
-			.haPrice(alchPrice * item.getQuantity())
-			.build();
+				.id(itemId)
+				.location(tile.getWorldLocation())
+				.itemId(realItemId)
+				.quantity(item.getQuantity())
+				.name(itemComposition.getName())
+				.haPrice(alchPrice * item.getQuantity())
+				.build();
 
 
 		// Update item price in case it is coins
@@ -311,14 +298,14 @@ public class GroundItemsPlugin extends Plugin
 		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
 
 		highlightedItems = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new WildcardMatchLoader(highlightedItemsList));
+				.maximumSize(512L)
+				.expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new WildcardMatchLoader(highlightedItemsList));
 
 		hiddenItems = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new WildcardMatchLoader(hiddenItemList));
+				.maximumSize(512L)
+				.expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new WildcardMatchLoader(hiddenItemList));
 
 		dirty = true;
 	}
@@ -338,68 +325,89 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take")
-			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+		if ((event.getType() == MenuAction.EXAMINE_ITEM_GROUND.getId() /* And Remove examine options */) || event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			int itemId = event.getIdentifier();
 			ItemComposition itemComposition = client.getItemDefinition(itemId);
 
-			if (isHidden(itemComposition.getName()))
+			boolean isHidden = isHidden(itemComposition.getName());
+
+			if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId()/*event.getOption().equals("Take")*/ && !isHidden)
 			{
-				return;
+				//Preserve previous behavior substitute string comparison for id ??Unknown if there is an issue from this??
+				highlightMenuEntry(event, itemId, itemComposition);
 			}
-
-			Region region = client.getRegion();
-			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			ItemLayer itemLayer = tile.getItemLayer();
-			if (itemLayer == null)
+			else if (!showHiddenItems && isHidden)
 			{
-				return;
-			}
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-			int quantity = 1;
-			Node current = itemLayer.getBottom();
-			while (current instanceof Item)
-			{
-				Item item = (Item) current;
-				if (item.getId() == itemId)
+				if (config.removeExamine() && event.getType() == MenuAction.EXAMINE_ITEM_GROUND.getId())
 				{
-					quantity = item.getQuantity();
+					//Examine action is added after the Take action, so on 2nd iteration remove the last two entries from the menu.
+					client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 2));
 				}
-				current = current.getNext();
+				else if (!config.removeExamine() && config.removeTakeOption() && event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
+				{
+					//Dunno if im stupid or not but it seems the take and examine can't be removed individually,
+					//the examine seems to disappear from the clients list after the take option has been removed?
+					client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
+				}
 			}
+		}
 
-			ItemPrice itemPrice = getItemPrice(itemComposition);
-			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			int cost = quantity * price;
-			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
+	}
+
+	private void highlightMenuEntry(MenuEntryAdded event, int itemId, ItemComposition itemComposition)
+	{
+		Region region = client.getRegion();
+		Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
+		ItemLayer itemLayer = tile.getItemLayer();
+		if (itemLayer == null)
+		{
+			return;
+		}
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+
+		int quantity = 1;
+		Node current = itemLayer.getBottom();
+		while (current instanceof Item)
+		{
+			Item item = (Item) current;
+			if (item.getId() == itemId)
+			{
+				quantity = item.getQuantity();
+			}
+			current = current.getNext();
+		}
+
+		ItemPrice itemPrice = getItemPrice(itemComposition);
+		int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+		int cost = quantity * price;
+		Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
 				isHidden(itemComposition.getName()));
 
-			if (!color.equals(config.defaultColor()))
+		if (!color.equals(config.defaultColor()))
+		{
+			String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
+			String colTag = "<col=" + hexColor + ">";
+			if (config.highlightMenuOption())
 			{
-				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
-				if (config.highlightMenuOption())
-				{
-					lastEntry.setOption(colTag + "Take");
-				}
-				if (config.highlightMenuItemName())
-				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(colTag + target);
-				}
+				lastEntry.setOption(colTag + "Take");
 			}
-
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+			if (config.highlightMenuItemName())
 			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+				String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+				lastEntry.setTarget(colTag + target);
 			}
-
-			client.setMenuEntries(menuEntries);
 		}
+
+		if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+		{
+			lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+		}
+
+		client.setMenuEntries(menuEntries);
 	}
 
 	void updateList(String item, boolean hiddenList)
