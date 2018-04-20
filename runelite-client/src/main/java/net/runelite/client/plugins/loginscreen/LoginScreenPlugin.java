@@ -22,11 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.usernamesyncer;
+package net.runelite.client.plugins.loginscreen;
 
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -34,21 +39,26 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Username Syncer",
-	description = "Save your username to the config, allowing it to be synced"
+	name = "Login Screen",
+	description = "Provides various enhancements for login screen"
 )
 @Slf4j
-public class UsernameSyncerPlugin extends Plugin
+public class LoginScreenPlugin extends Plugin implements KeyListener
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private UsernameSyncerConfig config;
+	private LoginScreenConfig config;
+
+	@Inject
+	private KeyManager keyManager;
 
 	private String usernameCache;
 
@@ -56,23 +66,34 @@ public class UsernameSyncerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		applyUsername();
+		keyManager.registerKeyListener(this);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		client.getPreferences().setRememberedUsername(usernameCache);
+		if (config.syncUsername())
+		{
+			client.getPreferences().setRememberedUsername(usernameCache);
+		}
+
+		keyManager.unregisterKeyListener(this);
 	}
 
 	@Provides
-	UsernameSyncerConfig getConfig(ConfigManager configManager)
+	LoginScreenConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(UsernameSyncerConfig.class);
+		return configManager.getConfig(LoginScreenConfig.class);
 	}
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
+		if (!config.syncUsername())
+		{
+			return;
+		}
+
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			applyUsername();
@@ -105,6 +126,11 @@ public class UsernameSyncerPlugin extends Plugin
 
 	private void applyUsername()
 	{
+		if (!config.syncUsername())
+		{
+			return;
+		}
+
 		GameState gameState = client.getGameState();
 		if (gameState == GameState.LOGIN_SCREEN)
 		{
@@ -123,5 +149,52 @@ public class UsernameSyncerPlugin extends Plugin
 
 			client.getPreferences().setRememberedUsername(username);
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (!config.pasteEnabled() || !client.getGameState().equals(GameState.LOGIN_SCREEN))
+		{
+			return;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_V && e.isControlDown())
+		{
+			try
+			{
+				final String data = Toolkit
+					.getDefaultToolkit()
+					.getSystemClipboard()
+					.getData(DataFlavor.stringFlavor)
+					.toString()
+					.trim();
+
+				// 0 is username, 1 is password
+				if (client.getCurrentLoginField() == 0)
+				{
+					client.setUsername(data);
+				}
+				else
+				{
+					client.setPassword(data);
+				}
+			}
+			catch (UnsupportedFlavorException | IOException ex)
+			{
+				log.warn("Failed to fetch clipboard data.");
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+
 	}
 }

@@ -22,15 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.usernamesyncer;
+package net.runelite.client.plugins.loginscreen;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("rememberusername")
-public interface UsernameSyncerConfig extends Config
+@ConfigGroup("loginscreen")
+public interface LoginScreenConfig extends Config
 {
+	@ConfigItem(
+		keyName = "syncusername",
+		name = "Sync username",
+		description = "Syncs the username that is currently remembered between computers"
+	)
+	default boolean syncUsername()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "pasteenabled",
+		name = "Ctrl-V paste",
+		description = "Enables Ctrl + V key binding that will set username or password on login screen from clipboard."
+	)
+	default boolean pasteEnabled()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		keyName = "username",
 		name = "",
