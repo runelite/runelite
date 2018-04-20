@@ -35,6 +35,7 @@ enum Task
 	//<editor-fold desc="Enums">
 	ABERRANT_SPECTRES("aberrant spectres", ItemID.ABERRANT_SPECTRE, "spectre"),
 	ABYSSAL_DEMONS("abyssal demons", ItemID.ABYSSAL_DEMON),
+	ADAMANT_DRAGONS("adamant dragons", ItemID.ADAMANTITE_BAR),
 	ANKOU("ankou", ItemID.ANKOU_MASK),
 	AVIANSIES("aviansies", ItemID.ENSOULED_AVIANSIE_HEAD),
 	BANSHEES("banshees", ItemID.BANSHEE),
@@ -107,6 +108,7 @@ enum Task
 	RATS("rats", ItemID.RATS_TAIL),
 	RED_DRAGONS("red dragons", ItemID.BABY_RED_DRAGON),
 	ROCKSLUGS("rockslugs", ItemID.ROCKSLUG),
+	RUNE_DRAGONS("rune dragons", ItemID.RUNITE_BAR),
 	SCORPIONS("scorpions", ItemID.ENSOULED_SCORPION_HEAD),
 	SEA_SNAKES("sea snakes", ItemID.SNAKE_CORPSE),
 	SHADES("shades", ItemID.SHADE_ROBE_TOP),
