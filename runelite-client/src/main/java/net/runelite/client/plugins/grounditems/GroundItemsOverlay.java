@@ -118,7 +118,7 @@ public class GroundItemsOverlay extends Overlay
 			final boolean highlighted = plugin.isHighlighted(item.getName(), item.getHaPrice(), item.getGePrice());
 			final boolean hidden = plugin.isHidden(item.getName(), item.getHaPrice(), item.getGePrice());
 
-			if (!plugin.isHotKeyPressed())
+			if (!plugin.isHotKeyPressed() && !highlighted)
 			{
 				// Do not display hidden items
 				if (hidden)
@@ -127,7 +127,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Do not display non-highlighted items when only highlighted items should be shown
-				if (config.showHighlightedOnly() && !highlighted)
+				if (config.showHighlightedOnly())
 				{
 					continue;
 				}

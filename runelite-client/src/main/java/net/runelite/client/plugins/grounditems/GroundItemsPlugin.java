@@ -424,11 +424,6 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getCostColor(boolean highlighted, boolean hidden, int haPrice, int gePrice)
 	{
-		if (hidden)
-		{
-			return Color.GRAY;
-		}
-
 		if (highlighted)
 		{
 			final boolean geBased = gePrice > haPrice;
@@ -451,6 +446,11 @@ public class GroundItemsPlugin extends Plugin
 			}
 
 			return config.highlightedColor();
+		}
+
+		if (hidden)
+		{
+			return Color.GRAY;
 		}
 
 		return config.defaultColor();
