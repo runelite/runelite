@@ -39,7 +39,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>api</artifactId>
+			<artifactId>runelite-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
