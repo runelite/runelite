@@ -420,6 +420,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		else if (config.swapPick() && option.equals("pick"))
+		{
+			swap("pick-lots", option, target, true);
+		}
+		else if (config.swapRaidsChest() && shiftModifier && option.equals("shared"))
+		{
+			swap("private", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
@@ -435,12 +443,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
 		}
-		else if (option.equals("wield"))
+		else if (config.swapTeleportItem() && option.equals("wield"))
 		{
-			if (config.swapTeleportItem())
-			{
-				swap("teleport", option, target, true);
-			}
+			swap("teleport", option, target, true);
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
