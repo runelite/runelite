@@ -37,7 +37,7 @@ public class WeaponChargesCounter extends Counter
 	@Getter
 	private final ChargedWeapon chargedWeapon;
 
-	public WeaponChargesCounter(BufferedImage image, WeaponChargesPlugin plugin, final ChargedWeapon chargedWeapon)
+	WeaponChargesCounter(BufferedImage image, WeaponChargesPlugin plugin, final ChargedWeapon chargedWeapon)
 	{
 		super(image, plugin, String.valueOf(plugin.getCharges(chargedWeapon)));
 		this.plugin = plugin;

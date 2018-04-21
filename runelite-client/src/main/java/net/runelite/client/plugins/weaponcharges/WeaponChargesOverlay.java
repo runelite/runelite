@@ -66,7 +66,7 @@ public class WeaponChargesOverlay extends Overlay
 		final Query inventoryQuery = new InventoryWidgetItemQuery();
 		final Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_WEAPON);
 		WidgetItem[] itemSlots = ArrayUtils.addAll(queryRunner.runQuery(inventoryQuery),
-													queryRunner.runQuery(equipmentQuery));
+				queryRunner.runQuery(equipmentQuery));
 		for (WidgetItem item : itemSlots)
 		{
 			final ChargedWeapon chargedWeapon = plugin.getChargedWeaponFromId(item.getId());
