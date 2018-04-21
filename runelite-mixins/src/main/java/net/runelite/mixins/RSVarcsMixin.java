@@ -24,7 +24,8 @@
  */
 package net.runelite.mixins;
 
-import net.runelite.api.VarClient;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSVarcs;
@@ -34,9 +35,17 @@ public abstract class RSVarcsMixin implements RSVarcs
 {
 	@Inject
 	@Override
-	public int getIntVar(VarClient var)
+	public int getIntVar(VarClientInt var)
 	{
-		int[] varcs = getVarcs();
+		int[] varcs = getIntVarcs();
+		return varcs[var.getIndex()];
+	}
+
+	@Inject
+	@Override
+	public String getStrVar(VarClientStr var)
+	{
+		String[] varcs = getStrVarcs();
 		return varcs[var.getIndex()];
 	}
 }

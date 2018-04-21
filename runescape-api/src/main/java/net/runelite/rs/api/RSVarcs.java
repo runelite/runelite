@@ -30,5 +30,8 @@ import net.runelite.mapping.Import;
 public interface RSVarcs extends Varcs
 {
 	@Import("varcs")
-	int[] getVarcs();
+	int[] getIntVarcs();
+
+	@Import("varcstrings")
+	String[] getStrVarcs();
 }
