@@ -35,9 +35,13 @@ public enum GrandExchangeOfferState
 	 */
 	EMPTY,
 	/**
-	 * Any offer that's been cancelled
+	 * A cancelled buy offer
 	 */
-	CANCELLED,
+	CANCELLED_BUY,
+	/**
+	 * A cancelled sell offer
+	 */
+	CANCELLED_SELL,
 	/**
 	 * A buy offer that is currently in progress.
 	 */

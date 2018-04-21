@@ -40,7 +40,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -53,6 +55,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.JShadowedLabel;
+import net.runelite.client.util.LinkBrowser;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
@@ -66,17 +69,13 @@ class XpInfoBox extends JPanel
 	private final SkillXPInfo xpInfo;
 
 	private final JPanel container = new JPanel();
-
-	private final JPanel iconBarPanel = new JPanel();
 	private final JPanel statsPanel = new JPanel();
-
 	private final JProgressBar progressBar = new JProgressBar();
 	private final JLabel xpHr = new JLabel();
 	private final JLabel xpGained = new JLabel();
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
-	private final JButton skillIcon = new JButton();
 
 	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
@@ -109,7 +108,10 @@ class XpInfoBox extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				showStatsPanel();
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
+					showStatsPanel();
+				}
 			}
 		};
 
@@ -117,11 +119,23 @@ class XpInfoBox extends JPanel
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
 		container.addMouseListener(panelMouseListener);
 
+		// Create open xp tracker menu
+		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), xpInfo.getSkill())));
+
+		// Create popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.add(openXpTracker);
+		container.setComponentPopupMenu(popupMenu);
+
+		// Create icon panel
+		final JPanel iconBarPanel = new JPanel();
 		iconBarPanel.setLayout(new BorderLayout(5, 0));
 		iconBarPanel.setOpaque(false);
 
 		// Create skill/reset icon
 		final BufferedImage skillImage = iconManager.getSkillImage(xpInfo.getSkill());
+		final JButton skillIcon = new JButton();
 		skillIcon.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
 		skillIcon.setIcon(new ImageIcon(skillImage));

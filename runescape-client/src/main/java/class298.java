@@ -52,7 +52,7 @@ public class class298 extends NameableContainer {
             Name var5 = new Name(var1.readString(), this.field3835);
             Name var6 = new Name(var1.readString(), this.field3835);
             var1.readString();
-            if(var5 != null && var5.method5427()) {
+            if(var5 != null && var5.isCleanNameValid()) {
                Ignore var7 = (Ignore)this.method5327(var5);
                if(var4) {
                   Ignore var8 = (Ignore)this.method5327(var6);

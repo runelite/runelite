@@ -53,6 +53,36 @@ public class WorldPoint
 	 */
 	private final int plane;
 
+	/**
+	 * Returns a WorldPoint offset on x from this point
+	 * @param dx offset
+	 * @return
+	 */
+	public WorldPoint dx(int dx)
+	{
+		return new WorldPoint(x + dx, y, plane);
+	}
+
+	/**
+	 * Returns a WorldPoint offset on y from this point
+	 * @param dy offset
+	 * @return
+	 */
+	public WorldPoint dy(int dy)
+	{
+		return new WorldPoint(x, y + dy, plane);
+	}
+
+	/**
+	 * Returns a WorldPoint offset on z from this point
+	 * @param dz offset
+	 * @return
+	 */
+	public WorldPoint dz(int dz)
+	{
+		return new WorldPoint(x, y, plane + dz);
+	}
+
 	public static boolean isInScene(Client client, int x, int y)
 	{
 		int baseX = client.getBaseX();

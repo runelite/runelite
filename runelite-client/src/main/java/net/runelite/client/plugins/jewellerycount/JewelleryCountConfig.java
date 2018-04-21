@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.kingdomofmiscellania;
+package net.runelite.client.plugins.jewellerycount;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "kingdom",
-	name = "Kingdom of Miscellania",
-	description = "Configuration for Kingdom of Miscellania plugin"
+	keyName = "jewelleryCount",
+	name = "Jewellery Count",
+	description = "Configuration for the Jewellery count plugin"
 )
-public interface KingdomConfig extends Config
+public interface JewelleryCountConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showOnlyInKingdom",
-		name = "Show Only in Kingdom",
-		description = "Configures whether or not to display kingdom information only when in kingdom",
+		keyName = "showJewelleryCount",
+		name = "Show Jewellery Count Configuration",
+		description = "Configures if jewellery count is shown",
 		position = 1
 	)
-	default boolean showOnlyInKingdom()
+	default boolean showJewelleryCount()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showWhenLow",
-		name = "Show When Low Favor or Coffer",
-		description = "Configures whether or not to display kingdom information when favor or coffer is low",
+		keyName = "recoilNotification",
+		name = "Ring of Recoil Notification",
+		description = "Configures if the ring of recoil breaking notification is shown",
 		position = 2
 	)
-	default boolean showWhenLow()
+	default boolean recoilNotification()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "favorLessThanValue",
-		name = "Alert if favor % below",
-		description = "Configures display kingdom information when favor less than value",
-		position = 3
-	)
-	default int favorLessThanValue()
-	{
-		return 95;
-	}
-
-	@ConfigItem(
-		keyName = "cofferLessThanValue",
-		name = "Alert if coffer below",
-		description = "Configures display kingdom information when coffer less than value",
-		position = 4
-	)
-	default int cofferLessThanValue()
-	{
-		return 1000000;
 	}
 }

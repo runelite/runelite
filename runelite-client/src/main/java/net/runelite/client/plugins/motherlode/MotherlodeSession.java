@@ -24,9 +24,14 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ItemID;
 import java.time.Duration;
 import java.time.Instant;
 
+@Slf4j
 public class MotherlodeSession
 {
 	private static final Duration HOUR = Duration.ofHours(1);
@@ -38,6 +43,48 @@ public class MotherlodeSession
 
 	private Instant recentPayDirtMined;
 	private int recentMined;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastGemFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int diamondsFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int rubiesFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int emeraldsFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int sapphiresFound;
+
+	public void incrementGemFound(int gemID)
+	{
+		lastGemFound = Instant.now();
+
+		switch (gemID)
+		{
+			case ItemID.UNCUT_DIAMOND:
+				diamondsFound++;
+				break;
+
+			case ItemID.UNCUT_RUBY:
+				rubiesFound++;
+				break;
+
+			case ItemID.UNCUT_EMERALD:
+				emeraldsFound++;
+				break;
+
+			case ItemID.UNCUT_SAPPHIRE:
+				sapphiresFound++;
+				break;
+
+			default:
+				log.error("Invalid gem type specified. The gem count will not be incremented.");
+		}
+	}
 
 	public void incrementPayDirtMined()
 	{

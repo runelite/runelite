@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,14 +32,14 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(
 	keyName = "motherlode",
 	name = "Motherlode Mine",
-	description = "Configuration for the motherlode plugin"
+	description = "Configuration for the Motherlode Mine plugin"
 )
 public interface MotherlodeConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showRocks",
-		name = "Show Pay-dirt mining spots",
-		description = "Configures whether or not the pay-dirt minings spots is displayed"
+		name = "Show pay-dirt mining spots",
+		description = "Configures whether or not the pay-dirt mining spots are displayed."
 	)
 	default boolean showRocks()
 	{
@@ -48,7 +49,7 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset"
+		description = "Configures the time until statistics are reset"
 	)
 	default int statTimeout()
 	{
@@ -57,8 +58,8 @@ public interface MotherlodeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSack",
-		name = "Show Pay-dirt Sack",
-		description = "Configures whether to Pay-dirt sack is displayed"
+		name = "Show pay-dirt sack",
+		description = "Configures whether the pay-dirt sack is displayed or not."
 	)
 	default boolean showSack()
 	{
@@ -67,10 +68,40 @@ public interface MotherlodeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMiningStats",
-		name = "Show Mining session stats",
+		name = "Show mining session stats",
 		description = "Configures whether to display mining session stats"
 	)
 	default boolean showMiningStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDepositsLeft",
+		name = "Show deposits left",
+		description = "Displays deposits left before sack is full"
+	)
+	default boolean showDepositsLeft()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMiningState",
+		name = "Show current mining state",
+		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
+	)
+	default boolean showMiningState()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showGemsFound",
+		name = "Show gems found",
+		description = "Shows gems found during current mining session"
+	)
+	default boolean showGemsFound()
 	{
 		return true;
 	}

@@ -39,13 +39,16 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "XP Globes"
 )
+@PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
 {
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
@@ -56,9 +59,6 @@ public class XpGlobesPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private XpGlobesConfig config;
 
 	@Inject
 	private XpGlobesOverlay overlay;

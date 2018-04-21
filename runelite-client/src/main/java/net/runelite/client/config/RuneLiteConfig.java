@@ -58,9 +58,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use Runelite's custom window title and borders.",
-		confirmationWarining = "Please restart your client after changing this setting",
-		warnOnEnable = true,
-		warnOnDisable = true
+		warning = "Please restart your client after changing this setting"
 	)
 	default boolean enableCustomChrome()
 	{
@@ -118,12 +116,12 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "useSmallFont",
-		name = "Use smaller font for in-game overlays",
-		description = "Toggles between small and regular RuneScape font for in-game overlays"
+		keyName = "fontType",
+		name = "Dynamic Overlay Font",
+		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc."
 	)
-	default boolean useSmallFont()
+	default FontType fontType()
 	{
-		return false;
+		return FontType.SMALL;
 	}
 }
