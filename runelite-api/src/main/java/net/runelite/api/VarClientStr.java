@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +24,14 @@
  */
 package net.runelite.api;
 
-public interface Varcs
-{
-	int getIntVar(VarClientInt var);
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-	String getStrVar(VarClientStr var);
+@AllArgsConstructor
+@Getter
+public enum VarClientStr
+{
+	CHATBOX_TYPED_TEXT(1);
+
+	private final int index;
 }
