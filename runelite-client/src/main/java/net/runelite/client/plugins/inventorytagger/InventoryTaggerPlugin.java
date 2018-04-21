@@ -2,13 +2,18 @@ package net.runelite.client.plugins.inventorytagger;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.hiscore.HiscorePanel;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -19,6 +24,9 @@ public class InventoryTaggerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private InventoryTaggerPlugin plugin;
 
 	@Inject
 	private InventoryTaggerConfig config;
@@ -42,11 +50,14 @@ public class InventoryTaggerPlugin extends Plugin
 		return overlay;
 	}
 
+	@Inject
+	private PluginToolbar pluginToolbar;
+
+	private NavigationButton navButton;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		inventoryTaggerPanel = new InventoryTaggerPanel(this, client);
-
 		//testing
 		TaggedItems tItem;
 
@@ -67,5 +78,28 @@ public class InventoryTaggerPlugin extends Plugin
 		taggedItems.add(tItem);
 
 
+		inventoryTaggerPanel = new InventoryTaggerPanel(this, client, plugin);
+
+		BufferedImage icon;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(HiscorePanel.class.getResourceAsStream("search.png"));
+		}
+
+		navButton = NavigationButton.builder()
+				.name("Item Tagger")
+				.icon(icon)
+				.panel(inventoryTaggerPanel)
+				.build();
+
+		pluginToolbar.addNavigation(navButton);
+
+
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		pluginToolbar.removeNavigation(navButton);
 	}
 }
