@@ -39,9 +39,6 @@ import net.runelite.client.ui.overlay.Overlay;
 public class RunepouchPlugin extends Plugin
 {
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private RunepouchOverlay overlay;
 
 	@Provides

@@ -92,6 +92,4 @@ public interface RunepouchConfig extends Config
 	{
 		return Color.yellow;
 	}
-
-
 }
