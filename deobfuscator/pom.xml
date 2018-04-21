@@ -38,7 +38,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
-			<artifactId>api</artifactId>
+			<artifactId>runescape-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
