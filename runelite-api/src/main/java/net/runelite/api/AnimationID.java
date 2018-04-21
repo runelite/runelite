@@ -111,8 +111,26 @@ public final class AnimationID
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int BURYING_BONES = 827;
 	public static final int LOOKING_INTO = 832;
+	public static final int DIG = 830;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+
+	// Farming
+	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
+	public static final int FARMING_HARVEST_BUSH = 2281;
+	public static final int FARMING_HARVEST_HERB = 2282;
+	public static final int FARMING_USE_COMPOST = 2283;
+	public static final int FARMING_CURE_WITH_POTION = 2288;
+	public static final int FARMING_PLANT_SEED = 2291;
+	public static final int FARMING_HARVEST_FLOWER = 2292;
+
+	// Lunar spellbook
+	public static final int MAGIC_LUNAR_FERTILE_SOIL = 4413;
+	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
+	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
+
+	// Arceuus spellbook
+	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
 }
