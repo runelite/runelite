@@ -228,30 +228,30 @@ public class Perspective
 	 * Calculates the above ground height of a tile point.
 	 *
 	 * @param client
-	 * @param x the ground coordinate on the x axis
-	 * @param y the ground coordinate on the y axis
+	 * @param localX the ground coordinate on the x axis
+	 * @param localY the ground coordinate on the y axis
 	 * @param plane the client plane/ground level
 	 * @return the offset from the ground of the tile
 	 */
-	public static int getTileHeight(Client client, int x, int y, int plane)
+	public static int getTileHeight(Client client, int localX, int localY, int plane)
 	{
-		int var3 = x >> 7;
-		int var4 = y >> 7;
-		if (var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103)
+		int sceneX = localX >> LOCAL_COORD_BITS;
+		int sceneY = localY >> LOCAL_COORD_BITS;
+		if (sceneX >= 0 && sceneY >= 0 && sceneX <= 103 && sceneY <= 103)
 		{
 			byte[][][] tileSettings = client.getTileSettings();
 			int[][][] tileHeights = client.getTileHeights();
 
 			int var5 = plane;
-			if (plane < 3 && (tileSettings[1][var3][var4] & 2) == 2)
+			if (plane < 3 && (tileSettings[1][sceneX][sceneY] & 2) == 2)
 			{
 				var5 = plane + 1;
 			}
 
-			int var6 = x & 127;
-			int var7 = y & 127;
-			int var8 = var6 * tileHeights[var5][var3 + 1][var4] + (128 - var6) * tileHeights[var5][var3][var4] >> 7;
-			int var9 = tileHeights[var5][var3][var4 + 1] * (128 - var6) + var6 * tileHeights[var5][var3 + 1][var4 + 1] >> 7;
+			int var6 = localX & 127;
+			int var7 = localY & 127;
+			int var8 = var6 * tileHeights[var5][sceneX + 1][sceneY] + (128 - var6) * tileHeights[var5][sceneX][sceneY] >> 7;
+			int var9 = tileHeights[var5][sceneX][sceneY + 1] * (128 - var6) + var6 * tileHeights[var5][sceneX + 1][sceneY + 1] >> 7;
 			return (128 - var7) * var8 + var7 * var9 >> 7;
 		}
 
