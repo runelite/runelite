@@ -29,11 +29,13 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
+import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -49,13 +51,13 @@ import net.runelite.client.util.QueryRunner;
 public class RunepouchOverlay extends Overlay
 {
 	private static final Varbits[] AMOUNT_VARBITS =
-	{
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
-	};
+		{
+			Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+		};
 	private static final Varbits[] RUNE_VARBITS =
-	{
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
-	};
+		{
+			Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+		};
 	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
 
@@ -81,8 +83,22 @@ public class RunepouchOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
-		WidgetItem[] items = queryRunner.runQuery(query);
+		WidgetItem[] items = new WidgetItem[]{};
+
+		// Check if RUNE_POUCH is in inventory
+		if (config.showInInventory())
+		{
+			Query inventoryQuery = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
+			items = queryRunner.runQuery(inventoryQuery);
+		}
+
+		// Check if RUNE_POUCH is in bank, only if it is not already found in the inventory
+		if (config.showInBank() && items.length == 0)
+		{
+			Query bankQuery = new BankItemQuery().idEquals(ItemID.RUNE_POUCH);
+			items = queryRunner.runQuery(bankQuery);
+		}
+
 		if (items.length == 0)
 		{
 			return null;

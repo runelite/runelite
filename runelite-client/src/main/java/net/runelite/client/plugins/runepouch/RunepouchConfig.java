@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.runepouch;
 
 import java.awt.Color;
+
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,20 +37,34 @@ import net.runelite.client.config.ConfigItem;
 )
 public interface RunepouchConfig extends Config
 {
+
 	@ConfigItem(
-		keyName = "fontcolor",
-		name = "Font Color",
-		description = "Color of the font for the number of runes in pouch"
+		keyName = "showinbank",
+		name = "Show in bank",
+		description = "Show the contents of the Rune Pouch in the bank",
+		position = 0
 	)
-	default Color fontColor()
+	default boolean showInBank()
 	{
-		return Color.yellow;
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showininventory",
+		name = "Show in inventory",
+		description = "Show the contents of the Rune Pouch in the inventory",
+		position = 1
+	)
+	default boolean showInInventory()
+	{
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "runeicons",
 		name = "Show Rune Icons",
-		description = "Show the rune icons next to the number of runes in pouch"
+		description = "Show the rune icons next to the number of runes in pouch",
+		position = 2
 	)
 	default boolean showIcons()
 	{
@@ -59,10 +74,22 @@ public interface RunepouchConfig extends Config
 	@ConfigItem(
 		keyName = "showOnlyOnHover",
 		name = "Show only on hover",
-		description = "Show the runes only when hovered"
+		description = "Show the runes only when hovered",
+		position = 3
 	)
 	default boolean showOnlyOnHover()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "fontcolor",
+		name = "Font Color",
+		description = "Color of the font for the number of runes in pouch",
+		position = 4
+	)
+	default Color fontColor()
+	{
+		return Color.yellow;
 	}
 }
