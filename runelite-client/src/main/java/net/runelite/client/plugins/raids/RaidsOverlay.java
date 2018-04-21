@@ -114,12 +114,13 @@ public class RaidsOverlay extends Overlay
 			switch (room.getType())
 			{
 				case COMBAT:
-					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()))
+					if (plugin.getRoomWhitelist().contains(room.getBoss().getName().toLowerCase()) ||
+							config.enableRotationWhitelist() && isWhitelistedRotation)
 					{
 						color = Color.GREEN;
 					}
 					else if (plugin.getRoomBlacklist().contains(room.getBoss().getName().toLowerCase())
-							|| config.enableRotationWhitelist() && !isWhitelistedRotation)
+							|| config.enableRotationWhitelist())
 					{
 						color = Color.RED;
 					}
