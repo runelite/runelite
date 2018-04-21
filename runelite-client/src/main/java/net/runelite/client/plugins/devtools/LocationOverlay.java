@@ -62,9 +62,7 @@ public class LocationOverlay extends Overlay
 		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
 		LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
 
-		int regionX = localWorld.getX() >> 6;
-		int regionY = localWorld.getY() >> 6;
-		int regionID = regionX << 8 | regionY;
+		int regionID = localWorld.getRegionID();
 
 		if (client.isInInstancedRegion())
 		{
