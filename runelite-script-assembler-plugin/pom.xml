@@ -32,7 +32,6 @@
 		<version>1.3.6-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.runelite</groupId>
 	<artifactId>script-assembler-plugin</artifactId>
 	<name>Script Assembler Plugin</name>
 	<packaging>maven-plugin</packaging>

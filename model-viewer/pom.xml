@@ -32,7 +32,6 @@
 		<version>1.3.6-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.runelite</groupId>
 	<artifactId>modelviewer</artifactId>
 	<name>Model Viewer</name>
 
