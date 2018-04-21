@@ -325,111 +325,124 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		int itemId = event.getIdentifier();
+		MenuAction menuAction = MenuAction.of(event.getType());
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-		if (option.equals("talk-to"))
+		if (event.getActionParam1() == WidgetInfo.INVENTORY.getId())
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
+			if (shiftModifier)
 			{
-				swap("pickpocket", option, target, true);
-			}
+				if (config.shiftClickCustomization() && !option.equals("use"))
+				{
+					Integer customOption = getSwapConfig(event.getIdentifier());
 
-			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
-			{
-				swap("teleport", option, target, true);
+					if (customOption != null && customOption == -1)
+					{
+						swap("use", option, target, true);
+					}
+				}
 			}
+			else if (menuAction == MenuAction.ITEM_FIRST_OPTION)
+			{
+				if (config.swapBones() && option.equals("bury"))
+				{
+					swap("use", option, target, true);
+				}
+			}
+			else if (menuAction == MenuAction.ITEM_SECOND_OPTION)
+			{
+				if (config.swapTeleportItem())
+				{
+					if (option.equals("wear"))
+					{
+						swap("rub", option, target, true);
+						swap("teleport", option, target, true);
+					}
+					else if (option.equals("wield"))
+					{
+						swap("teleport", option, target, true);
+					}
+				}
+			}
+		}
+		else if (menuAction == MenuAction.NPC_FIRST_OPTION)
+		{
+			if (option.equals("talk-to"))
+			{
+				if (config.swapPickpocket() && target.contains("h.a.m."))
+				{
+					swap("pickpocket", option, target, true);
+				}
 
-			if (config.swapBank())
-			{
-				swap("bank", option, target, true);
-			}
+				if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
+				{
+					swap("teleport", option, target, true);
+				}
 
-			if (config.swapExchange())
-			{
-				swap("exchange", option, target, true);
-			}
+				if (config.swapBank())
+				{
+					swap("bank", option, target, true);
+				}
 
-			if (config.swapTrade())
-			{
-				swap("trade", option, target, true);
-			}
+				if (config.swapExchange())
+				{
+					swap("exchange", option, target, true);
+				}
 
-			if (config.swapTravel())
-			{
-				swap("travel", option, target, true);
-				swap("pay-fare", option, target, true);
-				swap("charter", option, target, true);
-				swap("take-boat", option, target, true);
-				swap("fly", option, target, true);
-				swap("jatizso", option, target, true);
-				swap("neitiznot", option, target, true);
-				swap("rellekka", option, target, true);
-			}
+				if (config.swapTrade())
+				{
+					swap("trade", option, target, true);
+				}
 
-			if (config.swapPay())
-			{
-				swap("pay", option, target, true);
-			}
-		}
-		else if (config.swapHarpoon() && option.equals("cage"))
-		{
-			swap("harpoon", option, target, true);
-		}
-		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
-		{
-			swap("harpoon", option, target, true);
-		}
-		else if (config.swapHome() && option.equals("enter"))
-		{
-			swap("home", option, target, true);
-		}
-		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
-		{
-			swap("last-destination (", option, target, false);
-		}
-		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
-		{
-			swap("reset", option, target, true);
-		}
-		else if (config.swapBoxTrap() && option.equals("take"))
-		{
-			swap("lay", option, target, true);
-		}
-		else if (config.swapCatacombEntrance() && option.equals("read"))
-		{
-			swap("investigate", option, target, true);
-		}
-		else if (config.swapChase() && option.equals("pick-up"))
-		{
-			swap("chase", option, target, true);
-		}
-		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
-		{
-			Integer customOption = getSwapConfig(itemId);
+				if (config.swapTravel())
+				{
+					swap("travel", option, target, true);
+					swap("pay-fare", option, target, true);
+					swap("charter", option, target, true);
+					swap("take-boat", option, target, true);
+					swap("fly", option, target, true);
+					swap("jatizso", option, target, true);
+					swap("neitiznot", option, target, true);
+					swap("rellekka", option, target, true);
+				}
 
-			if (customOption != null && customOption == -1)
+				if (config.swapPay())
+				{
+					swap("pay", option, target, true);
+				}
+			}
+			else if (config.swapHarpoon() && (option.equals("cage") || option.equals("net") || option.equals("big net")))
 			{
-				swap("use", option, target, true);
+				swap("harpoon", option, target, true);
+			}
+			else if (config.swapChase() && option.equals("pick-up"))
+			{
+				swap("chase", option, target, true);
 			}
 		}
-		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (menuAction == MenuAction.GAME_OBJECT_FIRST_OPTION)
 		{
-			swap("rub", option, target, true);
-			swap("teleport", option, target, true);
-		}
-		else if (option.equals("wield"))
-		{
-			if (config.swapTeleportItem())
+			if (config.swapHome() && option.equals("enter"))
 			{
-				swap("teleport", option, target, true);
+				swap("home", option, target, true);
 			}
-		}
-		else if (config.swapBones() && option.equals("bury"))
-		{
-			swap("use", option, target, true);
+			else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
+			{
+				swap("last-destination (", option, target, false);
+			}
+			else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
+			{
+				swap("reset", option, target, true);
+			}
+			else if (config.swapBoxTrap() && option.equals("take"))
+			{
+				swap("lay", option, target, true);
+			}
+			else if (config.swapCatacombEntrance() && option.equals("read"))
+			{
+				swap("investigate", option, target, true);
+			}
 		}
 	}
 
