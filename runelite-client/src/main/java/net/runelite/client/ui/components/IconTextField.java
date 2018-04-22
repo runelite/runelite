@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.Document;
 import net.runelite.client.ui.ColorScheme;
 
 /**
@@ -158,6 +159,11 @@ public class IconTextField extends JPanel
 		{
 			super.setBackground(backgroundColor);
 		}
+	}
+
+	public Document getDocument()
+	{
+		return textField.getDocument();
 	}
 
 }
