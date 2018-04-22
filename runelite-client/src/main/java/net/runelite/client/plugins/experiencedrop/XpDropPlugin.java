@@ -100,7 +100,7 @@ public class XpDropPlugin extends Plugin
 				case MELEE:
 					if (spriteIDs.anyMatch(id ->
                             id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
-                                    || id == SpriteID.SKILL_HITPOINTS))
+                            || id == SpriteID.SKILL_HITPOINTS))
 					{
 						color = config.getMeleePrayerColor().getRGB();
 					}
