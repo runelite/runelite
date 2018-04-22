@@ -91,7 +91,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 					if (clanchatImage != null)
 					{
 						int width = clanchatImage.getWidth();
-						Point imageLocation = new Point(textLocation.getX() - width / 2, textLocation.getY() - clanchatImage.getHeight());
+						int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
+						Point imageLocation = new Point(textLocation.getX() - width / 2 - 1, textLocation.getY() - textHeight / 2 - clanchatImage.getHeight() / 2);
 						OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
 
 						// move text
