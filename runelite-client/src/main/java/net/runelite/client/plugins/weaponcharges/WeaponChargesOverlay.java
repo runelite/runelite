@@ -46,26 +46,34 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WeaponChargesOverlay extends Overlay
 {
 	private final WeaponChargesPlugin plugin;
+	private final WeaponChargesConfig config;
 	private final QueryRunner queryRunner;
+
 	private final TextComponent textComponent = new TextComponent();
 
 	@Inject
-	private WeaponChargesOverlay(WeaponChargesPlugin plugin, QueryRunner queryRunner)
+	private WeaponChargesOverlay(WeaponChargesPlugin plugin, WeaponChargesConfig config, QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
+		this.config = config;
 		this.queryRunner = queryRunner;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.showChargesOverlay())
+		{
+			return null;
+		}
+
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		final Query inventoryQuery = new InventoryWidgetItemQuery();
 		final Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_WEAPON);
-		WidgetItem[] itemSlots = ArrayUtils.addAll(queryRunner.runQuery(inventoryQuery),
+		final WidgetItem[] itemSlots = ArrayUtils.addAll(queryRunner.runQuery(inventoryQuery),
 				queryRunner.runQuery(equipmentQuery));
 		for (WidgetItem item : itemSlots)
 		{

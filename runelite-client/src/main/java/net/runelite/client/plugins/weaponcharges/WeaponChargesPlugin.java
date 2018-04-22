@@ -45,6 +45,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -80,6 +81,9 @@ public class WeaponChargesPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Provides
 	WeaponChargesConfig getConfig(ConfigManager configManager)
@@ -167,7 +171,7 @@ public class WeaponChargesPlugin extends Plugin
 		final ChargedWeapon equippedWeapon = getEquippedWeapon(equipmentContainer);
 		if (config.showChargesInfoBox() && equippedWeapon != null)
 		{
-			addChargesCounter(equippedWeapon);
+			clientThread.invokeLater(() -> addChargesCounter(equippedWeapon));
 		}
 		else
 		{

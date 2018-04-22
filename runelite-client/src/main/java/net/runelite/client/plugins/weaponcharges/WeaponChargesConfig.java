@@ -37,9 +37,19 @@ import net.runelite.client.config.ConfigItem;
 public interface WeaponChargesConfig extends Config
 {
 	@ConfigItem(
+		keyName = "showChargesOverlay",
+		name = "Show charges overlay",
+		description = "Displays amount of charges on top of the item in your inventory"
+	)
+	default boolean showChargesOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showChargesInfoBox",
 		name = "Show charges InfoBox",
-		description = "Displays amount of charges in an InfoBox in addition to on the item when equipped"
+		description = "Displays amount of charges in an InfoBox when equipped"
 	)
 	default boolean showChargesInfoBox()
 	{
