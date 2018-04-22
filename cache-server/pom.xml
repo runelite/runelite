@@ -36,7 +36,7 @@
 	<name>Cache Server</name>
 
 	<properties>
-		<cache.version>160</cache.version>
+		<cache.version>165</cache.version>
 	</properties>
 
 	<dependencies>
