@@ -183,6 +183,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		final Client client = clientProvider.get();
 
+		if (client == null)
+		{
+			return;
+		}
+
 		for (final Overlay overlay : overlays)
 		{
 			final Point location = loadOverlayLocation(overlay);
