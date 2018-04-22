@@ -360,77 +360,77 @@ public class class46 extends class28 {
       signature = "(Lba;B)V",
       garbageValue = "8"
    )
-   static final void method685(Actor var0) {
-      if(var0.field1205 != 0) {
-         if(var0.interacting != -1) {
-            Object var1 = null;
-            if(var0.interacting < 32768) {
-               var1 = Client.cachedNPCs[var0.interacting];
-            } else if(var0.interacting >= 32768) {
-               var1 = Client.cachedPlayers[var0.interacting - 32768];
+   static final void method685(Actor incoming) {
+      if(incoming.rotation != 0) {
+         if(incoming.interacting != -1) {
+            Object actor = null;
+            if(incoming.interacting < 32768) {
+               actor = Client.cachedNPCs[incoming.interacting];
+            } else if(incoming.interacting >= 32768) {
+               actor = Client.cachedPlayers[incoming.interacting - 32768];
             }
 
-            if(var1 != null) {
-               int var2 = var0.x - ((Actor)var1).x;
-               int var3 = var0.y - ((Actor)var1).y;
-               if(var2 != 0 || var3 != 0) {
-                  var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
+            if(actor != null) {
+               int x = incoming.x - ((Actor)actor).x;
+               int y = incoming.y - ((Actor)actor).y;
+               if(x != 0 || y != 0) {
+                  incoming.orientation = (int)(Math.atan2((double)x, (double)y) * 325.949D) & 2047;
                }
-            } else if(var0.field1156) {
-               var0.interacting = -1;
-               var0.field1156 = false;
+            } else if(incoming.field1156) {
+               incoming.interacting = -1;
+               incoming.field1156 = false;
             }
          }
 
-         if(var0.field1185 != -1 && (var0.queueSize == 0 || var0.field1158 > 0)) {
-            var0.orientation = var0.field1185;
-            var0.field1185 = -1;
+         if(incoming.field1185 != -1 && (incoming.queueSize == 0 || incoming.field1158 > 0)) {
+            incoming.orientation = incoming.field1185;
+            incoming.field1185 = -1;
          }
 
-         int var4 = var0.orientation - var0.angle & 2047;
-         if(var4 == 0 && var0.field1156) {
-            var0.interacting = -1;
-            var0.field1156 = false;
+         int var4 = incoming.orientation - incoming.angle & 2047;
+         if(var4 == 0 && incoming.field1156) {
+            incoming.interacting = -1;
+            incoming.field1156 = false;
          }
 
          if(var4 != 0) {
-            ++var0.field1184;
+            ++incoming.field1184;
             boolean var6;
             if(var4 > 1024) {
-               var0.angle -= var0.field1205;
+               incoming.angle -= incoming.rotation;
                var6 = true;
-               if(var4 < var0.field1205 || var4 > 2048 - var0.field1205) {
-                  var0.angle = var0.orientation;
+               if(var4 < incoming.rotation || var4 > 2048 - incoming.rotation) {
+                  incoming.angle = incoming.orientation;
                   var6 = false;
                }
 
-               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1184 > 25 || var6)) {
-                  if(var0.field1163 != -1) {
-                     var0.poseAnimation = var0.field1163;
+               if(incoming.idlePoseAnimation == incoming.poseAnimation && (incoming.field1184 > 25 || var6)) {
+                  if(incoming.field1163 != -1) {
+                     incoming.poseAnimation = incoming.field1163;
                   } else {
-                     var0.poseAnimation = var0.field1165;
+                     incoming.poseAnimation = incoming.field1165;
                   }
                }
             } else {
-               var0.angle += var0.field1205;
+               incoming.angle += incoming.rotation;
                var6 = true;
-               if(var4 < var0.field1205 || var4 > 2048 - var0.field1205) {
-                  var0.angle = var0.orientation;
+               if(var4 < incoming.rotation || var4 > 2048 - incoming.rotation) {
+                  incoming.angle = incoming.orientation;
                   var6 = false;
                }
 
-               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1184 > 25 || var6)) {
-                  if(var0.field1164 != -1) {
-                     var0.poseAnimation = var0.field1164;
+               if(incoming.idlePoseAnimation == incoming.poseAnimation && (incoming.field1184 > 25 || var6)) {
+                  if(incoming.field1164 != -1) {
+                     incoming.poseAnimation = incoming.field1164;
                   } else {
-                     var0.poseAnimation = var0.field1165;
+                     incoming.poseAnimation = incoming.field1165;
                   }
                }
             }
 
-            var0.angle &= 2047;
+            incoming.angle &= 2047;
          } else {
-            var0.field1184 = 0;
+            incoming.field1184 = 0;
          }
 
       }

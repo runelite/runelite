@@ -256,29 +256,29 @@ public class WidgetNode extends Node {
       signature = "(Ljava/lang/String;Lin;I)Ljava/lang/String;",
       garbageValue = "-1381280743"
    )
-   static String method1135(String var0, Widget var1) {
-      if(var0.indexOf("%") != -1) {
-         for(int var2 = 1; var2 <= 5; ++var2) {
+   static String method1135(String text, Widget widget) {
+      if(text.indexOf("%") != -1) {
+         for(int id = 1; id <= 5; ++id) {
             while(true) {
-               int var3 = var0.indexOf("%" + var2);
-               if(var3 == -1) {
+               int index = text.indexOf("%" + id);
+               if(index == -1) {
                   break;
                }
 
-               String var4 = var0.substring(0, var3);
-               int var6 = class308.method5486(var1, var2 - 1);
-               String var5;
-               if(var6 < 999999999) {
-                  var5 = Integer.toString(var6);
+               String var4 = text.substring(0, index);
+               int value = class308.executeScript(widget, id - 1);
+               String displayableAmount;
+               if(value < 999999999) {
+                  displayableAmount = Integer.toString(value);
                } else {
-                  var5 = "*";
+                  displayableAmount = "*";
                }
 
-               var0 = var4 + var5 + var0.substring(var3 + 2);
+               text = var4 + displayableAmount + text.substring(index + 2);
             }
          }
       }
 
-      return var0;
+      return text;
    }
 }

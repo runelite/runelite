@@ -232,7 +232,7 @@ public class class57 {
          if(class183.field2491 == var0) {
             var2 = var1.readUnsignedShortOb1() * 4;
             byte var38 = var1.method3725();
-            var37 = var1.method3555();
+            var37 = var1.readLEUShortA();
             var5 = var1.readUnsignedByte();
             var6 = var1.method3553();
             var7 = var1.readUnsignedShort();
@@ -342,11 +342,11 @@ public class class57 {
                }
 
             } else if(class183.field2490 == var0) {
-               var2 = var1.method3555();
+               var2 = var1.readLEUShortA();
                var3 = var1.readUnsignedByte();
                var37 = (var3 >> 4 & 7) + WidgetNode.field794;
                var5 = (var3 & 7) + class278.field3551;
-               var6 = var1.method3555();
+               var6 = var1.readLEUShortA();
                var7 = var1.method3554();
                if(var37 >= 0 && var5 >= 0 && var37 < 104 && var5 < 104) {
                   Deque var45 = Client.groundItemDeque[BoundingBox3DDrawMode.plane][var37][var5];
@@ -405,7 +405,7 @@ public class class57 {
                   var3 = (var2 >> 4 & 7) + WidgetNode.field794;
                   var37 = (var2 & 7) + class278.field3551;
                   var5 = var1.method3553();
-                  var6 = var1.method3555();
+                  var6 = var1.readLEUShortA();
                   if(var3 >= 0 && var37 >= 0 && var3 < 104 && var37 < 104) {
                      var35 = new Item();
                      var35.id = var5;

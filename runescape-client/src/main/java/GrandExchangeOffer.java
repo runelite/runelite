@@ -230,7 +230,7 @@ public class GrandExchangeOffer {
             }
 
             if(var9) {
-               if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1205 != 0) {
+               if(var0.angle != var0.orientation && var0.interacting == -1 && var0.rotation != 0) {
                   var8 = 2;
                }
 

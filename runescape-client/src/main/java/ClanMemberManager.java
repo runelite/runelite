@@ -107,7 +107,7 @@ public class ClanMemberManager extends NameableContainer {
             while(var5 != 0L) {
                long var11 = var5;
                var5 /= 37L;
-               var15.append(class316.field3924[(int)(var11 - var5 * 37L)]);
+               var15.append(class316.BASE_37_CHARACTERS[(int)(var11 - var5 * 37L)]);
             }
 
             var4 = var15.reverse().toString();

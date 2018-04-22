@@ -244,7 +244,7 @@ public class CombatInfo2 extends CacheableNode {
       }
 
       if((var3 & 16) != 0) {
-         var2.field1185 = var0.method3555();
+         var2.field1185 = var0.readLEUShortA();
          if(var2.queueSize == 0) {
             var2.orientation = var2.field1185;
             var2.field1185 = -1;
@@ -317,7 +317,7 @@ public class CombatInfo2 extends CacheableNode {
 
       if((var3 & 256) != 0) {
          var2.graphic = var0.method3553();
-         var5 = var0.method3563();
+         var5 = var0.readIMEInt();
          var2.field1198 = var5 >> 16;
          var2.graphicsDelay = (var5 & 65535) + Client.gameCycle;
          var2.spotAnimFrame = 0;
@@ -386,7 +386,7 @@ public class CombatInfo2 extends CacheableNode {
          var2.field1202 = var0.method3634();
          var2.field1166 = var0.method3553() + Client.gameCycle;
          var2.field1204 = var0.method3554() + Client.gameCycle;
-         var2.field1171 = var0.method3555();
+         var2.field1171 = var0.readLEUShortA();
          if(var2.field860) {
             var2.field1203 += var2.field861;
             var2.field1199 += var2.field837;

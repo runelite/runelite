@@ -95,9 +95,9 @@ public class BoundingBox3DDrawMode {
       signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
       garbageValue = "-1"
    )
-   static void method53(String var0, String var1, String var2) {
-      class90.loginMessage1 = var0;
-      class90.loginMessage2 = var1;
-      class90.loginMessage3 = var2;
+   static void method53(String loginMessage1, String loginMessage2, String loginMessage3) {
+      class90.loginMessage1 = loginMessage1;
+      class90.loginMessage2 = loginMessage2;
+      class90.loginMessage3 = loginMessage3;
    }
 }

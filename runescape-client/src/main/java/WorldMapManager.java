@@ -728,7 +728,7 @@ public final class WorldMapManager {
                var0.isLowDetail = false;
                var0.field842 = class265.getTileHeight(var0.x, var0.y, BoundingBox3DDrawMode.plane);
                var0.field1161 = Client.gameCycle;
-               class255.region.method2871(BoundingBox3DDrawMode.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field849, var0.field850, var0.field851, var0.field852);
+               class255.region.addRenderable(BoundingBox3DDrawMode.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field849, var0.field850, var0.field851, var0.field852);
             } else {
                if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
                   if(Client.field966[var3][var4] == Client.field1137) {

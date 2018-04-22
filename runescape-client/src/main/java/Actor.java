@@ -273,7 +273,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = -603160961
    )
-   int field1205;
+   @Export("rotation")
+   int rotation;
    @ObfuscatedName("ck")
    @ObfuscatedGetter(
       intValue = -1572892415
@@ -340,7 +341,7 @@ public abstract class Actor extends Renderable {
       this.npcCycle = 0;
       this.logicalHeight = 200;
       this.field1184 = 0;
-      this.field1205 = 32;
+      this.rotation = 32;
       this.queueSize = 0;
       this.pathX = new int[10];
       this.pathY = new int[10];

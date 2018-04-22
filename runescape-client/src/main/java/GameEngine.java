@@ -546,17 +546,17 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    @Export("isValidHost")
    protected final boolean isValidHost() {
-      String var1 = this.getDocumentBase().getHost().toLowerCase();
-      if(!var1.equals("jagex.com") && !var1.endsWith(".jagex.com")) {
-         if(!var1.equals("runescape.com") && !var1.endsWith(".runescape.com")) {
-            if(var1.endsWith("127.0.0.1")) {
+      String host = this.getDocumentBase().getHost().toLowerCase();
+      if(!host.equals("jagex.com") && !host.endsWith(".jagex.com")) {
+         if(!host.equals("runescape.com") && !host.endsWith(".runescape.com")) {
+            if(host.endsWith("127.0.0.1")) {
                return true;
             } else {
-               while(var1.length() > 0 && var1.charAt(var1.length() - 1) >= '0' && var1.charAt(var1.length() - 1) <= '9') {
-                  var1 = var1.substring(0, var1.length() - 1);
+               while(host.length() > 0 && host.charAt(host.length() - 1) >= '0' && host.charAt(host.length() - 1) <= '9') {
+                  host = host.substring(0, host.length() - 1);
                }
 
-               if(var1.endsWith("192.168.1.")) {
+               if(host.endsWith("192.168.1.")) {
                   return true;
                } else {
                   this.error("invalidhost");
@@ -732,20 +732,20 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       garbageValue = "-1629716786"
    )
    @Export("drawLoadingScreen")
-   protected final void drawLoadingScreen(int var1, String var2, boolean var3) {
+   protected final void drawLoadingScreen(int var1, String var2, boolean paintBlack) {
       try {
-         Graphics var4 = this.canvas.getGraphics();
+         Graphics graphics = this.canvas.getGraphics();
          if(SoundTask.field1600 == null) {
             SoundTask.field1600 = new java.awt.Font("Helvetica", 1, 13);
             ChatLineBuffer.field1479 = this.canvas.getFontMetrics(SoundTask.field1600);
          }
 
-         if(var3) {
-            var4.setColor(Color.black);
-            var4.fillRect(0, 0, MapLabel.canvasWidth, FloorUnderlayDefinition.canvasHeight);
+         if(paintBlack) {
+            graphics.setColor(Color.black);
+            graphics.fillRect(0, 0, MapLabel.canvasWidth, FloorUnderlayDefinition.canvasHeight);
          }
 
-         Color var5 = new Color(140, 17, 17);
+         Color color = new Color(140, 17, 17);
 
          try {
             if(TotalQuantityComparator.field304 == null) {
@@ -753,7 +753,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             }
 
             Graphics var6 = TotalQuantityComparator.field304.getGraphics();
-            var6.setColor(var5);
+            var6.setColor(color);
             var6.drawRect(0, 0, 303, 33);
             var6.fillRect(2, 2, var1 * 3, 30);
             var6.setColor(Color.black);
@@ -762,19 +762,19 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var6.setFont(SoundTask.field1600);
             var6.setColor(Color.white);
             var6.drawString(var2, (304 - ChatLineBuffer.field1479.stringWidth(var2)) / 2, 22);
-            var4.drawImage(TotalQuantityComparator.field304, MapLabel.canvasWidth / 2 - 152, FloorUnderlayDefinition.canvasHeight / 2 - 18, (ImageObserver)null);
+            graphics.drawImage(TotalQuantityComparator.field304, MapLabel.canvasWidth / 2 - 152, FloorUnderlayDefinition.canvasHeight / 2 - 18, (ImageObserver)null);
          } catch (Exception var9) {
             int var7 = MapLabel.canvasWidth / 2 - 152;
             int var8 = FloorUnderlayDefinition.canvasHeight / 2 - 18;
-            var4.setColor(var5);
-            var4.drawRect(var7, var8, 303, 33);
-            var4.fillRect(var7 + 2, var8 + 2, var1 * 3, 30);
-            var4.setColor(Color.black);
-            var4.drawRect(var7 + 1, var8 + 1, 301, 31);
-            var4.fillRect(var1 * 3 + var7 + 2, var8 + 2, 300 - var1 * 3, 30);
-            var4.setFont(SoundTask.field1600);
-            var4.setColor(Color.white);
-            var4.drawString(var2, var7 + (304 - ChatLineBuffer.field1479.stringWidth(var2)) / 2, var8 + 22);
+            graphics.setColor(color);
+            graphics.drawRect(var7, var8, 303, 33);
+            graphics.fillRect(var7 + 2, var8 + 2, var1 * 3, 30);
+            graphics.setColor(Color.black);
+            graphics.drawRect(var7 + 1, var8 + 1, 301, 31);
+            graphics.fillRect(var1 * 3 + var7 + 2, var8 + 2, 300 - var1 * 3, 30);
+            graphics.setFont(SoundTask.field1600);
+            graphics.setColor(Color.white);
+            graphics.drawString(var2, var7 + (304 - ChatLineBuffer.field1479.stringWidth(var2)) / 2, var8 + 22);
          }
       } catch (Exception var10) {
          this.canvas.repaint();

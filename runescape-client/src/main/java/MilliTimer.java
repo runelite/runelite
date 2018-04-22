@@ -434,8 +434,8 @@ public class MilliTimer extends Timer {
                      ++var0;
                   }
 
-                  if(class248.crossSprites == null) {
-                     class248.crossSprites = IndexDataBase.getSprites(class151.indexSprites, "cross", "");
+                  if(SkillConstants.crossSprites == null) {
+                     SkillConstants.crossSprites = IndexDataBase.getSprites(class151.indexSprites, "cross", "");
                   } else {
                      ++var0;
                   }

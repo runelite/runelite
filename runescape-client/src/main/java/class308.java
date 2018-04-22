@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -31,157 +32,158 @@ public class class308 extends class221 {
       signature = "(Lin;IB)I",
       garbageValue = "-94"
    )
-   static final int method5486(Widget var0, int var1) {
-      if(var0.dynamicValues != null && var1 < var0.dynamicValues.length) {
+   @Export("executeScript")
+   static final int executeScript(Widget widget, int id) {
+      if(widget.dynamicValues != null && id < widget.dynamicValues.length) {
          try {
-            int[] var2 = var0.dynamicValues[var1];
-            int var3 = 0;
-            int var4 = 0;
-            byte var5 = 0;
+            int[] script = widget.dynamicValues[id];
+            int accumulator = 0;
+            int counter = 0;
+            byte operator = 0;
 
             while(true) {
-               int var6 = var2[var4++];
-               int var7 = 0;
-               byte var8 = 0;
-               if(var6 == 0) {
-                  return var3;
+               int instruction = script[counter++];
+               int value = 0;
+               byte next = 0;
+               if(instruction == 0) {
+                  return accumulator;
                }
 
-               if(var6 == 1) {
-                  var7 = Client.boostedSkillLevels[var2[var4++]];
+               if(instruction == 1) {
+                  value = Client.boostedSkillLevels[script[counter++]];
                }
 
-               if(var6 == 2) {
-                  var7 = Client.realSkillLevels[var2[var4++]];
+               if(instruction == 2) {
+                  value = Client.realSkillLevels[script[counter++]];
                }
 
-               if(var6 == 3) {
-                  var7 = Client.skillExperiences[var2[var4++]];
+               if(instruction == 3) {
+                  value = Client.skillExperiences[script[counter++]];
                }
 
-               int var9;
-               Widget var10;
-               int var11;
+               int skill;
+               Widget other;
+               int item;
                int var12;
-               if(var6 == 4) {
-                  var9 = var2[var4++] << 16;
-                  var9 += var2[var4++];
-                  var10 = class44.getWidget(var9);
-                  var11 = var2[var4++];
-                  if(var11 != -1 && (!class47.getItemDefinition(var11).isMembers || Client.isMembers)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var11 + 1 == var10.itemIds[var12]) {
-                           var7 += var10.itemQuantities[var12];
+               if(instruction == 4) {
+                  skill = script[counter++] << 16;
+                  skill += script[counter++];
+                  other = class44.getWidget(skill);
+                  item = script[counter++];
+                  if(item != -1 && (!class47.getItemDefinition(item).isMembers || Client.isMembers)) {
+                     for(var12 = 0; var12 < other.itemIds.length; ++var12) {
+                        if(item + 1 == other.itemIds[var12]) {
+                           value += other.itemQuantities[var12];
                         }
                      }
                   }
                }
 
-               if(var6 == 5) {
-                  var7 = class237.clientVarps[var2[var4++]];
+               if(instruction == 5) {
+                  value = class237.clientVarps[script[counter++]];
                }
 
-               if(var6 == 6) {
-                  var7 = class248.field3012[Client.realSkillLevels[var2[var4++]] - 1];
+               if(instruction == 6) {
+                  value = SkillConstants.SKILL_EXPERIENCE[Client.realSkillLevels[script[counter++]] - 1];
                }
 
-               if(var6 == 7) {
-                  var7 = class237.clientVarps[var2[var4++]] * 100 / 46875;
+               if(instruction == 7) {
+                  value = class237.clientVarps[script[counter++]] * 100 / 46875;
                }
 
-               if(var6 == 8) {
-                  var7 = SoundTaskDataProvider.localPlayer.combatLevel;
+               if(instruction == 8) {
+                  value = SoundTaskDataProvider.localPlayer.combatLevel;
                }
 
-               if(var6 == 9) {
-                  for(var9 = 0; var9 < 25; ++var9) {
-                     if(class248.field3011[var9]) {
-                        var7 += Client.realSkillLevels[var9];
+               if(instruction == 9) {
+                  for(skill = 0; skill < 25; ++skill) {
+                     if(SkillConstants.ENABLED_SKILLS[skill]) {
+                        value += Client.realSkillLevels[skill];
                      }
                   }
                }
 
-               if(var6 == 10) {
-                  var9 = var2[var4++] << 16;
-                  var9 += var2[var4++];
-                  var10 = class44.getWidget(var9);
-                  var11 = var2[var4++];
-                  if(var11 != -1 && (!class47.getItemDefinition(var11).isMembers || Client.isMembers)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var11 + 1 == var10.itemIds[var12]) {
-                           var7 = 999999999;
+               if(instruction == 10) {
+                  skill = script[counter++] << 16;
+                  skill += script[counter++];
+                  other = class44.getWidget(skill);
+                  item = script[counter++];
+                  if(item != -1 && (!class47.getItemDefinition(item).isMembers || Client.isMembers)) {
+                     for(var12 = 0; var12 < other.itemIds.length; ++var12) {
+                        if(item + 1 == other.itemIds[var12]) {
+                           value = 999999999;
                            break;
                         }
                      }
                   }
                }
 
-               if(var6 == 11) {
-                  var7 = Client.energy;
+               if(instruction == 11) {
+                  value = Client.energy;
                }
 
-               if(var6 == 12) {
-                  var7 = Client.weight;
+               if(instruction == 12) {
+                  value = Client.weight;
                }
 
-               if(var6 == 13) {
-                  var9 = class237.clientVarps[var2[var4++]];
-                  int var13 = var2[var4++];
-                  var7 = (var9 & 1 << var13) != 0?1:0;
+               if(instruction == 13) {
+                  skill = class237.clientVarps[script[counter++]];
+                  int var13 = script[counter++];
+                  value = (skill & 1 << var13) != 0?1:0;
                }
 
-               if(var6 == 14) {
-                  var9 = var2[var4++];
-                  var7 = DynamicObject.getVarbit(var9);
+               if(instruction == 14) {
+                  skill = script[counter++];
+                  value = DynamicObject.getVarbit(skill);
                }
 
-               if(var6 == 15) {
-                  var8 = 1;
+               if(instruction == 15) {
+                  next = 1;
                }
 
-               if(var6 == 16) {
-                  var8 = 2;
+               if(instruction == 16) {
+                  next = 2;
                }
 
-               if(var6 == 17) {
-                  var8 = 3;
+               if(instruction == 17) {
+                  next = 3;
                }
 
-               if(var6 == 18) {
-                  var7 = (SoundTaskDataProvider.localPlayer.x >> 7) + class138.baseX;
+               if(instruction == 18) {
+                  value = (SoundTaskDataProvider.localPlayer.x >> 7) + class138.baseX;
                }
 
-               if(var6 == 19) {
-                  var7 = (SoundTaskDataProvider.localPlayer.y >> 7) + class23.baseY;
+               if(instruction == 19) {
+                  value = (SoundTaskDataProvider.localPlayer.y >> 7) + class23.baseY;
                }
 
-               if(var6 == 20) {
-                  var7 = var2[var4++];
+               if(instruction == 20) {
+                  value = script[counter++];
                }
 
-               if(var8 == 0) {
-                  if(var5 == 0) {
-                     var3 += var7;
+               if(next == 0) {
+                  if(operator == 0) {
+                     accumulator += value;
                   }
 
-                  if(var5 == 1) {
-                     var3 -= var7;
+                  if(operator == 1) {
+                     accumulator -= value;
                   }
 
-                  if(var5 == 2 && var7 != 0) {
-                     var3 /= var7;
+                  if(operator == 2 && value != 0) {
+                     accumulator /= value;
                   }
 
-                  if(var5 == 3) {
-                     var3 *= var7;
+                  if(operator == 3) {
+                     accumulator *= value;
                   }
 
-                  var5 = 0;
+                  operator = 0;
                } else {
-                  var5 = var8;
+                  operator = next;
                }
             }
-         } catch (Exception var14) {
+         } catch (Exception ex) {
             return -1;
          }
       } else {
