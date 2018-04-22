@@ -320,9 +320,9 @@ public class RaidsPlugin extends Plugin
 							.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-							.type(ChatMessageType.CLANCHAT_INFO)
-							.runeLiteFormattedMessage(chatMessage)
-							.build());
+					.type(ChatMessageType.CLANCHAT_INFO)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
 				}
 			}
 		}
