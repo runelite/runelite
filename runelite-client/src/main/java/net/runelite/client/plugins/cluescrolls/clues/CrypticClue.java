@@ -47,7 +47,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll, LocationClueScroll
+public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
 	private static final Set<CrypticClue> CLUES = ImmutableSet.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),

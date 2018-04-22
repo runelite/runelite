@@ -215,34 +215,32 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof ObjectClueScroll)
 		{
-			int objectId = ((ObjectClueScroll) clue).getObjectId();
+			final ObjectClueScroll objectClueScroll = (ObjectClueScroll) clue;
+			int objectId = objectClueScroll.getObjectId();
 
 			if (objectId != -1)
 			{
-				if (clue instanceof LocationClueScroll)
+				// Match object with location every time
+				final WorldPoint location = objectClueScroll.getLocation();
+
+				if (location != null)
 				{
-					// Match object with location every time
-					final WorldPoint location = ((LocationClueScroll) clue).getLocation();
+					final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
 
-					if (location != null)
+					if (localLocation != null)
 					{
-						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+						final Region region = client.getRegion();
+						final Tile[][][] tiles = region.getTiles();
+						final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
 
-						if (localLocation != null)
+						objectsToMark = Arrays.stream(tile.getGameObjects())
+							.filter(object -> object != null && object.getId() == objectId)
+							.toArray(GameObject[]::new);
+
+						// Set hint arrow to first object found as there can only be 1 hint arrow
+						if (objectsToMark.length >= 1)
 						{
-							final Region region = client.getRegion();
-							final Tile[][][] tiles = region.getTiles();
-							final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
-
-							objectsToMark = Arrays.stream(tile.getGameObjects())
-								.filter(object -> object != null && object.getId() == objectId)
-								.toArray(GameObject[]::new);
-
-							// Set hint arrow to first object found as there can only be 1 hint arrow
-							if (objectsToMark.length >= 1)
-							{
-								client.setHintArrow(objectsToMark[0].getWorldLocation());
-							}
+							client.setHintArrow(objectsToMark[0].getWorldLocation());
 						}
 					}
 				}
