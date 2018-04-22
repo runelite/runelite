@@ -31,8 +31,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +41,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.coords.WorldPoint;
@@ -91,7 +90,7 @@ public class ClueScrollPlugin extends Plugin
 	private GameObject[] objectsToMark;
 
 	@Getter
-	private Set<Integer> equippedItems;
+	private Item[] equippedItems;
 
 	@Getter
 	private Instant clueTimeout;
@@ -230,16 +229,11 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof EmoteClue)
 		{
-			equippedItems = new HashSet<>();
-
-			Item[] result = queryRunner.runQuery(new InventoryItemQuery(InventoryID.EQUIPMENT));
-
-			if (result != null)
+			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+			
+			if (container != null)
 			{
-				for (Item item : result)
-				{
-					equippedItems.add(item.getId());
-				}
+				equippedItems = container.getItems();
 			}
 		}
 
