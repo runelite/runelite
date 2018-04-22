@@ -95,6 +95,14 @@ public class SwingUtil
 	}
 
 	/**
+	 * Converts a given color to it's hexidecimal equivalent.
+	 */
+	public static String toHexColor(Color color)
+	{
+		return "#" + Integer.toHexString(color.getRGB()).substring(2);
+	}
+
+	/**
 	 * Safely sets Swing theme
 	 *
 	 * @param laf the swing look and feel

@@ -46,7 +46,7 @@ public class PluginErrorPanel extends JPanel
 	public PluginErrorPanel()
 	{
 		setOpaque(false);
-		setBorder(new EmptyBorder(50, 0, 0, 0));
+		setBorder(new EmptyBorder(50, 10, 0, 10));
 		setLayout(new BorderLayout());
 
 		noResultsTitle.setForeground(Color.WHITE);
