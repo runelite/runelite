@@ -115,9 +115,9 @@ public interface XpGlobesConfig extends Config
 
 	@ConfigItem(
 		keyName = "Orb duration",
-        name = "Duration of orbs",
-        description = "Change the duration the xp orbs are visible",
-        position = 7
+		name = "Duration of orbs",
+		description = "Change the duration the xp orbs are visible",
+		position = 7
 	)
 	default int xpOrbDuration()
 	{
