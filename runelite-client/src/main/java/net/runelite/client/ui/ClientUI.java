@@ -67,11 +67,12 @@ import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.events.TitleToolbarButtonAdded;
 import net.runelite.client.events.TitleToolbarButtonRemoved;
+import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -327,7 +328,7 @@ public class ClientUI
 			SwingUtil.setupDefaults();
 
 			// Use substance look and feel
-			SwingUtil.setTheme(new SubstanceGraphiteLookAndFeel());
+			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
 
 			// Use custom UI font
 			SwingUtil.setFont(FontManager.getRunescapeFont());
@@ -362,6 +363,8 @@ public class ClientUI
 			navContainer.setLayout(new BorderLayout(0, 0));
 			navContainer.setMinimumSize(new Dimension(0, 0));
 			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+			// To reduce substance's colorization (tinting)
+			navContainer.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
@@ -565,6 +568,7 @@ public class ClientUI
 
 	/**
 	 * Get offset of game canvas in game window
+	 *
 	 * @return game canvas offset
 	 */
 	public Point getCanvasOffset()

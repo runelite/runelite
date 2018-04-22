@@ -25,6 +25,7 @@
 package net.runelite.client.util;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -78,6 +79,9 @@ public class SwingUtil
 		// Prevents them from being obscured by the game applet.
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+		UIManager.put("Button.foreground", Color.WHITE);
+		UIManager.put("MenuItem.foreground", Color.WHITE);
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
@@ -210,7 +214,7 @@ public class SwingUtil
 						result = JOptionPane.showConfirmDialog(
 							frame,
 							"Are you sure you want to exit?", "Exit",
-							JOptionPane .OK_CANCEL_OPTION,
+							JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					}
 				}
