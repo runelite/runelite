@@ -169,13 +169,14 @@ class BarrowsOverlay extends Overlay
 				continue;
 			}
 
+			String brotherLetter = Character.toString(brother.getName().charAt(0));
 			net.runelite.api.Point minimapText = Perspective.getCanvasTextMiniMapLocation(client, graphics,
-				localLocation, brother.getName());
+				localLocation, brotherLetter);
 
 			if (minimapText != null)
 			{
 				graphics.setColor(Color.black);
-				graphics.drawString(brother.getName(), minimapText.getX() + 1, minimapText.getY() + 1);
+				graphics.drawString(brotherLetter, minimapText.getX() + 1, minimapText.getY() + 1);
 
 				if (client.getSetting(brother.getKilledVarbit()) > 0)
 				{
@@ -186,7 +187,7 @@ class BarrowsOverlay extends Overlay
 					graphics.setColor(config.brotherLocColor());
 				}
 
-				graphics.drawString(brother.getName(), minimapText.getX(), minimapText.getY());
+				graphics.drawString(brotherLetter, minimapText.getX(), minimapText.getY());
 			}
 		}
 	}
