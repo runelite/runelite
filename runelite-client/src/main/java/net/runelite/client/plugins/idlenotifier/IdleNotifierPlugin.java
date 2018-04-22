@@ -147,6 +147,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_POLE_CAST:
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
+			case FISHING_CRUSHING_INFERNAL_EELS:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
