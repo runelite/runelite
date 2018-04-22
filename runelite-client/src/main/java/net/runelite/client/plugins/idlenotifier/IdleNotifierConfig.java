@@ -37,20 +37,31 @@ public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
 		keyName = "animationidle",
-		name = "Idle Animation Notifications",
-		description = "Configures if idle animation notifications are enabled",
+		name = "Idle Animation Notification",
+		description = "Configures if the idle animation notification is enabled",
 		position = 1
 	)
 	default boolean animationIdle()
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+		keyName = "animationidledelay",
+		name = "Idle Animation Notification Delay (s)",
+		description = "The animation notification delay after the player is idle",
+		position = 2
+	)
+	default int getAnimationIdleNotificationDelay()
+	{
+		return 5;
+	}	
 
 	@ConfigItem(
 		keyName = "combatidle",
-		name = "Combat Idle Notifications",
-		description = "Configures if out of combat notifications are enabled",
-		position = 2
+		name = "Combat Idle Notification",
+		description = "Configures if the combat idle notification is enabled",
+		position = 3
 	)
 	default boolean combatIdle()
 	{
@@ -58,21 +69,21 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "timeout",
-		name = "Idle Notification Delay (ms)",
+		keyName = "combatidledelay",
+		name = "Combat Idle Notification Delay (s)",
 		description = "The notification delay after the player is idle",
-		position = 3
+		position = 4
 	)
-	default int getIdleNotificationDelay()
+	default int getCombatIdleNotificationDelay()
 	{
-		return 5000;
+		return 5;
 	}
 
 	@ConfigItem(
-		keyName = "hitpoints",
+		keyName = "hitpointslimit",
 		name = "Hitpoints Notification Threshold",
 		description = "The amount of hitpoints to send a notification at",
-		position = 4
+		position = 5
 	)
 	default int getHitpointsThreshold()
 	{
@@ -80,10 +91,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "prayer",
+		keyName = "prayerlimit",
 		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at",
-		position = 5
+		position = 6
 	)
 	default int getPrayerThreshold()
 	{

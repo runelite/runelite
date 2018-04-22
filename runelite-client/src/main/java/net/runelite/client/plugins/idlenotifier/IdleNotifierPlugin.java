@@ -7,10 +7,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -27,10 +27,20 @@ package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
@@ -99,17 +109,6 @@ import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Player;
-import net.runelite.api.Skill;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Idle Notifier"
@@ -117,7 +116,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
-	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+	private static final long COMBAT_WARNING_AFTER_TIME = 1180000000000L; // 19 minutes and 40 seconds
+	private static final long SIX_HOUR_LOGOUT_WARNING_AFTER_TIME = 21300000000000L; // 5 hours and 55 minutes
 
 	@Inject
 	private Notifier notifier;
@@ -128,17 +128,18 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
-	private Actor lastOpponent;
-	private Instant lastAnimating;
-	private Instant lastInteracting;
-	private boolean notifyIdle = false;
-	private boolean notifyHitpoints = true;
-	private boolean notifyPrayer = true;
-	private boolean notifyIdleLogout = true;
-	private boolean notify6HourLogout = true;
+	private long sixHourWarningTime;
+	private long opponentWarningTime;
+	private long lastAnimation;
 
-	private Instant sixHourWarningTime;
-	private boolean ready;
+	private boolean triggeredIdleLogout = false;
+	private boolean triggered6hrLogout = false;
+	private boolean triggeredIdleAnimation = false;
+	private boolean triggeredOutOfCombatIdle = false;
+	private boolean triggeredLowHealth = false;
+	private boolean triggeredLowPrayer = false;
+
+	private Actor trackedOpponent;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -161,6 +162,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		int animation = localPlayer.getAnimation();
+
 		switch (animation)
 		{
 			/* Woodcutting */
@@ -240,8 +242,8 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
-				resetTimers();
-				notifyIdle = true;
+				triggeredIdleAnimation = true;
+				lastAnimation = 0L;
 				break;
 		}
 	}
@@ -249,8 +251,6 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		lastInteracting = null;
-
 		GameState state = gameStateChanged.getGameState();
 
 		switch (state)
@@ -258,14 +258,14 @@ public class IdleNotifierPlugin extends Plugin
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
-				ready = true;
+			case LOGIN_SCREEN:
+				sixHourWarningTime = 0L;
+				lastAnimation = 0L;
+				opponentWarningTime = 0L;
+				trackedOpponent = null;
 				break;
 			case LOGGED_IN:
-				if (ready)
-				{
-					sixHourWarningTime = Instant.now().plus(SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION);
-					ready = false;
-				}
+				sixHourWarningTime = System.nanoTime() + SIX_HOUR_LOGOUT_WARNING_AFTER_TIME;
 				break;
 		}
 	}
@@ -274,7 +274,6 @@ public class IdleNotifierPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		final Player local = client.getLocalPlayer();
-		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 
 		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
@@ -291,25 +290,131 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
-		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
+		if (config.animationIdle() && checkAnimationIdle(local))
 		{
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
-		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
+		if (config.combatIdle() && checkOutOfCombat(local))
 		{
 			notifier.notify("[" + local.getName() + "] is now out of combat!");
 		}
 
-		if (checkLowHitpoints())
+		if (config.getHitpointsThreshold() != 0 && checkLowHitpoints())
 		{
-			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			notifier.notify("[" + local.getName() + "] has reached the hitpoint threshold!");
 		}
 
-		if (checkLowPrayer())
+		if (config.getPrayerThreshold() != 0 && checkLowPrayer())
 		{
-			notifier.notify("[" + local.getName() + "] has low prayer!");
+			notifier.notify("[" + local.getName() + "] has reached the prayer threshold!");
 		}
+	}
+
+	private boolean checkIdleLogout()
+	{
+		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
+			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
+			&& trackedOpponent == null)
+		{
+			if (!triggeredIdleLogout)
+			{
+				triggeredIdleLogout = true;
+				return true;
+			}
+		}
+		else
+		{
+			triggeredIdleLogout = false;
+		}
+
+		return false;
+	}
+
+	private boolean check6hrLogout()
+	{
+		if (sixHourWarningTime == 0L)
+		{
+			return false;
+		}
+
+		if (System.nanoTime() >= sixHourWarningTime)
+		{
+			if (!triggered6hrLogout)
+			{
+				triggered6hrLogout = true;
+				return true;
+			}
+		}
+		else
+		{
+			triggered6hrLogout = false;
+		}
+
+		return false;
+	}
+
+	private boolean checkAnimationIdle(Player local)
+	{
+		if (triggeredIdleAnimation)
+		{
+			if (lastAnimation != 0L
+				&& System.nanoTime() >= lastAnimation)
+			{
+				triggeredIdleAnimation = false;
+				lastAnimation = 0L;
+				return true;
+			}
+			else if (local.getAnimation() == IDLE)
+			{
+				lastAnimation = System.nanoTime() + (long) (config.getAnimationIdleNotificationDelay() * 1000000000L);
+			}
+		}
+
+		return false;
+	}
+
+	private boolean checkOutOfCombat(Player local)
+	{
+		Actor opponent = local.getInteracting();
+		boolean isOpponentPlayer = opponent instanceof Player;
+
+		if (opponentWarningTime != 0L
+			&& System.nanoTime() >= opponentWarningTime)
+		{
+			if (!triggeredOutOfCombatIdle)
+			{
+				triggeredOutOfCombatIdle = true;
+				trackedOpponent = null;
+				opponentWarningTime = 0L;
+				return true;
+			}
+		}
+		else
+		{
+			triggeredOutOfCombatIdle = false;
+		}
+
+		if (trackedOpponent == null)
+		{
+			if (opponent != null
+				&& opponent.getCombatLevel() > 0
+				&& !isOpponentPlayer
+				&& (client.getSetting(Varbits.MULTICOMBAT_AREA) == 1
+					|| (client.getSetting(Varbits.MULTICOMBAT_AREA) != 1 && opponent.getInteracting() == local)))
+			{
+					trackedOpponent = opponent;
+					opponentWarningTime = System.nanoTime() + COMBAT_WARNING_AFTER_TIME;
+			}
+		}
+		else if (trackedOpponent.getHealthRatio() == 0
+				|| (opponent == null && trackedOpponent.getInteracting() != local))
+		{
+				trackedOpponent = null;
+				opponentWarningTime = System.nanoTime() + (long) (config.getCombatIdleNotificationDelay() * 1000000000L);
+		}
+
+		return false;
 	}
 
 	private boolean checkLowHitpoints()
@@ -318,15 +423,15 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
 			{
-				if (!notifyHitpoints)
+				if (!triggeredLowHealth)
 				{
-					notifyHitpoints = true;
+					triggeredLowHealth = true;
 					return true;
 				}
 			}
 			else
 			{
-				notifyHitpoints = false;
+				triggeredLowHealth = false;
 			}
 		}
 
@@ -339,124 +444,18 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
 			{
-				if (!notifyPrayer)
+				if (!triggeredLowPrayer)
 				{
-					notifyPrayer = true;
+					triggeredLowPrayer = true;
 					return true;
 				}
 			}
 			else
 			{
-				notifyPrayer = false;
+				triggeredLowPrayer = false;
 			}
 		}
 
 		return false;
-	}
-
-	private boolean checkOutOfCombat(Duration waitDuration, Player local)
-	{
-		Actor opponent = local.getInteracting();
-		boolean isPlayer = opponent instanceof Player;
-
-		if (opponent != null
-			&& !isPlayer
-			&& opponent.getCombatLevel() > 0)
-		{
-			resetTimers();
-			lastOpponent = opponent;
-		}
-		else if (opponent == null)
-		{
-			lastOpponent = null;
-		}
-
-		if (lastOpponent != null && opponent == lastOpponent)
-		{
-			lastInteracting = Instant.now();
-		}
-
-		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
-		{
-			lastInteracting = null;
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean checkIdleLogout()
-	{
-		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
-			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
-		{
-			if (notifyIdleLogout)
-			{
-				notifyIdleLogout = false;
-				return true;
-			}
-		}
-		else
-		{
-			notifyIdleLogout = true;
-		}
-
-		return false;
-	}
-
-	private boolean check6hrLogout()
-	{
-		if (sixHourWarningTime == null)
-		{
-			return false;
-		}
-
-		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
-		{
-			if (notify6HourLogout)
-			{
-				notify6HourLogout = false;
-				return true;
-			}
-		}
-		else
-		{
-			notify6HourLogout = true;
-		}
-
-		return false;
-	}
-
-	private boolean checkAnimationIdle(Duration waitDuration, Player local)
-	{
-		if (notifyIdle)
-		{
-			if (lastAnimating != null)
-			{
-				if (Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
-				{
-					notifyIdle = false;
-					lastAnimating = null;
-					return true;
-				}
-			}
-			else if (local.getAnimation() == IDLE)
-			{
-				lastAnimating = Instant.now();
-			}
-		}
-
-		return false;
-	}
-
-	private void resetTimers()
-	{
-		// Reset animation idle timer
-		notifyIdle = false;
-		lastAnimating = null;
-
-		// Reset combat idle timer
-		lastOpponent = null;
-		lastInteracting = null;
 	}
 }
