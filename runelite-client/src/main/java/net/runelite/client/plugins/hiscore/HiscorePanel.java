@@ -49,7 +49,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -64,6 +63,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -165,7 +165,7 @@ public class HiscorePanel extends PluginPanel
 		inputPanel.setLayout(new BorderLayout(7, 7));
 		inputPanel.setBorder(subPanelBorder);
 
-		Icon search;
+		ImageIcon search;
 		try
 		{
 			BufferedImage icon;
@@ -417,14 +417,14 @@ public class HiscorePanel extends PluginPanel
 			{
 				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
 				text = "Bounty Hunter - Hunter Kills" + System.lineSeparator()
-						+ "Rank: " + rank;
+					+ "Rank: " + rank;
 				break;
 			}
 			case "Last Man Standing":
 			{
 				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
 				text = "Last Man Standing" + System.lineSeparator()
-						+ "Rank: " + rank;
+					+ "Rank: " + rank;
 				break;
 			}
 			case "Overall":
@@ -586,13 +586,13 @@ public class HiscorePanel extends PluginPanel
 				if (result.getPlayer() != null)
 				{
 					int combatLevel = Experience.getCombatLevel(
-							result.getAttack().getLevel(),
-							result.getStrength().getLevel(),
-							result.getDefence().getLevel(),
-							result.getHitpoints().getLevel(),
-							result.getMagic().getLevel(),
-							result.getRanged().getLevel(),
-							result.getPrayer().getLevel()
+						result.getAttack().getLevel(),
+						result.getStrength().getLevel(),
+						result.getDefence().getLevel(),
+						result.getHitpoints().getLevel(),
+						result.getMagic().getLevel(),
+						result.getRanged().getLevel(),
+						result.getPrayer().getLevel()
 					);
 					label.setText(Integer.toString(combatLevel));
 				}

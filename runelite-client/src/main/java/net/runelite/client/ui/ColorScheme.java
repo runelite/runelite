@@ -34,6 +34,9 @@ public class ColorScheme
 	/* The orange color used for the branding's accents */
 	public static final Color BRAND_ORANGE = new Color(220, 138, 0);
 
+	/* The orange color used for the branding's accents, with lowered opacity */
+	public static final Color BRAND_ORANGE_TRANSPARENT = new Color(220, 138, 0, 120);
+
 	public static final Color DARKER_GRAY_COLOR = new Color(30, 30, 30);
 	public static final Color DARK_GRAY_COLOR = new Color(40, 40, 40);
 	public static final Color MEDIUM_GRAY_COLOR = new Color(77, 77, 77);

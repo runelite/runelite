@@ -53,7 +53,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.ui.JShadowedLabel;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.LinkBrowser;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 

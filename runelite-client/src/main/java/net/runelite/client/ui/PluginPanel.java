@@ -68,7 +68,6 @@ public abstract class PluginPanel extends JPanel
 			northPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 			scrollPane = new JScrollPane(northPanel);
-			scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 			wrappedPanel = new JPanel();
