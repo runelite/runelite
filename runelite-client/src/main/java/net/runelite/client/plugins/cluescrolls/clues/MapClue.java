@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
-public class MapClue extends ClueScroll implements ObjectClueScroll, LocationClueScroll
+public class MapClue extends ClueScroll implements ObjectClueScroll
 {
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
