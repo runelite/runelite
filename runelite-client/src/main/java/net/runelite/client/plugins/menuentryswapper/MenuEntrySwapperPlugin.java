@@ -504,7 +504,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int idxB = searchIndex(entries, optionB, target, strict);
 
 		String entryOption = Text.removeTags(entries[idxA].getOption()).toLowerCase();
-		if(entryOption.equals("withdraw-10"))
+		if (entryOption.equals("withdraw-10"))
 		{
 			idxA--;
 		}
