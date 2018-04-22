@@ -269,7 +269,7 @@ public enum Varbits
 
 	/**
 	 * Barrows
-	*/
+	 */
 	BARROWS_KILLED_AHRIM(457),
 	BARROWS_KILLED_DHAROK(458),
 	BARROWS_KILLED_GUTHAN(459),
@@ -302,7 +302,15 @@ public enum Varbits
 	 */
 	DAILY_HERB_BOX(3961),
 	DAILY_STAVES(4539),
-	DAILY_ESSENCE(4547);
+	DAILY_ESSENCE(4547),
+
+	/**
+	 * Fairy Ring
+	 */
+	FAIR_RING_LAST_DESTINATION(5374),
+	FAIRY_RING_DIAL_ADCB(3985), //Left dial
+	FAIRY_RIGH_DIAL_ILJK(3986), //Middle dial
+	FAIRY_RING_DIAL_PSRQ(3987); //Right dial
 
 	/**
 	 * varbit id
