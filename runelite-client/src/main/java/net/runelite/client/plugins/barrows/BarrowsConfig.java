@@ -59,10 +59,10 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "brotherLocColor",
-			name = "Brother location color",
-			description = "Change the color of the name displayed on the minimap",
-			position = 2
+		keyName = "brotherLocColor",
+		name = "Brother location color",
+		description = "Change the color of the name displayed on the minimap",
+		position = 2
 	)
 	default Color brotherLocColor()
 	{
@@ -70,10 +70,10 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "deadBrotherLocColor",
-			name = "Dead Brother loc. color",
-			description = "Change the color of the name displayed on the minimap for a dead brother",
-			position = 3
+		keyName = "deadBrotherLocColor",
+		name = "Dead Brother loc. color",
+		description = "Change the color of the name displayed on the minimap for a dead brother",
+		position = 3
 	)
 	default Color deadBrotherLocColor()
 	{
