@@ -210,4 +210,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "claimSlime",
+		name = "Claim Slime",
+		description = "Swap Talk-to with Claim Slime from Morytania diaries"
+	)
+	default boolean claimSlime()
+	{
+		return true;
+	}
 }
