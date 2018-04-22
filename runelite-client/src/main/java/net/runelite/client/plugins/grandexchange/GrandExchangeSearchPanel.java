@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,7 +45,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.hiscore.IconTextField;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -60,7 +59,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
 
-	private Icon search;
+	private ImageIcon search;
 
 	private IconTextField searchBox = new IconTextField();
 	private JPanel container = new JPanel();
