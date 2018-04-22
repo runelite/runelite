@@ -22,54 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.plugins.cluescrolls.clues.emote;
 
-import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.Item;
 
-@Getter
-public enum Emote
+public class SlotLimitationRequirement implements ItemRequirement
 {
-	BULL_ROARER("Bull Roarer", -1),
-	YES("Yes", EMOTE_YES),
-	NO("No", EMOTE_NO),
-	THINK("Think", EMOTE_THINK),
-	BOW("Bow", EMOTE_BOW),
-	ANGRY("Angry", EMOTE_ANGRY),
-	CRY("Cry", EMOTE_CRY),
-	LAUGH("Laugh", EMOTE_LAUGH),
-	CHEER("Cheer", EMOTE_CHEER),
-	WAVE("Wave", EMOTE_WAVE),
-	BECKON("Beckon", EMOTE_BECKON),
-	DANCE("Dance", EMOTE_DANCE),
-	CLAP("Clap", EMOTE_CLAP),
-	PANIC("Panic", EMOTE_PANIC),
-	JIG("Jig", EMOTE_JIG),
-	SPIN("Spin", EMOTE_SPIN),
-	HEADBANG("Headbang", EMOTE_HEADBANG),
-	JUMP_FOR_JOY("Jump for Joy", EMOTE_JUMP_FOR_JOY),
-	RASPBERRY("Raspberry", EMOTE_RASPBERRY),
-	YAWN("Yawn", EMOTE_YAWN),
-	SALUTE("Salute", EMOTE_SALUTE),
-	SHRUG("Shrug", EMOTE_SHRUG),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	GOBLIN_SALUTE("Goblin Salute", EMOTE_GOBLIN_SALUTE),
-	SLAP_HEAD("Slap Head", EMOTE_SLAP_HEAD),
-	STOMP("Stomp", EMOTE_STOMP),
-	FLAP("Flap", EMOTE_FLAP),
-	PUSH_UP("Push up", EMOTE_PUSH_UP);
+	private String description;
+	private EquipmentInventorySlot[] slots;
 
-	private String name;
-	private int spriteId;
-
-	Emote(String name, int spriteId)
+	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
 	{
-		this.name = name;
-		this.spriteId = spriteId;
+		this.description = description;
+		this.slots = slots;
 	}
 
-	public boolean hasSprite()
+	@Override
+	public boolean fulfilledBy(Item[] items)
 	{
-		return spriteId != -1;
+		for (EquipmentInventorySlot slot : slots)
+		{
+			// The items array resizes as different slots are filled
+			if (slot.getSlotIdx() >= items.length)
+			{
+				return false;
+			}
+
+			if (items[slot.getSlotIdx()].getId() != -1)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public String getCollectiveName(Client client)
+	{
+		return description;
 	}
 }
