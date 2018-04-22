@@ -208,13 +208,13 @@
 									</includes>
 								</filter>
 								<filter>
-									<artifact>net.runelite.rs:api</artifact>
+									<artifact>net.runelite.rs:runescape-api</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
 								</filter>
 								<filter>
-									<artifact>org.pushingpixels:*</artifact>
+									<artifact>net.runelite.pushingpixels:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
