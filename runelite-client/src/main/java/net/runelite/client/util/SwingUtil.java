@@ -32,6 +32,7 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -41,6 +42,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.LookupOp;
+import java.awt.image.LookupTable;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -93,6 +96,40 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
+	}
+
+	/**
+	 * Offsets an image in the grayscale (darkens/brightens) by an offset
+	 */
+	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
+	{
+		int numComponents = image.getColorModel().getNumComponents();
+		int index = numComponents - 1;
+
+		LookupTable lookup = new LookupTable(0, numComponents)
+		{
+			@Override
+			public int[] lookupPixel(int[] src, int[] dest)
+			{
+				if (dest[index] != 0)
+				{
+					dest[index] = dest[index] + offset;
+					if (dest[index] < 0)
+					{
+						dest[index] = 0;
+					}
+					else if (dest[index] > 255)
+					{
+						dest[index] = 255;
+					}
+				}
+
+				return dest;
+			}
+		};
+
+		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
+		return op.filter(image, null);
 	}
 
 	/**
