@@ -404,6 +404,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("queuedSoundEffectCount")
 	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
 
+	@Import("soundEffectVolume")
+	@Override
+	int getSoundEffectVolume();
+
 	@Import("drawBoundingBoxes2D")
 	@Override
 	boolean getDrawBoundingBoxes2D();

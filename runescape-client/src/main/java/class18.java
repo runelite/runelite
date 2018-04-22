@@ -183,23 +183,23 @@ final class class18 implements Comparator {
 
          if(var4 == 4) {
             if(var2 == 0) {
-               Client.field1075 = 127;
+               Client.soundEffectVolume = 127;
             }
 
             if(var2 == 1) {
-               Client.field1075 = 96;
+               Client.soundEffectVolume = 96;
             }
 
             if(var2 == 2) {
-               Client.field1075 = 64;
+               Client.soundEffectVolume = 64;
             }
 
             if(var2 == 3) {
-               Client.field1075 = 32;
+               Client.soundEffectVolume = 32;
             }
 
             if(var2 == 4) {
-               Client.field1075 = 0;
+               Client.soundEffectVolume = 0;
             }
          }
 

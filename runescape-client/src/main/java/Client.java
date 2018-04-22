@@ -231,7 +231,8 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedGetter(
       intValue = -946689099
    )
-   static int field1075;
+   @Export("soundEffectVolume")
+   static int soundEffectVolume;
    @ObfuscatedName("pw")
    static boolean field1111;
    @ObfuscatedName("oc")
@@ -1426,7 +1427,7 @@ public final class Client extends GameEngine implements class302 {
       field996 = 255;
       field1026 = -1;
       field1102 = false;
-      field1075 = 127;
+      soundEffectVolume = 127;
       field951 = 127;
       queuedSoundEffectCount = 0;
       queuedSoundEffectIDs = new int[50];
@@ -5714,7 +5715,7 @@ public final class Client extends GameEngine implements class302 {
                var23 = var3.readUnsignedShort();
                var24 = var3.readUnsignedByte();
                var6 = var3.readUnsignedShort();
-               if(field1075 != 0 && var24 != 0 && queuedSoundEffectCount < 50) {
+               if(soundEffectVolume != 0 && var24 != 0 && queuedSoundEffectCount < 50) {
                   queuedSoundEffectIDs[queuedSoundEffectCount] = var23;
                   unknownSoundValues1[queuedSoundEffectCount] = var24;
                   unknownSoundValues2[queuedSoundEffectCount] = var6;

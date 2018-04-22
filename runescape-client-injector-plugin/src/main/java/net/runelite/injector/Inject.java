@@ -46,6 +46,7 @@ import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
+import net.runelite.injector.raw.ForcePlaySound;
 import net.runelite.injector.raw.ScriptVM;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
@@ -70,6 +71,7 @@ public class Inject
 
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
+	private final ForcePlaySound forcePlaySound = new ForcePlaySound(this);
 	private final ScriptVM scriptVM = new ScriptVM(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
@@ -320,6 +322,7 @@ public class Inject
 			setters.getInjectedSetters(), invokes.getInjectedInvokers());
 
 		drawAfterWidgets.inject();
+		forcePlaySound.inject();
 		scriptVM.inject();
 	}
 
