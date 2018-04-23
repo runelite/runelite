@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.game.ClanManager;
@@ -80,6 +81,9 @@ public class RuneLite
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private CommandManager commandManager;
 
 	@Inject
 	private OverlayRenderer overlayRenderer;
@@ -163,6 +167,7 @@ public class RuneLite
 		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
+		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(itemManager);
 		eventBus.register(clanManager);

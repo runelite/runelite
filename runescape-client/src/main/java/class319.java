@@ -538,11 +538,11 @@ public class class319 {
                         }
 
                         ScriptEvent var53;
-                        if(var9.onVarTransmitListener != null && Client.field1054 > var9.field2950) {
-                           if(var9.varTransmitTriggers != null && Client.field1054 - var9.field2950 <= 32) {
+                        if(var9.onVarTransmitListener != null && Client.pendingVarbitCount > var9.field2950) {
+                           if(var9.varTransmitTriggers != null && Client.pendingVarbitCount - var9.field2950 <= 32) {
                               label999:
-                              for(var37 = var9.field2950; var37 < Client.field1054; ++var37) {
-                                 var38 = Client.field984[var37 & 31];
+                              for(var37 = var9.field2950; var37 < Client.pendingVarbitCount; ++var37) {
+                                 var38 = Client.pendingVarbitChanges[var37 & 31];
 
                                  for(var23 = 0; var23 < var9.varTransmitTriggers.length; ++var23) {
                                     if(var38 == var9.varTransmitTriggers[var23]) {
@@ -561,7 +561,7 @@ public class class319 {
                               Client.field1066.addFront(var48);
                            }
 
-                           var9.field2950 = Client.field1054;
+                           var9.field2950 = Client.pendingVarbitCount;
                         }
 
                         if(var9.onInvTransmitListener != null && Client.field1056 > var9.field2951) {
