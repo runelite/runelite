@@ -40,6 +40,7 @@ import static net.runelite.api.AnimationID.FISHING_CAGE;
 import static net.runelite.api.AnimationID.FISHING_DRAGON_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_KARAMBWAN;
+import static net.runelite.api.AnimationID.FISHING_BIG_NET;
 import static net.runelite.api.AnimationID.FISHING_NET;
 import static net.runelite.api.AnimationID.FISHING_OILY_ROD;
 import static net.runelite.api.AnimationID.FISHING_POLE_CAST;
@@ -206,6 +207,7 @@ public class IdleNotifierPlugin extends Plugin
 			case SMITHING_CANNONBALL:
 			/* Fishing */
 			case FISHING_NET:
+			case FISHING_BIG_NET:
 			case FISHING_HARPOON:
 			case FISHING_BARBTAIL_HARPOON:
 			case FISHING_DRAGON_HARPOON:

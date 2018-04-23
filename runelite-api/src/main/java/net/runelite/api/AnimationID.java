@@ -75,6 +75,7 @@ public final class AnimationID
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
+	public static final int FISHING_BIG_NET = 620;
 	public static final int FISHING_NET = 621;
 	public static final int FISHING_POLE_CAST = 623; // pole is in the water
 	public static final int FISHING_CAGE = 619;
