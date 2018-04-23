@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
@@ -117,6 +119,9 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
+	private Integer clueItemId;
+	private boolean clueItemChanged = false;
+
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
@@ -140,28 +145,30 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked event)
+	{
+		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		{
+			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+
+			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
+			{
+				clueItemId = itemComposition.getId();
+				clueItemChanged = true;
+			}
+		}
+	}
+
+	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		// Check if item was removed from inventory
-		if (clue != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		if (clue != null && clueItemId != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			final Item[] items = event.getItemContainer().getItems();
-			boolean found = false;
+			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
-			// Clue was maybe removed from inventory, check if there is any clue scrolls left
-			for (Item item : items)
-			{
-				final ItemComposition itemContainerDefinition = itemManager.getItemComposition(item.getId());
-
-				// Check if we have any clue scrolls left
-				if (itemContainerDefinition.getName().startsWith("Clue scroll"))
-				{
-					found = true;
-					break;
-				}
-			}
-
-			if (!found)
+			// Check if clue was removed from inventory
+			if (items.noneMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueItemId))
 			{
 				resetClue();
 			}
@@ -286,6 +293,12 @@ public class ClueScrollPlugin extends Plugin
 
 	private void resetClue()
 	{
+		if (!clueItemChanged)
+		{
+			clueItemId = null;
+		}
+
+		clueItemChanged = false;
 		clue = null;
 		client.clearHintArrow();
 	}
@@ -356,6 +369,8 @@ public class ClueScrollPlugin extends Plugin
 
 			if (clue != null)
 			{
+				clueItemId = item.getId();
+				clueItemChanged = true;
 				return clue;
 			}
 		}
