@@ -28,6 +28,8 @@ import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Set;
+import net.runelite.api.Point;
+import net.runelite.api.TileObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -55,14 +57,22 @@ public class HerbiboarMinimapOverlay extends Overlay
 			HerbiboarTrail currentTrail = plugin.getCurrentTrail();
 			int finishId = plugin.getFinishId();
 			Set<Integer> shownTrailIds = plugin.getShownTrails();
-			plugin.getTrails().keySet().forEach((x) ->
+
+			for (TileObject tileObject : plugin.getTrails().keySet())
 			{
-				int id = x.getId();
+				int id = tileObject.getId();
+				Point minimapLocation = tileObject.getMinimapLocation();
+
+				if (minimapLocation == null)
+				{
+					continue;
+				}
+
 				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
 				{
-					OverlayUtil.renderMinimapLocation(graphics, x.getMinimapLocation(), config.getTrailColor());
+					OverlayUtil.renderMinimapLocation(graphics, minimapLocation, config.getTrailColor());
 				}
-			});
+			}
 		}
 
 		return null;
