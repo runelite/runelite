@@ -56,8 +56,8 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Menu Entry Swapper",
-	enabledByDefault = false
+		name = "Menu Entry Swapper",
+		enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {
@@ -70,22 +70,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String ITEM_KEY_PREFIX = "item_";
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
+			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
+			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
+			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
+			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
 	@Inject
 	private Client client;
@@ -189,8 +189,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB
-			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
-			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
+				|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
+				|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
 		{
 			configuringShiftClick = event.getMenuOption().equals(CONFIGURE);
 			refreshShiftClickCustomizationMenus();
@@ -318,41 +318,53 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event) {
-		if (client.getGameState() != GameState.LOGGED_IN) {
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
 			return;
 		}
 
 		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
-
-		if (option.equals("talk-to")) {
-			if (config.swapPickpocket() && target.contains("h.a.m.")) {
+		if (option.equals("climb") && target.contains("staircase"))
+			config.swapClimb();
+				swap("climb-up", option, target, true);
+		if (option.equals("talk-to"))
+		{
+			if (config.swapPickpocket() && target.contains("h.a.m."))
+			{
 				swap("pickpocket", option, target, true);
 			}
 
-			if (config.swapAbyssTeleport() && target.contains("mage of zamorak")) {
+			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
+			{
 				swap("teleport", option, target, true);
 			}
 
-			if (config.swapBank()) {
+			if (config.swapBank())
+			{
 				swap("bank", option, target, true);
 			}
 
-			if (config.swapExchange()) {
+			if (config.swapExchange())
+			{
 				swap("exchange", option, target, true);
 			}
 
-			if (config.swapTrade()) {
+			if (config.swapTrade())
+			{
 				swap("trade", option, target, true);
 			}
 
-			if (config.claimSlime() && target.equals("robin")) {
+			if (config.claimSlime() && target.equals("robin"))
+			{
 				swap("claim-slime", option, target, true);
 			}
 
-			if (config.swapTravel()) {
+			if (config.swapTravel())
+			{
 				swap("travel", option, target, true);
 				swap("pay-fare", option, target, true);
 				swap("charter", option, target, true);
@@ -364,49 +376,76 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("follow", option, target, true);
 			}
 
-			if (config.swapPay()) {
+			if (config.swapPay())
+			{
 				swap("pay", option, target, true);
 			}
-		} else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier")) {
+		}
+		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
+		{
 			swap("pay-toll(2-ecto)", option, target, true);
-		} else if (config.swapTravel() && option.equals("open") && target.equals("gate")) {
+		}
+		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
+		{
 			swap("pay-toll(10gp)", option, target, true);
-		} else if (config.swapHarpoon() && option.equals("cage")) {
+		}
+		else if (config.swapHarpoon() && option.equals("cage"))
+		{
 			swap("harpoon", option, target, true);
-		} else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net"))) {
+		}
+		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
+		{
 			swap("harpoon", option, target, true);
-		} else if (config.swapHome() && option.equals("enter")) {
+		}
+		else if (config.swapHome() && option.equals("enter"))
+		{
 			swap("home", option, target, true);
-		} else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree"))) {
+		}
+		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
+		{
 			swap("last-destination (", option, target, false);
-		} else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle"))) {
+		}
+		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
+		{
 			swap("reset", option, target, true);
-		} else if (config.swapBoxTrap() && option.equals("take")) {
+		}
+		else if (config.swapBoxTrap() && option.equals("take"))
+		{
 			swap("lay", option, target, true);
-		} else if (config.swapCatacombEntrance() && option.equals("read")) {
+		}
+		else if (config.swapCatacombEntrance() && option.equals("read"))
+		{
 			swap("investigate", option, target, true);
-		} else if (config.swapChase() && option.equals("pick-up")) {
+		}
+		else if (config.swapChase() && option.equals("pick-up"))
+		{
 			swap("chase", option, target, true);
-		} else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use")) {
+		}
+		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		{
 			Integer customOption = getSwapConfig(itemId);
 
-			if (customOption != null && customOption == -1) {
+			if (customOption != null && customOption == -1)
+			{
 				swap("use", option, target, true);
 			}
 		}
 		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear")) {
+		else if (config.swapTeleportItem() && option.equals("wear"))
+		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
-		} else if (option.equals("wield")) {
-			if (config.swapTeleportItem()) {
+		}
+		else if (option.equals("wield"))
+		{
+			if (config.swapTeleportItem())
+			{
 				swap("teleport", option, target, true);
 			}
-		} else if (config.swapBones() && option.equals("bury")) {
-			swap("use", option, target, true);
 		}
-		if (config.swapClimb() && option.equals("climb") && target.equals("staircase")) {
-			swap("climb-up", option, target, true);
+		else if (config.swapBones() && option.equals("bury"))
+		{
+			swap("use", option, target, true);
 		}
 	}
 

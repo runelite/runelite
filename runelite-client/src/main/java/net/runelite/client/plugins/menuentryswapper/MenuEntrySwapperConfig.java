@@ -230,6 +230,6 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapClimb()
 	{
-		return true;
+		return false;
 	}
 }
