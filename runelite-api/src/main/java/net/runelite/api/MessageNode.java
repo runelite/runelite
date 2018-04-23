@@ -30,10 +30,18 @@ public interface MessageNode
 
 	String getName();
 
+	/**
+	 * Sets the name of the player who sent the message
+	 * @param name Name of the player
+	 */
 	void setName(String name);
 
 	String getSender();
 
+	/**
+	 * Set the name of the clan chat the message was sent from
+	 * @param sender Name of the clan chat
+	 */
 	void setSender(String sender);
 
 	String getValue();
