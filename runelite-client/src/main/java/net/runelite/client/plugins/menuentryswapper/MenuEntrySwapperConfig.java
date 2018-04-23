@@ -215,7 +215,7 @@ public interface MenuEntrySwapperConfig extends Config
 		position = 16,
 		keyName = "swapTravel",
 		name = "Travel",
-		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter, Buy-pass on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember, Shantay"
+		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
 	)
 	default boolean swapTravel()
 	{
