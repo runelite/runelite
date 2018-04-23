@@ -30,25 +30,23 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.GameObject;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
-import net.runelite.api.Region;
-import net.runelite.api.Tile;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import static net.runelite.api.ItemID.*;
-import static net.runelite.api.ObjectID.*;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
-public class MapClue extends ClueScroll implements ObjectClueScroll, LocationClueScroll
+public class MapClue extends ClueScroll implements ObjectClueScroll
 {
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
@@ -136,24 +134,20 @@ public class MapClue extends ClueScroll implements ObjectClueScroll, LocationClu
 		// Mark game object
 		if (objectId != -1)
 		{
-			Region region = plugin.getClient().getRegion();
-			Tile[][][] tiles = region.getTiles();
-
-			Tile tile = tiles[plugin.getClient().getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
-
 			net.runelite.api.Point mousePosition = plugin.getClient().getMouseCanvasPosition();
 
-			for (GameObject gameObject : tile.getGameObjects())
+			if (plugin.getObjectsToMark() != null)
 			{
-				if (gameObject != null)
+				for (GameObject gameObject : plugin.getObjectsToMark())
 				{
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
-							CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
+						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, localLocation, CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
 				}
 			}
 		}
+		// Mark tile
 		else
 		{
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
