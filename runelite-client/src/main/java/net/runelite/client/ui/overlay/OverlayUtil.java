@@ -39,6 +39,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.Widget;
 
 
 /**
@@ -172,6 +173,14 @@ public class OverlayUtil
 			graphics.draw(area);
 			graphics.setColor(fillColor);
 			graphics.fill(area);
+		}
+	}
+
+	public static void renderWidget(Graphics2D graphics, Widget widget, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
+	{
+		if (!widget.isHidden())
+		{
+			renderHoverableArea(graphics, new Area(widget.getBounds()), mousePosition, fillColor, borderColor, borderHoverColor);
 		}
 	}
 
