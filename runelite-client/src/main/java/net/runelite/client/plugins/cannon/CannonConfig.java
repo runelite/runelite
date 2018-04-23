@@ -37,11 +37,12 @@ import net.runelite.client.config.ConfigItem;
 public interface CannonConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showEmptyCannonNotification",
-		name = "Empty cannon notification",
-		description = "Configures whether to notify you that the cannon is empty"
+		keyName = "showCannonSpots",
+		name = "Show common cannon spots",
+		description = "Configures whether to show common cannon spots or not",
+		position = 1
 	)
-	default boolean showEmptyCannonNotification()
+	default boolean showCannonSpots()
 	{
 		return true;
 	}
@@ -49,7 +50,8 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showInfobox",
 		name = "Show Cannonball infobox",
-		description = "Configures whether to show the cannonballs in an infobox"
+		description = "Configures whether to show the cannonballs in an infobox",
+		position = 2
 	)
 	default boolean showInfobox()
 	{
@@ -57,9 +59,43 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showEmptyCannonNotification",
+		name = "Empty cannon notification",
+		description = "Configures whether to notify you that the cannon is empty",
+		position = 3
+	)
+	default boolean showEmptyCannonNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAlmostEmptyCannonNotification",
+		name = "Running out notification",
+		description = "Configures whether to notify you that the cannon is almost empty",
+		position = 4
+	)
+	default boolean showAlmostEmptyCannonNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "almostEmptyCannonNotificationThreshold",
+		name = "Running out notification threshold",
+		description = "Configures the threshold amount for when a notification should be shown if the cannon is running out of ammo",
+		position = 5
+	)
+	default int almostEmptyCannonNotificationThreshold()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
 		keyName = "showDoubleHitSpot",
 		name = "Show double hit spots",
-		description = "Configures whether to show the NPC double hit spot"
+		description = "Configures whether to show the NPC double hit spot",
+		position = 6
 	)
 	default boolean showDoubleHitSpot()
 	{
@@ -69,20 +105,11 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "highlightDoubleHitColor",
 		name = "Color of double hit spots",
-		description = "Configures the highlight color of double hit spots"
+		description = "Configures the highlight color of double hit spots",
+		position = 7
 	)
 	default Color highlightDoubleHitColor()
 	{
 		return Color.RED;
-	}
-
-	@ConfigItem(
-		keyName = "showCannonSpots",
-		name = "Show common cannon spots",
-		description = "Configures whether to show common cannon spots or not"
-	)
-	default boolean showCannonSpots()
-	{
-		return true;
 	}
 }

@@ -77,6 +77,9 @@ public class CannonPlugin extends Plugin
 	private boolean cannonPlaced;
 
 	@Getter
+	private boolean almostEmptyNotified;
+
+	@Getter
 	private WorldPoint cannonPosition;
 
 	@Getter
@@ -125,6 +128,7 @@ public class CannonPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		cannonPlaced = false;
+		almostEmptyNotified = false;
 		cannonPosition = null;
 		cballsLeft = 0;
 		removeCounter();
@@ -173,6 +177,24 @@ public class CannonPlugin extends Plugin
 		}
 	}
 
+	@Schedule(
+			period = 1,
+			unit = ChronoUnit.SECONDS
+	)
+	public void checkAmmo()
+	{
+		if (!config.showAlmostEmptyCannonNotification())
+		{
+			return;
+		}
+
+		if (cballsLeft <= config.almostEmptyCannonNotificationThreshold() && cannonPlaced && !almostEmptyNotified)
+		{
+			notifier.notify("Your cannon is running out of ammo!");
+			almostEmptyNotified = true;
+		}
+	}
+
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
@@ -218,6 +240,7 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().equals("You add the furnace."))
 		{
 			cannonPlaced = true;
+			almostEmptyNotified = false;
 			addCounter();
 			cballsLeft = 0;
 		}
@@ -225,23 +248,33 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().contains("You pick up the cannon"))
 		{
 			cannonPlaced = false;
+			almostEmptyNotified = false;
 			cballsLeft = 0;
 			removeCounter();
 		}
 
 		if (event.getMessage().startsWith("You load the cannon with"))
 		{
+
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
 				int amt = Integer.valueOf(m.group());
 				cballsLeft += amt;
 			}
+			if (cballsLeft > config.almostEmptyCannonNotificationThreshold())
+			{
+				almostEmptyNotified = false;
+			}
 		}
 
 		if (event.getMessage().equals("You load the cannon with one cannonball."))
 		{
 			cballsLeft++;
+			if (cballsLeft > config.almostEmptyCannonNotificationThreshold())
+			{
+				almostEmptyNotified = false;
+			}
 		}
 
 		if (event.getMessage().contains("Your cannon is out of ammo!"))
@@ -254,6 +287,7 @@ public class CannonPlugin extends Plugin
 
 		if (event.getMessage().contains("You unload your cannon and receive Cannonball"))
 		{
+			almostEmptyNotified = false;
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
