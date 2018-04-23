@@ -352,7 +352,16 @@ public class ClueScrollPlugin extends Plugin
 					return emoteClue;
 				}
 
-				return FairyRingClue.forText(text);
+				final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
+
+				if (fairyRingClue != null)
+				{
+					return fairyRingClue;
+				}
+
+				// We have unknown clue, reset
+				resetClue();
+				return null;
 			}
 		}
 
