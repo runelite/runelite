@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Font;
@@ -33,7 +34,10 @@ import java.util.Collection;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -51,6 +55,9 @@ import net.runelite.client.ui.overlay.Overlay;
 public class DevToolsPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private PluginToolbar pluginToolbar;
 
 	@Inject
@@ -61,6 +68,9 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private BorderOverlay borderOverlay;
+
+	@Inject
+	private EventBus eventBus;
 
 	private boolean togglePlayers;
 	private boolean toggleNpcs;
@@ -123,9 +133,28 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommand(CommandExecuted commandExecuted) {
-		if (commandExecuted.getCommand().equalsIgnoreCase("test")) {
-			log.debug("Test!");
+	public void onCommand(CommandExecuted commandExecuted)
+	{
+		String[] args = commandExecuted.getArguments();
+
+		switch (commandExecuted.getCommand())
+		{
+			case "getvar":
+			{
+				int varbit = Integer.parseInt(args[0]);
+				int value = client.getVarbitValue(varbit);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
+				break;
+			}
+			case "setvar":
+			{
+				int varbit = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				client.setVarbitValue(varbit, value);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
+				eventBus.post(new VarbitChanged()); // fake event
+				break;
+			}
 		}
 	}
 
