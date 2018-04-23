@@ -27,7 +27,6 @@ package net.runelite.client.plugins.boosts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -75,9 +74,12 @@ class BoostsOverlay extends Overlay
 		panelComponent = new PanelComponent();
 
 		Instant lastChange = plugin.getLastChange();
-		if (config.displayNextChange() && lastChange != null && overlayActive)
+		if (!config.displayIndicators()
+			&& config.displayNextChange()
+			&& lastChange != null
+			&& overlayActive)
 		{
-			int nextChange = 60 - (int)Duration.between(lastChange, Instant.now()).getSeconds();
+			int nextChange = plugin.getChangeTime();
 			if (nextChange > 0)
 			{
 				panelComponent.getLines().add(new PanelComponent.Line(

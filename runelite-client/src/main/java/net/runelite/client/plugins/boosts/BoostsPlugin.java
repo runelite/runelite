@@ -27,7 +27,10 @@ package net.runelite.client.plugins.boosts;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -37,6 +40,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -76,8 +80,15 @@ public class BoostsPlugin extends Plugin
 	@Inject
 	private BoostsConfig config;
 
+	@Inject
+	private SkillIconManager skillIconManager;
+
 	@Getter
 	private Skill[] shownSkills;
+
+	private StatChangeIndicator statChangeIndicator;
+
+	private BufferedImage overallIcon;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -96,17 +107,29 @@ public class BoostsPlugin extends Plugin
 	{
 		updateShownSkills(config.enableSkill());
 		Arrays.fill(lastSkillLevels, -1);
+		overallIcon = skillIconManager.getSkillImage(Skill.OVERALL);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
+		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("boosts"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("displayIndicators") || event.getKey().equals("displayNextChange"))
+		{
+			addStatChangeIndicator();
+			return;
+		}
+
 		Skill[] old = shownSkills;
 		updateShownSkills(config.enableSkill());
 
@@ -137,6 +160,7 @@ public class BoostsPlugin extends Plugin
 		{
 			log.debug("Skill {} healed", skill);
 			lastChange = Instant.now();
+			addStatChangeIndicator();
 		}
 		lastSkillLevels[skillIdx] = cur;
 	}
@@ -151,5 +175,24 @@ public class BoostsPlugin extends Plugin
 		{
 			shownSkills = COMBAT;
 		}
+	}
+
+	public void addStatChangeIndicator()
+	{
+		infoBoxManager.removeInfoBox(statChangeIndicator);
+		statChangeIndicator = null;
+
+		if (lastChange != null
+			&& config.displayIndicators()
+			&& config.displayNextChange())
+		{
+			statChangeIndicator = new StatChangeIndicator(getChangeTime(), ChronoUnit.SECONDS, overallIcon, this);
+			infoBoxManager.addInfoBox(statChangeIndicator);
+		}
+	}
+
+	public int getChangeTime()
+	{
+		return 60 - (int) Duration.between(lastChange, Instant.now()).getSeconds();
 	}
 }
