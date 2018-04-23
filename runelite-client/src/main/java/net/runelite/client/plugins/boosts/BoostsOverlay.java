@@ -57,6 +57,8 @@ class BoostsOverlay extends Overlay
 
 	private PanelComponent panelComponent;
 
+	private boolean overlayActive;
+
 	@Inject
 	BoostsOverlay(Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
 	{
@@ -71,7 +73,23 @@ class BoostsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent = new PanelComponent();
-		boolean overlayActive = false;
+
+		Instant lastChange = plugin.getLastChange();
+		if (config.displayNextChange() && lastChange != null && overlayActive)
+		{
+			int nextChange = 60 - (int)Duration.between(lastChange, Instant.now()).getSeconds();
+			if (nextChange > 0)
+			{
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Next change in",
+					Color.WHITE,
+					String.valueOf(nextChange),
+					Color.WHITE
+				));
+			}
+		}
+
+		overlayActive = false;
 
 		for (Skill skill : plugin.getShownSkills())
 		{
@@ -133,21 +151,6 @@ class BoostsOverlay extends Overlay
 					Color.WHITE,
 					str,
 					strColor
-				));
-			}
-		}
-
-		Instant lastChange = plugin.getLastChange();
-		if (config.displayNextChange() && lastChange != null && overlayActive)
-		{
-			int nextChange = 60 - (int)Duration.between(lastChange, Instant.now()).getSeconds();
-			if (nextChange > 0)
-			{
-				panelComponent.getLines().add(new PanelComponent.Line(
-					"Next change in",
-					Color.WHITE,
-					String.valueOf(nextChange),
-					Color.WHITE
 				));
 			}
 		}
