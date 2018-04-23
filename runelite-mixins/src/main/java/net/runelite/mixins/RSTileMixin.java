@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import net.runelite.api.Actor;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Point;
 import net.runelite.api.WallObject;
@@ -38,10 +39,10 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -262,6 +263,12 @@ public abstract class RSTileMixin implements RSTile
 	@Inject
 	public void itemLayerChanged(int idx)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			// during region loading this gets set to null 104x104 times
+			return;
+		}
+
 		ItemLayerChanged itemLayerChanged = new ItemLayerChanged(this);
 		eventBus.post(itemLayerChanged);
 	}
