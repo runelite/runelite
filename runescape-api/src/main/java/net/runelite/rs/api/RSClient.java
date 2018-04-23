@@ -612,4 +612,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("hintArrowPlayerTargetIdx")
 	int getHintArrowPlayerTargetIdx();
+
+	@Import("isDynamicRegion")
+	@Override
+	boolean isInInstancedRegion();
 }
