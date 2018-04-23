@@ -29,9 +29,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +53,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UpdateCheckService
 {
 	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckService.class);
+
+	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
 	private static final int PORT = 43594;
 	private static final byte HANDSHAKE_TYPE = 15;
@@ -93,8 +97,10 @@ public class UpdateCheckService
 			return false;
 		}
 
-		try (Socket socket = new Socket(address, PORT))
+		try (Socket socket = new Socket())
 		{
+			socket.connect(new InetSocketAddress(address, PORT), (int) TIMEOUT.toMillis());
+
 			ByteBuffer buffer = ByteBuffer.allocate(5);
 			buffer.put(HANDSHAKE_TYPE);
 			buffer.putInt(RuneLiteAPI.getRsVersion());
