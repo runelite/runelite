@@ -191,7 +191,7 @@ public class GroundMarkerPlugin extends Plugin
 						WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
 							client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
 							worldPoint.getPlane());
-						p = rotateChunk(p, rotation);
+						p = rotate(p, rotation);
 						worldPoints.add(p);
 					}
 				}
@@ -201,13 +201,25 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	/**
+	 * Rotate the chunk containing the given point to rotation 0
+	 *
+	 * @param point point
+	 * @param rotation rotation
+	 * @return world point
+	 */
+	private static WorldPoint rotateInverse(WorldPoint point, int rotation)
+	{
+		return rotate(point, 4 - rotation);
+	}
+
+	/**
 	 * Rotate the coordinates in the chunk according to chunk rotation
 	 *
-	 * @param point
-	 * @param rotation
-	 * @return
+	 * @param point point
+	 * @param rotation rotation
+	 * @return world point
 	 */
-	private static WorldPoint rotateChunk(WorldPoint point, int rotation)
+	private static WorldPoint rotate(WorldPoint point, int rotation)
 	{
 		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
 		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
@@ -341,7 +353,7 @@ public class GroundMarkerPlugin extends Plugin
 
 			worldPoint = new WorldPoint(x, y, plane);
 			// rotate point back to 0, to match with template
-			worldPoint = rotate(worldPoint, rotation);
+			worldPoint = rotateInverse(worldPoint, rotation);
 		}
 		else
 		{
@@ -367,31 +379,6 @@ public class GroundMarkerPlugin extends Plugin
 		savePoints(regionId, points);
 
 		loadPoints();
-	}
-
-	/**
-	 * Rotate the chunk containing the given point to rotation 0
-	 *
-	 * @param point
-	 * @param rotation
-	 * @return
-	 */
-	private WorldPoint rotate(WorldPoint point, int rotation)
-	{
-		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
-		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
-		int x = point.getX() & (CHUNK_SIZE - 1);
-		int y = point.getY() & (CHUNK_SIZE - 1);
-		switch (rotation)
-		{
-			case 1:
-				return new WorldPoint(chunkX + ((CHUNK_SIZE - 1) - y), chunkY + x, point.getPlane());
-			case 2:
-				return new WorldPoint(chunkX + ((CHUNK_SIZE - 1) - x), chunkY + ((CHUNK_SIZE - 1) - y), point.getPlane());
-			case 3:
-				return new WorldPoint(chunkX + y, chunkY + ((CHUNK_SIZE - 1) - x), point.getPlane());
-		}
-		return point;
 	}
 
 	/**
@@ -426,7 +413,7 @@ public class GroundMarkerPlugin extends Plugin
 					continue;
 				}
 
-				if (Perspective.getCanvasTilePoly(client, local).contains(gameMouse))
+				if (poly.contains(gameMouse))
 				{
 					return local;
 				}
