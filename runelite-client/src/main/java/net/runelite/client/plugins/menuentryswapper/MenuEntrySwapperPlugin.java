@@ -351,6 +351,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("exchange", option, target, true);
 			}
 
+			if (config.swapTravel())
+			{
+				swap("travel", option, target, true);
+				swap("pay-fare", option, target, true);
+				swap("charter", option, target, true);
+				swap("buy-pass", option, target, true);
+				swap("take-boat", option, target, true);
+				swap("fly", option, target, true);
+				swap("jatizso", option, target, true);
+				swap("neitiznot", option, target, true);
+				swap("rellekka", option, target, true);
+				swap("follow", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);
@@ -359,19 +373,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.claimSlime() && target.equals("robin"))
 			{
 				swap("claim-slime", option, target, true);
-			}
-
-			if (config.swapTravel())
-			{
-				swap("travel", option, target, true);
-				swap("pay-fare", option, target, true);
-				swap("charter", option, target, true);
-				swap("take-boat", option, target, true);
-				swap("fly", option, target, true);
-				swap("jatizso", option, target, true);
-				swap("neitiznot", option, target, true);
-				swap("rellekka", option, target, true);
-				swap("follow", option, target, true);
 			}
 
 			if (config.swapPay())
