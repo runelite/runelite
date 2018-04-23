@@ -351,12 +351,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("exchange", option, target, true);
 			}
 
+			if (config.swapBuyPass())
+			{
+				swap("buy-pass", option, target, true);
+			}
+
 			if (config.swapTravel())
 			{
 				swap("travel", option, target, true);
 				swap("pay-fare", option, target, true);
 				swap("charter", option, target, true);
-				swap("buy-pass", option, target, true);
 				swap("take-boat", option, target, true);
 				swap("fly", option, target, true);
 				swap("jatizso", option, target, true);
