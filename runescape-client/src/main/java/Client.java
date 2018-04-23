@@ -141,12 +141,14 @@ public final class Client extends GameEngine implements class302 {
    )
    static int field1062;
    @ObfuscatedName("mn")
-   static int[] field984;
+   @Export("pendingVarbitChanges")
+   static int[] pendingVarbitChanges;
    @ObfuscatedName("mr")
    @ObfuscatedGetter(
       intValue = 1214508087
    )
-   static int field1054;
+   @Export("pendingVarbitCount")
+   static int pendingVarbitCount;
    @ObfuscatedName("oe")
    @ObfuscatedGetter(
       intValue = -391075689
@@ -1376,8 +1378,8 @@ public final class Client extends GameEngine implements class302 {
       field882 = -1;
       draggingWidget = false;
       cycleCntr = 1;
-      field984 = new int[32];
-      field1054 = 0;
+      pendingVarbitChanges = new int[32];
+      pendingVarbitCount = 0;
       interfaceItemTriggers = new int[32];
       field1056 = 0;
       field1057 = new int[32];
@@ -4346,7 +4348,7 @@ public final class Client extends GameEngine implements class302 {
                }
 
                class18.method142(var24);
-               field984[++field1054 - 1 & 31] = var24;
+               pendingVarbitChanges[++pendingVarbitCount - 1 & 31] = var24;
                var1.serverPacket = null;
                return true;
             }
@@ -4876,7 +4878,7 @@ public final class Client extends GameEngine implements class302 {
                }
 
                class18.method142(var23);
-               field984[++field1054 - 1 & 31] = var23;
+               pendingVarbitChanges[++pendingVarbitCount - 1 & 31] = var23;
                var1.serverPacket = null;
                return true;
             }
@@ -5224,7 +5226,7 @@ public final class Client extends GameEngine implements class302 {
                   if(class237.clientVarps[var23] != class237.serverVarps[var23]) {
                      class237.clientVarps[var23] = class237.serverVarps[var23];
                      class18.method142(var23);
-                     field984[++field1054 - 1 & 31] = var23;
+                     pendingVarbitChanges[++pendingVarbitCount - 1 & 31] = var23;
                   }
                }
 
@@ -5590,7 +5592,7 @@ public final class Client extends GameEngine implements class302 {
                }
 
                class250.method4503();
-               field1054 += 32;
+               pendingVarbitCount += 32;
                var1.serverPacket = null;
                return true;
             }
