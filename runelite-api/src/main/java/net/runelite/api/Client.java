@@ -167,6 +167,12 @@ public interface Client extends GameEngine
 
 	int getSetting(Varbits varbit);
 
+	void setSetting(Varbits varbit, int value);
+
+	int getVarbitValue(int varbit);
+
+	void setVarbitValue(int varbit, int value);
+
 	HashTable getWidgetFlags();
 
 	HashTable getComponentTable();
