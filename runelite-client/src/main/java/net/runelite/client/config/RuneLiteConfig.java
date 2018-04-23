@@ -133,4 +133,26 @@ public interface RuneLiteConfig extends Config
 	{
 		return FontType.SMALL;
 	}
+
+	@ConfigItem(
+		keyName = "infoBoxVertical",
+		name = "Display infoboxes vertically",
+		description = "Toggles the infoboxes to display vertically",
+		position = 10
+	)
+	default boolean infoBoxVertical()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "infoBoxWrap",
+		name = "Infobox wrap count",
+		description = "Configures the amount of infoboxes shown before wrapping",
+		position = 11
+	)
+	default int infoBoxWrap()
+	{
+		return 4;
+	}
 }
