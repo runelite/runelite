@@ -203,7 +203,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers on the first floor of a building overlooking Ardougne's Market.", DRAWERS_352, new WorldPoint(2657, 3322, 1), "Climb the ladder in the house north of the market."),
 		new CrypticClue("'A bag belt only?', he asked his balding brothers.", null, "Talk to Abbot Langley in the monastery"),
 		new CrypticClue("Search the drawers upstairs in Falador's shield shop.", DRAWERS, new WorldPoint(2971, 3386, 1), "Cassie's Shield Shop at the northern Falador entrance."),
-		new CrypticClue("Go to this building to be illuminated, and check the drawers while you are there.", "Market Guard", null, "The 2nd of the Lighthouse, Kill a Rellekka marketplace guard to obtain the key."),
+		new CrypticClue("Go to this building to be illuminated, and check the drawers while you are there.", "Market Guard", DRAWERS_350 , new WorldPoint(2511, 3642, 1), "Search the drawers in the 2nd floor of the Lighthouse. Kill a Rellekka marketplace guard to obtain the key."),
 		new CrypticClue("Dig near some giant mushrooms behind the Grand Tree.", null, "Dig near the red mushrooms northwest of the Grand Tree."),
 		new CrypticClue("Pentagrams and demons, burnt bones and remains, I wonder what the blood contains.", null, "Dig under the blood rune spawn next the the Demonic Ruins."),
 		new CrypticClue("Search the drawers above Varrock's shops.", null, "Located upstairs in Thessalia's Fine Clothes shop in Varrock."),
