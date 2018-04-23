@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
@@ -31,6 +32,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -44,6 +47,7 @@ import net.runelite.client.ui.overlay.Overlay;
 	name = "Developer Tools",
 	developerPlugin = true
 )
+@Slf4j
 public class DevToolsPlugin extends Plugin
 {
 	@Inject
@@ -116,6 +120,13 @@ public class DevToolsPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(overlay, locationOverlay, borderOverlay);
+	}
+
+	@Subscribe
+	public void onCommand(CommandExecuted commandExecuted) {
+		if (commandExecuted.getCommand().equalsIgnoreCase("test")) {
+			log.debug("Test!");
+		}
 	}
 
 	Font getFont()
