@@ -438,7 +438,7 @@ public class SlayerPlugin extends Plugin
 			if (composition == null || composition.getName() == null)
 				continue;
 
-			String name = composition.getName().replace('\u00A0', ' ');
+			String name = npc.getName();
 			for (String highlight : highlightedNpcs)
 			{
 				if (name.toLowerCase().contains(highlight.toLowerCase())
