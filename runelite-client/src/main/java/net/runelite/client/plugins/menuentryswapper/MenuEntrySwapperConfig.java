@@ -223,10 +223,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 16,
-			keyName = "swapClimb",
-			name = "Climb-Up",
-			description = "Swap climb with climb-up on staircases"
+		position = 16,
+		keyName = "swapClimb",
+		name = "Climb-Up",
+		description = "Swap climb with climb-up on staircases"
 	)
 	default boolean swapClimb()
 	{

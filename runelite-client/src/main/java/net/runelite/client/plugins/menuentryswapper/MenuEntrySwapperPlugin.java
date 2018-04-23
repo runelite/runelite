@@ -328,9 +328,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
-		if (option.equals("climb") && target.contains("staircase"))
-			config.swapClimb();
+
+		if  (option.equals("climb"))
+		{
+			if (config.swapClimb() && target.contains("staircase"))
+			{
 				swap("climb-up", option, target, true);
+			}
+		}
 		if (option.equals("talk-to"))
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
