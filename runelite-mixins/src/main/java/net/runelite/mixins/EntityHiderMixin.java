@@ -84,7 +84,9 @@ public abstract class EntityHiderMixin implements RSRegion
 
 	@Copy("draw2DExtras")
 	private static void draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
-	{ throw new RuntimeException(); }
+	{
+		throw new RuntimeException();
+	}
 
 	@Replace("draw2DExtras")
 	private static void rl$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
@@ -98,47 +100,43 @@ public abstract class EntityHiderMixin implements RSRegion
 	@Inject
 	private static boolean shouldDraw(Object renderable, boolean drawingUI)
 	{
-		if (renderable != null)
+		if (renderable instanceof RSPlayer)
 		{
-			if (renderable instanceof RSPlayer)
+			boolean local = drawingUI ? hideLocalPlayer2D : hideLocalPlayer;
+			boolean other = drawingUI ? hidePlayers2D : hidePlayers;
+
+			if (renderable == client.getLocalPlayer() ? local : other)
 			{
-				boolean local = drawingUI ? hideLocalPlayer2D : hideLocalPlayer;
-				boolean other = drawingUI ? hidePlayers2D : hidePlayers;
-
-				if ((local && renderable == client.getLocalPlayer())
-						|| (other && renderable != client.getLocalPlayer()))
-				{
-					RSPlayer player = (RSPlayer) renderable;
-
-					if (!hideAttackers)
-					{
-						if (player.getInteracting() == client.getLocalPlayer())
-						{
-							return true;
-						}
-					}
-
-					return (!hideFriends && player.isFriend()) || (!hideClanMates && player.isClanMember());
-				}
-			}
-			else if (renderable instanceof RSNPC)
-			{
-				RSNPC npc = (RSNPC) renderable;
+				RSPlayer player = (RSPlayer) renderable;
 
 				if (!hideAttackers)
 				{
-					if (npc.getInteracting() == client.getLocalPlayer())
+					if (player.getInteracting() == client.getLocalPlayer())
 					{
 						return true;
 					}
 				}
 
-				return drawingUI ? !hideNPCs2D : !hideNPCs;
+				return (!hideFriends && player.isFriend()) || (!hideClanMates && player.isClanMember());
 			}
-			else if (renderable instanceof RSProjectile)
+		}
+		else if (renderable instanceof RSNPC)
+		{
+			RSNPC npc = (RSNPC) renderable;
+
+			if (!hideAttackers)
 			{
-				return !hideProjectiles;
+				if (npc.getInteracting() == client.getLocalPlayer())
+				{
+					return true;
+				}
 			}
+
+			return drawingUI ? !hideNPCs2D : !hideNPCs;
+		}
+		else if (renderable instanceof RSProjectile)
+		{
+			return !hideProjectiles;
 		}
 
 		return true;

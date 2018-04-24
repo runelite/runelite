@@ -35,14 +35,38 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	public static boolean hidePlayers;
 
 	@Inject
+	public static boolean hidePlayers2D;
+
+	@Inject
+	public static boolean hideFriends;
+
+	@Inject
+	public static boolean hideClanMates;
+
+	@Inject
+	public static boolean hideLocalPlayer;
+
+	@Inject
+	public static boolean hideLocalPlayer2D;
+
+	@Inject
+	public static boolean hideNPCs;
+
+	@Inject
+	public static boolean hideNPCs2D;
+
+	@Inject
+	public static boolean hideAttackers;
+
+	@Inject
+	public static boolean hideProjectiles;
+
+	@Inject
 	@Override
 	public void setPlayersHidden(boolean state)
 	{
 		hidePlayers = state;
 	}
-
-	@Inject
-	public static boolean hidePlayers2D;
 
 	@Inject
 	@Override
@@ -52,17 +76,11 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	}
 
 	@Inject
-	public static boolean hideFriends;
-
-	@Inject
 	@Override
 	public void setFriendsHidden(boolean state)
 	{
 		hideFriends = state;
 	}
-
-	@Inject
-	public static boolean hideClanMates;
 
 	@Inject
 	@Override
@@ -72,17 +90,11 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	}
 
 	@Inject
-	public static boolean hideLocalPlayer;
-
-	@Inject
 	@Override
 	public void setLocalPlayerHidden(boolean state)
 	{
 		hideLocalPlayer = state;
 	}
-
-	@Inject
-	public static boolean hideLocalPlayer2D;
 
 	@Inject
 	@Override
@@ -92,17 +104,11 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	}
 
 	@Inject
-	public static boolean hideNPCs;
-
-	@Inject
 	@Override
 	public void setNPCsHidden(boolean state)
 	{
 		hideNPCs = state;
 	}
-
-	@Inject
-	public static boolean hideNPCs2D;
 
 	@Inject
 	@Override
@@ -112,17 +118,11 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 	}
 
 	@Inject
-	public static boolean hideAttackers;
-
-	@Inject
 	@Override
 	public void setAttackersHidden(boolean state)
 	{
 		hideAttackers = state;
 	}
-
-	@Inject
-	public static boolean hideProjectiles;
 
 	@Inject
 	@Override
