@@ -43,6 +43,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_4316;
 import static net.runelite.api.NpcID.FISHING_SPOT_4710;
 import static net.runelite.api.NpcID.FISHING_SPOT_4712;
 import static net.runelite.api.NpcID.FISHING_SPOT_4713;
+import static net.runelite.api.NpcID.FISHING_SPOT_6488;
 import static net.runelite.api.NpcID.FISHING_SPOT_7155;
 import static net.runelite.api.NpcID.FISHING_SPOT_7199;
 import static net.runelite.api.NpcID.FISHING_SPOT_7200;
