@@ -111,4 +111,15 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "enableShortcut",
+		name = "Screenshot with [Insert]",
+		description = "Configures whether or not screenshots can be taken with the Insert key",
+		position = 7
+	)
+	default boolean isScreenshotEnabled()
+	{
+		return false;
+	}
 }
