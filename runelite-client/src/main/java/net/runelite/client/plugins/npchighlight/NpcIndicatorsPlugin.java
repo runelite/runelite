@@ -174,6 +174,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			String npcName = npc.getName();
 
+			if (npcName == null)
+			{
+				continue;
+			}
+
 			for (String highlight : highlightedNpcs)
 			{
 				if (WildcardMatcher.matches(highlight, npcName))
