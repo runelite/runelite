@@ -66,6 +66,8 @@ public class EntityHiderPlugin extends Plugin
 
 	private void updateConfig()
 	{
+		client.setIsHidingEntities(true);
+
 		client.setPlayersHidden(config.hidePlayers());
 		client.setPlayersHidden2D(config.hidePlayers2D());
 
@@ -86,6 +88,8 @@ public class EntityHiderPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		client.setIsHidingEntities(false);
+
 		client.setPlayersHidden(false);
 		client.setPlayersHidden2D(false);
 

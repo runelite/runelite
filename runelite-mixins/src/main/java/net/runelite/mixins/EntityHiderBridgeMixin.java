@@ -32,6 +32,9 @@ import net.runelite.rs.api.RSClient;
 public abstract class EntityHiderBridgeMixin implements RSClient
 {
 	@Inject
+	public static boolean isHidingEntities;
+
+	@Inject
 	public static boolean hidePlayers;
 
 	@Inject
@@ -60,6 +63,13 @@ public abstract class EntityHiderBridgeMixin implements RSClient
 
 	@Inject
 	public static boolean hideProjectiles;
+
+	@Inject
+	@Override
+	public void setIsHidingEntities(boolean state)
+	{
+		isHidingEntities = state;
+	}
 
 	@Inject
 	@Override

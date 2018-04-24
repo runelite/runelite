@@ -43,6 +43,9 @@ public abstract class EntityHiderMixin implements RSRegion
 	@Shadow("clientInstance")
 	private static RSClient client;
 
+	@Shadow("isHidingEntities")
+	private static boolean isHidingEntities;
+
 	@Shadow("hidePlayers")
 	private static boolean hidePlayers;
 
@@ -100,6 +103,11 @@ public abstract class EntityHiderMixin implements RSRegion
 	@Inject
 	private static boolean shouldDraw(Object renderable, boolean drawingUI)
 	{
+		if (!isHidingEntities)
+		{
+			return true;
+		}
+
 		if (renderable instanceof RSPlayer)
 		{
 			boolean local = drawingUI ? hideLocalPlayer2D : hideLocalPlayer;

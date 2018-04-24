@@ -390,6 +390,8 @@ public interface Client extends GameEngine
 
 	boolean isInInstancedRegion();
 
+	void setIsHidingEntities(boolean state);
+
 	void setPlayersHidden(boolean state);
 
 	void setPlayersHidden2D(boolean state);
