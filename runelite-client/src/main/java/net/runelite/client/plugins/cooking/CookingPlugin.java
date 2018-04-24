@@ -69,12 +69,12 @@ public class CookingPlugin extends Plugin
     {
         if(event.getType() == ChatMessageType.FILTERED)
         {
-            if(event.getMessage().startsWith("You successfully cook a"))
+            if(event.getMessage().startsWith("You successfully cook ") || event.getMessage().startsWith("You successfully bake "))
             {
                 session.setLastCookingAction();
                 session.increaseCookAmount();
             }
-            else if(event.getMessage().startsWith("You accidentally burn"))
+            else if(event.getMessage().startsWith("You accidentally burn "))
             {
                 session.setLastCookingAction();
                 session.increaseBurnAmount();
