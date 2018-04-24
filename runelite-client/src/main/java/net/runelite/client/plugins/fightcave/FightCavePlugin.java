@@ -24,24 +24,36 @@
  */
 package net.runelite.client.plugins.fightcave;
 
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Query;
+
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import lombok.Getter;
+import net.runelite.api.*;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Fight Cave"
 )
 public class FightCavePlugin extends Plugin
 {
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+
 	@Inject
 	private Client client;
 
@@ -51,21 +63,88 @@ public class FightCavePlugin extends Plugin
 	@Inject
 	private FightCaveOverlay overlay;
 
+	@Inject
+	private JadOverlay jadOverlay;
+
+	@Getter
 	private JadAttack attack;
 
-	@Override
-	public Overlay getOverlay()
+	@Getter
+	private int currentWave;
+
+	@Getter
+	private Instant caveEnterTime;
+
+	@Getter
+	private boolean inCave;
+
+	@Provides
+	FightcaveConfig provideConfig(ConfigManager configManager)
 	{
-		return overlay;
+		return configManager.getConfig(FightcaveConfig.class);
+	}
+
+	@Override
+	public Collection<Overlay> getOverlays()
+	{
+		return Arrays.asList(overlay, jadOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		attack = null;
+		currentWave = -1;
+		inCave = false;
+		caveEnterTime = null;
+	}
+
+	@Subscribe
+	public void onMapRegionChanged(MapRegionChanged event)
+	{
+		int idx = event.getIndex();
+
+		if (idx == -1)
+		{
+			return; // this is the new array being assigned to the field
+		}
+
+		int[] regions = client.getMapRegions();
+		int region = regions[idx];
+
+		if (region == 9551 && !inCave)
+		{
+			inCave = true;
+			caveEnterTime = Instant.now();
+			currentWave = 1;
+		}
+		else
+		{
+			inCave = false;
+			caveEnterTime = null;
+		}
+	}
+
+	@Schedule(
+			period = 1,
+			unit = ChronoUnit.SECONDS
+	)
+	public void update()
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || !inCave)
+		{
+			return;
+		}
+
 	}
 
 	@Schedule(
 		period = 600,
 		unit = ChronoUnit.MILLIS
 	)
-	public void update()
+	public void updateJad()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !inCave)
 		{
 			return;
 		}
@@ -86,6 +165,29 @@ public class FightCavePlugin extends Plugin
 		{
 			attack = null;
 		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.SERVER)
+		{
+			String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+			if (chatMsg.startsWith("Wave"))
+			{
+				Matcher m = NUMBER_PATTERN.matcher(chatMsg);
+				if (m.find())
+				{
+					currentWave = Integer.valueOf(m.group());
+				}
+			}
+		}
+
+		if (event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
 	}
 
 	private NPC findJad()
