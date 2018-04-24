@@ -66,6 +66,7 @@ import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.events.TitleToolbarButtonAdded;
 import net.runelite.client.events.TitleToolbarButtonRemoved;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -117,6 +118,7 @@ public class ClientUI
 	private final RuneLiteProperties properties;
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
+	private final KeyManager keyManager;
 	private Applet client;
 	private JFrame frame;
 	private JPanel navContainer;
@@ -136,12 +138,14 @@ public class ClientUI
 		RuneLite runelite,
 		RuneLiteProperties properties,
 		RuneLiteConfig config,
-		EventBus eventBus)
+		EventBus eventBus,
+		KeyManager keyManager)
 	{
 		this.runelite = runelite;
 		this.properties = properties;
 		this.config = config;
 		this.eventBus = eventBus;
+		this.keyManager = keyManager;
 	}
 
 	@Subscribe
@@ -345,6 +349,11 @@ public class ClientUI
 			pluginToolbar = new ClientPluginToolbar();
 			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
+
+			// Add key listener
+			final UiKeyListener uiKeyListener = new UiKeyListener(this);
+			frame.addKeyListener(uiKeyListener);
+			keyManager.registerKeyListener(uiKeyListener);
 		});
 	}
 
@@ -506,7 +515,7 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
-	private void toggleSidebar()
+	void toggleSidebar()
 	{
 		// Toggle sidebar open
 		boolean isSidebarOpen = sidebarOpen;
