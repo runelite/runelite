@@ -85,9 +85,9 @@ public class ItemPricesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if(sackValue != 0 && sackHerbCount == sackHerbCountLoaded)
+		if (sackValue != 0 && sackHerbCount == sackHerbCountLoaded)
 		{
-			client.addChatMessage(ChatMessageType.SERVER,"","Total Herb Sack value: <col=0000ff>" + StackFormatter.formatNumber(sackValue),null);
+			client.addChatMessage(ChatMessageType.SERVER, "", "Total Herb Sack value: <col=0000ff>" + StackFormatter.formatNumber(sackValue), null);
 			sackValue = 0;
 			sackHerbCount = 0;
 			sackHerbCountLoaded = 0;
@@ -107,7 +107,7 @@ public class ItemPricesPlugin extends Plugin
 			return;
 		}
 
-		if(setMessage.getType() != ChatMessageType.SERVER)
+		if (setMessage.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
@@ -115,7 +115,7 @@ public class ItemPricesPlugin extends Plugin
 		String message = setMessage.getValue();
 		MessageNode messageNode = setMessage.getMessageNode();
 
-		if(message.equals("You look in your herb sack and see:"))
+		if (message.equals("You look in your herb sack and see:"))
 		{
 			sackValue = 0;
 		}
@@ -136,9 +136,12 @@ public class ItemPricesPlugin extends Plugin
 	{
 
 		int price = 0;
-		try {
+		try
+		{
 			price = itemManager.getItemPrice(Herbs.getHerbs(herbName).getItemId()).getPrice();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			log.warn("unable to get herb {}", herbName);
 		}
 		sackHerbCountLoaded++;
