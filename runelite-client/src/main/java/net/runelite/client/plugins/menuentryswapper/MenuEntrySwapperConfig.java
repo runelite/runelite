@@ -221,4 +221,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "swapAge",
+		name = "Age",
+		description = "Swap Talk-to with Age for Hans"
+	)
+	default boolean swapAge()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "swapAssignment",
+		name = "Assignment",
+		description = "Swap Talk-to with Assignment for Slayer Masters"
+	)
+	default boolean swapAssignment()
+	{
+		return true;
+	}
 }
