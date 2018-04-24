@@ -2,7 +2,7 @@ package net.runelite.client.plugins.menuentryswapper.swapConfigs;
 
 public enum SwapConCape
 {
-    TELEPOH("Tele to POH"),
+	TELEPOH("Tele to POH"),
 	TELE("Teleport");
 
 	private final String name;

@@ -251,5 +251,8 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Razmire Trade",
 			description = "Swap talk-to with General or Builders-Store"
 	)
-	default SwapRazmire swapRazmire() { return SwapRazmire.BUILDERS; }
+	default SwapRazmire swapRazmire()
+	{
+		return SwapRazmire.BUILDERS;
+	}
 }
