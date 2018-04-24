@@ -51,7 +51,6 @@ class CookingOverlay extends Overlay {
     private final CookingPlugin plugin;
     private final CookingConfig config;
     private final CookingSession session;
-    private final XpTrackerService xpTrackerService;
     private final PanelComponent panelComponent = new PanelComponent();
 
     @Inject
@@ -62,7 +61,6 @@ class CookingOverlay extends Overlay {
         this.plugin = plugin;
         this.config = config;
         this.session = session;
-        this.xpTrackerService = xpTrackerService;
     }
 
     @Override
