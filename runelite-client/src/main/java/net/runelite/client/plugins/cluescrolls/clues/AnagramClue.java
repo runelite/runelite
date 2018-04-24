@@ -74,7 +74,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: DRAGONS LAMENT", "Strange old Man", new WorldPoint(3564, 3288, 0), "Barrows", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "4"),
 		new AnagramClue("This anagram reveals who to speak to next: DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),
-		new AnagramClue("This anagram reveals who to speak to next: EEK ZERO OP", "Zookeeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "40"),
+		new AnagramClue("This anagram reveals who to speak to next: EEK ZERO OP", "Zoo keeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: EL OW", "Lowe", new WorldPoint(3233, 3423, 0), "Varrock archery store"),
 		new AnagramClue("This anagram reveals who to speak to next: ERR CURE IT", "Recruiter", new WorldPoint(2541, 3305, 0), "West Ardougne centre square", "20"),
 		new AnagramClue("This anagram reveals who to speak to next: FORLUN", "Runolf", new WorldPoint(2512, 10256, 0), "Miscellania & Etceteria Dungeon"),
