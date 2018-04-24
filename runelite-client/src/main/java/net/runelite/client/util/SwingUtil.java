@@ -228,17 +228,6 @@ public class SwingUtil
 		});
 	}
 
-	/**
-	 * Revalidate minimum frame size.
-	 *
-	 * @param frame the frame
-	 */
-	public static void revalidateMinimumSize(final JFrame frame)
-	{
-		// The JFrame only respects minimumSize if it was set by setMinimumSize, for some reason. (atleast on windows/native)
-		frame.setMinimumSize(frame.getLayout().minimumLayoutSize(frame));
-	}
-
 	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
 	{
 		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);

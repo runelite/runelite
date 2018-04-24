@@ -36,7 +36,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -54,6 +53,7 @@ import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
@@ -110,12 +110,14 @@ public class ClientUI
 	private final EventBus eventBus;
 	private Applet client;
 	private JFrame frame;
+	private JPanel container;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
+	private int lastSize;
 
 	@Inject
 	private ClientUI(
@@ -182,6 +184,17 @@ public class ClientUI
 			if (height > 2160)
 			{
 				height = 2160;
+			}
+
+			// Set minimum size to fixed mode size
+			if (width < Constants.GAME_FIXED_WIDTH)
+			{
+				width = Constants.GAME_FIXED_WIDTH;
+			}
+
+			if (height < Constants.GAME_FIXED_HEIGHT)
+			{
+				height = Constants.GAME_FIXED_HEIGHT;
 			}
 
 			final Dimension size = new Dimension(width, height);
@@ -314,19 +327,19 @@ public class ClientUI
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setResizable(true);
 
+			// Add close callback
 			SwingUtil.addGracefulExitCallback(frame, runelite::shutdown,
 				() -> client != null
 					&& client instanceof Client
 					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
 
-			final JPanel container = new JPanel();
+			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 			container.add(new ClientPanel(client));
 
-			navContainer = new JPanel();
-			navContainer.setLayout(new BorderLayout(0, 0));
+			navContainer = new JPanel(new BorderLayout(0, 0));
 			navContainer.setMinimumSize(new Dimension(0, 0));
-			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+			navContainer.setMaximumSize(new Dimension(0, 0));
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
@@ -397,8 +410,18 @@ public class ClientUI
 				});
 			}
 
+			// If the window is restored from being maximized, restore also previous state properly
+			frame.addWindowStateListener(e ->
+			{
+				if ((e.getOldState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH)
+				{
+					revalidateSize(true);
+					frame.setLocationRelativeTo(frame.getOwner());
+				}
+			});
+
 			frame.pack();
-			SwingUtil.revalidateMinimumSize(frame);
+			revalidateSize(false);
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setVisible(true);
 			frame.toFront();
@@ -482,60 +505,66 @@ public class ClientUI
 
 	private void expand(PluginPanel panel)
 	{
-		if (pluginPanel != null)
+		// Save last size
+		if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH)
 		{
-			navContainer.remove(0);
-		}
-		else
-		{
-			if (SwingUtil.isInScreenBounds(
-				frame.getLocationOnScreen().y + frame.getWidth() + PANEL_EXPANDED_WIDTH,
-				frame.getLocationOnScreen().y))
-			{
-				frame.setSize(frame.getWidth() + PANEL_EXPANDED_WIDTH, frame.getHeight());
-			}
+			lastSize = frame.getWidth();
 		}
 
-		pluginPanel = panel;
+		// We are switching panels, remove previous one
+		if (pluginPanel != null)
+		{
+			navContainer.remove(pluginPanel.getWrappedPanel());
+		}
+
+		// Expand navigation container
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
-		final JPanel wrappedPanel = panel.getWrappedPanel();
+		// Add plugin panel to container
+		pluginPanel = panel;
+		final JPanel wrappedPanel = pluginPanel.getWrappedPanel();
 		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
 
 		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
 		giveClientFocus();
-		panel.onActivate();
-
+		pluginPanel.onActivate();
 		wrappedPanel.repaint();
-		SwingUtil.revalidateMinimumSize(frame);
+		revalidateSize(false);
 	}
 
 	private void contract()
 	{
-		boolean wasMinimumWidth = frame.getWidth() == frame.getMinimumSize().width;
+		// Remove plugin panel from nav container
 		pluginPanel.onDeactivate();
-		navContainer.remove(0);
+		navContainer.remove(pluginPanel.getWrappedPanel());
+		pluginPanel = null;
+
+		// Hide nav container
 		navContainer.setMinimumSize(new Dimension(0, 0));
 		navContainer.setMaximumSize(new Dimension(0, 0));
 		navContainer.revalidate();
+
+		// Give back focus
 		giveClientFocus();
-		SwingUtil.revalidateMinimumSize(frame);
+		revalidateSize(false);
+	}
 
-		if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH)
+	private void revalidateSize(boolean force)
+	{
+		final int diff = frame.getWidth() - container.getWidth();
+		final int threshold = diff + Constants.GAME_FIXED_WIDTH + PANEL_EXPANDED_WIDTH + pluginToolbar.getWidth();
+		final Dimension dimension = frame.getLayout().minimumLayoutSize(frame);
+
+		// The JFrame only respects minimumSize if it was set by setMinimumSize
+		frame.setMinimumSize(dimension);
+
+		// If the frame size is under threshold, restore previous size
+		if (force || frame.getWidth() <= threshold)
 		{
-			if (wasMinimumWidth)
-			{
-				frame.setSize(frame.getMinimumSize().width, frame.getHeight());
-			}
-			else if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-			{
-				frame.setSize(frame.getWidth() - PANEL_EXPANDED_WIDTH, frame.getHeight());
-			}
+			frame.setSize(lastSize, 0);
 		}
-
-		pluginPanel = null;
 	}
 
 	private void giveClientFocus()
