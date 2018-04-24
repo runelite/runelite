@@ -145,6 +145,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_DRAGON_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
+			case FISHING_INFERNAL_HARPOON:
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_CRUSHING_INFERNAL_EELS:
