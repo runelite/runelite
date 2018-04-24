@@ -77,7 +77,7 @@ public class CannonPlugin extends Plugin
 	private boolean cannonPlaced;
 
 	@Getter
-	private boolean almostEmptyNotified;
+	private boolean emptyCannonNotified;
 
 	@Getter
 	private WorldPoint cannonPosition;
@@ -128,7 +128,7 @@ public class CannonPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		cannonPlaced = false;
-		almostEmptyNotified = false;
+		emptyCannonNotified = false;
 		cannonPosition = null;
 		cballsLeft = 0;
 		removeCounter();
@@ -183,15 +183,15 @@ public class CannonPlugin extends Plugin
 	)
 	public void checkAmmo()
 	{
-		if (!config.showAlmostEmptyCannonNotification())
+		if (!config.showEmptyCannonNotification())
 		{
 			return;
 		}
 
-		if (cballsLeft <= config.almostEmptyCannonNotificationThreshold() && cannonPlaced && !almostEmptyNotified)
+		if (needsEmptyCannonNotification())
 		{
 			notifier.notify("Your cannon is running out of ammo!");
-			almostEmptyNotified = true;
+			emptyCannonNotified = true;
 		}
 	}
 
@@ -240,7 +240,7 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().equals("You add the furnace."))
 		{
 			cannonPlaced = true;
-			almostEmptyNotified = false;
+			emptyCannonNotified = false;
 			addCounter();
 			cballsLeft = 0;
 		}
@@ -248,7 +248,7 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().contains("You pick up the cannon"))
 		{
 			cannonPlaced = false;
-			almostEmptyNotified = false;
+			emptyCannonNotified = false;
 			cballsLeft = 0;
 			removeCounter();
 		}
@@ -262,18 +262,18 @@ public class CannonPlugin extends Plugin
 				int amt = Integer.valueOf(m.group());
 				cballsLeft += amt;
 			}
-			if (cballsLeft > config.almostEmptyCannonNotificationThreshold())
+			if (cballsLeft > config.emptyCannonNotificationThreshold())
 			{
-				almostEmptyNotified = false;
+				emptyCannonNotified = false;
 			}
 		}
 
 		if (event.getMessage().equals("You load the cannon with one cannonball."))
 		{
 			cballsLeft++;
-			if (cballsLeft > config.almostEmptyCannonNotificationThreshold())
+			if (cballsLeft > config.emptyCannonNotificationThreshold())
 			{
-				almostEmptyNotified = false;
+				emptyCannonNotified = false;
 			}
 		}
 
@@ -287,7 +287,7 @@ public class CannonPlugin extends Plugin
 
 		if (event.getMessage().contains("You unload your cannon and receive Cannonball"))
 		{
-			almostEmptyNotified = false;
+			emptyCannonNotified = false;
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
@@ -318,6 +318,11 @@ public class CannonPlugin extends Plugin
 		}
 
 		return Color.red;
+	}
+
+	private boolean needsEmptyCannonNotification()
+	{
+		return (cballsLeft <= config.emptyCannonNotificationThreshold() && config.emptyCannonNotificationThreshold() > 0 && cannonPlaced && !emptyCannonNotified);
 	}
 
 	private void addCounter()

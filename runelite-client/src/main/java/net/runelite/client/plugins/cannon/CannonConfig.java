@@ -60,8 +60,8 @@ public interface CannonConfig extends Config
 
 	@ConfigItem(
 		keyName = "showEmptyCannonNotification",
-		name = "Empty cannon notification",
-		description = "Configures whether to notify you that the cannon is empty",
+		name = "Out of ammo notification",
+		description = "Configures whether to notify you that the cannon is (running) out of ammo",
 		position = 3
 	)
 	default boolean showEmptyCannonNotification()
@@ -70,32 +70,21 @@ public interface CannonConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAlmostEmptyCannonNotification",
-		name = "Running out notification",
-		description = "Configures whether to notify you that the cannon is almost empty",
+		keyName = "emptyCannonNotificationThreshold",
+		name = "Ammo threshold",
+		description = "Configures the threshold amount for when a notification should be shown if the cannon is (running) out of ammo",
 		position = 4
 	)
-	default boolean showAlmostEmptyCannonNotification()
+	default int emptyCannonNotificationThreshold()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "almostEmptyCannonNotificationThreshold",
-		name = "Running out notification threshold",
-		description = "Configures the threshold amount for when a notification should be shown if the cannon is running out of ammo",
-		position = 5
-	)
-	default int almostEmptyCannonNotificationThreshold()
-	{
-		return 5;
+		return 0;
 	}
 
 	@ConfigItem(
 		keyName = "showDoubleHitSpot",
 		name = "Show double hit spots",
 		description = "Configures whether to show the NPC double hit spot",
-		position = 6
+		position = 5
 	)
 	default boolean showDoubleHitSpot()
 	{
@@ -106,7 +95,7 @@ public interface CannonConfig extends Config
 		keyName = "highlightDoubleHitColor",
 		name = "Color of double hit spots",
 		description = "Configures the highlight color of double hit spots",
-		position = 7
+		position = 6
 	)
 	default Color highlightDoubleHitColor()
 	{
