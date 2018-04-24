@@ -105,7 +105,7 @@ public enum FishingSpot
 	KARAMBWANJI("Karambwanji, Shrimp", ItemID.KARAMBWANJI,
 		FISHING_SPOT_4710
 	),
-	SACRED_EEL("Scared eel", ItemID.SACRED_EEL,
+	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
 		FISHING_SPOT_6488
 	);
 
