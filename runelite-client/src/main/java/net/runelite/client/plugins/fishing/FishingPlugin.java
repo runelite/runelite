@@ -167,6 +167,10 @@ public class FishingPlugin extends Plugin
 		if (config.showInfernalEel())
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
+		}	
+		if (config.showSacredEel())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SACRED_EEL.getIds()));
 		}
 		if (config.showKarambwanji())
 		{
