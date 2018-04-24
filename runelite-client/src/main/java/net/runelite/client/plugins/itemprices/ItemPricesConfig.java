@@ -78,4 +78,15 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "herbSackValue",
+			name = "Herb sack value",
+			description = "Shows herb sack value when checks it",
+			position = 4
+	)
+	default boolean herbSackValue()
+	{
+		return true;
+	}
 }
