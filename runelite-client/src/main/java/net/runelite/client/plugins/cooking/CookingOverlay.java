@@ -40,92 +40,89 @@ import java.util.stream.IntStream;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 
-class CookingOverlay extends Overlay {
+class CookingOverlay extends Overlay
+{
 
-    private static final int[] animationIds =
-            {
-                    COOKING_FIRE, COOKING_RANGE
-            };
+	private static final int[] animationIds =
+			{
+					COOKING_FIRE, COOKING_RANGE
+			};
 
-    private final Client client;
-    private final CookingPlugin plugin;
-    private final CookingConfig config;
-    private final CookingSession session;
-    private final PanelComponent panelComponent = new PanelComponent();
+	private final Client client;
+	private final CookingPlugin plugin;
+	private final CookingConfig config;
+	private final CookingSession session;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-    @Inject
-    public CookingOverlay(Client client, CookingPlugin plugin, CookingConfig config, CookingSession session, XpTrackerService xpTrackerService)
-    {
-        setPosition(OverlayPosition.TOP_LEFT);
-        this.client = client;
-        this.plugin = plugin;
-        this.config = config;
-        this.session = session;
-    }
+	@Inject
+	public CookingOverlay(Client client, CookingPlugin plugin, CookingConfig config, CookingSession session, XpTrackerService xpTrackerService)
+	{
+		setPosition(OverlayPosition.TOP_LEFT);
+		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
+		this.session = session;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        if (!config.showCookingStats())
-        {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.showCookingStats())
+		{
+			return null;
+		}
 
-        CookingSession session = plugin.getSession();
-        if (session.getLastCookingAction() == null)
-        {
-            return null;
-        }
+		CookingSession session = plugin.getSession();
+		if (session.getLastCookingAction() == null)
+		{
+			return null;
+		}
 
-        Duration cookingTimeout = Duration.ofMinutes(config.cookingResetTimeout());
-        Duration cookedSince = Duration.between(session.getLastCookingAction(), Instant.now());
-        if (cookedSince.compareTo(cookingTimeout) >= 0) {
-            session.reset();
-            return null;
-        }
+		Duration cookingTimeout = Duration.ofMinutes(config.cookingResetTimeout());
+		Duration cookedSince = Duration.between(session.getLastCookingAction(), Instant.now());
+		if (cookedSince.compareTo(cookingTimeout) >= 0)
+		{
+			session.reset();
+			return null;
+		}
 
-        if (session.getStartCooking() == null)
-        {
-            session.setStartCooking();
-        }
+		if (session.getStartCooking() == null)
+		{
+			session.setStartCooking();
+		}
 
-        panelComponent.getLines().clear();
-        if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()) ||
-                Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < 3)
-        {
-            panelComponent.setTitle("Cooking");
-            panelComponent.setTitleColor(Color.GREEN);
-        }
-        else
-        {
-            panelComponent.setTitle("NOT cooking");
-            panelComponent.setTitleColor(Color.RED);
-        }
+		panelComponent.setWidth(150);
+		panelComponent.getLines().clear();
+		if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()) ||
+				Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < 3)
+		{
+			panelComponent.setTitle("Cooking");
+			panelComponent.setTitleColor(Color.GREEN);
+		}
+		else
+		{
+			panelComponent.setTitle("NOT cooking");
+			panelComponent.setTitleColor(Color.RED);
+		}
 
-        panelComponent.getLines().add(new PanelComponent.Line(
-                "Cooked:",
-                Integer.toString(session.getCookAmount()))
-        );
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"Cooked:",
+				Integer.toString(session.getCookAmount()) +
+						(session.getCookAmount() > 2 ? " (" + Long.toString(session.getActionsPerHour()) + "/hr)" : ""))
+		);
 
-        panelComponent.getLines().add(new PanelComponent.Line(
-                "Burnt:",
-                Integer.toString(session.getBurnAmount()) + " (" + session.getBurntPercentage() + "%)")
-        );
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"Burnt:",
+				Integer.toString(session.getBurnAmount()) + " (" + session.getBurntPercentage() + "%)")
+		);
 
-        if(session.getCookAmount() > 2)
-        {
-            panelComponent.getLines().add(new PanelComponent.Line(
-                    "Cooked/hr:",
-                    Long.toString(session.getActionsPerHour()))
-            );
-        }
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"Time:",
+				DurationFormatUtils.formatDuration(session.getSessionTime().toMillis(), "HH:mm:ss"))
 
-        panelComponent.getLines().add(new PanelComponent.Line(
-                "Time:",
-                DurationFormatUtils.formatDuration(session.getSessionTime().toMillis(), "HH:mm:ss"))
+		);
 
-        );
-
-        return panelComponent.render(graphics);
-    }
+		return panelComponent.render(graphics);
+	}
 
 }

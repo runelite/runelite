@@ -30,71 +30,71 @@ import java.time.Instant;
 
 public class CookingSession
 {
-    private Instant startCooking;
-    private Instant lastCookingAction;
-    private int cookAmount;
-    private int burnAmount;
+	private Instant startCooking;
+	private Instant lastCookingAction;
+	private int cookAmount;
+	private int burnAmount;
 
-    public void reset()
-    {
-        startCooking = null;
-        lastCookingAction = null;
-        cookAmount = 0;
-        burnAmount = 0;
-    }
+	public void reset()
+	{
+		startCooking = null;
+		lastCookingAction = null;
+		cookAmount = 0;
+		burnAmount = 0;
+	}
 
-    public void setStartCooking()
-    {
-        this.startCooking = Instant.now();
-    }
+	public void setStartCooking()
+	{
+		this.startCooking = Instant.now();
+	}
 
-    public Instant getStartCooking()
-    {
-        return startCooking;
-    }
+	public Instant getStartCooking()
+	{
+		return startCooking;
+	}
 
-    public void setLastCookingAction()
-    {
-        this.lastCookingAction = Instant.now();
-    }
+	public void setLastCookingAction()
+	{
+		this.lastCookingAction = Instant.now();
+	}
 
-    public Instant getLastCookingAction()
-    {
-        return lastCookingAction;
-    }
+	public Instant getLastCookingAction()
+	{
+		return lastCookingAction;
+	}
 
-    public void increaseBurnAmount()
-    {
-        this.burnAmount++;
-    }
+	public void increaseBurnAmount()
+	{
+		this.burnAmount++;
+	}
 
-    public int getBurnAmount()
-    {
-        return burnAmount;
-    }
+	public int getBurnAmount()
+	{
+		return burnAmount;
+	}
 
-    public String getBurntPercentage()
-    {
-        return new DecimalFormat("#.#").format(((double) getBurnAmount() / (getCookAmount() + getBurnAmount())) * 100);
-    }
+	public String getBurntPercentage()
+	{
+		return new DecimalFormat("#.#").format(((double) getBurnAmount() / (getCookAmount() + getBurnAmount())) * 100);
+	}
 
-    public void increaseCookAmount()
-    {
-        this.cookAmount++;
-    }
+	public void increaseCookAmount()
+	{
+		this.cookAmount++;
+	}
 
-    public int getCookAmount()
-    {
-        return cookAmount;
-    }
+	public int getCookAmount()
+	{
+		return cookAmount;
+	}
 
-    public Duration getSessionTime()
-    {
-        return Duration.between(getStartCooking(), Instant.now());
-    }
+	public Duration getSessionTime()
+	{
+		return Duration.between(getStartCooking(), Instant.now());
+	}
 
-    public long getActionsPerHour()
-    {
-        return (int) (((double) getCookAmount() / getSessionTime().getSeconds()) * 3600);
-    }
+	public long getActionsPerHour()
+	{
+		return (int) (((double) getCookAmount() / getSessionTime().getSeconds()) * 3600);
+	}
 }

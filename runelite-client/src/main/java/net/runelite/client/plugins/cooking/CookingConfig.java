@@ -29,29 +29,29 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-        keyName = "cooking",
-        name = "Cooking",
-        description = "Configuration for the cooking plugin"
+		keyName = "cooking",
+		name = "Cooking",
+		description = "Configuration for the cooking plugin"
 )
 public interface CookingConfig extends Config
 {
-    @ConfigItem(
-            keyName = "cookingResetTimeout",
-            name = "Reset timeout (minutes)",
-            description = "Configures the time until the session resets and the overlay closes"
-    )
-    default int cookingResetTimeout()
-    {
-        return 5;
-    }
+	@ConfigItem(
+			keyName = "cookingResetTimeout",
+			name = "Reset timeout (minutes)",
+			description = "Configures the time until the session resets and the overlay closes"
+	)
+	default int cookingResetTimeout()
+	{
+		return 5;
+	}
 
-    @ConfigItem(
-            keyName = "showCookingStats",
-            name = "Show Cooking session stats",
-            description = "Configures whether to display cooking session stats"
-    )
-    default boolean showCookingStats()
-    {
-        return true;
-    }
+	@ConfigItem(
+			keyName = "showCookingStats",
+			name = "Show Cooking session stats",
+			description = "Configures whether to display cooking session stats"
+	)
+	default boolean showCookingStats()
+	{
+		return true;
+	}
 }

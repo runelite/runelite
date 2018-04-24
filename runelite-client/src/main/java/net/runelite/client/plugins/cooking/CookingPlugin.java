@@ -37,48 +37,48 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "Cooking"
+		name = "Cooking"
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class CookingPlugin extends Plugin
 {
-    @Inject
-    private CookingOverlay overlay;
+	@Inject
+	private CookingOverlay overlay;
 
-    private final CookingSession session = new CookingSession();
+	private final CookingSession session = new CookingSession();
 
-    @Provides
-    CookingConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(CookingConfig.class);
-    }
+	@Provides
+	CookingConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CookingConfig.class);
+	}
 
-    @Override
-    public CookingOverlay getOverlay()
-    {
-        return overlay;
-    }
+	@Override
+	public CookingOverlay getOverlay()
+	{
+		return overlay;
+	}
 
-    public CookingSession getSession()
-    {
-        return session;
-    }
+	public CookingSession getSession()
+	{
+		return session;
+	}
 
-    @Subscribe
-    public void onChatMessage(ChatMessage event)
-    {
-        if(event.getType() == ChatMessageType.FILTERED)
-        {
-            if(event.getMessage().startsWith("You successfully cook ") || event.getMessage().startsWith("You successfully bake "))
-            {
-                session.setLastCookingAction();
-                session.increaseCookAmount();
-            }
-            else if(event.getMessage().startsWith("You accidentally burn "))
-            {
-                session.setLastCookingAction();
-                session.increaseBurnAmount();
-            }
-        }
-    }
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.FILTERED)
+		{
+			if (event.getMessage().startsWith("You successfully cook ") || event.getMessage().startsWith("You successfully bake "))
+			{
+				session.setLastCookingAction();
+				session.increaseCookAmount();
+			}
+			else if (event.getMessage().startsWith("You accidentally burn "))
+			{
+				session.setLastCookingAction();
+				session.increaseBurnAmount();
+			}
+		}
+	}
 }
