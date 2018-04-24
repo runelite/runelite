@@ -37,12 +37,22 @@ public interface CookingConfig extends Config
 {
 	@ConfigItem(
 			keyName = "cookingResetTimeout",
-			name = "Reset timeout (minutes)",
-			description = "Configures the time until the session resets and the overlay closes"
+			name = "Timeout (minutes)",
+			description = "Configures the time until the the overlay closes"
 	)
 	default int cookingResetTimeout()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+			keyName = "resetStatsOnClose",
+			name = "Reset statistics on close",
+			description = "Configures whether to reset the statistics when the overlay closes or to keep them"
+	)
+	default boolean resetStatsOnClose()
+	{
+		return true;
 	}
 
 	@ConfigItem(

@@ -35,12 +35,15 @@ public class CookingSession
 	private int cookAmount;
 	private int burnAmount;
 
-	public void reset()
+	public void reset(boolean keepStatistics)
 	{
-		startCooking = null;
 		lastCookingAction = null;
-		cookAmount = 0;
-		burnAmount = 0;
+		if (!keepStatistics)
+		{
+			startCooking = null;
+			cookAmount = 0;
+			burnAmount = 0;
+		}
 	}
 
 	public void setStartCooking()

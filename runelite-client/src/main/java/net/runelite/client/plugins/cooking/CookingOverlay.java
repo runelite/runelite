@@ -42,7 +42,6 @@ import static net.runelite.api.AnimationID.COOKING_RANGE;
 
 class CookingOverlay extends Overlay
 {
-
 	private static final int[] animationIds =
 			{
 					COOKING_FIRE, COOKING_RANGE
@@ -75,6 +74,10 @@ class CookingOverlay extends Overlay
 		CookingSession session = plugin.getSession();
 		if (session.getLastCookingAction() == null)
 		{
+			if (session.getCookAmount() > 0 && config.resetStatsOnClose())
+			{
+				session.reset(false);
+			}
 			return null;
 		}
 
@@ -82,7 +85,7 @@ class CookingOverlay extends Overlay
 		Duration cookedSince = Duration.between(session.getLastCookingAction(), Instant.now());
 		if (cookedSince.compareTo(cookingTimeout) >= 0)
 		{
-			session.reset();
+			session.reset(!config.resetStatsOnClose());
 			return null;
 		}
 
@@ -91,7 +94,7 @@ class CookingOverlay extends Overlay
 			session.setStartCooking();
 		}
 
-		panelComponent.setWidth(150);
+		panelComponent.setWidth(145);
 		panelComponent.getLines().clear();
 		if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()) ||
 				Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < 3)
@@ -101,7 +104,7 @@ class CookingOverlay extends Overlay
 		}
 		else
 		{
-			panelComponent.setTitle("NOT cooking");
+			panelComponent.setTitle("NOT Cooking");
 			panelComponent.setTitleColor(Color.RED);
 		}
 
