@@ -119,7 +119,10 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Home Portal",
 			description = "Swap Enter with Home or Build mode"
 	)
-	default SwapPortalMode swapPortalMode() { return SwapPortalMode.HOME; }
+	default SwapPortalMode swapPortalMode()
+	{
+		return SwapPortalMode.HOME;
+	}
 
 	@ConfigItem(
 		position = 8,
@@ -237,7 +240,10 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Con Cape",
 			description = "Swap wear with Tele to POH or Teleport"
 	)
-	default SwapConCape swapConCape() { return SwapConCape.TELEPOH; }
+	default SwapConCape swapConCape()
+	{
+		return SwapConCape.TELEPOH;
+	}
 
 	@ConfigItem(
 			position = 18,

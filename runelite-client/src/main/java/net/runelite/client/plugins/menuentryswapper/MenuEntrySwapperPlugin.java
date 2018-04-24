@@ -358,7 +358,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			if (config.swapTrade())
 			{
-				if(target.contains("razmire"))
+				if (target.contains("razmire"))
 				{
 					switch (config.swapRazmire())
 					{
