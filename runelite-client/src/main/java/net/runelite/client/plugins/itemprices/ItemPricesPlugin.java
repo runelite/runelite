@@ -24,16 +24,26 @@
  */
 package net.runelite.client.plugins.itemprices;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.StackFormatter;
+
+import java.io.IOException;
 
 @PluginDescriptor(
-	name = "Item Prices",
-	enabledByDefault = false
+		name = "Item Prices",
+		enabledByDefault = false
 )
 public class ItemPricesPlugin extends Plugin
 {
@@ -41,6 +51,10 @@ public class ItemPricesPlugin extends Plugin
 	private ItemPricesConfig config;
 	@Inject
 	private ItemPricesOverlay overlay;
+	@Inject
+	private ItemManager itemManager;
+	@Inject
+	private Client client;
 
 	@Provides
 	ItemPricesConfig getConfig(ConfigManager configManager)
@@ -52,5 +66,38 @@ public class ItemPricesPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		//System.out.println(event.toString());
+		if (event.getType() != ChatMessageType.SERVER) { return; }
+
+		String message = event.getMessage().toLowerCase();
+		if (!message.contains(" x grimy")) { return; }
+
+		String[] splitString = message.split(" x ");
+		int herbAmount = Integer.parseInt(splitString[0]);
+		String herbName = splitString[1];
+
+		//System.out.println(""+herbName.toUpperCase().replace(" ","_")+"_HERB(\""+herbName+"\", ItemID."+herbName.toUpperCase().replace(" ","_")+"),");
+		System.out.println(Herbs.getHerbs(herbName).getItemId());
+
+		try
+		{
+			int price = itemManager.getItemPrice(Herbs.getHerbs(herbName).getItemId()).getPrice();
+			client.addChatMessage(
+					ChatMessageType.SERVER,
+					event.getName(),
+					"GE Price:  " + " <col="+ChatColorType.HIGHLIGHT+"> " + StackFormatter.formatNumber(price * herbAmount),
+					event.getSender()
+			);
+		}
+		catch (IOException e)
+		{
+			System.out.println("Cant find price");
+		}
+
 	}
 }
