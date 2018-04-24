@@ -176,7 +176,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			for (String highlight : highlightedNpcs)
 			{
-				if (WildcardMatcher.matches(highlight, npcName))
+				if (npc.getName() != null && WildcardMatcher.matches(highlight, npcName))
 				{
 					npcMap.put(npc, npcName);
 				}

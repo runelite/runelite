@@ -33,6 +33,11 @@ public class WildcardMatcher
 
 	public static boolean matches(String pattern, String text)
 	{
+		if (pattern == null || text == null)
+		{
+			return false;
+		}
+
 		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern);
 		final StringBuffer buffer = new StringBuffer();
 
