@@ -72,6 +72,7 @@ import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.Text;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
@@ -296,11 +297,11 @@ public class ClueScrollPlugin extends Plugin
 		if (clueScrollText != null)
 		{
 			// Remove line breaks and also the rare occasion where there are double line breaks
-			String text = clueScrollText.getText()
+			String text = Text.removeTags(clueScrollText.getText()
 					.replaceAll("-<br>", "-")
 					.replaceAll("<br>", " ")
 					.replaceAll("[ ]+", " ")
-					.toLowerCase();
+					.toLowerCase());
 
 			if (clue != null && clue instanceof TextClueScroll)
 			{
