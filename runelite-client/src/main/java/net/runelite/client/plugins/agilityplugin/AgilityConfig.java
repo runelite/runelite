@@ -68,4 +68,27 @@ public interface AgilityConfig extends Config
 	{
 		return Color.GREEN;
 	}
+
+	@ConfigItem(
+		keyName = "highlightMarks",
+		name = "Highlight Marks of Grace",
+		description = "Enable/disable the highlighting of retrievable Marks of Grace",
+		position = 4
+	)
+	default boolean highlightMarks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "markHighlight",
+		name = "Mark highlight Color",
+		description = "Color of highlighted Marks of Grace",
+		position = 5
+	)
+	default Color getMarkColor()
+	{
+		return Color.ORANGE;
+	}
+
 }
