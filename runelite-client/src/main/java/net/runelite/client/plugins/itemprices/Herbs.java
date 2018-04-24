@@ -6,7 +6,8 @@ import net.runelite.api.ItemID;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Herbs {
+public enum Herbs
+{
 
 	GRIMY_GUAM_LEAF_HERB("grimy guam leaf", ItemID.GRIMY_GUAM_LEAF),
 	GRIMY_GRIMY_MARRENTILL_HERB("grimy marrentill", ItemID.GRIMY_MARRENTILL),
