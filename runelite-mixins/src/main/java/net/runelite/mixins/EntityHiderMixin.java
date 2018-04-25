@@ -112,8 +112,9 @@ public abstract class EntityHiderMixin implements RSRegion
 		{
 			boolean local = drawingUI ? hideLocalPlayer2D : hideLocalPlayer;
 			boolean other = drawingUI ? hidePlayers2D : hidePlayers;
+			boolean isLocalPlayer = renderable == client.getLocalPlayer();
 
-			if (renderable == client.getLocalPlayer() ? local : other)
+			if (isLocalPlayer ? local : other)
 			{
 				RSPlayer player = (RSPlayer) renderable;
 
@@ -125,7 +126,7 @@ public abstract class EntityHiderMixin implements RSRegion
 					}
 				}
 
-				return (!hideFriends && player.isFriend()) || (!hideClanMates && player.isClanMember());
+				return (!hideFriends && player.isFriend()) || (!isLocalPlayer && !hideClanMates && player.isClanMember());
 			}
 		}
 		else if (renderable instanceof RSNPC)
