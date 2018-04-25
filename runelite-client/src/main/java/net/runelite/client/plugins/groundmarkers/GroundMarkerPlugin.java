@@ -71,7 +71,6 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
 	private static final String WALK_HERE = "Walk here";
-	private static final String MENU_TARGET = "Tile";
 
 	private static final Gson gson = new Gson();
 
