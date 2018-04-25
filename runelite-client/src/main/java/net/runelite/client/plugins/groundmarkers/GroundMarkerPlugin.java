@@ -71,6 +71,7 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
 	private static final String WALK_HERE = "Walk here";
+	private static final String MENU_TARGET = "Tile";
 
 	private static final Gson gson = new Gson();
 
@@ -284,19 +285,8 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-
-		// get tile coordinates off of walk here entry
-		for (int i = 0; i < menuEntries.length; i++)
-		{
-			MenuEntry menuEntry = menuEntries[i];
-			if (menuEntry.getOption().equals(WALK_HERE))
-			{
-				Point target = new Point(menuEntry.getParam0(), menuEntry.getParam1());
-				markTile(target);
-				break;
-			}
-		}
+		Tile target = client.getSelectedRegionTile();
+		markTile(target.getLocalLocation());
 	}
 
 	@Override
@@ -317,10 +307,8 @@ public class GroundMarkerPlugin extends Plugin
 		return overlay;
 	}
 
-	protected void markTile(Point ptMouse)
+	protected void markTile(LocalPoint localPoint)
 	{
-		LocalPoint localPoint = getTile(ptMouse);
-
 		if (localPoint == null)
 		{
 			return;
@@ -379,47 +367,5 @@ public class GroundMarkerPlugin extends Plugin
 		savePoints(regionId, points);
 
 		loadPoints();
-	}
-
-	/**
-	 * Find the tile which the given mouse point is in
-	 * @param mouse
-	 * @return
-	 */
-	private LocalPoint getTile(Point mouse)
-	{
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
-		int z = client.getPlane();
-
-		java.awt.Point gameMouse = new java.awt.Point(mouse.getX(), mouse.getY());
-
-		for (int x = 0; x < REGION_SIZE; ++x)
-		{
-			for (int y = 0; y < REGION_SIZE; ++y)
-			{
-				Tile tile = tiles[z][x][y];
-
-				if (tile == null)
-				{
-					continue;
-				}
-
-				LocalPoint local = tile.getLocalLocation();
-				Polygon poly = Perspective.getCanvasTilePoly(client, local);
-
-				if (poly == null)
-				{
-					continue;
-				}
-
-				if (poly.contains(gameMouse))
-				{
-					return local;
-				}
-			}
-		}
-
-		return null;
 	}
 }
