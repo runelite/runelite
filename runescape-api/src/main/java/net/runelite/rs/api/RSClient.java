@@ -116,6 +116,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseCurrentButton();
 
+	@Import("selectedRegionTileX")
+	int getSelectedRegionTileX();
+
+	@Import("selectedRegionTileY")
+	int getSelectedRegionTileY();
+
 	@Import("draggingWidget")
 	@Override
 	boolean isDraggingWidget();
