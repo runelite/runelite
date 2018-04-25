@@ -41,6 +41,8 @@ Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/runelite/runelite/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
+* Fork Runelite if you haven't already (see the [Wiki](https://github.com/runelite/runelite/wiki/Beginner%27s-Guide-To-Git)
+  for specific instructions).
 * Make your changes in a new git branch:
 
     ```shell
