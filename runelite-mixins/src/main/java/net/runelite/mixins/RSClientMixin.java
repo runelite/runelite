@@ -54,6 +54,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
@@ -156,6 +157,21 @@ public abstract class RSClientMixin implements RSClient
 	public void setInterpolateObjectAnimations(boolean interpolate)
 	{
 		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public Tile getSelectedRegionTile()
+	{
+		int tileX = getSelectedRegionTileX();
+		int tileY = getSelectedRegionTileY();
+
+		if (tileX == -1 || tileY == -1)
+		{
+			return null;
+		}
+
+		return getRegion().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
