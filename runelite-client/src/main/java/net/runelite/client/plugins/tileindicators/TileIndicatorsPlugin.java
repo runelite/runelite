@@ -68,7 +68,8 @@ import net.runelite.client.ui.overlay.Overlay;
 public class TileIndicatorsPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
-	private static final String MARK = "Mark tile";
+	private static final String MARK = "Mark";
+	private static final String MENU_TARGET = "<col=ff9040>Tile";
 	private static final String WALK_HERE = "Walk here";
 
 	private static final Gson gson = new Gson();
@@ -300,7 +301,7 @@ public class TileIndicatorsPlugin extends Plugin
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
 			menuEntry.setOption(MARK);
-			menuEntry.setTarget(event.getTarget());
+			menuEntry.setTarget(MENU_TARGET);
 			menuEntry.setType(MenuAction.CANCEL.getId());
 
 			client.setMenuEntries(menuEntries);
@@ -310,7 +311,7 @@ public class TileIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (!event.getMenuOption().equals(MARK) || !event.getMenuTarget().equals(MENU_TARGET))
 		{
 			return;
 		}
