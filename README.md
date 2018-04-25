@@ -1,5 +1,5 @@
 ![](https://runelite.net/img/logo.png)
-# runelite [![Travis](https://img.shields.io/travis/runelite/runelite.svg)](https://travis-ci.org/runelite/runelite) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
+# runelite [![Travis](https://img.shields.io/travis/runelite/runelite.svg)](https://travis-ci.org/SquirtleNetwork/runelite) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
 runelite is a RuneScape 2 client and reverse engineering project
 
@@ -22,7 +22,7 @@ If you have any questions, please join our IRC channel on [irc.rizon.net #runeli
 ## Usage
 
 Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
-For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
+For more information visit the [RuneLite Wiki](https://github.com/SquirtleNetwork/runelite/wiki).
 
 ### License
 
@@ -31,4 +31,4 @@ Some of the code, like everything in runescape-client, is automatically generate
 
 ## Contribute and Develop
 
-We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/CONTRIBUTING.md).
+We've set up a separate document for our [contribution guidelines](https://github.com/SquirtleNetwork/runelite/blob/master/CONTRIBUTING.md).
