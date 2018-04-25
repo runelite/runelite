@@ -36,8 +36,6 @@ import net.runelite.api.widgets.WidgetInfo;
 
 public interface Client extends GameEngine
 {
-	Tile getSelectedRegionTile();
-
 	List<Player> getPlayers();
 
 	List<NPC> getNpcs();
@@ -108,6 +106,8 @@ public interface Client extends GameEngine
 	int getBaseY();
 
 	int getMouseCurrentButton();
+
+	Tile getSelectedRegionTile();
 
 	boolean isDraggingWidget();
 
