@@ -69,6 +69,9 @@ public class UpdateMappings
 
 		AnnotationRenamer an = new AnnotationRenamer(group2);
 		an.run();
+
+		ParameterRenamer pr = new ParameterRenamer(group1, group2, mapping);
+		pr.run();
 	}
 
 	public void save(File out) throws IOException
