@@ -107,6 +107,8 @@ public interface Client extends GameEngine
 
 	int getMouseCurrentButton();
 
+	Tile getSelectedRegionTile();
+
 	boolean isDraggingWidget();
 
 	Widget getDraggedWidget();
