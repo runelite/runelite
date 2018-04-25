@@ -165,11 +165,11 @@ public class WorldMapDecoration {
          }
 
          if(var2 >= 1) {
-            var8.method5854(1);
+            var8.setOutline(1);
          }
 
          if(var2 >= 2) {
-            var8.method5854(16777215);
+            var8.setOutline(16777215);
          }
 
          if(var3 != 0) {

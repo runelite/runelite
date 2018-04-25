@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Nicholas I
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.api.SpritePixels;
-import net.runelite.mapping.Import;
+package net.runelite.client.plugins.jewelleryenchanting;
 
-public interface RSSpritePixels extends SpritePixels
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup (
+	keyName = "jewelleryEchanting",
+	name = "Jewellery Enchanting",
+	description = "Configuration for the Jewellery Enchanting plugin"
+)
+public interface JewelleryEnchantingConfig extends Config
 {
-	@Import("drawAt")
-	@Override
-	void drawAt(int x, int y);
-
-	@Import("height")
-	@Override
-	int getHeight();
-
-	@Import("width")
-	@Override
-	int getWidth();
-
-	@Import("pixels")
-	@Override
-	int[] getPixels();
-
-	@Import("setRaster")
-	void setRaster();
-	
-	@Import("setOutline")
-	void setOutline(int outlineColor);
+	@ConfigItem (
+		keyName = "unenchantedColor",
+		name = "Jewellery Highlight",
+		description = "The color for any unenchanted jewellery"
+	)
+	default Color unenchantedColor ()
+	{
+		return new Color (255, 255, 255);
+	}
 }

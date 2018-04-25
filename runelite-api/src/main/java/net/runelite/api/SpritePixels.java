@@ -37,6 +37,13 @@ public interface SpritePixels
 	int getHeight();
 
 	int[] getPixels();
+	
+	/**
+	 * Draws the outline for a sprite with a given color
+	 * Make sure to call removeOutline after using the SpritePixels
+	 * @param outlineColor
+	 */
+	void setOutline(int outlineColor);
 
 	/**
 	 * Covert the SpritePixels to a BufferedImage

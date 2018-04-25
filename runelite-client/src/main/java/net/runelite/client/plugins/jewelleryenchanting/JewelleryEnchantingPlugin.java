@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Nicholas I
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.api.SpritePixels;
-import net.runelite.mapping.Import;
+package net.runelite.client.plugins.jewelleryenchanting;
 
-public interface RSSpritePixels extends SpritePixels
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
+
+@PluginDescriptor (
+	name = "Jewellery Enchanting",
+	enabledByDefault = false
+)
+public class JewelleryEnchantingPlugin extends Plugin
 {
-	@Import("drawAt")
-	@Override
-	void drawAt(int x, int y);
-
-	@Import("height")
-	@Override
-	int getHeight();
-
-	@Import("width")
-	@Override
-	int getWidth();
-
-	@Import("pixels")
-	@Override
-	int[] getPixels();
-
-	@Import("setRaster")
-	void setRaster();
+	@Inject
+	private JewelleryEnchantingOverlay overlay;
 	
-	@Import("setOutline")
-	void setOutline(int outlineColor);
+	@Getter(AccessLevel.PACKAGE)
+	private String clickedOption;
+	
+	@Override
+	public Overlay getOverlay ()
+	{
+		return overlay;
+	}
+	
+	@Provides
+	JewelleryEnchantingConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(JewelleryEnchantingConfig.class);
+	}
+	
+	@Subscribe
+	public void onMenuOptionClicked (MenuOptionClicked event)
+	{
+		if (event.getMenuTarget().contains("Enchant"))
+			clickedOption = event.getMenuTarget().split(">")[1];
+		else
+			clickedOption = null;
+	}
 }
