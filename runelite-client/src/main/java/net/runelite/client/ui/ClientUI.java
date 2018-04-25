@@ -36,7 +36,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -81,7 +80,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 @Singleton
 public class ClientUI
 {
-	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
 	public static final BufferedImage ICON;
 	private static final BufferedImage SIDEBAR_OPEN;
 	private static final BufferedImage SIDEBAR_CLOSE;
@@ -419,7 +417,7 @@ public class ClientUI
 
 			// Show frame
 			frame.pack();
-			SwingUtil.revalidateMinimumSize(frame);
+			revalidateMinimumSize();
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setVisible(true);
 			frame.toFront();
@@ -563,27 +561,11 @@ public class ClientUI
 
 		if (sidebarOpen)
 		{
-			// If sidebar is now open, check if expanded width after opening the sidebar will be higher
-			// than screen width, and if not, change the frame size to be original size + sidebar size
-			if (SwingUtil.isInScreenBounds(
-				frame.getLocationOnScreen().x + frame.getWidth() + pluginToolbar.getWidth(),
-				frame.getLocationOnScreen().y))
-			{
-				frame.setSize(frame.getWidth() + pluginToolbar.getWidth(), frame.getHeight());
-			}
-
-			SwingUtil.revalidateMinimumSize(frame);
+			expandFrameBy(pluginToolbar.getWidth());
 		}
 		else
 		{
-			SwingUtil.revalidateMinimumSize(frame);
-
-			// If size of the frame is smaller than screen size (e.g, not fullscreen) change the frame width
-			// to be frame width - sidebar width, as sidebar is now hidden
-			if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-			{
-				frame.setSize(frame.getWidth() - pluginToolbar.getWidth(), frame.getHeight());
-			}
+			contractFrameBy(pluginToolbar.getWidth());
 		}
 	}
 
@@ -603,19 +585,10 @@ public class ClientUI
 		{
 			navContainer.remove(0);
 		}
-		else
-		{
-			if (SwingUtil.isInScreenBounds(
-				frame.getLocationOnScreen().x + frame.getWidth() + PANEL_EXPANDED_WIDTH,
-				frame.getLocationOnScreen().y))
-			{
-				frame.setSize(frame.getWidth() + PANEL_EXPANDED_WIDTH, frame.getHeight());
-			}
-		}
 
 		pluginPanel = panel;
-		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
-		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
+		navContainer.setMinimumSize(new Dimension(pluginPanel.getWrappedPanel().getPreferredSize().width, 0));
+		navContainer.setMaximumSize(new Dimension(pluginPanel.getWrappedPanel().getPreferredSize().width, Integer.MAX_VALUE));
 
 		final JPanel wrappedPanel = panel.getWrappedPanel();
 		navContainer.add(wrappedPanel);
@@ -624,9 +597,8 @@ public class ClientUI
 		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
 		giveClientFocus();
 		panel.onActivate();
-
 		wrappedPanel.repaint();
-		SwingUtil.revalidateMinimumSize(frame);
+		expandFrameBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
 	}
 
 	private void contract()
@@ -636,28 +608,61 @@ public class ClientUI
 			return;
 		}
 
-		boolean wasMinimumWidth = frame.getWidth() == frame.getMinimumSize().width;
 		pluginPanel.onDeactivate();
 		navContainer.remove(0);
 		navContainer.setMinimumSize(new Dimension(0, 0));
 		navContainer.setMaximumSize(new Dimension(0, 0));
 		navContainer.revalidate();
 		giveClientFocus();
-		SwingUtil.revalidateMinimumSize(frame);
+		contractFrameBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
+		pluginPanel = null;
+	}
 
-		if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH)
+	private void expandFrameBy(final int value)
+	{
+		if (isFullScreen())
 		{
-			if (wasMinimumWidth)
-			{
-				frame.setSize(frame.getMinimumSize().width, frame.getHeight());
-			}
-			else if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-			{
-				frame.setSize(frame.getWidth() - PANEL_EXPANDED_WIDTH, frame.getHeight());
-			}
+			return;
 		}
 
-		pluginPanel = null;
+		final int result = getValidatedResult(value);
+
+		if (result != -1)
+		{
+			frame.setSize(result, frame.getHeight());
+		}
+	}
+
+	private void contractFrameBy(final int value)
+	{
+		if (isFullScreen())
+		{
+			return;
+		}
+
+		final int result = getValidatedResult(-value);
+
+		if (result != -1)
+		{
+			frame.setSize(result, frame.getHeight());
+		}
+	}
+
+	private int getValidatedResult(final int value)
+	{
+		revalidateMinimumSize();
+		final int result = frame.getWidth() + value;
+		return result <= frame.getMinimumSize().width ? result : -1;
+	}
+
+	private void revalidateMinimumSize()
+	{
+		frame.setMinimumSize(frame.getLayout().minimumLayoutSize(frame));
+	}
+
+	private boolean isFullScreen()
+	{
+		return (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 	}
 
 	private void giveClientFocus()
