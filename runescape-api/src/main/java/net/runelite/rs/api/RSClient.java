@@ -34,6 +34,12 @@ import net.runelite.mapping.Import;
 
 public interface RSClient extends RSGameEngine, Client
 {
+	@Import("selectedRegionTileX")
+	int getSelectedRegionTileX();
+
+	@Import("selectedRegionTileY")
+	int getSelectedRegionTileY();
+
 	@Import("cameraX")
 	@Override
 	int getCameraX();
