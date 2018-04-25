@@ -23,29 +23,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.tileindicators;
 
-package net.runelite.client.plugins.groundmarkers;
+import java.awt.event.KeyEvent;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.client.input.KeyListener;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-import java.awt.Color;
-
-@ConfigGroup(
-	keyName = "groundMarker",
-	name = "Ground Marker",
-	description = "Mark ground tiles"
-)
-public interface GroundMarkerConfig extends Config
+public class TileMarkerInputListener implements KeyListener
 {
-	@ConfigItem(
-		keyName = "markerColor",
-		name = "Color of the tile",
-		description = "Configures the color of marked tile"
-	)
-	default Color markerColor()
+	private static final int HOTKEY = KeyEvent.VK_SHIFT;
+
+	private final Client client;
+	private final TileIndicatorsPlugin plugin;
+
+	@Inject
+	private TileMarkerInputListener(Client client, TileIndicatorsPlugin plugin)
 	{
-		return Color.YELLOW;
+		this.client = client;
+		this.plugin = plugin;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == HOTKEY)
+		{
+			plugin.setHotKeyPressed(true);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == HOTKEY)
+		{
+			plugin.setHotKeyPressed(false);
+		}
 	}
 }

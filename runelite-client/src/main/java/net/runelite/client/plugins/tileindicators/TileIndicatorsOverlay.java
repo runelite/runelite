@@ -53,6 +53,11 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.destinationTileHighlight())
+		{
+			return null;
+		}
+
 		LocalPoint dest = client.getLocalDestinationLocation();
 		if (dest == null)
 		{
