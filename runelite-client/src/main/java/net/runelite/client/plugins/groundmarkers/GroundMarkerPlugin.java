@@ -30,7 +30,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,13 +42,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
-import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -284,19 +279,8 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-
-		// get tile coordinates off of walk here entry
-		for (int i = 0; i < menuEntries.length; i++)
-		{
-			MenuEntry menuEntry = menuEntries[i];
-			if (menuEntry.getOption().equals(WALK_HERE))
-			{
-				Point target = new Point(menuEntry.getParam0(), menuEntry.getParam1());
-				markTile(target);
-				break;
-			}
-		}
+		Tile target = client.getSelectedRegionTile();
+		markTile(target.getLocalLocation());
 	}
 
 	@Override
@@ -317,10 +301,8 @@ public class GroundMarkerPlugin extends Plugin
 		return overlay;
 	}
 
-	protected void markTile(Point ptMouse)
+	protected void markTile(LocalPoint localPoint)
 	{
-		LocalPoint localPoint = getTile(ptMouse);
-
 		if (localPoint == null)
 		{
 			return;
@@ -379,47 +361,5 @@ public class GroundMarkerPlugin extends Plugin
 		savePoints(regionId, points);
 
 		loadPoints();
-	}
-
-	/**
-	 * Find the tile which the given mouse point is in
-	 * @param mouse
-	 * @return
-	 */
-	private LocalPoint getTile(Point mouse)
-	{
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
-		int z = client.getPlane();
-
-		java.awt.Point gameMouse = new java.awt.Point(mouse.getX(), mouse.getY());
-
-		for (int x = 0; x < REGION_SIZE; ++x)
-		{
-			for (int y = 0; y < REGION_SIZE; ++y)
-			{
-				Tile tile = tiles[z][x][y];
-
-				if (tile == null)
-				{
-					continue;
-				}
-
-				LocalPoint local = tile.getLocalLocation();
-				Polygon poly = Perspective.getCanvasTilePoly(client, local);
-
-				if (poly == null)
-				{
-					continue;
-				}
-
-				if (poly.contains(gameMouse))
-				{
-					return local;
-				}
-			}
-		}
-
-		return null;
 	}
 }

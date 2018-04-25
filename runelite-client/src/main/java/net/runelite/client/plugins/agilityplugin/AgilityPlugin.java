@@ -35,6 +35,10 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.Node;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -49,6 +53,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -65,6 +70,9 @@ public class AgilityPlugin extends Plugin
 {
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
+
+	@Getter
+	private Tile markOfGrace;
 
 	@Inject
 	@Getter
@@ -99,6 +107,7 @@ public class AgilityPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		markOfGrace = null;
 		obstacles.clear();
 		session = null;
 	}
@@ -113,6 +122,7 @@ public class AgilityPlugin extends Plugin
 				session = null;
 				break;
 			case LOADING:
+				markOfGrace = null;
 				obstacles.clear();
 				break;
 		}
@@ -149,6 +159,48 @@ public class AgilityPlugin extends Plugin
 			session.resetLapCount();
 			session.incrementLapCount(client);
 		}
+	}
+
+	@Subscribe
+	public void onItemLayerChanged(ItemLayerChanged event)
+	{
+		if (obstacles.isEmpty())
+			return;
+
+		Tile tile = event.getTile();
+		ItemLayer itemLayer = tile.getItemLayer();
+		boolean hasMark = tileHasMark(itemLayer);
+
+		if (markOfGrace != null && tile.getWorldLocation().equals(markOfGrace.getWorldLocation()) && !hasMark)
+		{
+			markOfGrace = null;
+		}
+		else if (hasMark)
+		{
+			markOfGrace = tile;
+		}
+	}
+
+	private boolean tileHasMark(ItemLayer itemLayer)
+	{
+		if (itemLayer != null)
+		{
+			Node currentItem = itemLayer.getBottom();
+
+			while (currentItem instanceof Item)
+			{
+				final Item item = (Item) currentItem;
+
+				currentItem = currentItem.getNext();
+
+				if (item.getId() == ItemID.MARK_OF_GRACE)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// This code, brought to you, in part, by the letters C and V
