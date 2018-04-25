@@ -66,6 +66,7 @@ public class ParameterRenamer
 					if (destM != null)
 					{
 						destM.setParameters(sourceM.getParameters());
+						destM.setLocalVariables(sourceM.getLocalVariables());
 					}
 				}
 			}

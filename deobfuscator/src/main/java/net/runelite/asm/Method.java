@@ -31,9 +31,12 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.LocalVariable;
+import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_NATIVE;
@@ -55,6 +58,7 @@ public class Method
 	private Exceptions exceptions;
 	private Annotations annotations;
 	private List<Parameter> parameters;
+	private List<LocalVariable> localVariables;
 	private Code code;
 
 	public Method(ClassFile classFile, String name, Signature signature)
@@ -65,6 +69,7 @@ public class Method
 		exceptions = new Exceptions();
 		annotations = new Annotations();
 		parameters = new ArrayList<>();
+		localVariables = new ArrayList<>();
 	}
 
 	public ClassFile getClassFile()
@@ -128,7 +133,7 @@ public class Method
 			}
 
 			//Find first and last label for this method
-			if (parameters.size() > 0)
+			if (parameters.size() > 0 || localVariables.size() > 0)
 			{
 				Label startLabel = null;
 				Label endLabel = null;
@@ -151,6 +156,11 @@ public class Method
 					{
 						visitor.visitLocalVariable(lv.getName(), lv.getDesc(), lv.getSignature(), startLabel, endLabel, lv.getIndex());
 					}
+				}
+
+				for (LocalVariable lv : localVariables)
+				{
+					visitor.visitLocalVariable(lv.getName(), lv.getDesc(), lv.getSignature(), startLabel, endLabel, lv.getIndex());
 				}
 			}
 
@@ -307,5 +317,15 @@ public class Method
 	public void setParameters(List<Parameter> parameters)
 	{
 		this.parameters = parameters;
+	}
+
+	public List<LocalVariable> getLocalVariables()
+	{
+		return this.localVariables;
+	}
+
+	public void setLocalVariables(List<LocalVariable> localVariables)
+	{
+		this.localVariables = localVariables;
 	}
 }

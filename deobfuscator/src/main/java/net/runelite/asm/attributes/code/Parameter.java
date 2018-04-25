@@ -26,7 +26,7 @@ package net.runelite.asm.attributes.code;
 
 public class Parameter
 {
-	private final String name;
+	private String name;
 	private final int access;
 	private LocalVariable localVariable;
 

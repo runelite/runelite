@@ -320,9 +320,11 @@ public class CodeVisitor extends MethodVisitor
 			if (p.getName() == name)
 			{
 				p.setLocalVariable(lv);
-				break;
+				return;
 			}
 		}
+
+		method.getLocalVariables().add(lv);
 	}
 
 	@Override
