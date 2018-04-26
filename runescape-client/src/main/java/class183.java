@@ -2,78 +2,81 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gd")
 public class class183 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2491;
-   @ObfuscatedName("k")
+   public static final class183 field2475;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2490;
-   @ObfuscatedName("t")
+   public static final class183 field2484;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2501;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lgj;"
-   )
-   public static final class183 field2492;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lgj;"
-   )
-   public static final class183 field2489;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lgj;"
-   )
-   public static final class183 field2494;
+   public static final class183 field2476;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2493;
-   @ObfuscatedName("i")
+   public static final class183 field2477;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2495;
-   @ObfuscatedName("u")
+   public static final class183 field2485;
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2497;
-   @ObfuscatedName("x")
+   public static final class183 field2478;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgd;"
    )
-   public static final class183 field2498;
+   public static final class183 field2480;
    @ObfuscatedName("y")
-   @Export("floorSaturations")
-   static int[] floorSaturations;
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static final class183 field2474;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static final class183 field2482;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   public static final class183 field2483;
+   @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   @Export("socket")
+   static Task socket;
 
    static {
-      field2491 = new class183(15);
-      field2490 = new class183(7);
-      field2501 = new class183(14);
-      field2492 = new class183(4);
-      field2489 = new class183(2);
-      field2494 = new class183(5);
-      field2493 = new class183(3);
-      field2495 = new class183(5);
-      field2497 = new class183(6);
-      field2498 = new class183(4);
+      field2475 = new class183(2);
+      field2484 = new class183(6);
+      field2476 = new class183(15);
+      field2477 = new class183(7);
+      field2485 = new class183(5);
+      field2478 = new class183(4);
+      field2480 = new class183(14);
+      field2474 = new class183(3);
+      field2482 = new class183(5);
+      field2483 = new class183(4);
    }
 
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "15"
+      garbageValue = "2"
    )
    class183(int var1) {
    }

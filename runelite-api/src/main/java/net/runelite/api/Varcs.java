@@ -26,5 +26,7 @@ package net.runelite.api;
 
 public interface Varcs
 {
-	int getIntVar(VarClient var);
+	int getIntVar(VarClientInt var);
+
+	String getStrVar(VarClientStr var);
 }

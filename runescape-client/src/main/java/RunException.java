@@ -5,42 +5,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("fd")
 @Implements("RunException")
 public class RunException extends RuntimeException {
-   @ObfuscatedName("o")
-   public static Applet field2198;
-   @ObfuscatedName("k")
-   public static String field2194;
-   @ObfuscatedName("d")
+   @ObfuscatedName("g")
+   public static Applet field2168;
+   @ObfuscatedName("e")
+   public static String field2169;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1461760579
+      intValue = 1614496727
    )
-   @Export("revision")
-   public static int revision;
-   @ObfuscatedName("h")
-   String field2197;
-   @ObfuscatedName("m")
+   public static int field2170;
+   @ObfuscatedName("db")
+   @ObfuscatedGetter(
+      intValue = -1779827785
+   )
+   static int field2173;
+   @ObfuscatedName("n")
+   String field2171;
+   @ObfuscatedName("l")
    @Export("parent")
    Throwable parent;
 
    RunException(Throwable var1, String var2) {
-      this.field2197 = var2;
+      this.field2171 = var2;
       this.parent = var1;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljf;IIS)Z",
-      garbageValue = "23272"
+      signature = "(Ljava/lang/String;ZZI)V",
+      garbageValue = "-383753531"
    )
-   static boolean method3215(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         Area.decodeSprite(var3);
-         return true;
-      }
+   public static void method3308(String var0, boolean var1, boolean var2) {
+      NetWriter.method2154(var0, var1, "openjs", var2);
    }
 }

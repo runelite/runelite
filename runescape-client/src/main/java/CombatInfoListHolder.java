@@ -1,27 +1,26 @@
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("cf")
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
-   @ObfuscatedName("mc")
-   @ObfuscatedGetter(
-      intValue = 343740281
+   @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Lji;"
    )
-   static int field1310;
-   @ObfuscatedName("t")
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Ljj;"
    )
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lhm;"
+      signature = "Lhb;"
    )
    @Export("combatInfo1")
    CombatInfoList combatInfo1;
@@ -34,12 +33,12 @@ public class CombatInfoListHolder extends Node {
       this.combatInfo2 = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "19"
+      signature = "(IIIII)V",
+      garbageValue = "193768036"
    )
-   void method1859(int var1, int var2, int var3, int var4) {
+   void method1923(int var1, int var2, int var3, int var4) {
       CombatInfo1 var5 = null;
       int var6 = 0;
 
@@ -61,7 +60,7 @@ public class CombatInfoListHolder extends Node {
          }
 
       } else {
-         CombatInfoList.method3987(new CombatInfo1(var1, var2, var3, var4), var5);
+         CombatInfoList.method4064(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.last().unlink();
          }
@@ -69,12 +68,12 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)Lbd;",
-      garbageValue = "255512782"
+      signature = "(IB)Lbv;",
+      garbageValue = "64"
    )
-   CombatInfo1 method1860(int var1) {
+   CombatInfo1 method1925(int var1) {
       CombatInfo1 var2 = (CombatInfo1)this.combatInfo1.last();
       if(var2 != null && var2.cycle <= var1) {
          for(CombatInfo1 var3 = (CombatInfo1)this.combatInfo1.previous(); var3 != null && var3.cycle <= var1; var3 = (CombatInfo1)this.combatInfo1.previous()) {
@@ -82,7 +81,7 @@ public class CombatInfoListHolder extends Node {
             var2 = var3;
          }
 
-         if(this.combatInfo2.field3522 + var2.int2 + var2.cycle > var1) {
+         if(this.combatInfo2.field3532 + var2.cycle + var2.int2 > var1) {
             return var2;
          } else {
             var2.unlink();
@@ -93,116 +92,167 @@ public class CombatInfoListHolder extends Node {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "1"
+      garbageValue = "-54"
    )
-   boolean method1858() {
+   boolean method1926() {
       return this.combatInfo1.isEmpty();
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(ILff;Ljn;B)V",
-      garbageValue = "-52"
+      signature = "(Ljr;Ljr;I)V",
+      garbageValue = "633222779"
    )
-   static void method1871(int var0, IndexFile var1, IndexData var2) {
-      byte[] var3 = null;
-      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         for(FileSystem var5 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.getFront(); var5 != null; var5 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.getNext()) {
-            if(var5.hash == (long)var0 && var1 == var5.index && var5.type == 0) {
-               var3 = var5.field3367;
-               break;
+   public static void method1937(IndexDataBase var0, IndexDataBase var1) {
+      CombatInfo2.field3526 = var0;
+      CombatInfo2.field3523 = var1;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(ILcr;ZB)I",
+      garbageValue = "110"
+   )
+   static int method1938(int var0, Script var1, boolean var2) {
+      int var3 = -1;
+      Widget var4;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class81.intStack[--class171.intStackSize];
+         var4 = UnitPriceComparator.getWidget(var3);
+      } else {
+         var4 = var2?class49.field604:class81.field1270;
+      }
+
+      if(var0 == 1000) {
+         class171.intStackSize -= 4;
+         var4.originalX = class81.intStack[class171.intStackSize];
+         var4.originalY = class81.intStack[class171.intStackSize + 1];
+         var4.dynamicX = class81.intStack[class171.intStackSize + 2];
+         var4.dynamicY = class81.intStack[class171.intStackSize + 3];
+         TotalQuantityComparator.method100(var4);
+         InvType.clientInstance.widgetMethod0(var4);
+         if(var3 != -1 && var4.type == 0) {
+            class33.method372(GZipDecompressor.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1001) {
+         class171.intStackSize -= 4;
+         var4.originalWidth = class81.intStack[class171.intStackSize];
+         var4.originalHeight = class81.intStack[class171.intStackSize + 1];
+         var4.dynamicWidth = class81.intStack[class171.intStackSize + 2];
+         var4.buttonType = class81.intStack[class171.intStackSize + 3];
+         TotalQuantityComparator.method100(var4);
+         InvType.clientInstance.widgetMethod0(var4);
+         if(var3 != -1 && var4.type == 0) {
+            class33.method372(GZipDecompressor.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1003) {
+         boolean var5 = class81.intStack[--class171.intStackSize] == 1;
+         if(var5 != var4.isHidden) {
+            var4.isHidden = var5;
+            TotalQuantityComparator.method100(var4);
+         }
+
+         return 1;
+      } else if(var0 == 1005) {
+         var4.noClickThrough = class81.intStack[--class171.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1006) {
+         var4.noScrollThrough = class81.intStack[--class171.intStackSize] == 1;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Llh;I)V",
+      garbageValue = "-749527234"
+   )
+   static final void method1931(IndexedSprite var0) {
+      short var1 = 256;
+
+      int var2;
+      for(var2 = 0; var2 < class199.field2604.length; ++var2) {
+         class199.field2604[var2] = 0;
+      }
+
+      int var3;
+      for(var2 = 0; var2 < 5000; ++var2) {
+         var3 = (int)(Math.random() * 128.0D * (double)var1);
+         class199.field2604[var3] = (int)(Math.random() * 256.0D);
+      }
+
+      int var4;
+      int var5;
+      for(var2 = 0; var2 < 20; ++var2) {
+         for(var3 = 1; var3 < var1 - 1; ++var3) {
+            for(var4 = 1; var4 < 127; ++var4) {
+               var5 = var4 + (var3 << 7);
+               class33.field459[var5] = (class199.field2604[var5 - 128] + class199.field2604[var5 + 1] + class199.field2604[var5 + 128] + class199.field2604[var5 - 1]) / 4;
             }
          }
+
+         int[] var8 = class199.field2604;
+         class199.field2604 = class33.field459;
+         class33.field459 = var8;
       }
 
-      if(var3 != null) {
-         var2.load(var1, var0, var3, true);
-      } else {
-         byte[] var8 = var1.read(var0);
-         var2.load(var1, var0, var8, true);
-      }
-   }
+      if(var0 != null) {
+         var2 = 0;
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-603347936"
-   )
-   static void method1870() {
-      class62.tileUnderlayIds = null;
-      class62.tileOverlayIds = null;
-      class62.tileOverlayPath = null;
-      class62.overlayRotations = null;
-      GZipDecompressor.field2520 = null;
-      class297.field3831 = null;
-      AttackOption.field1354 = null;
-      class55.floorHues = null;
-      class183.floorSaturations = null;
-      class253.field3314 = null;
-      class36.floorMultiplier = null;
-      AttackOption.field1356 = null;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
-      garbageValue = "59"
-   )
-   public static boolean method1865(String var0, int var1, String var2) {
-      if(var1 == 0) {
-         try {
-            if(!class57.field667.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var10 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var10.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
-                  }
+         for(var3 = 0; var3 < var0.height; ++var3) {
+            for(var4 = 0; var4 < var0.width; ++var4) {
+               if(var0.pixels[var2++] != 0) {
+                  var5 = var4 + var0.offsetX + 16;
+                  int var6 = var3 + var0.offsetY + 16;
+                  int var7 = var5 + (var6 << 7);
+                  class199.field2604[var7] = 0;
                }
-
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
             }
-         } catch (Throwable var5) {
-            return false;
          }
-      } else if(var1 == 1) {
-         try {
-            Object var3 = class53.method820(class57.field674, var2, new Object[]{(new URL(class57.field674.getCodeBase(), var0)).toString()});
-            return var3 != null;
-         } catch (Throwable var6) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class57.field674.getAppletContext().showDocument(new URL(class57.field674.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var7) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            class53.method824(class57.field674, "loggedout");
-         } catch (Throwable var9) {
-            ;
-         }
+      }
 
-         try {
-            class57.field674.getAppletContext().showDocument(new URL(class57.field674.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var8) {
-            return false;
-         }
+   }
+
+   @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "-1900151126"
+   )
+   @Export("decodeContainer")
+   static final byte[] decodeContainer(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.readInt();
+      if(var3 < 0 || IndexDataBase.field3379 != 0 && var3 > IndexDataBase.field3379) {
+         throw new RuntimeException();
+      } else if(var2 == 0) {
+         byte[] var4 = new byte[var3];
+         var1.readBytes(var4, 0, var3);
+         return var4;
       } else {
-         throw new IllegalArgumentException();
+         int var6 = var1.readInt();
+         if(var6 >= 0 && (IndexDataBase.field3379 == 0 || var6 <= IndexDataBase.field3379)) {
+            byte[] var5 = new byte[var6];
+            if(var2 == 1) {
+               class188.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
+            } else {
+               IndexDataBase.gzip.decompress(var1, var5);
+            }
+
+            return var5;
+         } else {
+            throw new RuntimeException();
+         }
       }
    }
 }

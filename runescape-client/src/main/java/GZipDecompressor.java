@@ -4,20 +4,24 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("gq")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
    @ObfuscatedName("l")
-   static int[][][] field2520;
-   @ObfuscatedName("bs")
    @ObfuscatedSignature(
-      signature = "Llh;"
+      signature = "[[Liz;"
    )
-   @Export("loginType")
-   static JagexLoginType loginType;
+   @Export("widgets")
+   public static Widget[][] widgets;
    @ObfuscatedName("o")
+   static int[] field2501;
+   @ObfuscatedName("g")
    @Export("inflator")
    Inflater inflator;
+
+   public GZipDecompressor() {
+      this(-1, 1000000, 1000000);
+   }
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -26,14 +30,10 @@ public class GZipDecompressor {
    GZipDecompressor(int var1, int var2, int var3) {
    }
 
-   public GZipDecompressor() {
-      this(-1, 1000000, 1000000);
-   }
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lgc;[BI)V",
-      garbageValue = "929743285"
+      signature = "(Lgg;[BB)V",
+      garbageValue = "-19"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -56,47 +56,12 @@ public class GZipDecompressor {
       }
    }
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lin;B)Z",
-      garbageValue = "70"
+      signature = "(II)Z",
+      garbageValue = "993066626"
    )
-   static final boolean method3461(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 205) {
-         Client.field915 = 250;
-         return true;
-      } else {
-         int var2;
-         int var3;
-         if(var1 >= 300 && var1 <= 313) {
-            var2 = (var1 - 300) / 2;
-            var3 = var1 & 1;
-            Client.field1132.method4379(var2, var3 == 1);
-         }
-
-         if(var1 >= 314 && var1 <= 323) {
-            var2 = (var1 - 314) / 2;
-            var3 = var1 & 1;
-            Client.field1132.method4406(var2, var3 == 1);
-         }
-
-         if(var1 == 324) {
-            Client.field1132.method4386(false);
-         }
-
-         if(var1 == 325) {
-            Client.field1132.method4386(true);
-         }
-
-         if(var1 == 326) {
-            PacketNode var4 = WorldMapRectangle.method280(ClientPacket.field2435, Client.field957.field1484);
-            Client.field1132.method4398(var4.packetBuffer);
-            Client.field957.method2052(var4);
-            return true;
-         } else {
-            return false;
-         }
-      }
+   public static boolean method3535(int var0) {
+      return (var0 & 1) != 0;
    }
 }

@@ -1,34 +1,35 @@
+import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("ef")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("j")
+   @ObfuscatedName("kf")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Liz;"
    )
-   @Export("NetCache_reference")
-   static Buffer NetCache_reference;
-   @ObfuscatedName("o")
+   static Widget field1950;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 646572609
+      intValue = 1562202695
    )
    @Export("id")
    int id;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1835370453
+      intValue = -1380190211
    )
    @Export("count")
    int count;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @Export("types")
    int[] types;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @Export("list")
    int[][] list;
 
@@ -56,28 +57,41 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("jm")
+   @ObfuscatedName("km")
    @ObfuscatedSignature(
-      signature = "(IIIILld;Lik;I)V",
-      garbageValue = "1964580549"
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "67"
    )
-   @Export("worldToMinimap")
-   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle & 2047;
-         int var8 = Graphics3D.SINE[var7];
-         int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
-         int var11 = var3 * var9 - var8 * var2 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = var5.field2773 / 2 - 25;
-         int var15 = (int)(Math.sin(var12) * (double)var14);
-         int var16 = (int)(Math.cos(var12) * (double)var14);
-         byte var17 = 20;
-         Client.mapedge.method5876(var15 + (var0 + var5.field2773 / 2 - var17 / 2), var5.field2772 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
-      } else {
-         class38.drawDot(var0, var1, var2, var3, var4, var5);
+   static void method2945(String var0) {
+      class23.sessionToken = var0;
+
+      try {
+         String var1 = InvType.clientInstance.getParameter(Parameters.field3812.key);
+         String var2 = InvType.clientInstance.getParameter(Parameters.field3800.key);
+         String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
+         String var5;
+         if(var0.length() == 0) {
+            var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
+         } else {
+            String var4 = var3 + "; Expires=";
+            long var6 = class289.method5267() + 94608000000L;
+            class204.field2624.setTime(new Date(var6));
+            int var8 = class204.field2624.get(7);
+            int var9 = class204.field2624.get(5);
+            int var10 = class204.field2624.get(2);
+            int var11 = class204.field2624.get(1);
+            int var12 = class204.field2624.get(11);
+            int var13 = class204.field2624.get(12);
+            int var14 = class204.field2624.get(13);
+            var5 = class204.field2623[var8 - 1] + ", " + var9 / 10 + var9 % 10 + "-" + class204.field2628[0][var10] + "-" + var11 + " " + var12 / 10 + var12 % 10 + ":" + var13 / 10 + var13 % 10 + ":" + var14 / 10 + var14 % 10 + " GMT";
+            var3 = var4 + var5 + "; Max-Age=" + 94608000L;
+         }
+
+         Client var16 = InvType.clientInstance;
+         var5 = "document.cookie=\"" + var3 + "\"";
+         JSObject.getWindow(var16).eval(var5);
+      } catch (Throwable var15) {
+         ;
       }
 
    }

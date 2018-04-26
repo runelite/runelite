@@ -4,41 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("iy")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Liz;"
+      signature = "Liy;"
    )
    @Export("RC")
-   static final BuildType RC;
-   @ObfuscatedName("k")
+   public static final BuildType RC;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Liz;"
+      signature = "Liy;"
    )
    @Export("WIP")
-   static final BuildType WIP;
-   @ObfuscatedName("t")
+   public static final BuildType WIP;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Liz;"
+      signature = "Liy;"
    )
    @Export("LIVE")
-   static final BuildType LIVE;
-   @ObfuscatedName("d")
+   public static final BuildType LIVE;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Liz;"
+      signature = "Liy;"
    )
    @Export("BUILD_LIVE")
-   static final BuildType BUILD_LIVE;
-   @ObfuscatedName("h")
+   public static final BuildType BUILD_LIVE;
+   @ObfuscatedName("n")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1434698649
+      intValue = 68129071
    )
-   final int field3358;
+   public final int field3349;
 
    static {
       RC = new BuildType("LIVE", 0);
@@ -49,6 +49,6 @@ public class BuildType {
 
    BuildType(String var1, int var2) {
       this.identifier = var1;
-      this.field3358 = var2;
+      this.field3349 = var2;
    }
 }

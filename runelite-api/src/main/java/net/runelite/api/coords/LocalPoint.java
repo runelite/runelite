@@ -95,7 +95,7 @@ public class LocalPoint
 	}
 
 	/**
-	 * Returns the X coordinate in Region space (tiles)
+	 * Returns the X coordinate in Scene space (tiles)
 	 */
 	public int getRegionX()
 	{
@@ -104,7 +104,7 @@ public class LocalPoint
 
 
 	/**
-	 * Returns the Y coordinate in Region space (tiles)
+	 * Returns the Y coordinate in Scene space (tiles)
 	 */
 	public int getRegionY()
 	{

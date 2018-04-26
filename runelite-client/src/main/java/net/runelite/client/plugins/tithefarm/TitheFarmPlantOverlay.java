@@ -64,8 +64,12 @@ public class TitheFarmPlantOverlay extends Overlay
 		for (TitheFarmPlant plant : plugin.getPlants())
 		{
 			LocalPoint localLocation = LocalPoint.fromWorld(client, plant.getWorldLocation());
+			if (localLocation == null)
+			{
+				continue;
+			}
 			net.runelite.api.Point canvasLocation = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane());
-			if (viewport != null && localLocation != null)
+			if (viewport != null && canvasLocation != null)
 			{
 				switch (plant.getState())
 				{

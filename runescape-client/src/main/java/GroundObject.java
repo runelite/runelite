@@ -4,131 +4,96 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dn")
+@ObfuscatedName("dw")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("fy")
-   @ObfuscatedSignature(
-      signature = "[Lll;"
-   )
-   @Export("mapscene")
-   static IndexedSprite[] mapscene;
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -51176517
+      intValue = 1978395211
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1421060607
+      intValue = 937709269
    )
    @Export("x")
    int x;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -124099207
+      intValue = 1797664371
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1211280609
+      intValue = 1034101317
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1159915109
+      intValue = 1197635451
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-664782633"
+      signature = "(II)Ljz;",
+      garbageValue = "184284081"
    )
-   public static boolean method2669(int var0) {
-      return (var0 >> 21 & 1) != 0;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(ILcr;ZI)I",
-      garbageValue = "1912020908"
-   )
-   static int method2672(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 5504) {
-         WorldComparator.intStackSize -= 2;
-         var3 = class81.intStack[WorldComparator.intStackSize];
-         int var4 = class81.intStack[WorldComparator.intStackSize + 1];
-         if(!Client.field1111) {
-            Client.cameraPitchTarget = var3;
-            Client.mapAngle = var4;
-         }
-
-         return 1;
-      } else if(var0 == 5505) {
-         class81.intStack[++WorldComparator.intStackSize - 1] = Client.cameraPitchTarget;
-         return 1;
-      } else if(var0 == 5506) {
-         class81.intStack[++WorldComparator.intStackSize - 1] = Client.mapAngle;
-         return 1;
-      } else if(var0 == 5530) {
-         var3 = class81.intStack[--WorldComparator.intStackSize];
-         if(var3 < 0) {
-            var3 = 0;
-         }
-
-         Client.field945 = var3;
-         return 1;
-      } else if(var0 == 5531) {
-         class81.intStack[++WorldComparator.intStackSize - 1] = Client.field945;
-         return 1;
+   public static Enum method2768(int var0) {
+      Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         return 2;
+         byte[] var2 = Enum.EnumDefinition_indexCache.getConfigData(8, var0);
+         var1 = new Enum();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         Enum.EnumDefinition_cached.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("fl")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-541187702"
-   )
-   static void method2670() {
-      if(SoundTaskDataProvider.localPlayer.x >> 7 == Client.destinationX && SoundTaskDataProvider.localPlayer.y >> 7 == Client.destinationY) {
-         Client.destinationX = 0;
-      }
-
-   }
-
-   @ObfuscatedName("jl")
+   @ObfuscatedName("jj")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-22"
+      garbageValue = "-57"
    )
-   static final void method2671() {
-      PacketNode var0 = WorldMapRectangle.method280(ClientPacket.field2398, Client.field957.field1484);
-      var0.packetBuffer.putByte(0);
-      Client.field957.method2052(var0);
-   }
+   static void method2767() {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.first(); var0 != null; var0 = (WidgetNode)Client.componentTable.next()) {
+         int var1 = var0.id;
+         if(class85.loadWidget(var1)) {
+            boolean var2 = true;
+            Widget[] var3 = GZipDecompressor.widgets[var1];
 
-   @ObfuscatedName("jt")
-   @ObfuscatedSignature(
-      signature = "(Lin;I)I",
-      garbageValue = "-261087095"
-   )
-   @Export("getWidgetClickMask")
-   static int getWidgetClickMask(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get(((long)var0.id << 32) + (long)var0.index);
-      return var1 != null?var1.value:var0.clickMask;
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(var3[var4] != null) {
+                  var2 = var3[var4].hasScript;
+                  break;
+               }
+            }
+
+            if(!var2) {
+               var4 = (int)var0.hash;
+               Widget var5 = UnitPriceComparator.getWidget(var4);
+               if(var5 != null) {
+                  TotalQuantityComparator.method100(var5);
+               }
+            }
+         }
+      }
+
    }
 }

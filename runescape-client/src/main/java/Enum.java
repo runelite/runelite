@@ -4,49 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("jz")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ljr;"
    )
    @Export("EnumDefinition_indexCache")
-   public static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("k")
+   static IndexDataBase EnumDefinition_indexCache;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhd;"
+      signature = "Lhi;"
    )
    @Export("EnumDefinition_cached")
-   public static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("t")
+   static NodeCache EnumDefinition_cached;
+   @ObfuscatedName("b")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 58984681
+      intValue = 1948597767
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 142456961
+      intValue = 1897020051
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("x")
+   @ObfuscatedName("h")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -54,18 +54,18 @@ public class Enum extends CacheableNode {
       EnumDefinition_cached = new NodeCache(64);
    }
 
-   public Enum() {
+   Enum() {
       this.defaultString = "null";
       this.size = 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lgc;I)V",
-      garbageValue = "-505255438"
+      signature = "(Lgg;I)V",
+      garbageValue = "155654623"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -76,10 +76,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lgc;IB)V",
-      garbageValue = "40"
+      signature = "(Lgg;II)V",
+      garbageValue = "-1633125485"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -116,21 +116,51 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1726440698"
+      signature = "(B)I",
+      garbageValue = "56"
    )
-   public int method4957() {
+   public int method5029() {
       return this.size;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-1126393101"
+      signature = "(Ljr;Ljr;IZB)Leu;",
+      garbageValue = "4"
    )
-   public static String method4958(CharSequence var0) {
-      return VarCInt.method4785('*', var0.length());
+   public static Frames method5042(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
+      boolean var4 = true;
+      int[] var5 = var0.getChilds(var2);
+
+      for(int var6 = 0; var6 < var5.length; ++var6) {
+         byte[] var7 = var0.getChild(var2, var5[var6]);
+         if(var7 == null) {
+            var4 = false;
+         } else {
+            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+            byte[] var9;
+            if(var3) {
+               var9 = var1.getChild(0, var8);
+            } else {
+               var9 = var1.getChild(var8, 0);
+            }
+
+            if(var9 == null) {
+               var4 = false;
+            }
+         }
+      }
+
+      if(!var4) {
+         return null;
+      } else {
+         try {
+            return new Frames(var0, var1, var2, var3);
+         } catch (Exception var11) {
+            return null;
+         }
+      }
    }
 }

@@ -99,19 +99,21 @@ public class XpDropPlugin extends Plugin
 			{
 				case MELEE:
 					if (spriteIDs.anyMatch(id ->
-						id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE))
+							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
+								|| id == SpriteID.SKILL_HITPOINTS))
 					{
 						color = config.getMeleePrayerColor().getRGB();
 					}
 					break;
+
 				case RANGE:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || id == SpriteID.SKILL_HITPOINTS))
 					{
 						color = config.getRangePrayerColor().getRGB();
 					}
 					break;
 				case MAGIC:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || id == SpriteID.SKILL_HITPOINTS))
 					{
 						color = config.getMagePrayerColor().getRGB();
 					}
