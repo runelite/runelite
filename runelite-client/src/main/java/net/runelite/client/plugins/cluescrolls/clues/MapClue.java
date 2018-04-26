@@ -72,17 +72,19 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0)),
-		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3502, 0), CRATE_2620),
+		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620),
 		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0)),
 		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2616, 3077, 0)),
 		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(3458, 3182, 0), CRATE_18506),
+		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506),
 		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3629, 0), CRATE_354),
 		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
 		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0))
+		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1))
 	);
 
 	private int itemId;
