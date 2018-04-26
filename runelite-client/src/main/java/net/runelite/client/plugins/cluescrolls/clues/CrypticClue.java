@@ -128,7 +128,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.", "Jorral", new WorldPoint(2437, 3347, 0), "Speak to Jorral to receive a strange device."),
 		new CrypticClue("This crate is mine, all mine, even if it is in the middle of the desert.", CRATE_18889, new WorldPoint(3289, 3022, 0), "Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter."),
 		new CrypticClue("Dig where 4 siblings and I all live with our evil overlord.", new WorldPoint(3195, 3357, 0), "Dig in the chicken pen inside the Champion's Guild"),
-		new CrypticClue("In a town where the guards are armed with maces, search the upstairs rooms of the Public House.", "Guard dog", 348, new WorldPoint(2574, 3326, 1), "Search the drawers in the pub north of Ardougne Castle. Kill a Guard dog at Handelmort Mansion to obtain the key."),
+		new CrypticClue("In a town where the guards are armed with maces, search the upstairs rooms of the Public House.", "Guard dog", 348, new WorldPoint(2574, 3326, 1), "Search the drawers upstairs in the pub north of Ardougne Castle. Kill a Guard dog at Handelmort Mansion to obtain the key."),
 		new CrypticClue("Four blades I have, yet draw no blood; Still I turn my prey to powder. If you are brave, come search my roof; It is there my blades are louder.", NULL_1784, new WorldPoint(3167, 3307, 2), "Lumbridge windmill, search the crates on the top floor."),
 		new CrypticClue("Search through some drawers in the upstairs of a house in Rimmington.", NULL_10627, new WorldPoint(2970, 3214, 1), "On the first floor of the house north of Hetty the Witch's house in Rimmington."),
 		new CrypticClue("Probably filled with books on magic.", BOOKCASE_380, new WorldPoint(3096, 9572, 0), "Search the bookcase in the basement of Wizard's Tower."),
@@ -243,7 +243,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("You'll get licked.", null, "Kill a Bloodveld."),
 		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour", null, "Speak to Lovada south of the Lovakengj House blast mine"),
 		new CrypticClue("Dig in front of the icy arena where 1 of 4 was fought.", null, "Where you fought Kamil from Desert Treasure."),
-		new CrypticClue("Speak to Roavar.", null, "Talk to Roavar in the Canifis tavern."),
+		new CrypticClue("Speak to Roavar.", "Roavar", new WorldPoint(3494, 3474, 0), "Talk to Roavar in the Canifis tavern."),
 		new CrypticClue("Search the drawers upstairs of houses in the eastern part of Falador.", DRAWERS_350, new WorldPoint(3035, 3347, 1), "House is located east of the eastern Falador bank and south of the fountain. The house is indicated by the icon on the minimap."),
 		new CrypticClue("Search the drawers found upstairs in East Ardougne's houses.", DRAWERS, new WorldPoint(2574, 3326, 1), "Upstairs of the pub north of the Ardougne Castle."),
 		new CrypticClue("The far north eastern corner where 1 of 4 was defeated, the shadows still linger.", null, "Dig on the northeastern-most corner of the Shadow Dungeon. Bring a ring of visibility."),
@@ -303,7 +303,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the open crate found in a small farmhouse in Hosidius. Cabbages grow outside.", CRATE_27533, new WorldPoint(1687, 3628, 0), "The house is east of the Mess in Great Kourend."),
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank"),
-		new CrypticClue("Speak to Hazelmere.", "Hazelmere", null, "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859")
+		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859")
 	);
 
 	private String text;
