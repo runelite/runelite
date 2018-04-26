@@ -216,7 +216,7 @@ public class ClanChatPlugin extends Plugin
 	}
 
 
-	private static String sanitize(String lookup)
+	private String sanitize(String lookup)
 	{
 		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
 		return cleaned.replace('\u00A0', ' ');
