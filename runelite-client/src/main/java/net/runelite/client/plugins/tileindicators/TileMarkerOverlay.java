@@ -23,48 +23,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.groundmarkers;
+package net.runelite.client.plugins.tileindicators;
 
-import java.awt.event.KeyEvent;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.input.KeyListener;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class GroundMarkerInputListener implements KeyListener
+public class TileMarkerOverlay extends Overlay
 {
-	private static final int HOTKEY = KeyEvent.VK_SHIFT;
-
 	private final Client client;
-	private final GroundMarkerPlugin plugin;
+	private final TileIndicatorsConfig config;
+	private final TileIndicatorsPlugin plugin;
 
 	@Inject
-	private GroundMarkerInputListener(Client client, GroundMarkerPlugin plugin)
+	private TileMarkerOverlay(Client client, TileIndicatorsConfig config, TileIndicatorsPlugin plugin)
 	{
 		this.client = client;
+		this.config = config;
 		this.plugin = plugin;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
+	public Dimension render(Graphics2D graphics)
 	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
+		if (!config.tileMarkersEnabled())
 		{
-			plugin.setHotKeyPressed(true);
+			return null;
 		}
+
+		List<WorldPoint> points = plugin.getPoints();
+		for (WorldPoint point : points)
+		{
+			if (point.getPlane() != client.getPlane())
+			{
+				continue;
+			}
+
+			drawTile(graphics, point);
+		}
+
+		return null;
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e)
+	private void drawTile(Graphics2D graphics, WorldPoint point)
 	{
-		if (e.getKeyCode() == HOTKEY)
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (point.distanceTo(playerLocation) >= 32)
 		{
-			plugin.setHotKeyPressed(false);
+			return;
 		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, LocalPoint.fromWorld(client, point));
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygon(graphics, poly, config.tileMarkerColor());
 	}
 }

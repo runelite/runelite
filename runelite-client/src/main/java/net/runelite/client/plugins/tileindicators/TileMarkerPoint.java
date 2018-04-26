@@ -24,12 +24,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.groundmarkers;
+package net.runelite.client.plugins.tileindicators;
 
 import lombok.Value;
 
 @Value
-public class GroundMarkerPoint
+public class TileMarkerPoint
 {
 	private int regionId;
 	private int regionX;

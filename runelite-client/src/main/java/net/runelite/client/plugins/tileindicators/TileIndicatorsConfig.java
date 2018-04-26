@@ -37,6 +37,18 @@ import net.runelite.client.config.ConfigItem;
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
+		keyName = "destinationTileHighlight",
+		name = "Enable highlighting destination tile",
+		description = "Configures whether or not the destination tile is highlighted"
+	)
+	default boolean destinationTileHighlight()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "highlightDestinationColor",
 		name = "Color of current destination highlighting",
 		description = "Configures the highlight color of current destination"
@@ -44,5 +56,27 @@ public interface TileIndicatorsConfig extends Config
 	default Color highlightDestinationColor()
 	{
 		return Color.GRAY;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "tileMarkersEnabled",
+		name = "Enable tile marking",
+		description = "Configures whether or not tile markers are enabled"
+	)
+	default boolean tileMarkersEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "tileMarkerColor",
+		name = "Marked tile color",
+		description = "Configures the color of marked tile"
+	)
+	default Color tileMarkerColor()
+	{
+		return Color.YELLOW;
 	}
 }
