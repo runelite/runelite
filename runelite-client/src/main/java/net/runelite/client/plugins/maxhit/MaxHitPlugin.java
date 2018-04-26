@@ -72,14 +72,14 @@ public class MaxHitPlugin extends Plugin
 	private static final int BOOT_SLOT = 10;
 	private static final int RING_SLOT = 12;
 
-	public static double void_melee_bonus;
-	public static double void_ranged_bonus;
-	public static double melee_prayer;
-	public static double ranged_prayer;
-	public static double magic_boost;
-	public static double ranged_boost;
-	public static double melee_boost;
-	public static double dh_boost;
+	public static double voidMeleeBonus;
+	public static double voidRangedBonus;
+	public static double meleePrayerBonus;
+	public static double rangedPrayerBonus;
+	public static double magicBoost;
+	public static double rangedBoost;
+	public static double meleeBoost;
+	public static double dharokSetBoost;
 
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
@@ -96,27 +96,27 @@ public class MaxHitPlugin extends Plugin
 	private void updateWidget()
 	{
 		Widget equipYourCharacter = client.getWidget(WidgetInfo.EQUIP_YOUR_CHARACTER);
-		Widget meleeStr = client.getWidget(WidgetInfo.EQUIPMENT_MELEE_STRENGTH);
-		Widget rangedStr = client.getWidget(WidgetInfo.EQUIPMENT_RANGED_STRENGTH);
-		Widget magicDmg = client.getWidget(WidgetInfo.EQUIPMENT_MAGIC_DAMAGE);
-		ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-		void_melee_bonus = 1;
-		void_ranged_bonus = 1;
+		Widget meleeStrength = client.getWidget(WidgetInfo.EQUIPMENT_MELEE_STRENGTH);
+		Widget rangedStrength = client.getWidget(WidgetInfo.EQUIPMENT_RANGED_STRENGTH);
+		Widget magicDamage = client.getWidget(WidgetInfo.EQUIPMENT_MAGIC_DAMAGE);
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		voidMeleeBonus = 1;
+		voidRangedBonus = 1;
 
 		updateBoost();
 
-		if (equipContainer != null && equipYourCharacter != null)
+		if (equipmentContainer != null && equipYourCharacter != null)
 		{
-			Item[] equip = equipContainer.getItems();
+			Item[] equip = equipmentContainer.getItems();
 
 			if (contains(HELM_SLOT, "void", equip) && contains(CHEST_SLOT, "void", equip) && contains(LEG_SLOT, "void", equip) && contains(GLOVE_SLOT, "void", equip))
 			{
-				void_melee_bonus = 1.1;
-				void_ranged_bonus = 1.1;
+				voidMeleeBonus = 1.1;
+				voidRangedBonus = 1.1;
 
 				if (contains(CHEST_SLOT, "elite", equip) && contains(LEG_SLOT, "elite", equip))
 				{
-					void_ranged_bonus = 1.125;
+					voidRangedBonus = 1.125;
 				}
 			}
 
@@ -124,24 +124,24 @@ public class MaxHitPlugin extends Plugin
 			{
 				if (contains(WEAPON_SLOT, "swamp", equip) || contains(WEAPON_SLOT, "toxic", equip))
 				{
-					equipYourCharacter.setText("Equip Your Character...<br><br>Trident Max Hit: " + maxHit.trident(client, magicDmg, 2));
+					equipYourCharacter.setText("Equip Your Character...<br><br>Trident Max Hit: " + maxHit.trident(client, magicDamage, 2));
 					return;
 				}
-				equipYourCharacter.setText("Equip Your Character...<br><br>Trident Max Hit: " + maxHit.trident(client, magicDmg, 5));
+				equipYourCharacter.setText("Equip Your Character...<br><br>Trident Max Hit: " + maxHit.trident(client, magicDamage, 5));
 				return;
 			}
 			if (contains(WEAPON_SLOT, " dart", equip) || contains(WEAPON_SLOT, " knife", equip) || contains(WEAPON_SLOT, "throwing axe", equip) || contains(WEAPON_SLOT, "bow", equip) || contains(WEAPON_SLOT, "chinchompa", equip) || contains(WEAPON_SLOT, "blowpipe", equip))
 			{
-				equipYourCharacter.setText("Equip Your Character...<br><br>Ranged Max Hit: " + maxHit.ranged(client, rangedStr));
+				equipYourCharacter.setText("Equip Your Character...<br><br>Ranged Max Hit: " + maxHit.ranged(client, rangedStrength));
 				return;
 			}
 
 			if (contains(HELM_SLOT, "dharok", equip) && contains(CHEST_SLOT, "dharok", equip) && contains(LEG_SLOT, "dharok", equip) && contains(WEAPON_SLOT, "dharok", equip))
 			{
-				equipYourCharacter.setText("Equip Your Character...<br><br>Melee Max Hit: " + maxHit.melee(client, meleeStr) + " - " + maxHit.dharok(client, meleeStr));
+				equipYourCharacter.setText("Equip Your Character...<br><br>Melee Max Hit: " + maxHit.melee(client, meleeStrength) + " - " + maxHit.dharok(client, meleeStrength));
 				return;
 			}
-			equipYourCharacter.setText("Equip Your Character...<br><br>Melee Max Hit: " + maxHit.melee(client, meleeStr));
+			equipYourCharacter.setText("Equip Your Character...<br><br>Melee Max Hit: " + maxHit.melee(client, meleeStrength));
 		}
 	}
 
@@ -153,58 +153,58 @@ public class MaxHitPlugin extends Plugin
 
 	private void updateBoost()
 	{
-		double hp_lvl = client.getRealSkillLevel(Skill.HITPOINTS);
+		double hitpointsLevel = client.getRealSkillLevel(Skill.HITPOINTS);
 
-		magic_boost = 0;
-		ranged_boost = 0;
-		melee_boost = 0;
-		dh_boost = (99 + hp_lvl) / 100;
+		magicBoost = 0;
+		rangedBoost = 0;
+		meleeBoost = 0;
+		dharokSetBoost = (99 + hitpointsLevel ) / 100;
 
 		if (config.potion())
 		{
-			magic_boost = 1 + client.getRealSkillLevel(Skill.MAGIC) / 10;
-			ranged_boost = 4 + client.getRealSkillLevel(Skill.RANGED) / 10;
-			melee_boost = 4 + client.getRealSkillLevel(Skill.RANGED) * 15 / 100;
+			magicBoost = 1 + client.getRealSkillLevel(Skill.MAGIC) / 10;
+			rangedBoost = 4 + client.getRealSkillLevel(Skill.RANGED) / 10;
+			meleeBoost = 4 + client.getRealSkillLevel(Skill.RANGED) * 15 / 100;
 		}
 
 		switch (config.rangedprayer())
 		{
 			case DEFAULT:
-				ranged_prayer = 1;
+				rangedPrayerBonus = 1;
 				break;
-			case SE:
-				ranged_prayer = 1.05;
+			case SHARP_EYE:
+				rangedPrayerBonus = 1.05;
 				break;
-			case HE:
-				ranged_prayer = 1.1;
+			case HAWK_EYE:
+				rangedPrayerBonus = 1.1;
 				break;
-			case EE:
-				ranged_prayer = 1.15;
+			case EAGLE_EYE:
+				rangedPrayerBonus = 1.15;
 				break;
 			case RIGOUR:
-				ranged_prayer = 1.23;
+				rangedPrayerBonus = 1.23;
 				break;
 		}
 
 		switch (config.meleeprayer())
 		{
 			case DEFAULT:
-				melee_prayer = 1;
+				meleePrayerBonus = 1;
 				break;
-			case BOS:
-				melee_prayer = 1.05;
+			case BURST_OF_STRENGTH:
+				meleePrayerBonus = 1.05;
 				break;
-			case SS:
-				melee_prayer = 1.1;
+			case SUPERHUMAN_STRENGTH:
+				meleePrayerBonus = 1.1;
 				break;
-			case US:
-				melee_prayer = 1.15;
+			case ULTIMATE_STRENGTH:
+				meleePrayerBonus = 1.15;
 				break;
 			case CHIVALRY:
-				melee_prayer = 1.18;
+				meleePrayerBonus = 1.18;
 				break;
 			case PIETY:
-				melee_prayer = 1.23;
+				meleePrayerBonus = 1.23;
 				break;
 		}
 	}

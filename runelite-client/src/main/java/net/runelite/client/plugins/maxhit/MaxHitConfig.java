@@ -50,9 +50,9 @@ public interface MaxHitConfig extends Config
 	enum meleePrayer
 	{
 		DEFAULT("No Prayer"),
-		BOS("Burst of Strength"),
-		SS("Superhuman Strength"),
-		US("Ultimate Strength"),
+		BURST_OF_STRENGTH("Burst of Strength"),
+		SUPERHUMAN_STRENGTH("Superhuman Strength"),
+		ULTIMATE_STRENGTH("Ultimate Strength"),
 		CHIVALRY("Chivalry"),
 		PIETY("Piety");
 
@@ -89,9 +89,9 @@ public interface MaxHitConfig extends Config
 	enum rangedPrayer
 	{
 		DEFAULT("No Prayer"),
-		SE("Sharp Eye"),
-		HE("Hawk Eye"),
-		EE("Eagle Eye"),
+		SHARP_EYE("Sharp Eye"),
+		HAWK_EYE("Hawk Eye"),
+		EAGLE_EYE("Eagle Eye"),
 		RIGOUR("Rigour");
 
 		private final String name;
@@ -115,7 +115,7 @@ public interface MaxHitConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "potion",
+		keyName = "statBoost",
 		name = "Stat Boost",
 		description = "Simulates drinking a ranging and super strength potion, and using imbued hearth"
 	)
