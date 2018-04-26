@@ -346,7 +346,7 @@ public class MilliTimer extends Timer {
 
          for(int var78 = 0; var78 < 4; ++var78) {
             int var90 = var0.hitsplatCycles[var78];
-            int var79 = var0.field1160[var78];
+            int var79 = var0.hitsplatTypes[var78];
             class281 var91 = null;
             int var80 = 0;
             if(var79 >= 0) {
@@ -354,7 +354,7 @@ public class MilliTimer extends Timer {
                   continue;
                }
 
-               var91 = FileRequest.method4638(var0.field1160[var78]);
+               var91 = FileRequest.method4638(var0.hitsplatTypes[var78]);
                var80 = var91.field3580;
                if(var91 != null && var91.field3587 != null) {
                   var91 = var91.method5047();
@@ -531,7 +531,7 @@ public class MilliTimer extends Timer {
                      String var46 = null;
                      boolean var47 = false;
                      int var48 = 0;
-                     var45 = var91.method5043(var0.hitsplatTypes[var78]);
+                     var45 = var91.method5043(var0.hitsplatValues[var78]);
                      int var93 = var86.getTextWidth(var45);
                      if(var81 != null) {
                         var46 = var81.method5043(var0.field1164[var78]);
