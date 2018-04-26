@@ -76,7 +76,7 @@ public interface IdleNotifierConfig extends Config
 	)
 	default int getHitpointsThreshold()
 	{
-		return 15;
+		return 0;
 	}
 
 	@ConfigItem(
@@ -87,6 +87,6 @@ public interface IdleNotifierConfig extends Config
 	)
 	default int getPrayerThreshold()
 	{
-		return 15;
+		return 0;
 	}
 }
