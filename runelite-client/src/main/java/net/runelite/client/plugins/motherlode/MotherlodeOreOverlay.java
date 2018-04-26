@@ -26,8 +26,6 @@ package net.runelite.client.plugins.motherlode;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -35,16 +33,18 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class MotherlodeGemOverlay extends Overlay
+class MotherlodeOreOverlay extends Overlay
 {
+	private final MotherlodeSession session;
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
+	MotherlodeOreOverlay(MotherlodeSession session, MotherlodePlugin plugin, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
+		this.session = session;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -52,65 +52,77 @@ public class MotherlodeGemOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.isInMlm() || !config.showOresCollected())
+		{
+			return null;
+		}
+
 		MotherlodeSession session = plugin.getSession();
 
-		if (session.getLastPayDirtMined() == null || !plugin.isInMlm() || !config.showGemsFound())
+		int runiteCollected = session.getRuniteCollected();
+		int adamantCollected = session.getAdamantCollected();
+		int mithrilCollected = session.getMithrilCollected();
+		int goldCollected = session.getGoldCollected();
+		int coalCollected = session.getCoalCollected();
+		int nuggetsCollected = session.getNuggetsCollected();
+
+		if (runiteCollected == 0 && adamantCollected == 0 && mithrilCollected == 0 && goldCollected == 0
+			&& coalCollected == 0 && nuggetsCollected == 0)
 		{
 			return null;
 		}
-
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
-		{
-			return null;
-		}
-
-		int diamondsFound = session.getDiamondsFound();
-		int rubiesFound = session.getRubiesFound();
-		int emeraldsFound = session.getEmeraldsFound();
-		int sapphiresFound = session.getSapphiresFound();
 
 		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
+		panelComponent.getChildren().add(TitleComponent.builder().text("Ores collected").build());
 
-		if (diamondsFound == 0 && rubiesFound == 0 && emeraldsFound == 0 && sapphiresFound == 0)
-		{
-			return null;
-		}
-
-		if (diamondsFound > 0)
+		if (runiteCollected > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Diamonds:")
-				.right(Integer.toString(diamondsFound))
+				.left("Runite:")
+				.right(Integer.toString(runiteCollected))
 				.build());
 		}
 
-		if (rubiesFound > 0)
+		if (adamantCollected > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Rubies:")
-				.right(Integer.toString(rubiesFound))
+				.left("Adamant:")
+				.right(Integer.toString(adamantCollected))
 				.build());
 		}
 
-		if (emeraldsFound > 0)
+		if (mithrilCollected > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Emeralds:")
-				.right(Integer.toString(emeraldsFound))
+				.left("Mithril:")
+				.right(Integer.toString(mithrilCollected))
 				.build());
 		}
 
-		if (sapphiresFound > 0)
+		if (goldCollected > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Sapphires:")
-				.right(Integer.toString(sapphiresFound))
+				.left("Gold:")
+				.right(Integer.toString(goldCollected))
 				.build());
 		}
+
+		if (coalCollected > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Coal:")
+				.right(Integer.toString(coalCollected))
+				.build());
+		}
+
+		if (nuggetsCollected > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Nuggets:")
+				.right(Integer.toString(nuggetsCollected))
+				.build());
+		}
+
 
 		return panelComponent.render(graphics);
 	}

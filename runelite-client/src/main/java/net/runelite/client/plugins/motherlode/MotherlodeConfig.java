@@ -105,4 +105,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOresCollected",
+		name = "Show ores collected",
+		description = "Shows ores collected during current mining session"
+	)
+	default boolean showOresCollected()
+	{
+		return true;
+	}
 }
