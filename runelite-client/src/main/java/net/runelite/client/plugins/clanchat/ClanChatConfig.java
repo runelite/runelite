@@ -32,7 +32,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(
         keyName = "clanchat",
         name = "Clan Chat",
-        description = "TEST"
+        description = "Configuration for Clan Chat"
 )
 
 
