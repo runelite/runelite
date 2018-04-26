@@ -26,7 +26,6 @@ package net.runelite.client.plugins.kourendlibrary;
 
 import java.awt.Color;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.ui.FontManager;
@@ -40,7 +39,8 @@ class BookPanel extends JPanel
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 
-		JLabel image = new JLabel(new ImageIcon(b.getIcon()));
+		JLabel image = new JLabel();
+		b.getIcon().addTo(image);
 		JLabel name = new JLabel(b.getShortName());
 		location.setFont(FontManager.getRunescapeSmallFont());
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,32 +23,62 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.game;
 
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
-import net.runelite.api.ItemComposition;
-import net.runelite.client.game.AsyncBufferedImage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
-@RunWith(MockitoJUnitRunner.class)
-public class GrandExchangeOfferSlotTest
+public class AsyncBufferedImage extends BufferedImage
 {
-	@Mock
-	private GrandExchangeOffer offer;
-
-	@Test
-	public void testUpdateOffer()
+	private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
+	public AsyncBufferedImage(int width, int height, int imageType)
 	{
-		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
-
-		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot();
-		offerSlot.updateOffer(mock(ItemComposition.class), mock(AsyncBufferedImage.class), offer);
+		super(width, height, imageType);
 	}
 
+	/**
+	 * Call when the buffer has been changed
+	 */
+	public void changed()
+	{
+		for (Runnable r : listeners)
+		{
+			r.run();
+		}
+	}
+
+	/**
+	 * Register a function to be ran when the buffer has changed
+	 */
+	public void onChanged(Runnable r)
+	{
+		listeners.add(r);
+	}
+
+	/**
+	 * Calls setIcon on c, ensuring it is repainted when this changes
+	 */
+	public void addTo(JButton c)
+	{
+		c.setIcon(makeIcon(c));
+	}
+
+	/**
+	 * Calls setIcon on c, ensuring it is repainted when this changes
+	 */
+	public void addTo(JLabel c)
+	{
+		c.setIcon(makeIcon(c));
+	}
+
+	private ImageIcon makeIcon(JComponent c)
+	{
+		listeners.add(c::repaint);
+		return new ImageIcon(this);
+	}
 }
