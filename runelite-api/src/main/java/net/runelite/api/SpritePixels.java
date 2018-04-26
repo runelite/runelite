@@ -44,4 +44,11 @@ public interface SpritePixels
 	 * @return
 	 */
 	BufferedImage toBufferedImage();
+
+
+	/**
+	 * Writes the contents of the SpritePixels to the BufferedImage.
+	 * Width and Height must match
+ 	 */
+	void toBufferedImage(BufferedImage img);
 }
