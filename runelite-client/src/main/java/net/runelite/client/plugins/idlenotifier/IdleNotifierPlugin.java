@@ -251,6 +251,10 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowHitpoints()
 	{
+		if (config.getHitpointsThreshold() == 0)
+		{
+			return false;
+		}
 		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
@@ -272,6 +276,10 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowPrayer()
 	{
+		if (config.getPrayerThreshold() == 0)
+		{
+			return false;
+		}
 		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
