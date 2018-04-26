@@ -4,55 +4,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dk")
+@ObfuscatedName("do")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 2046117059
+      intValue = -2062965013
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -689535023
+      intValue = -935648273
    )
    @Export("x")
    int x;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -381189999
+      intValue = 1943466103
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1741793213
+      intValue = -590833893
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 431171731
+      intValue = 1808492959
    )
    @Export("height")
    int height;
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Ljr;Ljr;Ljr;Lhe;I)Z",
+      garbageValue = "1998951335"
+   )
+   public static boolean method2689(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2, class230 var3) {
+      class229.field2697 = var0;
+      class229.field2700 = var1;
+      class229.field2696 = var2;
+      class38.field507 = var3;
+      return true;
+   }
 }

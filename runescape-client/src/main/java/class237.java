@@ -2,23 +2,22 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("im")
 public class class237 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @Export("varpsMasks")
-   static int[] varpsMasks;
-   @ObfuscatedName("k")
+   public static int[] varpsMasks;
+   @ObfuscatedName("e")
    @Export("serverVarps")
    public static int[] serverVarps;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @Export("clientVarps")
    public static int[] clientVarps;
-   @ObfuscatedName("bo")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Lll;"
+      signature = "Ldc;"
    )
-   @Export("slArrowSprites")
-   static IndexedSprite[] slArrowSprites;
+   static class110 field2788;
 
    static {
       varpsMasks = new int[32];

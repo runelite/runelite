@@ -1,101 +1,79 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jy")
+@ObfuscatedName("jq")
 public class class279 extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ljr;"
    )
-   public static IndexDataBase field3552;
-   @ObfuscatedName("k")
+   static IndexDataBase field3554;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhd;"
+      signature = "Lhi;"
    )
    public static NodeCache field3553;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhh;"
    )
-   IterableHashTable field3554;
+   IterableHashTable field3552;
 
    static {
       field3553 = new NodeCache(64);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-85"
+      signature = "(I)V",
+      garbageValue = "1566824344"
    )
-   public void method4925() {
+   void method5007() {
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lgc;I)V",
-      garbageValue = "-1364819274"
+      signature = "(Lgg;I)V",
+      garbageValue = "-1640531527"
    )
-   public void method4937(Buffer var1) {
+   void method5020(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4923(var1, var2);
+         this.method5008(var1, var2);
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgc;II)V",
-      garbageValue = "-1298637294"
+      signature = "(Lgg;II)V",
+      garbageValue = "-385960396"
    )
-   void method4923(Buffer var1, int var2) {
+   void method5008(Buffer var1, int var2) {
       if(var2 == 249) {
-         this.field3554 = class28.readStringIntParameters(var1, this.field3554);
+         this.field3552 = class160.readStringIntParameters(var1, this.field3552);
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "0"
+      signature = "(III)I",
+      garbageValue = "2031177499"
    )
-   public int method4924(int var1, int var2) {
-      IterableHashTable var4 = this.field3554;
-      int var3;
-      if(var4 == null) {
-         var3 = var2;
-      } else {
-         IntegerNode var5 = (IntegerNode)var4.get((long)var1);
-         if(var5 == null) {
-            var3 = var2;
-         } else {
-            var3 = var5.value;
-         }
-      }
-
-      return var3;
+   public int method5011(int var1, int var2) {
+      return NetWriter.method2162(this.field3552, var1, var2);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "1573910847"
+      garbageValue = "89197415"
    )
-   public String method4932(int var1, String var2) {
-      return WorldMapType1.method309(this.field3554, var1, var2);
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Liu;B)Z",
-      garbageValue = "127"
-   )
-   public static boolean method4922(class245 var0) {
-      return class245.field2976 == var0 || class245.field2969 == var0 || class245.field2965 == var0 || class245.field2970 == var0 || class245.field2967 == var0 || class245.field2968 == var0 || class245.field2971 == var0 || class245.field2966 == var0;
+   public String method5010(int var1, String var2) {
+      return class169.method3365(this.field3552, var1, var2);
    }
 }

@@ -202,6 +202,7 @@ public enum Varbits
 	 * Motherlode mine sack
 	 */
 	SACK_NUMBER(5558),
+	SACK_UPGRADED(5556),
 
 	/**
 	 * Experience tracker
@@ -267,6 +268,16 @@ public enum Varbits
 	PYRAMID_PLUNDER_ROOM(2377),
 
 	/**
+	 * Barrows
+	 */
+	BARROWS_KILLED_AHRIM(457),
+	BARROWS_KILLED_DHAROK(458),
+	BARROWS_KILLED_GUTHAN(459),
+	BARROWS_KILLED_KARIL(460),
+	BARROWS_KILLED_TORAG(461),
+	BARROWS_KILLED_VERAC(462),
+
+	/**
 	 * Spicy stew ingredients
 	 */
 	SPICY_STEW_RED_SPICES(1879),
@@ -284,13 +295,22 @@ public enum Varbits
 	 */
 	KINGDOM_FAVOR(72),
 	KINGDOM_COFFER(74),
+	THRONE_OF_MISCELLANIA_QUEST(359),
 
 	/**
 	 * Daily Tasks (Collection availability)
 	 */
 	DAILY_HERB_BOX(3961),
 	DAILY_STAVES(4539),
-	DAILY_ESSENCE(4547);
+	DAILY_ESSENCE(4547),
+
+	/**
+	 * Fairy Ring
+	 */
+	FAIR_RING_LAST_DESTINATION(5374),
+	FAIRY_RING_DIAL_ADCB(3985), //Left dial
+	FAIRY_RIGH_DIAL_ILJK(3986), //Middle dial
+	FAIRY_RING_DIAL_PSRQ(3987); //Right dial
 
 	/**
 	 * varbit id

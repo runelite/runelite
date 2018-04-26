@@ -1,17 +1,13 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("ik")
 public class class249 {
-   @ObfuscatedName("q")
+   @ObfuscatedName("ev")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1671722142"
+      signature = "Lkh;"
    )
-   static final void method4501(String var0) {
-      PacketNode var1 = WorldMapRectangle.method280(ClientPacket.field2471, Client.field957.field1484);
-      var1.packetBuffer.putByte(WorldMapRegion.getLength(var0));
-      var1.packetBuffer.putString(var0);
-      Client.field957.method2052(var1);
-   }
+   @Export("font_p12full")
+   static Font font_p12full;
 }

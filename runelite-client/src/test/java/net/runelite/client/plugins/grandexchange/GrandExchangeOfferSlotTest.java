@@ -45,7 +45,7 @@ public class GrandExchangeOfferSlotTest
 	@Test
 	public void testUpdateOffer()
 	{
-		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED);
+		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
 
 		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot();
 		offerSlot.updateOffer(mock(ItemComposition.class), mock(BufferedImage.class), offer);

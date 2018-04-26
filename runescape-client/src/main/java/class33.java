@@ -1,91 +1,103 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("af")
+@ObfuscatedName("av")
 public final class class33 {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lll;"
+   @ObfuscatedName("qw")
+   @ObfuscatedGetter(
+      longValue = -191987490526068109L
    )
-   @Export("logoSprite")
-   static IndexedSprite logoSprite;
-   @ObfuscatedName("k")
-   final int[] field464;
+   static long field455;
+   @ObfuscatedName("aj")
+   static int[] field459;
+   @ObfuscatedName("gv")
+   @ObfuscatedGetter(
+      intValue = 234736069
+   )
+   @Export("cameraYaw")
+   static int cameraYaw;
+   @ObfuscatedName("e")
+   final int[] field458;
 
    class33() {
-      this.field464 = new int[4096];
+      this.field458 = new int[4096];
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lar;B)V",
-      garbageValue = "5"
+      signature = "(Lap;I)V",
+      garbageValue = "825478831"
    )
-   final void method407(class44 var1) {
+   final void method371(class44 var1) {
       for(int var2 = 0; var2 < 64; ++var2) {
          for(int var3 = 0; var3 < 64; ++var3) {
-            this.field464[var2 * 64 + var3] = var1.method655(var2, var3) | -16777216;
+            this.field458[var2 * 64 + var3] = var1.method664(var2, var3) | -16777216;
          }
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-47"
+      signature = "(III)I",
+      garbageValue = "-1399500455"
    )
-   final int method402(int var1, int var2) {
-      return this.field464[var1 * 64 + var2];
+   final int method367(int var1, int var2) {
+      return this.field458[var2 + var1 * 64];
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Ljf;B)V",
-      garbageValue = "-3"
+      signature = "(IIIZIZI)V",
+      garbageValue = "-137050603"
    )
-   public static void method409(IndexDataBase var0) {
-      Enum.EnumDefinition_indexCache = var0;
-   }
+   static void method366(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
+      if(var0 < var1) {
+         int var6 = (var0 + var1) / 2;
+         int var7 = var0;
+         World var8 = class171.worldList[var6];
+         class171.worldList[var6] = class171.worldList[var1];
+         class171.worldList[var1] = var8;
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "53"
-   )
-   static final void method408() {
-      if(!class132.Viewport_false0) {
-         int var0 = Region.pitchSin;
-         int var1 = Region.pitchCos;
-         int var2 = Region.yawSin;
-         int var3 = Region.yawCos;
-         byte var4 = 50;
-         short var5 = 3500;
-         int var6 = (class132.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var7 = (class132.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
-         int var8 = (class132.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var9 = (class132.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
-         int var10 = Graphics3D.method2779(var7, var4, var1, var0);
-         int var11 = Graphics3D.method2803(var7, var4, var1, var0);
-         var7 = var10;
-         var10 = Graphics3D.method2779(var9, var5, var1, var0);
-         int var12 = Graphics3D.method2803(var9, var5, var1, var0);
-         var9 = var10;
-         var10 = Graphics3D.method2800(var6, var11, var3, var2);
-         var11 = Graphics3D.method2812(var6, var11, var3, var2);
-         var6 = var10;
-         var10 = Graphics3D.method2800(var8, var12, var3, var2);
-         var12 = Graphics3D.method2812(var8, var12, var3, var2);
-         class132.field1919 = (var6 + var10) / 2;
-         class132.field1923 = (var7 + var9) / 2;
-         class132.field1924 = (var11 + var12) / 2;
-         class132.field1925 = (var10 - var6) / 2;
-         class37.field502 = (var9 - var7) / 2;
-         Resampler.field1629 = (var12 - var11) / 2;
-         class20.field336 = Math.abs(class132.field1925);
-         class132.field1926 = Math.abs(class37.field502);
-         IndexStoreActionHandler.field3399 = Math.abs(Resampler.field1629);
+         for(int var9 = var0; var9 < var1; ++var9) {
+            if(class322.method5750(class171.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
+               World var10 = class171.worldList[var9];
+               class171.worldList[var9] = class171.worldList[var7];
+               class171.worldList[var7++] = var10;
+            }
+         }
+
+         class171.worldList[var1] = class171.worldList[var7];
+         class171.worldList[var7] = var8;
+         method366(var0, var7 - 1, var2, var3, var4, var5);
+         method366(var7 + 1, var1, var2, var3, var4, var5);
       }
+
+   }
+
+   @ObfuscatedName("ii")
+   @ObfuscatedSignature(
+      signature = "([Liz;Liz;ZB)V",
+      garbageValue = "103"
+   )
+   static void method372(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      class45.method680(var0, var1.id, var3, var4, var2);
+      if(var1.children != null) {
+         class45.method680(var1.children, var1.id, var3, var4, var2);
+      }
+
+      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
+      if(var5 != null) {
+         PendingSpawn.method1698(var5.id, var3, var4, var2);
+      }
+
+      if(var1.contentType == 1337) {
+         ;
+      }
+
    }
 }

@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.agilityplugin;
 
 import java.awt.Color;
+import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
@@ -33,10 +34,12 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
 public class AgilityOverlay extends Overlay
@@ -62,6 +65,7 @@ public class AgilityOverlay extends Overlay
 	{
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
+		final Tile markOfGrace = plugin.getMarkOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
 			if (tile.getPlane() == client.getPlane()
@@ -70,7 +74,7 @@ public class AgilityOverlay extends Overlay
 				Area objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
-					Color configColor = config.getOverlayColor();
+					Color configColor = markOfGrace != null ? RED : config.getOverlayColor();
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 					{
 						graphics.setColor(configColor.darker());
@@ -86,6 +90,15 @@ public class AgilityOverlay extends Overlay
 			}
 
 		});
+
+		if (markOfGrace != null && config.highlightMarks())
+		{
+			if (markOfGrace.getPlane() == client.getPlane() && markOfGrace.getItemLayer() != null
+				&& markOfGrace.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			{
+				OverlayUtil.renderTileOverlay(graphics, markOfGrace.getItemLayer(), "Mark of Grace", config.getMarkColor());
+			}
+		}
 
 		return null;
 	}

@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
-*  Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +71,7 @@ class MotherlodeRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showRocks())
+		if (!config.showRocks() || !plugin.isInMlm())
 		{
 			return null;
 		}
@@ -90,7 +91,11 @@ class MotherlodeRocksOverlay extends Overlay
 			LocalPoint location = vein.getLocalLocation();
 			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
-				renderVein(graphics, vein);
+				// Only draw veins on the same level
+				if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
+				{
+					renderVein(graphics, vein);
+				}
 			}
 		}
 

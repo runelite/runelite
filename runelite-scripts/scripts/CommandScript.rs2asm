@@ -1,0 +1,295 @@
+.id                 73
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      4
+.string_var_count   0
+   load_int               10616876
+   widget_get_hidden_widget
+   load_int               1
+   if_icmpeq              LABEL9
+   load_int               10616877
+   widget_get_hidden_widget
+   load_int               1
+   if_icmpeq              LABEL9
+   jump                   LABEL10
+LABEL9:
+   return                
+LABEL10:
+   get_varc               203
+   load_int               0
+   if_icmpeq              LABEL22
+   get_varc               203
+   load_int               -1
+   if_icmpeq              LABEL22
+   load_int               -1
+   load_int               162
+   invoke                 1701
+   load_int               0
+   if_icmpeq              LABEL22
+   jump                   LABEL23
+LABEL22:
+   return                
+LABEL23:
+   get_varc_string        1
+   string_length         
+   istore                 2
+   load_int               0
+   istore                 3
+   get_rights            
+   load_int               0
+   if_icmpgt              LABEL32
+   jump                   LABEL34
+LABEL32:
+   load_int               1
+   istore                 3
+LABEL34:
+   iload                  3
+   load_int               1
+   if_icmpeq              LABEL38
+   jump                   LABEL49
+LABEL38:
+   load_string            "`"
+   iload                  1
+   string_indexof        
+   load_int               -1
+   if_icmpne              LABEL44
+   jump                   LABEL49
+LABEL44:
+   iload                  2
+   load_int               0
+   if_icmpeq              LABEL48
+   jump                   LABEL49
+LABEL48:
+   return                
+LABEL49:
+   iload                  0
+   load_int               84
+   if_icmpeq              LABEL53
+   jump                   LABEL159
+LABEL53:
+   invoke                 1984
+   iload                  2
+   load_int               0
+   if_icmpgt              LABEL58
+   jump                   LABEL158
+LABEL58:
+   get_varc_string        1
+   load_string            "/"
+   load_int               0
+   string_indexof_from   
+   load_int               0
+   if_icmpeq              LABEL65
+   jump                   LABEL92
+LABEL65:
+   get_clanchatcount     
+   load_int               0
+   if_icmpgt              LABEL69
+   jump                   LABEL88
+LABEL69:
+   iload                  2
+   load_int               1
+   if_icmple              LABEL73
+   jump                   LABEL74
+LABEL73:
+   return                
+LABEL74:
+   get_varbit             4394
+   load_int               1
+   if_icmpeq              LABEL78
+   jump                   LABEL84
+LABEL78:
+   get_clanchatcount     
+   load_int               0
+   if_icmpgt              LABEL82
+   jump                   LABEL83
+LABEL82:
+   part_clanchat         
+LABEL83:
+   jump                   LABEL87
+LABEL84:
+   get_varc_string        1
+   load_int               2
+   invoke                 96
+LABEL87:
+   jump                   LABEL91
+LABEL88:
+   get_varc_string        1
+   load_int               0
+   invoke                 96
+LABEL91:
+   jump                   LABEL154
+LABEL92:
+   get_varc_string        1
+   load_string            "::"
+   load_int               0
+   string_indexof_from   
+   load_int               0
+   if_icmpeq              LABEL99
+   jump                   LABEL151
+LABEL99:
+   iload                  2
+   load_int               2
+   if_icmpgt              LABEL103
+   jump                   LABEL147
+LABEL103:
+   get_varc_string        1
+   load_string            "::toggleroof"
+   load_int               0
+   string_indexof_from   
+   load_int               0
+   if_icmpeq              LABEL110
+   jump                   LABEL124
+LABEL110:
+   get_hideroofs         
+   load_int               1
+   if_icmpeq              LABEL114
+   jump                   LABEL119
+LABEL114:
+   load_int               0
+   set_hideroofs         
+   load_string            "Roofs will only be removed selectively."
+   send_game_message     
+   jump                   LABEL123
+LABEL119:
+   load_int               1
+   set_hideroofs         
+   load_string            "Roofs are now all hidden."
+   send_game_message     
+LABEL123:
+   jump                   LABEL146
+LABEL124:
+   get_varc_string        1
+   load_string            "::bank"
+   load_int               0
+   string_indexof_from   
+   load_int               0
+   if_icmpeq              LABEL131
+   load_string            "runeliteCommand" ; load callback name
+   runelite_callback                        ; invoke callback
+   jump                   LABEL135
+LABEL131:
+   load_string            "Hey, everyone, I just tried to do something very silly!"
+   load_int               0
+   invoke                 96
+   jump                   LABEL146
+LABEL135:
+   get_varc_string        1
+   invoke                 224
+   put_varc_string        1
+   get_varc_string        1
+   string_length         
+   istore                 2
+   get_varc_string        1
+   load_int               2
+   iload                  2
+   string_substring      
+   run_command           
+LABEL146:
+   jump                   LABEL150
+LABEL147:
+   get_varc_string        1
+   load_int               0
+   invoke                 96
+LABEL150:
+   jump                   LABEL154
+LABEL151:
+   get_varc_string        1
+   load_int               0
+   invoke                 96
+LABEL154:
+   get_varc_string        1
+   invoke                 77
+   load_string            ""
+   put_varc_string        1
+LABEL158:
+   jump                   LABEL227
+LABEL159:
+   iload                  0
+   load_int               104
+   if_icmpeq              LABEL163
+   jump                   LABEL169
+LABEL163:
+   iload                  3
+   load_int               1
+   if_icmpeq              LABEL167
+   jump                   LABEL168
+LABEL167:
+   invoke                 75
+LABEL168:
+   jump                   LABEL227
+LABEL169:
+   iload                  0
+   load_int               105
+   if_icmpeq              LABEL173
+   jump                   LABEL179
+LABEL173:
+   iload                  3
+   load_int               1
+   if_icmpeq              LABEL177
+   jump                   LABEL178
+LABEL177:
+   invoke                 76
+LABEL178:
+   jump                   LABEL227
+LABEL179:
+   iload                  0
+   load_int               80
+   if_icmpeq              LABEL183
+   jump                   LABEL221
+LABEL183:
+   get_varc_string       
+   string_length         
+   load_int               0
+   if_icmpgt              LABEL188
+   jump                   LABEL208
+LABEL188:
+   get_varc_string       
+   is_friend             
+   load_int               1
+   if_icmpeq              LABEL193
+   jump                   LABEL196
+LABEL193:
+   get_varc_string       
+   invoke                 107
+   return                
+LABEL196:
+   get_varc               60
+   get_gamecycle         
+   if_icmpgt              LABEL200
+   jump                   LABEL201
+LABEL200:
+   return                
+LABEL201:
+   get_gamecycle         
+   load_int               50
+   iadd                  
+   put_varc               60
+   load_string            "That player was not found on your Friends list."
+   send_game_message     
+   return                
+LABEL208:
+   get_varc               60
+   get_gamecycle         
+   if_icmpgt              LABEL212
+   jump                   LABEL213
+LABEL212:
+   return                
+LABEL213:
+   get_gamecycle         
+   load_int               50
+   iadd                  
+   put_varc               60
+   load_string            "You haven't received any messages to which you can reply."
+   send_game_message     
+   return                
+   jump                   LABEL227
+LABEL221:
+   get_varc_string        1
+   load_int               0
+   iload                  0
+   iload                  1
+   invoke                 74
+   put_varc_string        1
+LABEL227:
+   invoke                 223
+   return                

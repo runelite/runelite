@@ -34,7 +34,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -67,12 +67,8 @@ public class NpcClickboxOverlay extends Overlay
 
 		for (NPC npc : plugin.getTaggedNpcs())
 		{
-			NPCComposition composition = plugin.getComposition(npc);
-			if (composition == null || composition.getName() == null)
-				continue;
-
-			String name = composition.getName().replace('\u00A0', ' ');
-			renderNpcOverlay(graphics, npc, name, config.getTagColor());
+			String npcName = npc.getName();
+			renderNpcOverlay(graphics, npc, npcName, config.getTagColor());
 		}
 
 		return null;
@@ -80,21 +76,43 @@ public class NpcClickboxOverlay extends Overlay
 
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
 	{
-		Polygon objectClickbox = actor.getConvexHull();
-		if (objectClickbox != null)
+		switch (config.renderStyle())
 		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(objectClickbox);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-			graphics.fill(objectClickbox);
+			case TILE:
+				Polygon objectTile = actor.getCanvasTilePoly();
+
+				if (objectTile != null)
+				{
+					graphics.setColor(color);
+					graphics.setStroke(new BasicStroke(2));
+					graphics.draw(objectTile);
+					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+					graphics.fill(objectTile);
+				}
+				break;
+
+			case HULL:
+				Polygon objectClickbox = actor.getConvexHull();
+
+				if (objectClickbox != null)
+				{
+					graphics.setColor(color);
+					graphics.setStroke(new BasicStroke(2));
+					graphics.draw(objectClickbox);
+					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+					graphics.fill(objectClickbox);
+				}
+				break;
 		}
 
-		net.runelite.api.Point textLocation = actor.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
-
-		if (textLocation != null)
+		if (config.drawNames())
 		{
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			Point textLocation = actor.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
+
+			if (textLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			}
 		}
 	}
 }

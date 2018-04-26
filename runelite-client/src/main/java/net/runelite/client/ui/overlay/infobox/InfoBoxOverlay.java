@@ -34,6 +34,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -45,18 +46,21 @@ public class InfoBoxOverlay extends Overlay
 {
 	private static final int BOXSIZE = 35;
 	private static final int SEPARATOR = 2;
+	private static final int TOTAL_BOXSIZE = BOXSIZE + SEPARATOR;
 
 	private final InfoBoxManager infoboxManager;
 	private final TooltipManager tooltipManager;
 	private final Provider<Client> clientProvider;
+	private final RuneLiteConfig config;
 
 	@Inject
-	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider)
+	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider, RuneLiteConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.clientProvider = clientProvider;
+		this.config = config;
 	}
 
 	@Override
@@ -69,8 +73,24 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
-		int width = infoBoxes.size() * (BOXSIZE + SEPARATOR);
+		int wrap = config.infoBoxWrap();
+		int infoBoxCount = infoBoxes.size();
+		boolean vertical = config.infoBoxVertical();
+
+		int width, height;
+		if (!vertical)
+		{
+			width = getWidth(infoBoxCount, wrap);
+			height = getHeight(infoBoxCount, wrap);
+		}
+		else
+		{
+			width = getHeight(infoBoxCount, wrap);
+			height = getWidth(infoBoxCount, wrap);
+		}
+
 		int x = 0;
+		int y = 0;
 
 		for (InfoBox box : infoBoxes)
 		{
@@ -84,14 +104,14 @@ public class InfoBoxOverlay extends Overlay
 			infoBoxComponent.setColor(box.getTextColor());
 			infoBoxComponent.setImage(box.getImage());
 			infoBoxComponent.setText(box.getText());
-			infoBoxComponent.setPosition(new Point(x, 0));
+			infoBoxComponent.setPosition(new Point(x, y));
 			final Dimension infoBoxBounds = infoBoxComponent.render(graphics);
 
 			if (!Strings.isNullOrEmpty(box.getTooltip()))
 			{
 				final Rectangle intersectionRectangle = new Rectangle(infoBoxBounds);
 				intersectionRectangle.setLocation(getBounds().getLocation());
-				intersectionRectangle.translate(x, 0);
+				intersectionRectangle.translate(x, y);
 				final Point transformed = OverlayUtil.transformPosition(getPosition(), intersectionRectangle.getSize());
 				intersectionRectangle.translate(transformed.x, transformed.y);
 
@@ -104,9 +124,45 @@ public class InfoBoxOverlay extends Overlay
 				}
 			}
 
-			x += BOXSIZE + SEPARATOR;
+			// Determine which axis to reset/increase
+			if (vertical)
+			{
+				// Reset y if newbox reaches height limit
+				if (y + TOTAL_BOXSIZE < height)
+				{
+					y += TOTAL_BOXSIZE;
+				}
+				else
+				{
+					y = 0;
+					x += TOTAL_BOXSIZE;
+				}
+			}
+			else
+			{
+				// Reset x if newbox reaches width limit
+				if (x + TOTAL_BOXSIZE < width)
+				{
+					x += TOTAL_BOXSIZE;
+				}
+				else
+				{
+					x = 0;
+					y += TOTAL_BOXSIZE;
+				}
+			}
 		}
 
-		return new Dimension(width, BOXSIZE);
+		return new Dimension(width, height);
+	}
+
+	private static int getHeight(int infoBoxCount, int maxRow)
+	{
+		return maxRow == 0 ? TOTAL_BOXSIZE : (int) Math.ceil((double)infoBoxCount / maxRow) * TOTAL_BOXSIZE;
+	}
+
+	private static int getWidth(int infoBoxCount, int maxRow)
+	{
+		return maxRow == 0 ? infoBoxCount * TOTAL_BOXSIZE : (maxRow > infoBoxCount ? infoBoxCount : maxRow) * TOTAL_BOXSIZE;
 	}
 }

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +31,16 @@ import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -60,6 +64,9 @@ public class FishingPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private QueryRunner queryRunner;
@@ -160,6 +167,10 @@ public class FishingPlugin extends Plugin
 		if (config.showInfernalEel())
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
+		}	
+		if (config.showSacredEel())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SACRED_EEL.getIds()));
 		}
 		if (config.showKarambwanji())
 		{
@@ -174,8 +185,13 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void checkSpots(GameTick event)
 	{
-		NPCQuery query = new NPCQuery()
+		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
+
+		final NPCQuery query = new NPCQuery()
 			.idEquals(Ints.toArray(spotIds));
-		fishingSpots = queryRunner.runQuery(query);
+		NPC[] spots = queryRunner.runQuery(query);
+		// -1 to make closer things draw last (on top of farther things)
+		Arrays.sort(spots, Comparator.comparing(npc -> -1 * npc.getLocalLocation().distanceTo(cameraPoint)));
+		fishingSpots = spots;
 	}
 }

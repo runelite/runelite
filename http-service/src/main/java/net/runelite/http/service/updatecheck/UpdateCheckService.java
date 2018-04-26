@@ -24,18 +24,17 @@
  */
 package net.runelite.http.service.updatecheck;
 
-import com.google.common.base.Suppliers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
@@ -43,6 +42,7 @@ import net.runelite.http.service.worlds.WorldsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,6 +52,8 @@ public class UpdateCheckService
 {
 	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckService.class);
 
+	private static final Duration TIMEOUT = Duration.ofSeconds(5);
+
 	private static final int PORT = 43594;
 	private static final byte HANDSHAKE_TYPE = 15;
 
@@ -59,7 +61,7 @@ public class UpdateCheckService
 	private static final int RESPONSE_OUTDATED = 6;
 
 	private final WorldsService worldsService;
-	private final Supplier<Boolean> updateAvailable = Suppliers.memoizeWithExpiration(this::checkUpdate, 1, TimeUnit.MINUTES);
+	private boolean updateAvailable;
 
 	@Autowired
 	public UpdateCheckService(WorldsService worldsService)
@@ -70,7 +72,13 @@ public class UpdateCheckService
 	@RequestMapping
 	public Boolean check()
 	{
-		return updateAvailable.get();
+		return updateAvailable;
+	}
+
+	@Scheduled(fixedDelay = 60_000)
+	public void scheduledCheck()
+	{
+		updateAvailable = checkUpdate();
 	}
 
 	private boolean checkUpdate()
@@ -93,8 +101,11 @@ public class UpdateCheckService
 			return false;
 		}
 
-		try (Socket socket = new Socket(address, PORT))
+		try (Socket socket = new Socket())
 		{
+			socket.setSoTimeout((int) TIMEOUT.toMillis());
+			socket.connect(new InetSocketAddress(address, PORT), (int) TIMEOUT.toMillis());
+
 			ByteBuffer buffer = ByteBuffer.allocate(5);
 			buffer.put(HANDSHAKE_TYPE);
 			buffer.putInt(RuneLiteAPI.getRsVersion());

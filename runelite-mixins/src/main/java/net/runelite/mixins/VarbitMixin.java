@@ -55,6 +55,21 @@ public abstract class VarbitMixin implements RSClient
 	public int getSetting(Varbits varbit)
 	{
 		int varbitId = varbit.getId();
+		return getVarbitValue(varbitId);
+	}
+
+	@Inject
+	@Override
+	public void setSetting(Varbits varbit, int value)
+	{
+		int varbitId = varbit.getId();
+		setVarbitValue(varbitId, value);
+	}
+
+	@Inject
+	@Override
+	public int getVarbitValue(int varbitId)
+	{
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
 		{
@@ -70,5 +85,25 @@ public abstract class VarbitMixin implements RSClient
 		int msb = v.getMostSignificantBit();
 		int mask = (1 << ((msb - lsb) + 1)) - 1;
 		return (value >> lsb) & mask;
+	}
+
+	@Inject
+	@Override
+	public void setVarbitValue(int varbitId, int value)
+	{
+		RSVarbit v = varbitCache.getIfPresent(varbitId);
+		if (v == null)
+		{
+			client.getVarbit(varbitId); // load varbit into cache
+			RSNodeCache varbits = client.getVarbitCache();
+			v = (RSVarbit) varbits.get(varbitId); // get from cache
+			varbitCache.put(varbitId, v);
+		}
+
+		int[] varps = getVarps();
+		int lsb = v.getLeastSignificantBit();
+		int msb = v.getMostSignificantBit();
+		int mask = (1 << ((msb - lsb) + 1)) - 1;
+		varps[v.getIndex()] = (varps[v.getIndex()] & ~(mask << lsb)) | ((value & mask) << lsb);
 	}
 }

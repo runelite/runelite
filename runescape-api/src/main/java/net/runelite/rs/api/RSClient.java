@@ -116,6 +116,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getMouseCurrentButton();
 
+	@Import("selectedRegionTileX")
+	int getSelectedRegionTileX();
+
+	@Import("selectedRegionTileY")
+	int getSelectedRegionTileY();
+
 	@Import("draggingWidget")
 	@Override
 	boolean isDraggingWidget();
@@ -595,6 +601,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("hintArrowY")
 	int getHintArrowY();
 
+	@Import("hintArrowOffsetX")
+	void setHintArrowOffsetX(int value);
+
+	@Import("hintArrowOffsetY")
+	void setHintArrowOffsetY(int value);
+
 	@Import("hintArrowNpcTargetIdx")
 	void setHintArrowNpcTargetIdx(int value);
 
@@ -606,4 +618,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("hintArrowPlayerTargetIdx")
 	int getHintArrowPlayerTargetIdx();
+
+	@Import("isDynamicRegion")
+	@Override
+	boolean isInInstancedRegion();
 }
