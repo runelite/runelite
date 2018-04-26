@@ -477,7 +477,7 @@ public abstract class NameableContainer {
                }
 
                var17 = var0.getUSmart();
-               var2.method1703(var22, var9, var8, var20, Client.gameCycle, var17);
+               var2.applyActorHitsplat(var22, var9, var8, var20, Client.gameCycle, var17);
             }
          }
 

@@ -180,6 +180,22 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(mapSquaresBtn);
 
+		final JButton validMovementBtn = new JButton("Valid Moves");
+		validMovementBtn.addActionListener(e ->
+		{
+			highlightButton(validMovementBtn);
+			plugin.toggleValidMovement();
+		});
+		container.add(validMovementBtn);
+
+		final JButton lineOfSightBtn = new JButton("Line of Sight");
+		lineOfSightBtn.addActionListener(e ->
+		{
+			highlightButton(lineOfSightBtn);
+			plugin.toggleLineOfSight();
+		});
+		container.add(lineOfSightBtn);
+
 		return container;
 	}
 

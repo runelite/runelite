@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.demonicgorilla;
 
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import lombok.Getter;
+import net.runelite.api.Player;
 
-public interface Tile
+public class PendingGorillaAttack
 {
-	/**
-	 * Get the decorative object for this tile.
-	 *
-	 * @return
-	 */
-	DecorativeObject getDecorativeObject();
+	@Getter
+	private DemonicGorilla attacker;
 
-	GameObject[] getGameObjects();
+	@Getter
+	private DemonicGorilla.AttackStyle attackStyle;
 
-	ItemLayer getItemLayer();
+	@Getter
+	private Player target;
 
-	GroundObject getGroundObject();
+	@Getter
+	private int finishesOnTick;
 
-	WallObject getWallObject();
-
-	SceneTilePaint getSceneTilePaint();
-
-	SceneTileModel getSceneTileModel();
-
-	WorldPoint getWorldLocation();
-
-	Point getRegionLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getPlane();
-
-	boolean hasLineOfSightTo(Tile other);
+	public PendingGorillaAttack(DemonicGorilla attacker, DemonicGorilla.AttackStyle attackStyle,
+								Player target, int finishesOnTick)
+	{
+		this.attacker = attacker;
+		this.attackStyle = attackStyle;
+		this.target = target;
+		this.finishesOnTick = finishesOnTick;
+	}
 }
