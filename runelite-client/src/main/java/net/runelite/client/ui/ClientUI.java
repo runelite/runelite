@@ -51,12 +51,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+
+import joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.RuneLiteConfig;
@@ -116,6 +120,8 @@ public class ClientUI
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
+
+	private boolean justLoggedIn = false;
 
 	@Inject
 	private ClientUI(
@@ -279,6 +285,39 @@ public class ClientUI
 
 			pluginToolbar.removeComponent(event.getButton());
 		});
+	}
+
+	@Subscribe
+	void onTick(GameTick tick)
+	{
+		// getLocalPlayer().getName() is only populated a tick after login
+		if (justLoggedIn)
+		{
+			String loggedInUsername = ((Client) this.client).getLocalPlayer().getName();
+			if (!Strings.isNullOrEmpty(loggedInUsername))
+			{
+				frame.setTitle(properties.getTitle() + " (" + loggedInUsername + ")");
+			}
+			justLoggedIn = false;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOGGED_IN:
+				justLoggedIn = true;
+				break;
+			case HOPPING:
+				// no op
+				break;
+			default:
+				frame.setTitle(properties.getTitle());
+				break;
+		}
+
 	}
 
 	/**
