@@ -225,6 +225,10 @@ public class ModelViewer
 
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
 		long last = 0;
 
 		Camera camera = new Camera();
@@ -297,6 +301,11 @@ public class ModelViewer
 			nB.y = -nB.y;
 			nC.y = -nC.y;
 
+			// and z
+			nA.z = -nA.z;
+			nB.z = -nB.z;
+			nC.z = -nC.z;
+
 			int vertexAx = md.vertexPositionsX[vertexA];
 			int vertexAy = md.vertexPositionsY[vertexA];
 			int vertexAz = md.vertexPositionsZ[vertexA];
@@ -310,6 +319,12 @@ public class ModelViewer
 			int vertexCz = md.vertexPositionsZ[vertexC];
 
 			short textureId = md.faceTextures != null ? md.faceTextures[i] : -1;
+			int alpha = md.faceAlphas != null ? (md.faceAlphas[i] & 0xFF) : 255;
+			if (alpha == 0)
+			{
+				alpha = 255;
+			}
+
 			Color color;
 
 			float[] u = null;
@@ -359,34 +374,32 @@ public class ModelViewer
 			float rf = (float) color.getRed() / 255f;
 			float gf = (float) color.getGreen() / 255f;
 			float bf = (float) color.getBlue() / 255f;
+			float af = (float) alpha / 255f;
 
 			GL11.glBegin(GL11.GL_TRIANGLES);
 
-			GL11.glColor3f(rf, gf, bf);
+			GL11.glColor4f(rf, gf, bf, af);
 
-			// With GL11.GL_CCW we have to draw A -> C -> B when
-			// inverting y instead of A -> B -> C, or else with cull
-			// face will cull the wrong side
 			GL11.glNormal3f(nA.x, nA.y, nA.z);
 			if (textureId != -1)
 			{
 				GL11.glTexCoord2f(u[0], v[0]);
 			}
-			GL11.glVertex3i(vertexAx, -vertexAy, vertexAz);
-
-			GL11.glNormal3f(nC.x, nC.y, nC.z);
-			if (textureId != -1)
-			{
-				GL11.glTexCoord2f(u[2], v[2]);
-			}
-			GL11.glVertex3i(vertexCx, -vertexCy, vertexCz);
+			GL11.glVertex3i(vertexAx, -vertexAy, -vertexAz);
 
 			GL11.glNormal3f(nB.x, nB.y, nB.z);
 			if (textureId != -1)
 			{
 				GL11.glTexCoord2f(u[1], v[1]);
 			}
-			GL11.glVertex3i(vertexBx, -vertexBy, vertexBz);
+			GL11.glVertex3i(vertexBx, -vertexBy, -vertexBz);
+
+			GL11.glNormal3f(nC.x, nC.y, nC.z);
+			if (textureId != -1)
+			{
+				GL11.glTexCoord2f(u[2], v[2]);
+			}
+			GL11.glVertex3i(vertexCx, -vertexCy, -vertexCz);
 
 			GL11.glEnd();
 
@@ -556,15 +569,19 @@ public class ModelViewer
 			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY) / HEIGHT_MOD;
 
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
 			// TILE_SCALE/2 to draw the object from the center of the tile it is on
-			GL11.glTranslatef(regionX * TILE_SCALE + (TILE_SCALE / 2), height, -regionY * TILE_SCALE - (TILE_SCALE / 2));
+			GL11.glTranslatef(regionX * TILE_SCALE + (TILE_SCALE / 2), height * (location.getPosition().getZ() + 1), -regionY * TILE_SCALE - (TILE_SCALE / 2));
 
 			for (int i = 0; i < object.getObjectModels().length; ++i)
 			{
+				if (object.getObjectTypes() != null && object.getObjectTypes()[i] != location.getType())
+				{
+					continue;
+				}
+
 				ModelDefinition md = ModelManager.getModel(object.getObjectModels()[i], object, location);
 
-				if (object.getObjectTypes() != null && object.getObjectTypes()[i] != location.getType())
+				if (md == null)
 				{
 					continue;
 				}
@@ -572,7 +589,7 @@ public class ModelViewer
 				drawModel(md, object.getRecolorToFind(), object.getRecolorToReplace());
 			}
 
-			GL11.glTranslatef(-regionX * TILE_SCALE - (TILE_SCALE / 2), -height, regionY * TILE_SCALE + (TILE_SCALE / 2));
+			GL11.glTranslatef(-regionX * TILE_SCALE - (TILE_SCALE / 2), -(height * (location.getPosition().getZ() + 1)), regionY * TILE_SCALE + (TILE_SCALE / 2));
 			GL11.glPopMatrix();
 		}
 	}

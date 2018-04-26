@@ -4,43 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bk")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("pz")
+   @ObfuscatedName("px")
    @ObfuscatedGetter(
-      intValue = -2113898473
+      intValue = 1044279445
    )
-   static int field755;
-   @ObfuscatedName("p")
-   static int[] field762;
-   @ObfuscatedName("er")
-   @ObfuscatedGetter(
-      intValue = 260466589
+   static int field742;
+   @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "[Llv;"
    )
-   static int field761;
-   @ObfuscatedName("ja")
-   @ObfuscatedGetter(
-      intValue = -1304361363
+   static SpritePixels[] field744;
+   @ObfuscatedName("ft")
+   @ObfuscatedSignature(
+      signature = "[Llv;"
    )
-   @Export("menuY")
-   static int menuY;
-   @ObfuscatedName("o")
+   @Export("crossSprites")
+   static SpritePixels[] crossSprites;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lcr;"
    )
    @Export("invokedFromScript")
    Script invokedFromScript;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1003403421
+      intValue = 1027512821
    )
    @Export("invokedFromPc")
    int invokedFromPc;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @Export("savedLocalInts")
    int[] savedLocalInts;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @Export("savedLocalStrings")
    String[] savedLocalStrings;
 
@@ -48,66 +46,78 @@ public class ScriptState {
       this.invokedFromPc = -1;
    }
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Lbg;Lbg;IZI)I",
-      garbageValue = "570182430"
-   )
-   static int method1110(World var0, World var1, int var2, boolean var3) {
-      if(var2 == 1) {
-         int var4 = var0.playerCount;
-         int var5 = var1.playerCount;
-         if(!var3) {
-            if(var4 == -1) {
-               var4 = 2001;
+   @ObfuscatedName("e")
+   public static String method1132(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(var0 % 37L == 0L) {
+            return null;
+         } else {
+            int var2 = 0;
+
+            for(long var3 = var0; 0L != var3; var3 /= 37L) {
+               ++var2;
             }
 
-            if(var5 == -1) {
-               var5 = 2001;
+            StringBuilder var5 = new StringBuilder(var2);
+
+            while(var0 != 0L) {
+               long var6 = var0;
+               var0 /= 37L;
+               var5.append(class316.field3925[(int)(var6 - var0 * 37L)]);
             }
+
+            return var5.reverse().toString();
          }
-
-         return var4 - var5;
       } else {
-         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1686()?(var1.method1686()?0:1):(var1.method1686()?-1:0)):(var2 == 5?(var0.method1684()?(var1.method1684()?0:1):(var1.method1684()?-1:0)):(var2 == 6?(var0.method1685()?(var1.method1685()?0:1):(var1.method1685()?-1:0)):(var2 == 7?(var0.method1683()?(var1.method1683()?0:1):(var1.method1683()?-1:0)):var0.id - var1.id)))));
+         return null;
       }
    }
 
-   @ObfuscatedName("ee")
-   @ObfuscatedSignature(
-      signature = "(Ljn;Ljava/lang/String;I)V",
-      garbageValue = "-1408810217"
-   )
-   static void method1108(IndexData var0, String var1) {
-      class64 var2 = new class64(var0, var1);
-      Client.field871.add(var2);
-   }
-
-   @ObfuscatedName("hq")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1397694242"
+      garbageValue = "-652159623"
    )
-   static void method1109() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
-               }
-            }
-
-            --Client.menuOptionCount;
+   static void method1129() {
+      if(class90.username == null || class90.username.length() <= 0) {
+         if(Client.preferences.rememberedUsername != null) {
+            class90.username = Client.preferences.rememberedUsername;
+            class90.Login_isUsernameRemembered = true;
+         } else {
+            class90.Login_isUsernameRemembered = false;
          }
-      }
 
+      }
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lgg;IB)Ljava/lang/String;",
+      garbageValue = "-46"
+   )
+   public static String method1131(Buffer var0, int var1) {
+      try {
+         int var2 = var0.getUSmart();
+         if(var2 > var1) {
+            var2 = var1;
+         }
+
+         byte[] var3 = new byte[var2];
+         var0.offset += class313.huffman.decompress(var0.payload, var0.offset, var3, 0, var2);
+         String var4 = VarCString.getString(var3, 0, var2);
+         return var4;
+      } catch (Exception var6) {
+         return "Cabbage";
+      }
+   }
+
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1319799809"
+   )
+   static void method1130(int var0, int var1) {
+      WorldComparator.method73(class264.topContextMenuRow, var0, var1);
+      class264.topContextMenuRow = null;
    }
 }

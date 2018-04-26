@@ -4,35 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("de")
 @Implements("Resampler")
 public class Resampler {
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1844476667
+   @ObfuscatedName("po")
+   @ObfuscatedSignature(
+      signature = "Ldk;"
    )
-   static int field1629;
-   @ObfuscatedName("q")
-   static String[] field1627;
-   @ObfuscatedName("d")
+   @Export("soundSystem0")
+   static AbstractSoundSystem soundSystem0;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1205267741
+      longValue = -4286262569391723657L
+   )
+   static long field1592;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1585228139
    )
    @Export("storedSampleRateRatio")
    int storedSampleRateRatio;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1382949503
+      intValue = -97144149
    )
    @Export("playbackSampleRateRatio")
    int playbackSampleRateRatio;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @Export("resampleTable")
    int[][] resampleTable;
 
    public Resampler(int var1, int var2) {
       if(var2 != var1) {
-         int var3 = class36.method538(var1, var2);
+         int var3 = OwnWorldComparator.method1266(var1, var2);
          var1 /= var3;
          var2 /= var3;
          this.storedSampleRateRatio = var1;
@@ -41,36 +45,36 @@ public class Resampler {
 
          for(int var4 = 0; var4 < var1; ++var4) {
             int[] var5 = this.resampleTable[var4];
-            double var6 = 6.0D + (double)var4 / (double)var1;
+            double var6 = (double)var4 / (double)var1 + 6.0D;
             int var8 = (int)Math.floor(var6 - 7.0D + 1.0D);
             if(var8 < 0) {
                var8 = 0;
             }
 
-            int var9 = (int)Math.ceil(var6 + 7.0D);
+            int var9 = (int)Math.ceil(7.0D + var6);
             if(var9 > 14) {
                var9 = 14;
             }
 
             for(double var10 = (double)var2 / (double)var1; var8 < var9; ++var8) {
-               double var12 = 3.141592653589793D * ((double)var8 - var6);
+               double var12 = ((double)var8 - var6) * 3.141592653589793D;
                double var14 = var10;
                if(var12 < -1.0E-4D || var12 > 1.0E-4D) {
                   var14 = var10 * (Math.sin(var12) / var12);
                }
 
                var14 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var8 - var6));
-               var5[var8] = (int)Math.floor(65536.0D * var14 + 0.5D);
+               var5[var8] = (int)Math.floor(0.5D + 65536.0D * var14);
             }
          }
 
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "([BB)[B",
-      garbageValue = "85"
+      signature = "([BI)[B",
+      garbageValue = "-1690535032"
    )
    @Export("resampleIfNecessary")
    byte[] resampleIfNecessary(byte[] var1) {
@@ -113,29 +117,72 @@ public class Resampler {
       return var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1986061764"
+      signature = "(IB)I",
+      garbageValue = "-126"
    )
-   int method2302(int var1) {
+   int method2392(int var1) {
       if(this.resampleTable != null) {
-         var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio);
+         var1 = (int)((long)var1 * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio);
       }
 
       return var1;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "9"
+      signature = "(II)I",
+      garbageValue = "1392261444"
    )
-   int method2303(int var1) {
+   int method2388(int var1) {
       if(this.resampleTable != null) {
-         var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio) + 6;
+         var1 = (int)((long)var1 * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio) + 6;
       }
 
       return var1;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IIIB)Llv;",
+      garbageValue = "0"
+   )
+   static SpritePixels method2387(int var0, int var1, int var2) {
+      return (SpritePixels)WorldMapRegion.field472.method4019(class167.method3334(var0, var1, var2));
+   }
+
+   @ObfuscatedName("b")
+   public static String method2393(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(0L == var0 % 37L) {
+            return null;
+         } else {
+            int var2 = 0;
+
+            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
+               ++var2;
+            }
+
+            StringBuilder var5;
+            char var8;
+            for(var5 = new StringBuilder(var2); 0L != var0; var5.append(var8)) {
+               long var6 = var0;
+               var0 /= 37L;
+               var8 = class316.field3925[(int)(var6 - 37L * var0)];
+               if(var8 == '_') {
+                  int var9 = var5.length() - 1;
+                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+                  var8 = 160;
+               }
+            }
+
+            var5.reverse();
+            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+            return var5.toString();
+         }
+      } else {
+         return null;
+      }
    }
 }

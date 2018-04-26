@@ -107,6 +107,8 @@ public interface Client extends GameEngine
 
 	int getMouseCurrentButton();
 
+	Tile getSelectedRegionTile();
+
 	boolean isDraggingWidget();
 
 	Widget getDraggedWidget();
@@ -389,4 +391,26 @@ public interface Client extends GameEngine
 	void setInterpolateObjectAnimations(boolean interpolate);
 
 	boolean isInInstancedRegion();
+
+	void setIsHidingEntities(boolean state);
+
+	void setPlayersHidden(boolean state);
+
+	void setPlayersHidden2D(boolean state);
+
+	void setFriendsHidden(boolean state);
+
+	void setClanMatesHidden(boolean state);
+
+	void setLocalPlayerHidden(boolean state);
+
+	void setLocalPlayerHidden2D(boolean state);
+
+	void setNPCsHidden(boolean state);
+
+	void setNPCsHidden2D(boolean state);
+
+	void setAttackersHidden(boolean state);
+
+	void setProjectilesHidden(boolean state);
 }

@@ -3,106 +3,139 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hf")
+@ObfuscatedName("hd")
 public class class229 {
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static IndexDataBase field2697;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static IndexDataBase field2700;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static IndexDataBase field2696;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 675148937
+   )
+   public static int field2694;
+   @ObfuscatedName("y")
+   @Export("colorsToReplace")
+   public static short[][] colorsToReplace;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Lif;"
    )
-   public static IndexDataBase field2688;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Ljf;"
-   )
-   public static IndexDataBase field2691;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Ljf;"
-   )
-   public static IndexDataBase field2689;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lhw;"
-   )
-   public static class230 field2690;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -80246259
-   )
-   public static int field2687;
-   @ObfuscatedName("m")
-   @Export("IndexStoreActionHandler_thread")
-   static Thread IndexStoreActionHandler_thread;
-   @ObfuscatedName("y")
-   public static boolean field2692;
+   static Track1 field2698;
 
    static {
-      field2687 = 0;
+      field2694 = 0;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgc;IIIIIII)V",
-      garbageValue = "-400659516"
+      signature = "(II)Lkk;",
+      garbageValue = "1124811013"
    )
-   @Export("loadTerrain")
-   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7;
-      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         class62.tileSettings[var1][var2][var3] = 0;
-
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               if(var1 == 0) {
-                  class62.tileHeights[0][var2][var3] = -ItemContainer.method1131(var2 + 932731 + var4, var5 + 556238 + var3) * 8;
-               } else {
-                  class62.tileHeights[var1][var2][var3] = class62.tileHeights[var1 - 1][var2][var3] - 240;
-               }
-               break;
-            }
-
-            if(var7 == 1) {
-               int var8 = var0.readUnsignedByte();
-               if(var8 == 1) {
-                  var8 = 0;
-               }
-
-               if(var1 == 0) {
-                  class62.tileHeights[0][var2][var3] = -var8 * 8;
-               } else {
-                  class62.tileHeights[var1][var2][var3] = class62.tileHeights[var1 - 1][var2][var3] - var8 * 8;
-               }
-               break;
-            }
-
-            if(var7 <= 49) {
-               class62.tileOverlayIds[var1][var2][var3] = var0.readByte();
-               class62.tileOverlayPath[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class62.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-            } else if(var7 <= 81) {
-               class62.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
-            } else {
-               class62.tileUnderlayIds[var1][var2][var3] = (byte)(var7 - 81);
-            }
-         }
+   @Export("getOverlayDefinition")
+   public static Overlay getOverlayDefinition(int var0) {
+      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               break;
-            }
+         byte[] var2 = Overlay.overlay_ref.getConfigData(4, var0);
+         var1 = new Overlay();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
+         }
 
-            if(var7 == 1) {
-               var0.readUnsignedByte();
-               break;
-            }
+         var1.post();
+         Overlay.overlays.put(var1, (long)var0);
+         return var1;
+      }
+   }
 
-            if(var7 <= 49) {
-               var0.readUnsignedByte();
-            }
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Lgg;Ljava/lang/String;I)I",
+      garbageValue = "1129424841"
+   )
+   public static int method4233(Buffer var0, String var1) {
+      int var2 = var0.offset;
+      int var4 = var1.length();
+      byte[] var5 = new byte[var4];
+
+      for(int var6 = 0; var6 < var4; ++var6) {
+         char var7 = var1.charAt(var6);
+         if(var7 > 0 && var7 < 128 || var7 >= 160 && var7 <= 255) {
+            var5[var6] = (byte)var7;
+         } else if(var7 == 8364) {
+            var5[var6] = -128;
+         } else if(var7 == 8218) {
+            var5[var6] = -126;
+         } else if(var7 == 402) {
+            var5[var6] = -125;
+         } else if(var7 == 8222) {
+            var5[var6] = -124;
+         } else if(var7 == 8230) {
+            var5[var6] = -123;
+         } else if(var7 == 8224) {
+            var5[var6] = -122;
+         } else if(var7 == 8225) {
+            var5[var6] = -121;
+         } else if(var7 == 710) {
+            var5[var6] = -120;
+         } else if(var7 == 8240) {
+            var5[var6] = -119;
+         } else if(var7 == 352) {
+            var5[var6] = -118;
+         } else if(var7 == 8249) {
+            var5[var6] = -117;
+         } else if(var7 == 338) {
+            var5[var6] = -116;
+         } else if(var7 == 381) {
+            var5[var6] = -114;
+         } else if(var7 == 8216) {
+            var5[var6] = -111;
+         } else if(var7 == 8217) {
+            var5[var6] = -110;
+         } else if(var7 == 8220) {
+            var5[var6] = -109;
+         } else if(var7 == 8221) {
+            var5[var6] = -108;
+         } else if(var7 == 8226) {
+            var5[var6] = -107;
+         } else if(var7 == 8211) {
+            var5[var6] = -106;
+         } else if(var7 == 8212) {
+            var5[var6] = -105;
+         } else if(var7 == 732) {
+            var5[var6] = -104;
+         } else if(var7 == 8482) {
+            var5[var6] = -103;
+         } else if(var7 == 353) {
+            var5[var6] = -102;
+         } else if(var7 == 8250) {
+            var5[var6] = -101;
+         } else if(var7 == 339) {
+            var5[var6] = -100;
+         } else if(var7 == 382) {
+            var5[var6] = -98;
+         } else if(var7 == 376) {
+            var5[var6] = -97;
+         } else {
+            var5[var6] = 63;
          }
       }
 
+      var0.putShortSmart(var5.length);
+      var0.offset += class313.huffman.compress(var5, 0, var5.length, var0.payload, var0.offset);
+      return var0.offset - var2;
    }
 }

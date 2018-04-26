@@ -1,40 +1,46 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("in")
 public class class236 extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("gt")
    @ObfuscatedGetter(
-      intValue = 1168007567
+      intValue = -720108327
    )
-   public final int field2773;
-   @ObfuscatedName("k")
+   static int field2783;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -2137087845
+      intValue = 1489685915
    )
-   public final int field2772;
-   @ObfuscatedName("t")
-   public final int[] field2771;
-   @ObfuscatedName("d")
-   public final int[] field2774;
+   public final int field2780;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -856704949
+   )
+   public final int field2782;
+   @ObfuscatedName("b")
+   public final int[] field2781;
+   @ObfuscatedName("z")
+   public final int[] field2779;
 
    class236(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2773 = var1;
-      this.field2772 = var2;
-      this.field2771 = var3;
-      this.field2774 = var4;
+      this.field2780 = var1;
+      this.field2782 = var2;
+      this.field2781 = var3;
+      this.field2779 = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIB)Z",
-      garbageValue = "-29"
+      garbageValue = "60"
    )
-   public boolean method4346(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2774.length) {
-         int var3 = this.field2774[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2771[var2]) {
+   public boolean method4466(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2779.length) {
+         int var3 = this.field2779[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2781[var2]) {
             return true;
          }
       }
@@ -42,49 +48,23 @@ public class class236 extends CacheableNode {
       return false;
    }
 
-   @ObfuscatedName("ih")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([Lin;II)V",
-      garbageValue = "1456180696"
+      signature = "(II)Leu;",
+      garbageValue = "-1905056126"
    )
-   static final void method4345(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null) {
-            if(var3.type == 0) {
-               if(var3.children != null) {
-                  method4345(var3.children, var1);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var4 != null) {
-                  DynamicObject.method2026(var4.id, var1);
-               }
-            }
-
-            ScriptEvent var5;
-            if(var1 == 0 && var3.onDialogAbortListener != null) {
-               var5 = new ScriptEvent();
-               var5.widget = var3;
-               var5.objs = var3.onDialogAbortListener;
-               AbstractSoundSystem.method2256(var5);
-            }
-
-            if(var1 == 1 && var3.onSubChangeListener != null) {
-               if(var3.index >= 0) {
-                  Widget var6 = class44.getWidget(var3.id);
-                  if(var6 == null || var6.children == null || var3.index >= var6.children.length || var3 != var6.children[var3.index]) {
-                     continue;
-                  }
-               }
-
-               var5 = new ScriptEvent();
-               var5.widget = var3;
-               var5.objs = var3.onSubChangeListener;
-               AbstractSoundSystem.method2256(var5);
-            }
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         var1 = Enum.method5042(Sequence.skel_ref, Sequence.skin_ref, var0, false);
+         if(var1 != null) {
+            Sequence.skeletons.put(var1, (long)var0);
          }
-      }
 
+         return var1;
+      }
    }
 }

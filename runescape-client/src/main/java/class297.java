@@ -2,76 +2,73 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kr")
+@ObfuscatedName("kl")
 public abstract class class297 implements Comparator {
-   @ObfuscatedName("i")
-   static byte[][][] field3831;
-   @ObfuscatedName("k")
-   Comparator field3832;
+   @ObfuscatedName("c")
+   static int[][] field3834;
+   @ObfuscatedName("e")
+   Comparator field3835;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;I)V",
-      garbageValue = "261828528"
+      garbageValue = "-1146777239"
    )
-   final void method5283(Comparator var1) {
-      if(this.field3832 == null) {
-         this.field3832 = var1;
-      } else if(this.field3832 instanceof class297) {
-         ((class297)this.field3832).method5283(var1);
+   final void method5340(Comparator var1) {
+      if(this.field3835 == null) {
+         this.field3835 = var1;
+      } else if(this.field3835 instanceof class297) {
+         ((class297)this.field3835).method5340(var1);
       }
 
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lku;Lku;B)I",
-      garbageValue = "74"
+      signature = "(Lkg;Lkg;I)I",
+      garbageValue = "-2009192937"
    )
-   protected final int method5282(Nameable var1, Nameable var2) {
-      return this.field3832 == null?0:this.field3832.compare(var1, var2);
+   protected final int method5341(Nameable var1, Nameable var2) {
+      return this.field3835 == null?0:this.field3835.compare(var1, var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("ij")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "1554152801"
+      signature = "(Liz;III)V",
+      garbageValue = "1294500495"
    )
-   public static String method5290(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-            if(var4 == ' ') {
-               var2.append('+');
-            } else {
-               byte var5 = Client.charToByteCp1252(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
-         }
+   static void method5347(Widget var0, int var1, int var2) {
+      if(var0.dynamicX == 0) {
+         var0.relativeX = var0.originalX;
+      } else if(var0.dynamicX == 1) {
+         var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
+      } else if(var0.dynamicX == 2) {
+         var0.relativeX = var1 - var0.width - var0.originalX;
+      } else if(var0.dynamicX == 3) {
+         var0.relativeX = var0.originalX * var1 >> 14;
+      } else if(var0.dynamicX == 4) {
+         var0.relativeX = (var0.originalX * var1 >> 14) + (var1 - var0.width) / 2;
+      } else {
+         var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
       }
 
-      return var2.toString();
+      if(var0.dynamicY == 0) {
+         var0.relativeY = var0.originalY;
+      } else if(var0.dynamicY == 1) {
+         var0.relativeY = (var2 - var0.height) / 2 + var0.originalY;
+      } else if(var0.dynamicY == 2) {
+         var0.relativeY = var2 - var0.height - var0.originalY;
+      } else if(var0.dynamicY == 3) {
+         var0.relativeY = var2 * var0.originalY >> 14;
+      } else if(var0.dynamicY == 4) {
+         var0.relativeY = (var2 * var0.originalY >> 14) + (var2 - var0.height) / 2;
+      } else {
+         var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
+      }
+
    }
 }

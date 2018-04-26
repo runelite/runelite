@@ -1,16 +1,17 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gv")
+@ObfuscatedName("gb")
 public class class199 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("ai")
+   static int[] field2604;
+
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljf;Ljf;ZS)V",
-      garbageValue = "13356"
+      signature = "(IB)Z",
+      garbageValue = "61"
    )
-   public static void method3765(IndexDataBase var0, IndexDataBase var1, boolean var2) {
-      ObjectComposition.objects_ref = var0;
-      ObjectComposition.field3591 = var1;
-      ObjectComposition.objectCompositionLowDetail = var2;
+   public static boolean method3845(int var0) {
+      return (var0 >> 30 & 1) != 0;
    }
 }

@@ -4,72 +4,84 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("eh")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("o")
+   @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "Lly;"
+   )
+   @Export("loginType")
+   static JagexLoginType loginType;
+   @ObfuscatedName("fa")
+   @ObfuscatedSignature(
+      signature = "[Llv;"
+   )
+   @Export("headIconsHint")
+   static SpritePixels[] headIconsHint;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1568519555
+      intValue = -2061814305
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -60030067
+      intValue = -698917207
    )
    @Export("x")
    int x;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -519278479
+      intValue = 450495679
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1094507869
+      intValue = 1442680789
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 885515339
+      intValue = 180143651
    )
    @Export("rotation")
    int rotation;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 2056488293
+      intValue = 132619937
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -717533729
+      intValue = 438325865
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("x")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 121355007
+      intValue = 1273591553
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1338434239
+      intValue = 1977494167
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
@@ -79,55 +91,12 @@ public final class DecorativeObject {
       this.renderInfoBitPacked = 0;
    }
 
-   @ObfuscatedName("k")
-   static final void method3082(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2107841261"
+      signature = "(III)Z",
+      garbageValue = "1769847128"
    )
-   public static void method3081() {
-      KeyFocusListener var0 = KeyFocusListener.keyboard;
-      synchronized(KeyFocusListener.keyboard) {
-         ++KeyFocusListener.keyboardIdleTicks;
-         KeyFocusListener.field620 = KeyFocusListener.field623;
-         KeyFocusListener.field638 = 0;
-         int var1;
-         if(KeyFocusListener.field627 < 0) {
-            for(var1 = 0; var1 < 112; ++var1) {
-               KeyFocusListener.keyPressed[var1] = false;
-            }
-
-            KeyFocusListener.field627 = KeyFocusListener.field626;
-         } else {
-            while(KeyFocusListener.field627 != KeyFocusListener.field626) {
-               var1 = KeyFocusListener.field625[KeyFocusListener.field626];
-               KeyFocusListener.field626 = KeyFocusListener.field626 + 1 & 127;
-               if(var1 < 0) {
-                  KeyFocusListener.keyPressed[~var1] = false;
-               } else {
-                  if(!KeyFocusListener.keyPressed[var1] && KeyFocusListener.field638 < KeyFocusListener.field630.length - 1) {
-                     KeyFocusListener.field630[++KeyFocusListener.field638 - 1] = var1;
-                  }
-
-                  KeyFocusListener.keyPressed[var1] = true;
-               }
-            }
-         }
-
-         if(KeyFocusListener.field638 > 0) {
-            KeyFocusListener.keyboardIdleTicks = 0;
-         }
-
-         KeyFocusListener.field623 = KeyFocusListener.field631;
-      }
+   public static boolean method3163(int var0, int var1) {
+      return (var0 >> var1 + 1 & 1) != 0;
    }
 }
