@@ -7,183 +7,183 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kt")
+@ObfuscatedName("kn")
 @Implements("NameableContainer")
 public abstract class NameableContainer {
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1849349711
+      intValue = -2036864173
    )
-   final int field3838;
-   @ObfuscatedName("h")
+   final int field3849;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 535740751
+      intValue = 1906156027
    )
    @Export("count")
    int count;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "[Lku;"
+      signature = "[Lkg;"
    )
    @Export("nameables")
    Nameable[] nameables;
-   @ObfuscatedName("z")
-   HashMap field3837;
-   @ObfuscatedName("i")
-   HashMap field3840;
-   @ObfuscatedName("u")
-   Comparator field3842;
+   @ObfuscatedName("s")
+   HashMap field3844;
+   @ObfuscatedName("y")
+   HashMap field3845;
+   @ObfuscatedName("c")
+   Comparator field3847;
 
    NameableContainer(int var1) {
       this.count = 0;
-      this.field3842 = null;
-      this.field3838 = var1;
-      this.nameables = this.vmethod5462(var1);
-      this.field3837 = new HashMap(var1 / 8);
-      this.field3840 = new HashMap(var1 / 8);
+      this.field3847 = null;
+      this.field3849 = var1;
+      this.nameables = this.vmethod5514(var1);
+      this.field3844 = new HashMap(var1 / 8);
+      this.field3845 = new HashMap(var1 / 8);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)Lku;",
-      garbageValue = "52"
+      signature = "(I)Lkg;",
+      garbageValue = "1778408778"
    )
-   abstract Nameable vmethod5454();
+   abstract Nameable vmethod5513();
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)[Lku;",
-      garbageValue = "1474922336"
+      signature = "(IB)[Lkg;",
+      garbageValue = "0"
    )
-   abstract Nameable[] vmethod5462(int var1);
+   abstract Nameable[] vmethod5514(int var1);
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "57"
+      signature = "(I)V",
+      garbageValue = "896498573"
    )
-   public void method5302() {
+   public void method5363() {
       this.count = 0;
       Arrays.fill(this.nameables, (Object)null);
-      this.field3837.clear();
-      this.field3840.clear();
+      this.field3844.clear();
+      this.field3845.clear();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1109127029"
+      garbageValue = "436987222"
    )
    @Export("getCount")
    public int getCount() {
       return this.count;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-1221554128"
+      garbageValue = "1244123133"
    )
-   public boolean method5305() {
-      return this.field3838 == this.count;
+   public boolean method5365() {
+      return this.count == this.field3849;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lkz;I)Z",
-      garbageValue = "598346158"
+      signature = "(Lkb;B)Z",
+      garbageValue = "-103"
    )
    @Export("isMember")
    public boolean isMember(Name var1) {
-      return !var1.isCleanNameValid()?false:(this.field3837.containsKey(var1)?true:this.field3840.containsKey(var1));
+      return !var1.isCleanNameValid()?false:(this.field3844.containsKey(var1)?true:this.field3845.containsKey(var1));
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lkz;I)Lku;",
-      garbageValue = "1937396120"
+      signature = "(Lkb;B)Lkg;",
+      garbageValue = "44"
    )
-   public Nameable method5307(Name var1) {
-      Nameable var2 = this.method5327(var1);
-      return var2 != null?var2:this.method5309(var1);
+   public Nameable method5367(Name var1) {
+      Nameable var2 = this.method5368(var1);
+      return var2 != null?var2:this.method5364(var1);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lkz;I)Lku;",
-      garbageValue = "2001745595"
+      signature = "(Lkb;I)Lkg;",
+      garbageValue = "-218704733"
    )
-   Nameable method5327(Name var1) {
-      return !var1.isCleanNameValid()?null:(Nameable)this.field3837.get(var1);
+   Nameable method5368(Name var1) {
+      return !var1.isCleanNameValid()?null:(Nameable)this.field3844.get(var1);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lkz;B)Lku;",
-      garbageValue = "109"
+      signature = "(Lkb;I)Lkg;",
+      garbageValue = "1966282903"
    )
-   Nameable method5309(Name var1) {
-      return !var1.isCleanNameValid()?null:(Nameable)this.field3840.get(var1);
+   Nameable method5364(Name var1) {
+      return !var1.isCleanNameValid()?null:(Nameable)this.field3845.get(var1);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lkz;I)Z",
-      garbageValue = "447429359"
+      signature = "(Lkb;I)Z",
+      garbageValue = "577759477"
    )
-   public final boolean method5344(Name var1) {
-      Nameable var2 = this.method5327(var1);
+   public final boolean method5369(Name var1) {
+      Nameable var2 = this.method5368(var1);
       if(var2 == null) {
          return false;
       } else {
-         this.method5311(var2);
+         this.method5415(var2);
          return true;
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lku;B)V",
-      garbageValue = "28"
+      signature = "(Lkg;B)V",
+      garbageValue = "6"
    )
-   final void method5311(Nameable var1) {
-      int var2 = this.method5317(var1);
+   final void method5415(Nameable var1) {
+      int var2 = this.method5398(var1);
       if(var2 != -1) {
-         this.method5328(var2);
-         this.method5318(var1);
+         this.method5402(var2);
+         this.method5377(var1);
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(Lkz;I)Lku;",
-      garbageValue = "1635002869"
+      signature = "(Lkb;I)Lkg;",
+      garbageValue = "-387771737"
    )
-   Nameable method5312(Name var1) {
-      return this.method5313(var1, (Name)null);
+   Nameable method5371(Name var1) {
+      return this.method5372(var1, (Name)null);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(Lkz;Lkz;I)Lku;",
-      garbageValue = "171252347"
+      signature = "(Lkb;Lkb;I)Lkg;",
+      garbageValue = "1505776293"
    )
-   Nameable method5313(Name var1, Name var2) {
-      if(this.method5327(var1) != null) {
+   Nameable method5372(Name var1, Name var2) {
+      if(this.method5368(var1) != null) {
          throw new IllegalStateException();
       } else {
-         Nameable var3 = this.vmethod5454();
-         var3.method5264(var1, var2);
-         this.method5349(var3);
-         this.method5320(var3);
+         Nameable var3 = this.vmethod5513();
+         var3.method5325(var1, var2);
+         this.method5378(var3);
+         this.method5379(var3);
          return var3;
       }
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("aj")
    @ObfuscatedSignature(
-      signature = "(II)Lku;",
-      garbageValue = "-1083084917"
+      signature = "(IB)Lkg;",
+      garbageValue = "16"
    )
    @Export("get")
    public final Nameable get(int var1) {
@@ -194,37 +194,37 @@ public abstract class NameableContainer {
       }
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "8"
+      signature = "(I)V",
+      garbageValue = "2016770314"
    )
-   public final void method5331() {
-      if(this.field3842 == null) {
+   public final void method5362() {
+      if(this.field3847 == null) {
          Arrays.sort(this.nameables, 0, this.count);
       } else {
-         Arrays.sort(this.nameables, 0, this.count, this.field3842);
+         Arrays.sort(this.nameables, 0, this.count, this.field3847);
       }
 
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(Lku;Lkz;Lkz;B)V",
-      garbageValue = "1"
+      signature = "(Lkg;Lkb;Lkb;I)V",
+      garbageValue = "1434930517"
    )
-   final void method5316(Nameable var1, Name var2, Name var3) {
-      this.method5318(var1);
-      var1.method5264(var2, var3);
-      this.method5320(var1);
+   final void method5375(Nameable var1, Name var2, Name var3) {
+      this.method5377(var1);
+      var1.method5325(var2, var3);
+      this.method5379(var1);
    }
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "(Lku;I)I",
-      garbageValue = "435026569"
+      signature = "(Lkg;I)I",
+      garbageValue = "-773449762"
    )
-   final int method5317(Nameable var1) {
+   final int method5398(Nameable var1) {
       for(int var2 = 0; var2 < this.count; ++var2) {
          if(this.nameables[var2] == var1) {
             return var2;
@@ -234,53 +234,53 @@ public abstract class NameableContainer {
       return -1;
    }
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(Lku;I)V",
-      garbageValue = "-599225602"
+      signature = "(Lkg;I)V",
+      garbageValue = "-1002956193"
    )
-   final void method5318(Nameable var1) {
-      if(this.field3837.remove(var1.name) == null) {
+   final void method5377(Nameable var1) {
+      if(this.field3844.remove(var1.name) == null) {
          throw new IllegalStateException();
       } else {
-         if(var1.field3830 != null) {
-            this.field3840.remove(var1.field3830);
+         if(var1.field3832 != null) {
+            this.field3845.remove(var1.field3832);
          }
 
       }
    }
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("av")
    @ObfuscatedSignature(
-      signature = "(Lku;I)V",
-      garbageValue = "-1714169647"
+      signature = "(Lkg;I)V",
+      garbageValue = "-1090314159"
    )
-   final void method5349(Nameable var1) {
+   final void method5378(Nameable var1) {
       this.nameables[++this.count - 1] = var1;
    }
 
-   @ObfuscatedName("aq")
+   @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(Lku;I)V",
-      garbageValue = "-991416109"
+      signature = "(Lkg;I)V",
+      garbageValue = "1396964934"
    )
-   final void method5320(Nameable var1) {
-      this.field3837.put(var1.name, var1);
-      if(var1.field3830 != null) {
-         Nameable var2 = (Nameable)this.field3840.put(var1.field3830, var1);
+   final void method5379(Nameable var1) {
+      this.field3844.put(var1.name, var1);
+      if(var1.field3832 != null) {
+         Nameable var2 = (Nameable)this.field3845.put(var1.field3832, var1);
          if(var2 != null && var2 != var1) {
-            var2.field3830 = null;
+            var2.field3832 = null;
          }
       }
 
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "(IB)V",
-      garbageValue = "8"
+      garbageValue = "9"
    )
-   final void method5328(int var1) {
+   final void method5402(int var1) {
       --this.count;
       if(var1 < this.count) {
          System.arraycopy(this.nameables, var1 + 1, this.nameables, var1, this.count - var1);
@@ -288,25 +288,244 @@ public abstract class NameableContainer {
 
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "689927067"
+      signature = "(B)V",
+      garbageValue = "-54"
    )
-   public final void method5323() {
-      this.field3842 = null;
+   public final void method5400() {
+      this.field3847 = null;
    }
 
-   @ObfuscatedName("aa")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;I)V",
-      garbageValue = "1905878488"
+      garbageValue = "79333893"
    )
-   public final void method5324(Comparator var1) {
-      if(this.field3842 == null) {
-         this.field3842 = var1;
-      } else if(this.field3842 instanceof class297) {
-         ((class297)this.field3842).method5283(var1);
+   public final void method5384(Comparator var1) {
+      if(this.field3847 == null) {
+         this.field3847 = var1;
+      } else if(this.field3847 instanceof class297) {
+         ((class297)this.field3847).method5340(var1);
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lgl;ILbd;II)V",
+      garbageValue = "549657721"
+   )
+   static final void method5440(PacketBuffer var0, int var1, Player var2, int var3) {
+      byte var4 = -1;
+      if((var3 & 1024) != 0) {
+         var4 = var0.method3630();
+      }
+
+      if((var3 & 2048) != 0) {
+         class93.field1416[var1] = var0.method3631();
+      }
+
+      int var5;
+      if((var3 & 4096) != 0) {
+         for(var5 = 0; var5 < 3; ++var5) {
+            var2.actions[var5] = var0.readString();
+         }
+      }
+
+      int var6;
+      if((var3 & 8) != 0) {
+         var5 = var0.method3635();
+         if(var5 == 65535) {
+            var5 = -1;
+         }
+
+         var6 = var0.method3626();
+         class163.method3290(var2, var5, var6);
+      }
+
+      if((var3 & 128) != 0) {
+         var2.field1168 = var0.method3627();
+         if(var2.queueSize == 0) {
+            var2.orientation = var2.field1168;
+            var2.field1168 = -1;
+         }
+      }
+
+      if((var3 & 64) != 0) {
+         var5 = var0.method3628();
+         byte[] var15 = new byte[var5];
+         Buffer var7 = new Buffer(var15);
+         var0.method3778(var15, 0, var5);
+         class93.field1404[var1] = var7;
+         var2.decodeApperance(var7);
+      }
+
+      if((var3 & 256) != 0) {
+         var2.graphic = var0.readUnsignedShort();
+         var5 = var0.readInt();
+         var2.field1187 = var5 >> 16;
+         var2.graphicsDelay = (var5 & 65535) + Client.gameCycle;
+         var2.spotAnimFrame = 0;
+         var2.spotAnimFrameCycle = 0;
+         if(var2.graphicsDelay > Client.gameCycle) {
+            var2.spotAnimFrame = -1;
+         }
+
+         if(var2.graphic == 65535) {
+            var2.graphic = -1;
+         }
+      }
+
+      if((var3 & 1) != 0) {
+         var2.interacting = var0.readUnsignedShort();
+         if(var2.interacting == 65535) {
+            var2.interacting = -1;
+         }
+      }
+
+      int var8;
+      int var9;
+      if((var3 & 16) != 0) {
+         var5 = var0.readUnsignedShort();
+         Permission var21 = (Permission)class185.forOrdinal(TextureProvider.method2688(), var0.readUnsignedShortOb1());
+         boolean var16 = var0.readUnsignedByte() == 1;
+         var8 = var0.readUnsignedShortOb1();
+         var9 = var0.offset;
+         if(var2.name != null && var2.composition != null) {
+            boolean var10 = false;
+            if(var21.field3342 && CacheFile.friendManager.isIgnored(var2.name)) {
+               var10 = true;
+            }
+
+            if(!var10 && Client.myPlayerIndex == 0 && !var2.hidden) {
+               class93.field1402.offset = 0;
+               var0.method3778(class93.field1402.payload, 0, var8);
+               class93.field1402.offset = 0;
+               Buffer var12 = class93.field1402;
+               String var11 = ScriptState.method1131(var12, 32767);
+               String var13 = FontTypeFace.appendTags(UnitPriceComparator.method138(var11));
+               var2.overhead = var13.trim();
+               var2.field1159 = var5 >> 8;
+               var2.field1158 = var5 & 255;
+               var2.overheadTextCyclesRemaining = 150;
+               var2.field1191 = var16;
+               var2.field1155 = var2 != class265.localPlayer && var21.field3342 && "" != Client.field1068 && var13.toLowerCase().indexOf(Client.field1068) == -1;
+               int var14;
+               if(var21.field3341) {
+                  var14 = var16?91:1;
+               } else {
+                  var14 = var16?90:2;
+               }
+
+               if(var21.field3334 != -1) {
+                  ChatPlayer.sendGameMessage(var14, class241.method4532(var21.field3334) + var2.name.getName(), var13);
+               } else {
+                  ChatPlayer.sendGameMessage(var14, var2.name.getName(), var13);
+               }
+            }
+         }
+
+         var0.offset = var8 + var9;
+      }
+
+      if((var3 & 512) != 0) {
+         var2.field1182 = var0.method3586();
+         var2.field1184 = var0.method3586();
+         var2.field1174 = var0.method3631();
+         var2.field1185 = var0.method3631();
+         var2.field1186 = var0.readUnsignedShort() + Client.gameCycle;
+         var2.field1139 = var0.readUnsignedShort() + Client.gameCycle;
+         var2.field1188 = var0.readUnsignedShort();
+         if(var2.field840) {
+            var2.field1182 += var2.field842;
+            var2.field1184 += var2.field839;
+            var2.field1174 += var2.field842;
+            var2.field1185 += var2.field839;
+            var2.queueSize = 0;
+         } else {
+            var2.field1182 += var2.pathX[0];
+            var2.field1184 += var2.pathY[0];
+            var2.field1174 += var2.pathX[0];
+            var2.field1185 += var2.pathY[0];
+            var2.queueSize = 1;
+         }
+
+         var2.field1178 = 0;
+      }
+
+      if((var3 & 2) != 0) {
+         var5 = var0.method3626();
+         int var17;
+         int var20;
+         int var22;
+         if(var5 > 0) {
+            for(var6 = 0; var6 < var5; ++var6) {
+               var8 = -1;
+               var9 = -1;
+               var20 = -1;
+               var22 = var0.getUSmart();
+               if(var22 == 32767) {
+                  var22 = var0.getUSmart();
+                  var9 = var0.getUSmart();
+                  var8 = var0.getUSmart();
+                  var20 = var0.getUSmart();
+               } else if(var22 != 32766) {
+                  var9 = var0.getUSmart();
+               } else {
+                  var22 = -1;
+               }
+
+               var17 = var0.getUSmart();
+               var2.method1703(var22, var9, var8, var20, Client.gameCycle, var17);
+            }
+         }
+
+         var6 = var0.method3628();
+         if(var6 > 0) {
+            for(var22 = 0; var22 < var6; ++var22) {
+               var8 = var0.getUSmart();
+               var9 = var0.getUSmart();
+               if(var9 != 32767) {
+                  var20 = var0.getUSmart();
+                  var17 = var0.method3626();
+                  int var18 = var9 > 0?var0.method3626():var17;
+                  var2.setCombatInfo(var8, Client.gameCycle, var9, var20, var17, var18);
+               } else {
+                  var2.method1704(var8);
+               }
+            }
+         }
+      }
+
+      if((var3 & 4) != 0) {
+         var2.overhead = var0.readString();
+         if(var2.overhead.charAt(0) == '~') {
+            var2.overhead = var2.overhead.substring(1);
+            ChatPlayer.sendGameMessage(2, var2.name.getName(), var2.overhead);
+         } else if(var2 == class265.localPlayer) {
+            ChatPlayer.sendGameMessage(2, var2.name.getName(), var2.overhead);
+         }
+
+         var2.field1191 = false;
+         var2.field1159 = 0;
+         var2.field1158 = 0;
+         var2.overheadTextCyclesRemaining = 150;
+      }
+
+      if(var2.field840) {
+         if(var4 == 127) {
+            var2.method1250(var2.field842, var2.field839);
+         } else {
+            byte var19;
+            if(var4 != -1) {
+               var19 = var4;
+            } else {
+               var19 = class93.field1416[var1];
+            }
+
+            var2.method1216(var2.field842, var2.field839, var19);
+         }
       }
 
    }

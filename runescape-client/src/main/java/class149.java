@@ -2,38 +2,39 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ed")
 public class class149 implements Comparator {
-   @ObfuscatedName("o")
-   final boolean field2141;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Llh;"
+   )
+   static IndexedSprite field2106;
+   @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "Llh;"
+   )
+   static IndexedSprite field2107;
+   @ObfuscatedName("g")
+   final boolean field2108;
 
    public class149(boolean var1) {
-      this.field2141 = var1;
+      this.field2108 = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lkv;Lkv;I)I",
-      garbageValue = "-769924804"
+      signature = "(Lku;Lku;I)I",
+      garbageValue = "1128295150"
    )
-   int method3099(ChatPlayer var1, ChatPlayer var2) {
-      return this.field2141?var1.field3845 - var2.field3845:var2.field3845 - var1.field3845;
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method3099((ChatPlayer)var1, (ChatPlayer)var2);
+   int method3185(ChatPlayer var1, ChatPlayer var2) {
+      return this.field2108?var1.field3851 - var2.field3851:var2.field3851 - var1.field3851;
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IIIIII)V",
-      garbageValue = "763297214"
-   )
-   public static final void method3104(int var0, int var1, int var2, int var3, int var4) {
-      class7.boundingBoxes.addFirst(new BoundingBox2D(var0, var1, var2, var3, var4));
+   public int compare(Object var1, Object var2) {
+      return this.method3185((ChatPlayer)var1, (ChatPlayer)var2);
    }
 }

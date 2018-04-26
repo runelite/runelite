@@ -1,138 +1,142 @@
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("eg")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("o")
+   @ObfuscatedName("er")
+   @ObfuscatedSignature(
+      signature = "Lfs;"
+   )
+   static class169 field1812;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -303070873
+      intValue = 138753183
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -145538057
+      intValue = 1654232779
    )
    @Export("x")
    int x;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1411450965
+      intValue = -1040171339
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -164278337
+      intValue = 1081663913
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Ler;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Ldu;"
+      signature = "Ldl;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lew;"
-   )
-   @Export("wallObject")
-   WallObject wallObject;
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Les;"
    )
+   @Export("wallObject")
+   WallObject wallObject;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Leh;"
+   )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Ldn;"
+      signature = "Ldw;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("x")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Ldk;"
+      signature = "Ldo;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1911002073
+      intValue = -546143745
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "[Leb;"
+      signature = "[Let;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 863769661
+      intValue = -1535032315
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("l")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -365059857
+      intValue = 99522543
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("s")
+   @ObfuscatedName("q")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1234362029
+      intValue = 989863761
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("j")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1417207541
+      intValue = -82938123
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1805773899
+      intValue = -1178380049
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -794476337
+      intValue = -799269623
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lej;"
+      signature = "Leg;"
    )
    @Export("bridge")
    Tile bridge;
@@ -146,257 +150,111 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;III)V",
-      garbageValue = "-1831471603"
+      signature = "(Ljava/io/File;Ljava/io/File;I)V",
+      garbageValue = "1613059520"
    )
-   public static void method2684(String var0, String var1, int var2, int var3) throws IOException {
-      class37.idxCount = var3;
-      BoundingBox.field253 = var2;
-
+   static void method2778(File var0, File var1) {
       try {
-         ContextMenuRow.osName = System.getProperty("os.name");
-      } catch (Exception var30) {
-         ContextMenuRow.osName = "Unknown";
+         FileOnDisk var2 = new FileOnDisk(class167.jagexClDat, "rw", 10000L);
+         Buffer var3 = new Buffer(500);
+         var3.putByte(3);
+         var3.putByte(var1 != null?1:0);
+         var3.putCESU8(var0.getPath());
+         if(var1 != null) {
+            var3.putCESU8("");
+         }
+
+         var2.write(var3.payload, 0, var3.offset);
+         var2.close();
+      } catch (IOException var4) {
+         var4.printStackTrace();
       }
 
-      class25.osNameLC = ContextMenuRow.osName.toLowerCase();
+   }
 
-      try {
-         NPC.userHome = System.getProperty("user.home");
-         if(NPC.userHome != null) {
-            NPC.userHome = NPC.userHome + "/";
-         }
-      } catch (Exception var29) {
-         ;
-      }
-
-      try {
-         if(class25.osNameLC.startsWith("win")) {
-            if(NPC.userHome == null) {
-               NPC.userHome = System.getenv("USERPROFILE");
-            }
-         } else if(NPC.userHome == null) {
-            NPC.userHome = System.getenv("HOME");
-         }
-
-         if(NPC.userHome != null) {
-            NPC.userHome = NPC.userHome + "/";
-         }
-      } catch (Exception var28) {
-         ;
-      }
-
-      if(NPC.userHome == null) {
-         NPC.userHome = "~/";
-      }
-
-      WorldMapData.cacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", NPC.userHome, "/tmp/", ""};
-      Resampler.field1627 = new String[]{".jagex_cache_" + BoundingBox.field253, ".file_store_" + BoundingBox.field253};
-      int var18 = 0;
-
-      File var5;
-      label279:
-      while(var18 < 4) {
-         String var6 = var18 == 0?"":"" + var18;
-         class167.jagexClDat = new File(NPC.userHome, "jagex_cl_" + var0 + "_" + var1 + var6 + ".dat");
-         String var7 = null;
-         String var8 = null;
-         boolean var9 = false;
-         File var38;
-         if(class167.jagexClDat.exists()) {
-            try {
-               FileOnDisk var10 = new FileOnDisk(class167.jagexClDat, "rw", 10000L);
-
-               Buffer var11;
-               int var12;
-               for(var11 = new Buffer((int)var10.length()); var11.offset < var11.payload.length; var11.offset += var12) {
-                  var12 = var10.read(var11.payload, var11.offset, var11.payload.length - var11.offset);
-                  if(var12 == -1) {
-                     throw new IOException();
-                  }
-               }
-
-               var11.offset = 0;
-               var12 = var11.readUnsignedByte();
-               if(var12 < 1 || var12 > 3) {
-                  throw new IOException("" + var12);
-               }
-
-               int var13 = 0;
-               if(var12 > 1) {
-                  var13 = var11.readUnsignedByte();
-               }
-
-               if(var12 <= 2) {
-                  var7 = var11.getJagString();
-                  if(var13 == 1) {
-                     var8 = var11.getJagString();
-                  }
-               } else {
-                  var7 = var11.getCESU8();
-                  if(var13 == 1) {
-                     var8 = var11.getCESU8();
-                  }
-               }
-
-               var10.close();
-            } catch (IOException var33) {
-               var33.printStackTrace();
-            }
-
-            if(var7 != null) {
-               var38 = new File(var7);
-               if(!var38.exists()) {
-                  var7 = null;
-               }
-            }
-
-            if(var7 != null) {
-               var38 = new File(var7, "test.dat");
-               if(!WorldComparator.method70(var38, true)) {
-                  var7 = null;
-               }
-            }
-         }
-
-         if(var7 == null && var18 == 0) {
-            label254:
-            for(int var19 = 0; var19 < Resampler.field1627.length; ++var19) {
-               for(int var20 = 0; var20 < WorldMapData.cacheLocations.length; ++var20) {
-                  File var21 = new File(WorldMapData.cacheLocations[var20] + Resampler.field1627[var19] + File.separatorChar + var0 + File.separatorChar);
-                  if(var21.exists() && WorldComparator.method70(new File(var21, "test.dat"), true)) {
-                     var7 = var21.toString();
-                     var9 = true;
-                     break label254;
-                  }
-               }
-            }
-         }
-
-         if(var7 == null) {
-            var7 = NPC.userHome + File.separatorChar + "jagexcache" + var6 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
-            var9 = true;
-         }
-
-         if(var8 != null) {
-            File var37 = new File(var8);
-            var38 = new File(var7);
-
-            try {
-               File[] var40 = var37.listFiles();
-               File[] var22 = var40;
-
-               for(int var14 = 0; var14 < var22.length; ++var14) {
-                  File var15 = var22[var14];
-                  File var16 = new File(var38, var15.getName());
-                  boolean var17 = var15.renameTo(var16);
-                  if(!var17) {
-                     throw new IOException();
-                  }
-               }
-            } catch (Exception var32) {
-               var32.printStackTrace();
-            }
-
-            var9 = true;
-         }
-
-         if(var9) {
-            class110.method2284(new File(var7), (File)null);
-         }
-
-         var5 = new File(var7);
-         class241.field2807 = var5;
-         if(!class241.field2807.exists()) {
-            class241.field2807.mkdirs();
-         }
-
-         File[] var34 = class241.field2807.listFiles();
-         if(var34 != null) {
-            File[] var39 = var34;
-
-            for(int var23 = 0; var23 < var39.length; ++var23) {
-               File var24 = var39[var23];
-               if(!WorldComparator.method70(var24, false)) {
-                  ++var18;
-                  continue label279;
-               }
-            }
-         }
-         break;
-      }
-
-      File var4 = class241.field2807;
-      class170.field2233 = var4;
-      if(!class170.field2233.exists()) {
-         throw new RuntimeException("");
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "([BB)V",
+      garbageValue = "1"
+   )
+   static synchronized void method2779(byte[] var0) {
+      if(var0.length == 100 && class195.field2576 < 1000) {
+         class195.field2578[++class195.field2576 - 1] = var0;
+      } else if(var0.length == 5000 && class195.field2573 < 250) {
+         class195.field2575[++class195.field2573 - 1] = var0;
+      } else if(var0.length == 30000 && class195.field2574 < 50) {
+         class195.field2580[++class195.field2574 - 1] = var0;
       } else {
-         class170.field2234 = true;
-
-         try {
-            var5 = new File(NPC.userHome, "random.dat");
-            int var26;
-            if(var5.exists()) {
-               class167.randomDat = new CacheFile(new FileOnDisk(var5, "rw", 25L), 24, 0);
-            } else {
-               label205:
-               for(int var25 = 0; var25 < Resampler.field1627.length; ++var25) {
-                  for(var26 = 0; var26 < WorldMapData.cacheLocations.length; ++var26) {
-                     File var36 = new File(WorldMapData.cacheLocations[var26] + Resampler.field1627[var25] + File.separatorChar + "random.dat");
-                     if(var36.exists()) {
-                        class167.randomDat = new CacheFile(new FileOnDisk(var36, "rw", 25L), 24, 0);
-                        break label205;
-                     }
-                  }
+         if(MilliTimer.field2156 != null) {
+            for(int var1 = 0; var1 < class195.field2572.length; ++var1) {
+               if(var0.length == class195.field2572[var1] && class195.field2579[var1] < MilliTimer.field2156[var1].length) {
+                  MilliTimer.field2156[var1][class195.field2579[var1]++] = var0;
+                  return;
                }
             }
-
-            if(class167.randomDat == null) {
-               RandomAccessFile var35 = new RandomAccessFile(var5, "rw");
-               var26 = var35.read();
-               var35.seek(0L);
-               var35.write(var26);
-               var35.seek(0L);
-               var35.close();
-               class167.randomDat = new CacheFile(new FileOnDisk(var5, "rw", 25L), 24, 0);
-            }
-         } catch (IOException var31) {
-            ;
-         }
-
-         class167.dat2File = new CacheFile(new FileOnDisk(MessageNode.method1176("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
-         class167.idx255File = new CacheFile(new FileOnDisk(MessageNode.method1176("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-         Size.idxFiles = new CacheFile[class37.idxCount];
-
-         for(int var27 = 0; var27 < class37.idxCount; ++var27) {
-            Size.idxFiles[var27] = new CacheFile(new FileOnDisk(MessageNode.method1176("main_file_cache.idx" + var27), "rw", 1048576L), 6000, 0);
          }
 
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("kn")
    @ObfuscatedSignature(
-      signature = "(II)Lje;",
-      garbageValue = "1930939086"
+      signature = "(Ljava/lang/String;ZB)V",
+      garbageValue = "0"
    )
-   @Export("getUnderlayDefinition")
-   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
-         var1 = new FloorUnderlayDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
-         }
+   static void method2780(String var0, boolean var1) {
+      var0 = var0.toLowerCase();
+      short[] var2 = new short[16];
+      int var3 = 0;
 
-         var1.post();
-         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
-         return var1;
+      for(int var4 = 0; var4 < ItemComposition.field3643; ++var4) {
+         ItemComposition var5 = NetWriter.getItemDefinition(var4);
+         if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+            if(var3 >= 250) {
+               WidgetNode.field772 = -1;
+               Size.field366 = null;
+               return;
+            }
+
+            if(var3 >= var2.length) {
+               short[] var6 = new short[var2.length * 2];
+
+               for(int var7 = 0; var7 < var3; ++var7) {
+                  var6[var7] = var2[var7];
+               }
+
+               var2 = var6;
+            }
+
+            var2[var3++] = (short)var4;
+         }
+      }
+
+      Size.field366 = var2;
+      OwnWorldComparator.field846 = 0;
+      WidgetNode.field772 = var3;
+      String[] var8 = new String[WidgetNode.field772];
+
+      for(int var9 = 0; var9 < WidgetNode.field772; ++var9) {
+         var8[var9] = NetWriter.getItemDefinition(var2[var9]).name;
+      }
+
+      WorldMapType1.method273(var8, Size.field366);
+   }
+
+   @ObfuscatedName("kx")
+   @ObfuscatedSignature(
+      signature = "(Lgg;B)V",
+      garbageValue = "106"
+   )
+   static void method2777(Buffer var0) {
+      if(Client.field1071 != null) {
+         var0.putBytes(Client.field1071, 0, Client.field1071.length);
+      } else {
+         byte[] var1 = Preferences.method1778();
+         var0.putBytes(var1, 0, var1.length);
       }
    }
 }

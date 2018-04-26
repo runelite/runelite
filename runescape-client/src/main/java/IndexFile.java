@@ -6,33 +6,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fr")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Ldy;"
+      signature = "Ldm;"
    )
    @Export("dataFile")
    CacheFile dataFile;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Ldy;"
+      signature = "Ldm;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1621000493
+      intValue = 678105897
    )
    @Export("index")
    int index;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1067051891
+      intValue = 1681128857
    )
    @Export("maxSize")
    int maxSize;
@@ -42,7 +42,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdy;Ldy;I)V"
+      signature = "(ILdm;Ldm;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -54,10 +54,10 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "-1580679217"
+      garbageValue = "-415495778"
    )
    @Export("read")
    public byte[] read(int var1) {
@@ -101,7 +101,7 @@ public final class IndexFile {
                      int var10 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                      int var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                      int var12 = IndexStore_buffer[7] & 255;
-                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
+                     if(var9 == var1 && var10 == var7 && var12 == this.index) {
                         if(var11 >= 0 && (long)var11 <= this.dataFile.length() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
                               var5[var6++] = IndexStore_buffer[var13 + 8];
@@ -130,10 +130,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I[BII)Z",
-      garbageValue = "-1692563454"
+      signature = "(I[BIB)Z",
+      garbageValue = "33"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -152,10 +152,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I[BIZI)Z",
-      garbageValue = "-1703245934"
+      signature = "(I[BIZB)Z",
+      garbageValue = "-54"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -197,28 +197,32 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label145: {
+                  label135: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
-                        this.dataFile.seek((long)(var6 * 520));
+                        label154: {
+                           this.dataFile.seek((long)(var6 * 520));
 
-                        try {
-                           this.dataFile.read(IndexStore_buffer, 0, 8);
-                        } catch (EOFException var16) {
-                           break label145;
-                        }
+                           try {
+                              this.dataFile.read(IndexStore_buffer, 0, 8);
+                           } catch (EOFException var16) {
+                              break label135;
+                           }
 
-                        var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
-                        int var11 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
-                        var9 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
-                        int var12 = IndexStore_buffer[7] & 255;
-                        if(var14 != var1 || var11 != var8 || var12 != this.index) {
-                           var10000 = false;
-                           return var10000;
-                        }
+                           var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
+                           int var11 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
+                           var9 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
+                           int var12 = IndexStore_buffer[7] & 255;
+                           if(var14 == var1 && var8 == var11 && var12 == this.index) {
+                              if(var9 >= 0 && (long)var9 <= this.dataFile.length() / 520L) {
+                                 break label154;
+                              }
 
-                        if(var9 < 0 || (long)var9 > this.dataFile.length() / 520L) {
+                              var10000 = false;
+                              return var10000;
+                           }
+
                            var10000 = false;
                            return var10000;
                         }
@@ -231,7 +235,7 @@ public final class IndexFile {
                            ++var9;
                         }
 
-                        if(var9 == var6) {
+                        if(var6 == var9) {
                            ++var9;
                         }
                      }
@@ -272,25 +276,54 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("jt")
    @ObfuscatedSignature(
-      signature = "(II)Ljk;",
-      garbageValue = "-698481764"
+      signature = "(Lbt;ZB)V",
+      garbageValue = "-31"
    )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = KitDefinition.identKit_ref.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+   @Export("closeWidget")
+   static final void closeWidget(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      if(var1 && var2 != -1 && class250.validInterfaces[var2]) {
+         Widget.widgetIndex.method4675(var2);
+         if(GZipDecompressor.widgets[var2] != null) {
+            boolean var6 = true;
 
-         KitDefinition.identKits.put(var1, (long)var0);
-         return var1;
+            for(int var5 = 0; var5 < GZipDecompressor.widgets[var2].length; ++var5) {
+               if(GZipDecompressor.widgets[var2][var5] != null) {
+                  if(GZipDecompressor.widgets[var2][var5].type != 2) {
+                     GZipDecompressor.widgets[var2][var5] = null;
+                  } else {
+                     var6 = false;
+                  }
+               }
+            }
+
+            if(var6) {
+               GZipDecompressor.widgets[var2] = null;
+            }
+
+            class250.validInterfaces[var2] = false;
+         }
       }
+
+      for(IntegerNode var4 = (IntegerNode)Client.widgetFlags.first(); var4 != null; var4 = (IntegerNode)Client.widgetFlags.next()) {
+         if((var4.hash >> 48 & 65535L) == (long)var2) {
+            var4.unlink();
+         }
+      }
+
+      Widget var7 = UnitPriceComparator.getWidget(var3);
+      if(var7 != null) {
+         TotalQuantityComparator.method100(var7);
+      }
+
+      class264.method4807();
+      if(Client.widgetRoot != -1) {
+         GraphicsObject.method1920(Client.widgetRoot, 1);
+      }
+
    }
 }

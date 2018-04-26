@@ -4,17 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("ey")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("pb")
+   @ObfuscatedName("cz")
    @ObfuscatedGetter(
-      intValue = -1667513523
-   )
-   static int field2051;
-   @ObfuscatedName("cs")
-   @ObfuscatedGetter(
-      intValue = -1062304309
+      intValue = 991573623
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -23,10 +18,10 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)Lei;",
-      garbageValue = "1329079562"
+      signature = "(I)Lee;",
+      garbageValue = "-1967116980"
    )
    @Export("getModel")
    protected Model getModel() {
@@ -44,45 +39,19 @@ public abstract class Renderable extends CacheableNode {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "([I[IB)V",
-      garbageValue = "118"
+      signature = "(II)V",
+      garbageValue = "-589448514"
    )
-   public static void method3051(int[] var0, int[] var1) {
-      if(var0 != null && var1 != null) {
-         class195.field2584 = var0;
-         OwnWorldComparator.field866 = new int[var0.length];
-         class319.field3930 = new byte[var0.length][][];
-
-         for(int var2 = 0; var2 < class195.field2584.length; ++var2) {
-            class319.field3930[var2] = new byte[var1[var2]][];
+   static void method3142(int var0) {
+      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var1 != null) {
+         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
+            var1.itemIds[var2] = -1;
+            var1.stackSizes[var2] = 0;
          }
 
-      } else {
-         class195.field2584 = null;
-         OwnWorldComparator.field866 = null;
-         class319.field3930 = null;
-      }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1868311539"
-   )
-   static final int method3058(int var0, int var1) {
-      if(var0 == -1) {
-         return 12345678;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 65408) + var1;
       }
    }
 }

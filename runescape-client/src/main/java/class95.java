@@ -5,63 +5,91 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cs")
 public class class95 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @Export("chatLineMap")
    static final Map chatLineMap;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhh;"
    )
    @Export("messages")
    static final IterableHashTable messages;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Lhy;"
    )
-   static final IterableDualNodeQueue field1453;
-   @ObfuscatedName("d")
+   static final IterableDualNodeQueue field1429;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -274307493
+      intValue = -592033461
    )
-   static int field1452;
-   @ObfuscatedName("u")
-   static int[] field1449;
-   @ObfuscatedName("do")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   @Export("indexWorldMap")
-   static IndexData indexWorldMap;
+   static int field1431;
 
    static {
       chatLineMap = new HashMap();
       messages = new IterableHashTable(1024);
-      field1453 = new IterableDualNodeQueue();
-      field1452 = 0;
+      field1429 = new IterableDualNodeQueue();
+      field1431 = 0;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "469718687"
+   )
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)Lkj;",
-      garbageValue = "-735316052"
+      signature = "(III)I",
+      garbageValue = "79544076"
    )
-   @Export("getOverlayDefinition")
-   public static Overlay getOverlayDefinition(int var0) {
-      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = TotalQuantityComparator.overlay_ref.getConfigData(4, var0);
-         var1 = new Overlay();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
-         }
+   static final int method2076(int var0, int var1) {
+      int var2 = var0 + var1 * 57;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
+   }
 
-         var1.post();
-         Overlay.overlays.put(var1, (long)var0);
-         return var1;
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-743819804"
+   )
+   @Export("runWidgetOnLoadListener")
+   static void runWidgetOnLoadListener(int var0) {
+      if(var0 != -1) {
+         if(class85.loadWidget(var0)) {
+            Widget[] var1 = GZipDecompressor.widgets[var0];
+
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.onLoadListener != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.objs = var3.onLoadListener;
+                  class7.runScript(var4, 5000000);
+               }
+            }
+
+         }
       }
+   }
+
+   @ObfuscatedName("gr")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-511615548"
+   )
+   static void method2095() {
+      if(class265.localPlayer.x >> 7 == Client.destinationX && class265.localPlayer.y >> 7 == Client.destinationY) {
+         Client.destinationX = 0;
+      }
+
    }
 }

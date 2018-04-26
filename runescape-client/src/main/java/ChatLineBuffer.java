@@ -1,24 +1,23 @@
-import java.awt.FontMetrics;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("ci")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("ac")
-   static FontMetrics field1479;
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
+   static boolean field1454;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "[Lbv;"
+      signature = "[Lbn;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1201043193
+      intValue = -275027247
    )
    @Export("length")
    int length;
@@ -27,10 +26,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
-      garbageValue = "2069748508"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbn;",
+      garbageValue = "856139967"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -58,20 +57,20 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)Lbv;",
-      garbageValue = "151077776"
+      signature = "(II)Lbn;",
+      garbageValue = "-340819003"
    )
    @Export("getMessage")
    MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1010255618"
+      signature = "(B)I",
+      garbageValue = "23"
    )
    @Export("size")
    int size() {
