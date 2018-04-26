@@ -46,7 +46,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -61,8 +60,6 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
-import net.runelite.client.events.TitleToolbarButtonAdded;
-import net.runelite.client.events.TitleToolbarButtonRemoved;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
@@ -123,7 +120,6 @@ public class ClientUI
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
-	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
@@ -217,7 +213,7 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (navButton, jButton) ->
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), 16, (navButton, jButton) ->
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -256,7 +252,7 @@ public class ClientUI
 				}
 			});
 
-			pluginToolbar.addComponent(event.getIndex(), event.getButton(), button);
+			pluginToolbar.addComponent(event.getButton(), button);
 		});
 	}
 
@@ -264,24 +260,6 @@ public class ClientUI
 	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
 	{
 		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
-
-			titleToolbar.addComponent(event.getButton(), button);
-		});
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
-	{
-		SwingUtilities.invokeLater(() -> titleToolbar.removeComponent(event.getButton()));
 	}
 
 	/**
@@ -307,7 +285,6 @@ public class ClientUI
 
 			// Create main window
 			frame = new ContainableFrame();
-			frame.setLayout(new BorderLayout());
 
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
@@ -339,8 +316,7 @@ public class ClientUI
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
-			titleToolbar = new ClientTitleToolbar();
-			frame.add(container, BorderLayout.CENTER);
+			frame.add(container);
 
 			// Add key listener
 			final UiKeyListener uiKeyListener = new UiKeyListener(this);
@@ -358,12 +334,6 @@ public class ClientUI
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
-			// Add title bar
-			final JPanel topBar = new JPanel(new BorderLayout());
-			topBar.setBorder(new EmptyBorder(2, 2, 2, 5));
-			topBar.add(titleToolbar, BorderLayout.EAST);
-			frame.add(topBar, BorderLayout.NORTH);
-
 			// Show frame
 			frame.pack();
 			frame.revalidateMinimumSize();
@@ -431,7 +401,6 @@ public class ClientUI
 				0,
 				null);
 
-			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
 		});
 

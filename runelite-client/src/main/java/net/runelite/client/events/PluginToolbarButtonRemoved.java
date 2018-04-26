@@ -31,5 +31,4 @@ import net.runelite.client.ui.NavigationButton;
 public class PluginToolbarButtonRemoved
 {
 	private NavigationButton button;
-	private int index;
 }

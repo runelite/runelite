@@ -39,7 +39,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
@@ -53,7 +53,7 @@ public class AccountPlugin extends Plugin
 	private SessionManager sessionManager;
 
 	@Inject
-	private TitleToolbar titleToolbar;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -84,12 +84,16 @@ public class AccountPlugin extends Plugin
 	{
 		loginButton = NavigationButton.builder()
 			.icon(LOGIN_IMAGE)
+			.delimited(true)
+			.name("Account")
 			.tooltip("Login to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
 			.icon(LOGOUT_IMAGE)
+			.delimited(true)
+			.name("Account")
 			.tooltip("Logout of RuneLite")
 			.onClick(this::logoutClick)
 			.build();
@@ -99,9 +103,9 @@ public class AccountPlugin extends Plugin
 
 	private void addAndRemoveButtons()
 	{
-		titleToolbar.removeNavigation(loginButton);
-		titleToolbar.removeNavigation(logoutButton);
-		titleToolbar.addNavigation(sessionManager.getAccountSession() == null
+		pluginToolbar.removeNavigation(loginButton);
+		pluginToolbar.removeNavigation(logoutButton);
+		pluginToolbar.addNavigation(sessionManager.getAccountSession() == null
 			? loginButton
 			: logoutButton);
 	}
@@ -109,8 +113,8 @@ public class AccountPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		titleToolbar.removeNavigation(loginButton);
-		titleToolbar.removeNavigation(logoutButton);
+		pluginToolbar.removeNavigation(loginButton);
+		pluginToolbar.removeNavigation(logoutButton);
 	}
 
 	private void loginClick()

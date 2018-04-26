@@ -25,10 +25,13 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.collect.ComparisonChain;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javax.swing.Box;
 import javax.swing.JToolBar;
 
 /**
@@ -36,8 +39,13 @@ import javax.swing.JToolBar;
  */
 public class ClientPluginToolbar extends JToolBar
 {
-	private static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
-	private final Map<NavigationButton, Component> componentMap = new HashMap<>();
+	private static final int TOOLBAR_WIDTH = 36;
+	private final Map<NavigationButton, Component> componentMap = new TreeMap<>((a, b) ->
+		ComparisonChain
+			.start()
+			.compareFalseFirst(a.isDelimited(), b.isDelimited())
+			.compare(a.getName(), b.getName())
+			.result());
 
 	/**
 	 * Instantiates a new Client plugin toolbar.
@@ -46,40 +54,43 @@ public class ClientPluginToolbar extends JToolBar
 	{
 		super(JToolBar.VERTICAL);
 		setFloatable(false);
-		setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
-		setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		setSize(new Dimension(TOOLBAR_WIDTH, 0));
+		setMinimumSize(new Dimension(TOOLBAR_WIDTH, 0));
+		setPreferredSize(new Dimension(TOOLBAR_WIDTH, 0));
 		setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
-		addSeparator();
 	}
 
-	public void addComponent(final int index, final NavigationButton button, final Component component)
+	public void addComponent(final NavigationButton button, final Component component)
 	{
-		if (componentMap.put(button, component) == null)
-		{
-			if (index < 0)
-			{
-				add(component);
-			}
-			else
-			{
-				add(component, index);
-			}
-
-			revalidate();
-			repaint();
-		}
+		componentMap.put(button, component);
+		update();
 	}
 
 	public void removeComponent(final NavigationButton button)
 	{
-		final Component component = componentMap.remove(button);
+		componentMap.remove(button);
+		update();
+	}
 
-		if (component != null)
+	private void update()
+	{
+		removeAll();
+
+		final AtomicBoolean isDelimited = new AtomicBoolean(false);
+
+		componentMap.forEach((key, value) ->
 		{
-			remove(component);
-			revalidate();
-			repaint();
-		}
+			if (key.isDelimited() && !isDelimited.get())
+			{
+				isDelimited.set(true);
+				add(Box.createVerticalGlue());
+				addSeparator();
+			}
+
+			add(value);
+		});
+
+		revalidate();
+		repaint();
 	}
 }
