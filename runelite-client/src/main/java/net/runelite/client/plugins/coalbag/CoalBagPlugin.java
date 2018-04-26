@@ -30,15 +30,20 @@ import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
+import net.runelite.api.Query;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 import java.util.regex.Matcher;
@@ -47,8 +52,11 @@ import java.util.regex.Pattern;
 @PluginDescriptor(name = "Coal Bag")
 public class CoalBagPlugin extends Plugin
 {
-	private static final Pattern COAL_BAG_FILL_MESSAGE = Pattern.compile("The coal bag (still )?contains (.*) piece(s)? of coal\\.");
 	private static final Pattern COAL_BAG_EMPTY_MESSAGE = Pattern.compile("The coal bag is (now )?empty.");
+	private static final int FULL_BAG_AMOUNT = 27;
+	private static final String FILL_OPTION = "fill";
+	private static final String EMPTY_OPTION = "empty";
+	private static final int EMPTY_INVENTORY_SLOT_ID = -1;
 
 	@Getter
 	private int amount = -1;
@@ -61,6 +69,9 @@ public class CoalBagPlugin extends Plugin
 
 	@Inject
 	Client client;
+
+	@Inject
+	QueryRunner queryRunner;
 
 	@Inject
 	private CoalBagOverlay overlay;
@@ -97,38 +108,41 @@ public class CoalBagPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-		if (NPCDialog != null)
+		if (event.getWidgetId() != WidgetInfo.INVENTORY.getId())
 		{
-			String NPCText = Text.removeTags(NPCDialog.getText()); //remove color and linebreaks
-			Matcher mEmpty = COAL_BAG_EMPTY_MESSAGE.matcher(NPCText); //empty
-			boolean foundEmpty = mEmpty.find();
-			if (foundEmpty)
-			{
-				setAmount(0);
-				return;
-			}
+			return;
+		}
 
-			Matcher mCoalAmount = COAL_BAG_FILL_MESSAGE.matcher(NPCText); //number
-			boolean found = mCoalAmount.find();
-			if (!found)
-			{
-				return;
-			}
+		if (event.getMenuOption().toLowerCase().equals(FILL_OPTION))
+		{
+			Query inventoryQuery = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(ItemID.COAL);
 
-			String amount = mCoalAmount.group(2).toLowerCase();
-			if (amount.equals("one"))
+			Item[] items = queryRunner.runQuery(inventoryQuery);
+			int coalCount = items.length;
+			int amt = amount + coalCount;
+			if (amt > FULL_BAG_AMOUNT)
 			{
-				setAmount(1);
-				return;
+				amt = FULL_BAG_AMOUNT;
 			}
+			setAmount(amt);
+		}
 
-			setAmount(Integer.parseInt(mCoalAmount.group(2)));
+		if (event.getMenuOption().toLowerCase().equals(EMPTY_OPTION))
+		{
+			Query inventoryQuery = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(EMPTY_INVENTORY_SLOT_ID);
+			Item[] items = queryRunner.runQuery(inventoryQuery);
+
+			int emptyInvSpaces = items.length;
+			int amt = amount - emptyInvSpaces;
+			if (amt < 0)
+			{
+				amt = 0;
+			}
+			setAmount(amt);
 		}
 	}
-
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
