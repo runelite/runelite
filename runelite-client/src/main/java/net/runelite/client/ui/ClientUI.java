@@ -28,13 +28,10 @@ import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
 import java.awt.event.InputEvent;
@@ -46,12 +43,10 @@ import javax.inject.Singleton;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -77,8 +72,6 @@ import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
 /**
  * Client UI.
@@ -116,7 +109,6 @@ public class ClientUI
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
-	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
@@ -160,8 +152,6 @@ public class ClientUI
 		{
 			final NavigationButton navigationButton = event.getButton();
 			final PluginPanel pluginPanel = navigationButton.getPanel();
-			final boolean inTitle = !event.getButton().isTab() &&
-				(config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame));
 			final int iconSize = 16;
 
 			if (pluginPanel != null)
@@ -208,14 +198,7 @@ public class ClientUI
 				}
 			});
 
-			if (inTitle)
-			{
-				titleToolbar.addComponent(event.getButton(), button);
-			}
-			else
-			{
-				pluginToolbar.addComponent(event.getButton(), button);
-			}
+			pluginToolbar.addComponent(event.getButton(), button);
 		});
 	}
 
@@ -225,7 +208,6 @@ public class ClientUI
 		SwingUtilities.invokeLater(() ->
 		{
 			pluginToolbar.removeComponent(event.getButton());
-			titleToolbar.removeComponent(event.getButton());
 			final PluginPanel pluginPanel = event.getButton().getPanel();
 
 			if (pluginPanel != null)
@@ -290,7 +272,6 @@ public class ClientUI
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
-			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
 
 			// Add key listener
@@ -305,57 +286,6 @@ public class ClientUI
 			};
 
 			keyManager.registerKeyListener(sidebarListener);
-
-			// Decorate window with custom chrome and titlebar if needed
-			final boolean withTitleBar = config.enableCustomChrome();
-			frame.setUndecorated(withTitleBar);
-
-			if (withTitleBar)
-			{
-				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
-				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-				titleBar.add(titleToolbar);
-
-				// Substance's default layout manager for the title bar only lays out substance's components
-				// This wraps the default manager and lays out the TitleToolbar as well.
-				LayoutManager delegate = titleBar.getLayout();
-				titleBar.setLayout(new LayoutManager()
-				{
-					@Override
-					public void addLayoutComponent(String name, Component comp)
-					{
-						delegate.addLayoutComponent(name, comp);
-					}
-
-					@Override
-					public void removeLayoutComponent(Component comp)
-					{
-						delegate.removeLayoutComponent(comp);
-					}
-
-					@Override
-					public Dimension preferredLayoutSize(Container parent)
-					{
-						return delegate.preferredLayoutSize(parent);
-					}
-
-					@Override
-					public Dimension minimumLayoutSize(Container parent)
-					{
-						return delegate.minimumLayoutSize(parent);
-					}
-
-					@Override
-					public void layoutContainer(Container parent)
-					{
-						delegate.layoutContainer(parent);
-						final int width = titleToolbar.getPreferredSize().width;
-						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					}
-				});
-			}
 
 			// Update config
 			updateFrameConfig(true);
@@ -373,7 +303,7 @@ public class ClientUI
 				0,
 				null);
 
-			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
+			pluginToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
 
 			// Layout frame
@@ -691,7 +621,6 @@ public class ClientUI
 		}
 
 		frame.setExpandResizeType(config.automaticResizeType());
-		frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
 
 		if (!config.rememberScreenBounds())
 		{
