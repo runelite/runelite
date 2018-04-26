@@ -84,6 +84,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int EQUIPMENT_PAGE_GROUP_ID = 84;
 
 	static class WorldMap
 	{
@@ -420,5 +421,27 @@ public class WidgetID
 	{
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
+	}
+
+	static class EquipmentStats
+	{
+		static final int EQUIP_YOUR_CHARACTER = 3;
+		static final int A_STAB = 23;
+		static final int A_SLASH = 24;
+		static final int A_CRUSH = 25;
+		static final int A_MAGIC = 26;
+		static final int A_RANGE = 27;
+		static final int D_STAB = 29;
+		static final int D_SLASH = 30;
+		static final int D_CRUSH = 31;
+		static final int D_MAGIC = 32;
+		static final int D_RANGE = 33;
+		static final int M_STR = 35;
+		static final int R_STR = 36;
+		static final int M_DMG = 37;
+		static final int PRAYER = 38;
+		static final int UNDEAD = 40;
+		static final int SLAYER = 41;
+		static final int WEIGHT = 43;
 	}
 }
