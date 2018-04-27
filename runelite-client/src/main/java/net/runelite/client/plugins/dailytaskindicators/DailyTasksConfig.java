@@ -80,7 +80,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default Color dailyTaskColor()
 	{
-		return new Color(255, 0, 0);
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -91,6 +91,6 @@ public interface DailyTasksConfig extends Config
 	)
 	default Color dailyTaskColorTransparent()
 	{
-		return new Color(255, 0, 0);
+		return Color.RED;
 	}
 }
