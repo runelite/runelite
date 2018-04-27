@@ -44,10 +44,10 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.hiscore.IconTextField;
 import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
@@ -59,8 +59,6 @@ class GrandExchangeSearchPanel extends JPanel
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
-
-	private ItemClient itemClient;
 
 	private Icon search;
 
@@ -150,8 +148,6 @@ class GrandExchangeSearchPanel extends JPanel
 
 		if (result != null && !result.getItems().isEmpty())
 		{
-			itemClient = new ItemClient();
-
 			for (Item item : result.getItems())
 			{
 				int itemId = item.getId();
@@ -172,20 +168,7 @@ class GrandExchangeSearchPanel extends JPanel
 					log.warn("Unable to fetch item price for {}", itemId, ex);
 				}
 
-				BufferedImage itemImage = null;
-				try
-				{
-					itemImage = itemClient.getIcon(itemId);
-				}
-				catch (IOException ex)
-				{
-					log.warn("Unable to fetch item icon for {}", itemId, ex);
-				}
-
-				if (itemImage == null)
-				{
-					log.warn("Unable to fetch item icon for {}", itemId);
-				}
+				AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
 				ITEMS_LIST.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice != null ? itemPrice.getPrice() : 0, itemComp.getPrice() * 0.6));
 
