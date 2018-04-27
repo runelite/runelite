@@ -121,7 +121,7 @@ class SkillXPInfo
 	void setTargetLevel(int currentXp, int targetLevel)
 	{
 		if (targetLevel < Experience.getLevelForXp(currentXp) + 1)
-			targetLevel = Experience.getLevelForXp(currentXp)+1;
+			targetLevel = Experience.getLevelForXp(currentXp) + 1;
 		else if (targetLevel > Experience.MAX_VIRT_LEVEL)
 			targetLevel = Experience.MAX_VIRT_LEVEL;
 		
