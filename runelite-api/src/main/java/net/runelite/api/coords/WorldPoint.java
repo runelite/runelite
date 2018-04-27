@@ -165,4 +165,9 @@ public class WorldPoint
 	{
 		return new Point(x, y);
 	}
+
+	public int getRegionID()
+	{
+		return ((x >> 6) << 8) | (y >> 6);
+	}
 }
