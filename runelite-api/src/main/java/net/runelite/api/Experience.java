@@ -123,7 +123,7 @@ public class Experience
 		double magic = 0.325 * (floor(magicLevel / 2) + magicLevel);
 
 		double totalCombat = base + max(melee, max(range, magic));
-		return totalCombat < 3 ? 3 : totalCombat;
+		return totalCombat < 3.4 ? 3.4 : totalCombat;
 	}
 
 	/**
