@@ -155,4 +155,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 4;
 	}
+
+	@ConfigItem(
+		keyName = "rememberScreenBounds",
+		name = "Remember client position",
+		description = "Save the position and size of the client after exiting",
+		position = 13
+	)
+	default boolean rememberScreenBounds()
+	{
+		return true;
+	}
 }
