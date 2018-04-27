@@ -72,6 +72,7 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
@@ -837,5 +838,12 @@ public abstract class RSClientMixin implements RSClient
 			return;
 		}
 		rs$menuAction(var0, var1, var2, var3, var4, var5, var6, var7);
+	}
+
+	@FieldHook("username")
+	@Inject
+	public static void onUsernameChanged(int idx)
+	{
+		eventBus.post(new UsernameChanged());
 	}
 }
