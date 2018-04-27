@@ -264,7 +264,7 @@ public class RaidsPlugin extends Plugin
 
 		if (client.getSetting(Setting.IN_RAID_PARTY) == -1)
 		{
-			if (!(this.isInRaidChambers() && config.keepScouterActiveDuringRaid()))
+			if (!inRaidChambers || !config.keepScouterActiveDuringRaid())
 			{
 				overlay.setScoutOverlayShown(false);
 				raid = null;
