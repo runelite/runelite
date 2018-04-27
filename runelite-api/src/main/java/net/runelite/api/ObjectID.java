@@ -1296,9 +1296,9 @@ public final class ObjectID
 	public static final int DEAD_TREE_1290 = 1290;
 	public static final int DEAD_TREE_1291 = 1291;
 	public static final int DRAMEN_TREE = 1292;
-	public static final int NULL_1293 = 1293;
-	public static final int NULL_1294 = 1294;
-	public static final int NULL_1295 = 1295;
+	public static final int SPIRIT_TREE_VILLAGE_1293 = 1293;
+	public static final int SPIRIT_TREE_STRONGHOLD_1294 = 1294;
+	public static final int SPIRIT_TREE_1295 = 1295;
 	public static final int FALLEN_TREE = 1296;
 	public static final int FALLEN_TREE_1297 = 1297;
 	public static final int FERN = 1298;
@@ -8340,7 +8340,7 @@ public final class ObjectID
 	public static final int DEAD_BITTERCAP_MUSHROOMS_8335 = 8335;
 	public static final int DEAD_BITTERCAP_MUSHROOMS_8336 = 8336;
 	public static final int NULL_8337 = 8337;
-	public static final int NULL_8338 = 8338;
+	public static final int SPIRIT_TREE_PORT_SARIM_8338 = 8338;
 	public static final int SPIRIT_TREE_PATCH = 8339;
 	public static final int SPIRIT_TREE_PATCH_8340 = 8340;
 	public static final int SPIRIT_TREE_PATCH_8341 = 8341;
@@ -8384,8 +8384,8 @@ public final class ObjectID
 	public static final int DEAD_SPIRIT_TREE_8379 = 8379;
 	public static final int DEAD_SPIRIT_TREE_8380 = 8380;
 	public static final int DEAD_SPIRIT_TREE_8381 = 8381;
-	public static final int NULL_8382 = 8382;
-	public static final int NULL_8383 = 8383;
+	public static final int SPIRIT_TREE_ETCETERIA_8382 = 8382;
+	public static final int SPIRIT_TREE_BRIMHAVEN_8383 = 8383;
 	public static final int NULL_8384 = 8384;
 	public static final int NULL_8385 = 8385;
 	public static final int NULL_8386 = 8386;
@@ -27102,7 +27102,7 @@ public final class ObjectID
 	public static final int NULL_27113 = 27113;
 	public static final int NULL_27114 = 27114;
 	public static final int NULL_27115 = 27115;
-	public static final int NULL_27116 = 27116;
+	public static final int SPIRIT_TREE_KOUREND_27116 = 27116;
 	public static final int FLOWERS_27117 = 27117;
 	public static final int FLOWERS_27118 = 27118;
 	public static final int NULL_27119 = 27119;
