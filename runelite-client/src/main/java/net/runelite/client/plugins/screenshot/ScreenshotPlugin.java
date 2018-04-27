@@ -421,6 +421,27 @@ public class ScreenshotPlugin extends Plugin
 			// Draw the game onto the screenshot
 			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 
+			if (config.hideUsername() && client.getGameState() == GameState.LOGGED_IN)
+			{
+				try (InputStream reportButton = ScreenshotPlugin.class.getResourceAsStream("empty_username_overlay.png"))
+				{
+					BufferedImage emptyUsernameOverlayImage;
+					synchronized (ImageIO.class)
+					{
+						emptyUsernameOverlayImage = ImageIO.read(reportButton);
+					}
+
+					int x = gameOffsetX + 7;
+					int y = gameOffsetY + image.getHeight() - emptyUsernameOverlayImage.getHeight() - 29;
+
+					graphics.drawImage(emptyUsernameOverlayImage, x, y, null);
+				}
+				catch (Exception ex)
+				{
+					log.warn("error hiding username on screenshot", ex);
+				}
+			}
+
 			if (displayDate)
 			{
 				try (InputStream reportButton = ScreenshotPlugin.class.getResourceAsStream("report_button.png"))

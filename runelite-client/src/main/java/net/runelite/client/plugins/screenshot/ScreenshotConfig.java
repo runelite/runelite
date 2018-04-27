@@ -111,4 +111,15 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "hideUsername",
+			name = "Hide Username",
+			description = "Configures whether or not the username is hidden when a screenshot is taken",
+			position = 7
+	)
+	default boolean hideUsername()
+	{
+		return false;
+	}
 }
