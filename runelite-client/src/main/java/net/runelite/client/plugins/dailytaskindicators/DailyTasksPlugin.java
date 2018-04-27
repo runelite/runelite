@@ -146,6 +146,7 @@ public class DailyTasksPlugin extends Plugin
 	private void cacheColors()
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.GAME).refreshAll();
+		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.GAME).refreshAll();
 	}
 
 	private void sendChatMessage(String chatMessage)
