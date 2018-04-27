@@ -29,6 +29,7 @@ import java.awt.Color;
 import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.geom.Area;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +76,7 @@ public class AgilityOverlay extends Overlay
 				if (objectClickbox != null)
 				{
 					Color configColor = markOfGrace != null ? RED : config.getOverlayColor();
+
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 					{
 						graphics.setColor(configColor.darker());
@@ -83,6 +85,7 @@ public class AgilityOverlay extends Overlay
 					{
 						graphics.setColor(configColor);
 					}
+
 					graphics.draw(objectClickbox);
 					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
 					graphics.fill(objectClickbox);
@@ -96,7 +99,14 @@ public class AgilityOverlay extends Overlay
 			if (markOfGrace.getPlane() == client.getPlane() && markOfGrace.getItemLayer() != null
 				&& markOfGrace.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
-				OverlayUtil.renderTileOverlay(graphics, markOfGrace.getItemLayer(), "Mark of Grace", config.getMarkColor());
+				final Polygon poly = markOfGrace.getItemLayer().getCanvasTilePoly();
+
+				if (poly == null)
+				{
+					return null;
+				}
+
+				OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
 			}
 		}
 
