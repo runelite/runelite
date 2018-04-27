@@ -34,9 +34,12 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import net.runelite.http.api.ws.messages.Handshake;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
+import net.runelite.http.api.ws.messages.Handshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,12 +51,9 @@ public class WSService
 	private static final Gson gson = WebsocketGsonFactory.build();
 
 	private Session session;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private UUID uuid;
-
-	public UUID getUuid()
-	{
-		return uuid;
-	}
 
 	public void send(WebsocketMessage message)
 	{
@@ -68,21 +68,20 @@ public class WSService
 	public void onOpen(Session session, EndpointConfig config)
 	{
 		this.session = session;
-		SessionManager.add(this, session);
 		logger.debug("New session {}", session);
 	}
 
 	@OnClose
 	public void onClose(Session session, CloseReason resaon)
 	{
-		SessionManager.remove(session);
+		SessionManager.remove(this);
 		logger.debug("Close session {}", session);
 	}
 
 	@OnError
 	public void onError(Session session, Throwable ex)
 	{
-		SessionManager.remove(session);
+		SessionManager.remove(this);
 		logger.debug("Error in session {}", session, ex);
 	}
 
@@ -95,7 +94,7 @@ public class WSService
 		if (message instanceof Handshake)
 		{
 			Handshake hs = (Handshake) message;
-			uuid = hs.getSession();
+			SessionManager.changeSessionUID(this, hs.getSession());
 		}
 	}
 }
