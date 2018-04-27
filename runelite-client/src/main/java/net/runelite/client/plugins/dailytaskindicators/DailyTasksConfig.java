@@ -27,11 +27,12 @@ package net.runelite.client.plugins.dailytaskindicators;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
 
 @ConfigGroup(
-	keyName = "dailytaskindicators",
-	name = "Daily Task Indicators",
-	description = "Configuration for Daily Task Indicators plugin"
+		keyName = "dailytaskindicators",
+		name = "Daily Task Indicators",
+		description = "Configuration for Daily Task Indicators plugin"
 )
 public interface DailyTasksConfig extends Config
 {
@@ -39,7 +40,7 @@ public interface DailyTasksConfig extends Config
 		keyName = "showHerbBoxes",
 		name = "Show Herb Boxes",
 		description = "Configures whether or not to show a message when you can" +
-			" collect your daily herb boxes at NMZ",
+				" collect your daily herb boxes at NMZ",
 		position = 1
 	)
 	default boolean showHerbBoxes()
@@ -51,7 +52,7 @@ public interface DailyTasksConfig extends Config
 		keyName = "showStaves",
 		name = "Show Claimable Staves",
 		description = "Configures whether or not to show a message when you can" +
-			" collect your daily staves from Zaff",
+				" collect your daily staves from Zaff",
 		position = 2
 	)
 	default boolean showStaves()
@@ -63,11 +64,33 @@ public interface DailyTasksConfig extends Config
 		keyName = "showEssence",
 		name = "Show Claimable Essence",
 		description = "Configures whether or not to show a message when you can" +
-			" collect your daily pure essence from Wizard Cromperty",
+				" collect your daily pure essence from Wizard Cromperty",
 		position = 3
 	)
 	default boolean showEssence()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "dailyTaskColor",
+		name = "Color",
+		description = "Choose what color the daily task messages will be",
+		position = 4
+	)
+	default Color dailyTaskColor()
+	{
+		return new Color(255, 0, 0);
+	}
+
+	@ConfigItem(
+		keyName = "dailyTaskColorTransparent",
+		name = "Color (Transparent Chat)",
+		description = "Choose what color the daily task messages will be in the transparent chatbox",
+		position = 5
+	)
+	default Color dailyTaskColorTransparent()
+	{
+		return new Color(255, 0, 0);
 	}
 }
