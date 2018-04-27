@@ -118,15 +118,16 @@ class SkillXPInfo
 		return "\u221e";
 	}
 
-	void setTargetLevel(int currentXp, int targetLevel) {
-	    if(targetLevel < Experience.getLevelForXp(currentXp)+1)
-	        targetLevel = Experience.getLevelForXp(currentXp)+1;
-	    else if(targetLevel > Experience.MAX_VIRT_LEVEL)
-	        targetLevel = Experience.MAX_VIRT_LEVEL;
-
-	    targetLevelExp = Experience.getXpForLevel(targetLevel);
-	    targetChanged = true;
-    }
+	void setTargetLevel(int currentXp, int targetLevel)
+	{
+		if (targetLevel < Experience.getLevelForXp(currentXp) + 1)
+			targetLevel = Experience.getLevelForXp(currentXp)+1;
+		else if (targetLevel > Experience.MAX_VIRT_LEVEL)
+			targetLevel = Experience.MAX_VIRT_LEVEL;
+		
+		targetLevelExp = Experience.getXpForLevel(targetLevel);
+		targetChanged = true;
+	}
 
 	void reset(int currentXp)
 	{
@@ -136,7 +137,7 @@ class SkillXPInfo
 		}
 
 		xpGained = 0;
-        targetLevelExp = 0;
+		targetLevelExp = 0;
 		actions = 0;
 		skillTimeStart = null;
 	}
@@ -185,9 +186,9 @@ class SkillXPInfo
 		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
 		//Check if target level reached& Default to nextLevelExp.
-       targetLevelExp = targetLevelExp <= nextLevelExp ? nextLevelExp : targetLevelExp;
+		targetLevelExp = targetLevelExp <= nextLevelExp ? nextLevelExp : targetLevelExp;
 
-        targetChanged = false;
+		targetChanged = false;
 
 		if (skillTimeStart == null)
 		{
