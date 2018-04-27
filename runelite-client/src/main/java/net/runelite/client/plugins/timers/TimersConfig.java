@@ -156,6 +156,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showVengeanceOther",
+		name = "Vengeance Other timer",
+		description = "Configures whether vengeance other timer is displayed"
+	)
+	default boolean showVengeanceOther()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showFreezes",
 		name = "Freeze timer",
 		description = "Configures whether freeze timer is displayed"
