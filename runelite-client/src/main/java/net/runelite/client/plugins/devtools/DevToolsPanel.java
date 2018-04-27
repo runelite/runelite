@@ -65,6 +65,7 @@ public class DevToolsPanel extends PluginPanel
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
 		final JButton renderPlayersBtn = new JButton("Players");
+		renderPlayersBtn.setFocusable(false);
 		renderPlayersBtn.addActionListener(e ->
 		{
 			highlightButton(renderPlayersBtn);
@@ -73,6 +74,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderPlayersBtn);
 
 		final JButton renderNpcsBtn = new JButton("NPCs");
+		renderNpcsBtn.setFocusable(false);
 		renderNpcsBtn.addActionListener(e ->
 		{
 			highlightButton(renderNpcsBtn);
@@ -81,6 +83,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderNpcsBtn);
 
 		final JButton renderGroundItemsBtn = new JButton("Ground Items");
+		renderGroundItemsBtn.setFocusable(false);
 		renderGroundItemsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundItemsBtn);
@@ -89,6 +92,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderGroundItemsBtn);
 
 		final JButton renderGroundObjectsBtn = new JButton("Ground Objects");
+		renderGroundObjectsBtn.setFocusable(false);
 		renderGroundObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGroundObjectsBtn);
@@ -97,6 +101,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderGroundObjectsBtn);
 
 		final JButton renderGameObjectsBtn = new JButton("Game Objects");
+		renderGameObjectsBtn.setFocusable(false);
 		renderGameObjectsBtn.addActionListener(e ->
 		{
 			highlightButton(renderGameObjectsBtn);
@@ -105,6 +110,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderGameObjectsBtn);
 
 		final JButton renderWallsBtn = new JButton("Walls");
+		renderWallsBtn.setFocusable(false);
 		renderWallsBtn.addActionListener(e ->
 		{
 			highlightButton(renderWallsBtn);
@@ -113,6 +119,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderWallsBtn);
 
 		final JButton renderDecorBtn = new JButton("Decorations");
+		renderDecorBtn.setFocusable(false);
 		renderDecorBtn.addActionListener(e ->
 		{
 			highlightButton(renderDecorBtn);
@@ -121,6 +128,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderDecorBtn);
 
 		final JButton renderInventoryBtn = new JButton("Inventory");
+		renderInventoryBtn.setFocusable(false);
 		renderInventoryBtn.addActionListener(e ->
 		{
 			highlightButton(renderInventoryBtn);
@@ -129,6 +137,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderInventoryBtn);
 
 		final JButton renderProjectilesBtn = new JButton("Projectiles");
+		renderProjectilesBtn.setFocusable(false);
 		renderProjectilesBtn.addActionListener(e ->
 		{
 			highlightButton(renderProjectilesBtn);
@@ -140,14 +149,17 @@ public class DevToolsPanel extends PluginPanel
 		container.add(boundsDebugPanel);
 
 		final JButton settingsSnapshotBtn = new JButton("Get Settings");
+		settingsSnapshotBtn.setFocusable(false);
 		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
 		container.add(settingsSnapshotBtn);
 
 		final JButton settingsClearBtn = new JButton("Clear Settings");
+		settingsClearBtn.setFocusable(false);
 		settingsClearBtn.addActionListener(settingsTracker::clear);
 		container.add(settingsClearBtn);
 
 		final JButton renderLocationBtn = new JButton("Location");
+		renderLocationBtn.setFocusable(false);
 		renderLocationBtn.addActionListener(e ->
 		{
 			highlightButton(renderLocationBtn);
@@ -156,6 +168,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(renderLocationBtn);
 
 		final JButton widgetInspectorBtn = new JButton("Inspector");
+		widgetInspectorBtn.setFocusable(false);
 		widgetInspectorBtn.addActionListener(e ->
 		{
 			widgetInspector.setVisible(true);
@@ -165,6 +178,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(widgetInspectorBtn);
 
 		final JButton chunkBordersBtn = new JButton("Chunk borders");
+		chunkBordersBtn.setFocusable(false);
 		chunkBordersBtn.addActionListener(e ->
 		{
 			highlightButton(chunkBordersBtn);
@@ -173,6 +187,7 @@ public class DevToolsPanel extends PluginPanel
 		container.add(chunkBordersBtn);
 
 		final JButton mapSquaresBtn = new JButton("Map squares");
+		mapSquaresBtn.setFocusable(false);
 		mapSquaresBtn.addActionListener(e ->
 		{
 			highlightButton(mapSquaresBtn);
@@ -209,6 +224,7 @@ public class DevToolsPanel extends PluginPanel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 4));
 		JButton bBox2DButton = new JButton(bBox2DIcon);
+		bBox2DButton.setFocusable(false);
 		bBox2DButton.addActionListener(e ->
 		{
 			client.setDrawBoundingBoxes2D(!client.getDrawBoundingBoxes2D());
@@ -217,6 +233,7 @@ public class DevToolsPanel extends PluginPanel
 		buttonPanel.add(bBox2DButton);
 
 		JButton bBox3DButton = new JButton(bBox3DIcon);
+		bBox3DButton.setFocusable(false);
 		bBox3DButton.addActionListener(e ->
 		{
 			client.setDrawBoundingBoxes3D(!client.getDrawBoundingBoxes3D());
@@ -225,6 +242,7 @@ public class DevToolsPanel extends PluginPanel
 		buttonPanel.add(bBox3DButton);
 
 		JButton clickBoxButton = new JButton(clickBoxIcon);
+		clickBoxButton.setFocusable(false);
 		clickBoxButton.addActionListener(e ->
 		{
 			client.setdrawObjectGeometry2D(!client.getdrawObjectGeometry2D());
@@ -233,6 +251,7 @@ public class DevToolsPanel extends PluginPanel
 		buttonPanel.add(clickBoxButton);
 
 		JButton mouseoverModeButton = new JButton(client.getBoundingBoxAlwaysOnMode() ? bBox3DIcon : bBox3DMousoverIcon);
+		mouseoverModeButton.setFocusable(false);
 		mouseoverModeButton.addActionListener(e ->
 		{
 			client.setBoundingBoxAlwaysOnMode(!client.getBoundingBoxAlwaysOnMode());
