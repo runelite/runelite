@@ -60,6 +60,7 @@ public enum GameTimer
 	ICEBARRAGE("icebarrage", "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
 	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
 	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
+	VENGEANCEOTHER("vengeanceother", "Vengeance Other", -1, 30, ChronoUnit.SECONDS),
 	ANTIDOTEPLUS("antidoteplus", "Antidote+", 518, ChronoUnit.SECONDS),
 	ANTIVENOM("antivenom", "Anti-venom", 12, ChronoUnit.MINUTES),
 	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),

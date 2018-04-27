@@ -91,4 +91,14 @@ public interface AgilityConfig extends Config
 		return Color.ORANGE;
 	}
 
+	@ConfigItem(
+		keyName = "highlightShortcuts",
+		name = "Highlight Agility Shortcuts",
+		description = "Enable/disable the highlighting of Agility shortcuts",
+		position = 6
+	)
+	default boolean highlightShortcuts()
+	{
+		return true;
+	}
 }
