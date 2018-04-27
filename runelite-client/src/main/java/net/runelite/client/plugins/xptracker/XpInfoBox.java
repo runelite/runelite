@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.xptracker;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -34,17 +33,14 @@ import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.io.IOException;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import javafx.event.ActionEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.JShadowedLabel;
 import net.runelite.client.util.LinkBrowser;
@@ -110,12 +106,12 @@ class XpInfoBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
 		container.addMouseListener(panelMouseListener);
-
-        final JPopupMenu popupMenu = new JPopupMenu();
-
-        // Create target level menu
-        final JMenuItem targetLevel = new JMenuItem("Set Target Level");
-        targetLevel.addActionListener(e -> openTargetPanel());
+		
+		final JPopupMenu popupMenu = new JPopupMenu();
+		
+		// Create target level menu
+		final JMenuItem targetLevel = new JMenuItem("Set Target Level");
+		targetLevel.addActionListener(e -> openTargetPanel());
 
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
@@ -123,7 +119,7 @@ class XpInfoBox extends JPanel
 
 		// Create popup menu
 //		final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.add(targetLevel);
+		popupMenu.add(targetLevel);
 		popupMenu.add(openXpTracker);
 		container.setComponentPopupMenu(popupMenu);
 
@@ -198,36 +194,42 @@ class XpInfoBox extends JPanel
 		}
 	}
 
-	void openTargetPanel () {
+	void openTargetPanel ()
+	{
 		JDialog dialog = new JDialog();
 		dialog.setModal(true);
-        dialog.setAlwaysOnTop(true);
-        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		dialog.setAlwaysOnTop(true);
+		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
 		dialog.setLayout(new GridLayout(3,1));
 
 		//dialogue.setLayout(new BorderLayout(15,15));
 		JLabel label = new JLabel("Target Level:");
-		label.setBorder(new EmptyBorder(5,15,0,15));
+		label.setBorder(new EmptyBorder(5, 15, 0, 15));
 
 		JTextField input = new JTextField();
-        input.setBorder(new EmptyBorder(5,5,0,5));
+		input.setBorder(new EmptyBorder(5,5,0,5));
 
-        JButton button = new JButton("Set");
-        button.setBorder(new EmptyBorder(5,15,5,15));
-		button.addActionListener(ev -> { try {
-                                            int target = Integer.valueOf(input.getText());
-                                            xpInfo.setTargetLevel(client.getSkillExperience(xpInfo.getSkill()), target);
-                                        } catch(Exception e) {}
-                                        dialog.setVisible(false);
-//                                        log.info("Target Level Set To: " + Experience.getLevelForXp(xpInfo.getTargetLevelExp()));
-		                                });
+		JButton button = new JButton("Set");
+		button.setBorder(new EmptyBorder(5, 15, 5, 15));
+		button.addActionListener(ev ->
+			{
+				try
+				{
+					int target = Integer.valueOf(input.getText());
+					xpInfo.setTargetLevel(client.getSkillExperience(xpInfo.getSkill()), target);
+				}
+				catch (Exception e) { }
+				dialog.setVisible(false);
+//				log.info("Target Level Set To: " + Experience.getLevelForXp(xpInfo.getTargetLevelExp()));
+			}
+		);
 
 		dialog.add(label);
 		dialog.add(input);
 		dialog.add(button);
-        dialog.getRootPane().setDefaultButton(button);
-
+		dialog.getRootPane().setDefaultButton(button);
+		
 		dialog.setLocationRelativeTo(null);
 		dialog.pack();
 		dialog.setResizable(false);
