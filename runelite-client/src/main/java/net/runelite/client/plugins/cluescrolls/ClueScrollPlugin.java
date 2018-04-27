@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -58,6 +60,7 @@ import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -119,8 +122,17 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
+	@Inject
+	private ClueScrollConfig config;
+
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
+
+	@Provides
+	ClueScrollConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ClueScrollConfig.class);
+	}
 
 	@Override
 	public Collection<Overlay> getOverlays()
@@ -176,6 +188,15 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("cluescroll") && !config.displayHintArrows())
+		{
+			client.clearHintArrow();
+		}
+	}
+
+	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
@@ -197,7 +218,7 @@ public class ClueScrollPlugin extends Plugin
 		{
 			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
 
-			if (location != null)
+			if (config.displayHintArrows() && location != null)
 			{
 				client.setHintArrow(location);
 			}
@@ -213,7 +234,7 @@ public class ClueScrollPlugin extends Plugin
 				npcsToMark = queryRunner.runQuery(query);
 
 				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (npcsToMark.length >= 1)
+				if (config.displayHintArrows() && npcsToMark.length >= 1)
 				{
 					client.setHintArrow(npcsToMark[0]);
 				}
@@ -245,7 +266,7 @@ public class ClueScrollPlugin extends Plugin
 							.toArray(GameObject[]::new);
 
 						// Set hint arrow to first object found as there can only be 1 hint arrow
-						if (objectsToMark.length >= 1)
+						if (config.displayHintArrows() && objectsToMark.length >= 1)
 						{
 							client.setHintArrow(objectsToMark[0].getWorldLocation());
 						}
@@ -300,7 +321,11 @@ public class ClueScrollPlugin extends Plugin
 
 		clueItemChanged = false;
 		clue = null;
-		client.clearHintArrow();
+
+		if (config.displayHintArrows())
+		{
+			client.clearHintArrow();
+		}
 	}
 
 	private ClueScroll findClueScroll()
