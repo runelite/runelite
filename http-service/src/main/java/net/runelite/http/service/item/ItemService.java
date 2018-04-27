@@ -369,7 +369,7 @@ public class ItemService
 		}
 		else
 		{
-			log.warn("Dropping pending price lookup for {}", itemId);
+			log.debug("Dropping pending price lookup for {}", itemId);
 		}
 	}
 
@@ -381,7 +381,7 @@ public class ItemService
 		}
 		else
 		{
-			log.warn("Dropping pending search for {}", search);
+			log.debug("Dropping pending search for {}", search);
 		}
 	}
 
@@ -393,7 +393,7 @@ public class ItemService
 		}
 		else
 		{
-			log.warn("Dropping pending item lookup for {}", itemId);
+			log.debug("Dropping pending item lookup for {}", itemId);
 		}
 	}
 
