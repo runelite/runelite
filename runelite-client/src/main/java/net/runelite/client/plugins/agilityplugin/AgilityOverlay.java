@@ -69,6 +69,11 @@ public class AgilityOverlay extends Overlay
 		final Tile markOfGrace = plugin.getMarkOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
+			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts())
+			{
+				return;
+			}
+
 			if (tile.getPlane() == client.getPlane()
 				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
