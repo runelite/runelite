@@ -112,6 +112,7 @@ public final class AnimationID
 	public static final int BURYING_BONES = 827;
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
+	public static final int VENGEANCE_OTHER = 4411;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
