@@ -201,14 +201,14 @@ class XpInfoBox extends JPanel
 		dialog.setAlwaysOnTop(true);
 		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
-		dialog.setLayout(new GridLayout(3,1));
+		dialog.setLayout(new GridLayout(3, 1));
 
 		//dialogue.setLayout(new BorderLayout(15,15));
 		JLabel label = new JLabel("Target Level:");
 		label.setBorder(new EmptyBorder(5, 15, 0, 15));
 
 		JTextField input = new JTextField();
-		input.setBorder(new EmptyBorder(5,5,0,5));
+		input.setBorder(new EmptyBorder(5, 5, 0, 5));
 
 		JButton button = new JButton("Set");
 		button.setBorder(new EmptyBorder(5, 15, 5, 15));
@@ -219,7 +219,9 @@ class XpInfoBox extends JPanel
 					int target = Integer.valueOf(input.getText());
 					xpInfo.setTargetLevel(client.getSkillExperience(xpInfo.getSkill()), target);
 				}
-				catch (Exception e) { }
+				catch (Exception e)
+				{
+				}
 				dialog.setVisible(false);
 //				log.info("Target Level Set To: " + Experience.getLevelForXp(xpInfo.getTargetLevelExp()));
 			}
