@@ -110,7 +110,7 @@ public class Experience
 	/**
 	 * Calculates a high-precision combat level without integer rounding.
 	 *
-	 * @return Combat level between 1.15 and ~126.1 (assuming non-virtual levels).
+	 * @return Combat level between 3.4 and ~126.1 (assuming non-virtual levels).
 	 */
 	public static double getCombatLevelPrecise(int attackLevel, int strengthLevel,
 		int defenceLevel, int hitpointsLevel, int magicLevel,
