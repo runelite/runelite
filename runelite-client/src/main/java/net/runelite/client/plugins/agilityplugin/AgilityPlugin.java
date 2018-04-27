@@ -165,11 +165,13 @@ public class AgilityPlugin extends Plugin
 	public void onItemLayerChanged(ItemLayerChanged event)
 	{
 		if (obstacles.isEmpty())
+		{
 			return;
+		}
 
-		Tile tile = event.getTile();
-		ItemLayer itemLayer = tile.getItemLayer();
-		boolean hasMark = tileHasMark(itemLayer);
+		final Tile tile = event.getTile();
+		final ItemLayer itemLayer = tile.getItemLayer();
+		final boolean hasMark = tileHasMark(itemLayer);
 
 		if (markOfGrace != null && tile.getWorldLocation().equals(markOfGrace.getWorldLocation()) && !hasMark)
 		{
@@ -203,8 +205,6 @@ public class AgilityPlugin extends Plugin
 		return false;
 	}
 
-	// This code, brought to you, in part, by the letters C and V
-	// ... and the words "search" and "replace"
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
@@ -281,7 +281,13 @@ public class AgilityPlugin extends Plugin
 	{
 		obstacles.remove(oldObject);
 
-		if (newObject != null && Obstacles.OBSTACLE_IDS.contains(newObject.getId()))
+		if (newObject == null)
+		{
+			return;
+		}
+
+		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
+			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()))
 		{
 			obstacles.put(newObject, tile);
 		}

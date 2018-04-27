@@ -159,6 +159,17 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 11,
+		keyName = "drawOverheadPlayerNames",
+		name = "Draw names above players",
+		description = "Configures whether or not player names should be drawn above players"
+	)
+	default boolean drawOverheadPlayerNames()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 12,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -169,7 +180,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "colorPlayerMenu",
 		name = "Color player menu",
 		description = "Color right click menu for players"
@@ -180,7 +191,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "clanMenuIcons",
 		name = "Show clan rank in menu",
 		description = "Add clan rank to right click menu for players"
