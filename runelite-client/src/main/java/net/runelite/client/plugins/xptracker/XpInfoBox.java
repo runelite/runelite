@@ -93,6 +93,18 @@ class XpInfoBox extends JPanel
 		// Expand stats panel on click
 		Color backgroundColor = getBackground();
 
+		JPopupMenu rightClickMenu = new JPopupMenu();
+
+		// Create and add open xp tracker menu item
+		final JMenuItem openXpTrackerMenuItem = new JMenuItem("Open XP tracker");
+		openXpTrackerMenuItem.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), xpInfo.getSkill())));
+		rightClickMenu.add(openXpTrackerMenuItem);
+
+		// Create and add reset tracker menu item
+		final JMenuItem resetMenuItem = new JMenuItem("Reset " + xpInfo.getSkill().getName() + " tracker");
+		resetMenuItem.addActionListener(e -> reset());
+		rightClickMenu.add(resetMenuItem);
+
 		MouseListener panelMouseListener = new MouseAdapter()
 		{
 			@Override
@@ -112,21 +124,17 @@ class XpInfoBox extends JPanel
 				{
 					showStatsPanel();
 				}
+				if (SwingUtilities.isRightMouseButton(e))
+				{
+					rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+
 			}
 		};
 
 		container.setLayout(new BorderLayout());
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
 		container.addMouseListener(panelMouseListener);
-
-		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), xpInfo.getSkill())));
-
-		// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.add(openXpTracker);
-		container.setComponentPopupMenu(popupMenu);
 
 		// Create icon panel
 		final JPanel iconBarPanel = new JPanel();
@@ -140,8 +148,6 @@ class XpInfoBox extends JPanel
 		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
 		skillIcon.setIcon(new ImageIcon(skillImage));
 		skillIcon.setRolloverIcon(new ImageIcon(createHoverImage(skillImage)));
-		skillIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
-		skillIcon.addActionListener(e -> reset());
 		skillIcon.setBounds(ICON_BOUNDS);
 		skillIcon.setOpaque(false);
 		skillIcon.setFocusPainted(false);
