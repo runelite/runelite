@@ -60,8 +60,8 @@ import static net.runelite.api.Skill.WOODCUTTING;
 @Getter
 public enum DiscordGameEventType
 {
-	IN_GAME("In Game", false),
-	IN_MENU("In Menu", false),
+	IN_GAME("In Game", false, true),
+	IN_MENU("In Menu", false, false),
 	TRAINING_ATTACK(training(ATTACK), DiscordGameEventType::combatSkillChanged),
 	TRAINING_DEFENCE(training(DEFENCE), DiscordGameEventType::combatSkillChanged),
 	TRAINING_STRENGTH(training(STRENGTH), DiscordGameEventType::combatSkillChanged),
@@ -89,14 +89,16 @@ public enum DiscordGameEventType
 	private static final Set<Skill> COMBAT_SKILLS = Sets.newHashSet(ATTACK, STRENGTH, DEFENCE, HITPOINTS, SLAYER, RANGED, MAGIC);
 	private final String state;
 	private String details;
+	private boolean trackTime = true;
 	private boolean considerDelay = true;
 	private Function<DiscordGameEventType, Boolean> isChanged = (l) -> true;
 	private int priority = 0;
 
-	DiscordGameEventType(String state, boolean considerDelay)
+	DiscordGameEventType(String state, boolean considerDelay, boolean trackTime)
 	{
 		this.state = state;
 		this.considerDelay = considerDelay;
+		this.trackTime = trackTime;
 	}
 
 	DiscordGameEventType(String state, int priority, Function<DiscordGameEventType, Boolean> isChanged)
