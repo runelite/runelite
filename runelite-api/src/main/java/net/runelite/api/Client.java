@@ -332,7 +332,6 @@ public interface Client extends GameEngine
 
 	boolean isClanMember(String name);
 
-<<<<<<< HEAD
 	Preferences getPreferences();
 
 	void setCameraPitchRelaxerEnabled(boolean enabled);

@@ -183,37 +183,12 @@ public abstract class RSActorMixin implements RSActor
 
 	@Inject
 	@Override
-	public Point getRegionTile()
-	{
-		return new Point(this.getPathX()[0], this.getPathY()[0]);
-	}
-
-	@Inject
-	@Override
-	public Point getWorldTile()
-	{
-		Point region = getRegionTile();
-		int baseX = client.getBaseX();
-		int baseY = client.getBaseY();
-
-		return new Point(baseX + region.getX(), baseY + region.getY());
-	}
-
-	@Inject
-	@Override
 	public FreezeInfo getFreeze()
 	{
 		if (this.freeze == null)
 			this.freeze = new FreezeInfo();
 		
 		return this.freeze;
-	}
-
-	@Inject
-	@Override
-	public boolean hasComposition()
-	{
-		return false;
 	}
 
 	@FieldHook("animation")

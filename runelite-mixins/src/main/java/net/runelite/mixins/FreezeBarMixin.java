@@ -32,10 +32,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.rs.api.RSActor;
-import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSNPC;
-import net.runelite.rs.api.RSNPCComposition;
+import net.runelite.rs.api.*;
 
 @Mixin(RSClient.class)
 public abstract class FreezeBarMixin implements RSClient
@@ -76,7 +73,16 @@ public abstract class FreezeBarMixin implements RSClient
 		{
 			FreezeInfo freezeInfo = actor.getFreeze();
 
-			if (actor.hasComposition() && freezeInfo != null && (freezeInfo.isFrozen() || freezeInfo.isImmune()))
+			boolean hasComposition = false;
+
+			if (actor instanceof RSNPC) {
+				hasComposition = ((RSNPC) actor).getComposition() != null;
+			}
+			else if (actor instanceof RSPlayer) {
+				hasComposition = ((RSPlayer) actor).getPlayerComposition() != null;
+			}
+
+			if (hasComposition && freezeInfo != null && (freezeInfo.isFrozen() || freezeInfo.isImmune()))
 			{
 				if (actor instanceof RSNPC)
 				{
