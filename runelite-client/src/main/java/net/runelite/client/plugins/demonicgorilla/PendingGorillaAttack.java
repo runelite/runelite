@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.demonicgorilla;
 
-public interface NPCComposition
+import lombok.Getter;
+import net.runelite.api.Player;
+
+public class PendingGorillaAttack
 {
-	String getName();
+	@Getter
+	private DemonicGorilla attacker;
 
-	int[] getModels();
+	@Getter
+	private DemonicGorilla.AttackStyle attackStyle;
 
-	String[] getActions();
+	@Getter
+	private Player target;
 
-	boolean isClickable();
+	@Getter
+	private int finishesOnTick;
 
-	boolean isMinimapVisable();
-
-	boolean isVisable();
-
-	int getId();
-
-	int getCombatLevel();
-
-	int[] getConfigs();
-	
-	NPCComposition transform();
-
-	int getSize();
-
-	int getOverheadIcon();
+	public PendingGorillaAttack(DemonicGorilla attacker, DemonicGorilla.AttackStyle attackStyle,
+								Player target, int finishesOnTick)
+	{
+		this.attacker = attacker;
+		this.attackStyle = attackStyle;
+		this.target = target;
+		this.finishesOnTick = finishesOnTick;
+	}
 }

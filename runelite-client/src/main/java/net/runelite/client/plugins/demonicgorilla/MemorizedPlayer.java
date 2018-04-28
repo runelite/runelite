@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.demonicgorilla;
 
-public interface NPCComposition
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldArea;
+
+public class MemorizedPlayer
 {
-	String getName();
+	@Getter
+	private Player player;
 
-	int[] getModels();
+	@Getter
+	@Setter
+	private WorldArea lastWorldArea;
 
-	String[] getActions();
+	@Getter
+	private List<Hitsplat> recentHitsplats;
 
-	boolean isClickable();
-
-	boolean isMinimapVisable();
-
-	boolean isVisable();
-
-	int getId();
-
-	int getCombatLevel();
-
-	int[] getConfigs();
-	
-	NPCComposition transform();
-
-	int getSize();
-
-	int getOverheadIcon();
+	public MemorizedPlayer(Player player)
+	{
+		this.player = player;
+		this.recentHitsplats = new ArrayList<>();
+	}
 }

@@ -72,4 +72,8 @@ public interface RSNPCComposition extends NPCComposition
 	@Import("size")
 	@Override
 	int getSize();
+
+	@Import("headIcon")
+	@Override
+	int getOverheadIcon();
 }

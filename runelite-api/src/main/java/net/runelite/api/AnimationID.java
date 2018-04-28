@@ -113,6 +113,12 @@ public final class AnimationID
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
 	public static final int VENGEANCE_OTHER = 4411;
+	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
+	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
+	public static final int DEMONIC_GORILLA_RANGED_ATTACK = 7227;
+	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
+	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
+	public static final int DEMONIC_GORILLA_DEFEND = 7224;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
