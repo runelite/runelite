@@ -26,7 +26,6 @@ package net.runelite.client.util;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
@@ -243,7 +242,7 @@ public class SwingUtil
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
-		button.setMaximumSize(new Dimension(30, 30));
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
 		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
