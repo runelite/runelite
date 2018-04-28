@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.ws;
+package net.runelite.client.ui;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.awt.event.KeyEvent;
+import javax.swing.SwingUtilities;
+import net.runelite.client.input.KeyListener;
 
-public class SessionManager
+class UiKeyListener implements KeyListener
 {
-	private static final ConcurrentMap<UUID, WSService> sessions = new ConcurrentHashMap<>();
+	private final ClientUI clientUi;
 
-	public static void changeSessionUID(WSService service, UUID uuid)
+	UiKeyListener(ClientUI clientUi)
 	{
-		synchronized (service)
+		this.clientUi = clientUi;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_F11)
 		{
-			remove(service);
-			service.setUuid(uuid);
-			sessions.put(uuid, service);
+			SwingUtilities.invokeLater(clientUi::toggleSidebar);
 		}
 	}
 
-	static void remove(WSService service)
+	@Override
+	public void keyReleased(KeyEvent e)
 	{
-		synchronized (service)
-		{
-			UUID current = service.getUuid();
-			if (current != null)
-			{
-				sessions.remove(current);
-				service.setUuid(null);
-			}
-		}
-	}
-
-	public static WSService findSession(UUID uuid)
-	{
-		return sessions.get(uuid);
 	}
 }

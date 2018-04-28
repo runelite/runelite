@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.ws;
+package net.runelite.client.plugins.screenshot;
 
-import java.util.Objects;
-import javax.websocket.Session;
+import java.awt.event.KeyEvent;
+import java.util.Date;
+import javax.inject.Inject;
+import net.runelite.client.input.KeyListener;
+import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
 
-public class WSSession
+public class ScreenshotInput implements KeyListener
 {
-	private final WSService servlet;
-	private final Session session;
+	private final ScreenshotConfig config;
+	private final ScreenshotPlugin plugin;
 
-	public WSSession(WSService servlet, Session session)
+	@Inject
+	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
 	{
-		this.servlet = servlet;
-		this.session = session;
-	}
-
-	public WSService getServlet()
-	{
-		return servlet;
-	}
-
-	public Session getSession()
-	{
-		return session;
+		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
-	public int hashCode()
+	public void keyPressed(KeyEvent event)
 	{
-		int hash = 3;
-		hash = 29 * hash + Objects.hashCode(this.session);
-		return hash;
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public void keyTyped(KeyEvent event)
 	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final WSSession other = (WSSession) obj;
-		if (!Objects.equals(this.session, other.session))
-		{
-			return false;
-		}
-		return true;
 	}
+
+	@Override
+	public void keyReleased(KeyEvent event)
+	{
+		if (!config.isScreenshotEnabled())
+			return;
+
+		if (event.getKeyCode() == KeyEvent.VK_INSERT)
+		{
+			plugin.takeScreenshot(TIME_FORMAT.format(new Date()), config.displayDate());
+		}
+	}
+
 }
