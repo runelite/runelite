@@ -117,8 +117,8 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
+		period = 500,
+		unit = ChronoUnit.MILLIS
 	)
 	public void updateSchedule()
 	{
