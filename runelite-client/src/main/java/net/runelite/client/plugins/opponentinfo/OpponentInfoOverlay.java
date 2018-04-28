@@ -30,7 +30,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -42,13 +41,13 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
+import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.Text;
-import java.util.concurrent.ExecutionException;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -193,16 +192,16 @@ class OpponentInfoOverlay extends Overlay
 			// PVP Hitpoints
 			if (lastMaxHealth == null)
 			{
-				// If found
-				try
+				HiscoreResult opponentHiscore = hiscoreManager.lookupUsernameAsync(opponentName);
+				if (opponentHiscore != null)
 				{
+					int hitpointLevel = opponentHiscore.getHitpoints().getLevel();
 					// Rounding b/c in pvp its better to overestimate than underestimate
-					lastMaxHealth = hiscoreManager.lookupUsername(opponentName).getHitpoints().getLevel();
-					int currHealth = Math.round((lastRatio * lastMaxHealth));
-					str = currHealth + "/" + lastMaxHealth;
+					int currHealth = Math.round((lastRatio * hitpointLevel));
+					str = currHealth + "/" + hitpointLevel;
 				}
-				// If not found
-				catch (ExecutionException ex)
+
+				else
 				{
 					str = df.format(lastRatio * 100) + "%";
 				}

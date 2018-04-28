@@ -180,7 +180,28 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
-	private XpWorldType getWorldType(int worldNum)
+	public void startUp_backend() throws Exception
+	{
+		WorldClient worldClient = new WorldClient();
+		try
+		{
+			worlds = worldClient.lookupWorlds();
+			if (worlds != null)
+			{
+				log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
+			}
+			else
+			{
+				log.warn("Unable to look up worlds");
+			}
+		}
+		catch (IOException e)
+		{
+			log.warn("Error looking up worlds list", e);
+		}
+	}
+
+	public XpWorldType getWorldType(int worldNum)
 	{
 		if (worlds == null)
 		{

@@ -26,7 +26,7 @@ package net.runelite.client.plugins.xptracker;
 
 import net.runelite.http.api.worlds.WorldType;
 
-enum XpWorldType
+public enum XpWorldType
 {
 	NORMAL,
 	DMM,
