@@ -141,7 +141,7 @@ public class FreezeManager
 
 		freezeInfo.decrementAll();
 
-		//after immunity runs out
+		//after immunity runs out reset everything (no bars)
 		if (!freezeInfo.isFrozen() && !freezeInfo.isImmune() && freezeInfo.getType() == null && wasImmune)
 		{
 			freezeInfo.resetFreeze();
@@ -149,12 +149,26 @@ public class FreezeManager
 		}
 
 		//if not frozen, not immune and queued freezes
+		//whilst immune we want to skip this
+		//when we're frozen we cannot have a freeze reapply so skip this too
+		//we must have a freeze queued which can be applied
+		//the freeze type must be null which is implied by us not being in a frozen state
 		if (!freezeInfo.isImmune() && !freezeInfo.isFrozen() && freezeInfo.getType() == null && freezeInfo.hasQueued())
 		{
 			for (FreezeInfo.QueuedFreeze qf : freezeInfo.getQueuedFreezes())
 			{
-				if (qf.shouldTrigger())
-				{
+				//shouldTrigger will check if the freeze is ready to be activated
+				//the freeze graphic usually occurs 1/2 ticks before the freeze is actually applied
+				//that's why freezes are stored because freezes casted whilst we were immune might take
+				//effect when we're no longer immune.
+				//we must queue all freezes despite one already being queued because in the case where we don't have
+				//pid our queued freeze could potentially inhibit a new freeze from being queued which would actually
+				//end up freezing the subject
+				if (qf.shouldTrigger()) {
+					//the freeze time in ticks cannot simply be derived from the currently activate overhead prayer
+					//and freeze type.
+					//unlike freezes which apply 1/2 ticks after casting the length of the freeze is determined during
+					//the tick the graphic changes, so this information must be stored along with the type
 					int ticks = qf.getLengthTicks();
 					//halving has already been determined on cast
 					freezeInfo.startFreeze(qf.getType(), ticks, subject.getWorldLocation());
@@ -163,24 +177,16 @@ public class FreezeManager
 			}
 		}
 
-		//if we were frozen last tick or this tick
-		if (freezeInfo.isFrozen())
-		{
-
-		}
-
 		//if there is a type set from when we were last frozen but we're not frozen anymore then we're immune
 		if (freezeInfo.getType() != null && !freezeInfo.isFrozen())
 		{
 			freezeInfo.startImmunity();
 		}
 
-		//if we're immune
-		if (freezeInfo.isImmune())
-		{
-			
-		}
-
+		//this acts as a fail safe in case a freeze is cancelled early
+		//this would not necessarily be due to a bug, it could happen due to the subject having a freeze in effect
+		//before the subject was known to the client or when the attacker is over 10 tiles away the freeze
+		//automatically gets cancelled
 		if (freezeInfo.getPosition() != null && (!freezeInfo.getPosition().equals(subject.getWorldLocation())))
 		{
 			freezeInfo.resetFreeze();
