@@ -65,6 +65,7 @@ class XpInfoBox extends JPanel
 
 	private final Client client;
 	private final JPanel panel;
+	private final XpTrackerConfig config;
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillXPInfo xpInfo;
 
@@ -77,12 +78,16 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
 
-	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
+	private boolean showInfoChanged;
+
+	XpInfoBox(Client client, JPanel panel, XpTrackerConfig config, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
+		this.config = config;
 		this.panel = panel;
 		this.xpInfo = xpInfo;
 
+		showInfoChanged = config.showMoreInfo();
 		setLayout(new BorderLayout());
 		setBorder(new CompoundBorder
 		(
@@ -185,9 +190,9 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.CENTER);
 	}
 
-	private void showStatsPanel()
+	private void showStatsPanel(boolean... state)
 	{
-		if (statsPanel.isShowing())
+		if (statsPanel.isShowing() || !state[0])
 		{
 			container.remove(statsPanel);
 			revalidate();
@@ -215,6 +220,17 @@ class XpInfoBox extends JPanel
 		}
 
 		xpInfo.setStartXp(client.getSkillExperience(xpInfo.getSkill()));
+
+		showStatsPanel(!showInfoChanged);
+	}
+
+	void changeShowInfo()
+	{
+		if (showInfoChanged != config.showMoreInfo())
+		{
+			showInfoChanged = config.showMoreInfo();
+			showStatsPanel(!showInfoChanged);
+		}
 	}
 
 	void update()
@@ -224,6 +240,7 @@ class XpInfoBox extends JPanel
 			return;
 		}
 
+		changeShowInfo();
 		boolean updated = xpInfo.update(client.getSkillExperience(xpInfo.getSkill()));
 
 		SwingUtilities.invokeLater(() ->
