@@ -298,7 +298,7 @@ public final class GraphicsObject extends Renderable {
                   }
 
                   var12 = var1.getUSmart();
-                  var4.method1703(var8, var10, var9, var11, Client.gameCycle, var12);
+                  var4.applyActorHitsplat(var8, var10, var9, var11, Client.gameCycle, var12);
                }
             }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,37 +24,47 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import lombok.Getter;
 
-public interface Tile
+public class Hitsplat
 {
-	/**
-	 * Get the decorative object for this tile.
-	 *
-	 * @return
-	 */
-	DecorativeObject getDecorativeObject();
+	public enum HitsplatType
+	{
+		BLOCK, // Blue
+		DAMAGE, // Red
+		POISON, // Green
+		VENOM, // Darkgreen
+		DISEASE, // Yellow
+		HEAL; // Purple
 
-	GameObject[] getGameObjects();
+		public static HitsplatType fromInteger(int type)
+		{
+			switch (type)
+			{
+				case 0: return BLOCK;
+				case 1: return DAMAGE;
+				case 2: return POISON;
+				case 4: return DISEASE;
+				case 5: return VENOM;
+				case 6: return HEAL;
+			}
+			return null;
+		}
+	}
 
-	ItemLayer getItemLayer();
+	@Getter
+	private HitsplatType hitsplatType;
 
-	GroundObject getGroundObject();
+	@Getter
+	private int amount;
 
-	WallObject getWallObject();
+	@Getter
+	private int disappearsOnGameCycle;
 
-	SceneTilePaint getSceneTilePaint();
-
-	SceneTileModel getSceneTileModel();
-
-	WorldPoint getWorldLocation();
-
-	Point getRegionLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getPlane();
-
-	boolean hasLineOfSightTo(Tile other);
+	public Hitsplat(HitsplatType hitsplatType, int amount, int disappearsOnGameCycle)
+	{
+		this.hitsplatType = hitsplatType;
+		this.amount = amount;
+		this.disappearsOnGameCycle = disappearsOnGameCycle;
+	}
 }
