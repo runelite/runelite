@@ -255,11 +255,13 @@ public class SlayerPlugin extends Plugin
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
 		{
 			amount++;
+			return;
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
 		{
 			amount--;
+			return;
 		}
 
 		if (chatMsg.endsWith("; return to a Slayer master."))

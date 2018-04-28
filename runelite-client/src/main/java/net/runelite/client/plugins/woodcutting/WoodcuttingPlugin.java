@@ -79,6 +79,7 @@ public class WoodcuttingPlugin extends Plugin
 			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
 			{
 				session.setLastLogCut();
+				return;
 			}
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())

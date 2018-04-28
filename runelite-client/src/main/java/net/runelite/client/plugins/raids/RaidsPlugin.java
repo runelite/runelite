@@ -272,58 +272,62 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		if (!inRaidChambers || event.getType() != ChatMessageType.CLANCHAT_INFO)
 		{
-			String message = Text.removeTags(event.getMessage());
+			return;
+		}
 
-			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
-			{
-				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
-				infoBoxManager.addInfoBox(timer);
-			}
+		String message = Text.removeTags(event.getMessage());
 
-			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
+		if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
+		{
+			timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
+			infoBoxManager.addInfoBox(timer);
+			return;
+		}
+
+		if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
+		{
+			timer.timeFloor();
+			return;
+		}
+
+		if (message.startsWith(RAID_COMPLETE_MESSAGE))
+		{
+			if (timer != null)
 			{
 				timer.timeFloor();
+				timer.setStopped(true);
 			}
 
-			if (message.startsWith(RAID_COMPLETE_MESSAGE))
+			if (config.pointsMessage())
 			{
-				if (timer != null)
-				{
-					timer.timeFloor();
-					timer.setStopped(true);
-				}
+				int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
+				int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
 
-				if (config.pointsMessage())
-				{
-					int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
-					int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
+				double percentage = personalPoints / (totalPoints / 100.0);
 
-					double percentage = personalPoints / (totalPoints / 100.0);
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("Total points: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(POINTS_FORMAT.format(totalPoints))
+					.append(ChatColorType.NORMAL)
+					.append(", Personal points: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(POINTS_FORMAT.format(personalPoints))
+					.append(ChatColorType.NORMAL)
+					.append(" (")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(DECIMAL_FORMAT.format(percentage))
+					.append(ChatColorType.NORMAL)
+					.append("%)")
+					.build();
 
-					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
-
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
-						.build());
-				}
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CLANCHAT_INFO)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
 			}
 		}
 	}
