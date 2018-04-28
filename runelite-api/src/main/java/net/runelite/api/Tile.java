@@ -55,4 +55,6 @@ public interface Tile
 	LocalPoint getLocalLocation();
 
 	int getPlane();
+
+	boolean hasLineOfSightTo(Tile other);
 }
