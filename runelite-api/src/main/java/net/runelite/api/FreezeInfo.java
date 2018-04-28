@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,7 +75,7 @@ public class FreezeInfo
 	 * position we are frozen at, if we move from this point the freeze is automatically cancelled and immunity applied
 	 */
 	@Getter
-	private Point position;
+	private WorldPoint position;
 
 	public FreezeInfo()
 	{
@@ -132,7 +133,7 @@ public class FreezeInfo
 		return this.queuedFreezes.size() > 0;
 	}
 
-	public void startFreeze(FreezeType t, int frozenTicks, Point position)
+	public void startFreeze(FreezeType t, int frozenTicks, WorldPoint position)
 	{
 		this.immune = 0;
 		this.frozen = frozenTicks;

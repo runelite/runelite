@@ -117,7 +117,7 @@ public class FreezeManager
 		if (a instanceof Player)
 		{
 			log.debug("Player freeze queued");
-			OverheadPrayer activeOverhead = ((Player) a).getOverheadPrayer();
+			OverheadPrayer activeOverhead = OverheadPrayer.fromId(((Player) a).getOverheadIcon());
 
 			if (type.isHalfOnPray() && activeOverhead == OverheadPrayer.PROTECT_MAGIC)
 			{
@@ -157,7 +157,7 @@ public class FreezeManager
 				{
 					int ticks = qf.getLengthTicks();
 					//halving has already been determined on cast
-					freezeInfo.startFreeze(qf.getType(), ticks, subject.getWorldTile());
+					freezeInfo.startFreeze(qf.getType(), ticks, subject.getWorldLocation());
 					break;
 				}
 			}
@@ -181,7 +181,7 @@ public class FreezeManager
 			
 		}
 
-		if (freezeInfo.getPosition() != null && (!freezeInfo.getPosition().equals(subject.getWorldTile())))
+		if (freezeInfo.getPosition() != null && (!freezeInfo.getPosition().equals(subject.getWorldLocation())))
 		{
 			freezeInfo.resetFreeze();
 			log.debug("{} had their freeze cancelled", subject.getName());
