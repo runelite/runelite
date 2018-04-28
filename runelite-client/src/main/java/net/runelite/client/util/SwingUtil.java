@@ -239,6 +239,7 @@ public class SwingUtil
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
 		button.setName(navigationButton.getName());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));

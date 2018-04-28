@@ -32,6 +32,7 @@ import java.awt.Canvas;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
@@ -41,7 +42,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -61,6 +61,7 @@ import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -79,7 +80,7 @@ public class ClientUI
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static final BufferedImage ICON;
-	private static final BufferedImage SIDEBAR_OPEN;
+	static final BufferedImage SIDEBAR_OPEN;
 	private static final BufferedImage SIDEBAR_CLOSE;
 
 	static
@@ -115,6 +116,8 @@ public class ClientUI
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
+	private final MouseManager mouseManager;
+	private final ConfigManager configManager;
 	private Applet client;
 	private ContainableFrame frame;
 	private JPanel navContainer;
@@ -125,11 +128,6 @@ public class ClientUI
 	private boolean sidebarOpen;
 	private JPanel container;
 	private PluginPanel lastPluginPanel;
-	private NavigationButton sidebarNavigationButton;
-	private JButton sidebarNavigationJButton;
-
-	@Inject
-	private ConfigManager configManager;
 
 	@Inject
 	private ClientUI(
@@ -137,13 +135,17 @@ public class ClientUI
 		RuneLiteProperties properties,
 		RuneLiteConfig config,
 		EventBus eventBus,
-		KeyManager keyManager)
+		KeyManager keyManager,
+		MouseManager mouseManager,
+		ConfigManager configManager)
 	{
 		this.runelite = runelite;
 		this.properties = properties;
 		this.config = config;
 		this.eventBus = eventBus;
 		this.keyManager = keyManager;
+		this.mouseManager = mouseManager;
+		this.configManager = configManager;
 	}
 
 	@Subscribe
@@ -318,10 +320,11 @@ public class ClientUI
 			pluginToolbar = new ClientPluginToolbar();
 			frame.add(container);
 
-			// Add key listener
-			final UiKeyListener uiKeyListener = new UiKeyListener(this);
-			frame.addKeyListener(uiKeyListener);
-			keyManager.registerKeyListener(uiKeyListener);
+			// Add input listener
+			final ClientUIInputListener inputListener = new ClientUIInputListener(client, this);
+			frame.addKeyListener(inputListener);
+			keyManager.registerKeyListener(inputListener);
+			mouseManager.registerMouseListener(inputListener);
 		});
 	}
 
@@ -388,18 +391,6 @@ public class ClientUI
 			{
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
-
-			// Create hide sidebar button
-			sidebarNavigationButton = NavigationButton
-				.builder()
-				.icon(SIDEBAR_CLOSE)
-				.onClick(this::toggleSidebar)
-				.build();
-
-			sidebarNavigationJButton = SwingUtil.createSwingButton(
-				sidebarNavigationButton,
-				0,
-				null);
 
 			toggleSidebar();
 		});
@@ -476,6 +467,24 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
+	/**
+	 * Paint UI related overlays to target graphics
+	 * @param graphics target graphics
+	 */
+	public void paintOverlays(final Graphics2D graphics)
+	{
+		if (client == null || !(client instanceof Client))
+		{
+			return;
+		}
+
+		final Client client = (Client)this.client;
+		final int x = client.getRealDimensions().width - SIDEBAR_OPEN.getWidth() - 5;
+		final int y = 5;
+		final BufferedImage image = sidebarOpen ? SIDEBAR_OPEN : SIDEBAR_CLOSE;
+		graphics.drawImage(image, x, y, null);
+	}
+
 	void toggleSidebar()
 	{
 		// Toggle sidebar open
@@ -495,9 +504,6 @@ public class ClientUI
 
 		if (isSidebarOpen)
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
-			sidebarNavigationJButton.setToolTipText("Open SideBar");
-
 			// Save last panel and close current one
 			lastPluginPanel = pluginPanel;
 			contract();
@@ -507,9 +513,6 @@ public class ClientUI
 		}
 		else
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_CLOSE));
-			sidebarNavigationJButton.setToolTipText("Close SideBar");
-
 			// Try to restore last panel
 			expand(lastPluginPanel);
 
