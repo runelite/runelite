@@ -67,6 +67,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
 
@@ -235,7 +236,16 @@ public class CannonPlugin extends Plugin
 			if (m.find())
 			{
 				int amt = Integer.valueOf(m.group());
-				cballsLeft += amt;
+
+				// make sure cballs doesn't go above MAX_CBALLS
+				if (amt + cballsLeft > MAX_CBALLS)
+				{
+					cballsLeft = MAX_CBALLS;
+				}
+				else
+				{
+					cballsLeft += amt;
+				}
 			}
 		}
 
@@ -246,6 +256,8 @@ public class CannonPlugin extends Plugin
 
 		if (event.getMessage().contains("Your cannon is out of ammo!"))
 		{
+			cballsLeft = 0;
+
 			if (config.showEmptyCannonNotification())
 			{
 				notifier.notify("Your cannon is out of ammo!");
