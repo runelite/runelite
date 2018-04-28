@@ -34,7 +34,7 @@ public enum Varbits
 	/*
 	 * If chatbox is transparent or not
 	 */
-	TRANSPARANT_CHATBOX(4608),
+	TRANSPARENT_CHATBOX(4608),
 
 	/**
 	 * Runecraft pouches
@@ -337,7 +337,7 @@ public enum Varbits
 	GRAPES_4964(4964),
 
 	/**
-   * Automatically weed farming patches
+	 * Automatically weed farming patches
 	 */
 	AUTOWEED(5557);
 
