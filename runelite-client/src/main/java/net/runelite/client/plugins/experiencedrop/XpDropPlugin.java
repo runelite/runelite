@@ -41,7 +41,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "XP Drop"
+	name = "XP Drop Enhancer"
 )
 public class XpDropPlugin extends Plugin
 {

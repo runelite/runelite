@@ -31,7 +31,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "xpdrop",
-	name = "XP Drop",
+	name = "XP Drop Enhancer",
 	description = "Configuration for XP drop customization"
 )
 public interface XpDropConfig extends Config
