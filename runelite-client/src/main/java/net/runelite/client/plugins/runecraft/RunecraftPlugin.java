@@ -138,8 +138,8 @@ public class RunecraftPlugin extends Plugin
 				|| event.getMessage().contains("mist"))
 			{
 				bindNeckOverlay.bindingCharges -= 1;
-				return;
 			}
+			return;
 		}
 
 		if (event.getMessage().contains("Your Binding necklace has disintegrated."))

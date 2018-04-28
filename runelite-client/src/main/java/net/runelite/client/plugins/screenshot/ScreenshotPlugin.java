@@ -219,8 +219,8 @@ public class ScreenshotPlugin extends Plugin
 			{
 				clueNumber = Integer.valueOf(m.group());
 				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
-				return;
 			}
+			return;
 		}
 
 		if (chatMessage.startsWith("Your Barrows chest count is"))
@@ -229,8 +229,8 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				barrowsNumber = Integer.valueOf(m.group());
-				return;
 			}
+			return;
 		}
 
 		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
@@ -239,8 +239,8 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				raidsNumber = Integer.valueOf(m.group());
-				return;
 			}
+			return;
 		}
 	}
 

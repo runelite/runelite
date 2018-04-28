@@ -285,31 +285,37 @@ public class TimersPlugin extends Plugin
 		if (config.showStamina() && event.getMessage().equals("You drink some of your stamina potion."))
 		{
 			createGameTimer(STAMINA);
+			return;
 		}
 
 		if (event.getMessage().equals("<col=8f4808>Your stamina potion has expired.</col>"))
 		{
 			removeGameTimer(STAMINA);
+			return;
 		}
 
 		if (config.showAntiFire() && event.getMessage().equals("You drink some of your antifire potion."))
 		{
 			createGameTimer(ANTIFIRE);
+			return;
 		}
 
 		if (config.showExAntiFire() && event.getMessage().equals("You drink some of your extended antifire potion."))
 		{
 			createGameTimer(EXANTIFIRE);
+			return;
 		}
 
 		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase("you recharge your prayer."))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
 		{
 			createGameTimer(GOD_WARS_ALTAR);
+			return;
 		}
 
 		if (config.showExSuperAntifire() && event.getMessage().equals("You drink some of your extended super antifire potion."))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
+			return;
 		}
 
 		if (event.getMessage().equals("<col=7f007f>Your antifire potion has expired.</col>"))
@@ -317,6 +323,7 @@ public class TimersPlugin extends Plugin
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
 			removeGameTimer(EXANTIFIRE);
+			return;
 		}
 
 		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
@@ -329,72 +336,85 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(OVERLOAD);
 			}
-
+			return;
 		}
 
 		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
 		{
 			createGameTimer(CANNON);
+			return;
 		}
 
 		if (event.getMessage().equals("You pick up the cannon. It's really heavy."))
 		{
 			removeGameTimer(CANNON);
+			return;
 		}
 
 		if (config.showAntiVenomPlus() && event.getMessage().contains("You drink some of your super antivenom potion"))
 		{
 			createGameTimer(ANTIVENOMPLUS);
+			return;
 		}
 
 		if (config.showMagicImbue() && event.getMessage().equals("You are charged to combine runes!"))
 		{
 			createGameTimer(MAGICIMBUE);
+			return;
 		}
 
 		if (event.getMessage().equals("Your Magic Imbue charge has ended."))
 		{
 			removeGameTimer(MAGICIMBUE);
+			return;
 		}
 
 		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>"))
 		{
 			createGameTimer(FULLTB);
+			return;
 		}
 
 		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>"))
 		{
 			createGameTimer(HALFTB);
+			return;
 		}
 
 		if (config.showSuperAntiFire() && event.getMessage().contains("You drink some of your super antifire potion"))
 		{
 			createGameTimer(SUPERANTIFIRE);
+			return;
 		}
 
 		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>"))
 		{
 			removeGameTimer(SUPERANTIFIRE);
+			return;
 		}
 
 		if (event.getMessage().equals("<col=ef1020>Your imbued heart has regained its magical power.</col>"))
 		{
 			removeGameTimer(IMBUEDHEART);
+			return;
 		}
 
 		if (config.showAntiVenom() && event.getMessage().contains("You drink some of your antivenom potion"))
 		{
 			createGameTimer(ANTIVENOM);
+			return;
 		}
 
 		if (config.showSanfew() && event.getMessage().contains("You drink some of your Sanfew Serum."))
 		{
 			createGameTimer(SANFEW);
+			return;
 		}
 
 		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
 		{
 			createGameTimer(PRAYER_ENHANCE);
+			return;
 		}
 	}
 

@@ -220,6 +220,7 @@ public class CannonPlugin extends Plugin
 			cannonPlaced = true;
 			addCounter();
 			cballsLeft = 0;
+			return;
 		}
 
 		if (event.getMessage().contains("You pick up the cannon"))
@@ -227,6 +228,7 @@ public class CannonPlugin extends Plugin
 			cannonPlaced = false;
 			cballsLeft = 0;
 			removeCounter();
+			return;
 		}
 
 		if (event.getMessage().startsWith("You load the cannon with"))
@@ -237,11 +239,13 @@ public class CannonPlugin extends Plugin
 				int amt = Integer.valueOf(m.group());
 				cballsLeft += amt;
 			}
+			return;
 		}
 
 		if (event.getMessage().equals("You load the cannon with one cannonball."))
 		{
 			cballsLeft++;
+			return;
 		}
 
 		if (event.getMessage().contains("Your cannon is out of ammo!"))
@@ -250,6 +254,7 @@ public class CannonPlugin extends Plugin
 			{
 				notifier.notify("Your cannon is out of ammo!");
 			}
+			return;
 		}
 
 		if (event.getMessage().contains("You unload your cannon and receive Cannonball"))
