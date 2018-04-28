@@ -29,9 +29,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
@@ -77,8 +75,17 @@ class XpInfoBox extends JPanel
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
+	private final JButton skillIcon = new JButton();
+	private final ActionListener iconClick = new ActionListener()
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			reset();
+		}
+	};
 
 	private boolean showInfo;
+	private boolean resetIcon;
 
 	XpInfoBox(Client client, JPanel panel, XpTrackerConfig config, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
@@ -88,6 +95,7 @@ class XpInfoBox extends JPanel
 		this.xpInfo = xpInfo;
 
 		showInfo = config.showMoreInfo();
+		resetIcon = !config.resetSkillViaIcon();
 		setLayout(new BorderLayout());
 		setBorder(new CompoundBorder
 		(
@@ -128,9 +136,14 @@ class XpInfoBox extends JPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), xpInfo.getSkill())));
 
+		// Create reset
+		final JMenuItem resetButton = new JMenuItem("Reset skill");
+		resetButton.addActionListener(e -> reset());
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.add(openXpTracker);
+		popupMenu.add(resetButton);
 		container.setComponentPopupMenu(popupMenu);
 
 		// Create icon panel
@@ -140,13 +153,10 @@ class XpInfoBox extends JPanel
 
 		// Create skill/reset icon
 		final BufferedImage skillImage = iconManager.getSkillImage(xpInfo.getSkill());
-		final JButton skillIcon = new JButton();
 		skillIcon.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
 		skillIcon.setIcon(new ImageIcon(skillImage));
 		skillIcon.setRolloverIcon(new ImageIcon(createHoverImage(skillImage)));
-		skillIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
-		skillIcon.addActionListener(e -> reset());
 		skillIcon.setBounds(ICON_BOUNDS);
 		skillIcon.setOpaque(false);
 		skillIcon.setFocusPainted(false);
@@ -207,7 +217,10 @@ class XpInfoBox extends JPanel
 	void reset()
 	{
 		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
-		container.remove(statsPanel);
+		if (!showInfo)
+		{
+			container.remove(statsPanel);
+		}
 		panel.remove(this);
 		panel.revalidate();
 	}
@@ -224,12 +237,27 @@ class XpInfoBox extends JPanel
 		showStatsPanel(showInfo);
 	}
 
-	void changeShowInfo()
+	void changeConfigState()
 	{
 		if (showInfo != config.showMoreInfo())
 		{
 			showInfo = config.showMoreInfo();
 			showStatsPanel(showInfo);
+		}
+
+		if (resetIcon != config.resetSkillViaIcon())
+		{
+			resetIcon = config.resetSkillViaIcon();
+			if (resetIcon)
+			{
+				skillIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
+				skillIcon.addActionListener(iconClick);
+			}
+			else
+			{
+				skillIcon.setToolTipText("");
+				skillIcon.removeActionListener(iconClick);
+			}
 		}
 	}
 
@@ -240,7 +268,7 @@ class XpInfoBox extends JPanel
 			return;
 		}
 
-		changeShowInfo();
+		changeConfigState();
 		boolean updated = xpInfo.update(client.getSkillExperience(xpInfo.getSkill()));
 
 		SwingUtilities.invokeLater(() ->

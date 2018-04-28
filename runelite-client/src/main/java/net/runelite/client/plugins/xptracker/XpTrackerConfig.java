@@ -46,4 +46,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "resetskillviaicon",
+			name = "Reset Skill Via Icon",
+			description = "Toggle if clicking the skill icon in the xp tracker will reset the skill tracker",
+			position = 2
+	)
+	default boolean resetSkillViaIcon()
+	{
+		return true;
+	}
 }
