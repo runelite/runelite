@@ -72,6 +72,7 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
@@ -102,7 +103,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final MediaType JSON = MediaType.parse("application/json");
 
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy", Locale.US);
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+	static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile("Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
@@ -133,7 +134,13 @@ public class ScreenshotPlugin extends Plugin
 	private OverlayRenderer overlayRenderer;
 
 	@Inject
+	private ScreenshotInput inputListener;
+
+	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private KeyManager keyManager;
 
 	private NavigationButton titleBarButton;
 
@@ -147,6 +154,7 @@ public class ScreenshotPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		SCREENSHOT_DIR.mkdirs();
+		keyManager.registerKeyListener(inputListener);
 
 		try
 		{
@@ -191,6 +199,7 @@ public class ScreenshotPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		titleToolbar.removeNavigation(titleBarButton);
+		keyManager.unregisterKeyListener(inputListener);
 	}
 
 	@Subscribe
@@ -387,7 +396,7 @@ public class ScreenshotPlugin extends Plugin
 	 * @param fileName    Filename to use, without file extension.
 	 * @param displayDate Whether to show today's date on the report button as the screenshot is taken.
 	 */
-	private void takeScreenshot(String fileName, boolean displayDate)
+	void takeScreenshot(String fileName, boolean displayDate)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
