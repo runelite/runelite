@@ -105,10 +105,11 @@ public abstract class Actor extends Renderable {
    @ObfuscatedName("ar")
    byte field1146;
    @ObfuscatedName("aq")
-   int[] field1160;
-   @ObfuscatedName("bq")
    @Export("hitsplatTypes")
    int[] hitsplatTypes;
+   @ObfuscatedName("bq")
+   @Export("hitsplatValues")
+   int[] hitsplatValues;
    @ObfuscatedName("bi")
    @Export("hitsplatCycles")
    int[] hitsplatCycles;
@@ -317,8 +318,8 @@ public abstract class Actor extends Renderable {
       this.field1159 = 0;
       this.field1158 = 0;
       this.field1146 = 0;
-      this.field1160 = new int[4];
       this.hitsplatTypes = new int[4];
+      this.hitsplatValues = new int[4];
       this.hitsplatCycles = new int[4];
       this.field1163 = new int[4];
       this.field1164 = new int[4];
@@ -374,7 +375,9 @@ public abstract class Actor extends Renderable {
       signature = "(IIIIIII)V",
       garbageValue = "410924527"
    )
-   final void method1703(int var1, int var2, int var3, int var4, int var5, int var6) {
+   @Export("applyActorHitsplat")
+   @Hook(value = "onActorHitsplat", end = true)
+   final void applyActorHitsplat(int var1, int var2, int var3, int var4, int var5, int var6) {
       boolean var7 = true;
       boolean var8 = true;
 
@@ -407,7 +410,7 @@ public abstract class Actor extends Renderable {
          if(var10 == 0) {
             var14 = this.hitsplatCycles[0];
          } else if(var10 == 1) {
-            var14 = this.hitsplatTypes[0];
+            var14 = this.hitsplatValues[0];
          }
 
          for(int var13 = 1; var13 < 4; ++var13) {
@@ -416,9 +419,9 @@ public abstract class Actor extends Renderable {
                   var9 = var13;
                   var14 = this.hitsplatCycles[var13];
                }
-            } else if(var10 == 1 && this.hitsplatTypes[var13] < var14) {
+            } else if(var10 == 1 && this.hitsplatValues[var13] < var14) {
                var9 = var13;
-               var14 = this.hitsplatTypes[var13];
+               var14 = this.hitsplatValues[var13];
             }
          }
 
@@ -441,8 +444,8 @@ public abstract class Actor extends Renderable {
       }
 
       if(var9 >= 0) {
-         this.field1160[var9] = var1;
-         this.hitsplatTypes[var9] = var2;
+         this.hitsplatTypes[var9] = var1;
+         this.hitsplatValues[var9] = var2;
          this.field1163[var9] = var3;
          this.field1164[var9] = var4;
          this.hitsplatCycles[var9] = var5 + var11 + var6;

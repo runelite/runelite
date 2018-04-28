@@ -28,33 +28,44 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.geom.GeneralPath;
+import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class BorderOverlay extends Overlay
+public class SceneOverlay extends Overlay
 {
 	private static final Color MAP_SQUARE_COLOR = Color.GREEN;
 	private static final Color CHUNK_BORDER_COLOR = Color.BLUE;
+	private static final Color LOCAL_VALID_MOVEMENT_COLOR = new Color(141, 220, 26);
+	private static final Color VALID_MOVEMENT_COLOR = new Color(73, 122, 18);
+	private static final Color LINE_OF_SIGHT_COLOR = new Color(204, 42, 219);
 
 	private static final int LOCAL_TILE_SIZE = Perspective.LOCAL_TILE_SIZE;
 	private static final int CHUNK_SIZE = 8;
 	private static final int MAP_SQUARE_SIZE = CHUNK_SIZE * CHUNK_SIZE; // 64
-	private static final int CULL_RANGE = 16;
+	private static final int CULL_CHUNK_BORDERS_RANGE = 16;
 	private static final int STROKE_WIDTH = 4;
+	private static final int CULL_LINE_OF_SIGHT_RANGE = 10;
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
 	@Inject
-	public BorderOverlay(Client client, DevToolsPlugin plugin)
+	public SceneOverlay(Client client, DevToolsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -75,16 +86,26 @@ public class BorderOverlay extends Overlay
 			renderMapSquares(graphics);
 		}
 
+		if (plugin.isToggleLineOfSight())
+		{
+			renderLineOfSight(graphics);
+		}
+
+		if (plugin.isToggleValidMovement())
+		{
+			renderValidMovement(graphics);
+		}
+
 		return null;
 	}
 
 	private void renderChunkBorders(Graphics2D graphics)
 	{
 		WorldPoint wp = client.getLocalPlayer().getWorldLocation();
-		int startX = (wp.getX() - CULL_RANGE + CHUNK_SIZE - 1) / CHUNK_SIZE * CHUNK_SIZE;
-		int startY = (wp.getY() - CULL_RANGE + CHUNK_SIZE - 1) / CHUNK_SIZE * CHUNK_SIZE;
-		int endX = (wp.getX() + CULL_RANGE) / CHUNK_SIZE * CHUNK_SIZE;
-		int endY = (wp.getY() + CULL_RANGE) / CHUNK_SIZE * CHUNK_SIZE;
+		int startX = (wp.getX() - CULL_CHUNK_BORDERS_RANGE + CHUNK_SIZE - 1) / CHUNK_SIZE * CHUNK_SIZE;
+		int startY = (wp.getY() - CULL_CHUNK_BORDERS_RANGE + CHUNK_SIZE - 1) / CHUNK_SIZE * CHUNK_SIZE;
+		int endX = (wp.getX() + CULL_CHUNK_BORDERS_RANGE) / CHUNK_SIZE * CHUNK_SIZE;
+		int endY = (wp.getY() + CULL_CHUNK_BORDERS_RANGE) / CHUNK_SIZE * CHUNK_SIZE;
 
 		graphics.setStroke(new BasicStroke(STROKE_WIDTH));
 		graphics.setColor(CHUNK_BORDER_COLOR);
@@ -92,8 +113,8 @@ public class BorderOverlay extends Overlay
 		GeneralPath path = new GeneralPath();
 		for (int x = startX; x <= endX; x += CHUNK_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_RANGE);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_RANGE);
+			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
+			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
 
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
@@ -118,8 +139,8 @@ public class BorderOverlay extends Overlay
 		}
 		for (int y = startY; y <= endY; y += CHUNK_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_RANGE, y);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_RANGE, y);
+			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
+			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
 
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
@@ -148,10 +169,10 @@ public class BorderOverlay extends Overlay
 	private void renderMapSquares(Graphics2D graphics)
 	{
 		WorldPoint wp = client.getLocalPlayer().getWorldLocation();
-		int startX = (wp.getX() - CULL_RANGE + MAP_SQUARE_SIZE - 1) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
-		int startY = (wp.getY() - CULL_RANGE + MAP_SQUARE_SIZE - 1) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
-		int endX = (wp.getX() + CULL_RANGE) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
-		int endY = (wp.getY() + CULL_RANGE) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
+		int startX = (wp.getX() - CULL_CHUNK_BORDERS_RANGE + MAP_SQUARE_SIZE - 1) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
+		int startY = (wp.getY() - CULL_CHUNK_BORDERS_RANGE + MAP_SQUARE_SIZE - 1) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
+		int endX = (wp.getX() + CULL_CHUNK_BORDERS_RANGE) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
+		int endY = (wp.getY() + CULL_CHUNK_BORDERS_RANGE) / MAP_SQUARE_SIZE * MAP_SQUARE_SIZE;
 
 		graphics.setStroke(new BasicStroke(STROKE_WIDTH));
 		graphics.setColor(MAP_SQUARE_COLOR);
@@ -159,8 +180,8 @@ public class BorderOverlay extends Overlay
 		GeneralPath path = new GeneralPath();
 		for (int x = startX; x <= endX; x += MAP_SQUARE_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_RANGE);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_RANGE);
+			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
+			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
 
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
@@ -185,8 +206,8 @@ public class BorderOverlay extends Overlay
 		}
 		for (int y = startY; y <= endY; y += MAP_SQUARE_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_RANGE, y);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_RANGE, y);
+			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
+			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
 
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
@@ -210,6 +231,127 @@ public class BorderOverlay extends Overlay
 			}
 		}
 		graphics.draw(path);
+	}
+
+	private void renderTileIfValidForMovement(Graphics2D graphics, Actor actor, int dx, int dy)
+	{
+		WorldArea area = actor.getWorldArea();
+		if (area == null)
+		{
+			return;
+		}
+
+		if (area.canTravelInDirection(client, dx, dy))
+		{
+			LocalPoint lp = actor.getLocalLocation();
+			if (lp == null)
+			{
+				return;
+			}
+
+			lp = new LocalPoint(
+				lp.getX() + dx * Perspective.LOCAL_TILE_SIZE + dx * Perspective.LOCAL_TILE_SIZE * (area.getWidth() - 1) / 2,
+				lp.getY() + dy * Perspective.LOCAL_TILE_SIZE + dy * Perspective.LOCAL_TILE_SIZE * (area.getHeight() - 1) / 2);
+			if (lp == null)
+			{
+				return;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+			if (poly == null)
+			{
+				return;
+			}
+
+			if (actor == client.getLocalPlayer())
+			{
+				OverlayUtil.renderPolygon(graphics, poly, LOCAL_VALID_MOVEMENT_COLOR);
+			}
+			else
+			{
+				OverlayUtil.renderPolygon(graphics, poly, VALID_MOVEMENT_COLOR);
+			}
+		}
+	}
+
+	private void renderValidMovement(Graphics2D graphics)
+	{
+		Player player = client.getLocalPlayer();
+		List<NPC> npcs = client.getNpcs();
+		for (NPC npc : npcs)
+		{
+			if (player.getInteracting() != npc && npc.getInteracting() != player)
+			{
+				continue;
+			}
+			for (int dx = -1; dx <= 1; dx++)
+			{
+				for (int dy = -1; dy <= 1; dy++)
+				{
+					if (dx == 0 && dy == 0)
+					{
+						continue;
+					}
+					renderTileIfValidForMovement(graphics, npc, dx, dy);
+				}
+			}
+		}
+
+		for (int dx = -1; dx <= 1; dx++)
+		{
+			for (int dy = -1; dy <= 1; dy++)
+			{
+				if (dx == 0 && dy == 0)
+				{
+					continue;
+				}
+				renderTileIfValidForMovement(graphics, player, dx, dy);
+			}
+		}
+	}
+
+	private void renderTileIfHasLineOfSight(Graphics2D graphics, WorldArea start, int targetX, int targetY)
+	{
+		WorldPoint targetLocation = new WorldPoint(targetX, targetY, start.getPlane());
+		if (targetLocation == null)
+		{
+			return;
+		}
+
+		// Running the line of sight algorithm 100 times per frame doesn't
+		// seem to use much CPU time, however rendering 100 tiles does
+		if (start.hasLineOfSightTo(client, targetLocation))
+		{
+			LocalPoint lp = LocalPoint.fromWorld(client, targetLocation);
+			if (lp == null)
+			{
+				return;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+			if (poly == null)
+			{
+				return;
+			}
+
+			OverlayUtil.renderPolygon(graphics, poly, LINE_OF_SIGHT_COLOR);
+		}
+	}
+
+	private void renderLineOfSight(Graphics2D graphics)
+	{
+		WorldArea area = client.getLocalPlayer().getWorldArea();
+		for (int x = area.getX() - CULL_LINE_OF_SIGHT_RANGE; x <= area.getX() + CULL_LINE_OF_SIGHT_RANGE; x++)
+		{
+			for (int y = area.getY() - CULL_LINE_OF_SIGHT_RANGE; y <= area.getY() + CULL_LINE_OF_SIGHT_RANGE; y++)
+			{
+				if (x == area.getX() && y == area.getY())
+				{
+					continue;
+				}
+				renderTileIfHasLineOfSight(graphics, area, x, y);
+			}
+		}
 	}
 
 }
