@@ -413,4 +413,6 @@ public interface Client extends GameEngine
 	void setAttackersHidden(boolean state);
 
 	void setProjectilesHidden(boolean state);
+
+	CollisionData[] getCollisionMaps();
 }

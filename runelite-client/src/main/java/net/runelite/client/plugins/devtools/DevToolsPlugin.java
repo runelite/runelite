@@ -67,7 +67,7 @@ public class DevToolsPlugin extends Plugin
 	private LocationOverlay locationOverlay;
 
 	@Inject
-	private BorderOverlay borderOverlay;
+	private SceneOverlay sceneOverlay;
 
 	@Inject
 	private EventBus eventBus;
@@ -84,6 +84,8 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleLocation;
 	private boolean toggleChunkBorders;
 	private boolean toggleMapSquares;
+	private boolean toggleValidMovement;
+	private boolean toggleLineOfSight;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -129,7 +131,7 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, locationOverlay, borderOverlay);
+		return Arrays.asList(overlay, locationOverlay, sceneOverlay);
 	}
 
 	@Subscribe
@@ -223,6 +225,16 @@ public class DevToolsPlugin extends Plugin
 		toggleMapSquares = !toggleMapSquares;
 	}
 
+	void toggleValidMovement()
+	{
+		toggleValidMovement = !toggleValidMovement;
+	}
+
+	void toggleLineOfSight()
+	{
+		toggleLineOfSight = !toggleLineOfSight;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -281,5 +293,15 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleMapSquares()
 	{
 		return toggleMapSquares;
+	}
+
+	boolean isToggleValidMovement()
+	{
+		return toggleValidMovement;
+	}
+
+	boolean isToggleLineOfSight()
+	{
+		return toggleLineOfSight;
 	}
 }
