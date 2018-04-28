@@ -221,7 +221,7 @@ class XpInfoBox extends JPanel
 
 		xpInfo.setStartXp(client.getSkillExperience(xpInfo.getSkill()));
 
-		showStatsPanel(!showInfoChanged);
+		showStatsPanel(showInfoChanged);
 	}
 
 	void changeShowInfo()
@@ -229,7 +229,7 @@ class XpInfoBox extends JPanel
 		if (showInfoChanged != config.showMoreInfo())
 		{
 			showInfoChanged = config.showMoreInfo();
-			showStatsPanel(!showInfoChanged);
+			showStatsPanel(showInfoChanged);
 		}
 	}
 
