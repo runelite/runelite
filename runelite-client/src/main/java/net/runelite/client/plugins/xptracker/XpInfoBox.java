@@ -79,7 +79,8 @@ class XpInfoBox extends JPanel
 	private final ActionListener iconClick = new ActionListener()
 	{
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e)
+		{
 			reset();
 		}
 	};
