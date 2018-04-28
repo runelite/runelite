@@ -116,7 +116,7 @@ public class HiscorePanel extends PluginPanel
 		MAGIC, FLETCHING, WOODCUTTING,
 		RUNECRAFT, SLAYER, FARMING,
 		CONSTRUCTION, HUNTER
-	};
+	));
 
 	private static final DecimalFormat TOTAL_EHP_FORMAT = new DecimalFormat("#.0");
 
@@ -541,7 +541,7 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
-			result = client.lookup(lookup, endpoint);
+			result = hiscoreClient.lookup(lookup, endpoint);
 		}
 		catch (IOException ex)
 		{
