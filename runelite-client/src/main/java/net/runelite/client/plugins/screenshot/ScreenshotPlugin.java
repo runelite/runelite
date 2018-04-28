@@ -71,6 +71,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -81,7 +82,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -131,7 +131,7 @@ public class ScreenshotPlugin extends Plugin
 	private TitleToolbar titleToolbar;
 
 	@Inject
-	private OverlayRenderer overlayRenderer;
+	private DrawManager drawManager;
 
 	@Inject
 	private ScreenshotInput inputListener;
@@ -405,7 +405,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		overlayRenderer.requestScreenshot(image ->
+		drawManager.requestNextFrameListener(image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
 				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
