@@ -292,7 +292,8 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
-		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball"))
+		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
+			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
 		{
 			skipProjectileCheckThisTick = true;
 
