@@ -68,4 +68,8 @@ public interface RSNPCComposition extends NPCComposition
 	@Import("transform")
 	@Override
 	RSNPCComposition transform();
+
+	@Import("size")
+	@Override
+	int getSize();
 }

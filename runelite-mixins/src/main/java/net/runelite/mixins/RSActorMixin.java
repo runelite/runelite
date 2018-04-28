@@ -29,11 +29,13 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GraphicChanged;
@@ -203,5 +205,26 @@ public abstract class RSActorMixin implements RSActor
 			return null;
 		}
 		return model.getConvexHull(getX(), getY(), getOrientation());
+	}
+
+	@Inject
+	@Override
+	public WorldArea getWorldArea()
+	{
+		int size = 1;
+		if (this instanceof NPC)
+		{
+			NPCComposition composition = ((NPC)this).getComposition();
+			if (composition != null && composition.getConfigs() != null)
+			{
+				composition = composition.transform();
+			}
+			if (composition != null)
+			{
+				size = composition.getSize();
+			}
+		}
+
+		return new WorldArea(this.getWorldLocation(), size, size);
 	}
 }
