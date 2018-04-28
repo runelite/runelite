@@ -45,4 +45,6 @@ public interface NPCComposition
 	int[] getConfigs();
 	
 	NPCComposition transform();
+
+	int getSize();
 }
