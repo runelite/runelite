@@ -44,6 +44,9 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	private RaidsPlugin plugin;
 
+	@Inject
+	private RaidsConfig config;
+
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
@@ -56,7 +59,7 @@ public class RaidsPointsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInRaidChambers())
+		if (!config.pointsOverlay() || !plugin.isInRaidChambers())
 		{
 			return null;
 		}
