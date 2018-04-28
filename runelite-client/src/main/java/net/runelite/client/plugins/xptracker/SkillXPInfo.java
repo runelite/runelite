@@ -43,9 +43,11 @@ class SkillXPInfo
 	private int xpGained = 0;
 	private int actions = 0;
 	private int nextLevelExp = 0;
+	private int targetLevelExp = 0;
 	private int startLevelExp = 0;
 	private int level = 0;
 	private boolean initialized = false;
+	private boolean targetChanged = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
 
@@ -77,7 +79,7 @@ class SkillXPInfo
 
 	int getXpRemaining()
 	{
-		return nextLevelExp - (startXp + xpGained);
+		return targetLevelExp - (startXp + xpGained);
 	}
 
 	int getActionsRemaining()
@@ -103,7 +105,7 @@ class SkillXPInfo
 		int currentXp = startXp + xpGained;
 
 		double xpGained = currentXp - startLevelExp;
-		double xpGoal = nextLevelExp - startLevelExp;
+		double xpGoal = targetLevelExp - startLevelExp;
 		return (int) ((xpGained / xpGoal) * 100);
 	}
 
@@ -116,6 +118,17 @@ class SkillXPInfo
 		return "\u221e";
 	}
 
+	void setTargetLevel(int currentXp, int targetLevel)
+	{
+		if (targetLevel < Experience.getLevelForXp(currentXp) + 1)
+			targetLevel = Experience.getLevelForXp(currentXp) + 1;
+		else if (targetLevel > Experience.MAX_VIRT_LEVEL)
+			targetLevel = Experience.MAX_VIRT_LEVEL;
+		
+		targetLevelExp = Experience.getXpForLevel(targetLevel);
+		targetChanged = true;
+	}
+
 	void reset(int currentXp)
 	{
 		if (startXp != -1)
@@ -124,6 +137,7 @@ class SkillXPInfo
 		}
 
 		xpGained = 0;
+		targetLevelExp = 0;
 		actions = 0;
 		skillTimeStart = null;
 	}
@@ -137,7 +151,7 @@ class SkillXPInfo
 
 		int originalXp = xpGained + startXp;
 
-		if (originalXp >= currentXp)
+		if (originalXp >= currentXp && !targetChanged)
 		{
 			return false;
 		}
@@ -170,6 +184,11 @@ class SkillXPInfo
 		level = currentLevel;
 
 		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+
+		//Check if target level reached& Default to nextLevelExp.
+		targetLevelExp = targetLevelExp <= nextLevelExp ? nextLevelExp : targetLevelExp;
+
+		targetChanged = false;
 
 		if (skillTimeStart == null)
 		{
