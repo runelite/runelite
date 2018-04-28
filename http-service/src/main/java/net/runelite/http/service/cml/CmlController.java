@@ -25,12 +25,7 @@
 package net.runelite.http.service.cml;
 
 import net.runelite.http.api.cml.CmlResult;
-import net.runelite.http.api.hiscore.*;
-import net.runelite.http.service.hiscore.HiscoreResultBuilder;
-import net.runelite.http.service.util.HiscoreEndpointEditor;
-import net.runelite.http.service.xp.XpTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
