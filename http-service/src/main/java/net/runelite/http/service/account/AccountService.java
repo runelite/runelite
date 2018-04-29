@@ -63,7 +63,7 @@ public class AccountService
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	private static final String CREATE_SESSIONS = "CREATE TABLE IF NOT EXISTS `sessions` (\n"
-		+ "  `user` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
+		+ "  `user` int(11) NOT NULL PRIMARY KEY,\n"
 		+ "  `uuid` varchar(36) NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  `last_used` timestamp NOT NULL,\n"
