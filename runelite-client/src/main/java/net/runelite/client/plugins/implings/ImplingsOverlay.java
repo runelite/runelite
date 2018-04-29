@@ -32,6 +32,8 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -74,7 +76,46 @@ public class ImplingsOverlay extends Overlay
 			drawImp(graphics, imp, text, plugin.getIds().get(imp.getId()));
 		}
 
+		//Show Imp spawns
+		if(config.showSpawn())
+		{
+			Map<WorldPoint, String> points = plugin.getPoints();
+
+			for (Map.Entry<WorldPoint, String>  point : points.entrySet())
+			{
+				drawSpawnPoint(graphics, point.getKey(),point.getValue(),config.getSpawnColor());
+			}
+		}
+
 		return null;
+	}
+
+	private void drawSpawnPoint(Graphics2D graphics, WorldPoint point, String text, Color color)
+	{
+
+		//Don't draw spawns if Player is not in range
+		if (point.distanceTo(client.getLocalPlayer().getWorldLocation()) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint localPoint = LocalPoint.fromWorld(client,point);
+		if (localPoint == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics,poly, config.getSpawnColor());
+		}
+		
+		Point textPoint = Perspective.getCanvasTextLocation(client,graphics, localPoint,text,0);
+		if (textPoint != null)
+		{
+			OverlayUtil.renderTextLocation(graphics,textPoint,text,color);
+		}
 	}
 
 	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
