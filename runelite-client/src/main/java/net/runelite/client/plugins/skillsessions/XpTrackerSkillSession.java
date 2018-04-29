@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.skillsessions;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 
-@ConfigGroup(
-	keyName = "woodcutting",
-	name = "Woodcutting",
-	description = "Configuration for the woodcutting plugin"
-)
-public interface WoodcuttingConfig extends Config
+public abstract class XpTrackerSkillSession extends SkillSession
 {
-	@ConfigItem(
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
-	)
-	default boolean showNestNotification()
+	private final XpTrackerService xpTracker;
+
+	public XpTrackerSkillSession(Skill skill, XpTrackerService xpTracker)
 	{
-		return true;
+		super(skill);
+		this.xpTracker = xpTracker;
+	}
+
+	@Override
+	public int getActions()
+	{
+		return xpTracker.getActions(skill);
+	}
+
+	@Override
+	public int getActionsPerHour()
+	{
+		return xpTracker.getActionsHr(skill);
 	}
 }

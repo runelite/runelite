@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,95 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fishing;
+package net.runelite.client.plugins.skillsessions;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class FishingOverlay extends Overlay
+import java.awt.*;
+
+public class SkillSessionsOverlay extends Overlay
 {
-	private static final String FISHING_SPOT = "Fishing spot";
-
+	private final SkillSessionsPlugin plugin;
 	private final Client client;
-	private final FishingPlugin plugin;
-	private final FishingConfig config;
-	private final XpTrackerService xpTrackerService;
-
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public FishingOverlay(Client client, FishingPlugin plugin, FishingConfig config, XpTrackerService xpTrackerService)
+	public SkillSessionsOverlay(SkillSessionsPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
+
 		this.plugin = plugin;
-		this.config = config;
-		this.xpTrackerService = xpTrackerService;
+		this.client = client;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showFishingStats())
-		{
-			return null;
-		}
-
-		FishingSession session = plugin.getSession();
-
-		if (session.getLastFishCaught() == null)
-		{
-			return null;
-		}
-
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCaught = Duration.between(session.getLastFishCaught(), Instant.now());
-
-		if (sinceCaught.compareTo(statTimeout) >= 0)
+		SkillSession session = plugin.getFocused();
+		if (session == null)
 		{
 			return null;
 		}
 
 		panelComponent.getLines().clear();
-		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
-			.contains(FISHING_SPOT))
-		{
-			panelComponent.setTitle("Fishing");
-			panelComponent.setTitleColor(Color.GREEN);
-		}
-		else
-		{
-			panelComponent.setTitle("NOT fishing");
-			panelComponent.setTitleColor(Color.RED);
-		}
 
-		int actions = xpTrackerService.getActions(Skill.FISHING);
-		if (actions > 0)
-		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-				"Caught fish:",
-				Integer.toString(actions)
-			));
-
-			if (actions > 2)
-			{
-				panelComponent.getLines().add(new PanelComponent.Line(
-					"Fish/hr:",
-					Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING))
-				));
-			}
-		}
-
+		session.modifyPanel(panelComponent, client);
 		return panelComponent.render(graphics);
 	}
 }

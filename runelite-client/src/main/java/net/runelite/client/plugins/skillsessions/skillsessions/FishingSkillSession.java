@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fishing;
+package net.runelite.client.plugins.skillsessions.skillsessions;
 
-import java.time.Instant;
-import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.skillsessions.SkillSessionsConfig;
+import net.runelite.client.plugins.skillsessions.XpTrackerSkillSession;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 
-public class FishingSession
+public class FishingSkillSession extends XpTrackerSkillSession
 {
-	@Getter
-	private Instant lastFishCaught;
+	private static final String FISHING_SPOT = "Fishing spot";
 
-	public void setLastFishCaught()
+	public FishingSkillSession(XpTrackerService xpTracker)
 	{
-		lastFishCaught = Instant.now();
+		super(Skill.FISHING, xpTracker);
+	}
+
+	@Override
+	public boolean shouldDisplay(SkillSessionsConfig config)
+	{
+		return config.showFishing();
+	}
+
+	@Override
+	public boolean isInAction(Client client)
+	{
+		return client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
+				.contains(FISHING_SPOT);
+	}
+
+	@Override
+	public String getActionName()
+	{
+		return "Fish caught";
 	}
 }

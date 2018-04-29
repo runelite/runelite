@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.skillsessions;
 
-import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "woodcutting",
-	name = "Woodcutting",
-	description = "Configuration for the woodcutting plugin"
+		keyName = "skillsessions",
+		name = "Skill Session",
+		description = "Configuration for the skill sessions plugin"
 )
-public interface WoodcuttingConfig extends Config
+public interface SkillSessionsConfig
 {
 	@ConfigItem(
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
+			keyName = "statTimeout",
+			name = "Session statistics timeout (minutes)",
+			description = "Configures the time since an action for the session statistics to no longer displayed"
 	)
-	default boolean showNestNotification()
+	default int statTimeout()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+			keyName = "timeoutStatReset",
+			name = "Reset the statistics when the session times out",
+			description = "Configures whether the statistics of a session should be reset when the session times out"
+	)
+	default boolean statTimeoutReset()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "showFishing",
+			name = "Display your fishing session statistics",
+			description = "Configures whether your fishing session statistics are displayed"
+	)
+	default boolean showFishing()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showCooking",
+			name = "Display your cooking session statistics",
+			description = "Configures whether your cooking session statistics are displayed"
+	)
+	default boolean showCooking()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showWoodcutting",
+			name = "Display your woodcutting session statistics",
+			description = "Configures whether your woodcutting session statistics are displayed"
+	)
+	default boolean showWoodcutting()
 	{
 		return true;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.skillsessions.skillsessions;
 
-import java.time.Instant;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.skillsessions.SkillSessionsConfig;
+import net.runelite.client.plugins.skillsessions.XpTrackerSkillSession;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 
-public class WoodcuttingSession
+import java.util.stream.IntStream;
+
+import static net.runelite.api.AnimationID.*;
+
+public class WoodcuttingSkillSession extends XpTrackerSkillSession
 {
-	private Instant lastLogCut;
+	private static final int[] animationIds =
+			{
+					WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK,
+					WOODCUTTING_MITHRIL, WOODCUTTING_ADAMANT, WOODCUTTING_RUNE, WOODCUTTING_DRAGON,
+					WOODCUTTING_INFERNAL
+			};
 
-	public void setLastLogCut()
+	public WoodcuttingSkillSession(XpTrackerService xpTracker)
 	{
-		lastLogCut = Instant.now();
+		super(Skill.WOODCUTTING, xpTracker);
 	}
 
-	public Instant getLastLogCut()
+	@Override
+	public boolean shouldDisplay(SkillSessionsConfig config)
 	{
-		return lastLogCut;
+		return config.showWoodcutting();
+	}
+
+	@Override
+	public boolean isInAction(Client client)
+	{
+		return IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation());
+	}
+
+	@Override
+	public String getActionName()
+	{
+		return "Logs cut";
 	}
 }

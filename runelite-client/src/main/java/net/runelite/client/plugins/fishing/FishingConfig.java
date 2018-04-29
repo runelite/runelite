@@ -46,16 +46,6 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset"
-	)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
 		keyName = "showShrimp",
 		name = "Show Shrimp/Anchovies",
 		description = "Configures whether shrimp/anchovies is displayed"
@@ -171,16 +161,6 @@ public interface FishingConfig extends Config
 		description = "Configures whether karambwan is displayed"
 	)
 	default boolean showKarambwan()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showFishingStats",
-		name = "Show Fishing session stats",
-		description = "Configures whether to display the fishing session stats"
-	)
-	default boolean showFishingStats()
 	{
 		return true;
 	}
