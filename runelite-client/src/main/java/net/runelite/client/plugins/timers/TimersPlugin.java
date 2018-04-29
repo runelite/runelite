@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timers;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -442,8 +443,35 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(CHARGE);
 		}
-	}
 
+		if (config.showHomeTeleport() && event.getMessage().startsWith("You need to wait another ") && event.getMessage().endsWith(" to cast this spell."))
+		{
+			long time;
+			if (event.getMessage().equals("You need to wait another minute to cast this spell."))
+			{
+				time = 1;
+			}
+			else
+			{
+				time = Long.parseLong(event.getMessage().split(" ")[5]);
+			}
+			createGameTimerWithVariableTime(HOME_TELEPORT, time, ChronoUnit.MINUTES);
+		}
+
+		if (config.showMinigameTeleport() && event.getMessage().startsWith("You must wait another ") && event.getMessage().endsWith(" before you can use the minigame teleports."))
+		{
+			long time;
+			if (event.getMessage().equals("You must wait another minute before you can use the minigame teleports."))
+			{
+				time = 1;
+			}
+			else
+			{
+				time = Long.parseLong(event.getMessage().split(" ")[4]);
+			}
+			createGameTimerWithVariableTime(MINIGAME_TELEPORT, time, ChronoUnit.MINUTES);
+		}
+	}
 
 	@Subscribe
 	public void onTick(GameTick event)
@@ -593,6 +621,16 @@ public class TimersPlugin extends Plugin
 			}
 		}
 	}
+
+	public void createGameTimerWithVariableTime(GameTimer timer, long time, ChronoUnit unit)
+	{
+		removeGameTimer(timer);
+
+		TimerTimer t = new TimerTimer(timer, this, time, unit);
+		t.setTooltip(timer.getDescription());
+		infoBoxManager.addInfoBox(t);
+	}
+
 
 	public void createGameTimer(GameTimer timer)
 	{
