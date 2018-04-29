@@ -11,13 +11,16 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 
 @PluginDescriptor(
         name = "Cat Information"
 )
 
 @Slf4j
-public class CatPlugin extends Plugin {
+public class CatPlugin extends Plugin
+{
 
     @Inject
     private Notifier notifier;
@@ -28,16 +31,19 @@ public class CatPlugin extends Plugin {
     private final String CAT_HUNGRY_MESSAGE_2 = "Your kitten is very hungry.";
     private final String CAT_RAN_AWAY_MESSAGE = "Your kitten got lonely and ran off.";
 
-    @Subscribe
-    public void onChatMessage(ChatMessage event) {
+    private String[] messages = {CAT_ATTENTION_MESSAGE_1, CAT_ATTENTION_MESSAGE_2, CAT_HUNGRY_MESSAGE_1, CAT_HUNGRY_MESSAGE_2, CAT_RAN_AWAY_MESSAGE};
 
-        if (event.getType() == ChatMessageType.SERVER) {
+    @Subscribe
+    public void onChatMessage(ChatMessage event)
+    {
+
+        if (event.getType() == ChatMessageType.SERVER)
+        {
             String message = Text.removeTags(event.getMessage());
-            if (message.contentEquals(CAT_ATTENTION_MESSAGE_1) ||
-                    message.contentEquals(CAT_ATTENTION_MESSAGE_2) ||
-                    message.contentEquals(CAT_HUNGRY_MESSAGE_1) ||
-                    message.contentEquals(CAT_HUNGRY_MESSAGE_2) ||
-                    message.contentEquals(CAT_RAN_AWAY_MESSAGE)) {
+            List<String> m = Arrays.asList(messages);
+
+            if (m.contains(message))
+            {
                 notifier.notify(message);
             }
         }
