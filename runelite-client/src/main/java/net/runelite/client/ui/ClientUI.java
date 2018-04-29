@@ -196,38 +196,7 @@ public class ClientUI
 				return;
 			}
 
-			if (client == null)
-			{
-				return;
-			}
-
-			int width = config.gameSize().width;
-			int height = config.gameSize().height;
-
-			// The upper bounds are defined by the applet's max size
-			// The lower bounds are taken care of by ClientPanel's setMinimumSize
-
-			if (width > 7680)
-			{
-				width = 7680;
-			}
-
-			if (height > 2160)
-			{
-				height = 2160;
-			}
-
-			final Dimension size = new Dimension(width, height);
-
-			client.setSize(size);
-			client.setPreferredSize(size);
-			client.getParent().setPreferredSize(size);
-			client.getParent().setSize(size);
-
-			if (frame.isVisible())
-			{
-				frame.pack();
-			}
+			setGameSize(config.gameSize());
 		});
 	}
 
@@ -493,6 +462,7 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
+			setGameSize(config.gameSize());
 			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
 
 			// Create hide sidebar button
@@ -637,6 +607,40 @@ public class ClientUI
 		{
 			contractFrameBy(pluginToolbar.getWidth());
 		}
+	}
+
+	private void setGameSize(final Dimension size)
+	{
+		if (client == null)
+		{
+			return;
+		}
+
+		int width = size.width;
+		int height = size.height;
+
+		// The upper bounds are defined by the applet's max size
+		// The lower bounds are taken care of by ClientPanel's setMinimumSize
+
+		if (width > 7680)
+		{
+			width = 7680;
+		}
+
+		if (height > 2160)
+		{
+			height = 2160;
+		}
+
+		final Dimension newSize = new Dimension(width, height);
+
+		client.setSize(newSize);
+		client.setPreferredSize(newSize);
+		client.setMinimumSize(newSize);
+		client.getParent().setPreferredSize(newSize);
+		client.getParent().setSize(newSize);
+		client.getParent().setMinimumSize(newSize);
+		revalidateMinimumSize();
 	}
 
 	private void expand(@Nullable PluginPanel panel)
