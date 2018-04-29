@@ -419,4 +419,22 @@ public interface Client extends GameEngine
 	void setProjectilesHidden(boolean state);
 
 	CollisionData[] getCollisionMaps();
+
+	@VisibleForDevtools
+	int[] getBoostedSkillLevels();
+
+	@VisibleForDevtools
+	int[] getRealSkillLevels();
+
+	@VisibleForDevtools
+	int[] getSkillExperiences();
+
+	@VisibleForDevtools
+	int[] getChangedSkills();
+
+	@VisibleForDevtools
+	int getChangedSkillsCount();
+
+	@VisibleForDevtools
+	void setChangedSkillsCount(int i);
 }
