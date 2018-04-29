@@ -86,7 +86,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("The dead, red dragon watches over this chest. He must really dig the view.", "Barbarian", 375, new WorldPoint(3353, 3332, 0), "Search the chest underneath the Red Dragon's head in the Exam Centre. Kill a MALE Barbarian in Barbarian Village or Barbarian Outpost to receive the key."),
 		new CrypticClue("My home is grey, and made of stone; A castle with a search for a meal. Hidden in some drawers I am, across from a wooden wheel.", DRAWERS_5618, new WorldPoint(3213, 3216, 1), "Open the drawers inside the room with the spinning wheel on the first floor of Lumbridge Castle."),
 		new CrypticClue("Come to the evil ledge, Yew know yew want to. Try not to get stung.", new WorldPoint(3089, 3468, 0), "Dig in Edgeville, just east of the Southern Yew tree."),
-		new CrypticClue("Look in the ground floor crates of houses in Falador.", NULL_5536, new WorldPoint(3027, 3356, 0), "The house east of the east bank."),
+		new CrypticClue("Look in the ground floor crates of houses in Falador.", CRATES_24088, new WorldPoint(3029, 3355, 0), "The house east of the east bank."),
 		new CrypticClue("You were 3 and I was the 6th. Come speak to me.", "Vannaka", new WorldPoint(3146, 9913, 0), "Speak to Vannaka in Edgeville Dungeon."),
 		new CrypticClue("Search the crates in Draynor Manor.", CRATE_11485, new WorldPoint(3105, 3369, 2), "Top floor of the manor"),
 		new CrypticClue("Search the crates near a cart in Varrock.", CRATE_5107, new WorldPoint(3226, 3452, 0), "South east of Varrock Palace, south of the tree farming patch."),
