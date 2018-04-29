@@ -1,5 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ir")
+@ObfuscatedName("il")
 public interface class244 extends Enumerated {
 }

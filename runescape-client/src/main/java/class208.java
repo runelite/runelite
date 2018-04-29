@@ -1,22 +1,22 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("hc")
 public class class208 extends class224 {
-   @ObfuscatedName("o")
-   Object field2625;
+   @ObfuscatedName("g")
+   Object field2631;
 
    class208(Object var1, int var2) {
       super(var2);
-      this.field2625 = var1;
+      this.field2631 = var1;
    }
 
-   @ObfuscatedName("o")
-   Object vmethod4084() {
-      return this.field2625;
+   @ObfuscatedName("g")
+   Object vmethod4179() {
+      return this.field2631;
    }
 
-   @ObfuscatedName("k")
-   boolean vmethod4087() {
+   @ObfuscatedName("e")
+   boolean vmethod4180() {
       return false;
    }
 }

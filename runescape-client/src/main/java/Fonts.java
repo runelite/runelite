@@ -1,45 +1,40 @@
+import java.applet.Applet;
 import java.util.HashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kc")
+@ObfuscatedName("kr")
 @Implements("Fonts")
 public class Fonts {
-   @ObfuscatedName("ff")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "[Lld;"
+      signature = "Ljr;"
    )
-   @Export("headIconsPrayer")
-   static SpritePixels[] headIconsPrayer;
-   @ObfuscatedName("o")
+   IndexDataBase field3894;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ljr;"
    )
-   IndexDataBase field3892;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Ljf;"
-   )
-   IndexDataBase field3890;
-   @ObfuscatedName("t")
+   IndexDataBase field3891;
+   @ObfuscatedName("b")
    @Export("map")
    HashMap map;
 
    @ObfuscatedSignature(
-      signature = "(Ljf;Ljf;)V"
+      signature = "(Ljr;Ljr;)V"
    )
    public Fonts(IndexDataBase var1, IndexDataBase var2) {
-      this.field3892 = var1;
-      this.field3890 = var2;
+      this.field3894 = var1;
+      this.field3891 = var2;
       this.map = new HashMap();
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "([Lkp;I)Ljava/util/HashMap;",
-      garbageValue = "-1359608733"
+      signature = "([Lkv;I)Ljava/util/HashMap;",
+      garbageValue = "787875018"
    )
    @Export("createMap")
    public HashMap createMap(FontName[] var1) {
@@ -51,19 +46,64 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            IndexDataBase var7 = this.field3892;
-            IndexDataBase var8 = this.field3890;
-            String var9 = var5.field3885;
+            IndexDataBase var7 = this.field3894;
+            IndexDataBase var8 = this.field3891;
+            String var9 = var5.field3889;
             int var10 = var7.getFile(var9);
             int var11 = var7.getChild(var10, "");
-            Font var6 = FontName.method5488(var7, var8, var10, var11);
-            if(var6 != null) {
-               this.map.put(var5, var6);
-               var2.put(var5, var6);
+            Font var12;
+            if(!class326.method5792(var7, var10, var11)) {
+               var12 = null;
+            } else {
+               var12 = AbstractByteBuffer.method3837(var8.getConfigData(var10, var11));
+            }
+
+            if(var12 != null) {
+               this.map.put(var5, var12);
+               var2.put(var5, var12);
             }
          }
       }
 
       return var2;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Ljava/applet/Applet;Ljava/lang/String;I)V",
+      garbageValue = "-631481600"
+   )
+   public static void method5551(Applet var0, String var1) {
+      class57.field661 = var0;
+      if(var1 != null) {
+         class57.field655 = var1;
+      }
+
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "349070007"
+   )
+   static final int method5548(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
    }
 }

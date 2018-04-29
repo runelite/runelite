@@ -3,97 +3,92 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("et")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("gf")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -905114669
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1716707329
+      intValue = 1342979519
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 355953863
+      intValue = 1420885365
    )
    @Export("height")
    int height;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -578308445
+      intValue = 738968671
    )
    @Export("x")
    int x;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -655554511
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("h")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ley;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("m")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1891180903
+      intValue = -817930801
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1628553067
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1077887321
+      intValue = 1208197889
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1705717825
+      intValue = 1593201963
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2017876587
+      intValue = -218677999
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("x")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1243283353
+      intValue = 1388335241
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1689595723
+      intValue = 993335671
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1774788285
+      intValue = -867170549
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2055602271
+      intValue = -287107299
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 2062036631
+      intValue = 2019313501
    )
    @Export("flags")
    int flags;
@@ -103,32 +98,22 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("fx")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lbz;III)V",
-      garbageValue = "-841453657"
+      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
+      garbageValue = "874939923"
    )
-   static void method3083(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = CombatInfo1.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.actionFrameCycle = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field1193 = 0;
-         }
+   @Export("loadClassFromDescriptor")
+   static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
+   }
 
-         if(var3 == 2) {
-            var0.field1193 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || CombatInfo1.getAnimation(var1).forcedPriority >= CombatInfo1.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.actionFrameCycle = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field1193 = 0;
-         var0.field1216 = var0.queueSize;
-      }
-
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Liv;B)Z",
+      garbageValue = "-55"
+   )
+   public static boolean method3165(class245 var0) {
+      return class245.field2960 == var0 || class245.field2961 == var0 || class245.field2962 == var0 || class245.field2969 == var0 || class245.field2963 == var0 || class245.field2964 == var0 || class245.field2965 == var0 || class245.field2966 == var0;
    }
 }

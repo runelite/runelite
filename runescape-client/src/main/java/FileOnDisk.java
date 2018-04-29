@@ -9,21 +9,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("di")
+@ObfuscatedName("db")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("o")
+   @ObfuscatedName("ig")
+   @ObfuscatedSignature(
+      signature = "Liz;"
+   )
+   static Widget field1676;
+   @ObfuscatedName("g")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      longValue = -5361995657130045831L
+      longValue = 1580344169738491077L
    )
    @Export("length")
    long length;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      longValue = -7300225605936443415L
+      longValue = 3043768136751491835L
    )
    @Export("position")
    long position;
@@ -49,22 +54,22 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "1887798545"
+      garbageValue = "1820785308"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.position > this.length) {
-         this.file.seek(this.length + 1L);
+      if(this.position + (long)var3 > this.length) {
+         this.file.seek(1L + this.length);
          this.file.write(1);
          throw new EOFException();
       } else {
@@ -73,20 +78,20 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1973112982"
+      garbageValue = "-2131676731"
    )
    @Export("close")
    public final void close() throws IOException {
       this.closeSync(false);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1832171393"
+      signature = "(ZB)V",
+      garbageValue = "-95"
    )
    @Export("closeSync")
    public final void closeSync(boolean var1) throws IOException {
@@ -105,20 +110,20 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)J",
-      garbageValue = "2086846389"
+      garbageValue = "1608363080"
    )
    @Export("length")
    public final long length() throws IOException {
       return this.file.length();
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "([BIII)I",
-      garbageValue = "223146812"
+      garbageValue = "1677252204"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -131,6 +136,22 @@ public final class FileOnDisk {
    }
 
    protected void finalize() throws Throwable {
+      if(this.file != null) {
+         System.out.println("");
+         this.close();
+      }
+
+   }
+
+   protected void aaw() throws Throwable {
+      if(this.file != null) {
+         System.out.println("");
+         this.close();
+      }
+
+   }
+
+   protected void aav() throws Throwable {
       if(this.file != null) {
          System.out.println("");
          this.close();

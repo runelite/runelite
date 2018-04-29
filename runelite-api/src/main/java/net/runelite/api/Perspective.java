@@ -228,30 +228,30 @@ public class Perspective
 	 * Calculates the above ground height of a tile point.
 	 *
 	 * @param client
-	 * @param x the ground coordinate on the x axis
-	 * @param y the ground coordinate on the y axis
+	 * @param localX the ground coordinate on the x axis
+	 * @param localY the ground coordinate on the y axis
 	 * @param plane the client plane/ground level
 	 * @return the offset from the ground of the tile
 	 */
-	public static int getTileHeight(Client client, int x, int y, int plane)
+	public static int getTileHeight(Client client, int localX, int localY, int plane)
 	{
-		int var3 = x >> 7;
-		int var4 = y >> 7;
-		if (var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103)
+		int sceneX = localX >> LOCAL_COORD_BITS;
+		int sceneY = localY >> LOCAL_COORD_BITS;
+		if (sceneX >= 0 && sceneY >= 0 && sceneX <= 103 && sceneY <= 103)
 		{
 			byte[][][] tileSettings = client.getTileSettings();
 			int[][][] tileHeights = client.getTileHeights();
 
 			int var5 = plane;
-			if (plane < 3 && (tileSettings[1][var3][var4] & 2) == 2)
+			if (plane < 3 && (tileSettings[1][sceneX][sceneY] & 2) == 2)
 			{
 				var5 = plane + 1;
 			}
 
-			int var6 = x & 127;
-			int var7 = y & 127;
-			int var8 = var6 * tileHeights[var5][var3 + 1][var4] + (128 - var6) * tileHeights[var5][var3][var4] >> 7;
-			int var9 = tileHeights[var5][var3][var4 + 1] * (128 - var6) + var6 * tileHeights[var5][var3 + 1][var4 + 1] >> 7;
+			int var6 = localX & 127;
+			int var7 = localY & 127;
+			int var8 = var6 * tileHeights[var5][sceneX + 1][sceneY] + (128 - var6) * tileHeights[var5][sceneX][sceneY] >> 7;
+			int var9 = tileHeights[var5][sceneX][sceneY + 1] * (128 - var6) + var6 * tileHeights[var5][sceneX + 1][sceneY + 1] >> 7;
 			return (128 - var7) * var8 + var7 * var9 >> 7;
 		}
 
@@ -289,19 +289,19 @@ public class Perspective
 		int aoeSize = size / 2;
 
 		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point topLeft = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
-			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
+		Point southWestCorner = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1,
+			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile + 1);
 		// expand by size
-		Point bottomRight = new Point(topLeft.getX() + size * LOCAL_TILE_SIZE - 1,
-			topLeft.getY() + size * LOCAL_TILE_SIZE - 1);
+		Point northEastCorner = new Point(southWestCorner.getX() + size * LOCAL_TILE_SIZE - 1,
+			southWestCorner.getY() + size * LOCAL_TILE_SIZE - 1);
 		// Take the x of top left and the y of bottom right to create bottom left
-		Point bottomLeft = new Point(topLeft.getX(), bottomRight.getY());
+		Point bottomLeft = new Point(southWestCorner.getX(), northEastCorner.getY());
 		// Similarly for top right
-		Point topRight = new Point(bottomRight.getX(), topLeft.getY());
+		Point topRight = new Point(northEastCorner.getX(), southWestCorner.getY());
 
-		Point p1 = worldToCanvas(client, topLeft.getX(), topLeft.getY(), plane);
+		Point p1 = worldToCanvas(client, southWestCorner.getX(), southWestCorner.getY(), plane);
 		Point p2 = worldToCanvas(client, topRight.getX(), topRight.getY(), plane);
-		Point p3 = worldToCanvas(client, bottomRight.getX(), bottomRight.getY(), plane);
+		Point p3 = worldToCanvas(client, northEastCorner.getX(), northEastCorner.getY(), plane);
 		Point p4 = worldToCanvas(client, bottomLeft.getX(), bottomLeft.getY(), plane);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)

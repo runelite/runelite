@@ -44,6 +44,7 @@ public class RegenMeterOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
+	private static final double DIAMETER = 25D;
 
 	private final Client client;
 	private RegenMeterPlugin plugin;
@@ -93,7 +94,7 @@ public class RegenMeterOverlay extends Overlay
 		}
 		Rectangle bounds = widget.getBounds();
 
-		Arc2D.Double arc = new Arc2D.Double(bounds.x + 26d, bounds.y + 3.d, 27d, 27d, 90.d, -360.d * percent, Arc2D.OPEN);
+		Arc2D.Double arc = new Arc2D.Double(bounds.x + 28d, bounds.y + (bounds.height / 2 - DIAMETER / 2), DIAMETER, DIAMETER, 88.d, -360.d * percent, Arc2D.OPEN);
 		final Stroke STROKE = new BasicStroke(2f);
 		g.setStroke(STROKE);
 		g.setColor(color);

@@ -4,75 +4,109 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jz")
+@ObfuscatedName("jb")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lji;"
    )
    @Export("index")
    IndexData index;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -690512423
+      intValue = 1441835589
    )
    @Export("crc")
    int crc;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @Export("padding")
    byte padding;
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ILcr;ZB)I",
-      garbageValue = "1"
+      signature = "(II)Ljl;",
+      garbageValue = "-852112309"
    )
-   static int method4524(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class44.getWidget(class81.intStack[--WorldComparator.intStackSize]);
+   public static class281 method4638(int var0) {
+      class281 var1 = (class281)class281.field3568.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         var3 = var2?class81.field1285:Signlink.field2218;
+         byte[] var2 = class281.field3576.getConfigData(32, var0);
+         var1 = new class281();
+         if(var2 != null) {
+            var1.method5044(new Buffer(var2));
+         }
+
+         class281.field3568.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("jq")
+   @ObfuscatedSignature(
+      signature = "([Liz;II)V",
+      garbageValue = "1433926302"
+   )
+   static final void method4639(Widget[] var0, int var1) {
+      for(int var2 = 0; var2 < var0.length; ++var2) {
+         Widget var3 = var0[var2];
+         if(var3 != null && var3.parentId == var1 && (!var3.hasScript || !MapIconReference.method762(var3))) {
+            if(var3.type == 0) {
+               if(!var3.hasScript && MapIconReference.method762(var3) && var3 != GameCanvas.field642) {
+                  continue;
+               }
+
+               method4639(var0, var3.id);
+               if(var3.children != null) {
+                  method4639(var3.children, var3.id);
+               }
+
+               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
+               if(var4 != null) {
+                  UnitPriceComparator.method142(var4.id);
+               }
+            }
+
+            if(var3.type == 6) {
+               int var5;
+               if(var3.field2868 != -1 || var3.field2869 != -1) {
+                  boolean var7 = UrlRequest.method3182(var3);
+                  if(var7) {
+                     var5 = var3.field2869;
+                  } else {
+                     var5 = var3.field2868;
+                  }
+
+                  if(var5 != -1) {
+                     Sequence var6 = NPC.getAnimation(var5);
+
+                     for(var3.field2896 += Client.field913; var3.field2896 > var6.frameLengths[var3.field2943]; TotalQuantityComparator.method100(var3)) {
+                        var3.field2896 -= var6.frameLengths[var3.field2943];
+                        ++var3.field2943;
+                        if(var3.field2943 >= var6.frameIDs.length) {
+                           var3.field2943 -= var6.frameStep;
+                           if(var3.field2943 < 0 || var3.field2943 >= var6.frameIDs.length) {
+                              var3.field2943 = 0;
+                           }
+                        }
+                     }
+                  }
+               }
+
+               if(var3.field2907 != 0 && !var3.hasScript) {
+                  int var8 = var3.field2907 >> 16;
+                  var5 = var3.field2907 << 16 >> 16;
+                  var8 *= Client.field913;
+                  var5 *= Client.field913;
+                  var3.rotationX = var8 + var3.rotationX & 2047;
+                  var3.rotationZ = var5 + var3.rotationZ & 2047;
+                  TotalQuantityComparator.method100(var3);
+               }
+            }
+         }
       }
 
-      int var4;
-      if(var0 == 1300) {
-         var4 = class81.intStack[--WorldComparator.intStackSize] - 1;
-         if(var4 >= 0 && var4 <= 9) {
-            var3.setAction(var4, class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize]);
-            return 1;
-         } else {
-            --KeyFocusListener.scriptStringStackSize;
-            return 1;
-         }
-      } else if(var0 == 1301) {
-         WorldComparator.intStackSize -= 2;
-         var4 = class81.intStack[WorldComparator.intStackSize];
-         int var5 = class81.intStack[WorldComparator.intStackSize + 1];
-         var3.dragParent = FontName.getWidgetChild(var4, var5);
-         return 1;
-      } else if(var0 == 1302) {
-         var3.dragRenderBehavior = class81.intStack[--WorldComparator.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1303) {
-         var3.dragDeadZone = class81.intStack[--WorldComparator.intStackSize];
-         return 1;
-      } else if(var0 == 1304) {
-         var3.dragDeadTime = class81.intStack[--WorldComparator.intStackSize];
-         return 1;
-      } else if(var0 == 1305) {
-         var3.opBase = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1306) {
-         var3.targetVerb = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1307) {
-         var3.actions = null;
-         return 1;
-      } else {
-         return 2;
-      }
    }
 }

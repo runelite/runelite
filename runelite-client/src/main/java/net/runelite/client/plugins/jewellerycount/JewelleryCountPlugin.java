@@ -25,9 +25,16 @@
 package net.runelite.client.plugins.jewellerycount;
 
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Jewellery Count"
@@ -37,9 +44,33 @@ public class JewelleryCountPlugin extends Plugin
 	@Inject
 	private JewelleryCountOverlay overlay;
 
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private JewelleryCountConfig config;
+
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Provides
+	JewelleryCountConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(JewelleryCountConfig.class);
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.SERVER)
+		{
+			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
+			{
+				notifier.notify("Your Ring of Recoil has shattered");
+			}
+		}
 	}
 }

@@ -2,57 +2,57 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hx")
 public class class211 implements Iterator {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhm;"
+      signature = "Lhb;"
    )
-   CombatInfoList field2632;
-   @ObfuscatedName("k")
+   CombatInfoList field2638;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Lht;"
    )
-   Node field2633;
-   @ObfuscatedName("t")
+   Node field2639;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lhj;"
+      signature = "Lht;"
    )
-   Node field2634;
+   Node field2640;
 
    @ObfuscatedSignature(
-      signature = "(Lhm;)V"
+      signature = "(Lhb;)V"
    )
    class211(CombatInfoList var1) {
-      this.field2634 = null;
-      this.field2632 = var1;
-      this.field2633 = this.field2632.node.next;
-      this.field2634 = null;
-   }
-
-   public Object next() {
-      Node var1 = this.field2633;
-      if(var1 == this.field2632.node) {
-         var1 = null;
-         this.field2633 = null;
-      } else {
-         this.field2633 = var1.next;
-      }
-
-      this.field2634 = var1;
-      return var1;
+      this.field2640 = null;
+      this.field2638 = var1;
+      this.field2639 = this.field2638.node.next;
+      this.field2640 = null;
    }
 
    public boolean hasNext() {
-      return this.field2632.node != this.field2633;
+      return this.field2638.node != this.field2639;
    }
 
    public void remove() {
-      if(this.field2634 == null) {
+      if(this.field2640 == null) {
          throw new IllegalStateException();
       } else {
-         this.field2634.unlink();
-         this.field2634 = null;
+         this.field2640.unlink();
+         this.field2640 = null;
       }
+   }
+
+   public Object next() {
+      Node var1 = this.field2639;
+      if(var1 == this.field2638.node) {
+         var1 = null;
+         this.field2639 = null;
+      } else {
+         this.field2639 = var1.next;
+      }
+
+      this.field2640 = var1;
+      return var1;
    }
 }

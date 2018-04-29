@@ -54,6 +54,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
@@ -65,8 +66,11 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
-import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -79,6 +83,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.Hooks;
+import static net.runelite.client.callback.Hooks.deferredEventBus;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -105,6 +110,12 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean interpolateObjectAnimations;
+
+	@Inject
+	private static RSPlayer[] oldPlayers = new RSPlayer[2048];
+
+	@Inject
+	private static RSNPC[] oldNpcs = new RSNPC[32768];
 
 	@Inject
 	@Override
@@ -146,6 +157,21 @@ public abstract class RSClientMixin implements RSClient
 	public void setInterpolateObjectAnimations(boolean interpolate)
 	{
 		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public Tile getSelectedRegionTile()
+	{
+		int tileX = getSelectedRegionTileX();
+		int tileY = getSelectedRegionTileY();
+
+		if (tileX == -1 || tileY == -1)
+		{
+			return null;
+		}
+
+		return getRegion().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
@@ -670,6 +696,18 @@ public abstract class RSClientMixin implements RSClient
 		{
 			npc.setIndex(idx);
 		}
+
+		RSNPC oldNpc = oldNpcs[idx];
+		oldNpcs[idx] = npc;
+
+		if (oldNpc != null)
+		{
+			eventBus.post(new NpcDespawned(oldNpc));
+		}
+		if (npc != null)
+		{
+			deferredEventBus.post(new NpcSpawned(npc));
+		}
 	}
 
 	@FieldHook("cachedPlayers")
@@ -683,9 +721,16 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		RSPlayer player = cachedPlayers[idx];
+		RSPlayer oldPlayer = oldPlayers[idx];
+		oldPlayers[idx] = player;
+
+		if (oldPlayer != null)
+		{
+			eventBus.post(new PlayerDespawned(oldPlayer));
+		}
 		if (player != null)
 		{
-			player.setIndex(idx);
+			deferredEventBus.post(new PlayerSpawned(player));
 		}
 	}
 
@@ -736,20 +781,6 @@ public abstract class RSClientMixin implements RSClient
 		eventBus.post(new ClanChanged(client.getClanMemberManager() != null));
 	}
 
-	@FieldHook("isMenuOpen")
-	@Inject
-	public static void menuOpened(int opened)
-	{
-		if (!client.isMenuOpen())
-		{
-			return;
-		}
-
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
-	}
-
 	@Inject
 	@Override
 	public boolean hasHintArrow()
@@ -777,7 +808,7 @@ public abstract class RSClientMixin implements RSClient
 	public void setHintArrow(Player player)
 	{
 		client.setHintArrowTargetType(HintArrowType.PLAYER.getValue());
-		client.setHintArrowPlayerTargetIdx(player.getIndex());
+		client.setHintArrowPlayerTargetIdx(((RSPlayer) player).getPlayerId());
 	}
 
 	@Inject

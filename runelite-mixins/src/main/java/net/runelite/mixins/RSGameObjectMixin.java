@@ -28,6 +28,7 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.coords.Angle;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -79,7 +80,7 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	@Override
 	public Area getClickbox()
 	{
-		return Perspective.getClickbox(client, getModel(), getOrientation(), getX(), getY());
+		return Perspective.getClickbox(client, getModel(), getRsOrientation(), getX(), getY());
 	}
 
 	@Inject
@@ -93,6 +94,15 @@ public abstract class RSGameObjectMixin implements RSGameObject
 			return null;
 		}
 
-		return model.getConvexHull(getX(), getY(), getOrientation());
+		return model.getConvexHull(getX(), getY(), getRsOrientation());
+	}
+
+	@Override
+	@Inject
+	public Angle getOrientation()
+	{
+		int orientation = getRsOrientation();
+		int rotation = (getFlags() >> 6) & 3;
+		return new Angle(rotation * 512 + orientation);
 	}
 }

@@ -24,57 +24,12 @@
  */
 package net.runelite.modelviewer;
 
+import lombok.Value;
+
+@Value
 public class LocationKey
 {
 	private final int id;
 	private final int type;
 	private final int orientation;
-
-	public LocationKey(int id, int type, int orientation)
-	{
-		this.id = id;
-		this.type = type;
-		this.orientation = orientation;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 5;
-		hash = 97 * hash + this.id;
-		hash = 97 * hash + this.type;
-		hash = 97 * hash + this.orientation;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final LocationKey other = (LocationKey) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.type != other.type)
-		{
-			return false;
-		}
-		if (this.orientation != other.orientation)
-		{
-			return false;
-		}
-		return true;
-	}
 }

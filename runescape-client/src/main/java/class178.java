@@ -2,67 +2,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fw")
 public abstract class class178 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1240880825
+      intValue = 1058967717
    )
-   public int field2296;
-   @ObfuscatedName("k")
+   public int field2275;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1589540181
+      intValue = -1360995007
    )
-   public int field2293;
-   @ObfuscatedName("t")
+   public int field2273;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1243119805
+      intValue = 1922539711
    )
-   public int field2294;
-   @ObfuscatedName("d")
+   public int field2276;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 880617749
+      intValue = -1954538561
    )
-   public int field2295;
+   public int field2274;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIILfb;I)Z",
-      garbageValue = "-1864637630"
+      signature = "(IIILff;B)Z",
+      garbageValue = "93"
    )
-   protected abstract boolean vmethod3428(int var1, int var2, int var3, CollisionData var4);
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Liu;IIB)Lcr;",
-      garbageValue = "-77"
-   )
-   static Script method3431(class245 var0, int var1, int var2) {
-      int var3 = (var1 << 8) + var0.field2973;
-      Script var5 = WorldMapType3.method233(var3, var0);
-      if(var5 != null) {
-         return var5;
-      } else {
-         int var6 = var0.field2973 + (var2 + 40000 << 8);
-         var5 = WorldMapType3.method233(var6, var0);
-         return var5 != null?var5:null;
-      }
-   }
-
-   @ObfuscatedName("hs")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-1"
-   )
-   static final void method3432(int var0) {
-      if(var0 >= 0) {
-         int var1 = Client.menuActionParams0[var0];
-         int var2 = Client.menuActionParams1[var0];
-         int var3 = Client.menuTypes[var0];
-         int var4 = Client.menuIdentifiers[var0];
-         String var5 = Client.menuOptions[var0];
-         String var6 = Client.menuTargets[var0];
-         PacketBuffer.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.mouseLastPressedX, MouseInput.mouseLastPressedY);
-      }
-   }
+   public abstract boolean vmethod3496(int var1, int var2, int var3, CollisionData var4);
 }
