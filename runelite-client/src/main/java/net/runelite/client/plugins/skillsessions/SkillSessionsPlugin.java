@@ -27,18 +27,18 @@ package net.runelite.client.plugins.skillsessions;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.skillsessions.skillsessions.AgilitySkillSession;
 import net.runelite.client.plugins.skillsessions.skillsessions.CookingSkillSession;
 import net.runelite.client.plugins.skillsessions.skillsessions.FishingSkillSession;
 import net.runelite.client.plugins.skillsessions.skillsessions.WoodcuttingSkillSession;
@@ -58,6 +58,9 @@ import java.util.function.Supplier;
 public class SkillSessionsPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private SkillSessionsOverlay overlay;
 
 	@Inject
@@ -69,6 +72,8 @@ public class SkillSessionsPlugin extends Plugin
 	@Getter
 	@Setter
 	private SkillSession focused;
+
+	private int lastAgilityXp;
 
 	private ClassToInstanceMap<SkillSession> sessions;
 
@@ -145,6 +150,15 @@ public class SkillSessionsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			focused = null;
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.FILTERED)
@@ -169,5 +183,44 @@ public class SkillSessionsPlugin extends Plugin
 		{
 			updateSession(WoodcuttingSkillSession.class, () -> new WoodcuttingSkillSession(xpTracker));
 		}
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event)
+	{
+		if (event.getSkill() != Skill.AGILITY)
+		{
+			return;
+		}
+
+		// Determine how much EXP was actually gained
+		int agilityXp = client.getSkillExperience(Skill.AGILITY);
+		int skillGained = agilityXp - lastAgilityXp;
+		lastAgilityXp = agilityXp;
+
+		AgilitySkillSession session = sessions.getInstance(AgilitySkillSession.class);
+
+		//Assume if they gained xp and have the course region loaded, the are going round the course.
+		//May be problematic if they are going round the course but the region isn't loaded.
+		if (session != null && Ints.contains(client.getMapRegions(), session.getCourse().getRegionId()))
+		{
+			session.updateLastAction();
+		}
+
+		// Get course
+		AgilityCourse course = AgilityCourse.getCourse(skillGained);
+		if (course == null || !Ints.contains(client.getMapRegions(), course.getRegionId()))
+		{
+			return;
+		}
+
+		if (session == null || session.getCourse() != course)
+		{
+			session = new AgilitySkillSession(course);
+			sessions.putInstance(AgilitySkillSession.class, session);
+		}
+
+		session.incrementLapCount(client);
+		this.focused = session;
 	}
 }

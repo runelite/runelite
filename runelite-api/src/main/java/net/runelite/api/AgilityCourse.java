@@ -22,46 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.agility;
+package net.runelite.api;
 
-import java.time.Instant;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.Skill;
 
-@Getter
-@Setter
-public class AgilitySession
+import java.util.HashMap;
+import java.util.Map;
+
+@AllArgsConstructor
+public enum AgilityCourse
 {
-	private final Courses course;
-	private Instant lastLapCompleted;
-	private int totalLaps;
-	private int lapsTillLevel;
+	GNOME(86.5, 46, 9781),
+	DRAYNOR(120.0, 79, 12338),
+	AL_KHARID(180.0, 30, 13105),
+	PYRAMID(722.0, 300, 13356),
+	VARROCK(238.0, 125, 12853),
+	PENGUIN(540.0, 65, 10559),
+	BARBARIAN(139.5, 60, 10039),
+	CANIFIS(240.0, 175, 13878),
+	APE_ATOLL(580.0, 300, 11050),
+	FALADOR(440, 180, 12084),
+	WILDERNESS(571.0, 499, 11837),
+	SEERS(570.0, 435, 10806),
+	POLLNIVEACH(890.0, 540, 13358),
+	RELLEKA(780.0, 475, 10553),
+	ARDOUGNE(793.0, 529, 10547);
 
-	public AgilitySession(Courses course)
+	private final static Map<Integer, AgilityCourse> courseXps = new HashMap<>();
+
+	static
 	{
-		this.course = course;
+		for (AgilityCourse course : values())
+		{
+			courseXps.put(course.lastObstacleXp, course);
+		}
 	}
 
-	public void incrementLapCount(Client client)
+	@Getter
+	private final double totalXp;
+	private final int lastObstacleXp;
+	@Getter
+	private final int regionId;
+
+	public static AgilityCourse getCourse(int exp)
 	{
-		Instant now = Instant.now();
-
-		lastLapCompleted = now;
-		++totalLaps;
-
-		int currentExp = client.getSkillExperience(Skill.AGILITY);
-		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
-		int remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
-
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
-	}
-
-	public void resetLapCount()
-	{
-		totalLaps = 0;
-		lapsTillLevel = 0;
+		return courseXps.get(exp);
 	}
 }

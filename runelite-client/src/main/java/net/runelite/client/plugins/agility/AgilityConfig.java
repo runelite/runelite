@@ -37,28 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showLapCount",
-		name = "Show Lap count",
-		description = "Enable/disable the lap counter",
-		position = 1
-	)
-	default boolean showLapCount()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
-		description = "Time until the lap counter hides/resets",
-		position = 2
-	)
-	default int lapTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Color of Agility overlay",

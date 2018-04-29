@@ -75,6 +75,16 @@ public interface SkillSessionsConfig
 	}
 
 	@ConfigItem(
+			keyName = "showAgility",
+			name = "Display your agility session statistics",
+			description = "Configures whether your agility session statistics are displayed"
+	)
+	default boolean showAgility()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 			keyName = "showWoodcutting",
 			name = "Display your woodcutting session statistics",
 			description = "Configures whether your woodcutting session statistics are displayed"
