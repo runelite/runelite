@@ -27,16 +27,20 @@ package net.runelite.mixins;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.api.HeadIcon;
+import static net.runelite.api.HeadIcon.MAGIC;
+import static net.runelite.api.HeadIcon.MELEE;
+import static net.runelite.api.HeadIcon.RANGED;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Replace;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSName;
@@ -70,6 +74,23 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 
 		return name.replace('\u00A0', ' ');
+	}
+
+	@Inject
+	@Override
+	public HeadIcon getOverheadIcon()
+	{
+		switch (getRsOverheadIcon())
+		{
+			case 0:
+				return MELEE;
+			case 1:
+				return RANGED;
+			case 2:
+				return MAGIC;
+			default:
+				return null;
+		}
 	}
 
 	@Inject
