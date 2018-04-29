@@ -28,6 +28,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
+import net.runelite.api.OverheadPrayer;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Copy;
@@ -178,4 +179,13 @@ public abstract class RSPlayerMixin implements RSPlayer
 			setSpotAnimFrame(spotAnimFrame);
 		}
 	}
+	
+	/*
+	@Inject
+	@Override
+	public OverheadPrayer getOverheadPrayer()
+	{
+		return OverheadPrayer.fromId(this.getOverheadIcon());
+	}
+	*/
 }

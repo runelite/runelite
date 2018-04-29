@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Dreyri <https://github.com/Dreyri>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.mixins;
 
-import java.awt.Polygon;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSCombatInfoList;
+import net.runelite.rs.api.RSNode;
 
-public interface Player extends Actor
+@Mixin(RSCombatInfoList.class)
+public abstract class RSCombatInfoListMixin implements RSCombatInfoList
 {
 	@Override
-	int getCombatLevel();
+	@Inject
+	public boolean isEmpty()
+	{
+		return this.getNode().getNext() == this.getNode();
+	}
 
-	PlayerComposition getPlayerComposition();
+	@Override
+	@Inject
+	public RSNode last()
+	{
+		return this.previousOrLast(null);
+	}
 
-	Polygon[] getPolygons();
-
-	int getTeam();
-
-	boolean isClanMember();
-
-	boolean isFriend();
-
-	int getOverheadIcon();
-	
-	//OverheadPrayer getOverheadPrayer();
+	@Override
+	@Inject
+	public RSNode previous()
+	{
+		RSNode current = this.getCurrent();
+		if (current == this.getNode())
+		{
+			this.setCurrent(null);
+			return null;
+		}
+		else
+		{
+			this.setCurrent(current.getNext());
+			return current;
+		}
+	}
 }

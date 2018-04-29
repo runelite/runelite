@@ -415,4 +415,8 @@ public interface Client extends GameEngine
 	void setProjectilesHidden(boolean state);
 
 	CollisionData[] getCollisionMaps();
+
+	void setDrawFreezeBar(boolean draw);
+
+	boolean getDrawFreezeBar();
 }

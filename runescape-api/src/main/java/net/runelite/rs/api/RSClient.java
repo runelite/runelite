@@ -622,4 +622,11 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("isDynamicRegion")
 	@Override
 	boolean isInInstancedRegion();
+	
+	@Import("Rasterizer2D_fillRectangle")
+	void Rasterizer2D_fillRectangle(int x, int y, int width, int height, int color);
+
+	void setDrawFreezeBar(boolean draw);
+
+	boolean getDrawFreezeBar();
 }

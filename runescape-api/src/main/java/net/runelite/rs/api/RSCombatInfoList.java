@@ -33,4 +33,19 @@ public interface RSCombatInfoList
 {
 	@Import("node")
 	RSNode getNode();
+
+	@Import("current")
+	RSNode getCurrent();
+
+	@Import("current")
+	void setCurrent(RSNode newCurrent);
+
+	boolean isEmpty();
+
+	@Import("previousOrLast")
+	RSNode previousOrLast(RSNode node);
+
+	RSNode last();
+
+	RSNode previous();
 }

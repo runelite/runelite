@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Dreyri <https://github.com/Dreyri>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,24 +24,32 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
+import lombok.Getter;
 
-public interface Player extends Actor
+public enum FreezeType
 {
-	@Override
-	int getCombatLevel();
+	ICE_RUSH(8, 361, false),
+	ICE_BURST(16, 363, false),
+	ICE_BLITZ(24, 367, false),
+	ICE_BARRAGE(32, 369, false),
 
-	PlayerComposition getPlayerComposition();
+	BIND(8, 181, true),
+	SNARE(16, 180, true),
+	ENTANGLE(24, 179, true);
 
-	Polygon[] getPolygons();
+	@Getter
+	private int ticks;
 
-	int getTeam();
+	@Getter
+	private int graphic;
 
-	boolean isClanMember();
+	@Getter
+	private boolean halfOnPray;
 
-	boolean isFriend();
-
-	int getOverheadIcon();
-	
-	//OverheadPrayer getOverheadPrayer();
+	FreezeType(int ticks, int graphic, boolean halfOnPray)
+	{
+		this.ticks = ticks;
+		this.graphic = graphic;
+		this.halfOnPray = halfOnPray;
+	}
 }

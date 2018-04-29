@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.FreezeInfo;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
@@ -58,6 +59,9 @@ public abstract class RSActorMixin implements RSActor
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private FreezeInfo freeze;
 
 	@Inject
 	@Override
@@ -175,6 +179,16 @@ public abstract class RSActorMixin implements RSActor
 	public Point getMinimapLocation()
 	{
 		return Perspective.worldToMiniMap(client, getX(), getY());
+	}
+
+	@Inject
+	@Override
+	public FreezeInfo getFreeze()
+	{
+		if (this.freeze == null)
+			this.freeze = new FreezeInfo();
+		
+		return this.freeze;
 	}
 
 	@FieldHook("animation")
