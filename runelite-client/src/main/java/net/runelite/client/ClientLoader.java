@@ -113,8 +113,6 @@ public class ClientLoader
 
 		rs.setStub(new RSStub(config));
 
-		new ReducedFunctionalityPopup();
-
 		return rs;
 	}
 }

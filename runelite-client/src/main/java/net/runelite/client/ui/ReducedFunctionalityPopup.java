@@ -27,58 +27,87 @@ package net.runelite.client.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
-public class ReducedFunctionalityPopup extends JDialog
+public class ReducedFunctionalityPopup
 {
-	public ReducedFunctionalityPopup()
+	private JDialog dialog;
+
+	public void init() throws Exception
 	{
-		this.setTitle("Reduced Functionality Mode");
-		this.setModal(true);
-		this.setAlwaysOnTop(true);
-		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
-		this.setLayout(new BorderLayout());
-		this.getContentPane().setBackground(Color.DARK_GRAY);
+		SwingUtilities.invokeAndWait(() ->
+			{
+				dialog = new JDialog();
+				dialog.setTitle("Reduced Functionality Mode");
+				dialog.setModal(true);
+				dialog.setAlwaysOnTop(true);
+				dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
-		JLabel text = new JLabel( "<html><p color='white'>" +
-				"RuneLite has not yet been updated for use with the <br>" +
-				"latest OSRS update.<br>" +
-				"As a result RuneLite is running in reduced functionality mode.<br>" +
-				"A new version of RuneLite for use with the new game update <br>" +
-				"should be available shortly.<br>" +
-				"<br>Thank you for your patience." +
-				"</p></html>");
-		text.setBorder(new EmptyBorder(15, 15, 0, 15));
+				dialog.setLayout(new BorderLayout());
+				dialog.getContentPane().setBackground(Color.GRAY);
+		});
+	}
 
-		JLabel icon = new JLabel(javax.swing.UIManager.getIcon("OptionPane.informationIcon"));
-		icon.setBorder(new EmptyBorder(10, 25, 50, 25));
-
-		JButton okButton = new JButton("Ok");
-		okButton.addActionListener(e -> this.setVisible(false));
-		okButton.setBorder(new EmptyBorder(8, 35, 8, 35));
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBackground(Color.DARK_GRAY);
-		buttonPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
-		buttonPanel.add(okButton);
-		
-		this.getRootPane().setDefaultButton(okButton);
-
-
-		this.add(icon, BorderLayout.WEST);
-		this.add(text, BorderLayout.CENTER);
-		this.add(buttonPanel, BorderLayout.SOUTH);
+	public void show() throws Exception
+	{
+		SwingUtilities.invokeAndWait(() ->
+			{
+				JTextArea text = new JTextArea("RuneLite has not yet been updated for use with the \n" +
+								"latest OSRS update.\n" +
+								"As a result RuneLite is running in reduced functionality mode.\n" +
+								"A new version of RuneLite for use with the new game update \n" +
+								"should be available shortly.\n" +
+								"\nThank you for your patience."
+				);
+				text.setBorder(BorderFactory.createCompoundBorder(
+						new LineBorder(Color.DARK_GRAY, 1, true),
+						new EmptyBorder(15, 15, 15, 15)
+				));
+				text.setEditable(false);
 
 
-		this.pack();
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+				JPanel textPanel = new JPanel();
+				textPanel.setBorder(new EmptyBorder(15, 15, 0, 15));
+				textPanel.add(text);
 
-		this.setVisible(true);
+
+
+		JLabel icon = new JLabel(javax.swing.UIManager.getIcon("OptionPane.errorIcon"));
+
+
+			JPanel iconPanel = new JPanel();
+			iconPanel.setBorder(new EmptyBorder(30, 25, 0, 0));
+			iconPanel.add(icon);
+
+				JButton okButton = new JButton("Ok");
+				okButton.setFont(FontManager.getRunescapeBoldFont());
+				okButton.addActionListener(e -> dialog.setVisible(false));
+				okButton.setBorder(new EmptyBorder(8, 35, 8, 35));
+
+				JPanel buttonPanel = new JPanel();
+				buttonPanel.setBorder(new EmptyBorder(0, 0, 15, 0));
+				buttonPanel.add(okButton);
+
+				dialog.getRootPane().setDefaultButton(okButton);
+
+				dialog.add(iconPanel, BorderLayout.WEST);
+				dialog.add(textPanel, BorderLayout.CENTER);
+				dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+				dialog.pack();
+				dialog.setLocationRelativeTo(null);
+				dialog.setResizable(false);
+				dialog.setVisible(true);
+				dialog.requestFocus();
+			});
 	}
 }
