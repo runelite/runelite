@@ -1,13 +1,11 @@
 package net.runelite.client.game;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.plugins.xptracker.XpWorldType;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -15,7 +13,8 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -25,18 +24,15 @@ import java.util.concurrent.TimeUnit;
 public class HiscoreManager
 {
 
+	static final HiscoreResult EMPTY = new HiscoreResult();
+	static final HiscoreResult NONE = new HiscoreResult();
+
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
 
-	/**
-	 * has no hiscore
-	 */
-	static final HiscoreResult NONE = new HiscoreResult();
-
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
-	private final LoadingCache<String, HiscoreResult> hiscoreLookupCache;
-	private final XpTrackerPlugin xpTrackerPlugin = new XpTrackerPlugin();
+	private final Map<HiscoreEndpoint, LoadingCache<String, HiscoreResult>> hiscores = new HashMap<>();
 
 	@Inject
 	public HiscoreManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
@@ -45,69 +41,65 @@ public class HiscoreManager
 		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
 
-		try
+		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
 		{
-			xpTrackerPlugin.startUp_backend();
+			hiscores.put(endpoint, CacheBuilder.newBuilder()
+					.maximumSize(128L)
+					.expireAfterAccess(1, TimeUnit.HOURS)
+					.build(new HiscoreLoader(executor, hiscoreClient, endpoint)));
 		}
-		catch (Exception ex)
-		{
-			log.debug("could not start up plugin");
-		}
-
-
-		hiscoreLookupCache = CacheBuilder.newBuilder()
-				.maximumSize(128L)
-				.expireAfterAccess(1, TimeUnit.HOURS)
-				.build(new CacheLoader<String, HiscoreResult>()
-				{
-					@Override
-					public HiscoreResult load(String username) throws Exception
-					{
-						try
-						{
-							int worldNum = client.getWorld();
-							XpWorldType worldType = xpTrackerPlugin.getWorldType(worldNum);
-
-							HiscoreEndpoint endpoint;
-							switch (worldType)
-							{
-								case NORMAL:  endpoint = HiscoreEndpoint.NORMAL;
-									break;
-								case DMM:  endpoint = HiscoreEndpoint.DEADMAN;
-									break;
-								case SDMM:  endpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
-									break;
-								default: endpoint = HiscoreEndpoint.NORMAL;
-									break;
-							}
-
-							log.debug("Hiscore endpoint " + endpoint.name() + " selected");
-							HiscoreResult result = hiscoreClient.lookup(username, endpoint);
-							return result;
-						}
-						catch (IOException ex)
-						{
-							log.warn("Error fetching Hiscore data " + ex.getMessage());
-							return NONE;
-						}
-					}
-				});
 	}
 
-	public HiscoreResult lookupUsername(String username) throws ExecutionException
+	/**
+	 * Synchronously look up a players hiscore from a specified endpoint
+	 *
+	 * @param username Players username
+	 * @param endpoint Hiscore endpoint
+	 * @throws IOException Upon error in fetching hiscore
+	 * @return HiscoreResult or null
+	 */
+	public HiscoreResult lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		return hiscoreLookupCache.get(username);
+		if (!Strings.isNullOrEmpty(username) && endpoint != null)
+		{
+			LoadingCache<String, HiscoreResult> cache = hiscores.get(endpoint);
+			HiscoreResult result = cache.getIfPresent(username);
+
+			if (result != null && result != EMPTY)
+			{
+				return result == NONE ? null : result;
+			}
+
+			result = hiscoreClient.lookup(username, endpoint);
+
+			return result;
+		}
+		return null;
 	}
 
-	public HiscoreResult lookupUsernameAsync(String username)
+	/**
+	 * Asynchronously look up a players hiscore from a specified endpoint
+	 *
+	 * @param username Players username
+	 * @param endpoint Hiscore endpoint
+	 * @return HiscoreResult or null
+	 */
+	public HiscoreResult lookupUsernameAsync(String username, HiscoreEndpoint endpoint)
 	{
-		HiscoreResult hiscore = hiscoreLookupCache.getIfPresent(username);
-
-		if (hiscore != null && hiscore != NONE)
+		if (!Strings.isNullOrEmpty(username) && endpoint != null)
 		{
-			return hiscore;
+			LoadingCache<String, HiscoreResult> cache = hiscores.get(endpoint);
+
+			final HiscoreResult hiscore = cache.getIfPresent(username);
+
+			if (hiscore != null && hiscore != EMPTY)
+			{
+				return hiscore == NONE ? null : hiscore;
+			}
+
+			cache.refresh(username);
 		}
-		hiscoreLookupCache.refresh(username);
+
 		return null;
 	}
 }

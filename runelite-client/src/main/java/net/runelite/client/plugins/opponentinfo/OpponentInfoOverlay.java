@@ -24,30 +24,23 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Map;
-import javax.inject.Inject;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import net.runelite.client.game.HiscoreManager;
-import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.hiscore.HiscoreResult;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.awt.Point;
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -64,6 +57,8 @@ class OpponentInfoOverlay extends Overlay
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
 	private final Client client;
+	private OpponentInfoPlugin plugin;
+
 	private final NPC[] clientNpcs;
 
 	private Integer lastMaxHealth;
@@ -79,11 +74,12 @@ class OpponentInfoOverlay extends Overlay
 	private HiscoreManager hiscoreManager;
 
 	@Inject
-	OpponentInfoOverlay(Client client)
+	OpponentInfoOverlay(Client client, OpponentInfoPlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
+		this.plugin = plugin;
 		this.clientNpcs = client.getCachedNPCs();
 	}
 
@@ -192,7 +188,8 @@ class OpponentInfoOverlay extends Overlay
 			// PVP Hitpoints
 			if (lastMaxHealth == null)
 			{
-				HiscoreResult opponentHiscore = hiscoreManager.lookupUsernameAsync(opponentName);
+
+				HiscoreResult opponentHiscore = hiscoreManager.lookupUsernameAsync(opponentName, plugin.getHiscoreEndpoint());
 				if (opponentHiscore != null)
 				{
 					int hitpointLevel = opponentHiscore.getHitpoints().getLevel();
