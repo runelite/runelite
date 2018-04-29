@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +24,47 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.inject.Provides;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Map;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Opponent Information"
+@ConfigGroup(
+	keyName = "opponentinfo",
+	name = "Opponent Information",
+	description = "Configuration for the opponent information plugin"
 )
-public class OpponentInfoPlugin extends Plugin
+public interface OpponentInfoConfig extends Config
 {
-	@Inject
-	private OpponentInfoOverlay overlay;
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "showOpponentsOpponent",
+		name = "Opponent's opponent",
+		description = "Display your opponent's opponent under their health bar"
+	)
+	default OpponentsOpponent showOpponentsOpponent()
 	{
-		return overlay;
+		return OpponentsOpponent.DEFAULT;
 	}
-
-	@Inject
-	private OpponentInfoConfig config;
-
-	@Provides
-	OpponentInfoConfig provideConfig(ConfigManager configManager)
+	enum OpponentsOpponent
 	{
-		return configManager.getConfig(OpponentInfoConfig.class);
-	}
+		DEFAULT("Always"),
+		NEVER("Never"),
+		SINGLE("In Single"),
+		MULTI("In Multi");
 
-	public static Map<String, Integer> loadNpcHealth()
-	{
-		Gson gson = new Gson();
-		Type type = new TypeToken<Map<String, Integer>>()
+		private final String name;
+		OpponentsOpponent(String name)
 		{
-		}.getType();
+			this.name = name;
+		}
 
-		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
-		return gson.fromJson(new InputStreamReader(healthFile), type);
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+		public boolean isSet()
+		{
+			return this != DEFAULT;
+		}
 	}
 }
