@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.demonicgorilla;
 
 import com.google.common.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.HeadIcon;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -65,10 +65,6 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 public class DemonicGorillaPlugin extends Plugin
 {
-	static final int OVERHEAD_ICON_MELEE = 0;
-	static final int OVERHEAD_ICON_RANGED = 1;
-	static final int OVERHEAD_ICON_MAGIC = 2;
-
 	@Inject
 	private Client client;
 
@@ -155,19 +151,22 @@ public class DemonicGorillaPlugin extends Plugin
 
 	private DemonicGorilla.AttackStyle getProtectedStyle(Player player)
 	{
-		if (player.getOverheadIcon() == OVERHEAD_ICON_MELEE)
+		HeadIcon headIcon = player.getOverheadIcon();
+		if (headIcon == null)
 		{
-			return DemonicGorilla.AttackStyle.MELEE;
+			return null;
 		}
-		else if (player.getOverheadIcon() == OVERHEAD_ICON_RANGED)
+		switch (headIcon)
 		{
-			return DemonicGorilla.AttackStyle.RANGED;
+			case MELEE:
+				return DemonicGorilla.AttackStyle.MELEE;
+			case RANGED:
+				return DemonicGorilla.AttackStyle.RANGED;
+			case MAGIC:
+				return DemonicGorilla.AttackStyle.MAGIC;
+			default:
+				return null;
 		}
-		else if (player.getOverheadIcon() == OVERHEAD_ICON_MAGIC)
-		{
-			return DemonicGorilla.AttackStyle.MAGIC;
-		}
-		return null;
 	}
 
 	private void onGorillaAttack(DemonicGorilla gorilla, final DemonicGorilla.AttackStyle attackStyle)

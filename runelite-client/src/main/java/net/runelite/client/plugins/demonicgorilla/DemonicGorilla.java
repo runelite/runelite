@@ -29,6 +29,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
+import net.runelite.api.HeadIcon;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldArea;
@@ -112,7 +113,7 @@ public class DemonicGorilla
 
 	@Getter
 	@Setter
-	private int lastTickOverheadIcon;
+	private HeadIcon lastTickOverheadIcon;
 
 	@Getter
 	@Setter
@@ -125,16 +126,15 @@ public class DemonicGorilla
 		this.nextAttackTick = -100;
 		this.attacksUntilSwitch = ATTACKS_PER_SWITCH;
 		this.recentProjectileId = -1;
-		this.lastTickOverheadIcon = -1;
 	}
 
-	public int getOverheadIcon()
+	public HeadIcon getOverheadIcon()
 	{
 		NPCComposition composition = this.npc.getComposition();
 		if (composition != null)
 		{
 			return composition.getOverheadIcon();
 		}
-		return -1;
+		return null;
 	}
 }
