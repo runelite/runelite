@@ -30,9 +30,9 @@ import net.runelite.client.config.ConfigItem;
 import java.awt.Color;
 
 @ConfigGroup(
-		keyName = "dailytaskindicators",
-		name = "Daily Task Indicators",
-		description = "Configuration for Daily Task Indicators plugin"
+	keyName = "dailytaskindicators",
+	name = "Daily Task Indicators",
+	description = "Configuration for Daily Task Indicators plugin"
 )
 public interface DailyTasksConfig extends Config
 {
@@ -40,7 +40,7 @@ public interface DailyTasksConfig extends Config
 		keyName = "showHerbBoxes",
 		name = "Show Herb Boxes",
 		description = "Configures whether or not to show a message when you can" +
-				" collect your daily herb boxes at NMZ",
+			" collect your daily herb boxes at NMZ",
 		position = 1
 	)
 	default boolean showHerbBoxes()
@@ -52,7 +52,7 @@ public interface DailyTasksConfig extends Config
 		keyName = "showStaves",
 		name = "Show Claimable Staves",
 		description = "Configures whether or not to show a message when you can" +
-				" collect your daily staves from Zaff",
+			" collect your daily staves from Zaff",
 		position = 2
 	)
 	default boolean showStaves()
@@ -64,7 +64,7 @@ public interface DailyTasksConfig extends Config
 		keyName = "showEssence",
 		name = "Show Claimable Essence",
 		description = "Configures whether or not to show a message when you can" +
-				" collect your daily pure essence from Wizard Cromperty",
+			" collect your daily pure essence from Wizard Cromperty",
 		position = 3
 	)
 	default boolean showEssence()
