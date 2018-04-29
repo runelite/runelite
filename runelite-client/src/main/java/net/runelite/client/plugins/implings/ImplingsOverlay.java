@@ -29,9 +29,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import java.util.Map;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
+import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -45,13 +48,17 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  */
 public class ImplingsOverlay extends Overlay
 {
+	private final Client client;
+	private final ImplingsConfig config;
 	private final ImplingsPlugin plugin;
 
 	@Inject
-	private ImplingsOverlay(ImplingsPlugin plugin)
+	private ImplingsOverlay(Client client, ImplingsConfig config, ImplingsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.config = config;
+		this.client = client;
 		this.plugin = plugin;
 	}
 
