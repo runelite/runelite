@@ -121,7 +121,7 @@ public class ImplingsOverlay extends Overlay
 		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text, 0);
 		if (textPoint != null)
 		{
-			OverlayUtil.renderTextLocation(graphics, textPoint,text, color);
+			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);
 		}
 	}
 
