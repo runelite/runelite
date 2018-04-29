@@ -122,6 +122,7 @@ public class RuneLite
 		parser.accepts("developer-mode");
 		parser.accepts("no-rs");
 		parser.accepts("debug");
+		parser.accepts("disable-update-check");
 		setOptions(parser.parse(args));
 
 		PROFILES_DIR.mkdirs();
@@ -143,8 +144,9 @@ public class RuneLite
 	{
 		// Load RuneLite or Vanilla client
 		final boolean hasRs = !getOptions().has("no-rs");
+		final boolean disableUpdateCheck = getOptions().has("disable-update-check");
 		final Optional<Applet> optionalClient = hasRs
-			? new ClientLoader().loadRs()
+			? new ClientLoader().loadRs(disableUpdateCheck)
 			: Optional.empty();
 
 		if (!optionalClient.isPresent() && hasRs)
@@ -176,7 +178,7 @@ public class RuneLite
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(clanManager);
-		if (client != null)
+		if (this.client != null)
 		{
 			eventBus.register(itemManager.get());
 		}

@@ -209,7 +209,7 @@ public class ClueScrollPlugin extends Plugin
 
 			if (npc != null)
 			{
-				Query query = new NPCQuery().nameContains(npc);
+				Query query = new NPCQuery().nameEquals(npc);
 				npcsToMark = queryRunner.runQuery(query);
 
 				// Set hint arrow to first NPC found as there can only be 1 hint arrow

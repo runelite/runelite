@@ -240,12 +240,14 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedName("ng")
    static long[] field1069;
    @ObfuscatedName("ma")
-   static int[] field1040;
+   @Export("changedSkills")
+   static int[] changedSkills;
    @ObfuscatedName("mw")
    @ObfuscatedGetter(
       intValue = 1955143427
    )
-   static int field908;
+   @Export("changedSkillsCount")
+   static int changedSkillsCount;
    @ObfuscatedName("mt")
    @ObfuscatedGetter(
       intValue = 185562589
@@ -1384,8 +1386,8 @@ public final class Client extends GameEngine implements class302 {
       pendingVarbitCount = 0;
       interfaceItemTriggers = new int[32];
       field1032 = 0;
-      field1040 = new int[32];
-      field908 = 0;
+      changedSkills = new int[32];
+      changedSkillsCount = 0;
       chatCycle = 0;
       field1045 = 0;
       field891 = 0;
@@ -3999,7 +4001,7 @@ public final class Client extends GameEngine implements class302 {
                   }
                }
 
-               field1040[++field908 - 1 & 31] = var5;
+               changedSkills[++changedSkillsCount - 1 & 31] = var5;
                var1.serverPacket = null;
                return true;
             }

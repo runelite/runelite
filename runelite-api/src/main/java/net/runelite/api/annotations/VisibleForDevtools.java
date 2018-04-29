@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
-import net.runelite.api.widgets.WidgetInfo;
+package net.runelite.api.annotations;
 
-public enum Portal
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ * Used to indicate a method is only visible for devtools
+ */
+@Documented
+@Retention(RetentionPolicy.SOURCE)
+public @interface VisibleForDevtools
 {
-	PURPLE(WidgetInfo.PEST_CONTROL_PURPLE_SHIELD, WidgetInfo.PEST_CONTROL_PURPLE_HEALTH, WidgetInfo.PEST_CONTROL_PURPLE_ICON),
-	BLUE(WidgetInfo.PEST_CONTROL_BLUE_SHIELD, WidgetInfo.PEST_CONTROL_BLUE_HEALTH, WidgetInfo.PEST_CONTROL_BLUE_ICON),
-	YELLOW(WidgetInfo.PEST_CONTROL_YELLOW_SHIELD, WidgetInfo.PEST_CONTROL_YELLOW_HEALTH, WidgetInfo.PEST_CONTROL_YELLOW_ICON),
-	RED(WidgetInfo.PEST_CONTROL_RED_SHIELD, WidgetInfo.PEST_CONTROL_RED_HEALTH, WidgetInfo.PEST_CONTROL_RED_ICON);
-
-	private final WidgetInfo shield;
-	private final WidgetInfo hitpoints;
-	private final WidgetInfo icon;
-
-	private Portal(WidgetInfo shield, WidgetInfo hitpoints, WidgetInfo icon)
-	{
-		this.shield = shield;
-		this.hitpoints = hitpoints;
-		this.icon = icon;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Portal(" + name() + ")";
-	}
-
-	public WidgetInfo getShield()
-	{
-		return shield;
-	}
-
-	public WidgetInfo getHitpoints()
-	{
-		return hitpoints;
-	}
-
-	public WidgetInfo getIcon()
-	{
-		return icon;
-	}
 }

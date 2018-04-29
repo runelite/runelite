@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
-import net.runelite.api.widgets.WidgetInfo;
 
-public enum Portal
+package net.runelite.client.plugins.cerberus;
+
+import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.Getter;
+import net.runelite.api.NPC;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
+
+@PluginDescriptor(name = "Cerberus")
+@Singleton
+public class CerberusPlugin extends Plugin
 {
-	PURPLE(WidgetInfo.PEST_CONTROL_PURPLE_SHIELD, WidgetInfo.PEST_CONTROL_PURPLE_HEALTH, WidgetInfo.PEST_CONTROL_PURPLE_ICON),
-	BLUE(WidgetInfo.PEST_CONTROL_BLUE_SHIELD, WidgetInfo.PEST_CONTROL_BLUE_HEALTH, WidgetInfo.PEST_CONTROL_BLUE_ICON),
-	YELLOW(WidgetInfo.PEST_CONTROL_YELLOW_SHIELD, WidgetInfo.PEST_CONTROL_YELLOW_HEALTH, WidgetInfo.PEST_CONTROL_YELLOW_ICON),
-	RED(WidgetInfo.PEST_CONTROL_RED_SHIELD, WidgetInfo.PEST_CONTROL_RED_HEALTH, WidgetInfo.PEST_CONTROL_RED_ICON);
+	@Getter
+	private final List<NPC> ghosts = new ArrayList<>();
 
-	private final WidgetInfo shield;
-	private final WidgetInfo hitpoints;
-	private final WidgetInfo icon;
+	@Inject
+	private CerberusOverlay overlay;
 
-	private Portal(WidgetInfo shield, WidgetInfo hitpoints, WidgetInfo icon)
+	@Override
+	protected void shutDown() throws Exception
 	{
-		this.shield = shield;
-		this.hitpoints = hitpoints;
-		this.icon = icon;
+		ghosts.clear();
 	}
 
 	@Override
-	public String toString()
+	public Overlay getOverlay()
 	{
-		return "Portal(" + name() + ")";
+		return overlay;
 	}
 
-	public WidgetInfo getShield()
+	@Subscribe
+	public void onNpcSpawned(final NpcSpawned event)
 	{
-		return shield;
+		final NPC npc = event.getNpc();
+
+		CerberusGhost.fromNPC(npc).ifPresent(ghost ->
+		{
+			if (ghosts.size() == CerberusGhost.values().length)
+			{
+				// Reset ghosts as this is new ghost wave
+				ghosts.clear();
+			}
+
+			ghosts.add(npc);
+			ghosts.sort((a, b) -> Integer.compare(b.getLocalLocation().getY(), a.getLocalLocation().getY()));
+		});
 	}
 
-	public WidgetInfo getHitpoints()
+	@Subscribe
+	public void onNpcDespawned(final NpcDespawned event)
 	{
-		return hitpoints;
-	}
-
-	public WidgetInfo getIcon()
-	{
-		return icon;
+		ghosts.remove(event.getNpc());
 	}
 }

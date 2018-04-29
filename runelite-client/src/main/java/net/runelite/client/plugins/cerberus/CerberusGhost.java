@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
-import net.runelite.api.widgets.WidgetInfo;
+package net.runelite.client.plugins.cerberus;
 
-public enum Portal
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Skill;
+
+@Getter
+@RequiredArgsConstructor
+public enum CerberusGhost
 {
-	PURPLE(WidgetInfo.PEST_CONTROL_PURPLE_SHIELD, WidgetInfo.PEST_CONTROL_PURPLE_HEALTH, WidgetInfo.PEST_CONTROL_PURPLE_ICON),
-	BLUE(WidgetInfo.PEST_CONTROL_BLUE_SHIELD, WidgetInfo.PEST_CONTROL_BLUE_HEALTH, WidgetInfo.PEST_CONTROL_BLUE_ICON),
-	YELLOW(WidgetInfo.PEST_CONTROL_YELLOW_SHIELD, WidgetInfo.PEST_CONTROL_YELLOW_HEALTH, WidgetInfo.PEST_CONTROL_YELLOW_ICON),
-	RED(WidgetInfo.PEST_CONTROL_RED_SHIELD, WidgetInfo.PEST_CONTROL_RED_HEALTH, WidgetInfo.PEST_CONTROL_RED_ICON);
+	RANGE(NpcID.SUMMONED_SOUL, Skill.RANGED),
+	MAGE(NpcID.SUMMONED_SOUL_5868, Skill.MAGIC),
+	MELEE(NpcID.SUMMONED_SOUL_5869, Skill.ATTACK);
 
-	private final WidgetInfo shield;
-	private final WidgetInfo hitpoints;
-	private final WidgetInfo icon;
+	private static final Map<Integer, CerberusGhost> MAP = new HashMap<>();
+	private final int npcId;
+	private final Skill type;
 
-	private Portal(WidgetInfo shield, WidgetInfo hitpoints, WidgetInfo icon)
+	static
 	{
-		this.shield = shield;
-		this.hitpoints = hitpoints;
-		this.icon = icon;
+		final CerberusGhost[] values = CerberusGhost.values();
+
+		for (final CerberusGhost ghost : values)
+		{
+			MAP.put(ghost.getNpcId(), ghost);
+		}
 	}
 
-	@Override
-	public String toString()
+	/**
+	 * Try to identify if NPC is ghost
+	 * @param npc npc
+	 * @return optional ghost
+	 */
+	public static Optional<CerberusGhost> fromNPC(final NPC npc)
 	{
-		return "Portal(" + name() + ")";
-	}
-
-	public WidgetInfo getShield()
-	{
-		return shield;
-	}
-
-	public WidgetInfo getHitpoints()
-	{
-		return hitpoints;
-	}
-
-	public WidgetInfo getIcon()
-	{
-		return icon;
+		return npc == null ? Optional.empty() : Optional.ofNullable(MAP.get(npc.getId()));
 	}
 }
