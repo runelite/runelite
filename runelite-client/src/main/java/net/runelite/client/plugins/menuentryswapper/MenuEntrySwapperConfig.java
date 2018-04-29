@@ -221,4 +221,12 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "rockCake",
+			name = "Rock Cake",
+			description = "Swap eat on rock cake with guzzle"
+	)
+	default boolean rockCake() { return true; }
 }
