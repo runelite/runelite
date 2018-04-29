@@ -45,14 +45,14 @@ public class ReducedFunctionalityPopup extends JDialog
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.DARK_GRAY);
 
-		JLabel text = new JLabel("<html><p color='white'>" +
-			"RuneLite has not yet been updated for use with the <br>" +
-			"latest OSRS update.<br>" +
-			"As a result RuneLite is running in reduced functionality mode.<br>" +
-			"A new version of RuneLite for use with the new game update <br>" +
-			"should be available shortly.<br>" +
-			"<br>Thank you for your patience." +
-			"</p></html>");
+		JLabel text = new JLabel( "<html><p color='white'>" +
+				"RuneLite has not yet been updated for use with the <br>" +
+				"latest OSRS update.<br>" +
+				"As a result RuneLite is running in reduced functionality mode.<br>" +
+				"A new version of RuneLite for use with the new game update <br>" +
+				"should be available shortly.<br>" +
+				"<br>Thank you for your patience." +
+				"</p></html>");
 		text.setBorder(new EmptyBorder(15, 15, 0, 15));
 
 		JLabel icon = new JLabel(javax.swing.UIManager.getIcon("OptionPane.informationIcon"));
@@ -61,17 +61,19 @@ public class ReducedFunctionalityPopup extends JDialog
 		JButton okButton = new JButton("Ok");
 		okButton.addActionListener(e -> this.setVisible(false));
 		okButton.setBorder(new EmptyBorder(8, 35, 8, 35));
-
+		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		buttonPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 		buttonPanel.add(okButton);
-
+		
 		this.getRootPane().setDefaultButton(okButton);
+
 
 		this.add(icon, BorderLayout.WEST);
 		this.add(text, BorderLayout.CENTER);
 		this.add(buttonPanel, BorderLayout.SOUTH);
+
 
 		this.pack();
 		this.setLocationRelativeTo(null);
