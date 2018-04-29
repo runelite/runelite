@@ -28,6 +28,7 @@ package net.runelite.client.plugins.xptracker;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
@@ -48,6 +49,15 @@ class SkillXPInfo
 	private boolean initialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
+	private Duration timeLoggedIn = Duration.ZERO;
+	private LocalTime lastTimeChecked = LocalTime.now();
+	private XpTrackerConfig config;
+
+	public SkillXPInfo(Skill skill, XpTrackerConfig config)
+	{
+		this.skill = skill;
+		this.config = config;
+	}
 
 	int getXpHr()
 	{
@@ -71,7 +81,16 @@ class SkillXPInfo
 			return 0;
 		}
 
-		long timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
+		long timeElapsedInSeconds;
+
+		if (config.includeLoggedOutTime())
+		{
+			timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
+		}
+		else
+		{
+			timeElapsedInSeconds = timeLoggedIn.getSeconds();
+		}
 		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
 	}
 
@@ -126,6 +145,8 @@ class SkillXPInfo
 		xpGained = 0;
 		actions = 0;
 		skillTimeStart = null;
+		timeLoggedIn = Duration.ZERO;
+		lastTimeChecked = LocalTime.now();
 	}
 
 	boolean update(int currentXp)
@@ -134,6 +155,15 @@ class SkillXPInfo
 		{
 			return false;
 		}
+
+
+		Duration diff = Duration.between(lastTimeChecked, LocalTime.now());
+		if (xpGained > 0 && diff.getSeconds() < 5)
+		{
+			// This should be called at least once per tick, so if over 5 seconds have passed, something is up
+			timeLoggedIn = timeLoggedIn.plus(diff);
+		}
+		lastTimeChecked = LocalTime.now();
 
 		int originalXp = xpGained + startXp;
 
