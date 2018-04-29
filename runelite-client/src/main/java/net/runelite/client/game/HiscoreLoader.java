@@ -4,99 +4,63 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreResult;
+
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
-import lombok.extern.slf4j.Slf4j;
+
 import static net.runelite.client.game.HiscoreManager.EMPTY;
 import static net.runelite.client.game.HiscoreManager.NONE;
 
-import net.runelite.api.Client;
-import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.plugins.xptracker.XpWorldType;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-
 @Slf4j
-public class HiscoreLoader extends CacheLoader<String, HiscoreResult>
+class HiscoreLoader extends CacheLoader<String, HiscoreResult>
 {
-	private final Client client;
 	private final ListeningExecutorService executorService;
 	private final HiscoreClient hiscoreClient;
-	private final XpTrackerPlugin xpTrackerPlugin = new XpTrackerPlugin();
+	private final HiscoreEndpoint endpoint;
 
-	HiscoreLoader(Client client, ScheduledExecutorService executor, HiscoreClient hiscoreClient)
+	HiscoreLoader(ScheduledExecutorService executor, HiscoreClient client, HiscoreEndpoint endpoint)
 	{
 		this.executorService = MoreExecutors.listeningDecorator(executor);
-		this.client = client;
-		this.hiscoreClient = hiscoreClient;
-
-		try
-		{
-			xpTrackerPlugin.startUp_backend();
-		}
-		catch (Exception ex)
-		{
-			log.debug("could not start up plugin");
-		}
+		this.hiscoreClient = client;
+		this.endpoint = endpoint;
 	}
 
 	@Override
-	public HiscoreResult load(String username) throws Exception
+	public HiscoreResult load(String s) throws Exception
 	{
-		// guava's Cache doesn't support null values
 		return EMPTY;
 	}
 
 	@Override
-	public ListenableFuture<HiscoreResult> reload(String username, HiscoreResult oldValue)
+	public ListenableFuture<HiscoreResult> reload(String key, HiscoreResult oldValue)
 	{
-		log.debug("Submitting lookup for item {}", username);
+		log.debug("Submitting lookup for item {}", key);
 
-		return executorService.submit(() -> fetch(username));
+		return executorService.submit(() -> fetch(key));
 	}
 
-	private HiscoreResult fetch(String username)
+	private HiscoreResult fetch(String key)
 	{
-		HiscoreEndpoint hiscoreEndpoint;
 		try
 		{
-			int worldNum = client.getWorld();
-			XpWorldType worldType = xpTrackerPlugin.getWorldType(worldNum);
-
-			switch (worldType)
-			{
-				case NORMAL:  hiscoreEndpoint = HiscoreEndpoint.NORMAL;
-					break;
-				case DMM:  hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
-					break;
-				case SDMM:  hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
-					break;
-				default: hiscoreEndpoint = HiscoreEndpoint.NORMAL;
-					break;
-			}
-
-			log.debug("Hiscore endpoint " + hiscoreEndpoint.name() + " selected");
-		}
-		catch (Exception ex)
-		{
-			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
-			log.debug("could not start up plugin");
-		}
-
-		try
-		{
-			HiscoreResult hiscoreResult = hiscoreClient.lookup(username, hiscoreEndpoint);
-			if (hiscoreResult == null)
+			HiscoreResult result = hiscoreClient.lookup(key, endpoint);
+			if (result == null)
 			{
 				return NONE;
 			}
-			return hiscoreResult;
+			return result;
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to look up item!", ex);
+			log.warn("Unable to look up hiscore!", ex);
 			return NONE;
 		}
 	}
-};
+
+}
+
