@@ -68,6 +68,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemLayerChanged;
+import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -197,6 +198,12 @@ public class GroundItemsPlugin extends Plugin
 		{
 			dirty = true;
 		}
+	}
+
+	@Subscribe
+	public void onMapRegionChanged(final MapRegionChanged event)
+	{
+		dirty = true;
 	}
 
 	@Subscribe
