@@ -40,6 +40,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -64,6 +65,9 @@ public class ImplingsPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, Color> ids = new HashMap<>();
+	
+	@Getter(AccessLevel.PACKAGE)
+	private Map<WorldPoint, String> points;
 
 	@Inject
 	private ImplingsOverlay overlay;
@@ -172,6 +176,7 @@ public class ImplingsPlugin extends Plugin
 		{
 			ids.put(STATIC_SPAWN, config.getSpawnColor());
 			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
+			points = ImplingPuroPuroSpawn.getSpawns();
 		}
 	}
 
