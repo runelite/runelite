@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -34,9 +35,11 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
@@ -61,12 +64,14 @@ import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
 import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
 import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
+import static net.runelite.client.plugins.timers.GameTimer.HOME_TELEPORT;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
 import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
 import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
 import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
+import static net.runelite.client.plugins.timers.GameTimer.MINIGAME_TELEPORT;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
 import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
@@ -94,6 +99,21 @@ public class TimersPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	private boolean checkTeleportDestination = false;
+
+	private int checksLeft;
+
+	private WorldPoint lastWorldLocation;
+
+	//Lumbridge, Edgeville, Lunar Isle, Dark Altar
+	private ImmutableSet<Integer> homeTeleportRegions = ImmutableSet.of(12850, 12342, 8253, 6716);
+
+	//BA, Burthorpe, Blast Furnace (+ Kelda Rat Pit), Castle Wars, Clan Wars, Fishing Trawler, LMS, NMZ, PC,
+	//Rat Pits (Ardy, Varrock, Port Sarim), Shades of Mort'ton, Tithe Farm, Trouble Brewing, Fight Pits
+	private ImmutableSet<Integer> minigameTeleportRegions = ImmutableSet.of(
+		10039, 8781, 11679, 9776, 13361, 10545, 13617, 10288, 10537,
+		10291, 13109, 12082, 13875, 6968, 15151, 9552);
 
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
@@ -226,6 +246,16 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBURST);
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
+		}
+
+		if (!config.showHomeTeleport())
+		{
+			removeGameTimer(HOME_TELEPORT);
+		}
+
+		if (!config.showMinigameTeleport())
+		{
+			removeGameTimer(MINIGAME_TELEPORT);
 		}
 	}
 
@@ -414,6 +444,53 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+
+	@Subscribe
+	public void onTick(GameTick event)
+	{
+		if (checkTeleportDestination)
+		{
+			//Make sure the check isn't running forever if we manage to cancel the teleport
+			if (checksLeft == 0)
+			{
+				checkTeleportDestination = false;
+				return;
+			}
+			checksLeft -= 1;
+
+			boolean moved = false;
+			WorldPoint currentPosition = client.getLocalPlayer().getWorldLocation();
+			if (currentPosition.getRegionID() != lastWorldLocation.getRegionID())
+			{
+				moved = true;
+			}
+			else
+			{
+				if (homeTeleportRegions.contains(currentPosition.getRegionID()) || minigameTeleportRegions.contains(currentPosition.getRegionID()))
+				{
+					if (currentPosition.distanceTo(lastWorldLocation) > 1)
+					{
+						moved = true;
+					}
+				}
+			}
+
+			if (moved)
+			{
+				checkTeleportDestination = false;
+
+				if (homeTeleportRegions.contains(currentPosition.getRegionID()))
+				{
+					createGameTimer(HOME_TELEPORT);
+				}
+				else if (minigameTeleportRegions.contains(currentPosition.getRegionID()))
+				{
+					createGameTimer(MINIGAME_TELEPORT);
+				}
+			}
+		}
+	}
+
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
@@ -428,8 +505,14 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
-	}
 
+		if ((config.showHomeTeleport() || config.showMinigameTeleport()) && (actor.getAnimation() == AnimationID.COW_TELEPORT_FINAL || actor.getAnimation() == AnimationID.HOME_TELEPORT_FINAL))
+		{
+			checkTeleportDestination = true;
+			checksLeft = 6;
+			lastWorldLocation = actor.getWorldLocation();
+		}
+	}
 
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
