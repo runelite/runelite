@@ -176,7 +176,7 @@ public class RuneLite
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(clanManager);
-		if (client != null)
+		if (this.client != null)
 		{
 			eventBus.register(itemManager.get());
 		}
