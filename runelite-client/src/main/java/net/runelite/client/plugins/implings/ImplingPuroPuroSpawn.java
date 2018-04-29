@@ -43,5 +43,5 @@ public class ImplingPuroPuroSpawn
 		//./.
 
 		return puroPuroSpawns;
-    }
+	}
 }
