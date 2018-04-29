@@ -22,46 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.api;
 
-import net.runelite.api.HeadIcon;
-import static net.runelite.api.HeadIcon.MAGIC;
-import static net.runelite.api.HeadIcon.MELEE;
-import static net.runelite.api.HeadIcon.RANGED;
-import net.runelite.api.events.NpcActionChanged;
-import net.runelite.api.mixins.FieldHook;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import static net.runelite.client.callback.Hooks.eventBus;
-import net.runelite.rs.api.RSNPCComposition;
-
-@Mixin(RSNPCComposition.class)
-public abstract class RSNpcCompositionMixin implements RSNPCComposition
+public enum HeadIcon
 {
-	@Inject
-	@Override
-	public HeadIcon getOverheadIcon()
-	{
-		switch (getRsOverheadIcon())
-		{
-			case 0:
-				return MELEE;
-			case 1:
-				return RANGED;
-			case 2:
-				return MAGIC;
-			default:
-				return null;
-		}
-	}
-
-	@FieldHook("actions")
-	@Inject
-	public void actionsHook(int idx)
-	{
-		NpcActionChanged npcActionChanged = new NpcActionChanged();
-		npcActionChanged.setNpcComposition(this);
-		npcActionChanged.setIdx(idx);
-		eventBus.post(npcActionChanged);
-	}
+	MELEE,
+	RANGED,
+	MAGIC;
 }

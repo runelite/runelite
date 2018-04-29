@@ -48,5 +48,5 @@ public interface NPCComposition
 
 	int getSize();
 
-	int getOverheadIcon();
+	HeadIcon getOverheadIcon();
 }
