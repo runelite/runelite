@@ -34,7 +34,7 @@ public enum Varbits
 	/*
 	 * If chatbox is transparent or not
 	 */
-	TRANSPARENT_CHATBOX(4608),
+	TRANSPARANT_CHATBOX(4608),
 
 	/**
 	 * Runecraft pouches
@@ -293,9 +293,9 @@ public enum Varbits
 	/**
 	 * Kingdom Management
 	 */
+	KINGDOM_LAST_COLLECTED(71), // returns minutes since last collected
 	KINGDOM_FAVOR(72),
 	KINGDOM_COFFER(74),
-	THRONE_OF_MISCELLANIA_QUEST(359),
 
 	/**
 	 * Daily Tasks (Collection availability)
@@ -313,33 +313,9 @@ public enum Varbits
 	FAIRY_RING_DIAL_PSRQ(3987), //Right dial
 
 	/**
-	 * Transmog controllers for farming
+	 * Quests
 	 */
-	FARMING_4771(4771),
-	FARMING_4772(4772),
-	FARMING_4773(4773),
-	FARMING_4774(4774),
-
-	/**
-	 * Transmog controllers for grapes
-	 */
-	GRAPES_4953(4953),
-	GRAPES_4954(4954),
-	GRAPES_4955(4955),
-	GRAPES_4956(4956),
-	GRAPES_4957(4957),
-	GRAPES_4958(4958),
-	GRAPES_4959(4959),
-	GRAPES_4960(4960),
-	GRAPES_4961(4961),
-	GRAPES_4962(4962),
-	GRAPES_4963(4963),
-	GRAPES_4964(4964),
-
-	/**
-	 * Automatically weed farming patches
-	 */
-	AUTOWEED(5557);
+	QUEST_ROYAL_TROUBLE(2140);
 
 	/**
 	 * varbit id
