@@ -63,7 +63,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
@@ -119,7 +118,7 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
-	private Map<String, Integer> npcHealth = OpponentInfoPlugin.loadNpcHealth();
+	private Map<String, Integer> npcHealth = loadNpcHealth();
 
 	private String taskName;
 	private int amount;
@@ -557,7 +556,7 @@ public class SlayerPlugin extends Plugin
 		{
 		}.getType();
 
-		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
+		InputStream healthFile = SlayerPlugin.class.getResourceAsStream("/npc_health.json");
 		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 }
