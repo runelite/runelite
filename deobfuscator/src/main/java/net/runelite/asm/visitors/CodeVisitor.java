@@ -36,6 +36,8 @@ import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.LocalVariable;
+import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.IntInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
@@ -111,6 +113,12 @@ public class CodeVisitor extends MethodVisitor
 	{
 		Type type = new Type(desc);
 		return new MethodAnnotationVisitor(method, type);
+	}
+
+	@Override
+	public void visitParameter(String name, int access)
+	{
+		method.getParameters().add(new Parameter(name, access));
 	}
 
 	private Instruction createInstructionFromOpcode(int opcode)
@@ -300,6 +308,21 @@ public class CodeVisitor extends MethodVisitor
 	{
 		Instruction i = code.getInstructions().findOrCreateLabel(label);
 		code.getInstructions().addInstruction(i);
+	}
+
+	@Override
+	public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index)
+	{
+		LocalVariable lv = new LocalVariable(name, desc, signature, start, end, index);
+
+		for (Parameter p : method.getParameters())
+		{
+			if (p.getName().equals(name))
+			{
+				p.setLocalVariable(lv);
+				break;
+			}
+		}
 	}
 
 	@Override
