@@ -41,5 +41,5 @@ public interface Player extends Actor
 
 	boolean isFriend();
 
-	int getOverheadIcon();
+	HeadIcon getOverheadIcon();
 }

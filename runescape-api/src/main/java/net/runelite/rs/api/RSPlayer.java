@@ -59,6 +59,5 @@ public interface RSPlayer extends RSActor, Player
 	boolean isFriend();
 
 	@Import("overheadIcon")
-	@Override
-	int getOverheadIcon();
+	int getRsOverheadIcon();
 }
