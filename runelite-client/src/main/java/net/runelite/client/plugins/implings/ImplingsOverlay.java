@@ -90,7 +90,10 @@ public class ImplingsOverlay extends Overlay
 
 			for (Map.Entry<WorldPoint, String>  point : points.entrySet())
 			{
-				drawSpawnPoint(graphics, point.getKey(),point.getValue(),config.getSpawnColor());
+				if (plugin.getHideSpawns() == null || !plugin.getHideSpawns().contains(point.getValue().toLowerCase()))
+				{
+					drawSpawnPoint(graphics, point.getKey(), point.getValue(), config.getSpawnColor());
+				}
 			}
 		}
 

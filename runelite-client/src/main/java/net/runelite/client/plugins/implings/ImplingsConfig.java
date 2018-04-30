@@ -282,11 +282,23 @@ public interface ImplingsConfig extends Config
 		return new Color(102, 7, 101);
 	}
 
+
 	@ConfigItem(
-		position = 23,
-		keyName = "showspawn",
-		name = "Show Spawn locations",
-		description = "Configures whether or not spawn locations are displayed in Puro Puro"
+			position = 23,
+			keyName = "showname",
+			name = "Show name on minimap",
+			description = "Configures whether or not impling names are displayed on minimap"
+	)
+	default boolean showName()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 24,
+			keyName = "showspawn",
+			name = "Show Spawn locations",
+			description = "Configures whether or not spawn locations are displayed in Puro Puro"
 	)
 	default boolean showSpawn()
 	{
@@ -294,24 +306,18 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
+		position = 25,
 		keyName = "spawnColor",
 		name = "Impling spawn color",
 		description = "Text color for impling spawns in Puro Puro"
 	)
-	default Color getSpawnColor()
-	{
-		return Color.WHITE;
-	}
+	default Color getSpawnColor() { return Color.WHITE; }
 
 	@ConfigItem(
-		position = 25,
-		keyName = "showname",
-		name = "Show name on minimap",
-		description = "Configures whether or not impling names are displayed on minimap"
+		position = 26,
+		keyName = "hiddenSpawns",
+		name = "Hide puro puro spawns",
+		description = "Configure which spawns should be hidden in puro puro minigame"
 	)
-	default boolean showName()
-	{
-		return false;
-	}
+	default String getHiddenSpawns() { return "Baby,Young"; }
 }

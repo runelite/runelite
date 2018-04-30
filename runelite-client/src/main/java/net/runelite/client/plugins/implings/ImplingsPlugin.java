@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -68,6 +69,9 @@ public class ImplingsPlugin extends Plugin
 	
 	@Getter(AccessLevel.PACKAGE)
 	private Map<WorldPoint, String> points;
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<String> hideSpawns;
 
 	@Inject
 	private ImplingsOverlay overlay;
@@ -176,8 +180,15 @@ public class ImplingsPlugin extends Plugin
 		{
 			ids.put(STATIC_SPAWN, config.getSpawnColor());
 			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
+			UpdateList();
 			points = ImplingPuroPuroSpawn.getSpawns();
 		}
+	}
+
+	private void UpdateList()
+	{
+		String toHide = config.getHiddenSpawns().toLowerCase();
+		hideSpawns = Arrays.asList(toHide.split("\\s*,\\s*"));
 	}
 
 }
