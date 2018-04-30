@@ -47,10 +47,29 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "pointsMessage",
-		name = "Display points in chatbox after raid",
-		description = "Display a message with total points, individual points and percentage at the end of a raid"
+			position = 1,
+			keyName = "displayPersonalPointsPerHour",
+			name = "Display personal points per hour",
+			description = "Display current personal points per hour during the raid"
+	)
+	default boolean displayPersonalPointsPerHour()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 2,
+			keyName = "displayTeamPointsPerHour",
+			name = "Display total team points per hour",
+			description = "Display current total team points per hour during the raid"
+	)
+	default boolean displayTeamPointsPerHour() { return false; }
+
+	@ConfigItem(
+			position = 3,
+			keyName = "pointsMessage",
+			name = "Display points in chatbox after raid",
+			description = "Display a message with total points, individual points and percentage at the end of a raid"
 	)
 	default boolean pointsMessage()
 	{
@@ -58,7 +77,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 4,
 		keyName = "scoutOverlay",
 		name = "Show scout overlay",
 		description = "Display an overlay that shows the current raid layout (when entering lobby)"
@@ -69,7 +88,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "scoutOverlayAtBank",
 		name = "Show scout overlay outside lobby",
 		description = "Keep the overlay active while at the raids area"
@@ -80,7 +99,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "whitelistedRooms",
 		name = "Whitelisted rooms",
 		description = "Display whitelisted rooms in green on the overlay. Separate with comma (full name)"
@@ -91,7 +110,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 7,
 		keyName = "blacklistedRooms",
 		name = "Blacklisted rooms",
 		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
@@ -102,7 +121,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "enableRotationWhitelist",
 		name = "Enable rotation whitelist",
 		description = "Enable the rotation whitelist"
@@ -113,7 +132,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "whitelistedRotations",
 		name = "Whitelisted rotations",
 		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like [tekton, muttadile, guardians]"
@@ -124,7 +143,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 10,
 		keyName = "enableLayoutWhitelist",
 		name = "Enable layout whitelist",
 		description = "Enable the layout whitelist"
@@ -135,7 +154,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "whitelistedLayouts",
 		name = "Whitelisted layouts",
 		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
@@ -144,4 +163,6 @@ public interface RaidsConfig extends Config
 	{
 		return "";
 	}
+
+
 }
