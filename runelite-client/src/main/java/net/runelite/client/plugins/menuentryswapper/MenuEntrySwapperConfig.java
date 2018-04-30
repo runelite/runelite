@@ -213,6 +213,17 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 16,
+		keyName = "charterOption",
+		name = "Trader Crew",
+		description = "Configure whether you want Charter or Trade to be the first option of Trader Crewmembers."
+	)
+	default CharterOption charterOption()
+	{
+		return CharterOption.TRADE;
+	}
+
+	@ConfigItem(
+		position = 17,
 		keyName = "claimSlime",
 		name = "Claim Slime",
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
