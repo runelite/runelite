@@ -84,7 +84,7 @@ public class ImplingsOverlay extends Overlay
 		}
 
 		//Show Imp spawns
-		if(config.showSpawn())
+		if (config.showSpawn())
 		{
 			Map<WorldPoint, String> points = plugin.getPoints();
 
@@ -109,7 +109,7 @@ public class ImplingsOverlay extends Overlay
 			return;
 		}
 
-		LocalPoint localPoint = LocalPoint.fromWorld(client,point);
+		LocalPoint localPoint = LocalPoint.fromWorld(client, point);
 		if (localPoint == null)
 		{
 			return;
@@ -118,13 +118,13 @@ public class ImplingsOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
 		if (poly != null)
 		{
-			OverlayUtil.renderPolygon(graphics,poly, config.getSpawnColor());
+			OverlayUtil.renderPolygon(graphics, poly, config.getSpawnColor());
 		}
 		
-		Point textPoint = Perspective.getCanvasTextLocation(client,graphics, localPoint,text,0);
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text,0);
 		if (textPoint != null)
 		{
-			OverlayUtil.renderTextLocation(graphics,textPoint,text,color);
+			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);
 		}
 	}
 

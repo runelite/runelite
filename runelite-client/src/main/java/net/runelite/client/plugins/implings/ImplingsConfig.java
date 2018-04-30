@@ -311,7 +311,10 @@ public interface ImplingsConfig extends Config
 		name = "Impling spawn color",
 		description = "Text color for impling spawns in Puro Puro"
 	)
-	default Color getSpawnColor() { return Color.WHITE; }
+	default Color getSpawnColor()
+	{
+		return Color.WHITE;
+	}
 
 	@ConfigItem(
 		position = 26,
@@ -319,5 +322,8 @@ public interface ImplingsConfig extends Config
 		name = "Hide puro puro spawns",
 		description = "Configure which spawns should be hidden in puro puro minigame"
 	)
-	default String getHiddenSpawns() { return "Baby,Young"; }
+	default String getHiddenSpawns()
+	{
+		return "Baby,Young";
+	}
 }
