@@ -124,6 +124,7 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 	private int points;
 	private int cachedXp;
+	private int gainedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
 
@@ -336,6 +337,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
+		gainedXp = slayerExp-cachedXp;
 		killedOne();
 		cachedXp = slayerExp;
 	}
@@ -365,7 +367,17 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		amount--;
+		Task task = Task.getTask(taskName);
+		if ((task.getTaskRegularXp() != -1 && task.getTaskSuperiorXp() == -1 && gainedXp > task.getTaskRegularXp()) ||
+				(task.getTaskRegularXp() != -1 && task.getTaskSuperiorXp() != -1 && gainedXp > task.getTaskRegularXp() && gainedXp < task.getTaskSuperiorXp()))
+		{
+			amount -= (int)Math.ceil((double) gainedXp / task.getTaskRegularXp());
+		}
+		else
+		{
+			amount--;
+		}
+
 		config.amount(amount); // save changed value
 
 		if (!config.showInfobox())

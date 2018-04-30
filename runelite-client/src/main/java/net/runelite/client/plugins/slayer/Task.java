@@ -28,6 +28,7 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.runelite.api.ItemID;
 
 enum Task
@@ -63,7 +64,7 @@ enum Task
 	DARK_BEASTS("dark beasts", ItemID.DARK_BEAST, "night beast"),
 	DESERT_LIZARDS("desert lizards", ItemID.DESERT_LIZARD),
 	DOGS("dogs", ItemID.GUARD_DOG, "jackal"),
-	DUST_DEVILS("dust devils", ItemID.DUST_DEVIL, "choke devil"),
+	DUST_DEVILS("dust devils", ItemID.DUST_DEVIL, 105, 3000, "choke devil"),
 	DWARVES("dwarves", ItemID.DWARVEN_HELMET, "dwarf"),
 	EARTH_WARRIORS("earth warriors", ItemID.BRONZE_FULL_HELM_T),
 	ELVES("elves", ItemID.ELF, "elf"),
@@ -115,10 +116,10 @@ enum Task
 	SHADOW_WARRIORS("shadow warriors", ItemID.BLACK_FULL_HELM),
 	SKELETAL_WYVERNS("skeletal wyverns", ItemID.SKELETAL_WYVERN),
 	SKELETONS("skeletons", ItemID.SKELETON_GUARD),
-	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL),
+	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL, 185, 2400),
 	SPIDERS("spiders", ItemID.HUGE_SPIDER),
 	STEEL_DRAGONS("steel dragons", ItemID.STEEL_DRAGON),
-	SUQAHS("suqahs", ItemID.SUQAH_TOOTH),
+	SUQAHS("suqahs", ItemID.SUQAH_TOOTH, 108, -1),
 	TERROR_DOGS("terror dogs", ItemID.TERROR_DOG),
 	TROLLS("trolls", ItemID.TROLL_GUARD),
 	TUROTH("turoth", ItemID.TUROTH),
@@ -135,6 +136,8 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
+	private int regularXp = -1;
+	private int superiorXp = -1;
 	private final String[] targetNames;
 
 	static
@@ -153,10 +156,22 @@ enum Task
 		this.targetNames = targetNames;
 	}
 
+	Task(String name, int itemSpriteId, int regXp, int supXp, String... targetNames)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.regularXp = regXp;
+		this.superiorXp = supXp;
+		this.targetNames = targetNames;
+	}
+
 	public static Task getTask(String taskName)
 	{
 		return tasks.get(taskName);
 	}
+
+
 
 	public String getName()
 	{
@@ -166,6 +181,16 @@ enum Task
 	public int getItemSpriteId()
 	{
 		return itemSpriteId;
+	}
+
+	public int getTaskRegularXp()
+	{
+		return this.regularXp;
+	}
+
+	public int getTaskSuperiorXp()
+	{
+		return this.superiorXp;
 	}
 
 	public String[] getTargetNames()
