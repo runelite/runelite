@@ -30,7 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Setting;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
@@ -85,14 +85,14 @@ public class AttackStylesPluginTest
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 
 		// Set mock client to attack in style that gives attack xp
-		when(client.getSetting(Setting.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
+		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
 
 		// verify that earning xp in a warned skill will display red text on the widget
 		attackPlugin.onAttackStyleChange(new VarbitChanged());
 		assertTrue(attackPlugin.isWarnedSkillSelected());
 
 		// Switch to attack style that doesn't give attack xp
-		when(client.getSetting(Setting.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
+		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
 
 		// Verify the widget will now display white text
 		attackPlugin.onAttackStyleChange(new VarbitChanged());
@@ -123,7 +123,7 @@ public class AttackStylesPluginTest
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
 
 		// equip type_4 weapon type on player
-		when(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
+		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
 		attackPlugin.onEquippedWeaponTypeChange(new VarbitChanged());
 
 		// Verify there is a warned skill
