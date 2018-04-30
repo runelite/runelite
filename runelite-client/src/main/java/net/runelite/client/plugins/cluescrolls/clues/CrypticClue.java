@@ -73,7 +73,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Gold I see, yet gold I require. Give me 875 if death you desire.", "Saniboch", new WorldPoint(2745, 3151, 0), "Speak to Saniboch at the Brimhaven Dungeon entrance."),
 		new CrypticClue("Find a crate close to the monks that like to paaarty!", CRATE_354, new WorldPoint(2614, 3204, 0), "The crate is in the east side of the Kandarin monastery, near Brother Omad"),
 		new CrypticClue("Identify the back of this over-acting brother. (He's a long way from home.)", "Hamid", new WorldPoint(3376, 3284, 0), "Talk to Hamid, the monk at the altar in the Duel Arena"),
-		new CrypticClue("In a town where thieves steal from stalls, search for some drawers in the upstairs of a house near the bank.", "Guard", DRAWERS, new WorldPoint(2611, 3324, 1), "Kill any Guard located around East Ardougne for a medium key. Then search the drawers in the upstairs hallway of Jerico's house, which is the house with pigeon cages located south of the northern East Ardougne bank."),
+		new CrypticClue("In a town where thieves steal from stalls, search for some drawers in the upstairs of a house near the bank.", "Guard", DRAWERS, new WorldPoint(2611, 3324, 1), 10457, "Kill any Guard located around East Ardougne for a medium key. Then search the drawers in the upstairs hallway of Jerico's house, which is the house with pigeon cages located south of the northern East Ardougne bank."),
 		new CrypticClue("His bark is worse than his bite.", "Barker", new WorldPoint(3499, 3503, 0), "Speak to the Barker at Canifis's Barkers' Haberdashery."),
 		new CrypticClue("The beasts to my east snap claws and tails, The rest to my west can slide and eat fish. The force to my north will jump and they'll wail, Come dig by my fire and make a wish.", new WorldPoint(2598, 3267, 0), "Dig by the torch in the Ardougne Zoo, between the penguins and the scorpions."),
 		new CrypticClue("A town with a different sort of night-life is your destination. Search for some crates in one of the houses.", CRATE_24344, new WorldPoint(3498, 3507, 0), "Search the crate inside of the clothes shop in Canifis."),
@@ -310,29 +310,41 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private String npc;
 	private int objectId;
 	private WorldPoint location;
+	private int regionId;
 	private String solution;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
 	{
-		this(text, null, -1, location, solution);
+		this(text, null, -1, location, -1, solution);
 	}
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution)
 	{
-		this(text, null, objectId, location, solution);
+		this(text, null, objectId, location, -1, solution);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution)
 	{
-		this(text, npc, -1, location, solution);
+		this(text, npc, -1, location, -1, solution);
+	}
+
+	private CrypticClue(String text, String npc, WorldPoint location, int regionId, String solution)
+	{
+		this(text, npc, -1, location, regionId, solution);
 	}
 
 	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution)
+	{
+		this(text, npc, objectId, location, -1, solution);
+	}
+
+	private CrypticClue(String text, String npc, int objectId, WorldPoint location, int regionId, String solution)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.objectId = objectId;
 		this.location = location;
+		this.regionId = regionId;
 		this.solution = solution;
 	}
 
@@ -398,9 +410,13 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		// Mark NPC
 		if (plugin.getNpcsToMark() != null)
 		{
-			for (NPC npc : plugin.getNpcsToMark())
+			int region = plugin.getClient().getLocalPlayer().getWorldLocation().getRegionID();
+
+			if (regionId == -1 || regionId == region)
 			{
-				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
+				for (NPC npc : plugin.getNpcsToMark()) {
+					OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
+				}
 			}
 		}
 
