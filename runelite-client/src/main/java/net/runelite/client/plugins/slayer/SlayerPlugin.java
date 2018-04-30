@@ -373,11 +373,8 @@ public class SlayerPlugin extends Plugin
 		Task task = Task.getTask(taskName);
 		if (npcHealth.get(task.getHealthName()) != null)
 		{
-			System.out.println("task.getXpMultiplier: " + task.getXpMultiplier() + "npcHealth.get(task.getHealthName())" + npcHealth.get(task.getHealthName()));
 			int regularXp = (int) Math.ceil(task.getXpMultiplier() * npcHealth.get(task.getHealthName()));
 			int superiorXp = 10 * npcHealth.get(task.getSuperiorName());
-			log.info("reg: " + regularXp + ", sup: " + superiorXp);
-			log.info("amount -=" + (int) Math.ceil((double) gainedXp / regularXp));
 			if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) ||
 					(task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < superiorXp))
 			{
@@ -390,7 +387,6 @@ public class SlayerPlugin extends Plugin
 		}
 		else
 		{
-			System.out.println("Skipped, null npcHealth");
 			amount--;
 		}
 
