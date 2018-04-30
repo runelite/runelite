@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Generated;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -88,10 +89,15 @@ public class RaidsPlugin extends Plugin
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
 
 	private BufferedImage raidsIcon;
+
+	@Getter
 	private RaidsTimer timer;
 
 	@Getter
 	private boolean inRaidChambers;
+
+	@Getter
+	private boolean raidStarted;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -103,6 +109,7 @@ public class RaidsPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	@Getter
 	private RaidsConfig config;
 
 	@Inject
@@ -302,7 +309,7 @@ public class RaidsPlugin extends Plugin
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
-					String chatMessage = new ChatMessageBuilder()
+					String chatMessageLine1 = new ChatMessageBuilder()
 							.append(ChatColorType.NORMAL)
 							.append("Total points: ")
 							.append(ChatColorType.HIGHLIGHT)
@@ -321,12 +328,29 @@ public class RaidsPlugin extends Plugin
 
 					chatMessageManager.queue(QueuedMessage.builder()
 						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
+						.runeLiteFormattedMessage(chatMessageLine1)
 						.build());
+
+					String chatMessageLine2 = new ChatMessageBuilder()
+							.append(ChatColorType.NORMAL)
+							.append("Personal points per hour: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(POINTS_FORMAT.format(getPointsPerHour(personalPoints)))
+							.append(ChatColorType.NORMAL)
+							.append(", Team points per hour:")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(POINTS_FORMAT.format(getPointsPerHour(totalPoints)))
+							.build();
+
+					chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.CLANCHAT_INFO)
+							.runeLiteFormattedMessage(chatMessageLine2)
+							.build());
 				}
 			}
 		}
 	}
+
 
 	private void updateInfoBoxState()
 	{
@@ -639,5 +663,22 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return raidsIcon;
+	}
+
+	public int getPointsPerHour(int points)
+	{
+		if (timer == null)
+		{
+			return 0;
+		}
+
+		int secondsElapsed = timer.getTime().toSecondOfDay();
+
+		if (secondsElapsed > 0)
+		{
+			return (3600 / secondsElapsed) * points;
+		}
+
+		return 0;
 	}
 }

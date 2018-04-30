@@ -27,6 +27,7 @@ package net.runelite.client.plugins.raids;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.LocalTime;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -44,13 +45,16 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	private RaidsPlugin plugin;
 
+	private RaidsConfig config;
+
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
-	public RaidsPointsOverlay()
+	public RaidsPointsOverlay(RaidsConfig config)
 	{
 		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.HIGH);
+		this.config = config;
 	}
 
 	@Override
@@ -61,8 +65,8 @@ public class RaidsPointsOverlay extends Overlay
 			return null;
 		}
 
-		int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
 		int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
+		int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
 
 		panel.getLines().clear();
 		panel.getLines().add(new PanelComponent.Line(
@@ -75,6 +79,37 @@ public class RaidsPointsOverlay extends Overlay
 			"Party size:", Color.WHITE, String.valueOf(client.getSetting(Varbits.RAID_PARTY_SIZE)), Color.WHITE
 		));
 
+		if (config.displayPersonalPointsPerHour())
+		{
+			int personalPointsPerHour = 0;
+
+			if (plugin.getTimer() != null)
+			{
+				personalPointsPerHour = plugin.getPointsPerHour(personalPoints);
+			}
+
+			panel.getLines().add(new PanelComponent.Line(
+				"Personal p/hr:", Color.WHITE, POINTS_FORMAT.format(personalPointsPerHour), Color.WHITE
+			));
+		}
+
+		if (config.displayTeamPointsPerHour())
+		{
+			int teamPointsPerHour = 0;
+
+			if (plugin.getTimer() != null)
+			{
+				teamPointsPerHour = plugin.getPointsPerHour(totalPoints);
+			}
+
+			panel.getLines().add(new PanelComponent.Line(
+				"Team p/hr:", Color.WHITE, 	POINTS_FORMAT.format(teamPointsPerHour), Color.WHITE
+			));
+		}
+
 		return panel.render(graphics);
 	}
+
+
+
 }
