@@ -402,7 +402,7 @@ public class GroundItemsPlugin extends Plugin
 				}
 			}
 
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+			if (itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
