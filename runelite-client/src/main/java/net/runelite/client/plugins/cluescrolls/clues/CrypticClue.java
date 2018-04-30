@@ -228,7 +228,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", null, "Talk to Juna while wearing three Guthix related items."),
 		new CrypticClue("You might have to turn over a few stones to progress.", null, "Kill a rock crab and pick up the casket (elite) that it drops."),
 		new CrypticClue("Dig under Razorlor's toad batta.", null, "Dig on the toad batta spawn in Tarn's Lair."),
-		new CrypticClue("Talk to Cassie in Falador.", null, "Cassie is found just south-east of the northern Falador gate."),
+		new CrypticClue("Talk to Cassie in Falador.", "Cassie", new WorldPoint(2975, 3383, 0), "Cassie is found just south-east of the northern Falador gate."),
 		new CrypticClue("Faint sounds of 'Arr', fire giants found deep, the eastern tip of a lake, are the rewards you could reap.", null, "Dig south of the pillar at the end of the Deep Wilderness Dungeon."),
 		new CrypticClue("If you're feeling brave, dig beneath the dragon's eye.", null, "Dig below the mossy rock under the Viyeldi caves."),
 		new CrypticClue("Search the tents in the Imperial Guard camp in Burthorpe for some boxes.", null, "Search in the tents in northwest corner of the camp."),
