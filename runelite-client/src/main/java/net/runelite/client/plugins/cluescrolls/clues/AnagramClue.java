@@ -112,7 +112,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: O BIRDZ A ZANY EN PC", "Cap'n Izzy no Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
 		new AnagramClue("This anagram reveals who to speak to next: OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "9"),
 		new AnagramClue("This anagram reveals who to speak to next: OR ZINC FUMES WARD", "Wizard Frumscone", new WorldPoint(2594, 3086, 0), "Downstairs in the Wizards' Guild"),
-		new AnagramClue("This anagram reveals who to speak to next: OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1578, 3533, 0), "Shayzien House Infirmary", "19"),
+		new AnagramClue("This anagram reveals who to speak to next: OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1575, 3590, 0), "Shayzien House Infirmary", "19"),
 		new AnagramClue("This anagram reveals who to speak to next: PACINNG A TAIE", "Captain Ginea", new WorldPoint(1561, 3602, 0), "Building east of Shayzien combat ring", "113"),
 		new AnagramClue("This anagram reveals who to speak to next: PEAK REFLEX", "Flax keeper", new WorldPoint(2744, 3444, 0), "Flax field south of Seers Village", "676"),
 		new AnagramClue("This anagram reveals who to speak to next: PEATY PERT", "Party Pete", new WorldPoint(3047, 3376, 0), "Falador Party Room"),
