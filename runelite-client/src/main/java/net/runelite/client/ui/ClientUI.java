@@ -125,6 +125,7 @@ public class ClientUI
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
 	private Applet client;
+	@Getter
 	private ContainableFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
