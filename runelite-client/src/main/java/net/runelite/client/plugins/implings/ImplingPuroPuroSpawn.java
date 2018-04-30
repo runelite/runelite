@@ -35,10 +35,10 @@ public class ImplingPuroPuroSpawn
 		Map<WorldPoint, String> puroPuroSpawns = new HashMap<>();
 
 		//Eclectic spawns
-		puroPuroSpawns.put(new WorldPoint(2567,4319,0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2591,4295,0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2615,4326,0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2591,4340,0), "Eclectic");
+		puroPuroSpawns.put(new WorldPoint(2567, 4319, 0), "Eclectic");
+		puroPuroSpawns.put(new WorldPoint(2591, 4295, 0), "Eclectic");
+		puroPuroSpawns.put(new WorldPoint(2615, 4326, 0), "Eclectic");
+		puroPuroSpawns.put(new WorldPoint(2591, 4340, 0), "Eclectic");
 
 		//./.
 		return puroPuroSpawns;
