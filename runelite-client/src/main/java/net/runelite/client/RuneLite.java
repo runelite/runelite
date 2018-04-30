@@ -33,18 +33,15 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import java.applet.Applet;
-import java.awt.Color;
 import java.io.File;
 import java.util.Locale;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.util.EnumConverter;
