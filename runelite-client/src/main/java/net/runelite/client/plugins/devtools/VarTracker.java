@@ -30,49 +30,49 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
 @Slf4j
-public class SettingsTracker
+public class VarTracker
 {
 	private final Client client;
 
-	private int[] widgetSettings;
+	private int[] varPs;
 
-	public SettingsTracker(Client client)
+	public VarTracker(Client client)
 	{
 		this.client = client;
 	}
 
 	public void snapshot(ActionEvent e)
 	{
-		if (widgetSettings == null)
+		if (varPs == null)
 		{
-			widgetSettings = copy(client.getVarps());
+			varPs = copy(client.getVarps());
 
-			log.info("Snapshotted client and widget settings");
+			log.info("Snapshotted VarPs");
 			return;
 		}
 
-		int[] newWidgetSettings = client.getVarps();
+		int[] newVarPs = client.getVarps();
 
-		for (int i = 0; i < Math.min(widgetSettings.length, newWidgetSettings.length); ++i)
+		for (int i = 0; i < Math.min(varPs.length, newVarPs.length); ++i)
 		{
-			int before = widgetSettings[i];
-			int after = newWidgetSettings[i];
+			int before = varPs[i];
+			int after = newVarPs[i];
 
 			if (before == after)
 			{
 				continue;
 			}
 
-			log.info("Widget setting index {} has changed from {} to {}: {} -> {}",
+			log.info("VarP index {} has changed from {} to {}: {} -> {}",
 				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
 		}
 
-		widgetSettings = copy(newWidgetSettings);
+		varPs = copy(newVarPs);
 	}
 
 	public void clear(ActionEvent e)
 	{
-		widgetSettings = null;
+		varPs = null;
 	}
 
 	private static int[] copy(int[] array)
