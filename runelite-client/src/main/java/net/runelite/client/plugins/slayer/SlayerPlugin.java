@@ -290,7 +290,6 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
-			System.out.println("Amount before end: " + amount);
 			setTask("", 0);
 			return;
 		}
