@@ -166,9 +166,9 @@ public interface Client extends GameEngine
 
 	Varcs getVarcs();
 
-	int getSetting(Setting setting);
+	int getVar(VarPlayer varPlayer);
 
-	int getSetting(Varbits varbit);
+	int getVar(Varbits varbit);
 
 	@VisibleForDevtools
 	void setSetting(Varbits varbit, int value);

@@ -126,7 +126,7 @@ class OpponentInfoOverlay extends Overlay
 
 			Actor opponentsOpponent = opponent.getInteracting();
 			if (opponentsOpponent != null
-					&& (opponentsOpponent != client.getLocalPlayer() || client.getSetting(Varbits.MULTICOMBAT_AREA) == 1))
+					&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
 			{
 				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
 			}

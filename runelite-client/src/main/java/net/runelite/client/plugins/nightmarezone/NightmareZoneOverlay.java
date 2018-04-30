@@ -100,7 +100,7 @@ class NightmareZoneOverlay extends Overlay
 		panelComponent.getLines().add(new PanelComponent.Line(
 				"Points: ",
 				Color.WHITE,
-				StackFormatter.formatNumber(client.getSetting(Varbits.NMZ_POINTS)),
+				StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)),
 				Color.WHITE
 		));
 
@@ -109,7 +109,7 @@ class NightmareZoneOverlay extends Overlay
 
 	private void renderAbsorptionCounter()
 	{
-		int absorptionPoints = client.getSetting(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
 		if (absorptionPoints == 0)
 		{
 			if (absorptionCounter != null)

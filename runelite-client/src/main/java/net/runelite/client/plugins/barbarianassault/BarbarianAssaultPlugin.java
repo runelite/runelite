@@ -90,7 +90,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getSetting(Varbits.IN_GAME_BA) == 1 &&
+		if (client.getVar(Varbits.IN_GAME_BA) == 1 &&
 				overlay.getCurrentRound() == null &&
 				client.getLocalPlayer() != null)
 		{
@@ -115,7 +115,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
-		int inGame = client.getSetting(Varbits.IN_GAME_BA);
+		int inGame = client.getVar(Varbits.IN_GAME_BA);
 
 		if (inGameBit != inGame && inGameBit == 1)
 		{

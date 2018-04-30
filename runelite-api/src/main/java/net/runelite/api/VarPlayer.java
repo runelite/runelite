@@ -29,7 +29,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Setting
+public enum VarPlayer
 {
 	ATTACK_STYLE(43),
 

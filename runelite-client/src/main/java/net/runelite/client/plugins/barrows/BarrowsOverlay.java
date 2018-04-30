@@ -178,7 +178,7 @@ class BarrowsOverlay extends Overlay
 				graphics.setColor(Color.black);
 				graphics.drawString(brotherLetter, minimapText.getX() + 1, minimapText.getY() + 1);
 
-				if (client.getSetting(brother.getKilledVarbit()) > 0)
+				if (client.getVar(brother.getKilledVarbit()) > 0)
 				{
 					graphics.setColor(config.deadBrotherLocColor());
 				}

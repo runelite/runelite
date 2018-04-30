@@ -47,7 +47,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Point;
-import net.runelite.api.Setting;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import static net.runelite.api.Perspective.SCENE_SIZE;
@@ -152,7 +152,7 @@ public class RaidsPlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			inRaidChambers = client.getSetting(Varbits.IN_RAID) == 1;
+			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
 			updateInfoBoxState();
 		}
 
@@ -226,7 +226,7 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
-		boolean setting = client.getSetting(Varbits.IN_RAID) == 1;
+		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
 
 		if (inRaidChambers != setting)
 		{
@@ -262,7 +262,7 @@ public class RaidsPlugin extends Plugin
 			}
 		}
 
-		if (client.getSetting(Setting.IN_RAID_PARTY) == -1)
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1)
 		{
 			overlay.setScoutOverlayShown(false);
 			raid = null;
@@ -297,8 +297,8 @@ public class RaidsPlugin extends Plugin
 
 				if (config.pointsMessage())
 				{
-					int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
-					int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
+					int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
+					int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
