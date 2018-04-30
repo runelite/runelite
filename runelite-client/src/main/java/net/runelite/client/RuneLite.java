@@ -53,6 +53,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.ReducedFunctionalityPopup;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import org.slf4j.LoggerFactory;
@@ -230,6 +231,13 @@ public class RuneLite
 
 		// Show UI after all plugins are loaded
 		clientUI.show();
+
+		if (isOutdated)
+		{
+			ReducedFunctionalityPopup rfp = new ReducedFunctionalityPopup();
+			rfp.init();
+			rfp.show();
+		}
 	}
 
 	public void shutdown()
