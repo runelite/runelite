@@ -41,6 +41,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
+import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -161,18 +162,35 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			if (config.showGEPrice() && item.getGePrice() > 0)
+			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 			{
-				itemStringBuilder.append(" (EX: ")
-					.append(StackFormatter.quantityToStackSize(item.getGePrice()))
-					.append(" gp)");
-			}
+				if (item.getGePrice() > 0)
+				{
+					itemStringBuilder.append(" (EX: ")
+						.append(StackFormatter.quantityToStackSize(item.getGePrice()))
+						.append(" gp)");
+				}
 
-			if (config.showHAValue() && item.getHaPrice() > 0)
+				if (item.getHaPrice() > 0)
+				{
+					itemStringBuilder.append(" (HA: ")
+						.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+						.append(" gp)");
+				}
+			}
+			else
 			{
-				itemStringBuilder.append(" (HA: ")
-					.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
-					.append(" gp)");
+				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
+					? item.getGePrice()
+					: item.getHaPrice();
+
+				if (price > 0)
+				{
+					itemStringBuilder
+						.append(" (")
+						.append(StackFormatter.quantityToStackSize(price))
+						.append(" gp)");
+				}
 			}
 
 			final String itemString = itemStringBuilder.toString();
