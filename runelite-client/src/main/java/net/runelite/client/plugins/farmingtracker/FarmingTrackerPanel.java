@@ -183,6 +183,7 @@ class FarmingTrackerPanel extends PluginPanel
 				panel.getProgress().setMaximum(0);
 				panel.getProgress().setValue(0);
 				panel.getEstimate().setText("Unknown");
+				panel.getProgress().setBackground(null);
 			}
 			else
 			{
