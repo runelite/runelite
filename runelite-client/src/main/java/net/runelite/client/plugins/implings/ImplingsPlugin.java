@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -176,8 +177,15 @@ public class ImplingsPlugin extends Plugin
 		{
 			ids.put(STATIC_SPAWN, config.getSpawnColor());
 			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
-			points = ImplingPuroPuroSpawn.getSpawns();
+			points = ImplingPuroPuroSpawn.getSpawns(UpdateList());
 		}
+	}
+	
+	public List<String> UpdateList()
+	{
+		String toHide = config.getHiddenSpawns().toLowerCase();
+		List<String> hiddenSpawns = Arrays.asList(toHide.split("\\s*,\\s*"));
+		return hiddenSpawns;
 	}
 
 }
