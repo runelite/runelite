@@ -188,17 +188,17 @@ enum Task
 	}
 
 	public double getXpMultiplier()
-    {
-        return this.xpMultiplier;
-    }
+	{
+		return this.xpMultiplier;
+	}
 
-    public String getHealthName()
-    {
-        return this.healthName;
-    }
+	public String getHealthName()
+	{
+		return this.healthName;
+	}
 
-    public String getSuperiorName()
-    {
-        return this.superiorName;
-    }
+	public String getSuperiorName()
+	{
+		return this.superiorName;
+	}
 }

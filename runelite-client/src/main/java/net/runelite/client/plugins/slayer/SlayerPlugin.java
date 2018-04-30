@@ -291,6 +291,7 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
+			System.out.println("Amount before end: " + amount);
 			setTask("", 0);
 			return;
 		}
@@ -369,22 +370,27 @@ public class SlayerPlugin extends Plugin
 		{
 			return;
 		}
-		//DEBUG
-		log.info("Dust devil:" + npcHealth.get("Dust devil_110") + " " + npcHealth.get("Choke devil_264"));
-		log.info("Smoke devil:" + npcHealth.get("Smoke devil_160") + " " + npcHealth.get("Nuclear smoke devil_280"));
-		log.info("Suqah:" + npcHealth.get("Suqah_111"));
 		Task task = Task.getTask(taskName);
-		int regularXp = (int)Math.ceil(task.getXpMultiplier()*npcHealth.get(task.getHealthName()));
-		int superiorXp = 10*npcHealth.get(task.getSuperiorName());
-		log.info("reg: " + regularXp + ", sup: " + superiorXp);
-		log.info("amount -=" + (int)Math.ceil((double) gainedXp / regularXp));
-		if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) ||
-				(task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < superiorXp))
+		if (npcHealth.get(task.getHealthName()) != null)
 		{
-			amount -= (int)Math.ceil((double) gainedXp / regularXp);
+			System.out.println("task.getXpMultiplier: " + task.getXpMultiplier() + "npcHealth.get(task.getHealthName())" + npcHealth.get(task.getHealthName()));
+			int regularXp = (int) Math.ceil(task.getXpMultiplier() * npcHealth.get(task.getHealthName()));
+			int superiorXp = 10 * npcHealth.get(task.getSuperiorName());
+			log.info("reg: " + regularXp + ", sup: " + superiorXp);
+			log.info("amount -=" + (int) Math.ceil((double) gainedXp / regularXp));
+			if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) ||
+					(task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < superiorXp))
+			{
+				amount -= (int) Math.ceil((double) gainedXp / regularXp);
+			}
+			else
+			{
+				amount--;
+			}
 		}
 		else
 		{
+			System.out.println("Skipped, null npcHealth");
 			amount--;
 		}
 
