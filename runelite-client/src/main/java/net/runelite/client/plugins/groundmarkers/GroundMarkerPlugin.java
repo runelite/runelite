@@ -65,6 +65,7 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
+	private static final String CLEAR = "Clear Marked Tiles";
 	private static final String WALK_HERE = "Walk here";
 
 	private static final Gson gson = new Gson();
@@ -259,9 +260,15 @@ public class GroundMarkerPlugin extends Plugin
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+			MenuEntry clearMarksMenuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+
+
+			clearMarksMenuEntry.setOption(CLEAR);
+			clearMarksMenuEntry.setTarget(event.getTarget());
+			clearMarksMenuEntry.setType(MenuAction.CANCEL.getId());
 
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
@@ -276,6 +283,11 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (!event.getMenuOption().equals(MARK))
 		{
+			return;
+		}
+		else if (event.getMenuOption().equals(CLEAR))
+		{
+			points.clear();
 			return;
 		}
 
