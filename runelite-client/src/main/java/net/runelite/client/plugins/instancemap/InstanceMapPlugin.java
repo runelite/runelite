@@ -26,12 +26,17 @@ package net.runelite.client.plugins.instancemap;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
+import com.google.inject.Provides;
+
 import javax.inject.Inject;
+
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
+
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
@@ -61,6 +66,12 @@ public class InstanceMapPlugin extends Plugin
 
 	@Inject
 	private MouseManager mouseManager;
+
+	@Provides
+	InstanceMapConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InstanceMapConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
