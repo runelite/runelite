@@ -169,7 +169,7 @@ enum Task
 	{
 		return tasks.get(taskName);
 	}
-	
+
 	public String getName()
 	{
 		return this.name;
