@@ -33,6 +33,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Setting;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -92,7 +93,7 @@ public class KingdomPlugin extends Plugin
 
 	private void processInfobox()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuest() && isInKingdom())
+		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedMiscQuest() && isInKingdom())
 		{
 			addKingdomInfobox();
 		}
@@ -128,9 +129,14 @@ public class KingdomPlugin extends Plugin
 		return Ints.indexOf(client.getMapRegions(), KINGDOM_REGION) >= 0;
 	}
 
-	private boolean hasCompletedQuest()
+	private boolean hasCompletedMiscQuest()
 	{
-		return client.getSetting(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
+		return client.getSetting(Setting.QUEST_THRONE_OF_MISCELLANIA) > 99;
+	}
+
+	private boolean hasCompletedRoyalQuest()
+	{
+		return client.getSetting(Varbits.QUEST_ROYAL_TROUBLE) > 20;
 	}
 
 	static int getFavorPercent(int favor)

@@ -293,9 +293,9 @@ public enum Varbits
 	/**
 	 * Kingdom Management
 	 */
+	KINGDOM_LAST_COLLECTED(71), // returns minutes since last collected
 	KINGDOM_FAVOR(72),
 	KINGDOM_COFFER(74),
-	THRONE_OF_MISCELLANIA_QUEST(359),
 
 	/**
 	 * Daily Tasks (Collection availability)
@@ -339,7 +339,12 @@ public enum Varbits
 	/**
 	 * Automatically weed farming patches
 	 */
-	AUTOWEED(5557);
+	AUTOWEED(5557),
+
+	/**
+	 * Quests
+	 */
+	QUEST_ROYAL_TROUBLE(2140);
 
 	/**
 	 * varbit id
