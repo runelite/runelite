@@ -468,7 +468,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			File playerFolder;
-			if (client.getLocalPlayer() != null)
+			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
 				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
 			}
