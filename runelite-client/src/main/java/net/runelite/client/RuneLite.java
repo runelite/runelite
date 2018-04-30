@@ -259,16 +259,9 @@ public class RuneLite
 					"Thank you for your patience." +
 					"</html>"
 			);
-			text.setBorder(
-					BorderFactory.createCompoundBorder(
-							BorderFactory.createCompoundBorder(
-								new EmptyBorder(0, 0, 15, 0),
-								new LineBorder(Color.DARK_GRAY, 1, true)),
-							new EmptyBorder(5, 15, 5, 10)
-					)
-			);
+			text.setBorder(new EmptyBorder(0, 0, 15, 10));
 
-			JOptionPane.showMessageDialog(clientUI.getFrame(), text, "Reduced Functionality Mode", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, text, "Reduced Functionality Mode", JOptionPane.ERROR_MESSAGE);
 		});
 	}
 
