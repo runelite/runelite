@@ -70,6 +70,9 @@ public class ImplingsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Map<WorldPoint, String> points;
 
+	@Getter(AccessLevel.PACKAGE)
+	private List<String> hideSpawns;
+
 	@Inject
 	private ImplingsOverlay overlay;
 
@@ -177,15 +180,15 @@ public class ImplingsPlugin extends Plugin
 		{
 			ids.put(STATIC_SPAWN, config.getSpawnColor());
 			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
-			points = ImplingPuroPuroSpawn.getSpawns(UpdateList());
+			UpdateList();
+			points = ImplingPuroPuroSpawn.getSpawns();
 		}
 	}
-	
-	public List<String> UpdateList()
+
+	private void UpdateList()
 	{
 		String toHide = config.getHiddenSpawns().toLowerCase();
-		List<String> hiddenSpawns = Arrays.asList(toHide.split("\\s*,\\s*"));
-		return hiddenSpawns;
+		hideSpawns = Arrays.asList(toHide.split("\\s*,\\s*"));
 	}
 
 }
