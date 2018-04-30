@@ -63,7 +63,7 @@ enum Task
 	DARK_BEASTS("dark beasts", ItemID.DARK_BEAST, "night beast"),
 	DESERT_LIZARDS("desert lizards", ItemID.DESERT_LIZARD),
 	DOGS("dogs", ItemID.GUARD_DOG, "jackal"),
-	DUST_DEVILS("dust devils", ItemID.DUST_DEVIL, 105, 3000, "choke devil"),
+	DUST_DEVILS("dust devils", ItemID.DUST_DEVIL, 1.00, "Dust devil_110", "Choke devil_264", "choke devil"),
 	DWARVES("dwarves", ItemID.DWARVEN_HELMET, "dwarf"),
 	EARTH_WARRIORS("earth warriors", ItemID.BRONZE_FULL_HELM_T),
 	ELVES("elves", ItemID.ELF, "elf"),
@@ -115,10 +115,10 @@ enum Task
 	SHADOW_WARRIORS("shadow warriors", ItemID.BLACK_FULL_HELM),
 	SKELETAL_WYVERNS("skeletal wyverns", ItemID.SKELETAL_WYVERN),
 	SKELETONS("skeletons", ItemID.SKELETON_GUARD),
-	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL, 185, 2400),
+	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL, 1.00, "Smoke devil_160", "Nuclear smoke devil_280"),
 	SPIDERS("spiders", ItemID.HUGE_SPIDER),
 	STEEL_DRAGONS("steel dragons", ItemID.STEEL_DRAGON),
-	SUQAHS("suqahs", ItemID.SUQAH_TOOTH, 108, -1),
+	SUQAHS("suqahs", ItemID.SUQAH_TOOTH, 1.025, "Suqah_111", "None"),
 	TERROR_DOGS("terror dogs", ItemID.TERROR_DOG),
 	TROLLS("trolls", ItemID.TROLL_GUARD),
 	TUROTH("turoth", ItemID.TUROTH),
@@ -135,8 +135,9 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
-	private int regularXp = -1;
-	private int superiorXp = -1;
+	private double xpMultiplier = -1.00;
+	private String healthName = "None";
+	private String superiorName = "None";
 	private final String[] targetNames;
 
 	static
@@ -155,13 +156,14 @@ enum Task
 		this.targetNames = targetNames;
 	}
 
-	Task(String name, int itemSpriteId, int regXp, int supXp, String... targetNames)
+	Task(String name, int itemSpriteId, double xpMultiplier, String healthName, String superiorName, String... targetNames)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
-		this.regularXp = regXp;
-		this.superiorXp = supXp;
+		this.xpMultiplier = xpMultiplier;
+		this.healthName = healthName;
+		this.superiorName = superiorName;
 		this.targetNames = targetNames;
 	}
 
@@ -180,18 +182,23 @@ enum Task
 		return itemSpriteId;
 	}
 
-	public int getTaskRegularXp()
-	{
-		return this.regularXp;
-	}
-
-	public int getTaskSuperiorXp()
-	{
-		return this.superiorXp;
-	}
-
 	public String[] getTargetNames()
 	{
 		return this.targetNames;
 	}
+
+	public double getXpMultiplier()
+    {
+        return this.xpMultiplier;
+    }
+
+    public String getHealthName()
+    {
+        return this.healthName;
+    }
+
+    public String getSuperiorName()
+    {
+        return this.superiorName;
+    }
 }

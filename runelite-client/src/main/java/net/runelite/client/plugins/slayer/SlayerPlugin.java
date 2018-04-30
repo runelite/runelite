@@ -26,15 +26,16 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -62,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
@@ -117,6 +119,7 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
+	private Map<String, Integer> npcHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	private String taskName;
 	private int amount;
@@ -366,12 +369,19 @@ public class SlayerPlugin extends Plugin
 		{
 			return;
 		}
-
+		//DEBUG
+		log.info("Dust devil:" + npcHealth.get("Dust devil_110") + " " + npcHealth.get("Choke devil_264"));
+		log.info("Smoke devil:" + npcHealth.get("Smoke devil_160") + " " + npcHealth.get("Nuclear smoke devil_280"));
+		log.info("Suqah:" + npcHealth.get("Suqah_111"));
 		Task task = Task.getTask(taskName);
-		if ((task.getTaskRegularXp() != -1 && task.getTaskSuperiorXp() == -1 && gainedXp > task.getTaskRegularXp()) ||
-				(task.getTaskRegularXp() != -1 && task.getTaskSuperiorXp() != -1 && gainedXp > task.getTaskRegularXp() && gainedXp < task.getTaskSuperiorXp()))
+		int regularXp = (int)Math.ceil(task.getXpMultiplier()*npcHealth.get(task.getHealthName()));
+		int superiorXp = 10*npcHealth.get(task.getSuperiorName());
+		log.info("reg: " + regularXp + ", sup: " + superiorXp);
+		log.info("amount -=" + (int)Math.ceil((double) gainedXp / regularXp));
+		if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) ||
+				(task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < superiorXp))
 		{
-			amount -= (int)Math.ceil((double) gainedXp / task.getTaskRegularXp());
+			amount -= (int)Math.ceil((double) gainedXp / regularXp);
 		}
 		else
 		{
@@ -536,5 +546,16 @@ public class SlayerPlugin extends Plugin
 	private String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+
+	public static Map<String, Integer> loadNpcHealth()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
+		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 }
