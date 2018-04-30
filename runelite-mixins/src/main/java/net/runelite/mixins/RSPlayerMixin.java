@@ -31,6 +31,9 @@ import net.runelite.api.HeadIcon;
 import static net.runelite.api.HeadIcon.MAGIC;
 import static net.runelite.api.HeadIcon.MELEE;
 import static net.runelite.api.HeadIcon.RANGED;
+import static net.runelite.api.HeadIcon.REDEMPTION;
+import static net.runelite.api.HeadIcon.RETRIBUTION;
+import static net.runelite.api.HeadIcon.SMITE;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -88,6 +91,12 @@ public abstract class RSPlayerMixin implements RSPlayer
 				return RANGED;
 			case 2:
 				return MAGIC;
+			case 3:
+				return RETRIBUTION;
+			case 4:
+				return SMITE;
+			case 5:
+				return REDEMPTION;
 			default:
 				return null;
 		}
