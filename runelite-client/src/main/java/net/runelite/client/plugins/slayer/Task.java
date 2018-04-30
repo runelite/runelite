@@ -28,7 +28,6 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.Map;
-
 import net.runelite.api.ItemID;
 
 enum Task
@@ -170,9 +169,7 @@ enum Task
 	{
 		return tasks.get(taskName);
 	}
-
-
-
+	
 	public String getName()
 	{
 		return this.name;
