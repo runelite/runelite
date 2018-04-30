@@ -26,6 +26,8 @@ package net.runelite.mixins;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -105,5 +107,19 @@ public abstract class VarbitMixin implements RSClient
 		int msb = v.getMostSignificantBit();
 		int mask = (1 << ((msb - lsb) + 1)) - 1;
 		varps[v.getIndex()] = (varps[v.getIndex()] & ~(mask << lsb)) | ((value & mask) << lsb);
+	}
+
+	@Inject
+	@Override
+	public int getVar(VarClientInt varClientInt)
+	{
+		return getVarcs().getIntVarcs()[varClientInt.getIndex()];
+	}
+
+	@Inject
+	@Override
+	public String getVar(VarClientStr varClientStr)
+	{
+		return getVarcs().getStrVarcs()[varClientStr.getIndex()];
 	}
 }
