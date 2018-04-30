@@ -244,7 +244,7 @@ public class ItemService
 			}
 
 			query.executeBatch();
-			con.commit();
+			con.commit(false);
 
 			return entries;
 		}
@@ -320,7 +320,7 @@ public class ItemService
 			}
 
 			q.executeBatch();
-			con.commit();
+			con.commit(false);
 		}
 	}
 
