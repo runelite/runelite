@@ -35,7 +35,7 @@ public class MaxHitCalc extends MaxHitPlugin
 		double equipmentMeleeStrength = Double.parseDouble(meleeStrength.getText().replace("Melee strength: ", ""));
 		int str = client.getRealSkillLevel(Skill.STRENGTH);
 		double effectiveStrength = Math.floor((Math.floor((str + meleeBoost) * meleePrayerBonus) + 11) * voidMeleeBonus);
-		double maxHit = Math.floor(0.5 + effectiveStrength * (equipmentMeleeStrength + 64) / 640);
+		double maxHit = Math.floor((0.5 + effectiveStrength * (equipmentMeleeStrength + 64) / 640) * meleeSlayerBonus);
 		return (int)maxHit;
 	}
 
@@ -43,7 +43,7 @@ public class MaxHitCalc extends MaxHitPlugin
 	{
 		double equipmentMagicDamage = Double.parseDouble(magicDamage.getText().replace("Magic damage: ", "").replace(".", "").replace("%", ""));
 		int magic = client.getRealSkillLevel(Skill.MAGIC);
-		double maxHit = Math.floor((Math.floor((magic + magicBoost) / 3) - i) * ( 1 + ((equipmentMagicDamage) / 1000)));
+		double maxHit = Math.floor(((Math.floor((magic + magicBoost) / 3) - i) * ( 1 + ((equipmentMagicDamage) / 1000))) * rangeSlayerBonus);
 		return (int)maxHit;
 	}
 
@@ -52,7 +52,7 @@ public class MaxHitCalc extends MaxHitPlugin
 		double equipmentRangedStrength = Double.parseDouble(rangedStrength.getText().replace("Ranged strength: ", ""));
 		int ranged = client.getRealSkillLevel(Skill.RANGED);
 		double effectiveRangedStrength = Math.floor((Math.floor((ranged + rangedBoost) * rangedPrayerBonus) + 8) * voidRangedBonus);
-		double maxHit = Math.floor(0.5 + effectiveRangedStrength * (equipmentRangedStrength + 64) / 640);
+		double maxHit = Math.floor((0.5 + effectiveRangedStrength * (equipmentRangedStrength + 64) / 640) * rangeSlayerBonus);
 		return (int)maxHit;
 	}
 

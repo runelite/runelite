@@ -71,6 +71,7 @@ public class MaxHitPlugin extends Plugin
 	private static final int GLOVE_SLOT = 9;
 	private static final int BOOT_SLOT = 10;
 	private static final int RING_SLOT = 12;
+	private String maxHitText;
 
 	public static double voidMeleeBonus;
 	public static double voidRangedBonus;
@@ -80,6 +81,8 @@ public class MaxHitPlugin extends Plugin
 	public static double rangedBoost;
 	public static double meleeBoost;
 	public static double dharokSetBoost;
+	public static double meleeSlayerBonus;
+	public static double rangeSlayerBonus;
 
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
@@ -102,6 +105,10 @@ public class MaxHitPlugin extends Plugin
 		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 		voidMeleeBonus = 1;
 		voidRangedBonus = 1;
+		meleeSlayerBonus = 1;
+		rangeSlayerBonus = 1;
+
+		maxHitText = "Equip Your Character...<br><br>Melee Max Hit: ";
 
 		updateBoost();
 
@@ -111,12 +118,29 @@ public class MaxHitPlugin extends Plugin
 
 			if (contains(HELM_SLOT, "void", equip) && contains(CHEST_SLOT, "void", equip) && contains(LEG_SLOT, "void", equip) && contains(GLOVE_SLOT, "void", equip))
 			{
-				voidMeleeBonus = 1.1;
-				voidRangedBonus = 1.1;
-
-				if (contains(CHEST_SLOT, "elite", equip) && contains(LEG_SLOT, "elite", equip))
+				if (contains(HELM_SLOT, "melee", equip))
 				{
-					voidRangedBonus = 1.125;
+					voidMeleeBonus = 1.1;
+				}
+
+				if (contains(HELM_SLOT, "ranger", equip))
+				{
+					voidRangedBonus = 1.1;
+
+					if (contains(CHEST_SLOT, "elite", equip) && contains(LEG_SLOT, "elite", equip))
+					{
+						voidRangedBonus = 1.125;
+					}
+				}
+			}
+
+			if (contains(HELM_SLOT, "slayer", equip) || contains(HELM_SLOT, "black mask", equip))
+			{
+				meleeSlayerBonus = 1.17;
+
+				if (contains(HELM_SLOT, "(i)", equip))
+				{
+					rangeSlayerBonus = 1.15;
 				}
 			}
 
@@ -124,24 +148,30 @@ public class MaxHitPlugin extends Plugin
 			{
 				if (contains(WEAPON_SLOT, "swamp", equip) || contains(WEAPON_SLOT, "toxic", equip))
 				{
-					equipYourCharacter.setText("Equip Your Character...<br><br>Trident Max Hit: " + maxHit.trident(client, magicDamage, 2));
-					return;
+					maxHitText = maxHitText.replace("Melee", "Trident") + maxHit.trident(client, magicDamage, 2);
 				}
-				equipYourCharacter.setText("Equip Your Character...<br><br>Trident Max Hit: " + maxHit.trident(client, magicDamage, 5));
-				return;
+
+				else
+				{
+					maxHitText = maxHitText.replace("Melee", "Trident") + maxHit.trident(client, magicDamage, 5);
+				}
 			}
-			if (contains(WEAPON_SLOT, " dart", equip) || contains(WEAPON_SLOT, " knife", equip) || contains(WEAPON_SLOT, "throwing axe", equip) || contains(WEAPON_SLOT, "bow", equip) || contains(WEAPON_SLOT, "chinchompa", equip) || contains(WEAPON_SLOT, "blowpipe", equip))
+			else if (contains(WEAPON_SLOT, " dart", equip) || contains(WEAPON_SLOT, " knife", equip) || contains(WEAPON_SLOT, "throwing axe", equip) || contains(WEAPON_SLOT, "bow", equip) || contains(WEAPON_SLOT, "chinchompa", equip) || contains(WEAPON_SLOT, "blowpipe", equip))
 			{
-				equipYourCharacter.setText("Equip Your Character...<br><br>Ranged Max Hit: " + maxHit.ranged(client, rangedStrength));
-				return;
+				maxHitText = maxHitText.replace("Melee", "Ranged") + maxHit.ranged(client, rangedStrength);
+			}
+
+			else
+			{
+				maxHitText = maxHitText + maxHit.melee(client, meleeStrength);
 			}
 
 			if (contains(HELM_SLOT, "dharok", equip) && contains(CHEST_SLOT, "dharok", equip) && contains(LEG_SLOT, "dharok", equip) && contains(WEAPON_SLOT, "dharok", equip))
 			{
-				equipYourCharacter.setText("Equip Your Character...<br><br>Melee Max Hit: " + maxHit.melee(client, meleeStrength) + " - " + maxHit.dharok(client, meleeStrength));
-				return;
+				maxHitText = maxHitText + " - " + maxHit.dharok(client, meleeStrength);
 			}
-			equipYourCharacter.setText("Equip Your Character...<br><br>Melee Max Hit: " + maxHit.melee(client, meleeStrength));
+
+			equipYourCharacter.setText(maxHitText);
 		}
 	}
 
