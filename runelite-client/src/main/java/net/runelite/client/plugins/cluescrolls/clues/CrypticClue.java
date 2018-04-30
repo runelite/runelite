@@ -215,7 +215,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Speak to a referee.", "Gnome ball referee", new WorldPoint(2386, 3487, 0), "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096"),
 		new CrypticClue("This crate holds a better reward than a broken arrow.", CRATE_356, new WorldPoint(2671, 3437, 0), "Inside the Ranging Guild. Search the crate behind the northern most building."),
 		new CrypticClue("Search the drawers in the house next to the Port Sarim mage shop.", null, "House east of Betty's. Contains a cooking sink."),
-		new CrypticClue("With a name like that, you'd expect a little more than just a few scimitars.", null, "Speak to Daga on Ape Atoll."),
+		new CrypticClue("With a name like that, you'd expect a little more than just a few scimitars.", "Daga", new WorldPoint(2760, 2776, 0), "Speak to Daga on Ape Atoll."),
 		new CrypticClue("Strength potions with red spiders' eggs? He is quite a herbalist.", "Apothecary", new WorldPoint(3194, 3403, 0), "Talk to Apothecary in the South-western Varrock. (the) apothecary is just north-west of the Varrock Swordshop."),
 		new CrypticClue("Robin wishes to see your finest range equipment.", null, "Robin at the inn in Port Phasmatys. Speak to him with +182 in ranged attack bonus."),
 		new CrypticClue("You will need to under-cook to solve this one.", CRATE_357, new WorldPoint(3219, 9617, 0), "Search the crate in the Lumbridge basement."),
