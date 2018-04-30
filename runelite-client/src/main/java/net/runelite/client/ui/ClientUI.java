@@ -722,7 +722,11 @@ public class ClientUI
 	{
 		revalidateMinimumSize();
 		final int result = frame.getWidth() + value;
-		return result <= frame.getMinimumSize().width ? result : -1;
+		final int minWidth = frame.getMinimumSize().width > config.gameSize().width
+			? frame.getMinimumSize().width
+			: config.gameSize().width;
+
+		return result <= minWidth ? result : -1;
 	}
 
 	private void revalidateMinimumSize()
