@@ -25,23 +25,29 @@
 package net.runelite.client.plugins.implings;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
-
+	
 public class ImplingPuroPuroSpawn
 {
-	public static Map<WorldPoint, String> getSpawns()
+	private static Map<WorldPoint, String> puroPuroSpawns = new HashMap<>();
+
+	public static Map<WorldPoint, String> getSpawns(List<String> hiddenSpawns)
 	{
-		Map<WorldPoint, String> puroPuroSpawns = new HashMap<>();
-
-		//Eclectic spawns
-		puroPuroSpawns.put(new WorldPoint(2567, 4319, 0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2591, 4295, 0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2615, 4326, 0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2591, 4340, 0), "Eclectic");
-
-		//./.
+		setSpawn(new WorldPoint(2567, 4319, 0), "Eclectic", hiddenSpawns);
+		setSpawn(new WorldPoint(2591, 4295, 0), "Eclectic", hiddenSpawns);
+		setSpawn(new WorldPoint(2615, 4326, 0), "Eclectic", hiddenSpawns);
+		setSpawn(new WorldPoint(2591, 4340, 0), "Eclectic", hiddenSpawns);
 
 		return puroPuroSpawns;
+	}
+
+	private static void setSpawn(WorldPoint point, String imp, List<String> hiddenSpawns)
+	{
+		if(!hiddenSpawns.contains(imp.toLowerCase()))
+		{
+			puroPuroSpawns.put(point,imp);
+		}
 	}
 }
