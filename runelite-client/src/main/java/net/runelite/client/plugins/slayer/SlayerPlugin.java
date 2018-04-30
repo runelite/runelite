@@ -337,7 +337,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		gainedXp = slayerExp-cachedXp;
+		gainedXp = slayerExp - cachedXp;
 		killedOne();
 		cachedXp = slayerExp;
 	}
