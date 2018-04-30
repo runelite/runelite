@@ -27,6 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.xpglobes.HomeOption;
 
 @ConfigGroup(
 	keyName = "menuentryswapper",
@@ -115,12 +116,12 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "swapHome",
-		name = "Home",
-		description = "Swap Enter with Home on Portal"
+		name = "House",
+		description = "Swap Enter on POH Portal"
 	)
-	default boolean swapHome()
+	default HomeOption swapHome()
 	{
-		return true;
+		return HomeOption.Home;
 	}
 
 	@ConfigItem(
