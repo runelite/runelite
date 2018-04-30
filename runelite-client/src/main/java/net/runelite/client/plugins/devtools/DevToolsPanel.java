@@ -43,7 +43,7 @@ public class DevToolsPanel extends PluginPanel
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
-	private final SettingsTracker settingsTracker;
+	private final VarTracker varTracker;
 
 	private WidgetInspector widgetInspector;
 
@@ -55,7 +55,7 @@ public class DevToolsPanel extends PluginPanel
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 
-		settingsTracker = new SettingsTracker(client);
+		varTracker = new VarTracker(client);
 		add(createOptionsPanel());
 	}
 
@@ -139,13 +139,13 @@ public class DevToolsPanel extends PluginPanel
 		final JPanel boundsDebugPanel = createBoundsDebugMultiButton();
 		container.add(boundsDebugPanel);
 
-		final JButton settingsSnapshotBtn = new JButton("Get Settings");
-		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
-		container.add(settingsSnapshotBtn);
+		final JButton varSnapshotBtn = new JButton("Snapshot Vars");
+		varSnapshotBtn.addActionListener(varTracker::snapshot);
+		container.add(varSnapshotBtn);
 
-		final JButton settingsClearBtn = new JButton("Clear Settings");
-		settingsClearBtn.addActionListener(settingsTracker::clear);
-		container.add(settingsClearBtn);
+		final JButton varClearBtn = new JButton("Clear Vars");
+		varClearBtn.addActionListener(varTracker::clear);
+		container.add(varClearBtn);
 
 		final JButton renderLocationBtn = new JButton("Location");
 		renderLocationBtn.addActionListener(e ->
