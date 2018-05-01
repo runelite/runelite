@@ -65,7 +65,7 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
-	private static final String CLEAR = "Clear Marked Tiles";
+	private static final String CLEAR = "Unmark nearby tiles";
 	private static final String WALK_HERE = "Walk here";
 
 	private static final Gson gson = new Gson();
