@@ -445,7 +445,7 @@ public class kittenPlugin extends Plugin{
             if (playerText.equals(CHAT_CAT_STROKE))
             {
                 kittenAttention = Instant.now();
-                if (config.kittenAttentionBox()) { addAttentionTimer(3600);}
+                if (config.kittenAttentionBox()) { addAttentionTimer(1800);}
             }
             if (playerText.equals(CHAT_CAT_BALLOFWOOL))
             {
