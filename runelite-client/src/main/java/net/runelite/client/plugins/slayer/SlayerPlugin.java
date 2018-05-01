@@ -88,10 +88,6 @@ public class SlayerPlugin extends Plugin
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
-	@Getter
-	private static final String[] superiorNames = { "Crushing", "Chasm", "Screaming", "Giant", "Cockathrice", "Flaming", "Monstrous", "Malevolent",
-			"Insatiable", "Vitreous", "abomination", "Abhorrent", "Repugnant", "Choke", "King", "Marble", "Nechryarch", "Greater", "Night", "Nuclear"};
-
 	@Inject
 	private Client client;
 
@@ -433,6 +429,10 @@ public class SlayerPlugin extends Plugin
 
 		List<NPC> npcs = new ArrayList<>();
 		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
+		for (String s : Task.getTask(taskName).getSuperiorNames())
+		{
+			highlightedNpcs.add(s);
+		}
 		highlightedNpcs.add(taskName.replaceAll("s$", ""));
 
 		for (NPC npc : client.getNpcs())
