@@ -34,13 +34,52 @@ public class ImplingPuroPuroSpawn
 	{
 		Map<WorldPoint, String> puroPuroSpawns = new HashMap<>();
 
+		//Baby spawns
+		puroPuroSpawns.put(new WorldPoint(2563, 4291, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2563, 4348, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2569, 4323, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2571, 4305, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2581, 4300, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2596, 4296, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2609, 4339, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2610, 4304, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2615, 4322, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2620, 4291, 0), "Baby");
+		puroPuroSpawns.put(new WorldPoint(2620, 4348, 0), "Baby");
+
+		//Young spawns
+		puroPuroSpawns.put(new WorldPoint(2564, 4321, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2573, 4330, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2574, 4321, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2590, 4348, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2592, 4291, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2595, 4343, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2612, 4327, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2612, 4309, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2619, 4322, 0), "Young");
+		puroPuroSpawns.put(new WorldPoint(2587, 4300, 0), "Young");
+
+		//Gourmet spawns
+		puroPuroSpawns.put(new WorldPoint(2568, 4296, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2569, 4327, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2574, 4311, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2574, 4311, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2585, 4296, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2597, 4293, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2609, 4317, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2615, 4298, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2618, 4321, 0), "Gourmet");
+
+		//Earth spawns
+		//There are definitely more but needs further investigation
+		puroPuroSpawns.put(new WorldPoint(2587, 4342, 0), "Gourmet");
+
 		//Eclectic spawns
 		puroPuroSpawns.put(new WorldPoint(2567, 4319, 0), "Eclectic");
+		puroPuroSpawns.put(new WorldPoint(2591, 4340, 0), "Eclectic");
 		puroPuroSpawns.put(new WorldPoint(2591, 4295, 0), "Eclectic");
 		puroPuroSpawns.put(new WorldPoint(2615, 4326, 0), "Eclectic");
-		puroPuroSpawns.put(new WorldPoint(2591, 4340, 0), "Eclectic");
 
-		//./.
 		return puroPuroSpawns;
 	}
 }

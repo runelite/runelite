@@ -24,17 +24,13 @@
  */
 package net.runelite.client.plugins.implings;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.*;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Map;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
+
+import net.runelite.api.*;
 import net.runelite.api.Point;
-import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -66,6 +62,7 @@ public class ImplingsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		NPC[] imps = plugin.getImplings();
+
 		if (imps == null)
 		{
 			return null;
@@ -86,21 +83,50 @@ public class ImplingsOverlay extends Overlay
 		//Show Imp spawns
 		if (config.showSpawn())
 		{
-			Map<WorldPoint, String> points = plugin.getPoints();
+			//Draw static spawns
+			Map<WorldPoint, String> staticPoints = plugin.getStaticSpawns();
 
-			for (Map.Entry<WorldPoint, String>  point : points.entrySet())
+			for (Map.Entry<WorldPoint, String>  staticSpawn : staticPoints.entrySet())
 			{
-				if (plugin.getHideSpawns() == null || !plugin.getHideSpawns().contains(point.getValue().toLowerCase()))
+				if (plugin.getHideSpawns() == null || !plugin.getHideSpawns().contains(staticSpawn.getValue().toLowerCase()))
 				{
-					drawSpawnPoint(graphics, point.getKey(), point.getValue(), config.getSpawnColor());
+					drawStaticSpawn(graphics, staticSpawn.getKey(), staticSpawn.getValue(), config.getStaticSpawnColor());
 				}
+			}
+
+			//Draw dynamic spawns
+			Map<Integer, String> dynamicSpawns = plugin.getDynamicSpawns();
+			for (Map.Entry<Integer, String>  dynamicSpawn : dynamicSpawns.entrySet())
+			{
+				drawDynamicSpawn(graphics, dynamicSpawn.getKey(), dynamicSpawn.getValue(), config.getDynamicSpawnColor());
+
 			}
 		}
 
 		return null;
 	}
 
-	private void drawSpawnPoint(Graphics2D graphics, WorldPoint point, String text, Color color)
+	private void drawDynamicSpawn(Graphics2D graphics, Integer spawnID, String text, Color color)
+	{
+		List<NPC> npcs = client.getNpcs();
+		for (NPC npc : npcs)
+		{
+			if (npc.getComposition().getId() == spawnID)
+			{
+				NPCComposition composition = npc.getComposition();
+				if (composition.getConfigs() != null)
+				{
+					NPCComposition transformedComposition = composition.transform();
+					if (transformedComposition == null)
+					{
+						OverlayUtil.renderActorOverlay(graphics, npc, text, color);
+					}
+				}
+			}
+		}
+	}
+
+	private void drawStaticSpawn(Graphics2D graphics, WorldPoint point, String text, Color color)
 	{
 
 		//Don't draw spawns if Player is not in range
@@ -118,10 +144,10 @@ public class ImplingsOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
 		if (poly != null)
 		{
-			OverlayUtil.renderPolygon(graphics, poly, config.getSpawnColor());
+			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
-		
-		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text, 0);
+
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text,0);
 		if (textPoint != null)
 		{
 			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);

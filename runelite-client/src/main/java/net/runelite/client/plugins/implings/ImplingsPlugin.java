@@ -57,9 +57,9 @@ import net.runelite.client.util.QueryRunner;
 )
 public class ImplingsPlugin extends Plugin
 {
-	// Impling spawns in PuroPuro. Not in NpcID.
-	private static final int STATIC_SPAWN = 1618;
-	private static final int DYNAMIC_SPAWN = 1633;
+	private static final int DYNAMIC_SPAWN_NATURE_DRAGON = 1618;
+	private static final int DYNAMIC_SPAWN_ECLECTIC = 1633;
+	private static final int DYNAMIC_SPAWN_BABY_ESSENCE = 1634;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] implings;
@@ -68,7 +68,10 @@ public class ImplingsPlugin extends Plugin
 	private final Map<Integer, Color> ids = new HashMap<>();
 	
 	@Getter(AccessLevel.PACKAGE)
-	private Map<WorldPoint, String> points;
+	private Map<WorldPoint, String> staticSpawns = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<Integer, String> dynamicSpawns = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<String> hideSpawns;
@@ -178,17 +181,16 @@ public class ImplingsPlugin extends Plugin
 		}
 		if (config.showSpawn())
 		{
-			ids.put(STATIC_SPAWN, config.getSpawnColor());
-			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
 			UpdateList();
-			points = ImplingPuroPuroSpawn.getSpawns();
+			dynamicSpawns.put(DYNAMIC_SPAWN_NATURE_DRAGON, "T3 Nature-Dragon Dynamic");
+			dynamicSpawns.put(DYNAMIC_SPAWN_ECLECTIC, "T2 Eclectic Dynamic");
+			dynamicSpawns.put(DYNAMIC_SPAWN_BABY_ESSENCE, "T1 Baby-Essence Dynamic");
+			staticSpawns = ImplingPuroPuroSpawn.getSpawns();
 		}
 	}
-
 	private void UpdateList()
 	{
 		String toHide = config.getHiddenSpawns().toLowerCase();
 		hideSpawns = Arrays.asList(toHide.split("\\s*,\\s*"));
 	}
-
 }
