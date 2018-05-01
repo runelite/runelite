@@ -128,7 +128,7 @@ public class FarmingTrackerPlugin extends Plugin
 
 		WorldPoint loc = lastTickLoc;
 		lastTickLoc = client.getLocalPlayer().getWorldLocation();
-		if (loc == null)
+		if (loc == null || loc.getRegionID() != lastTickLoc.getRegionID())
 		{
 			return;
 		}
