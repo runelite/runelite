@@ -463,7 +463,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if(config.swapBAHorn() && option.equals("tell-controlled"))
 		{
 			Widget roleToCall = client.getWidget(WidgetInfo.BA_COLL_CALL_TEXT);
-            switch(roleToCall != null ? roleToCall.getText() : "")
+			switch(roleToCall != null ? roleToCall.getText() : "")
 			{
 				case "Accurate/Field/Water":
 					swap("tell-accurate", option, target, true);
@@ -479,7 +479,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if(config.swapBAHorn() && option.equals("tell-tofu"))
 		{
 			Widget roleToCall = client.getWidget(WidgetInfo.BA_HEAL_CALL_TEXT);
-            switch(roleToCall != null ? roleToCall.getText() : "")
+			switch(roleToCall != null ? roleToCall.getText() : "")
 			{
 				case "Crackers":
 					swap("tell-crackers", option, target, true);
@@ -492,7 +492,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if(config.swapBAHorn() && option.equals("tell-worms"))
 		{
 			Widget roleToCall = client.getWidget(WidgetInfo.BA_DEF_CALL_TEXT);
-            switch(roleToCall != null ? roleToCall.getText() : "")
+			switch(roleToCall != null ? roleToCall.getText() : "")
 			{
 				case "Pois. Tofu":
 					swap("tell-tofu", option, target, true);
