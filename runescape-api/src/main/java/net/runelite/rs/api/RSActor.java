@@ -59,6 +59,10 @@ public interface RSActor extends RSRenderable, Actor
 	@Override
 	int getGraphic();
 
+	@Import("graphic")
+	@Override
+	void setGraphic(int graphic);
+
 	@Import("combatInfoList")
 	RSCombatInfoList getCombatInfoList();
 
@@ -93,6 +97,7 @@ public interface RSActor extends RSRenderable, Actor
 	int getSpotAnimFrame();
 
 	@Import("spotAnimFrame")
+	@Override
 	void setSpotAnimFrame(int frame);
 
 	@Import("spotAnimFrameCycle")
