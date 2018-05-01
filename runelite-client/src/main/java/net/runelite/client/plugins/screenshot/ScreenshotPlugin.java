@@ -163,7 +163,6 @@ public class ScreenshotPlugin extends Plugin
 			{
 				iconImage = ImageIO.read(ScreenshotPlugin.class.getResourceAsStream("screenshot.png"));
 			}
-
 			titleBarButton = NavigationButton.builder()
 				.tooltip("Take screenshot")
 				.icon(iconImage)
@@ -263,6 +262,8 @@ public class ScreenshotPlugin extends Plugin
 	{
 		Widget widget = event.getWidget();
 
+		boolean isLoot = false;
+
 		if (widget.isHidden())
 		{
 			return;
@@ -322,7 +323,7 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-
+				isLoot = true;
 				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
 				clueType = null;
 				clueNumber = null;
@@ -334,7 +335,7 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-
+				isLoot = true;
 				fileName = "Barrows(" + barrowsNumber + ")";
 				barrowsNumber = null;
 				break;
@@ -345,7 +346,7 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-
+				isLoot = true;
 				fileName = "Raids(" + raidsNumber + ")";
 				raidsNumber = null;
 				break;
@@ -359,6 +360,10 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		if (isLoot && config.saveLastLoot())
+		{
+			captureWidget(widget, "loot");
+		}
 		takeScreenshot(fileName, config.displayDate());
 	}
 
@@ -387,6 +392,35 @@ public class ScreenshotPlugin extends Plugin
 		String skillName = m.group(1);
 		String skillLevel = m.group(2);
 		return skillName + "(" + skillLevel + ")";
+	}
+
+	void captureWidget(Widget widget, String filename)
+	{
+		drawManager.requestNextFrameListener(image ->
+		{
+			//reduce the image to just what we want.
+			image = image.getSubimage(widget.getOriginalX(), widget.getOriginalY(), widget.getWidth(), widget.getHeight());
+			BufferedImage widgetCapture = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+			Graphics graphics = widgetCapture.getGraphics();
+			// Draw the game onto the screenshot
+			graphics.drawImage(image, 0, 0, null);
+
+			File playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+			playerFolder.mkdirs();
+			executor.execute(() ->
+			{
+				try
+				{
+					File lootFile = new File(playerFolder, filename + ".png");
+					ImageIO.write(widgetCapture, "PNG", lootFile);
+				}
+				catch (IOException ex)
+				{
+					log.warn("error writing widgetCapture", ex);
+				}
+			});
+		});
 	}
 
 	/**

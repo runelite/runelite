@@ -122,4 +122,15 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "saveLastLoot",
+		name = "Save last loot",
+		description = "Save the last loot from Barrows, Raids, Clues, etc to a static path."
+	)
+	default boolean saveLastLoot()
+	{
+		return true;
+	}
 }
