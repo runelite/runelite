@@ -343,7 +343,7 @@ public class ClientUI
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setResizable(true);
 
-			SwingUtil.addGracefulExitCallback(config, frame,
+			SwingUtil.addGracefulExitCallback(frame,
 				() ->
 				{
 					saveClientBoundsConfig();
