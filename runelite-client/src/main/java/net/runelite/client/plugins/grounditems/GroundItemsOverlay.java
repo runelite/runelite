@@ -116,6 +116,10 @@ public class GroundItemsOverlay extends Overlay
 
 			if (!plugin.isHotKeyPressed())
 			{
+				if (plugin.isHideAll())
+				{
+					continue;
+				}
 				// Do not display hidden items
 				if (hidden)
 				{
