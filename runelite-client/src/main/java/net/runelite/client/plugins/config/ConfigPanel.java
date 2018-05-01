@@ -61,6 +61,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -204,7 +205,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create edit config button and disable it by default
 		final JButton editConfigButton = new JButton(new ImageIcon(CONFIG_ICON));
-		editConfigButton.setPreferredSize(new Dimension(32, 0));
+		editConfigButton.setPreferredSize(new Dimension(32, 25));
 		editConfigButton.setEnabled(false);
 
 		// If we have configuration proxy enable the button and add edit config listener
@@ -228,7 +229,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create enabling/disabling button
 		final JButton toggleButton = new JButton(new ImageIcon(CHECK_ICON));
-		toggleButton.setPreferredSize(new Dimension(32, 0));
+		toggleButton.setPreferredSize(new Dimension(32, 25));
 
 		if (plugin == null)
 		{
@@ -301,8 +302,14 @@ public class ConfigPanel extends PluginPanel
 	private void openConfigList()
 	{
 		removeAll();
-		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
-		add(searchBar);
+
+		JPanel topPanel = new JPanel();
+		topPanel.setBorder(new EmptyBorder(0, 6, 0, 6));
+		topPanel.setLayout(new GridLayout(2, 1));
+		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), 0);
+		topPanel.add(searchBar, 1);
+
+		getWrappedPanel().add(topPanel, BorderLayout.NORTH);
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
