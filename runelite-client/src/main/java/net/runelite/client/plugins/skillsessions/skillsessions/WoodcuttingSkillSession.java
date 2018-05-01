@@ -24,24 +24,30 @@
  */
 package net.runelite.client.plugins.skillsessions.skillsessions;
 
+import java.util.stream.IntStream;
+import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.skillsessions.SkillSessionsConfig;
 import net.runelite.client.plugins.skillsessions.XpTrackerSkillSession;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 
-import java.util.stream.IntStream;
-
-import static net.runelite.api.AnimationID.*;
-
 public class WoodcuttingSkillSession extends XpTrackerSkillSession
 {
 	private static final int[] animationIds =
-			{
-					WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK,
-					WOODCUTTING_MITHRIL, WOODCUTTING_ADAMANT, WOODCUTTING_RUNE, WOODCUTTING_DRAGON,
-					WOODCUTTING_INFERNAL
-			};
+		{
+			WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK,
+			WOODCUTTING_MITHRIL, WOODCUTTING_ADAMANT, WOODCUTTING_RUNE, WOODCUTTING_DRAGON,
+			WOODCUTTING_INFERNAL
+		};
 
 	public WoodcuttingSkillSession(XpTrackerService xpTracker)
 	{

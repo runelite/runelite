@@ -24,16 +24,15 @@
  */
 package net.runelite.client.plugins.skillsessions;
 
+import java.awt.Color;
+import java.time.Duration;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-
-import java.awt.*;
-import java.time.Duration;
-import java.time.Instant;
 
 @Getter
 public abstract class SkillSession
@@ -84,12 +83,12 @@ public abstract class SkillSession
 		panelComponent.setTitleColor(isInAction(client) ? Color.GREEN : Color.RED);
 
 		panelComponent.getLines().add(new PanelComponent.Line(
-				"Time:",
-				DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "HH:mm:ss")
+			"Time:",
+			DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "HH:mm:ss")
 		));
 
 		int actions = getActions();
 		panelComponent.getLines().add(new PanelComponent.Line(getActionName() + ":", Integer.toString(actions) +
-				(actions > 2 ? " (" + Integer.toString(getActionsPerHour()) + "/hr)" : "")));
+			(actions > 2 ? " (" + Integer.toString(getActionsPerHour()) + "/hr)" : "")));
 	}
 }

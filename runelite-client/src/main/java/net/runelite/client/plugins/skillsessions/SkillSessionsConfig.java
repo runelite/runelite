@@ -28,16 +28,16 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "skillsessions",
-		name = "Skill Session",
-		description = "Configuration for the skill sessions plugin"
+	keyName = "skillsessions",
+	name = "Skill Session",
+	description = "Configuration for the skill sessions plugin"
 )
 public interface SkillSessionsConfig
 {
 	@ConfigItem(
-			keyName = "statTimeout",
-			name = "Session statistics timeout (minutes)",
-			description = "Configures the time since an action for the session statistics to no longer displayed"
+		keyName = "statTimeout",
+		name = "Session statistics timeout (minutes)",
+		description = "Configures the time since an action for the session statistics to no longer displayed"
 	)
 	default int statTimeout()
 	{
@@ -45,9 +45,9 @@ public interface SkillSessionsConfig
 	}
 
 	@ConfigItem(
-			keyName = "timeoutStatReset",
-			name = "Reset the statistics when the session times out",
-			description = "Configures whether the statistics of a session should be reset when the session times out"
+		keyName = "timeoutStatReset",
+		name = "Reset the statistics when the session times out",
+		description = "Configures whether the statistics of a session should be reset when the session times out"
 	)
 	default boolean statTimeoutReset()
 	{
@@ -55,9 +55,9 @@ public interface SkillSessionsConfig
 	}
 
 	@ConfigItem(
-			keyName = "showFishing",
-			name = "Display your fishing session statistics",
-			description = "Configures whether your fishing session statistics are displayed"
+		keyName = "showFishing",
+		name = "Display your fishing session statistics",
+		description = "Configures whether your fishing session statistics are displayed"
 	)
 	default boolean showFishing()
 	{
@@ -65,9 +65,9 @@ public interface SkillSessionsConfig
 	}
 
 	@ConfigItem(
-			keyName = "showCooking",
-			name = "Display your cooking session statistics",
-			description = "Configures whether your cooking session statistics are displayed"
+		keyName = "showCooking",
+		name = "Display your cooking session statistics",
+		description = "Configures whether your cooking session statistics are displayed"
 	)
 	default boolean showCooking()
 	{
@@ -75,9 +75,9 @@ public interface SkillSessionsConfig
 	}
 
 	@ConfigItem(
-			keyName = "showAgility",
-			name = "Display your agility session statistics",
-			description = "Configures whether your agility session statistics are displayed"
+		keyName = "showAgility",
+		name = "Display your agility session statistics",
+		description = "Configures whether your agility session statistics are displayed"
 	)
 	default boolean showAgility()
 	{
@@ -85,9 +85,9 @@ public interface SkillSessionsConfig
 	}
 
 	@ConfigItem(
-			keyName = "showWoodcutting",
-			name = "Display your woodcutting session statistics",
-			description = "Configures whether your woodcutting session statistics are displayed"
+		keyName = "showWoodcutting",
+		name = "Display your woodcutting session statistics",
+		description = "Configures whether your woodcutting session statistics are displayed"
 	)
 	default boolean showWoodcutting()
 	{

@@ -24,30 +24,29 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 public enum AgilityCourse
 {
-	GNOME(86.5, 46, 9781),
-	DRAYNOR(120.0, 79, 12338),
-	AL_KHARID(180.0, 30, 13105),
-	PYRAMID(722.0, 300, 13356),
-	VARROCK(238.0, 125, 12853),
-	PENGUIN(540.0, 65, 10559),
-	BARBARIAN(139.5, 60, 10039),
-	CANIFIS(240.0, 175, 13878),
-	APE_ATOLL(580.0, 300, 11050),
-	FALADOR(440, 180, 12084),
-	WILDERNESS(571.0, 499, 11837),
-	SEERS(570.0, 435, 10806),
-	POLLNIVEACH(890.0, 540, 13358),
-	RELLEKA(780.0, 475, 10553),
-	ARDOUGNE(793.0, 529, 10547);
+	GNOME(86.5, 9781, 46),
+	DRAYNOR(120.0, 12338, 79),
+	AL_KHARID(180.0, 13105, 30),
+	PYRAMID(722.0, 13356, 300),
+	VARROCK(238.0, 12853, 125),
+	PENGUIN(540.0, 10559, 65),
+	BARBARIAN(139.5, 10039, 60),
+	CANIFIS(240.0, 13878, 175),
+	APE_ATOLL(580.0, 11050, 300),
+	FALADOR(440, 12084, 180),
+	WILDERNESS(571.0, 11837, 499),
+	SEERS(570.0, 10806, 435),
+	POLLNIVEACH(890.0, 13358, 540),
+	RELLEKA(780.0, 10553, 475),
+	ARDOUGNE(793.0, 10547, 529);
 
 	private final static Map<Integer, AgilityCourse> courseXps = new HashMap<>();
 
@@ -61,9 +60,9 @@ public enum AgilityCourse
 
 	@Getter
 	private final double totalXp;
-	private final int lastObstacleXp;
 	@Getter
 	private final int regionId;
+	private final int lastObstacleXp;
 
 	public static AgilityCourse getCourse(int exp)
 	{

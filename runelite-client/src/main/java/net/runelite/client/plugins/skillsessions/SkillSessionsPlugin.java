@@ -30,10 +30,22 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
+import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.AgilityCourse;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Skill;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -46,13 +58,8 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Map;
-import java.util.function.Supplier;
-
 @PluginDescriptor(
-		name = "Skill Sessions"
+	name = "Skill Sessions"
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class SkillSessionsPlugin extends Plugin
@@ -132,7 +139,7 @@ public class SkillSessionsPlugin extends Plugin
 		for (Map.Entry<Class<? extends SkillSession>, ? extends SkillSession> session : sessions.entrySet())
 		{
 			int timeoutDifference = Duration.between(session.getValue().getLastAction(), Instant.now())
-					.compareTo(statTimeout);
+				.compareTo(statTimeout);
 
 			if (timeoutDifference >= 0)
 			{
@@ -167,7 +174,7 @@ public class SkillSessionsPlugin extends Plugin
 		}
 
 		if (event.getMessage().startsWith("You successfully cook ") ||
-				event.getMessage().startsWith("You successfully bake "))
+			event.getMessage().startsWith("You successfully bake "))
 		{
 			updateSession(CookingSkillSession.class, CookingSkillSession::new).incrementCookedAmount();
 		}

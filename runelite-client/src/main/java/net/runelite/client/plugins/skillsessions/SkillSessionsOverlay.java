@@ -25,12 +25,12 @@
 package net.runelite.client.plugins.skillsessions;
 
 import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
-import java.awt.*;
 
 public class SkillSessionsOverlay extends Overlay
 {

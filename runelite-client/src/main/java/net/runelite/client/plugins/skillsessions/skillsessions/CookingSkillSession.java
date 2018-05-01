@@ -24,6 +24,10 @@
  */
 package net.runelite.client.plugins.skillsessions.skillsessions;
 
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.stream.IntStream;
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -32,17 +36,12 @@ import net.runelite.client.plugins.skillsessions.SkillSession;
 import net.runelite.client.plugins.skillsessions.SkillSessionsConfig;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.stream.IntStream;
-
 //Doesn't use XpTrackerSkillSession as the number of actions
 //is tracked anyway in order to calculate the burn percentage.
 public class CookingSkillSession extends SkillSession
 {
 	private static final int[] animationIds = {
-			AnimationID.COOKING_FIRE, AnimationID.COOKING_RANGE
+		AnimationID.COOKING_FIRE, AnimationID.COOKING_RANGE
 	};
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
@@ -82,7 +81,7 @@ public class CookingSkillSession extends SkillSession
 	public boolean isInAction(Client client)
 	{
 		return IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()) ||
-				+Duration.between(lastAction, Instant.now()).getSeconds() < 3;
+			+Duration.between(lastAction, Instant.now()).getSeconds() < 3;
 	}
 
 	@Override
@@ -102,6 +101,6 @@ public class CookingSkillSession extends SkillSession
 	{
 		super.modifyPanel(panelComponent, client);
 		panelComponent.getLines().add(new PanelComponent.Line("Burnt:", Integer.toString(burntAmount)
-				+ " (" + getBurntPercentage() + "%)"));
+			+ " (" + getBurntPercentage() + "%)"));
 	}
 }

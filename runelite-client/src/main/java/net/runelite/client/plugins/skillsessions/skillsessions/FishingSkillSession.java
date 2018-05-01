@@ -49,7 +49,7 @@ public class FishingSkillSession extends XpTrackerSkillSession
 	public boolean isInAction(Client client)
 	{
 		return client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
-				.contains(FISHING_SPOT);
+			.contains(FISHING_SPOT);
 	}
 
 	@Override

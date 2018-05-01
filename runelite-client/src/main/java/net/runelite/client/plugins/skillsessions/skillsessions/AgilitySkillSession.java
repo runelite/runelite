@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillsessions.skillsessions;
 
+import java.time.Duration;
+import java.time.Instant;
 import lombok.Getter;
 import net.runelite.api.AgilityCourse;
 import net.runelite.api.Client;
@@ -32,9 +34,6 @@ import net.runelite.api.Skill;
 import net.runelite.client.plugins.skillsessions.SkillSession;
 import net.runelite.client.plugins.skillsessions.SkillSessionsConfig;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
-import java.time.Duration;
-import java.time.Instant;
 
 public class AgilitySkillSession extends SkillSession
 {
@@ -91,8 +90,8 @@ public class AgilitySkillSession extends SkillSession
 		if (lapsTillLevel > 0)
 		{
 			panelComponent.getLines().add(new PanelComponent.Line(
-					"Laps till level:",
-					Integer.toString(lapsTillLevel)
+				"Laps till level:",
+				Integer.toString(lapsTillLevel)
 			));
 		}
 	}
