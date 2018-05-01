@@ -70,7 +70,7 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			String slain = client.getSetting(brother.getKilledVarbit()) > 0 ? "✓" : "";
+			String slain = client.getVar(brother.getKilledVarbit()) > 0 ? "✓" : "";
 			panelComponent.getLines().add(new PanelComponent.Line(
 				brother.getName(),
 				Color.WHITE,

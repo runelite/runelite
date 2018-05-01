@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +24,21 @@
  */
 package net.runelite.api;
 
-public interface Varcs
-{
-	int getIntVar(VarClientInt var);
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-	String getStrVar(VarClientStr var);
+@AllArgsConstructor
+@Getter
+public enum VarPlayer
+{
+	ATTACK_STYLE(43),
+
+	BANK_TAB(115),
+
+	SPECIAL_ATTACK_PERCENT(300),
+	SPECIAL_ATTACK_ENABLED(301),
+
+	IN_RAID_PARTY(1427);
+
+	private final int id;
 }
