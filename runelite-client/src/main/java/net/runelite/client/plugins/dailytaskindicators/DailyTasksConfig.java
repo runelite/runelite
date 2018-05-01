@@ -37,7 +37,7 @@ public interface DailyTasksConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showHerbBoxes",
-		name = "Show Herb Boxes",
+		name = "Show Claimable Herb Boxes",
 		description = "Configures whether or not to show a message for daily herb boxes",
 		position = 1
 	)

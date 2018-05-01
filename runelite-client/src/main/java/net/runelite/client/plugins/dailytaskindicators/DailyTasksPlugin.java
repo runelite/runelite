@@ -25,16 +25,13 @@
 
 package net.runelite.client.plugins.dailytaskindicators;
 
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -66,8 +63,6 @@ public class DailyTasksPlugin extends Plugin
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg;
 	private int prevHerbVarbVal, prevStavesVarbVal, prevEssVarbVal, prevSandVarbVal, prevEctoVarbVal;
 
-	private final Set<Integer> FREE_TO_PLAY_WORLDS = Sets.newHashSet(1, 8, 16, 26, 35, 81, 82, 83, 84, 85, 93, 94, 117);
-
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
 	{
@@ -78,13 +73,8 @@ public class DailyTasksPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = false;
-		prevHerbVarbVal = 15;
-		prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = 0;
+		prevHerbVarbVal = prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = 0;
 		cacheColors();
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			new VarbitChanged(); // force a change
-		}
 	}
 
 	@Subscribe
@@ -118,34 +108,37 @@ public class DailyTasksPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
+		if (client.isMember())
 		{
-			sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
-			hasSentHerbMsg = true;
-		}
+			if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
+			{
+				sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
+				hasSentHerbMsg = true;
+			}
 
-		if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
-		{
-			sendChatMessage("You have staves waiting to be collected from Zaff.");
-			hasSentStavesMsg = true;
-		}
+			if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
+			{
+				sendChatMessage("You have staves waiting to be collected from Zaff.");
+				hasSentStavesMsg = true;
+			}
 
-		if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
-		{
-			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
-			hasSentEssenceMsg = true;
-		}
+			if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
+			{
+				sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
+				hasSentEssenceMsg = true;
+			}
 
-		if (config.showSand() && !hasSentSandMsg && checkCanCollectSand())
-		{
-			sendChatMessage("You have buckets of sand waiting to be collected from Bert.");
-			hasSentSandMsg = true;
-		}
+			if (config.showSand() && !hasSentSandMsg && checkCanCollectSand())
+			{
+				sendChatMessage("You have buckets of sand waiting to be collected from Bert.");
+				hasSentSandMsg = true;
+			}
 
-		if (config.showEcto() && !hasSentEctoMsg && checkCanCollectEcto())
-		{
-			sendChatMessage("You have bonemeal and buckets of slime waiting to be collected from Robin.");
-			hasSentEctoMsg = true;
+			if (config.showEcto() && !hasSentEctoMsg && checkCanCollectEcto())
+			{
+				sendChatMessage("You have bonemeal and buckets of slime waiting to be collected from Robin.");
+				hasSentEctoMsg = true;
+			}
 		}
 	}
 
@@ -177,7 +170,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private boolean checkCanCollectSand()
 	{
-		if (client.getVar(Varbits.QUEST_A_HAND_IN_THE_SAND) == 160 && !FREE_TO_PLAY_WORLDS.contains(client.getWorld()))
+		if (client.getVar(Varbits.QUEST_A_HAND_IN_THE_SAND) == 160 && !didCompleteDiaries(Varbits.DIARY_ARDOUGNE_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_SAND);
 			return prevSandVarbVal == value ? (prevSandVarbVal = value) == 0 : false;
@@ -190,9 +183,8 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_MORYTANIA_EASY, Varbits.DIARY_MORYTANIA_MEDIUM, Varbits.DIARY_MORYTANIA_HARD, Varbits.DIARY_MORYTANIA_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_ECTO);
-			if (value != prevEctoVarbVal)
+			if (prevEctoVarbVal == value ? (prevEctoVarbVal = value) == 0 : false)
 			{
-				prevEctoVarbVal = value;
 				if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
 					|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
 					|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
@@ -216,7 +208,7 @@ public class DailyTasksPlugin extends Plugin
 				break;
 			}
 		}
-		return completedDiaries && !FREE_TO_PLAY_WORLDS.contains(client.getWorld());
+		return completedDiaries;
 	}
 
 	private void cacheColors()
