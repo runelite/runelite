@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.SystemTray;
@@ -47,17 +48,22 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.NavigationButton;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -193,7 +199,7 @@ public class SwingUtil
 	 * @param callback        the callback
 	 * @param confirmRequired the confirm required
 	 */
-	public static void addGracefulExitCallback(@Nonnull final JFrame frame, @Nonnull final Runnable callback, @Nonnull final Callable<Boolean> confirmRequired)
+	public static void addGracefulExitCallback(final RuneLiteConfig config, @Nonnull final JFrame frame, @Nonnull final Runnable callback, @Nonnull final Callable<Boolean> confirmRequired)
 	{
 		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter()
@@ -207,11 +213,22 @@ public class SwingUtil
 				{
 					if (confirmRequired.call())
 					{
+						JPanel content = new JPanel();
+						content.setLayout(new GridLayout(2, 1, 0, 10));
+
+						JLabel text = new JLabel("Are you sure you want to exit?");
+						content.add(text, 0);
+
+						JCheckBox checkBox = new JCheckBox("Never ask again");
+						content.add(checkBox, 1);
+
 						result = JOptionPane.showConfirmDialog(
 							frame,
-							"Are you sure you want to exit?", "Exit",
+								content, "Exit",
 							JOptionPane .OK_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
+
+						config.setConfirmOnClose(!checkBox.isSelected());
 					}
 				}
 				catch (Exception e)
