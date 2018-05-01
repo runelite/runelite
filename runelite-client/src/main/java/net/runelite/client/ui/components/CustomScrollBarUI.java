@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -32,6 +33,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 
 /**
@@ -40,6 +42,15 @@ import net.runelite.client.ui.ColorScheme;
  */
 public class CustomScrollBarUI extends BasicScrollBarUI
 {
+
+	/* The background color of the bar's thumb */
+	@Setter
+	private Color thumbColor = ColorScheme.MEDIUM_GRAY_COLOR;
+
+	/* The background color of the bar's track */
+	@Setter
+	private Color trackColor = ColorScheme.SCROLL_TRACK_COLOR;
+
 	/**
 	 * Overrides the painting of the bar's track (the darker part underneath that extends
 	 * the full page length).
@@ -47,7 +58,7 @@ public class CustomScrollBarUI extends BasicScrollBarUI
 	@Override
 	protected void paintTrack(Graphics graphics, JComponent jComponent, Rectangle rectangle)
 	{
-		graphics.setColor(ColorScheme.SCROLL_TRACK_COLOR);
+		graphics.setColor(trackColor);
 		graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
 
@@ -58,7 +69,7 @@ public class CustomScrollBarUI extends BasicScrollBarUI
 	@Override
 	protected void paintThumb(Graphics graphics, JComponent jComponent, Rectangle rectangle)
 	{
-		graphics.setColor(ColorScheme.MEDIUM_GRAY_COLOR);
+		graphics.setColor(thumbColor);
 		graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
 

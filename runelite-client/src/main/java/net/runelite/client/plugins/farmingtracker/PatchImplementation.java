@@ -970,7 +970,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	BUSH(Tab.SPECIAL)
+	BUSH(Tab.BUSH)
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2271,7 +2271,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-		GRAPES(Tab.SPECIAL)
+	GRAPES(Tab.SPECIAL)
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2298,6 +2298,17 @@ public enum PatchImplementation
 		};
 
 	abstract PatchState forVarbitValue(int value);
+
+	/**
+	 * Returns a formatted name based on the enum's name.
+	 * Ex:
+	 * SPIRIT_TREE  into Spirit Tree
+	 * HERB			into Herb
+	 */
+	public String getName()
+	{
+		return (name().substring(0, 1).toUpperCase() + name().toLowerCase().substring(1)).replaceAll("_", " ");
+	}
 
 	private final Tab tab;
 }
