@@ -264,11 +264,11 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (hotKeyPressed)
 		{
-			if(event.getOption().equals(WALK_HERE))
+			if (event.getOption().equals(WALK_HERE))
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-				if(config.clearTiles())
+				if (config.clearTiles())
 				{
 					menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 					MenuEntry clearTiles = menuEntries[menuEntries.length - 2] = new MenuEntry();
@@ -295,8 +295,8 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (event.getMenuOption().equals(MARK))
 		{
-            Tile target = client.getSelectedRegionTile();
-            markTile(target.getLocalLocation());
+			Tile target = client.getSelectedRegionTile();
+			markTile(target.getLocalLocation());
 		}
 		else if (event.getMenuOption().equals(CLEAR))
 		{
