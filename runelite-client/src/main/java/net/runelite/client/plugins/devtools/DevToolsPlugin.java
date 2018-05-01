@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.VarbitChanged;
@@ -176,6 +177,14 @@ public class DevToolsPlugin extends Plugin
 				int count = client.getChangedSkillsCount();
 				skills[++count - 1 & 31] = skill.ordinal();
 				client.setChangedSkillsCount(count);
+				break;
+			}
+			case "anim":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player localPlayer = client.getLocalPlayer();
+				localPlayer.setAnimation(id);
+				localPlayer.setActionFrame(0);
 				break;
 			}
 		}
