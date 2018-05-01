@@ -221,4 +221,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "swapBAHorn",
+			name = "Barbarian Assault Horn",
+			description = "Swap Horn options to the correct option to call"
+	)
+	default boolean swapBAHorn()
+	{
+		return true;
+	}
 }

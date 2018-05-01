@@ -43,6 +43,7 @@ import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
@@ -445,6 +446,61 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
+		}
+		else if(config.swapBAHorn() && option.equals("tell-red"))
+		{
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_ATK_CALL_TEXT);
+			switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Blue egg":
+					swap("tell-blue", option, target, true);
+					break;
+				case "Green egg":
+					swap("tell-green", option, target, true);
+					break;
+			}
+		}
+		else if(config.swapBAHorn() && option.equals("tell-controlled"))
+		{
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_COLL_CALL_TEXT);
+            switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Accurate/Field/Water":
+					swap("tell-accurate", option, target, true);
+					break;
+				case "Aggressive/Blunt/Earth":
+					swap("tell-aggressive", option, target, true);
+					break;
+				case "Defensive/Barbed/Fire":
+					swap("tell-defensive", option, target, true);
+					break;
+			}
+		}
+		else if(config.swapBAHorn() && option.equals("tell-tofu"))
+		{
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_HEAL_CALL_TEXT);
+            switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Crackers":
+					swap("tell-crackers", option, target, true);
+					break;
+				case "Worms":
+					swap("tell-worms", option, target, true);
+					break;
+			}
+		}
+		else if(config.swapBAHorn() && option.equals("tell-worms"))
+		{
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_DEF_CALL_TEXT);
+            switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Pois. Tofu":
+					swap("tell-tofu", option, target, true);
+					break;
+				case "Pois. Meat":
+					swap("tell-meat", option, target, true);
+					break;
+			}
 		}
 	}
 
