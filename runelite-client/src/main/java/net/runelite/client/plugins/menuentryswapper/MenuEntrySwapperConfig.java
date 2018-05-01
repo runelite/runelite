@@ -27,7 +27,6 @@ package net.runelite.client.plugins.menuentryswapper;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.xpglobes.HomeOption;
 
 @ConfigGroup(
 	keyName = "menuentryswapper",

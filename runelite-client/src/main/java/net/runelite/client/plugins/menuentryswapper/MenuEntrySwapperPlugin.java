@@ -52,7 +52,6 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.xpglobes.HomeOption;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -404,6 +403,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapHome() == HomeOption.Friends && option.equals("enter"))
 		{
 			swap("friend's house", option, target, true);
+		}
+		else if (config.swapHome() == HomeOption.Build && option.equals("enter"))
+		{
+			swap("build mode", option, target, true);
 		}
 		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
 		{
