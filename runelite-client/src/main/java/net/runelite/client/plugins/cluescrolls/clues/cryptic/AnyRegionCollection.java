@@ -34,11 +34,11 @@ public class AnyRegionCollection implements RegionRequirement
 	}
 
 	@Override
-	public boolean fulfilledBy(int regionId)
+	public boolean fulfilledBy(int[] regionIds)
 	{
 		for (RegionRequirement region : regions)
 		{
-			if (region.fulfilledBy(regionId))
+			if (region.fulfilledBy(regionIds))
 			{
 				return true;
 			}

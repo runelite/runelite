@@ -36,8 +36,16 @@ public class RangeRegionRequirement implements RegionRequirement
 	}
 
 	@Override
-	public boolean fulfilledBy(int regionId)
+	public boolean fulfilledBy(int[] regions)
 	{
-		return regionId >= startRegionId && regionId <= endRegionId;
+		for (int region : regions)
+		{
+			if (region >= startRegionId && region <= endRegionId)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -292,14 +292,13 @@ public class ClueScrollPlugin extends Plugin
 				boolean displayHint = true;
 
 				//	If this clue is region locked, only display the hint arrow if we're in the correct region.
-				if (clue instanceof RegionLockedClueScroll && clue instanceof LocationClueScroll)
+				if (clue instanceof RegionLockedClueScroll)
 				{
-					WorldPoint location = ((LocationClueScroll) clue).getLocation();
 					RegionRequirement requirement = ((RegionLockedClueScroll) clue).getRegionRequirements();
 
-					if (location != null && requirement != null)
+					if (requirement != null)
 					{
-						displayHint = requirement.fulfilledBy(location.getRegionID());
+						displayHint = requirement.fulfilledBy(client.getMapRegions());
 					}
 				}
 

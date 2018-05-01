@@ -26,5 +26,5 @@ package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
 public interface RegionRequirement
 {
-	boolean fulfilledBy(int regions);
+	boolean fulfilledBy(int[] regions);
 }
