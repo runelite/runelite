@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.interfaceswapper;
 
+// This class has the default relative placement of all the main interface components
 class InterfaceDefault
 {
 	static final int LEFT_MAIN_SCREEN_RELATIVE_X = 0;

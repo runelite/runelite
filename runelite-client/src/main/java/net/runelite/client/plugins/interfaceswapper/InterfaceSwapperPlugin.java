@@ -51,10 +51,14 @@ public class InterfaceSwapperPlugin extends Plugin
 	@Subscribe
 	public void configChanged(ConfigChanged event)
 	{
+		// Checks if the main screen exists
 		if (client.getWidget(WidgetInfo.UPPER_MAIN_SCREEN) != null)
 		{
+			// Restores to default state before checking if
 			restoreHorizontalSwap();
 			restoreVerticalSwap();
+
+			// Swaps horizontal components
 			if (config.horizontalSwap())
 			{
 				for (WidgetInfo widget : widgetsMainScreen)
@@ -69,6 +73,8 @@ public class InterfaceSwapperPlugin extends Plugin
 				}
 				client.getWidget(worldMap).setRelativeX(client.getWidget(worldMap).getRelativeX() - client.getWidget(chatBox).getWidth());
 			}
+
+			// Swaps vertical components
 			if (config.verticalSwap())
 			{
 				for (WidgetInfo widget : widgetsMainScreen)
@@ -92,6 +98,7 @@ public class InterfaceSwapperPlugin extends Plugin
 		}
 	}
 
+	// Restores the horizontal swap
 	private void restoreHorizontalSwap()
 	{
 		client.getWidget(WidgetInfo.LEFT_MAIN_SCREEN).setRelativeX(InterfaceDefault.LEFT_MAIN_SCREEN_RELATIVE_X);
@@ -107,6 +114,7 @@ public class InterfaceSwapperPlugin extends Plugin
 		client.getWidget(WidgetInfo.INVENTORY_INTERFACE).setRelativeX(InterfaceDefault.INVENTORY_RELATIVE_X);
 	}
 
+	// Restores the vertical swap
 	private void restoreVerticalSwap()
 	{
 		client.getWidget(WidgetInfo.LEFT_MAIN_SCREEN).setRelativeY(InterfaceDefault.LEFT_MAIN_SCREEN_RELATIVE_Y);
