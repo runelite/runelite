@@ -103,6 +103,17 @@ public interface SlayerConfig extends Config
 		return Color.RED;
 	}
 
+	@ConfigItem(
+			position = 7,
+			keyName = "superiorColor",
+			name = "Superior Color",
+			description = "Color of the highlighted targets superior form"
+	)
+	default Color getSuperiorColor()
+	{
+		return Color.CYAN;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",

@@ -88,6 +88,10 @@ public class SlayerPlugin extends Plugin
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
+	@Getter
+	private static final String[] superiorNames = { "Crushing", "Chasm", "Screaming", "Giant", "Cockathrice", "Flaming", "Monstrous", "Malevolent",
+			"Insatiable", "Vitreous", "abomination", "Abhorrent", "Repugnant", "Choke", "King", "Marble", "Nechryarch", "Greater", "Night", "Nuclear"};
+
 	@Inject
 	private Client client;
 
