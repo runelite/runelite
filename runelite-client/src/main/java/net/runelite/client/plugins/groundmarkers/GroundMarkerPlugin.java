@@ -70,6 +70,8 @@ public class GroundMarkerPlugin extends Plugin
 
 	private static final Gson gson = new Gson();
 
+
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
@@ -82,6 +84,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private GroundMarkerInputListener inputListener;
+
+	@Inject
+	private GroundMarkerConfig config;
 
 	@Inject
 	private ConfigManager configManager;
@@ -257,42 +262,46 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
+		if (hotKeyPressed)
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+			if(event.getOption().equals(WALK_HERE))
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+				if(config.clearTiles())
+				{
+					menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+					MenuEntry clearTiles = menuEntries[menuEntries.length - 2] = new MenuEntry();
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-			MenuEntry clearMarksMenuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+					clearTiles.setOption(CLEAR);
+					clearTiles.setTarget(event.getTarget());
+					clearTiles.setType(MenuAction.CANCEL.getId());
+				}
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
+				menuEntry.setOption(MARK);
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setType(MenuAction.CANCEL.getId());
+				client.setMenuEntries(menuEntries);
+			}
 
-			clearMarksMenuEntry.setOption(CLEAR);
-			clearMarksMenuEntry.setTarget(event.getTarget());
-			clearMarksMenuEntry.setType(MenuAction.CANCEL.getId());
-
-			menuEntry.setOption(MARK);
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setType(MenuAction.CANCEL.getId());
-
-			client.setMenuEntries(menuEntries);
 		}
+
+
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (event.getMenuOption().equals(MARK))
 		{
-			return;
+            Tile target = client.getSelectedRegionTile();
+            markTile(target.getLocalLocation());
 		}
 		else if (event.getMenuOption().equals(CLEAR))
 		{
-			points.clear();
-			return;
+			clearPoints();
 		}
-
-		Tile target = client.getSelectedRegionTile();
-		markTile(target.getLocalLocation());
 	}
 
 	@Override
@@ -370,6 +379,18 @@ public class GroundMarkerPlugin extends Plugin
 
 		savePoints(regionId, points);
 
+		loadPoints();
+	}
+
+	private void clearPoints()
+	{
+		points.clear();
+		int[] regions = client.getMapRegions();
+
+		for (int regionId : regions)
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
+		}
 		loadPoints();
 	}
 }
