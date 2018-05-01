@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -50,6 +52,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
@@ -145,6 +148,26 @@ public class DevToolsPlugin extends Plugin
 
 		switch (commandExecuted.getCommand())
 		{
+			case "logger":
+			{
+				final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+				String message;
+				Level currentLoggerLevel = logger.getLevel();
+
+				if (args.length < 1)
+				{
+					message = "Logger level is currently set to " + currentLoggerLevel;
+				}
+				else
+				{
+					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
+					logger.setLevel(newLoggerLevel);
+					message = "Logger level has been set to " + newLoggerLevel;
+				}
+
+				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
+				break;
+			}
 			case "getvar":
 			{
 				int varbit = Integer.parseInt(args[0]);
