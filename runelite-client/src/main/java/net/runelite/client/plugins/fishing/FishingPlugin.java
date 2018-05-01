@@ -58,6 +58,10 @@ public class FishingPlugin extends Plugin
 {
 	private final List<Integer> spotIds = new ArrayList<>();
 
+	private boolean hasNotifiedIdle;
+	private long lastSpotInteraction;
+
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
 
@@ -169,6 +173,32 @@ public class FishingPlugin extends Plugin
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWAN.getIds()));
 		}
+	}
+
+	@Subscribe
+	public void checkIdle(GameTick event){
+
+		if(config.notifyWhenIdle()) {
+
+			// We could check if we are fishing, but would rather not notify players every time they swap fishing spots
+			if (client.getLocalPlayer().getInteracting() != null) {
+				lastSpotInteraction = System.currentTimeMillis();
+
+				if (hasNotifiedIdle) {
+					hasNotifiedIdle = false;
+				}
+			} else {
+
+				if (!hasNotifiedIdle) {
+					if (lastSpotInteraction - System.currentTimeMillis() < 0) {
+						notifier.notify("You have stopped fishing!");
+						hasNotifiedIdle = true;
+					}
+				}
+
+			}
+		}
+
 	}
 
 	@Subscribe

@@ -174,4 +174,15 @@ public interface FishingConfig extends Config
 	{
 		return true;
 	}
+
+
+	@ConfigItem(
+			keyName = "notifyWhenIdle",
+			name = "Notify player when idle",
+			description = "When you stop fishing, a desktop notification will alert you"
+	)
+	default boolean notifyWhenIdle()
+	{
+		return true;
+	}
 }
