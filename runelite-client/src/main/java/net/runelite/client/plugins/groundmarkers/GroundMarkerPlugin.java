@@ -262,32 +262,26 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (hotKeyPressed)
+		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
-			if (event.getOption().equals(WALK_HERE))
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			if (config.clearTiles())
 			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-				if (config.clearTiles())
-				{
-					menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-					MenuEntry clearTiles = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				MenuEntry clearTiles = menuEntries[menuEntries.length - 2] = new MenuEntry();
 
-					clearTiles.setOption(CLEAR);
-					clearTiles.setTarget(event.getTarget());
-					clearTiles.setType(MenuAction.CANCEL.getId());
-				}
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-
-				menuEntry.setOption(MARK);
-				menuEntry.setTarget(event.getTarget());
-				menuEntry.setType(MenuAction.CANCEL.getId());
-				client.setMenuEntries(menuEntries);
+				clearTiles.setOption(CLEAR);
+				clearTiles.setTarget(event.getTarget());
+				clearTiles.setType(MenuAction.CANCEL.getId());
 			}
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
+			menuEntry.setOption(MARK);
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setType(MenuAction.CANCEL.getId());
+			client.setMenuEntries(menuEntries);
 		}
-
-
 	}
 
 	@Subscribe
