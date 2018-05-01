@@ -396,17 +396,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
-		else if (config.swapHome() == HomeOption.HOME && option.equals("enter"))
+		else if (config.swapHome() != HomeOption.ENTER && option.equals("enter"))
 		{
-			swap("home", option, target, true);
-		}
-		else if (config.swapHome() == HomeOption.FRIENDS && option.equals("enter"))
-		{
-			swap("friend's house", option, target, true);
-		}
-		else if (config.swapHome() == HomeOption.BUILD && option.equals("enter"))
-		{
-			swap("build mode", option, target, true);
+			if (config.swapHome() == HomeOption.HOME)
+			{
+				swap("home", option, target, true);
+			}
+			else if (config.swapHome() == HomeOption.FRIENDS)
+			{
+				swap("friend's house", option, target, true);
+			}
+			else if (config.swapHome() == HomeOption.BUILD)
+			{
+				swap("build mode", option, target, true);
+			}
 		}
 		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
 		{
