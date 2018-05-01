@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 
 /**
@@ -58,6 +59,10 @@ public class MaterialTab extends JLabel
 	/* The tab's associated content display */
 	@Getter
 	private final JComponent content;
+
+	/* To be execuded when the tab is selected */
+	@Setter
+	private Runnable onSelectEvent;
 
 	@Getter
 	private boolean selected;
@@ -93,6 +98,10 @@ public class MaterialTab extends JLabel
 		setBorder(SELECTED_BORDER);
 		setForeground(Color.WHITE);
 		selected = true;
+		if (onSelectEvent != null)
+		{
+			onSelectEvent.run();
+		}
 	}
 
 	public void unselect()

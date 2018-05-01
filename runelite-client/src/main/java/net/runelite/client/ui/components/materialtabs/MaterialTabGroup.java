@@ -59,8 +59,20 @@ public class MaterialTabGroup extends JPanel
 	{
 		this.display = display;
 		this.display.setLayout(new BorderLayout());
-		setLayout(new FlowLayout());
+		setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
 		setOpaque(false);
+	}
+
+	/* Returns the tab on a certain index. */
+	public MaterialTab getTab(int index)
+	{
+
+		if (tabs == null || tabs.isEmpty())
+		{
+			return null;
+		}
+
+		return tabs.get(index);
 	}
 
 	public void addTab(MaterialTab tab)
@@ -89,6 +101,7 @@ public class MaterialTabGroup extends JPanel
 			{
 				tab.select();
 				display.add(tab.getContent());
+				display.revalidate();
 				display.repaint();
 			}
 			else
