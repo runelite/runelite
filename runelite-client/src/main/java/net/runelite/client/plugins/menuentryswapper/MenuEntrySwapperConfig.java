@@ -120,7 +120,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default HomeOption swapHome()
 	{
-		return HomeOption.Home;
+		return HomeOption.HOME;
 	}
 
 	@ConfigItem(
