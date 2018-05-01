@@ -213,6 +213,17 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int LEFT_MAIN_SCREEN = 0;
+		static final int UPPER_MAIN_SCREEN = 1;
+		static final int WORLD_MAP = 3;
+		static final int MAIN_SCREEN = 12;
+		static final int CHAT_BOX = 24;
+		static final int LEFT_UPPER_PILLAR = 25;
+		static final int LEFT_LOWER_PILLAR = 26;
+		static final int RIGHT_PILLAR = 27;
+		static final int LOWER_INVENTORY_BAR = 28;
+		static final int UPPER_INVENTORY_BAR = 45;
+		static final int INVENTORY = 62;
 		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 	}
