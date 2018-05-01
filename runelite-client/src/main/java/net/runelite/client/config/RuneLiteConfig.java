@@ -192,7 +192,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
-		description = "Toggles the infoboxes to display vertically",10
+		description = "Toggles the infoboxes to display vertically",
 		position = 31
 	)
 	default boolean infoBoxVertical()
@@ -212,10 +212,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "confirmOnClose",
-			name = "Confirmation dialog on close",
-			description = "Would you like to be asked if you're sure before closing the client?",
-			position = 33
+		keyName = "confirmOnClose",
+		name = "Confirmation dialog on close",
+		description = "Would you like to be asked if you're sure before closing the client?",
+		position = 33
 	)
 	default boolean confirmOnClose()
 	{

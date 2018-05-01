@@ -349,9 +349,7 @@ public class ClientUI
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
-				() -> client != null
-					&& client instanceof Client
-					&& config.confirmOnClose());
+					() -> config.confirmOnClose());
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
