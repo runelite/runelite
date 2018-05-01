@@ -147,7 +147,7 @@ public class ImplingsOverlay extends Overlay
 			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
-		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text,0);
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text, 0);
 		if (textPoint != null)
 		{
 			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);
