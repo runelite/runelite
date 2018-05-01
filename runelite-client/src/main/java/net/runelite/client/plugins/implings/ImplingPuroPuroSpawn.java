@@ -71,8 +71,11 @@ public class ImplingPuroPuroSpawn
 		puroPuroSpawns.put(new WorldPoint(2618, 4321, 0), "Gourmet");
 
 		//Earth spawns
-		//There are definitely more but needs further investigation
-		puroPuroSpawns.put(new WorldPoint(2587, 4342, 0), "Gourmet");
+		puroPuroSpawns.put(new WorldPoint(2570, 4330, 0), "Earth");
+		puroPuroSpawns.put(new WorldPoint(2598, 4340, 0), "Earth");
+		puroPuroSpawns.put(new WorldPoint(2587, 4342, 0), "Earth");
+		puroPuroSpawns.put(new WorldPoint(2612, 4310, 0), "Earth");
+		puroPuroSpawns.put(new WorldPoint(2611, 4334, 0), "Earth");
 
 		//Eclectic spawns
 		puroPuroSpawns.put(new WorldPoint(2567, 4319, 0), "Eclectic");
