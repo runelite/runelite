@@ -65,8 +65,10 @@ public interface Actor extends Renderable
 
 	int getGraphic();
 
+	@VisibleForDevtools
 	void setGraphic(int graphic);
 
+	@VisibleForDevtools
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	int getModelHeight();
