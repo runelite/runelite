@@ -102,11 +102,17 @@ public class DailyTasksPlugin extends Plugin
 			{
 				hasSentEctoMsg = false;
 			}
+			sendNotification();
 		}
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
+	{
+		sendNotification();
+	}
+
+	private void sendNotification()
 	{
 		if (client.isMember())
 		{
