@@ -85,6 +85,10 @@ import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+import java.time.temporal.ChronoUnit;
+
+import static net.runelite.client.plugins.timers.GameTimer.*;
+
 @PluginDescriptor(
 	name = "Timers"
 )
@@ -148,7 +152,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIDOTEPLUS);
 		}
 
-		if (!config.showAntidotePlusPlus())
+		if (!config.showAntiFire())
 		{
 			removeGameTimer(ANTIDOTEPLUSPLUS);
 		}
@@ -496,9 +500,15 @@ public class TimersPlugin extends Plugin
 			{
 				if (homeTeleportRegions.contains(currentPosition.getRegionID()) || minigameTeleportRegions.contains(currentPosition.getRegionID()))
 				{
-					if (currentPosition.distanceTo(lastWorldLocation) > 1)
+					if (currentPosition.distanceTo(lastWorldLocation) > 3)
 					{
 						moved = true;
+					}
+					else
+					{
+						//The Player cancelled the teleport
+						checkTeleportDestination = false;
+						return;
 					}
 				}
 			}
