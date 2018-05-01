@@ -187,6 +187,14 @@ public class DevToolsPlugin extends Plugin
 				localPlayer.setActionFrame(0);
 				break;
 			}
+			case "gfx":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player localPlayer = client.getLocalPlayer();
+				localPlayer.setGraphic(id);
+				localPlayer.setSpotAnimFrame(0);
+				break;
+			}
 		}
 	}
 
