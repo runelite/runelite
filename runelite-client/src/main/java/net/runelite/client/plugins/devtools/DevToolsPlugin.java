@@ -43,6 +43,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -200,6 +201,10 @@ public class DevToolsPlugin extends Plugin
 				int count = client.getChangedSkillsCount();
 				skills[++count - 1 & 31] = skill.ordinal();
 				client.setChangedSkillsCount(count);
+
+				ExperienceChanged experienceChanged = new ExperienceChanged();
+				experienceChanged.setSkill(skill);
+				eventBus.post(experienceChanged);
 				break;
 			}
 			case "anim":
