@@ -351,7 +351,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("exchange", option, target, true);
 			}
 
-			if (config.swapTrade())
+			if (config.swapTrade() && (!(target.equals("trader crewmember") || target.equals("trader stan")) || config.charterOption().equals(CharterOption.TRADE)))
 			{
 				swap("trade", option, target, true);
 			}
@@ -365,13 +365,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("travel", option, target, true);
 				swap("pay-fare", option, target, true);
-				swap("charter", option, target, true);
 				swap("take-boat", option, target, true);
 				swap("fly", option, target, true);
 				swap("jatizso", option, target, true);
 				swap("neitiznot", option, target, true);
 				swap("rellekka", option, target, true);
 				swap("follow", option, target, true);
+
+				if (!(target.equals("trader crewmember") || target.equals("trader stan")) || config.charterOption().equals(CharterOption.CHARTER))
+				{
+					swap("charter", option, target, true);
+				}
 			}
 
 			if (config.swapPay())
