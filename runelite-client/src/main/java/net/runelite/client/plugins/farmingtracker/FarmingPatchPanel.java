@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -67,7 +68,7 @@ class FarmingPatchPanel extends JPanel
 		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
 		final JLabel location = new JShadowedLabel(patch.getRegion().getName()
-			+ (showFullTitle() ? " (" + patch.getName() + ")" : ""));
+			+ (Strings.isNullOrEmpty(patch.getName()) ? "" : " (" + patch.getName() + ")"));
 		location.setFont(FontManager.getRunescapeSmallFont());
 		location.setForeground(Color.WHITE);
 
@@ -82,31 +83,5 @@ class FarmingPatchPanel extends JPanel
 
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);
-	}
-
-	/**
-	 * This determines if the label should display location and type, ex:
-	 * It makes sense to display:
-	 * Catherby (North) <-- for allotment
-	 * but not so much for herbs:
-	 * Troll Stronghold
-	 * as there are no other herb patches in that region.
-	 */
-	private boolean showFullTitle()
-	{
-		switch (patch.getImplementation())
-		{
-			case FLOWER:
-			case HOPS:
-			case BUSH:
-			case FRUIT_TREE:
-			case CALQUAT:
-			case SPIRIT_TREE:
-			case TREE:
-			case HERB:
-				return false;
-			default:
-				return true;
-		}
 	}
 }
