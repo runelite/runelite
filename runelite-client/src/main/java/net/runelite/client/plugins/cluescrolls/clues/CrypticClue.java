@@ -432,9 +432,9 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		}
 
 		// Mark NPC
-		if (plugin.getNpcsToMark() != null)
+		if (plugin.getNpcsToMark() != null && location != null)
 		{
-			int region = plugin.getClient().getLocalPlayer().getWorldLocation().getRegionID();
+			int region = location.getRegionID();
 
 			if (regionRequirements != null && regionRequirements.fulfilledBy(region))
 			{

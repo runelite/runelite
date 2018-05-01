@@ -63,6 +63,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.*;
+import net.runelite.client.plugins.cluescrolls.clues.cryptic.RegionRequirement;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -291,10 +292,15 @@ public class ClueScrollPlugin extends Plugin
 				boolean displayHint = true;
 
 				//	If this clue is region locked, only display the hint arrow if we're in the correct region.
-				if (clue instanceof RegionLockedClueScroll)
+				if (clue instanceof RegionLockedClueScroll && clue instanceof LocationClueScroll)
 				{
-					int region = client.getLocalPlayer().getWorldLocation().getRegionID();
-					displayHint = ((RegionLockedClueScroll) clue).getRegionRequirements().fulfilledBy(region);
+					WorldPoint location = ((LocationClueScroll) clue).getLocation();
+					RegionRequirement requirement = ((RegionLockedClueScroll) clue).getRegionRequirements();
+
+					if (location != null && requirement != null)
+					{
+						displayHint = requirement.fulfilledBy(location.getRegionID());
+					}
 				}
 
 				if (displayHint)
