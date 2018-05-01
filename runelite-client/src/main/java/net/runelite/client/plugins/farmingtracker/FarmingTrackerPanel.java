@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -124,15 +125,20 @@ class FarmingTrackerPanel extends PluginPanel
 				FarmingPatchPanel p = new FarmingPatchPanel(patch);
 
 				/* Show labels to subdivide tabs into sections */
-				if ((tab == Tab.SPECIAL
-					&& patch.getImplementation().ordinal() > 2
-					&& patch.getImplementation() != lastImpl)
-					|| (tab == Tab.TREE
-					&& patch.getImplementation().ordinal() > 9
-					&& patch.getImplementation() != lastImpl))
+				if (patch.getImplementation() != lastImpl && !Strings.isNullOrEmpty(patch.getImplementation().getName()))
 				{
 					JLabel groupLabel = new JLabel(patch.getImplementation().getName());
-					groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
+
+					if (first)
+					{
+						first = false;
+						groupLabel.setBorder(new EmptyBorder(4, 0, 0, 0));
+					}
+					else
+					{
+						groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
+					}
+					
 					groupLabel.setFont(FontManager.getRunescapeSmallFont());
 
 					container.add(groupLabel, c);
@@ -147,8 +153,8 @@ class FarmingTrackerPanel extends PluginPanel
 				/* This is a weird hack to remove the top border on the first tracker of every tab */
 				if (first)
 				{
-					p.setBorder(null);
 					first = false;
+					p.setBorder(null);
 				}
 			}
 
