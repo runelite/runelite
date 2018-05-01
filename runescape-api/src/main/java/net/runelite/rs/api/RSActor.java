@@ -51,6 +51,10 @@ public interface RSActor extends RSRenderable, Actor
 	@Override
 	int getAnimation();
 
+	@Import("animation")
+	@Override
+	void setAnimation(int animation);
+
 	@Import("graphic")
 	@Override
 	int getGraphic();
@@ -70,6 +74,7 @@ public interface RSActor extends RSRenderable, Actor
 	int getActionFrame();
 
 	@Import("actionFrame")
+	@Override
 	void setActionFrame(int frame);
 
 	@Import("actionFrameCycle")
