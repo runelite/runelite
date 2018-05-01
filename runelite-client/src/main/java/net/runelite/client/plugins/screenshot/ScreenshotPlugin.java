@@ -261,9 +261,6 @@ public class ScreenshotPlugin extends Plugin
 	public void hideWidgets(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
-
-		boolean isLoot = false;
-
 		if (widget.isHidden())
 		{
 			return;
@@ -323,7 +320,10 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				isLoot = true;
+				if (config.saveLastLoot())
+				{
+					captureWidget(widget, "clue");
+				}
 				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
 				clueType = null;
 				clueNumber = null;
@@ -335,7 +335,10 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				isLoot = true;
+				if (config.saveLastLoot())
+				{
+					captureWidget(widget, "barrows");
+				}
 				fileName = "Barrows(" + barrowsNumber + ")";
 				barrowsNumber = null;
 				break;
@@ -346,7 +349,10 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				isLoot = true;
+				if (config.saveLastLoot())
+				{
+					captureWidget(widget, "raid");
+				}
 				fileName = "Raids(" + raidsNumber + ")";
 				raidsNumber = null;
 				break;
@@ -358,11 +364,6 @@ public class ScreenshotPlugin extends Plugin
 		if (fileName == null)
 		{
 			return;
-		}
-
-		if (isLoot && config.saveLastLoot())
-		{
-			captureWidget(widget, "loot");
 		}
 		takeScreenshot(fileName, config.displayDate());
 	}
@@ -406,13 +407,11 @@ public class ScreenshotPlugin extends Plugin
 			// Draw the game onto the screenshot
 			graphics.drawImage(image, 0, 0, null);
 
-			File playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
-			playerFolder.mkdirs();
 			executor.execute(() ->
 			{
 				try
 				{
-					File lootFile = new File(playerFolder, filename + ".png");
+					File lootFile = new File(SCREENSHOT_DIR, filename + ".png");
 					ImageIO.write(widgetCapture, "PNG", lootFile);
 				}
 				catch (IOException ex)
