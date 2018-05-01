@@ -223,10 +223,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-        position = 17,
-        keyName = "swapBAHorn",
-        name = "Barbarian Assault Horn",
-        description = "Swap Horn options to the correct option to call"
+		position = 17,
+		keyName = "swapBAHorn",
+		name = "Barbarian Assault Horn",
+		description = "Swap Horn options to the correct option to call"
 	)
 	default boolean swapBAHorn()
 	{
