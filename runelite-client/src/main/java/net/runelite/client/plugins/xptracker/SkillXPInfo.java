@@ -72,7 +72,9 @@ class SkillXPInfo
 		}
 
 		long timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
-		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
+		int hourlyExperience = (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
+
+		return hourlyExperience < 0 ? 0 : hourlyExperience;
 	}
 
 	int getXpRemaining()
@@ -111,7 +113,7 @@ class SkillXPInfo
 	{
 		if (getXpSec() > 0)
 		{
-			return LocalTime.MIN.plusSeconds( getXpRemaining() / getXpSec() ).toString();
+			return LocalTime.MIN.plusSeconds(getXpRemaining() / getXpSec()).toString();
 		}
 		return "\u221e";
 	}
