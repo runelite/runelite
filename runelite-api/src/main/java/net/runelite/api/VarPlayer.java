@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, Kamiel
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -23,54 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.chat;
+package net.runelite.api;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-import java.util.Arrays;
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.ScriptCallbackEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Slf4j
-@Singleton
-public class CommandManager
+@AllArgsConstructor
+@Getter
+public enum VarPlayer
 {
-	private static final String CALLBACK_NAME = "runeliteCommand";
-	private final Provider<Client> clientProvider;
-	private final EventBus eventBus;
+	ATTACK_STYLE(43),
 
-	@Inject
-	public CommandManager(Provider<Client> clientProvider, EventBus eventBus)
-	{
-		this.clientProvider = clientProvider;
-		this.eventBus = eventBus;
-	}
+	BANK_TAB(115),
 
-	@Subscribe
-	private void scriptEvent(ScriptCallbackEvent event)
-	{
-		if (!CALLBACK_NAME.equals(event.getEventName()))
-		{
-			return;
-		}
+	SPECIAL_ATTACK_PERCENT(300),
+	SPECIAL_ATTACK_ENABLED(301),
 
-		Client client = clientProvider.get();
-		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
+	IN_RAID_PARTY(1427);
 
-		log.debug("Command: {}", typedText);
-
-		String[] split = typedText.split(" ");
-
-		String command = split[0];
-		String[] args = Arrays.copyOfRange(split, 1, split.length);
-
-		CommandExecuted commandExecuted = new CommandExecuted(command, args);
-		eventBus.post(commandExecuted);
-	}
+	private final int id;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018 Morgan Lewis <http://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.asm.attributes.code;
 
-import net.runelite.mapping.Import;
-
-public interface RSVarcs
+public class Parameter
 {
-	@Import("varcs")
-	int[] getIntVarcs();
+	private final String name;
+	private final int access;
+	private LocalVariable localVariable;
 
-	@Import("varcstrings")
-	String[] getStrVarcs();
+	public Parameter(String name, int access)
+	{
+		this.name = name;
+		this.access = access;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public int getAccess()
+	{
+		return access;
+	}
+
+	public LocalVariable getLocalVariable()
+	{
+		return localVariable;
+	}
+
+	public void setLocalVariable(LocalVariable localVariable)
+	{
+		this.localVariable = localVariable;
+	}
 }
