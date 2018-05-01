@@ -65,6 +65,10 @@ public interface Actor extends Renderable
 
 	int getGraphic();
 
+	void setGraphic(int graphic);
+
+	void setSpotAnimFrame(int spotAnimFrame);
+
 	int getModelHeight();
 
 	Polygon getCanvasTilePoly();
