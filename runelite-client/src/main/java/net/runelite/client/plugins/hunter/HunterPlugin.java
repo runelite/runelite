@@ -38,6 +38,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -102,7 +103,8 @@ public class HunterPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
-		final HunterTrap myTrap = traps.get(gameObject.getWorldLocation());
+		final WorldPoint trapLocation = gameObject.getWorldLocation();
+		final HunterTrap myTrap = traps.get(trapLocation);
 		final Player localPlayer = client.getLocalPlayer();
 
 		switch (gameObject.getId())
@@ -115,34 +117,58 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL: // Deadfall trap placed
 			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
 				// If player is right next to "object" trap assume that player placed the trap
-				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 1)
+				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 1)
 				{
-					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), gameObject.getWorldLocation());
-					traps.put(gameObject.getWorldLocation(), new HunterTrap(gameObject));
+					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
+					traps.put(trapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
-
 				break;
+
 			case ObjectID.MAGIC_BOX: // Imp box placed
 			case ObjectID.BOX_TRAP_9380: // Box trap placed
 			case ObjectID.BIRD_SNARE_9345: // Bird snare placed
-			case ObjectID.NET_TRAP_9343: // Net trap placed at green sallys
-			case ObjectID.NET_TRAP: // Net trap placed at orange sallys
-			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
-			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
 				// If the player is on that tile, assume he is the one that placed the trap
 				// Note that a player can move and set up a trap in the same tick, and this
 				// event runs after the player movement has been updated, so we need to
 				// compare to the trap location to the last location of the player.
 				if (lastTickLocalPlayerLocation != null
-					&& gameObject.getWorldLocation().distanceTo(lastTickLocalPlayerLocation) == 0)
+					&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
-					traps.put(gameObject.getWorldLocation(), new HunterTrap(gameObject));
+					traps.put(trapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
 				}
-
 				break;
+
+			case ObjectID.NET_TRAP_9343: // Net trap placed at green sallys
+			case ObjectID.NET_TRAP: // Net trap placed at orange sallys
+			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
+			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
+				if (lastTickLocalPlayerLocation != null
+						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
+				{
+					// Net traps facing to the north and east must have their tile translated.
+					// As otherwise, the wrong tile is stored.
+					Direction trapOrientation = gameObject.getOrientation().getNearestDirection();
+					WorldPoint translatedTrapLocation = trapLocation;
+
+					switch (trapOrientation)
+					{
+						case NORTH:
+							translatedTrapLocation = trapLocation.dy(1);
+							break;
+						case EAST:
+							translatedTrapLocation = trapLocation.dx(1);
+							break;
+					}
+
+					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), translatedTrapLocation);
+					traps.put(translatedTrapLocation, new HunterTrap(gameObject));
+					lastActionTime = Instant.now();
+				}
+				break;
+
 			/*
 			 * ------------------------------------------------------------------------------
 			 * Catching stuff
@@ -298,6 +324,7 @@ public class HunterPlugin extends Plugin
 
 			boolean containsBoulder = false;
 			boolean containsAnything = false;
+			boolean containsYoungTree = false;
 			for (GameObject object : objects)
 			{
 				if (object != null)
@@ -308,10 +335,18 @@ public class HunterPlugin extends Plugin
 						containsBoulder = true;
 						break;
 					}
+
+					// Check for young trees (used while catching salamanders) in the tile.
+					// Otherwise, hunter timers will never disappear after a trap is dismantled
+					if (object.getId() == ObjectID.YOUNG_TREE_8732 || object.getId() == ObjectID.YOUNG_TREE_8990 ||
+						object.getId() == ObjectID.YOUNG_TREE_9000 || object.getId() == ObjectID.YOUNG_TREE_9341)
+					{
+						containsYoungTree = true;
+					}
 				}
 			}
 
-			if (!containsAnything)
+			if (!containsAnything || containsYoungTree)
 			{
 				it.remove();
 				log.debug("Trap removed from personal trap collection, {} left", traps.size());

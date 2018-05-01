@@ -336,6 +336,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pickpocket", option, target, true);
 			}
 
+			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
+			{
+				swap("teleport", option, target, true);
+			}
+
 			if (config.swapBank())
 			{
 				swap("bank", option, target, true);
@@ -384,14 +389,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("last-destination (", option, target, false);
 		}
-		else if (config.swapBoxTrap() && option.equals("check"))
+		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap("reset", option, target, true);
+		}
+		else if (config.swapBoxTrap() && option.equals("take"))
+		{
+			swap("lay", option, target, true);
 		}
 		else if (config.swapCatacombEntrance() && option.equals("read"))
 		{
 			swap("investigate", option, target, true);
 		}
+		else if (config.swapChase() && option.equals("pick-up"))
+		{
+			swap("chase", option, target, true);
+		}
+		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		{
+			Integer customOption = getSwapConfig(itemId);
+
+			if (customOption != null && customOption == -1)
+			{
+				swap("use", option, target, true);
+			}
+		}
+		// Put all item-related swapping after shift-click
 		else if (config.swapTeleportItem() && option.equals("wear"))
 		{
 			swap("rub", option, target, true);
@@ -403,28 +426,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("teleport", option, target, true);
 			}
-
-			if (config.swapSilverSickle())
-			{
-				swap("cast bloom", option, target, true);
-			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
-		}
-		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
-		{
-			Integer customOption = getSwapConfig(itemId);
-
-			if (customOption != null && customOption == -1)
-			{
-				swap("use", option, target, true);
-			}
-		}
-		else if (config.swapChase() && option.equals("pick-up"))
-		{
-			swap("chase", option, target, true);
 		}
 	}
 

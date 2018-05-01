@@ -33,6 +33,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
@@ -522,13 +523,16 @@ public class ClientUI
 		giveClientFocus();
 		SwingUtil.revalidateMinimumSize(frame);
 
-		if (wasMinimumWidth)
+		if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH)
 		{
-			frame.setSize(frame.getMinimumSize().width, frame.getHeight());
-		}
-		else if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-		{
-			frame.setSize(frame.getWidth() - PANEL_EXPANDED_WIDTH, frame.getHeight());
+			if (wasMinimumWidth)
+			{
+				frame.setSize(frame.getMinimumSize().width, frame.getHeight());
+			}
+			else if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+			{
+				frame.setSize(frame.getWidth() - PANEL_EXPANDED_WIDTH, frame.getHeight());
+			}
 		}
 
 		pluginPanel = null;

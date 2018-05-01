@@ -104,4 +104,34 @@ public interface PohConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showSpellbook",
+		name = "Show Spellbook altar",
+		description = "Configures whether or not the Spellbook altar is displayed"
+	)
+	default boolean showSpellbook()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showJewelleryBox",
+		name = "Show Jewellery Box",
+		description = "Configures whether or not the Jewllery box is displayed"
+	)
+	default boolean showJewelleryBox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMagicTravel",
+		name = "Show Fairy/ Spirit Tree/ Obelisk",
+		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
+	)
+	default boolean showMagicTravel()
+	{
+		return true;
+	}
 }

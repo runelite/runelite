@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
@@ -57,7 +58,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
@@ -67,7 +70,7 @@ import static net.runelite.api.widgets.WidgetID.RAIDS_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
+import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -143,6 +146,8 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		SCREENSHOT_DIR.mkdirs();
+
 		try
 		{
 			BufferedImage iconImage;
@@ -163,7 +168,7 @@ public class ScreenshotPlugin extends Plugin
 					{
 						try
 						{
-							Desktop.getDesktop().open(RuneLite.SCREENSHOT_DIR);
+							Desktop.getDesktop().open(SCREENSHOT_DIR);
 						}
 						catch (IOException ex)
 						{
@@ -227,6 +232,20 @@ public class ScreenshotPlugin extends Plugin
 				raidsNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+	}
+
+	@Subscribe
+	public void loadWidgets(WidgetLoaded event)
+	{
+		if (!config.screenshotKingdom())
+		{
+			return;
+		}
+		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
+		{
+			String fileName = "Kingdom " + LocalDate.now();
+			takeScreenshot(fileName, config.displayDate());
 		}
 	}
 
@@ -442,11 +461,11 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null)
 			{
-				playerFolder = new File(RuneLite.SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
 			}
 			else
 			{
-				playerFolder = RuneLite.SCREENSHOT_DIR;
+				playerFolder = SCREENSHOT_DIR;
 			}
 
 			playerFolder.mkdirs();

@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Polygon;
+import net.runelite.api.coords.Angle;
 
 /**
  *
@@ -32,8 +33,6 @@ import java.awt.Polygon;
  */
 public interface GameObject extends TileObject
 {
-	int getFlags();
-
 	/**
 	 * Returns the min x,y for this game object
 	 *
@@ -50,4 +49,6 @@ public interface GameObject extends TileObject
 	Point getRegionMaxLocation();
 
 	Polygon getConvexHull();
+
+	Angle getOrientation();
 }

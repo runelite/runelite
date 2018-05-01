@@ -758,7 +758,7 @@ public class class36 {
                   var3 = 1;
                } else if(var0 == 3605) {
                   var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  WorldMapRectangle.friendManager.method1780(var31);
+                  WorldMapRectangle.friendManager.addToFriendsList(var31);
                   var3 = 1;
                } else if(var0 == 3606) {
                   var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
@@ -766,7 +766,7 @@ public class class36 {
                   var3 = 1;
                } else if(var0 == 3607) {
                   var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
-                  WorldMapRectangle.friendManager.method1782(var31);
+                  WorldMapRectangle.friendManager.addToIgnoreList(var31);
                   var3 = 1;
                } else if(var0 == 3608) {
                   var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
@@ -866,7 +866,7 @@ public class class36 {
                } else if(var0 == 3623) {
                   var31 = class81.scriptStringStack[--KeyFocusListener.scriptStringStackSize];
                   var31 = FontName.method5489(var31);
-                  class81.intStack[++WorldComparator.intStackSize - 1] = WorldMapRectangle.friendManager.method1738(new Name(var31, GZipDecompressor.loginType))?1:0;
+                  class81.intStack[++WorldComparator.intStackSize - 1] = WorldMapRectangle.friendManager.isIgnored(new Name(var31, GZipDecompressor.loginType))?1:0;
                   var3 = 1;
                } else if(var0 == 3624) {
                   var4 = class81.intStack[--WorldComparator.intStackSize];

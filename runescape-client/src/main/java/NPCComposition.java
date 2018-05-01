@@ -44,17 +44,20 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1191741209
    )
-   public int field3720;
+   @Export("size")
+   public int size;
    @ObfuscatedName("i")
    @Export("models")
    int[] models;
    @ObfuscatedName("u")
-   int[] field3711;
+   @Export("additionalModels")
+   int[] additionalModels;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -245521569
    )
-   public int field3712;
+   @Export("standingAnimation")
+   public int standingAnimation;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -847438703
@@ -69,22 +72,26 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1399586949
    )
-   public int field3732;
+   @Export("walkingAnimation")
+   public int walkingAnimation;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1392574473
    )
-   public int field3736;
+   @Export("rotate180Animation")
+   public int rotate180Animation;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 282238707
    )
-   public int field3717;
+   @Export("rotate90RightAnimation")
+   public int rotate90RightAnimation;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -447164707
    )
-   public int field3706;
+   @Export("rotate90LeftAnimation")
+   public int rotate90LeftAnimation;
    @ObfuscatedName("v")
    @Export("colors")
    short[] colors;
@@ -92,9 +99,11 @@ public class NPCComposition extends CacheableNode {
    @Export("modifiedColors")
    short[] modifiedColors;
    @ObfuscatedName("r")
-   short[] field3721;
+   @Export("textureToReplace")
+   short[] textureToReplace;
    @ObfuscatedName("j")
-   short[] field3740;
+   @Export("textureToReplaceWith")
+   short[] textureToReplaceWith;
    @ObfuscatedName("b")
    @Export("actions")
    public String[] actions;
@@ -126,22 +135,26 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 869631619
    )
-   int field3729;
+   @Export("ambient")
+   int ambient;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = -1068666911
    )
-   int field3730;
+   @Export("contrast")
+   int contrast;
    @ObfuscatedName("ag")
    @ObfuscatedGetter(
       intValue = 608267971
    )
-   public int field3715;
+   @Export("headIcon")
+   public int headIcon;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = -261996981
    )
-   public int field3733;
+   @Export("rotation")
+   public int rotation;
    @ObfuscatedName("ac")
    @Export("configs")
    public int[] configs;
@@ -168,7 +181,8 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lha;"
    )
-   IterableHashTable field3735;
+   @Export("params")
+   IterableHashTable params;
 
    static {
       npcs = new NodeCache(64);
@@ -177,24 +191,24 @@ public class NPCComposition extends CacheableNode {
 
    NPCComposition() {
       this.name = "null";
-      this.field3720 = 1;
-      this.field3712 = -1;
+      this.size = 1;
+      this.standingAnimation = -1;
       this.field3716 = -1;
       this.field3714 = -1;
-      this.field3732 = -1;
-      this.field3736 = -1;
-      this.field3717 = -1;
-      this.field3706 = -1;
+      this.walkingAnimation = -1;
+      this.rotate180Animation = -1;
+      this.rotate90RightAnimation = -1;
+      this.rotate90LeftAnimation = -1;
       this.actions = new String[5];
       this.isMinimapVisible = true;
       this.combatLevel = -1;
       this.widthScale = 128;
       this.heightScale = 128;
       this.isVisible = false;
-      this.field3729 = 0;
-      this.field3730 = 0;
-      this.field3715 = -1;
-      this.field3733 = 32;
+      this.ambient = 0;
+      this.contrast = 0;
+      this.headIcon = -1;
+      this.rotation = 32;
       this.varpIndex = -1;
       this.varp32Index = -1;
       this.field3724 = true;
@@ -247,20 +261,20 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 2) {
          this.name = var1.readString();
       } else if(var2 == 12) {
-         this.field3720 = var1.readUnsignedByte();
+         this.size = var1.readUnsignedByte();
       } else if(var2 == 13) {
-         this.field3712 = var1.readUnsignedShort();
+         this.standingAnimation = var1.readUnsignedShort();
       } else if(var2 == 14) {
-         this.field3732 = var1.readUnsignedShort();
+         this.walkingAnimation = var1.readUnsignedShort();
       } else if(var2 == 15) {
          this.field3716 = var1.readUnsignedShort();
       } else if(var2 == 16) {
          this.field3714 = var1.readUnsignedShort();
       } else if(var2 == 17) {
-         this.field3732 = var1.readUnsignedShort();
-         this.field3736 = var1.readUnsignedShort();
-         this.field3717 = var1.readUnsignedShort();
-         this.field3706 = var1.readUnsignedShort();
+         this.walkingAnimation = var1.readUnsignedShort();
+         this.rotate180Animation = var1.readUnsignedShort();
+         this.rotate90RightAnimation = var1.readUnsignedShort();
+         this.rotate90LeftAnimation = var1.readUnsignedShort();
       } else if(var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.readString();
          if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
@@ -277,19 +291,19 @@ public class NPCComposition extends CacheableNode {
          }
       } else if(var2 == 41) {
          var3 = var1.readUnsignedByte();
-         this.field3721 = new short[var3];
-         this.field3740 = new short[var3];
+         this.textureToReplace = new short[var3];
+         this.textureToReplaceWith = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3721[var4] = (short)var1.readUnsignedShort();
-            this.field3740[var4] = (short)var1.readUnsignedShort();
+            this.textureToReplace[var4] = (short)var1.readUnsignedShort();
+            this.textureToReplaceWith[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 60) {
          var3 = var1.readUnsignedByte();
-         this.field3711 = new int[var3];
+         this.additionalModels = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3711[var4] = var1.readUnsignedShort();
+            this.additionalModels[var4] = var1.readUnsignedShort();
          }
       } else if(var2 == 93) {
          this.isMinimapVisible = false;
@@ -302,13 +316,13 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 99) {
          this.isVisible = true;
       } else if(var2 == 100) {
-         this.field3729 = var1.readByte();
+         this.ambient = var1.readByte();
       } else if(var2 == 101) {
-         this.field3730 = var1.readByte();
+         this.contrast = var1.readByte();
       } else if(var2 == 102) {
-         this.field3715 = var1.readUnsignedShort();
+         this.headIcon = var1.readUnsignedShort();
       } else if(var2 == 103) {
-         this.field3733 = var1.readUnsignedShort();
+         this.rotation = var1.readUnsignedShort();
       } else if(var2 != 106 && var2 != 118) {
          if(var2 == 107) {
             this.field3724 = false;
@@ -317,7 +331,7 @@ public class NPCComposition extends CacheableNode {
          } else if(var2 == 111) {
             this.field3738 = true;
          } else if(var2 == 249) {
-            this.field3735 = class28.readStringIntParameters(var1, this.field3735);
+            this.params = class28.readStringIntParameters(var1, this.params);
          }
       } else {
          this.varpIndex = var1.readUnsignedShort();
@@ -398,13 +412,13 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            if(this.field3721 != null) {
-               for(var9 = 0; var9 < this.field3721.length; ++var9) {
-                  var11.method2613(this.field3721[var9], this.field3740[var9]);
+            if(this.textureToReplace != null) {
+               for(var9 = 0; var9 < this.textureToReplace.length; ++var9) {
+                  var11.method2613(this.textureToReplace[var9], this.textureToReplaceWith[var9]);
                }
             }
 
-            var5 = var11.light(this.field3729 + 64, this.field3730 * 5 + 850, -30, -50, -30);
+            var5 = var11.light(this.ambient + 64, this.contrast * 5 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 
@@ -436,13 +450,13 @@ public class NPCComposition extends CacheableNode {
       if(this.configs != null) {
          NPCComposition var1 = this.transform();
          return var1 == null?null:var1.method5148();
-      } else if(this.field3711 == null) {
+      } else if(this.additionalModels == null) {
          return null;
       } else {
          boolean var5 = false;
 
-         for(int var2 = 0; var2 < this.field3711.length; ++var2) {
-            if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.field3711[var2], 0)) {
+         for(int var2 = 0; var2 < this.additionalModels.length; ++var2) {
+            if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.additionalModels[var2], 0)) {
                var5 = true;
             }
          }
@@ -450,10 +464,10 @@ public class NPCComposition extends CacheableNode {
          if(var5) {
             return null;
          } else {
-            ModelData[] var6 = new ModelData[this.field3711.length];
+            ModelData[] var6 = new ModelData[this.additionalModels.length];
 
-            for(int var3 = 0; var3 < this.field3711.length; ++var3) {
-               var6[var3] = ModelData.method2645(NpcDefinition_modelIndexCache, this.field3711[var3], 0);
+            for(int var3 = 0; var3 < this.additionalModels.length; ++var3) {
+               var6[var3] = ModelData.method2645(NpcDefinition_modelIndexCache, this.additionalModels[var3], 0);
             }
 
             ModelData var7;
@@ -470,9 +484,9 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            if(this.field3721 != null) {
-               for(var4 = 0; var4 < this.field3721.length; ++var4) {
-                  var7.method2613(this.field3721[var4], this.field3740[var4]);
+            if(this.textureToReplace != null) {
+               for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
+                  var7.method2613(this.textureToReplace[var4], this.textureToReplaceWith[var4]);
                }
             }
 
@@ -531,7 +545,7 @@ public class NPCComposition extends CacheableNode {
       garbageValue = "-71"
    )
    public int method5124(int var1, int var2) {
-      IterableHashTable var4 = this.field3735;
+      IterableHashTable var4 = this.params;
       int var3;
       if(var4 == null) {
          var3 = var2;
@@ -553,6 +567,6 @@ public class NPCComposition extends CacheableNode {
       garbageValue = "-820378305"
    )
    public String method5125(int var1, String var2) {
-      return WorldMapType1.method309(this.field3735, var1, var2);
+      return WorldMapType1.method309(this.params, var1, var2);
    }
 }

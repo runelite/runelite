@@ -48,33 +48,34 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class MapClue extends ClueScroll implements ObjectClueScroll
+public class MapClue extends ClueScroll implements ObjectClueScroll, LocationClueScroll
 {
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
+		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
 		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0)),
 		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0)),
 		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0)),
-		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3502, 0), CRATE_2620),
 		new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0)),
 		new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2616, 3077, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(3458, 3182, 0), CRATE_18506),
-		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3629, 0), CRATE_354),
+		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2659, 3488, 0), CRATE_357),
 		new MapClue(CLUE_SCROLL_MEDIUM_3599, new WorldPoint(2651, 3231, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_3601, new WorldPoint(2564, 3249, 0), CRATE_354),
 		new MapClue(CLUE_SCROLL_MEDIUM_3602, new WorldPoint(2924, 3210, 0)),
-		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0)),
-		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7286, new WorldPoint(2536, 3865, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7288, new WorldPoint(3434, 3265, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
-		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0))
+		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3502, 0), CRATE_2620),
+		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2616, 3077, 0)),
+		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
+		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(3458, 3182, 0), CRATE_18506),
+		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3629, 0), CRATE_354),
+		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
+		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0))
 	);
 
 	private int itemId;
@@ -125,11 +126,6 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!plugin.getClient().hasHintArrow())
-		{
-			plugin.getClient().setHintArrow(getLocation());
-		}
-
 		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 		if (localLocation == null)

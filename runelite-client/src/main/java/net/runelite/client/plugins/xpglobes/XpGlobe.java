@@ -24,9 +24,8 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import net.runelite.api.Skill;
-
 import java.time.Instant;
+import net.runelite.api.Skill;
 
 public class XpGlobe
 {

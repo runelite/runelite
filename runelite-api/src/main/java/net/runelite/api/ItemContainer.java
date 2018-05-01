@@ -24,11 +24,11 @@
  */
 package net.runelite.api;
 
-public interface ItemContainer
+public interface ItemContainer extends Node
 {
 	/**
 	 * Get the items from the container
-	 * @return
+	 * @return items
 	 */
 	Item[] getItems();
 }

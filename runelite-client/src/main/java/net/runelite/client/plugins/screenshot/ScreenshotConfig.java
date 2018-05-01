@@ -91,10 +91,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "kingdom",
+		name = "Screenshot Kingdom Reward",
+		description = "Configures whether screenshots are taken of Kingdom Reward",
+		position = 5
+	)
+	default boolean screenshotKingdom()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "uploadScreenshot",
 		name = "Upload To Imgur",
 		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
-		position = 5
+		position = 6
 	)
 	default boolean uploadScreenshot()
 	{

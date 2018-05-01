@@ -55,7 +55,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.clanManager = clanManager;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(OverlayPriority.MED);
 	}
 
 	@Override

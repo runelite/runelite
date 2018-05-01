@@ -32,6 +32,9 @@ public interface RSPlayer extends RSActor, Player
 	@Import("name")
 	RSName getRsName();
 
+	@Import("playerId")
+	int getPlayerId();
+
 	@Import("composition")
 	@Override
 	RSPlayerComposition getPlayerComposition();
@@ -54,9 +57,4 @@ public interface RSPlayer extends RSActor, Player
 	@Import("isFriend")
 	@Override
 	boolean isFriend();
-
-	@Override
-	int getIndex();
-
-	void setIndex(int id);
 }

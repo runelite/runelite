@@ -465,17 +465,17 @@ public abstract class class28 {
                }
 
                int var9 = var1.getBits(1);
-               var4.field1172 = var4.composition.field3720;
-               var4.field1205 = var4.composition.field3733;
+               var4.field1172 = var4.composition.size;
+               var4.field1205 = var4.composition.rotation;
                if(var4.field1205 == 0) {
                   var4.angle = 0;
                }
 
-               var4.field1165 = var4.composition.field3732;
-               var4.field1209 = var4.composition.field3736;
-               var4.field1167 = var4.composition.field3717;
-               var4.field1177 = var4.composition.field3706;
-               var4.idlePoseAnimation = var4.composition.field3712;
+               var4.field1165 = var4.composition.walkingAnimation;
+               var4.field1209 = var4.composition.rotate180Animation;
+               var4.field1167 = var4.composition.rotate90RightAnimation;
+               var4.field1177 = var4.composition.rotate90LeftAnimation;
+               var4.idlePoseAnimation = var4.composition.standingAnimation;
                var4.field1163 = var4.composition.field3716;
                var4.field1164 = var4.composition.field3714;
                var4.method1874(SoundTaskDataProvider.localPlayer.pathX[0] + var6, SoundTaskDataProvider.localPlayer.pathY[0] + var8, var9 == 1);

@@ -340,7 +340,7 @@ public class CombatInfo2 extends CacheableNode {
          var10 = var0.offset;
          if(var2.name != null && var2.composition != null) {
             boolean var22 = false;
-            if(var18.field3352 && WorldMapRectangle.friendManager.method1738(var2.name)) {
+            if(var18.field3352 && WorldMapRectangle.friendManager.isIgnored(var2.name)) {
                var22 = true;
             }
 

@@ -3729,7 +3729,7 @@ public final class Client extends GameEngine implements class302 {
                      var2 = npcIndices[var1];
                      NPC var22 = cachedNPCs[var2];
                      if(var22 != null) {
-                        WorldMapType3.method234(var22, var22.composition.field3720);
+                        WorldMapType3.method234(var22, var22.composition.size);
                      }
                   }
 
@@ -5404,7 +5404,7 @@ public final class Client extends GameEngine implements class302 {
                   }
                }
 
-               if(WorldMapRectangle.friendManager.method1738(new Name(var62, GZipDecompressor.loginType))) {
+               if(WorldMapRectangle.friendManager.isIgnored(new Name(var62, GZipDecompressor.loginType))) {
                   var13 = true;
                }
 
@@ -5528,7 +5528,7 @@ public final class Client extends GameEngine implements class302 {
                boolean var90 = false;
                if(var82) {
                   var80 = var3.readString();
-                  if(WorldMapRectangle.friendManager.method1738(new Name(var80, GZipDecompressor.loginType))) {
+                  if(WorldMapRectangle.friendManager.isIgnored(new Name(var80, GZipDecompressor.loginType))) {
                      var90 = true;
                   }
                }
@@ -5612,7 +5612,7 @@ public final class Client extends GameEngine implements class302 {
                   }
                }
 
-               if(var31.field3352 && WorldMapRectangle.friendManager.method1738(new Name(var62, GZipDecompressor.loginType))) {
+               if(var31.field3352 && WorldMapRectangle.friendManager.isIgnored(new Name(var62, GZipDecompressor.loginType))) {
                   var15 = true;
                }
 
@@ -6069,6 +6069,7 @@ public final class Client extends GameEngine implements class302 {
       garbageValue = "-1938426547"
    )
    @Export("openMenu")
+   @Hook("menuOpened")
    final void openMenu(int var1, int var2) {
       int var3 = MessageNode.fontBold12.getTextWidth("Choose Option");
 

@@ -71,10 +71,23 @@ public class BankValuePlugin extends Plugin
 		}
 
 		bankTitle.save();
-		bankCalculation.calculate();
+		calculate(widgetBankTitleBar);
 		if (bankCalculation.isFinished())
 		{
 			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
 		}
+	}
+
+	private void calculate(Widget bankTitleBar)
+	{
+		// Don't update on a search because rs seems to constantly update the title
+		if (bankTitleBar == null ||
+			bankTitleBar.isHidden() ||
+			bankTitleBar.getText().contains("Showing"))
+		{
+			return;
+		}
+
+		bankCalculation.calculate();
 	}
 }

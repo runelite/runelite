@@ -119,5 +119,17 @@ public class PohOverlay extends Overlay
 		{
 			iconList.add(PohIcons.EXITPORTAL);
 		}
+		if (config.showSpellbook())
+		{
+			iconList.add(PohIcons.SPELLBOOKALTAR);
+		}
+		if (config.showJewelleryBox())
+		{
+			iconList.add(PohIcons.JEWELLERYBOX);
+		}
+		if (config.showMagicTravel())
+		{
+			iconList.add(PohIcons.MAGICTRAVEL);
+		}
 	}
 }

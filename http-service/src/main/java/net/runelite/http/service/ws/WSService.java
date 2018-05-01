@@ -69,28 +69,28 @@ public class WSService
 	{
 		this.session = session;
 		SessionManager.add(this, session);
-		logger.info("New session {}", session);
+		logger.debug("New session {}", session);
 	}
 
 	@OnClose
 	public void onClose(Session session, CloseReason resaon)
 	{
 		SessionManager.remove(session);
-		logger.info("Close session {}", session);
+		logger.debug("Close session {}", session);
 	}
 
 	@OnError
 	public void onError(Session session, Throwable ex)
 	{
 		SessionManager.remove(session);
-		logger.warn("Error in session {}", session, ex);
+		logger.debug("Error in session {}", session, ex);
 	}
 
 	@OnMessage
 	public void onMessage(Session session, String text)
 	{
 		WebsocketMessage message = gson.fromJson(text, WebsocketMessage.class);
-		logger.info("Got message: {}", message);
+		logger.debug("Got message: {}", message);
 
 		if (message instanceof Handshake)
 		{

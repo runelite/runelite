@@ -57,7 +57,7 @@ public enum Book
 	IDEOLOGY_OF_DARKNESS(ItemID.IDEOLOGY_OF_DARKNESS, "The Ideology of Darkness", "The Ideology of Darkness, by Philophaire."),
 	RADAS_JOURNEY(ItemID.RADAS_JOURNEY, "Rada's Journey", "The Journey of Rada, by Griselle."),
 	TRANSVERGENCE_THEORY(ItemID.TRANSVERGENCE_THEORY, "Transvergence Theory", "The Theory of Transvergence, by Amon Ducot."),
-	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "Tristessa's Tradgedy", "The Tragedy of Tristessa."),
+	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "Tristessa's Tragedy", "The Tragedy of Tristessa."),
 	TREACHERY_OF_ROYALTY(ItemID.TREACHERY_OF_ROYALTY, "The Treachery of Royalty", "The Treachery of Royalty, by Professor Answith."),
 	TRANSPORTATION_INCANTATIONS(ItemID.TRANSPORTATION_INCANTATIONS, "Transportation Incantations", "Transportation Incantations, by Amon Ducot."),
 	SOUL_JORUNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),

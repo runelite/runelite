@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,6 +25,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,6 +38,7 @@ import net.runelite.client.config.ConfigItem;
 public interface SlayerConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "infobox",
 		name = "Task InfoBox",
 		description = "Display task information in an InfoBox"
@@ -46,6 +49,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "itemoverlay",
 		name = "Count on Items",
 		description = "Display task count remaining on slayer items"
@@ -56,6 +60,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "superiornotification",
 		name = "Superior foe notification",
 		description = "Toggles notifications on superior foe encounters"
@@ -66,6 +71,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "statTimeout",
 		name = "InfoBox Expiry (minutes)",
 		description = "Set the time until the InfoBox expires"
@@ -73,6 +79,28 @@ public interface SlayerConfig extends Config
 	default int statTimeout()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "highlightTargets",
+		name = "Highlight Targets",
+		description = "Highlight monsters you can kill for your current slayer assignment"
+	)
+	default boolean highlightTargets()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "targetColor",
+		name = "Target Color",
+		description = "Color of the highlighted targets"
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
 	}
 
 	// Stored data

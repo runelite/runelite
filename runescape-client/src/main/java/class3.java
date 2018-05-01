@@ -27,7 +27,7 @@ final class class3 implements class0 {
       var0.bitAccess();
       int var1 = Client.localInteractingIndex;
       Player var2 = SoundTaskDataProvider.localPlayer = Client.cachedPlayers[var1] = new Player();
-      var2.field836 = var1;
+      var2.playerId = var1;
       int var3 = var0.getBits(30);
       byte var4 = (byte)(var3 >> 28);
       int var5 = var3 >> 14 & 16383;

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,25 +28,32 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.time.Instant;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -54,7 +62,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
@@ -99,6 +106,15 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private TargetClickboxOverlay targetClickboxOverlay;
+
+	@Inject
+	private TargetMinimapOverlay targetMinimapOverlay;
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<NPC> highlightedTargets = new ArrayList<>();
 
 	private String taskName;
 	private int amount;
@@ -168,11 +184,8 @@ public class SlayerPlugin extends Plugin
 		config.streak(streak);
 	}
 
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void scheduledChecks()
+	@Subscribe
+	public void onGameTick(GameTick tick)
 	{
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
@@ -215,6 +228,15 @@ public class SlayerPlugin extends Plugin
 			{
 				removeCounter();
 			}
+		}
+
+		if (config.highlightTargets())
+		{
+			highlightedTargets = buildTargetsToHighlight();
+		}
+		else
+		{
+			highlightedTargets.clear();
 		}
 	}
 
@@ -387,11 +409,62 @@ public class SlayerPlugin extends Plugin
 		counter = null;
 	}
 
+	private List<NPC> buildTargetsToHighlight()
+	{
+		if (Strings.isNullOrEmpty(taskName))
+			return Collections.EMPTY_LIST;
+
+		List<NPC> npcs = new ArrayList<>();
+		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
+		highlightedNpcs.add(taskName.replaceAll("s$", ""));
+
+		for (NPC npc : client.getNpcs())
+		{
+			NPCComposition composition = getComposition(npc);
+
+			if (composition == null || composition.getName() == null)
+				continue;
+
+			String name = composition.getName().replace('\u00A0', ' ');
+			for (String highlight : highlightedNpcs)
+			{
+				if (name.toLowerCase().contains(highlight.toLowerCase())
+					&& Arrays.asList(composition.getActions()).contains("Attack"))
+				{
+					npcs.add(npc);
+					break;
+				}
+			}
+		}
+
+		return npcs;
+	}
+
+	/**
+	 * Get npc composition, account for imposters
+	 *
+	 * @param npc
+	 * @return
+	 */
+	private static NPCComposition getComposition(NPC npc)
+	{
+		if (npc == null)
+			return null;
+
+		NPCComposition composition = npc.getComposition();
+		if (composition != null && composition.getConfigs() != null)
+		{
+			composition = composition.transform();
+		}
+
+		return composition;
+	}
+
 	//Getters
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, targetClickboxOverlay, targetMinimapOverlay);
 	}
 
 	public String getTaskName()

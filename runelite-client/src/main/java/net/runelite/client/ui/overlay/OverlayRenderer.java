@@ -281,12 +281,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 		// Create copy of snap corners because overlays will modify them
 		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
-
-		// Set font based on configuration
-		graphics.setFont(runeLiteConfig.useSmallFont()
-			? FontManager.getRunescapeSmallFont()
-			: FontManager.getRunescapeFont());
-
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
@@ -500,6 +494,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
 	{
 		final Graphics2D subGraphics = (Graphics2D) graphics.create();
+
 		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
 			subGraphics.setClip(client.getViewportXOffset(),
@@ -507,6 +502,24 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				client.getViewportWidth(),
 				client.getViewportHeight());
 		}
+
+		final OverlayPosition position = overlay.getPosition();
+
+		// Set font based on configuration
+		if (position == OverlayPosition.DYNAMIC)
+		{
+			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+		}
+		else if (position == OverlayPosition.TOOLTIP)
+		{
+			subGraphics.setFont(FontManager.getRunescapeSmallFont());
+		}
+		else
+		{
+			subGraphics.setFont(FontManager.getRunescapeFont());
+		}
+
+
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
 		subGraphics.dispose();

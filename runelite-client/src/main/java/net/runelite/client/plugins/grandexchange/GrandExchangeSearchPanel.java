@@ -126,6 +126,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 		if (Strings.isNullOrEmpty(lookup))
 		{
+			searchItemsPanel.removeAll();
 			return;
 		}
 
@@ -198,18 +199,24 @@ class GrandExchangeSearchPanel extends JPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
-			for (GrandExchangeItems item : ITEMS_LIST)
+			if (ITEMS_LIST.isEmpty())
 			{
-				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice());
-
-				searchItemsPanel.add(panel);
+				showSearchString("No results found.");
 			}
+			else
+			{
+				for (GrandExchangeItems item : ITEMS_LIST)
+				{
+					GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
+						item.getItemId(), item.getGePrice(), item.getHaPrice());
 
-			ITEMS_LIST.clear();
+					searchItemsPanel.add(panel);
+				}
 
-			// Remove searching label after search is complete
-			showSearchString(null);
+				// Remove searching label after search is complete
+				showSearchString(null);
+				ITEMS_LIST.clear();
+			}
 		});
 	}
 

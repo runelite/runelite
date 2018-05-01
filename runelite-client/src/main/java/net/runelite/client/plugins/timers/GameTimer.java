@@ -42,7 +42,7 @@ public enum GameTimer
 	EXANTIFIRE("exantifire", "Extended antifire", 12, ChronoUnit.MINUTES),
 	OVERLOAD("overload", "Overload", 5, ChronoUnit.MINUTES),
 	CANNON("cannon", "Cannon", 25, ChronoUnit.MINUTES),
-	MAGICIMBUE("magicimbue", "Magic imbue", 15, ChronoUnit.SECONDS),
+	MAGICIMBUE("magicimbue", "Magic imbue", 12, ChronoUnit.SECONDS),
 	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
 	ANTIVENOMPLUS("antivenomplus", "Anti-venom+", 3, ChronoUnit.MINUTES),
@@ -65,7 +65,7 @@ public enum GameTimer
 	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
 	SANFEW("sanfew", "Sanfew serum", 6, ChronoUnit.MINUTES),
 	OVERLOAD_RAID("overloadraid", "Overload", 5, ChronoUnit.MINUTES),
-	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 290, ChronoUnit.SECONDS),
+	PRAYER_ENHANCE("prayerenhance", "Prayer enhance", 275, ChronoUnit.SECONDS),
 	GOD_WARS_ALTAR("altar", "God wars altar", 10, ChronoUnit.MINUTES),
 	ANTIPOISON("antipoison", "Antipoison", 90, ChronoUnit.SECONDS),
 	SUPERANTIPOISON("superantipoison", "Superantipoison", 346, ChronoUnit.SECONDS);
