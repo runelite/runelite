@@ -38,6 +38,8 @@ public enum VarPlayer
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
+	FOLLOWER(447),
+
 	IN_RAID_PARTY(1427);
 
 	private final int id;
