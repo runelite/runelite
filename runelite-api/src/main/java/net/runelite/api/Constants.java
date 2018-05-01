@@ -34,4 +34,6 @@ public class Constants
 	public static final Dimension GAME_FIXED_SIZE = new Dimension(GAME_FIXED_WIDTH, GAME_FIXED_HEIGHT);
 	public static final double GAME_FIXED_ASPECT_RATIO = (double) GAME_FIXED_WIDTH / (double) GAME_FIXED_HEIGHT;
 	public static final int CLIENT_DEFAULT_ZOOM = 512;
+	public static final int CHUNK_SIZE = 8;
+	public static final int REGION_SIZE = 104;
 }

@@ -43,7 +43,7 @@ public class DevToolsPanel extends PluginPanel
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
-	private final SettingsTracker settingsTracker;
+	private final VarTracker varTracker;
 
 	private WidgetInspector widgetInspector;
 
@@ -55,7 +55,7 @@ public class DevToolsPanel extends PluginPanel
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 
-		settingsTracker = new SettingsTracker(client);
+		varTracker = new VarTracker(client);
 		add(createOptionsPanel());
 	}
 
@@ -139,13 +139,13 @@ public class DevToolsPanel extends PluginPanel
 		final JPanel boundsDebugPanel = createBoundsDebugMultiButton();
 		container.add(boundsDebugPanel);
 
-		final JButton settingsSnapshotBtn = new JButton("Get Settings");
-		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
-		container.add(settingsSnapshotBtn);
+		final JButton varSnapshotBtn = new JButton("Snapshot Vars");
+		varSnapshotBtn.addActionListener(varTracker::snapshot);
+		container.add(varSnapshotBtn);
 
-		final JButton settingsClearBtn = new JButton("Clear Settings");
-		settingsClearBtn.addActionListener(settingsTracker::clear);
-		container.add(settingsClearBtn);
+		final JButton varClearBtn = new JButton("Clear Vars");
+		varClearBtn.addActionListener(varTracker::clear);
+		container.add(varClearBtn);
 
 		final JButton renderLocationBtn = new JButton("Location");
 		renderLocationBtn.addActionListener(e ->
@@ -179,6 +179,22 @@ public class DevToolsPanel extends PluginPanel
 			plugin.toggleMapSquares();
 		});
 		container.add(mapSquaresBtn);
+
+		final JButton validMovementBtn = new JButton("Valid Moves");
+		validMovementBtn.addActionListener(e ->
+		{
+			highlightButton(validMovementBtn);
+			plugin.toggleValidMovement();
+		});
+		container.add(validMovementBtn);
+
+		final JButton lineOfSightBtn = new JButton("Line of Sight");
+		lineOfSightBtn.addActionListener(e ->
+		{
+			highlightButton(lineOfSightBtn);
+			plugin.toggleLineOfSight();
+		});
+		container.add(lineOfSightBtn);
 
 		return container;
 	}

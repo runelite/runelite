@@ -62,9 +62,9 @@ public class XpTrackerService
 	{
 		try (Connection con = sql2o.open())
 		{
-			PlayerEntity playerEntity = findOrCreatePlayer(username);
+			PlayerEntity playerEntity = findOrCreatePlayer(con, username);
 
-			XpEntity currentXp = findXpAtTime(username, Instant.now());
+			XpEntity currentXp = findXpAtTime(con, username, Instant.now());
 			if (currentXp != null)
 			{
 				XpData hiscoreData = XpMapper.INSTANCE.hiscoreResultToXpData(hiscoreResult);
@@ -139,43 +139,45 @@ public class XpTrackerService
 		}
 	}
 
-	private synchronized PlayerEntity findOrCreatePlayer(String username)
+	private synchronized PlayerEntity findOrCreatePlayer(Connection con, String username)
 	{
-		try (Connection con = sql2o.open())
+		PlayerEntity playerEntity = con.createQuery("select * from player where name = :name")
+			.addParameter("name", username)
+			.executeAndFetchFirst(PlayerEntity.class);
+		if (playerEntity != null)
 		{
-			PlayerEntity playerEntity = con.createQuery("select * from player where name = :name")
-				.addParameter("name", username)
-				.executeAndFetchFirst(PlayerEntity.class);
-			if (playerEntity != null)
-			{
-				return playerEntity;
-			}
-
-			Instant now = Instant.now();
-
-			int id = con.createQuery("insert into player (name, tracked_since) values (:name, :tracked_since)")
-				.addParameter("name", username)
-				.addParameter("tracked_since", now)
-				.executeUpdate()
-				.getKey(int.class);
-
-			playerEntity = new PlayerEntity();
-			playerEntity.setId(id);
-			playerEntity.setName(username);
-			playerEntity.setTracked_since(now);
 			return playerEntity;
 		}
+
+		Instant now = Instant.now();
+
+		int id = con.createQuery("insert into player (name, tracked_since) values (:name, :tracked_since)")
+			.addParameter("name", username)
+			.addParameter("tracked_since", now)
+			.executeUpdate()
+			.getKey(int.class);
+
+		playerEntity = new PlayerEntity();
+		playerEntity.setId(id);
+		playerEntity.setName(username);
+		playerEntity.setTracked_since(now);
+		return playerEntity;
+	}
+
+	private XpEntity findXpAtTime(Connection con, String username, Instant time)
+	{
+		return con.createQuery("select * from xp join player on player.id=xp.player where player.name = :username and time <= :time order by time desc limit 1")
+			.throwOnMappingFailure(false)
+			.addParameter("username", username)
+			.addParameter("time", time)
+			.executeAndFetchFirst(XpEntity.class);
 	}
 
 	public XpEntity findXpAtTime(String username, Instant time)
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("select * from xp join player on player.id=xp.player where player.name = :username and time <= :time order by time desc limit 1")
-				.throwOnMappingFailure(false)
-				.addParameter("username", username)
-				.addParameter("time", time)
-				.executeAndFetchFirst(XpEntity.class);
+			return findXpAtTime(con, username, time);
 		}
 	}
 }

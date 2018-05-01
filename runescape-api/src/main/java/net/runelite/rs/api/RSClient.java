@@ -82,7 +82,6 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getVarps();
 
 	@Import("varcs")
-	@Override
 	RSVarcs getVarcs();
 
 	@Import("energy")
@@ -101,13 +100,28 @@ public interface RSClient extends RSGameEngine, Client
 	int getBaseY();
 
 	@Import("boostedSkillLevels")
+	@Override
 	int[] getBoostedSkillLevels();
 
 	@Import("realSkillLevels")
+	@Override
 	int[] getRealSkillLevels();
 
 	@Import("skillExperiences")
+	@Override
 	int[] getSkillExperiences();
+
+	@Import("changedSkills")
+	@Override
+	int[] getChangedSkills();
+
+	@Import("changedSkillsCount")
+	@Override
+	int getChangedSkillsCount();
+
+	@Import("changedSkillsCount")
+	@Override
+	void setChangedSkillsCount(int i);
 
 	@Import("gameState")
 	int getRSGameState();
@@ -115,6 +129,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("mouseCurrentButton")
 	@Override
 	int getMouseCurrentButton();
+
+	@Import("selectedRegionTileX")
+	int getSelectedRegionTileX();
+
+	@Import("selectedRegionTileY")
+	int getSelectedRegionTileY();
 
 	@Import("draggingWidget")
 	@Override
@@ -612,4 +632,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("hintArrowPlayerTargetIdx")
 	int getHintArrowPlayerTargetIdx();
+
+	@Import("isDynamicRegion")
+	@Override
+	boolean isInInstancedRegion();
 }

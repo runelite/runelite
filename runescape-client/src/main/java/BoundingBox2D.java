@@ -4,54 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("c")
 @Implements("BoundingBox2D")
 public final class BoundingBox2D extends BoundingBox {
-   @ObfuscatedName("of")
+   @ObfuscatedName("pm")
    @ObfuscatedSignature(
-      signature = "Lld;"
+      signature = "Lct;"
    )
-   @Export("minimapSprite")
-   static SpritePixels minimapSprite;
-   @ObfuscatedName("pl")
-   @ObfuscatedGetter(
-      intValue = -681479473
+   static class100 field238;
+   @ObfuscatedName("ns")
+   @ObfuscatedSignature(
+      signature = "Llz;"
    )
-   static int field248;
-   @ObfuscatedName("u")
-   public static short[] field246;
-   @ObfuscatedName("o")
+   static class320 field246;
+   @ObfuscatedName("ab")
+   protected static String field244;
+   @ObfuscatedName("cm")
+   @Export("currentTypedKey")
+   public static char currentTypedKey;
+   @ObfuscatedName("if")
+   @ObfuscatedSignature(
+      signature = "Liz;"
+   )
+   static Widget field241;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 423493109
+      intValue = -566524049
    )
    @Export("xMin")
    final int xMin;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1699475659
+      intValue = -1483633439
    )
    @Export("yMin")
    final int yMin;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -76157077
+      intValue = -1917843219
    )
    @Export("xMax")
    final int xMax;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1224011697
+      intValue = -1596657605
    )
    @Export("yMax")
    final int yMax;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 349392343
+      intValue = 1829738489
    )
    @Export("color")
    final int color;
 
-   BoundingBox2D(int var1, int var2, int var3, int var4, int var5) {
+   public BoundingBox2D(int var1, int var2, int var3, int var4, int var5) {
       this.xMin = var1;
       this.yMin = var2;
       this.xMax = var3;
@@ -59,49 +66,30 @@ public final class BoundingBox2D extends BoundingBox {
       this.color = var5;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "45976309"
+      garbageValue = "2120397174"
    )
-   public final void vmethod46() {
+   final void vmethod51() {
       Rasterizer2D.drawRectangle(this.xMin + Rasterizer2D.draw_region_x, this.yMin + Rasterizer2D.drawingAreaTop, this.xMax - this.xMin, this.yMax - this.yMin, this.color);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)[Lga;",
-      garbageValue = "-1823861162"
+      signature = "(I)I",
+      garbageValue = "-758072695"
    )
-   static LoginPacket[] method37() {
-      return new LoginPacket[]{LoginPacket.field2485, LoginPacket.field2486, LoginPacket.field2483, LoginPacket.field2488};
+   static int method42() {
+      return ++class95.field1431 - 1;
    }
 
-   @ObfuscatedName("fm")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "12"
+      signature = "(ILiv;B)I",
+      garbageValue = "-55"
    )
-   static final void method36() {
-      if(class71.soundSystem1 != null) {
-         class71.soundSystem1.method2197();
-      }
-
-      if(class155.soundSystem0 != null) {
-         class155.soundSystem0.method2197();
-      }
-
-   }
-
-   @ObfuscatedName("kj")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-965946678"
-   )
-   static void method32() {
-      if(Client.field960 == 1) {
-         Client.field1061 = true;
-      }
-
+   public static int method40(int var0, class245 var1) {
+      return (var0 << 8) + var1.field2959;
    }
 }

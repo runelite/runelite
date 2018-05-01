@@ -4,104 +4,124 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cl")
+@ObfuscatedName("ca")
 public class class81 {
-   @ObfuscatedName("rl")
-   @ObfuscatedGetter(
-      intValue = 1392282369
-   )
-   static int field1287;
-   @ObfuscatedName("t")
-   @Export("scriptLocalInts")
-   static int[] scriptLocalInts;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @Export("scriptLocalStrings")
    static String[] scriptLocalStrings;
-   @ObfuscatedName("h")
-   static int[] field1282;
-   @ObfuscatedName("m")
+   @ObfuscatedName("n")
+   static int[] field1277;
+   @ObfuscatedName("l")
    @Export("SHAPE_VERTICES")
    static int[][] SHAPE_VERTICES;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @Export("intStack")
    static int[] intStack;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @Export("scriptStringStack")
    static String[] scriptStringStack;
-   @ObfuscatedName("y")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1788554331
+      intValue = -964697413
+   )
+   @Export("scriptStringStackSize")
+   static int scriptStringStackSize;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 969622183
    )
    @Export("scriptStackCount")
    static int scriptStackCount;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "[Lbo;"
+      signature = "[Lbk;"
    )
    @Export("scriptStack")
    static ScriptState[] scriptStack;
-   @ObfuscatedName("n")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lin;"
+      signature = "Liz;"
    )
-   static Widget field1285;
-   @ObfuscatedName("l")
-   static Calendar field1284;
-   @ObfuscatedName("s")
-   static final String[] field1291;
+   static Widget field1270;
+   @ObfuscatedName("p")
+   static Calendar field1271;
    @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 311283157
+   static final String[] field1263;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lae;"
    )
-   static int field1288;
+   @Export("scriptMapIconReference")
+   static MapIconReference scriptMapIconReference;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 172673385
+   )
+   static int field1274;
 
    static {
-      field1282 = new int[5];
+      field1277 = new int[5];
       SHAPE_VERTICES = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1284 = Calendar.getInstance();
-      field1291 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      field1288 = 0;
+      field1271 = Calendar.getInstance();
+      field1263 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field1274 = 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "1"
+      signature = "(ILcr;ZI)I",
+      garbageValue = "1925295473"
    )
-   static char method1849(char var0) {
-      return var0 != 181 && var0 != 131?Character.toTitleCase(var0):var0;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IIIZIZI)V",
-      garbageValue = "-1939266148"
-   )
-   static void method1848(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if(var0 < var1) {
-         int var6 = (var0 + var1) / 2;
-         int var7 = var0;
-         World var8 = World.worldList[var6];
-         World.worldList[var6] = World.worldList[var1];
-         World.worldList[var1] = var8;
-
-         for(int var9 = var0; var9 < var1; ++var9) {
-            if(Client.method1503(World.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
-               World var10 = World.worldList[var9];
-               World.worldList[var9] = World.worldList[var7];
-               World.worldList[var7++] = var10;
-            }
-         }
-
-         World.worldList[var1] = World.worldList[var7];
-         World.worldList[var7] = var8;
-         method1848(var0, var7 - 1, var2, var3, var4, var5);
-         method1848(var7 + 1, var1, var2, var3, var4, var5);
+   static int method1912(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class49.field604:field1270;
+      if(var0 == 1600) {
+         intStack[++class171.intStackSize - 1] = var3.scrollX;
+         return 1;
+      } else if(var0 == 1601) {
+         intStack[++class171.intStackSize - 1] = var3.scrollY;
+         return 1;
+      } else if(var0 == 1602) {
+         scriptStringStack[++scriptStringStackSize - 1] = var3.text;
+         return 1;
+      } else if(var0 == 1603) {
+         intStack[++class171.intStackSize - 1] = var3.scrollWidth;
+         return 1;
+      } else if(var0 == 1604) {
+         intStack[++class171.intStackSize - 1] = var3.scrollHeight;
+         return 1;
+      } else if(var0 == 1605) {
+         intStack[++class171.intStackSize - 1] = var3.modelZoom;
+         return 1;
+      } else if(var0 == 1606) {
+         intStack[++class171.intStackSize - 1] = var3.rotationX;
+         return 1;
+      } else if(var0 == 1607) {
+         intStack[++class171.intStackSize - 1] = var3.rotationY;
+         return 1;
+      } else if(var0 == 1608) {
+         intStack[++class171.intStackSize - 1] = var3.rotationZ;
+         return 1;
+      } else if(var0 == 1609) {
+         intStack[++class171.intStackSize - 1] = var3.opacity;
+         return 1;
+      } else if(var0 == 1610) {
+         intStack[++class171.intStackSize - 1] = var3.field2853;
+         return 1;
+      } else if(var0 == 1611) {
+         intStack[++class171.intStackSize - 1] = var3.textColor;
+         return 1;
+      } else if(var0 == 1612) {
+         intStack[++class171.intStackSize - 1] = var3.field2847;
+         return 1;
+      } else if(var0 == 1613) {
+         intStack[++class171.intStackSize - 1] = var3.field2854.rsOrdinal();
+         return 1;
+      } else {
+         return 2;
       }
-
    }
 }

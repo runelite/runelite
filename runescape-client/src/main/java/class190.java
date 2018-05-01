@@ -1,42 +1,46 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gr")
+@ObfuscatedName("gs")
 public class class190 {
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "[Ljx;"
+   )
+   @Export("mapAreaType")
+   public static Area[] mapAreaType;
+   @ObfuscatedName("bk")
+   @ObfuscatedGetter(
+      intValue = 561921555
+   )
+   static int field2515;
    @ObfuscatedName("df")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lji;"
    )
-   @Export("indexScripts")
-   static IndexData indexScripts;
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-277343420"
+      signature = "(II)Ljp;",
+      garbageValue = "-1405155802"
    )
-   static void method3488() {
-      class95.field1449 = new int[2000];
-      int var0 = 0;
-      int var1 = 240;
-
-      int var3;
-      for(byte var2 = 12; var0 < 16; var1 -= var2) {
-         var3 = class27.method248((double)((float)var1 / 360.0F), 0.9998999834060669D, (double)((float)var0 * 0.425F / 16.0F + 0.075F));
-         class95.field1449[var0] = var3;
-         ++var0;
-      }
-
-      var1 = 48;
-
-      for(int var5 = var1 / 6; var0 < class95.field1449.length; var1 -= var5) {
-         var3 = var0 * 2;
-
-         for(int var4 = class27.method248((double)((float)var1 / 360.0F), 0.9998999834060669D, 0.5D); var0 < var3 && var0 < class95.field1449.length; ++var0) {
-            class95.field1449[var0] = var4;
+   public static VarCString method3560(int var0) {
+      VarCString var1 = (VarCString)VarCString.field3478.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = VarCString.field3481.getConfigData(15, var0);
+         var1 = new VarCString();
+         if(var2 != null) {
+            var1.method4887(new Buffer(var2));
          }
-      }
 
+         VarCString.field3478.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

@@ -229,7 +229,7 @@ public class ReorderPrayersPlugin extends Plugin
 	{
 		clearPrayerTabMenus();
 		prayerOrder = Prayer.values();
-		reorderPrayers();
+		reorderPrayers(false);
 	}
 
 	@Subscribe
@@ -362,6 +362,11 @@ public class ReorderPrayersPlugin extends Plugin
 
 	private void reorderPrayers()
 	{
+		reorderPrayers(config.unlockPrayerReordering());
+	}
+
+	private void reorderPrayers(boolean unlocked)
+	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
@@ -387,7 +392,7 @@ public class ReorderPrayersPlugin extends Plugin
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 
 				int widgetConfig = prayerWidget.getClickMask();
-				if (config.unlockPrayerReordering())
+				if (unlocked)
 				{
 					// allow dragging of this widget
 					widgetConfig |= DRAG;

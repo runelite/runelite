@@ -92,4 +92,13 @@ public interface RSActor extends RSRenderable, Actor
 
 	@Import("spotAnimFrameCycle")
 	int getSpotAnimFrameCycle();
+
+	@Import("hitsplatValues")
+	int[] getHitsplatValues();
+
+	@Import("hitsplatTypes")
+	int[] getHitsplatTypes();
+
+	@Import("hitsplatCycles")
+	int[] getHitsplatCycles();
 }

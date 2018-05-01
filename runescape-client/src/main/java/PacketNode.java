@@ -4,71 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gh")
+@ObfuscatedName("gj")
 @Implements("PacketNode")
 public class PacketNode extends Node {
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "[Lgh;"
+      signature = "[Lgj;"
    )
    @Export("packetBufferNodes")
-   static PacketNode[] packetBufferNodes;
-   @ObfuscatedName("m")
+   public static PacketNode[] packetBufferNodes;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -72182589
+      intValue = -1121375225
    )
-   static int field2502;
-   @ObfuscatedName("o")
+   public static int field2491;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lfl;"
+      signature = "Lfb;"
    )
    @Export("clientPacket")
    public ClientPacket clientPacket;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -434098959
+      intValue = 1225622277
    )
-   public int field2503;
-   @ObfuscatedName("t")
+   public int field2487;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgl;"
    )
    @Export("packetBuffer")
    public PacketBuffer packetBuffer;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1932772265
+      intValue = 1553837013
    )
-   public int field2505;
+   public int field2489;
 
    static {
       packetBufferNodes = new PacketNode[300];
-      field2502 = 0;
+      field2491 = 0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1599528097"
+      garbageValue = "1513402665"
    )
-   public void method3436() {
-      if(field2502 < packetBufferNodes.length) {
-         packetBufferNodes[++field2502 - 1] = this;
+   public void method3508() {
+      if(field2491 < packetBufferNodes.length) {
+         packetBufferNodes[++field2491 - 1] = this;
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Ljf;IIIZB)V",
-      garbageValue = "11"
+      signature = "(IIB)V",
+      garbageValue = "-18"
    )
-   public static void method3442(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
-      class229.field2687 = 1;
-      class185.field2511 = var0;
-      VertexNormal.field1931 = var1;
-      GrandExchangeEvents.field284 = var2;
-      class86.field1330 = var3;
-      class229.field2692 = var4;
-      class2.field11 = 10000;
+   static void method3514(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      FileRequest var4 = (FileRequest)class264.NetCache_pendingWrites.get(var2);
+      if(var4 != null) {
+         class264.NetCache_pendingWritesQueue.setHead(var4);
+      }
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1615225476"
+   )
+   public static void method3515() {
+      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
+         if(IndexStoreActionHandler.field3386 != 0) {
+            IndexStoreActionHandler.field3386 = 1;
+
+            try {
+               IndexStoreActionHandler.IndexStoreActionHandler_lock.wait();
+            } catch (InterruptedException var3) {
+               ;
+            }
+         }
+
+      }
    }
 }

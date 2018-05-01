@@ -196,8 +196,8 @@ public class ObjectSaver
 		if (obj.getConfigChangeDest() != null)
 		{
 			out.writeByte(92);
+			out.writeShort(obj.getVarbitID());
 			out.writeShort(obj.getVarpID());
-			out.writeShort(obj.getConfigId());
 
 			int[] c = obj.getConfigChangeDest();
 			out.writeShort(c[c.length - 1]);

@@ -56,7 +56,7 @@ public class ChatMessageManager
 	private final Map<ChatMessageType, Set<ChatColor>> colorCache = new HashMap<>();
 	private final Provider<Client> clientProvider;
 	private final ScheduledExecutorService executor;
-	private int transparancyVarbit = -1;
+	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
@@ -69,11 +69,11 @@ public class ChatMessageManager
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int setting = clientProvider.get().getSetting(Varbits.TRANSPARANT_CHATBOX);
+		int setting = clientProvider.get().getVar(Varbits.TRANSPARENT_CHATBOX);
 
-		if (transparancyVarbit != setting)
+		if (transparencyVarbit != setting)
 		{
-			transparancyVarbit = setting;
+			transparencyVarbit = setting;
 			refreshAll();
 		}
 	}
@@ -140,7 +140,7 @@ public class ChatMessageManager
 		}
 
 		final Client client = clientProvider.get();
-		final boolean transparent = client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
 		final Set<ChatColor> chatColors = colorCache.get(target.getType());
 
 		// If we do not have any colors cached, simply set clean message

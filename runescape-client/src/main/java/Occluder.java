@@ -2,113 +2,123 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ey")
+@ObfuscatedName("ea")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("o")
+   @ObfuscatedName("cu")
+   @Export("middleMouseMovesCamera")
+   static boolean middleMouseMovesCamera;
+   @ObfuscatedName("dt")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   @Export("indexCache10")
+   static IndexData indexCache10;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 877128845
+      intValue = 1701776881
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 2110459427
+      intValue = -1556631507
    )
    @Export("maxTIleX")
    int maxTIleX;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1745472967
+      intValue = -1280485765
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1874897747
+      intValue = -888785215
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 428096717
+      intValue = 457570787
    )
    @Export("type")
    int type;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1032526341
+      intValue = -38465519
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1432123535
+      intValue = 918286751
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -2076241211
+      intValue = -995572309
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2054917559
+      intValue = 314938407
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("x")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 301946859
+      intValue = 392408775
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 213858501
+      intValue = 531879001
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1734080975
+      intValue = 58322367
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1565920855
+      intValue = -1418589495
    )
-   int field2089;
-   @ObfuscatedName("n")
+   int field2057;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 488576783
+      intValue = 245631587
    )
-   int field2088;
-   @ObfuscatedName("l")
+   int field2058;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -325868361
+      intValue = 2010205333
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("s")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 371832825
+      intValue = 487003455
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1985946671
+      intValue = -794940769
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -186195409
+      intValue = 211147959
    )
    @Export("maxNormalY")
    int maxNormalY;

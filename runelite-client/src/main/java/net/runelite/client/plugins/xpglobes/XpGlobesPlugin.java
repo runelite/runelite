@@ -51,7 +51,6 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
 {
-	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
@@ -59,6 +58,9 @@ public class XpGlobesPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private XpGlobesConfig config;
 
 	@Inject
 	private XpGlobesOverlay overlay;
@@ -148,7 +150,7 @@ public class XpGlobesPlugin extends Plugin
 			{
 				XpGlobe globe = it.next();
 				Instant globeCreationTime = globe.getTime();
-				if (currentTime.isBefore(globeCreationTime.plusSeconds(SECONDS_TO_SHOW_GLOBE)))
+				if (currentTime.isBefore(globeCreationTime.plusSeconds(config.xpOrbDuration())))
 				{
 					//if a globe is not expired, stop checking newer globes
 					return;

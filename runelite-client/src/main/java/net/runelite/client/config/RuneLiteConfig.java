@@ -37,7 +37,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",
-		description = "The game will resize to this resolution upon starting the client"
+		description = "The game will resize to this resolution upon starting the client",
+		position = 1
 	)
 	default Dimension gameSize()
 	{
@@ -47,7 +48,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "lockWindowSize",
 		name = "Lock window size",
-		description = "Determines if the window resizing is allowed or not"
+		description = "Determines if the window resizing is allowed or not",
+		position = 2
 	)
 	default boolean lockWindowSize()
 	{
@@ -58,7 +60,8 @@ public interface RuneLiteConfig extends Config
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use Runelite's custom window title and borders.",
-		warning = "Please restart your client after changing this setting"
+		warning = "Please restart your client after changing this setting",
+		position = 3
 	)
 	default boolean enableCustomChrome()
 	{
@@ -68,7 +71,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
 		name = "Enable client always on top",
-		description = "The game will always be on the top of the screen"
+		description = "The game will always be on the top of the screen",
+		position = 4
 	)
 	default boolean gameAlwaysOnTop()
 	{
@@ -78,7 +82,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
-		description = "Enables tray notifications"
+		description = "Enables tray notifications",
+		position = 5
 	)
 	default boolean enableTrayNotifications()
 	{
@@ -88,7 +93,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationSound",
 		name = "Enable sound on notifications",
-		description = "Enables the playing of a beep sound when notifications are displayed"
+		description = "Enables the playing of a beep sound when notifications are displayed",
+		position = 6
 	)
 	default boolean enableNotificationSound()
 	{
@@ -98,7 +104,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused"
+		description = "Toggles idle notifications for when the client is focused",
+		position = 7
 	)
 	default boolean sendNotificationsWhenFocused()
 	{
@@ -108,7 +115,8 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationRequestFocus",
 		name = "Request focus on notification",
-		description = "Toggles window focus request"
+		description = "Toggles window focus request",
+		position = 8
 	)
 	default boolean requestFocusOnNotification()
 	{
@@ -118,10 +126,55 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
-		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc."
+		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
+		position = 9
 	)
 	default FontType fontType()
 	{
 		return FontType.SMALL;
+	}
+
+	@ConfigItem(
+		keyName = "infoBoxVertical",
+		name = "Display infoboxes vertically",
+		description = "Toggles the infoboxes to display vertically",
+		position = 10
+	)
+	default boolean infoBoxVertical()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "infoBoxWrap",
+		name = "Infobox wrap count",
+		description = "Configures the amount of infoboxes shown before wrapping",
+		position = 11
+	)
+	default int infoBoxWrap()
+	{
+		return 4;
+	}
+
+	@ConfigItem(
+		keyName = "containInScreen",
+		name = "Contain in screen",
+		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
+		position = 12
+	)
+	default boolean containInScreen()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rememberScreenBounds",
+		name = "Remember client position",
+		description = "Save the position and size of the client after exiting",
+		position = 13
+	)
+	default boolean rememberScreenBounds()
+	{
+		return true;
 	}
 }

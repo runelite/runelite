@@ -36,11 +36,27 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 	@Override
 	public BufferedImage toBufferedImage()
 	{
+		BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		toBufferedImage(img);
+
+		return img;
+	}
+
+	@Inject
+	@Override
+	public void toBufferedImage(BufferedImage img)
+	{
 		int width = getWidth();
 		int height = getHeight();
+
+		if (img.getWidth() != width || img.getHeight() != height)
+		{
+			throw new IllegalArgumentException("Image bounds do not match SpritePixels");
+		}
+
 		int[] pixels = getPixels();
 		int[] transPixels = new int[pixels.length];
-		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 		for (int i = 0; i < pixels.length; i++)
 		{
@@ -51,6 +67,5 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 		}
 
 		img.setRGB(0, 0, width, height, transPixels, 0, width);
-		return img;
 	}
 }

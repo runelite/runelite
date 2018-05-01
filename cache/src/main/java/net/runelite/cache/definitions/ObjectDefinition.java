@@ -49,7 +49,7 @@ public class ObjectDefinition
 	private boolean nonFlatShading = false;
 	private int anInt2088 = -1;
 	private int animationID = -1;
-	private int varpID = -1;
+	private int varbitID = -1;
 	private int ambient = 0;
 	private int contrast = 0;
 	private String[] actions = new String[5];
@@ -68,7 +68,7 @@ public class ObjectDefinition
 	private int anInt2106 = -1;
 	private int[] configChangeDest;
 	private boolean isRotated = false;
-	private int configId = -1;
+	private int varpID = -1;
 	private int anInt2110 = -1;
 	private boolean aBool2111 = false;
 	private int anInt2112 = 0;

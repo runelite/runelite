@@ -1,174 +1,183 @@
-import java.io.IOException;
-import java.net.Socket;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("be")
+@ObfuscatedName("br")
 public class class64 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("ez")
+   @ObfuscatedGetter(
+      longValue = 7422934189023485029L
+   )
+   static long field749;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lji;"
    )
-   final IndexData field764;
-   @ObfuscatedName("k")
+   final IndexData field746;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1424194087
+      intValue = -640562887
    )
-   final int field766;
-   @ObfuscatedName("t")
+   final int field748;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1436833265
+      intValue = 1132242421
    )
-   int field763;
+   int field747;
 
    @ObfuscatedSignature(
-      signature = "(Ljn;Ljava/lang/String;)V"
+      signature = "(Lji;Ljava/lang/String;)V"
    )
    class64(IndexData var1, String var2) {
-      this.field763 = 0;
-      this.field764 = var1;
-      this.field766 = var1.size();
+      this.field747 = 0;
+      this.field746 = var1;
+      this.field748 = var1.size();
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "338994287"
+      signature = "(B)Z",
+      garbageValue = "-34"
    )
-   boolean method1117() {
-      this.field763 = 0;
+   boolean method1134() {
+      this.field747 = 0;
 
-      for(int var1 = 0; var1 < this.field766; ++var1) {
-         if(!this.field764.method4642(var1) || this.field764.method4636(var1)) {
-            ++this.field763;
+      for(int var1 = 0; var1 < this.field748; ++var1) {
+         if(!this.field746.method4783(var1) || this.field746.method4772(var1)) {
+            ++this.field747;
          }
       }
 
-      return this.field763 >= this.field766;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-1617301459"
-   )
-   public static synchronized long method1118() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class138.field2048) {
-         class196.field2587 += class138.field2048 - var0;
-      }
-
-      class138.field2048 = var0;
-      return var0 + class196.field2587;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/net/Socket;IIB)Lfd;",
-      garbageValue = "31"
-   )
-   public static class169 method1119(Socket var0, int var1, int var2) throws IOException {
-      return new class171(var0, var1, var2);
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1704197135"
-   )
-   public static boolean method1112(int var0) {
-      return var0 >= WorldMapDecorationType.field2988.rsOrdinal && var0 <= WorldMapDecorationType.field2993.rsOrdinal;
+      return this.field747 >= this.field748;
    }
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-201433794"
+      signature = "(Ljava/lang/CharSequence;II[BII)I",
+      garbageValue = "-1111361006"
    )
-   public static boolean method1111(char var0) {
-      return var0 >= '0' && var0 <= '9';
+   @Export("encodeStringCp1252")
+   public static int encodeStringCp1252(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
+      int var5 = var2 - var1;
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         char var7 = var0.charAt(var6 + var1);
+         if(var7 > 0 && var7 < 128 || var7 >= 160 && var7 <= 255) {
+            var3[var6 + var4] = (byte)var7;
+         } else if(var7 == 8364) {
+            var3[var6 + var4] = -128;
+         } else if(var7 == 8218) {
+            var3[var6 + var4] = -126;
+         } else if(var7 == 402) {
+            var3[var6 + var4] = -125;
+         } else if(var7 == 8222) {
+            var3[var6 + var4] = -124;
+         } else if(var7 == 8230) {
+            var3[var6 + var4] = -123;
+         } else if(var7 == 8224) {
+            var3[var6 + var4] = -122;
+         } else if(var7 == 8225) {
+            var3[var6 + var4] = -121;
+         } else if(var7 == 710) {
+            var3[var6 + var4] = -120;
+         } else if(var7 == 8240) {
+            var3[var6 + var4] = -119;
+         } else if(var7 == 352) {
+            var3[var6 + var4] = -118;
+         } else if(var7 == 8249) {
+            var3[var6 + var4] = -117;
+         } else if(var7 == 338) {
+            var3[var6 + var4] = -116;
+         } else if(var7 == 381) {
+            var3[var6 + var4] = -114;
+         } else if(var7 == 8216) {
+            var3[var6 + var4] = -111;
+         } else if(var7 == 8217) {
+            var3[var6 + var4] = -110;
+         } else if(var7 == 8220) {
+            var3[var6 + var4] = -109;
+         } else if(var7 == 8221) {
+            var3[var6 + var4] = -108;
+         } else if(var7 == 8226) {
+            var3[var6 + var4] = -107;
+         } else if(var7 == 8211) {
+            var3[var6 + var4] = -106;
+         } else if(var7 == 8212) {
+            var3[var6 + var4] = -105;
+         } else if(var7 == 732) {
+            var3[var6 + var4] = -104;
+         } else if(var7 == 8482) {
+            var3[var6 + var4] = -103;
+         } else if(var7 == 353) {
+            var3[var6 + var4] = -102;
+         } else if(var7 == 8250) {
+            var3[var6 + var4] = -101;
+         } else if(var7 == 339) {
+            var3[var6 + var4] = -100;
+         } else if(var7 == 382) {
+            var3[var6 + var4] = -98;
+         } else if(var7 == 376) {
+            var3[var6 + var4] = -97;
+         } else {
+            var3[var6 + var4] = 63;
+         }
+      }
+
+      return var5;
    }
 
-   @ObfuscatedName("eq")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1391119009"
+      signature = "(ILcr;ZI)I",
+      garbageValue = "-639289657"
    )
-   @Export("setGameState")
-   static void setGameState(int var0) {
-      if(var0 != Client.gameState) {
-         if(Client.gameState == 0) {
-            class23.clientInstance.method922();
-         }
+   static int method1137(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = UnitPriceComparator.getWidget(class81.intStack[--class171.intStackSize]);
+      } else {
+         var3 = var2?class49.field604:class81.field1270;
+      }
 
-         if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.loginState = 0;
-            Client.field983 = 0;
-            Client.field905 = 0;
-            Client.field918.method5212(var0);
-            if(var0 != 20) {
-               WorldMapType3.method232(false);
-            }
-         }
-
-         if(var0 != 20 && var0 != 40 && FaceNormal.field2069 != null) {
-            FaceNormal.field2069.vmethod3331();
-            FaceNormal.field2069 = null;
-         }
-
-         if(Client.gameState == 25) {
-            Client.field924 = 0;
-            Client.field920 = 0;
-            Client.field921 = 1;
-            Client.field922 = 0;
-            Client.field923 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               Player.method1230(ClanMember.indexCache10, class151.indexSprites, true, Client.gameState == 11?4:0);
-            } else if(var0 == 11) {
-               Player.method1230(ClanMember.indexCache10, class151.indexSprites, false, 4);
-            } else if(class90.field1387) {
-               IndexStoreActionHandler.field3398 = null;
-               class90.field1388 = null;
-               class90.runeSprites = null;
-               class321.field3938 = null;
-               class90.field1381 = null;
-               class33.logoSprite = null;
-               class57.titlemuteSprite = null;
-               class90.field1363 = null;
-               class90.field1393 = null;
-               class5.field40 = null;
-               BoundingBox3DDrawMode.slFlagSprites = null;
-               class237.slArrowSprites = null;
-               World.slStarSprites = null;
-               class167.field2223 = null;
-               class21.field347 = null;
-               ScriptState.field762 = null;
-               GrandExchangeEvent.field298 = null;
-               class21.field344 = null;
-               MouseRecorder.field819 = null;
-               GrandExchangeEvents.field287 = null;
-               Huffman.field2513 = null;
-               AbstractSoundSystem.field1585 = null;
-               class229.field2687 = 1;
-               class185.field2511 = null;
-               VertexNormal.field1931 = -1;
-               GrandExchangeEvents.field284 = -1;
-               class86.field1330 = 0;
-               class229.field2692 = false;
-               class2.field11 = 2;
-               GraphicsObject.sendConInfo(true);
-               class90.field1387 = false;
-            }
+      if(var0 == 1927) {
+         if(class81.field1274 >= 10) {
+            throw new RuntimeException();
+         } else if(var3.onResizeListener == null) {
+            return 0;
          } else {
-            Player.method1230(ClanMember.indexCache10, class151.indexSprites, true, 0);
+            ScriptEvent var4 = new ScriptEvent();
+            var4.widget = var3;
+            var4.objs = var3.onResizeListener;
+            var4.field784 = class81.field1274 + 1;
+            Client.field1049.addFront(var4);
+            return 1;
+         }
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("fv")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-522334513"
+   )
+   static boolean method1136() {
+      if(Client.field1120 != null && Client.field1121 < Client.field1120.size()) {
+         while(Client.field1121 < Client.field1120.size()) {
+            class64 var0 = (class64)Client.field1120.get(Client.field1121);
+            if(!var0.method1134()) {
+               return false;
+            }
+
+            ++Client.field1121;
          }
 
-         Client.gameState = var0;
+         return true;
+      } else {
+         return true;
       }
    }
 }

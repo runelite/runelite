@@ -26,9 +26,9 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Color;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -36,10 +36,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class MotherlodeSackOverlay extends Overlay
 {
+	private static final Color DANGER = new Color(150, 0, 0, 150);
 	private final Client client;
 	private final MotherlodeConfig config;
 	private final MotherlodePlugin plugin;
@@ -66,6 +68,7 @@ class MotherlodeSackOverlay extends Overlay
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
 		panelComponent.getLines().clear();
+		panelComponent.setBackgroundColor(BackgroundComponent.DEFAULT_BACKGROUND_COLOR);
 
 		if (sack != null)
 		{
@@ -73,24 +76,43 @@ class MotherlodeSackOverlay extends Overlay
 
 			if (config.showSack())
 			{
+				if (plugin.getCurSackSize() >= plugin.getMaxSackSize())
+				{
+					panelComponent.setBackgroundColor(DANGER);
+				}
+
 				panelComponent.getLines().add(new PanelComponent.Line(
 					"Pay-dirt in sack:",
 					Color.WHITE,
-					String.valueOf(client.getSetting(Varbits.SACK_NUMBER)),
-						plugin.getCurSackSize() >= plugin.getMaxSackSize() ? Color.RED : Color.WHITE
+					String.valueOf(client.getVar(Varbits.SACK_NUMBER)),
+					Color.WHITE
 				));
 			}
 
 			if (config.showDepositsLeft())
 			{
-				Integer depositsLeft = plugin.getDepositsLeft();
-
-				panelComponent.getLines().add(new PanelComponent.Line(
+				final Integer depositsLeft = plugin.getDepositsLeft();
+				final PanelComponent.Line line = new PanelComponent.Line(
 					"Deposits left:",
 					Color.WHITE,
 					depositsLeft == null ? "N/A" : String.valueOf(depositsLeft),
-					depositsLeft == null ? Color.WHITE : (depositsLeft == 0 ? Color.RED : Color.WHITE)
-				));
+					Color.WHITE
+				);
+
+				if (depositsLeft != null)
+				{
+					if (depositsLeft == 0)
+					{
+						panelComponent.setBackgroundColor(DANGER);
+					}
+					else if (depositsLeft == 1)
+					{
+						line.setLeftColor(Color.RED);
+						line.setRightColor(Color.RED);
+					}
+				}
+
+				panelComponent.getLines().add(line);
 			}
 		}
 

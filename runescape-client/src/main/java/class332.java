@@ -2,36 +2,33 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("lb")
+@ObfuscatedName("lr")
 public class class332 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1936895871
+      intValue = 1247236621
    )
    @Export("indexedSpriteCount")
    static int indexedSpriteCount;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 130685959
+      intValue = -1725796917
    )
    @Export("indexedSpriteWidth")
    static int indexedSpriteWidth;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1148468711
+      intValue = -1803091429
    )
    @Export("indexedSpriteHeight")
    static int indexedSpriteHeight;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @Export("indexedSpriteOffsetXs")
    static int[] indexedSpriteOffsetXs;
-   @ObfuscatedName("z")
-   @Export("indexedSpriteHeights")
-   static int[] indexedSpriteHeights;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
+   @Export("indexSpriteWidths")
+   static int[] indexSpriteWidths;
+   @ObfuscatedName("y")
    @Export("indexedSpritePalette")
    static int[] indexedSpritePalette;
-   @ObfuscatedName("u")
-   @Export("spritePixels")
-   static byte[][] spritePixels;
 }

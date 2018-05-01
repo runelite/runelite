@@ -51,6 +51,7 @@ import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
@@ -317,7 +318,10 @@ public class MenuManager
 		}
 
 		String target = event.getMenuTarget();
-		String username = target.split("[<>]")[2]; // <col=ffffff>username<col=40ff00>  (level-42)
+
+		// removes tags and level from player names for example:
+		// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
+		String username = Text.removeTags(target).split("[(]")[0].trim();
 
 		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
 		playerMenuOptionClicked.setMenuOption(event.getMenuOption());

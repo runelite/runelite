@@ -9,110 +9,111 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bk")
+@ObfuscatedName("bl")
 @Implements("MouseInput")
 public class MouseInput implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("pk")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lcn;"
-   )
-   static class100 field727;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 505374563
-   )
-   @Export("mouseLastX")
-   public static int mouseLastX;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lbk;"
+      signature = "Lbl;"
    )
    @Export("mouse")
-   public static MouseInput mouse;
-   @ObfuscatedName("m")
+   static MouseInput mouse;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -311249603
+      intValue = 1923802269
    )
    @Export("mouseIdleTicks")
-   static volatile int mouseIdleTicks;
-   @ObfuscatedName("z")
+   public static volatile int mouseIdleTicks;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1522609927
+      intValue = 694721139
    )
    @Export("MouseHandler_currentButton")
-   public static volatile int MouseHandler_currentButton;
-   @ObfuscatedName("i")
+   static volatile int MouseHandler_currentButton;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -942316025
+      intValue = -2130241259
    )
    @Export("mouseX")
-   public static volatile int mouseX;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 933271557
-   )
-   @Export("mouseY")
-   public static volatile int mouseY;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -199746931
-   )
-   @Export("mouseLastY")
-   public static int mouseLastY;
+   static volatile int mouseX;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1365272873
+      intValue = 1622837431
    )
    @Export("MouseHandler_lastButton")
-   public static volatile int MouseHandler_lastButton;
-   @ObfuscatedName("a")
+   static volatile int MouseHandler_lastButton;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2140382891
+      intValue = 502312673
+   )
+   @Export("mouseY")
+   static volatile int mouseY;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1156405329
    )
    @Export("mouseCurrentButton")
    public static int mouseCurrentButton;
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 19240831
+      intValue = 1097308479
+   )
+   @Export("mouseLastX")
+   public static int mouseLastX;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -721576639
+   )
+   @Export("mouseLastY")
+   public static int mouseLastY;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 458103313
    )
    @Export("MouseHandler_lastPressedX")
-   public static volatile int MouseHandler_lastPressedX;
-   @ObfuscatedName("n")
+   static volatile int MouseHandler_lastPressedX;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 2020634831
+      intValue = 1595906531
    )
    @Export("MouseHandler_lastPressedY")
-   public static volatile int MouseHandler_lastPressedY;
-   @ObfuscatedName("l")
+   static volatile int MouseHandler_lastPressedY;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      longValue = -5947434018702569619L
+      longValue = 6488970622473117931L
    )
    @Export("MouseHandler_lastPressedTimeMillis")
-   public static volatile long MouseHandler_lastPressedTimeMillis;
-   @ObfuscatedName("s")
+   static volatile long MouseHandler_lastPressedTimeMillis;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1634411255
+      intValue = -579543125
    )
    @Export("mouseLastButton")
    public static int mouseLastButton;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 462384719
+      intValue = -1824375525
    )
    @Export("mouseLastPressedX")
    public static int mouseLastPressedX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1989322603
+      intValue = 1993404975
    )
    @Export("mouseLastPressedY")
    public static int mouseLastPressedY;
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      longValue = 2096942580672954479L
+      longValue = 2273062141062104299L
    )
    @Export("mouseLastPressedTimeMillis")
    public static long mouseLastPressedTimeMillis;
+   @ObfuscatedName("cs")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   @Export("indexInterfaces")
+   static IndexData indexInterfaces;
 
    static {
       mouse = new MouseInput();
@@ -133,12 +134,12 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
       mouseLastPressedTimeMillis = 0L;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/event/MouseEvent;B)I",
-      garbageValue = "11"
+      signature = "(Ljava/awt/event/MouseEvent;I)I",
+      garbageValue = "1391372373"
    )
-   final int method1036(MouseEvent var1) {
+   final int method1057(MouseEvent var1) {
       int var2 = var1.getButton();
       return !var1.isAltDown() && var2 != 2?(!var1.isMetaDown() && var2 != 3?1:2):4;
    }
@@ -159,8 +160,8 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
          mouseIdleTicks = 0;
          MouseHandler_lastPressedX = var1.getX();
          MouseHandler_lastPressedY = var1.getY();
-         MouseHandler_lastPressedTimeMillis = class64.method1118();
-         MouseHandler_lastButton = this.method1036(var1);
+         MouseHandler_lastPressedTimeMillis = class289.method5267();
+         MouseHandler_lastButton = this.method1057(var1);
          if(MouseHandler_lastButton != 0) {
             MouseHandler_currentButton = MouseHandler_lastButton;
          }
@@ -184,18 +185,37 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    }
 
-   public final void mouseClicked(MouseEvent var1) {
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
    public final synchronized void mouseExited(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
          mouseX = -1;
          mouseY = -1;
+      }
+
+   }
+
+   public final void focusGained(FocusEvent var1) {
+   }
+
+   public final synchronized void mouseMoved(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         mouseX = var1.getX();
+         mouseY = var1.getY();
+      }
+
+   }
+
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(mouse != null) {
+         MouseHandler_currentButton = 0;
+      }
+
+   }
+
+   public final void mouseClicked(MouseEvent var1) {
+      if(var1.isPopupTrigger()) {
+         var1.consume();
       }
 
    }
@@ -209,180 +229,43 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    }
 
-   public final synchronized void mouseMoved(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         mouseX = var1.getX();
-         mouseY = var1.getY();
-      }
-
-   }
-
-   public final void focusGained(FocusEvent var1) {
-   }
-
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(mouse != null) {
-         MouseHandler_currentButton = 0;
-      }
-
-   }
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "681053473"
+      signature = "(Ljr;Ljr;Ljr;I)V",
+      garbageValue = "2147131037"
    )
-   static int method1066() {
-      return 11;
+   public static void method1090(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
+      class281.field3576 = var0;
+      class281.field3573 = var1;
+      class281.field3567 = var2;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "815408664"
+      signature = "(III)I",
+      garbageValue = "1991767683"
    )
-   static void method1062() {
-      FileOnDisk var0 = null;
-
-      try {
-         var0 = NPC.getPreferencesFile("", class265.field3435.name, true);
-         Buffer var1 = Client.preferences.serialize();
-         var0.write(var1.payload, 0, var1.offset);
-      } catch (Exception var3) {
-         ;
-      }
-
-      try {
-         if(var0 != null) {
-            var0.closeSync(true);
-         }
-      } catch (Exception var2) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "3849"
-   )
-   @Export("ilog")
-   public static int ilog(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
-      }
-
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
-      }
-
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
-   }
-
-   @ObfuscatedName("fu")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "700517857"
-   )
-   static void method1051(int var0) {
-      if(var0 == -3) {
-         BoundingBox3DDrawMode.method53("Connection timed out.", "Please try using a different world.", "");
-      } else if(var0 == -2) {
-         BoundingBox3DDrawMode.method53("", "Error connecting to server.", "");
+   static int method1058(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
       } else if(var0 == -1) {
-         BoundingBox3DDrawMode.method53("No response from server.", "Please try using a different world.", "");
-      } else if(var0 == 3) {
-         class90.loginIndex = 3;
-      } else if(var0 == 4) {
-         BoundingBox3DDrawMode.method53("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(var0 == 5) {
-         BoundingBox3DDrawMode.method53("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-      } else if(var0 == 6) {
-         BoundingBox3DDrawMode.method53("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         BoundingBox3DDrawMode.method53("This world is full.", "Please use a different world.", "");
-      } else if(var0 == 8) {
-         BoundingBox3DDrawMode.method53("Unable to connect.", "Login server offline.", "");
-      } else if(var0 == 9) {
-         BoundingBox3DDrawMode.method53("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         BoundingBox3DDrawMode.method53("Unable to connect.", "Bad session id.", "");
-      } else if(var0 == 11) {
-         BoundingBox3DDrawMode.method53("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         BoundingBox3DDrawMode.method53("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         BoundingBox3DDrawMode.method53("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         BoundingBox3DDrawMode.method53("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         BoundingBox3DDrawMode.method53("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(var0 == 17) {
-         BoundingBox3DDrawMode.method53("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         BoundingBox3DDrawMode.method53("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         BoundingBox3DDrawMode.method53("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(var0 == 20) {
-         BoundingBox3DDrawMode.method53("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(var0 == 22) {
-         BoundingBox3DDrawMode.method53("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         BoundingBox3DDrawMode.method53("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         BoundingBox3DDrawMode.method53("Error loading your profile.", "Please contact customer support.", "");
-      } else if(var0 == 25) {
-         BoundingBox3DDrawMode.method53("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         BoundingBox3DDrawMode.method53("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(var0 == 27) {
-         BoundingBox3DDrawMode.method53("", "Service unavailable.", "");
-      } else if(var0 == 31) {
-         BoundingBox3DDrawMode.method53("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         BoundingBox3DDrawMode.method53("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         BoundingBox3DDrawMode.method53("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         BoundingBox3DDrawMode.method53("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(var0 == 55) {
-         BoundingBox3DDrawMode.method53("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+         if(var1 < 0) {
+            var1 = 0;
+         } else if(var1 > 127) {
+            var1 = 127;
+         }
+
+         var1 = 127 - var1;
+         return var1;
       } else {
-         if(var0 == 56) {
-            BoundingBox3DDrawMode.method53("Enter the 6-digit code generated by your", "authenticator app.", "");
-            class64.setGameState(11);
-            return;
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         if(var0 == 57) {
-            BoundingBox3DDrawMode.method53("The code you entered was incorrect.", "Please try again.", "");
-            class64.setGameState(11);
-            return;
-         }
-
-         BoundingBox3DDrawMode.method53("Unexpected server response", "Please try using a different world.", "");
+         return (var0 & 65408) + var1;
       }
-
-      class64.setGameState(10);
    }
 }

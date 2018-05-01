@@ -41,7 +41,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -149,12 +148,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		for (NPC npc : client.getNpcs())
 		{
-			if (npcTags.contains(npc.getIndex()))
+			if (npcTags.contains(npc.getIndex()) && npc.getName() != null)
 			{
-				NPCComposition composition = getComposition(npc);
-				if (composition == null || composition.getName() == null)
-					continue;
-
 				taggedNpcs.add(npc);
 			}
 		}
@@ -177,42 +172,23 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		for (NPC npc : client.getNpcs())
 		{
-			NPCComposition composition = getComposition(npc);
+			String npcName = npc.getName();
 
-			if (npc == null || composition == null || composition.getName() == null)
+			if (npcName == null)
+			{
 				continue;
+			}
 
 			for (String highlight : highlightedNpcs)
 			{
-				String name = composition.getName().replace('\u00A0', ' ');
-				if (WildcardMatcher.matches(highlight, name))
+				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					npcMap.put(npc, name);
+					npcMap.put(npc, npcName);
 				}
 			}
 		}
 
 		return npcMap;
-	}
-
-	/**
-	 * Get npc composition, account for imposters
-	 *
-	 * @param npc
-	 * @return
-	 */
-	protected NPCComposition getComposition(NPC npc)
-	{
-		if (npc == null)
-			return null;
-
-		NPCComposition composition = npc.getComposition();
-		if (composition != null && composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
-
-		return composition;
 	}
 
 	void updateNpcMenuOptions(boolean pressed)

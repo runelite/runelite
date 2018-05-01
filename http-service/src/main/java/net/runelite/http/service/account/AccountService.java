@@ -24,8 +24,6 @@
  */
 package net.runelite.http.service.account;
 
-import net.runelite.http.service.account.beans.UserEntry;
-import net.runelite.http.service.account.beans.SessionEntry;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -42,9 +40,10 @@ import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
+import net.runelite.http.service.account.beans.SessionEntry;
+import net.runelite.http.service.account.beans.UserEntry;
 import net.runelite.http.service.ws.SessionManager;
 import net.runelite.http.service.ws.WSService;
-import net.runelite.http.service.ws.WSSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class AccountService
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	private static final String CREATE_SESSIONS = "CREATE TABLE IF NOT EXISTS `sessions` (\n"
-		+ "  `user` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
+		+ "  `user` int(11) NOT NULL PRIMARY KEY,\n"
 		+ "  `uuid` varchar(36) NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  `last_used` timestamp NOT NULL,\n"
@@ -73,7 +72,7 @@ public class AccountService
 		+ ") ENGINE=InnoDB";
 
 	private static final String CREATE_USERS = "CREATE TABLE IF NOT EXISTS `users` (\n"
-		+ "  `id` int(11) NOT NULL,\n"
+		+ "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
 		+ "  `username` tinytext NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  PRIMARY KEY (`id`),\n"
@@ -233,14 +232,12 @@ public class AccountService
 
 	private void notifySession(UUID uuid, String username)
 	{
-		WSSession session = SessionManager.findSession(uuid);
-		if (session == null)
+		WSService service = SessionManager.findSession(uuid);
+		if (service == null)
 		{
 			logger.info("Session {} logged in - but no websocket session", uuid);
 			return;
 		}
-
-		WSService service = session.getServlet();
 
 		LoginResponse response = new LoginResponse();
 		response.setUsername(username);

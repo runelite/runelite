@@ -4,58 +4,43 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("it")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("h")
-   @Export("indexedSpriteOffsetYs")
-   static int[] indexedSpriteOffsetYs;
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1844691065
+      intValue = 1743274173
    )
    @Export("type")
    int type;
-   @ObfuscatedName("k")
-   public byte[] field3367;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
+   byte[] field3358;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lff;"
+      signature = "Lfr;"
    )
    @Export("index")
-   public IndexFile index;
-   @ObfuscatedName("d")
+   IndexFile index;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lji;"
    )
    @Export("data")
-   public IndexData data;
+   IndexData data;
 
-   @ObfuscatedName("jx")
+   @ObfuscatedName("fb")
    @ObfuscatedSignature(
-      signature = "(IIII)Lbt;",
-      garbageValue = "-2107829732"
+      signature = "(I)V",
+      garbageValue = "-1270225217"
    )
-   static final WidgetNode method4523(int var0, int var1, int var2) {
-      WidgetNode var3 = new WidgetNode();
-      var3.id = var1;
-      var3.owner = var2;
-      Client.componentTable.put(var3, (long)var0);
-      BoundingBox.method45(var1);
-      Widget var4 = class44.getWidget(var0);
-      FontName.method5490(var4);
-      if(Client.field1033 != null) {
-         FontName.method5490(Client.field1033);
-         Client.field1033 = null;
+   static final void method4637() {
+      for(int var0 = 0; var0 < Client.npcIndexesCount; ++var0) {
+         int var1 = Client.npcIndices[var0];
+         NPC var2 = Client.cachedNPCs[var1];
+         if(var2 != null) {
+            BoundingBox3D.method55(var2, var2.composition.size);
+         }
       }
 
-      ScriptState.method1109();
-      class86.method1889(MouseRecorder.widgets[var0 >> 16], var4, false);
-      class20.runWidgetOnLoadListener(var1);
-      if(Client.widgetRoot != -1) {
-         DynamicObject.method2026(Client.widgetRoot, 1);
-      }
-
-      return var3;
    }
 }

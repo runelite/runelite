@@ -1,9 +1,9 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("lq")
+@ObfuscatedName("lk")
 public class class314 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @Export("cp1252AsciiExtension")
    public static final char[] cp1252AsciiExtension;
 

@@ -46,9 +46,11 @@ public class ModelManager
 	{
 		LocationKey key;
 
+		int rot = location.getOrientation();
+
 		if (location != null)
 		{
-			key = new LocationKey(id, location.getType(), location.getOrientation());
+			key = new LocationKey(id, location.getType(), rot);
 		}
 		else
 		{
@@ -70,7 +72,8 @@ public class ModelManager
 
 			if (object != null && location != null)
 			{
-				rotate(md, object, location);
+				rotate(md, object, location, rot);
+				md.computeNormals();
 			}
 
 			models.put(key, md);
@@ -84,13 +87,13 @@ public class ModelManager
 	}
 
 	// this logic is from method3697 in 140
-	private static void rotate(ModelDefinition md, ObjectDefinition object, Location location)
+	private static void rotate(ModelDefinition md, ObjectDefinition object, Location location, int rot)
 	{
 		if (object.getObjectTypes() == null)
 		{
 			boolean isRotate = object.isRotated();
 
-			if (location.getType() == 2 && location.getOrientation() > 3)
+			if (location.getType() == 2 && rot > 3)
 			{
 				isRotate = !isRotate;
 			}
@@ -102,7 +105,7 @@ public class ModelManager
 		}
 		else
 		{
-			boolean isRotate = object.isRotated() ^ location.getOrientation() > 3;
+			boolean isRotate = object.isRotated() ^ rot > 3;
 
 			if (isRotate)
 			{
@@ -110,7 +113,7 @@ public class ModelManager
 			}
 		}
 
-		switch (location.getOrientation())
+		switch (rot & 3)
 		{
 			case 1:
 				md.rotate1();

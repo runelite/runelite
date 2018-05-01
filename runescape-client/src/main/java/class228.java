@@ -3,89 +3,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("hr")
 public class class228 {
-   @ObfuscatedName("dr")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -2105996307
+      intValue = 505109079
    )
-   @Export("port1")
-   static int port1;
-   @ObfuscatedName("o")
-   byte[] field2680;
-   @ObfuscatedName("k")
-   byte[] field2684;
-   @ObfuscatedName("t")
+   static int field2691;
+   @ObfuscatedName("dq")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
+   @ObfuscatedName("g")
+   byte[] field2690;
+   @ObfuscatedName("e")
+   byte[] field2683;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 223733873
+      intValue = 201429183
    )
-   int field2676;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -240120851
-   )
-   int field2679;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 2011552557
-   )
-   int field2677;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1763526805
-   )
-   int field2681;
+   int field2687;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -769640769
+      intValue = 1331680483
+   )
+   int field2685;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1916292187
+   )
+   int field2692;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1558356005
    )
    int field2682;
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 710422243
+      intValue = -648285141
    )
-   int field2683;
-   @ObfuscatedName("u")
+   int field2688;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1981145311
+      intValue = 714199839
    )
-   int field2678;
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(II)Ljy;",
-      garbageValue = "1643689868"
+   int field2689;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -306646171
    )
-   public static class279 method4119(int var0) {
-      class279 var1 = (class279)class279.field3553.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class279.field3552.getConfigData(34, var0);
-         var1 = new class279();
-         if(var2 != null) {
-            var1.method4937(new Buffer(var2));
-         }
-
-         var1.method4925();
-         class279.field3553.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)I",
-      garbageValue = "-33"
-   )
-   public static int method4120(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
-      }
-
-      return var2;
-   }
+   int field2686;
 }

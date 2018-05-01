@@ -41,8 +41,12 @@ public interface NPCComposition
 	int getId();
 
 	int getCombatLevel();
-	
+
 	int[] getConfigs();
 	
 	NPCComposition transform();
+
+	int getSize();
+
+	HeadIcon getOverheadIcon();
 }

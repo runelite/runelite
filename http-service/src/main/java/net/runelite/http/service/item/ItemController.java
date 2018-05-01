@@ -73,17 +73,10 @@ public class ItemController
 		ItemEntry item = itemService.getItem(itemId);
 		if (item != null)
 		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
 			return item.toItem();
 		}
 
-		item = itemService.fetchItem(itemId);
-		if (item != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return item.toItem();
-		}
-
+		itemService.queueItem(itemId);
 		return null;
 	}
 
@@ -127,7 +120,6 @@ public class ItemController
 		}
 
 		Instant now = Instant.now();
-		boolean hit = true;
 
 		if (time != null && time.isAfter(now))
 		{
@@ -137,16 +129,11 @@ public class ItemController
 		ItemEntry item = itemService.getItem(itemId);
 		if (item == null)
 		{
-			item = itemService.fetchItem(itemId);
-			hit = false;
-
-			if (item == null)
-			{
-				cachedEmpty.put(itemId, itemId);
-				return ResponseEntity.notFound()
-					.header(RUNELITE_CACHE, "MISS")
-					.build();
-			}
+			itemService.queueItem(itemId); // queue lookup
+			cachedEmpty.put(itemId, itemId); // cache empty
+			return ResponseEntity.notFound()
+				.header(RUNELITE_CACHE, "MISS")
+				.build();
 		}
 
 		PriceEntry priceEntry = itemService.getPrice(itemId, time);
@@ -164,28 +151,18 @@ public class ItemController
 		else if (priceEntry == null)
 		{
 			// Price is unknown
-			List<PriceEntry> prices = itemService.fetchPrice(itemId);
-
-			if (prices == null || prices.isEmpty())
-			{
-				cachedEmpty.put(itemId, itemId);
-				return ResponseEntity.notFound()
-					.header(RUNELITE_CACHE, "MISS")
-					.build();
-			}
-
-			// Get the most recent price
-			priceEntry = prices.get(prices.size() - 1);
-			hit = false;
+			itemService.queuePriceLookup(itemId); // queue lookup
+			cachedEmpty.put(itemId, itemId);
+			return ResponseEntity.notFound()
+				.header(RUNELITE_CACHE, "MISS")
+				.build();
 		}
-		else
+
+		Instant cacheTime = now.minus(CACHE_DUATION);
+		if (priceEntry.getFetched_time().isBefore(cacheTime))
 		{
-			Instant cacheTime = now.minus(CACHE_DUATION);
-			if (priceEntry.getFetched_time().isBefore(cacheTime))
-			{
-				// Queue a check for the price
-				itemService.queuePriceLookup(itemId);
-			}
+			// Queue a check for the price
+			itemService.queuePriceLookup(itemId);
 		}
 
 		ItemPrice itemPrice = new ItemPrice();
@@ -194,7 +171,6 @@ public class ItemController
 		itemPrice.setTime(priceEntry.getTime());
 
 		return ResponseEntity.ok()
-			.header(RUNELITE_CACHE, hit ? "HIT" : "MISS")
 			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
 			.body(itemPrice);
 	}

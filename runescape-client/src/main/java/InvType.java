@@ -4,23 +4,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jb")
+@ObfuscatedName("jw")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ljr;"
    )
-   public static IndexDataBase field3449;
-   @ObfuscatedName("k")
+   public static IndexDataBase field3441;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhd;"
+      signature = "Lhi;"
    )
    @Export("inventoryCache")
    public static NodeCache inventoryCache;
-   @ObfuscatedName("t")
+   @ObfuscatedName("ar")
+   @Export("clientInstance")
+   @ObfuscatedSignature(
+      signature = "Lclient;"
+   )
+   static Client clientInstance;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -234790135
+      intValue = -63196535
    )
    @Export("size")
    public int size;
@@ -33,10 +39,10 @@ public class InvType extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lgc;I)V",
-      garbageValue = "-1816691580"
+      signature = "(Lgg;I)V",
+      garbageValue = "-1288197779"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -46,19 +52,37 @@ public class InvType extends CacheableNode {
             return;
          }
 
-         this.method4716(var1, var2);
+         this.method4832(var1, var2);
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgc;II)V",
-      garbageValue = "714195674"
+      signature = "(Lgg;IB)V",
+      garbageValue = "-25"
    )
-   void method4716(Buffer var1, int var2) {
+   void method4832(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Ljr;I)V",
+      garbageValue = "3846221"
+   )
+   public static void method4838(IndexDataBase var0) {
+      IndexData.field3400 = var0;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "-23"
+   )
+   public static boolean method4839(char var0) {
+      return var0 >= ' ' && var0 <= '~'?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
    }
 }

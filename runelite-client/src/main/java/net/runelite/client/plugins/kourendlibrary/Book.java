@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.game.ItemManager;
 
 public enum Book
 {
@@ -77,7 +76,7 @@ public enum Book
 		return Collections.unmodifiableMap(byId);
 	}
 
-	private static final Map<String, Book> buildByName()
+	private static Map<String, Book> buildByName()
 	{
 		HashMap<String, Book> byName = new HashMap<>();
 		for (Book b : Book.values())
@@ -110,7 +109,7 @@ public enum Book
 	private final String shortName;
 
 	@Getter
-	private final BufferedImage icon;
+	private AsyncBufferedImage icon;
 
 	@Getter
 	private final boolean isDarkManuscript;
@@ -121,7 +120,6 @@ public enum Book
 		this.isDarkManuscript = false;
 		this.shortName = shortName;
 		this.name = name;
-		this.icon = getImage(Integer.toString(id));
 	}
 
 	Book(int id)
@@ -130,21 +128,13 @@ public enum Book
 		this.isDarkManuscript = true;
 		this.name = "Dark Manuscript";
 		this.shortName = "Dark Manuscript";
-		this.icon = getImage(Integer.toString(id));
 	}
 
-	private static BufferedImage getImage(String name)
+	static void fillImages(ItemManager itemManager)
 	{
-		try
+		for (Book b : values())
 		{
-			synchronized (ImageIO.class)
-			{
-				return ImageIO.read(Book.class.getResourceAsStream("items/" + name + ".png"));
-			}
-		}
-		catch (IOException | IllegalArgumentException e)
-		{
-			throw new RuntimeException("Cannot load book " + name, e);
+			b.icon = itemManager.getImage(b.item);
 		}
 	}
 }

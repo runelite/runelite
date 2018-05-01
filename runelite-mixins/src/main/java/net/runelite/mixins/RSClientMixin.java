@@ -51,9 +51,10 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
-import net.runelite.api.Setting;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
@@ -71,6 +72,7 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
@@ -156,6 +158,21 @@ public abstract class RSClientMixin implements RSClient
 	public void setInterpolateObjectAnimations(boolean interpolate)
 	{
 		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public Tile getSelectedRegionTile()
+	{
+		int tileX = getSelectedRegionTileX();
+		int tileY = getSelectedRegionTileY();
+
+		if (tileX == -1 || tileY == -1)
+		{
+			return null;
+		}
+
+		return getRegion().getTiles()[getPlane()][tileX][tileY];
 	}
 
 	@Inject
@@ -299,17 +316,17 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public int getSetting(Setting setting)
+	public int getVar(VarPlayer varPlayer)
 	{
 		int[] varps = getVarps();
-		return varps[setting.getId()];
+		return varps[varPlayer.getId()];
 	}
 
 	@Inject
 	@Override
 	public boolean isPrayerActive(Prayer prayer)
 	{
-		return getSetting(prayer.getVarbit()) == 1;
+		return getVar(prayer.getVarbit()) == 1;
 	}
 
 	/**
@@ -363,7 +380,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		if (isResized())
 		{
-			if (getSetting(Varbits.SIDE_PANELS) == 1)
+			if (getVar(Varbits.SIDE_PANELS) == 1)
 			{
 				return getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE);
 			}
@@ -821,5 +838,12 @@ public abstract class RSClientMixin implements RSClient
 			return;
 		}
 		rs$menuAction(var0, var1, var2, var3, var4, var5, var6, var7);
+	}
+
+	@FieldHook("username")
+	@Inject
+	public static void onUsernameChanged(int idx)
+	{
+		eventBus.post(new UsernameChanged());
 	}
 }
