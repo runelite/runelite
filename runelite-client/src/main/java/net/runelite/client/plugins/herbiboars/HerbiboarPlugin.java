@@ -160,7 +160,7 @@ public class HerbiboarPlugin extends Plugin
 		for (HerbiboarTrail trail : HerbiboarTrail.values())
 		{
 			int trailId = trail.getTrailId();
-			int value = client.getSetting(trail.getVarbit());
+			int value = client.getVar(trail.getVarbit());
 
 			if (value > 0)
 			{
@@ -175,7 +175,7 @@ public class HerbiboarPlugin extends Plugin
 		}
 
 		// Get finish data
-		finishId = client.getSetting(Varbits.HB_FINISH);
+		finishId = client.getVar(Varbits.HB_FINISH);
 		if (finishId > 0 && currentTrail != null)
 		{
 			shownTrails.add(currentTrail.getTrailId());
@@ -184,7 +184,7 @@ public class HerbiboarPlugin extends Plugin
 			currentPath = -1;
 		}
 
-		int started = client.getSetting(Varbits.HB_STARTED);
+		int started = client.getVar(Varbits.HB_STARTED);
 		if (currentPath == -1 && finishId == 0 && started == 0)
 		{
 			resetTrailData();

@@ -33,7 +33,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
-import net.runelite.api.Setting;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -108,7 +108,7 @@ public class RegenMeterPlugin extends Plugin
 	@Subscribe
 	private void onTick(GameTick event)
 	{
-		if (client.getSetting(Setting.SPECIAL_ATTACK_PERCENT) == 1000)
+		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
 		{
 			// The recharge doesn't tick when at 100%
 			ticksSinceSpecRegen = 0;
