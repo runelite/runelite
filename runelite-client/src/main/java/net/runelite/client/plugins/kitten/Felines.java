@@ -11,36 +11,36 @@ import java.util.Map;
 public enum Felines {
 
     //white/black
-    KITTEN_5591("5591", ItemID.PET_KITTEN),
-    CAT_1619("1619", ItemID.PET_CAT),
+    KITTEN_5591(5591, ItemID.PET_KITTEN),
+    CAT_1619(1619, ItemID.PET_CAT),
 
     //white
-    KITTEN_5592("5592", ItemID.PET_KITTEN_1556),
-    CAT_1620("1620", ItemID.PET_CAT_1562),
+    KITTEN_5592(5592, ItemID.PET_KITTEN_1556),
+    CAT_1620(1620, ItemID.PET_CAT_1562),
 
     //brown
-    KITTEN_5593("5593", ItemID.PET_KITTEN_1557),
-    CAT_1621("1621", ItemID.PET_CAT_1563),
+    KITTEN_5593(5593, ItemID.PET_KITTEN_1557),
+    CAT_1621(1621, ItemID.PET_CAT_1563),
 
     //black
-    KITTEN_5594("5594", ItemID.PET_KITTEN_1558),
-    CAT_1622("1622", ItemID.PET_CAT_1564),
+    KITTEN_5594(5594, ItemID.PET_KITTEN_1558),
+    CAT_1622(1622, ItemID.PET_CAT_1564),
 
     //white/brown
-    KITTEN_5595("5595", ItemID.PET_KITTEN_1559),
-    CAT_1623("1623", ItemID.PET_CAT_1565),
+    KITTEN_5595(5595, ItemID.PET_KITTEN_1559),
+    CAT_1623(1623, ItemID.PET_CAT_1565),
 
     //white/blue
-    KITTEN_5596("5596", ItemID.PET_KITTEN_1560),
-    CAT_1624("1624", ItemID.PET_CAT_1566),
+    KITTEN_5596(5596, ItemID.PET_KITTEN_1560),
+    CAT_1624(1624, ItemID.PET_CAT_1566),
 
     //hell
-    HELLKITTEN("5597", ItemID.HELLKITTEN),
-    HELL_CAT("1625", ItemID.HELL_CAT);
+    HELLKITTEN(5597, ItemID.HELLKITTEN),
+    HELL_CAT(1625, ItemID.HELL_CAT);
 
 
-    private static final Map<String, Felines> felines = new HashMap<>();
-    private final String name;
+    private static final Map<Integer, Felines> felines = new HashMap<>();
+    private final int id;
     private final int itemSpriteId;
 
 
@@ -48,12 +48,12 @@ public enum Felines {
     {
         for (Felines cat : values())
         {
-            felines.put(cat.getName(), cat);
+            felines.put(cat.getId(), cat);
         }
     }
 
-    private Felines(String name, int ItemSpriteId) {
-        this.name = name;
+    private Felines(int id, int ItemSpriteId) {
+        this.id = id;
         this.itemSpriteId = ItemSpriteId;
 
     }
@@ -62,10 +62,10 @@ public enum Felines {
     {
         return itemSpriteId;
     }
-    public String getName()
+    public int getId()
     {
-        return name;
+        return id;
     }
 
-    public static Felines find(String id) {return felines.get(id);}
+    public static Felines find(int id) {return felines.get(id);}
 }

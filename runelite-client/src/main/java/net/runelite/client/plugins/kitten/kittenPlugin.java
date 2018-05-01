@@ -271,7 +271,7 @@ public class kittenPlugin extends Plugin{
     private void addKittenGrowthBox(int seconds)
     {
         if (seconds <= 0 ) { return; }
-        Felines feline = Felines.find(String.valueOf(followerID));
+        Felines feline = Felines.find(followerID);
 
         if (feline == null) { return; }
 
