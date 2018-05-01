@@ -60,7 +60,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.RuneLiteConfig;
@@ -199,7 +198,7 @@ public class SwingUtil
 	 * @param callback        the callback
 	 * @param confirmRequired the confirm required
 	 */
-	public static void addGracefulExitCallback(final RuneLiteConfig config, @Nonnull final JFrame frame, @Nonnull final Runnable callback, @Nonnull final Callable<Boolean> confirmRequired)
+	public static void addGracefulExitCallback(@Nonnull final RuneLiteConfig config, @Nonnull final JFrame frame, @Nonnull final Runnable callback, @Nonnull final Callable<Boolean> confirmRequired)
 	{
 		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter()
@@ -223,9 +222,8 @@ public class SwingUtil
 						content.add(checkBox, 1);
 
 						result = JOptionPane.showConfirmDialog(
-							frame,
-								content, "Exit",
-							JOptionPane .OK_CANCEL_OPTION,
+							frame, content, "Exit",
+							JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 
 						config.setConfirmOnClose(!checkBox.isSelected());

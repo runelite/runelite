@@ -223,10 +223,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "confirmOnClose",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "confirmOnClose",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	void setConfirmOnClose(boolean b);
 }
