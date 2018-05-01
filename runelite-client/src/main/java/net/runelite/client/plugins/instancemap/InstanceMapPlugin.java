@@ -27,6 +27,8 @@ package net.runelite.client.plugins.instancemap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.Getter;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
@@ -38,11 +40,11 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Instance Map"
 )
+@Singleton
 public class InstanceMapPlugin extends Plugin
 {
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
@@ -51,6 +53,7 @@ public class InstanceMapPlugin extends Plugin
 	private InstanceMapInputListener inputListener;
 
 	@Inject
+	@Getter
 	private InstanceMapOverlay overlay;
 
 	@Inject
@@ -63,25 +66,15 @@ public class InstanceMapPlugin extends Plugin
 	private MouseManager mouseManager;
 
 	@Override
-	public void configure(Binder binder)
+	public void configure(final Binder binder)
 	{
-		binder.bind(InstanceMapInputListener.class);
-	}
-
-	private void addCustomOptions()
-	{
-		menuManager.addManagedCustomMenu(openMapOption);
-	}
-
-	private void removeCustomOptions()
-	{
-		menuManager.removeManagedCustomMenu(openMapOption);
+		binder.bind(InstanceMapService.class).to(InstanceMapServiceImpl.class);
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		addCustomOptions();
+		menuManager.addManagedCustomMenu(openMapOption);
 		keyManager.registerKeyListener(inputListener);
 		mouseManager.registerMouseListener(inputListener);
 		mouseManager.registerMouseWheelListener(inputListener);
@@ -90,7 +83,7 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		removeCustomOptions();
+		menuManager.removeManagedCustomMenu(openMapOption);
 		keyManager.unregisterKeyListener(inputListener);
 		mouseManager.registerMouseListener(inputListener);
 		mouseManager.unregisterMouseWheelListener(inputListener);
@@ -123,33 +116,14 @@ public class InstanceMapPlugin extends Plugin
 
 		if (clickedOptionEquals(event, openMapOption))
 		{
-			if (overlay.isMapShown())
-			{
-				closeMap();
-			}
-			else
-			{
-				showMap();
-			}
+			setMenuState(!overlay.isMapShown());
+			overlay.setShowMap(!overlay.isMapShown());
 		}
 	}
 
-	@Override
-	public Overlay getOverlay()
+	public void setMenuState(boolean shown)
 	{
-		return overlay;
-	}
-
-	public void showMap()
-	{
-		overlay.setShowMap(true);
-		openMapOption.setMenuOption("Hide");
-	}
-
-	public void closeMap()
-	{
-		overlay.setShowMap(false);
-		openMapOption.setMenuOption("Show");
+		openMapOption.setMenuOption(shown ? "Hide" : "Show");
 	}
 
 	public void ascendMap()

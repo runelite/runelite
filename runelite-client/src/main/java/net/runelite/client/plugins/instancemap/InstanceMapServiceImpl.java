@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins.instancemap;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup(
-	name = "Clue Scroll",
-	keyName = "cluescroll",
-	description = "Configuration for the clue scroll plugin"
-)
-public interface ClueScrollConfig extends Config
+@Singleton
+class InstanceMapServiceImpl implements InstanceMapService
 {
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
-	)
-	default boolean displayHintArrows()
+	private final InstanceMapPlugin instanceMapPlugin;
+	private final InstanceMapOverlay instanceMapOverlay;
+
+	@Inject
+	private InstanceMapServiceImpl(final InstanceMapPlugin instanceMapPlugin, final InstanceMapOverlay instanceMapOverlay)
 	{
-		return true;
+		this.instanceMapPlugin = instanceMapPlugin;
+		this.instanceMapOverlay = instanceMapOverlay;
 	}
 
-	@ConfigItem(
-		keyName = "showMapOnFirstRead",
-		name = "Show map on first read",
-		description = "Configures whether or not the map is auto-shown on first read"
-	)
-	default boolean showOnFirstRead()
+	@Override
+	public void openAt(WorldPoint point)
 	{
-		return true;
+		if (point != null)
+		{
+			instanceMapOverlay.openAt(point);
+			instanceMapPlugin.setMenuState(instanceMapOverlay.isMapShown());
+		}
+	}
+
+	@Override
+	public void close()
+	{
+		instanceMapOverlay.openAt(null);
+		instanceMapPlugin.setMenuState(instanceMapOverlay.isMapShown());
+	}
+
+	@Override
+	public boolean isOpen()
+	{
+		return instanceMapOverlay.isMapShown();
 	}
 }

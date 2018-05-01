@@ -120,6 +120,8 @@
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>
+		<module>runelite-map-assembler-plugin</module>
+		<module>runelite-map</module>
 		<module>runelite-script-assembler-plugin</module>
 		<module>runelite-scripts</module>
 		<module>runescape-api</module>

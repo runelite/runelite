@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins.instancemap;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup(
-	name = "Clue Scroll",
-	keyName = "cluescroll",
-	description = "Configuration for the clue scroll plugin"
-)
-public interface ClueScrollConfig extends Config
+/**
+ * Instance map service to be used for manipulation with the map.
+ */
+public interface InstanceMapService extends AutoCloseable
 {
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
-	)
-	default boolean displayHintArrows()
-	{
-		return true;
-	}
+	/**
+	 * Open instance map at specified world point.
+	 *
+	 * @param point the point
+	 */
+	void openAt(final WorldPoint point);
 
-	@ConfigItem(
-		keyName = "showMapOnFirstRead",
-		name = "Show map on first read",
-		description = "Configures whether or not the map is auto-shown on first read"
-	)
-	default boolean showOnFirstRead()
-	{
-		return true;
-	}
+	/**
+	 * Checks if instance map is already open
+	 * @return true if map is open
+	 */
+	boolean isOpen();
+
+	@Override
+	void close();
 }
