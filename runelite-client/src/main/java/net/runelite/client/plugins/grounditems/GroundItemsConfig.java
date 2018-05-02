@@ -271,4 +271,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return 10000000;
 	}
+
+	@ConfigItem(
+		keyName = "showRecolorItemPriority",
+		name = "Recolor Item Priority",
+		description = "Configures whether or not to recolor items over highlight list",
+		position = 21
+	)
+	default boolean showRecolorItemPriority()
+	{
+		return true;
+	}
 }
