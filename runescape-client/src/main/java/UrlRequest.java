@@ -77,9 +77,9 @@ public class UrlRequest {
    )
    static void method3183() {
       if(class90.Login_isUsernameRemembered && class90.username != null && class90.username.length() > 0) {
-         class90.field1363 = 1;
+         class90.currentLoginField = 1;
       } else {
-         class90.field1363 = 0;
+         class90.currentLoginField = 0;
       }
 
    }
