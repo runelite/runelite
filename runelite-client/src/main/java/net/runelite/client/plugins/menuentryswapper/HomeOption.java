@@ -39,7 +39,7 @@ public enum HomeOption
 			case HOME: return "Home";
 			case FRIENDS: return "Friends";
 			case BUILD: return "Build";
-			case ENTER: return "Enter";
+			case ENTER: return "Disabled";
 			default: throw new IllegalArgumentException();
 		}
 	}
