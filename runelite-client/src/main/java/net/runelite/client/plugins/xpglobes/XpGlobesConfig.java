@@ -48,10 +48,21 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "enableSkillColors",
+			name = "Enable skill colors",
+			description = "Use colors matching to the skill",
+			position = 1
+	)
+	default boolean enableSkillColors()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "Progress arc color",
 		name = "Progress arc color",
 		description = "Change the color of the progress arc in the xp orb",
-		position = 1
+		position = 2
 	)
 	default Color progressArcColor()
 	{
@@ -62,7 +73,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress orb outline color",
 		name = "Progress orb outline color",
 		description = "Change the color of the progress orb outline",
-		position = 2
+		position = 3
 	)
 	default Color progressOrbOutLineColor()
 	{
@@ -73,7 +84,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress orb background color",
 		name = "Progress orb background color",
 		description = "Change the color of the progress orb background",
-		position = 3
+		position = 4
 	)
 	default Color progressOrbBackgroundColor()
 	{
@@ -84,7 +95,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress arc width",
 		name = "Progress arc width",
 		description = "Change the stroke width of the progress arc",
-		position = 4
+		position = 5
 	)
 	default int progressArcStrokeWidth()
 	{
@@ -95,7 +106,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Orb size",
 		name = "Size of orbs",
 		description = "Change the size of the xp orbs",
-		position = 5
+		position = 6
 	)
 	default int xpOrbSize()
 	{
@@ -106,7 +117,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Center orbs",
 		name = "Center orbs",
 		description = "Where to center the xp orbs around",
-		position = 6
+		position = 7
 	)
 	default OrbCentering centerOrbs()
 	{
@@ -117,7 +128,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Orb duration",
 		name = "Duration of orbs",
 		description = "Change the duration the xp orbs are visible",
-		position = 7
+		position = 8
 	)
 	default int xpOrbDuration()
 	{
