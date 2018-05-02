@@ -35,17 +35,17 @@ import net.runelite.api.Skill;
 
 @Data
 @Slf4j
-class SkillXPInfo
+class XpStateSingle
 {
 	private final Skill skill;
+	private final int startXp;
 	private Instant skillTimeStart = null;
-	private int startXp = -1;
 	private int xpGained = 0;
 	private int actions = 0;
 	private int nextLevelExp = 0;
 	private int startLevelExp = 0;
 	private int level = 0;
-	private boolean initialized = false;
+	private boolean actionsHistoryInitialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
 
@@ -82,7 +82,7 @@ class SkillXPInfo
 
 	int getActionsRemaining()
 	{
-		if (initialized)
+		if (actionsHistoryInitialized)
 		{
 			long xpRemaining = getXpRemaining() * actionExps.length;
 			long actionExp = 0;
@@ -92,7 +92,14 @@ class SkillXPInfo
 				actionExp += actionExps[i];
 			}
 
-			return Math.toIntExact(xpRemaining / actionExp);
+			// Let's not divide by zero (or negative)
+			if (actionExp > 0)
+			{
+				// Make sure to account for the very last action at the end
+				long remainder = xpRemaining % actionExp;
+				long quotient = xpRemaining / actionExp;
+				return Math.toIntExact(quotient + (remainder > 0 ? 1 : 0));
+			}
 		}
 
 		return Integer.MAX_VALUE;
@@ -116,35 +123,24 @@ class SkillXPInfo
 		return "\u221e";
 	}
 
-	void reset(int currentXp)
-	{
-		if (startXp != -1)
-		{
-			startXp = currentXp;
-		}
-
-		xpGained = 0;
-		actions = 0;
-		skillTimeStart = null;
-	}
 
 	boolean update(int currentXp)
 	{
 		if (startXp == -1)
 		{
+			log.warn("Attempted to update skill state " + skill + " but was not initialized with current xp");
 			return false;
 		}
 
 		int originalXp = xpGained + startXp;
+		int actionExp = currentXp - originalXp;
 
-		if (originalXp >= currentXp)
+		if (actionExp == 0)
 		{
 			return false;
 		}
 
-		int actionExp = currentXp - originalXp;
-
-		if (initialized)
+		if (actionsHistoryInitialized)
 		{
 			actionExps[actionExpIndex] = actionExp;
 		}
@@ -156,7 +152,7 @@ class SkillXPInfo
 				actionExps[i] = actionExp;
 			}
 
-			initialized = true;
+			actionsHistoryInitialized = true;
 		}
 
 		actionExpIndex = (actionExpIndex + 1) % actionExps.length;
@@ -177,5 +173,20 @@ class SkillXPInfo
 		}
 
 		return true;
+	}
+
+	XpSnapshotSingle snapshot()
+	{
+		return XpSnapshotSingle.builder()
+			.currentLevel(getLevel())
+			.xpGainedInSession(getXpGained())
+			.xpRemainingToGoal(getXpRemaining())
+			.xpPerHour(getXpHr())
+			.skillProgressToGoal(getSkillProgress())
+			.actionsInSession(getActions())
+			.actionsRemainingToGoal(getActionsRemaining())
+			.actionsPerHour(getActionsHr())
+			.timeTillGoal(getTimeTillLevel())
+			.build();
 	}
 }
