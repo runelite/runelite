@@ -310,6 +310,7 @@ public class SwingUtil
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
+		button.setMaximumSize(new Dimension(30, 30));
 		button.setName(navigationButton.getName());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
