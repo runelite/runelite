@@ -82,18 +82,29 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "hexTimerColor",
-		name = "Timer color",
-		description = "Color of timer overlay"
+			position = 4,
+			keyName = "hexTimerFillColor",
+			name = "Timer fill color",
+			description = "Fill Color of timer overlay"
 	)
-	default Color getTimerColor()
+	default Color getTimerFillColor()
 	{
 		return new Color(217, 54, 0);
 	}
 
 	@ConfigItem(
-		position = 5,
+			position = 5,
+			keyName = "hexTimerBorderColor",
+			name = "Timer border color",
+			description = "Border Color of timer overlay"
+	)
+	default Color getTimerBorderColor()
+	{
+		return new Color(255, 255, 255);
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "hexWarningColor",
 		name = "Warning color",
 		description = "Color of warning overlay"

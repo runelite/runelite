@@ -25,27 +25,21 @@
 package net.runelite.client.plugins.blastmine;
 
 import com.google.common.collect.Sets;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Perspective;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ProgressPie;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Set;
@@ -64,21 +58,21 @@ public class BlastMineRockOverlay extends Overlay
 	private final Client client;
 	private final BlastMinePlugin plugin;
 	private final BlastMinePluginConfig config;
+	private final ItemManager itemManager;
 
 	private Color timerColor;
+	private Color timerBorderColor;
 	private Color warningColor;
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	BlastMineRockOverlay(@Nullable Client client, BlastMinePlugin plugin, BlastMinePluginConfig config)
+	BlastMineRockOverlay(@Nullable Client client, BlastMinePlugin plugin, BlastMinePluginConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.config = config;
 		this.client = client;
+		this.itemManager = itemManager;
 	}
 
 	@Override
@@ -91,7 +85,8 @@ public class BlastMineRockOverlay extends Overlay
 
 	public void updateColors()
 	{
-		timerColor = config.getTimerColor();
+		timerColor = config.getTimerFillColor();
+		timerBorderColor = config.getTimerBorderColor();
 		warningColor = config.getWarningColor();
 	}
 
@@ -119,7 +114,7 @@ public class BlastMineRockOverlay extends Overlay
 						drawIconOnRock(graphics, rock, tinderboxIcon);
 						break;
 					case LIT:
-						drawTimerOnRock(graphics, rock, timerColor);
+						drawTimerOnRock(graphics, rock, timerColor, timerBorderColor);
 						drawAreaWarning(graphics, rock, warningColor, tiles);
 						break;
 				}
@@ -136,26 +131,18 @@ public class BlastMineRockOverlay extends Overlay
 		}
 	}
 
-	private void drawTimerOnRock(Graphics2D graphics, BlastMineRock rock, Color color)
+	private void drawTimerOnRock(Graphics2D graphics, BlastMineRock rock, Color fillColor, Color borderColor)
 	{
 		net.runelite.api.Point loc = Perspective.worldToCanvas(client, rock.getGameObject().getX(), rock.getGameObject().getY(), client.getPlane(), 150);
 
 		if (loc != null && config.showTimerOverlay())
 		{
-			//Construct the arc
-			Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-			arc.setAngleStart(90);
 			double timeLeft = 1 - rock.getRemainingFuseTimeRelative();
-			arc.setAngleExtent(timeLeft * 360);
-			arc.setFrame(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
-
-			//Draw the inside of the arc
-			graphics.setColor(color);
-			graphics.fill(arc);
-
-			//Draw the outlines of the arc
-			graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-			graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+			Point position = new Point((loc.getX() - TIMER_SIZE / 2 ) + 10, (loc.getY() - TIMER_SIZE / 2) + 10);
+			ProgressPie pie = new ProgressPie();
+			pie.setFill(fillColor);
+			pie.setBorderColor(borderColor);
+			pie.render(graphics, position, timeLeft);
 		}
 	}
 
