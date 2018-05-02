@@ -6,6 +6,7 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -49,54 +50,76 @@ public class InterfaceSwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void configChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
-		// Checks if the main screen exists
+		performSwap();
+	}
+
+
+	//Solution I don't like
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		performSwap();
+	}
+
+	private void performSwap()
+	{
 		if (client.getWidget(WidgetInfo.UPPER_MAIN_SCREEN) != null)
 		{
 			// Restores to default state before checking if
 			restoreHorizontalSwap();
 			restoreVerticalSwap();
 
-			// Swaps horizontal components
-			if (config.horizontalSwap())
-			{
-				for (WidgetInfo widget : widgetsMainScreen)
-				{
-					client.getWidget(widget).setRelativeX(client.getWidget(widget).getRelativeX() + client.getWidget(worldMap).getWidth() - 4);
-				}
-				client.getWidget(chatBox).setRelativeX(client.getWidget(chatBox).getRelativeX() + client.getWidget(worldMap).getWidth() - 4);
-
-				for (WidgetInfo widget : widgetsInventory)
-				{
-					client.getWidget(widget).setRelativeX(client.getWidget(widget).getRelativeX() - client.getWidget(chatBox).getWidth());
-				}
-				client.getWidget(worldMap).setRelativeX(client.getWidget(worldMap).getRelativeX() - client.getWidget(chatBox).getWidth());
-			}
-
-			// Swaps vertical components
-			if (config.verticalSwap())
-			{
-				for (WidgetInfo widget : widgetsMainScreen)
-				{
-					client.getWidget(widget).setRelativeY(client.getWidget(widget).getRelativeY() + client.getWidget(chatBox).getHeight());
-				}
-				int mainScreenHeight = client.getWidget(WidgetInfo.UPPER_MAIN_SCREEN).getHeight() + client.getWidget(WidgetInfo.MAIN_SCREEN).getHeight();
-
-				client.getWidget(chatBox).setRelativeY(client.getWidget(chatBox).getRelativeY() - mainScreenHeight);
-
-				int inventoryHeight = client.getWidget(WidgetInfo.INVENTORY_INTERFACE).getHeight() +
-						client.getWidget(WidgetInfo.UPPER_INVENTORY_BAR).getHeight() +
-						client.getWidget(WidgetInfo.LOWER_INVENTORY_BAR).getHeight();
-
-				for (WidgetInfo widget : widgetsInventory)
-				{
-					client.getWidget(widget).setRelativeY(client.getWidget(widget).getRelativeY() - client.getWidget(worldMap).getHeight());
-				}
-				client.getWidget(worldMap).setRelativeY(client.getWidget(worldMap).getRelativeY() + inventoryHeight);
-			}
+			// Swaps components
+			horizontalSwap();
+			verticalSwap();
 		}
 	}
+
+	private void horizontalSwap()
+	{
+		if (config.horizontalSwap())
+		{
+			for (WidgetInfo widget : widgetsMainScreen)
+			{
+				client.getWidget(widget).setRelativeX(client.getWidget(widget).getRelativeX() + client.getWidget(worldMap).getWidth() - 4);
+			}
+			client.getWidget(chatBox).setRelativeX(client.getWidget(chatBox).getRelativeX() + client.getWidget(worldMap).getWidth() - 4);
+
+			for (WidgetInfo widget : widgetsInventory)
+			{
+				client.getWidget(widget).setRelativeX(client.getWidget(widget).getRelativeX() - client.getWidget(chatBox).getWidth());
+			}
+			client.getWidget(worldMap).setRelativeX(client.getWidget(worldMap).getRelativeX() - client.getWidget(chatBox).getWidth());
+		}
+	}
+
+	private void verticalSwap()
+	{
+		// Swaps vertical components
+		if (config.verticalSwap())
+		{
+			for (WidgetInfo widget : widgetsMainScreen)
+			{
+				client.getWidget(widget).setRelativeY(client.getWidget(widget).getRelativeY() + client.getWidget(chatBox).getHeight());
+			}
+			int mainScreenHeight = client.getWidget(WidgetInfo.UPPER_MAIN_SCREEN).getHeight() + client.getWidget(WidgetInfo.MAIN_SCREEN).getHeight();
+
+			client.getWidget(chatBox).setRelativeY(client.getWidget(chatBox).getRelativeY() - mainScreenHeight);
+
+			int inventoryHeight = client.getWidget(WidgetInfo.INVENTORY_INTERFACE).getHeight() +
+					client.getWidget(WidgetInfo.UPPER_INVENTORY_BAR).getHeight() +
+					client.getWidget(WidgetInfo.LOWER_INVENTORY_BAR).getHeight();
+
+			for (WidgetInfo widget : widgetsInventory)
+			{
+				client.getWidget(widget).setRelativeY(client.getWidget(widget).getRelativeY() - client.getWidget(worldMap).getHeight() - 2);
+			}
+			client.getWidget(worldMap).setRelativeY(client.getWidget(worldMap).getRelativeY() + inventoryHeight - 2);
+		}
+	}
+
 
 	// Restores the horizontal swap
 	private void restoreHorizontalSwap()
