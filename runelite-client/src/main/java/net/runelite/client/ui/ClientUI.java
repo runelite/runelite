@@ -55,6 +55,7 @@ import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
@@ -201,22 +202,10 @@ public class ClientUI
 				return;
 			}
 
-			int width = config.gameSize().width;
-			int height = config.gameSize().height;
-
 			// The upper bounds are defined by the applet's max size
-			// The lower bounds are taken care of by ClientPanel's setMinimumSize
-
-			if (width > 7680)
-			{
-				width = 7680;
-			}
-
-			if (height > 2160)
-			{
-				height = 2160;
-			}
-
+			// The lower bounds are defined by the client's fixed size
+			int width = Math.max(Math.min(config.gameSize().width, 7680), Constants.GAME_FIXED_WIDTH);
+			int height = Math.max(Math.min(config.gameSize().height, 2160), Constants.GAME_FIXED_HEIGHT);
 			final Dimension size = new Dimension(width, height);
 
 			client.setSize(size);
