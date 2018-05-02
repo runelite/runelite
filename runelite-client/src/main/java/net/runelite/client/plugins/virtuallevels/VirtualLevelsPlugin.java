@@ -107,6 +107,39 @@ public class VirtualLevelsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onTotalLevelScriptEvent(ScriptCallbackEvent event)
+	{
+		if (!config.showTotalOnSkillTab())
+		{
+			return;
+		}
+
+		String eventName = event.getEventName();
+
+		String[] stringStack = client.getStringStack();
+		int stringStackPointer = client.getStringStackSize();
+
+		switch (eventName)
+		{
+			case "skillTabTotalLevel":
+				int level = 0;
+
+				for (Skill skill : Skill.VALUES)
+				{
+					if (skill == Skill.OVERALL)
+					{
+						continue;
+					}
+
+					level += Experience.getLevelForXp(client.getSkillExperience(skill));
+				}
+
+				stringStack[--stringStackPointer] = "Total level:<br>" + level;
+				break;
+		}
+	}
+
+	@Subscribe
 	public void onConfigChange(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("virtuallevels"))
@@ -117,6 +150,7 @@ public class VirtualLevelsPlugin extends Plugin
 		switch (event.getKey())
 		{
 			case "skillTab":
+			case "skillTabTotal":
 				postFakeSkillChange();
 				break;
 		}

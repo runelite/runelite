@@ -48,6 +48,17 @@ public interface VirtualLevelsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "skillTabTotal",
+		name = "Enable virtual total level on skill tab",
+		description = "Configures if the skill tab should show your virtual total level."
+	)
+	default boolean showTotalOnSkillTab()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 3,
 		keyName = "hiscoresPanel",
 		name = "Enable virtual levels on Hiscores",
