@@ -32,9 +32,11 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 
-public class kittenAttentionTimer extends Timer {
+public class kittenAttentionTimer extends Timer
+{
 
-    public kittenAttentionTimer(BufferedImage infoImage, Plugin plugin, Duration seconds) {
-        super(seconds.toMillis(), ChronoUnit.MILLIS, infoImage, plugin);
-    }
+	public kittenAttentionTimer(BufferedImage infoImage, Plugin plugin, Duration seconds)
+	{
+		super(seconds.toMillis(), ChronoUnit.MILLIS, infoImage, plugin);
+	}
 }
