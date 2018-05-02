@@ -62,6 +62,7 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 			if (lastPress != null && !plugin.isHotKeyPressed() && Duration.between(lastPress, Instant.now()).getNano() < 250000000)
 			{
 				plugin.setHideAll(!plugin.isHideAll());
+				lastPress = null;
 			}
 			else
 			{
