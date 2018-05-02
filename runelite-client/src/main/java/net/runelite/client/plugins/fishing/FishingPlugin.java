@@ -36,11 +36,13 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -65,8 +67,16 @@ public class FishingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
 
+
+	@Inject
+	private Client client;
+
+
 	@Inject
 	private QueryRunner queryRunner;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private FishingConfig config;
