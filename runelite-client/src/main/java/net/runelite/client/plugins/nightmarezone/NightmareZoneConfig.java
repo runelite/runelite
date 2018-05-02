@@ -92,11 +92,34 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "overloadwarningnotification",
+			name = "Overload expiration warning timer",
+			description = "Toggles notifications when your overload is about to expire",
+			position = 6
+	)
+	default boolean overloadWarningNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "overloadwarningtimer",
+			name = "Warning timer (seconds)",
+			description = "Time before overload expires to send a notification at",
+			position = 7
+	)
+	default int overloadWarningWindow()
+	{
+		return 15;
+	}
+
+	@ConfigItem(
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 6
+		position = 8
 	)
+
 	default boolean absorptionNotification()
 	{
 		return true;
@@ -106,7 +129,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 7
+		position = 9
 	)
 	default int absorptionThreshold()
 	{
@@ -117,7 +140,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 8
+		position = 10
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -128,7 +151,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 9
+		position = 11
 	)
 	default Color absorptionColorBelowThreshold()
 	{
