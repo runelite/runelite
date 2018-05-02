@@ -400,7 +400,7 @@ public class ScreenshotPlugin extends Plugin
 		drawManager.requestNextFrameListener(image ->
 		{
 			//reduce the image to just what we want.
-			image = image.getSubimage(widget.getOriginalX(), widget.getOriginalY(), widget.getWidth(), widget.getHeight());
+			image = image.getSubimage(widget.getCanvasLocation().getX(), widget.getCanvasLocation().getY(), widget.getWidth(), widget.getHeight());
 			BufferedImage widgetCapture = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 			Graphics graphics = widgetCapture.getGraphics();
@@ -411,7 +411,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				try
 				{
-					File lootFile = new File(SCREENSHOT_DIR, filename + ".png");
+					File lootFile = new File(SCREENSHOT_DIR, "last" + filename + ".png");
 					ImageIO.write(widgetCapture, "PNG", lootFile);
 				}
 				catch (IOException ex)
