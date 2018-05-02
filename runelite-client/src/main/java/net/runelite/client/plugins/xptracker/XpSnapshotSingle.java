@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,20 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.api.Skill;
+import lombok.Builder;
+import lombok.Value;
 
-@Singleton
-class XpTrackerServiceImpl implements XpTrackerService
+@Builder
+@Value
+class XpSnapshotSingle
 {
-	private final XpTrackerPlugin plugin;
-
-	@Inject
-	XpTrackerServiceImpl(XpTrackerPlugin plugin)
-	{
-		this.plugin = plugin;
-	}
-
-	@Override
-	public int getActions(Skill skill)
-	{
-		return plugin.getSkillSnapshot(skill).getActionsInSession();
-	}
-
-	@Override
-	public int getActionsHr(Skill skill)
-	{
-		return plugin.getSkillSnapshot(skill).getActionsPerHour();
-	}
-
-	@Override
-	public int getActionsLeft(Skill skill)
-	{
-		return plugin.getSkillSnapshot(skill).getActionsRemainingToGoal();
-	}
+	private int currentLevel;
+	private int xpGainedInSession;
+	private int xpRemainingToGoal;
+	private int xpPerHour;
+	private int skillProgressToGoal;
+	private int actionsInSession;
+	private int actionsRemainingToGoal;
+	private int actionsPerHour;
+	private String timeTillGoal;
 }

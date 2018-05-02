@@ -27,6 +27,7 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -56,7 +57,19 @@ public interface Actor extends Renderable
 
 	int getAnimation();
 
+	@VisibleForDevtools
+	void setAnimation(int animation);
+
+	@VisibleForDevtools
+	void setActionFrame(int actionFrame);
+
 	int getGraphic();
+
+	@VisibleForDevtools
+	void setGraphic(int graphic);
+
+	@VisibleForDevtools
+	void setSpotAnimFrame(int spotAnimFrame);
 
 	int getModelHeight();
 
