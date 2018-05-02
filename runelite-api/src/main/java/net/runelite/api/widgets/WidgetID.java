@@ -84,6 +84,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int COMBAT_AREA_GROUP_ID = 90;
 
 	static class WorldMap
 	{
@@ -420,5 +421,11 @@ public class WidgetID
 	{
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
+	}
+	
+	static class CombatArea
+	{
+		static final int LEVEL_RANGE = 45;
+		static final int WILDERNESS_LEVEL = 46;
 	}
 }

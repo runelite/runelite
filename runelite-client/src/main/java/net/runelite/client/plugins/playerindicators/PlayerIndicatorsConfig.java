@@ -148,6 +148,28 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 10,
+		keyName = "drawAttackableNames",
+		name = "Draw attackable player names",
+		description = "Configures whether or not names of attackable players should be drawn"
+	)
+	default boolean drawAttackableNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "attackablePlayerColor",
+		name = "Attackable player color",
+		description = "Color of attackable player names"
+	)
+	default Color getAttackableNameColor()
+	{
+		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+		position = 12,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles",
 		description = "Configures whether or not tiles under players with rendered names should be drawn"
@@ -158,7 +180,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 13,
 		keyName = "drawOverheadPlayerNames",
 		name = "Draw names above players",
 		description = "Configures whether or not player names should be drawn above players"
@@ -169,7 +191,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 14,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -180,7 +202,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 15,
 		keyName = "colorPlayerMenu",
 		name = "Color player menu",
 		description = "Color right click menu for players"
@@ -191,7 +213,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 16,
 		keyName = "clanMenuIcons",
 		name = "Show clan rank in menu",
 		description = "Add clan rank to right click menu for players"

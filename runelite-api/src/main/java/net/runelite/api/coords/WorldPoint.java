@@ -99,6 +99,23 @@ public class WorldPoint
 		return client.getPlane() == plane && isInScene(client, x, y);
 	}
 
+	public static boolean isInZone(WorldPoint lowerBound, WorldPoint upperBound, WorldPoint userLocation)
+	{
+		if (userLocation.getX() < lowerBound.getX() || userLocation.getX() > upperBound.getX())
+		{
+			return false;
+		}
+		if (userLocation.getY() < lowerBound.getY() || userLocation.getY() > upperBound.getY())
+		{
+			return false;
+		}
+		if (userLocation.getPlane() < lowerBound.getPlane() || userLocation.getPlane() > upperBound.getPlane())
+		{
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Returns a WorldPoint containing the passed LocalPoint
 	 */
