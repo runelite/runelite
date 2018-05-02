@@ -26,6 +26,7 @@ package net.runelite.client.config;
 
 import java.awt.Dimension;
 import net.runelite.api.Constants;
+import net.runelite.client.Notifier;
 
 @ConfigGroup(
 	keyName = "runelite",
@@ -80,32 +81,21 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationTray",
-		name = "Enable tray notifications",
-		description = "Enables tray notifications",
+		keyName = "notificationMode",
+		name = "Notification mode",
+		description = "Determines mode of notifications",
 		position = 5
 	)
-	default boolean enableTrayNotifications()
+	default Notifier.NotificationMode notificationMode()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "notificationSound",
-		name = "Enable sound on notifications",
-		description = "Enables the playing of a beep sound when notifications are displayed",
-		position = 6
-	)
-	default boolean enableNotificationSound()
-	{
-		return true;
+		return Notifier.NotificationMode.TRAY;
 	}
 
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles idle notifications for when the client is focused",
-		position = 7
+		position = 6
 	)
 	default boolean sendNotificationsWhenFocused()
 	{
@@ -116,7 +106,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationRequestFocus",
 		name = "Request focus on notification",
 		description = "Toggles window focus request",
-		position = 8
+		position = 7
 	)
 	default boolean requestFocusOnNotification()
 	{
@@ -127,7 +117,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
-		position = 9
+		position = 8
 	)
 	default FontType fontType()
 	{
@@ -138,7 +128,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 10
+		position = 9
 	)
 	default boolean infoBoxVertical()
 	{
@@ -149,7 +139,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 11
+		position = 10
 	)
 	default int infoBoxWrap()
 	{
@@ -160,7 +150,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "containInScreen",
 		name = "Contain in screen",
 		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
-		position = 12
+		position = 11
 	)
 	default boolean containInScreen()
 	{
@@ -171,7 +161,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "rememberScreenBounds",
 		name = "Remember client position",
 		description = "Save the position and size of the client after exiting",
-		position = 13
+		position = 12
 	)
 	default boolean rememberScreenBounds()
 	{
