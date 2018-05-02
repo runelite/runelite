@@ -73,7 +73,7 @@ public class WalkHerePlugin extends Plugin
 
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 
-		if (option.equals("walk-here"))
+		if (option.equals("walk"))
 		{
 			setDefaultOption(option);
 		}
