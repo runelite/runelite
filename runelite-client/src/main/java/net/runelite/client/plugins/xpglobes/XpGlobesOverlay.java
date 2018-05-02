@@ -149,20 +149,13 @@ public class XpGlobesOverlay extends Overlay
 			5,
 			config.progressOrbOutLineColor()
 		);
-
-		Color progressColor = config.progressArcColor();
-		if(config.enableSkillColors())
-		{
-			progressColor = skillToDraw.getSkillColor();
-		}
-		
 		drawProgressArc(
 			graphics,
 			x, y,
 			config.xpOrbSize(), config.xpOrbSize(),
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			config.progressArcStrokeWidth(),
-			progressColor);
+			skillToDraw.getSkillColor());
 
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
 
