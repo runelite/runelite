@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsConfig;
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsPlugin;
 import org.junit.Test;
 
 public class HiscorePanelTest
@@ -31,7 +33,7 @@ public class HiscorePanelTest
 	@Test
 	public void testConstructor()
 	{
-		new HiscorePanel(new HiscoreConfig() {});
+		new HiscorePanel(new HiscoreConfig() {}, new VirtualLevelsPlugin(), new VirtualLevelsConfig() {});
 	}
 	
 }

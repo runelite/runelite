@@ -57,14 +57,4 @@ public interface HiscoreConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		position = 3,
-		keyName = "virtualLevels",
-		name = "Display virtual levels",
-		description = "Display levels over 99 in the hiscore panel"
-	)
-	default boolean virtualLevels()
-	{
-		return true;
-	}
 }

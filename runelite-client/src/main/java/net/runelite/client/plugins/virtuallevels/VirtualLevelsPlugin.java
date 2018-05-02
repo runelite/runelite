@@ -34,6 +34,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
 
 import javax.inject.Inject;
 
@@ -48,6 +49,9 @@ public class VirtualLevelsPlugin extends Plugin
 
 	@Inject
 	private VirtualLevelsConfig config;
+
+	@Inject
+	private PluginManager pluginManager;
 
 	@Override
 	protected void startUp() throws Exception
@@ -116,6 +120,15 @@ public class VirtualLevelsPlugin extends Plugin
 				postFakeSkillChange();
 				break;
 		}
+	}
+
+	/**
+	 * Check if the plugin is enabled. This is to prevent having to inject the PluginManager into plugins that
+	 * depend on this one to check if this plugin is enabled.
+	 */
+	public boolean isEnabled()
+	{
+		return pluginManager.isPluginEnabled(this);
 	}
 
 	/**

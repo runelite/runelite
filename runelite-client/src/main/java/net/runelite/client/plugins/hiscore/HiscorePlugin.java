@@ -45,7 +45,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsPlugin;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.Text;
@@ -55,6 +57,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "HiScore",
 	loadWhenOutdated = true
 )
+@PluginDependency(VirtualLevelsPlugin.class)
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";

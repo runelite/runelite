@@ -47,4 +47,15 @@ public interface VirtualLevelsConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		position = 3,
+		keyName = "hiscoresPanel",
+		name = "Enable virtual levels on Hiscores",
+		description = "Configures if the hiscores panel shows virtual levels."
+	)
+	default boolean showOnHiscoresPanel()
+	{
+		return true;
+	}
+
 }
