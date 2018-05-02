@@ -113,4 +113,23 @@ public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Qu
 		});
 		return (QueryType) this;
 	}
+
+	public QueryType isWithinRegions(int[] regions)
+	{
+		predicate = and(actor ->
+		{
+			int region = actor.getWorldLocation().getRegionID();
+
+			for (int id : regions)
+			{
+				if (region == id)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		});
+		return (QueryType) this;
+	}
 }
