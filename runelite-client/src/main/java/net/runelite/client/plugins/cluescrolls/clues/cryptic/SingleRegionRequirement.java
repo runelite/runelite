@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
 import com.google.common.primitives.Ints;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SingleRegionRequirement implements RegionRequirement
 {
@@ -39,5 +41,15 @@ public class SingleRegionRequirement implements RegionRequirement
 	public boolean fulfilledBy(int[] regions)
 	{
 		return Ints.contains(regions, this.regionId);
+	}
+
+	@Override
+	public List<Integer> getRegions()
+	{
+		List<Integer> list = new ArrayList<>();
+
+		list.add(this.regionId);
+
+		return list;
 	}
 }

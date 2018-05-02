@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnyRegionCollection implements RegionRequirement
 {
 	private RegionRequirement[] regions;
@@ -45,5 +48,21 @@ public class AnyRegionCollection implements RegionRequirement
 		}
 
 		return false;
+	}
+
+	@Override
+	public List<Integer> getRegions()
+	{
+		List<Integer> list = new ArrayList<>();
+
+		for (RegionRequirement requirement : regions)
+		{
+			for (int id : requirement.getRegions())
+			{
+				list.add(id);
+			}
+		}
+
+		return list;
 	}
 }

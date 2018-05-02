@@ -24,7 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.cryptic;
 
+import java.util.List;
+
 public interface RegionRequirement
 {
 	boolean fulfilledBy(int[] regions);
+
+	List<Integer> getRegions();
 }
