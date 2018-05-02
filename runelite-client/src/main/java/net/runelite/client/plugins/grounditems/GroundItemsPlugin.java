@@ -36,13 +36,14 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -84,6 +85,12 @@ import net.runelite.http.api.item.ItemPrice;
 @Slf4j
 public class GroundItemsPlugin extends Plugin
 {
+	private static final Splitter COMMA_SPLITTER = Splitter
+		.on(",")
+		.omitEmptyStrings()
+		.trimResults();
+
+	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 	//Size of one region
 	private static final int REGION_SIZE = 104;
 	// The max distance in tiles between the player and the item.
@@ -94,17 +101,23 @@ public class GroundItemsPlugin extends Plugin
 	private static final int COINS = ItemID.COINS_995;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> hiddenBoxes = new HashMap<>();
+	@Setter(AccessLevel.PACKAGE)
+	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Rectangle, String> highlightBoxes = new HashMap<>();
+	@Setter(AccessLevel.PACKAGE)
+	private Map.Entry<Rectangle, GroundItem> hiddenBoxBounds;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Map.Entry<Rectangle, GroundItem> highlightBoxBounds;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
 
-	private List<String> hiddenItemList = new ArrayList<>();
-	private List<String> highlightedItemsList = new ArrayList<>();
+	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
+	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
 	private boolean dirty;
 
 	@Inject
@@ -302,13 +315,11 @@ public class GroundItemsPlugin extends Plugin
 
 	private void reset()
 	{
-		Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
-
 		// gets the hidden items from the text box in the config
-		hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems().trim());
+		hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems());
 
 		// gets the highlighted items from the text box in the config
-		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems().trim());
+		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems());
 
 		highlightedItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
@@ -404,24 +415,27 @@ public class GroundItemsPlugin extends Plugin
 
 	void updateList(String item, boolean hiddenList)
 	{
-		List<String> items = new ArrayList<>((hiddenList) ? hiddenItemList : highlightedItemsList);
+		final Set<String> hiddenItemSet = new HashSet<>(hiddenItemList);
+		final Set<String> highlightedItemSet = new HashSet<>(highlightedItemsList);
 
-		items.removeIf(s -> s.isEmpty());
-		if (!items.removeIf(s -> s.equalsIgnoreCase(item)))
+		if (hiddenList)
+		{
+			highlightedItemSet.removeIf(item::equalsIgnoreCase);
+		}
+		else
+		{
+			hiddenItemSet.removeIf(item::equalsIgnoreCase);
+		}
+
+		final Set<String> items = hiddenList ? hiddenItemSet : highlightedItemSet;
+
+		if (!items.removeIf(item::equalsIgnoreCase))
 		{
 			items.add(item);
 		}
 
-		String newList = Joiner.on(", ").join(items);
-		// This triggers the config update which updates the list
-		if (hiddenList)
-		{
-			config.setHiddenItems(newList);
-		}
-		else
-		{
-			config.setHighlightedItem(newList);
-		}
+		config.setHiddenItems(COMMA_JOINER.join(hiddenItemSet));
+		config.setHighlightedItem(COMMA_JOINER.join(highlightedItemSet));
 	}
 
 	public boolean isHighlighted(String item)
