@@ -59,12 +59,14 @@ public final class WorldMapManager {
    @ObfuscatedGetter(
       intValue = 623990259
    )
-   int field547;
+   @Export("mapSurfaceBaseOffsetX")
+   int mapSurfaceBaseOffsetX;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1324620167
    )
-   int field554;
+   @Export("mapSurfaceBaseOffsetY")
+   int mapSurfaceBaseOffsetY;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 2023618093
@@ -122,8 +124,8 @@ public final class WorldMapManager {
          this.field546.method297();
          this.field546.method298();
          this.field546.method299();
-         this.field547 = this.field546.getMinX() * 64;
-         this.field554 = this.field546.getMinY() * 64;
+         this.mapSurfaceBaseOffsetX = this.field546.getMinX() * 64;
+         this.mapSurfaceBaseOffsetY = this.field546.getMinY() * 64;
          this.field556 = (this.field546.method294() - this.field546.getMinX() + 1) * 64;
          this.field553 = (this.field546.method296() - this.field546.getMinY() + 1) * 64;
          int var17 = this.field546.method294() - this.field546.getMinX() + 1;
@@ -213,8 +215,8 @@ public final class WorldMapManager {
       Rasterizer2D.setRasterBuffer(var9, var10, var11);
       Rasterizer2D.setDrawRegion(var12);
       var17 = (int)(64.0F * var14);
-      var18 = this.field547 + var1;
-      int var19 = var2 + this.field554;
+      var18 = this.mapSurfaceBaseOffsetX + var1;
+      int var19 = this.mapSurfaceBaseOffsetY + var2;
 
       for(int var20 = var13.worldMapRegionX; var20 < var13.worldMapRegionWidth + var13.worldMapRegionX; ++var20) {
          for(int var21 = var13.worldMapRegionY; var21 < var13.worldMapRegionY + var13.worldMapRegionHeight; ++var21) {
@@ -234,8 +236,8 @@ public final class WorldMapManager {
       WorldMapRectangle var14 = this.getRegionRectForViewport(var1, var2, var3, var4);
       float var15 = this.method602(var7 - var5, var3 - var1);
       int var16 = (int)(64.0F * var15);
-      int var17 = this.field547 + var1;
-      int var18 = var2 + this.field554;
+      int var17 = this.mapSurfaceBaseOffsetX + var1;
+      int var18 = var2 + this.mapSurfaceBaseOffsetY;
 
       int var19;
       int var20;
@@ -314,8 +316,8 @@ public final class WorldMapManager {
 
                while(var11.hasNext()) {
                   MapIcon var12 = (MapIcon)var11.next();
-                  int var13 = var3 * (var12.field522.worldX - this.field547) / this.field556;
-                  int var14 = var4 - (var12.field522.worldY - this.field554) * var4 / this.field553;
+                  int var13 = var3 * (var12.field522.worldX - this.mapSurfaceBaseOffsetX) / this.field556;
+                  int var14 = var4 - (var12.field522.worldY - this.mapSurfaceBaseOffsetY) * var4 / this.field553;
                   Rasterizer2D.method5802(var13 + var1, var14 + var2, 2, 16776960, 256);
                }
             }
@@ -336,8 +338,8 @@ public final class WorldMapManager {
          WorldMapRectangle var12 = this.getRegionRectForViewport(var1, var2, var3, var4);
          float var13 = this.method602(var7, var3 - var1);
          int var14 = (int)(64.0F * var13);
-         int var15 = this.field547 + var1;
-         int var16 = var2 + this.field554;
+         int var15 = this.mapSurfaceBaseOffsetX + var1;
+         int var16 = var2 + this.mapSurfaceBaseOffsetY;
 
          for(int var17 = var12.worldMapRegionX; var17 < var12.worldMapRegionWidth + var12.worldMapRegionX; ++var17) {
             for(int var18 = var12.worldMapRegionY; var18 < var12.worldMapRegionY + var12.worldMapRegionHeight; ++var18) {
@@ -360,10 +362,10 @@ public final class WorldMapManager {
    @Export("getRegionRectForViewport")
    WorldMapRectangle getRegionRectForViewport(int var1, int var2, int var3, int var4) {
       WorldMapRectangle var5 = new WorldMapRectangle(this);
-      int var6 = this.field547 + var1;
-      int var7 = var2 + this.field554;
-      int var8 = var3 + this.field547;
-      int var9 = var4 + this.field554;
+      int var6 = this.mapSurfaceBaseOffsetX + var1;
+      int var7 = var2 + this.mapSurfaceBaseOffsetY;
+      int var8 = var3 + this.mapSurfaceBaseOffsetX;
+      int var9 = var4 + this.mapSurfaceBaseOffsetY;
       int var10 = var6 / 64;
       int var11 = var7 / 64;
       int var12 = var8 / 64;
@@ -400,7 +402,8 @@ public final class WorldMapManager {
       signature = "(I)Z",
       garbageValue = "-191452998"
    )
-   public boolean method627() {
+   @Export("getLoaded")
+   public boolean getLoaded() {
       return this.loaded;
    }
 

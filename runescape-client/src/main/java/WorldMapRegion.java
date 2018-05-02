@@ -58,7 +58,8 @@ public class WorldMapRegion {
    @ObfuscatedGetter(
       intValue = -1066215841
    )
-   int field475;
+   @Export("pixelsPerTile")
+   int pixelsPerTile;
    @ObfuscatedName("p")
    List field479;
    @ObfuscatedName("q")
@@ -89,9 +90,9 @@ public class WorldMapRegion {
       garbageValue = "1412"
    )
    void method377(int var1, int var2, int var3) {
-      SpritePixels var4 = Resampler.method2387(this.field481, this.field488, this.field475);
+      SpritePixels var4 = Resampler.method2387(this.field481, this.field488, this.pixelsPerTile);
       if(var4 != null) {
-         if(var3 == this.field475 * 64) {
+         if(var3 == this.pixelsPerTile * 64) {
             var4.method5915(var1, var2);
          } else {
             var4.method5936(var1, var2, var3, var3);
@@ -161,7 +162,7 @@ public class WorldMapRegion {
                            var16 = new Coordinates(var9 + var17.field402, var17.field405 * 64 + var6 + var17.method686() * 8, var7 + var17.field399 * 64 + var17.method687() * 8);
                         }
 
-                        MapIcon var18 = new MapIcon(var14.id, var16, var15, this.method411(var14));
+                        MapIcon var18 = new MapIcon(var14.id, var16, var15, this.createMapLabel(var14));
                         this.field474.put(var8, var18);
                         continue label55;
                      }
@@ -197,11 +198,11 @@ public class WorldMapRegion {
       garbageValue = "-2110816636"
    )
    void method382(int var1, class47 var2, WorldMapRegion[] var3, IndexedSprite[] var4) {
-      this.field475 = var1;
+      this.pixelsPerTile = var1;
       if(this.field476 != null || !this.field477.isEmpty()) {
          if(Resampler.method2387(this.field481, this.field488, var1) == null) {
             class33 var5 = this.method390(this.field481, this.field488, var3);
-            SpritePixels var6 = new SpritePixels(this.field475 * 64, this.field475 * 64);
+            SpritePixels var6 = new SpritePixels(this.pixelsPerTile * 64, this.pixelsPerTile * 64);
             var6.setRaster();
             if(this.field476 != null) {
                this.method385(var2, var3, var4, var5);
@@ -209,7 +210,7 @@ public class WorldMapRegion {
                this.method386(var2, var4, var5);
             }
 
-            LoginPacket.method3506(var6, this.field481, this.field488, this.field475);
+            LoginPacket.method3506(var6, this.field481, this.field488, this.pixelsPerTile);
          }
       }
    }
@@ -326,7 +327,7 @@ public class WorldMapRegion {
       int var6 = var3.field404[0][var1][var2] - 1;
       int var7 = var3.field400[0][var1][var2] - 1;
       if(var6 == -1 && var7 == -1) {
-         Rasterizer2D.Rasterizer2D_fillRectangle(this.field475 * var1, this.field475 * (63 - var2), this.field475, this.field475, this.field478);
+         Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, this.field478);
       }
 
       int var8 = 16711935;
@@ -335,13 +336,13 @@ public class WorldMapRegion {
       }
 
       if(var7 > -1 && var3.field406[0][var1][var2] == 0) {
-         Rasterizer2D.Rasterizer2D_fillRectangle(this.field475 * var1, this.field475 * (63 - var2), this.field475, this.field475, var8);
+         Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, var8);
       } else {
          int var9 = this.method395(var1, var2, var3, var5);
          if(var7 == -1) {
-            Rasterizer2D.Rasterizer2D_fillRectangle(this.field475 * var1, this.field475 * (63 - var2), this.field475, this.field475, var9);
+            Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, var9);
          } else {
-            var4.method729(this.field475 * var1, this.field475 * (63 - var2), var9, var8, this.field475, this.field475, var3.field406[0][var1][var2], var3.field407[0][var1][var2]);
+            var4.method729(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), var9, var8, this.pixelsPerTile, this.pixelsPerTile, var3.field406[0][var1][var2], var3.field407[0][var1][var2]);
          }
       }
    }
@@ -357,9 +358,9 @@ public class WorldMapRegion {
          if(var6 > -1) {
             int var7 = class157.method3252(var6, this.field478);
             if(var3.field406[var5][var1][var2] == 0) {
-               Rasterizer2D.Rasterizer2D_fillRectangle(this.field475 * var1, this.field475 * (63 - var2), this.field475, this.field475, var7);
+               Rasterizer2D.Rasterizer2D_fillRectangle(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, this.pixelsPerTile, var7);
             } else {
-               var4.method729(this.field475 * var1, this.field475 * (63 - var2), 0, var7, this.field475, this.field475, var3.field406[var5][var1][var2], var3.field407[var5][var1][var2]);
+               var4.method729(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), 0, var7, this.pixelsPerTile, this.pixelsPerTile, var3.field406[var5][var1][var2], var3.field407[var5][var1][var2]);
             }
          }
       }
@@ -371,10 +372,10 @@ public class WorldMapRegion {
       signature = "(II[Lak;I)Lav;",
       garbageValue = "1165286327"
    )
-   class33 method390(int var1, int var2, WorldMapRegion[] var3) {
+   class33 method390(int var1, int var2, WorldMapRegion[] worldMapRegions) {
       class33 var4 = class157.method3253(var1, var2);
       if(var4 == null) {
-         var4 = this.method502(var3);
+         var4 = this.method502(worldMapRegions);
          class292.method5270(var4, var1, var2);
       }
 
@@ -535,9 +536,9 @@ public class WorldMapRegion {
                   ObjectComposition var12 = class80.getObjectDefinition(var9.objectDefinitionId);
                   if(var12.mapSceneId != -1) {
                      if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
-                        var4[var12.mapSceneId].method5891(this.field475 * var1, this.field475 * (63 - var2), this.field475 * 2, this.field475 * 2);
+                        var4[var12.mapSceneId].method5891(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile * 2, this.pixelsPerTile * 2);
                      } else {
-                        var4[var12.mapSceneId].method5891(this.field475 * var1, this.field475 * (63 - var2), this.field475 * 2 + 1, this.field475 * 2 + 1);
+                        var4[var12.mapSceneId].method5891(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile * 2 + 1, this.pixelsPerTile * 2 + 1);
                      }
                   }
                }
@@ -574,19 +575,19 @@ public class WorldMapRegion {
 
                   if(var8.decoration == WorldMapDecorationType.field2976.rsOrdinal) {
                      if(var8.rotation == 0) {
-                        Rasterizer2D.method5812(this.field475 * var1, this.field475 * (63 - var2), 1, var10);
+                        Rasterizer2D.method5812(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), 1, var10);
                      }
 
                      if(var8.rotation == 1) {
-                        Rasterizer2D.method5812(this.field475 + this.field475 * var1 - 1, this.field475 * (63 - var2), 1, var10);
+                        Rasterizer2D.method5812(this.pixelsPerTile + this.pixelsPerTile * var1 - 1, this.pixelsPerTile * (63 - var2), 1, var10);
                      }
 
                      if(var8.rotation == 2) {
-                        Rasterizer2D.method5812(this.field475 + this.field475 * var1 - 1, this.field475 * (63 - var2) + this.field475 - 1, 1, var10);
+                        Rasterizer2D.method5812(this.pixelsPerTile + this.pixelsPerTile * var1 - 1, this.pixelsPerTile * (63 - var2) + this.pixelsPerTile - 1, 1, var10);
                      }
 
                      if(var8.rotation == 3) {
-                        Rasterizer2D.method5812(this.field475 * var1, this.field475 * (63 - var2) + this.field475 - 1, 1, var10);
+                        Rasterizer2D.method5812(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2) + this.pixelsPerTile - 1, 1, var10);
                      }
                   }
 
@@ -594,12 +595,12 @@ public class WorldMapRegion {
                      int var11 = var8.rotation % 2;
                      int var12;
                      if(var11 == 0) {
-                        for(var12 = 0; var12 < this.field475; ++var12) {
-                           Rasterizer2D.method5812(var12 + this.field475 * var1, (64 - var2) * this.field475 - 1 - var12, 1, var10);
+                        for(var12 = 0; var12 < this.pixelsPerTile; ++var12) {
+                           Rasterizer2D.method5812(var12 + this.pixelsPerTile * var1, (64 - var2) * this.pixelsPerTile - 1 - var12, 1, var10);
                         }
                      } else {
-                        for(var12 = 0; var12 < this.field475; ++var12) {
-                           Rasterizer2D.method5812(var12 + this.field475 * var1, var12 + this.field475 * (63 - var2), 1, var10);
+                        for(var12 = 0; var12 < this.pixelsPerTile; ++var12) {
+                           Rasterizer2D.method5812(var12 + this.pixelsPerTile * var1, var12 + this.pixelsPerTile * (63 - var2), 1, var10);
                         }
                      }
                   }
@@ -705,11 +706,11 @@ public class WorldMapRegion {
       signature = "(Lal;Ljx;IIFB)V",
       garbageValue = "-89"
    )
-   void method497(MapIcon var1, Area var2, int var3, int var4, float var5) {
-      if(var1.field526 != null) {
-         if(var1.field526.fontSize.method184(var5)) {
-            Font var6 = (Font)this.mapFonts.get(var1.field526.fontSize);
-            var6.method5574(var1.field526.text, var3 - var1.field526.field460 / 2, var4, var1.field526.field460, var1.field526.field462, -16777216 | var2.field3456, 0, 1, 0, var6.verticalSpace / 2);
+   void method497(MapIcon mapIcon, Area var2, int var3, int var4, float var5) {
+      if(mapIcon.field526 != null) {
+         if(mapIcon.field526.fontSize.method184(var5)) {
+            Font var6 = (Font)this.mapFonts.get(mapIcon.field526.fontSize);
+            var6.method5574(mapIcon.field526.text, var3 - mapIcon.field526.field460 / 2, var4, mapIcon.field526.field460, mapIcon.field526.field462, -16777216 | var2.field3456, 0, 1, 0, var6.verticalSpace / 2);
          }
       }
    }
@@ -785,7 +786,7 @@ public class WorldMapRegion {
                   MapIcon var10 = (MapIcon)this.field474.get(field483);
                   if(var10 != null) {
                      if(var9.id != var10.areaId) {
-                        MapIcon var16 = new MapIcon(var9.id, var10.field528, var10.field522, this.method411(var9));
+                        MapIcon var16 = new MapIcon(var9.id, var10.field528, var10.field522, this.createMapLabel(var9));
                         this.field474.put(new Coordinates(field483), var16);
                         var10 = var16;
                      }
@@ -813,7 +814,7 @@ public class WorldMapRegion {
                   }
 
                   if(var12 != null) {
-                     var10 = new MapIcon(var9.id, var12, var11, this.method411(var9));
+                     var10 = new MapIcon(var9.id, var12, var11, this.createMapLabel(var9));
                      this.field474.put(new Coordinates(field483), var10);
                      return;
                   }
@@ -881,7 +882,7 @@ public class WorldMapRegion {
    )
    MapLabel method410(int var1) {
       Area var2 = class190.mapAreaType[var1];
-      return this.method411(var2);
+      return this.createMapLabel(var2);
    }
 
    @ObfuscatedName("ap")
@@ -889,9 +890,10 @@ public class WorldMapRegion {
       signature = "(Ljx;I)Lao;",
       garbageValue = "81116203"
    )
-   MapLabel method411(Area var1) {
-      if(var1.name != null && this.mapFonts != null && this.mapFonts.get(Size.field365) != null) {
-         int var3 = var1.field3457;
+   @Export("createMapLabel")
+   MapLabel createMapLabel(Area area) {
+      if(area.name != null && this.mapFonts != null && this.mapFonts.get(Size.field365) != null) {
+         int var3 = area.field3457;
          Size[] var4 = new Size[]{Size.field359, Size.field365, Size.field360};
          Size[] var5 = var4;
          int var6 = 0;
@@ -919,9 +921,9 @@ public class WorldMapRegion {
             if(var14 == null) {
                return null;
             } else {
-               var6 = var14.method5564(var1.name, 1000000);
+               var6 = var14.method5564(area.name, 1000000);
                String[] var15 = new String[var6];
-               var14.method5566(var1.name, (int[])null, var15);
+               var14.method5566(area.name, (int[])null, var15);
                int var8 = var15.length * var14.verticalSpace / 2;
                int var9 = 0;
                String[] var10 = var15;
@@ -934,7 +936,7 @@ public class WorldMapRegion {
                   }
                }
 
-               return new MapLabel(var1.name, var9, var8, var2);
+               return new MapLabel(area.name, var9, var8, var2);
             }
          }
       } else {
@@ -999,19 +1001,19 @@ public class WorldMapRegion {
    void method460(int var1, int var2, int var3, int var4) {
       var3 %= 4;
       if(var3 == 0) {
-         Rasterizer2D.method5814(this.field475 * var1, this.field475 * (63 - var2), this.field475, var4);
+         Rasterizer2D.method5814(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
       }
 
       if(var3 == 1) {
-         Rasterizer2D.method5812(this.field475 * var1, this.field475 * (63 - var2), this.field475, var4);
+         Rasterizer2D.method5812(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
       }
 
       if(var3 == 2) {
-         Rasterizer2D.method5814(this.field475 * var1 + this.field475 - 1, this.field475 * (63 - var2), this.field475, var4);
+         Rasterizer2D.method5814(this.pixelsPerTile * var1 + this.pixelsPerTile - 1, this.pixelsPerTile * (63 - var2), this.pixelsPerTile, var4);
       }
 
       if(var3 == 3) {
-         Rasterizer2D.method5812(this.field475 * var1, this.field475 * (63 - var2) + this.field475 - 1, this.field475, var4);
+         Rasterizer2D.method5812(this.pixelsPerTile * var1, this.pixelsPerTile * (63 - var2) + this.pixelsPerTile - 1, this.pixelsPerTile, var4);
       }
 
    }

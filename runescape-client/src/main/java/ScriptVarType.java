@@ -2349,7 +2349,7 @@ public class ScriptVarType implements Enumerated, class338 {
                            Coordinates var56;
                            if(var0 == 6606) {
                               var56 = new Coordinates(class81.intStack[--class171.intStackSize]);
-                              class71.method1202().method6110(var56.worldX, var56.worldY);
+                              class71.method1202().setWorldMapPositionTarget(var56.worldX, var56.worldY);
                               var3 = 1;
                            } else if(var0 == 6607) {
                               var56 = new Coordinates(class81.intStack[--class171.intStackSize]);
@@ -2413,7 +2413,7 @@ public class ScriptVarType implements Enumerated, class338 {
                                  if(var57 == null) {
                                     class81.intStack[++class171.intStackSize - 1] = -1;
                                  } else {
-                                    class81.intStack[++class171.intStackSize - 1] = var57.method318();
+                                    class81.intStack[++class171.intStackSize - 1] = var57.getInitialMapSurfaceZoom();
                                  }
 
                                  var3 = 1;
