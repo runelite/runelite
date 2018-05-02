@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.virtuallevels;
 
-package net.runelite.api;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public enum Skill
+@ConfigGroup(
+	keyName = "virtuallevels",
+	name = "Virtual Levels",
+	description = "Configuration for the virtual levels plugin."
+)
+public interface VirtualLevelsConfig extends Config
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
-	OVERALL("Overall");
 
-	public static final Skill[] VALUES = values();
-
-	private final String name;
-
-	Skill(String name)
+	@ConfigItem(
+		position = 0,
+		keyName = "skillTab",
+		name = "Enable virtual levels on skill tab",
+		description = "Configures if the skill tab should show virtual levels."
+	)
+	default boolean showOnSkillTab()
 	{
-		this.name = name;
+		return true;
 	}
 
-	public String getName()
-	{
-		return name;
-	}
 }
