@@ -72,10 +72,11 @@ public class WalkHerePlugin extends Plugin
 		}
 
 		String option = Text.removeTags(event.getOption()).toLowerCase();
+		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-		if (option.equals("walk"))
+		if (!option.contains("walk"))
 		{
-			setDefaultOption(option);
+			onlyWalkHere();
 		}
 	}
 
@@ -106,10 +107,9 @@ public class WalkHerePlugin extends Plugin
 
 	private int searchIndex(MenuEntry[] entries, String option)
 	{
-		for (int i = entries.length - 1; i >= 0; i--)
+		for (int i = 0; i < entries.length - 1; i++)
 		{
-			MenuEntry entry = entries[i];
-			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
+			String entryOption = Text.removeTags(entries[i].getOption()).toLowerCase();
 
 			if (entryOption.equals(option))
 			{
@@ -123,5 +123,15 @@ public class WalkHerePlugin extends Plugin
 	public void onConfigChanged(ConfigChanged event)
 	{
 		curHotkey = config.hotkey().getHotkey();
+	}
+
+	private void onlyWalkHere()
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		int idx = searchIndex(entries, "walk here");
+		if (idx != -1)
+		{
+			client.setMenuEntries(new MenuEntry[]{entries[idx]});
+		}
 	}
 }

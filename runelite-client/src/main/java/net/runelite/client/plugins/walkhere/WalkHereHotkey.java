@@ -34,7 +34,6 @@ import java.awt.event.KeyEvent;
 public enum WalkHereHotkey
 {
 	SHIFT("Shift", KeyEvent.VK_SHIFT),
-	ALT("Alt", KeyEvent.VK_ALT),
 	CONTROL("Control", KeyEvent.VK_CONTROL);
 
 	private final String name;
