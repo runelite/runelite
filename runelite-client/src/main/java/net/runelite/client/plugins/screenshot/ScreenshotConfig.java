@@ -131,6 +131,6 @@ public interface ScreenshotConfig extends Config
 	)
 	default boolean saveLastLoot()
 	{
-		return true;
+		return false;
 	}
 }
