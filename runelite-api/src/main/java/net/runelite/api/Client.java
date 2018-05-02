@@ -133,6 +133,20 @@ public interface Client extends GameEngine
 	void setUsername(String name);
 
 	/**
+	 * Sets the password on login screen.
+	 *
+	 * @param password the login screen password
+	 */
+	void setPassword(String password);
+
+	/**
+	 * Gets currently selected login field. 0 is username, and 1 is password.
+	 *
+	 * @return currently selected login field
+	 */
+	int getCurrentLoginField();
+
+	/**
 	 * Gets the account type of the logged in player.
 	 *
 	 * @return the account type
