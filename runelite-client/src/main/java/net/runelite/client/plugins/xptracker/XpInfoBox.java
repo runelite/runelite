@@ -61,11 +61,10 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 class XpInfoBox extends JPanel
 {
 	private static final Rectangle ICON_BOUNDS = new Rectangle(0, 0, 26, 26);
-
+	public final Skill skill;
 	private final Client client;
 	private final JPanel panel;
-	private final Skill skill;
-
+	private final XpPanel xpPanel;
 	private final JPanel container = new JPanel();
 	private final JPanel statsPanel = new JPanel();
 	private final JProgressBar progressBar = new JProgressBar();
@@ -74,12 +73,14 @@ class XpInfoBox extends JPanel
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
+	public int addedOrder = -1;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, XpPanel xpPanel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
 		this.panel = panel;
 		this.skill = skill;
+		this.xpPanel = xpPanel;
 
 		setLayout(new BorderLayout());
 		setBorder(new CompoundBorder
@@ -185,6 +186,26 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.CENTER);
 	}
 
+	private static BufferedImage createHoverImage(BufferedImage image)
+	{
+		LookupTable lookup = new LookupTable(0, 4)
+		{
+			@Override
+			public int[] lookupPixel(int[] src, int[] dest)
+			{
+				if (dest[3] != 0)
+				{
+					dest[3] = 60;
+				}
+
+				return dest;
+			}
+		};
+
+		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
+		return op.filter(image, null);
+	}
+
 	private void showStatsPanel()
 	{
 		if (statsPanel.isShowing())
@@ -201,6 +222,7 @@ class XpInfoBox extends JPanel
 
 	void reset()
 	{
+		addedOrder = -1;
 		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
@@ -219,8 +241,10 @@ class XpInfoBox extends JPanel
 			{
 				panel.add(this);
 				panel.revalidate();
+				addedOrder = panel.getComponentCount() + 1;
 			}
 
+			xpPanel.setInfoBoxOrder(this);
 			levelLabel.setText(String.valueOf(xpSnapshotSingle.getCurrentLevel()));
 			xpGained.setText(XpPanel.formatLine(xpSnapshotSingle.getXpGainedInSession(), "xp gained"));
 			xpLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getXpRemainingToGoal(), "xp left"));
@@ -242,25 +266,5 @@ class XpInfoBox extends JPanel
 
 		// Always update xp/hr as time always changes
 		xpHr.setText(XpPanel.formatLine(xpSnapshotSingle.getXpPerHour(), "xp/hr"));
-	}
-
-	private static BufferedImage createHoverImage(BufferedImage image)
-	{
-		LookupTable lookup = new LookupTable(0, 4)
-		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				if (dest[3] != 0)
-				{
-					dest[3] = 60;
-				}
-
-				return dest;
-			}
-		};
-
-		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
 	}
 }
