@@ -342,13 +342,6 @@ public class GroundItemsPlugin extends Plugin
 			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			int itemId = event.getIdentifier();
-			ItemComposition itemComposition = client.getItemDefinition(itemId);
-
-			if (isHidden(itemComposition.getName()))
-			{
-				return;
-			}
-
 			Region region = client.getRegion();
 			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
 			ItemLayer itemLayer = tile.getItemLayer();
@@ -372,20 +365,25 @@ public class GroundItemsPlugin extends Plugin
 				current = current.getNext();
 			}
 
-			ItemPrice itemPrice = getItemPrice(itemComposition);
-			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			int cost = quantity * price;
-			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
-				isHidden(itemComposition.getName()));
+			final ItemComposition itemComposition = client.getItemDefinition(itemId);
+			final ItemPrice itemPrice = getItemPrice(itemComposition);
+			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+			final int gePrice = quantity * price;
+			final boolean hidden = isHidden(itemComposition.getName(), haPrice, gePrice);
+			final boolean highlighted = isHighlighted(itemComposition.getName(), haPrice, gePrice);
+			final Color color = getCostColor(highlighted, hidden, haPrice, gePrice);
 
 			if (!color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";
+
 				if (config.highlightMenuOption())
 				{
 					lastEntry.setOption(colTag + "Take");
 				}
+
 				if (config.highlightMenuItemName())
 				{
 					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
@@ -424,14 +422,52 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	public boolean isHighlighted(String item)
+	Color getCostColor(boolean highlighted, boolean hidden, int haPrice, int gePrice)
 	{
-		return TRUE.equals(highlightedItems.getUnchecked(item));
+		if (highlighted)
+		{
+			final boolean geBased = gePrice > haPrice;
+			final int cost = geBased ? gePrice : haPrice;
+			final int base = geBased ? config.getHighlightOverGeValue() : config.getHighlightOverHAValue();
+
+			if (cost >= base + config.insaneValuePrice())
+			{
+				return config.insaneValueColor();
+			}
+
+			if (cost >= base + config.highValuePrice())
+			{
+				return config.highValueColor();
+			}
+
+			if (cost >= base + config.mediumValuePrice())
+			{
+				return config.mediumValueColor();
+			}
+
+			return config.highlightedColor();
+		}
+
+		if (hidden)
+		{
+			return Color.GRAY;
+		}
+
+		return config.defaultColor();
 	}
 
-	public boolean isHidden(String item)
+	boolean isHighlighted(String item, int haPrice, int gePrice)
 	{
-		return TRUE.equals(hiddenItems.getUnchecked(item));
+		return TRUE.equals(highlightedItems.getUnchecked(item))
+			|| (config.getHighlightOverGeValue() > 0 && gePrice >= config.getHighlightOverGeValue())
+			|| (config.getHighlightOverHAValue() > 0 && haPrice >= config.getHighlightOverHAValue());
+	}
+
+	boolean isHidden(String item, int haPrice, int gePrice)
+	{
+		return TRUE.equals(hiddenItems.getUnchecked(item))
+			|| (gePrice > 0 && gePrice < config.getHideUnderGeValue())
+			|| haPrice < config.getHideUnderHAValue();
 	}
 
 	@Subscribe
