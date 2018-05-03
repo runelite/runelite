@@ -27,11 +27,13 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.TrayIcon;
 import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -44,13 +46,16 @@ public class DevToolsPanel extends PluginPanel
 
 	private WidgetInspector widgetInspector;
 
+	private final Notifier notifier;
+
 	@Inject
-	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector)
+	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, Notifier notifier)
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
+		this.notifier = notifier;
 
 		varTracker = new VarTracker(client);
 		add(createOptionsPanel());
@@ -197,6 +202,13 @@ public class DevToolsPanel extends PluginPanel
 			plugin.toggleGraphicsObjects();
 		});
 		container.add(graphicsObjectsBtn);
+
+		final JButton notificationBtn = new JButton("Notification");
+		notificationBtn.addActionListener(e ->
+		{
+			notifier.notify("Wow!", TrayIcon.MessageType.ERROR);
+		});
+		container.add(notificationBtn);
 
 		return container;
 	}
