@@ -36,8 +36,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -149,6 +149,7 @@ public class GroundItemsPlugin extends Plugin
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final List<GroundItem> groundItems = new ArrayList<>();
+	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
@@ -338,18 +339,13 @@ public class GroundItemsPlugin extends Plugin
 			.build(new WildcardMatchLoader(hiddenItemList));
 
 		dirty = true;
-	}
 
-	private ItemPrice getItemPrice(ItemComposition itemComposition)
-	{
-		if (itemComposition.getNote() != -1)
-		{
-			return itemManager.getItemPriceAsync(itemComposition.getLinkedNoteId());
-		}
-		else
-		{
-			return itemManager.getItemPriceAsync(itemComposition.getId());
-		}
+		// Cache colors
+		priceChecks.clear();
+		priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
+		priceChecks.put(config.highValuePrice(), config.highValueColor());
+		priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
+		priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
 	}
 
 	@Subscribe
@@ -360,16 +356,10 @@ public class GroundItemsPlugin extends Plugin
 			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			int itemId = event.getIdentifier();
-			ItemComposition itemComposition = client.getItemDefinition(itemId);
-
-			if (isHidden(itemComposition.getName()))
-			{
-				return;
-			}
-
 			Region region = client.getRegion();
 			Tile tile = region.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
 			ItemLayer itemLayer = tile.getItemLayer();
+
 			if (itemLayer == null)
 			{
 				return;
@@ -380,6 +370,7 @@ public class GroundItemsPlugin extends Plugin
 
 			int quantity = 1;
 			Node current = itemLayer.getBottom();
+
 			while (current instanceof Item)
 			{
 				Item item = (Item) current;
@@ -390,13 +381,17 @@ public class GroundItemsPlugin extends Plugin
 				current = current.getNext();
 			}
 
-			ItemPrice itemPrice = getItemPrice(itemComposition);
-			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			int cost = quantity * price;
-			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
-				isHidden(itemComposition.getName()));
+			final ItemComposition itemComposition = client.getItemDefinition(itemId);
+			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+			final ItemPrice itemPrice = itemManager.getItemPriceAsync(realItemId);
+			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+			final int gePrice = quantity * price;
+			final Color hidden = getHidden(itemComposition.getName(), haPrice, gePrice, itemComposition.isTradeable());
+			final Color highlighted = getHighlighted(itemComposition.getName(), haPrice, gePrice);
+			final Color color = getItemColor(highlighted, hidden);
 
-			if (!color.equals(config.defaultColor()))
+			if (color != null && !color.equals(config.defaultColor()))
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";
@@ -448,14 +443,49 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(COMMA_JOINER.join(highlightedItemSet));
 	}
 
-	public boolean isHighlighted(String item)
+	Color getHighlighted(String item, int gePrice, int haPrice)
 	{
-		return TRUE.equals(highlightedItems.getUnchecked(item));
+		if (TRUE.equals(highlightedItems.getUnchecked(item)))
+		{
+			return config.highlightedColor();
+		}
+
+		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
+		{
+			if (gePrice > entry.getKey() || haPrice > entry.getKey())
+			{
+				return entry.getValue();
+			}
+		}
+
+		return null;
 	}
 
-	public boolean isHidden(String item)
+	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable)
 	{
-		return TRUE.equals(hiddenItems.getUnchecked(item));
+		final boolean isHidden = TRUE.equals(hiddenItems.getUnchecked(item));
+		final boolean canBeHidden = isTradeable || !config.dontHideUntradeables();
+		final boolean underGe = gePrice < config.getHideUnderValue();
+		final boolean underHa = haPrice < config.getHideUnderValue();
+
+		return isHidden || (canBeHidden && underGe && underHa)
+			? Color.GRAY
+			: null;
+	}
+
+	Color getItemColor(Color highlighted, Color hidden)
+	{
+		if (highlighted != null)
+		{
+			return highlighted;
+		}
+
+		if (hidden != null)
+		{
+			return hidden;
+		}
+
+		return config.defaultColor();
 	}
 
 	@Subscribe

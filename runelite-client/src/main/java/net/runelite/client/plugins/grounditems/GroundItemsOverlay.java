@@ -170,24 +170,6 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final boolean highlighted = plugin.isHighlighted(item.getName());
-			final boolean hidden = plugin.isHidden(item.getName());
-
-			if (!plugin.isHotKeyPressed())
-			{
-				// Do not display hidden items
-				if (hidden)
-				{
-					continue;
-				}
-
-				// Do not display non-highlighted items when only highlighted items should be shown
-				if (config.showHighlightedOnly() && !highlighted)
-				{
-					continue;
-				}
-			}
-
 			// Update GE price for item
 			final ItemPrice itemPrice = itemManager.getItemPriceAsync(item.getItemId());
 
@@ -196,22 +178,25 @@ public class GroundItemsOverlay extends Overlay
 				item.setGePrice(itemPrice.getPrice() * item.getQuantity());
 			}
 
-			if (!plugin.isHotKeyPressed() && !highlighted)
-			{
-				// Check if item is under config threshold
-				final boolean underThreshold = item.getGePrice() < config.getHideUnderGeValue()
-					|| item.getHaPrice() < config.getHideUnderHAValue();
+			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
+			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
 
-				// If item is under threshold an we are either not always showing untradeables or item is tradeable
-				// do not display item
-				if (underThreshold && (!config.dontHideUntradeables() || item.isTradeable()))
+			if (highlighted == null && !plugin.isHotKeyPressed())
+			{
+				// Do not display hidden items
+				if (hidden != null)
+				{
+					continue;
+				}
+
+				// Do not display non-highlighted items
+				if (config.showHighlightedOnly())
 				{
 					continue;
 				}
 			}
 
-			final Color color = getCostColor(item.getGePrice() > 0 ? item.getGePrice() : item.getHaPrice(),
-				highlighted, hidden);
+			final Color color = plugin.getItemColor(highlighted, hidden);
 			itemStringBuilder.append(item.getName());
 
 			if (item.getQuantity() > 1)
@@ -327,10 +312,10 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Draw hidden box
-				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden, true);
+				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden != null, true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted, false);
+				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 			}
 
 			textComponent.setText(itemString);
@@ -340,42 +325,6 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	Color getCostColor(int cost, boolean highlighted, boolean hidden)
-	{
-		if (hidden)
-		{
-			return Color.GRAY;
-		}
-
-		if (highlighted)
-		{
-			return config.highlightedColor();
-		}
-
-		// set the color according to rarity, if possible
-		if (cost >= config.insaneValuePrice())
-		{
-			return config.insaneValueColor();
-		}
-
-		if (cost >= config.highValuePrice())
-		{
-			return config.highValueColor();
-		}
-
-		if (cost >= config.mediumValuePrice())
-		{
-			return config.mediumValueColor();
-		}
-
-		if (cost >= config.lowValuePrice())
-		{
-			return config.lowValueColor();
-		}
-
-		return config.defaultColor();
 	}
 
 	private void drawRectangle(Graphics2D graphics, Rectangle rect, Color color, boolean inList, boolean hiddenBox)
