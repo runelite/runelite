@@ -57,6 +57,9 @@ public class SlayerPluginTest
 
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
+	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
+	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
+
 	@Mock
 	@Bind
 	Client client;
@@ -162,5 +165,29 @@ public class SlayerPluginTest
 		when(slayerConfig.showSuperiorNotification()).thenReturn(false);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 		verifyNoMoreInteractions(notifier);
+	}
+
+	@Test
+	public void testBracletSlaughter()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
+
+		slayerPlugin.setAmount(42);
+
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(43, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testBraceletExpeditious()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS, null);
+
+		slayerPlugin.setAmount(42);
+
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(41, slayerPlugin.getAmount());
 	}
 }

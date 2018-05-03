@@ -38,7 +38,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -49,6 +52,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
@@ -100,8 +104,10 @@ public class HiscorePanel extends PluginPanel
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
 
-	private static final HiscoreSkill[] SKILL_PANEL_ORDER = new HiscoreSkill[]
-	{
+	/**
+	 * Real skills, ordered in the way they should be displayed in the panel.
+	 */
+	private static final Set<HiscoreSkill> SKILLS = new LinkedHashSet<>(Arrays.asList(
 		ATTACK, HITPOINTS, MINING,
 		STRENGTH, AGILITY, SMITHING,
 		DEFENCE, HERBLORE, FISHING,
@@ -110,7 +116,7 @@ public class HiscorePanel extends PluginPanel
 		MAGIC, FLETCHING, WOODCUTTING,
 		RUNECRAFT, SLAYER, FARMING,
 		CONSTRUCTION, HUNTER
-	};
+	));
 
 	@Inject
 	ScheduledExecutorService executor;
@@ -127,6 +133,7 @@ public class HiscorePanel extends PluginPanel
 	private final JPanel statsPanel = new JPanel();
 	private final ButtonGroup endpointButtonGroup = new ButtonGroup();
 	private final JTextArea details = new JTextArea();
+	private final JProgressBar progressBar;
 
 	private List<JToggleButton> endpointButtons;
 
@@ -214,7 +221,7 @@ public class HiscorePanel extends PluginPanel
 		statsPanel.setBorder(subPanelBorder);
 
 		// For each skill on the ingame skill panel, create a Label and add it to the UI
-		for (HiscoreSkill skill : SKILL_PANEL_ORDER)
+		for (HiscoreSkill skill : SKILLS)
 		{
 			JPanel panel = makeSkillPanel(skill.getName(), skill);
 			statsPanel.add(panel);
@@ -269,6 +276,16 @@ public class HiscorePanel extends PluginPanel
 		details.setText("");
 
 		detailsPanel.add(details, BorderLayout.CENTER);
+
+		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setValue(0);
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(100);
+		progressBar.setBackground(Color.RED);
+		progressBar.setVisible(false);
+
+		detailsPanel.add(progressBar, BorderLayout.SOUTH);
 
 		c.gridx = 0;
 		c.gridy = 4;
@@ -334,6 +351,7 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		String text;
+		int progress = -1;
 		switch (skillName)
 		{
 			case "Combat":
@@ -421,7 +439,16 @@ public class HiscorePanel extends PluginPanel
 				else
 				{
 					int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+					int currentXp = (int) requestedSkill.getExperience();
+					int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
+					int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+
+					remainingXp = xpForNextLevel != -1 ? StackFormatter.formatNumber(xpForNextLevel - currentXp) : "0";
+
+					double xpGained = currentXp - xpForCurrentLevel;
+					double xpGoal = xpForNextLevel != -1 ? xpForNextLevel - xpForCurrentLevel : 100;
+					progress = (int) ((xpGained / xpGoal) * 100f);
+
 				}
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
@@ -433,6 +460,18 @@ public class HiscorePanel extends PluginPanel
 
 		details.setFont(UIManager.getFont("Label.font"));
 		details.setText(text);
+
+		if (progress >= 0)
+		{
+			progressBar.setVisible(true);
+			progressBar.setValue(progress);
+			progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
+		}
+		else
+		{
+			progressBar.setVisible(false);
+		}
+
 	}
 
 	@Override
@@ -497,6 +536,7 @@ public class HiscorePanel extends PluginPanel
 	{
 		String lookup = input.getText();
 		details.setText("Loading...");
+		progressBar.setVisible(false);
 
 		lookup = sanitize(lookup);
 
@@ -521,6 +561,7 @@ public class HiscorePanel extends PluginPanel
 		{
 			log.warn("Error fetching Hiscore data " + ex.getMessage());
 			details.setText("Error fetching Hiscore data");
+			progressBar.setVisible(false);
 			return;
 		}
 
@@ -550,7 +591,7 @@ public class HiscorePanel extends PluginPanel
 				Skill s = result.getSkill(skill);
 
 				int level;
-				if (config.virtualLevels() && skill.hasVirtualLevels())
+				if (config.virtualLevels() && SKILLS.contains(skill))
 				{
 					level = Experience.getLevelForXp((int) s.getExperience());
 				}
@@ -566,6 +607,7 @@ public class HiscorePanel extends PluginPanel
 		// Clear details panel
 		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
 		details.setText("Hover over a skill for details");
+		progressBar.setVisible(false);
 	}
 
 	private static String sanitize(String lookup)

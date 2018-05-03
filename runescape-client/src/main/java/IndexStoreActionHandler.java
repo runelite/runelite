@@ -1,50 +1,40 @@
-import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jv")
+@ObfuscatedName("jm")
 @Implements("IndexStoreActionHandler")
 public class IndexStoreActionHandler implements Runnable {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhr;"
+      signature = "Lhn;"
    )
    @Export("IndexStoreActionHandler_requestQueue")
-   public static Deque IndexStoreActionHandler_requestQueue;
-   @ObfuscatedName("k")
+   static Deque IndexStoreActionHandler_requestQueue;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhr;"
+      signature = "Lhn;"
    )
    @Export("IndexStoreActionHandler_responseQueue")
-   public static Deque IndexStoreActionHandler_responseQueue;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lll;"
-   )
-   static IndexedSprite field3398;
-   @ObfuscatedName("d")
+   static Deque IndexStoreActionHandler_responseQueue;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -2083116819
+      intValue = -1957494801
    )
-   public static int field3401;
-   @ObfuscatedName("h")
+   static int field3386;
+   @ObfuscatedName("z")
    @Export("IndexStoreActionHandler_lock")
-   public static Object IndexStoreActionHandler_lock;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1349346113
-   )
-   static int field3399;
-   @ObfuscatedName("ae")
-   protected static GarbageCollectorMXBean field3402;
+   static Object IndexStoreActionHandler_lock;
+   @ObfuscatedName("n")
+   @Export("IndexStoreActionHandler_thread")
+   static Thread IndexStoreActionHandler_thread;
 
    static {
       IndexStoreActionHandler_requestQueue = new Deque();
       IndexStoreActionHandler_responseQueue = new Deque();
-      field3401 = 0;
+      field3386 = 0;
       IndexStoreActionHandler_lock = new Object();
    }
 
@@ -60,13 +50,13 @@ public class IndexStoreActionHandler implements Runnable {
             Object var14;
             if(var1 != null) {
                if(var1.type == 0) {
-                  var1.index.write((int)var1.hash, var1.field3367, var1.field3367.length);
+                  var1.index.write((int)var1.hash, var1.field3358, var1.field3358.length);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      var1.unlink();
                   }
                } else if(var1.type == 1) {
-                  var1.field3367 = var1.index.read((int)var1.hash);
+                  var1.field3358 = var1.index.read((int)var1.hash);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      IndexStoreActionHandler_responseQueue.addFront(var1);
@@ -75,39 +65,46 @@ public class IndexStoreActionHandler implements Runnable {
 
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3401 <= 1) {
-                     field3401 = 0;
+                  if(field3386 <= 1) {
+                     field3386 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  field3401 = 600;
+                  field3386 = 600;
                }
             } else {
-               ScriptVarType.method11(100L);
+               BoundingBox3DDrawMode.method59(100L);
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3401 <= 1) {
-                     field3401 = 0;
+                  if(field3386 <= 1) {
+                     field3386 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  --field3401;
+                  --field3386;
                }
             }
          }
       } catch (Exception var13) {
-         AttackOption.processClientError((String)null, var13);
+         class253.processClientError((String)null, var13);
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-2142349185"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-1264635180"
    )
-   static final boolean method4629() {
-      return class132.Viewport_containsMouse;
+   public static int method4752(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+      }
+
+      return var2;
    }
 }

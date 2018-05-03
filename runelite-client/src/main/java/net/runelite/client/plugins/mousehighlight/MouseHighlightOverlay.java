@@ -30,8 +30,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.VarClient;
-import net.runelite.api.Varcs;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -112,8 +111,7 @@ class MouseHighlightOverlay extends Overlay
 		if (widget != null)
 		{
 			// If this varc is set, some CS is showing tooltip
-			Varcs varcs = client.getVarcs();
-			int tooltipTimeout = varcs.getIntVar(VarClient.TOOLTIP_TIMEOUT);
+			int tooltipTimeout = client.getVar(VarClientInt.TOOLTIP_TIMEOUT);
 			if (tooltipTimeout > client.getGameCycle())
 			{
 				return null;

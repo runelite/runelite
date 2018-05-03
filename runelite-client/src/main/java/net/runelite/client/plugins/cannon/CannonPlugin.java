@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -70,6 +71,7 @@ public class CannonPlugin extends Plugin
 	private static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
+	private boolean skipProjectileCheckThisTick;
 
 	@Getter
 	private int cballsLeft;
@@ -203,7 +205,15 @@ public class CannonPlugin extends Plugin
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
 			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
 			{
-				cballsLeft--;
+				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
+				// the message event runs before the projectile event. However they run
+				// in the opposite order on the server. So if both fires in the same tick,
+				// we don't want to update the cannonball counter if it was set to a specific
+				// amount.
+				if (!skipProjectileCheckThisTick)
+				{
+					cballsLeft--;
+				}
 			}
 		}
 	}
@@ -235,11 +245,17 @@ public class CannonPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
+				// The cannon will usually refill to MAX_CBALLS, but if the
+				// player didn't have enough cannonballs in their inventory,
+				// it could fill up less than that. Filling the cannon to
+				// cballsLeft + amt is not always accurate though because our
+				// counter doesn't decrease if the player has been too far away
+				// from the cannon due to the projectiels not being in memory,
+				// so our counter can be higher than it is supposed to be.
 				int amt = Integer.valueOf(m.group());
-
-				// make sure cballs doesn't go above MAX_CBALLS
-				if (amt + cballsLeft > MAX_CBALLS)
+				if (cballsLeft + amt >= MAX_CBALLS)
 				{
+					skipProjectileCheckThisTick = true;
 					cballsLeft = MAX_CBALLS;
 				}
 				else
@@ -247,15 +263,27 @@ public class CannonPlugin extends Plugin
 					cballsLeft += amt;
 				}
 			}
-		}
-
-		if (event.getMessage().equals("You load the cannon with one cannonball."))
-		{
-			cballsLeft++;
+			else if (event.getMessage().equals("You load the cannon with one cannonball."))
+			{
+				if (cballsLeft + 1 >= MAX_CBALLS)
+				{
+					skipProjectileCheckThisTick = true;
+					cballsLeft = MAX_CBALLS;
+				}
+				else
+				{
+					cballsLeft++;
+				}
+			}
 		}
 
 		if (event.getMessage().contains("Your cannon is out of ammo!"))
 		{
+			skipProjectileCheckThisTick = true;
+
+			// If the player was out of range of the cannon, some cannonballs
+			// may have been used without the client knowing, so having this
+			// extra check is a good idea.
 			cballsLeft = 0;
 
 			if (config.showEmptyCannonNotification())
@@ -264,24 +292,19 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
-		if (event.getMessage().contains("You unload your cannon and receive Cannonball"))
+		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
+			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
 		{
-			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
-			if (m.find())
-			{
-				int unload = Integer.valueOf(m.group());
+			skipProjectileCheckThisTick = true;
 
-				// make sure cballs doesn't go below 0
-				if (cballsLeft - unload < 0)
-				{
-					cballsLeft = 0;
-				}
-				else
-				{
-					cballsLeft -= unload;
-				}
-			}
+			cballsLeft = 0;
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		skipProjectileCheckThisTick = false;
 	}
 
 	Color getStateColor()

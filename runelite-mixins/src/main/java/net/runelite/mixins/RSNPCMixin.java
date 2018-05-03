@@ -48,6 +48,10 @@ public abstract class RSNPCMixin implements RSNPC
 	public int getId()
 	{
 		RSNPCComposition composition = getComposition();
+		if (composition != null && composition.getConfigs() != null)
+		{
+			composition = composition.transform();
+		}
 		return composition == null ? -1 : composition.getId();
 	}
 
@@ -56,6 +60,10 @@ public abstract class RSNPCMixin implements RSNPC
 	public String getName()
 	{
 		RSNPCComposition composition = getComposition();
+		if (composition != null && composition.getConfigs() != null)
+		{
+			composition = composition.transform();
+		}
 		return composition == null ? null : composition.getName().replace('\u00A0', ' ');
 	}
 
@@ -64,6 +72,10 @@ public abstract class RSNPCMixin implements RSNPC
 	public int getCombatLevel()
 	{
 		RSNPCComposition composition = getComposition();
+		if (composition != null && composition.getConfigs() != null)
+		{
+			composition = composition.transform();
+		}
 		return composition == null ? -1 : composition.getCombatLevel();
 	}
 

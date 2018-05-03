@@ -30,14 +30,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
@@ -46,7 +45,7 @@ class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(BufferedImage icon, String name, int itemID, int gePrice, Double
+	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
 		haPrice)
 	{
 		BorderLayout layout = new BorderLayout();
@@ -88,7 +87,7 @@ class GrandExchangeItemPanel extends JPanel
 		itemIcon.setPreferredSize(ICON_SIZE);
 		if (icon != null)
 		{
-			itemIcon.setIcon(new ImageIcon(icon));
+			icon.addTo(itemIcon);
 		}
 		add(itemIcon, BorderLayout.LINE_START);
 

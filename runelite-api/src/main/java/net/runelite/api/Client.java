@@ -29,8 +29,10 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -55,6 +57,11 @@ public interface Client extends GameEngine
 	String getUsername();
 
 	void setUsername(String name);
+
+	/**
+	 * Gets the account type for the logged in player.
+	 */
+	AccountType getAccountType();
 
 	Canvas getCanvas();
 
@@ -106,6 +113,8 @@ public interface Client extends GameEngine
 	int getBaseY();
 
 	int getMouseCurrentButton();
+
+	Tile getSelectedRegionTile();
 
 	boolean isDraggingWidget();
 
@@ -161,11 +170,22 @@ public interface Client extends GameEngine
 
 	int[] getVarps();
 
-	Varcs getVarcs();
+	int getVar(VarPlayer varPlayer);
 
-	int getSetting(Setting setting);
+	int getVar(Varbits varbit);
 
-	int getSetting(Varbits varbit);
+	int getVar(VarClientInt varClientInt);
+
+	String getVar(VarClientStr varClientStr);
+
+	@VisibleForDevtools
+	void setSetting(Varbits varbit, int value);
+
+	@VisibleForDevtools
+	int getVarbitValue(int varbit);
+
+	@VisibleForDevtools
+	void setVarbitValue(int varbit, int value);
 
 	HashTable getWidgetFlags();
 
@@ -381,4 +401,48 @@ public interface Client extends GameEngine
 	boolean isInterpolateObjectAnimations();
 
 	void setInterpolateObjectAnimations(boolean interpolate);
+
+	boolean isInInstancedRegion();
+
+	void setIsHidingEntities(boolean state);
+
+	void setPlayersHidden(boolean state);
+
+	void setPlayersHidden2D(boolean state);
+
+	void setFriendsHidden(boolean state);
+
+	void setClanMatesHidden(boolean state);
+
+	void setLocalPlayerHidden(boolean state);
+
+	void setLocalPlayerHidden2D(boolean state);
+
+	void setNPCsHidden(boolean state);
+
+	void setNPCsHidden2D(boolean state);
+
+	void setAttackersHidden(boolean state);
+
+	void setProjectilesHidden(boolean state);
+
+	CollisionData[] getCollisionMaps();
+
+	@VisibleForDevtools
+	int[] getBoostedSkillLevels();
+
+	@VisibleForDevtools
+	int[] getRealSkillLevels();
+
+	@VisibleForDevtools
+	int[] getSkillExperiences();
+
+	@VisibleForDevtools
+	int[] getChangedSkills();
+
+	@VisibleForDevtools
+	int getChangedSkillsCount();
+
+	@VisibleForDevtools
+	void setChangedSkillsCount(int i);
 }

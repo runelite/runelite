@@ -34,6 +34,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -54,6 +56,7 @@ public class XpGlobesOverlay extends Overlay
 	private final Client client;
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
+	private final XpTrackerService xpTrackerService;
 
 	@Inject
 	private SkillIconManager iconManager;
@@ -68,13 +71,14 @@ public class XpGlobesOverlay extends Overlay
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 
 	@Inject
-	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
+	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config, XpTrackerService xpTrackerService)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.xpTrackerService = xpTrackerService;
 	}
 
 	@Override
@@ -215,6 +219,9 @@ public class XpGlobesOverlay extends Overlay
 		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (config.xpOrbSize() / 2);
 		int y = (int) drawnGlobe.getY() + config.xpOrbSize() + 10;
 
+		// reset the timer on XpGlobe to prevent it from disappearing while hovered over it
+		mouseOverSkill.setTime(Instant.now());
+
 		String skillName = mouseOverSkill.getSkillName();
 		String skillLevel = Integer.toString(mouseOverSkill.getCurrentLevel());
 
@@ -230,7 +237,12 @@ public class XpGlobesOverlay extends Overlay
 		lines.add(new PanelComponent.Line("Current xp:", Color.ORANGE, skillCurrentXp, Color.WHITE));
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
-			String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
+			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
+			String actionsLeftString = decimalFormat.format(actionsLeft);
+			lines.add(new PanelComponent.Line("Actions left:", Color.ORANGE, actionsLeftString, Color.WHITE));
+
+			int xpLeft = mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp();
+			String skillXpToLvl = decimalFormat.format(xpLeft);
 			lines.add(new PanelComponent.Line("Xp to level:", Color.ORANGE, skillXpToLvl, Color.WHITE));
 
 			//Create progress bar for skill.

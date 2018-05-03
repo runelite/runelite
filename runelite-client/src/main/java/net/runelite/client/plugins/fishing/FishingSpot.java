@@ -43,6 +43,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_4316;
 import static net.runelite.api.NpcID.FISHING_SPOT_4710;
 import static net.runelite.api.NpcID.FISHING_SPOT_4712;
 import static net.runelite.api.NpcID.FISHING_SPOT_4713;
+import static net.runelite.api.NpcID.FISHING_SPOT_6488;
 import static net.runelite.api.NpcID.FISHING_SPOT_7155;
 import static net.runelite.api.NpcID.FISHING_SPOT_7199;
 import static net.runelite.api.NpcID.FISHING_SPOT_7200;
@@ -53,6 +54,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_7730;
 import static net.runelite.api.NpcID.FISHING_SPOT_7731;
 import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
+import static net.runelite.api.NpcID.FISHING_SPOT_7947;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1509;
@@ -68,7 +70,7 @@ public enum FishingSpot
 	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1518, FISHING_SPOT_1521, FISHING_SPOT_1525,
 		FISHING_SPOT_1528, FISHING_SPOT_1530, FISHING_SPOT_1544,
-		FISHING_SPOT_7155, FISHING_SPOT_7469
+		FISHING_SPOT_7155, FISHING_SPOT_7469, FISHING_SPOT_7947
 	),
 	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER,
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1522,
@@ -102,6 +104,9 @@ public enum FishingSpot
 	),
 	KARAMBWANJI("Karambwanji, Shrimp", ItemID.KARAMBWANJI,
 		FISHING_SPOT_4710
+	),
+	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
+		FISHING_SPOT_6488
 	);
 
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();

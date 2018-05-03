@@ -51,10 +51,9 @@ class OpponentInfoOverlay extends Overlay
 {
 	private static final int WIDTH = 129;
 
-	private static final int TOP_BORDER = 4;
-	private static final int BOTTOM_BORDER = 4;
+	private static final int TOP_BORDER = 2;
 
-	private static final int BAR_WIDTH = WIDTH - 10;
+	private static final int BAR_WIDTH = WIDTH - 4;
 	private static final int BAR_HEIGHT = 16;
 
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
@@ -126,7 +125,7 @@ class OpponentInfoOverlay extends Overlay
 
 			Actor opponentsOpponent = opponent.getInteracting();
 			if (opponentsOpponent != null
-					&& (opponentsOpponent != client.getLocalPlayer() || client.getSetting(Varbits.MULTICOMBAT_AREA) == 1))
+					&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
 			{
 				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
 			}
@@ -146,14 +145,12 @@ class OpponentInfoOverlay extends Overlay
 		int height = TOP_BORDER + fm.getHeight(); // opponent name
 		if (lastRatio >= 0)
 		{
-			height += BAR_HEIGHT + 6;
+			height += BAR_HEIGHT + 5;
 		}
 		if (opponentsOpponentName != null)
 		{
-			height += fm.getHeight() + 3;
+			height += fm.getHeight() + 5;
 		}
-		height += 3;
-		height += BOTTOM_BORDER;
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(0, 0, WIDTH, height));
@@ -174,7 +171,6 @@ class OpponentInfoOverlay extends Overlay
 		if (lastRatio >= 0)
 		{
 			int barWidth = (int) (lastRatio * (float) BAR_WIDTH);
-			y += 3;
 
 			graphics.setColor(HP_GREEN);
 			graphics.fillRect((WIDTH - BAR_WIDTH) / 2, y, barWidth, BAR_HEIGHT);

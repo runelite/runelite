@@ -1,436 +1,263 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("e")
 public class class1 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lk;"
-   )
-   static final class1 field7;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lk;"
-   )
-   static final class1 field1;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lk;"
-   )
-   static final class1 field8;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lk;"
-   )
-   static final class1 field2;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lk;"
-   )
-   static final class1 field4;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lk;"
-   )
-   static final class1 field5;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lk;"
+      signature = "Le;"
    )
    static final class1 field6;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 502601821
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Le;"
    )
-   final int field0;
+   static final class1 field1;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Le;"
+   )
+   static final class1 field2;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Le;"
+   )
+   static final class1 field3;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Le;"
+   )
+   static final class1 field0;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Le;"
+   )
+   static final class1 field7;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Le;"
+   )
+   static final class1 field5;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1144417733
+   )
+   final int field4;
 
    static {
-      field7 = new class1(1);
-      field1 = new class1(3);
-      field8 = new class1(5);
-      field2 = new class1(4);
-      field4 = new class1(6);
-      field5 = new class1(0);
       field6 = new class1(2);
+      field1 = new class1(6);
+      field2 = new class1(4);
+      field3 = new class1(1);
+      field0 = new class1(3);
+      field7 = new class1(0);
+      field5 = new class1(5);
    }
 
    class1(int var1) {
-      this.field0 = var1;
+      this.field4 = var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IB)Lln;",
-      garbageValue = "-29"
+      signature = "(Ljava/lang/Object;ZB)[B",
+      garbageValue = "-100"
    )
-   public static class320 method1(int var0) {
-      class320[] var1 = Ignore.method5386();
-
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         class320 var3 = var1[var2];
-         if(var0 == var3.field3932) {
-            return var3;
-         }
-      }
-
-      return null;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(ILcr;ZI)I",
-      garbageValue = "-1094703409"
-   )
-   static int method0(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 6600) {
-         var3 = BoundingBox3DDrawMode.plane;
-         int var9 = (SoundTaskDataProvider.localPlayer.x >> 7) + class138.baseX;
-         int var5 = (SoundTaskDataProvider.localPlayer.y >> 7) + class23.baseY;
-         class86.method1892().method6018(var3, var9, var5, true);
-         return 1;
-      } else {
-         WorldMapData var11;
-         if(var0 == 6601) {
-            var3 = class81.intStack[--WorldComparator.intStackSize];
-            String var16 = "";
-            var11 = class86.method1892().getWorldMapDataByFileId(var3);
-            if(var11 != null) {
-               var16 = var11.getName();
-            }
-
-            class81.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var16;
-            return 1;
-         } else if(var0 == 6602) {
-            var3 = class81.intStack[--WorldComparator.intStackSize];
-            class86.method1892().method6019(var3);
-            return 1;
-         } else if(var0 == 6603) {
-            class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6033();
-            return 1;
-         } else if(var0 == 6604) {
-            var3 = class81.intStack[--WorldComparator.intStackSize];
-            class86.method1892().method6030(var3);
-            return 1;
-         } else if(var0 == 6605) {
-            class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6035()?1:0;
-            return 1;
+   @Export("toByteArray")
+   public static byte[] toByteArray(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var6 = (byte[])((byte[])var0);
+         if(var1) {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
+            return var5;
          } else {
-            Coordinates var15;
-            if(var0 == 6606) {
-               var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-               class86.method1892().method6037(var15.worldX, var15.worldY);
-               return 1;
-            } else if(var0 == 6607) {
-               var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-               class86.method1892().method6038(var15.worldX, var15.worldY);
-               return 1;
-            } else if(var0 == 6608) {
-               var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-               class86.method1892().method6029(var15.plane, var15.worldX, var15.worldY);
-               return 1;
-            } else if(var0 == 6609) {
-               var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-               class86.method1892().method6040(var15.plane, var15.worldX, var15.worldY);
-               return 1;
-            } else if(var0 == 6610) {
-               class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6047();
-               class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6042();
-               return 1;
-            } else {
-               WorldMapData var13;
-               if(var0 == 6611) {
-                  var3 = class81.intStack[--WorldComparator.intStackSize];
-                  var13 = class86.method1892().getWorldMapDataByFileId(var3);
-                  if(var13 == null) {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                  } else {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var13.method337().bitpack();
-                  }
+            return var6;
+         }
+      } else if(var0 instanceof AbstractByteBuffer) {
+         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
+         return var2.get();
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
 
-                  return 1;
-               } else if(var0 == 6612) {
-                  var3 = class81.intStack[--WorldComparator.intStackSize];
-                  var13 = class86.method1892().getWorldMapDataByFileId(var3);
-                  if(var13 == null) {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                  } else {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = (var13.method360() - var13.getMinX() + 1) * 64;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = (var13.method331() - var13.getMinY() + 1) * 64;
-                  }
+   @ObfuscatedName("fs")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1215173221"
+   )
+   static final void method1() {
+      Client.field911.close();
+      VarCInt.method4881();
+      FloorUnderlayDefinition.underlays.reset();
+      KitDefinition.identKits.reset();
+      ScriptVarType.method23();
+      class23.method182();
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
+      LoginPacket.method3505();
+      class152.method3204();
+      Varbit.varbits.reset();
+      class71.method1205();
+      GameSocket.method3447();
+      class36.method546();
+      class279.field3553.reset();
+      class278.field3545.reset();
+      TotalQuantityComparator.method91();
+      PlayerComposition.field2802.reset();
+      class171.method3395();
+      ((TextureProvider)Graphics3D.textureLoader).reset();
+      Script.field1437.reset();
+      MouseInput.indexInterfaces.reset();
+      CombatInfoListHolder.indexSoundEffects.reset();
+      class7.indexCache3.reset();
+      class27.indexCache4.reset();
+      SoundTaskDataProvider.indexMaps.reset();
+      class7.indexTrack1.reset();
+      class28.indexModels.reset();
+      UnitPriceComparator.indexSprites.reset();
+      WorldMapRectangle.indexTextures.reset();
+      Occluder.indexCache10.reset();
+      class190.indexTrack2.reset();
+      MapIcon.indexScripts.reset();
+      GameSocket.region.reset();
 
-                  return 1;
-               } else if(var0 == 6613) {
-                  var3 = class81.intStack[--WorldComparator.intStackSize];
-                  var13 = class86.method1892().getWorldMapDataByFileId(var3);
-                  if(var13 == null) {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                  } else {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var13.getMinX() * 64;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var13.getMinY() * 64;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var13.method360() * 64 + 64 - 1;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var13.method331() * 64 + 64 - 1;
-                  }
+      for(int var0 = 0; var0 < 4; ++var0) {
+         Client.collisionMaps[var0].reset();
+      }
 
-                  return 1;
-               } else if(var0 == 6614) {
-                  var3 = class81.intStack[--WorldComparator.intStackSize];
-                  var13 = class86.method1892().getWorldMapDataByFileId(var3);
-                  if(var13 == null) {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                  } else {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var13.method338();
-                  }
+      System.gc();
+      class229.field2694 = 1;
+      class132.field1905 = null;
+      class321.field3940 = -1;
+      class132.field1897 = -1;
+      AttackOption.field1334 = 0;
+      Signlink.field2193 = false;
+      class20.field335 = 2;
+      Client.field1084 = -1;
+      Client.field1085 = false;
+      NetWriter.method2150();
+      class55.setGameState(10);
+   }
 
-                  return 1;
-               } else if(var0 == 6615) {
-                  var15 = class86.method1892().method6043();
-                  if(var15 == null) {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                  } else {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var15.worldX;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = var15.worldY;
-                  }
+   @ObfuscatedName("gv")
+   @ObfuscatedSignature(
+      signature = "(IIIIZI)V",
+      garbageValue = "-180781084"
+   )
+   static final void method2(int var0, int var1, int var2, int var3, boolean var4) {
+      if(var2 < 1) {
+         var2 = 1;
+      }
 
-                  return 1;
-               } else if(var0 == 6616) {
-                  class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6020();
-                  return 1;
-               } else if(var0 == 6617) {
-                  var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-                  var13 = class86.method1892().method6021();
-                  if(var13 == null) {
-                     class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                     class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                     return 1;
-                  } else {
-                     int[] var14 = var13.method321(var15.plane, var15.worldX, var15.worldY);
-                     if(var14 == null) {
-                        class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                        class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                     } else {
-                        class81.intStack[++WorldComparator.intStackSize - 1] = var14[0];
-                        class81.intStack[++WorldComparator.intStackSize - 1] = var14[1];
-                     }
+      if(var3 < 1) {
+         var3 = 1;
+      }
 
-                     return 1;
-                  }
-               } else {
-                  Coordinates var7;
-                  if(var0 == 6618) {
-                     var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-                     var13 = class86.method1892().method6021();
-                     if(var13 == null) {
-                        class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                        class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                        return 1;
-                     } else {
-                        var7 = var13.method322(var15.worldX, var15.worldY);
-                        if(var7 == null) {
-                           class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                        } else {
-                           class81.intStack[++WorldComparator.intStackSize - 1] = var7.bitpack();
-                        }
+      int var5 = var3 - 334;
+      if(var5 < 0) {
+         var5 = 0;
+      } else if(var5 > 100) {
+         var5 = 100;
+      }
 
-                        return 1;
-                     }
-                  } else {
-                     Coordinates var12;
-                     if(var0 == 6619) {
-                        WorldComparator.intStackSize -= 2;
-                        var3 = class81.intStack[WorldComparator.intStackSize];
-                        var12 = new Coordinates(class81.intStack[WorldComparator.intStackSize + 1]);
-                        WorldMapDecoration.method310(var3, var12, false);
-                        return 1;
-                     } else if(var0 == 6620) {
-                        WorldComparator.intStackSize -= 2;
-                        var3 = class81.intStack[WorldComparator.intStackSize];
-                        var12 = new Coordinates(class81.intStack[WorldComparator.intStackSize + 1]);
-                        WorldMapDecoration.method310(var3, var12, true);
-                        return 1;
-                     } else if(var0 == 6621) {
-                        WorldComparator.intStackSize -= 2;
-                        var3 = class81.intStack[WorldComparator.intStackSize];
-                        var12 = new Coordinates(class81.intStack[WorldComparator.intStackSize + 1]);
-                        var11 = class86.method1892().getWorldMapDataByFileId(var3);
-                        if(var11 == null) {
-                           class81.intStack[++WorldComparator.intStackSize - 1] = 0;
-                           return 1;
-                        } else {
-                           class81.intStack[++WorldComparator.intStackSize - 1] = var11.containsCoord(var12.plane, var12.worldX, var12.worldY)?1:0;
-                           return 1;
-                        }
-                     } else if(var0 == 6622) {
-                        class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6044();
-                        class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6045();
-                        return 1;
-                     } else if(var0 == 6623) {
-                        var15 = new Coordinates(class81.intStack[--WorldComparator.intStackSize]);
-                        var13 = class86.method1892().getWorldMapDataContainingCoord(var15.plane, var15.worldX, var15.worldY);
-                        if(var13 == null) {
-                           class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                        } else {
-                           class81.intStack[++WorldComparator.intStackSize - 1] = var13.getFileId();
-                        }
+      int var6 = (Client.field1125 - Client.field1100) * var5 / 100 + Client.field1100;
+      int var7 = var3 * var6 * 512 / (var2 * 334);
+      int var8;
+      int var9;
+      short var15;
+      if(var7 < Client.field1106) {
+         var15 = Client.field1106;
+         var6 = var15 * var2 * 334 / (var3 * 512);
+         if(var6 > Client.field1026) {
+            var6 = Client.field1026;
+            var8 = var3 * var6 * 512 / (var15 * 334);
+            var9 = (var2 - var8) / 2;
+            if(var4) {
+               Rasterizer2D.noClip();
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
+            }
 
-                        return 1;
-                     } else if(var0 == 6624) {
-                        class86.method1892().method6118(class81.intStack[--WorldComparator.intStackSize]);
-                        return 1;
-                     } else if(var0 == 6625) {
-                        class86.method1892().method6157();
-                        return 1;
-                     } else if(var0 == 6626) {
-                        class86.method1892().method6048(class81.intStack[--WorldComparator.intStackSize]);
-                        return 1;
-                     } else if(var0 == 6627) {
-                        class86.method1892().method6141();
-                        return 1;
-                     } else {
-                        boolean var10;
-                        if(var0 == 6628) {
-                           var10 = class81.intStack[--WorldComparator.intStackSize] == 1;
-                           class86.method1892().method6106(var10);
-                           return 1;
-                        } else if(var0 == 6629) {
-                           var3 = class81.intStack[--WorldComparator.intStackSize];
-                           class86.method1892().method6051(var3);
-                           return 1;
-                        } else if(var0 == 6630) {
-                           var3 = class81.intStack[--WorldComparator.intStackSize];
-                           class86.method1892().method6134(var3);
-                           return 1;
-                        } else if(var0 == 6631) {
-                           class86.method1892().method6160();
-                           return 1;
-                        } else if(var0 == 6632) {
-                           var10 = class81.intStack[--WorldComparator.intStackSize] == 1;
-                           class86.method1892().method6054(var10);
-                           return 1;
-                        } else {
-                           boolean var4;
-                           if(var0 == 6633) {
-                              WorldComparator.intStackSize -= 2;
-                              var3 = class81.intStack[WorldComparator.intStackSize];
-                              var4 = class81.intStack[WorldComparator.intStackSize + 1] == 1;
-                              class86.method1892().method6055(var3, var4);
-                              return 1;
-                           } else if(var0 == 6634) {
-                              WorldComparator.intStackSize -= 2;
-                              var3 = class81.intStack[WorldComparator.intStackSize];
-                              var4 = class81.intStack[WorldComparator.intStackSize + 1] == 1;
-                              class86.method1892().method6056(var3, var4);
-                              return 1;
-                           } else if(var0 == 6635) {
-                              class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6074()?1:0;
-                              return 1;
-                           } else if(var0 == 6636) {
-                              var3 = class81.intStack[--WorldComparator.intStackSize];
-                              class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6058(var3)?1:0;
-                              return 1;
-                           } else if(var0 == 6637) {
-                              var3 = class81.intStack[--WorldComparator.intStackSize];
-                              class81.intStack[++WorldComparator.intStackSize - 1] = class86.method1892().method6059(var3)?1:0;
-                              return 1;
-                           } else if(var0 == 6638) {
-                              WorldComparator.intStackSize -= 2;
-                              var3 = class81.intStack[WorldComparator.intStackSize];
-                              var12 = new Coordinates(class81.intStack[WorldComparator.intStackSize + 1]);
-                              var7 = class86.method1892().method6062(var3, var12);
-                              if(var7 == null) {
-                                 class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                              } else {
-                                 class81.intStack[++WorldComparator.intStackSize - 1] = var7.bitpack();
-                              }
+            var0 += var9;
+            var2 -= var9 * 2;
+         }
+      } else if(var7 > Client.field940) {
+         var15 = Client.field940;
+         var6 = var15 * var2 * 334 / (var3 * 512);
+         if(var6 < Client.field883) {
+            var6 = Client.field883;
+            var8 = var15 * var2 * 334 / (var6 * 512);
+            var9 = (var3 - var8) / 2;
+            if(var4) {
+               Rasterizer2D.noClip();
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
+            }
 
-                              return 1;
-                           } else {
-                              MapIcon var8;
-                              if(var0 == 6639) {
-                                 var8 = class86.method1892().method6064();
-                                 if(var8 == null) {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                                 } else {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = var8.areaId;
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = var8.field532.bitpack();
-                                 }
+            var1 += var9;
+            var3 -= var9 * 2;
+         }
+      }
 
-                                 return 1;
-                              } else if(var0 == 6640) {
-                                 var8 = class86.method1892().method6065();
-                                 if(var8 == null) {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                                 } else {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = var8.areaId;
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = var8.field532.bitpack();
-                                 }
+      var8 = (Client.field1103 - Client.field1102) * var5 / 100 + Client.field1102;
+      Client.scale = var3 * var6 * var8 / 85504 << 1;
+      if(var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
+         int[] var14 = new int[9];
 
-                                 return 1;
-                              } else {
-                                 Area var6;
-                                 if(var0 == 6693) {
-                                    var3 = class81.intStack[--WorldComparator.intStackSize];
-                                    var6 = Area.mapAreaType[var3];
-                                    if(var6.name == null) {
-                                       class81.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = "";
-                                    } else {
-                                       class81.scriptStringStack[++KeyFocusListener.scriptStringStackSize - 1] = var6.name;
-                                    }
+         for(int var10 = 0; var10 < 9; ++var10) {
+            int var11 = var10 * 32 + 15 + 128;
+            int var12 = var11 * 3 + 600;
+            int var13 = Graphics3D.SINE[var11];
+            var14[var10] = var13 * var12 >> 16;
+         }
 
-                                    return 1;
-                                 } else if(var0 == 6694) {
-                                    var3 = class81.intStack[--WorldComparator.intStackSize];
-                                    var6 = Area.mapAreaType[var3];
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = var6.field3458;
-                                    return 1;
-                                 } else if(var0 == 6695) {
-                                    var3 = class81.intStack[--WorldComparator.intStackSize];
-                                    var6 = Area.mapAreaType[var3];
-                                    if(var6 == null) {
-                                       class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                                    } else {
-                                       class81.intStack[++WorldComparator.intStackSize - 1] = var6.field3473;
-                                    }
+         Region.buildVisibilityMaps(var14, 500, 800, var2, var3);
+      }
 
-                                    return 1;
-                                 } else if(var0 == 6696) {
-                                    var3 = class81.intStack[--WorldComparator.intStackSize];
-                                    var6 = Area.mapAreaType[var3];
-                                    if(var6 == null) {
-                                       class81.intStack[++WorldComparator.intStackSize - 1] = -1;
-                                    } else {
-                                       class81.intStack[++WorldComparator.intStackSize - 1] = var6.spriteId;
-                                    }
+      Client.Viewport_xOffset = var0;
+      Client.Viewport_yOffset = var1;
+      Client.viewportWidth = var2;
+      Client.viewportHeight = var3;
+   }
 
-                                    return 1;
-                                 } else if(var0 == 6697) {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = class20.scriptMapIconReference.areaId;
-                                    return 1;
-                                 } else if(var0 == 6698) {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = class20.scriptMapIconReference.field590.bitpack();
-                                    return 1;
-                                 } else if(var0 == 6699) {
-                                    class81.intStack[++WorldComparator.intStackSize - 1] = class20.scriptMapIconReference.field591.bitpack();
-                                    return 1;
-                                 } else {
-                                    return 2;
-                                 }
-                              }
-                           }
-                        }
-                     }
-                  }
+   @ObfuscatedName("iw")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Liz;I)Ljava/lang/String;",
+      garbageValue = "21208401"
+   )
+   static String method3(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         for(int var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
                }
+
+               var0 = var0.substring(0, var3) + MouseRecorder.method1166(MapIconReference.method758(var1, var2 - 1)) + var0.substring(var3 + 2);
             }
          }
       }
+
+      return var0;
+   }
+
+   @ObfuscatedName("kj")
+   @ObfuscatedSignature(
+      signature = "(Liz;I)I",
+      garbageValue = "414903591"
+   )
+   @Export("getWidgetClickMask")
+   static int getWidgetClickMask(Widget var0) {
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get(((long)var0.id << 32) + (long)var0.index);
+      return var1 != null?var1.value:var0.clickMask;
    }
 }

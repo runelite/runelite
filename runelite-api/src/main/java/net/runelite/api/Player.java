@@ -40,4 +40,6 @@ public interface Player extends Actor
 	boolean isClanMember();
 
 	boolean isFriend();
+
+	HeadIcon getOverheadIcon();
 }

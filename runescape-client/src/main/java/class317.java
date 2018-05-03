@@ -1,34 +1,20 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("lk")
+@ObfuscatedName("la")
 public class class317 {
-   @ObfuscatedName("o")
-   static char[] field3926;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    static char[] field3927;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
+   static char[] field3929;
+   @ObfuscatedName("b")
    static int[] field3928;
+   @ObfuscatedName("a")
+   static int[] field3926;
 
    static {
-      field3926 = new char[64];
-
-      int var0;
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3926[var0] = (char)(var0 + 65);
-      }
-
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3926[var0] = (char)(var0 + 97 - 26);
-      }
-
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3926[var0] = (char)(var0 + 48 - 52);
-      }
-
-      field3926[62] = '+';
-      field3926[63] = '/';
       field3927 = new char[64];
 
+      int var0;
       for(var0 = 0; var0 < 26; ++var0) {
          field3927[var0] = (char)(var0 + 65);
       }
@@ -41,8 +27,24 @@ public class class317 {
          field3927[var0] = (char)(var0 + 48 - 52);
       }
 
-      field3927[62] = '*';
-      field3927[63] = '-';
+      field3927[62] = '+';
+      field3927[63] = '/';
+      field3929 = new char[64];
+
+      for(var0 = 0; var0 < 26; ++var0) {
+         field3929[var0] = (char)(var0 + 65);
+      }
+
+      for(var0 = 26; var0 < 52; ++var0) {
+         field3929[var0] = (char)(var0 + 97 - 26);
+      }
+
+      for(var0 = 52; var0 < 62; ++var0) {
+         field3929[var0] = (char)(var0 + 48 - 52);
+      }
+
+      field3929[62] = '*';
+      field3929[63] = '-';
       field3928 = new int[128];
 
       for(var0 = 0; var0 < field3928.length; ++var0) {

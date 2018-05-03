@@ -38,6 +38,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_RUNE = 867;
 	public static final int WOODCUTTING_DRAGON = 2846;
 	public static final int WOODCUTTING_INFERNAL = 2117;
+	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
 	public static final int COOKING_FIRE = 897;
@@ -75,14 +76,18 @@ public final class AnimationID
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
+	public static final int FISHING_BIG_NET = 620;
 	public static final int FISHING_NET = 621;
 	public static final int FISHING_POLE_CAST = 623; // pole is in the water
 	public static final int FISHING_CAGE = 619;
 	public static final int FISHING_HARPOON = 618;
 	public static final int FISHING_BARBTAIL_HARPOON = 5108;
 	public static final int FISHING_DRAGON_HARPOON = 7401;
+	public static final int FISHING_INFERNAL_HARPOON = 7402;
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
+	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
+	public static final int FISHING_BAREHAND = 6709;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
@@ -93,6 +98,7 @@ public final class AnimationID
 	public static final int MINING_DRAGON_PICKAXE = 7139;
 	public static final int MINING_DRAGON_PICKAXE_ORN = 642;
 	public static final int MINING_INFERNAL_PICKAXE = 4482;
+	public static final int MINING_3A_PICKAXE = 7283;
 	public static final int MINING_MOTHERLODE_BRONZE = 6753;
 	public static final int MINING_MOTHERLODE_IRON = 6754;
 	public static final int MINING_MOTHERLODE_STEEL = 6755;
@@ -103,12 +109,38 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON = 6758;
 	public static final int MINING_MOTHERLODE_DRAGON_ORN = 335;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
+	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int BURYING_BONES = 827;
 	public static final int LOOKING_INTO = 832;
+	public static final int DIG = 830;
+	public static final int VENGEANCE_OTHER = 4411;
+	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
+	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
+	public static final int DEMONIC_GORILLA_RANGED_ATTACK = 7227;
+	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
+	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
+	public static final int DEMONIC_GORILLA_DEFEND = 7224;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+
+	// Farming
+	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
+	public static final int FARMING_HARVEST_BUSH = 2281;
+	public static final int FARMING_HARVEST_HERB = 2282;
+	public static final int FARMING_USE_COMPOST = 2283;
+	public static final int FARMING_CURE_WITH_POTION = 2288;
+	public static final int FARMING_PLANT_SEED = 2291;
+	public static final int FARMING_HARVEST_FLOWER = 2292;
+
+	// Lunar spellbook
+	public static final int MAGIC_LUNAR_FERTILE_SOIL = 4413;
+	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
+	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
+
+	// Arceuus spellbook
+	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
 }

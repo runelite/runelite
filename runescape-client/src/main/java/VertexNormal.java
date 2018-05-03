@@ -1,38 +1,36 @@
+import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("ec")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("z")
+   @ObfuscatedName("n")
+   public static File field1912;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 51653105
-   )
-   public static int field1931;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 909698261
+      intValue = 1868193879
    )
    @Export("x")
    int x;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -517319707
+      intValue = 1652211909
    )
    @Export("y")
    int y;
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -987713281
+      intValue = -661566551
    )
    @Export("z")
    int z;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -514131039
+      intValue = -163743625
    )
    @Export("magnitude")
    int magnitude;
@@ -41,7 +39,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lea;)V"
+      signature = "(Lec;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -50,12 +48,25 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(ZZI)Lll;",
-      garbageValue = "1690207821"
+      signature = "(IIB)I",
+      garbageValue = "-46"
    )
-   static IndexedSprite method2778(boolean var0, boolean var1) {
-      return var0?(var1?class246.field2979:class90.field1393):(var1?Frames.field2074:class90.field1363);
+   public static int method2875(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 = var0 * var2;
+         }
+
+         var0 *= var0;
+      }
+
+      if(var1 == 1) {
+         return var0 * var2;
+      } else {
+         return var2;
+      }
    }
 }

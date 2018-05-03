@@ -29,15 +29,14 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.3.5-SNAPSHOT</version>
+		<version>1.3.8-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.runelite</groupId>
 	<artifactId>cache-server</artifactId>
 	<name>Cache Server</name>
 
 	<properties>
-		<cache.version>160</cache.version>
+		<cache.version>165</cache.version>
 	</properties>
 
 	<dependencies>

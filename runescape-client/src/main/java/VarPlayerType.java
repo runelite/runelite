@@ -1,27 +1,36 @@
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("js")
+@ObfuscatedName("jk")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ljr;"
    )
    @Export("varplayer_ref")
-   public static IndexDataBase varplayer_ref;
-   @ObfuscatedName("t")
+   static IndexDataBase varplayer_ref;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 2005161095
+   )
+   public static int field3446;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lhd;"
+      signature = "Lhi;"
    )
    @Export("varplayers")
-   public static NodeCache varplayers;
-   @ObfuscatedName("d")
+   static NodeCache varplayers;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1117881149
+      intValue = 1520269613
    )
    @Export("configType")
    public int configType;
@@ -30,17 +39,17 @@ public class VarPlayerType extends CacheableNode {
       varplayers = new NodeCache(64);
    }
 
-   public VarPlayerType() {
+   VarPlayerType() {
       this.configType = 0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lgc;B)V",
-      garbageValue = "-48"
+      signature = "(Lgg;I)V",
+      garbageValue = "-1790088234"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -51,10 +60,10 @@ public class VarPlayerType extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lgc;II)V",
-      garbageValue = "-1135051668"
+      signature = "(Lgg;II)V",
+      garbageValue = "-636351580"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -64,66 +73,88 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   @ObfuscatedName("fg")
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(ILjr;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "-1291509997"
+   )
+   public static void method4853(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
+      int var6 = var1.getFile(var2);
+      int var7 = var1.getChild(var6, var3);
+      ISAACCipher.method3902(var0, var1, var6, var7, var4, var5);
+   }
+
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1113184025"
+      garbageValue = "-1700355006"
    )
-   static final void method4736() {
-      Client.field957.close();
-      Overlay.overlays.reset();
-      FloorUnderlayDefinition.underlays.reset();
-      KitDefinition.identKits.reset();
-      CollisionData.method3415();
-      WorldMapDecorationType.method4499();
-      ItemComposition.items.reset();
-      ItemComposition.itemModelCache.reset();
-      ItemComposition.itemSpriteCache.reset();
-      class316.method5617();
-      class85.method1887();
-      Varbit.varbits.reset();
-      WorldMapType3.method237();
-      class281.field3568.reset();
-      class281.field3569.reset();
-      class281.field3570.reset();
-      CombatInfo2.field3524.reset();
-      CombatInfo2.field3531.reset();
-      class279.field3553.reset();
-      Varcs.method1993();
-      class251.method4504();
-      class170.method3292();
-      class25.method201();
-      ((TextureProvider)Graphics3D.textureLoader).reset();
-      Script.field1459.reset();
-      class71.indexInterfaces.reset();
-      class93.indexSoundEffects.reset();
-      WorldMapType3.indexCache3.reset();
-      class55.indexCache4.reset();
-      MouseRecorder.indexMaps.reset();
-      PacketBuffer.indexTrack1.reset();
-      class18.indexModels.reset();
-      class151.indexSprites.reset();
-      GameCanvas.indexTextures.reset();
-      ClanMember.indexCache10.reset();
-      class189.indexTrack2.reset();
-      class190.indexScripts.reset();
-      class255.region.reset();
+   static void method4848() {
+      class90.username = class90.username.trim();
+      if(class90.username.length() == 0) {
+         VerticalAlignment.method4829("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      } else {
+         long var1;
+         try {
+            URL var3 = new URL(IndexData.method4789("services", false) + "m=accountappeal/login.ws");
+            URLConnection var4 = var3.openConnection();
+            var4.setRequestProperty("connection", "close");
+            var4.setDoInput(true);
+            var4.setDoOutput(true);
+            var4.setConnectTimeout(5000);
+            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
+            var5.write("data1=req");
+            var5.flush();
+            InputStream var6 = var4.getInputStream();
+            Buffer var7 = new Buffer(new byte[1000]);
 
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].reset();
+            while(true) {
+               int var8 = var6.read(var7.payload, var7.offset, 1000 - var7.offset);
+               if(var8 == -1) {
+                  var7.offset = 0;
+                  long var10 = var7.readLong();
+                  var1 = var10;
+                  break;
+               }
+
+               var7.offset += var8;
+               if(var7.offset >= 1000) {
+                  var1 = 0L;
+                  break;
+               }
+            }
+         } catch (Exception var14) {
+            var1 = 0L;
+         }
+
+         int var0;
+         if(var1 == 0L) {
+            var0 = 5;
+         } else {
+            var0 = class57.method879(var1, class90.username);
+         }
+
+         switch(var0) {
+         case 2:
+            VerticalAlignment.method4829("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class90.loginIndex = 6;
+            break;
+         case 3:
+            VerticalAlignment.method4829("", "Error connecting to server.", "");
+            break;
+         case 4:
+            VerticalAlignment.method4829("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            VerticalAlignment.method4829("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            VerticalAlignment.method4829("", "Error connecting to server.", "");
+            break;
+         case 7:
+            VerticalAlignment.method4829("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         }
+
       }
-
-      System.gc();
-      class229.field2687 = 1;
-      class185.field2511 = null;
-      VertexNormal.field1931 = -1;
-      GrandExchangeEvents.field284 = -1;
-      class86.field1330 = 0;
-      class229.field2692 = false;
-      class2.field11 = 2;
-      Client.field1026 = -1;
-      Client.field1102 = false;
-      class61.method1071();
-      class64.setGameState(10);
    }
 }

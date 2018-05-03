@@ -26,6 +26,8 @@ package net.runelite.api.widgets;
 
 public class WidgetID
 {
+	public static final int FAIRY_RING_CODE_GROUP_ID = 381;
+	public static final int FAIRY_RING_GROUP_ID = 398;
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
 	public static final int BANK_INVENTORY_GROUP_ID = 15;
@@ -39,7 +41,7 @@ public class WidgetID
 	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
-	public static final int PESTRCONTROL_GROUP_ID = 408;
+	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
 	public static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
@@ -80,6 +82,8 @@ public class WidgetID
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
+	public static final int KINGDOM_GROUP_ID = 392;
+	public static final int BARROWS_GROUP_ID = 24;
 
 	static class WorldMap
 	{
@@ -394,5 +398,27 @@ public class WidgetID
 	{
 		static final int WIDGET = 1;
 		static final int BOTTOM_BAR = 14;
+	}
+
+	static class FairyRing
+	{
+		static final int LEFT_ORB_CLOCKWISE = 19;
+		static final int LEFT_ORB_COUNTER_CLOCKWISE = 20;
+		static final int MIDDLE_ORB_CLOCKWISE = 21;
+		static final int MIDDLE_ORB_COUNTER_CLOCKWISE = 22;
+		static final int RIGHT_ORB_CLOCKWISE = 23;
+		static final int RIGHT_ORB_COUNTER_CLOCKWISE = 24;
+		static final int TELEPORT_BUTTON = 26;
+	}
+
+	static class FairyRingCode
+	{
+		static final int FAIRY_QUEEN_HIDEOUT = 139;
+	}
+
+	static class Barrows
+	{
+		static final int BARROWS_BROTHERS = 8;
+		static final int BARROWS_POTENTIAL = 9;
 	}
 }

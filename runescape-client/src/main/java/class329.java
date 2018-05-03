@@ -2,56 +2,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lj")
+@ObfuscatedName("lg")
 public enum class329 implements Enumerated {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Llj;"
+      signature = "Llg;"
    )
-   field3965(0, 0),
-   @ObfuscatedName("k")
+   field3976(0, 0),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Llj;"
+      signature = "Llg;"
    )
-   field3966(1, 1),
-   @ObfuscatedName("t")
+   field3971(1, 1),
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Llj;"
+      signature = "Llg;"
    )
-   field3967(2, 2),
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Llj;"
-   )
-   field3968(3, 3),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Llj;"
-   )
-   field3969(4, 4);
-
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1688724763
-   )
-   public final int field3970;
+   field3972(2, 2),
    @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1728854711
+   @ObfuscatedSignature(
+      signature = "Llg;"
    )
-   final int field3972;
+   field3973(3, 3),
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Llg;"
+   )
+   field3974(4, 4);
+
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1446162609
+   )
+   public final int field3975;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1563006441
+   )
+   final int field3970;
 
    class329(int var3, int var4) {
-      this.field3970 = var3;
-      this.field3972 = var4;
+      this.field3975 = var3;
+      this.field3970 = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-369819377"
+      signature = "(S)I",
+      garbageValue = "19795"
    )
    public int rsOrdinal() {
-      return this.field3972;
+      return this.field3970;
    }
 }

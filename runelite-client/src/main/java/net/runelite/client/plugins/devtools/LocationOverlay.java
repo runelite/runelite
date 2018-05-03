@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.CHUNK_SIZE;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -38,8 +40,6 @@ public class LocationOverlay extends Overlay
 {
 	private final Client client;
 	private final DevToolsPlugin plugin;
-
-	private PanelComponent panelComponent;
 
 	@Inject
 	LocationOverlay(Client client, DevToolsPlugin plugin)
@@ -57,13 +57,31 @@ public class LocationOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent = new PanelComponent();
+		PanelComponent panelComponent = new PanelComponent();
 
 		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+		LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
 
-		int regionX = localWorld.getX() >> 6;
-		int regionY = localWorld.getY() >> 6;
-		int regionID = regionX << 8 | regionY;
+		int regionID = localWorld.getRegionID();
+
+		if (client.isInInstancedRegion())
+		{
+			panelComponent.setWidth(150);
+			panelComponent.getLines().add(new PanelComponent.Line("Instance"));
+
+			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+			int z = client.getPlane();
+			int chunkData = instanceTemplateChunks[z][localPoint.getRegionX() / CHUNK_SIZE][localPoint.getRegionY() / CHUNK_SIZE];
+
+			int rotation = chunkData >> 1 & 0x3;
+			int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
+			int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
+
+			panelComponent.getLines().add(new PanelComponent.Line(
+				"Chunk " + localPoint.getRegionX() / CHUNK_SIZE + "," + localPoint.getRegionY() / CHUNK_SIZE,
+				rotation + " " + chunkX + " " + chunkY
+			));
+		}
 
 		panelComponent.getLines().add(new PanelComponent.Line(
 			"Tile",

@@ -53,6 +53,36 @@ public class WorldPoint
 	 */
 	private final int plane;
 
+	/**
+	 * Returns a WorldPoint offset on x from this point
+	 * @param dx offset
+	 * @return
+	 */
+	public WorldPoint dx(int dx)
+	{
+		return new WorldPoint(x + dx, y, plane);
+	}
+
+	/**
+	 * Returns a WorldPoint offset on y from this point
+	 * @param dy offset
+	 * @return
+	 */
+	public WorldPoint dy(int dy)
+	{
+		return new WorldPoint(x, y + dy, plane);
+	}
+
+	/**
+	 * Returns a WorldPoint offset on z from this point
+	 * @param dz offset
+	 * @return
+	 */
+	public WorldPoint dz(int dz)
+	{
+		return new WorldPoint(x, y, plane + dz);
+	}
+
 	public static boolean isInScene(Client client, int x, int y)
 	{
 		int baseX = client.getBaseX();
@@ -87,6 +117,17 @@ public class WorldPoint
 			(y >>> Perspective.LOCAL_COORD_BITS) + client.getBaseY(),
 			plane
 		);
+	}
+
+	/**
+	 * Find the shortest distance from this point to a WorldArea
+	 *
+	 * @param other The WorldArea to find the distance to
+	 * @return Returns the shortest distance
+	 */
+	public int distanceTo(WorldArea other)
+	{
+		return new WorldArea(this, 1, 1).distanceTo(other);
 	}
 
 	/**
@@ -134,5 +175,10 @@ public class WorldPoint
 	public Point toPoint()
 	{
 		return new Point(x, y);
+	}
+
+	public int getRegionID()
+	{
+		return ((x >> 6) << 8) | (y >> 6);
 	}
 }

@@ -63,7 +63,7 @@ class BlastFurnaceOverlay extends Overlay
 
 		for (BarsOres varbit : BarsOres.values())
 		{
-			int amount = client.getSetting(varbit.getVarbit());
+			int amount = client.getVar(varbit.getVarbit());
 
 			if (amount == 0)
 			{

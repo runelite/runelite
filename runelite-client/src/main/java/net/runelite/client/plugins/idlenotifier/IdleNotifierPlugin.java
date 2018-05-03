@@ -31,78 +31,12 @@ import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
-import static net.runelite.api.AnimationID.COOKING_FIRE;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
-import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
-import static net.runelite.api.AnimationID.CRAFTING_SPINNING;
-import static net.runelite.api.AnimationID.FISHING_BARBTAIL_HARPOON;
-import static net.runelite.api.AnimationID.FISHING_CAGE;
-import static net.runelite.api.AnimationID.FISHING_DRAGON_HARPOON;
-import static net.runelite.api.AnimationID.FISHING_HARPOON;
-import static net.runelite.api.AnimationID.FISHING_KARAMBWAN;
-import static net.runelite.api.AnimationID.FISHING_NET;
-import static net.runelite.api.AnimationID.FISHING_OILY_ROD;
-import static net.runelite.api.AnimationID.FISHING_POLE_CAST;
-import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAPLE_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_MAPLE_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_NORMAL_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_NORMAL_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_OAK_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_OAK_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_WILLOW_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_WILLOW_SHORTBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_YEW_LONGBOW;
-import static net.runelite.api.AnimationID.FLETCHING_STRING_YEW_SHORTBOW;
-import static net.runelite.api.AnimationID.GEM_CUTTING_DIAMOND;
-import static net.runelite.api.AnimationID.GEM_CUTTING_EMERALD;
-import static net.runelite.api.AnimationID.GEM_CUTTING_JADE;
-import static net.runelite.api.AnimationID.GEM_CUTTING_OPAL;
-import static net.runelite.api.AnimationID.GEM_CUTTING_REDTOPAZ;
-import static net.runelite.api.AnimationID.GEM_CUTTING_RUBY;
-import static net.runelite.api.AnimationID.GEM_CUTTING_SAPPHIRE;
-import static net.runelite.api.AnimationID.HERBLORE_MAKE_TAR;
-import static net.runelite.api.AnimationID.HERBLORE_POTIONMAKING;
-import static net.runelite.api.AnimationID.IDLE;
-import static net.runelite.api.AnimationID.MAGIC_CHARGING_ORBS;
-import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_BLACK_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_BRONZE_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_ORN;
-import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_ORN;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
-import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
-import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
-import static net.runelite.api.AnimationID.SMITHING_ANVIL;
-import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
-import static net.runelite.api.AnimationID.SMITHING_SMELTING;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -173,6 +107,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_RUNE:
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
+			case WOODCUTTING_3A_AXE:
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
@@ -206,13 +141,17 @@ public class IdleNotifierPlugin extends Plugin
 			case SMITHING_CANNONBALL:
 			/* Fishing */
 			case FISHING_NET:
+			case FISHING_BIG_NET:
 			case FISHING_HARPOON:
 			case FISHING_BARBTAIL_HARPOON:
 			case FISHING_DRAGON_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
+			case FISHING_INFERNAL_HARPOON:
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
+			case FISHING_CRUSHING_INFERNAL_EELS:
+			case FISHING_BAREHAND:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -224,6 +163,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE:
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
+			case MINING_3A_PICKAXE:
 			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
@@ -235,6 +175,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_DRAGON:
 			case MINING_MOTHERLODE_DRAGON_ORN:
 			case MINING_MOTHERLODE_INFERNAL:
+			case MINING_MOTHERLODE_3A:
 			/* Herblore */
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
@@ -314,9 +255,13 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowHitpoints()
 	{
+		if (config.getHitpointsThreshold() == 0)
+		{
+			return false;
+		}
 		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVar(Varbits.NMZ_ABSORPTION) <= config.getHitpointsThreshold())
 			{
 				if (!notifyHitpoints)
 				{
@@ -335,6 +280,10 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkLowPrayer()
 	{
+		if (config.getPrayerThreshold() == 0)
+		{
+			return false;
+		}
 		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
 		{
 			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())

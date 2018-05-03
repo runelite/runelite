@@ -29,25 +29,28 @@ package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.Point;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.queries.BankItemQuery;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,17 +62,27 @@ import net.runelite.client.ui.PluginToolbar;
 )
 public class GrandExchangePlugin extends Plugin
 {
+	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
 
+	@Getter(AccessLevel.PACKAGE)
 	private GrandExchangePanel panel;
 
-	private MouseListener itemClick;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed;
+
+	@Inject
+	private GrandExchangeInputListener inputListener;
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Inject
 	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Inject
 	private Client client;
@@ -105,104 +118,10 @@ public class GrandExchangePlugin extends Plugin
 
 		pluginToolbar.addNavigation(button);
 
-		itemClick = new MouseListener()
-		{
-			@Override
-			public MouseEvent mouseClicked(MouseEvent e)
-			{
-				// Check if left click + alt
-				if (e.getButton() == MouseEvent.BUTTON1 && e.isAltDown())
-				{
-					Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-					if (inventoryWidget != null && !inventoryWidget.isHidden())
-					{
-						if (findAndSearch(inventoryWidget.getWidgetItems().toArray(new WidgetItem[0])))
-						{
-							e.consume();
-							return super.mouseClicked(e);
-						}
-					}
-
-					// Check the inventory when the bank is open aswell
-					Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
-					if (bankInventoryWidget != null && !bankInventoryWidget.isHidden())
-					{
-						if (findAndSearch(bankInventoryWidget.getDynamicChildren()))
-						{
-							e.consume();
-							return super.mouseClicked(e);
-						}
-					}
-
-					Widget bankWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-					if (bankWidget != null && !bankWidget.isHidden())
-					{
-						// Use bank item query for only checking the active tab
-						if (findAndSearch(new BankItemQuery().result(client)))
-						{
-							e.consume();
-							return super.mouseClicked(e);
-						}
-					}
-				}
-
-				return super.mouseClicked(e);
-			}
-
-			private boolean findAndSearch(Widget[] widgets)
-			{
-				Point mousePosition = client.getMouseCanvasPosition();
-				for (Widget widget : widgets)
-				{
-					if (widget.getBounds().contains(mousePosition.getX(), mousePosition.getY()))
-					{
-						ItemComposition itemComposition = itemManager.getItemComposition(widget.getItemId());
-						search(itemComposition);
-						return true;
-					}
-				}
-				return false;
-			}
-
-			/**
-			 * Finds the item clicked based on the mouse location
-			 * @param items
-			 * @return true if an item is found, false otherwise
-			 */
-			private boolean findAndSearch(WidgetItem[] items)
-			{
-				Point mousePosition = client.getMouseCanvasPosition();
-				for (WidgetItem item : items)
-				{
-					if (item.getCanvasBounds().contains(mousePosition.getX(), mousePosition.getY()))
-					{
-						ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-						search(itemComposition);
-						return true;
-					}
-				}
-				return false;
-			}
-
-			private void search(ItemComposition itemComposition)
-			{
-				SwingUtilities.invokeLater(() ->
-				{
-					panel.showSearch();
-
-					if (!button.isSelected())
-					{
-						button.getOnSelect().run();
-					}
-
-					panel.getSearchPanel().priceLookup(itemComposition.getName());
-				});
-			}
-		};
-
 		if (config.quickLookup())
 		{
-			mouseManager.registerMouseListener(itemClick);
+			mouseManager.registerMouseListener(inputListener);
+			keyManager.registerKeyListener(inputListener);
 		}
 	}
 
@@ -210,7 +129,8 @@ public class GrandExchangePlugin extends Plugin
 	protected void shutDown()
 	{
 		pluginToolbar.removeNavigation(button);
-		mouseManager.unregisterMouseListener(itemClick);
+		mouseManager.unregisterMouseListener(inputListener);
+		keyManager.unregisterKeyListener(inputListener);
 	}
 
 	@Subscribe
@@ -222,11 +142,13 @@ public class GrandExchangePlugin extends Plugin
 			{
 				if (config.quickLookup())
 				{
-					mouseManager.registerMouseListener(itemClick);
+					mouseManager.registerMouseListener(inputListener);
+					keyManager.registerKeyListener(inputListener);
 				}
 				else
 				{
-					mouseManager.unregisterMouseListener(itemClick);
+					mouseManager.unregisterMouseListener(inputListener);
+					keyManager.unregisterKeyListener(inputListener);
 				}
 			}
 		}
@@ -240,5 +162,45 @@ public class GrandExchangePlugin extends Plugin
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
 		SwingUtilities.invokeLater(() -> panel.updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		// At the moment, if the user disables quick lookup, the input listener gets disabled. Thus, isHotKeyPressed()
+		// should always return false when quick lookup is disabled.
+		// Replace the default option with "Search ..." when holding alt
+		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed)
+		{
+			return;
+		}
+
+		final MenuEntry[] entries = client.getMenuEntries();
+		final MenuEntry menuEntry = entries[entries.length - 1];
+		final int widgetId = menuEntry.getParam1();
+		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+
+		switch (groupId)
+		{
+			case WidgetID.BANK_GROUP_ID:
+				// Don't show for view tabs and such
+				if (WidgetInfo.TO_CHILD(widgetId) != WidgetInfo.BANK_ITEM_CONTAINER.getChildId())
+				{
+					break;
+				}
+			case WidgetID.INVENTORY_GROUP_ID:
+			case WidgetID.BANK_INVENTORY_GROUP_ID:
+				menuEntry.setOption("Search Grand Exchange");
+				client.setMenuEntries(entries);
+		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
+		{
+			setHotKeyPressed(false);
+		}
 	}
 }

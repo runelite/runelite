@@ -4,53 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ji")
+@ObfuscatedName("jt")
 @Implements("HorizontalAlignment")
 public enum HorizontalAlignment implements Enumerated {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lji;"
+      signature = "Ljt;"
    )
-   field3698(2, 0),
-   @ObfuscatedName("k")
+   field3706(0, 0),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lji;"
+      signature = "Ljt;"
    )
-   field3702(0, 1),
-   @ObfuscatedName("t")
+   field3704(1, 1),
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lji;"
+      signature = "Ljt;"
    )
-   field3699(1, 2);
+   field3702(2, 2);
 
-   @ObfuscatedName("pc")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1600437789
-   )
-   static int field3697;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1442749709
+      intValue = 1467511525
    )
    @Export("value")
    public final int value;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1657418347
+      intValue = -91901173
    )
-   final int field3701;
+   final int field3700;
 
    HorizontalAlignment(int var3, int var4) {
       this.value = var3;
-      this.field3701 = var4;
+      this.field3700 = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-369819377"
+      signature = "(S)I",
+      garbageValue = "19795"
    )
    public int rsOrdinal() {
-      return this.field3701;
+      return this.field3700;
    }
 }

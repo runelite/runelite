@@ -41,4 +41,11 @@ public interface XpTrackerService
 	 * @return
 	 */
 	int getActionsHr(Skill skill);
+
+	/**
+	 * Get the number of actions remaining
+	 * @param skill
+	 * @return
+	 */
+	int getActionsLeft(Skill skill);
 }

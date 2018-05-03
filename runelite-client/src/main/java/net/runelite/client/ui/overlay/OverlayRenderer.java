@@ -33,15 +33,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -95,7 +92,6 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final RuneLiteConfig runeLiteConfig;
 	private final TooltipOverlay tooltipOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
-	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
 	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
 	// Overlay movement variables
@@ -182,6 +178,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		allOverlays.addAll(overlays);
 
 		final Client client = clientProvider.get();
+
+		if (client == null)
+		{
+			return;
+		}
 
 		for (final Overlay overlay : overlays)
 		{
@@ -506,11 +507,19 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
-		subGraphics.setFont((position == OverlayPosition.DYNAMIC
-			|| position == OverlayPosition.TOOLTIP)
-			&& runeLiteConfig.useSmallFont()
-			? FontManager.getRunescapeSmallFont()
-			: FontManager.getRunescapeFont());
+		if (position == OverlayPosition.DYNAMIC)
+		{
+			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+		}
+		else if (position == OverlayPosition.TOOLTIP)
+		{
+			subGraphics.setFont(FontManager.getRunescapeSmallFont());
+		}
+		else
+		{
+			subGraphics.setFont(FontManager.getRunescapeFont());
+		}
+
 
 		subGraphics.translate(point.x, point.y);
 		final Dimension dimension = MoreObjects.firstNonNull(overlay.render(subGraphics), new Dimension());
@@ -641,26 +650,5 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	{
 		final String locationKey = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(runeliteGroupName, locationKey, OverlayPosition.class);
-	}
-
-	public void provideScreenshot(BufferedImage image)
-	{
-		Consumer<BufferedImage> consumer;
-		while ((consumer = screenshotRequests.poll()) != null)
-		{
-			try
-			{
-				consumer.accept(image);
-			}
-			catch (Exception ex)
-			{
-				log.warn("error in screenshot callback", ex);
-			}
-		}
-	}
-
-	public void requestScreenshot(Consumer<BufferedImage> consumer)
-	{
-		screenshotRequests.add(consumer);
 	}
 }

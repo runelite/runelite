@@ -1,26 +1,26 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hl")
+@ObfuscatedName("hv")
 public class class221 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhl;"
+      signature = "Lhv;"
    )
-   class221 field2663;
-   @ObfuscatedName("k")
+   class221 field2669;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhl;"
+      signature = "Lhv;"
    )
-   class221 field2662;
+   class221 field2668;
 
-   @ObfuscatedName("o")
-   public void method4067() {
-      if(this.field2662 != null) {
-         this.field2662.field2663 = this.field2663;
-         this.field2663.field2662 = this.field2662;
-         this.field2663 = null;
-         this.field2662 = null;
+   @ObfuscatedName("g")
+   public void method4165() {
+      if(this.field2668 != null) {
+         this.field2668.field2669 = this.field2669;
+         this.field2669.field2668 = this.field2668;
+         this.field2669 = null;
+         this.field2668 = null;
       }
    }
 }

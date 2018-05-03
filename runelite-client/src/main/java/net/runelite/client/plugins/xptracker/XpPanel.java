@@ -29,7 +29,6 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -70,7 +69,7 @@ class XpPanel extends PluginPanel
 		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
 		final JButton resetButton = new JButton("Reset All");
-		resetButton.addActionListener(e -> resetAllInfoBoxes());
+		resetButton.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
 
 		final JButton openTrackerButton = new JButton("Open XP tracker");
 		openTrackerButton.addActionListener(e -> LinkBrowser.browse(buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
@@ -98,7 +97,7 @@ class XpPanel extends PluginPanel
 					break;
 				}
 
-				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, xpTrackerPlugin.getSkillXpInfo(skill), iconManager));
+				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
 			}
 		}
 		catch (IOException e)
@@ -130,39 +129,36 @@ class XpPanel extends PluginPanel
 	void resetAllInfoBoxes()
 	{
 		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.reset());
-		updateTotal();
 	}
 
-	void updateAllInfoBoxes()
+	void resetSkill(Skill skill)
 	{
-		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.update());
-		updateTotal();
+		XpInfoBox xpInfoBox = infoBoxes.get(skill);
+		if (xpInfoBox != null)
+		{
+			xpInfoBox.reset();
+		}
 	}
 
-	void updateSkillExperience(Skill skill)
+	void updateSkillExperience(boolean updated, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
-		xpInfoBox.update();
-		xpInfoBox.init();
-		updateTotal();
+
+		if (xpInfoBox != null)
+		{
+			xpInfoBox.update(updated, xpSnapshotSingle);
+		}
 	}
 
-	private void updateTotal()
+	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
-		final AtomicInteger totalXpGainedVal = new AtomicInteger();
-		final AtomicInteger totalXpHrVal = new AtomicInteger();
+		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
+	}
 
-		for (XpInfoBox xpInfoBox : infoBoxes.values())
-		{
-			totalXpGainedVal.addAndGet(xpInfoBox.getXpInfo().getXpGained());
-			totalXpHrVal.addAndGet(xpInfoBox.getXpInfo().getXpHr());
-		}
-
-		SwingUtilities.invokeLater(() ->
-		{
-			totalXpGained.setText(formatLine(totalXpGainedVal.get(), "total xp gained"));
-			totalXpHr.setText(formatLine(totalXpHrVal.get(), "total xp/hr"));
-		});
+	private void rebuildAsync(XpSnapshotTotal xpSnapshotTotal)
+	{
+		totalXpGained.setText(formatLine(xpSnapshotTotal.getXpGainedInSession(), "total xp gained"));
+		totalXpHr.setText(formatLine(xpSnapshotTotal.getXpPerHour(), "total xp/hr"));
 	}
 
 	static String formatLine(double number, String description)

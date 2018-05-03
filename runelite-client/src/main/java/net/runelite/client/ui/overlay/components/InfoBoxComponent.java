@@ -71,7 +71,7 @@ public class InfoBoxComponent implements RenderableEntity
 		{
 			graphics.drawImage(image,
 				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				(BOX_SIZE - image.getHeight()) / 2, null);
+				position.y + (BOX_SIZE - image.getHeight()) / 2, null);
 		}
 
 		final TextComponent textComponent = new TextComponent();
@@ -79,7 +79,7 @@ public class InfoBoxComponent implements RenderableEntity
 		textComponent.setText(text);
 		textComponent.setPosition(new Point(
 			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
-			BOX_SIZE - SEPARATOR));
+			position.y + BOX_SIZE - SEPARATOR));
 		textComponent.render(graphics);
 		return new Dimension(BOX_SIZE, BOX_SIZE);
 	}

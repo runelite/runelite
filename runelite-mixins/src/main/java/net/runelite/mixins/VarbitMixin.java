@@ -26,6 +26,8 @@ package net.runelite.mixins;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -52,9 +54,24 @@ public abstract class VarbitMixin implements RSClient
 
 	@Inject
 	@Override
-	public int getSetting(Varbits varbit)
+	public int getVar(Varbits varbit)
 	{
 		int varbitId = varbit.getId();
+		return getVarbitValue(varbitId);
+	}
+
+	@Inject
+	@Override
+	public void setSetting(Varbits varbit, int value)
+	{
+		int varbitId = varbit.getId();
+		setVarbitValue(varbitId, value);
+	}
+
+	@Inject
+	@Override
+	public int getVarbitValue(int varbitId)
+	{
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
 		{
@@ -70,5 +87,39 @@ public abstract class VarbitMixin implements RSClient
 		int msb = v.getMostSignificantBit();
 		int mask = (1 << ((msb - lsb) + 1)) - 1;
 		return (value >> lsb) & mask;
+	}
+
+	@Inject
+	@Override
+	public void setVarbitValue(int varbitId, int value)
+	{
+		RSVarbit v = varbitCache.getIfPresent(varbitId);
+		if (v == null)
+		{
+			client.getVarbit(varbitId); // load varbit into cache
+			RSNodeCache varbits = client.getVarbitCache();
+			v = (RSVarbit) varbits.get(varbitId); // get from cache
+			varbitCache.put(varbitId, v);
+		}
+
+		int[] varps = getVarps();
+		int lsb = v.getLeastSignificantBit();
+		int msb = v.getMostSignificantBit();
+		int mask = (1 << ((msb - lsb) + 1)) - 1;
+		varps[v.getIndex()] = (varps[v.getIndex()] & ~(mask << lsb)) | ((value & mask) << lsb);
+	}
+
+	@Inject
+	@Override
+	public int getVar(VarClientInt varClientInt)
+	{
+		return getVarcs().getIntVarcs()[varClientInt.getIndex()];
+	}
+
+	@Inject
+	@Override
+	public String getVar(VarClientStr varClientStr)
+	{
+		return getVarcs().getStrVarcs()[varClientStr.getIndex()];
 	}
 }

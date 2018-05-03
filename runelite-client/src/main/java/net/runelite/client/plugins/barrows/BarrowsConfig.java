@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -38,7 +39,8 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "showMinimap",
 		name = "Show Minimap in tunnels",
-		description = "Configures whether or not the minimap is displayed"
+		description = "Configures whether or not the minimap is displayed",
+		position = 0
 	)
 	default boolean showMinimap()
 	{
@@ -48,10 +50,33 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show Brothers location",
-		description = "Configures whether or not the brothers location is displayed"
+		description = "Configures whether or not the brothers location is displayed",
+		position = 1
 	)
 	default boolean showBrotherLoc()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "brotherLocColor",
+		name = "Brother location color",
+		description = "Change the color of the name displayed on the minimap",
+		position = 2
+	)
+	default Color brotherLocColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "deadBrotherLocColor",
+		name = "Dead Brother loc. color",
+		description = "Change the color of the name displayed on the minimap for a dead brother",
+		position = 3
+	)
+	default Color deadBrotherLocColor()
+	{
+		return Color.RED;
 	}
 }

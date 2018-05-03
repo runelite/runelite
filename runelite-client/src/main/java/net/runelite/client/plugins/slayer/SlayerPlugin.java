@@ -78,6 +78,8 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("[\\d]+(?:,[\\d]+)?");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
+	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
+	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
@@ -243,12 +245,23 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
 		}
 
 		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+
+		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
+		{
+			amount++;
+		}
+
+		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
+		{
+			amount--;
+		}
+
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
@@ -415,7 +428,7 @@ public class SlayerPlugin extends Plugin
 			return Collections.EMPTY_LIST;
 
 		List<NPC> npcs = new ArrayList<>();
-		List<String> highlightedNpcs = Arrays.asList(Task.getTask(taskName).getTargetNames());
+		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
 		highlightedNpcs.add(taskName.replaceAll("s$", ""));
 
 		for (NPC npc : client.getNpcs())
@@ -425,7 +438,7 @@ public class SlayerPlugin extends Plugin
 			if (composition == null || composition.getName() == null)
 				continue;
 
-			String name = composition.getName().replace('\u00A0', ' ');
+			String name = npc.getName();
 			for (String highlight : highlightedNpcs)
 			{
 				if (name.toLowerCase().contains(highlight.toLowerCase())

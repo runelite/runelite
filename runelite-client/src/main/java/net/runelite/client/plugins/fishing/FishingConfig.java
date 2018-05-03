@@ -146,6 +146,16 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSacredEel",
+		name = "Show Sacred Eel",
+		description = "Configures whether sacred eel is displayed"
+	)
+	default boolean showSacredEel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showKarambwanji",
 		name = "Show Karambwanji",
 		description = "Configures whether karambwanji is displayed"

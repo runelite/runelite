@@ -3,110 +3,147 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fs")
 public abstract class class169 {
-   @ObfuscatedName("gx")
+   @ObfuscatedName("en")
    @ObfuscatedGetter(
-      intValue = 25645433
+      intValue = -1994098663
    )
-   static int field2228;
+   static int field2206;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1585663712"
+      garbageValue = "-37990145"
    )
-   public abstract boolean vmethod3335(int var1) throws IOException;
+   public abstract boolean vmethod3407(int var1) throws IOException;
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "45"
-   )
-   public abstract int vmethod3334() throws IOException;
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1452513085"
+      garbageValue = "-1289513265"
    )
-   public abstract int vmethod3349() throws IOException;
+   public abstract int vmethod3406() throws IOException;
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "692266189"
+      signature = "(S)I",
+      garbageValue = "-6075"
    )
-   public abstract int vmethod3348(byte[] var1, int var2, int var3) throws IOException;
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-1491035871"
-   )
-   public abstract void vmethod3337(byte[] var1, int var2, int var3) throws IOException;
+   public abstract int vmethod3405() throws IOException;
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-102019490"
+      signature = "([BIII)I",
+      garbageValue = "680375269"
    )
-   public abstract void vmethod3331();
+   public abstract int vmethod3426(byte[] var1, int var2, int var3) throws IOException;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1435510869"
+      signature = "([BIII)V",
+      garbageValue = "1818485286"
    )
-   static int method3291(int var0, int var1) {
-      Overlay var2 = class95.getOverlayDefinition(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else if(var2.texture >= 0) {
-         int var3 = class27.method247(Graphics3D.textureLoader.getAverageTextureRGB(var2.texture), 96);
-         return Graphics3D.colorPalette[var3] | -16777216;
-      } else if(var2.color == 16711935) {
-         return var1;
+   public abstract void vmethod3411(byte[] var1, int var2, int var3) throws IOException;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1579216827"
+   )
+   public abstract void vmethod3404();
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lhh;ILjava/lang/String;I)Ljava/lang/String;",
+      garbageValue = "1647708015"
+   )
+   static String method3365(IterableHashTable var0, int var1, String var2) {
+      if(var0 == null) {
+         return var2;
       } else {
-         int var4 = var2.hue;
-         int var5 = var2.saturation;
-         int var6 = var2.lightness;
-         if(var6 > 179) {
-            var5 /= 2;
-         }
-
-         if(var6 > 192) {
-            var5 /= 2;
-         }
-
-         if(var6 > 217) {
-            var5 /= 2;
-         }
-
-         if(var6 > 243) {
-            var5 /= 2;
-         }
-
-         int var7 = (var5 / 32 << 7) + var6 / 2 + (var4 / 4 << 10);
-         int var8 = class27.method247(var7, 96);
-         return Graphics3D.colorPalette[var8] | -16777216;
+         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
+         return var3 == null?var2:(String)var3.value;
       }
    }
 
-   @ObfuscatedName("if")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-43531897"
+      signature = "([BIILeb;[Lff;I)V",
+      garbageValue = "-1792503626"
    )
-   static final String method3290(int var0) {
-      String var1 = Integer.toString(var0);
+   static final void method3364(byte[] var0, int var1, int var2, Region var3, CollisionData[] var4) {
+      Buffer var5 = new Buffer(var0);
+      int var6 = -1;
 
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+      while(true) {
+         int var7 = var5.getUSmart();
+         if(var7 == 0) {
+            return;
+         }
+
+         var6 += var7;
+         int var8 = 0;
+
+         while(true) {
+            int var9 = var5.getUSmart();
+            if(var9 == 0) {
+               break;
+            }
+
+            var8 += var9 - 1;
+            int var10 = var8 & 63;
+            int var11 = var8 >> 6 & 63;
+            int var12 = var8 >> 12;
+            int var13 = var5.readUnsignedByte();
+            int var14 = var13 >> 2;
+            int var15 = var13 & 3;
+            int var16 = var11 + var1;
+            int var17 = var10 + var2;
+            if(var16 > 0 && var17 > 0 && var16 < 103 && var17 < 103) {
+               int var18 = var12;
+               if((class62.tileSettings[1][var16][var17] & 2) == 2) {
+                  var18 = var12 - 1;
+               }
+
+               CollisionData var19 = null;
+               if(var18 >= 0) {
+                  var19 = var4[var18];
+               }
+
+               WorldMapType3.addObject(var12, var16, var17, var6, var15, var14, var3, var19);
+            }
+         }
       }
+   }
 
-      return var1.length() > 9?" " + class45.getColTags(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class45.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class45.getColTags(16776960) + var1 + "</col>");
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(ILcr;ZI)I",
+      garbageValue = "-2059313525"
+   )
+   static int method3352(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class49.field604:class81.field1270;
+      if(var0 == 1500) {
+         class81.intStack[++class171.intStackSize - 1] = var3.relativeX;
+         return 1;
+      } else if(var0 == 1501) {
+         class81.intStack[++class171.intStackSize - 1] = var3.relativeY;
+         return 1;
+      } else if(var0 == 1502) {
+         class81.intStack[++class171.intStackSize - 1] = var3.width;
+         return 1;
+      } else if(var0 == 1503) {
+         class81.intStack[++class171.intStackSize - 1] = var3.height;
+         return 1;
+      } else if(var0 == 1504) {
+         class81.intStack[++class171.intStackSize - 1] = var3.isHidden?1:0;
+         return 1;
+      } else if(var0 == 1505) {
+         class81.intStack[++class171.intStackSize - 1] = var3.parentId;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 }

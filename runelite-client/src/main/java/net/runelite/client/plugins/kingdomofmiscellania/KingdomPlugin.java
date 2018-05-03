@@ -26,7 +26,6 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
-import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -35,10 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -56,31 +53,13 @@ public class KingdomPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private KingdomConfig config;
-
-	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Getter
-	private int favor = -1, coffer = -1;
+	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
 	private BufferedImage counterImage;
-
-	@Provides
-	KingdomConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(KingdomConfig.class);
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("kingdom") && client.getGameState() == GameState.LOGGED_IN)
-		{
-			processInfobox();
-		}
-	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -100,8 +79,8 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		favor = client.getSetting(Varbits.KINGDOM_FAVOR);
-		coffer = client.getSetting(Varbits.KINGDOM_COFFER);
+		favor = client.getVar(Varbits.KINGDOM_FAVOR);
+		coffer = client.getVar(Varbits.KINGDOM_COFFER);
 		processInfobox();
 	}
 
@@ -113,23 +92,16 @@ public class KingdomPlugin extends Plugin
 
 	private void processInfobox()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuest() && isInKingdom())
 		{
-			if (!config.showOnlyInKingdom() || isInKingdom())
-			{
-				addKingdomInfobox();
-			}
-			else if (config.showWhenLow() && (isFavorLow(config.favorLessThanValue()) || isCofferLow(config.cofferLessThanValue())))
-			{
-				addKingdomInfobox();
-			}
-			else
-			{
-				removeKingdomInfobox();
-			}
+			addKingdomInfobox();
 		}
-	}
+		else
+		{
+			removeKingdomInfobox();
+		}
 
+	}
 
 	private void addKingdomInfobox()
 	{
@@ -156,15 +128,9 @@ public class KingdomPlugin extends Plugin
 		return Ints.indexOf(client.getMapRegions(), KINGDOM_REGION) >= 0;
 	}
 
-	private boolean isFavorLow(int lessThanValue)
+	private boolean hasCompletedQuest()
 	{
-		int i = getFavorPercent(favor);
-		return i < lessThanValue;
-	}
-
-	private boolean isCofferLow(int lessThanValue)
-	{
-		return coffer < lessThanValue;
+		return client.getVar(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
 	}
 
 	static int getFavorPercent(int favor)

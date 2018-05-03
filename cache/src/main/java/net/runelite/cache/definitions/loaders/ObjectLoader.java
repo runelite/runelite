@@ -253,14 +253,14 @@ public class ObjectLoader
 			{
 				varpID = -1;
 			}
-			def.setVarpID(varpID);
+			def.setVarbitID(varpID);
 
 			int configId = is.readUnsignedShort();
 			if (configId == 0xFFFF)
 			{
 				configId = -1;
 			}
-			def.setConfigId(configId);
+			def.setVarpID(configId);
 
 			int length = is.readUnsignedByte();
 			int[] configChangeDest = new int[length + 2];
@@ -313,14 +313,14 @@ public class ObjectLoader
 			{
 				varpID = -1;
 			}
-			def.setVarpID(varpID);
+			def.setVarbitID(varpID);
 
 			int configId = is.readUnsignedShort();
 			if (configId == 0xFFFF)
 			{
 				configId = -1;
 			}
-			def.setConfigId(configId);
+			def.setVarpID(configId);
 
 
 			int var = is.readUnsignedShort();

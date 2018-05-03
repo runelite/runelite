@@ -150,7 +150,7 @@ public class XteaService
 			}
 
 			query.executeBatch();
-			con.commit();
+			con.commit(false);
 		}
 	}
 

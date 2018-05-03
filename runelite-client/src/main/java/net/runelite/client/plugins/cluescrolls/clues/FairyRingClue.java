@@ -38,7 +38,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_C
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 
 @Getter
-public class FairyRingClue extends ClueScroll implements TextClueScroll
+public class FairyRingClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final Set<FairyRingClue> CLUES = ImmutableSet.of(
 		new FairyRingClue("A I R 2 3 3 1", new WorldPoint(2702, 3246, 0)),
@@ -78,11 +78,6 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!plugin.getClient().hasHintArrow())
-		{
-			plugin.getClient().setHintArrow(getLocation());
-		}
-
 		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
 
 		if (localLocation == null)

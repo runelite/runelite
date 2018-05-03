@@ -2,167 +2,123 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("ha")
 public class class231 extends Node {
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1798284945
-   )
-   int field2734;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
-   )
-   class233 field2722;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Ldp;"
-   )
-   RawAudioNode field2729;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lhq;"
-   )
-   class228 field2724;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 336612017
-   )
-   int field2725;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -421665255
-   )
-   int field2726;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1177219731
-   )
-   int field2727;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1070398357
-   )
-   int field2728;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 2081770757
-   )
-   int field2733;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1644041127
-   )
-   int field2730;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 342580387
-   )
-   int field2721;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 130889509
-   )
-   int field2732;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 373027721
-   )
-   int field2731;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -506289271
-   )
-   int field2735;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 2065634891
-   )
-   int field2740;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1052678629
-   )
-   int field2736;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1451029365
-   )
-   int field2737;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1997208629
-   )
-   int field2738;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lda;"
-   )
-   class115 field2739;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -2140173415
-   )
-   int field2723;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1771557571
+      intValue = 1127595273
+   )
+   int field2735;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhg;"
+   )
+   class233 field2730;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Ldt;"
+   )
+   RawAudioNode field2731;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lhr;"
+   )
+   class228 field2732;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1772031005
+   )
+   int field2733;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1564125281
+   )
+   int field2734;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1683734631
+   )
+   int field2749;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -457706801
+   )
+   int field2736;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 179606165
+   )
+   int field2737;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1466250835
+   )
+   int field2738;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1163540679
+   )
+   int field2739;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1935985143
+   )
+   int field2740;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 670772179
+   )
+   int field2742;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 167539245
+   )
+   int field2745;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 3948959
    )
    int field2741;
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "117"
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 46740947
    )
-   void method4262() {
-      this.field2722 = null;
-      this.field2729 = null;
-      this.field2724 = null;
-      this.field2739 = null;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)J",
-      garbageValue = "-30"
+   int field2744;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1190290583
    )
-   static long method4261(CharSequence var0) {
-      long var1 = 0L;
-      int var3 = var0.length();
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1 *= 37L;
-         char var5 = var0.charAt(var4);
-         if(var5 >= 'A' && var5 <= 'Z') {
-            var1 += (long)(var5 + 1 - 65);
-         } else if(var5 >= 'a' && var5 <= 'z') {
-            var1 += (long)(var5 + 1 - 97);
-         } else if(var5 >= '0' && var5 <= '9') {
-            var1 += (long)(var5 + 27 - 48);
-         }
-
-         if(var1 >= 177917621779460413L) {
-            break;
-         }
-      }
-
-      while(0L == var1 % 37L && var1 != 0L) {
-         var1 /= 37L;
-      }
-
-      return var1;
-   }
-
+   int field2729;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1923042527
+   )
+   int field2746;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-937162823"
+      signature = "Ldn;"
    )
-   static final void method4265(String var0) {
-      StringBuilder var10000 = (new StringBuilder()).append(var0);
-      Object var10001 = null;
-      String var1 = var10000.append(" is already on your ignore list").toString();
-      class57.sendGameMessage(30, "", var1);
+   class115 field2747;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1926233093
+   )
+   int field2748;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 464184643
+   )
+   int field2743;
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "2"
+   )
+   void method4357() {
+      this.field2730 = null;
+      this.field2731 = null;
+      this.field2732 = null;
+      this.field2747 = null;
    }
 }

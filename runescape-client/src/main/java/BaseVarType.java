@@ -1,85 +1,142 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("n")
 @Implements("BaseVarType")
 public enum BaseVarType implements Enumerated {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lh;"
+      signature = "Ln;"
    )
    @Export("INTEGER")
-   INTEGER(1, 0, Integer.class, new class2()),
-   @ObfuscatedName("k")
+   INTEGER(0, 0, Integer.class, new class2()),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lh;"
+      signature = "Ln;"
    )
    @Export("LONG")
-   LONG(2, 1, Long.class, new class3()),
-   @ObfuscatedName("t")
+   LONG(1, 1, Long.class, new class3()),
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lh;"
+      signature = "Ln;"
    )
    @Export("STRING")
-   STRING(0, 2, String.class, new class5());
+   STRING(2, 2, String.class, new class5());
 
-   @ObfuscatedName("ru")
+   @ObfuscatedName("ms")
    @ObfuscatedSignature(
-      signature = "Ljh;"
+      signature = "Lfo;"
    )
-   public static class265 field25;
-   @ObfuscatedName("d")
+   @Export("mouseWheel")
+   static MouseWheel mouseWheel;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Llh;"
+   )
+   static IndexedSprite field33;
+   @ObfuscatedName("is")
+   @ObfuscatedSignature(
+      signature = "Ldx;"
+   )
+   static TextureProvider field23;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -2084820863
+      intValue = 123058171
    )
    @Export("id2")
    final int id2;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 104614253
+      intValue = 544673551
    )
    @Export("id")
    final int id;
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/Class;Lo;)V"
+      signature = "(IILjava/lang/Class;Lg;)V"
    )
    BaseVarType(int var3, int var4, Class var5, class0 var6) {
       this.id2 = var3;
       this.id = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-369819377"
+      signature = "(S)I",
+      garbageValue = "19795"
    )
    public int rsOrdinal() {
       return this.id;
    }
 
-   @ObfuscatedName("hg")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lbz;IIBB)V",
-      garbageValue = "0"
+      signature = "(Ljr;B)V",
+      garbageValue = "32"
    )
-   static final void method9(Player var0, int var1, int var2, byte var3) {
-      int var4 = var0.pathX[0];
-      int var5 = var0.pathY[0];
-      int var6 = var0.getSize();
-      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
-         if(var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
-            int var7 = class171.method3325(var4, var5, var0.getSize(), WorldMapType2.method578(var1, var2), Client.collisionMaps[var0.field856], true, Client.field1034, Client.field1131);
-            if(var7 >= 1) {
-               for(int var8 = 0; var8 < var7 - 1; ++var8) {
-                  var0.method1186(Client.field1034[var8], Client.field1131[var8], var3);
-               }
+   public static void method10(IndexDataBase var0) {
+      class279.field3554 = var0;
+   }
 
-            }
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldb;",
+      garbageValue = "1584972593"
+   )
+   @Export("getPreferencesFile")
+   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
+      File var3 = new File(VertexNormal.field1912, "preferences" + var0 + ".dat");
+      if(var3.exists()) {
+         try {
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
+            ;
          }
+      }
+
+      String var4 = "";
+      if(OwnWorldComparator.field847 == 33) {
+         var4 = "_rc";
+      } else if(OwnWorldComparator.field847 == 34) {
+         var4 = "_wip";
+      }
+
+      File var5 = new File(class167.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      FileOnDisk var6;
+      if(!var2 && var5.exists()) {
+         try {
+            var6 = new FileOnDisk(var5, "rw", 10000L);
+            return var6;
+         } catch (IOException var8) {
+            ;
+         }
+      }
+
+      try {
+         var6 = new FileOnDisk(var3, "rw", 10000L);
+         return var6;
+      } catch (IOException var7) {
+         throw new RuntimeException();
+      }
+   }
+
+   @ObfuscatedName("kw")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;S)V",
+      garbageValue = "-1221"
+   )
+   static final void method12(String var0) {
+      if(LoginPacket.clanMemberManager != null) {
+         PacketNode var1 = AbstractSoundSystem.method2350(ClientPacket.field2412, Client.field911.field1460);
+         var1.packetBuffer.putByte(class95.getLength(var0));
+         var1.packetBuffer.putString(var0);
+         Client.field911.method2135(var1);
       }
    }
 }

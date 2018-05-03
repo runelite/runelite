@@ -356,6 +356,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("trade", option, target, true);
 			}
 
+			if (config.claimSlime() && target.equals("robin"))
+			{
+				swap("claim-slime", option, target, true);
+			}
+
 			if (config.swapTravel())
 			{
 				swap("travel", option, target, true);
@@ -366,12 +371,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("jatizso", option, target, true);
 				swap("neitiznot", option, target, true);
 				swap("rellekka", option, target, true);
+				swap("follow", option, target, true);
+				swap("transport", option, target, true);
 			}
 
 			if (config.swapPay())
 			{
 				swap("pay", option, target, true);
 			}
+		}
+		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
+		{
+			swap("pay-toll(2-ecto)", option, target, true);
+		}
+		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
+		{
+			swap("pay-toll(10gp)", option, target, true);
 		}
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
@@ -392,6 +407,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap("reset", option, target, true);
+		}
+		else if (config.swapBoxTrap() && option.equals("take"))
+		{
+			swap("lay", option, target, true);
 		}
 		else if (config.swapCatacombEntrance() && option.equals("read"))
 		{

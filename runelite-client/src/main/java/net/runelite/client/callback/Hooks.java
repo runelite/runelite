@@ -26,18 +26,20 @@ package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.RenderingHints;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
@@ -54,20 +56,25 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
+import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.DeferredEventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +87,9 @@ public class Hooks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
-	public static final EventBus eventBus = injector.getInstance(EventBus.class);
+	public static final EventBus eventBus = injector.getInstance(EventBus.class); // symbol must match mixin Hook
+	private static final DeferredEventBus _deferredEventBus = injector.getInstance(DeferredEventBus.class);
+	public static final EventBus deferredEventBus = _deferredEventBus; // symbol must match mixin Hook
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
@@ -89,6 +98,8 @@ public class Hooks
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
 	private static final GameTick tick = new GameTick();
+	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
+	private static final Notifier notifier = injector.getInstance(Notifier.class);
 
 	private static Dimension lastStretchedDimensions;
 	private static BufferedImage stretchedImage;
@@ -102,6 +113,9 @@ public class Hooks
 		if (shouldProcessGameTick)
 		{
 			shouldProcessGameTick = false;
+
+			_deferredEventBus.replay();
+
 			eventBus.post(tick);
 		}
 
@@ -255,6 +269,8 @@ public class Hooks
 			log.warn("Error during overlay rendering", ex);
 		}
 
+		notifier.processFlash(graphics2d);
+
 		// Stretch the game image if the user has that enabled
 		if (!client.isResized() && client.isStretchedEnabled())
 		{
@@ -274,6 +290,12 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
+				
+				/*
+					Fill Canvas before drawing stretched image to prevent artifacts.
+				*/
+				graphics.setColor(Color.BLACK);
+				graphics.fillRect(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
@@ -288,7 +310,7 @@ public class Hooks
 		// Draw the image onto the game canvas
 		graphics.drawImage(image, 0, 0, client.getCanvas());
 
-		renderer.provideScreenshot(image);
+		renderHooks.processDrawComplete(image);
 	}
 
 	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
@@ -432,6 +454,38 @@ public class Hooks
 	{
 		PostItemComposition event = new PostItemComposition();
 		event.setItemComposition(itemComposition);
+		eventBus.post(event);
+	}
+
+	public static void menuOpened(Client client, int var1, int var2)
+	{
+		MenuOpened event = new MenuOpened();
+		event.setMenuEntries(client.getMenuEntries());
+		eventBus.post(event);
+	}
+
+	/**
+	 * Called after a hitsplat has been processed on an actor.
+	 * Note that this event runs even if the hitsplat didn't show up,
+	 * i.e. the actor already had 4 visible hitsplats.
+	 *
+	 * @param actor The actor the hitsplat was applied to
+	 * @param type The hitsplat type (i.e. color)
+	 * @param value The value of the hitsplat (i.e. how high the hit was)
+	 * @param var3
+	 * @param var4
+	 * @param gameCycle The gamecycle the hitsplat was applied on
+	 * @param duration The amount of gamecycles the hitsplat will last for
+	 */
+	public static void onActorHitsplat(Actor actor, int type, int value, int var3, int var4,
+		int gameCycle, int duration)
+	{
+		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value,
+			gameCycle + duration);
+
+		HitsplatApplied event = new HitsplatApplied();
+		event.setActor(actor);
+		event.setHitsplat(hitsplat);
 		eventBus.post(event);
 	}
 }

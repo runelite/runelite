@@ -39,7 +39,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLU
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
 {
 	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
 		new AnagramClue("This anagram reveals who to speak to next: A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "5"),
@@ -74,7 +74,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: DRAGONS LAMENT", "Strange old Man", new WorldPoint(3564, 3288, 0), "Barrows", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "4"),
 		new AnagramClue("This anagram reveals who to speak to next: DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),
-		new AnagramClue("This anagram reveals who to speak to next: EEK ZERO OP", "Zookeeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "40"),
+		new AnagramClue("This anagram reveals who to speak to next: EEK ZERO OP", "Zoo keeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: EL OW", "Lowe", new WorldPoint(3233, 3423, 0), "Varrock archery store"),
 		new AnagramClue("This anagram reveals who to speak to next: ERR CURE IT", "Recruiter", new WorldPoint(2541, 3305, 0), "West Ardougne centre square", "20"),
 		new AnagramClue("This anagram reveals who to speak to next: FORLUN", "Runolf", new WorldPoint(2512, 10256, 0), "Miscellania & Etceteria Dungeon"),
@@ -84,7 +84,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: GOBLETS ODD TOES", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja", "33 (or none)"),
 		new AnagramClue("This anagram reveals who to speak to next: HE DO POSE. IT IS CULTRRL, MK?", "Riki the sculptor's model", new WorldPoint(2904, 10206, 0), "East Keldagrim, south of kebab seller."),
-		new AnagramClue("This anagram reveals who to speak to next: HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Burthorpe Castle, top floor", "36"),
+		new AnagramClue("This anagram reveals who to speak to next: HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Top floor of Burthorpe Castle", "36"),
 		new AnagramClue("This anagram reveals who to speak to next: HIS PHOR", "Horphis", new WorldPoint(1639, 3812, 0), "Arceuus Library, Zeah", "1"),
 		new AnagramClue("This anagram reveals who to speak to next: I AM SIR", "Marisi", new WorldPoint(1813, 3488, 0), "Allotment patch, South coast Zeah", "5"),
 		new AnagramClue("This anagram reveals who to speak to next: ICY FE", "Fycie", new WorldPoint(2630, 2997, 0), "East Feldip Hills"),
@@ -112,11 +112,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: O BIRDZ A ZANY EN PC", "Cap'n Izzy no Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
 		new AnagramClue("This anagram reveals who to speak to next: OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "9"),
 		new AnagramClue("This anagram reveals who to speak to next: OR ZINC FUMES WARD", "Wizard Frumscone", new WorldPoint(2594, 3086, 0), "Downstairs in the Wizards' Guild"),
-		new AnagramClue("This anagram reveals who to speak to next: OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1578, 3533, 0), "Shayzien House Infirmary", "19"),
+		new AnagramClue("This anagram reveals who to speak to next: OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1575, 3590, 0), "Shayzien House Infirmary", "19"),
 		new AnagramClue("This anagram reveals who to speak to next: PACINNG A TAIE", "Captain Ginea", new WorldPoint(1561, 3602, 0), "Building east of Shayzien combat ring", "113"),
 		new AnagramClue("This anagram reveals who to speak to next: PEAK REFLEX", "Flax keeper", new WorldPoint(2744, 3444, 0), "Flax field south of Seers Village", "676"),
 		new AnagramClue("This anagram reveals who to speak to next: PEATY PERT", "Party Pete", new WorldPoint(3047, 3376, 0), "Falador Party Room"),
-		new AnagramClue("This anagram reveals who to speak to next: PROFS LOSE WRONG PIE", "Professor Onglewip", new WorldPoint(3113, 3162, 0), "Ground floor Wizards Tower"),
+		new AnagramClue("This anagram reveals who to speak to next: PROFS LOSE WRONG PIE", "Professor Onglewip", new WorldPoint(3113, 3162, 0), "Ground floor of Wizards Tower"),
 		new AnagramClue("This anagram reveals who to speak to next: QUIT HORRIBLE TYRANT", "Brother Tranquility", new WorldPoint(3681, 2963, 0), "Mos Le'Harmless or Harmony Island", "7"),
 		new AnagramClue("This anagram reveals who to speak to next: QUE SIR", "Squire", new WorldPoint(2975, 3343, 0), "Falador Castle Courtyard", "654"),
 		new AnagramClue("This anagram reveals who to speak to next: R AK MI", "Karim", new WorldPoint(3273, 3181, 0), "Al Kharid Kebab shop", "5"),
@@ -193,11 +193,6 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		{
 			for (NPC npc : plugin.getNpcsToMark())
 			{
-				if (!plugin.getClient().hasHintArrow())
-				{
-					plugin.getClient().setHintArrow(npc);
-				}
-
 				OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}

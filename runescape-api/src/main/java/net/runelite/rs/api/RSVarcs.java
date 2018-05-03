@@ -24,11 +24,13 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.Varcs;
 import net.runelite.mapping.Import;
 
-public interface RSVarcs extends Varcs
+public interface RSVarcs
 {
 	@Import("varcs")
-	int[] getVarcs();
+	int[] getIntVarcs();
+
+	@Import("varcstrings")
+	String[] getStrVarcs();
 }

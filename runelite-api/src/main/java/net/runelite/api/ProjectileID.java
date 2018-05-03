@@ -60,6 +60,10 @@ public class ProjectileID
 
 	public static final int WINTERTODT_SNOW_FALL_AOE = 501;
 
+	public static final int DEMONIC_GORILLA_RANGED = 1302;
+	public static final int DEMONIC_GORILLA_MAGIC = 1304;
+	public static final int DEMONIC_GORILLA_BOULDER = 856;
+
 	/**
 	 * missing: marble gargoyle, superior dark beast
 	 */

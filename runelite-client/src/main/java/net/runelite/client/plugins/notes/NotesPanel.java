@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.notes;
 
 import javax.swing.BorderFactory;
-import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -40,7 +40,7 @@ import java.awt.event.FocusListener;
 @Slf4j
 public class NotesPanel extends PluginPanel
 {
-	private final JEditorPane notesEditor = new JEditorPane();
+	private final JTextArea notesEditor = new JTextArea();
 
 	void init(NotesConfig config)
 	{
@@ -55,7 +55,8 @@ public class NotesPanel extends PluginPanel
 		final JLabel notesHeader = new JLabel("Notes");
 		add(notesHeader, BorderLayout.NORTH);
 
-		notesEditor.setContentType("text/plain");
+		notesEditor.setLineWrap(true);
+		notesEditor.setWrapStyleWord(true);
 
 		// load note text
 		String data = config.notesData();

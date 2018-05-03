@@ -34,7 +34,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -68,13 +67,8 @@ public class NpcClickboxOverlay extends Overlay
 
 		for (NPC npc : plugin.getTaggedNpcs())
 		{
-			NPCComposition composition = plugin.getComposition(npc);
-
-			if (composition == null || composition.getName() == null)
-				continue;
-
-			String name = composition.getName().replace('\u00A0', ' ');
-			renderNpcOverlay(graphics, npc, name, config.getTagColor());
+			String npcName = npc.getName();
+			renderNpcOverlay(graphics, npc, npcName, config.getTagColor());
 		}
 
 		return null;

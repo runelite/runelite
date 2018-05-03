@@ -1,131 +1,113 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("x")
 @Implements("Size")
 public class Size {
-   @ObfuscatedName("o")
+   @ObfuscatedName("ow")
+   static boolean field361;
+   @ObfuscatedName("rx")
+   static short[] field366;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Le;"
+      signature = "Lx;"
    )
-   public static final Size field371;
-   @ObfuscatedName("k")
+   public static final Size field365;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Le;"
+      signature = "Lx;"
    )
-   public static final Size field363;
-   @ObfuscatedName("t")
+   public static final Size field359;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Le;"
+      signature = "Lx;"
    )
-   public static final Size field368;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "[Ldy;"
-   )
-   @Export("idxFiles")
-   public static CacheFile[] idxFiles;
-   @ObfuscatedName("bx")
-   @ObfuscatedGetter(
-      intValue = 1752042203
-   )
-   static int field369;
-   @ObfuscatedName("ct")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   @Export("configsIndex")
-   static IndexData configsIndex;
-   @ObfuscatedName("ea")
-   @ObfuscatedSignature(
-      signature = "Lfo;"
-   )
-   static Task field364;
-   @ObfuscatedName("d")
-   final String field365;
+   public static final Size field360;
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lek;"
+   )
+   @Export("listFetcher")
+   static UrlRequest listFetcher;
+   @ObfuscatedName("go")
    @ObfuscatedGetter(
-      intValue = -163371543
+      intValue = -916308557
+   )
+   static int field367;
+   @ObfuscatedName("z")
+   final String field358;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1319477451
    )
    final int field362;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1921369821
+      intValue = 2092823011
    )
-   final int field367;
-   @ObfuscatedName("z")
+   final int field363;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1135391441
+      intValue = -1034426445
    )
-   final int field372;
+   final int field364;
 
    static {
-      field371 = new Size("SMALL", 1, 0, 4);
-      field363 = new Size("MEDIUM", 0, 1, 2);
-      field368 = new Size("LARGE", 2, 2, 0);
+      field365 = new Size("SMALL", 2, 0, 4);
+      field359 = new Size("MEDIUM", 0, 1, 2);
+      field360 = new Size("LARGE", 1, 2, 0);
    }
 
    Size(String var1, int var2, int var3, int var4) {
-      this.field365 = var1;
+      this.field358 = var1;
       this.field362 = var2;
-      this.field367 = var3;
-      this.field372 = var4;
+      this.field363 = var3;
+      this.field364 = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(FB)Z",
-      garbageValue = "5"
+      garbageValue = "8"
    )
-   boolean method192(float var1) {
-      return var1 >= (float)this.field372;
+   boolean method184(float var1) {
+      return var1 >= (float)this.field364;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)Le;",
-      garbageValue = "-1822528271"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "-502693213"
    )
-   static Size method195(int var0) {
-      Size[] var1 = new Size[]{field368, field371, field363};
-      Size[] var2 = var1;
+   static void method188(Component var0) {
+      var0.addMouseListener(MouseInput.mouse);
+      var0.addMouseMotionListener(MouseInput.mouse);
+      var0.addFocusListener(MouseInput.mouse);
+   }
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         Size var4 = var2[var3];
-         if(var0 == var4.field367) {
-            return var4;
-         }
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)[Lgk;",
+      garbageValue = "2067329253"
+   )
+   static LoginPacket[] method187() {
+      return new LoginPacket[]{LoginPacket.field2470, LoginPacket.field2465, LoginPacket.field2466, LoginPacket.field2468};
+   }
+
+   @ObfuscatedName("ks")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "24006"
+   )
+   static final void method183() {
+      KeyFocusListener.method823();
+      if(LoginPacket.clanMemberManager != null) {
+         LoginPacket.clanMemberManager.method5519();
       }
 
-      return null;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-121"
-   )
-   static final void method199() {
-      Object var10000 = null;
-      String var0 = "Your ignore list is full. Max of 100 for free users, and 400 for members";
-      class57.sendGameMessage(30, "", var0);
-   }
-
-   @ObfuscatedName("hi")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-537016480"
-   )
-   static void method198() {
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
-      Client.menuOptions[0] = "Cancel";
-      Client.menuTargets[0] = "";
-      Client.menuTypes[0] = 1006;
-      Client.menuBooleanArray[0] = false;
-      Client.menuOptionCount = 1;
    }
 }

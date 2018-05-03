@@ -1,146 +1,120 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ky")
+@ObfuscatedName("ki")
 @Implements("ClanMemberManager")
 public class ClanMemberManager extends NameableContainer {
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Llh;"
+      signature = "Lly;"
    )
-   final JagexLoginType field3866;
-   @ObfuscatedName("t")
+   final JagexLoginType field3870;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lkn;"
+      signature = "Lkx;"
    )
-   final class302 field3867;
-   @ObfuscatedName("x")
-   public String field3870;
-   @ObfuscatedName("y")
-   public String field3869;
-   @ObfuscatedName("a")
-   public byte field3865;
-   @ObfuscatedName("w")
+   final class302 field3869;
+   @ObfuscatedName("h")
+   public String field3872;
+   @ObfuscatedName("i")
+   public String field3873;
+   @ObfuscatedName("o")
+   public byte field3874;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2058371485
+      intValue = 1598588801
    )
    public int field3871;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1041941277
+      intValue = 1812803835
    )
-   int field3872;
+   int field3876;
 
    @ObfuscatedSignature(
-      signature = "(Llh;Lkn;)V"
+      signature = "(Lly;Lkx;)V"
    )
    public ClanMemberManager(JagexLoginType var1, class302 var2) {
       super(100);
-      this.field3870 = null;
-      this.field3869 = null;
-      this.field3872 = 1;
-      this.field3866 = var1;
-      this.field3867 = var2;
+      this.field3872 = null;
+      this.field3873 = null;
+      this.field3876 = 1;
+      this.field3870 = var1;
+      this.field3869 = var2;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)Lkg;",
+      garbageValue = "1778408778"
+   )
+   Nameable vmethod5513() {
+      return new ClanMember();
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IB)[Lkg;",
+      garbageValue = "0"
+   )
+   Nameable[] vmethod5514(int var1) {
+      return new ClanMember[var1];
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1198023022"
+   )
+   final void method5515(String var1) {
+      this.field3872 = OwnWorldComparator.method1264(var1);
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(B)Lku;",
-      garbageValue = "52"
+      signature = "(Ljava/lang/String;S)V",
+      garbageValue = "-16466"
    )
-   Nameable vmethod5454() {
-      return new ClanMember();
+   final void method5517(String var1) {
+      this.field3873 = OwnWorldComparator.method1264(var1);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)[Lku;",
-      garbageValue = "1474922336"
+      signature = "(Lgg;B)V",
+      garbageValue = "-30"
    )
-   Nameable[] vmethod5462(int var1) {
-      return new ClanMember[var1];
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "2019694273"
-   )
-   final void method5481(String var1) {
-      this.field3870 = class290.method5208(var1);
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-166998516"
-   )
-   final void method5457(String var1) {
-      this.field3869 = class290.method5208(var1);
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Lgc;I)V",
-      garbageValue = "-521243063"
-   )
-   public final void method5469(Buffer var1) {
-      this.method5457(var1.readString());
+   public final void method5524(Buffer var1) {
+      this.method5517(var1.readString());
       long var2 = var1.readLong();
-      long var5 = var2;
-      String var4;
-      int var7;
-      if(var2 > 0L && var2 < 6582952005840035281L) {
-         if(var2 % 37L == 0L) {
-            var4 = null;
-         } else {
-            var7 = 0;
+      this.method5515(ScriptState.method1132(var2));
+      this.field3874 = var1.readByte();
+      int var4 = var1.readUnsignedByte();
+      if(var4 != 255) {
+         this.method5363();
 
-            for(long var13 = var2; 0L != var13; var13 /= 37L) {
-               ++var7;
-            }
-
-            StringBuilder var15 = new StringBuilder(var7);
-
-            while(var5 != 0L) {
-               long var11 = var5;
-               var5 /= 37L;
-               var15.append(class316.field3924[(int)(var11 - var5 * 37L)]);
-            }
-
-            var4 = var15.reverse().toString();
-         }
-      } else {
-         var4 = null;
-      }
-
-      this.method5481(var4);
-      this.field3865 = var1.readByte();
-      var7 = var1.readUnsignedByte();
-      if(var7 != 255) {
-         this.method5302();
-
-         for(int var8 = 0; var8 < var7; ++var8) {
-            ClanMember var9 = (ClanMember)this.method5312(new Name(var1.readString(), this.field3866));
-            int var10 = var1.readUnsignedShort();
-            var9.method5389(var10, ++this.field3872 - 1);
-            var9.rank = var1.readByte();
+         for(int var5 = 0; var5 < var4; ++var5) {
+            ClanMember var6 = (ClanMember)this.method5371(new Name(var1.readString(), this.field3870));
+            int var7 = var1.readUnsignedShort();
+            var6.method5454(var7, ++this.field3876 - 1);
+            var6.rank = var1.readByte();
             var1.readString();
-            this.method5470(var9);
+            this.method5531(var6);
          }
 
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lgc;I)V",
-      garbageValue = "488922628"
+      signature = "(Lgg;I)V",
+      garbageValue = "-637112722"
    )
-   public final void method5459(Buffer var1) {
-      Name var2 = new Name(var1.readString(), this.field3866);
+   public final void method5539(Buffer var1) {
+      Name var2 = new Name(var1.readString(), this.field3870);
       int var3 = var1.readUnsignedShort();
       byte var4 = var1.readByte();
       boolean var5 = false;
@@ -154,61 +128,176 @@ public class ClanMemberManager extends NameableContainer {
             return;
          }
 
-         var6 = (ClanMember)this.method5327(var2);
-         if(var6 != null && var6.method5390() == var3) {
-            this.method5311(var6);
+         var6 = (ClanMember)this.method5368(var2);
+         if(var6 != null && var6.method5456() == var3) {
+            this.method5415(var6);
          }
       } else {
          var1.readString();
-         var6 = (ClanMember)this.method5327(var2);
+         var6 = (ClanMember)this.method5368(var2);
          if(var6 == null) {
-            if(this.getCount() > super.field3838) {
+            if(this.getCount() > super.field3849) {
                return;
             }
 
-            var6 = (ClanMember)this.method5312(var2);
+            var6 = (ClanMember)this.method5371(var2);
          }
 
-         var6.method5389(var3, ++this.field3872 - 1);
+         var6.method5454(var3, ++this.field3876 - 1);
          var6.rank = var4;
-         this.method5470(var6);
+         this.method5531(var6);
+      }
+
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "759225492"
+   )
+   public final void method5516() {
+      for(int var1 = 0; var1 < this.getCount(); ++var1) {
+         ((ClanMember)this.get(var1)).method5302();
       }
 
    }
 
    @ObfuscatedName("cm")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1227336595"
+      signature = "(B)V",
+      garbageValue = "85"
    )
-   public final void method5460() {
+   public final void method5519() {
       for(int var1 = 0; var1 < this.getCount(); ++var1) {
-         ((ClanMember)this.get(var1)).method5247();
+         ((ClanMember)this.get(var1)).method5320();
       }
 
    }
 
-   @ObfuscatedName("cw")
+   @ObfuscatedName("cg")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1475497438"
+      signature = "(Lkd;B)V",
+      garbageValue = "-70"
    )
-   public final void method5461() {
-      for(int var1 = 0; var1 < this.getCount(); ++var1) {
-         ((ClanMember)this.get(var1)).method5258();
-      }
-
-   }
-
-   @ObfuscatedName("ci")
-   @ObfuscatedSignature(
-      signature = "(Lkg;I)V",
-      garbageValue = "1605565571"
-   )
-   final void method5470(ClanMember var1) {
-      if(var1.method5271().equals(this.field3867.vmethod5404())) {
+   final void method5531(ClanMember var1) {
+      if(var1.method5322().equals(this.field3869.vmethod5463())) {
          this.field3871 = var1.rank;
       }
 
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZI)Z",
+      garbageValue = "410775066"
+   )
+   public static boolean method5518(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
+
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == '-') {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == '+') {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= '0' && var8 <= '9') {
+               var10 = var8 - '0';
+            } else if(var8 >= 'A' && var8 <= 'Z') {
+               var10 = var8 - '7';
+            } else {
+               if(var8 < 'a' || var8 > 'z') {
+                  return false;
+               }
+
+               var10 = var8 - 'W';
+            }
+
+            if(var10 >= var1) {
+               return false;
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var5 * var1 + var10;
+            if(var9 / var1 != var5) {
+               return false;
+            }
+
+            var5 = var9;
+            var4 = true;
+         }
+
+         return var4;
+      } else {
+         throw new IllegalArgumentException("");
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(B)[Llh;",
+      garbageValue = "-126"
+   )
+   static IndexedSprite[] method5525() {
+      IndexedSprite[] var0 = new IndexedSprite[class332.indexedSpriteCount];
+
+      for(int var1 = 0; var1 < class332.indexedSpriteCount; ++var1) {
+         IndexedSprite var2 = var0[var1] = new IndexedSprite();
+         var2.originalWidth = class332.indexedSpriteWidth;
+         var2.originalHeight = class332.indexedSpriteHeight;
+         var2.offsetX = class332.indexedSpriteOffsetXs[var1];
+         var2.offsetY = WorldComparator.indexedSpriteOffsetYs[var1];
+         var2.width = class332.indexSpriteWidths[var1];
+         var2.height = GrandExchangeEvents.indexedSpriteHeights[var1];
+         var2.palette = class332.indexedSpritePalette;
+         var2.pixels = ChatPlayer.spritePixels[var1];
+      }
+
+      class332.indexedSpriteOffsetXs = null;
+      WorldComparator.indexedSpriteOffsetYs = null;
+      class332.indexSpriteWidths = null;
+      GrandExchangeEvents.indexedSpriteHeights = null;
+      class332.indexedSpritePalette = null;
+      ChatPlayer.spritePixels = null;
+      return var0;
+   }
+
+   @ObfuscatedName("ko")
+   @ObfuscatedSignature(
+      signature = "(IIIILlv;Lin;I)V",
+      garbageValue = "1984280687"
+   )
+   @Export("drawDot")
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = Graphics3D.SINE[var6];
+            int var9 = Graphics3D.COSINE[var6];
+            int var10 = var9 * var2 + var3 * var8 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method5931(var10 + var5.field2780 / 2 - var4.maxWidth / 2, var5.field2782 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2780, var5.field2782, var5.field2779, var5.field2781);
+            } else {
+               var4.drawAt(var0 + var10 + var5.field2780 / 2 - var4.maxWidth / 2, var5.field2782 / 2 + var1 - var11 - var4.maxHeight / 2);
+            }
+
+         }
+      }
    }
 }

@@ -1,103 +1,188 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
+@ObfuscatedName("o")
 @Implements("BoundingBox3DDrawMode")
 public class BoundingBox3DDrawMode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "La;"
+      signature = "Lo;"
    )
    @Export("ON_MOUSEOVER")
    public static final BoundingBox3DDrawMode ON_MOUSEOVER;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "La;"
+      signature = "Lo;"
    )
    @Export("ALWAYS")
    public static final BoundingBox3DDrawMode ALWAYS;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      longValue = -4316665645575237141L
-   )
-   static long field270;
-   @ObfuscatedName("bj")
-   @ObfuscatedSignature(
-      signature = "[Lll;"
-   )
-   @Export("slFlagSprites")
-   static IndexedSprite[] slFlagSprites;
-   @ObfuscatedName("fq")
-   @ObfuscatedSignature(
-      signature = "[Lld;"
-   )
-   @Export("headIconsHint")
-   static SpritePixels[] headIconsHint;
-   @ObfuscatedName("ib")
-   @ObfuscatedGetter(
-      intValue = -1588895343
-   )
-   @Export("plane")
-   static int plane;
+   @ObfuscatedName("p")
+   static int[][][] field271;
+   @ObfuscatedName("ac")
+   static java.awt.Font field265;
+   @ObfuscatedName("fv")
+   static byte[][] field270;
 
    static {
       ON_MOUSEOVER = new BoundingBox3DDrawMode();
       ALWAYS = new BoundingBox3DDrawMode();
    }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Laf;III)V",
-      garbageValue = "-1187438857"
-   )
-   static void method55(class33 var0, int var1, int var2) {
-      class213 var3 = WorldMapRegion.field480;
-      long var5 = (long)(0 | var1 << 8 | var2);
-      var3.method3935(var0, var5);
+   @ObfuscatedName("g")
+   public static final void method59(long var0) {
+      if(var0 > 0L) {
+         if(var0 % 10L == 0L) {
+            GameEngine.method949(var0 - 1L);
+            GameEngine.method949(1L);
+         } else {
+            GameEngine.method949(var0);
+         }
+
+      }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1985381325"
+      signature = "(I)V",
+      garbageValue = "1647325483"
    )
-   static final void method54(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
-         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
-            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-               class297.field3831[0][var5][var4] = 127;
-               if(var0 == var5 && var5 > 0) {
-                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5 - 1][var4];
-               }
+   public static void method58() {
+      class326.classInfos = new CombatInfoList();
+   }
 
-               if(var0 + var2 == var5 && var5 < 103) {
-                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5 + 1][var4];
-               }
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lgl;I)V",
+      garbageValue = "827590057"
+   )
+   static final void method60(PacketBuffer var0) {
+      int var1 = 0;
+      var0.bitAccess();
 
-               if(var4 == var1 && var4 > 0) {
-                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5][var4 - 1];
-               }
-
-               if(var4 == var3 + var1 && var4 < 103) {
-                  class62.tileHeights[0][var5][var4] = class62.tileHeights[0][var5][var4 + 1];
+      int var2;
+      int var3;
+      int var4;
+      for(var2 = 0; var2 < class93.playerIndexesCount; ++var2) {
+         var3 = class93.playerIndices[var2];
+         if((class93.field1415[var3] & 1) == 0) {
+            if(var1 > 0) {
+               --var1;
+               class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+            } else {
+               var4 = var0.getBits(1);
+               if(var4 == 0) {
+                  var1 = Script.method2103(var0);
+                  class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+               } else {
+                  ISAACCipher.decodeMovement(var0, var3);
                }
             }
          }
       }
 
+      var0.byteAccess();
+      if(var1 != 0) {
+         throw new RuntimeException();
+      } else {
+         var0.bitAccess();
+
+         for(var2 = 0; var2 < class93.playerIndexesCount; ++var2) {
+            var3 = class93.playerIndices[var2];
+            if((class93.field1415[var3] & 1) != 0) {
+               if(var1 > 0) {
+                  --var1;
+                  class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+               } else {
+                  var4 = var0.getBits(1);
+                  if(var4 == 0) {
+                     var1 = Script.method2103(var0);
+                     class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                  } else {
+                     ISAACCipher.decodeMovement(var0, var3);
+                  }
+               }
+            }
+         }
+
+         var0.byteAccess();
+         if(var1 != 0) {
+            throw new RuntimeException();
+         } else {
+            var0.bitAccess();
+
+            for(var2 = 0; var2 < class93.field1409; ++var2) {
+               var3 = class93.field1410[var2];
+               if((class93.field1415[var3] & 1) != 0) {
+                  if(var1 > 0) {
+                     --var1;
+                     class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                  } else {
+                     var4 = var0.getBits(1);
+                     if(var4 == 0) {
+                        var1 = Script.method2103(var0);
+                        class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                     } else if(Preferences.decodeRegionHash(var0, var3)) {
+                        class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                     }
+                  }
+               }
+            }
+
+            var0.byteAccess();
+            if(var1 != 0) {
+               throw new RuntimeException();
+            } else {
+               var0.bitAccess();
+
+               for(var2 = 0; var2 < class93.field1409; ++var2) {
+                  var3 = class93.field1410[var2];
+                  if((class93.field1415[var3] & 1) == 0) {
+                     if(var1 > 0) {
+                        --var1;
+                        class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                     } else {
+                        var4 = var0.getBits(1);
+                        if(var4 == 0) {
+                           var1 = Script.method2103(var0);
+                           class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                        } else if(Preferences.decodeRegionHash(var0, var3)) {
+                           class93.field1415[var3] = (byte)(class93.field1415[var3] | 2);
+                        }
+                     }
+                  }
+               }
+
+               var0.byteAccess();
+               if(var1 != 0) {
+                  throw new RuntimeException();
+               } else {
+                  class93.playerIndexesCount = 0;
+                  class93.field1409 = 0;
+
+                  for(var2 = 1; var2 < 2048; ++var2) {
+                     class93.field1415[var2] = (byte)(class93.field1415[var2] >> 1);
+                     Player var5 = Client.cachedPlayers[var2];
+                     if(var5 != null) {
+                        class93.playerIndices[++class93.playerIndexesCount - 1] = var2;
+                     } else {
+                        class93.field1410[++class93.field1409 - 1] = var2;
+                     }
+                  }
+
+               }
+            }
+         }
+      }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "-1"
+      signature = "(CI)Z",
+      garbageValue = "-1021597585"
    )
-   static void method53(String var0, String var1, String var2) {
-      class90.loginMessage1 = var0;
-      class90.loginMessage2 = var1;
-      class90.loginMessage3 = var2;
+   public static boolean method61(char var0) {
+      return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

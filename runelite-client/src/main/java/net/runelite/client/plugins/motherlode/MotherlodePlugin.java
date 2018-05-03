@@ -53,8 +53,10 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKFALL;
 import static net.runelite.api.ObjectID.ROCKFALL_26680;
+import net.runelite.api.Perspective;
 import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
@@ -86,6 +88,8 @@ public class MotherlodePlugin extends Plugin
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
 
+	private static final int UPPER_FLOOR_HEIGHT = -500;
+
 	@Inject
 	private MotherlodeOverlay overlay;
 
@@ -94,6 +98,9 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private MotherlodeSackOverlay motherlodeSackOverlay;
+
+	@Inject
+	private MotherlodeGemOverlay motherlodeGemOverlay;
 
 	@Inject
 	private MotherlodeConfig config;
@@ -127,7 +134,7 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay);
+		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
 	}
 
 	@Override
@@ -147,8 +154,8 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
-			curSackSize = client.getSetting(Varbits.SACK_NUMBER);
-			boolean sackUpgraded = client.getSetting(Varbits.SACK_UPGRADED) == 1;
+			curSackSize = client.getVar(Varbits.SACK_NUMBER);
+			boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
 			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 		}
 	}
@@ -156,17 +163,34 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!inMlm)
+		if (!inMlm || event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
 		}
 
-		if (event.getType() == ChatMessageType.FILTERED)
+		String chatMessage = event.getMessage();
+
+		switch (chatMessage)
 		{
-			if (event.getMessage().equals("You manage to mine some pay-dirt."))
-			{
+			case "You manage to mine some pay-dirt.":
 				session.incrementPayDirtMined();
-			}
+				break;
+
+			case "You just found a Diamond!":
+				session.incrementGemFound(ItemID.UNCUT_DIAMOND);
+				break;
+
+			case "You just found a Ruby!":
+				session.incrementGemFound(ItemID.UNCUT_RUBY);
+				break;
+
+			case "You just found an Emerald!":
+				session.incrementGemFound(ItemID.UNCUT_EMERALD);
+				break;
+
+			case "You just found a Sapphire!":
+				session.incrementGemFound(ItemID.UNCUT_SAPPHIRE);
+				break;
 		}
 	}
 
@@ -378,5 +402,16 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if the given point is "upstairs" in the mlm.
+	 * The upper floor is actually on z=0.
+	 * @param localPoint
+	 * @return
+	 */
+	boolean isUpstairs(LocalPoint localPoint)
+	{
+		return Perspective.getTileHeight(client, localPoint.getX(), localPoint.getY(), 0) < UPPER_FLOOR_HEIGHT;
 	}
 }

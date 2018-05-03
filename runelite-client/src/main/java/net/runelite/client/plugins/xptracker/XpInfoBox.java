@@ -36,6 +36,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -49,11 +51,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.attackstyles.AttackStyle;
+import net.runelite.client.plugins.attackstyles.WeaponType;
+import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.JShadowedLabel;
 import net.runelite.client.util.LinkBrowser;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -65,8 +72,7 @@ class XpInfoBox extends JPanel
 
 	private final Client client;
 	private final JPanel panel;
-	@Getter(AccessLevel.PACKAGE)
-	private final SkillXPInfo xpInfo;
+	private final Skill skill;
 
 	private final JPanel container = new JPanel();
 	private final JPanel statsPanel = new JPanel();
@@ -77,11 +83,17 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
 
-	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
+	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	private static final Skill[] COMBAT = new Skill[]
+			{
+					Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS
+			};
+
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
 		this.panel = panel;
-		this.xpInfo = xpInfo;
+		this.skill = skill;
 
 		setLayout(new BorderLayout());
 		setBorder(new CompoundBorder
@@ -121,7 +133,7 @@ class XpInfoBox extends JPanel
 
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), xpInfo.getSkill())));
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -134,14 +146,16 @@ class XpInfoBox extends JPanel
 		iconBarPanel.setOpaque(false);
 
 		// Create skill/reset icon
-		final BufferedImage skillImage = iconManager.getSkillImage(xpInfo.getSkill());
+		final BufferedImage skillImage = iconManager.getSkillImage(skill);
 		final JButton skillIcon = new JButton();
+
 		skillIcon.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
 		skillIcon.setIcon(new ImageIcon(skillImage));
 		skillIcon.setRolloverIcon(new ImageIcon(createHoverImage(skillImage)));
-		skillIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
-		skillIcon.addActionListener(e -> reset());
+
+		skillIcon.setToolTipText("Reset " + skill.getName() + " tracker");
+		skillIcon.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 		skillIcon.setBounds(ICON_BOUNDS);
 		skillIcon.setOpaque(false);
 		skillIcon.setFocusPainted(false);
@@ -201,63 +215,90 @@ class XpInfoBox extends JPanel
 
 	void reset()
 	{
-		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
 		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
 	}
 
-	void init()
+	void update(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
-		if (xpInfo.getStartXp() != -1)
-		{
-			return;
-		}
-
-		xpInfo.setStartXp(client.getSkillExperience(xpInfo.getSkill()));
+		SwingUtilities.invokeLater(() -> rebuildAsync(updated, xpSnapshotSingle));
 	}
 
-	void update()
+	private void rebuildAsync(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
-		if (xpInfo.getStartXp() == -1)
+		if (updated)
 		{
-			return;
-		}
-
-		boolean updated = xpInfo.update(client.getSkillExperience(xpInfo.getSkill()));
-
-		SwingUtilities.invokeLater(() ->
-		{
-			if (updated)
+			if (getParent() != panel)
 			{
-				if (getParent() != panel)
-				{
-					panel.add(this);
-					panel.revalidate();
-				}
-
-				levelLabel.setText(String.valueOf(xpInfo.getLevel()));
-				xpGained.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
-				xpLeft.setText(XpPanel.formatLine(xpInfo.getXpRemaining(), "xp left"));
-				actionsLeft.setText(XpPanel.formatLine(xpInfo.getActionsRemaining(client), xpInfo.getTextActionKills()));
-
-				final int progress = xpInfo.getSkillProgress();
-
-				progressBar.setValue(progress);
-				progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
-
-				progressBar.setToolTipText("<html>"
-					+ XpPanel.formatLine(xpInfo.getActions(), "actions")
-					+ "<br/>"
-					+ XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr")
-					+ "<br/>"
-					+ xpInfo.getTimeTillLevel() + " till next lvl"
-					+ "</html>");
+				panel.add(this);
+				panel.revalidate();
+			}
+			levelLabel.setText(String.valueOf(xpSnapshotSingle.getCurrentLevel()));
+			xpGained.setText(XpPanel.formatLine(xpSnapshotSingle.getXpGainedInSession(), "xp gained"));
+			xpLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getXpRemainingToGoal(), "xp left"));
+			if (Arrays.asList(COMBAT).contains(skill))
+			{
+				actionsLeft.setText(XpPanel.formatLine(getKillsRemaining(xpSnapshotSingle), getTextActionKills()));
+			}
+			else
+			{
+				actionsLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getActionsRemainingToGoal(), getTextActionKills()));
 			}
 
-			// Always update xp/hr as time always changes
-			xpHr.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
-		});
+			final int progress = xpSnapshotSingle.getSkillProgressToGoal();
+
+			progressBar.setValue(progress);
+			progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
+
+			progressBar.setToolTipText("<html>"
+				+ XpPanel.formatLine(xpSnapshotSingle.getActionsInSession(), "actions")
+				+ "<br/>"
+				+ XpPanel.formatLine(xpSnapshotSingle.getActionsPerHour(), "actions/hr")
+				+ "<br/>"
+				+ xpSnapshotSingle.getTimeTillGoal() + " till next lvl"
+				+ "</html>");
+		}
+
+		// Always update xp/hr as time always changes
+		xpHr.setText(XpPanel.formatLine(xpSnapshotSingle.getXpPerHour(), "xp/hr"));
+	}
+
+	//
+	private int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
+	{
+		int killsRemaining = Integer.MAX_VALUE;
+		Actor opponent = client.getLocalPlayer().getInteracting();
+		if (opponent != null)
+		{
+			int opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+			double modifier = getCombatXPModifier(skill);
+			double actionExp = (opponentHealth * modifier);
+			killsRemaining = (int)(xpSnapshotSingle.getXpRemainingToGoal() / actionExp);
+		}
+		return killsRemaining;
+	}
+
+	// Calculates the xp modifier based on combat style
+	private double getCombatXPModifier(Skill skill)
+	{
+		final double sharedXPModifier = 4.0 / 3.0;
+		final double longRangedXPModifier = 2.0;
+		final double defaultModifier = 4;
+		if (skill.equals(Skill.HITPOINTS))
+		{
+			return sharedXPModifier;
+		}
+		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
+		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
+		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED) ? sharedXPModifier :
+				weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE) ? longRangedXPModifier : defaultModifier;
+	}
+
+	// Return the text of the action, depending if it's a combat skill.
+	private String getTextActionKills()
+	{
+		return Arrays.asList(COMBAT).contains(skill) ? "kills left" : "actions left";
 	}
 
 	private static BufferedImage createHoverImage(BufferedImage image)

@@ -28,28 +28,34 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.updatecheck.UpdateCheckClient;
 
 @Slf4j
 public class ClientLoader
 {
-	public Optional<Applet> loadRs()
+	public Applet loadRs(UpdateCheckMode updateMode)
 	{
-		final UpdateCheckClient updateCheck = new UpdateCheckClient();
-		boolean isOutdated = updateCheck.isOutdated();
+		if (updateMode == UpdateCheckMode.AUTO)
+		{
+			final UpdateCheckClient updateCheck = new UpdateCheckClient();
+			updateMode = updateCheck.isOutdated() ?
+				UpdateCheckMode.VANILLA :
+				UpdateCheckMode.RUNELITE;
+		}
 
 		try
 		{
-			if (isOutdated)
+			switch (updateMode)
 			{
-				log.info("RuneLite is outdated - fetching vanilla client");
-				return Optional.of(loadVanilla());
+				case RUNELITE:
+					return loadRuneLite();
+				default:
+				case VANILLA:
+					return loadVanilla();
+				case NONE:
+					return null;
 			}
-
-			log.debug("RuneLite is up to date");
-			return Optional.of(loadRuneLite());
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 		{
@@ -61,7 +67,8 @@ public class ClientLoader
 			}
 
 			log.error("Error loading RS!", e);
-			return Optional.empty();
+			System.exit(-1);
+			return null;
 		}
 	}
 
@@ -97,9 +104,9 @@ public class ClientLoader
 		// Must set parent classloader to null, or it will pull from
 		// this class's classloader first
 		URLClassLoader classloader = new URLClassLoader(new URL[]
-		{
-			url
-		}, null);
+			{
+				url
+			}, null);
 
 		Class<?> clientClass = classloader.loadClass(initialClass);
 		Applet rs = (Applet) clientClass.newInstance();

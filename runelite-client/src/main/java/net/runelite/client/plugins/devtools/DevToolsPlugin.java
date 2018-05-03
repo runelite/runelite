@@ -24,13 +24,27 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import static java.lang.Math.min;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Player;
+import net.runelite.api.Skill;
+import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -39,13 +53,18 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
 	developerPlugin = true
 )
+@Slf4j
 public class DevToolsPlugin extends Plugin
 {
+	@Inject
+	private Client client;
+
 	@Inject
 	private PluginToolbar pluginToolbar;
 
@@ -56,7 +75,10 @@ public class DevToolsPlugin extends Plugin
 	private LocationOverlay locationOverlay;
 
 	@Inject
-	private BorderOverlay borderOverlay;
+	private SceneOverlay sceneOverlay;
+
+	@Inject
+	private EventBus eventBus;
 
 	private boolean togglePlayers;
 	private boolean toggleNpcs;
@@ -70,6 +92,8 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleLocation;
 	private boolean toggleChunkBorders;
 	private boolean toggleMapSquares;
+	private boolean toggleValidMovement;
+	private boolean toggleLineOfSight;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -115,7 +139,91 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, locationOverlay, borderOverlay);
+		return Arrays.asList(overlay, locationOverlay, sceneOverlay);
+	}
+
+	@Subscribe
+	public void onCommand(CommandExecuted commandExecuted)
+	{
+		String[] args = commandExecuted.getArguments();
+
+		switch (commandExecuted.getCommand())
+		{
+			case "logger":
+			{
+				final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+				String message;
+				Level currentLoggerLevel = logger.getLevel();
+
+				if (args.length < 1)
+				{
+					message = "Logger level is currently set to " + currentLoggerLevel;
+				}
+				else
+				{
+					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
+					logger.setLevel(newLoggerLevel);
+					message = "Logger level has been set to " + newLoggerLevel;
+				}
+
+				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
+				break;
+			}
+			case "getvar":
+			{
+				int varbit = Integer.parseInt(args[0]);
+				int value = client.getVarbitValue(varbit);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
+				break;
+			}
+			case "setvar":
+			{
+				int varbit = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				client.setVarbitValue(varbit, value);
+				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
+				eventBus.post(new VarbitChanged()); // fake event
+				break;
+			}
+			case "addxp":
+			{
+				Skill skill = Skill.valueOf(args[0].toUpperCase());
+				int xp = Integer.parseInt(args[1]);
+
+				int totalXp = client.getSkillExperience(skill) + xp;
+				int level = min(Experience.getLevelForXp(totalXp), 99);
+
+				client.getBoostedSkillLevels()[skill.ordinal()] = level;
+				client.getRealSkillLevels()[skill.ordinal()] = level;
+				client.getSkillExperiences()[skill.ordinal()] = totalXp;
+
+				int[] skills = client.getChangedSkills();
+				int count = client.getChangedSkillsCount();
+				skills[++count - 1 & 31] = skill.ordinal();
+				client.setChangedSkillsCount(count);
+
+				ExperienceChanged experienceChanged = new ExperienceChanged();
+				experienceChanged.setSkill(skill);
+				eventBus.post(experienceChanged);
+				break;
+			}
+			case "anim":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player localPlayer = client.getLocalPlayer();
+				localPlayer.setAnimation(id);
+				localPlayer.setActionFrame(0);
+				break;
+			}
+			case "gfx":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player localPlayer = client.getLocalPlayer();
+				localPlayer.setGraphic(id);
+				localPlayer.setSpotAnimFrame(0);
+				break;
+			}
+		}
 	}
 
 	Font getFont()
@@ -183,6 +291,16 @@ public class DevToolsPlugin extends Plugin
 		toggleMapSquares = !toggleMapSquares;
 	}
 
+	void toggleValidMovement()
+	{
+		toggleValidMovement = !toggleValidMovement;
+	}
+
+	void toggleLineOfSight()
+	{
+		toggleLineOfSight = !toggleLineOfSight;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -241,5 +359,15 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleMapSquares()
 	{
 		return toggleMapSquares;
+	}
+
+	boolean isToggleValidMovement()
+	{
+		return toggleValidMovement;
+	}
+
+	boolean isToggleLineOfSight()
+	{
+		return toggleLineOfSight;
 	}
 }
