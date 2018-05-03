@@ -84,7 +84,6 @@ public class ConfigPanel extends PluginPanel
 {
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
-	private static final Dimension ITEM_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH, 0);
 	private static BufferedImage CONFIG_ICON;
 	private static BufferedImage UNCHECK_ICON;
 	private static BufferedImage CHECK_ICON;
@@ -92,6 +91,7 @@ public class ConfigPanel extends PluginPanel
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final int OFFSET = 6;
 	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+	private static final Dimension ITEM_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 2 * OFFSET, 25);
 
 	private JPanel topPanel;
 	private JPanel contents;
@@ -162,9 +162,7 @@ public class ConfigPanel extends PluginPanel
 
 		topPanel = new JPanel();
 		topPanel.setBorder(BORDER_PADDING);
-		topPanel.setLayout(new GridLayout(2, 1));
-		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), 0);
-		topPanel.add(searchBar, 1);
+		topPanel.setLayout(new GridLayout(0, 1));
 		add(topPanel, BorderLayout.NORTH);
 
 		contents = new JPanel();
@@ -336,7 +334,9 @@ public class ConfigPanel extends PluginPanel
 
 	private void openConfigList()
 	{
-		topPanel.setVisible(true);
+		topPanel.removeAll();
+		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), 0);
+		topPanel.add(searchBar, 1);
 		contents.removeAll();
 
 		onSearchBarChanged();
@@ -396,12 +396,12 @@ public class ConfigPanel extends PluginPanel
 	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager)
 	{
 		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
-		topPanel.setVisible(false);
+		topPanel.removeAll();
 		contents.removeAll();
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name);
+		JLabel title = new JLabel(name, SwingConstants.CENTER);
 		title.setToolTipText(cd.getGroup().description());
-		contents.add(title, SwingConstants.CENTER);
+		topPanel.add(title, 0);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -561,6 +561,7 @@ public class ConfigPanel extends PluginPanel
 		}
 
 		JButton resetButton = new JButton("Reset");
+		resetButton.setPreferredSize(ITEM_PREFERRED_SIZE);
 		resetButton.addActionListener((e) ->
 		{
 			configManager.setDefaultConfiguration(config, true);
@@ -571,6 +572,7 @@ public class ConfigPanel extends PluginPanel
 		contents.add(resetButton);
 
 		JButton backButton = new JButton("Back");
+		backButton.setPreferredSize(ITEM_PREFERRED_SIZE);
 		backButton.addActionListener(e -> openConfigList());
 		contents.add(backButton);
 
