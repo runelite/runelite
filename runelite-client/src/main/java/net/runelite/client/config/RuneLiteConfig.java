@@ -166,4 +166,26 @@ public interface RuneLiteConfig extends Config
 	{
 		return 4;
 	}
+
+	@ConfigItem(
+		keyName = "containInScreen",
+		name = "Contain in screen",
+		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
+		position = 13
+	)
+	default boolean containInScreen()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rememberScreenBounds",
+		name = "Remember client position",
+		description = "Save the position and size of the client after exiting",
+		position = 14
+	)
+	default boolean rememberScreenBounds()
+	{
+		return true;
+	}
 }
