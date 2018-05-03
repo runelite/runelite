@@ -42,6 +42,6 @@ public interface WalkHereConfig extends Config
 	)
 	default WalkHereHotkey hotkey()
 	{
-		return WalkHereHotkey.ALT;
+		return WalkHereHotkey.SHIFT;
 	}
 }
