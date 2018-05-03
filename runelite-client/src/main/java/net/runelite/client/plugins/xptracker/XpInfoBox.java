@@ -47,10 +47,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.JShadowedLabel;
 import net.runelite.client.util.LinkBrowser;
@@ -64,8 +63,8 @@ class XpInfoBox extends JPanel
 	private final Client client;
 	private final JPanel panel;
 	private final XpTrackerConfig config;
-	@Getter(AccessLevel.PACKAGE)
-	private final SkillXPInfo xpInfo;
+
+	private final Skill skill;
 
 	private final JPanel container = new JPanel();
 	private final JPanel statsPanel = new JPanel();
@@ -76,26 +75,21 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
 	private final JButton skillIcon = new JButton();
-	private final ActionListener iconClick = new ActionListener()
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			reset();
-		}
-	};
+	private ActionListener iconClick;
 
 	private boolean showInfo;
 	private boolean resetIcon;
 
-	XpInfoBox(Client client, JPanel panel, XpTrackerConfig config, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, XpTrackerConfig config, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
 		this.config = config;
 		this.panel = panel;
-		this.xpInfo = xpInfo;
+		this.skill = skill;
 
-		showInfo = config.showMoreInfo();
+        iconClick = e -> xpTrackerPlugin.resetSkillState(skill);
+
+		showInfo = !config.showMoreInfo();
 		resetIcon = !config.resetSkillViaIcon();
 		setLayout(new BorderLayout());
 		setBorder(new CompoundBorder
@@ -135,11 +129,11 @@ class XpInfoBox extends JPanel
 
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), xpInfo.getSkill())));
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
 		// Create reset
 		final JMenuItem resetButton = new JMenuItem("Reset skill");
-		resetButton.addActionListener(e -> reset());
+		resetButton.addActionListener(iconClick);
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -153,11 +147,13 @@ class XpInfoBox extends JPanel
 		iconBarPanel.setOpaque(false);
 
 		// Create skill/reset icon
-		final BufferedImage skillImage = iconManager.getSkillImage(xpInfo.getSkill());
+		final BufferedImage skillImage = iconManager.getSkillImage(skill);
+
 		skillIcon.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
 		skillIcon.setIcon(new ImageIcon(skillImage));
 		skillIcon.setRolloverIcon(new ImageIcon(createHoverImage(skillImage)));
+
 		skillIcon.setBounds(ICON_BOUNDS);
 		skillIcon.setOpaque(false);
 		skillIcon.setFocusPainted(false);
@@ -201,6 +197,16 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.CENTER);
 	}
 
+    void reset()
+    {
+        if (!showInfo)
+        {
+            container.remove(statsPanel);
+        }
+        panel.remove(this);
+        panel.revalidate();
+    }
+
 	private void showStatsPanel(boolean state)
 	{
 		if (statsPanel.isShowing() || !state)
@@ -215,30 +221,7 @@ class XpInfoBox extends JPanel
 		}
 	}
 
-	void reset()
-	{
-		xpInfo.reset(client.getSkillExperience(xpInfo.getSkill()));
-		if (!showInfo)
-		{
-			container.remove(statsPanel);
-		}
-		panel.remove(this);
-		panel.revalidate();
-	}
-
-	void init()
-	{
-		if (xpInfo.getStartXp() != -1)
-		{
-			return;
-		}
-
-		xpInfo.setStartXp(client.getSkillExperience(xpInfo.getSkill()));
-
-		showStatsPanel(showInfo);
-	}
-
-	void changeConfigState()
+	void update(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
 		if (showInfo != config.showMoreInfo())
 		{
@@ -251,7 +234,7 @@ class XpInfoBox extends JPanel
 			resetIcon = config.resetSkillViaIcon();
 			if (resetIcon)
 			{
-				skillIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
+                skillIcon.setToolTipText("Reset " + skill.getName() + " tracker");
 				skillIcon.addActionListener(iconClick);
 			}
 			else
@@ -260,50 +243,40 @@ class XpInfoBox extends JPanel
 				skillIcon.removeActionListener(iconClick);
 			}
 		}
+		SwingUtilities.invokeLater(() -> rebuildAsync(updated, xpSnapshotSingle));
 	}
 
-	void update()
+	private void rebuildAsync(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
-		if (xpInfo.getStartXp() == -1)
+        if (updated)
 		{
-			return;
-		}
-
-		changeConfigState();
-		boolean updated = xpInfo.update(client.getSkillExperience(xpInfo.getSkill()));
-
-		SwingUtilities.invokeLater(() ->
-		{
-			if (updated)
+			if (getParent() != panel)
 			{
-				if (getParent() != panel)
-				{
-					panel.add(this);
-					panel.revalidate();
-				}
-
-				levelLabel.setText(String.valueOf(xpInfo.getLevel()));
-				xpGained.setText(XpPanel.formatLine(xpInfo.getXpGained(), "xp gained"));
-				xpLeft.setText(XpPanel.formatLine(xpInfo.getXpRemaining(), "xp left"));
-				actionsLeft.setText(XpPanel.formatLine(xpInfo.getActionsRemaining(), "actions left"));
-
-				final int progress = xpInfo.getSkillProgress();
-
-				progressBar.setValue(progress);
-				progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
-
-				progressBar.setToolTipText("<html>"
-					+ XpPanel.formatLine(xpInfo.getActions(), "actions")
-					+ "<br/>"
-					+ XpPanel.formatLine(xpInfo.getActionsHr(), "actions/hr")
-					+ "<br/>"
-					+ xpInfo.getTimeTillLevel() + " till next lvl"
-					+ "</html>");
+				panel.add(this);
+				panel.revalidate();
 			}
 
-			// Always update xp/hr as time always changes
-			xpHr.setText(XpPanel.formatLine(xpInfo.getXpHr(), "xp/hr"));
-		});
+			levelLabel.setText(String.valueOf(xpSnapshotSingle.getCurrentLevel()));
+			xpGained.setText(XpPanel.formatLine(xpSnapshotSingle.getXpGainedInSession(), "xp gained"));
+			xpLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getXpRemainingToGoal(), "xp left"));
+			actionsLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getActionsRemainingToGoal(), "actions left"));
+
+			final int progress = xpSnapshotSingle.getSkillProgressToGoal();
+
+			progressBar.setValue(progress);
+			progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
+
+			progressBar.setToolTipText("<html>"
+				+ XpPanel.formatLine(xpSnapshotSingle.getActionsInSession(), "actions")
+				+ "<br/>"
+				+ XpPanel.formatLine(xpSnapshotSingle.getActionsPerHour(), "actions/hr")
+				+ "<br/>"
+				+ xpSnapshotSingle.getTimeTillGoal() + " till next lvl"
+				+ "</html>");
+		}
+
+		// Always update xp/hr as time always changes
+		xpHr.setText(XpPanel.formatLine(xpSnapshotSingle.getXpPerHour(), "xp/hr"));
 	}
 
 	private static BufferedImage createHoverImage(BufferedImage image)
