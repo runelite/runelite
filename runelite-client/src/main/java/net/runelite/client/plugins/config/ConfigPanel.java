@@ -58,6 +58,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -83,9 +84,18 @@ public class ConfigPanel extends PluginPanel
 {
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
+	private static final Dimension ITEM_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH, 0);
 	private static BufferedImage CONFIG_ICON;
 	private static BufferedImage UNCHECK_ICON;
 	private static BufferedImage CHECK_ICON;
+
+	private static final int SCROLLBAR_WIDTH = 17;
+	private static final int OFFSET = 6;
+	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+
+	private JPanel topPanel;
+	private JPanel contents;
+	private JScrollPane scrollPane;
 
 	static
 	{
@@ -114,7 +124,7 @@ public class ConfigPanel extends PluginPanel
 
 	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
 	{
-		super();
+		super(false);
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 		this.executorService = executorService;
@@ -141,13 +151,39 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
+		createPanel();
 		rebuildPluginList();
 		openConfigList();
 	}
 
+	final void createPanel()
+	{
+		setLayout(new BorderLayout());
+
+		topPanel = new JPanel();
+		topPanel.setBorder(BORDER_PADDING);
+		topPanel.setLayout(new GridLayout(2, 1));
+		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), 0);
+		topPanel.add(searchBar, 1);
+		add(topPanel, BorderLayout.NORTH);
+
+		contents = new JPanel();
+		contents.setBorder(BORDER_PADDING);
+		contents.setLayout(new GridLayout(0, 1, 0, 3));
+
+		JPanel northPanel = new JPanel();
+		northPanel.setLayout(new BorderLayout());
+		northPanel.add(contents, BorderLayout.NORTH);
+
+		scrollPane = new JScrollPane(northPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add(scrollPane, BorderLayout.CENTER);
+	}
+
 	final void rebuildPluginList()
 	{
-		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
+		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 		Map<String, JPanel> newChildren = new TreeMap<>();
 
 		pluginManager.getPlugins().stream()
@@ -276,16 +312,15 @@ public class ConfigPanel extends PluginPanel
 	{
 		final String text = searchBar.getText();
 
-		children.values().forEach(this::remove);
-
+		children.values().forEach(contents::remove);
 		if (text.isEmpty())
 		{
-			children.values().forEach(this::add);
+			children.values().forEach(contents::add);
 			revalidate();
 			return;
 		}
 
-		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> add(children.get(k)));
+		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> contents.add(children.get(k)));
 		revalidate();
 	}
 
@@ -301,21 +336,13 @@ public class ConfigPanel extends PluginPanel
 
 	private void openConfigList()
 	{
-		removeAll();
-
-		JPanel topPanel = new JPanel();
-		topPanel.setBorder(new EmptyBorder(0, 6, 0, 6));
-		topPanel.setLayout(new GridLayout(2, 1));
-		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), 0);
-		topPanel.add(searchBar, 1);
-
-		getWrappedPanel().add(topPanel, BorderLayout.NORTH);
+		topPanel.setVisible(true);
+		contents.removeAll();
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
-		JScrollPane scrollbar = getScrollPane();
-		scrollbar.validate();
-		scrollbar.getVerticalScrollBar().setValue(scrollBarPosition);
+		scrollPane.validate();
+		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
 	private void changeConfiguration(Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
@@ -368,12 +395,13 @@ public class ConfigPanel extends PluginPanel
 
 	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager)
 	{
-		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
-		removeAll();
+		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
+		topPanel.setVisible(false);
+		contents.removeAll();
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		contents.add(title, SwingConstants.CENTER);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -384,6 +412,7 @@ public class ConfigPanel extends PluginPanel
 
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
+			item.setPreferredSize(ITEM_PREFERRED_SIZE);
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
@@ -528,7 +557,7 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			add(item);
+			contents.add(item);
 		}
 
 		JButton resetButton = new JButton("Reset");
@@ -539,13 +568,20 @@ public class ConfigPanel extends PluginPanel
 			// Reload configuration panel
 			openGroupConfigPanel(config, cd, configManager);
 		});
-		add(resetButton);
+		contents.add(resetButton);
 
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(e -> openConfigList());
-		add(backButton);
+		contents.add(backButton);
 
 		revalidate();
-		getScrollPane().getVerticalScrollBar().setValue(0);
+		scrollPane.getVerticalScrollBar().setValue(0);
+	}
+
+	@Override
+	public Dimension getPreferredSize()
+	{
+		int width = PANEL_WIDTH + SCROLLBAR_WIDTH;
+		return new Dimension(width, super.getPreferredSize().height);
 	}
 }
