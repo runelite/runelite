@@ -192,6 +192,8 @@ LABEL147:
    string_indexof_from   
    load_int               0
    if_icmpeq              LABEL154
+   load_string            "runeliteCommand" ; load callback name
+   runelite_callback                        ; invoke callback
    jump                   LABEL158
 LABEL154:
    load_string            "Hey, everyone, I just tried to do something very silly!"
