@@ -61,6 +61,8 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
+	// ItemID for nature runes
+	private static final int NATURE_RUNE_ID = 561;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -170,8 +172,16 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.showHAValue() && item.getHaPrice() > 0)
 			{
+				int haPrice = item.getHaPrice();
+				final ItemPrice natureRunePrice = itemManager.getItemPriceAsync(NATURE_RUNE_ID);
+
+				if(config.includeNatureCost())
+				{
+					haPrice -= natureRunePrice == null ? 0 : natureRunePrice.getPrice();
+				}
+
 				itemStringBuilder.append(" (HA: ")
-					.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+					.append(StackFormatter.quantityToStackSize(haPrice))
 					.append(" gp)");
 			}
 

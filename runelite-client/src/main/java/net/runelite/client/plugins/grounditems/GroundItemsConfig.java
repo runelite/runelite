@@ -74,6 +74,14 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "includeNatureCost",
+			name = "Include Nature Rune Cost",
+			description = "Configures whether or not to display item HA value after the cost of nature runes",
+			position = 4
+	)
+	default boolean includeNatureCost() {return true; }
+
+	@ConfigItem(
 		keyName = "showMenuItemQuantities",
 		name = "Show Menu Item Quantities",
 		description = "Configures whether or not to show the item quantities in the menu",
