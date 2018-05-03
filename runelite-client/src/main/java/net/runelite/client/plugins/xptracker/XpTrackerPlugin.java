@@ -65,9 +65,6 @@ import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
-	private static final String CONFIG_GROUP = "xptracker";
-
-	private static final String SKILL_KEY_PREFIX = "track";
 
 	@Inject
 	private PluginToolbar pluginToolbar;
