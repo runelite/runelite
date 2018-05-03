@@ -25,16 +25,9 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.Objects;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -43,10 +36,10 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.http.api.worlds.World;
@@ -55,14 +48,32 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
 
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.Objects;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
+
 @PluginDescriptor(
 	name = "XP Tracker"
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	private static final String CONFIG_GROUP = "xptracker";
+
+	private static final String SKILL_KEY_PREFIX = "track";
+
 	@Inject
 	private PluginToolbar pluginToolbar;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private Client client;
@@ -83,6 +94,12 @@ public class XpTrackerPlugin extends Plugin
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
+
+	@Provides
+	XpTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -111,7 +128,9 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = new XpPanel(this, client, skillIconManager);
+
+
+		xpPanel = new XpPanel(this, client, configManager, skillIconManager);
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
