@@ -29,17 +29,17 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "xptracker",
-		name = "XP Tracker",
-		description = "Configuration for the XP tracker plugin"
+	keyName = "xptracker",
+	name = "XP Tracker",
+	description = "Configuration for the XP tracker plugin"
 )
 public interface XpTrackerConfig extends Config
 {
 	@ConfigItem(
-			keyName = "trackAgility",
-			name = "Track Agility",
-			description = "Configures whether or not to track agility XP",
-			position = 0
+		keyName = "trackAgility",
+		name = "Track Agility",
+		description = "Configures whether or not to track agility XP",
+		position = 0
 	)
 	default boolean trackAgility()
 	{
@@ -47,10 +47,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackAttack",
-			name = "Track Attack",
-			description = "Configures whether or not to track Attack XP",
-			position = 1
+		keyName = "trackAttack",
+		name = "Track Attack",
+		description = "Configures whether or not to track Attack XP",
+		position = 1
 	)
 	default boolean trackAttack()
 	{
@@ -58,10 +58,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackConstruction",
-			name = "Track Agility",
-			description = "Configures whether or not to track contruction XP",
-			position = 2
+		keyName = "trackConstruction",
+		name = "Track Agility",
+		description = "Configures whether or not to track contruction XP",
+		position = 2
 	)
 	default boolean trackConstruction()
 	{
@@ -69,10 +69,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackCooking",
-			name = "Track Cooking",
-			description = "Configures whether or not to track cooking XP",
-			position = 3
+		keyName = "trackCooking",
+		name = "Track Cooking",
+		description = "Configures whether or not to track cooking XP",
+		position = 3
 	)
 	default boolean trackCooking()
 	{
@@ -80,10 +80,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackCrafting",
-			name = "Track Crafting",
-			description = "Configures whether or not to track crafting XP",
-			position = 4
+		keyName = "trackCrafting",
+		name = "Track Crafting",
+		description = "Configures whether or not to track crafting XP",
+		position = 4
 	)
 	default boolean trackCrafting()
 	{
@@ -91,10 +91,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackDefence",
-			name = "Track Defence",
-			description = "Configures whether or not to track defence XP",
-			position = 5
+		keyName = "trackDefence",
+		name = "Track Defence",
+		description = "Configures whether or not to track defence XP",
+		position = 5
 	)
 	default boolean trackDefence()
 	{
@@ -102,10 +102,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackFarming",
-			name = "Track Farming",
-			description = "Configures whether or not to track farming XP",
-			position = 6
+		keyName = "trackFarming",
+		name = "Track Farming",
+		description = "Configures whether or not to track farming XP",
+		position = 6
 	)
 	default boolean trackFarming()
 	{
@@ -113,10 +113,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackFiremaking",
-			name = "Track Firemanking",
-			description = "Configures whether or not to track firemaking XP",
-			position = 7
+		keyName = "trackFiremaking",
+		name = "Track Firemanking",
+		description = "Configures whether or not to track firemaking XP",
+		position = 7
 	)
 	default boolean trackFiremaking()
 	{
@@ -124,10 +124,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackFishing",
-			name = "Track Fishing",
-			description = "Configures whether or not to track fishing XP",
-			position = 8
+		keyName = "trackFishing",
+		name = "Track Fishing",
+		description = "Configures whether or not to track fishing XP",
+		position = 8
 	)
 	default boolean trackFishing()
 	{
@@ -135,10 +135,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackFletching",
-			name = "Track Fletching",
-			description = "Configures whether or not to track fletching XP",
-			position = 9
+		keyName = "trackFletching",
+		name = "Track Fletching",
+		description = "Configures whether or not to track fletching XP",
+		position = 9
 	)
 	default boolean trackFletching()
 	{
@@ -146,10 +146,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackHerblore",
-			name = "Track Herblore",
-			description = "Configures whether or not to track herblore XP",
-			position = 10
+		keyName = "trackHerblore",
+		name = "Track Herblore",
+		description = "Configures whether or not to track herblore XP",
+		position = 10
 	)
 	default boolean trackHerblore()
 	{
@@ -157,10 +157,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackHitpoints",
-			name = "Track Hitpoints",
-			description = "Configures whether or not to track hitpoints XP",
-			position = 11
+		keyName = "trackHitpoints",
+		name = "Track Hitpoints",
+		description = "Configures whether or not to track hitpoints XP",
+		position = 11
 	)
 	default boolean trackHitpoints()
 	{
@@ -168,10 +168,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackHunter",
-			name = "Track Hunter",
-			description = "Configures whether or not to track hunter XP",
-			position = 12
+		keyName = "trackHunter",
+		name = "Track Hunter",
+		description = "Configures whether or not to track hunter XP",
+		position = 12
 	)
 	default boolean trackHunter()
 	{
@@ -179,10 +179,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackMagic",
-			name = "Track Magic",
-			description = "Configures whether or not to track magic XP",
-			position = 13
+		keyName = "trackMagic",
+		name = "Track Magic",
+		description = "Configures whether or not to track magic XP",
+		position = 13
 	)
 	default boolean trackMagic()
 	{
@@ -190,10 +190,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackMining",
-			name = "Track Mining",
-			description = "Configures whether or not to track mining XP",
-			position = 14
+		keyName = "trackMining",
+		name = "Track Mining",
+		description = "Configures whether or not to track mining XP",
+		position = 14
 	)
 	default boolean trackMining()
 	{
@@ -201,10 +201,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackPrayer",
-			name = "Track Prayer",
-			description = "Configures whether or not to track prayer XP",
-			position = 15
+		keyName = "trackPrayer",
+		name = "Track Prayer",
+		description = "Configures whether or not to track prayer XP",
+		position = 15
 	)
 	default boolean trackPrayer()
 	{
@@ -212,10 +212,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "Ranged",
-			name = "Track Ranged",
-			description = "Configures whether or not to track ranged XP",
-			position = 16
+		keyName = "Ranged",
+		name = "Track Ranged",
+		description = "Configures whether or not to track ranged XP",
+		position = 16
 	)
 	default boolean trackRanged()
 	{
@@ -223,10 +223,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackRunecraft",
-			name = "Track Runecrafting",
-			description = "Configures whether or not to track runecrafting XP",
-			position = 17
+		keyName = "trackRunecraft",
+		name = "Track Runecrafting",
+		description = "Configures whether or not to track runecrafting XP",
+		position = 17
 	)
 	default boolean trackRunecraft()
 	{
@@ -234,10 +234,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackSlayer",
-			name = "Track Slayer",
-			description = "Configures whether or not to track slayer XP",
-			position = 18
+		keyName = "trackSlayer",
+		name = "Track Slayer",
+		description = "Configures whether or not to track slayer XP",
+		position = 18
 	)
 	default boolean trackSlayer()
 	{
@@ -245,10 +245,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackSmithing",
-			name = "Track Smithing",
-			description = "Configures whether or not to track smithing XP",
-			position = 19
+		keyName = "trackSmithing",
+		name = "Track Smithing",
+		description = "Configures whether or not to track smithing XP",
+		position = 19
 	)
 	default boolean trackSmithing()
 	{
@@ -256,10 +256,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackStrength",
-			name = "Track Strength",
-			description = "Configures whether or not to track strength XP",
-			position = 20
+		keyName = "trackStrength",
+		name = "Track Strength",
+		description = "Configures whether or not to track strength XP",
+		position = 20
 	)
 	default boolean trackStrength()
 	{
@@ -267,10 +267,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackThieving",
-			name = "Track Thieving",
-			description = "Configures whether or not to track thieving XP",
-			position = 21
+		keyName = "trackThieving",
+		name = "Track Thieving",
+		description = "Configures whether or not to track thieving XP",
+		position = 21
 	)
 	default boolean trackThieving()
 	{
@@ -278,10 +278,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackWoodcutting",
-			name = "Track Woodcutting",
-			description = "Configures whether or not to track woodcutting XP",
-			position = 22
+		keyName = "trackWoodcutting",
+		name = "Track Woodcutting",
+		description = "Configures whether or not to track woodcutting XP",
+		position = 22
 	)
 	default boolean trackWoodcutting()
 	{
