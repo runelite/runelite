@@ -129,7 +129,18 @@ public interface RuneLiteConfig extends Config
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
 		position = 9
 	)
-	default FontType fontType()
+	default FontType getDynamicFontType()
+	{
+		return FontType.SMALL;
+	}
+
+	@ConfigItem(
+		keyName = "tooltipFontType",
+		name = "Tooltip Overlay Font",
+		description = "Configures what font type is used for tooltip overlays such as menu actions, item stats, etc.",
+		position = 10
+	)
+	default FontType getTooltipFontType()
 	{
 		return FontType.SMALL;
 	}
@@ -138,7 +149,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 10
+		position = 11
 	)
 	default boolean infoBoxVertical()
 	{
@@ -149,7 +160,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 11
+		position = 12
 	)
 	default int infoBoxWrap()
 	{
