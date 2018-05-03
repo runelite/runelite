@@ -104,7 +104,7 @@ public interface NightmareZoneConfig extends Config
 
 	@ConfigItem(
 			keyName = "overloadwarningtimer",
-			name = "Warning timer (seconds)",
+			name = "Overload timer (seconds)",
 			description = "Time before overload expires to send a notification at",
 			position = 7
 	)
