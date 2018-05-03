@@ -65,9 +65,9 @@ public class WorldMapOverlayTestPlugin extends Plugin
 		markGraphics.setColor(Color.ORANGE);
 		markGraphics.fillOval(0, 0, 10, 10);
 
-		BufferedImage playerImage = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage playerImage = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
 		playerImage.getGraphics().setColor(Color.WHITE);
-		playerImage.getGraphics().fillRect(0, 0, 5, 5);
+		playerImage.getGraphics().fillRect(0, 0, 8,8);
 		playerDot = new WorldMapPoint(null, playerImage);
 
 		worldMapPointManager.add(playerDot);
