@@ -34,8 +34,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImagePanelComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -43,7 +41,6 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
 
 class BlastMineOreCountOverlay extends Overlay
 {
@@ -88,16 +85,14 @@ class BlastMineOreCountOverlay extends Overlay
 				imagePanelComponent.getImages().add(getImage(ADAMANTITE_ORE, client.getVar(Varbits.BLAST_MINE_ADAMANTITE)));
 				imagePanelComponent.getImages().add(getImage(RUNITE_ORE, client.getVar(Varbits.BLAST_MINE_RUNITE)));
 
-				if(config.showCollectXP())
+				if (config.showCollectXP())
 				{
 					imagePanelComponent.setTitle("Collected Mining xp: \t \t " + StackFormatter.formatNumber(CalculateXP()) + " xp");
 				}
-
-
 			}
 		}
 
-		if(imagePanelComponent.getImages().size() > 0)
+		if (imagePanelComponent.getImages().size() > 0)
 		{
 			return imagePanelComponent.render(graphics);
 		}
