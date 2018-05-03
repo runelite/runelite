@@ -50,6 +50,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
 import javax.swing.ToolTipManager;
@@ -306,5 +307,36 @@ public class SwingUtil
 	public static boolean isCustomTitlePanePresent(final Window frame)
 	{
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
+	}
+
+	/**
+	 * Linearly interpolates between colors a and b by t.
+	 * @param a first color
+	 * @param b second color
+	 * @param t factor
+	 * @return interpolated color
+	 */
+	public static Color colorLerp(Color a, Color b, double t)
+	{
+		final double r1 = a.getRed();
+		final double r2 = b.getRed();
+		final double g1 = a.getGreen();
+		final double g2 = b.getGreen();
+		final double b1 = a.getBlue();
+		final double b2 = b.getBlue();
+
+		return new Color(
+			(int) Math.round(r1 + (t * (r2 - r1))),
+			(int) Math.round(g1 + (t * (g2 - g1))),
+			(int) Math.round(b1 + (t * (b2 - b1)))
+		);
+	}
+
+	/**
+	 * Sets the substance Colorization factor to 1.0 so colors don't appear desaturated.
+	 */
+	public static void fullySaturateColors(JFrame window)
+	{
+		((JPanel) window.getContentPane()).putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 	}
 }

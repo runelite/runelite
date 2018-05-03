@@ -815,4 +815,12 @@ public class ClientUI
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
 	}
+
+	public void sendCustomNotification(
+		final String title,
+		final String message,
+		final TrayIcon.MessageType type)
+	{
+		CustomNotification.sendCustomNotification(title, message, type, frame);
+	}
 }

@@ -26,6 +26,8 @@ package net.runelite.client.config;
 
 import java.awt.Dimension;
 import net.runelite.api.Constants;
+import net.runelite.client.Notifier;
+import net.runelite.client.util.OSType;
 
 @ConfigGroup("runelite")
 public interface RuneLiteConfig extends Config
@@ -131,14 +133,17 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationTray",
+		keyName = "notificationTray_",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
+		sync = false,
 		position = 20
 	)
-	default boolean enableTrayNotifications()
+	default Notifier.NativeCustomOff trayNotifications()
 	{
-		return true;
+		return OSType.getOSType() == OSType.Windows
+			? Notifier.NativeCustomOff.CUSTOM
+			: Notifier.NativeCustomOff.NATIVE;
 	}
 
 	@ConfigItem(
