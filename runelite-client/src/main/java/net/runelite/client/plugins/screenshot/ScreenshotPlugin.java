@@ -276,6 +276,7 @@ public class ScreenshotPlugin extends Plugin
 		switch (TO_GROUP(widget.getId()))
 		{
 			case LEVEL_UP_GROUP_ID:
+			case DIALOG_SPRITE_GROUP_ID:
 				if (!config.screenshotLevels())
 				{
 					return;
