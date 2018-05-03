@@ -33,10 +33,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import lombok.Getter;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -55,7 +52,7 @@ public class NightmareZonePlugin extends Plugin
 	private static final int[] NMZ_MAP_REGION = {9033};
 
 	@Getter
-	private Instant lastChange;
+	private Instant firstAnimTime;
 
 	@Inject
 	private Notifier notifier;
@@ -192,28 +189,30 @@ public class NightmareZonePlugin extends Plugin
 
 	private void checkOverloadTimer()
 	{
+		final Player local = client.getLocalPlayer();
+
 		// This is the time in seconds to wait
 		// before the notification is sent
 		int timeToWait = (300 - config.overloadWarningWindow());
 
-		if (client.getLocalPlayer().getAnimation() == (AnimationID.OVERLOAD_DAMAGE) && flag == false)
+		if (local.getAnimation() == (AnimationID.OVERLOAD_DAMAGE) && flag == false)
 		{
-			lastChange = Instant.now();
+			firstAnimTime = Instant.now();
 			flag = true;
 		}
-		if (lastChange != null)
+		if (firstAnimTime != null)
 		{
 			if (!overloadNotificationSend)
 			{
-				if (Duration.between(lastChange, Instant.now()).getSeconds() >= timeToWait)
+				if (Duration.between(firstAnimTime, Instant.now()).getSeconds() >= timeToWait)
 				{
-					notifier.notify("Your overload runs out in " + config.overloadWarningWindow() + " seconds!");
+					notifier.notify("[" + local.getName() + "]'s overload expires in " + config.overloadWarningWindow() + " seconds!");
 					overloadNotificationSend = true;
 				}
 			}
 			else
 			{
-				if (Duration.between(lastChange, Instant.now()).getSeconds() < timeToWait)
+				if (Duration.between(firstAnimTime, Instant.now()).getSeconds() < timeToWait)
 				{
 					overloadNotificationSend = false;
 				}
