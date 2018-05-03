@@ -264,7 +264,7 @@ class XpInfoBox extends JPanel
 		xpHr.setText(XpPanel.formatLine(xpSnapshotSingle.getXpPerHour(), "xp/hr"));
 	}
 
-	//
+	// Replaces the actions remaining with kills remaining
 	private int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
 	{
 		int killsRemaining = Integer.MAX_VALUE;
