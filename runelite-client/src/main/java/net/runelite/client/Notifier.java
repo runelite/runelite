@@ -43,6 +43,9 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -55,6 +58,23 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
+	@Getter
+	@RequiredArgsConstructor
+	public enum NativeCustomOff
+	{
+		NATIVE("Native"),
+		CUSTOM("Custom"),
+		OFF("Off");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
@@ -77,11 +97,11 @@ public class Notifier
 
 	@Inject
 	private Notifier(
-			final Provider<ClientUI> clientUI,
-			final Provider<Client> client,
-			final RuneLiteConfig runeliteConfig,
-			final RuneLiteProperties runeLiteProperties,
-			final ScheduledExecutorService executorService)
+		final Provider<ClientUI> clientUI,
+		final Provider<Client> client,
+		final RuneLiteConfig runeliteConfig,
+		final RuneLiteProperties runeLiteProperties,
+		final ScheduledExecutorService executorService)
 	{
 		this.client = client;
 		this.appName = runeLiteProperties.getTitle();
@@ -116,9 +136,14 @@ public class Notifier
 			clientUI.requestFocus();
 		}
 
-		if (runeLiteConfig.enableTrayNotifications())
+		switch (runeLiteConfig.trayNotifications())
 		{
-			sendNotification(appName, message, type);
+			case NATIVE:
+				sendNotification(appName, message, type);
+				break;
+			case CUSTOM:
+				SwingUtilities.invokeLater(() -> clientUI.sendCustomNotification(appName, message, type));
+				break;
 		}
 
 		if (runeLiteConfig.enableNotificationSound())
@@ -227,8 +252,8 @@ public class Notifier
 		executorService.submit(() ->
 		{
 			final boolean success = sendCommand(commands)
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
+				.map(process -> process.exitValue() == 0)
+				.orElse(false);
 
 			if (!success)
 			{
