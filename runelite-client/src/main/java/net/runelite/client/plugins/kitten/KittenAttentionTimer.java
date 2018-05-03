@@ -31,16 +31,12 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-class kittenGrowthTimer extends Timer
+
+public class KittenAttentionTimer extends Timer
 {
-	private final Felines kitten;
-	public kittenGrowthTimer(Felines kitten, BufferedImage petImage, Plugin plugin, Duration seconds)
+
+	public KittenAttentionTimer(BufferedImage infoImage, Plugin plugin, Duration seconds)
 	{
-		super(seconds.toMillis(), ChronoUnit.MILLIS, petImage, plugin);
-		this.kitten = kitten;
-	}
-	public Felines getKitten()
-	{
-		return kitten;
+		super(seconds.toMillis(), ChronoUnit.MILLIS, infoImage, plugin);
 	}
 }

@@ -52,7 +52,7 @@ import java.time.temporal.ChronoUnit;
 		name = "Kitten"
 )
 
-public class kittenPlugin extends Plugin
+public class KittenPlugin extends Plugin
 {
 
 	private boolean ready;
@@ -128,7 +128,7 @@ public class kittenPlugin extends Plugin
 
 		if (playerHasFollower())
 		{
-			NewFollower();
+			newFollower();
 		}
 	}
 
@@ -159,12 +159,12 @@ public class kittenPlugin extends Plugin
 		followerID = Integer.parseInt(s.substring(0, 16), 2);
 		if (followerID != 0) //Varbit needs to fill up first after logging in
 		{
-			NewFollower();
+			newFollower();
 		}
 
 	}
 
-	private void NewFollower()
+	private void newFollower()
 	{
 		if (followerID >= 1619 && followerID <= 1625)
 		{
@@ -247,9 +247,9 @@ public class kittenPlugin extends Plugin
 			catSpawned = null;
 		}
 
-		infoBoxManager.removeIf(t -> t instanceof kittenGrowthTimer);
-		infoBoxManager.removeIf(t -> t instanceof kittenHungryTimer);
-		infoBoxManager.removeIf(t -> t instanceof kittenAttentionTimer);
+		infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
+		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
+		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
 
 		followerID = 0;
 		cat = false;
@@ -326,8 +326,8 @@ public class kittenPlugin extends Plugin
 			return;
 		}
 
-		infoBoxManager.removeIf(t -> t instanceof kittenGrowthTimer);
-		kittenGrowthTimer timer = new kittenGrowthTimer(feline, itemManager.getImage(feline.getItemSpriteId()), this, Duration.ofSeconds(seconds));
+		infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
+		KittenGrowthTimer timer = new KittenGrowthTimer(feline, itemManager.getImage(feline.getItemSpriteId()), this, Duration.ofSeconds(seconds));
 
 		if (kitten == true)
 		{
@@ -357,8 +357,8 @@ public class kittenPlugin extends Plugin
 		{
 			return;
 		}
-		infoBoxManager.removeIf(t -> t instanceof kittenHungryTimer);
-		kittenHungryTimer timer = new kittenHungryTimer(itemManager.getImage(1552), this, Duration.ofSeconds(seconds));
+		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
+		KittenHungryTimer timer = new KittenHungryTimer(itemManager.getImage(1552), this, Duration.ofSeconds(seconds));
 
 		if (config.kittenHungryBox() & kitten == true)
 		{
@@ -373,8 +373,8 @@ public class kittenPlugin extends Plugin
 		{
 			return;
 		}
-		infoBoxManager.removeIf(t -> t instanceof kittenAttentionTimer);
-		kittenAttentionTimer timer = new kittenAttentionTimer(itemManager.getImage(1759), this, Duration.ofSeconds(seconds));
+		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
+		KittenAttentionTimer timer = new KittenAttentionTimer(itemManager.getImage(1759), this, Duration.ofSeconds(seconds));
 
 		if (config.kittenAttentionBox() & kitten == true)
 		{
@@ -458,9 +458,9 @@ public class kittenPlugin extends Plugin
 				previousFeline = 0;
 				config.felineId(0); // in case the new kitten has the same NpcID. We need to track growth progress from the beginning.
 
-				infoBoxManager.removeIf(t -> t instanceof kittenGrowthTimer);
-				infoBoxManager.removeIf(t -> t instanceof kittenHungryTimer);
-				infoBoxManager.removeIf(t -> t instanceof kittenAttentionTimer);
+				infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
+				infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
+				infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
 				followerID = 0;
 				cat = false;
 				lazycat = false;
@@ -481,9 +481,9 @@ public class kittenPlugin extends Plugin
 				previousFeline = 0;
 				config.felineId(0); // in case the new kitten has the same NpcID. We need to track growth progress from the beginning.
 
-				infoBoxManager.removeIf(t -> t instanceof kittenGrowthTimer);
-				infoBoxManager.removeIf(t -> t instanceof kittenHungryTimer);
-				infoBoxManager.removeIf(t -> t instanceof kittenAttentionTimer);
+				infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
+				infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
+				infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
 				followerID = 0;
 				cat = false;
 				lazycat = false;

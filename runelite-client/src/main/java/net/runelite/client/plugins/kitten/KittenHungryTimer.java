@@ -32,10 +32,10 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 
-public class kittenHungryTimer extends Timer
+public class KittenHungryTimer extends Timer
 {
 
-	public kittenHungryTimer(BufferedImage infoImage, Plugin plugin, Duration seconds)
+	public KittenHungryTimer(BufferedImage infoImage, Plugin plugin, Duration seconds)
 	{
 		super(seconds.toMillis(), ChronoUnit.MILLIS, infoImage, plugin);
 	}
