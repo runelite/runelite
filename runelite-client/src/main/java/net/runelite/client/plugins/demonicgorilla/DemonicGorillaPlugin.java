@@ -60,7 +60,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Demonic gorillas"
+	name = "Demonic Gorillas"
 )
 @Slf4j
 public class DemonicGorillaPlugin extends Plugin
