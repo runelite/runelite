@@ -410,7 +410,7 @@ public class WorldMapDecoration {
                   ;
                }
 
-               var0.method5630(FontTypeFace.appendTags(var27) + (class90.field1363 == 0 & Client.gameCycle % 40 < 20?DynamicObject.getColTags(16776960) + "|":""), GrandExchangeEvent.field293 - 70, var36, 16777215, 0);
+               var0.method5630(FontTypeFace.appendTags(var27) + (class90.currentLoginField == 0 & Client.gameCycle % 40 < 20?DynamicObject.getColTags(16776960) + "|":""), GrandExchangeEvent.field293 - 70, var36, 16777215, 0);
                var36 += 15;
                var23 = "Password: ";
                var29 = class90.password;
@@ -422,7 +422,7 @@ public class WorldMapDecoration {
                }
 
                var49 = new String(var30);
-               var0.method5630(var23 + var49 + (class90.field1363 == 1 & Client.gameCycle % 40 < 20?DynamicObject.getColTags(16776960) + "|":""), GrandExchangeEvent.field293 - 108, var36, 16777215, 0);
+               var0.method5630(var23 + var49 + (class90.currentLoginField == 1 & Client.gameCycle % 40 < 20?DynamicObject.getColTags(16776960) + "|":""), GrandExchangeEvent.field293 - 108, var36, 16777215, 0);
                var36 += 15;
                var35 = 277;
                var12 = GrandExchangeEvent.field293 + -117;
