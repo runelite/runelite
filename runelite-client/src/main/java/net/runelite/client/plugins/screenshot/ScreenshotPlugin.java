@@ -174,9 +174,7 @@ public class ScreenshotPlugin extends Plugin
 			titleBarButton = NavigationButton.builder()
 				.tooltip("Take screenshot")
 				.icon(iconImage)
-				.onClick(() -> takeScreenshot(
-					TIME_FORMAT.format(new Date()),
-					client.getLocalPlayer() != null))
+				.onClick(() -> takeScreenshot(TIME_FORMAT.format(new Date())))
 				.popup(ImmutableMap
 					.<String, Runnable>builder()
 					.put("Open screenshot folder...", () ->
@@ -261,7 +259,7 @@ public class ScreenshotPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
 		{
 			String fileName = "Kingdom " + LocalDate.now();
-			takeScreenshot(fileName, config.displayDate());
+			takeScreenshot(fileName);
 		}
 	}
 
@@ -366,7 +364,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		takeScreenshot(fileName, config.displayDate());
+		takeScreenshot(fileName);
 	}
 
 	/**
@@ -401,9 +399,8 @@ public class ScreenshotPlugin extends Plugin
 	 * and optionally uploads it to an image-hosting service.
 	 *
 	 * @param fileName    Filename to use, without file extension.
-	 * @param displayDate Whether to show today's date on the report button as the screenshot is taken.
 	 */
-	void takeScreenshot(String fileName, boolean displayDate)
+	void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -473,7 +470,7 @@ public class ScreenshotPlugin extends Plugin
 			});
 		};
 
-		if (displayDate)
+		if (config.displayDate())
 		{
 			screenshotOverlay.queueForTimestamp(screenshotConsumer);
 		}
