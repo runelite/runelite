@@ -42,6 +42,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Set;
 
 public class BlastMineRockOverlay extends Overlay

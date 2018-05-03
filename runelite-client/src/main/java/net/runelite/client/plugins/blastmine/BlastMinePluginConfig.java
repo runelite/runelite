@@ -49,7 +49,18 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+			position = 0,
+			keyName = "showCollectXP",
+			name = "Show experience on collect",
+			description = "Configures whether or not the collect experience is displayed"
+	)
+	default boolean showCollectXP()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "showRockIconOverlay",
 		name = "Show icons overlay",
 		description = "Configures whether or not the icon overlay is displayed"
@@ -60,7 +71,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "showTimerOverlay",
 		name = "Show timer overlay",
 		description = "Configures whether or not the timer overlay is displayed"
@@ -71,7 +82,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "showWarningOverlay",
 		name = "Show explosion warning",
 		description = "Configures whether or not the explosion warning overlay is displayed"
@@ -82,7 +93,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
+			position = 5,
 			keyName = "hexTimerFillColor",
 			name = "Timer fill color",
 			description = "Fill Color of timer overlay"
@@ -93,7 +104,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
+			position = 6,
 			keyName = "hexTimerBorderColor",
 			name = "Timer border color",
 			description = "Border Color of timer overlay"
@@ -104,7 +115,7 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "hexWarningColor",
 		name = "Warning color",
 		description = "Color of warning overlay"

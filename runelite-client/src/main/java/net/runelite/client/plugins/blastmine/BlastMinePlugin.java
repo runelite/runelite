@@ -60,6 +60,8 @@ public class BlastMinePlugin extends Plugin
 	@Getter
 	private final Set<BlastMineRock> rocks = new HashSet<>();
 
+	
+
 	@Provides
 	BlastMinePluginConfig getConfig(ConfigManager configManager)
 	{

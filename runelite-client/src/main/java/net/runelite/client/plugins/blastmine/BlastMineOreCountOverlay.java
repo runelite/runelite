@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.blastmine;
 
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
@@ -35,10 +36,14 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
+import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.item.ItemPrice;
 
 import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
 
 class BlastMineOreCountOverlay extends Overlay
 {
@@ -53,7 +58,6 @@ class BlastMineOreCountOverlay extends Overlay
 	private final ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
 	private final ItemManager itemManager;
 
-
 	@Inject
 	BlastMineOreCountOverlay(Client client, BlastMinePluginConfig config, ItemManager itemManager)
 	{
@@ -61,6 +65,8 @@ class BlastMineOreCountOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.itemManager = itemManager;
+
+		;
 	}
 
 	@Override
@@ -69,6 +75,7 @@ class BlastMineOreCountOverlay extends Overlay
 		Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
 
 		imagePanelComponent.getImages().clear();
+		imagePanelComponent.setTitle("");
 
 		if (blastMineWidget != null)
 		{
@@ -81,20 +88,55 @@ class BlastMineOreCountOverlay extends Overlay
 				imagePanelComponent.getImages().add(getImage(ADAMANTITE_ORE, client.getVar(Varbits.BLAST_MINE_ADAMANTITE)));
 				imagePanelComponent.getImages().add(getImage(RUNITE_ORE, client.getVar(Varbits.BLAST_MINE_RUNITE)));
 
+				if(config.showCollectXP())
+				{
+					imagePanelComponent.setTitle("Collected Mining xp: \t \t " + StackFormatter.formatNumber(CalculateXP()) + " xp");
+				}
+
+
 			}
 		}
 
 		if(imagePanelComponent.getImages().size() > 0)
 		{
-			imagePanelComponent.render(graphics);
-			imagePanelComponent.render(graphics);
+			return imagePanelComponent.render(graphics);
 		}
 
-		return  null;
+		return null;
+
+	}
+
+	private int CalculateXP()
+	{
+		return  client.getVar(Varbits.BLAST_MINE_COAL) * 30 +
+				client.getVar(Varbits.BLAST_MINE_GOLD) * 60 +
+				client.getVar(Varbits.BLAST_MINE_MITHRIL) * 110 +
+				client.getVar(Varbits.BLAST_MINE_ADAMANTITE) * 170 +
+				client.getVar(Varbits.BLAST_MINE_RUNITE) * 240;
 	}
 
 	private BufferedImage getImage(int itemID, int amount)
 	{
 		return itemManager.getImage(itemID, amount, true);
+	}
+
+	private int getItemPrice(ItemComposition composition)
+	{
+		// convert to unnoted id
+		final boolean note = composition.getNote() != -1;
+		final int id = note ? composition.getLinkedNoteId() : composition.getId();
+
+		ItemPrice itemPrice;
+		try
+		{
+			itemPrice = itemManager.getItemPrice(id);
+		}
+		catch (IOException e)
+		{
+			return 0;
+		}
+
+		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
+		return gePrice;
 	}
 }
