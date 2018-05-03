@@ -143,23 +143,23 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideUnderGeValue",
-		name = "Hide < GE Value",
-		description = "Configures hidden ground items under GE value",
+		keyName = "highlightOverValue",
+		name = "Highlight > Value",
+		description = "Configures highlighted ground items over either GE or HA value",
 		position = 8
 	)
-	default int getHideUnderGeValue()
+	default int getHighlightOverValue()
 	{
-		return 0;
+		return 10000;
 	}
 
 	@ConfigItem(
-		keyName = "hideUnderHaValue",
-		name = "Hide < HA Value",
-		description = "Configures hidden ground items under High Alch value",
+		keyName = "hideUnderValue",
+		name = "Hide < Value",
+		description = "Configures hidden ground items under both GE and HA value",
 		position = 9
 	)
-	default int getHideUnderHAValue()
+	default int getHideUnderValue()
 	{
 		return 0;
 	}
