@@ -241,6 +241,6 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean removeBA()
 	{
-		return true;
+		return false;
 	}
 }
