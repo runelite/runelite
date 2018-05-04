@@ -45,16 +45,4 @@ public interface WintertodtConfig extends Config {
     {
         return Color.RED;
     }
-
-    @ConfigItem(
-            keyName = "disablePlugin",
-            name = "Disable Plugin",
-            description = "Disables the plugin and brings back the official UI.",
-            position = 4
-    )
-    default boolean disablePlugin()
-    {
-        return false;
-    }
-
 }
