@@ -56,6 +56,6 @@ public interface GroundMarkerConfig extends Config
 	)
 	default boolean clearTiles()
 	{
-		return false;
+		return true;
 	}
 }

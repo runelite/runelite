@@ -276,7 +276,6 @@ public class GroundMarkerPlugin extends Plugin
 				clearTiles.setType(MenuAction.CANCEL.getId());
 			}
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setType(MenuAction.CANCEL.getId());
@@ -380,7 +379,6 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		points.clear();
 		int[] regions = client.getMapRegions();
-
 		for (int regionId : regions)
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
