@@ -414,6 +414,7 @@ public class ClueScrollPlugin extends Plugin
 
 	/**
 	 * Example input: "00 degrees 00 minutes north 07 degrees 13 minutes west"
+	 * Note: some clues use "1 degree" instead of "01 degrees"
 	 */
 	private CoordinateClue coordinatesToWorldPoint(String text)
 	{
@@ -425,7 +426,7 @@ public class ClueScrollPlugin extends Plugin
 			return null;
 		}
 
-		if (!splitText[1].equals("degrees") || !splitText[3].equals("minutes"))
+		if (!splitText[1].startsWith("degree") || !splitText[3].startsWith("minute"))
 		{
 			log.warn("\"" + text + "\" is not a well formed coordinate string");
 			return null;

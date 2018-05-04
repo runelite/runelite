@@ -27,19 +27,28 @@ package net.runelite.client;
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import com.google.inject.Inject;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.OSType;
@@ -48,6 +57,25 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
+	@Getter
+	@RequiredArgsConstructor
+	public enum NotificationMode
+	{
+		TRAY("System tray"),
+		BEEP("System beep"),
+		MESSAGE("Game message"),
+		FLASH("Screen flash"),
+		OFF("Off");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
@@ -55,24 +83,32 @@ public class Notifier
 		.addEscape('"', "'")
 		.build();
 
+	// Notifier properties
+	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
+	private static final int FLASH_DURATION = 2000;
+	private static final String MESSAGE_COLOR = "FF0000";
+
+	private final Provider<Client> client;
 	private final String appName;
 	private final RuneLiteConfig runeLiteConfig;
 	private final Provider<ClientUI> clientUI;
 	private final ScheduledExecutorService executorService;
 	private final Path notifyIconPath;
+	private Instant flashStart;
 
 	@Inject
 	private Notifier(
 			final Provider<ClientUI> clientUI,
+			final Provider<Client> client,
 			final RuneLiteConfig runeliteConfig,
 			final RuneLiteProperties runeLiteProperties,
 			final ScheduledExecutorService executorService)
 	{
+		this.client = client;
 		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;
-
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 		storeIcon();
 	}
@@ -101,26 +137,63 @@ public class Notifier
 			clientUI.requestFocus();
 		}
 
-		if (runeLiteConfig.enableTrayNotifications())
+		switch (runeLiteConfig.notificationMode())
 		{
-			sendNotification(appName, message, type, null);
+			case TRAY:
+				sendNotification(appName, message, type);
+				break;
+			case BEEP:
+				Toolkit.getDefaultToolkit().beep();
+				break;
+			case MESSAGE:
+				final Client client = this.client.get();
+
+				if (client != null && client.getGameState() == GameState.LOGGED_IN)
+				{
+					client.addChatMessage(ChatMessageType.GAME, appName,
+						"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
+				}
+
+				break;
+			case FLASH:
+				flashStart = Instant.now();
+				break;
+		}
+	}
+
+	public void processFlash(final Graphics2D graphics)
+	{
+		if (flashStart == null)
+		{
+			return;
 		}
 
-		if (runeLiteConfig.enableNotificationSound())
+		final Client client = this.client.get();
+
+		if (client == null || client.getGameCycle() % 40 >= 20)
 		{
-			Toolkit.getDefaultToolkit().beep();
+			return;
+		}
+
+		final Color color = graphics.getColor();
+		graphics.setColor(FLASH_COLOR);
+		graphics.fill(new Rectangle(client.getCanvas().getSize()));
+		graphics.setColor(color);
+
+		if (Instant.now().minusMillis(FLASH_DURATION).isAfter(flashStart))
+		{
+			flashStart = null;
 		}
 	}
 
 	private void sendNotification(
 		final String title,
 		final String message,
-		final TrayIcon.MessageType type,
-		final String subtitle)
+		final TrayIcon.MessageType type)
 	{
 		final String escapedTitle = SHELL_ESCAPE.escape(title);
 		final String escapedMessage = SHELL_ESCAPE.escape(message);
-		final String escapedSubtitle = subtitle != null ? SHELL_ESCAPE.escape(subtitle) : null;
+		final String escapedSubtitle = null;
 
 		switch (OSType.getOSType())
 		{
