@@ -70,8 +70,6 @@ public class GroundMarkerPlugin extends Plugin
 
 	private static final Gson gson = new Gson();
 
-
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
