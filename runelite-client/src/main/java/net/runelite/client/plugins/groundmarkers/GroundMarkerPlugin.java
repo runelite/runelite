@@ -264,6 +264,7 @@ public class GroundMarkerPlugin extends Plugin
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
 			if (config.clearTiles())
 			{
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
@@ -273,6 +274,7 @@ public class GroundMarkerPlugin extends Plugin
 				clearTiles.setTarget(event.getTarget());
 				clearTiles.setType(MenuAction.CANCEL.getId());
 			}
+
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
@@ -381,6 +383,7 @@ public class GroundMarkerPlugin extends Plugin
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
 		}
+
 		loadPoints();
 	}
 }
