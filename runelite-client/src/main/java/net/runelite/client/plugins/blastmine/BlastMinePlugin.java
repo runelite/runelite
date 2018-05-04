@@ -57,6 +57,9 @@ public class BlastMinePlugin extends Plugin
 	@Inject
 	private BlastMineOreCountOverlay blastMineOreCountOverlay;
 
+	@Inject
+	private BlastMineOreDetailsOverlay blastMineOreDetailsOverlay;
+
 	@Getter
 	private final Set<BlastMineRock> rocks = new HashSet<>();
 
@@ -72,12 +75,13 @@ public class BlastMinePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		blastMineRockOverlay.updateColors();
+		blastMineOreDetailsOverlay.setBounds(blastMineOreCountOverlay.getBounds());
 	}
 
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(blastMineRockOverlay, blastMineOreCountOverlay);
+		return Arrays.asList(blastMineRockOverlay, blastMineOreCountOverlay, blastMineOreDetailsOverlay);
 	}
 
 	@Subscribe

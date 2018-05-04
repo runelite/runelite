@@ -49,14 +49,14 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 0,
-			keyName = "showCollectXP",
-			name = "Show experience on collect",
-			description = "Configures whether or not the collect experience is displayed"
+			position = 1,
+			keyName = "showSackDetails",
+			name = "Show xp and gp in sack",
+			description = "Configures whether or not the collected experience and gp is displayed"
 	)
-	default boolean showCollectXP()
+	default boolean showSackDetails()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
