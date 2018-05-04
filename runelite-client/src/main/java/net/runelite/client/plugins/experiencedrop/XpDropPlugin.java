@@ -132,8 +132,8 @@ public class XpDropPlugin extends Plugin
 			int defaultColor = config.getDefaultXpDrop().getRGB();
 			widget.setTextColor(defaultColor);
 		}
-		else {
-
+		else 
+		{
 			int defaultColorIdx = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
 			int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
 			widget.setTextColor(defaultColor);
