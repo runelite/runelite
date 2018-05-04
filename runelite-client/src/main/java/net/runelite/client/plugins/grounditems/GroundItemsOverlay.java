@@ -84,7 +84,7 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU && plugin.isHideAll())
+		if (!plugin.isHotKeyPressed() && (config.itemHighlightMode() == MENU || plugin.isHideAll()))
 		{
 			return null;
 		}
