@@ -185,14 +185,14 @@ public final class WorldMapManager {
       garbageValue = "-486046884"
    )
    @Export("drawMapRegion")
-   public final void drawMapRegion(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   public final void drawMapRegion(int var1, int var2, int var3, int var4, int x1, int y1, int x2, int y2) {
       int[] var9 = Rasterizer2D.graphicsPixels;
       int var10 = Rasterizer2D.graphicsPixelsWidth;
       int var11 = Rasterizer2D.graphicsPixelsHeight;
       int[] var12 = new int[4];
       Rasterizer2D.copyDrawRegion(var12);
       WorldMapRectangle var13 = this.getRegionRectForViewport(var1, var2, var3, var4);
-      float var14 = this.method602(var7 - var5, var3 - var1);
+      float var14 = this.method602(x2 - x1, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       this.field557 = var15;
       if(!this.field550.containsKey(Integer.valueOf(var15))) {
@@ -220,7 +220,7 @@ public final class WorldMapManager {
 
       for(int var20 = var13.worldMapRegionX; var20 < var13.worldMapRegionWidth + var13.worldMapRegionX; ++var20) {
          for(int var21 = var13.worldMapRegionY; var21 < var13.worldMapRegionY + var13.worldMapRegionHeight; ++var21) {
-            this.mapRegions[var20][var21].method377(var5 + var17 * (this.mapRegions[var20][var21].field481 * 64 - var18) / 64, var8 - var17 * (this.mapRegions[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
+            this.mapRegions[var20][var21].method377(x1 + var17 * (this.mapRegions[var20][var21].field481 * 64 - var18) / 64, y2 - var17 * (this.mapRegions[var20][var21].field488 * 64 - var19 + 64) / 64, var17);
          }
       }
 
@@ -232,28 +232,28 @@ public final class WorldMapManager {
       garbageValue = "-1997582972"
    )
    @Export("drawMapIcons")
-   public final void drawMapIcons(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
-      WorldMapRectangle var14 = this.getRegionRectForViewport(var1, var2, var3, var4);
-      float var15 = this.method602(var7 - var5, var3 - var1);
+   public final void drawMapIcons(int x1, int y1, int x2, int y2, int graphicsX1, int var6, int graphicsX2, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
+      WorldMapRectangle worldMapRectangle = this.getRegionRectForViewport(x1, y1, x2, y2);
+      float var15 = this.method602(graphicsX2 - graphicsX1, x2 - x1);
       int var16 = (int)(64.0F * var15);
-      int var17 = this.mapSurfaceBaseOffsetX + var1;
-      int var18 = var2 + this.mapSurfaceBaseOffsetY;
+      int xCoordinate = x1 + this.mapSurfaceBaseOffsetX;
+      int yCoordinate = y1 + this.mapSurfaceBaseOffsetY;
 
       int var19;
       int var20;
-      for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionWidth + var14.worldMapRegionX; ++var19) {
-         for(var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionHeight + var14.worldMapRegionY; ++var20) {
+      for(var19 = worldMapRectangle.worldMapRegionX; var19 < worldMapRectangle.worldMapRegionWidth + worldMapRectangle.worldMapRegionX; ++var19) {
+         for(var20 = worldMapRectangle.worldMapRegionY; var20 < worldMapRectangle.worldMapRegionHeight + worldMapRectangle.worldMapRegionY; ++var20) {
             if(var13) {
                this.mapRegions[var19][var20].method405();
             }
 
-            this.mapRegions[var19][var20].method499(var5 + var16 * (this.mapRegions[var19][var20].field481 * 64 - var17) / 64, var8 - var16 * (this.mapRegions[var19][var20].field488 * 64 - var18 + 64) / 64, var16, var9);
+            this.mapRegions[var19][var20].method499(graphicsX1 + var16 * (this.mapRegions[var19][var20].field481 * 64 - xCoordinate) / 64, var8 - var16 * (this.mapRegions[var19][var20].field488 * 64 - yCoordinate + 64) / 64, var16, var9);
          }
       }
 
       if(var10 != null && var11 > 0) {
-         for(var19 = var14.worldMapRegionX; var19 < var14.worldMapRegionWidth + var14.worldMapRegionX; ++var19) {
-            for(var20 = var14.worldMapRegionY; var20 < var14.worldMapRegionHeight + var14.worldMapRegionY; ++var20) {
+         for(var19 = worldMapRectangle.worldMapRegionX; var19 < worldMapRectangle.worldMapRegionWidth + worldMapRectangle.worldMapRegionX; ++var19) {
+            for(var20 = worldMapRectangle.worldMapRegionY; var20 < worldMapRectangle.worldMapRegionHeight + worldMapRectangle.worldMapRegionY; ++var20) {
                this.mapRegions[var19][var20].drawFlashingMapIcons(var10, var11, var12);
             }
          }
@@ -360,12 +360,12 @@ public final class WorldMapManager {
       garbageValue = "30"
    )
    @Export("getRegionRectForViewport")
-   WorldMapRectangle getRegionRectForViewport(int var1, int var2, int var3, int var4) {
+   WorldMapRectangle getRegionRectForViewport(int x1, int y1, int x2, int y2) {
       WorldMapRectangle var5 = new WorldMapRectangle(this);
-      int var6 = this.mapSurfaceBaseOffsetX + var1;
-      int var7 = var2 + this.mapSurfaceBaseOffsetY;
-      int var8 = var3 + this.mapSurfaceBaseOffsetX;
-      int var9 = var4 + this.mapSurfaceBaseOffsetY;
+      int var6 = x1 + this.mapSurfaceBaseOffsetX;
+      int var7 = y1 + this.mapSurfaceBaseOffsetY;
+      int var8 = x2 + this.mapSurfaceBaseOffsetX;
+      int var9 = y2 + this.mapSurfaceBaseOffsetY;
       int var10 = var6 / 64;
       int var11 = var7 / 64;
       int var12 = var8 / 64;
@@ -455,8 +455,8 @@ public final class WorldMapManager {
       signature = "(III)F",
       garbageValue = "-782152666"
    )
-   float method602(int var1, int var2) {
-      float var3 = (float)var1 / (float)var2;
+   float method602(int graphicsDiff, int worldDiff) {
+      float var3 = (float)graphicsDiff / (float)worldDiff;
       if(var3 > 8.0F) {
          return 8.0F;
       } else if(var3 < 1.0F) {
