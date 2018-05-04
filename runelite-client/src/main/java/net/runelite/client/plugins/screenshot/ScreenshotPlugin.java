@@ -32,6 +32,8 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -440,12 +442,28 @@ public class ScreenshotPlugin extends Plugin
 						reportButtonImage = ImageIO.read(reportButton);
 					}
 
-					int x = gameOffsetX + 403;
+					float ratioX = 1.0f;
+
+					if (client.isStretchedEnabled())
+					{
+						// calculate the stretched ratio's (width and height)
+						ratioX = (float)client.getStretchedDimensions().width / client.getRealDimensions().width;
+						float ratioY = (float)client.getStretchedDimensions().height / client.getRealDimensions().height;
+
+						// calculate the stretched dimensions of the report button image
+						int reportButtonResizedWidth = (int)((float)reportButtonImage.getWidth() * ratioX);
+						int reportButtonResizedHeight = (int)((float)reportButtonImage.getHeight() * ratioY);
+
+						reportButtonImage = resize(reportButtonImage, reportButtonResizedHeight, reportButtonResizedWidth);
+					}
+
+					int x = gameOffsetX + (int)(403 * ratioX);
 					int y = gameOffsetY + image.getHeight() - reportButtonImage.getHeight() - 1;
 
 					graphics.drawImage(reportButtonImage, x, y, null);
 
 					graphics.setFont(FontManager.getRunescapeSmallFont());
+
 					FontMetrics fontMetrics = graphics.getFontMetrics();
 
 					String date = DATE_FORMAT.format(new Date());
@@ -503,6 +521,24 @@ public class ScreenshotPlugin extends Plugin
 			});
 		});
 	}
+
+	/**
+	 * Resizes an image, this is used to resize images such as the report button while in stretched fixed mode.
+	 * @param img Image which needs to be resized.
+	 * @param height The new height of the to be resized image.
+	 * @param width The new width of the to be resized image.
+	 * @return
+	 */
+	private BufferedImage resize(BufferedImage img, int height, int width)
+	{
+		Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = resized.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
+		return resized;
+	}
+
 
 	/**
 	 * Uploads a screenshot to the Imgur image-hosting service,
