@@ -174,7 +174,7 @@ public class GroundItemsOverlay extends Overlay
 				int haPrice = item.getHaPrice();
 				final ItemPrice natureRunePrice = itemManager.getItemPriceAsync(ItemID.NATURE_RUNE);
 
-				if(config.includeNatureCost())
+				if (config.includeNatureCost())
 				{
 					haPrice -= natureRunePrice == null ? 0 : natureRunePrice.getPrice();
 				}
