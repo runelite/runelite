@@ -104,6 +104,12 @@ public class WorldMapOverlay extends Overlay
 			{
 				Point drawPoint = mapWorldPointToGraphicsPoint(point);
 
+				if (drawPoint == null)
+				{
+					worldPoint.setClickbox(null);
+					continue;
+				}
+
 				if (worldPoint.isSnapToEdge())
 				{
 					Canvas canvas = client.getCanvas();
@@ -168,6 +174,12 @@ public class WorldMapOverlay extends Overlay
 	private Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
 	{
 		RenderOverview ro = clientProvider.get().getRenderOverview();
+
+		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
+		{
+			return null;
+		}
+
 		Float pixelsPerTile = ro.getWorldMapZoom();
 
 		Point worldMapPosition = ro.getWorldMapPosition();
@@ -184,18 +196,18 @@ public class WorldMapOverlay extends Overlay
 
 			return new Point(xGraphDiff, yGraphDiff);
 		}
-		return new Point(0, 0);
+		return null;
 	}
 
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
 		String tooltip = worldPoint.getTooltip();
-		if (tooltip == null || tooltip.length() <= 0)
+		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
+		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
 			return;
 		}
 
-		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
 		graphics.setClip(0, 0, clientProvider.get().getCanvas().getWidth(), clientProvider.get().getCanvas().getHeight());
