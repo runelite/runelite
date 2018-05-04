@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -38,8 +40,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -49,6 +53,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
@@ -89,6 +94,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleMapSquares;
 	private boolean toggleValidMovement;
 	private boolean toggleLineOfSight;
+	private boolean toggleGraphicsObjects;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -144,6 +150,26 @@ public class DevToolsPlugin extends Plugin
 
 		switch (commandExecuted.getCommand())
 		{
+			case "logger":
+			{
+				final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+				String message;
+				Level currentLoggerLevel = logger.getLevel();
+
+				if (args.length < 1)
+				{
+					message = "Logger level is currently set to " + currentLoggerLevel;
+				}
+				else
+				{
+					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
+					logger.setLevel(newLoggerLevel);
+					message = "Logger level has been set to " + newLoggerLevel;
+				}
+
+				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
+				break;
+			}
 			case "getvar":
 			{
 				int varbit = Integer.parseInt(args[0]);
@@ -176,6 +202,26 @@ public class DevToolsPlugin extends Plugin
 				int count = client.getChangedSkillsCount();
 				skills[++count - 1 & 31] = skill.ordinal();
 				client.setChangedSkillsCount(count);
+
+				ExperienceChanged experienceChanged = new ExperienceChanged();
+				experienceChanged.setSkill(skill);
+				eventBus.post(experienceChanged);
+				break;
+			}
+			case "anim":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player localPlayer = client.getLocalPlayer();
+				localPlayer.setAnimation(id);
+				localPlayer.setActionFrame(0);
+				break;
+			}
+			case "gfx":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player localPlayer = client.getLocalPlayer();
+				localPlayer.setGraphic(id);
+				localPlayer.setSpotAnimFrame(0);
 				break;
 			}
 		}
@@ -256,6 +302,11 @@ public class DevToolsPlugin extends Plugin
 		toggleLineOfSight = !toggleLineOfSight;
 	}
 
+	void toggleGraphicsObjects()
+	{
+		toggleGraphicsObjects = !toggleGraphicsObjects;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -324,5 +375,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleLineOfSight()
 	{
 		return toggleLineOfSight;
+	}
+
+	boolean isToggleGraphicsObjects()
+	{
+		return toggleGraphicsObjects;
 	}
 }

@@ -30,26 +30,34 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
+import static net.runelite.api.EquipmentInventorySlot.AMULET;
+import static net.runelite.api.EquipmentInventorySlot.BODY;
+import static net.runelite.api.EquipmentInventorySlot.BOOTS;
+import static net.runelite.api.EquipmentInventorySlot.CAPE;
+import static net.runelite.api.EquipmentInventorySlot.GLOVES;
+import static net.runelite.api.EquipmentInventorySlot.HEAD;
+import static net.runelite.api.EquipmentInventorySlot.LEGS;
+import static net.runelite.api.EquipmentInventorySlot.RING;
+import static net.runelite.api.EquipmentInventorySlot.SHIELD;
+import static net.runelite.api.EquipmentInventorySlot.WEAPON;
 import net.runelite.api.Item;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
-import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import static net.runelite.api.EquipmentInventorySlot.*;
-import static net.runelite.api.EquipmentInventorySlot.LEGS;
-import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.EMOTE_IMAGE;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.EMOTE_IMAGE;
+import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
+import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
+import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequirement;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
@@ -95,7 +103,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Cry in the Catherby Ranging shop. Bow before you talk to me. Equip blue gnome boots, a hard leather body and an unblessed silver sickle.", new WorldPoint(2823, 3443, 0), CRY, BOW, item(BLUE_BOOTS), item(HARDLEATHER_BODY), item(SILVER_SICKLE)),
 		new EmoteClue("Cry on the shore of Catherby beach. Laugh before you talk to me, equip an adamant sq shield, a bone dagger and mithril platebody.", new WorldPoint(2852, 3429, 0), CRY, LAUGH, item(ADAMANT_SQ_SHIELD), item(BONE_DAGGER), item(MITHRIL_PLATEBODY)),
 		new EmoteClue("Cry on top of the western tree in the Gnome Agility Arena. Indicate 'no' before you talk to me. Equip a steel kiteshield, ring of forging and green dragonhide chaps.", new WorldPoint(2473, 3420, 2), CRY, NO, item(STEEL_KITESHIELD), item(RING_OF_FORGING), item(GREEN_DHIDE_CHAPS)),
-		new EmoteClue("Cry in the Tzhaar gem shop. Beware of the double agents! Equip a fire cape and TokTz-Xil-Ul.", new WorldPoint(2463, 5149, 0), CRY, item(FIRE_CAPE), item(TOKTZXILUL)),
+		new EmoteClue("Cry in the TzHaar gem store. Beware of double agents! Equip a fire cape and TokTz-Xil-Ul.", new WorldPoint(2463, 5149, 0), CRY, item(FIRE_CAPE), item(TOKTZXILUL)),
 		new EmoteClue("Cry in the Draynor Village jail. Jump for joy before you talk to me. Equip an adamant sword, a sapphire amulet and an adamant plateskirt.", new WorldPoint(3128, 3245, 0), CRY, JUMP_FOR_JOY, item(ADAMANT_SWORD), item(SAPPHIRE_AMULET), item(ADAMANT_PLATESKIRT)),
 		new EmoteClue("Dance at the crossroads north of Draynor. Equip an iron chain body, a sapphire ring and a longbow.", new WorldPoint(3109, 3294, 0), DANCE, item(IRON_CHAINBODY), item(SAPPHIRE_RING), item(LONGBOW)),
 		new EmoteClue("Dance in the Party Room. Equip a steel full helmet, steel platebody and an iron plateskirt.", new WorldPoint(3045, 3376, 0), DANCE, item(STEEL_FULL_HELM), item(STEEL_PLATEBODY), item(IRON_PLATESKIRT)),

@@ -28,5 +28,9 @@ public enum HeadIcon
 {
 	MELEE,
 	RANGED,
-	MAGIC;
+	MAGIC,
+	RETRIBUTION,
+	SMITE,
+	REDEMPTION,
+	RANGE_MAGE; //used by Kalphite Queen
 }

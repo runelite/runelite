@@ -36,12 +36,13 @@ public enum class27 implements Enumerated {
    @ObfuscatedGetter(
       intValue = -1006164869
    )
-   final int field395;
+   @Export("worldMapType")
+   final int worldMapType;
    @ObfuscatedName("l")
    final byte field391;
 
-   class27(int var3, byte var4) {
-      this.field395 = var3;
+   class27(int worldMapType, byte var4) {
+      this.worldMapType = worldMapType;
       this.field391 = var4;
    }
 
@@ -84,7 +85,8 @@ public enum class27 implements Enumerated {
       signature = "(B)[Lai;",
       garbageValue = "-83"
    )
-   static class27[] method218() {
+   @Export("getWorldMapTypes")
+   static class27[] getWorldMapTypes() {
       return new class27[]{field394, field396, field393, field392};
    }
 }

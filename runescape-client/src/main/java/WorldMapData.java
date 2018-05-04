@@ -36,7 +36,8 @@ public class WorldMapData {
    @ObfuscatedGetter(
       intValue = 1296252979
    )
-   int field445;
+   @Export("initialMapSurfaceZoom")
+   int initialMapSurfaceZoom;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lio;"
@@ -72,7 +73,7 @@ public class WorldMapData {
    public WorldMapData() {
       this.fileId = -1;
       this.field444 = -1;
-      this.field445 = -1;
+      this.initialMapSurfaceZoom = -1;
       this.field446 = null;
       this.minX = Integer.MAX_VALUE;
       this.field448 = 0;
@@ -95,7 +96,7 @@ public class WorldMapData {
       this.field444 = var1.readInt();
       var1.readUnsignedByte();
       this.field441 = var1.readUnsignedByte() == 1;
-      this.field445 = var1.readUnsignedByte();
+      this.initialMapSurfaceZoom = var1.readUnsignedByte();
       int var3 = var1.readUnsignedByte();
       this.field452 = new LinkedList();
 
@@ -113,9 +114,9 @@ public class WorldMapData {
    )
    WorldMapSectionBase method281(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      class27 var3 = (class27)class185.forOrdinal(class27.method218(), var2);
+      class27 var3 = (class27)class185.forOrdinal(class27.getWorldMapTypes(), var2);
       Object var4 = null;
-      switch(var3.field395) {
+      switch(var3.worldMapType) {
       case 0:
          var4 = new WorldMapType1();
          break;
@@ -162,11 +163,12 @@ public class WorldMapData {
       signature = "(IIB)Z",
       garbageValue = "0"
    )
-   public boolean method283(int var1, int var2) {
-      int var3 = var1 / 64;
-      int var4 = var2 / 64;
-      if(var3 >= this.minX && var3 <= this.field448) {
-         if(var4 >= this.minY && var4 <= this.field450) {
+   @Export("surfaceContainsPosition")
+   public boolean surfaceContainsPosition(int x, int y) {
+      int regionX = x / 64;
+      int regionY = y / 64;
+      if(regionX >= this.minX && regionX <= this.field448) {
+         if(regionY >= this.minY && regionY <= this.field450) {
             Iterator var5 = this.field452.iterator();
 
             WorldMapSectionBase var6;
@@ -176,7 +178,7 @@ public class WorldMapData {
                }
 
                var6 = (WorldMapSectionBase)var5.next();
-            } while(!var6.vmethod766(var1, var2));
+            } while(!var6.vmethod766(x, y));
 
             return true;
          } else {
@@ -295,8 +297,9 @@ public class WorldMapData {
       signature = "(I)I",
       garbageValue = "-2105428269"
    )
-   public int method318() {
-      return this.field445;
+   @Export("getInitialMapSurfaceZoom")
+   public int getInitialMapSurfaceZoom() {
+      return this.initialMapSurfaceZoom;
    }
 
    @ObfuscatedName("q")

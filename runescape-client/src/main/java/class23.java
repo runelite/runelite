@@ -192,12 +192,12 @@ public class class23 {
                         var18 = 201;
                         var17 = var18 + 52;
                         if(var3 == 1 && var22 >= var17 - 12 && var22 < var17 + 2) {
-                           class90.field1363 = 0;
+                           class90.currentLoginField = 0;
                         }
 
                         var17 += 15;
                         if(var3 == 1 && var22 >= var17 - 12 && var22 < var17 + 2) {
-                           class90.field1363 = 1;
+                           class90.currentLoginField = 1;
                         }
 
                         var17 += 15;
@@ -281,25 +281,25 @@ public class class23 {
                                  class21.field338 = 0;
                                  WidgetNode.field767 = "";
                                  class90.field1362 = true;
-                              } else if(class90.field1363 == 0) {
+                              } else if(class90.currentLoginField == 0) {
                                  if(class303.currentPressedKey == 85 && class90.username.length() > 0) {
                                     class90.username = class90.username.substring(0, class90.username.length() - 1);
                                  }
 
                                  if(class303.currentPressedKey == 84 || class303.currentPressedKey == 80) {
-                                    class90.field1363 = 1;
+                                    class90.currentLoginField = 1;
                                  }
 
                                  if(var9 && class90.username.length() < 320) {
                                     class90.username = class90.username + BoundingBox2D.currentTypedKey;
                                  }
-                              } else if(class90.field1363 == 1) {
+                              } else if(class90.currentLoginField == 1) {
                                  if(class303.currentPressedKey == 85 && class90.password.length() > 0) {
                                     class90.password = class90.password.substring(0, class90.password.length() - 1);
                                  }
 
                                  if(class303.currentPressedKey == 84 || class303.currentPressedKey == 80) {
-                                    class90.field1363 = 0;
+                                    class90.currentLoginField = 0;
                                  }
 
                                  if(class303.currentPressedKey == 84) {

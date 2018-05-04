@@ -28,6 +28,7 @@ import net.runelite.api.HeadIcon;
 import static net.runelite.api.HeadIcon.MAGIC;
 import static net.runelite.api.HeadIcon.MELEE;
 import static net.runelite.api.HeadIcon.RANGED;
+import static net.runelite.api.HeadIcon.RANGE_MAGE;
 import net.runelite.api.events.NpcActionChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -50,6 +51,8 @@ public abstract class RSNpcCompositionMixin implements RSNPCComposition
 				return RANGED;
 			case 2:
 				return MAGIC;
+			case 6:
+				return RANGE_MAGE;
 			default:
 				return null;
 		}
