@@ -379,6 +379,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		points.clear();
 		int[] regions = client.getMapRegions();
+
 		for (int regionId : regions)
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
