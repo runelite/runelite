@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.cluescrolls;
 
-import net.runelite.api.coords.WorldPoint;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-public interface RenderOverview
+class ClueScrollWorldMapPoint extends WorldMapPoint
 {
-	Point getWorldMapPosition();
+	private final BufferedImage worldMapImage;
+	private final Point imagePoint;
+	private final BufferedImage edgeSnapImage;
 
-	float getWorldMapZoom();
+	ClueScrollWorldMapPoint()
+	{
+		super(null, null);
 
-	void setWorldMapPositionTarget(WorldPoint worldPoint);
+		this.setSnapToEdge(true);
+		this.setJumpOnClick(true);
 
-	WorldMapManager getWorldMapManager();
+		worldMapImage = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = worldMapImage.getGraphics();
+		graphics.drawImage(ClueScrollPlugin.MAP_ARROW, 0, 0, null);
+		graphics.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0,  2, null);
 
-	void initializeWorldMap(WorldMapData var1);
+		imagePoint = new Point(worldMapImage.getWidth() / 2, worldMapImage.getHeight());
+		this.setImage(worldMapImage);
+		this.setImagePoint(imagePoint);
 
-	WorldMapData getWorldMapData();
+		edgeSnapImage = ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+	}
+
+	@Override
+	public void onEdgeSnap()
+	{
+		this.setImage(edgeSnapImage);
+		this.setImagePoint(null);
+	}
+
+	@Override
+	public void onEdgeUnsnap()
+	{
+		this.setImage(worldMapImage);
+		this.setImagePoint(imagePoint);
+	}
 }

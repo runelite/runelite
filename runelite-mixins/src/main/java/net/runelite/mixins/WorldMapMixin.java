@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.mixins;
 
+import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSRenderOverview;
+import net.runelite.rs.api.RSWorldMapManager;
 
-public interface RenderOverview
+@Mixin(RSRenderOverview.class)
+public abstract class WorldMapMixin implements RSRenderOverview
 {
-	Point getWorldMapPosition();
+	@Override
+	@Inject
+	public Point getWorldMapPosition()
+	{
+		RSWorldMapManager worldMapManager = getWorldMapManager();
+		int worldX = getWorldMapX() + worldMapManager.getSurfaceOffsetX();
+		int worldY = getWorldMapY() + worldMapManager.getSurfaceOffsetY();
+		return new Point(worldX, worldY);
+	}
 
-	float getWorldMapZoom();
+	@Inject
+	public void setWorldMapPositionTarget(WorldPoint worldPoint)
+	{
+		setWorldMapPositionTarget(worldPoint.getX(), worldPoint.getY());
+	}
 
-	void setWorldMapPositionTarget(WorldPoint worldPoint);
-
-	WorldMapManager getWorldMapManager();
-
-	void initializeWorldMap(WorldMapData var1);
-
-	WorldMapData getWorldMapData();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.ui.overlay.worldmap;
 
-import net.runelite.api.coords.WorldPoint;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-public interface RenderOverview
+@Singleton
+public class WorldMapPointManager
 {
-	Point getWorldMapPosition();
+	@Getter(AccessLevel.PACKAGE)
+	private final List<WorldMapPoint> worldMapPoints = new ArrayList<>();
 
-	float getWorldMapZoom();
+	public void add(WorldMapPoint worldMapPoint)
+	{
+		worldMapPoints.add(worldMapPoint);
+	}
 
-	void setWorldMapPositionTarget(WorldPoint worldPoint);
-
-	WorldMapManager getWorldMapManager();
-
-	void initializeWorldMap(WorldMapData var1);
-
-	WorldMapData getWorldMapData();
+	public void remove(WorldMapPoint worldMapPoint)
+	{
+		worldMapPoints.remove(worldMapPoint);
+	}
 }

@@ -77,7 +77,7 @@ public class WidgetID
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
 	public static final int BLAST_FURNACE_GROUP_ID = 474;
-	public static final int WORLD_MAP = 595;
+	public static final int WORLD_MAP_GROUP_ID = 595;
 	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
@@ -88,6 +88,8 @@ public class WidgetID
 	static class WorldMap
 	{
 		static final int OPTION = 36;
+		static final int TOOLTIP = 35;
+		static final int MAPVIEW = 3;
 	}
 
 	static class SlayerRewards
