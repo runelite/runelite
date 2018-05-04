@@ -39,6 +39,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
@@ -56,6 +57,7 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -486,6 +488,12 @@ public class Hooks
 		HitsplatApplied event = new HitsplatApplied();
 		event.setActor(actor);
 		event.setHitsplat(hitsplat);
+		eventBus.post(event);
+	}
+
+	public static void onGraphicsObjectCreated(GraphicsObject go, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
+	{
+		GraphicsObjectCreated event = new GraphicsObjectCreated(go);
 		eventBus.post(event);
 	}
 }
