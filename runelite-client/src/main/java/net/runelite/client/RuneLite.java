@@ -37,11 +37,6 @@ import java.io.File;
 import java.util.Locale;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.util.EnumConverter;
@@ -60,6 +55,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.util.SwingUtil;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
@@ -238,28 +234,8 @@ public class RuneLite
 
 		if (isOutdated)
 		{
-			showReducedFunctionalityDialog();
+			SwingUtil.showReducedFunctionalityDialog();
 		}
-	}
-
-	private void showReducedFunctionalityDialog() throws Exception
-	{
-		SwingUtilities.invokeAndWait(() ->
-		{
-			JLabel text = new JLabel(
-					"<html>" +
-					"RuneLite has not yet been updated for use with the latest<br>" +
-					"OSRS update.<br>" +
-					"As a result RuneLite is running in reduced functionality mode.<br>" +
-					"A new version of RuneLite for use with the new game update<br>" +
-					"should be available shortly.<br><br>" +
-					"Thank you for your patience." +
-					"</html>"
-			);
-			text.setBorder(new EmptyBorder(0, 0, 15, 10));
-
-			JOptionPane.showMessageDialog(null, text, "Reduced Functionality Mode", JOptionPane.ERROR_MESSAGE);
-		});
 	}
 
 	public void shutdown()
