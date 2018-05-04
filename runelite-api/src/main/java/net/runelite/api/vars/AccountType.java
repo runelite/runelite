@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.vars;
 
-public enum HeadIcon
+/**
+ * An enumeration of possible account types.
+ */
+public enum AccountType
 {
-	MELEE,
-	RANGED,
-	MAGIC,
-	RETRIBUTION,
-	SMITE,
-	REDEMPTION,
-	RANGE_MAGE; //used by Kalphite Queen
+	NORMAL,
+	IRONMAN,
+	ULTIMATE_IRONMAN,
+	HARDCORE_IRONMAN;
+
+	/**
+	 * Check if the {@code AccountType} is any of the possible ironman types.
+	 *
+	 * @return {@code true} if the type is any of the ironman types.
+	 */
+	public boolean isIronman()
+	{
+		return this.ordinal() >= IRONMAN.ordinal() && this.ordinal() <= HARDCORE_IRONMAN.ordinal();
+	}
+
 }
