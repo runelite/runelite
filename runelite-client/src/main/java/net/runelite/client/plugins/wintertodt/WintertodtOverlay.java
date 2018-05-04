@@ -6,7 +6,6 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
@@ -25,13 +24,11 @@ public class WintertodtOverlay extends Overlay {
     String pyromancerHelp = "";
 
     PanelComponent pnc = new PanelComponent();
-    TextComponent txtc = new TextComponent();
 
     @Inject
     public WintertodtOverlay(Client client, WintertodtConfig cfg) {
         this.client = client;
         this.config = cfg;
-        //setPosition(OverlayPosition.TOP_LEFT);
     }
 
     //1399 = UP 1398 = DOWN 1397 = BROKE 1400 = PYRO
@@ -47,10 +44,8 @@ public class WintertodtOverlay extends Overlay {
         Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
         Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
         Widget wtReturn = client.getWidget(WidgetInfo.WINTERTODT_RETURN);
-        //Only runs while interface is open
         if(config.disablePlugin() != true){
             if (wtOverlay != null){
-                //Can't hide the Return Value
                 wtOverlayBAR.setHidden(true);
                 wtOverlayUI.setHidden(true);
 
