@@ -28,11 +28,14 @@ import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 
@@ -66,6 +69,17 @@ public class BlowPipeTrackerPlugin extends Plugin
 
 
     }
+
+    @Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
+	}
 
     private AttractorDefinition getAttractorForPlayer()
 	{
