@@ -49,6 +49,16 @@ public interface FarmingTrackerConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "useLocalDates",
+			name = "Use local language in dates",
+			description = "The language used for displaying dates"
+	)
+	default boolean useLocalDates()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "patch",
 		name = "Default patch",
 		description = "Default patch on opening the panel",
