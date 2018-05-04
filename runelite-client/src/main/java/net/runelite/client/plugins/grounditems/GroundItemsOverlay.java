@@ -33,10 +33,8 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
@@ -61,8 +59,6 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
-	// ItemID for nature runes
-	private static final int NATURE_RUNE_ID = 561;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -173,7 +169,7 @@ public class GroundItemsOverlay extends Overlay
 			if (config.showHAValue() && item.getHaPrice() > 0)
 			{
 				int haPrice = item.getHaPrice();
-				final ItemPrice natureRunePrice = itemManager.getItemPriceAsync(NATURE_RUNE_ID);
+				final ItemPrice natureRunePrice = itemManager.getItemPriceAsync(ItemID.NATURE_RUNE);
 
 				if(config.includeNatureCost())
 				{
