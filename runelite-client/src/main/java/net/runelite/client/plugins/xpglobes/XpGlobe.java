@@ -37,7 +37,7 @@ public class XpGlobe
 	private Instant time;
 	private double skillProgressRadius;
 
-	public XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp)
+	XpGlobe(Skill skill, int currentXp, int currentLevel, int goalXp)
 	{
 		this.skill = skill;
 		this.currentXp = currentXp;
@@ -85,11 +85,6 @@ public class XpGlobe
 		this.goalXp = goalXp;
 	}
 
-	public int getGoalLevel()
-	{
-		return this.currentLevel++;
-	}
-
 	public String getSkillName()
 	{
 		return skill.getName();
@@ -105,7 +100,7 @@ public class XpGlobe
 		this.skillProgressRadius = -(3.6 * getSkillProgress(startXp, currentXp, goalXp)); //arc goes backwards
 	}
 
-	public double getSkillProgress(int startXp, int currentXp, int goalXp)
+	private double getSkillProgress(int startXp, int currentXp, int goalXp)
 	{
 		double xpGained = currentXp - startXp;
 		double xpGoal = goalXp - startXp;
