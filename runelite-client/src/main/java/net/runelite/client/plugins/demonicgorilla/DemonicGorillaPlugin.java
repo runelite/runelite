@@ -60,7 +60,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Demonic gorillas"
+	name = "Demonic Gorillas"
 )
 @Slf4j
 public class DemonicGorillaPlugin extends Plugin
@@ -142,7 +142,7 @@ public class DemonicGorillaPlugin extends Plugin
 		{
 			gorilla.setNextPosibleAttackStyles(Arrays
 				.stream(DemonicGorilla.ALL_REGULAR_ATTACK_STYLES)
-				.filter(x -> !Arrays.stream(protectedStyles).anyMatch(y -> x == y))
+				.filter(x -> Arrays.stream(protectedStyles).noneMatch(y -> x == y))
 				.collect(Collectors.toList()));
 			gorilla.setAttacksUntilSwitch(DemonicGorilla.ATTACKS_PER_SWITCH);
 			gorilla.setChangedAttackStyleThisTick(true);
@@ -403,7 +403,7 @@ public class DemonicGorillaPlugin extends Plugin
 							// or other players
 							final WorldArea area1 = new WorldArea(x, 1, 1);
 							return area1 != null &&
-								!gorillas.values().stream().anyMatch(y ->
+								gorillas.values().stream().noneMatch(y ->
 								{
 									if (y == gorilla)
 									{
@@ -414,7 +414,7 @@ public class DemonicGorillaPlugin extends Plugin
 											y.getNpc().getWorldArea() : y.getLastWorldArea();
 									return area2 != null && area1.intersectsWith(area2);
 								}) &&
-								!memorizedPlayers.values().stream().anyMatch(y ->
+								memorizedPlayers.values().stream().noneMatch(y ->
 								{
 									final WorldArea area2 = y.getLastWorldArea();
 									return area2 != null && area1.intersectsWith(area2);
@@ -455,7 +455,7 @@ public class DemonicGorillaPlugin extends Plugin
 							}
 							else if (tickCounter >= gorilla.getNextAttackTick() &&
 								gorilla.getRecentProjectileId() == -1 &&
-								!recentBoulders.stream().anyMatch(x -> x.distanceTo(mp.getLastWorldArea()) == 0))
+								recentBoulders.stream().noneMatch(x -> x.distanceTo(mp.getLastWorldArea()) == 0))
 							{
 								gorilla.setNextPosibleAttackStyles(gorilla
 									.getNextPosibleAttackStyles()
