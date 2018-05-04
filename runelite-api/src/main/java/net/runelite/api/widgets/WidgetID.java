@@ -84,7 +84,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
-
+	public static final int WINTERTODT_GROUP_ID = 396;
 	static class WorldMap
 	{
 		static final int OPTION = 36;
@@ -420,5 +420,25 @@ public class WidgetID
 	{
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
+	}
+
+	static class Wintertodt
+	{
+		static final int WINTERTODT_ENTRY = 2;
+		static final int WINTERTODT_ENTRY_BAR = 16;
+		static final int WINTERTODT_ENTRY_UI = 4;
+		static final int WINTERTODT_RETURN = 3;
+		static final int WINTERTODT_ENERGY = 21;
+		static final int WINTERTODT_POINTS = 7;
+
+		static final int WINTERTODT_SW_BRAZIER = 12;
+		static final int WINTERTODT_NW_BRAZIER = 13;
+		static final int WINTERTODT_NE_BRAZIER = 14;
+		static final int WINTERTODT_SE_BRAZIER = 15;
+
+		static final int WINTERTODT_SW_PYRO = 8;
+		static final int WINTERTODT_NW_PYRO = 9;
+		static final int WINTERTODT_NE_PYRO = 10;
+		static final int WINTERTODT_SE_PYRO = 11;
 	}
 }
