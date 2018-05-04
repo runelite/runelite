@@ -34,14 +34,16 @@ import net.runelite.client.config.ConfigItem;
 	name = "XP Drop",
 	description = "Configuration for XP drop customization"
 )
-public interface XpDropConfig extends Config {
+public interface XpDropConfig extends Config
+{
 	@ConfigItem(
 			keyName = "hideSkillIcons",
 			name = "Hide skill icons",
 			description = "Configure if XP drops will show their respective skill icons",
 			position = 6
 	)
-	default boolean hideSkillIcons() {
+	default boolean hideSkillIcons()
+	{
 		return false;
 	}
 
@@ -51,7 +53,8 @@ public interface XpDropConfig extends Config {
 			description = "XP drop color when a melee prayer is active",
 			position = 1
 	)
-	default Color getMeleePrayerColor() {
+	default Color getMeleePrayerColor()
+	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
 
@@ -61,7 +64,8 @@ public interface XpDropConfig extends Config {
 			description = "XP drop color when a range prayer is active",
 			position = 2
 	)
-	default Color getRangePrayerColor() {
+	default Color getRangePrayerColor()
+	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
 
@@ -71,7 +75,8 @@ public interface XpDropConfig extends Config {
 			description = "XP drop color when a mage prayer is active",
 			position = 3
 	)
-	default Color getMagePrayerColor() {
+	default Color getMagePrayerColor()
+	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
 
@@ -81,7 +86,8 @@ public interface XpDropConfig extends Config {
 			description = "More custom default colors",
 			position = 5
 	)
-	default Color getDefaultXpDrop() {
+	default Color getDefaultXpDrop()
+	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
 	@ConfigItem(
@@ -89,9 +95,9 @@ public interface XpDropConfig extends Config {
 			name = "XP Drop Color",
 			description = "Configure if color is overridden for XP drops",
 			position = 4
-
 	)
-	default boolean overrideVanillaColor() {
+	default boolean overrideVanillaColor()
+	{
 		return false;
 	}
 }
