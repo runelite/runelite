@@ -31,12 +31,12 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
