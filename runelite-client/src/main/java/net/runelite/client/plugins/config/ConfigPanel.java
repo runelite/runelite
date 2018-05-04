@@ -156,7 +156,7 @@ public class ConfigPanel extends PluginPanel
 		openConfigList();
 	}
 
-	final void createPanel()
+	private final void createPanel()
 	{
 		setLayout(new BorderLayout());
 
