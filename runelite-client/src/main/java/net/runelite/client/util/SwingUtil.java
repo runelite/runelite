@@ -308,6 +308,13 @@ public class SwingUtil
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
 
+	/**
+	 * Creates and displays message dialog about reduced functionality mode.
+	 * IMPORTANT! Should only be called if client is outdated.
+	 *
+	 * @throws Exception if interrupted / unsuccessful.
+	 */
+
 	public static void showReducedFunctionalityDialog() throws Exception
 	{
 		SwingUtilities.invokeAndWait(() ->
