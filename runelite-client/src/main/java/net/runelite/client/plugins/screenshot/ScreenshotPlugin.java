@@ -28,9 +28,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -47,6 +45,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -79,9 +78,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -102,7 +101,6 @@ public class ScreenshotPlugin extends Plugin
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy", Locale.US);
 	static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -117,6 +115,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private ScreenshotConfig config;
+
+	@Inject
+	private ScreenshotOverlay screenshotOverlay;
 
 	@Inject
 	private Notifier notifier;
@@ -151,6 +152,12 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Override
+	public Overlay getOverlay()
+	{
+		return screenshotOverlay;
+	}
+
+	@Override
 	protected void startUp() throws Exception
 	{
 		SCREENSHOT_DIR.mkdirs();
@@ -167,9 +174,7 @@ public class ScreenshotPlugin extends Plugin
 			titleBarButton = NavigationButton.builder()
 				.tooltip("Take screenshot")
 				.icon(iconImage)
-				.onClick(() -> takeScreenshot(
-					TIME_FORMAT.format(new Date()),
-					client.getLocalPlayer() != null))
+				.onClick(() -> takeScreenshot(TIME_FORMAT.format(new Date())))
 				.popup(ImmutableMap
 					.<String, Runnable>builder()
 					.put("Open screenshot folder...", () ->
@@ -254,7 +259,7 @@ public class ScreenshotPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.KINGDOM_GROUP_ID)
 		{
 			String fileName = "Kingdom " + LocalDate.now();
-			takeScreenshot(fileName, config.displayDate());
+			takeScreenshot(fileName);
 		}
 	}
 
@@ -271,6 +276,7 @@ public class ScreenshotPlugin extends Plugin
 		switch (TO_GROUP(widget.getId()))
 		{
 			case LEVEL_UP_GROUP_ID:
+			case DIALOG_SPRITE_GROUP_ID:
 				if (!config.screenshotLevels())
 				{
 					return;
@@ -359,7 +365,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		takeScreenshot(fileName, config.displayDate());
+		takeScreenshot(fileName);
 	}
 
 	/**
@@ -394,9 +400,8 @@ public class ScreenshotPlugin extends Plugin
 	 * and optionally uploads it to an image-hosting service.
 	 *
 	 * @param fileName    Filename to use, without file extension.
-	 * @param displayDate Whether to show today's date on the report button as the screenshot is taken.
 	 */
-	void takeScreenshot(String fileName, boolean displayDate)
+	void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -405,7 +410,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		drawManager.requestNextFrameListener(image ->
+		Consumer<BufferedImage> screenshotConsumer = image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
 				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
@@ -429,43 +434,6 @@ public class ScreenshotPlugin extends Plugin
 
 			// Draw the game onto the screenshot
 			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-
-			if (displayDate)
-			{
-				try (InputStream reportButton = ScreenshotPlugin.class.getResourceAsStream("report_button.png"))
-				{
-					BufferedImage reportButtonImage;
-					synchronized (ImageIO.class)
-					{
-						reportButtonImage = ImageIO.read(reportButton);
-					}
-
-					int x = gameOffsetX + 403;
-					int y = gameOffsetY + image.getHeight() - reportButtonImage.getHeight() - 1;
-
-					graphics.drawImage(reportButtonImage, x, y, null);
-
-					graphics.setFont(FontManager.getRunescapeSmallFont());
-					FontMetrics fontMetrics = graphics.getFontMetrics();
-
-					String date = DATE_FORMAT.format(new Date());
-					int dateWidth = fontMetrics.stringWidth(date);
-					int dateHeight = fontMetrics.getHeight();
-
-					int textX = x + reportButtonImage.getWidth() / 2 - dateWidth / 2;
-					int textY = y + reportButtonImage.getHeight() / 2 + dateHeight / 2;
-
-					graphics.setColor(Color.BLACK);
-					graphics.drawString(date, textX + 1, textY + 1);
-
-					graphics.setColor(Color.WHITE);
-					graphics.drawString(date, textX, textY);
-				}
-				catch (Exception ex)
-				{
-					log.warn("error displaying date on screenshot", ex);
-				}
-			}
 
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
@@ -501,7 +469,16 @@ public class ScreenshotPlugin extends Plugin
 					log.warn("error writing screenshot", ex);
 				}
 			});
-		});
+		};
+
+		if (config.displayDate())
+		{
+			screenshotOverlay.queueForTimestamp(screenshotConsumer);
+		}
+		else
+		{
+			drawManager.requestNextFrameListener(screenshotConsumer);
+		}
 	}
 
 	/**
