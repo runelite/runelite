@@ -34,7 +34,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;

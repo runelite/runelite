@@ -80,9 +80,9 @@ public interface GroundItemsConfig extends Config
         position = 4
 	)
 	default boolean includeNatureCost()
-    {
-        return true;
-    }
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showMenuItemQuantities",
