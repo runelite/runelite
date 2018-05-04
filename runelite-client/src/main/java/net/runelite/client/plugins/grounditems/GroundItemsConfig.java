@@ -74,10 +74,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-        keyName = "includeNatureCost",
-        name = "Include Nature Rune Cost",
-        description = "Configures whether or not to include cost of nature runes to HA value",
-        position = 4
+		keyName = "includeNatureCost",
+		name = "Include Nature Rune Cost",
+		description = "Configures whether or not to include cost of nature runes to HA value",
+		position = 4
 	)
 	default boolean includeNatureCost()
 	{
