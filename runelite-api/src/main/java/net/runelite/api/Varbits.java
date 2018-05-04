@@ -348,7 +348,12 @@ public enum Varbits
 	/**
 	 * Automatically weed farming patches
 	 */
-	AUTOWEED(5557);
+	AUTOWEED(5557),
+
+	/**
+	 * The varbit that stores the players {@code AccountType}.
+	 */
+	ACCOUNT_TYPE(1777);
 
 	/**
 	 * varbit id

@@ -196,6 +196,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(lineOfSightBtn);
 
+		final JButton graphicsObjectsBtn = new JButton("Graphics objects");
+		graphicsObjectsBtn.addActionListener(e ->
+		{
+			highlightButton(graphicsObjectsBtn);
+			plugin.toggleGraphicsObjects();
+		});
+		container.add(graphicsObjectsBtn);
+
 		return container;
 	}
 

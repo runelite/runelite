@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -56,6 +57,11 @@ public interface Client extends GameEngine
 	String getUsername();
 
 	void setUsername(String name);
+
+	/**
+	 * Gets the account type for the logged in player.
+	 */
+	AccountType getAccountType();
 
 	Canvas getCanvas();
 
@@ -227,6 +233,8 @@ public interface Client extends GameEngine
 	LocalPoint getLocalDestinationLocation();
 
 	List<Projectile> getProjectiles();
+
+	List<GraphicsObject> getGraphicsObjects();
 
 	/**
 	 * Play a sound effect at the player's current location. This is how UI,

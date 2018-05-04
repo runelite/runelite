@@ -31,12 +31,12 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
@@ -139,7 +139,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "666"),
 		new AnagramClue("This anagram reveals who to speak to next: WOO AN EGG KIWI", "Awowogei", new WorldPoint(2802, 2764, 0), "Ape Atoll", "24"),
-		new AnagramClue("This anagram reveals who to speak to next: YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya")
+		new AnagramClue("This anagram reveals who to speak to next: YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya"),
+		new AnagramClue("This anagram reveals who to speak to next: MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "2505")
 	);
 
 	private String text;

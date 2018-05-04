@@ -28,11 +28,14 @@ package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -77,8 +80,9 @@ import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.Text;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Clue Scroll"
@@ -87,6 +91,11 @@ import net.runelite.client.util.QueryRunner;
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
+
+	public static final BufferedImage CLUE_SCROLL_IMAGE;
+	public static final BufferedImage MAP_ARROW;
+	public static final BufferedImage EMOTE_IMAGE;
+	public static final BufferedImage SPADE_IMAGE;
 
 	@Getter
 	private ClueScroll clue;
@@ -125,13 +134,47 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private ClueScrollConfig config;
 
+	@Inject
+	private WorldMapPointManager worldMapPointManager;
+
+	private ClueScrollWorldMapPoint worldMapPoint;
+
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
+
+	static
+	{
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
+				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
+				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
+				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ClueScrollConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		clearMapPoint();
 	}
 
 	@Override
@@ -222,6 +265,8 @@ public class ClueScrollPlugin extends Plugin
 			{
 				client.setHintArrow(location);
 			}
+
+			setMapPoint(location);
 		}
 
 		if (clue instanceof NpcClueScroll)
@@ -234,9 +279,14 @@ public class ClueScrollPlugin extends Plugin
 				npcsToMark = queryRunner.runQuery(query);
 
 				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (config.displayHintArrows() && npcsToMark.length >= 1)
+				if (npcsToMark.length >= 1)
 				{
-					client.setHintArrow(npcsToMark[0]);
+					if (config.displayHintArrows())
+					{
+						client.setHintArrow(npcsToMark[0]);
+					}
+
+					setMapPoint(npcsToMark[0].getWorldLocation());
 				}
 			}
 		}
@@ -321,6 +371,8 @@ public class ClueScrollPlugin extends Plugin
 
 		clueItemChanged = false;
 		clue = null;
+
+		clearMapPoint();
 
 		if (config.displayHintArrows())
 		{
@@ -414,6 +466,7 @@ public class ClueScrollPlugin extends Plugin
 
 	/**
 	 * Example input: "00 degrees 00 minutes north 07 degrees 13 minutes west"
+	 * Note: some clues use "1 degree" instead of "01 degrees"
 	 */
 	private CoordinateClue coordinatesToWorldPoint(String text)
 	{
@@ -425,7 +478,7 @@ public class ClueScrollPlugin extends Plugin
 			return null;
 		}
 
-		if (!splitText[1].equals("degrees") || !splitText[3].equals("minutes"))
+		if (!splitText[1].startsWith("degree") || !splitText[3].startsWith("minute"))
 		{
 			log.warn("\"" + text + "\" is not a well formed coordinate string");
 			return null;
@@ -466,5 +519,24 @@ public class ClueScrollPlugin extends Plugin
 		y2 += degY * 32 + Math.round(minY / 1.875);
 
 		return new WorldPoint(x2, y2, 0);
+	}
+
+	private void setMapPoint(WorldPoint point)
+	{
+		if (worldMapPoint == null)
+		{
+			worldMapPoint = new ClueScrollWorldMapPoint();
+			worldMapPointManager.add(worldMapPoint);
+		}
+		worldMapPoint.setWorldPoint(point);
+	}
+
+	private void clearMapPoint()
+	{
+		if (worldMapPoint != null)
+		{
+			worldMapPointManager.remove(worldMapPoint);
+			worldMapPoint = null;
+		}
 	}
 }
