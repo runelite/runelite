@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
  * All rights reserved.
  *
@@ -29,10 +30,19 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.SoundEffectID;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,6 +65,8 @@ public class MetronomePlugin extends Plugin
 	@Inject
 	private MetronomePluginConfiguration config;
 
+	private int attackStyleVarbit = -1;
+	private int equippedWeaponTypeVarbit = -1;
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
 	private int curWeaponTickRate = 1;
@@ -74,10 +86,10 @@ public class MetronomePlugin extends Plugin
 	{
 		if (config.syncWithAttack())
 		{
-			updateIsCasting(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
+			updateIsCasting(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE));
 			if (!isCasting)
 			{
-				updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
+				updateIsRapid(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE));
 			}
 			updateCurrentTickRate();
 		}
@@ -89,10 +101,10 @@ public class MetronomePlugin extends Plugin
 		//Need to get the currently equipped weapon.
 		if (config.syncWithAttack() && client.getGameState() == GameState.LOGGED_IN)
 		{
-			updateIsCasting(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
+			updateIsCasting(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE));
 			if (!isCasting)
 			{
-				updateIsRapid(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE));
+				updateIsRapid(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE));
 			}
 			updateCurrentTickRate();
 		}
@@ -155,11 +167,12 @@ public class MetronomePlugin extends Plugin
 		{
 			curWeaponTickRate = 4;
 		}
+		config.setTickCount(curWeaponTickRate);
 	}
 
-	public weapontickrates getChargedWeaponFromId(int itemId)
+	public WeaponTickrates getChargedWeaponFromId(int itemId)
 	{
-		for (weapontickrates weapon : weapontickrates.values())
+		for (WeaponTickrates weapon : WeaponTickrates.values())
 		{
 			if (itemId == weapon.getItemId())
 			{
@@ -200,5 +213,37 @@ public class MetronomePlugin extends Plugin
 		}
 		tickCounter = 0;
 		shouldTock = false;
+	}
+
+	@Subscribe
+	public void onEquippedWeaponTypeChange(VarbitChanged event)
+	{
+		if (config.syncWithAttack() && client.getGameState() == GameState.LOGGED_IN && (client.getVar(VarPlayer.ATTACK_STYLE) != attackStyleVarbit || client.getVar(Varbits.EQUIPPED_WEAPON_TYPE) != equippedWeaponTypeVarbit))
+		{
+			updateAll();
+		}
+	}
+
+	@Subscribe
+	public void onAttackStyleChange(VarbitChanged event)
+	{
+		if (config.syncWithAttack() && client.getGameState() == GameState.LOGGED_IN && (client.getVar(VarPlayer.ATTACK_STYLE) != attackStyleVarbit || client.getVar(Varbits.EQUIPPED_WEAPON_TYPE) != equippedWeaponTypeVarbit))
+		{
+			updateAll();
+		}
+	}
+
+	private void updateAll()
+	{
+		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+		updateIsCasting(equippedWeaponTypeVarbit, attackStyleVarbit);
+
+		if (!isCasting)
+		{
+			updateIsRapid(equippedWeaponTypeVarbit, attackStyleVarbit);
+		}
+
+		updateCurrentTickRate();
 	}
 }

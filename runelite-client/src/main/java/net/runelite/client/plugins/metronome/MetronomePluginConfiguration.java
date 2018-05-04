@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
  * All rights reserved.
  *
@@ -46,6 +47,14 @@ public interface MetronomePluginConfiguration extends Config
 	{
 		return 1;
 	}
+
+	@ConfigItem(
+		keyName = "tickCount",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setTickCount(int newTickCount);
 
 	@ConfigItem(
 		keyName = "enableTock",

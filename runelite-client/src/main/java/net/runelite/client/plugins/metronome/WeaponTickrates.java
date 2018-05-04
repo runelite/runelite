@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
 @RequiredArgsConstructor
-public enum weapontickrates
+public enum WeaponTickrates
 {
 	_3RD_AGE_AXE(ItemID._3RD_AGE_AXE, 5),
 	_3RD_AGE_BOW(ItemID._3RD_AGE_BOW, 4),
