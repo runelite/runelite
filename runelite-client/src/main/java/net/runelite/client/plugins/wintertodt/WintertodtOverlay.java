@@ -35,11 +35,12 @@ public class WintertodtOverlay extends Overlay {
     @Override
     public Dimension render(Graphics2D graphics)
     {
-     safeFires = "";
-     downFires = "";
-     needReapir = "";
-     pyromancerHelp = "";
-     //Three Main UI pieces
+        //clears strings
+        safeFires = "";
+        downFires = "";
+        needReapir = "";
+        pyromancerHelp = "";
+        //Three Main UI pieces
         Widget wtOverlay = client.getWidget(WidgetInfo.WINTERTODT_BASE);
         Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
         Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
@@ -61,7 +62,7 @@ public class WintertodtOverlay extends Overlay {
                 Widget wtReturn = client.getWidget(WidgetInfo.WINTERTODT_RETURN);
                 wtReturn.setRelativeX(-195);
 
-                //Points and Energy with lots of checks for interface.
+                //Return
                 if(wtReturn.getText().contains(": "))
                 {
                     String returnSplitter[] = wtReturn.getText().split(": ");
@@ -73,6 +74,7 @@ public class WintertodtOverlay extends Overlay {
                     );
                 }
 
+                //Energy
                 if(wtEnergy.getText().contains(": "))
                 {
                     String energySplitter[] = wtEnergy.getText().split(": ");
@@ -84,6 +86,7 @@ public class WintertodtOverlay extends Overlay {
                     ));
                 }
 
+                //Points
                 if(wtPoints.getText().contains(("<br>")))
                 {
                     String pointSplitter[] = wtPoints.getText().split("<br>");
@@ -116,7 +119,7 @@ public class WintertodtOverlay extends Overlay {
                 else
                 {downFires += ", SE";}
 
-                //Pyros
+                //Pyromancers
                 if(wtSWP.getSpriteId() == 1400)
                 {pyromancerHelp += ", SW";}
                 if(wtNWP.getSpriteId() == 1400)
@@ -126,25 +129,27 @@ public class WintertodtOverlay extends Overlay {
                 if(wtSEP.getSpriteId() == 1400)
                 {pyromancerHelp += ", SE";}
 
-                //Adds the text and continues to render.
+                //Lit Fires
                 pnc.getLines().add(new PanelComponent.Line("Fires Lit:  ",
                         Color.WHITE,
                         safeFires.replaceFirst(", ", ""),
-                        Color.GREEN)
+                        config.highColor())
                 );
-
+                //Unlit Fires
                 pnc.getLines().add(new PanelComponent.Line("Fires Down: ",
                         Color.WHITE,
                         downFires.replaceFirst(", ", ""),
-                        Color.RED)
+                        config.lowColor())
                 );
 
+                //Pyromancers
                 pnc.getLines().add(new PanelComponent.Line("Pyros:  ",
                         Color.WHITE,
                         pyromancerHelp.replaceFirst(", ", ""),
-                        Color.RED)
+                        config.lowColor())
                 );
 
+                //Renders
                 pnc.setWidth(160);
                 pnc.render(graphics);
                 pnc.getLines().clear();
@@ -173,6 +178,6 @@ public class WintertodtOverlay extends Overlay {
         } else if(points > 60 && points <= 100){
             return config.highColor();
         }
-        return Color.BLACK;
+        return Color.WHITE;
     }
 }
