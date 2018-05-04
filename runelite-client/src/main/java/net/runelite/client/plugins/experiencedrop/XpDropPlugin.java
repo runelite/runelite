@@ -127,7 +127,8 @@ public class XpDropPlugin extends Plugin
 
 	private void resetTextColor(Widget widget)
 	{
-		if (config.overrideVanillaColor()){
+		if (config.overrideVanillaColor())
+		{
 			int defaultColor = config.getDefaultXpDrop().getRGB();
 			widget.setTextColor(defaultColor);
 		}
