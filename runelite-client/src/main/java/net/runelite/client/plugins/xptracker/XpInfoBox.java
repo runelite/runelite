@@ -49,6 +49,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -61,6 +62,7 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 class XpInfoBox extends JPanel
 {
 	private static final Rectangle ICON_BOUNDS = new Rectangle(0, 0, 26, 26);
+	@Getter
 	public final Skill skill;
 	private final Client client;
 	private final JPanel panel;
@@ -73,7 +75,8 @@ class XpInfoBox extends JPanel
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
-	public int addedOrder = -1;
+	@Getter
+	private int addedOrder = -1;
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, XpPanel xpPanel, Skill skill, SkillIconManager iconManager) throws IOException
 	{

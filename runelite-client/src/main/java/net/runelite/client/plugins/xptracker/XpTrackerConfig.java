@@ -41,7 +41,7 @@ public interface XpTrackerConfig extends Config
 		description = "Configures how to display the order of the skills in the XP Tracker",
 		position = 0
 	)
-	default SkillOrderType reorder()
+	default SkillOrderType skillOrder()
 	{
 		return SkillOrderType.LEAST_RECENT;
 	}

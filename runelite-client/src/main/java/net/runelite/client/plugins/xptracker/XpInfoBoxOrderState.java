@@ -27,13 +27,14 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.Component;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import lombok.Getter;
 
-public class XpInfoBoxOrderState
+class XpInfoBoxOrderState
 {
 	private XpTrackerConfig config;
 	@Getter
-	private LinkedList<XpInfoBox> infoBoxes;
+	private List<XpInfoBox> infoBoxes;
 	private XpInfoBox previousXpBox;
 
 	XpInfoBoxOrderState(XpTrackerConfig config)
@@ -41,19 +42,19 @@ public class XpInfoBoxOrderState
 		this.config = config;
 	}
 
-	void updateInfoBoxOrderState()
+	void reorderInfoBoxOrderState()
 	{
 		if (infoBoxes == null || previousXpBox == null)
 		{
 			return;
 		}
 
-		SkillOrderType skillOrderType = config.reorder();
+		SkillOrderType skillOrderType = config.skillOrder();
 
 		switch (skillOrderType)
 		{
 			case LEAST_RECENT:
-				infoBoxes.sort(Comparator.comparing(o -> o.addedOrder));
+				infoBoxes.sort(Comparator.comparing(XpInfoBox::getAddedOrder));
 				break;
 
 			case MOST_RECENT:
@@ -62,19 +63,19 @@ public class XpInfoBoxOrderState
 				if (newTopBoxIndex > 0)
 				{
 					XpInfoBox box = infoBoxes.remove(newTopBoxIndex);
-					infoBoxes.addFirst(box);
+					infoBoxes.add(0, box);
 				}
 				break;
 
 			case ALPHABETICAL:
-				infoBoxes.sort(Comparator.comparing(o -> o.skill.getName()));
+				infoBoxes.sort(Comparator.comparing(box -> box.getSkill().getName()));
 				break;
 		}
 	}
 
 	void setInfoBoxOrderState(XpInfoBox infoBox, Component[] oldBoxOrder)
 	{
-		LinkedList<XpInfoBox> boxes = new LinkedList<>();
+		List<XpInfoBox> boxes = new LinkedList<>();
 
 		for (Component component : oldBoxOrder)
 		{

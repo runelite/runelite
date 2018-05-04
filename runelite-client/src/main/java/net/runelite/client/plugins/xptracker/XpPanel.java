@@ -28,7 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -55,7 +55,7 @@ class XpPanel extends PluginPanel
 	private final JPanel infoBoxPanel = new JPanel();
 	private XpInfoBoxOrderState xpInfoBoxOrderState;
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager, XpTrackerConfig config, XpInfoBoxOrderState xpInfoBoxOrderState)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager, XpInfoBoxOrderState xpInfoBoxOrderState)
 	{
 		super();
 
@@ -172,14 +172,15 @@ class XpPanel extends PluginPanel
 
 	void renderInfoBoxOrder()
 	{
-		LinkedList<XpInfoBox> xpInfoBoxes = xpInfoBoxOrderState.getInfoBoxes();
+		List<XpInfoBox> xpInfoBoxes = xpInfoBoxOrderState.getInfoBoxes();
 
-		if (xpInfoBoxes == null)
+		if (xpInfoBoxes == null || infoBoxPanel.getComponentCount() < 1)
 		{
 			return;
 		}
 
 		xpInfoBoxes.forEach(infoBoxPanel::add);
+
 		infoBoxPanel.revalidate();
 		infoBoxPanel.repaint();
 	}
@@ -187,7 +188,7 @@ class XpPanel extends PluginPanel
 	void setInfoBoxOrder(XpInfoBox infoBox)
 	{
 		xpInfoBoxOrderState.setInfoBoxOrderState(infoBox, infoBoxPanel.getComponents());
-		xpInfoBoxOrderState.updateInfoBoxOrderState();
+		xpInfoBoxOrderState.reorderInfoBoxOrderState();
 		renderInfoBoxOrder();
 	}
 

@@ -117,7 +117,7 @@ public class XpTrackerPlugin extends Plugin
 		}
 
 		xpInfoBoxOrderState = new XpInfoBoxOrderState(config);
-		xpPanel = new XpPanel(this, client, skillIconManager, config, xpInfoBoxOrderState);
+		xpPanel = new XpPanel(this, client, skillIconManager, xpInfoBoxOrderState);
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
@@ -296,7 +296,7 @@ public class XpTrackerPlugin extends Plugin
 			return;
 		}
 
-		xpInfoBoxOrderState.updateInfoBoxOrderState();
+		xpInfoBoxOrderState.reorderInfoBoxOrderState();
 		xpPanel.renderInfoBoxOrder();
 	}
 
