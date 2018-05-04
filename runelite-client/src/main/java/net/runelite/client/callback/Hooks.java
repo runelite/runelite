@@ -64,6 +64,7 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
+import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
@@ -98,6 +99,7 @@ public class Hooks
 	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
 	private static final GameTick tick = new GameTick();
 	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
+	private static final Notifier notifier = injector.getInstance(Notifier.class);
 
 	private static Dimension lastStretchedDimensions;
 	private static BufferedImage stretchedImage;
@@ -266,6 +268,8 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+
+		notifier.processFlash(graphics2d);
 
 		// Stretch the game image if the user has that enabled
 		if (!client.isResized() && client.isStretchedEnabled())
