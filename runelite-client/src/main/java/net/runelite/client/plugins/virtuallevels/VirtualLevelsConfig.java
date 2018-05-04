@@ -59,6 +59,17 @@ public interface VirtualLevelsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
+		keyName = "orbs",
+		name = "Enable virtual levels on Xp Globes",
+		description = "Configures if the Xp Globes should go up to 126."
+	)
+	default boolean showOnSkillOrb()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 3,
 		keyName = "hiscoresPanel",
 		name = "Enable virtual levels on Hiscores",
