@@ -32,4 +32,10 @@ public interface RSWorldMapManager extends WorldMapManager
 	@Import("loaded")
 	@Override
 	boolean isLoaded();
+
+	@Import("mapSurfaceBaseOffsetX")
+	int getSurfaceOffsetX();
+
+	@Import("mapSurfaceBaseOffsetY")
+	int getSurfaceOffsetY();
 }
