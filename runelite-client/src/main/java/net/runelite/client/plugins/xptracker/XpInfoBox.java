@@ -87,7 +87,7 @@ class XpInfoBox extends JPanel
 		this.panel = panel;
 		this.skill = skill;
 
-        iconClick = e -> xpTrackerPlugin.resetSkillState(skill);
+		iconClick = e -> xpTrackerPlugin.resetSkillState(skill);
 
 		showInfo = !config.showMoreInfo();
 		resetIcon = !config.resetSkillViaIcon();
@@ -131,9 +131,9 @@ class XpInfoBox extends JPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
-		// Create reset
+		// Create reset menu
 		final JMenuItem resetButton = new JMenuItem("Reset skill");
-		resetButton.addActionListener(iconClick);
+		resetButton.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -197,15 +197,15 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.CENTER);
 	}
 
-    void reset()
-    {
-        if (!showInfo)
-        {
-            container.remove(statsPanel);
-        }
-        panel.remove(this);
-        panel.revalidate();
-    }
+	void reset()
+	{
+		if (!showInfo)
+		{
+			container.remove(statsPanel);
+		}
+		panel.remove(this);
+		panel.revalidate();
+	}
 
 	private void showStatsPanel(boolean state)
 	{
@@ -234,7 +234,7 @@ class XpInfoBox extends JPanel
 			resetIcon = config.resetSkillViaIcon();
 			if (resetIcon)
 			{
-                skillIcon.setToolTipText("Reset " + skill.getName() + " tracker");
+				skillIcon.setToolTipText("Reset " + skill.getName() + " tracker");
 				skillIcon.addActionListener(iconClick);
 			}
 			else
@@ -248,7 +248,7 @@ class XpInfoBox extends JPanel
 
 	private void rebuildAsync(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
-        if (updated)
+		if (updated)
 		{
 			if (getParent() != panel)
 			{
