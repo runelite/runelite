@@ -122,13 +122,21 @@ public class XpDropPlugin extends Plugin
 
 			widget.setTextColor(color);
 		}
+
 	}
 
 	private void resetTextColor(Widget widget)
 	{
-		int defaultColorIdx = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
-		int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
-		widget.setTextColor(defaultColor);
+		if (config.overrideVanillaColor()){
+			int defaultColor = config.getDefaultXpDrop().getRGB();
+			widget.setTextColor(defaultColor);
+		}
+		else {
+
+			int defaultColorIdx = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
+			int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
+			widget.setTextColor(defaultColor);
+		}
 	}
 
 	private PrayerType getActivePrayerType()
