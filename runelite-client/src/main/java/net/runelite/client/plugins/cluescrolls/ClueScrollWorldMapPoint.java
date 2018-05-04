@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,47 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-public class ClueScrollWorldOverlay extends Overlay
+class ClueScrollWorldMapPoint extends WorldMapPoint
 {
-	public static final int IMAGE_Z_OFFSET = 30;
+	private final BufferedImage worldMapImage;
+	private final Point imagePoint;
+	private final BufferedImage edgeSnapImage;
 
-	public static final Color CLICKBOX_BORDER_COLOR = Color.ORANGE;
-	public static final Color CLICKBOX_HOVER_BORDER_COLOR = CLICKBOX_BORDER_COLOR.darker();
-	public static final Color CLICKBOX_FILL_COLOR = new Color(0, 255, 0, 20);
-
-	private final ClueScrollPlugin plugin;
-
-	@Inject
-	public ClueScrollWorldOverlay(ClueScrollPlugin plugin)
+	ClueScrollWorldMapPoint()
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.plugin = plugin;
+		super(null, null);
+
+		this.setSnapToEdge(true);
+		this.setJumpOnClick(true);
+
+		worldMapImage = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = worldMapImage.getGraphics();
+		graphics.drawImage(ClueScrollPlugin.MAP_ARROW, 0, 0, null);
+		graphics.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0,  2, null);
+
+		imagePoint = new Point(worldMapImage.getWidth() / 2, worldMapImage.getHeight());
+		this.setImage(worldMapImage);
+		this.setImagePoint(imagePoint);
+
+		edgeSnapImage = ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void onEdgeSnap()
 	{
-		ClueScroll clue = plugin.getClue();
+		this.setImage(edgeSnapImage);
+		this.setImagePoint(null);
+	}
 
-		if (clue != null)
-		{
-			clue.makeWorldOverlayHint(graphics, plugin);
-		}
-
-		return null;
+	@Override
+	public void onEdgeUnsnap()
+	{
+		this.setImage(worldMapImage);
+		this.setImagePoint(imagePoint);
 	}
 }
