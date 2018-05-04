@@ -431,7 +431,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 								calledPoison = ItemID.POISONED_WORMS;
 								break;
 						}
-						System.out.println(target.equals(item));
 						if(target.equals(item))//if targeting the item itself
 						{
 							if(calledPoison != 0 && itemId != calledPoison)//if no call or chosen item is not the called one
