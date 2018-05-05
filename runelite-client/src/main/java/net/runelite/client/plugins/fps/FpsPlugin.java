@@ -94,6 +94,7 @@ public class FpsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		drawManager.registerEveryFrameListener(drawListener);
+		drawListener.reloadConfig();
 	}
 
 	@Override
