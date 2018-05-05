@@ -30,6 +30,7 @@ import net.runelite.api.Client;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -49,47 +50,38 @@ public class LightBoxSolverPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private ConfigManager configManager;
-
 	@Getter
 	private int count = 0;
 
 	@Getter
-	private int[] solution = new int[8];
+	private int[] solution = new int[LightBox.COMBINATIONS_POWER];
 
 	@Getter
 	private boolean solving = false;
 
-	private boolean[][] lightBox = new boolean[5][5];
-	private boolean[][][] lightBoxChanges = new boolean[8][5][5];
-	private final boolean[][] solvedState = new boolean[][]
-			{{true, true, true, true, true},
-			{true, true, true, true, true},
-			{true, true, true, true, true},
-			{true, true, true, true, true},
-			{true, true, true, true, true}};
+	private boolean[][] lightBoxState = new boolean[LightBox.WIDTH][LightBox.HEIGHT];
+	private boolean[][][] lightBoxChanges = new boolean[LightBox.COMBINATIONS_POWER][LightBox.WIDTH][LightBox.HEIGHT];
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getWidget(322, 3) != null)
+		if (client.getWidget(WidgetInfo.LIGHT_BOX) != null)
 		{
 			boolean changed = false;
-			boolean[][] tempLightBox = new boolean[5][5];
+			boolean[][] tempLightBox = new boolean[LightBox.WIDTH][LightBox.HEIGHT];
 
 			int index = 0;
-			for (Widget light : client.getWidget(322, 3).getDynamicChildren())
+			for (Widget light : client.getWidget(WidgetInfo.LIGHT_BOX).getDynamicChildren())
 			{
-				tempLightBox[index / 5][index % 5] = light.getItemId() == 20357;
+				tempLightBox[index / LightBox.WIDTH][index % LightBox.HEIGHT] = light.getItemId() == LightBox.LIGHT_BULB_ON;
 				index++;
 			}
 
-			for (int h = 0; h < 5; h++)
+			for (int h = 0; h < LightBox.WIDTH; h++)
 			{
-				for (int k = 0; k < 5; k++)
+				for (int k = 0; k < LightBox.HEIGHT; k++)
 				{
-					if (tempLightBox[h][k] != lightBox[h][k])
+					if (tempLightBox[h][k] != lightBoxState[h][k])
 					{
 						if (!solving)
 						{
@@ -102,7 +94,7 @@ public class LightBoxSolverPlugin extends Plugin
 
 			if (changed && !solving)
 			{
-				lightBox = deepCopy(tempLightBox);
+				lightBoxState = deepCopy(tempLightBox);
 
 				if (count < 7)
 				{
@@ -118,7 +110,7 @@ public class LightBoxSolverPlugin extends Plugin
 
 			if (changed && solving)
 			{
-				lightBox = deepCopy(tempLightBox);
+				lightBoxState = deepCopy(tempLightBox);
 				count++;
 			}
 		}
@@ -127,17 +119,17 @@ public class LightBoxSolverPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == 322)
+		if (event.getGroupId() == WidgetInfo.LIGHT_BOX.getGroupId())
 		{
 			int index = 0;
-			for (Widget light : client.getWidget(322, 3).getDynamicChildren())
+			for (Widget light : client.getWidget(WidgetInfo.LIGHT_BOX).getDynamicChildren())
 			{
-				lightBox[index / 5][index % 5] = light.getItemId() == 20357;
+				lightBoxState[index / LightBox.WIDTH][index % LightBox.HEIGHT] = light.getItemId() == LightBox.LIGHT_BULB_ON;
 				index++;
 			}
 			count = 0;
 			solving = false;
-			lightBoxChanges = new boolean[8][5][5];
+			lightBoxChanges = new boolean[LightBox.COMBINATIONS_POWER][LightBox.WIDTH][LightBox.HEIGHT];
 		}
 	}
 
@@ -149,7 +141,7 @@ public class LightBoxSolverPlugin extends Plugin
 
 		while (current[7] != 7)
 		{
-			tempLightBox = deepCopy(lightBox);
+			tempLightBox = deepCopy(lightBoxState);
 
 			while (current[currentCount] != -1)
 			{
@@ -162,7 +154,7 @@ public class LightBoxSolverPlugin extends Plugin
 			}
 
 			currentCount = 0;
-			if (Arrays.deepEquals(tempLightBox, solvedState))
+			if (Arrays.deepEquals(tempLightBox, LightBox.SOLVED_STATE))
 			{
 				break;
 			}
@@ -197,9 +189,9 @@ public class LightBoxSolverPlugin extends Plugin
 	private boolean[][] xor(int num, boolean[][] box)
 	{
 		boolean[][] tempLightBox = box.clone();
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < LightBox.WIDTH; i++)
 		{
-			for (int j = 0; j < 5; j++)
+			for (int j = 0; j < LightBox.HEIGHT; j++)
 			{
 				if (lightBoxChanges[num][i][j])
 				{

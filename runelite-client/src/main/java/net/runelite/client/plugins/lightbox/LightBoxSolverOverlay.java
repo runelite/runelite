@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.lightbox;
 
 import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -53,21 +55,28 @@ public class LightBoxSolverOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getWidget(322, 3) != null)
+		Widget lightBoxWindow = client.getWidget(WidgetInfo.LIGHT_BOX_WINDOW);
+
+		if (lightBoxWindow != null && !lightBoxWindow.isHidden())
 		{
 			if (!plugin.isSolving())
 			{
 				graphics.setColor(Color.ORANGE);
-				Rectangle childBounds = client.getWidget(322, plugin.getCount() + 8).getBounds();
+				Rectangle childBounds = client.getWidget(WidgetInfo.LIGHT_BOX.getGroupId(),
+						WidgetInfo.LIGHT_BOX_BUTTON_A.getChildId() + plugin.getCount()).getBounds();
 				graphics.draw(childBounds);
 			}
 			else if (plugin.getCount() > 0)
 			{
 				if (plugin.getSolution() != null)
 				{
-					graphics.setColor(Color.ORANGE);
-					Rectangle childBounds = client.getWidget(322, plugin.getSolution()[plugin.getCount() - 1] + 8).getBounds();
-					graphics.draw(childBounds);
+					if (plugin.getSolution()[plugin.getCount() - 1] != -1)
+					{
+						graphics.setColor(Color.ORANGE);
+						Rectangle childBounds = client.getWidget(WidgetInfo.LIGHT_BOX.getGroupId(),
+								WidgetInfo.LIGHT_BOX_BUTTON_A.getChildId() + plugin.getSolution()[plugin.getCount() - 1]).getBounds();
+						graphics.draw(childBounds);
+					}
 				}
 				else
 				{
@@ -75,8 +84,8 @@ public class LightBoxSolverOverlay extends Overlay
 					FontMetrics metrics = graphics.getFontMetrics();
 					String text = "Reopen the light box and try again";
 					graphics.drawString( text,
-							(int) (client.getWidget(322, 2).getBounds().getX() + (int) client.getWidget(322, 2).getBounds().getWidth() / 2 - metrics.stringWidth(text) / 2),
-							(int) client.getWidget(322, 2).getBounds().getY() + metrics.getHeight());
+							(int) lightBoxWindow.getBounds().getX() + (int) lightBoxWindow.getBounds().getWidth() / 2 - metrics.stringWidth(text) / 2,
+							(int) lightBoxWindow.getBounds().getY() + metrics.getHeight());
 				}
 			}
 		}
