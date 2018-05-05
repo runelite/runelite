@@ -32,6 +32,11 @@ class TaggedItems
 		itemIdList.remove(itemID);
 	}
 
+	public String getHexColor()
+	{
+		return String.format("%02x%02x%02x", overlayColor.getRed(), overlayColor.getGreen(), overlayColor.getBlue());
+	}
+
 	public void clearItem()
 	{
 		itemIdList.clear();

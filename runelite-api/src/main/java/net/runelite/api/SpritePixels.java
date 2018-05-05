@@ -51,4 +51,6 @@ public interface SpritePixels
 	 * Width and Height must match
  	 */
 	void toBufferedImage(BufferedImage img);
+
+	void setOutline(int outlineColor);
 }

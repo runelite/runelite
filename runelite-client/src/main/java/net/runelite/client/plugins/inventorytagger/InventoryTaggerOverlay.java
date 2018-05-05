@@ -1,21 +1,19 @@
 package net.runelite.client.plugins.inventorytagger;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Query;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
 
 public class InventoryTaggerOverlay extends Overlay
@@ -50,13 +48,13 @@ public class InventoryTaggerOverlay extends Overlay
 		{
 			final Rectangle bounds = item.getCanvasBounds();
 
-			for (TaggedItems tI: plugin.taggedItems)
+			for (Map.Entry<String, TaggedItems> tI: plugin.taggedItems.entrySet())
 			{
-				if (tI.containsItem(item.getId()))
+				if (tI.getValue().containsItem(item.getId()))
 				{
-					graphics.setColor(tI.overlayColor);
-					graphics.setStroke(new BasicStroke(3));
-					graphics.draw(bounds);
+					SpritePixels itemSprite = client.createItemSprite(item.getId(), item.getQuantity(), 1, tI.getValue().overlayColor.getRGB(), item.getQuantity() > 1 ? 1 : 0, true, 710);
+					itemSprite.setOutline(tI.getValue().overlayColor.getRGB());
+					itemSprite.drawAt(item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1);
 				}
 			}
 

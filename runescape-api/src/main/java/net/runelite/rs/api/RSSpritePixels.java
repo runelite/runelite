@@ -47,4 +47,7 @@ public interface RSSpritePixels extends SpritePixels
 
 	@Import("setRaster")
 	void setRaster();
+
+	@Import("setOutline")
+	void setOutline(int outlineColor);
 }

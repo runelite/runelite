@@ -107,11 +107,11 @@ final class class2 implements class0 {
          }
 
          if(var2 >= 1) {
-            var8.method5913(1);
+            var8.setOutline(1);
          }
 
          if(var2 >= 2) {
-            var8.method5913(16777215);
+            var8.setOutline(16777215);
          }
 
          if(var3 != 0) {

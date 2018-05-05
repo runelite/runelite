@@ -1243,11 +1243,11 @@ public class Widget extends Node {
                }
 
                if(this.borderThickness >= 1) {
-                  var5.method5913(1);
+                  var5.setOutline(1);
                }
 
                if(this.borderThickness >= 2) {
-                  var5.method5913(16777215);
+                  var5.setOutline(16777215);
                }
 
                if(this.sprite2 != 0) {
