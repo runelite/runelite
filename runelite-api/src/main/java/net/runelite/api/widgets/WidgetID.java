@@ -75,6 +75,7 @@ public class WidgetID
 	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
+	public static final int LIGHT_BOX_GROUP_ID = 322;
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
 	public static final int BLAST_FURNACE_GROUP_ID = 474;
 	public static final int WORLD_MAP_GROUP_ID = 595;
@@ -447,6 +448,13 @@ public class WidgetID
 	static class PuzzleBox
 	{
 		static final int VISIBLE_BOX = 4;
+	}
+
+	static class LightBox
+	{
+		static final int LIGHT_BOX_WINDOW = 2;
+		static final int LIGHT_BULB_CONTAINER = 3;
+		static final int BUTTON_A = 8;
 	}
 
 	static class DialogSprite
