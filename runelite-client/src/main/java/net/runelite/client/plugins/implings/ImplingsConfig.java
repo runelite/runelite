@@ -326,15 +326,4 @@ public interface ImplingsConfig extends Config
 	{
 		return Color.RED;
 	}
-
-	@ConfigItem(
-			position = 27,
-			keyName = "hiddenSpawns",
-			name = "Hide puro puro spawns",
-			description = "Configure which spawns should be hidden in puro puro minigame"
-	)
-	default String getHiddenSpawns()
-	{
-		return "Baby,Young";
-	}
 }

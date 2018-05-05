@@ -27,7 +27,10 @@ package net.runelite.client.plugins.implings;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
-
+/**
+ *
+ * @author Juzzed
+ */
 public class ImplingPuroPuroSpawn
 {
 	public static Map<WorldPoint, String> getSpawns()

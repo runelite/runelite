@@ -24,13 +24,19 @@
  */
 package net.runelite.client.plugins.implings;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
-
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Point;
+import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -88,7 +94,16 @@ public class ImplingsOverlay extends Overlay
 
 			for (Map.Entry<WorldPoint, String>  staticSpawn : staticPoints.entrySet())
 			{
-				if (plugin.getHideSpawns() == null || !plugin.getHideSpawns().contains(staticSpawn.getValue().toLowerCase()))
+				Boolean show = true;
+				switch (staticSpawn.getValue())
+				{
+					case "Baby" :  show = config.showBaby();break;
+					case "Young" :  show = config.showYoung();break;
+					case "Gourmet" :  show = config.showGourmet();break;
+					case "Earth" :  show = config.showEarth();break;
+					case "Eclectic" :  show = config.showEclectic();break;
+				}
+				if (show)
 				{
 					drawStaticSpawn(graphics, staticSpawn.getKey(), staticSpawn.getValue(), config.getStaticSpawnColor());
 				}

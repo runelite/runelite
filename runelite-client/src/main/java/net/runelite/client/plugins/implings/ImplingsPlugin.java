@@ -181,16 +181,10 @@ public class ImplingsPlugin extends Plugin
 		}
 		if (config.showSpawn())
 		{
-			UpdateList();
 			dynamicSpawns.put(DYNAMIC_SPAWN_NATURE_DRAGON, "T3 Nature-Lucky Dynamic");
 			dynamicSpawns.put(DYNAMIC_SPAWN_ECLECTIC, "T2 Eclectic Dynamic");
 			dynamicSpawns.put(DYNAMIC_SPAWN_BABY_ESSENCE, "T1 Baby-Essence Dynamic");
 			staticSpawns = ImplingPuroPuroSpawn.getSpawns();
 		}
-	}
-	private void UpdateList()
-	{
-		String toHide = config.getHiddenSpawns().toLowerCase();
-		hideSpawns = Arrays.asList(toHide.split("\\s*,\\s*"));
 	}
 }
