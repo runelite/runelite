@@ -77,4 +77,12 @@ public class ProjectileID
 	public static final int VORKATH_PRAYER_DISABLE = 1471;
 	public static final int VORKATH_VENOM = 1470;
 	public static final int VORKATH_ICE = 350;
+
+	public static final int BRONZE_DART = 226;
+	public static final int IRON_DART = 227;
+	public static final int STEEL_DART = 228;
+	public static final int MITHRIL_DART = 229;
+	public static final int ADAMANT_DART = 230;
+	public static final int RUNE_DART = 231;
+	public static final int DRAGON_DART = 1122;
 }

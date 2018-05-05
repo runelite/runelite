@@ -24,13 +24,30 @@
  */
 package net.runelite.client.plugins.blowpipetracker;
 
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-import java.awt.*;
+@ConfigGroup(
+		keyName = "blowpipetracker",
+		name = "Blowpipe Tracker",
+		description = "Configuration for the blowpipe tracker plugin"
+)
+public interface BlowPipeTrackerConfig extends Config
+{
+	@ConfigItem(
+			position = 1,
+			keyName = "showdarts",
+			name = "Show Darts",
+			description = "Display number of darts in an InfoBox"
+	)
+	default boolean showDarts() { return true; }
 
-public class BlowPipeTrackerOverlay extends Overlay {
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        return null;
-    }
+	@ConfigItem(
+			position = 2,
+			keyName = "showscales",
+			name = "Show Scales",
+			description = "Display number of scales in an InfoBox"
+	)
+	default boolean showScales() { return true; }
 }
