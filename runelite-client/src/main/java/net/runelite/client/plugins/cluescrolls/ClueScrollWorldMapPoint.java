@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.plugins.cluescrolls;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-public class ScreenshotInput implements KeyListener
+class ClueScrollWorldMapPoint extends WorldMapPoint
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	private final BufferedImage worldMapImage;
+	private final Point imagePoint;
+	private final BufferedImage edgeSnapImage;
 
-	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	ClueScrollWorldMapPoint()
 	{
-		this.config = config;
-		this.plugin = plugin;
+		super(null, null);
+
+		this.setSnapToEdge(true);
+		this.setJumpOnClick(true);
+
+		worldMapImage = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = worldMapImage.getGraphics();
+		graphics.drawImage(ClueScrollPlugin.MAP_ARROW, 0, 0, null);
+		graphics.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0,  2, null);
+
+		imagePoint = new Point(worldMapImage.getWidth() / 2, worldMapImage.getHeight());
+		this.setImage(worldMapImage);
+		this.setImagePoint(imagePoint);
+
+		edgeSnapImage = ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event)
+	public void onEdgeSnap()
 	{
+		this.setImage(edgeSnapImage);
+		this.setImagePoint(null);
 	}
 
 	@Override
-	public void keyTyped(KeyEvent event)
+	public void onEdgeUnsnap()
 	{
+		this.setImage(worldMapImage);
+		this.setImagePoint(imagePoint);
 	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
-		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
-		}
-	}
-
 }

@@ -346,8 +346,8 @@ public class RenderOverview {
    )
    public void method6068(int var1, int var2, boolean var3, int var4, int var5, int var6, int var7) {
       if(this.field4024.method6053()) {
-         this.method6071();
-         this.method6072();
+         this.moveTowardZoomTarget();
+         this.moveTowardLocationTarget();
          if(var3) {
             int var8 = (int)Math.ceil((double)((float)var6 / this.worldMapZoom));
             int var9 = (int)Math.ceil((double)((float)var7 / this.worldMapZoom));
@@ -461,7 +461,8 @@ public class RenderOverview {
       signature = "(B)V",
       garbageValue = "4"
    )
-   void method6071() {
+   @Export("moveTowardZoomTarget")
+   void moveTowardZoomTarget() {
       if(class19.field326 != null) {
          this.worldMapZoom = this.worldMapZoomTarget;
       } else {
@@ -481,7 +482,8 @@ public class RenderOverview {
       signature = "(B)V",
       garbageValue = "-76"
    )
-   void method6072() {
+   @Export("moveTowardLocationTarget")
+   void moveTowardLocationTarget() {
       if(this.hasTargetPosition()) {
          int var1 = this.worldMapTargetX - this.worldMapX;
          int var2 = this.worldMapTargetY - this.worldMapY;
@@ -693,14 +695,14 @@ public class RenderOverview {
       garbageValue = "4171"
    )
    @Export("extractWorldmap")
-   public void extractWorldmap(int var1, int var2, int var3, int var4, int var5) {
+   public void extractWorldmap(int graphicsX, int graphicsY, int width, int height, int gameCycle) {
       int[] var6 = new int[4];
       Rasterizer2D.copyDrawRegion(var6);
-      Rasterizer2D.setDrawRegion(var1, var2, var3 + var1, var2 + var4);
-      Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
+      Rasterizer2D.setDrawRegion(graphicsX, graphicsY, width + graphicsX, graphicsY + height);
+      Rasterizer2D.Rasterizer2D_fillRectangle(graphicsX, graphicsY, width, height, -16777216);
       int var7 = this.field4024.method6051();
       if(var7 < 100) {
-         this.method6090(var1, var2, var3, var4, var7);
+         this.method6090(graphicsX, graphicsY, width, height, var7);
       } else {
          if(!this.worldMapManager.getLoaded()) {
             this.worldMapManager.load(this.field4012, this.worldMapData.getIdentifier(), Client.isMembers);
@@ -721,21 +723,21 @@ public class RenderOverview {
             }
          }
 
-         int var8 = (int)Math.ceil((double)((float)var3 / this.worldMapZoom));
-         int var9 = (int)Math.ceil((double)((float)var4 / this.worldMapZoom));
-         this.worldMapManager.drawMapRegion(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, var1, var2, var3 + var1, var2 + var4);
+         int var8 = (int)Math.ceil((double)((float)width / this.worldMapZoom));
+         int var9 = (int)Math.ceil((double)((float)height / this.worldMapZoom));
+         this.worldMapManager.drawMapRegion(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, graphicsX, graphicsY, width + graphicsX, graphicsY + height);
          boolean var10;
          if(!this.field4065) {
             var10 = false;
-            if(var5 - this.field4054 > 100) {
-               this.field4054 = var5;
+            if(gameCycle - this.field4054 > 100) {
+               this.field4054 = gameCycle;
                var10 = true;
             }
 
-            this.worldMapManager.drawMapIcons(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, var1, var2, var3 + var1, var2 + var4, this.field4052, this.field4038, this.field4060, this.field4036, var10);
+            this.worldMapManager.drawMapIcons(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, graphicsX, graphicsY, width + graphicsX, graphicsY + height, this.field4052, this.field4038, this.field4060, this.field4036, var10);
          }
 
-         this.method6087(var1, var2, var3, var4, var8, var9);
+         this.method6087(graphicsX, graphicsY, width, height, var8, var9);
          var10 = Client.rights >= 2;
          if(var10 && this.field4011 && this.field4059 != null) {
             this.field4055.method5630("Coord: " + this.field4059, Rasterizer2D.draw_region_x + 10, Rasterizer2D.drawingAreaTop + 20, 16776960, -1);
@@ -743,8 +745,8 @@ public class RenderOverview {
 
          this.worldMapDisplayWidth = var8;
          this.worldMapDisplayHeight = var9;
-         this.worldMapDisplayX = var1;
-         this.worldMapDisplayY = var2;
+         this.worldMapDisplayX = graphicsX;
+         this.worldMapDisplayY = graphicsY;
          Rasterizer2D.setDrawRegion(var6);
       }
    }

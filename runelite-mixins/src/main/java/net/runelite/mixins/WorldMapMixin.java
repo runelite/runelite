@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.mixins;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSRenderOverview;
+import net.runelite.rs.api.RSWorldMapManager;
 
-public class ScreenshotInput implements KeyListener
+@Mixin(RSRenderOverview.class)
+public abstract class WorldMapMixin implements RSRenderOverview
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	@Override
+	@Inject
+	public Point getWorldMapPosition()
+	{
+		RSWorldMapManager worldMapManager = getWorldMapManager();
+		int worldX = getWorldMapX() + worldMapManager.getSurfaceOffsetX();
+		int worldY = getWorldMapY() + worldMapManager.getSurfaceOffsetY();
+		return new Point(worldX, worldY);
+	}
 
 	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	public void setWorldMapPositionTarget(WorldPoint worldPoint)
 	{
-		this.config = config;
-		this.plugin = plugin;
-	}
-
-	@Override
-	public void keyPressed(KeyEvent event)
-	{
-	}
-
-	@Override
-	public void keyTyped(KeyEvent event)
-	{
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
-		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
-		}
+		setWorldMapPositionTarget(worldPoint.getX(), worldPoint.getY());
 	}
 
 }

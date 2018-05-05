@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.ui.overlay.worldmap;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import lombok.Data;
+import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 
-public class ScreenshotInput implements KeyListener
+@Data
+public class WorldMapPoint
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	private BufferedImage image;
 
-	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	private WorldPoint worldPoint;
+
+	/**
+	 * The point on the image that will be drawn at WorldPoint
+	 * WorldMapPointManager will center the image if imagePoint is null
+	 */
+	private Point imagePoint;
+
+	private Rectangle clickbox;
+
+	private boolean snapToEdge;
+
+	private boolean currentlyEdgeSnapped;
+
+	/**
+	 * Whether or not the map jumps to worldPoint when the overlay is clicked
+	 */
+	private boolean jumpOnClick;
+
+	private boolean tooltipVisible;
+
+	private String tooltip;
+
+	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
 	{
-		this.config = config;
-		this.plugin = plugin;
+		this.worldPoint = worldPoint;
+		this.image = image;
 	}
 
-	@Override
-	public void keyPressed(KeyEvent event)
+	public MouseEvent onClick(MouseEvent e)
+	{
+		return e;
+	}
+
+	public void onEdgeSnap()
 	{
 	}
 
-	@Override
-	public void keyTyped(KeyEvent event)
+	public void onEdgeUnsnap()
 	{
 	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
-		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
-		}
-	}
-
 }

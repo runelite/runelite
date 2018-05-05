@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.rs.api;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import net.runelite.api.GraphicsObject;
+import net.runelite.mapping.Import;
 
-public class ScreenshotInput implements KeyListener
+public interface RSGraphicsObject extends GraphicsObject, RSRenderable
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
-
-	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
-	{
-		this.config = config;
-		this.plugin = plugin;
-	}
-
+	@Import("id")
 	@Override
-	public void keyPressed(KeyEvent event)
-	{
-	}
+	int getId();
 
+	@Import("x")
+	int getX();
+
+	@Import("y")
+	int getY();
+
+	@Import("startCycle")
 	@Override
-	public void keyTyped(KeyEvent event)
-	{
-	}
+	int getStartCycle();
 
+	@Import("level")
 	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
+	int getLevel();
 
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
-		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
-		}
-	}
-
+	@Import("height")
+	@Override
+	int getHeight();
 }
