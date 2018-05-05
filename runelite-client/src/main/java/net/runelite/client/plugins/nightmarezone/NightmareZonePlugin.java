@@ -71,8 +71,13 @@ public class NightmareZonePlugin extends Plugin
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
 
+	// This starts as true since you need to
+	// drink an overload before sending notifications
 	private boolean overloadNotificationSend = true;
-	private boolean flag = false;
+
+	// Becomes true once the first overload damage
+	// animation is triggered
+	private boolean animationFlag = false;
 
 	@Override
 	protected void shutDown()
@@ -187,18 +192,17 @@ public class NightmareZonePlugin extends Plugin
 		}
 	}
 
+
 	private void checkOverloadTimer()
 	{
 		final Player local = client.getLocalPlayer();
+		int warningTime = config.overloadWarningTime();
+		int timeToWait = (300 - warningTime);
 
-		// This is the time in seconds to wait
-		// before the notification is sent
-		int timeToWait = (300 - config.overloadWarningWindow());
-
-		if (local.getAnimation() == (AnimationID.OVERLOAD_DAMAGE) && flag == false)
+		if (local.getAnimation() == (AnimationID.OVERLOAD_DAMAGE) && animationFlag == false)
 		{
 			firstAnimTime = Instant.now();
-			flag = true;
+			animationFlag = true;
 		}
 		if (firstAnimTime != null)
 		{
@@ -206,7 +210,7 @@ public class NightmareZonePlugin extends Plugin
 			{
 				if (Duration.between(firstAnimTime, Instant.now()).getSeconds() >= timeToWait)
 				{
-					notifier.notify("[" + local.getName() + "]'s overload expires in " + config.overloadWarningWindow() + " seconds!");
+					notifier.notify("[" + local.getName() + "]'s overload expires in " + warningTime + " seconds!");
 					overloadNotificationSend = true;
 				}
 			}

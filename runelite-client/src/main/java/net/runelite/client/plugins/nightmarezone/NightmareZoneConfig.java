@@ -108,7 +108,7 @@ public interface NightmareZoneConfig extends Config
 			description = "Time before overload expires to send a notification at",
 			position = 7
 	)
-	default int overloadWarningWindow()
+	default int overloadWarningTime()
 	{
 		return 15;
 	}
