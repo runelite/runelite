@@ -83,10 +83,10 @@ public class InventoryTaggerPlugin extends Plugin
 		//testing
 		TaggedItems tItem;
 
-		taggedItems.put(SETNAME_MELE, new TaggedItems(SETNAME_MELE, new Color(255, 0, 0, 50)));
-		taggedItems.put(SETNAME_RANGE, new TaggedItems(SETNAME_RANGE, new Color(0, 255, 0, 50)));
-		taggedItems.put(SETNAME_MAGE, new TaggedItems(SETNAME_MAGE, new Color(0, 0, 255, 50)));
-		taggedItems.put(SETNAME_OTHER, new TaggedItems(SETNAME_OTHER, new Color(255, 255, 0, 50)));
+		taggedItems.put(SETNAME_MELE, new TaggedItems(SETNAME_MELE, new Color(255, 0, 0, 255)));
+		taggedItems.put(SETNAME_RANGE, new TaggedItems(SETNAME_RANGE, new Color(0, 255, 0, 252)));
+		taggedItems.put(SETNAME_MAGE, new TaggedItems(SETNAME_MAGE, new Color(0, 0, 255, 255)));
+		taggedItems.put(SETNAME_OTHER, new TaggedItems(SETNAME_OTHER, new Color(255, 255, 0, 255)));
 	}
 
 	@Subscribe
