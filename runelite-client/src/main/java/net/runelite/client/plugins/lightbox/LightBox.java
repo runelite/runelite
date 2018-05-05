@@ -26,13 +26,13 @@ package net.runelite.client.plugins.lightbox;
 
 public class LightBox
 {
-    public static final int WIDTH = 5, HEIGHT = 5;
-    public static final int COMBINATIONS_POWER = 8;
-    public static final int LIGHT_BULB_ON = 20357;
-    public static final boolean[][] SOLVED_STATE = new boolean[][]
-            {{true, true, true, true, true},
-            {true, true, true, true, true},
-            {true, true, true, true, true},
-            {true, true, true, true, true},
-            {true, true, true, true, true}};
+	public static final int WIDTH = 5, HEIGHT = 5;
+	public static final int COMBINATIONS_POWER = 8;
+	public static final int LIGHT_BULB_ON = 20357;
+	public static final boolean[][] SOLVED_STATE = new boolean[][]
+		{{true, true, true, true, true},
+		{true, true, true, true, true},
+		{true, true, true, true, true},
+		{true, true, true, true, true},
+		{true, true, true, true, true}};
 }
