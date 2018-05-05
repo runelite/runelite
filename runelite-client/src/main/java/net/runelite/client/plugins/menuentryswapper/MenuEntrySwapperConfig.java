@@ -91,10 +91,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "swapExchange",
-			name = "Exchange",
-			description = "Swap Talk-to with Dream on Dominic Onion"
+		position = 5,
+		keyName = "swapExchange",
+		name = "Exchange",
+		description = "Swap Talk-to with Dream on Dominic Onion"
 	)
 	default boolean swapDream()
 	{
