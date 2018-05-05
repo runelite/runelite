@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.plugins.specialcounter;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class ScreenshotInput implements KeyListener
+public class SpecialCounter extends Counter
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
+	private int hitValue;
+	private SpecialWeapon weapon;
 
-	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	public SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
 	{
-		this.config = config;
-		this.plugin = plugin;
+		super(image, plugin, null);
+		this.weapon = weapon;
+		this.hitValue = hitValue;
+	}
+
+	public void addHits(double hit)
+	{
+		this.hitValue += hit;
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event)
+	public String getText()
 	{
+		return Integer.toString(hitValue);
 	}
 
 	@Override
-	public void keyTyped(KeyEvent event)
+	public String getTooltip()
 	{
-	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
+		if (!weapon.isDamage())
 		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
+			if (hitValue == 1)
+			{
+				return weapon.getName() + " special has hit " + hitValue + " time.";
+			}
+			else
+			{
+				return weapon.getName() + " special has hit " + hitValue + " times.";
+			}
+		}
+		else
+		{
+			return weapon.getName() + " special has hit " + hitValue + " total.";
 		}
 	}
-
 }

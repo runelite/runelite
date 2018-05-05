@@ -26,4 +26,5 @@ package net.runelite.api;
 
 public interface WorldMapData
 {
+	boolean surfaceContainsPosition(int x, int y);
 }
