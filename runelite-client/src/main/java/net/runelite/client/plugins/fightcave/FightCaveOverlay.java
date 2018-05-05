@@ -30,6 +30,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImagePanelComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -38,6 +40,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class FightCaveOverlay extends Overlay
@@ -65,17 +70,70 @@ public class FightCaveOverlay extends Overlay
 		JadAttack attack = plugin.getAttack();
 		if (attack == null)
 		{
-			return null;
+			int wave = plugin.getWave();
+			if (wave == 0)
+			{
+				return null;
+			}
+			int[] enemies = plugin.getEnemies(wave);
+			if (enemies.length > 0)
+			{
+				Map<Integer, Integer> numberOfEnemies = new HashMap<>();
+				for (int i = 0; i < enemies.length; i++)
+				{
+					if (numberOfEnemies.containsKey(enemies [i]))
+					{
+						numberOfEnemies.put(enemies[i], numberOfEnemies.get(enemies[i]) + 1);
+					}
+					else
+					{
+						numberOfEnemies.put(enemies[i], 1);
+					}
+				}
+				PanelComponent waveInfo = new PanelComponent();
+				waveInfo.setTitle("Current Wave: " + Integer.toString(wave));
+				List<PanelComponent.Line> lines = waveInfo.getLines();
+
+				if (numberOfEnemies.containsKey(360))
+				{
+					lines.add(new PanelComponent.Line("360 Mage: ", Integer.toString(numberOfEnemies.get(360))));
+				}
+				if (numberOfEnemies.containsKey(180))
+				{
+					lines.add(new PanelComponent.Line("180 Melee: ", Integer.toString(numberOfEnemies.get(180))));
+				}
+				if (numberOfEnemies.containsKey(90))
+				{
+					lines.add(new PanelComponent.Line("90 Ranger: ", Integer.toString(numberOfEnemies.get(90))));
+				}
+				if (numberOfEnemies.containsKey(45))
+				{
+					lines.add(new PanelComponent.Line("45 Melee: ", Integer.toString(numberOfEnemies.get(45))));
+				}
+				if (numberOfEnemies.containsKey(22))
+				{
+					lines.add(new PanelComponent.Line("22 Melee: ", Integer.toString(numberOfEnemies.get(22))));
+				}
+
+				return waveInfo.render(graphics);
+			}
+			else
+			{
+				return null;
+			}
 		}
-		BufferedImage prayerImage = getPrayerImage(attack);
-		ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
-		imagePanelComponent.setTitle("TzTok-Jad");
-		imagePanelComponent.getImages().add(prayerImage);
-		if (!client.isPrayerActive(attack.getPrayer()))
+		else
 		{
-			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
+			BufferedImage prayerImage = getPrayerImage(attack);
+			ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
+			imagePanelComponent.setTitle("TzTok-Jad");
+			imagePanelComponent.getImages().add(prayerImage);
+			if (!client.isPrayerActive(attack.getPrayer()))
+			{
+				imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
+			}
+			return imagePanelComponent.render(graphics);
 		}
-		return imagePanelComponent.render(graphics);
 	}
 
 	private BufferedImage getPrayerImage(JadAttack attack)
