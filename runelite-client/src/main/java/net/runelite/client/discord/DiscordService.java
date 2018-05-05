@@ -129,7 +129,7 @@ public class DiscordService implements AutoCloseable
 		discordRichPresence.largeImageText = discordPresence.getLargeImageText();
 		discordRichPresence.smallImageKey = Strings.isNullOrEmpty(discordPresence.getSmallImageKey())
 			? "default"
-			: discordPresence.getLargeImageKey();
+			: discordPresence.getSmallImageKey();
 		discordRichPresence.smallImageText = discordPresence.getSmallImageText();
 		discordRichPresence.partyId = discordPresence.getPartyId();
 		discordRichPresence.partySize = discordPresence.getPartySize();

@@ -35,10 +35,15 @@ import net.runelite.http.api.updatecheck.UpdateCheckClient;
 @Slf4j
 public class ClientLoader
 {
-	public Optional<Applet> loadRs()
+	public Optional<Applet> loadRs(boolean disableUpdateCheck)
 	{
-		final UpdateCheckClient updateCheck = new UpdateCheckClient();
-		boolean isOutdated = updateCheck.isOutdated();
+		boolean isOutdated = false;
+
+		if (!disableUpdateCheck)
+		{
+			final UpdateCheckClient updateCheck = new UpdateCheckClient();
+			isOutdated = updateCheck.isOutdated();
+		}
 
 		try
 		{

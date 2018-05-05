@@ -24,9 +24,10 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.CollisionData;
 import net.runelite.mapping.Import;
 
-public interface RSCollisionData
+public interface RSCollisionData extends CollisionData
 {
 	@Import("flags")
 	int[][] getFlags();

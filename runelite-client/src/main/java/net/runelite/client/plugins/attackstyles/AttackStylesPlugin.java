@@ -35,7 +35,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Setting;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
@@ -100,9 +100,9 @@ public class AttackStylesPlugin extends Plugin
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 			updateAttackStyle(
-				client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE),
-				client.getSetting(Setting.ATTACK_STYLE),
-				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
+				client.getVar(Varbits.EQUIPPED_WEAPON_TYPE),
+				client.getVar(VarPlayer.ATTACK_STYLE),
+				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
 			processWidgets();
 		}
@@ -173,11 +173,11 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onAttackStyleChange(VarbitChanged event)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getSetting(Setting.ATTACK_STYLE))
+		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
 		{
-			attackStyleVarbit = client.getSetting(Setting.ATTACK_STYLE);
-			updateAttackStyle(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
+			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
+				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
 		}
 	}
@@ -185,11 +185,11 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onEquippedWeaponTypeChange(VarbitChanged event)
 	{
-		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE))
+		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
-			equippedWeaponTypeVarbit = client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getSetting(Setting.ATTACK_STYLE),
-				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
+			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
+				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(true);
 		}
 	}
@@ -197,10 +197,10 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onCastingModeChange(VarbitChanged event)
 	{
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getSetting(Varbits.DEFENSIVE_CASTING_MODE))
+		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
 		{
-			castingModeVarbit = client.getSetting(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE),
+			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
+			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
 				castingModeVarbit);
 			updateWarning(false);
 		}

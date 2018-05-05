@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.discord;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
@@ -62,32 +62,34 @@ public enum DiscordGameEventType
 {
 	IN_GAME("In Game", false),
 	IN_MENU("In Menu", false),
-	TRAINING_ATTACK(training(ATTACK), DiscordGameEventType::combatSkillChanged),
-	TRAINING_DEFENCE(training(DEFENCE), DiscordGameEventType::combatSkillChanged),
-	TRAINING_STRENGTH(training(STRENGTH), DiscordGameEventType::combatSkillChanged),
-	TRAINING_HITPOINTS(training(HITPOINTS), DiscordGameEventType::combatSkillChanged),
-	TRAINING_SLAYER(training(SLAYER), 1, DiscordGameEventType::combatSkillChanged),
-	TRAINING_RANGED(training(RANGED), DiscordGameEventType::combatSkillChanged),
-	TRAINING_MAGIC(training(MAGIC), DiscordGameEventType::combatSkillChanged),
-	TRAINING_PRAYER(training(PRAYER)),
-	TRAINING_COOKING(training(COOKING)),
-	TRAINING_WOODCUTTING(training(WOODCUTTING)),
-	TRAINING_FLETCHING(training(FLETCHING)),
-	TRAINING_FISHING(training(FISHING)),
-	TRAINING_FIREMAKING(training(FIREMAKING)),
-	TRAINING_CRAFTING(training(CRAFTING)),
-	TRAINING_SMITHING(training(SMITHING)),
-	TRAINING_MINING(training(MINING)),
-	TRAINING_HERBLORE(training(HERBLORE)),
-	TRAINING_AGILITY(training(AGILITY)),
-	TRAINING_THIEVING(training(THIEVING)),
-	TRAINING_FARMING(training(FARMING)),
-	TRAINING_RUNECRAFT(training(RUNECRAFT)),
-	TRAINING_HUNTER(training(HUNTER)),
-	TRAINING_CONSTRUCTION(training(CONSTRUCTION));
+	TRAINING_ATTACK(ATTACK, DiscordGameEventType::combatSkillChanged),
+	TRAINING_DEFENCE(DEFENCE, DiscordGameEventType::combatSkillChanged),
+	TRAINING_STRENGTH(STRENGTH, DiscordGameEventType::combatSkillChanged),
+	TRAINING_HITPOINTS(HITPOINTS, DiscordGameEventType::combatSkillChanged),
+	TRAINING_SLAYER(SLAYER, 1, DiscordGameEventType::combatSkillChanged),
+	TRAINING_RANGED(RANGED, DiscordGameEventType::combatSkillChanged),
+	TRAINING_MAGIC(MAGIC, DiscordGameEventType::combatSkillChanged),
+	TRAINING_PRAYER(PRAYER),
+	TRAINING_COOKING(COOKING),
+	TRAINING_WOODCUTTING(WOODCUTTING),
+	TRAINING_FLETCHING(FLETCHING),
+	TRAINING_FISHING(FISHING),
+	TRAINING_FIREMAKING(FIREMAKING),
+	TRAINING_CRAFTING(CRAFTING),
+	TRAINING_SMITHING(SMITHING),
+	TRAINING_MINING(MINING),
+	TRAINING_HERBLORE(HERBLORE),
+	TRAINING_AGILITY(AGILITY),
+	TRAINING_THIEVING(THIEVING),
+	TRAINING_FARMING(FARMING),
+	TRAINING_RUNECRAFT(RUNECRAFT),
+	TRAINING_HUNTER(HUNTER),
+	TRAINING_CONSTRUCTION(CONSTRUCTION);
 
-	private static final Set<Skill> COMBAT_SKILLS = Sets.newHashSet(ATTACK, STRENGTH, DEFENCE, HITPOINTS, SLAYER, RANGED, MAGIC);
+	private static final Set<Skill> COMBAT_SKILLS = ImmutableSet.of(ATTACK, STRENGTH, DEFENCE, HITPOINTS, SLAYER, RANGED, MAGIC);
+
 	private final String state;
+	private final String imageKey;
 	private String details;
 	private boolean considerDelay = true;
 	private Function<DiscordGameEventType, Boolean> isChanged = (l) -> true;
@@ -96,20 +98,29 @@ public enum DiscordGameEventType
 	DiscordGameEventType(String state, boolean considerDelay)
 	{
 		this.state = state;
+		this.imageKey = "default";
 		this.considerDelay = considerDelay;
 	}
 
-	DiscordGameEventType(String state, int priority, Function<DiscordGameEventType, Boolean> isChanged)
+	DiscordGameEventType(Skill skill, int priority, Function<DiscordGameEventType, Boolean> isChanged)
 	{
-		this.state = state;
+		this.state = training(skill);
+		this.imageKey = imageKeyOf(skill);
 		this.priority = priority;
 		this.isChanged = isChanged;
 	}
 
-	DiscordGameEventType(String state, Function<DiscordGameEventType, Boolean> isChanged)
+	DiscordGameEventType(Skill skill, Function<DiscordGameEventType, Boolean> isChanged)
 	{
-		this.state = state;
+		this.state = training(skill);
+		this.imageKey = imageKeyOf(skill);
 		this.isChanged = isChanged;
+	}
+
+	DiscordGameEventType(Skill skill)
+	{
+		this.state = training(skill);
+		this.imageKey = imageKeyOf(skill);
 	}
 
 	private static String training(final Skill skill)
@@ -122,7 +133,17 @@ public enum DiscordGameEventType
 		return "Training: " + what;
 	}
 
-	static boolean combatSkillChanged(final DiscordGameEventType l)
+	private static String imageKeyOf(final Skill skill)
+	{
+		return imageKeyOf(skill.getName().toLowerCase());
+	}
+
+	private static String imageKeyOf(final String what)
+	{
+		return "icon_" + what;
+	}
+
+	private static boolean combatSkillChanged(final DiscordGameEventType l)
 	{
 		for (Skill skill : Skill.values())
 		{
@@ -161,8 +182,7 @@ public enum DiscordGameEventType
 			case RUNECRAFT: return TRAINING_RUNECRAFT;
 			case HUNTER: return TRAINING_HUNTER;
 			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
+			default: return null;
 		}
-
-		return null;
 	}
 }

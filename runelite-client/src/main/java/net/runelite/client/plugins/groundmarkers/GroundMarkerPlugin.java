@@ -342,9 +342,7 @@ public class GroundMarkerPlugin extends Plugin
 			worldPoint = WorldPoint.fromLocal(client, localPoint);
 		}
 
-		int regionX = worldPoint.getX() >> 6;
-		int regionY = worldPoint.getY() >> 6;
-		int regionId = regionX << 8 | regionY;
+		int regionId = worldPoint.getRegionID();
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getX() & 0x3f, worldPoint.getY() & 0x3f, client.getPlane());
 		log.debug("Updating point: {} - {}", point, worldPoint);
 

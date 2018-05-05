@@ -125,7 +125,8 @@ public class class90 {
    @ObfuscatedGetter(
       intValue = -1295030239
    )
-   static int field1363;
+   @Export("currentLoginField")
+   static int currentLoginField;
    @ObfuscatedName("bl")
    @Export("worldSelectShown")
    static boolean worldSelectShown;
@@ -180,7 +181,7 @@ public class class90 {
       field1354 = false;
       field1353 = false;
       field1362 = true;
-      field1363 = 0;
+      currentLoginField = 0;
       worldSelectShown = false;
       field1368 = -1;
       new DecimalFormat("##0.00");

@@ -24,55 +24,58 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.ItemID;
+import net.runelite.api.Prayer;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
+import static net.runelite.client.plugins.timers.GameTimer.BIND;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
 import static net.runelite.client.plugins.timers.GameTimer.GOD_WARS_ALTAR;
-import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
-import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
-import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
-import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
-import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.BIND;
-import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
 import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
+import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
 import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
 import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
 import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
+import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
+import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
+import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.Prayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.GraphicChanged;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -106,7 +109,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
-		int raidVarb = client.getSetting(Varbits.IN_RAID);
+		int raidVarb = client.getVar(Varbits.IN_RAID);
 		if (lastRaidVarb != raidVarb)
 		{
 			removeGameTimer(OVERLOAD_RAID);
@@ -188,6 +191,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
+		}
+
+		if (!config.showVengeanceOther())
+		{
+			removeGameTimer(VENGEANCEOTHER);
 		}
 
 		if (!config.showImbuedHeart())
@@ -313,7 +321,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
 		{
-			if (client.getSetting(Varbits.IN_RAID) == 1)
+			if (client.getVar(Varbits.IN_RAID) == 1)
 			{
 				createGameTimer(OVERLOAD_RAID);
 			}
@@ -389,6 +397,23 @@ public class TimersPlugin extends Plugin
 			createGameTimer(PRAYER_ENHANCE);
 		}
 	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		Actor actor = event.getActor();
+
+		if (actor != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		if (config.showVengeanceOther() && actor.getAnimation() == AnimationID.VENGEANCE_OTHER)
+		{
+			createGameTimer(VENGEANCEOTHER);
+		}
+	}
+
 
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)

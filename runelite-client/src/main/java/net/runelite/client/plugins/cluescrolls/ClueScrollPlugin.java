@@ -27,10 +27,12 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -49,13 +51,16 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -117,6 +122,18 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
+	@Inject
+	private ClueScrollConfig config;
+
+	private Integer clueItemId;
+	private boolean clueItemChanged = false;
+
+	@Provides
+	ClueScrollConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ClueScrollConfig.class);
+	}
+
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
@@ -140,31 +157,42 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked event)
+	{
+		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
+		{
+			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+
+			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
+			{
+				clueItemId = itemComposition.getId();
+				clueItemChanged = true;
+			}
+		}
+	}
+
+	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		// Check if item was removed from inventory
-		if (clue != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		if (clue != null && clueItemId != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			final Item[] items = event.getItemContainer().getItems();
-			boolean found = false;
+			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
-			// Clue was maybe removed from inventory, check if there is any clue scrolls left
-			for (Item item : items)
-			{
-				final ItemComposition itemContainerDefinition = itemManager.getItemComposition(item.getId());
-
-				// Check if we have any clue scrolls left
-				if (itemContainerDefinition.getName().startsWith("Clue scroll"))
-				{
-					found = true;
-					break;
-				}
-			}
-
-			if (!found)
+			// Check if clue was removed from inventory
+			if (items.noneMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueItemId))
 			{
 				resetClue();
 			}
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("cluescroll") && !config.displayHintArrows())
+		{
+			client.clearHintArrow();
 		}
 	}
 
@@ -190,7 +218,7 @@ public class ClueScrollPlugin extends Plugin
 		{
 			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
 
-			if (location != null)
+			if (config.displayHintArrows() && location != null)
 			{
 				client.setHintArrow(location);
 			}
@@ -202,11 +230,11 @@ public class ClueScrollPlugin extends Plugin
 
 			if (npc != null)
 			{
-				Query query = new NPCQuery().nameContains(npc);
+				Query query = new NPCQuery().nameEquals(npc);
 				npcsToMark = queryRunner.runQuery(query);
 
 				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (npcsToMark.length >= 1)
+				if (config.displayHintArrows() && npcsToMark.length >= 1)
 				{
 					client.setHintArrow(npcsToMark[0]);
 				}
@@ -238,7 +266,7 @@ public class ClueScrollPlugin extends Plugin
 							.toArray(GameObject[]::new);
 
 						// Set hint arrow to first object found as there can only be 1 hint arrow
-						if (objectsToMark.length >= 1)
+						if (config.displayHintArrows() && objectsToMark.length >= 1)
 						{
 							client.setHintArrow(objectsToMark[0].getWorldLocation());
 						}
@@ -286,8 +314,18 @@ public class ClueScrollPlugin extends Plugin
 
 	private void resetClue()
 	{
+		if (!clueItemChanged)
+		{
+			clueItemId = null;
+		}
+
+		clueItemChanged = false;
 		clue = null;
-		client.clearHintArrow();
+
+		if (config.displayHintArrows())
+		{
+			client.clearHintArrow();
+		}
 	}
 
 	private ClueScroll findClueScroll()
@@ -339,7 +377,16 @@ public class ClueScrollPlugin extends Plugin
 					return emoteClue;
 				}
 
-				return FairyRingClue.forText(text);
+				final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
+
+				if (fairyRingClue != null)
+				{
+					return fairyRingClue;
+				}
+
+				// We have unknown clue, reset
+				resetClue();
+				return null;
 			}
 		}
 
@@ -356,6 +403,8 @@ public class ClueScrollPlugin extends Plugin
 
 			if (clue != null)
 			{
+				clueItemId = item.getId();
+				clueItemChanged = true;
 				return clue;
 			}
 		}
@@ -365,6 +414,7 @@ public class ClueScrollPlugin extends Plugin
 
 	/**
 	 * Example input: "00 degrees 00 minutes north 07 degrees 13 minutes west"
+	 * Note: some clues use "1 degree" instead of "01 degrees"
 	 */
 	private CoordinateClue coordinatesToWorldPoint(String text)
 	{
@@ -376,7 +426,7 @@ public class ClueScrollPlugin extends Plugin
 			return null;
 		}
 
-		if (!splitText[1].equals("degrees") || !splitText[3].equals("minutes"))
+		if (!splitText[1].startsWith("degree") || !splitText[3].startsWith("minute"))
 		{
 			log.warn("\"" + text + "\" is not a well formed coordinate string");
 			return null;

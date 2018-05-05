@@ -30,6 +30,7 @@ import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -192,7 +193,7 @@ public class ConfigManager
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
-				final String[] split = ((String) groupAndKey).split("\\.");
+				final String[] split = ((String) groupAndKey).split("\\.", 2);
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
@@ -449,6 +450,15 @@ public class ConfigManager
 			int height = Integer.parseInt(splitStr[1]);
 			return new Point(width, height);
 		}
+		if (type == Rectangle.class)
+		{
+			String[] splitStr = str.split(":");
+			int x  = Integer.parseInt(splitStr[0]);
+			int y = Integer.parseInt(splitStr[1]);
+			int width = Integer.parseInt(splitStr[2]);
+			int height = Integer.parseInt(splitStr[3]);
+			return new Rectangle(x, y, width, height);
+		}
 		if (type.isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
@@ -475,6 +485,11 @@ public class ConfigManager
 		{
 			Point p = (Point) object;
 			return p.x + ":" + p.y;
+		}
+		if (object instanceof Rectangle)
+		{
+			Rectangle r = (Rectangle)object;
+			return r.x + ":" + r.y + ":" + r.width + ":" + r.height;
 		}
 		return object.toString();
 	}

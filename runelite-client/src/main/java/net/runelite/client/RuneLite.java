@@ -31,6 +31,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import java.applet.Applet;
 import java.io.File;
 import java.util.Optional;
@@ -49,6 +50,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import org.slf4j.LoggerFactory;
@@ -89,6 +91,9 @@ public class RuneLite
 	private OverlayRenderer overlayRenderer;
 
 	@Inject
+	private DrawManager drawManager;
+
+	@Inject
 	private SessionManager sessionManager;
 
 	@Inject
@@ -104,7 +109,7 @@ public class RuneLite
 	private TitleToolbar titleToolbar;
 
 	@Inject
-	private ItemManager itemManager;
+	private Provider<ItemManager> itemManager;
 
 	@Inject
 	private ClanManager clanManager;
@@ -117,6 +122,7 @@ public class RuneLite
 		parser.accepts("developer-mode");
 		parser.accepts("no-rs");
 		parser.accepts("debug");
+		parser.accepts("disable-update-check");
 		setOptions(parser.parse(args));
 
 		PROFILES_DIR.mkdirs();
@@ -138,8 +144,9 @@ public class RuneLite
 	{
 		// Load RuneLite or Vanilla client
 		final boolean hasRs = !getOptions().has("no-rs");
+		final boolean disableUpdateCheck = getOptions().has("disable-update-check");
 		final Optional<Applet> optionalClient = hasRs
-			? new ClientLoader().loadRs()
+			? new ClientLoader().loadRs(disableUpdateCheck)
 			: Optional.empty();
 
 		if (!optionalClient.isPresent() && hasRs)
@@ -165,12 +172,16 @@ public class RuneLite
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
+		eventBus.register(drawManager);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
-		eventBus.register(itemManager);
 		eventBus.register(clanManager);
+		if (this.client != null)
+		{
+			eventBus.register(itemManager.get());
+		}
 
 		// Load user configuration
 		configManager.load();

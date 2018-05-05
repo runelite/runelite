@@ -34,6 +34,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -217,6 +218,9 @@ public class XpGlobesOverlay extends Overlay
 		//draw tooltip under the globe of the mouse location
 		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (config.xpOrbSize() / 2);
 		int y = (int) drawnGlobe.getY() + config.xpOrbSize() + 10;
+
+		// reset the timer on XpGlobe to prevent it from disappearing while hovered over it
+		mouseOverSkill.setTime(Instant.now());
 
 		String skillName = mouseOverSkill.getSkillName();
 		String skillLevel = Integer.toString(mouseOverSkill.getCurrentLevel());

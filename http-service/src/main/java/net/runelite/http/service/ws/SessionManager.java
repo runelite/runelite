@@ -24,49 +24,39 @@
  */
 package net.runelite.http.service.ws;
 
-import com.google.common.base.Objects;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
-import javax.websocket.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class SessionManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
+	private static final ConcurrentMap<UUID, WSService> sessions = new ConcurrentHashMap<>();
 
-	private static final Set<WSSession> sessions = Collections.synchronizedSet(new HashSet<>());
-
-	public static void add(WSService service, Session session)
+	public static void changeSessionUID(WSService service, UUID uuid)
 	{
-		WSSession wssession = new WSSession(service, session);
-
-		logger.info("Adding service {} session {}", service, session);
-
-		sessions.add(wssession);
-	}
-
-	public static void remove(Session session)
-	{
-		WSSession wssession = new WSSession(null, session);
-		sessions.remove(wssession);
-	}
-
-	public static WSSession findSession(UUID uuid)
-	{
-		synchronized (sessions)
+		synchronized (service)
 		{
-			for (WSSession session : sessions)
+			remove(service);
+			service.setUuid(uuid);
+			sessions.put(uuid, service);
+		}
+	}
+
+	static void remove(WSService service)
+	{
+		synchronized (service)
+		{
+			UUID current = service.getUuid();
+			if (current != null)
 			{
-				if (Objects.equal(session.getServlet().getUuid(), uuid))
-				{
-					return session;
-				}
+				sessions.remove(current);
+				service.setUuid(null);
 			}
 		}
+	}
 
-		return null;
+	public static WSService findSession(UUID uuid)
+	{
+		return sessions.get(uuid);
 	}
 }

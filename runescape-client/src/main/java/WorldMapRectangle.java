@@ -602,11 +602,11 @@ public final class WorldMapRectangle {
                            var9.field2835 = Client.field1032;
                         }
 
-                        if(var9.onStatTransmitListener != null && Client.field908 > var9.field2951) {
-                           if(var9.statTransmitTriggers != null && Client.field908 - var9.field2951 <= 32) {
+                        if(var9.onStatTransmitListener != null && Client.changedSkillsCount > var9.field2951) {
+                           if(var9.statTransmitTriggers != null && Client.changedSkillsCount - var9.field2951 <= 32) {
                               label1136:
-                              for(var46 = var9.field2951; var46 < Client.field908; ++var46) {
-                                 var22 = Client.field1040[var46 & 31];
+                              for(var46 = var9.field2951; var46 < Client.changedSkillsCount; ++var46) {
+                                 var22 = Client.changedSkills[var46 & 31];
 
                                  for(var23 = 0; var23 < var9.statTransmitTriggers.length; ++var23) {
                                     if(var22 == var9.statTransmitTriggers[var23]) {
@@ -625,7 +625,7 @@ public final class WorldMapRectangle {
                               Client.field1049.addFront(var40);
                            }
 
-                           var9.field2951 = Client.field908;
+                           var9.field2951 = Client.changedSkillsCount;
                         }
 
                         if(Client.chatCycle > var9.field2948 && var9.onChatTransmitListener != null) {

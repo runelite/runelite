@@ -39,6 +39,7 @@ import java.awt.RenderingHints;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
@@ -55,6 +56,7 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
@@ -67,6 +69,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -94,6 +97,7 @@ public class Hooks
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
 	private static final GameTick tick = new GameTick();
+	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
 
 	private static Dimension lastStretchedDimensions;
 	private static BufferedImage stretchedImage;
@@ -302,7 +306,7 @@ public class Hooks
 		// Draw the image onto the game canvas
 		graphics.drawImage(image, 0, 0, client.getCanvas());
 
-		renderer.provideScreenshot(image);
+		renderHooks.processDrawComplete(image);
 	}
 
 	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
@@ -453,6 +457,31 @@ public class Hooks
 	{
 		MenuOpened event = new MenuOpened();
 		event.setMenuEntries(client.getMenuEntries());
+		eventBus.post(event);
+	}
+
+	/**
+	 * Called after a hitsplat has been processed on an actor.
+	 * Note that this event runs even if the hitsplat didn't show up,
+	 * i.e. the actor already had 4 visible hitsplats.
+	 *
+	 * @param actor The actor the hitsplat was applied to
+	 * @param type The hitsplat type (i.e. color)
+	 * @param value The value of the hitsplat (i.e. how high the hit was)
+	 * @param var3
+	 * @param var4
+	 * @param gameCycle The gamecycle the hitsplat was applied on
+	 * @param duration The amount of gamecycles the hitsplat will last for
+	 */
+	public static void onActorHitsplat(Actor actor, int type, int value, int var3, int var4,
+		int gameCycle, int duration)
+	{
+		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value,
+			gameCycle + duration);
+
+		HitsplatApplied event = new HitsplatApplied();
+		event.setActor(actor);
+		event.setHitsplat(hitsplat);
 		eventBus.post(event);
 	}
 }
