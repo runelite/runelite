@@ -29,7 +29,8 @@ public enum InventoryID
 	INVENTORY(93),
 	EQUIPMENT(94),
 	BANK(95),
-	PUZZLE_BOX(140);
+	PUZZLE_BOX(140),
+	BARROWS_REWARD(141);
 
 	private final int id;
 
