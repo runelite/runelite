@@ -45,7 +45,8 @@ public enum GameTimer
 	MAGICIMBUE("magicimbue", "Magic imbue", 12, ChronoUnit.SECONDS),
 	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
-	ANTIVENOMPLUS("antivenomplus", "Anti-venom+", 3, ChronoUnit.MINUTES),
+	ANTIVENOMPLUSVENOM("antivenomplus", "Anti-venom+ (Venom immunity)", 3, ChronoUnit.MINUTES),
+	ANTIVENOMPLUSPOISON("antidoteplusplus", "Anti-venom+ (Poison immunity)", 12, ChronoUnit.MINUTES), //uses antidoteplusplus's image to differentiate between the venom and poison timer
 	SUPERANTIFIRE("superantifire", "Super antifire", 3, ChronoUnit.MINUTES),
 	ANTIDOTEPLUSPLUS("antidoteplusplus", "Antidote++", 12, ChronoUnit.MINUTES),
 	BIND("bind", "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
