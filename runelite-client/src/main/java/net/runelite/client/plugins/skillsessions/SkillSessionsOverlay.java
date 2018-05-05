@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.agility;
+package net.runelite.client.plugins.skillsessions;
 
-import java.time.Instant;
-import lombok.Getter;
-import lombok.Setter;
+import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.Skill;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-@Getter
-@Setter
-public class AgilitySession
+public class SkillSessionsOverlay extends Overlay
 {
-	private final Courses course;
-	private Instant lastLapCompleted;
-	private int totalLaps;
-	private int lapsTillLevel;
+	private final SkillSessionsPlugin plugin;
+	private final Client client;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-	public AgilitySession(Courses course)
+	@Inject
+	public SkillSessionsOverlay(SkillSessionsPlugin plugin, Client client)
 	{
-		this.course = course;
+		setPosition(OverlayPosition.TOP_LEFT);
+
+		this.plugin = plugin;
+		this.client = client;
 	}
 
-	public void incrementLapCount(Client client)
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		Instant now = Instant.now();
+		SkillSession session = plugin.getFocused();
+		if (session == null)
+		{
+			return null;
+		}
 
-		lastLapCompleted = now;
-		++totalLaps;
+		panelComponent.getLines().clear();
 
-		int currentExp = client.getSkillExperience(Skill.AGILITY);
-		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
-		int remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
-
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
-	}
-
-	public void resetLapCount()
-	{
-		totalLaps = 0;
-		lapsTillLevel = 0;
+		session.modifyPanel(panelComponent, client);
+		return panelComponent.render(graphics);
 	}
 }

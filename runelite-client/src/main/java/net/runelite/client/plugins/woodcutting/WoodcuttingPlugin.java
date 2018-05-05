@@ -26,7 +26,6 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
@@ -35,7 +34,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.ui.overlay.Overlay;
+
+import javax.inject.Inject;
 
 @PluginDescriptor(
 	name = "Woodcutting"
@@ -47,12 +47,7 @@ public class WoodcuttingPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
-	private WoodcuttingOverlay overlay;
-
-	@Inject
 	private WoodcuttingConfig config;
-
-	private final WoodcuttingSession session = new WoodcuttingSession();
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -60,27 +55,11 @@ public class WoodcuttingPlugin extends Plugin
 		return configManager.getConfig(WoodcuttingConfig.class);
 	}
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	public WoodcuttingSession getSession()
-	{
-		return session;
-	}
-
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.FILTERED || event.getType() == ChatMessageType.SERVER)
 		{
-			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
-			{
-				session.setLastLogCut();
-			}
-
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
 			{
 				notifier.notify("A bird nest has spawned!");

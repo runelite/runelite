@@ -28,20 +28,11 @@ package net.runelite.client.plugins.fishing;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
@@ -50,8 +41,14 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 @PluginDescriptor(
 	name = "Fishing"
@@ -75,15 +72,10 @@ public class FishingPlugin extends Plugin
 	private FishingConfig config;
 
 	@Inject
-	private FishingOverlay overlay;
-
-	@Inject
 	private FishingSpotOverlay spotOverlay;
 
 	@Inject
 	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
-
-	private final FishingSession session = new FishingSession();
 
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
@@ -96,31 +88,6 @@ public class FishingPlugin extends Plugin
 	{
 		// Initialize overlay config
 		updateConfig();
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, spotOverlay, fishingSpotMinimapOverlay);
-	}
-
-	public FishingSession getSession()
-	{
-		return session;
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() != ChatMessageType.FILTERED)
-		{
-			return;
-		}
-
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
-		{
-			session.setLastFishCaught();
-		}
 	}
 
 	@Subscribe
@@ -167,7 +134,7 @@ public class FishingPlugin extends Plugin
 		if (config.showInfernalEel())
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
-		}	
+		}
 		if (config.showSacredEel())
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.SACRED_EEL.getIds()));

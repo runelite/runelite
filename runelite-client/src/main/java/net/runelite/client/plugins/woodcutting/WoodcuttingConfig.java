@@ -36,31 +36,11 @@ import net.runelite.client.config.ConfigItem;
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset"
-	)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
 		keyName = "showNestNotification",
 		name = "Bird nest notification",
 		description = "Configures whether to notify you of a bird nest spawn"
 	)
 	default boolean showNestNotification()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showWoodcuttingStats",
-		name = "Show Woodcutting session stats",
-		description = "Configures whether to display woodcutting session stats"
-	)
-	default boolean showWoodcuttingStats()
 	{
 		return true;
 	}

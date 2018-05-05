@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Desetude <harry@desetude.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.agility;
+package net.runelite.client.plugins.skillsessions.skillsessions;
 
-import java.util.HashMap;
-import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.skillsessions.SkillSessionsConfig;
+import net.runelite.client.plugins.skillsessions.XpTrackerSkillSession;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 
-@AllArgsConstructor
-public enum Courses
+public class FishingSkillSession extends XpTrackerSkillSession
 {
-	GNOME(86.5, 46, 9781),
-	DRAYNOR(120.0, 79, 12338),
-	AL_KARID(180.0, 30, 13105),
-	PYRAMID(722.0, 300, 13356),
-	VARROCK(238.0, 125, 12853),
-	PENGUIN(540.0, 65, 10559),
-	BARBARIAN(139.5, 60, 10039),
-	CANIFIS(240.0, 175, 13878),
-	APE_ATOLL(580.0, 300, 11050),
-	FALADOR(440, 180, 12084),
-	WILDERNESS(571.0, 499, 11837),
-	SEERS(570.0, 435, 10806),
-	POLLNIVEACH(890.0, 540, 13358),
-	RELLEKA(780.0, 475, 10553),
-	ARDOUGNE(793.0, 529, 10547);
+	private static final String FISHING_SPOT = "Fishing spot";
 
-	private final static Map<Integer, Courses> courseXps = new HashMap<>();
-
-	@Getter
-	private final double totalXp;
-
-	private final int lastObstacleXp;
-
-	@Getter
-	private final int regionId;
-
-	static
+	public FishingSkillSession(XpTrackerService xpTracker)
 	{
-		for (Courses course : values())
-		{
-			courseXps.put(course.lastObstacleXp, course);
-		}
+		super(Skill.FISHING, xpTracker);
 	}
 
-	public static Courses getCourse(int exp)
+	@Override
+	public boolean shouldDisplay(SkillSessionsConfig config)
 	{
-		return courseXps.get(exp);
+		return config.showFishing();
+	}
+
+	@Override
+	public boolean isInAction(Client client)
+	{
+		return client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
+			.contains(FISHING_SPOT);
+	}
+
+	@Override
+	public String getActionName()
+	{
+		return "Fish caught";
 	}
 }
