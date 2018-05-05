@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay.worldmap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -41,8 +42,18 @@ public class WorldMapPointManager
 		worldMapPoints.add(worldMapPoint);
 	}
 
+	public void addAll(Collection<? extends WorldMapPoint> collection)
+	{
+		worldMapPoints.addAll(collection);
+	}
+
 	public void remove(WorldMapPoint worldMapPoint)
 	{
 		worldMapPoints.remove(worldMapPoint);
+	}
+
+	public void removeAll(Collection<? extends WorldMapPoint> collection)
+	{
+		worldMapPoints.removeAll(collection);
 	}
 }

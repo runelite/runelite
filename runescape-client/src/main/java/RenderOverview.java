@@ -723,9 +723,9 @@ public class RenderOverview {
             }
          }
 
-         int var8 = (int)Math.ceil((double)((float)width / this.worldMapZoom));
-         int var9 = (int)Math.ceil((double)((float)height / this.worldMapZoom));
-         this.worldMapManager.drawMapRegion(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, graphicsX, graphicsY, width + graphicsX, graphicsY + height);
+         int widthInTiles = (int)Math.ceil((double)((float)width / this.worldMapZoom));
+         int heightInTiles = (int)Math.ceil((double)((float)height / this.worldMapZoom));
+         this.worldMapManager.drawMapRegion(this.worldMapX - widthInTiles / 2, this.worldMapY - heightInTiles / 2, widthInTiles / 2 + this.worldMapX, heightInTiles / 2 + this.worldMapY, graphicsX, graphicsY, width + graphicsX, graphicsY + height);
          boolean var10;
          if(!this.field4065) {
             var10 = false;
@@ -734,17 +734,17 @@ public class RenderOverview {
                var10 = true;
             }
 
-            this.worldMapManager.drawMapIcons(this.worldMapX - var8 / 2, this.worldMapY - var9 / 2, var8 / 2 + this.worldMapX, var9 / 2 + this.worldMapY, graphicsX, graphicsY, width + graphicsX, graphicsY + height, this.field4052, this.field4038, this.field4060, this.field4036, var10);
+            this.worldMapManager.drawMapIcons(this.worldMapX - widthInTiles / 2, this.worldMapY - heightInTiles / 2, widthInTiles / 2 + this.worldMapX, heightInTiles / 2 + this.worldMapY, graphicsX, graphicsY, width + graphicsX, graphicsY + height, this.field4052, this.field4038, this.field4060, this.field4036, var10);
          }
 
-         this.method6087(graphicsX, graphicsY, width, height, var8, var9);
+         this.method6087(graphicsX, graphicsY, width, height, widthInTiles, heightInTiles);
          var10 = Client.rights >= 2;
          if(var10 && this.field4011 && this.field4059 != null) {
             this.field4055.method5630("Coord: " + this.field4059, Rasterizer2D.draw_region_x + 10, Rasterizer2D.drawingAreaTop + 20, 16776960, -1);
          }
 
-         this.worldMapDisplayWidth = var8;
-         this.worldMapDisplayHeight = var9;
+         this.worldMapDisplayWidth = widthInTiles;
+         this.worldMapDisplayHeight = heightInTiles;
          this.worldMapDisplayX = graphicsX;
          this.worldMapDisplayY = graphicsY;
          Rasterizer2D.setDrawRegion(var6);

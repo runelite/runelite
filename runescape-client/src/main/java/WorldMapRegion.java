@@ -220,13 +220,13 @@ public class WorldMapRegion {
       signature = "(IIILjava/util/HashSet;I)V",
       garbageValue = "1923609767"
    )
-   void method499(int var1, int var2, int var3, HashSet var4) {
+   void method499(int displayX, int displayY, int pixelsPerRegion, HashSet var4) {
       if(var4 == null) {
          var4 = new HashSet();
       }
 
-      this.drawNonLinkMapIcons(var1, var2, var4, var3);
-      this.drawMapLinks(var1, var2, var4, var3);
+      this.drawNonLinkMapIcons(displayX, displayY, var4, pixelsPerRegion);
+      this.drawMapLinks(displayX, displayY, var4, pixelsPerRegion);
    }
 
    @ObfuscatedName("q")
@@ -617,23 +617,23 @@ public class WorldMapRegion {
       garbageValue = "50"
    )
    @Export("drawNonLinkMapIcons")
-   void drawNonLinkMapIcons(int var1, int var2, HashSet var3, int var4) {
-      float var5 = (float)var4 / 64.0F;
-      float var6 = var5 / 2.0F;
+   void drawNonLinkMapIcons(int regionBaseDisplayX, int regionBaseDisplayY, HashSet var3, int pixelsPerRegion) {
+      float pixelsPerTile = (float)pixelsPerRegion / 64.0F;
+      float halfPixelsPerTile = pixelsPerTile / 2.0F;
       Iterator var7 = this.field474.entrySet().iterator();
 
       while(var7.hasNext()) {
          Entry var8 = (Entry)var7.next();
          Coordinates var9 = (Coordinates)var8.getKey();
-         int var10 = (int)((float)var9.worldX * var5 + (float)var1 - var6);
-         int var11 = (int)((float)(var2 + var4) - (float)var9.worldY * var5 - var6);
+         int screenX = (int)((float)var9.worldX * pixelsPerTile + (float)regionBaseDisplayX - halfPixelsPerTile);
+         int screenY = (int)((float)(regionBaseDisplayY + pixelsPerRegion) - (float)var9.worldY * pixelsPerTile - halfPixelsPerTile);
          MapIcon var12 = (MapIcon)var8.getValue();
          if(var12 != null) {
-            var12.screenX = var10;
-            var12.screenY = var11;
+            var12.screenX = screenX;
+            var12.screenY = screenY;
             Area var13 = class190.mapAreaType[var12.areaId];
             if(!var3.contains(Integer.valueOf(var13.method4865()))) {
-               this.method381(var12, var10, var11, var5);
+               this.method381(var12, screenX, screenY, pixelsPerTile);
             }
          }
       }
@@ -680,10 +680,10 @@ public class WorldMapRegion {
       signature = "(Lal;IIFI)V",
       garbageValue = "-2042579438"
    )
-   void method381(MapIcon var1, int var2, int var3, float var4) {
+   void method381(MapIcon var1, int screenX, int screenY, float var4) {
       Area var5 = class190.mapAreaType[var1.areaId];
-      this.method409(var5, var2, var3);
-      this.method497(var1, var5, var2, var3, var4);
+      this.method409(var5, screenX, screenY);
+      this.method497(var1, var5, screenX, screenY, var4);
    }
 
    @ObfuscatedName("ak")
