@@ -12,12 +12,14 @@ public class WintertodtOverlay extends Overlay
 {
 	private final Client client;
 	private WintertodtConfig config;
-	//Storage
-	// String
+
+	//Strings
 	String safeFires = "";
 	String downFires = "";
 	String needReapir = "";
 	String pyromancerHelp = "";
+
+	//UI Component
 	PanelComponent pnc = new PanelComponent();
 
 	@Inject
@@ -30,16 +32,19 @@ public class WintertodtOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		//clears string
+		//Cleans Up previous render
 		safeFires = "";
 		downFires = "";
 		needReapir = "";
 		pyromancerHelp = "";
+
 		//Three Main UI pieces
 		Widget wtOverlay = client.getWidget(WidgetInfo.WINTERTODT_BASE);
 		Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
 		Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
+
 		if (wtOverlay != null){
+			//Hides Official UI
 			wtOverlayBAR.setHidden(true);
 			wtOverlayUI.setHidden(true);
 			//Widgets
@@ -54,7 +59,9 @@ public class WintertodtOverlay extends Overlay
 			Widget wtNEP = client.getWidget(WidgetInfo.WINTERTODT_PYRO_NE);
 			Widget wtSEP = client.getWidget(WidgetInfo.WINTERTODT_PYRO_SE);
 			Widget wtReturn = client.getWidget(WidgetInfo.WINTERTODT_RETURN);
+			//Puts UI off-screen because it can't read if hidden
 			wtReturn.setRelativeX(-195);
+
 			//Return
 			if(wtReturn.getText().contains(": "))
 			{
@@ -66,6 +73,7 @@ public class WintertodtOverlay extends Overlay
 						Color.GREEN)
 				);
 			}
+
 			//Energy
 			if(wtEnergy.getText().contains(": "))
 			{
@@ -122,13 +130,13 @@ public class WintertodtOverlay extends Overlay
 			{pyromancerHelp += ", SE";}
 
 				//Lit Fires
-			pnc.getLines().add(new PanelComponent.Line("Fires Lit:  ",
+			pnc.getLines().add(new PanelComponent.Line("Lit Fires:  ",
 					Color.WHITE,
 					safeFires.replaceFirst(", ", ""),
 					config.highColor())
 			);
 				//Unlit Fires
-			pnc.getLines().add(new PanelComponent.Line("Fires Down: ",
+			pnc.getLines().add(new PanelComponent.Line("Unlit Fires: ",
 					Color.WHITE,
 					downFires.replaceFirst(", ", ""),
 					config.lowColor())

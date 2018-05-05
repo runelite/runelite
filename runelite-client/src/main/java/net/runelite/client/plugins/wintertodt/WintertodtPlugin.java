@@ -34,6 +34,7 @@ public class WintertodtPlugin extends Plugin {
 	@Override
 	protected void shutDown() throws Exception
 	{
+		//Unhides Widgets
 		Widget wtOverlay = client.getWidget(WidgetInfo.WINTERTODT_BASE);
 		Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
 		Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
