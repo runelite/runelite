@@ -13,6 +13,8 @@ public class WintertodtOverlay extends Overlay
 {
 	private final Client client;
 	private WintertodtConfig config;
+	//UI Colors
+	public static final Color WT_BG_COLOR = new Color(0, 0, 0, 156);
 
 	//Strings
 	String safeFires = "";
@@ -29,8 +31,6 @@ public class WintertodtOverlay extends Overlay
 		this.client = client;
 		this.config = cfg;
 	}
-
-	public static final Color WT_BG_COLOR = new Color(0, 0, 0, 156);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -56,7 +56,7 @@ public class WintertodtOverlay extends Overlay
 		Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
 		Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
 
-		//Continues if found
+		//Still leaving this here as an extra saftey
 		if (wtBase != null) {
 			//Widgets
 			Widget wtEnergy = client.getWidget(WidgetInfo.WINTERTODT_ENERGY);
@@ -154,21 +154,24 @@ public class WintertodtOverlay extends Overlay
 					safeFires.replaceFirst(", ", ""),
 					config.highColor())
 			);
+
 			//Unlit Fires
 			pnc.getLines().add(new PanelComponent.Line("Unlit Fires: ",
 					Color.WHITE,
 					downFires.replaceFirst(", ", ""),
 					config.lowColor())
 			);
+
 			//Pyromancers
 			pnc.getLines().add(new PanelComponent.Line("Pyros:  ",
 					Color.WHITE,
 					pyromancerHelp.replaceFirst(", ", ""),
 					config.lowColor())
 			);
+
 			//Renders
 			pnc.setWidth(160);
-			pnc.setBackgroundColor(WT_BG_COLOR);
+			//pnc.setBackgroundColor(WT_BG_COLOR);
 			pnc.render(graphics);
 		}
 	}
