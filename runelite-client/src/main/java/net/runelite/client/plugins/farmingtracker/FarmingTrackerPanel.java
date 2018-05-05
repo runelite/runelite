@@ -266,7 +266,7 @@ class FarmingTrackerPanel extends PluginPanel
 						f.append("Done ");
 						if (ldtTime.getDayOfWeek() != ldtNow.getDayOfWeek())
 						{
-							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
+							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH)).append(" ");
 						}
 						f.append(String.format("at %d:%02d", ldtTime.getHour(), ldtTime.getMinute()));
 						panel.getEstimate().setText(f.toString());
