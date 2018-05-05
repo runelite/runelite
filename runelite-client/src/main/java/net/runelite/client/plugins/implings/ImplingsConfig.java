@@ -282,11 +282,23 @@ public interface ImplingsConfig extends Config
 		return new Color(102, 7, 101);
 	}
 
+
 	@ConfigItem(
-		position = 23,
-		keyName = "showspawn",
-		name = "Show Spawn locations",
-		description = "Configures whether or not spawn locations are displayed in Puro Puro"
+			position = 23,
+			keyName = "showname",
+			name = "Show name on minimap",
+			description = "Configures whether or not impling names are displayed on minimap"
+	)
+	default boolean showName()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 24,
+			keyName = "showspawn",
+			name = "Show Spawn locations",
+			description = "Configures whether or not spawn locations are displayed in Puro Puro"
 	)
 	default boolean showSpawn()
 	{
@@ -294,24 +306,24 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
-		keyName = "spawnColor",
-		name = "Impling spawn color",
-		description = "Text color for impling spawns in Puro Puro"
+			position = 25,
+			keyName = "spawnColorDynamic",
+			name = "Impling dynamic spawn color",
+			description = "Text color for dynamic impling spawns in Puro Puro"
 	)
-	default Color getSpawnColor()
+	default Color getDynamicSpawnColor()
 	{
 		return Color.WHITE;
 	}
 
 	@ConfigItem(
-		position = 25,
-		keyName = "showname",
-		name = "Show name on minimap",
-		description = "Configures whether or not impling names are displayed on minimap"
+			position = 26,
+			keyName = "spawnColorStatic",
+			name = "Impling static spawn color",
+			description = "Text color for static impling spawns in Puro Puro"
 	)
-	default boolean showName()
+	default Color getStaticSpawnColor()
 	{
-		return false;
+		return Color.RED;
 	}
 }

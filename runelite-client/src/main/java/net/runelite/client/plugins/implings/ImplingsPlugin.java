@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -40,6 +41,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,15 +57,24 @@ import net.runelite.client.util.QueryRunner;
 )
 public class ImplingsPlugin extends Plugin
 {
-	// Impling spawns in PuroPuro. Not in NpcID.
-	private static final int STATIC_SPAWN = 1618;
-	private static final int DYNAMIC_SPAWN = 1633;
+	private static final int DYNAMIC_SPAWN_NATURE_DRAGON = 1618;
+	private static final int DYNAMIC_SPAWN_ECLECTIC = 1633;
+	private static final int DYNAMIC_SPAWN_BABY_ESSENCE = 1634;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] implings;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, Color> ids = new HashMap<>();
+	
+	@Getter(AccessLevel.PACKAGE)
+	private Map<WorldPoint, String> staticSpawns = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<Integer, String> dynamicSpawns = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<String> hideSpawns;
 
 	@Inject
 	private ImplingsOverlay overlay;
@@ -170,9 +181,10 @@ public class ImplingsPlugin extends Plugin
 		}
 		if (config.showSpawn())
 		{
-			ids.put(STATIC_SPAWN, config.getSpawnColor());
-			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
+			dynamicSpawns.put(DYNAMIC_SPAWN_NATURE_DRAGON, "T3 Nature-Lucky Dynamic");
+			dynamicSpawns.put(DYNAMIC_SPAWN_ECLECTIC, "T2 Eclectic Dynamic");
+			dynamicSpawns.put(DYNAMIC_SPAWN_BABY_ESSENCE, "T1 Baby-Essence Dynamic");
+			staticSpawns = ImplingPuroPuroSpawn.getSpawns();
 		}
 	}
-
 }

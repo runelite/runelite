@@ -29,9 +29,16 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Point;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,13 +50,17 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  */
 public class ImplingsOverlay extends Overlay
 {
+	private final Client client;
+	private final ImplingsConfig config;
 	private final ImplingsPlugin plugin;
 
 	@Inject
-	private ImplingsOverlay(ImplingsPlugin plugin)
+	private ImplingsOverlay(Client client, ImplingsConfig config, ImplingsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.config = config;
+		this.client = client;
 		this.plugin = plugin;
 	}
 
@@ -57,6 +68,7 @@ public class ImplingsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		NPC[] imps = plugin.getImplings();
+
 		if (imps == null)
 		{
 			return null;
@@ -74,7 +86,87 @@ public class ImplingsOverlay extends Overlay
 			drawImp(graphics, imp, text, plugin.getIds().get(imp.getId()));
 		}
 
+		//Show Imp spawns
+		if (config.showSpawn())
+		{
+			//Draw static spawns
+			Map<WorldPoint, String> staticPoints = plugin.getStaticSpawns();
+
+			for (Map.Entry<WorldPoint, String>  staticSpawn : staticPoints.entrySet())
+			{
+				Boolean show = true;
+				switch (staticSpawn.getValue())
+				{
+					case "Baby" :  show = config.showBaby();break;
+					case "Young" :  show = config.showYoung();break;
+					case "Gourmet" :  show = config.showGourmet();break;
+					case "Earth" :  show = config.showEarth();break;
+					case "Eclectic" :  show = config.showEclectic();break;
+				}
+				if (show)
+				{
+					drawStaticSpawn(graphics, staticSpawn.getKey(), staticSpawn.getValue(), config.getStaticSpawnColor());
+				}
+			}
+
+			//Draw dynamic spawns
+			Map<Integer, String> dynamicSpawns = plugin.getDynamicSpawns();
+			for (Map.Entry<Integer, String>  dynamicSpawn : dynamicSpawns.entrySet())
+			{
+				drawDynamicSpawn(graphics, dynamicSpawn.getKey(), dynamicSpawn.getValue(), config.getDynamicSpawnColor());
+
+			}
+		}
+
 		return null;
+	}
+
+	private void drawDynamicSpawn(Graphics2D graphics, Integer spawnID, String text, Color color)
+	{
+		List<NPC> npcs = client.getNpcs();
+		for (NPC npc : npcs)
+		{
+			if (npc.getComposition().getId() == spawnID)
+			{
+				NPCComposition composition = npc.getComposition();
+				if (composition.getConfigs() != null)
+				{
+					NPCComposition transformedComposition = composition.transform();
+					if (transformedComposition == null)
+					{
+						OverlayUtil.renderActorOverlay(graphics, npc, text, color);
+					}
+				}
+			}
+		}
+	}
+
+	private void drawStaticSpawn(Graphics2D graphics, WorldPoint point, String text, Color color)
+	{
+
+		//Don't draw spawns if Player is not in range
+		if (point.distanceTo(client.getLocalPlayer().getWorldLocation()) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+		if (localPoint == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
+
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text, 0);
+		if (textPoint != null)
+		{
+			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);
+		}
 	}
 
 	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
