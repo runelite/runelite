@@ -7,6 +7,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import javax.inject.Inject;
 import java.awt.*;
+
 @Slf4j
 public class WintertodtOverlay extends Overlay
 {
@@ -29,24 +30,34 @@ public class WintertodtOverlay extends Overlay
 		this.config = cfg;
 	}
 
+	public static final Color WT_BG_COLOR = new Color(0, 0, 0, 156);
+
 	@Override
 	public Dimension render(Graphics2D graphics)
+	{
+		//Checks if in Wintertodt or the Wintertodt Snowy Path and runs Render Void.
+		if(client.getLocalPlayer().getWorldLocation().getRegionID() == 6462 || client.getLocalPlayer().getWorldLocation().getRegionID() == 6461) {
+			runWintertodtUI(graphics);
+		}
+		return null;
+	}
+
+	private void runWintertodtUI(Graphics2D graphics)
 	{
 		//Cleans Up previous render
 		safeFires = "";
 		downFires = "";
 		needReapir = "";
 		pyromancerHelp = "";
+		pnc.getLines().clear();
 
-		//Three Main UI pieces
-		Widget wtOverlay = client.getWidget(WidgetInfo.WINTERTODT_BASE);
+		//Main UI
+		Widget wtBase = client.getWidget(WidgetInfo.WINTERTODT_BASE);
 		Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
 		Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
 
-		if (wtOverlay != null){
-			//Hides Official UI
-			wtOverlayBAR.setHidden(true);
-			wtOverlayUI.setHidden(true);
+		//Continues if found
+		if (wtBase != null) {
 			//Widgets
 			Widget wtEnergy = client.getWidget(WidgetInfo.WINTERTODT_ENERGY);
 			Widget wtPoints = client.getWidget(WidgetInfo.WINTERTODT_POINTS);
@@ -59,12 +70,14 @@ public class WintertodtOverlay extends Overlay
 			Widget wtNEP = client.getWidget(WidgetInfo.WINTERTODT_PYRO_NE);
 			Widget wtSEP = client.getWidget(WidgetInfo.WINTERTODT_PYRO_SE);
 			Widget wtReturn = client.getWidget(WidgetInfo.WINTERTODT_RETURN);
+
 			//Puts UI off-screen because it can't read if hidden
 			wtReturn.setRelativeX(-195);
+			wtOverlayBAR.setHidden(true);
+			wtOverlayUI.setHidden(true);
 
 			//Return
-			if(wtReturn.getText().contains(": "))
-			{
+			if (wtReturn.getText().contains(": ")) {
 				String returnSplitter[] = wtReturn.getText().split(": ");
 				pnc.getLines().add(new PanelComponent.Line(
 						"Returns:",
@@ -75,8 +88,7 @@ public class WintertodtOverlay extends Overlay
 			}
 
 			//Energy
-			if(wtEnergy.getText().contains(": "))
-			{
+			if (wtEnergy.getText().contains(": ")) {
 				String energySplitter[] = wtEnergy.getText().split(": ");
 				pnc.getLines().add(new PanelComponent.Line(
 						"Energy: ",
@@ -87,55 +99,62 @@ public class WintertodtOverlay extends Overlay
 			}
 
 			//Points
-			if(wtPoints.getText().contains(("<br>")))
-			{
+			if (wtPoints.getText().contains(("<br>"))) {
 				String pointSplitter[] = wtPoints.getText().split("<br>");
 				pnc.getLines().add(new PanelComponent.Line(
-					pointSplitter[0] + ":",
-					Color.WHITE,
-					pointSplitter[1],
-					getColor(Integer.parseInt(pointSplitter[1])))
+						pointSplitter[0] + ":",
+						Color.WHITE,
+						pointSplitter[1],
+						getColor(Integer.parseInt(pointSplitter[1])))
 				);
 			}
 
 			//Fires
-			if(wtSWF.getSpriteId() == 1399)
-			{safeFires += ", SW";}
-			else
-			{downFires += ", SW";}
+			if (wtSWF.getSpriteId() == 1399) {
+				safeFires += ", SW";
+			} else {
+				downFires += ", SW";
+			}
 
-			if(wtNWF.getSpriteId() == 1399)
-			{safeFires += ", NW";}
-			else
-			{downFires += ", NW";}
+			if (wtNWF.getSpriteId() == 1399) {
+				safeFires += ", NW";
+			} else {
+				downFires += ", NW";
+			}
 
-			if(wtNEF.getSpriteId() == 1399)
-			{safeFires += ", NE";}
-			else
-			{downFires += ", NE";}
+			if (wtNEF.getSpriteId() == 1399) {
+				safeFires += ", NE";
+			} else {
+				downFires += ", NE";
+			}
 
-			if(wtSEF.getSpriteId() == 1399)
-			{safeFires += ", SE";}
-			else
-			{downFires += ", SE";}
+			if (wtSEF.getSpriteId() == 1399) {
+				safeFires += ", SE";
+			} else {
+				downFires += ", SE";
+			}
 
 			//Pyromancers
-			if(wtSWP.getSpriteId() == 1400)
-			{pyromancerHelp += ", SW";}
-			if(wtNWP.getSpriteId() == 1400)
-			{pyromancerHelp += ", NW";}
-			if(wtNEP.getSpriteId() == 1400)
-			{pyromancerHelp += ", NE";}
-			if(wtSEP.getSpriteId() == 1400)
-			{pyromancerHelp += ", SE";}
+			if (wtSWP.getSpriteId() == 1400) {
+				pyromancerHelp += ", SW";
+			}
+			if (wtNWP.getSpriteId() == 1400) {
+				pyromancerHelp += ", NW";
+			}
+			if (wtNEP.getSpriteId() == 1400) {
+				pyromancerHelp += ", NE";
+			}
+			if (wtSEP.getSpriteId() == 1400) {
+				pyromancerHelp += ", SE";
+			}
 
-				//Lit Fires
+			//Lit Fires
 			pnc.getLines().add(new PanelComponent.Line("Lit Fires:  ",
 					Color.WHITE,
 					safeFires.replaceFirst(", ", ""),
 					config.highColor())
 			);
-				//Unlit Fires
+			//Unlit Fires
 			pnc.getLines().add(new PanelComponent.Line("Unlit Fires: ",
 					Color.WHITE,
 					downFires.replaceFirst(", ", ""),
@@ -149,16 +168,15 @@ public class WintertodtOverlay extends Overlay
 			);
 			//Renders
 			pnc.setWidth(160);
+			pnc.setBackgroundColor(WT_BG_COLOR);
 			pnc.render(graphics);
-			pnc.getLines().clear();
 		}
-		return null;
 	}
 
 	//Visual Feedback for points
 	public Color getColor(int points)
 	{
-		if(points < 500)
+		if (points < 500)
 		{
 			return config.lowColor();
 		}
@@ -171,15 +189,15 @@ public class WintertodtOverlay extends Overlay
 	//Visual Feedback for Energy
 	public Color getEnergyColor(int points)
 	{
-		if(points <= 20)
+		if (points <= 20)
 		{
 			return config.lowColor();
 		}
-		else if(points > 20 && points <= 60)
+		else if (points > 20 && points <= 60)
 		{
 			return config.medColor();
 		}
-		else if(points > 60 && points <= 100)
+		else if (points > 60 && points <= 100)
 		{
 			return config.highColor();
 		}

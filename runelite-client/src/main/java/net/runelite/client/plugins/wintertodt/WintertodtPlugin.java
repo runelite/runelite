@@ -29,19 +29,23 @@ public class WintertodtPlugin extends Plugin {
 
 	@Override
 	public Overlay getOverlay()
-    { return overlay; }
+	{
+		return overlay;
+	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		//Unhides Widgets
-		Widget wtOverlay = client.getWidget(WidgetInfo.WINTERTODT_BASE);
 		Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
 		Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
 		Widget wtReturn = client.getWidget(WidgetInfo.WINTERTODT_RETURN);
-		wtOverlayBAR.setHidden(false);
-		wtOverlayUI.setHidden(false);
-		wtReturn.setRelativeX(0);
+		if(wtReturn != null)
+		{
+			wtOverlayBAR.setHidden(false);
+			wtOverlayUI.setHidden(false);
+			wtReturn.setRelativeX(0);
+		}
 	}
 
 	@Provides
