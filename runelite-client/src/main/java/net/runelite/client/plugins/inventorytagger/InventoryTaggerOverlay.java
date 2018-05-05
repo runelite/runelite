@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.inventorytagger;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -52,37 +51,8 @@ public class InventoryTaggerOverlay extends Overlay
 			{
 				if (tI.getValue().containsItem(item.getId()))
 				{
-					//graphics.drawImage(image, item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
-
 					ItemOutline pic = new ItemOutline(client, item.getId(), 2, tI.getValue().overlayColor);
 					graphics.drawImage(pic.getPicture(), item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
-
-
-//					try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-//							new FileOutputStream("C:\\Users\\kulers\\Desktop\\item_" + item.getId() + ".txt"), "utf-8"))) {
-//
-//						int num = 1;
-//						for (int ddsd : itemSprite.getPixels())
-//						{
-//							//writer.write((ddsd != tI.getValue().overlayColor.getRGB() ? "-" : "#"));
-//							writer.write(" "+ddsd);
-//							if (num == 36){
-//								writer.write(System.getProperty("line.separator"));
-//								num = 0 ;
-//							}
-//							num++;
-//						}
-//
-//
-//					} catch (UnsupportedEncodingException e) {
-//						e.printStackTrace();
-//					} catch (FileNotFoundException e) {
-//						e.printStackTrace();
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-
-
 				}
 			}
 
