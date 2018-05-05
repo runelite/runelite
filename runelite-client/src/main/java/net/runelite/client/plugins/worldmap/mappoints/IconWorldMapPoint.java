@@ -25,28 +25,15 @@
  */
 package net.runelite.client.plugins.worldmap.mappoints;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-public class TooltipOnlyWMP extends WorldMapPoint
+public class IconWorldMapPoint extends WorldMapPoint
 {
-	//Actual icons are 15 px but 17 stops rounding errors from having their tooltip trigger::
-	private static final int ICON_SIZE = 15;
-	private static final BufferedImage clearMapIcon = new BufferedImage(ICON_SIZE, ICON_SIZE, BufferedImage.TYPE_INT_ARGB);
-
-	public TooltipOnlyWMP(WorldPoint worldPoint, String tooltip)
+	public IconWorldMapPoint(WorldPoint worldPoint, BufferedImage icon, String tooltip)
 	{
-		super(worldPoint, clearMapIcon);
+		super(worldPoint, icon);
 		setTooltip(tooltip);
-		setImagePoint(new Point(clearMapIcon.getWidth() / 2, clearMapIcon.getHeight() / 2));
-
-		//DEBUG
-		Graphics g = clearMapIcon.getGraphics();
-		g.setColor(Color.MAGENTA);
-		g.drawRect(0, 0, clearMapIcon.getWidth() - 1, clearMapIcon.getHeight() - 1);
 	}
 }
