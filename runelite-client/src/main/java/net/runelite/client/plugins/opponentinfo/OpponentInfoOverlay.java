@@ -84,6 +84,9 @@ class OpponentInfoOverlay extends Overlay
 		panelComponent.setGap(new Point(0, 2));
 	}
 
+	@Inject
+	private OpponentInfoConfig config;
+
 	private Actor getOpponent()
 	{
 		Player player = client.getLocalPlayer();
@@ -174,7 +177,7 @@ class OpponentInfoOverlay extends Overlay
 			progressBarComponent.setBackgroundColor(HP_RED);
 			progressBarComponent.setForegroundColor(HP_GREEN);
 
-			if (lastMaxHealth != null)
+			if (lastMaxHealth != null && !config.healthOverlay())
 			{
 				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
 				progressBarComponent.setMaximum(lastMaxHealth);

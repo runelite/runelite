@@ -39,6 +39,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -85,6 +87,12 @@ public class OpponentInfoPlugin extends Plugin
 		{
 			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
 		}
+	}
+
+	@Provides
+	OpponentInfoConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(OpponentInfoConfig.class);
 	}
 
 	public static Map<String, Integer> loadNpcHealth()
