@@ -58,7 +58,8 @@ public class FightCavePlugin extends Plugin
 
 	private static final ArrayList<Integer> FIGHT_CAVE_REGIONS = new ArrayList<Integer>(Arrays.asList(9294, 9295, 9296, 9550, 9551, 9552, 9806, 9807, 9808));
 
-	private static final int[][] WAVE_ENEMIES = {//I could have just written a function, but this is faster to write :shrug:
+	//Array contains a list of what monster levels are spawned each wave
+	private static final int[][] WAVE_ENEMIES = {
 			{22},
 			{22, 22},
 			{45},
@@ -164,7 +165,7 @@ public class FightCavePlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.SERVER && isInFightCaves())
 		{
-			String msg = Text.removeTags(event.getMessage());//.substring(6);
+			String msg = Text.removeTags(event.getMessage());
 			if (msg.contains("Wave:"))
 			{
 				this.wave = Integer.parseInt(msg.substring(6));
@@ -173,7 +174,8 @@ public class FightCavePlugin extends Plugin
 		}
 	}
 
-	private boolean isInFightCaves()//more like is in city or fight caves, but close enough
+	//more like is in city or fight caves, but close enough
+	private boolean isInFightCaves()
 	{
 		int[] regions = client.getMapRegions();
 		for (int i = 0; i < regions.length; i++)
