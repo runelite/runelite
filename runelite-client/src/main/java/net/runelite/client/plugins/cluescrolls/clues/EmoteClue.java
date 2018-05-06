@@ -128,6 +128,7 @@ import static net.runelite.api.ItemID.BROWN_HEADBAND;
 import static net.runelite.api.ItemID.BRUISE_BLUE_SNELM_3343;
 import static net.runelite.api.ItemID.CAPE_OF_LEGENDS;
 import static net.runelite.api.ItemID.CASTLE_WARS_BRACELET3;
+import static net.runelite.api.ItemID.CASTLE_WARS_BRACELET1;
 import static net.runelite.api.ItemID.CLIMBING_BOOTS;
 import static net.runelite.api.ItemID.COIF;
 import static net.runelite.api.ItemID.COMBAT_BRACELET;
@@ -485,7 +486,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Laugh by the fountain of heroes. Equip splitbark legs, dragon boots and a Rune longsword.", new WorldPoint(2716, 6584, 0), LAUGH, item(SPLITBARK_LEGS), item(DRAGON_BOOTS), item(RUNE_LONGSWORD)),
 		new EmoteClue("Laugh in Jokul's tent in the Mountain Camp. Beware of double agents! Equip a rune full helmet, blue dragonhide chaps and a fire battlestaff.", new WorldPoint(2812, 3681, 0), LAUGH, item(RUNE_FULL_HELM), item(BLUE_DHIDE_CHAPS), item(FIRE_BATTLESTAFF)),
 		new EmoteClue("Laugh at the crossroads south of the Sinclair Mansion. Equip a cowl, a blue wizard robe top and an iron scimitar.", new WorldPoint(2741, 3536, 0), LAUGH, item(LEATHER_COWL), item(EARTH_RUNE), item(IRON_SCIMITAR)),
-		new EmoteClue("Laugh in front of the gem store in Ardougne market. Equip a Castlewars bracelet, a dragonstone amulet and a ring of forging.", new WorldPoint(2666, 3304, 0), LAUGH, item(CASTLE_WARS_BRACELET3), item(DRAGONSTONE_AMULET), item(RING_OF_FORGING)),
+		new EmoteClue("Laugh in front of the gem store in Ardougne market. Equip a Castlewars bracelet, a dragonstone amulet and a ring of forging.", new WorldPoint(2666, 3304, 0), LAUGH, any("Castle wars bracelet", range(CASTLE_WARS_BRACELET3, CASTLE_WARS_BRACELET1)), item(DRAGONSTONE_AMULET), item(RING_OF_FORGING)),
 		new EmoteClue("Panic in the Limestone Mine. Equip bronze platelegs, a steel pickaxe and a steel medium helmet.", new WorldPoint(3372, 3498, 0), PANIC, item(BRONZE_PLATELEGS), item(STEEL_PICKAXE), item(STEEL_MED_HELM)),
 		new EmoteClue("Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.", new WorldPoint(3504, 3576, 0), PANIC, WAVE, item(MITHRIL_PLATESKIRT), item(MAPLE_LONGBOW), emptySlot("No boots", BOOTS)),
 		new EmoteClue("Panic on the Wilderness volcano bridge. Beware of double agents! Equip any headband and crozier.", new WorldPoint(3368, 3935, 0), PANIC, any("Any headband", range(RED_HEADBAND, BROWN_HEADBAND), range(WHITE_HEADBAND, GREEN_HEADBAND)), any("Any crozier", item(ANCIENT_CROZIER), item(ARMADYL_CROZIER), item(BANDOS_CROZIER), range(SARADOMIN_CROZIER, ZAMORAK_CROZIER))),
