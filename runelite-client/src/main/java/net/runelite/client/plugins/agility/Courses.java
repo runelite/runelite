@@ -48,11 +48,12 @@ public enum Courses
 	RELLEKA(780.0, 475, 10553),
 	ARDOUGNE(793.0, 529, 10547);
 
-	private final static Map<Integer, Courses> courseXps = new HashMap<>();
+	private final static Map<Integer, Courses> coursesByRegion = new HashMap<>();
 
 	@Getter
 	private final double totalXp;
 
+	@Getter
 	private final int lastObstacleXp;
 
 	@Getter
@@ -62,12 +63,12 @@ public enum Courses
 	{
 		for (Courses course : values())
 		{
-			courseXps.put(course.lastObstacleXp, course);
+			coursesByRegion.put(course.regionId, course);
 		}
 	}
 
-	public static Courses getCourse(int exp)
+	public static Courses getCourse(int regionId)
 	{
-		return courseXps.get(exp);
+		return coursesByRegion.get(regionId);
 	}
 }
