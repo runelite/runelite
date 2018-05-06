@@ -54,6 +54,5 @@ public interface XpTrackerService
 	 * @param skill
 	 * @return
 	 */
-
 	int getXpHr(Skill skill);
 }
