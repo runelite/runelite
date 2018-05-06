@@ -110,7 +110,12 @@ public class ImplingsPlugin extends Plugin
 			return false;
 		}
 
-		switch (impling.getImplingType())
+		return showImplingType(impling.getImplingType());
+	}
+
+	boolean showImplingType(ImplingType implingType)
+	{
+		switch (implingType)
 		{
 			case BABY:
 				return config.showBaby();
