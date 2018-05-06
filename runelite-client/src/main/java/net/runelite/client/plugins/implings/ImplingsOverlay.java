@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
@@ -38,7 +39,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 /**
- *
  * @author robin
  */
 public class ImplingsOverlay extends Overlay
@@ -56,22 +56,22 @@ public class ImplingsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		NPC[] imps = plugin.getImplings();
-		if (imps == null)
+		List<NPC> implings = plugin.getImplings();
+
+		if (implings.isEmpty())
 		{
 			return null;
 		}
 
-		for (NPC imp : imps)
+		for (NPC imp : implings)
 		{
-			if (imp == null || imp.getName() == null)
+			Color color = plugin.npcToColor(imp);
+			if (!plugin.showNpc(imp) || color == null)
 			{
 				continue;
 			}
 
-			//Spawns have the name "null", so they get changed to "Spawn"
-			String text = imp.getName().equals("null") ? "Spawn" : imp.getName();
-			drawImp(graphics, imp, text, plugin.getIds().get(imp.getId()));
+			drawImp(graphics, imp, imp.getName(), color);
 		}
 
 		return null;
