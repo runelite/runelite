@@ -29,8 +29,7 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ImagePanelComponent;
-
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import java.awt.Color;
@@ -38,6 +37,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class FightCaveOverlay extends Overlay
@@ -46,61 +49,65 @@ public class FightCaveOverlay extends Overlay
 
 	private final Client client;
 	private final FightCavePlugin plugin;
+	private final FightcaveConfig config;
 
-	private BufferedImage protectFromMagicImg;
-	private BufferedImage protectFromMissilesImg;
+	private PanelComponent panelComponent;
 
 	@Inject
-	FightCaveOverlay(Client client, FightCavePlugin plugin)
+	FightCaveOverlay(Client client, FightCavePlugin plugin, FightcaveConfig config)
 	{
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		JadAttack attack = plugin.getAttack();
-		if (attack == null)
+		if (!this.plugin.isInCave())
 		{
 			return null;
 		}
-		BufferedImage prayerImage = getPrayerImage(attack);
-		ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
-		imagePanelComponent.setTitle("TzTok-Jad");
-		imagePanelComponent.getImages().add(prayerImage);
-		if (!client.isPrayerActive(attack.getPrayer()))
+
+		panelComponent = new PanelComponent();
+		panelComponent.setTitle("Fight Cave");
+		panelComponent.setTitleColor(Color.WHITE);
+
+		if (config.showCurrentWave())
 		{
-			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Wave:",
+					Color.WHITE,
+					String.valueOf(plugin.getCurrentWave()),
+					Color.WHITE
+			));
 		}
-		return imagePanelComponent.render(graphics);
+
+		if (config.showCaveTimer())
+		{
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Elapsed:",
+					Color.WHITE,
+					getElapsedTime(),
+					Color.WHITE
+			));
+		}
+
+		return needsOverlay() ? panelComponent.render(graphics) : null;
 	}
 
-	private BufferedImage getPrayerImage(JadAttack attack)
+	private String getElapsedTime()
 	{
-		return attack == JadAttack.MAGIC ? getProtectFromMagicImage() : getProtectFromMissilesImage();
+		Duration duration = Duration.between(plugin.getCaveEnterTime(), Instant.now());
+		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
+		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
-	private BufferedImage getProtectFromMagicImage()
+	private boolean needsOverlay()
 	{
-		if (protectFromMagicImg == null)
-		{
-			String path = "/prayers/protect_from_magic.png";
-			protectFromMagicImg = getImage(path);
-		}
-		return protectFromMagicImg;
-	}
-
-	private BufferedImage getProtectFromMissilesImage()
-	{
-		if (protectFromMissilesImg == null)
-		{
-			String path = "/prayers/protect_from_missiles.png";
-			protectFromMissilesImg = getImage(path);
-		}
-		return protectFromMissilesImg;
+		return config.showCaveTimer() || config.showCurrentWave();
 	}
 
 	private BufferedImage getImage(String path)
