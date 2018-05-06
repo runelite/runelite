@@ -144,7 +144,7 @@ public class WorldPoint
 			return Integer.MAX_VALUE;
 		}
 
-		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
+		return distanceTo2D(other);
 	}
 
 
@@ -156,7 +156,7 @@ public class WorldPoint
 	 */
 	public int distanceTo2D(WorldPoint other)
 	{
-		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
+		return Math.max(Math.abs(getX() - other.getX()), Math.abs(getY() - other.getY()));
 	}
 
 	/**
