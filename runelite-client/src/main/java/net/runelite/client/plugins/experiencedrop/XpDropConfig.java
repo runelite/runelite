@@ -82,7 +82,7 @@ public interface XpDropConfig extends Config
 
 	@ConfigItem(
 			keyName = "defaultXpDrop",
-			name = "Regular XP Drop",
+			name = "Regular XP Color",
 			description = "More custom default colors",
 			position = 5
 	)
