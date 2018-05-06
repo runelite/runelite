@@ -114,7 +114,8 @@ public class ScreenMarkerPlugin extends Plugin
 	void updateMarkerConfig()
 	{
 		ArrayList<String> parts = new ArrayList<>(this.markers.size() - 1);
-		for (ScreenMarker marker : this.markers) {
+		for (ScreenMarker marker : this.markers)
+		{
 			if (marker.equals(this.drawingMarker))
 				continue;
 

@@ -43,7 +43,10 @@ public interface ScreenMarkerConfig extends Config
 			description = "Configures whether or not to display markers",
 			position = 1
 	)
-	default boolean displayMarkers() { return true; }
+	default boolean displayMarkers()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 			keyName = "markerThickness",
@@ -73,7 +76,10 @@ public interface ScreenMarkerConfig extends Config
 			description = "Allows markers to be added to the screen",
 			position = 4
 	)
-	default boolean addMarkers() { return false; }
+	default boolean addMarkers()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "addMarkers",
@@ -88,7 +94,10 @@ public interface ScreenMarkerConfig extends Config
 			description = "Contains serialized marker data",
 			hidden = true
 	)
-	default String markerData() { return ""; }
+	default String markerData()
+	{
+		return "";
+	}
 
 	@ConfigItem(
 			keyName = "markerData",
