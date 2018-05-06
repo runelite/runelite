@@ -192,7 +192,7 @@ public final class WorldMapManager {
       int[] var12 = new int[4];
       Rasterizer2D.copyDrawRegion(var12);
       WorldMapRectangle var13 = this.getRegionRectForViewport(var1, var2, var3, var4);
-      float var14 = this.method602(x2 - x1, var3 - var1);
+      float var14 = this.getPixelsPerTile(x2 - x1, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       this.field557 = var15;
       if(!this.field550.containsKey(Integer.valueOf(var15))) {
@@ -232,29 +232,29 @@ public final class WorldMapManager {
       garbageValue = "-1997582972"
    )
    @Export("drawMapIcons")
-   public final void drawMapIcons(int x1, int y1, int x2, int y2, int graphicsX1, int var6, int graphicsX2, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
+   public final void drawMapIcons(int x1, int y1, int x2, int y2, int graphicsX1, int graphicsY1, int graphicsX2, int graphicsY2, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
       WorldMapRectangle worldMapRectangle = this.getRegionRectForViewport(x1, y1, x2, y2);
-      float var15 = this.method602(graphicsX2 - graphicsX1, x2 - x1);
-      int var16 = (int)(64.0F * var15);
+      float pixelsPerTile = this.getPixelsPerTile(graphicsX2 - graphicsX1, x2 - x1);
+      int regionWidthPixels = (int)(64.0F * pixelsPerTile);
       int xCoordinate = x1 + this.mapSurfaceBaseOffsetX;
       int yCoordinate = y1 + this.mapSurfaceBaseOffsetY;
 
-      int var19;
-      int var20;
-      for(var19 = worldMapRectangle.worldMapRegionX; var19 < worldMapRectangle.worldMapRegionWidth + worldMapRectangle.worldMapRegionX; ++var19) {
-         for(var20 = worldMapRectangle.worldMapRegionY; var20 < worldMapRectangle.worldMapRegionHeight + worldMapRectangle.worldMapRegionY; ++var20) {
+      int curRegionX;
+      int curRegionY;
+      for(curRegionX = worldMapRectangle.worldMapRegionX; curRegionX < worldMapRectangle.worldMapRegionWidth + worldMapRectangle.worldMapRegionX; ++curRegionX) {
+         for(curRegionY = worldMapRectangle.worldMapRegionY; curRegionY < worldMapRectangle.worldMapRegionHeight + worldMapRectangle.worldMapRegionY; ++curRegionY) {
             if(var13) {
-               this.mapRegions[var19][var20].method405();
+               this.mapRegions[curRegionX][curRegionY].method405();
             }
 
-            this.mapRegions[var19][var20].method499(graphicsX1 + var16 * (this.mapRegions[var19][var20].field481 * 64 - xCoordinate) / 64, var8 - var16 * (this.mapRegions[var19][var20].field488 * 64 - yCoordinate + 64) / 64, var16, var9);
+            this.mapRegions[curRegionX][curRegionY].method499(graphicsX1 + regionWidthPixels * (this.mapRegions[curRegionX][curRegionY].field481 * 64 - xCoordinate) / 64, graphicsY2 - regionWidthPixels * (this.mapRegions[curRegionX][curRegionY].field488 * 64 - yCoordinate + 64) / 64, regionWidthPixels, var9);
          }
       }
 
       if(var10 != null && var11 > 0) {
-         for(var19 = worldMapRectangle.worldMapRegionX; var19 < worldMapRectangle.worldMapRegionWidth + worldMapRectangle.worldMapRegionX; ++var19) {
-            for(var20 = worldMapRectangle.worldMapRegionY; var20 < worldMapRectangle.worldMapRegionHeight + worldMapRectangle.worldMapRegionY; ++var20) {
-               this.mapRegions[var19][var20].drawFlashingMapIcons(var10, var11, var12);
+         for(curRegionX = worldMapRectangle.worldMapRegionX; curRegionX < worldMapRectangle.worldMapRegionWidth + worldMapRectangle.worldMapRegionX; ++curRegionX) {
+            for(curRegionY = worldMapRectangle.worldMapRegionY; curRegionY < worldMapRectangle.worldMapRegionHeight + worldMapRectangle.worldMapRegionY; ++curRegionY) {
+               this.mapRegions[curRegionX][curRegionY].drawFlashingMapIcons(var10, var11, var12);
             }
          }
       }
@@ -336,7 +336,7 @@ public final class WorldMapManager {
          return var11;
       } else {
          WorldMapRectangle var12 = this.getRegionRectForViewport(var1, var2, var3, var4);
-         float var13 = this.method602(var7, var3 - var1);
+         float var13 = this.getPixelsPerTile(var7, var3 - var1);
          int var14 = (int)(64.0F * var13);
          int var15 = this.mapSurfaceBaseOffsetX + var1;
          int var16 = var2 + this.mapSurfaceBaseOffsetY;
@@ -455,7 +455,8 @@ public final class WorldMapManager {
       signature = "(III)F",
       garbageValue = "-782152666"
    )
-   float method602(int graphicsDiff, int worldDiff) {
+   @Export("getPixelsPerTile")
+   float getPixelsPerTile(int graphicsDiff, int worldDiff) {
       float var3 = (float)graphicsDiff / (float)worldDiff;
       if(var3 > 8.0F) {
          return 8.0F;

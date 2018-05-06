@@ -28,6 +28,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -35,6 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -61,6 +63,9 @@ public class WorldMapOverlay extends Overlay
 
 	private final WorldMapPointManager worldMapPointManager;
 	private final Provider<Client> clientProvider;
+
+	@Setter
+	private static boolean debugInfo = false;
 
 	@Inject
 	private WorldMapOverlay(Provider<Client> clientProvider, WorldMapPointManager worldMapPointManager,
@@ -168,7 +173,42 @@ public class WorldMapOverlay extends Overlay
 			drawTooltip(graphics, tooltipPoint);
 		}
 
+		if (debugInfo)
+		{
+			drawDebugInfo(graphics);
+		}
+
 		return null;
+	}
+
+	private void drawDebugInfo(Graphics graphics)
+	{
+		RenderOverview ro = clientProvider.get().getRenderOverview();
+		Rectangle worldMapRectangle = clientProvider.get().getWidget(WidgetInfo.WORLD_MAP_VIEW).getBounds();
+
+		graphics.setClip(worldMapRectangle);
+		graphics.setColor(Color.CYAN);
+
+		WorldPoint mapCenterPoint = new WorldPoint(ro.getWorldMapPosition().getX(), ro.getWorldMapPosition().getY(), 0);
+		Point middle = mapWorldPointToGraphicsPoint(mapCenterPoint);
+
+		if (middle == null)
+		{
+			return;
+		}
+
+		graphics.drawLine(middle.getX(), worldMapRectangle.y, middle.getX(), worldMapRectangle.y + worldMapRectangle.height);
+		graphics.drawLine(worldMapRectangle.x, middle.getY(), worldMapRectangle.x + worldMapRectangle.width, middle.getY());
+
+		String output = "Center: " + mapCenterPoint.getX() + ", " + mapCenterPoint.getY();
+		graphics.setColor(Color.white);
+		FontMetrics fm = graphics.getFontMetrics();
+		int height = fm.getHeight();
+		int width = fm.stringWidth(output);
+		graphics.fillRect((int)worldMapRectangle.getX(), (int)worldMapRectangle.getY() + worldMapRectangle.height - height, (int)worldMapRectangle.getX() + width, (int)worldMapRectangle.getY() + worldMapRectangle.height);
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(output, (int) worldMapRectangle.getX(), (int) worldMapRectangle.getY() + worldMapRectangle.height);
 	}
 
 	private Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
@@ -182,17 +222,31 @@ public class WorldMapOverlay extends Overlay
 
 		Float pixelsPerTile = ro.getWorldMapZoom();
 
-		Point worldMapPosition = ro.getWorldMapPosition();
-		int xWorldDiff = worldPoint.getX() - worldMapPosition.getX();
-		int yWorldDiff = worldPoint.getY() - worldMapPosition.getY();
-		yWorldDiff = -yWorldDiff;
-
 		Widget map = clientProvider.get().getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (map != null)
 		{
 			Rectangle worldMapRect = map.getBounds();
-			int xGraphDiff = (int) (xWorldDiff * pixelsPerTile + worldMapRect.getWidth() / 2 + worldMapRect.getX());
-			int yGraphDiff = (int) (yWorldDiff * pixelsPerTile + worldMapRect.getHeight() / 2 + worldMapRect.getY());
+
+			int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
+			int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
+
+			Point worldMapPosition = ro.getWorldMapPosition();
+
+			//Offset in tiles from anchor sides
+			int yTileMax = worldMapPosition.getY() - heightInTiles / 2;
+			int yTileOffset = (yTileMax - worldPoint.getY() - 1) * -1;
+			int xTileOffset = worldPoint.getX() + widthInTiles / 2 - worldMapPosition.getX();
+
+			int xGraphDiff = ((int) (xTileOffset * pixelsPerTile));
+			int yGraphDiff = (int) (yTileOffset * pixelsPerTile);
+
+			//Center on tile.
+			yGraphDiff -= pixelsPerTile - (pixelsPerTile / 2);
+			xGraphDiff += pixelsPerTile - (pixelsPerTile / 2);
+
+			yGraphDiff = worldMapRect.height - yGraphDiff;
+			yGraphDiff += (int) worldMapRect.getY();
+			xGraphDiff += (int) worldMapRect.getX();
 
 			return new Point(xGraphDiff, yGraphDiff);
 		}
