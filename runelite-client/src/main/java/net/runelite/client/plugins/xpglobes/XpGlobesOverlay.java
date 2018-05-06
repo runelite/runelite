@@ -265,7 +265,11 @@ public class XpGlobesOverlay extends Overlay
 
 			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
 			String xpHrString = decimalFormat.format(xpHr);
-			lines.add(new PanelComponent.Line("Xp per hour:", Color.ORANGE, xpHrString, Color.WHITE));
+			xpTooltip.getChildren().add(LineComponent.builder()
+				.left("Xp per hour:")
+				.leftColor(Color.ORANGE)
+				.right(xpHrString)
+				.build());
 
 			//Create progress bar for skill.
 			ProgressBarComponent progressBar = new ProgressBarComponent();
