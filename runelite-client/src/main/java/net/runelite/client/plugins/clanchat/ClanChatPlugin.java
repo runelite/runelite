@@ -26,16 +26,20 @@ package net.runelite.client.plugins.clanchat;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
+
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
+import net.runelite.api.ClanMemberRank;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
@@ -51,31 +55,29 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Clan Chat"
+        name = "Clan Chat"
 )
 @Slf4j
-public class ClanChatPlugin extends Plugin
-{
-	private final String joinClanChatMessage = "%s has joined the clan chat";
-	private final String leftClanChatMessage = "%s has left the clan chat";
+public class ClanChatPlugin extends Plugin {
+    private final String joinClanChatMessage = "%s has joined the clan chat";
+    private final String leftClanChatMessage = "%s has left the clan chat";
 
-	@Inject
-	private Client client;
+    @Inject
+    private Client client;
 
-	@Inject
-	private ClanManager clanManager;
+    @Inject
+    private ClanManager clanManager;
 
-	@Inject
-	private ChatMessageManager chatMessageManager;
+    @Inject
+    private ChatMessageManager chatMessageManager;
 
     @Inject
     private ClanChatConfig config;
 
-	private HashSet<ClanMember> previousMembersInClan;
+    private HashSet<ClanMember> previousMembersInClan;
 
     @Provides
-    ClanChatConfig getConfig(ConfigManager configManager)
-    {
+    ClanChatConfig getConfig(ConfigManager configManager) {
         return configManager.getConfig(ClanChatConfig.class);
     }
 
@@ -85,88 +87,78 @@ public class ClanChatPlugin extends Plugin
     }
 
     @Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void updateClanChatTitle()
-	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
+            period = 600,
+            unit = ChronoUnit.MILLIS
+    )
+    public void updateClanChatTitle() {
+        if (client.getGameState() != GameState.LOGGED_IN) {
+            return;
+        }
 
-		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
-		if (clanChatTitleWidget != null)
-		{
-			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
-		}
-	}
+        Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
+        if (clanChatTitleWidget != null) {
+            clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
+        }
+    }
 
-	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
-	{
-		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
+    @Subscribe
+    public void onSetMessage(SetMessage setMessage) {
+        if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN) {
+            return;
+        }
 
-		if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
-		{
-			insertClanRankIcon(setMessage);
-		}
-	}
+        if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0) {
+            insertClanRankIcon(setMessage);
+        }
+    }
 
 
-	private void insertClanRankIcon(final SetMessage message)
-	{
-		final ClanMemberRank rank = clanManager.getRank(message.getName());
+    private void insertClanRankIcon(final SetMessage message) {
+        final ClanMemberRank rank = clanManager.getRank(message.getName());
 
-		if (rank != null && rank != ClanMemberRank.UNRANKED)
-		{
-			int iconNumber = clanManager.getIconNumber(rank);
-			message.getMessageNode()
-				.setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
-			client.refreshChat();
-		}
-	}
+        if (rank != null && rank != ClanMemberRank.UNRANKED) {
+            int iconNumber = clanManager.getIconNumber(rank);
+            message.getMessageNode()
+                    .setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
+            client.refreshChat();
+        }
+    }
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		boolean isInClan = client.getLocalPlayer().isClanMember();
+    @Subscribe
+    public void onGameTick(GameTick gameTick) {
+        boolean isInClan = client.getLocalPlayer().isClanMember();
 
-		if (isInClan)
-		{
-			HashSet<ClanMember> currentMembers = new HashSet<>(Arrays.asList(client.getClanMembers()));
-			if (previousMembersInClan != null && config.showEnterAndLeaveMessages()) {
-				Sets.SetView<ClanMember> clanMembersThatJoined = Sets.difference(currentMembers, previousMembersInClan);
-				Sets.SetView<ClanMember> clanMembersThatLeft = Sets.difference(previousMembersInClan, currentMembers);
+        if (isInClan) {
+            HashSet<ClanMember> currentMembers = new HashSet<>(Arrays.asList(client.getClanMembers()));
+            if (previousMembersInClan != null && config.showEnterAndLeaveMessages()) {
+                Sets.SetView<ClanMember> clanMembersThatJoined = Sets.difference(currentMembers, previousMembersInClan);
+                Sets.SetView<ClanMember> clanMembersThatLeft = Sets.difference(previousMembersInClan, currentMembers);
 
-				sendChatMessage(clanMembersThatJoined, true);
-				sendChatMessage(clanMembersThatLeft, false);
-			}
-			previousMembersInClan = currentMembers;
-			return;
-		}
-		previousMembersInClan = null;
-	}
+                sendChatMessage(clanMembersThatJoined, true);
+                sendChatMessage(clanMembersThatLeft, false);
+            }
+            previousMembersInClan = currentMembers;
+            return;
+        }
+        previousMembersInClan = null;
+    }
 
-	private void sendChatMessage(Set<ClanMember> members, boolean newMembers) {
-		members.forEach(member -> {
-			String chatMessage = newMembers ? String.format(joinClanChatMessage, member.getUsername())
-					: String.format(leftClanChatMessage, member.getUsername());
+    private void sendChatMessage(Set<ClanMember> members, boolean newMembers) {
+        members.forEach(member -> {
+            String chatMessage = newMembers ? String.format(joinClanChatMessage, member.getUsername())
+                    : String.format(leftClanChatMessage, member.getUsername());
 
-			final String message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append(chatMessage)
-					.build();
+            final String message = new ChatMessageBuilder()
+                    .append(ChatColorType.HIGHLIGHT)
+                    .append(chatMessage)
+                    .build();
 
-			chatMessageManager.queue(
-					QueuedMessage.builder()
-							.type(ChatMessageType.CLANCHAT_INFO)
-							.runeLiteFormattedMessage(message)
-							.build());
-		});
-	}
+            chatMessageManager.queue(
+                    QueuedMessage.builder()
+                            .type(ChatMessageType.CLANCHAT_INFO)
+                            .runeLiteFormattedMessage(message)
+                            .build());
+        });
+    }
 
 }
