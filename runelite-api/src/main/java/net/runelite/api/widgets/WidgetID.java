@@ -423,5 +423,6 @@ public class WidgetID
 	{
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
+		static final int BARROWS_REWARD_INVENTORY = 3;
 	}
 }

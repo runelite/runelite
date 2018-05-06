@@ -1,7 +1,6 @@
 package net.runelite.client.plugins.blastmine;
 
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
@@ -15,7 +14,6 @@ import net.runelite.http.api.item.ItemPrice;
 
 import javax.inject.Inject;
 import java.awt.*;
-import java.io.IOException;
 import java.util.HashMap;
 
 class BlastMineOreDetailsOverlay extends Overlay
@@ -49,11 +47,6 @@ class BlastMineOreDetailsOverlay extends Overlay
 		Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
 		panelComponent.getLines().clear();
 
-		if (orePrices.size() == 0)
-		{
-			this.getOrePrices();
-		}
-
 		if (blastMineWidget != null)
 		{
 			blastMineWidget.setHidden(true);
@@ -83,6 +76,7 @@ class BlastMineOreDetailsOverlay extends Overlay
 
 	private int CalculatePrice()
 	{
+		this.getOrePrices();
 		return client.getVar(Varbits.BLAST_MINE_COAL) * orePrices.get(COAL) +
 				client.getVar(Varbits.BLAST_MINE_GOLD) * orePrices.get(GOLD_ORE) +
 				client.getVar(Varbits.BLAST_MINE_MITHRIL) * orePrices.get(MITHRIL_ORE) +
@@ -101,22 +95,13 @@ class BlastMineOreDetailsOverlay extends Overlay
 
 	private int getItemPrice(int itemId)
 	{
-		// convert to unnoted id
-		ItemComposition composition = this.itemManager.getItemComposition(itemId);
-		final boolean note = composition.getNote() != -1;
-		final int id = note ? composition.getLinkedNoteId() : composition.getId();
-
-		ItemPrice itemPrice;
-		try
+		final ItemPrice price = itemManager.getItemPriceAsync(itemId);
+		if (price != null)
 		{
-			itemPrice = this.itemManager.getItemPrice(id);
-		}
-		catch (IOException e)
-		{
-			return 0;
+			int gePrice = price.getPrice();
+			return gePrice;
 		}
 
-		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
-		return gePrice;
+		return 0;
 	}
 }

@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.blastmine;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import net.runelite.api.*;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
@@ -34,23 +36,18 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPie;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BlastMineRockOverlay extends Overlay
 {
 	private static final int TIMER_SIZE = 25;
-	private static final int TIMER_BORDER_WIDTH = 1;
 	private static final int MAX_DISTANCE = 16;
 	private static final int WARNING_DISTANCE = 2;
-	private static final Set<Integer> WALL_OBJECTS = Collections.unmodifiableSet(Sets.newHashSet(ObjectID.NULL_28570, ObjectID.NULL_28571, ObjectID.NULL_28572, ObjectID.NULL_28573, ObjectID.NULL_28574,
+	private static final ImmutableSet<Integer> WALL_OBJECTS = ImmutableSet.copyOf(Sets.newHashSet(ObjectID.NULL_28570, ObjectID.NULL_28571, ObjectID.NULL_28572, ObjectID.NULL_28573, ObjectID.NULL_28574,
 			ObjectID.NULL_28575, ObjectID.NULL_28576, ObjectID.NULL_28577, ObjectID.NULL_28578, ObjectID.HARD_ROCK, ObjectID.HARD_ROCK_28580,
 			ObjectID.CAVITY, ObjectID.CAVITY_28582, ObjectID.POT_OF_DYNAMITE, ObjectID.POT_OF_DYNAMITE_28584, ObjectID.POT_OF_DYNAMITE_28585,
 			ObjectID.POT_OF_DYNAMITE_28586, ObjectID.SHATTERED_ROCKFACE, ObjectID.SHATTERED_ROCKFACE_28588));
@@ -64,8 +61,12 @@ public class BlastMineRockOverlay extends Overlay
 	private Color timerBorderColor;
 	private Color warningColor;
 
+	private BufferedImage chiselIcon;
+	private BufferedImage dynamiteIcon;
+	private BufferedImage tinderboxIcon;
+
 	@Inject
-	BlastMineRockOverlay(@Nullable Client client, BlastMinePlugin plugin, BlastMinePluginConfig config, ItemManager itemManager)
+	BlastMineRockOverlay(Client client, BlastMinePlugin plugin, BlastMinePluginConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -73,12 +74,15 @@ public class BlastMineRockOverlay extends Overlay
 		this.config = config;
 		this.client = client;
 		this.itemManager = itemManager;
+
+		this.chiselIcon = itemManager.getImage(ItemID.CHISEL);
+		this.dynamiteIcon = itemManager.getImage(ItemID.DYNAMITE);
+		this.tinderboxIcon = itemManager.getImage(ItemID.TINDERBOX);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		plugin.getRocks().removeIf(rock -> (rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) || (rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
 		drawRocks(graphics);
 		return null;
 	}
@@ -90,17 +94,25 @@ public class BlastMineRockOverlay extends Overlay
 		warningColor = config.getWarningColor();
 	}
 
+	public void removeRocks()
+	{
+		plugin.getRocks().removeIf(rock -> (rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) || (rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
+	}
+
 	private void drawRocks(Graphics2D graphics)
 	{
 		Tile[][][] tiles = client.getRegion().getTiles();
-		BufferedImage chiselIcon = itemManager.getImage(ItemID.CHISEL);
-		BufferedImage dynamiteIcon = itemManager.getImage(ItemID.DYNAMITE);
-		BufferedImage tinderboxIcon = itemManager.getImage(ItemID.TINDERBOX);
 		Widget viewport = client.getViewportWidget();
-		for (BlastMineRock rock : plugin.getRocks())
+
+		if (viewport != null)
 		{
-			if (viewport != null && rock.getGameObject().getCanvasLocation() != null
-				&& rock.getGameObject().getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= MAX_DISTANCE)
+			Set<BlastMineRock> nearbyRocks = plugin.getRocks().stream()
+					.filter(rock ->
+							rock.getGameObject().getCanvasLocation() != null &&
+									rock.getGameObject().getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= MAX_DISTANCE)
+					.collect(Collectors.toSet());
+
+			for (BlastMineRock rock : nearbyRocks)
 			{
 				switch (rock.getType())
 				{
@@ -138,7 +150,7 @@ public class BlastMineRockOverlay extends Overlay
 		if (loc != null && config.showTimerOverlay())
 		{
 			double timeLeft = 1 - rock.getRemainingFuseTimeRelative();
-			Point position = new Point((loc.getX() - TIMER_SIZE / 2 ) + 10, (loc.getY() - TIMER_SIZE / 2) + 10);
+			Point position = new Point((loc.getX() - TIMER_SIZE / 2) + 10, (loc.getY() - TIMER_SIZE / 2) + 10);
 			ProgressPie pie = new ProgressPie();
 			pie.setFill(fillColor);
 			pie.setBorderColor(borderColor);
@@ -178,7 +190,7 @@ public class BlastMineRockOverlay extends Overlay
 			{
 				GameObject gameObject = tiles[z][x + i][y + j].getGameObjects()[0];
 				//check if tile is empty, or is a wall...
-				if (gameObject == null  || !WALL_OBJECTS.contains(gameObject.getId()))
+				if (gameObject == null || !WALL_OBJECTS.contains(gameObject.getId()))
 				{
 					LocalPoint localTile = new LocalPoint(
 							(x + i) * Perspective.LOCAL_TILE_SIZE + Perspective.LOCAL_TILE_SIZE / 2,
@@ -192,5 +204,10 @@ public class BlastMineRockOverlay extends Overlay
 				}
 			}
 		}
+	}
+
+	public ImmutableSet<Integer> getWallObjects()
+	{
+		return WALL_OBJECTS;
 	}
 }

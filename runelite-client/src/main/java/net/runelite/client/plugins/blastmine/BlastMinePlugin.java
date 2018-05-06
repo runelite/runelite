@@ -24,16 +24,16 @@
  */
 package net.runelite.client.plugins.blastmine;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -51,6 +51,8 @@ import java.util.Set;
 )
 public class BlastMinePlugin extends Plugin
 {
+	private static final Set<Integer> BLAST_MINE_REGIONS = ImmutableSet.of(5948,5692);
+
 	@Inject
 	private BlastMineRockOverlay blastMineRockOverlay;
 
@@ -63,7 +65,8 @@ public class BlastMinePlugin extends Plugin
 	@Getter
 	private final Set<BlastMineRock> rocks = new HashSet<>();
 
-
+	@Inject
+	private Client client;
 
 	@Provides
 	BlastMinePluginConfig getConfig(ConfigManager configManager)
@@ -85,9 +88,20 @@ public class BlastMinePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onTick(GameTick tick)
+	{
+		blastMineRockOverlay.removeRocks();
+	}
+
+	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
+
+		if (!blastMineRockOverlay.getWallObjects().contains(gameObject.getId()))
+		{
+			return;
+		}
 
 		BlastMineRock newRock = new BlastMineRock(gameObject);
 		BlastMineRock oldRock = getRockFromCollection(gameObject);
@@ -119,6 +133,18 @@ public class BlastMinePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		if (!inBlastMine())
+		{
+			return;
+		}
+
+		GameObject object = event.getGameObject();
+		rocks.remove(object);
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("blastmineplugin"))
@@ -138,5 +164,26 @@ public class BlastMinePlugin extends Plugin
 			}
 		}
 		return null;
+	}
+
+	public boolean inBlastMine()
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+
+		int[] regions = client.getMapRegions();
+		for (int region : regions)
+		{
+			if (!BLAST_MINE_REGIONS.contains(region))
+			{
+				return false;
+			}
+		}
+
+		return true;
+
+
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2017, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot;
+package net.runelite.client.plugins.fps;
 
-import java.awt.event.KeyEvent;
-import java.util.Date;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import static net.runelite.client.plugins.screenshot.ScreenshotPlugin.TIME_FORMAT;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class ScreenshotInput implements KeyListener
+@ConfigGroup(
+	keyName = FpsPlugin.CONFIG_GROUP_KEY,
+	name = "FPS Control",
+	description = "Lets you control what your game frame rate is, often helps keep CPU down too"
+)
+public interface FpsConfig extends Config
 {
-	private final ScreenshotConfig config;
-	private final ScreenshotPlugin plugin;
-
-	@Inject
-	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
+	@ConfigItem(
+		keyName = "limitMode",
+		name = "Limit Mode",
+		description = "Stay at or under the target frames per second even when in this mode",
+		position = 1
+	)
+	default FpsLimitMode limitMode()
 	{
-		this.config = config;
-		this.plugin = plugin;
+		return FpsLimitMode.NEVER;
 	}
 
-	@Override
-	public void keyPressed(KeyEvent event)
+	@ConfigItem(
+		keyName = "maxFps",
+		name = "FPS target",
+		description = "Desired max frames per second",
+		position = 2
+	)
+	default int maxFps()
 	{
+		return 50;
 	}
 
-	@Override
-	public void keyTyped(KeyEvent event)
+	@ConfigItem(
+		keyName = "drawFps",
+		name = "Draw FPS indicator",
+		description = "Show a number in the corner for the current FPS",
+		position = 3
+	)
+	default boolean drawFps()
 	{
+		return true;
 	}
-
-	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (!config.isScreenshotEnabled())
-			return;
-
-		if (event.getKeyCode() == KeyEvent.VK_INSERT)
-		{
-			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
-		}
-	}
-
 }
