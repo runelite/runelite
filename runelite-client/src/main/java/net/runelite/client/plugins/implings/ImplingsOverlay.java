@@ -31,8 +31,12 @@ import java.awt.Polygon;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,13 +47,17 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  */
 public class ImplingsOverlay extends Overlay
 {
+	private final Client client;
+	private final ImplingsConfig config;
 	private final ImplingsPlugin plugin;
 
 	@Inject
-	private ImplingsOverlay(ImplingsPlugin plugin)
+	private ImplingsOverlay(Client client, ImplingsConfig config, ImplingsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.config = config;
+		this.client = client;
 		this.plugin = plugin;
 	}
 
@@ -74,7 +82,49 @@ public class ImplingsOverlay extends Overlay
 			drawImp(graphics, imp, imp.getName(), color);
 		}
 
+		//Draw static spawns
+		if (config.showSpawn())
+		{
+			for (ImplingSpawn spawn : ImplingSpawn.values())
+			{
+				if (!plugin.showImplingType(spawn.getType()))
+				{
+					continue;
+				}
+
+				String impName = spawn.getType().getName();
+				drawSpawn(graphics, spawn.getSpawnLocation(), impName, config.getSpawnColor());
+			}
+		}
+
 		return null;
+	}
+
+	private void drawSpawn(Graphics2D graphics, WorldPoint point, String text, Color color)
+	{
+		//Don't draw spawns if Player is not in range
+		if (point.distanceTo(client.getLocalPlayer().getWorldLocation()) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+		if (localPoint == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
+
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, localPoint, text, 0);
+		if (textPoint != null)
+		{
+			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);
+		}
 	}
 
 	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)

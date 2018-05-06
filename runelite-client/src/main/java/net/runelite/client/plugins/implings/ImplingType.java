@@ -24,17 +24,24 @@
  */
 package net.runelite.client.plugins.implings;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 enum ImplingType
 {
-	BABY,
-	YOUNG,
-	GOURMET,
-	EARTH,
-	ESSENCE,
-	ECLECTIC,
-	NATURE,
-	MAGPIE,
-	NINJA,
-	DRAGON,
-	LUCKY
+	BABY("Baby"),
+	YOUNG("Young"),
+	GOURMET("Gourmet"),
+	EARTH("Earth"),
+	ESSENCE("Essence"),
+	ECLECTIC("Eclectic"),
+	NATURE("Nature"),
+	MAGPIE("Magpie"),
+	NINJA("Ninja"),
+	DRAGON("Dragon"),
+	LUCKY("Lucky");
+
+	private final String name;
 }
