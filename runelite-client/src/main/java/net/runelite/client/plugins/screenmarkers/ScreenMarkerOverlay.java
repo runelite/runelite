@@ -43,6 +43,7 @@ public class ScreenMarkerOverlay extends Overlay
 		this.plugin = plugin;
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
 	@Override
