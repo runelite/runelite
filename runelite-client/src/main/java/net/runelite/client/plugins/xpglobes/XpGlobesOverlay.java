@@ -245,6 +245,10 @@ public class XpGlobesOverlay extends Overlay
 			String skillXpToLvl = decimalFormat.format(xpLeft);
 			lines.add(new PanelComponent.Line("Xp to level:", Color.ORANGE, skillXpToLvl, Color.WHITE));
 
+			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
+			String xpHrString = decimalFormat.format(xpHr);
+			lines.add(new PanelComponent.Line("Xp per hour:", Color.ORANGE, xpHrString, Color.WHITE));
+
 			//Create progress bar for skill.
 			ProgressBarComponent progressBar = new ProgressBarComponent();
 			double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
