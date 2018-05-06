@@ -71,7 +71,7 @@ public class ClanChatPlugin extends Plugin
     @Inject
     private ClanChatConfig config;
 
-	private HashSet<ClanMember> previousMembersInClan;
+    private HashSet<ClanMember> previousMembersInClan;
 
     @Provides
     ClanChatConfig getConfig(ConfigManager configManager)
@@ -85,9 +85,9 @@ public class ClanChatPlugin extends Plugin
     }
 
     @Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
+        period = 600,
+        unit = ChronoUnit.MILLIS
+    )
 	public void updateClanChatTitle()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
