@@ -44,6 +44,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
@@ -338,15 +339,19 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.setTitle("Cryptic Clue");
-		panelComponent.setWidth(150);
-
-		panelComponent.getLines().add(new PanelComponent.Line("Clue:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getText(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(LineComponent.builder().left("Clue:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getText())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
 		if (getNpc() != null)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("NPC:"));
-			panelComponent.getLines().add(new PanelComponent.Line(getNpc(), TITLED_CONTENT_COLOR));
+			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getNpc())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 		}
 
 		if (objectId != -1)
@@ -355,13 +360,19 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 			if (object != null)
 			{
-				panelComponent.getLines().add(new PanelComponent.Line("Object:"));
-				panelComponent.getLines().add(new PanelComponent.Line(object.getName(), TITLED_CONTENT_COLOR));
+				panelComponent.getChildren().add(LineComponent.builder().left("Object:").build());
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(object.getName())
+					.leftColor(TITLED_CONTENT_COLOR)
+					.build());
 			}
 		}
 
-		panelComponent.getLines().add(new PanelComponent.Line("Solution:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getSolution(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(LineComponent.builder().left("Solution:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getSolution())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 	}
 
 	@Override
