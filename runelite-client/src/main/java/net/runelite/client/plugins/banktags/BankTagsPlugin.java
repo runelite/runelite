@@ -181,9 +181,9 @@ public class BankTagsPlugin extends Plugin
 					search = searchInput;
 				}
 
-				List<String> tags = Arrays.asList(tagsConfig.split(","));
+				List<String> tags = Arrays.asList(tagsConfig.toLowerCase().split(","));
 
-				if (tags.stream().anyMatch(tag -> tag.contains(search)))
+				if (tags.stream().anyMatch(tag -> tag.contains(search.toLowerCase())))
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
