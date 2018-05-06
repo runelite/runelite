@@ -31,12 +31,12 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 
 @Getter
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
@@ -92,7 +92,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: I EAT ITS CHART HINTS DO U", "Shiratti the Custodian", new WorldPoint(3427, 2927, 0), "North of fountain, Nardah"),
 		new AnagramClue("This anagram reveals who to speak to next: I EVEN", "Nieve", new WorldPoint(2432, 3422, 0), "The slayer master in Gnome Stronghold", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: I FAFFY RUN", "Fairy Nuff", new WorldPoint(3201, 3169, 0), "North of the bank in Zanaris"),
-		new AnagramClue("This anagram reveals who to speak to next: IM N ZEZIM", "Immenizz", new WorldPoint(2592, 4324, 0), "The Imp inside Puro-Puro"),
+		new AnagramClue("This anagram reveals who to speak to next: IM N ZEZIM", "Impling", new WorldPoint(2592, 4324, 0), "The Imp inside Puro-Puro"),
 		new AnagramClue("This anagram reveals who to speak to next: KAY SIR", "Sir Kay", new WorldPoint(2760, 3496, 0), "The courtyard in Camelot Castle", "6"),
 		new AnagramClue("This anagram reveals who to speak to next: LEAKEY", "Kaylee", new WorldPoint(2957, 3370, 0), "Rising Sun Inn in Falador", "18"),
 		new AnagramClue("This anagram reveals who to speak to next: LAND DOOMD", "Odd Old Man", new WorldPoint(3359, 3506, 0), "Limestone mine northeast of Varrock"),
@@ -139,7 +139,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "666"),
 		new AnagramClue("This anagram reveals who to speak to next: WOO AN EGG KIWI", "Awowogei", new WorldPoint(2802, 2764, 0), "Ape Atoll", "24"),
-		new AnagramClue("This anagram reveals who to speak to next: YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya")
+		new AnagramClue("This anagram reveals who to speak to next: YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya"),
+		new AnagramClue("This anagram reveals who to speak to next: MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "2505")
 	);
 
 	private String text;

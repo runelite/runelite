@@ -30,26 +30,34 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
+import static net.runelite.api.EquipmentInventorySlot.AMULET;
+import static net.runelite.api.EquipmentInventorySlot.BODY;
+import static net.runelite.api.EquipmentInventorySlot.BOOTS;
+import static net.runelite.api.EquipmentInventorySlot.CAPE;
+import static net.runelite.api.EquipmentInventorySlot.GLOVES;
+import static net.runelite.api.EquipmentInventorySlot.HEAD;
+import static net.runelite.api.EquipmentInventorySlot.LEGS;
+import static net.runelite.api.EquipmentInventorySlot.RING;
+import static net.runelite.api.EquipmentInventorySlot.SHIELD;
+import static net.runelite.api.EquipmentInventorySlot.WEAPON;
 import net.runelite.api.Item;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
-import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import static net.runelite.api.EquipmentInventorySlot.*;
-import static net.runelite.api.EquipmentInventorySlot.LEGS;
-import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.EMOTE_IMAGE;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.EMOTE_IMAGE;
+import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
+import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
+import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequirement;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
@@ -57,7 +65,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
 		new EmoteClue("Beckon on the east coast of the Kharazi Jungle. Beware of double agents! Equip any vestment stole and a heraldic rune shield.", new WorldPoint(2954, 2933, 0), BECKON, any("Any stole", item(GUTHIX_STOLE), item(SARADOMIN_STOLE), item(ZAMORAK_STOLE), item(ARMADYL_STOLE), item(BANDOS_STOLE), item(ANCIENT_STOLE)), any("Any heraldic rune shield", item(RUNE_SHIELD_H1), item(RUNE_SHIELD_H2), item(RUNE_SHIELD_H3), item(RUNE_SHIELD_H4), item(RUNE_SHIELD_H5))),
 		new EmoteClue("Cheer in the Barbarian Agility Arena. Headbang before you talk to me. Equip a steel platebody, maple shortbow and a Wilderness cape.", new WorldPoint(2552, 3556, 0), CHEER, HEADBANG, item(STEEL_PLATEBODY), item(MAPLE_SHORTBOW), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
-		new EmoteClue("Bow upstairs in the Monastery. Equip a completed prayer book.", new WorldPoint(3136, 3513, 0), BOW, any("Any god book", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
+		new EmoteClue("Bow upstairs in the Monastery. Equip a completed prayer book.", new WorldPoint(3056, 3484, 1), BOW, any("Any god book", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
 		new EmoteClue("Cheer in the Shadow dungeon. Equip a rune crossbow, climbing boots and any mitre.", new WorldPoint(2774, 6785, 0), CHEER, any("Any mitre", item(GUTHIX_MITRE), item(SARADOMIN_MITRE), item(ZAMORAK_MITRE), item(ANCIENT_MITRE), item(BANDOS_MITRE), item(ARMADYL_MITRE)), item(RUNE_CROSSBOW), item(CLIMBING_BOOTS)),
 		new EmoteClue("Cheer at the top of the agility pyramid. Beware of double agents! Equip a blue mystic robe top, and any rune heraldic shield.", new WorldPoint(3043, 4697, 3), CHEER, item(MYSTIC_ROBE_TOP), any("Any rune heraldic shield", item(RUNE_SHIELD_H1), item(RUNE_SHIELD_H2), item(RUNE_SHIELD_H3), item(RUNE_SHIELD_H4), item(RUNE_SHIELD_H5))),
 		new EmoteClue("Dance in Iban's temple. Beware of double agents! Equip Iban's staff, a black mystic top, and a black mystic bottom.", new WorldPoint(2011, 4712, 0), DANCE, any("Any iban's staff", item(IBANS_STAFF), item(IBANS_STAFF_U)), item(MYSTIC_ROBE_TOP_DARK), item(MYSTIC_ROBE_BOTTOM_DARK)),
@@ -123,7 +131,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Laugh at the crossroads south of the Sinclair Mansion. Equip a cowl, a blue wizard robe top and an iron scimitar.", new WorldPoint(2741, 3536, 0), LAUGH, item(LEATHER_COWL), item(EARTH_RUNE), item(IRON_SCIMITAR)),
 		new EmoteClue("Laugh in front of the gem store in Ardougne market. Equip a Castlewars bracelet, a dragonstone amulet and a ring of forging.", new WorldPoint(2666, 3304, 0), LAUGH, item(CASTLE_WARS_BRACELET3), item(DRAGONSTONE_AMULET), item(RING_OF_FORGING)),
 		new EmoteClue("Panic in the Limestone Mine. Equip bronze platelegs, a steel pickaxe and a steel medium helmet.", new WorldPoint(3372, 3498, 0), PANIC, item(BRONZE_PLATELEGS), item(STEEL_PICKAXE), item(STEEL_MED_HELM)),
-		new EmoteClue("Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.", new WorldPoint(3504, 3576, 0), PANIC, WAVE, item(MITHRIL_PLATESKIRT), item(MAPLE_LONGBOW)),
+		new EmoteClue("Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.", new WorldPoint(3504, 3576, 0), PANIC, WAVE, item(MITHRIL_PLATESKIRT), item(MAPLE_LONGBOW), emptySlot("No boots", BOOTS)),
 		new EmoteClue("Panic on the Wilderness volcano bridge. Beware of double agents! Equip any headband and crozier.", new WorldPoint(3368, 3935, 0), PANIC, any("Any headband", range(RED_HEADBAND, BROWN_HEADBAND), range(WHITE_HEADBAND, GREEN_HEADBAND)), any("Any crozier", item(ANCIENT_CROZIER), item(ARMADYL_CROZIER), item(BANDOS_CROZIER), range(SARADOMIN_CROZIER, ZAMORAK_CROZIER))),
 		new EmoteClue("Panic by the pilot on White Wolf Mountain. Beware of double agents! Equip mithril platelegs, a ring of life and a rune axe.", new WorldPoint(2847, 3499, 0), PANIC, item(MITHRIL_PLATELEGS), item(RING_OF_LIFE), item(RUNE_AXE)),
 		new EmoteClue("Panic by the big egg where no one dare goes and the ground is burnt. Beware of double agents! Equip a dragon med helm, a TokTz-Ket-Xil, a brine sabre, rune platebody and an uncharged amulet of glory.", new WorldPoint(3227, 3831, 0), PANIC, item(DRAGON_MED_HELM), item(TOKTZKETXIL), item(BRINE_SABRE), item(RUNE_PLATEBODY), item(AMULET_OF_GLORY)),
