@@ -32,10 +32,13 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
+import net.runelite.api.ClanMemberRank;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
@@ -68,10 +71,10 @@ public class ClanChatPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-    @Inject
+	@Inject
     private ClanChatConfig config;
 
-    private HashSet<ClanMember> previousMembersInClan;
+	private HashSet<ClanMember> previousMembersInClan;
 
     @Provides
     ClanChatConfig getConfig(ConfigManager configManager)
