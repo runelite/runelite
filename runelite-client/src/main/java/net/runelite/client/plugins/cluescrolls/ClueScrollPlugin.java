@@ -34,6 +34,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -74,6 +76,7 @@ import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
+import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
@@ -91,6 +94,10 @@ import net.runelite.client.util.Text;
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
+
+	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
+	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
+	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
 
 	public static final BufferedImage CLUE_SCROLL_IMAGE;
 	public static final BufferedImage MAP_ARROW;
@@ -186,12 +193,55 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
 		}
 
-		if (!event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
+		if (clue instanceof HotColdClue && event.getMessage().startsWith("The device is"))
+		{
+			HotColdClue hotColdClue = (HotColdClue) clue;
+			String message = event.getMessage();
+			Matcher m1 = FINAL_STRANGE_DEVICE_MESSAGE.matcher(message);
+			Matcher m2 = STRANGE_DEVICE_MESSAGE.matcher(message);
+			Matcher m3 = INITIAL_STRANGE_DEVICE_MESSAGE.matcher(message);
+
+			// the order that these pattern matchers are checked is important
+			if (m1.find())
+			{
+				// final location for hot cold clue has been found
+				WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+
+				if (localWorld != null)
+				{
+					hotColdClue.markFinalSpot(localWorld);
+				}
+			}
+			else if (m2.find())
+			{
+				String temperature = m2.group(1);
+				String difference = m2.group(2);
+				WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+
+				if (localWorld != null)
+				{
+					hotColdClue.updatePossibleArea(localWorld, temperature, difference);
+				}
+			}
+			else if (m3.find())
+			{
+				String temperature = m3.group(1);
+				WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+
+				if (localWorld != null)
+				{
+					hotColdClue.updatePossibleArea(localWorld, temperature, "");
+				}
+			}
+		}
+
+		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
+			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
 		{
 			return;
 		}
@@ -379,6 +429,11 @@ public class ClueScrollPlugin extends Plugin
 			clueItemId = null;
 		}
 
+		if (clue instanceof HotColdClue)
+		{
+			((HotColdClue) clue).resetHotCold();
+		}
+
 		clueItemChanged = false;
 		clue = null;
 
@@ -444,6 +499,13 @@ public class ClueScrollPlugin extends Plugin
 				if (fairyRingClue != null)
 				{
 					return fairyRingClue;
+				}
+
+				final HotColdClue hotColdClue = HotColdClue.forText(text);
+
+				if (hotColdClue != null)
+				{
+					return hotColdClue;
 				}
 
 				// We have unknown clue, reset
