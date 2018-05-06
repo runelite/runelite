@@ -51,7 +51,7 @@ import java.util.Set;
 )
 public class BlastMinePlugin extends Plugin
 {
-	private static final Set<Integer> BLAST_MINE_REGIONS = ImmutableSet.of(5948,5692);
+	private static final Set<Integer> BLAST_MINE_REGIONS = ImmutableSet.of(5948, 5692);
 
 	@Inject
 	private BlastMineRockOverlay blastMineRockOverlay;
