@@ -62,5 +62,4 @@ class XpTrackerServiceImpl implements XpTrackerService
 	{
 		return plugin.getSkillSnapshot(skill).getXpPerHour();
 	}
-
 }
