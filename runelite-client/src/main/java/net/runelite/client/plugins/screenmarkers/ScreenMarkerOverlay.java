@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.screenmarkers;
 
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
 import javax.inject.Inject;
@@ -40,6 +42,7 @@ public class ScreenMarkerOverlay extends Overlay
 	{
 		this.plugin = plugin;
 		setPriority(OverlayPriority.HIGH);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 
 	@Override
