@@ -328,7 +328,7 @@ public class ClueScrollPlugin extends Plugin
 		if (clue instanceof EmoteClue)
 		{
 			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
-			
+
 			if (container != null)
 			{
 				equippedItems = container.getItems();
