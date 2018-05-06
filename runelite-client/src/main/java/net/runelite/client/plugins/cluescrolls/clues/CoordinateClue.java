@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -45,7 +46,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 {
 	private String text;
 	private WorldPoint location;
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(952);
+	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
