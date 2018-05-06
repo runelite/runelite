@@ -65,7 +65,9 @@ public class StackContext
 	public void addPopped(InstructionContext popped)
 	{
 		if (!this.poppeds.contains(popped))
+		{
 			this.poppeds.add(popped);
+		}
 	}
 
 	public Type getType()
@@ -87,13 +89,17 @@ public class StackContext
 		
 		// remove the instruction which pushed this
 		if (!pushed.getInstruction().removeStack())
+		{
 			// dup will return false as the other objects on the stack below this are necessary
 			// for the other branch.
 			return list;
+		}
 		
 		// remove from the stack things this instruction read
-		for (StackContext ctx : pushed.getPops()) 
+		for (StackContext ctx : pushed.getPops())
+		{
 			list.addAll(ctx.removeStack());
+		}
 		
 		return list;
 	}

@@ -64,7 +64,9 @@ public class AnnotationCopier
 				assert f2 != null || f.getAnnotations() == null;
 
 				if (f2 == null)
+				{
 					continue;
+				}
 
 				copy(f.getAnnotations(), f2.getAnnotations());
 			}
@@ -76,7 +78,9 @@ public class AnnotationCopier
 				assert m2 != null || m.getAnnotations() == null;
 
 				if (m2 == null)
+				{
 					continue;
+				}
 
 				copy(m.getAnnotations(), m2.getAnnotations());
 			}
@@ -96,7 +100,9 @@ public class AnnotationCopier
 		for (Annotation a : an.getAnnotations())
 		{
 			if (!isType(a.getType()))
+			{
 				continue;
+			}
 			
 			Annotation a2 = new Annotation(an2);
 			a2.setType(a.getType());

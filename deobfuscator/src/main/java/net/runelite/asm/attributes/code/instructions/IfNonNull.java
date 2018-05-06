@@ -42,10 +42,14 @@ public class IfNonNull extends If0
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
 		if (!this.isSameField(thisIc, otherIc))
+		{
 			return false;
+		}
 		
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
+		{
 			return true;
+		}
 		
 		if (otherIc.getInstruction() instanceof IfACmpEq || otherIc.getInstruction() instanceof IfACmpNe)
 		{

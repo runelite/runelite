@@ -46,7 +46,9 @@ public class VersionClassVisitor extends ClassVisitor
 		String[] exceptions)
 	{
 		if (!name.equals("init"))
+		{
 			return null;
+		}
 
 		return vmv;
 	}

@@ -83,7 +83,9 @@ public class AnnotationMapper
 		for (Field f : from.getFields())
 		{
 			if (!hasCopyableAnnotation(f.getAnnotations()))
+			{
 				continue;
+			}
 
 			Field other = (Field) mapping.get(f);
 			if (other == null)
@@ -98,7 +100,9 @@ public class AnnotationMapper
 		for (Method m : from.getMethods())
 		{
 			if (!hasCopyableAnnotation(m.getAnnotations()))
+			{
 				continue;
+			}
 
 			Method other = (Method) mapping.get(m);
 			if (other == null)
@@ -118,7 +122,9 @@ public class AnnotationMapper
 		int count = 0;
 
 		if (from.getAnnotations() == null)
+		{
 			return count;
+		}
 		
 		for (Annotation a : from.getAnnotations())
 		{
@@ -146,8 +152,12 @@ public class AnnotationMapper
 	private boolean hasCopyableAnnotation(Annotations a)
 	{
 		for (Annotation an : a.getAnnotations())
+		{
 			if (isCopyable(an))
+			{
 				return true;
+			}
+		}
 
 		return false;
 	}

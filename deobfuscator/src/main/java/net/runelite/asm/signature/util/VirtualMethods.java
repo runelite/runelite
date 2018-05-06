@@ -40,16 +40,22 @@ public class VirtualMethods
 	private static List<Method> findBaseMethods(List<Method> methods, ClassFile cf, String name, Signature type)
 	{
 		if (cf == null)
+		{
 			return methods;
+		}
 		
 		Method m = cf.findMethod(name, type);
 		if (m != null && !m.isStatic())
+		{
 			methods.add(m);
+		}
 		
 		List<Method> parentMethods = findBaseMethods(new ArrayList<>(), cf.getParent(), name, type);
 		
 		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
+		{
 			parentMethods.addAll(findBaseMethods(new ArrayList<>(), inter, name, type));
+		}
 		
 		// parentMethods take precedence over our methods
 		return parentMethods.isEmpty() ? methods : parentMethods;
@@ -63,16 +69,22 @@ public class VirtualMethods
 	private static void findMethodUp(List<Method> methods, Set<ClassFile> visited, ClassFile cf, String name, Signature type)
 	{
 		if (cf == null || visited.contains(cf))
+		{
 			return;
+		}
 		
 		visited.add(cf); // can do diamond inheritance with interfaces
 		
 		Method m = cf.findMethod(name, type);
 		if (m != null && !m.isStatic())
+		{
 			methods.add(m);
+		}
 		
 		for (ClassFile child : cf.getChildren())
+		{
 			findMethodUp(methods, visited, child, name, type);
+		}
 	}
 	
 	public static List<Method> getVirtualMethods(Method method)
@@ -90,7 +102,9 @@ public class VirtualMethods
 		
 		// now search up from bases, appending to list.
 		for (Method m : bases)
+		{
 			findMethodUp(list, new HashSet<>(), m.getClassFile(), m.getName(), m.getDescriptor());
+		}
 
 		return list;
 	}

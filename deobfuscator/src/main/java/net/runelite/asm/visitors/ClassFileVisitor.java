@@ -57,7 +57,9 @@ public class ClassFileVisitor extends ClassVisitor
 		classFile.setAccess(access);
 		
 		for (String inter : interfaces)
+		{
 			classFile.getInterfaces().addInterface(new net.runelite.asm.pool.Class(inter));
+		}
 	}
 
 	@Override

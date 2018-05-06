@@ -130,9 +130,13 @@ public class Dup_X1 extends Instruction implements DupInstruction
 		assert pushedIndex >= 0 && pushedIndex <= 2;
 		
 		if (pushedIndex == 0)
+		{
 			return ctx.getPushes().get(2);
+		}
 		else if (pushedIndex == 2)
+		{
 			return ctx.getPushes().get(0);
+		}
 		
 		return null;
 	}

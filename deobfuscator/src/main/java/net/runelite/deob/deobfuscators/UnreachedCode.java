@@ -77,7 +77,9 @@ public class UnreachedCode implements Deobfuscator
 				}
 
 				if (i instanceof Label)
+				{
 					continue;
+				}
 				
 				ins.remove(i);
 				++count;
@@ -102,7 +104,9 @@ public class UnreachedCode implements Deobfuscator
 			for (Method m : cf.getMethods())
 			{
 				if (m.getCode() == null)
+				{
 					continue;
+				}
 				
 				count += removeUnused(m);
 			}

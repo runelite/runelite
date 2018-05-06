@@ -76,7 +76,9 @@ public class Annotation
 	public void accept(AnnotationVisitor visitor)
 	{
 		for (Element element : elements)
+		{
 			visitor.visit(element.getName(), element.getValue());
+		}
 		visitor.visitEnd();
 	}
 }

@@ -43,9 +43,15 @@ public class MethodSignatureMapper
 	{
 		List<Method> methods = new ArrayList<>();
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method m : cf.getMethods())
+			{
 				if (!m.isStatic() && !m.getName().equals("<init>") && m.getCode() != null)
+				{
 					methods.add(m);
+				}
+			}
+		}
 		return methods;
 	}
 

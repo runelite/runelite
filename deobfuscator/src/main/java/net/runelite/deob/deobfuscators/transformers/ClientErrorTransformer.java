@@ -66,7 +66,9 @@ public class ClientErrorTransformer implements Transformer
 		if (!m.isStatic() || m.getDescriptor().size() != 2
 			|| !m.getDescriptor().getTypeOfArg(0).equals(Type.STRING)
 			|| !m.getDescriptor().getTypeOfArg(1).equals(Type.THROWABLE))
+		{
 			return;
+		}
 
 		Code code = m.getCode();
 		Instructions ins = code.getInstructions();

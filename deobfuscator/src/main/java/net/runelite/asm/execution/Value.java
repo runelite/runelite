@@ -71,22 +71,30 @@ public class Value
 	public Value arrayGet(Value index)
 	{
 		if (isUnknownOrNull() || index.isUnknownOrNull())
+		{
 			return UNKNOWN;
+		}
 		
 		int i = (int) index.value;
 		
 		if (i < 0)
+		{
 			return UNKNOWN;
+		}
 		
 		assert isArray();
 		
 		int len = Array.getLength(value);
 		if (len <= i)
+		{
 			return UNKNOWN;
+		}
 		
 		Value o = (Value) Array.get(value, i);
 		if (o.isUnknownOrNull())
+		{
 			return UNKNOWN;
+		}
 		
 		return o;
 	}
@@ -94,12 +102,16 @@ public class Value
 	public void arraySet(Value index, Value object)
 	{
 		if (isUnknownOrNull() || index.isUnknownOrNull())
+		{
 			return;
+		}
 		
 		int i = (int) index.value;
 		
 		if (i < 0)
+		{
 			return;
+		}
 
 		assert isArray();
 		
@@ -116,12 +128,16 @@ public class Value
 	public Value cast(Class<?> c)
 	{
 		if (isUnknownOrNull())
+		{
 			return UNKNOWN;
+		}
 		
 		Object v = value;
 		
 		if (value instanceof Number && Number.class.isAssignableFrom(PrimitiveUtils.unbox(c)))
+		{
 			v = PrimitiveUtils.convert((Number) value, c);
+		}
 		
 		return new Value(PrimitiveUtils.unbox(c).cast(v));
 	}
@@ -143,7 +159,9 @@ public class Value
 
 			// the generated garbage code can create negative sized arrays
 			if (len < 0 || len > 0xFFFF)
+			{
 				len = 0;
+			}
 
 			Value[] array = new Value[len];
 			Arrays.fill(array, UNKNOWN);
@@ -157,7 +175,9 @@ public class Value
 		
 		int i = 0;
 		for (Value l : lenghts)
+		{
 			mainArray.arraySet(new Value(i++), newArray(l));
+		}
 		
 		return mainArray;
 	}

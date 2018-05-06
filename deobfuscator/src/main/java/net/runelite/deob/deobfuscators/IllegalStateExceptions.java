@@ -65,7 +65,9 @@ public class IllegalStateExceptions implements Deobfuscator
 			{
 				Code c = m.getCode();
 				if (c == null)
+				{
 					continue;
+				}
 				
 				Instructions instructions = c.getInstructions();
 				
@@ -75,16 +77,22 @@ public class IllegalStateExceptions implements Deobfuscator
 					Instruction ins = ilist.get(i);
 					
 					if (!(ins instanceof ComparisonInstruction)) // the if
+					{
 						continue;
+					}
 					
 					Instruction ins2 = ilist.get(i + 1);
 					if (!(ins2 instanceof New))
+					{
 						continue;
+					}
 					
 					New new2 = (New) ins2;
 					net.runelite.asm.pool.Class clazz = new2.getNewClass();
 					if (!clazz.getName().contains("java/lang/IllegalStateException"))
+					{
 						continue;
+					}
 
 					interesting.add(ins);
 				}
@@ -103,7 +111,9 @@ public class IllegalStateExceptions implements Deobfuscator
 	private void visit(MethodContext ctx)
 	{
 		for (InstructionContext ictx : toRemove)
+		{
 			processOne(ictx);
+		}
 		toRemove.clear();
 	}
 
@@ -113,7 +123,9 @@ public class IllegalStateExceptions implements Deobfuscator
 		Instructions instructions = ins.getInstructions();
 
 		if (instructions == null)
+		{
 			return;
+		}
 		
 		List<Instruction> ilist = instructions.getInstructions();
 

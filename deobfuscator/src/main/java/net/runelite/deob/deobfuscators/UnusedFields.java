@@ -48,11 +48,14 @@ public class UnusedFields implements Deobfuscator
 	private void checkForFieldUsage(ClassGroup group)
 	{
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 				if (code == null)
+				{
 					continue;
+				}
 
 				for (Instruction ins : code.getInstructions().getInstructions())
 				{
@@ -64,6 +67,7 @@ public class UnusedFields implements Deobfuscator
 					}
 				}
 			}
+		}
 	}
 	
 	@Override
@@ -73,12 +77,16 @@ public class UnusedFields implements Deobfuscator
 		
 		int count = 0;
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Field f : new ArrayList<>(cf.getFields()))
+			{
 				if (!used.contains(f))
 				{
 					cf.removeField(f);
 					++count;
 				}
+			}
+		}
 
 		logger.info("Removed " + count + " unused fields");
 	}

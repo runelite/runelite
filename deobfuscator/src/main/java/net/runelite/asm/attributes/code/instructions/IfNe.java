@@ -50,10 +50,14 @@ public class IfNe extends If0
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
 		if (!this.isSameField(thisIc, otherIc))
+		{
 			return false;
+		}
 		
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
+		{
 			return true;
+		}
 		
 		// whether or not it jumps can be negated too, so
 		// ifne vs ificmpne 0
@@ -67,7 +71,9 @@ public class IfNe extends If0
 				s2 = otherIc.getPops().get(1);
 
 			if (isZero(s1) || isZero(s2) || isOne(s1) || isOne(s2))
+			{
 				return true;
+			}
 		}
 
 		if (otherIc.getInstruction() instanceof IfEq)
@@ -87,11 +93,17 @@ public class IfNe extends If0
 				s2 = other.getPops().get(1);
 
 			if (isZero(s1) || isZero(s2)) // isne vs ificmpeq 0
+			{
 				super.mapOtherBranch(mapping, ctx, other);
+			}
 			else if (isOne(s1) || isOne(s2)) // isne vs isicmpeq 1
+			{
 				super.map(mapping, ctx, other);
+			}
 			else
+			{
 				assert false;
+			}
 		}
 		else if (other.getInstruction() instanceof IfICmpNe)
 		{
@@ -99,11 +111,17 @@ public class IfNe extends If0
 				s2 = other.getPops().get(1);
 
 			if (isZero(s1) || isZero(s2))
+			{
 				super.map(mapping, ctx, other); // ifne 0 vs ificmpne 0
+			}
 			else if (isOne(s1) || isOne(s2))
+			{
 				super.mapOtherBranch(mapping, ctx, other); // ifne 0 vs ificmpne 1
+			}
 			else
+			{
 				assert false;
+			}
 		}
 		else if (other.getInstruction() instanceof IfEq)
 		{

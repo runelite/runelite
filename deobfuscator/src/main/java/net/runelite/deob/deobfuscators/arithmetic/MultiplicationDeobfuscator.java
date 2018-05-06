@@ -102,7 +102,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						LVTInstruction storelvt = (LVTInstruction) storeCtx.getInstruction();
 
 						if (storelvt instanceof IInc)
+						{
 							throw new IllegalStateException();
+						}
 
 						assert storelvt.store();
 
@@ -129,7 +131,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			if (ctx.getInstruction().getClass() == want)
 			{
 				if (!isOnlyPath(ctx, sctx))
+				{
 					continue;
+				}
 			}
 			
 			InstructionContext i = sctx.getPushed();
@@ -150,7 +154,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				{
 					// bipush/sipush are always not obfuscated
 					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush)
+					{
 						continue;
+					}
 					
 					// a constant of imul
 					me.instructions.add(i);
@@ -262,7 +268,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		}
 		
 		if (me.instructions.isEmpty() && me.subexpressions.isEmpty())
+		{
 			throw new IllegalStateException();
+		}
 		
 		return me;
 	}
@@ -273,7 +281,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		assert one.getInstruction() == two.getInstruction();
 		
 		if (one.getInstruction() != two.getInstruction())
+		{
 			return false;
+		}
 		
 		assert one.getPops().contains(sctx);
 		int i = one.getPops().indexOf(sctx);
@@ -281,7 +291,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		StackContext theirsctx = two.getPops().get(i);
 	
 		if (sctx.getPushed().getInstruction() != theirsctx.getPushed().getInstruction())
+		{
 			return false;
+		}
 		
 		return true;
 	}
@@ -320,13 +332,19 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				// everything which pops the result must be the same
 				Instruction poppedIns = null;
 				for (StackContext s : i.getPushes())
+				{
 					for (InstructionContext i2 : s.getPopped())
 					{
 						if (poppedIns == null)
+						{
 							poppedIns = i2.getInstruction();
+						}
 						else if (poppedIns != i2.getInstruction())
+						{
 							return false;
+						}
 					}
+				}
 			}
 		}
 		return true;

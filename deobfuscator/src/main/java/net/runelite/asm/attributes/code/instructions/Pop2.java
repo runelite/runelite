@@ -56,7 +56,9 @@ public class Pop2 extends Instruction
 		ins.pop(value);
 
 		if (value.getType().getSize() == 2)
+		{
 			return ins;
+		}
 		
 		value = stack.pop();
 		ins.pop(value);

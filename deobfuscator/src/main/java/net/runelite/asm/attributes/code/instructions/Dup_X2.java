@@ -53,11 +53,15 @@ public class Dup_X2 extends Instruction implements DupInstruction
 		StackContext two = stack.pop();
 		StackContext three = null;
 		if (two.getType().getSize() == 1)
+		{
 			three = stack.pop();
+		}
 		
 		ins.pop(one, two);
 		if (three != null)
+		{
 			ins.pop(three);
+		}
 		
 		StackContext ctx = new StackContext(ins, one.getType(), one.getValue());
 		stack.push(ctx);
@@ -134,9 +138,13 @@ public class Dup_X2 extends Instruction implements DupInstruction
 		// 3 2 1 -> 1 3 2 1
 		
 		if (pushedIndex == 0)
+		{
 			return ctx.getPushes().get(3);
+		}
 		else if (pushedIndex == 3)
+		{
 			return ctx.getPushes().get(0);
+		}
 		
 		return null;
 	}

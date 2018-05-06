@@ -51,7 +51,9 @@ public class ClientVersion
 				JarEntry entry = it.nextElement();
 
 				if (!entry.getName().equals("client.class"))
+				{
 					continue;
+				}
 
 				InputStream in = jar.getInputStream(entry);
 

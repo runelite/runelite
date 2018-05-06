@@ -44,17 +44,23 @@ public class ClassGroupMapper
 	public void map()
 	{
 		for (ClassFile cf1 : one.getClasses())
+		{
 			for (ClassFile cf2 : two.getClasses())
 			{
 				if (!MappingExecutorUtil.isMaybeEqual(cf1, cf2))
+				{
 					continue;
-				
+				}
+
 				ClassMapper m = new ClassMapper(cf1, cf2);
 				if (!m.same())
+				{
 					continue;
-				
+				}
+
 				map.put(cf1, cf2);
 			}
+		}
 	}
 
 	public Map<ClassFile, ClassFile> getMap()

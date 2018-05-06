@@ -64,17 +64,23 @@ public class FieldInliner implements Deobfuscator
 				Code code = m.getCode();
 				
 				if (code == null)
+				{
 					continue;
+				}
 				
 				for (Instruction i : code.getInstructions().getInstructions())
 				{
 					if (!(i instanceof FieldInstruction))
+					{
 						continue;
+					}
 					
 					FieldInstruction sf = (FieldInstruction) i;
 					
 					if (sf.getMyField() == null)
+					{
 						continue;
+					}
 
 					fieldInstructions.put(sf.getMyField(), sf);
 				}
@@ -89,22 +95,30 @@ public class FieldInliner implements Deobfuscator
 			for (Field f : cf.getFields())
 			{
 				if (!f.isStatic() || !f.getType().equals(Type.STRING))
+				{
 					continue;
+				}
 				
 				Object constantValue = f.getValue();
 				if (constantValue != null)
+				{
 					continue;
+				}
 
 				List<FieldInstruction> sfis = fieldInstructions.get(f).stream().filter(f2 -> f2 instanceof SetFieldInstruction).collect(Collectors.toList());
 				if (sfis.size() != 1)
+				{
 					continue;
+				}
 				
 				SetFieldInstruction sfi = (SetFieldInstruction) sfis.get(0);
 				Instruction ins = (Instruction) sfi;
 				
 				Method mOfSet = ins.getInstructions().getCode().getMethod();
 				if (!mOfSet.getName().equals("<clinit>"))
+				{
 					continue;
+				}
 				
 				// get prev instruction and change to a constant value
 				Instructions instructions = mOfSet.getCode().getInstructions();
@@ -113,7 +127,9 @@ public class FieldInliner implements Deobfuscator
 				
 				Instruction prev = instructions.getInstructions().get(idx - 1);
 				if (!(prev instanceof PushConstantInstruction))
+				{
 					continue;
+				}
 				
 				PushConstantInstruction pci = (PushConstantInstruction) prev;
 				

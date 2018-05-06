@@ -91,7 +91,9 @@ public class VariableContext
 	public void addRead(InstructionContext ctx)
 	{
 		if (!read.contains(ctx))
+		{
 			read.add(ctx);
+		}
 	}
 
 	public List<InstructionContext> getRead()

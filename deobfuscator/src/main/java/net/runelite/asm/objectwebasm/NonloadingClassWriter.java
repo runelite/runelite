@@ -63,9 +63,15 @@ public class NonloadingClassWriter extends ClassWriter
 		if (cf1 != null && cf2 != null)
 		{
 			for (ClassFile c = cf1; c != null; c = c.getParent())
+			{
 				for (ClassFile c2 = cf2; c2 != null; c2 = c2.getParent())
+				{
 					if (c == c2)
+					{
 						return c.getName();
+					}
+				}
+			}
 
 			return "java/lang/Object";
 		}
@@ -92,7 +98,9 @@ public class NonloadingClassWriter extends ClassWriter
 			prev = c;
 
 			if (c.getName().equals(other))
+			{
 				return other;
+			}
 		}
 
 		return super.getCommonSuperClass(prev.getSuperName(), other);

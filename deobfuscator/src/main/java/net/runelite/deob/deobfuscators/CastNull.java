@@ -52,10 +52,14 @@ public class CastNull implements Deobfuscator
 	private void visit(InstructionContext ictx)
 	{
 		if (!(ictx.getInstruction() instanceof CheckCast))
+		{
 			return;
+		}
 		
 		if (notInteresting.contains(ictx.getInstruction()) || interesting.contains(ictx.getInstruction()))
+		{
 			return;
+		}
 		
 		StackContext sctx = ictx.getPops().get(0);
 		if (sctx.getPushed().getInstruction() instanceof AConstNull)

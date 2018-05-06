@@ -161,7 +161,9 @@ public class SpriteLoader
 					int index = pixelPaletteIndicies[j];
 
 					if (index != 0)
+					{
 						pixelAlphas[j] = (byte) 0xFF;
+					}
 				}
 			}
 

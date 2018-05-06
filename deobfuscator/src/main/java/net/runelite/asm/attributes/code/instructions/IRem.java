@@ -60,7 +60,9 @@ public class IRem extends Instruction
 				i1 = (int) one.getValue().getValue();
 			
 			if (i2 != 0)
+			{
 				result = new Value(i1 % i2);
+			}
 		}
 		
 		StackContext ctx = new StackContext(ins, Type.INT, result);
