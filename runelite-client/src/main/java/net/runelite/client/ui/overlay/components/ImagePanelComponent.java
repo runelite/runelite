@@ -46,6 +46,18 @@ public class ImagePanelComponent implements RenderableEntity
 	private static final int BOTTOM_BORDER = 4;
 	private static final int SEPARATOR = 1;
 
+	private final int wrapAfter;
+
+	public ImagePanelComponent()
+	{
+		this(-1);
+	}
+
+	public ImagePanelComponent(int wrapAfter)
+	{
+		this.wrapAfter = wrapAfter;
+	}
+
 	@Setter
 	@Nullable
 	private String title;
@@ -70,19 +82,39 @@ public class ImagePanelComponent implements RenderableEntity
 
 		//Determine max height and width of images
 		int maxImageHeight = 0;
-		int imageWidth = 0;
-		for (final BufferedImage image : images)
+		int totalHeight = 0;
+		int currentRowWidth = 0;
+		int maxRowWidth = 0;
+
+		for (int i = 0; i < images.size(); i ++)
 		{
-			if (image.getHeight() > maxImageHeight)
+			if (i == 0 || i % wrapAfter == 0 && wrapAfter > 0)
 			{
-				maxImageHeight = image.getHeight();
+				currentRowWidth = 0;
 			}
-			imageWidth += image.getWidth() + SEPARATOR;
+
+			if (images.get(i).getHeight() > maxImageHeight)
+			{
+				maxImageHeight = images.get(i).getHeight();
+			}
+
+			currentRowWidth += images.get(i).getWidth() + SEPARATOR;
+
+			if (currentRowWidth > maxRowWidth)
+			{
+				maxRowWidth = currentRowWidth;
+			}
+
+			if (i == 0 || i % wrapAfter == 0 && wrapAfter > 0)
+			{
+				totalHeight += maxImageHeight + SEPARATOR;
+				maxImageHeight = 0;
+			}
 		}
 
-		int height = TOP_BORDER + (Strings.isNullOrEmpty(title) ? 0 : metrics.getHeight() + SEPARATOR)
-			+ maxImageHeight + BOTTOM_BORDER;
-		int width = Math.max(Strings.isNullOrEmpty(title) ? 0 : metrics.stringWidth(title), imageWidth) + SIDE_BORDER * 2;
+		int height = TOP_BORDER + (Strings.isNullOrEmpty(title) ? 0 : metrics.getHeight() + 2 * SEPARATOR)
+				+ totalHeight + BOTTOM_BORDER;
+		int width = Math.max(Strings.isNullOrEmpty(title) ? 0 : metrics.stringWidth(title), maxRowWidth) + SIDE_BORDER * 2;
 		dimension.setSize(width, height);
 
 		if (dimension.height == TOP_BORDER + BOTTOM_BORDER)
@@ -111,17 +143,27 @@ public class ImagePanelComponent implements RenderableEntity
 			titleComponent.setColor(titleColor);
 			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, y));
 			titleComponent.render(graphics);
-			y += SEPARATOR;
+			y += SEPARATOR * 2;
 		}
 
 		// Render all images
-		int imageOffsetX = ((width - imageWidth) / 2);
-		for (final BufferedImage image : images)
+		int imageOffsetX = ((width - maxRowWidth) / 2) + SIDE_BORDER;
+		int divisor = (images.size() <= wrapAfter || wrapAfter == -1) ? images.size() : wrapAfter;
+
+		for (int i = 0; i < images.size(); i ++)
 		{
-			graphics.drawImage(image, imageOffsetX + ((imageWidth / images.size()) - image.getWidth()) / 2, y, null);
+			final BufferedImage image = images.get(i);
+			graphics.drawImage(image, imageOffsetX + ((maxRowWidth / divisor) - image.getWidth()) / 2, y, null);
 			imageOffsetX += image.getWidth() + SEPARATOR;
+			if ((i + 1) % wrapAfter == 0 && wrapAfter > 0)
+			{
+				y += image.getHeight() + SEPARATOR;
+				imageOffsetX = ((width - maxRowWidth) / 2) + SIDE_BORDER;
+			}
 		}
 
 		return dimension;
 	}
 }
+
+
