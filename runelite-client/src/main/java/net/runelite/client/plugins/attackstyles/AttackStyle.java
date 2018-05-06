@@ -24,36 +24,71 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 
+@Getter
+@Slf4j
 public enum AttackStyle
 {
-	ACCURATE("Accurate", Skill.ATTACK),
-	AGGRESSIVE("Aggressive", Skill.STRENGTH),
-	DEFENSIVE("Defensive", Skill.DEFENCE),
-	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
-	RANGING("Ranging", Skill.RANGED),
-	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
-	CASTING("Casting", Skill.MAGIC),
-	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
-	OTHER("Other");
+	ACCURATE("Accurate", SpriteID.SKILL_ATTACK, Skill.ATTACK),
+	AGGRESSIVE("Aggressive", SpriteID.SKILL_STRENGTH, Skill.STRENGTH),
+	DEFENSIVE("Defensive", SpriteID.SKILL_DEFENCE, Skill.DEFENCE),
+	CONTROLLED("Controlled", SpriteID.SKILL_DEFENCE_SQUASHED, Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
+	RANGING("Ranging", SpriteID.SKILL_RANGED, Skill.RANGED),
+	LONGRANGE("Longrange", SpriteID.SKILL_DEFENCE_SQUASHED, Skill.RANGED, Skill.DEFENCE),
+	CASTING("Casting", SpriteID.SKILL_MAGIC, Skill.MAGIC),
+	DEFENSIVE_CASTING("Defensive Casting", SpriteID.SKILL_DEFENCE_SQUASHED, Skill.MAGIC, Skill.DEFENCE),
+	OTHER("Other", SpriteID.SKILL_DEFENCE_SQUASHED);
 
 	private final String name;
+	private final int spriteID;
 	private final Skill[] skills;
 
-	AttackStyle(String name, Skill... skills)
+	AttackStyle(String name, int spriteID, Skill... skills)
 	{
 		this.name = name;
+		this.spriteID = spriteID;
 		this.skills = skills;
 	}
 
-	public String getName()
+	public BufferedImage getImage()
 	{
-		return name;
+		switch (name)
+		{
+			case "Controlled":
+			case "Longrange":
+			case "Defensive Casting":
+			case "Other":
+				return getImageFile("defensive.png");
+			default:
+				return getImageFile(getName() + ".png");
+		}
 	}
 
-	public Skill[] getSkills()
+	private BufferedImage getImageFile(String fileName)
 	{
-		return skills;
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				BufferedImage bufferedImageSource = ImageIO.read(this.getClass().getResourceAsStream(fileName));
+
+				if (bufferedImageSource != null)
+				{
+					return bufferedImageSource;
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			log.warn("unable to load image", e);
+		}
+		return new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
 	}
 }
