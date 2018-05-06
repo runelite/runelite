@@ -372,7 +372,8 @@ public class SlayerPlugin extends Plugin
 		if (npcHealth.get(task.getHealthName()) != null)
 		{
 			int regularXp = (int) Math.ceil(task.getXpMultiplier() * npcHealth.get(task.getHealthName()));
-			if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) || (task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < 10 * npcHealth.get(task.getSuperiorName())))
+			if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) ||
+					(task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < 10 * npcHealth.get(task.getSuperiorName())))
 			{
 				amount -= (int) Math.ceil((double) gainedXp / regularXp);
 			}
