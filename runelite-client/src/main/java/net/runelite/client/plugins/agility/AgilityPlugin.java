@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
@@ -142,8 +141,8 @@ public class AgilityPlugin extends Plugin
 		lastAgilityXp = agilityXp;
 
 		// Get course
-		Courses course = Courses.getCourse(skillGained);
-		if (course == null || !Ints.contains(client.getMapRegions(), course.getRegionId()))
+		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+		if (course == null || Math.abs(course.getLastObstacleXp() - skillGained) > 1)
 		{
 			return;
 		}
