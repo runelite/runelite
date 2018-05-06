@@ -11,8 +11,8 @@ import java.awt.*;
 		name = "Wintertodt Plugin",
 		description = "Configuration for the Wintertodt UI"
 )
-public interface WintertodtConfig extends Config {
-
+public interface WintertodtConfig extends Config
+{
 	@ConfigItem(
 			keyName = "highColor",
 			name = "High Color",
@@ -44,5 +44,16 @@ public interface WintertodtConfig extends Config {
 	default Color lowColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+			keyName = "panelColor",
+			name = "Panel Color",
+			description = "Changes the color of the Text Panel.",
+			position = 4
+	)
+	default Color panelColor()
+	{
+		return new Color(70,61,50,156);
 	}
 }

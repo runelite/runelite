@@ -40,7 +40,7 @@ public class WintertodtPlugin extends Plugin {
 		Widget wtOverlayBAR = client.getWidget(WidgetInfo.WINTERTODT_BASE_BAR);
 		Widget wtOverlayUI = client.getWidget(WidgetInfo.WINTERTODT_BASE_UI);
 		Widget wtReturn = client.getWidget(WidgetInfo.WINTERTODT_RETURN);
-		if(wtReturn != null)
+		if (wtReturn != null)
 		{
 			wtOverlayBAR.setHidden(false);
 			wtOverlayUI.setHidden(false);
