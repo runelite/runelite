@@ -151,23 +151,25 @@ public class ContainableFrame extends JFrame
 		}
 
 		revalidateMinimumSize();
+		final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
+		final boolean wasCloseToLeftEdge = Math.abs(getX() - screenBounds.getX()) <= SCREEN_EDGE_CLOSE_DISTANCE;
+		int newWindowX = getX();
+		int newWindowWidth = getWidth() - value;
 
-		if (expandResizeType == ExpandResizeType.KEEP_GAME_SIZE)
+		if (isFrameCloseToRightEdge() && (expandedClientOppositeDirection || !wasCloseToLeftEdge))
 		{
-			final int newWindowWidth = getWidth() - value;
-			final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
-			final boolean wasCloseToLeftEdge = Math.abs(getX() - screenBounds.getX()) <= SCREEN_EDGE_CLOSE_DISTANCE;
-			int newWindowX = getX();
-
-			if (isFrameCloseToRightEdge() && (expandedClientOppositeDirection || !wasCloseToLeftEdge))
-			{
-				// Keep the distance to the right edge
-				newWindowX += value;
-			}
-
-			setBounds(newWindowX, getY(), newWindowWidth, getHeight());
+			// Keep the distance to the right edge
+			newWindowX += value;
 		}
 
+		if (expandResizeType == ExpandResizeType.KEEP_WINDOW_SIZE && newWindowWidth > getMinimumSize().width)
+		{
+			// The sidebar fits inside the window, do not resize and move
+			newWindowWidth = getWidth();
+			newWindowX = getX();
+		}
+
+		setBounds(newWindowX, getY(), newWindowWidth, getHeight());
 		expandedClientOppositeDirection = false;
 	}
 
