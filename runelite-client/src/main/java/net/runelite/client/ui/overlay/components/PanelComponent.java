@@ -97,8 +97,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Render background
 		final Dimension dimension = new Dimension(
-				savedChildrenSize.width + RIGHT_BORDER,
-				savedChildrenSize.height + BOTTOM_BORDER);
+			savedChildrenSize.width + RIGHT_BORDER,
+			savedChildrenSize.height + BOTTOM_BORDER);
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(dimension));
@@ -120,14 +120,14 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Render all children
 		final Dimension childPreferredSize = new Dimension(
-				preferredSize.width - RIGHT_BORDER,
-				preferredSize.height - BOTTOM_BORDER);
+			preferredSize.width - RIGHT_BORDER,
+			preferredSize.height - BOTTOM_BORDER);
 
 		boolean wrapped = false;
 
 		for (int i = 0; i < children.size(); i ++)
 		{
-			LayoutableRenderableEntity child = children.get(i);
+			final LayoutableRenderableEntity child = children.get(i);
 
 			child.setPreferredSize(childPreferredSize);
 			graphics.translate(x, y);
