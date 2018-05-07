@@ -90,7 +90,7 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Clue Scroll",
-	category = PluginCategory.ACTIVITY
+	category = PluginCategory.MINIGAME
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin

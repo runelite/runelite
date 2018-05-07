@@ -51,7 +51,7 @@ import net.runelite.client.util.QueryRunner;
  */
 @PluginDescriptor(
 	name = "Implings",
-	category = PluginCategory.ACTIVITY
+	category = PluginCategory.MINIGAME
 )
 public class ImplingsPlugin extends Plugin
 {
