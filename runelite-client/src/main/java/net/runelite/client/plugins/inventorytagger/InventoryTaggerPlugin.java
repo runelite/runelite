@@ -1,7 +1,6 @@
 package net.runelite.client.plugins.inventorytagger;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +11,9 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
@@ -35,18 +31,9 @@ public class InventoryTaggerPlugin extends Plugin
 	private InventoryTaggerPlugin plugin;
 
 	@Inject
-	private InventoryTaggerConfig config;
-
-	@Inject
 	private InventoryTaggerOverlay overlay;
 
 	public Map<String, TaggedItems> taggedItems = new HashMap<>();
-
-	@Provides
-	InventoryTaggerConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(InventoryTaggerConfig.class);
-	}
 
 	@Override
 	public Overlay getOverlay()
@@ -54,12 +41,7 @@ public class InventoryTaggerPlugin extends Plugin
 		return overlay;
 	}
 
-	@Inject
-	private PluginToolbar pluginToolbar;
-
-	private NavigationButton navButton;
-
-	public boolean editorMode = false;
+	private boolean editorMode = false;
 
 	private static final String SETNAME_MELE = "MELE";
 	private static final String SETNAME_RANGE = "RANGE";
@@ -80,9 +62,7 @@ public class InventoryTaggerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		//testing
-		TaggedItems tItem;
-
+		taggedItems = new HashMap<>();
 		taggedItems.put(SETNAME_MELE, new TaggedItems(SETNAME_MELE, new Color(255, 0, 0, 255)));
 		taggedItems.put(SETNAME_RANGE, new TaggedItems(SETNAME_RANGE, new Color(0, 255, 0, 252)));
 		taggedItems.put(SETNAME_MAGE, new TaggedItems(SETNAME_MAGE, new Color(0, 0, 255, 255)));
@@ -130,7 +110,9 @@ public class InventoryTaggerPlugin extends Plugin
 		}
 
 		int widgetId = firstEntry.getParam1();
-		if (widgetId == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB.getId() || widgetId == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB.getId())
+		if (widgetId == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB.getId() ||
+			widgetId == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB.getId() ||
+			widgetId == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB.getId())
 		{
 			//Configure Options
 			int itemId = firstEntry.getIdentifier();
@@ -141,13 +123,13 @@ public class InventoryTaggerPlugin extends Plugin
 
 			MenuEntry[] entries = event.getMenuEntries();
 
-			final MenuEntry resetShiftClickEntry = new MenuEntry();
-			resetShiftClickEntry.setOption(editorMode ? SAVE : CONFIGURE);
-			resetShiftClickEntry.setTarget(MENU_TARGET);
-			resetShiftClickEntry.setIdentifier(itemId);
-			resetShiftClickEntry.setParam1(widgetId);
-			resetShiftClickEntry.setType(MenuAction.RUNELITE.getId());
-			client.setMenuEntries(ArrayUtils.addAll(entries, resetShiftClickEntry));
+			final MenuEntry configureOption = new MenuEntry();
+			configureOption.setOption(editorMode ? SAVE : CONFIGURE);
+			configureOption.setTarget(MENU_TARGET);
+			configureOption.setIdentifier(itemId);
+			configureOption.setParam1(widgetId);
+			configureOption.setType(MenuAction.RUNELITE.getId());
+			client.setMenuEntries(ArrayUtils.addAll(entries, configureOption));
 		}
 
 		if (widgetId == WidgetInfo.INVENTORY.getId() && editorMode)
@@ -159,7 +141,6 @@ public class InventoryTaggerPlugin extends Plugin
 				return;
 			}
 
-			MenuEntry[] entries = event.getMenuEntries();
 			MenuEntry[] menuList = new MenuEntry[taggedItems.size()];
 			int num = 0;
 			for (Map.Entry<String, TaggedItems> i : taggedItems.entrySet())

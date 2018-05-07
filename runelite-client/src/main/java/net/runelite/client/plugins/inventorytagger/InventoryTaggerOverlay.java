@@ -23,16 +23,13 @@ public class InventoryTaggerOverlay extends Overlay
 
 	private final InventoryTaggerPlugin plugin;
 
-	private final InventoryTaggerConfig config;
-
 	@Inject
-	InventoryTaggerOverlay(QueryRunner queryRunner, Client client, InventoryTaggerConfig config, InventoryTaggerPlugin plugin)
+	InventoryTaggerOverlay(QueryRunner queryRunner, Client client, InventoryTaggerPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 	}
 
