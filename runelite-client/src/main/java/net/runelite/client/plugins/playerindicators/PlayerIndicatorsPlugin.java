@@ -125,9 +125,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 			int image = -1;
 			Color color = null;
 
-			if (config.drawFriendNames() && player.isFriend())
+			if (config.highlightFriends() && player.isFriend())
 			{
-				color = config.getFriendNameColor();
+				color = config.getFriendColor();
 			}
 			else if (config.drawClanMemberNames() && player.isClanMember())
 			{
@@ -139,11 +139,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 					image = clanManager.getIconNumber(rank);
 				}
 			}
-			else if (config.drawTeamMemberNames() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
 			{
 				color = config.getTeamMemberColor();
 			}
-			else if (config.drawNonClanMemberNames() && !player.isClanMember())
+			else if (config.highlightNonClanMembers() && !player.isClanMember())
 			{
 				color = config.getNonClanMemberColor();
 			}
@@ -166,7 +166,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 					lastEntry.setTarget("<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">" + target);
 				}
 
-				if (image != -1 && config.clanMenuIcons())
+				if (image != -1 && config.showClanRanks())
 				{
 					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
 				}

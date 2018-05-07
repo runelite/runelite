@@ -74,7 +74,7 @@ public class class7 {
    )
    @Export("runScript")
    static void runScript(ScriptEvent var0, int var1) {
-      Object[] var2 = var0.objs;
+      Object[] var2 = var0.params;
       Script var3;
       int var19;
       if(GameObject.method3165(var0.field781)) {
@@ -123,46 +123,46 @@ public class class7 {
                if(var2[var10] instanceof Integer) {
                   var11 = ((Integer)var2[var10]).intValue();
                   if(var11 == -2147483647) {
-                     var11 = var0.field787;
+                     var11 = var0.mouseX;
                   }
 
                   if(var11 == -2147483646) {
-                     var11 = var0.field780;
+                     var11 = var0.mouseY;
                   }
 
                   if(var11 == -2147483645) {
-                     var11 = var0.widget != null?var0.widget.id:-1;
+                     var11 = var0.source != null?var0.source.id:-1;
                   }
 
                   if(var11 == -2147483644) {
-                     var11 = var0.field779;
+                     var11 = var0.op;
                   }
 
                   if(var11 == -2147483643) {
-                     var11 = var0.widget != null?var0.widget.index:-1;
+                     var11 = var0.source != null?var0.source.index:-1;
                   }
 
                   if(var11 == -2147483642) {
-                     var11 = var0.field776 != null?var0.field776.id:-1;
+                     var11 = var0.target != null?var0.target.id:-1;
                   }
 
                   if(var11 == -2147483641) {
-                     var11 = var0.field776 != null?var0.field776.index:-1;
+                     var11 = var0.target != null?var0.target.index:-1;
                   }
 
                   if(var11 == -2147483640) {
-                     var11 = var0.pressedKey;
+                     var11 = var0.typedKeyCode;
                   }
 
                   if(var11 == -2147483639) {
-                     var11 = var0.typedKey;
+                     var11 = var0.typedKeyChar;
                   }
 
                   AbstractByteBuffer.scriptLocalInts[var8++] = var11;
                } else if(var2[var10] instanceof String) {
                   var21 = (String)var2[var10];
                   if(var21.equals("event_opbase")) {
-                     var21 = var0.string;
+                     var21 = var0.opbase;
                   }
 
                   class81.scriptLocalStrings[var9++] = var21;

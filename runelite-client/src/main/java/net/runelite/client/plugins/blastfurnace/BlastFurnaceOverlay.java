@@ -47,9 +47,9 @@ class BlastFurnaceOverlay extends Overlay
 	@Inject
 	BlastFurnaceOverlay(Client client, BlastFurnacePlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.client = client;
+		setPosition(OverlayPosition.TOP_LEFT);
 		imagePanelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
 

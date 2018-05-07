@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -44,29 +43,15 @@ public class PanelComponent implements LayoutableRenderableEntity
 		VERTICAL;
 	}
 
-	private static final int TOP_BORDER = 4;
-	private static final int LEFT_BORDER = 4;
-	private static final int RIGHT_BORDER = 4;
-	private static final int BOTTOM_BORDER = 4;
-	private static final int SEPARATOR = 1;
-
 	@Setter
+	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private int wrapping = -1;
 
 	@Setter
 	private String title;
 
 	@Setter
-	private Color titleColor = Color.WHITE;
-
-	@Setter
-	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
-
-	@Setter
-	private Point position = new Point();
-
-	@Setter
-	private Dimension preferredSize = new Dimension(129, 0);
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Getter
 	private List<LayoutableRenderableEntity> children = new ArrayList<>();
@@ -74,54 +59,50 @@ public class PanelComponent implements LayoutableRenderableEntity
 	@Setter
 	private Orientation orientation = Orientation.VERTICAL;
 
-	private final Dimension savedChildrenSize = new Dimension();
+	@Setter
+	private Rectangle border = new Rectangle(
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER);
+
+	@Setter
+	private Point gap = new Point(0, 0);
+
+	private final Dimension childDimensions = new Dimension();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (Strings.isNullOrEmpty(title) && children.isEmpty())
+		if (children.isEmpty())
 		{
 			return null;
 		}
 
 		final FontMetrics metrics = graphics.getFontMetrics();
 
-		// Calculate panel dimensions
-		int width = preferredSize.width;
-		int height = preferredSize.height;
-		int x = LEFT_BORDER;
-		int y = TOP_BORDER + metrics.getHeight();
-
-		// Set graphics offset at correct position
-		graphics.translate(position.x, position.y);
-
 		// Render background
 		final Dimension dimension = new Dimension(
-			savedChildrenSize.width + RIGHT_BORDER,
-			savedChildrenSize.height + BOTTOM_BORDER);
+			border.x + childDimensions.width + border.width,
+			border.y + childDimensions.height + border.height);
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(dimension));
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.render(graphics);
 
-		if (!Strings.isNullOrEmpty(title))
-		{
-			// Render title
-			final TextComponent titleComponent = new TextComponent();
-			titleComponent.setText(title);
-			titleComponent.setColor(titleColor);
-			titleComponent.setPosition(new Point((dimension.width - metrics.stringWidth(title)) / 2, y));
-			titleComponent.render(graphics);
+		// Offset children
+		final int baseX = border.x;
+		final int baseY = border.y + metrics.getHeight();
+		int width = 0;
+		int height = 0;
+		int x = baseX;
+		int y = baseY;
 
-			// Move children a bit
-			height = y += metrics.getHeight() + SEPARATOR;
-		}
-
-		// Render all children
+		// Create child preferred size
 		final Dimension childPreferredSize = new Dimension(
-			preferredSize.width - RIGHT_BORDER,
-			preferredSize.height - BOTTOM_BORDER);
+			preferredSize.width - border.x - border.width,
+			preferredSize.height - border.y - border.height);
 
 		boolean wrapped = false;
 
@@ -137,14 +118,14 @@ public class PanelComponent implements LayoutableRenderableEntity
 			switch (orientation)
 			{
 				case VERTICAL:
-					y += childDimension.height + SEPARATOR;
-					height = wrapped ? height : y;
-					width = Math.max(width, x + childDimension.width);
+					height += childDimension.height + gap.y;
+					y = baseY + height;
+					width = Math.max(width, childDimension.width);
 					break;
 				case HORIZONTAL:
-					x += childDimension.width + SEPARATOR;
-					width = wrapped ? width : x;
-					height = Math.max(height, y + childDimension.height);
+					width += childDimension.width + gap.x;
+					x = baseX + width;
+					height = Math.max(height, childDimension.height);
 					break;
 			}
 
@@ -166,14 +147,13 @@ public class PanelComponent implements LayoutableRenderableEntity
 			}
 		}
 
-		// Reset the padding
-		height -= metrics.getHeight();
+		// Remove last child gap
+		width -= gap.x;
+		height -= gap.y;
 
-		// Save children size
-		savedChildrenSize.setSize(width, height);
+		// Cache children bounds
+		childDimensions.setSize(width, height);
 
-		// Reset graphics position
-		graphics.translate(-position.x, -position.y);
 		return dimension;
 	}
 }

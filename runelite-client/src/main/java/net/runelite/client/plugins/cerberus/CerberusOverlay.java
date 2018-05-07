@@ -49,6 +49,7 @@ public class CerberusOverlay extends Overlay
 		this.plugin = plugin;
 		this.iconManager = iconManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
 
 	@Override
@@ -60,8 +61,6 @@ public class CerberusOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		panelComponent.setTitle("Ghost order");
 
 		// Ghosts are already sorted
 		plugin.getGhosts().stream()

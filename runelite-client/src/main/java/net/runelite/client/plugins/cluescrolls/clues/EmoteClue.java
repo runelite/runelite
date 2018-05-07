@@ -415,6 +415,7 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequire
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
@@ -582,8 +583,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Emote Clue");
-
+		panelComponent.getChildren().add(TitleComponent.builder().text("Emote Clue").build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Emotes:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(getFirstEmote().getName())

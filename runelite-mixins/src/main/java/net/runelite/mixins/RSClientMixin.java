@@ -27,7 +27,6 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
@@ -53,10 +52,10 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
@@ -83,6 +82,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.Hooks;
@@ -104,6 +104,9 @@ public abstract class RSClientMixin implements RSClient
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private static int tickCount;
 
 	@Inject
 	private static boolean interpolatePlayerAnimations;
@@ -882,5 +885,19 @@ public abstract class RSClientMixin implements RSClient
 	public static void onUsernameChanged(int idx)
 	{
 		eventBus.post(new UsernameChanged());
+	}
+
+	@Override
+	@Inject
+	public int getTickCount()
+	{
+		return tickCount;
+	}
+
+	@Override
+	@Inject
+	public void setTickCount(int tick)
+	{
+		tickCount = tick;
 	}
 }
