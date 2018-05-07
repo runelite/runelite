@@ -69,7 +69,6 @@ public class FightCaveOverlay extends Overlay
 			return null;
 		}
 		BufferedImage prayerImage = getPrayerImage(attack);
-		imagePanelComponent.setTitle("TzTok-Jad");
 		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
 
 		if (!client.isPrayerActive(attack.getPrayer()))
