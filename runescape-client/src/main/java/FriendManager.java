@@ -17,7 +17,7 @@ public class FriendManager {
    @ObfuscatedSignature(
       signature = "Lky;"
    )
-   public final class304 field1237;
+   public final FriendContainer field1237;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lkm;"
@@ -35,7 +35,7 @@ public class FriendManager {
    FriendManager(JagexLoginType var1) {
       this.field1234 = 0;
       this.field1239 = var1;
-      this.field1237 = new class304(var1);
+      this.field1237 = new FriendContainer(var1);
       this.field1238 = new class298(var1);
    }
 
