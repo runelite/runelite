@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.teamcapes;
+package net.runelite.client.ui.overlay.components;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Map;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.awt.Stroke;
+import java.awt.geom.Arc2D;
+import lombok.Setter;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class TeamCapesOverlay extends Overlay
+
+public class ProgressPieComponent implements RenderableEntity
 {
-	private final TeamCapesPlugin plugin;
-	private final TeamCapesConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
+	@Setter
+	private int diameter = 25;
 
-	@Inject
-	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
-	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
-		this.plugin = plugin;
-		this.config = config;
-	}
+	@Setter
+	private Color borderColor = Color.WHITE;
+
+	@Setter
+	private Color fill = Color.WHITE;
+
+	@Setter
+	private Stroke stroke = new BasicStroke(1);
+
+	@Setter
+	private double progress;
+
+	@Setter
+	private Point position;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Map<Integer, Integer> teams = plugin.getTeams();
-		if (teams.isEmpty())
-		{
-			return null;
-		}
-		panelComponent.getChildren().clear();
+		//Construct the arc
+		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
+		arc.setAngleStart(90);
+		arc.setAngleExtent(progress * 360);
+		arc.setFrame(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
 
-		for (Map.Entry<Integer, Integer> team : teams.entrySet())
-		{
-			// Only display team capes that have a count greater than the configured minimum.
-			if (team.getValue() >= config.getMinimumCapeCount())
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Team-" + Integer.toString(team.getKey()))
-					.right(Integer.toString(team.getValue()))
-					.build());
-			}
-		}
+		//Draw the inside of the arc
+		graphics.setColor(fill);
+		graphics.fill(arc);
 
-		return panelComponent.render(graphics);
+		//Draw the outlines of the arc
+		graphics.setStroke(stroke);
+		graphics.setColor(borderColor);
+		graphics.drawOval(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
+
+		return new Dimension(diameter, diameter);
+	}
+
+	public void setBorder(Color border, int size)
+	{
+		this.borderColor = border;
+		stroke = new BasicStroke(size);
 	}
 }

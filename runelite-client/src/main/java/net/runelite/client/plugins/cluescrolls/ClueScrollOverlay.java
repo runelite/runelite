@@ -59,7 +59,7 @@ public class ClueScrollOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getLines().clear();
+		panelComponent.getChildren().clear();
 
 		clue.makeOverlayHint(panelComponent, plugin);
 

@@ -29,8 +29,8 @@ import net.runelite.api.Item;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.ImagePanelComponent;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.QueryRunner;
 import javax.inject.Inject;
 import java.awt.Dimension;
@@ -44,15 +44,17 @@ public class InventoryViewerOverlay extends Overlay
 
 	private static final int PLACEHOLDER_WIDTH = 36;
 	private static final int PLACEHOLDER_HEIGHT = 32;
+	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private static final int INVENTORY_SIZE = 28;
 
-	private final ImagePanelComponent imagePanelComponent = new ImagePanelComponent(4);
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	InventoryViewerOverlay(QueryRunner queryRunner, ItemManager itemManager)
 	{
-		setPosition(OverlayPosition.BOTTOM_LEFT);
+		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setWrapping(4);
 		this.itemManager = itemManager;
 		this.queryRunner = queryRunner;
 	}
@@ -60,7 +62,7 @@ public class InventoryViewerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		imagePanelComponent.getImages().clear();
+		panelComponent.getChildren().clear();
 
 		Item[] items = queryRunner.runQuery(new InventoryItemQuery(InventoryID.INVENTORY));
 
@@ -71,16 +73,16 @@ public class InventoryViewerOverlay extends Overlay
 				BufferedImage image = getImage(items[i]);
 				if (image != null && items[i].getQuantity() > 0)
 				{
-					imagePanelComponent.getImages().add(image);
+					panelComponent.getChildren().add(new ImageComponent(image));
 					continue;
 				}
 
 			}
 
-			imagePanelComponent.getImages().add(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
+			panelComponent.getChildren().add(PLACEHOLDER_IMAGE);
 		}
 
-		return imagePanelComponent.render(graphics);
+		return panelComponent.render(graphics);
 	}
 
 	private BufferedImage getImage(Item item)

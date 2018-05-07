@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runepouch;
+package net.runelite.client.plugins.implings;
 
-import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@ConfigGroup(
-	keyName = "runepouch",
-	name = "Rune Pouch",
-	description = "Configuration for the Runepouch plugin"
-)
-public interface RunepouchConfig extends Config
+@AllArgsConstructor
+@Getter
+enum ImplingType
 {
-	@ConfigItem(
-		keyName = "fontcolor",
-		name = "Font Color",
-		description = "Color of the font for the number of runes in pouch",
-		position = 1
-	)
-	default Color fontColor()
-	{
-		return Color.yellow;
-	}
+	BABY("Baby"),
+	YOUNG("Young"),
+	GOURMET("Gourmet"),
+	EARTH("Earth"),
+	ESSENCE("Essence"),
+	ECLECTIC("Eclectic"),
+	NATURE("Nature"),
+	MAGPIE("Magpie"),
+	NINJA("Ninja"),
+	DRAGON("Dragon"),
+	LUCKY("Lucky");
 
-	@ConfigItem(
-		keyName = "runeicons",
-		name = "Show Rune Icons",
-		description = "Show the rune icons next to the number of runes in pouch",
-		position = 2
-	)
-	default boolean showIcons()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "runePouchOverlayMode",
-		name = "Display mode",
-		description = "Configures where rune pouch overlay is displayed",
-		position = 3
-	)
-	default RunePouchOverlayMode runePouchOverlayMode()
-	{
-		return RunePouchOverlayMode.BOTH;
-	}
+	private final String name;
 }

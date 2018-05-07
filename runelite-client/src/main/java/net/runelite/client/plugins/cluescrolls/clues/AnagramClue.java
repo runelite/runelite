@@ -36,6 +36,7 @@ import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
@@ -167,18 +168,25 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.setTitle("Anagram Clue");
-		panelComponent.setWidth(150);
+		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getNpc())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
-		panelComponent.getLines().add(new PanelComponent.Line("NPC:"));
-		panelComponent.getLines().add(new PanelComponent.Line(getNpc(), TITLED_CONTENT_COLOR));
-
-		panelComponent.getLines().add(new PanelComponent.Line("Area:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getArea(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getArea())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
 		if (getAnswer() != null)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("Answer:"));
-			panelComponent.getLines().add(new PanelComponent.Line(true, getAnswer(), TITLED_CONTENT_COLOR));
+			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getAnswer())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 		}
 	}
 

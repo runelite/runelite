@@ -33,6 +33,7 @@ import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class RaidsOverlay extends Overlay
@@ -61,7 +62,7 @@ public class RaidsOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getLines().clear();
+		panelComponent.getChildren().clear();
 
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
@@ -81,9 +82,11 @@ public class RaidsOverlay extends Overlay
 			color = Color.RED;
 		}
 
-		panelComponent.getLines().add(new PanelComponent.Line(
-				"Layout", Color.WHITE, layout, color
-		));
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Layout")
+			.right(layout)
+			.rightColor(color)
+			.build());
 
 		int bossMatches = 0;
 		int bossCount = 0;
@@ -119,9 +122,12 @@ public class RaidsOverlay extends Overlay
 						color = Color.RED;
 					}
 
-					panelComponent.getLines().add(new PanelComponent.Line(
-						room.getType().getName(), Color.WHITE, room.getBoss().getName(), color
-					));
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left(room.getType().getName())
+						.right(room.getBoss().getName())
+						.rightColor(color)
+						.build());
+
 					break;
 
 				case PUZZLE:
@@ -134,9 +140,11 @@ public class RaidsOverlay extends Overlay
 						color = Color.RED;
 					}
 
-					panelComponent.getLines().add(new PanelComponent.Line(
-						room.getType().getName(), Color.WHITE, room.getPuzzle().getName(), color
-					));
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left(room.getType().getName())
+						.right(room.getPuzzle().getName())
+						.rightColor(color)
+						.build());
 					break;
 			}
 		}

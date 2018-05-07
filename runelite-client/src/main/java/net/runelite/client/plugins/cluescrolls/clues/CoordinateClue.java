@@ -33,6 +33,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
@@ -46,12 +47,9 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.setTitle("Coordinate Clue");
-		panelComponent.setWidth(135);
-
-		panelComponent.getLines().add(new PanelComponent.Line("Travel to the marked"));
-		panelComponent.getLines().add(new PanelComponent.Line("out destination to see"));
-		panelComponent.getLines().add(new PanelComponent.Line("a marker for where"));
-		panelComponent.getLines().add(new PanelComponent.Line("you should dig."));
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Travel to the marked out destination to see a marker for where you should dig.")
+			.build());
 	}
 
 	@Override
