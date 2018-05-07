@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
+import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.QueryRunner;
 import javax.inject.Inject;
 
 @PluginDescriptor(
@@ -37,13 +37,13 @@ import javax.inject.Inject;
 public class InventoryViewerPlugin extends Plugin
 {
 	@Inject
-	private QueryRunner queryRunner;
-
-	@Inject
 	private ItemManager itemManager;
 
 	@Inject
 	private InventoryViewerOverlay overlay;
+
+	@Inject
+	private Client client;
 
 	@Override
 	public InventoryViewerOverlay getOverlay()

@@ -50,9 +50,6 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private int wrapping = -1;
 
 	@Setter
-	private String title;
-
-	@Setter
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Getter
@@ -131,7 +128,6 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 			if (wrapping > 0 && i < children.size() - 1 && (i + 1)  % wrapping == 0)
 			{
-
 				switch (orientation)
 				{
 					case VERTICAL:

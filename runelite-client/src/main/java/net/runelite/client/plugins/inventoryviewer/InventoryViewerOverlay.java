@@ -24,11 +24,13 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
+import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.QueryRunner;
@@ -39,24 +41,25 @@ import java.awt.image.BufferedImage;
 
 public class InventoryViewerOverlay extends Overlay
 {
-	private final QueryRunner queryRunner;
-	private final ItemManager itemManager;
-
 	private static final int PLACEHOLDER_WIDTH = 36;
 	private static final int PLACEHOLDER_HEIGHT = 32;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private static final int INVENTORY_SIZE = 28;
 
+	private final Client client;
+	private final ItemManager itemManager;
+
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	InventoryViewerOverlay(QueryRunner queryRunner, ItemManager itemManager)
+	private InventoryViewerOverlay(QueryRunner queryRunner, Client client, ItemManager itemManager)
 	{
+		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
 		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 		this.itemManager = itemManager;
-		this.queryRunner = queryRunner;
+		this.client = client;
 	}
 
 	@Override
@@ -64,7 +67,12 @@ public class InventoryViewerOverlay extends Overlay
 	{
 		panelComponent.getChildren().clear();
 
-		Item[] items = queryRunner.runQuery(new InventoryItemQuery(InventoryID.INVENTORY));
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		Item[] items = null;
+		if (itemContainer != null)
+		{
+			items = itemContainer.getItems();
+		}
 
 		for (int i = 0; i < INVENTORY_SIZE; i ++)
 		{
