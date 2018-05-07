@@ -47,6 +47,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class WoodcuttingOverlay extends Overlay
 {
@@ -100,13 +101,17 @@ class WoodcuttingOverlay extends Overlay
 
 		if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()))
 		{
-			panelComponent.setTitle("Woodcutting");
-			panelComponent.setTitleColor(Color.GREEN);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Woodcutting")
+				.color(Color.GREEN)
+				.build());
 		}
 		else
 		{
-			panelComponent.setTitle("NOT woodcutting");
-			panelComponent.setTitleColor(Color.RED);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("NOT woodcutting")
+				.color(Color.RED)
+				.build());
 		}
 
 		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);

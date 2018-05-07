@@ -46,6 +46,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
@@ -338,7 +339,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Cryptic Clue");
+		panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue").build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Clue:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(getText())
