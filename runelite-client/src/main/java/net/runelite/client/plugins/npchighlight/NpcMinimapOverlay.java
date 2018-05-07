@@ -28,8 +28,8 @@ package net.runelite.client.plugins.npchighlight;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Map;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -39,12 +39,14 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class NpcMinimapOverlay extends Overlay
 {
+	private final Client client;
 	private final NpcIndicatorsConfig config;
 	private final NpcIndicatorsPlugin plugin;
 
 	@Inject
-	NpcMinimapOverlay(NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
+	NpcMinimapOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
 	{
+		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -54,15 +56,19 @@ public class NpcMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Map<NPC, String> npcMap = plugin.getHighlightedNpcs();
-		for (NPC npc : npcMap.keySet())
+		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, npcMap.get(npc), config.getNpcColor());
+			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
 		}
 
-		for (NPC npc : plugin.getTaggedNpcs())
+		NPC[] npcs = client.getCachedNPCs();
+		for (int npcId : plugin.getNpcTags())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
+			NPC npc = npcs[npcId];
+			if (npc != null && npc.getName() != null)
+			{
+				renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
+			}
 		}
 
 		return null;
