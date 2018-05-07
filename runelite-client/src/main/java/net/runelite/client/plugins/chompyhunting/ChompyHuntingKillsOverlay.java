@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class ChompyHuntingKillsOverlay extends Overlay
 {
@@ -83,20 +84,24 @@ public class ChompyHuntingKillsOverlay extends Overlay
 
 		if (numLiveChompies == 0)
 		{
-			panelComponent.setTitle("Waiting for chompies...");
-			panelComponent.setTitleColor(Color.GREEN);
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text("Waiting for chompies...")
+					.color(Color.GREEN)
+					.build());
 		}
 		else if (numLiveChompies == 1)
 		{
-			panelComponent.setTitle(Integer.toString(numLiveChompies) +
-				" chompy to kill");
-			panelComponent.setTitleColor(Color.RED);
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text(Integer.toString(numLiveChompies) + " chompy to kill")
+					.color(Color.RED)
+					.build());
 		}
 		else
 		{
-			panelComponent.setTitle(Integer.toString(numLiveChompies) +
-				" chompies to kill");
-			panelComponent.setTitleColor(Color.RED);
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text(Integer.toString(numLiveChompies) + " chompies to kill")
+					.color(Color.RED)
+					.build());
 		}
 
 		if (config.displaySessionKillCount())
