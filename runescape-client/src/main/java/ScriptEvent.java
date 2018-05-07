@@ -59,8 +59,8 @@ public class ScriptEvent extends Node {
    @ObfuscatedGetter(
       intValue = 1973273457
    )
-   @Export("typedKey")
-   int typedKey;
+   @Export("typedKeyChar")
+   int typedKeyChar;
    @ObfuscatedName("h")
    @Export("string")
    String string;

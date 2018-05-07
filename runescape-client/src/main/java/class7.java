@@ -155,7 +155,7 @@ public class class7 {
                   }
 
                   if(var11 == -2147483639) {
-                     var11 = var0.typedKey;
+                     var11 = var0.typedKeyChar;
                   }
 
                   AbstractByteBuffer.scriptLocalInts[var8++] = var11;
