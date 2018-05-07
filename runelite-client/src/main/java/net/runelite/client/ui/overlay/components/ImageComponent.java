@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.teamcapes;
+package net.runelite.client.ui.overlay.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Map;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.awt.image.BufferedImage;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 
-public class TeamCapesOverlay extends Overlay
+@AllArgsConstructor
+@Setter
+public class ImageComponent implements LayoutableRenderableEntity
 {
-	private final TeamCapesPlugin plugin;
-	private final TeamCapesConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
-
-	@Inject
-	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
-	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
-		this.plugin = plugin;
-		this.config = config;
-	}
+	private BufferedImage image;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Map<Integer, Integer> teams = plugin.getTeams();
-		if (teams.isEmpty())
+		if (image == null)
 		{
 			return null;
 		}
-		panelComponent.getChildren().clear();
 
-		for (Map.Entry<Integer, Integer> team : teams.entrySet())
-		{
-			// Only display team capes that have a count greater than the configured minimum.
-			if (team.getValue() >= config.getMinimumCapeCount())
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Team-" + Integer.toString(team.getKey()))
-					.right(Integer.toString(team.getValue()))
-					.build());
-			}
-		}
+		graphics.drawImage(image, 0, -graphics.getFontMetrics().getHeight(), null);
+		return new Dimension(image.getWidth(), image.getHeight());
+	}
 
-		return panelComponent.render(graphics);
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
+		// Just use image dimensions for now
 	}
 }

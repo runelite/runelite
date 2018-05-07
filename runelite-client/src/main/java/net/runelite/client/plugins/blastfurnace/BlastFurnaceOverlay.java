@@ -32,13 +32,14 @@ import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.ImagePanelComponent;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class BlastFurnaceOverlay extends Overlay
 {
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
-	private final ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
+	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
 	private ItemManager itemManager;
@@ -49,6 +50,7 @@ class BlastFurnaceOverlay extends Overlay
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.client = client;
+		imagePanelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
 
 	@Override
@@ -59,7 +61,7 @@ class BlastFurnaceOverlay extends Overlay
 			return null;
 		}
 
-		imagePanelComponent.getImages().clear();
+		imagePanelComponent.getChildren().clear();
 
 		for (BarsOres varbit : BarsOres.values())
 		{
@@ -70,7 +72,7 @@ class BlastFurnaceOverlay extends Overlay
 				continue;
 			}
 
-			imagePanelComponent.getImages().add(getImage(varbit.getItemID(), amount));
+			imagePanelComponent.getChildren().add(new ImageComponent(getImage(varbit.getItemID(), amount)));
 		}
 
 		return imagePanelComponent.render(graphics);
