@@ -27,22 +27,23 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -91,7 +92,12 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs tagged due to highlight in the config
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private Map<NPC, String> highlightedNpcs = new HashMap<>();
+	private final Set<NPC> highlightedNpcs = new HashSet<>();
+
+	/**
+	 * Highlight strings from the configuration
+	 */
+	private List<String> highlights = new ArrayList<>();
 
 	private boolean hotKeyPressed = false;
 
@@ -112,13 +118,65 @@ public class NpcIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		keyManager.registerKeyListener(inputListener);
+		highlights = getHighlights();
+		rebuildNpcs();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		npcTags.clear();
+		highlightedNpcs.clear();
 		keyManager.unregisterKeyListener(inputListener);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("npcindicators"))
+		{
+			return;
+		}
+
+		highlights = getHighlights();
+		rebuildNpcs();
+	}
+
+	private List<String> getHighlights()
+	{
+		String configNpcs = config.getNpcToHighlight().toLowerCase();
+		if (configNpcs.isEmpty())
+			return Collections.emptyList();
+
+		List<String> highlightedNpcs = Arrays.asList(configNpcs.split(DELIMITER_REGEX));
+		return highlightedNpcs;
+	}
+
+	/**
+	 * Rebuild highlighted npcs
+	 */
+	private void rebuildNpcs()
+	{
+		highlightedNpcs.clear();
+
+		for (NPC npc : client.getNpcs())
+		{
+			String npcName = npc.getName();
+
+			if (npcName == null)
+			{
+				continue;
+			}
+
+			for (String highlight : highlights)
+			{
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					highlightedNpcs.add(npc);
+					break;
+				}
+			}
+		}
 	}
 
 	@Subscribe
@@ -139,45 +197,34 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
-		highlightedNpcs = buildNpcsToHighlight();
+		NPC npc = npcSpawned.getNpc();
+		String npcName = npc.getName();
+		if (npcName != null)
+		{
+			for (String highlight : highlights)
+			{
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					highlightedNpcs.add(npc);
+					break;
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC npc = npcDespawned.getNpc();
+		highlightedNpcs.remove(npc);
 	}
 
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(npcClickboxOverlay, npcMinimapOverlay);
-	}
-
-	private Map<NPC, String> buildNpcsToHighlight()
-	{
-		String configNpcs = config.getNpcToHighlight().toLowerCase();
-		if (configNpcs.isEmpty())
-			return Collections.EMPTY_MAP;
-
-		Map<NPC, String> npcMap = new HashMap<>();
-		List<String> highlightedNpcs = Arrays.asList(configNpcs.split(DELIMITER_REGEX));
-
-		for (NPC npc : client.getNpcs())
-		{
-			String npcName = npc.getName();
-
-			if (npcName == null)
-			{
-				continue;
-			}
-
-			for (String highlight : highlightedNpcs)
-			{
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					npcMap.put(npc, npcName);
-				}
-			}
-		}
-
-		return npcMap;
 	}
 
 	void updateNpcMenuOptions(boolean pressed)
