@@ -51,6 +51,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private static final int SEPARATOR = 1;
 
 	@Setter
+	private int wrapping = -1;
+
+	@Setter
 	private String title;
 
 	@Setter
@@ -94,8 +97,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Render background
 		final Dimension dimension = new Dimension(
-			savedChildrenSize.width + RIGHT_BORDER,
-			savedChildrenSize.height + BOTTOM_BORDER);
+				savedChildrenSize.width + RIGHT_BORDER,
+				savedChildrenSize.height + BOTTOM_BORDER);
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(dimension));
@@ -117,11 +120,15 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Render all children
 		final Dimension childPreferredSize = new Dimension(
-			preferredSize.width - RIGHT_BORDER,
-			preferredSize.height - BOTTOM_BORDER);
+				preferredSize.width - RIGHT_BORDER,
+				preferredSize.height - BOTTOM_BORDER);
 
-		for (final LayoutableRenderableEntity child : children)
+		boolean wrapped = false;
+
+		for (int i = 0; i < children.size(); i ++)
 		{
+			LayoutableRenderableEntity child = children.get(i);
+
 			child.setPreferredSize(childPreferredSize);
 			graphics.translate(x, y);
 			final Dimension childDimension = child.render(graphics);
@@ -130,13 +137,32 @@ public class PanelComponent implements LayoutableRenderableEntity
 			switch (orientation)
 			{
 				case VERTICAL:
-					height = y += childDimension.height + SEPARATOR;
+					y += childDimension.height + SEPARATOR;
+					height = wrapped ? height : y;
 					width = Math.max(width, x + childDimension.width);
 					break;
 				case HORIZONTAL:
-					width = x += childDimension.width + SEPARATOR;
+					x += childDimension.width + SEPARATOR;
+					width = wrapped ? width : x;
 					height = Math.max(height, y + childDimension.height);
 					break;
+			}
+
+			if (wrapping > 0 && (i + 1) % wrapping == 0)
+			{
+				wrapped = true;
+
+				switch (orientation)
+				{
+					case VERTICAL:
+						y = TOP_BORDER + metrics.getHeight();
+						width = x += childDimension.width + SEPARATOR;
+						break;
+					case HORIZONTAL:
+						x = LEFT_BORDER;
+						height = y += childDimension.height + SEPARATOR;
+						break;
+				}
 			}
 		}
 
