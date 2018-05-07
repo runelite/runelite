@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Team Capes",
 	enabledByDefault = false,
-	category = PluginCategory.OTHER
+	category = PluginCategory.UTILITY
 )
 public class TeamCapesPlugin extends Plugin
 {

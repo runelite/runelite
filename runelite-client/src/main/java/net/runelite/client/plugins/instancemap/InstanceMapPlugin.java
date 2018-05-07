@@ -43,7 +43,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Instance Map",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class InstanceMapPlugin extends Plugin
 {

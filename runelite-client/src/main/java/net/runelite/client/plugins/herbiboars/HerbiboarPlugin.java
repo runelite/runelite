@@ -64,7 +64,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 @PluginDescriptor(
 	name = "Herbiboar",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 public class HerbiboarPlugin extends Plugin
 {

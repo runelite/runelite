@@ -45,7 +45,7 @@ import net.runelite.http.api.worlds.WorldResult;
 
 @PluginDescriptor(
 	name = "Default World",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class DefaultWorldPlugin extends Plugin

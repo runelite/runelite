@@ -77,7 +77,7 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Slayer",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.COMBAT
 )
 @Slf4j
 public class SlayerPlugin extends Plugin

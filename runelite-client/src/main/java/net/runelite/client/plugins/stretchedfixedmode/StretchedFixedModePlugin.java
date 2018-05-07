@@ -39,7 +39,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Stretched Fixed Mode",
 	enabledByDefault = false,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class StretchedFixedModePlugin extends Plugin
 {

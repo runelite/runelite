@@ -57,7 +57,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Player Indicators",
-	category = PluginCategory.OTHER
+	category = PluginCategory.UTILITY
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {

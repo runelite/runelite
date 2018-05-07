@@ -77,7 +77,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Motherlode Mine",
 	enabledByDefault = false,
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 public class MotherlodePlugin extends Plugin
 {

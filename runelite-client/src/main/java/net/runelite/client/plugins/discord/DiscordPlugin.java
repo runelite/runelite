@@ -50,7 +50,7 @@ import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
 	name = "Discord",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class DiscordPlugin extends Plugin
 {

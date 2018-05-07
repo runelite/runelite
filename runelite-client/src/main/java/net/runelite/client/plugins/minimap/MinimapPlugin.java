@@ -44,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Minimap",
-	category = PluginCategory.OTHER
+	category = PluginCategory.UTILITY
 )
 public class MinimapPlugin extends Plugin
 {

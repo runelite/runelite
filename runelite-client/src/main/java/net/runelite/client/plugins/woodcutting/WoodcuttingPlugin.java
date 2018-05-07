@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Woodcutting",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin

@@ -40,7 +40,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Username Syncer",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class UsernameSyncerPlugin extends Plugin

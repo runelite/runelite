@@ -48,7 +48,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.CLIENT
 )
 public class IdleNotifierPlugin extends Plugin
 {

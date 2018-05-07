@@ -55,7 +55,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "HiScore",
 	loadWhenOutdated = true,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class HiscorePlugin extends Plugin
 {

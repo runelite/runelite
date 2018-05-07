@@ -38,7 +38,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Entity Hider",
 	enabledByDefault = false,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class EntityHiderPlugin extends Plugin
 {

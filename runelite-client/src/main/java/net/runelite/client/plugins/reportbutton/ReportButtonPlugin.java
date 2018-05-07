@@ -49,7 +49,7 @@ import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Report Button",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class ReportButtonPlugin extends Plugin

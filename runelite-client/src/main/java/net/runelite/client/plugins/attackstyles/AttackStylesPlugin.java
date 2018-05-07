@@ -56,7 +56,7 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 
 @PluginDescriptor(
 	name = "Attack Styles",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.COMBAT
 )
 @Slf4j
 public class AttackStylesPlugin extends Plugin

@@ -65,7 +65,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Cannon",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.COMBAT
 )
 public class CannonPlugin extends Plugin
 {

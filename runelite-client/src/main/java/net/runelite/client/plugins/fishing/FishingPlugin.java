@@ -56,7 +56,7 @@ import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Fishing",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Singleton

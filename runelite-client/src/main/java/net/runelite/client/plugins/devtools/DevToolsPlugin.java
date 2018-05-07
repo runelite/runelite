@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory;
 @PluginDescriptor(
 	name = "Developer Tools",
 	developerPlugin = true,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class DevToolsPlugin extends Plugin

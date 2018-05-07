@@ -37,7 +37,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
 	name = "Animation Smoothing",
 	enabledByDefault = false,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class AnimationSmoothingPlugin extends Plugin
 {

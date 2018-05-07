@@ -61,7 +61,7 @@ import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
 	name = "Chat Commands",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin

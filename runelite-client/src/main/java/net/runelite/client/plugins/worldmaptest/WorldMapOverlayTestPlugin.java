@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 	name = "WorldMapOverlayTest",
 	developerPlugin = true,
 	enabledByDefault = false,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class WorldMapOverlayTestPlugin extends Plugin
 {

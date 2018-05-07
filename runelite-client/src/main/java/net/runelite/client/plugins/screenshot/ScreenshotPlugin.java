@@ -94,7 +94,7 @@ import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Screenshot",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin

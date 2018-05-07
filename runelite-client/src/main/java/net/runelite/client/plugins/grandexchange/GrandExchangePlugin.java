@@ -61,7 +61,7 @@ import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.CLIENT
 )
 public class GrandExchangePlugin extends Plugin
 {

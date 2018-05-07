@@ -54,7 +54,7 @@ import net.runelite.client.util.QueryRunner;
 @Slf4j
 @PluginDescriptor(
 	name = "Hunter",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 public class HunterPlugin extends Plugin
 {

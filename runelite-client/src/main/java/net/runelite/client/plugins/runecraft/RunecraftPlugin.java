@@ -53,7 +53,7 @@ import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Runecraft",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 public class RunecraftPlugin extends Plugin
 {

@@ -49,7 +49,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "FPS Control",
 	enabledByDefault = false,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class FpsPlugin extends Plugin
 {

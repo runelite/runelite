@@ -50,7 +50,7 @@ import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Farming Tracker",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 @Slf4j
 public class FarmingTrackerPlugin extends Plugin

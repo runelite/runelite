@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Blast Furnace",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 public class BlastFurnacePlugin extends Plugin
 {

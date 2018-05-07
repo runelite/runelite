@@ -41,7 +41,7 @@ import net.runelite.client.ui.PluginToolbar;
 @PluginDescriptor(
 	name = "Notes",
 	loadWhenOutdated = true,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class NotesPlugin extends Plugin

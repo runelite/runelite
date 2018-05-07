@@ -34,7 +34,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Rune Pouch",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.SKILLS
 )
 public class RunepouchPlugin extends Plugin
 {

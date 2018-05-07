@@ -64,7 +64,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Agility",
-	category = PluginCategory.SKILLING
+	category = PluginCategory.SKILLS
 )
 @Slf4j
 public class AgilityPlugin extends Plugin

@@ -36,7 +36,7 @@ import net.runelite.client.ui.PluginToolbar;
 @PluginDescriptor(
 	name = "Info Panel",
 	loadWhenOutdated = true,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class InfoPlugin extends Plugin
 {

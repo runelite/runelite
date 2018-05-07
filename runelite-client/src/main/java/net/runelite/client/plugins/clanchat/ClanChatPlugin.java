@@ -43,7 +43,7 @@ import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Clan Chat",
-	category = PluginCategory.OTHER
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class ClanChatPlugin extends Plugin

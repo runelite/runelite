@@ -40,7 +40,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Combat Level",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.COMBAT
 )
 public class CombatLevelPlugin extends Plugin
 {

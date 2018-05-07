@@ -41,7 +41,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Chat History",
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 public class ChatHistoryPlugin extends Plugin
 {

@@ -59,7 +59,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
 	enabledByDefault = false,
-	category = PluginCategory.UTILITY
+	category = PluginCategory.CLIENT
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {

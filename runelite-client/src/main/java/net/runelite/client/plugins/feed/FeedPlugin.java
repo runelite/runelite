@@ -50,7 +50,7 @@ import net.runelite.http.api.feed.FeedResult;
 @PluginDescriptor(
 	name = "News Feed",
 	loadWhenOutdated = true,
-	category = PluginCategory.OTHER
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class FeedPlugin extends Plugin

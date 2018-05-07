@@ -69,7 +69,7 @@ import net.runelite.http.api.item.ItemPrice;
  */
 @PluginDescriptor(
 	name = "Examine",
-	category = PluginCategory.OTHER
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class ExaminePlugin extends Plugin
