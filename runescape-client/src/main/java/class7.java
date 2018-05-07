@@ -151,7 +151,7 @@ public class class7 {
                   }
 
                   if(var11 == -2147483640) {
-                     var11 = var0.pressedKey;
+                     var11 = var0.typedKeyCode;
                   }
 
                   if(var11 == -2147483639) {

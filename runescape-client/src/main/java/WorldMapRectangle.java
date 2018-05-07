@@ -675,7 +675,7 @@ public final class WorldMapRectangle {
                            for(var46 = 0; var46 < Client.field1089; ++var46) {
                               ScriptEvent var42 = new ScriptEvent();
                               var42.source = var9;
-                              var42.pressedKey = Client.field1039[var46];
+                              var42.typedKeyCode = Client.field1039[var46];
                               var42.typedKey = Client.field957[var46];
                               var42.objs = var9.onKeyListener;
                               Client.field1049.addFront(var42);
