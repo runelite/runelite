@@ -16,7 +16,8 @@ public interface ClanChatConfig extends Config
 		name = "Show member enter and leave messages",
 		description = "Configures whether or not to display messages informing who has entered and left the clan chat"
 	)
-	default boolean showEnterAndLeaveMessages() {
+	default boolean showEnterAndLeaveMessages() 
+	{
 		return false;
 	}
 }
