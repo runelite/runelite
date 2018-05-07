@@ -65,7 +65,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+		Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET);
 
 		if (minimapWidget != null)
 		{
@@ -79,7 +79,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+		Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET);
 
 		if (minimapWidget != null)
 		{
@@ -145,7 +145,7 @@ public class MinimapPlugin extends Plugin
 
 		if (event.getKey().equals("hideMinimap"))
 		{
-			Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+			Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET);
 
 			if (minimapWidget != null)
 			{
@@ -160,7 +160,7 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetHiddenChange(WidgetHiddenChanged event)
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
+		Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET);
 
 		if (event.getWidget() == minimapWidget)
 		{
