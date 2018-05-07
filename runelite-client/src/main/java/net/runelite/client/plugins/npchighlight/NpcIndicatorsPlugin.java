@@ -27,7 +27,6 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,12 +81,15 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	/**
+	 * NPCs tagged with the Tag option
+	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<Integer> npcTags = new HashSet<>();
 
-	@Getter(AccessLevel.PACKAGE)
-	private final List<NPC> taggedNpcs = new ArrayList<>();
-
+	/**
+	 * NPCs tagged due to highlight in the config
+	 */
 	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, String> highlightedNpcs = new HashMap<>();
 
@@ -116,7 +118,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		npcTags.clear();
-		taggedNpcs.clear();
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
@@ -141,18 +142,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		highlightedNpcs = buildNpcsToHighlight();
-		taggedNpcs.clear();
-		if (npcTags.isEmpty() || !config.isTagEnabled())
-		{
-			return;
-		}
-		for (NPC npc : client.getNpcs())
-		{
-			if (npcTags.contains(npc.getIndex()) && npc.getName() != null)
-			{
-				taggedNpcs.add(npc);
-			}
-		}
 	}
 
 	@Override
