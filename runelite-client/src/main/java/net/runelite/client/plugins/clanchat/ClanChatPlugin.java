@@ -28,9 +28,7 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import javax.inject.Inject;
 
 import com.google.inject.Provides;
@@ -39,8 +37,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.GameState;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -60,8 +58,9 @@ import net.runelite.client.task.Schedule;
 @Slf4j
 public class ClanChatPlugin extends Plugin
 {
-	private final String joinClanChatMessage = "%s has joined the clan chat";
-	private final String leftClanChatMessage = "%s has left the clan chat";
+	private final String joinClanChatMessage = "%s has joined.";
+	private final String leftClanChatMessage = "%s has left.";
+	private final String joinedClanChat = "Now talking in clan channel ";
 
 	@Inject
 	private Client client;
@@ -76,6 +75,8 @@ public class ClanChatPlugin extends Plugin
 	private ClanChatConfig config;
 
 	private HashSet<ClanMember> previousMembersInClan;
+
+	private String clanChannelName;
 
 	@Provides
 	ClanChatConfig getConfig(ConfigManager configManager)
@@ -110,6 +111,11 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onSetMessage(SetMessage setMessage)
 	{
+		if (setMessage.getValue().contains(joinedClanChat))
+		{
+			clanChannelName = setMessage.getValue().replace(joinedClanChat, "");
+		}
+
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
@@ -159,19 +165,21 @@ public class ClanChatPlugin extends Plugin
 
 	private void sendChatMessage(Set<ClanMember> members, boolean newMembers)
 	{
+		int iconNumber = clanManager.getIconNumber(ClanMemberRank.OWNER);
 		members.forEach(member ->
 		{
 			String chatMessage = newMembers ? String.format(joinClanChatMessage, member.getUsername())
 				: String.format(leftClanChatMessage, member.getUsername());
 
 			final String message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
+				.append(ChatColorType.NORMAL)
 				.append(chatMessage)
 				.build();
 
 			chatMessageManager.queue(
 				QueuedMessage.builder()
-					.type(ChatMessageType.CLANCHAT_INFO)
+					.type(ChatMessageType.CLANCHAT)
+					.sender(clanChannelName + " <img=" + iconNumber + ">")
 					.runeLiteFormattedMessage(message)
 					.build());
 		});
