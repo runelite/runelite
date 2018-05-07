@@ -281,7 +281,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Guthix left his mark in a fiery lake, dig at the tip of it.", new WorldPoint(3069, 3935, 0), "Dig at the tip of the lava lake that is shaped like a Guthixian symbol, west of the Mage Arena."),
 		new CrypticClue("Search the drawers in the upstairs of a house in Catherby.", DRAWERS_350, new WorldPoint(2809, 3451, 1), "Perdu's house in Catherby."),
 		new CrypticClue("Search a crate in the Haymaker's arms.", CRATE_27532, new WorldPoint(1720, 3652, 1), "Search the crate in the north-east corner of The Haymaker's Arms tavern east of Kourend Castle."),
-		new CrypticClue("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.", new WorldPoint(3307, 9505, 0), "Dig next to the Entomologist, Kalphite area, Stronghold Slayer Cave."),
+		new CrypticClue("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.", new WorldPoint(3307, 9505, 0), "Dig next to the Entomologist, Kalphite area, near Shantay Pass."),
 		new CrypticClue("Search the crates in the most north-western house in Al Kharid.", CRATE_358, new WorldPoint(3289, 3202, 0), "Search the crates in the house, marked with a icon, southeast of the gem stall."),
 		new CrypticClue("You will have to fly high where a sword cannot help you.", null, "Kill an Aviansie."),
 		new CrypticClue("A massive battle rages beneath so be careful when you dig by the large broken crossbow.", new WorldPoint(2927, 3761, 0), "NE of the God Wars Dungeon entrance, climb the rocky handholds & dig by large crossbow."),
