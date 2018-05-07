@@ -48,6 +48,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class MapClue extends ClueScroll implements ObjectClueScroll
@@ -103,7 +104,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Map Clue");
+		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
 
 		if (objectId != -1)
 		{

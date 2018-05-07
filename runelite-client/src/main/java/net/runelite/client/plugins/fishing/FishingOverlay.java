@@ -37,6 +37,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class FishingOverlay extends Overlay
 {
@@ -86,13 +87,17 @@ class FishingOverlay extends Overlay
 		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
 			.contains(FISHING_SPOT))
 		{
-			panelComponent.setTitle("Fishing");
-			panelComponent.setTitleColor(Color.GREEN);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Fishing")
+				.color(Color.GREEN)
+				.build());
 		}
 		else
 		{
-			panelComponent.setTitle("NOT fishing");
-			panelComponent.setTitleColor(Color.RED);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("NOT fishing")
+				.color(Color.RED)
+				.build());
 		}
 
 		int actions = xpTrackerService.getActions(Skill.FISHING);
