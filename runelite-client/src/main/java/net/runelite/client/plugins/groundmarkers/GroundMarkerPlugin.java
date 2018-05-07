@@ -263,6 +263,7 @@ public class GroundMarkerPlugin extends Plugin
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
+
 			if (config.clearTiles())
 			{
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
@@ -276,6 +277,7 @@ public class GroundMarkerPlugin extends Plugin
 			{
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 			}
+
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
