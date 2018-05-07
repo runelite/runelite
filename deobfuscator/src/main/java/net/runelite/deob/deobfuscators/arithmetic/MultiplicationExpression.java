@@ -94,9 +94,13 @@ public class MultiplicationExpression
 			
 			// constant has been distributed, outer numbers all go to 1
 			if (result instanceof Long)
+			{
 				result = 1L;
+			}
 			else
+			{
 				result = 1;
+			}
 		}
 		
 		// set result on ins
@@ -108,9 +112,13 @@ public class MultiplicationExpression
 			assert newIns == pci;
 			// rest of the results go to 1
 			if (result instanceof Long)
+			{
 				result = 1L;
+			}
 			else
+			{
 				result = 1;
+			}
 		}
 		
 		return count;
@@ -122,12 +130,18 @@ public class MultiplicationExpression
 		{
 			FieldInstruction fi = (FieldInstruction) i.getInstruction();
 			if (fi.getMyField() != null && fi.getMyField() != field)
+			{
 				return true;
+			}
 		}
 		
 		for (MultiplicationExpression ex : this.subexpressions)
+		{
 			if (ex.hasFieldOtherThan(field))
+			{
 				return true;
+			}
+		}
 		
 		return false;
 	}

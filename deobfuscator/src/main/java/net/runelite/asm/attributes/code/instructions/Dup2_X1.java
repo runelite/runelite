@@ -57,12 +57,16 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 		StackContext one = stack.pop();
 		StackContext two = null;
 		if (one.getType().getSize() == 1)
+		{
 			two = stack.pop();
+		}
 		StackContext three = stack.pop();
 		
 		ins.pop(one);
 		if (two != null)
+		{
 			ins.pop(two);
+		}
 		ins.pop(three);
 		
 		if (two != null)

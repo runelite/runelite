@@ -47,7 +47,9 @@ public class RenameUnique implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 		{
 			if (cf.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
+			{
 				continue;
+			}
 			
 			map.map(cf.getPoolClass(), "class" + i++);
 		}
@@ -58,13 +60,17 @@ public class RenameUnique implements Deobfuscator
 		int i = 0;
 		
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Field field : cf.getFields())
 			{
 				if (field.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
+				{
 					continue;
-				
+				}
+
 				map.map(field.getPoolField(), "field" + i++);
 			}
+		}
 	}
 
 	private void generateMethodNames(NameMappings map, ClassGroup group)
@@ -72,23 +78,33 @@ public class RenameUnique implements Deobfuscator
 		int i = 0;
 		
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method method : cf.getMethods())
 			{
 				if (method.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
+				{
 					continue;
-				
+				}
+
 				List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
 				assert !virtualMethods.isEmpty();
-				
+
 				String name;
 				if (virtualMethods.size() == 1)
+				{
 					name = "method" + i++;
+				}
 				else
+				{
 					name = "vmethod" + i++;
-				
+				}
+
 				for (Method m : virtualMethods)
+				{
 					map.map(m.getPoolMethod(), name);
+				}
 			}
+		}
 	}
 
 	@Override

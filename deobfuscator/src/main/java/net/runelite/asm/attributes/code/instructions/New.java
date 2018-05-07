@@ -98,7 +98,9 @@ public class New extends Instruction implements TypeInstruction
 	public void regeneratePool()
 	{
 		if (myClass != null)
+		{
 			clazz = myClass.getPoolClass();
+		}
 	}
 
 	@Override

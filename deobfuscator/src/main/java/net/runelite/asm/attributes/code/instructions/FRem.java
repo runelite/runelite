@@ -60,7 +60,9 @@ public class FRem extends Instruction
 				f1 = (float) one.getValue().getValue();
 			
 			if (f2 != 0.0f)
+			{
 				result = new Value(f1 % f2);
+			}
 		}
 		
 		StackContext ctx = new StackContext(ins, Type.FLOAT, result);

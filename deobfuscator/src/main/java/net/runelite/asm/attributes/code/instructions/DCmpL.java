@@ -60,11 +60,17 @@ public class DCmpL extends Instruction
 				d1 = (double) one.getValue().getValue();
 			
 			if (d1 > d2)
+			{
 				result = new Value(1);
+			}
 			else if (d1 == d2)
+			{
 				result = new Value(0);
+			}
 			else if (d1 < d2)
+			{
 				result = new Value(-1);
+			}
 		}
 		
 		StackContext ctx = new StackContext(ins, Type.INT, result);

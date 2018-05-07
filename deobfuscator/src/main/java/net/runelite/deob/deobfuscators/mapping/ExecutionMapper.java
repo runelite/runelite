@@ -62,7 +62,9 @@ public class ExecutionMapper
 		}
 
 		if (multiple)
+		{
 			return null;
+		}
 
 		return highest;
 	}

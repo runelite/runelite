@@ -50,7 +50,9 @@ public class RuntimeExceptions implements Deobfuscator
 			{
 				Code c = m.getCode();
 				if (c == null)
+				{
 					continue;
+				}
 
 				// Keep one handler in the client so the deobfuscator
 				// keeps the client error handling related methods

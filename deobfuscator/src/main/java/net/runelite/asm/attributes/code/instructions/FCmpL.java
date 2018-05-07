@@ -60,11 +60,17 @@ public class FCmpL extends Instruction
 				f1 = (float) one.getValue().getValue();
 			
 			if (f1 > f2)
+			{
 				result = new Value(1);
+			}
 			else if (f1 == f2)
+			{
 				result = new Value(0);
+			}
 			else if (f1 < f2)
+			{
 				result = new Value(-1);
+			}
 		}
 		
 		StackContext ctx = new StackContext(ins, Type.INT, result);

@@ -60,7 +60,9 @@ public class DRem extends Instruction
 				d1 = (double) one.getValue().getValue();
 			
 			if (d2 != 0.0d)
+			{
 				result = new Value(d1 % d2);
+			}
 		}
 		
 		StackContext ctx = new StackContext(ins, Type.DOUBLE, result);

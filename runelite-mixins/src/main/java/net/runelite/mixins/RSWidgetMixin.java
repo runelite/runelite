@@ -370,7 +370,9 @@ public abstract class RSWidgetMixin implements RSWidget
 			{
 				// if the widget is hidden it will not magically unhide from its parent changing
 				if (child == null || child.isSelfHidden())
+				{
 					continue;
+				}
 
 				child.broadcastHidden(hidden);
 			}
@@ -383,7 +385,9 @@ public abstract class RSWidgetMixin implements RSWidget
 		for (Widget nestedChild : nestedChildren)
 		{
 			if (nestedChild == null || nestedChild.isSelfHidden())
+			{
 				continue;
+			}
 
 			((RSWidget) nestedChild).broadcastHidden(hidden);
 		}

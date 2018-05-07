@@ -67,7 +67,9 @@ public class InstructionContext
 	public void push(StackContext... ctx)
 	{
 		for (StackContext c : ctx)
+		{
 			pushes.add(c);
+		}
 	}
 	
 	public void read(VariableContext... ctx)
@@ -148,26 +150,34 @@ public class InstructionContext
 	public boolean equals(Object other)
 	{
 		if (!(other instanceof InstructionContext))
+		{
 			return false;
+		}
 		
 		InstructionContext ic = (InstructionContext) other;
 		
 		if (ins != ic.ins)
+		{
 			return false;
+		}
 		
 		// check if stack at time of execution is equal
 		Stack ours = new Stack(this.getStack()), // copy stacks since we destroy them
 			theirs = new Stack(ic.getStack());
 		
 		if (ours.getSize() != theirs.getSize()) // is this possible?
+		{
 			return false;
+		}
 		
 		while (ours.getSize() > 0)
 		{
 			StackContext s1 = ours.pop(), s2 = theirs.pop();
 			
 			if (s1.getPushed().getInstruction() != s2.getPushed().getInstruction())
+			{
 				return false;
+			}
 		}
 		
 		return true;
@@ -223,10 +233,14 @@ public class InstructionContext
 
 				InstructionContext storedCtx = vctx.getInstructionWhichStored();
 				if (storedCtx == null)
+				{
 					return ctx; // initial parameter
+				}
 				
 				if (vctx.isIsParameter())
+				{
 					return ctx; // parameter (storedCtx is invoking instruction in another frame). this lvt index is fixed.
+				}
 				
 				return storedCtx.resolve(null);
 			}
@@ -249,7 +263,9 @@ public class InstructionContext
 		for (StackContext sctx : stack.getStack())
 		{
 			if (sctx == null)
+			{
 				break;
+			}
 			
 			InstructionContext i = sctx.getPushed();
 			wic.addStack(i.getInstruction());

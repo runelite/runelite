@@ -97,7 +97,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		boolean removed = npcTags.remove(npcId);
 		if (!removed)
+		{
 			npcTags.add(npcId);
+		}
 	}
 
 	@Provides
@@ -134,7 +136,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onMenuObjectClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuOption().equals(TAG))
+		{
 			toggleTag(click.getId());
+		}
 	}
 
 	@Subscribe
@@ -165,7 +169,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		String configNpcs = config.getNpcToHighlight().toLowerCase();
 		if (configNpcs.isEmpty())
+		{
 			return Collections.EMPTY_MAP;
+		}
 
 		Map<NPC, String> npcMap = new HashMap<>();
 		List<String> highlightedNpcs = Arrays.asList(configNpcs.split(DELIMITER_REGEX));

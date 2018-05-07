@@ -68,6 +68,8 @@ public class Exceptions
 	public void renameClass(ClassFile cf, String name)
 	{
 		for (Exception e : exceptions)
+		{
 			e.renameClass(cf, name);
+		}
 	}
 }

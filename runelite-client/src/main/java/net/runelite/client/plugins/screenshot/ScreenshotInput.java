@@ -56,7 +56,9 @@ public class ScreenshotInput implements KeyListener
 	public void keyReleased(KeyEvent event)
 	{
 		if (!config.isScreenshotEnabled())
+		{
 			return;
+		}
 
 		if (event.getKeyCode() == KeyEvent.VK_INSERT)
 		{

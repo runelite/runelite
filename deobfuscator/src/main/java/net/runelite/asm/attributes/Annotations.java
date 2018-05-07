@@ -59,8 +59,12 @@ public class Annotations
 	public Annotation find(Type type)
 	{
 		for (Annotation a : annotations)
+		{
 			if (a.getType().equals(type))
+			{
 				return a;
+			}
+		}
 		return null;
 	}
 

@@ -52,11 +52,15 @@ public class Dup2 extends Instruction implements DupInstruction
 		StackContext one = stack.pop();
 		StackContext two = null;
 		if (one.getType().getSize() == 1)
+		{
 			two = stack.pop();
+		}
 		
 		ins.pop(one);
 		if (two != null)
+		{
 			ins.pop(two);
+		}
 		
 		if (two != null)
 		{

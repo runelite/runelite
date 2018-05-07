@@ -121,10 +121,14 @@ public class MappingExecutorUtil
 		className = m.getClazz().getName();
 
 		if (className.startsWith("java/lang/reflect/") || className.startsWith("java/io/") || className.startsWith("java/util/"))
+		{
 			return true;
+		}
 		
 		if (className.startsWith("java/") || className.startsWith("netscape/") || className.startsWith("javax/"))
+		{
 			return false;
+		}
 		
 		return true;
 	}
@@ -132,7 +136,9 @@ public class MappingExecutorUtil
 	public static boolean isInlineable(Instruction i)
 	{
 		if (!(i instanceof InvokeStatic))
+		{
 			return false;
+		}
 
 		ClassGroup group = i.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		InvokeStatic is = (InvokeStatic) i;
@@ -190,7 +196,9 @@ public class MappingExecutorUtil
 
 				InstructionContext storedCtx = vctx.getInstructionWhichStored();
 				if (storedCtx == null)
+				{
 					return ctx; // initial parameter
+				}
 				
 				if (vctx.isIsParameter())
 				{
@@ -207,8 +215,12 @@ public class MappingExecutorUtil
 					for (int lvtIndex = 0 /* static */;
 						paramIndex < sig.size();
 						lvtIndex += sig.getTypeOfArg(paramIndex++).getSize())
+					{
 						if (lvtIndex == lvt.getVariableIndex())
+						{
 							break;
+						}
+					}
 					assert paramIndex < sig.size();
 
 					// Get stack context that was popped by the invoke
@@ -235,7 +247,9 @@ public class MappingExecutorUtil
 	public static boolean isMaybeEqual(Type t1, Type t2)
 	{
 		if (t1.getDimensions() != t2.getDimensions())
+		{
 			return false;
+		}
 
 		while (t1.getDimensions() > 0)
 		{
@@ -244,7 +258,9 @@ public class MappingExecutorUtil
 		}
 
 		if (t1.isPrimitive() || t2.isPrimitive())
+		{
 			return t1.equals(t2);
+		}
 
 		return true;
 	}
@@ -252,17 +268,23 @@ public class MappingExecutorUtil
 	public static boolean isMaybeEqual(Signature s1, Signature s2)
 	{
 		if (s1.size() != s2.size())
+		{
 			return false;
+		}
 
 		if (!isMaybeEqual(s1.getReturnValue(), s2.getReturnValue()))
+		{
 			return false;
+		}
 
 		for (int i = 0; i < s1.size(); ++i)
 		{
 			Type t1 = s1.getTypeOfArg(i), t2 = s2.getTypeOfArg(i);
 
 			if (!isMaybeEqual(t1, t2))
+			{
 				return false;
+			}
 		}
 
 		return true;
@@ -271,26 +293,36 @@ public class MappingExecutorUtil
 	public static boolean isMaybeEqual(ClassFile cf1, ClassFile cf2)
 	{
 		if (cf1 == null && cf2 == null)
+		{
 			return true;
+		}
 		
 		if (cf1 == null || cf2 == null)
+		{
 			return false;
+		}
 		
 		if (cf1.getParent() != null || cf2.getParent() != null)
 		{
 			if (!isMaybeEqual(cf1.getParent(), cf2.getParent()))
+			{
 				return false;
+			}
 		}
 		else
 		{
 			// otherwise parents are not our classes
 			if (!cf1.getParentClass().equals(cf2.getParentClass()))
+			{
 				return false;
+			}
 		}
 		
 		Interfaces i1 = cf1.getInterfaces(), i2 = cf2.getInterfaces();
 		if (i1.getInterfaces().size() != i2.getInterfaces().size())
+		{
 			return false;
+		}
 		
 		return true;
 	}
@@ -298,13 +330,19 @@ public class MappingExecutorUtil
 	public static boolean isMaybeEqual(Field f1, Field f2)
 	{
 		if (f1 == null && f2 == null)
+		{
 			return true;
+		}
 		
 		if (f1 == null || f2 == null)
+		{
 			return false;
+		}
 		
 		if (f1.isStatic() != f2.isStatic())
+		{
 			return false;
+		}
 		
 		return isMaybeEqual(f1.getType(), f2.getType());
 	}

@@ -157,7 +157,9 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	{
 		Field f1 = getComparedField(ctx), f2 = getComparedField(other);
 		if (f1 == null || f2 == null)
+		{
 			return;
+		}
 
 		assert MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 		
@@ -175,14 +177,18 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 			if (base.getInstruction() instanceof GetFieldInstruction)
 			{
 				if (gfi != null)
+				{
 					return null;
+				}
 				
 				gfi = (GetFieldInstruction) base.getInstruction();
 			}
 		}
 		
 		if (gfi == null)
+		{
 			return null;
+		}
 		
 		return gfi.getMyField();
 	}
@@ -191,17 +197,27 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	{
 		Field f1 = getComparedField(thisIc), f2 = getComparedField(otherIc);
 		if ((f1 != null) != (f2 != null))
+		{
 			return false;
+		}
 		
 		if (f1 == null || f2 == null)
+		{
 			return true;
+		}
 		
 		if (f1.isStatic() != f2.isStatic())
+		{
 			return false;
+		}
 
 		if (!f1.isStatic())
+		{
 			if (!MappingExecutorUtil.isMaybeEqual(f1.getClassFile(), f2.getClassFile()))
+			{
 				return false;
+			}
+		}
 		
 		return MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 	}

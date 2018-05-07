@@ -50,10 +50,14 @@ public class Stack
 	private void printStack(StackContext ctx, int level)
 	{
 		for (int i = 0; i < level; ++i)
+		{
 			System.err.print(" ");
+		}
 		System.err.println(ctx.getType() + " pushed by " + ctx.getPushed().getInstruction().getType().getName());// + " at " + ctx.getPushed().getInstruction().getPc());
 		for (StackContext c : ctx.getPushed().getPops())
+		{
 			printStack(c, level + 2);
+		}
 	}
 
 	public void push(StackContext i)
@@ -63,7 +67,9 @@ public class Stack
 			Method m = i.getPushed().getInstruction().getInstructions().getCode().getMethod();
 			System.err.println("stack overflow in " + m.getClassFile().getName() + " method " + m.getName());
 			for (int c = 0; c < stack.length; ++c)
+			{
 				printStack(stack[c], 0);
+			}
 			throw new RuntimeException("Stack overflow");
 		}
 		
@@ -76,7 +82,9 @@ public class Stack
 	public StackContext pop()
 	{
 		if (size <= 0)
+		{
 			throw new RuntimeException("Stack underflow");
+		}
 
 		return stack[--size];
 	}

@@ -57,7 +57,9 @@ public interface DivisionInstruction extends MappableInstruction
 			Field fi1 = f1.getMyField(), fi2 = f2.getMyField();
 
 			if (fi1 != null && fi2 != null)
+			{
 				mappings.map((Instruction) this, fi1, fi2);
+			}
 		}
 
 		if (i2.getInstruction() instanceof GetFieldInstruction && io2.getInstruction() instanceof GetFieldInstruction)
@@ -68,7 +70,9 @@ public interface DivisionInstruction extends MappableInstruction
 			Field fi1 = f1.getMyField(), fi2 = f2.getMyField();
 
 			if (fi1 != null && fi2 != null)
+			{
 				mappings.map((Instruction) this, fi1, fi2);
+			}
 		}
 	}
 

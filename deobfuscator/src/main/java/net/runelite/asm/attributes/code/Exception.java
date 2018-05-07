@@ -106,6 +106,8 @@ public class Exception implements Cloneable
 	public void renameClass(ClassFile cf, String name)
 	{
 		if (catchType != null && cf.getName().equals(catchType.getName()))
+		{
 			catchType = new Class(name);
+		}
 	}
 }

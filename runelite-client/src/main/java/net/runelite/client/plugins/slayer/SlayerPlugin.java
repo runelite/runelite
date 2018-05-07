@@ -425,7 +425,9 @@ public class SlayerPlugin extends Plugin
 	private List<NPC> buildTargetsToHighlight()
 	{
 		if (Strings.isNullOrEmpty(taskName))
+		{
 			return Collections.EMPTY_LIST;
+		}
 
 		List<NPC> npcs = new ArrayList<>();
 		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
@@ -436,7 +438,9 @@ public class SlayerPlugin extends Plugin
 			NPCComposition composition = getComposition(npc);
 
 			if (composition == null || composition.getName() == null)
+			{
 				continue;
+			}
 
 			String name = npc.getName();
 			for (String highlight : highlightedNpcs)
@@ -462,7 +466,9 @@ public class SlayerPlugin extends Plugin
 	private static NPCComposition getComposition(NPC npc)
 	{
 		if (npc == null)
+		{
 			return null;
+		}
 
 		NPCComposition composition = npc.getComposition();
 		if (composition != null && composition.getConfigs() != null)
