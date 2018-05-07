@@ -11,7 +11,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -54,10 +53,6 @@ public class InventoryTaggerPlugin extends Plugin
 
 	private static final String MENU_SET = "Set";
 	private static final String MENU_REMOVE = "Remove";
-
-
-	@Inject
-	private MenuManager menuManager;
 
 	@Override
 	protected void startUp() throws Exception
