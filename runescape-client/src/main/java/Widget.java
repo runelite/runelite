@@ -1225,7 +1225,7 @@ public class Widget extends Node {
          if(var5 != null) {
             return var5;
          } else {
-            var5 = AbstractByteBuffer.method3836(class18.field319, var2, 0);
+            var5 = AbstractByteBuffer.getSpriteAsSpritePixels(class18.field319, var2, 0);
             if(var5 == null) {
                field2934 = true;
                return null;
@@ -1313,7 +1313,7 @@ public class Widget extends Node {
             if(var3 != null) {
                return var3;
             } else {
-               var3 = AbstractByteBuffer.method3836(class18.field319, var2, 0);
+               var3 = AbstractByteBuffer.getSpriteAsSpritePixels(class18.field319, var2, 0);
                if(var3 != null) {
                   field2842.put(var3, (long)var2);
                } else {

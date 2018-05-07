@@ -273,7 +273,7 @@ public class Area extends CacheableNode {
          if(var2 != null) {
             return var2;
          } else {
-            var2 = AbstractByteBuffer.method3836(field3462, var1, 0);
+            var2 = AbstractByteBuffer.getSpriteAsSpritePixels(field3462, var1, 0);
             if(var2 != null) {
                areaSpriteCache.put(var2, (long)var1);
             }

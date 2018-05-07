@@ -38,7 +38,8 @@ public abstract class AbstractByteBuffer {
       signature = "(Ljr;IIB)Llv;",
       garbageValue = "-11"
    )
-   public static SpritePixels method3836(IndexDataBase var0, int var1, int var2) {
+   @Export("getSpriteAsSpritePixels")
+   public static SpritePixels getSpriteAsSpritePixels(IndexDataBase var0, int var1, int var2) {
       if(!class326.method5792(var0, var1, var2)) {
          return null;
       } else {

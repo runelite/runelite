@@ -299,7 +299,7 @@ public enum AttackOption implements Enumerated {
                      var10 = UnitPriceComparator.indexSprites;
                      var3 = var10.getFile("compass");
                      var4 = var10.getChild(var3, "");
-                     var12 = AbstractByteBuffer.method3836(var10, var3, var4);
+                     var12 = AbstractByteBuffer.getSpriteAsSpritePixels(var10, var3, var4);
                      WorldMapManager.compass = var12;
                   } else {
                      ++var0;
@@ -309,7 +309,7 @@ public enum AttackOption implements Enumerated {
                      var10 = UnitPriceComparator.indexSprites;
                      var3 = var10.getFile("mapedge");
                      var4 = var10.getChild(var3, "");
-                     var12 = AbstractByteBuffer.method3836(var10, var3, var4);
+                     var12 = AbstractByteBuffer.getSpriteAsSpritePixels(var10, var3, var4);
                      class230.mapedge = var12;
                   } else {
                      ++var0;

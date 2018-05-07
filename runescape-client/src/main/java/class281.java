@@ -273,7 +273,7 @@ public class class281 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.method3836(field3573, this.field3577, 0);
+            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3573, this.field3577, 0);
             if(var1 != null) {
                field3584.put(var1, (long)this.field3577);
             }
@@ -296,7 +296,7 @@ public class class281 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.method3836(field3573, this.field3578, 0);
+            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3573, this.field3578, 0);
             if(var1 != null) {
                field3584.put(var1, (long)this.field3578);
             }
@@ -319,7 +319,7 @@ public class class281 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.method3836(field3573, this.field3579, 0);
+            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3573, this.field3579, 0);
             if(var1 != null) {
                field3584.put(var1, (long)this.field3579);
             }
@@ -342,7 +342,7 @@ public class class281 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.method3836(field3573, this.field3565, 0);
+            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3573, this.field3565, 0);
             if(var1 != null) {
                field3584.put(var1, (long)this.field3565);
             }

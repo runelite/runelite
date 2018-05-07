@@ -159,7 +159,7 @@ public class CombatInfo2 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.method3836(field3523, this.field3533, 0);
+            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3523, this.field3533, 0);
             if(var1 != null) {
                field3525.put(var1, (long)this.field3533);
             }
@@ -182,7 +182,7 @@ public class CombatInfo2 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.method3836(field3523, this.field3531, 0);
+            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3523, this.field3531, 0);
             if(var1 != null) {
                field3525.put(var1, (long)this.field3531);
             }
