@@ -42,26 +42,30 @@ public class InventoryTaggerPlugin extends Plugin
 
 	private boolean editorMode = false;
 
-	private static final String SETNAME_MELEE = "Melee";
-	private static final String SETNAME_RANGE = "Ranged";
-	private static final String SETNAME_MAGE = "Mage";
-	private static final String SETNAME_OTHER = "Other";
+	private static final String SETNAME_ALPHA = "Red";
+	private static final String SETNAME_BETA = "Lime";
+	private static final String SETNAME_GAMMA = "Blue";
+	private static final String SETNAME_DELTA = "Yellow";
+	private static final String SETNAME_EPSILON = "Cyan";
+	private static final String SETNAME_ZETA = "Magenta";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String MENU_TARGET = "<col=ff9040>Inventory Tagger";
 
-	private static final String MENU_SET = "Set";
+	private static final String MENU_SET = "Mark";
 	private static final String MENU_REMOVE = "Remove";
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		taggedItems = new HashMap<>();
-		taggedItems.put(SETNAME_MELEE, new TaggedItems(SETNAME_MELEE, new Color(255, 0, 0, 255)));
-		taggedItems.put(SETNAME_RANGE, new TaggedItems(SETNAME_RANGE, new Color(0, 255, 0, 252)));
-		taggedItems.put(SETNAME_MAGE, new TaggedItems(SETNAME_MAGE, new Color(0, 0, 255, 255)));
-		taggedItems.put(SETNAME_OTHER, new TaggedItems(SETNAME_OTHER, new Color(255, 255, 0, 255)));
+		taggedItems.put(SETNAME_ALPHA, new TaggedItems(SETNAME_ALPHA, new Color(255, 0, 0, 255)));
+		taggedItems.put(SETNAME_BETA, new TaggedItems(SETNAME_BETA, new Color(0, 255, 0, 255)));
+		taggedItems.put(SETNAME_GAMMA, new TaggedItems(SETNAME_GAMMA, new Color(0, 0, 255, 255)));
+		taggedItems.put(SETNAME_DELTA, new TaggedItems(SETNAME_DELTA, new Color(255, 255, 0, 255)));
+		taggedItems.put(SETNAME_EPSILON, new TaggedItems(SETNAME_EPSILON, new Color(0, 255, 255, 255)));
+		taggedItems.put(SETNAME_ZETA, new TaggedItems(SETNAME_ZETA, new Color(255, 0, 255, 255)));
 	}
 
 	@Subscribe
