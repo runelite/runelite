@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
@@ -304,6 +305,14 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
+
+	@Import("getSpriteAsSpritePixels")
+	@Override
+	RSSpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+
+	@Import("indexSprites")
+	@Override
+	RSIndexDataBase getIndexSprites();
 
 	@Import("widgetFlags")
 	@Override
