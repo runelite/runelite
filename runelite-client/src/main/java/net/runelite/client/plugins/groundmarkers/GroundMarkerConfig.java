@@ -51,8 +51,8 @@ public interface GroundMarkerConfig extends Config
 
 	@ConfigItem(
 		keyName = "clearTiles",
-		name = "Allow clear all",
-		description = "Allows the Clear all marked tiles option when holding shift. Only clears tiles visible."
+		name = "Allow 'Clear Visible Tiles'",
+		description = "Allows the Clear all visible tiles option when holding shift. Only clears tiles visible."
 	)
 	default boolean clearTiles()
 	{
