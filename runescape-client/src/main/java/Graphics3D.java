@@ -336,7 +336,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var4 >> 14, var6, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var4 >> 14, var6, var19);
                               var5 += var17;
                               var4 += var15;
                               var6 += var20;
@@ -344,7 +344,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
                         var5 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -364,7 +364,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var5 >> 14, var6, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var5 >> 14, var6, var19);
                               var5 += var17;
                               var4 += var15;
                               var6 += var20;
@@ -372,7 +372,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
                         var5 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -408,7 +408,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
                               var5 += var15;
                               var3 += var16;
                               var6 += var20;
@@ -416,7 +416,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var3 >> 14, var6, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var3 >> 14, var6, var19);
                         var4 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -436,7 +436,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
                               var5 += var15;
                               var3 += var16;
                               var6 += var20;
@@ -444,7 +444,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var4 >> 14, var6, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var4 >> 14, var6, var19);
                         var4 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -493,7 +493,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var5 >> 14, var7, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var5 >> 14, var7, var19);
                               var3 += var16;
                               var5 += var17;
                               var7 += var20;
@@ -501,7 +501,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
                         var3 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -521,7 +521,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var3 >> 14, var7, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var3 >> 14, var7, var19);
                               var3 += var16;
                               var5 += var17;
                               var7 += var20;
@@ -529,7 +529,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
                         var3 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -565,7 +565,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
                               var3 += var17;
                               var4 += var15;
                               var7 += var20;
@@ -573,7 +573,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var4 >> 14, var7, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var4 >> 14, var7, var19);
                         var5 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -593,7 +593,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
+                              rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
                               var3 += var17;
                               var4 += var15;
                               var7 += var20;
@@ -601,7 +601,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2887(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var5 >> 14, var7, var19);
+                        rasterGouraudLine(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var5 >> 14, var7, var19);
                         var5 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -649,7 +649,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var3 >> 14, var8, var19);
+                           rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var3 >> 14, var8, var19);
                            var4 += var15;
                            var3 += var16;
                            var8 += var20;
@@ -657,7 +657,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
+                     rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
                      var4 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -677,7 +677,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var4 >> 14, var8, var19);
+                           rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var4 >> 14, var8, var19);
                            var4 += var15;
                            var3 += var16;
                            var8 += var20;
@@ -685,7 +685,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
+                     rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
                      var4 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -721,7 +721,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
+                           rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
                            var4 += var16;
                            var5 += var17;
                            var8 += var20;
@@ -729,7 +729,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var5 >> 14, var8, var19);
+                     rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var5 >> 14, var8, var19);
                      var3 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -749,7 +749,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
+                           rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
                            var4 += var16;
                            var5 += var17;
                            var8 += var20;
@@ -757,7 +757,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2887(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var3 >> 14, var8, var19);
+                     rasterGouraudLine(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var3 >> 14, var8, var19);
                      var3 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -770,7 +770,8 @@ public class Graphics3D extends Rasterizer2D {
    }
 
    @ObfuscatedName("d")
-   static final void method2887(int[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @Export("rasterGouraudLine")
+   static final void rasterGouraudLine(int[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(rasterClipEnable) {
          if(var5 > rasterClipX) {
             var5 = rasterClipX;
