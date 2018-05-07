@@ -32,17 +32,21 @@ import lombok.Getter;
 import net.runelite.api.GameObject;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
-import static net.runelite.api.ObjectID.*;
+import static net.runelite.api.ObjectID.CRATE_18506;
+import static net.runelite.api.ObjectID.CRATE_2620;
+import static net.runelite.api.ObjectID.CRATE_354;
+import static net.runelite.api.ObjectID.CRATE_357;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Getter
@@ -76,6 +80,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
 		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
 		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0))
 	);
 
@@ -102,25 +107,24 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 		if (objectId != -1)
 		{
-			panelComponent.setWidth(150);
-
 			ObjectComposition objectToClick = plugin.getClient().getObjectDefinition(getObjectId());
 
 			String objectName = "N/A";
+
 			if (objectToClick != null)
 			{
 				objectName = objectToClick.getName();
 			}
 
-			panelComponent.getLines().add(new PanelComponent.Line("Travel to the destination"));
-			panelComponent.getLines().add(new PanelComponent.Line("and click the " + objectName + "."));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Travel to the destination and click the " + objectName + ".")
+				.build());
 		}
 		else
 		{
-			panelComponent.setWidth(160);
-
-			panelComponent.getLines().add(new PanelComponent.Line("Travel to the destination"));
-			panelComponent.getLines().add(new PanelComponent.Line("and dig on the marked tile."));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Travel to the destination and dig on the marked tile.")
+				.build());
 		}
 	}
 

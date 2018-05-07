@@ -63,6 +63,10 @@ public final class GraphicsObject extends Renderable {
    @Export("finished")
    boolean finished;
 
+   @Hook(
+       value = "onGraphicsObjectCreated",
+       end = true
+   )
    GraphicsObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       this.field1286 = 0;
       this.field1287 = 0;

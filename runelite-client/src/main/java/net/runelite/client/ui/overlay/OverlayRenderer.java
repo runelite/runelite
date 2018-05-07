@@ -64,6 +64,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
+import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 
 @Singleton
 @Slf4j
@@ -91,6 +92,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final ConfigManager configManager;
 	private final RuneLiteConfig runeLiteConfig;
 	private final TooltipOverlay tooltipOverlay;
+	private final WorldMapOverlay worldMapOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
@@ -117,6 +119,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final KeyManager keyManager,
 		final TooltipOverlay tooltipOverlay,
 		final InfoBoxOverlay infoBoxOverlay,
+		final WorldMapOverlay worldMapOverlay,
 		final ConfigManager configManager,
 		final RuneLiteConfig runeLiteConfig)
 	{
@@ -124,6 +127,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		this.pluginManager = pluginManager;
 		this.tooltipOverlay = tooltipOverlay;
 		this.infoBoxOverlay = infoBoxOverlay;
+		this.worldMapOverlay = worldMapOverlay;
 		this.configManager = configManager;
 		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
@@ -169,7 +173,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					.stream()
 					.filter(pluginManager::isPluginEnabled)
 					.flatMap(plugin -> plugin.getOverlays().stream()),
-				Stream.of(infoBoxOverlay, tooltipOverlay))
+				Stream.of(infoBoxOverlay, tooltipOverlay, worldMapOverlay))
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
 
