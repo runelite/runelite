@@ -162,7 +162,7 @@ public class class7 {
                } else if(var2[var10] instanceof String) {
                   var21 = (String)var2[var10];
                   if(var21.equals("event_opbase")) {
-                     var21 = var0.string;
+                     var21 = var0.opbase;
                   }
 
                   class81.scriptLocalStrings[var9++] = var21;
