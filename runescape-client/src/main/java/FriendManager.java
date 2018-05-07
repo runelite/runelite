@@ -22,7 +22,7 @@ public class FriendManager {
    @ObfuscatedSignature(
       signature = "Lkm;"
    )
-   public final class298 field1238;
+   public final IgnoreContainer field1238;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -554047583
@@ -36,7 +36,7 @@ public class FriendManager {
       this.field1234 = 0;
       this.field1239 = var1;
       this.field1237 = new FriendContainer(var1);
-      this.field1238 = new class298(var1);
+      this.field1238 = new IgnoreContainer(var1);
    }
 
    @ObfuscatedName("g")
