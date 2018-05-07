@@ -2560,7 +2560,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var28;
                                  var4 += var27;
                                  var6 += var31;
@@ -2571,7 +2571,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2594,7 +2594,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var28;
                                  var4 += var27;
                                  var6 += var31;
@@ -2605,7 +2605,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2648,7 +2648,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var27;
                                  var3 += var26;
                                  var6 += var31;
@@ -2659,7 +2659,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var4 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2682,7 +2682,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var27;
                                  var3 += var26;
                                  var6 += var31;
@@ -2693,7 +2693,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var4 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2749,7 +2749,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var26;
                                  var5 += var28;
                                  var7 += var31;
@@ -2760,7 +2760,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var3 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2783,7 +2783,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var26;
                                  var5 += var28;
                                  var7 += var31;
@@ -2794,7 +2794,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var3 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2837,7 +2837,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var28;
                                  var4 += var27;
                                  var7 += var31;
@@ -2848,7 +2848,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2871,7 +2871,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var28;
                                  var4 += var27;
                                  var7 += var31;
@@ -2882,7 +2882,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2937,7 +2937,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var27;
                               var3 += var26;
                               var8 += var31;
@@ -2948,7 +2948,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var4 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -2971,7 +2971,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var27;
                               var3 += var26;
                               var8 += var31;
@@ -2982,7 +2982,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var4 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -3025,7 +3025,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var26;
                               var5 += var28;
                               var8 += var31;
@@ -3036,7 +3036,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var3 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -3059,7 +3059,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var26;
                               var5 += var28;
                               var8 += var31;
@@ -3070,7 +3070,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2907(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        rasterTextureLine(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var3 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -3087,7 +3087,8 @@ public class Graphics3D extends Rasterizer2D {
    }
 
    @ObfuscatedName("v")
-   static final void method2907(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14) {
+   @Export("rasterTextureLine")
+   static final void rasterTextureLine(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14) {
       if(rasterClipEnable) {
          if(var6 > rasterClipX) {
             var6 = rasterClipX;
