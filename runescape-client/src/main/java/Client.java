@@ -3251,7 +3251,7 @@ public final class Client extends GameEngine implements class302 {
                                              return;
                                           }
 
-                                          var38 = var42.widget;
+                                          var38 = var42.source;
                                           if(var38.index < 0) {
                                              break;
                                           }
@@ -3263,7 +3263,7 @@ public final class Client extends GameEngine implements class302 {
                                     }
                                  }
 
-                                 var38 = var42.widget;
+                                 var38 = var42.source;
                                  if(var38.index < 0) {
                                     break;
                                  }
@@ -3275,7 +3275,7 @@ public final class Client extends GameEngine implements class302 {
                            }
                         }
 
-                        var38 = var42.widget;
+                        var38 = var42.source;
                         if(var38.index < 0) {
                            break;
                         }
@@ -5088,7 +5088,7 @@ public final class Client extends GameEngine implements class302 {
          ScriptEvent var8;
          if(draggedWidget.onDragListener != null && draggingWidget) {
             var8 = new ScriptEvent();
-            var8.widget = draggedWidget;
+            var8.source = draggedWidget;
             var8.mouseX = var6;
             var8.mouseY = var7;
             var8.objs = draggedWidget.onDragListener;
@@ -5099,7 +5099,7 @@ public final class Client extends GameEngine implements class302 {
             if(draggingWidget) {
                if(draggedWidget.onDragCompleteListener != null) {
                   var8 = new ScriptEvent();
-                  var8.widget = draggedWidget;
+                  var8.source = draggedWidget;
                   var8.mouseX = var6;
                   var8.mouseY = var7;
                   var8.field776 = draggedOnWidget;

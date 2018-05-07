@@ -148,7 +148,7 @@ public class class64 {
             return 0;
          } else {
             ScriptEvent var4 = new ScriptEvent();
-            var4.widget = var3;
+            var4.source = var3;
             var4.objs = var3.onResizeListener;
             var4.field784 = class81.field1274 + 1;
             Client.field1049.addFront(var4);

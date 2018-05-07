@@ -131,7 +131,7 @@ public class class7 {
                   }
 
                   if(var11 == -2147483645) {
-                     var11 = var0.widget != null?var0.widget.id:-1;
+                     var11 = var0.source != null?var0.source.id:-1;
                   }
 
                   if(var11 == -2147483644) {
@@ -139,7 +139,7 @@ public class class7 {
                   }
 
                   if(var11 == -2147483643) {
-                     var11 = var0.widget != null?var0.widget.index:-1;
+                     var11 = var0.source != null?var0.source.index:-1;
                   }
 
                   if(var11 == -2147483642) {

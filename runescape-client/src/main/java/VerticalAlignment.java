@@ -69,7 +69,7 @@ public enum VerticalAlignment implements Enumerated {
       Widget var4 = class44.getWidgetChild(var0, var1);
       if(var4 != null && var4.onTargetEnterListener != null) {
          ScriptEvent var5 = new ScriptEvent();
-         var5.widget = var4;
+         var5.source = var4;
          var5.objs = var4.onTargetEnterListener;
          class71.method1203(var5);
       }

@@ -23,8 +23,8 @@ public class ScriptEvent extends Node {
    @ObfuscatedSignature(
       signature = "Liz;"
    )
-   @Export("widget")
-   Widget widget;
+   @Export("source")
+   Widget source;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -672052205

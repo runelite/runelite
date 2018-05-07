@@ -356,7 +356,7 @@ public final class WorldMapRectangle {
                            for(ScriptEvent var34 = (ScriptEvent)Client.field1049.getFront(); var34 != null; var34 = (ScriptEvent)Client.field1049.getNext()) {
                               if(var34.boolean1) {
                                  var34.unlink();
-                                 var34.widget.field2946 = false;
+                                 var34.source.field2946 = false;
                               }
                            }
 
@@ -382,7 +382,7 @@ public final class WorldMapRectangle {
                      if(!var9.noClickThrough) {
                         if(var9.noScrollThrough && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY < var15) {
                            for(var54 = (ScriptEvent)Client.field1049.getFront(); var54 != null; var54 = (ScriptEvent)Client.field1049.getNext()) {
-                              if(var54.boolean1 && var54.widget.onScrollWheelListener == var54.objs) {
+                              if(var54.boolean1 && var54.source.onScrollWheelListener == var54.objs) {
                                  var54.unlink();
                               }
                            }
@@ -391,7 +391,7 @@ public final class WorldMapRectangle {
                         for(var54 = (ScriptEvent)Client.field1049.getFront(); var54 != null; var54 = (ScriptEvent)Client.field1049.getNext()) {
                            if(var54.boolean1) {
                               var54.unlink();
-                              var54.widget.field2946 = false;
+                              var54.source.field2946 = false;
                            }
                         }
 
@@ -448,7 +448,7 @@ public final class WorldMapRectangle {
                         if(var43 && Client.mouseWheelRotation != 0 && var9.onScrollWheelListener != null) {
                            var40 = new ScriptEvent();
                            var40.boolean1 = true;
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.mouseY = Client.mouseWheelRotation;
                            var40.objs = var9.onScrollWheelListener;
                            Client.field1049.addFront(var40);
@@ -465,7 +465,7 @@ public final class WorldMapRectangle {
                            if(var9.onClickListener != null) {
                               var40 = new ScriptEvent();
                               var40.boolean1 = true;
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.mouseX = MouseInput.mouseLastPressedX - var10;
                               var40.mouseY = MouseInput.mouseLastPressedY - var11;
                               var40.objs = var9.onClickListener;
@@ -476,7 +476,7 @@ public final class WorldMapRectangle {
                         if(var9.field2906 && var44 && var9.onClickRepeatListener != null) {
                            var40 = new ScriptEvent();
                            var40.boolean1 = true;
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.mouseX = MouseInput.mouseLastX - var10;
                            var40.mouseY = MouseInput.mouseLastY - var11;
                            var40.objs = var9.onClickRepeatListener;
@@ -488,7 +488,7 @@ public final class WorldMapRectangle {
                            if(var9.onReleaseListener != null) {
                               var40 = new ScriptEvent();
                               var40.boolean1 = true;
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.mouseX = MouseInput.mouseLastX - var10;
                               var40.mouseY = MouseInput.mouseLastY - var11;
                               var40.objs = var9.onReleaseListener;
@@ -499,7 +499,7 @@ public final class WorldMapRectangle {
                         if(var44 && var9.onHoldListener != null) {
                            var40 = new ScriptEvent();
                            var40.boolean1 = true;
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.mouseX = MouseInput.mouseLastX - var10;
                            var40.mouseY = MouseInput.mouseLastY - var11;
                            var40.objs = var9.onHoldListener;
@@ -511,7 +511,7 @@ public final class WorldMapRectangle {
                            if(var9.onMouseOverListener != null) {
                               var40 = new ScriptEvent();
                               var40.boolean1 = true;
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.mouseX = MouseInput.mouseLastX - var10;
                               var40.mouseY = MouseInput.mouseLastY - var11;
                               var40.objs = var9.onMouseOverListener;
@@ -522,7 +522,7 @@ public final class WorldMapRectangle {
                         if(var9.field2946 && var43 && var9.onMouseRepeatListener != null) {
                            var40 = new ScriptEvent();
                            var40.boolean1 = true;
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.mouseX = MouseInput.mouseLastX - var10;
                            var40.mouseY = MouseInput.mouseLastY - var11;
                            var40.objs = var9.onMouseRepeatListener;
@@ -534,7 +534,7 @@ public final class WorldMapRectangle {
                            if(var9.onMouseLeaveListener != null) {
                               var40 = new ScriptEvent();
                               var40.boolean1 = true;
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.mouseX = MouseInput.mouseLastX - var10;
                               var40.mouseY = MouseInput.mouseLastY - var11;
                               var40.objs = var9.onMouseLeaveListener;
@@ -544,7 +544,7 @@ public final class WorldMapRectangle {
 
                         if(var9.onTimerListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onTimerListener;
                            Client.field976.addFront(var40);
                         }
@@ -559,7 +559,7 @@ public final class WorldMapRectangle {
                                  for(var23 = 0; var23 < var9.varTransmitTriggers.length; ++var23) {
                                     if(var22 == var9.varTransmitTriggers[var23]) {
                                        var41 = new ScriptEvent();
-                                       var41.widget = var9;
+                                       var41.source = var9;
                                        var41.objs = var9.onVarTransmitListener;
                                        Client.field1049.addFront(var41);
                                        break label1184;
@@ -568,7 +568,7 @@ public final class WorldMapRectangle {
                               }
                            } else {
                               var40 = new ScriptEvent();
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.objs = var9.onVarTransmitListener;
                               Client.field1049.addFront(var40);
                            }
@@ -585,7 +585,7 @@ public final class WorldMapRectangle {
                                  for(var23 = 0; var23 < var9.invTransmitTriggers.length; ++var23) {
                                     if(var22 == var9.invTransmitTriggers[var23]) {
                                        var41 = new ScriptEvent();
-                                       var41.widget = var9;
+                                       var41.source = var9;
                                        var41.objs = var9.onInvTransmitListener;
                                        Client.field1049.addFront(var41);
                                        break label1160;
@@ -594,7 +594,7 @@ public final class WorldMapRectangle {
                               }
                            } else {
                               var40 = new ScriptEvent();
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.objs = var9.onInvTransmitListener;
                               Client.field1049.addFront(var40);
                            }
@@ -611,7 +611,7 @@ public final class WorldMapRectangle {
                                  for(var23 = 0; var23 < var9.statTransmitTriggers.length; ++var23) {
                                     if(var22 == var9.statTransmitTriggers[var23]) {
                                        var41 = new ScriptEvent();
-                                       var41.widget = var9;
+                                       var41.source = var9;
                                        var41.objs = var9.onStatTransmitListener;
                                        Client.field1049.addFront(var41);
                                        break label1136;
@@ -620,7 +620,7 @@ public final class WorldMapRectangle {
                               }
                            } else {
                               var40 = new ScriptEvent();
-                              var40.widget = var9;
+                              var40.source = var9;
                               var40.objs = var9.onStatTransmitListener;
                               Client.field1049.addFront(var40);
                            }
@@ -630,42 +630,42 @@ public final class WorldMapRectangle {
 
                         if(Client.chatCycle > var9.field2948 && var9.onChatTransmitListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onChatTransmitListener;
                            Client.field1049.addFront(var40);
                         }
 
                         if(Client.field1045 > var9.field2948 && var9.onFriendTransmitListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onFriendTransmitListener;
                            Client.field1049.addFront(var40);
                         }
 
                         if(Client.field891 > var9.field2948 && var9.onClanTransmitListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onClanTransmitListener;
                            Client.field1049.addFront(var40);
                         }
 
                         if(Client.field881 > var9.field2948 && var9.onStockTransmitListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onStockTransmitListener;
                            Client.field1049.addFront(var40);
                         }
 
                         if(Client.field1046 > var9.field2948 && var9.onCamFinishedListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onCamFinishedListener;
                            Client.field1049.addFront(var40);
                         }
 
                         if(Client.field987 > var9.field2948 && var9.onMiscTransmitListener != null) {
                            var40 = new ScriptEvent();
-                           var40.widget = var9;
+                           var40.source = var9;
                            var40.objs = var9.onMiscTransmitListener;
                            Client.field1049.addFront(var40);
                         }
@@ -674,7 +674,7 @@ public final class WorldMapRectangle {
                         if(var9.onKeyListener != null) {
                            for(var46 = 0; var46 < Client.field1089; ++var46) {
                               ScriptEvent var42 = new ScriptEvent();
-                              var42.widget = var9;
+                              var42.source = var9;
                               var42.pressedKey = Client.field1039[var46];
                               var42.typedKey = Client.field957[var46];
                               var42.objs = var9.onKeyListener;

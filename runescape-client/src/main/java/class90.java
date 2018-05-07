@@ -262,7 +262,7 @@ public class class90 {
 
       if(var3 && var0.onResizeListener != null && (var4 != var0.width || var5 != var0.height)) {
          ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
+         var6.source = var0;
          var6.objs = var0.onResizeListener;
          Client.field1049.addFront(var6);
       }
