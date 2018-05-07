@@ -64,13 +64,15 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Barrows Brothers"
+	name = "Barrows Brothers",
+	category = PluginCategory.COMBAT
 )
 @Slf4j
 public class BarrowsPlugin extends Plugin

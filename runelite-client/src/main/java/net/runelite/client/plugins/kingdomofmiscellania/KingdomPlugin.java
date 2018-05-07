@@ -37,12 +37,14 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Kingdom of Miscellania",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class KingdomPlugin extends Plugin

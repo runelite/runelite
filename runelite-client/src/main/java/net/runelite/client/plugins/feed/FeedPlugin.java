@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
@@ -48,7 +49,8 @@ import net.runelite.http.api.feed.FeedResult;
 
 @PluginDescriptor(
 	name = "News Feed",
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class FeedPlugin extends Plugin

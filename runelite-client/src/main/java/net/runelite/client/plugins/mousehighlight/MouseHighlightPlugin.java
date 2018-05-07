@@ -28,11 +28,13 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Mouse Tooltips"
+	name = "Mouse Tooltips",
+	category = PluginCategory.UTILITY
 )
 public class MouseHighlightPlugin extends Plugin
 {

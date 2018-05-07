@@ -28,13 +28,15 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Info Panel",
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	category = PluginCategory.OTHER
 )
 public class InfoPlugin extends Plugin
 {

@@ -42,13 +42,15 @@ import net.runelite.api.events.UsernameChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
-	name = "Farming Tracker"
+	name = "Farming Tracker",
+	category = PluginCategory.SKILLING
 )
 @Slf4j
 public class FarmingTrackerPlugin extends Plugin

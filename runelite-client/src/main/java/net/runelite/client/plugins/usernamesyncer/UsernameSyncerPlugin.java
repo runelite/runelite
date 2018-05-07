@@ -35,10 +35,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Username Syncer"
+	name = "Username Syncer",
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class UsernameSyncerPlugin extends Plugin

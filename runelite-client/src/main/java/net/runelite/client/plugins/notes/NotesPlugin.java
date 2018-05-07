@@ -33,13 +33,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
 @PluginDescriptor(
 	name = "Notes",
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class NotesPlugin extends Plugin

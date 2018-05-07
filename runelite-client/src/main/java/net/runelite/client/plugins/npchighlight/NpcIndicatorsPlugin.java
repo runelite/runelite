@@ -50,11 +50,15 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.WildcardMatcher;
 
-@PluginDescriptor(name = "NPC Indicators")
+@PluginDescriptor(
+	name = "NPC Indicators",
+	category = PluginCategory.UTILITY
+)
 public class NpcIndicatorsPlugin extends Plugin
 {
 	// Option added to NPC menu

@@ -39,13 +39,15 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tithe Farm"
+	name = "Tithe Farm",
+	category = PluginCategory.SKILLING
 )
 public class TitheFarmPlugin extends Plugin
 {

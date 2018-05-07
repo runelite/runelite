@@ -43,12 +43,14 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Barbarian Assault"
+	name = "Barbarian Assault",
+	category = PluginCategory.COMBAT
 )
 public class BarbarianAssaultPlugin extends Plugin
 {

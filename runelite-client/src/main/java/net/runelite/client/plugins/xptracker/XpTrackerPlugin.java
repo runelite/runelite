@@ -45,6 +45,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.ui.NavigationButton;
@@ -56,7 +57,8 @@ import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
-	name = "XP Tracker"
+	name = "XP Tracker",
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin

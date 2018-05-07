@@ -43,11 +43,13 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Report Button"
+	name = "Report Button",
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class ReportButtonPlugin extends Plugin

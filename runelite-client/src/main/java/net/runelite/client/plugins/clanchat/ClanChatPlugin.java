@@ -37,11 +37,13 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Clan Chat"
+	name = "Clan Chat",
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class ClanChatPlugin extends Plugin

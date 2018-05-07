@@ -32,11 +32,13 @@ import net.runelite.api.Actor;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boss Timers"
+	name = "Boss Timers",
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class BossTimersPlugin extends Plugin

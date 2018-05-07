@@ -48,6 +48,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -59,7 +60,8 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat Commands"
+	name = "Chat Commands",
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin

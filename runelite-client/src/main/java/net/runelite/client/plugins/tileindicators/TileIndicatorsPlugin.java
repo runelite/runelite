@@ -29,12 +29,14 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Tile Indicators",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.OTHER
 )
 public class TileIndicatorsPlugin extends Plugin
 {

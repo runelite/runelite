@@ -74,6 +74,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -84,7 +85,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
-	name = "Ground Items"
+	name = "Ground Items",
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class GroundItemsPlugin extends Plugin

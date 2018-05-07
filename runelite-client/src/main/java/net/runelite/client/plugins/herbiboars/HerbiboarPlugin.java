@@ -57,12 +57,14 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Herbiboar"
+	name = "Herbiboar",
+	category = PluginCategory.SKILLING
 )
 public class HerbiboarPlugin extends Plugin
 {

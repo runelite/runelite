@@ -43,11 +43,13 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class DailyTasksPlugin extends Plugin

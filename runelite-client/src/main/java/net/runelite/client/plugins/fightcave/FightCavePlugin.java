@@ -32,13 +32,15 @@ import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fight Cave"
+	name = "Fight Cave",
+	category = PluginCategory.COMBAT
 )
 public class FightCavePlugin extends Plugin
 {

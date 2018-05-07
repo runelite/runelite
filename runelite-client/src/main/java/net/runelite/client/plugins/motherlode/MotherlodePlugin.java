@@ -69,13 +69,15 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.SKILLING
 )
 public class MotherlodePlugin extends Plugin
 {

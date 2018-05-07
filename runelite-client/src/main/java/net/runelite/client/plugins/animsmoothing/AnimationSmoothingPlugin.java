@@ -30,12 +30,14 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
 
 @PluginDescriptor(
 	name = "Animation Smoothing",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.OTHER
 )
 public class AnimationSmoothingPlugin extends Plugin
 {

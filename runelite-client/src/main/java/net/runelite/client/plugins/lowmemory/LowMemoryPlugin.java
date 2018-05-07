@@ -30,11 +30,13 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Low Detail",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.OTHER
 )
 public class LowMemoryPlugin extends Plugin
 {

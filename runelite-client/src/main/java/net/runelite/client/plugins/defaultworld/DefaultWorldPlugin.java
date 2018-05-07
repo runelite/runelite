@@ -37,12 +37,16 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 
-@PluginDescriptor(name = "Default World")
+@PluginDescriptor(
+	name = "Default World",
+	category = PluginCategory.OTHER
+)
 @Slf4j
 public class DefaultWorldPlugin extends Plugin
 {

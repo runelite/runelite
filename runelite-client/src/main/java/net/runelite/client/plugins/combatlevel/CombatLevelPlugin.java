@@ -35,10 +35,12 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Combat Level"
+	name = "Combat Level",
+	category = PluginCategory.UTILITY
 )
 public class CombatLevelPlugin extends Plugin
 {

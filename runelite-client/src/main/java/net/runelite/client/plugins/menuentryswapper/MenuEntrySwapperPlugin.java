@@ -51,13 +51,15 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Menu Entry Swapper",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.UTILITY
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {

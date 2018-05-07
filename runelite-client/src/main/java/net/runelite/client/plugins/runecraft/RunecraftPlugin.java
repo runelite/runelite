@@ -46,12 +46,14 @@ import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Runecraft"
+	name = "Runecraft",
+	category = PluginCategory.SKILLING
 )
 public class RunecraftPlugin extends Plugin
 {

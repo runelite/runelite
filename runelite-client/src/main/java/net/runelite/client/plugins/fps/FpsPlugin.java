@@ -31,6 +31,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -47,7 +48,8 @@ import net.runelite.client.ui.overlay.Overlay;
  */
 @PluginDescriptor(
 	name = "FPS Control",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.OTHER
 )
 public class FpsPlugin extends Plugin
 {

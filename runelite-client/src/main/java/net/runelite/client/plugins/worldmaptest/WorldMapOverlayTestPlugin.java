@@ -36,6 +36,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -43,7 +44,8 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 @PluginDescriptor(
 	name = "WorldMapOverlayTest",
 	developerPlugin = true,
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.OTHER
 )
 public class WorldMapOverlayTestPlugin extends Plugin
 {

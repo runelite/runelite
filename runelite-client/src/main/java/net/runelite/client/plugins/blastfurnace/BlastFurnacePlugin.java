@@ -39,11 +39,13 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Blast Furnace"
+	name = "Blast Furnace",
+	category = PluginCategory.SKILLING
 )
 public class BlastFurnacePlugin extends Plugin
 {

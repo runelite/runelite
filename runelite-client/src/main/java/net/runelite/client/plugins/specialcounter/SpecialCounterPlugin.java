@@ -43,12 +43,14 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.UTILITY
 )
 public class SpecialCounterPlugin extends Plugin
 {

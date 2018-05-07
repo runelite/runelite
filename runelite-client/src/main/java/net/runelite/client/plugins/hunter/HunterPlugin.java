@@ -47,12 +47,14 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter"
+	name = "Hunter",
+	category = PluginCategory.SKILLING
 )
 public class HunterPlugin extends Plugin
 {

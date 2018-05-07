@@ -68,6 +68,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -75,7 +76,8 @@ import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Slayer"
+	name = "Slayer",
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class SlayerPlugin extends Plugin

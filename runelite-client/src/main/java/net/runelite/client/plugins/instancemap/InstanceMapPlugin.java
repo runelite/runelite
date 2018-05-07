@@ -37,11 +37,13 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Instance Map"
+	name = "Instance Map",
+	category = PluginCategory.OTHER
 )
 public class InstanceMapPlugin extends Plugin
 {

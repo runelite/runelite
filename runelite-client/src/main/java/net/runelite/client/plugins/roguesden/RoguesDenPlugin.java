@@ -47,11 +47,13 @@ import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Rogues' Den"
+	name = "Rogues' Den",
+	category = PluginCategory.SKILLING
 )
 @Slf4j
 public class RoguesDenPlugin extends Plugin

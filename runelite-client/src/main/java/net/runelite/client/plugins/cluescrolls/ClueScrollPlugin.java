@@ -67,6 +67,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
 import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
@@ -88,7 +89,8 @@ import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll"
+	name = "Clue Scroll",
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin

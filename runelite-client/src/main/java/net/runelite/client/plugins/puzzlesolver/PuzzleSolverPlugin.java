@@ -30,10 +30,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Puzzle Solver"
+	name = "Puzzle Solver",
+	category = PluginCategory.UTILITY
 )
 public class PuzzleSolverPlugin extends Plugin
 {

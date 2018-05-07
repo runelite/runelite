@@ -48,6 +48,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
@@ -57,7 +58,8 @@ import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
-	developerPlugin = true
+	developerPlugin = true,
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class DevToolsPlugin extends Plugin

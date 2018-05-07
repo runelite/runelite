@@ -56,6 +56,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
@@ -67,7 +68,8 @@ import net.runelite.http.api.item.ItemPrice;
  * @author Adam
  */
 @PluginDescriptor(
-	name = "Examine"
+	name = "Examine",
+	category = PluginCategory.OTHER
 )
 @Slf4j
 public class ExaminePlugin extends Plugin

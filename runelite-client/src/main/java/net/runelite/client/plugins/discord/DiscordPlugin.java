@@ -41,6 +41,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
@@ -48,7 +49,8 @@ import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
-	name = "Discord"
+	name = "Discord",
+	category = PluginCategory.OTHER
 )
 public class DiscordPlugin extends Plugin
 {

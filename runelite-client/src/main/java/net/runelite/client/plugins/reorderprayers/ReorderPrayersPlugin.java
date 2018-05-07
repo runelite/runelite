@@ -53,10 +53,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
-@PluginDescriptor(name = "Reorder Prayers")
+@PluginDescriptor(
+	name = "Reorder Prayers",
+	category = PluginCategory.UTILITY
+)
 public class ReorderPrayersPlugin extends Plugin
 {
 
