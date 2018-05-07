@@ -143,11 +143,11 @@ public class class7 {
                   }
 
                   if(var11 == -2147483642) {
-                     var11 = var0.field776 != null?var0.field776.id:-1;
+                     var11 = var0.target != null?var0.target.id:-1;
                   }
 
                   if(var11 == -2147483641) {
-                     var11 = var0.field776 != null?var0.field776.index:-1;
+                     var11 = var0.target != null?var0.target.index:-1;
                   }
 
                   if(var11 == -2147483640) {

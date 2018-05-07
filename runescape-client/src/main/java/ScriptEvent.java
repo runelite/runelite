@@ -47,7 +47,8 @@ public class ScriptEvent extends Node {
    @ObfuscatedSignature(
       signature = "Liz;"
    )
-   Widget field776;
+   @Export("target")
+   Widget target;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1845549705

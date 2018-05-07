@@ -5102,7 +5102,7 @@ public final class Client extends GameEngine implements class302 {
                   var8.source = draggedWidget;
                   var8.mouseX = var6;
                   var8.mouseY = var7;
-                  var8.field776 = draggedOnWidget;
+                  var8.target = draggedOnWidget;
                   var8.objs = draggedWidget.onDragCompleteListener;
                   class71.method1203(var8);
                }
