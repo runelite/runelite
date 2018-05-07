@@ -31,4 +31,13 @@ public interface RSBufferProvider extends BufferProvider
 {
 	@Import("setRaster")
 	void setRaster();
+
+	@Import("pixels")
+	int[] getPixels();
+
+	@Import("width")
+	int getWidth();
+
+	@Import("height")
+	int getHeight();
 }

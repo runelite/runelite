@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -263,6 +264,8 @@ public interface Client extends GameEngine
 	void playSoundEffect(int id, int x, int y, int range);
 
 	BufferProvider getBufferProvider();
+
+	BufferedImage getUnderObjectBuffer();
 
 	int getMouseIdleTicks();
 

@@ -48,7 +48,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
 import net.runelite.api.Projectile;
-import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
@@ -318,7 +317,22 @@ public class Hooks
 		renderHooks.processDrawComplete(image);
 	}
 
-	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	public static void beforeDrawRegion()
+	{
+		BufferedImage image = client.getUnderObjectBuffer();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+
+		try
+		{
+			renderer.render(graphics2d, OverlayLayer.BELOW_OBJECTS);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
+	}
+
+	public static void afterDrawRegion()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();

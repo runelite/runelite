@@ -46,6 +46,7 @@ import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
+import net.runelite.injector.raw.DrawUnderObjects;
 import net.runelite.injector.raw.ScriptVM;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
@@ -71,6 +72,7 @@ public class Inject
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
 	private final ScriptVM scriptVM = new ScriptVM(this);
+	private final DrawUnderObjects drawUnderObjects = new DrawUnderObjects(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -321,6 +323,7 @@ public class Inject
 
 		drawAfterWidgets.inject();
 		scriptVM.inject();
+		drawUnderObjects.inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)

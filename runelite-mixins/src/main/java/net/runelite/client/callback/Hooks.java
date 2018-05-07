@@ -108,4 +108,14 @@ public class Hooks
 	{
 		throw new RuntimeException();
 	}
+
+	public static void beforeDrawRegion()
+	{
+		throw new RuntimeException();
+	}
+
+	public static void afterDrawRegion()
+	{
+		throw new RuntimeException();
+	}
 }

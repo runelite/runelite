@@ -27,6 +27,11 @@ package net.runelite.client.ui.overlay;
 public enum OverlayLayer
 {
 	/**
+	 * Render above the floor and ground decorations, but below players and most walls
+	 */
+	BELOW_OBJECTS,
+
+	/**
 	 * Render right above the scene (that contains actors and the surface)
 	 */
 	ABOVE_SCENE,
