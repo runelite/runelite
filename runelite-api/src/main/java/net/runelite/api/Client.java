@@ -447,4 +447,8 @@ public interface Client extends GameEngine
 
 	@VisibleForDevtools
 	void setChangedSkillsCount(int i);
+
+	int getTickCount();
+
+	void setTickCount(int tickCount);
 }

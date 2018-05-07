@@ -106,6 +106,9 @@ public abstract class RSClientMixin implements RSClient
 	private static RSClient client;
 
 	@Inject
+	private static int tickCount;
+
+	@Inject
 	private static boolean interpolatePlayerAnimations;
 
 	@Inject
@@ -882,5 +885,17 @@ public abstract class RSClientMixin implements RSClient
 	public static void onUsernameChanged(int idx)
 	{
 		eventBus.post(new UsernameChanged());
+	}
+
+	@Override
+	public int getTickCount()
+	{
+		return tickCount;
+	}
+
+	@Override
+	public void setTickCount(int tick)
+	{
+		tickCount = tick;
 	}
 }
