@@ -464,6 +464,9 @@ public class ClientUI
 			{
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
+
+			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
+
 			frame.setVisible(true);
 			frame.toFront();
 			requestFocus();
@@ -481,8 +484,6 @@ public class ClientUI
 			{
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
-
-			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
 
 			// Create hide sidebar button
 			sidebarNavigationButton = NavigationButton
