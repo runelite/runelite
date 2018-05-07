@@ -123,7 +123,7 @@ public class class7 {
                if(var2[var10] instanceof Integer) {
                   var11 = ((Integer)var2[var10]).intValue();
                   if(var11 == -2147483647) {
-                     var11 = var0.field787;
+                     var11 = var0.mouseX;
                   }
 
                   if(var11 == -2147483646) {

@@ -29,7 +29,8 @@ public class ScriptEvent extends Node {
    @ObfuscatedGetter(
       intValue = -672052205
    )
-   int field787;
+   @Export("mouseX")
+   int mouseX;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 901295407
