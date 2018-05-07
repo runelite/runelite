@@ -5,19 +5,17 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		name = "Clan Chat",
-		keyName = "clanchat",
-		description = "Configuration for the clan chat plugin"
+	name = "Clan Chat",
+	keyName = "clanchat",
+	description = "Configuration for the clan chat plugin"
 )
-public interface ClanChatConfig extends Config
-{
+public interface ClanChatConfig extends Config {
 	@ConfigItem(
-			keyName = "showEnterAndLeaveMessages",
-			name = "Show member enter and leave messages",
-			description = "Configures whether or not to display messages informing who has entered and left the clan chat"
+		keyName = "showEnterAndLeaveMessages",
+		name = "Show member enter and leave messages",
+		description = "Configures whether or not to display messages informing who has entered and left the clan chat"
 	)
-	default boolean showEnterAndLeaveMessages()
-	{
+	default boolean showEnterAndLeaveMessages() {
 		return false;
 	}
 }

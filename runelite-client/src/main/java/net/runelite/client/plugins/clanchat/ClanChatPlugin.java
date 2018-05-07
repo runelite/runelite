@@ -90,8 +90,8 @@ public class ClanChatPlugin extends Plugin
 	}
 
 	@Schedule(
-			period = 600,
-			unit = ChronoUnit.MILLIS
+		period = 600,
+		unit = ChronoUnit.MILLIS
 	)
 	public void updateClanChatTitle()
 	{
@@ -130,7 +130,7 @@ public class ClanChatPlugin extends Plugin
 		{
 			int iconNumber = clanManager.getIconNumber(rank);
 			message.getMessageNode()
-					.setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
+				.setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
 			client.refreshChat();
 		}
 	}
@@ -162,18 +162,18 @@ public class ClanChatPlugin extends Plugin
 		members.forEach(member ->
 		{
 			String chatMessage = newMembers ? String.format(joinClanChatMessage, member.getUsername())
-					: String.format(leftClanChatMessage, member.getUsername());
+				: String.format(leftClanChatMessage, member.getUsername());
 
 			final String message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append(chatMessage)
-					.build();
+				.append(ChatColorType.HIGHLIGHT)
+				.append(chatMessage)
+				.build();
 
 			chatMessageManager.queue(
-					QueuedMessage.builder()
-							.type(ChatMessageType.CLANCHAT_INFO)
-							.runeLiteFormattedMessage(message)
-							.build());
+				QueuedMessage.builder()
+					.type(ChatMessageType.CLANCHAT_INFO)
+					.runeLiteFormattedMessage(message)
+					.build());
 		});
 	}
 
