@@ -36,9 +36,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.attackstyles.AttackStyle;
-import net.runelite.client.plugins.attackstyles.WeaponType;
-import net.runelite.client.plugins.slayer.TaskCounter;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
@@ -52,8 +49,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.runelite.client.plugins.attackstyles.AttackStyle.*;
-
 @PluginDescriptor(
 		name = "Blowpipe Tracker"
 )
@@ -61,8 +56,8 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.*;
 public class BlowPipeTrackerPlugin extends Plugin
 {
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
 	@Inject
 	private BlowPipeTrackerConfig config;
@@ -79,9 +74,9 @@ public class BlowPipeTrackerPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
-    private int dartsLeft = -1;
-    private int scalesLeft = -1;
-    private int dartId;
+	private int dartsLeft = -1;
+	private int scalesLeft = -1;
+	private int dartId;
 	private boolean parsedValuesFromText = false;
 	private String dartType;
 
@@ -93,18 +88,18 @@ public class BlowPipeTrackerPlugin extends Plugin
 	private int ticksInAnimation;
 	private int attackStyleVarbit = -1;
 
-    private static final Random random = new Random();
-    private static final Pattern DART_AND_SCALE_PATTERN = Pattern.compile("Darts: (\\S*)(?: dart)? x (\\d*[,]?\\d*). Scales: \\d+[.]?\\d%, (\\d*[,]?\\d*)");
-    private static final String OUT_OF_DARTS = "Your blowpipe has run out of darts";
-    private static final String OUT_OF_SCALES = "Your blowpipe needs to be charged Zulrah's scales";
+	private static final Random random = new Random();
+	private static final Pattern DART_AND_SCALE_PATTERN = Pattern.compile("Darts: (\\S*)(?: dart)? x (\\d*[,]?\\d*). Scales: \\d+[.]?\\d%, (\\d*[,]?\\d*)");
+	private static final String OUT_OF_DARTS = "Your blowpipe has run out of darts";
+	private static final String OUT_OF_SCALES = "Your blowpipe needs to be charged Zulrah's scales";
 
-    private static final int TICKS_RAPID_PVM = 2;
-    private static final int TICKS_RAPID_PVP = 3;
-    private static final int TICKS_NORMAL_PVM = 3;
-    private static final int TICKS_NORMAL_PVP = 4;
-    private static final int MAX_SCALES = 16383;
+	private static final int TICKS_RAPID_PVM = 2;
+	private static final int TICKS_RAPID_PVP = 3;
+	private static final int TICKS_NORMAL_PVM = 3;
+	private static final int TICKS_NORMAL_PVP = 4;
+	private static final int MAX_SCALES = 16383;
 
-    @Subscribe
+	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
 		Player player = client.getLocalPlayer();
@@ -164,8 +159,9 @@ public class BlowPipeTrackerPlugin extends Plugin
 		return random.nextDouble() <= 0.66;
 	}
 
-    @Subscribe
-	public void onChatMessage(ChatMessage event) {
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 			return;
 
@@ -191,7 +187,8 @@ public class BlowPipeTrackerPlugin extends Plugin
 		List<String> matches = new ArrayList<>();
 		if (mComplete.find())
 		{
-			for (int i = 1; i <= mComplete.groupCount(); i++) {
+			for (int i = 1; i <= mComplete.groupCount(); i++)
+			{
 				matches.add(mComplete.group(i));
 				log.debug("Match: " + mComplete.group(i));
 			}
@@ -305,7 +302,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 			{
 				BufferedImage blowpipeImg = itemManager.getImage(ItemID.TOXIC_BLOWPIPE);
 				combinedCounter = new Counter(blowpipeImg, this,
-						String.format("%.1f%%", 100 * (double)scalesLeft/MAX_SCALES));
+						String.format("%.1f%%", 100 * (double)scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
 				combinedCounter.setTextColor(getColorForScalesLeft());
 
@@ -313,7 +310,7 @@ public class BlowPipeTrackerPlugin extends Plugin
 			}
 			else
 			{
-				combinedCounter.setText(String.format("%.1f%%", 100 * (double)scalesLeft/MAX_SCALES));
+				combinedCounter.setText(String.format("%.1f%%", 100 * (double)scalesLeft / MAX_SCALES));
 				combinedCounter.setTooltip(String.format("<col=ffff00>Darts (%s):</col> %s</br><col=ffff00>Scales:</col> %s", dartType, dartsLeft, scalesLeft));
 				combinedCounter.setTextColor(getColorForScalesLeft());
 			}

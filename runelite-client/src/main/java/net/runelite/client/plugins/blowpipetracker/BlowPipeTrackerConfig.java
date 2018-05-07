@@ -41,7 +41,10 @@ public interface BlowPipeTrackerConfig extends Config
 			name = "Show Overlay",
 			description = "Configures whether to show the blowpipe info in an infobox"
 	)
-	default boolean showInfobox() { return false; }
+	default boolean showInfobox()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			position = 2,
@@ -49,7 +52,10 @@ public interface BlowPipeTrackerConfig extends Config
 			name = "Show Darts",
 			description = "Display number of darts in an InfoBox"
 	)
-	default boolean showDarts() { return true; }
+	default boolean showDarts()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 			position = 3,
@@ -57,7 +63,10 @@ public interface BlowPipeTrackerConfig extends Config
 			name = "Show Scales",
 			description = "Display number of scales in an InfoBox"
 	)
-	default boolean showScales() { return true; }
+	default boolean showScales()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 			position = 4,
@@ -65,7 +74,10 @@ public interface BlowPipeTrackerConfig extends Config
 			name = "Empty blowpipe notification",
 			description = "Configures whether to notify you that your blowpipe is empty"
 	)
-	default boolean showEmptyBlowpipeNotification() { return true; }
+	default boolean showEmptyBlowpipeNotification()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 			position = 5,
@@ -73,5 +85,8 @@ public interface BlowPipeTrackerConfig extends Config
 			name = "Infobox grouping",
 			description = "Configures how to group the blowpipe infoboxes"
 	)
-	default DisplayStyleMode displayStyleMode() { return DisplayStyleMode.COMBINED; }
+	default DisplayStyleMode displayStyleMode()
+	{
+		return DisplayStyleMode.COMBINED;
+	}
 }
