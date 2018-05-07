@@ -33,19 +33,15 @@ import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
+@Setter
 public class TextComponent implements RenderableEntity
 {
 	private static final String COL_TAG_REGEX = "(<col=([0-9a-fA-F]){2,6}>)";
 	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("(?=" + COL_TAG_REGEX + ")");
 	private static final Pattern COL_TAG_PATTERN = Pattern.compile(COL_TAG_REGEX);
 
-	@Setter
 	private String text;
-
-	@Setter
 	private Point position = new Point();
-
-	@Setter
 	private Color color = Color.WHITE;
 
 	public static String textWithoutColTags(String text)

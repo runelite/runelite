@@ -35,6 +35,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class RaidsOverlay extends Overlay
 {
@@ -66,13 +67,17 @@ public class RaidsOverlay extends Overlay
 
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
-			panelComponent.setTitleColor(Color.RED);
-			panelComponent.setTitle("Unable to scout this raid!");
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Unable to scout this raid!")
+				.color(Color.RED)
+				.build());
+
 			return panelComponent.render(graphics);
 		}
 
-		panelComponent.setTitleColor(Color.WHITE);
-		panelComponent.setTitle("Raid scouter");
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text("Raid scouter")
+			.build());
 
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");

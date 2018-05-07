@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +24,11 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.geom.Arc2D;
-import lombok.Setter;
-import net.runelite.api.Point;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
-@Setter
-public class ProgressPieComponent implements RenderableEntity
+public class ComponentConstants
 {
-	private int diameter = 25;
-	private Color borderColor = Color.WHITE;
-	private Color fill = Color.WHITE;
-	private Stroke stroke = new BasicStroke(1);
-	private double progress;
-	private Point position;
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		//Construct the arc
-		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
-		arc.setAngleExtent(progress * 360);
-		arc.setFrame(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
-
-		//Draw the inside of the arc
-		graphics.setColor(fill);
-		graphics.fill(arc);
-
-		//Draw the outlines of the arc
-		graphics.setStroke(stroke);
-		graphics.setColor(borderColor);
-		graphics.drawOval(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
-
-		return new Dimension(diameter, diameter);
-	}
-
-	public void setBorder(Color border, int size)
-	{
-		this.borderColor = border;
-		stroke = new BasicStroke(size);
-	}
+	public static final int STANDARD_BORDER = 4;
+	public static final int STANDARD_WIDTH = 129;
+	public static final Color STANDARD_BACKGROUND_COLOR = new Color(70, 61, 50, 156);
 }

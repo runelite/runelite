@@ -38,8 +38,6 @@ import lombok.Setter;
 @Builder
 public class LineComponent implements LayoutableRenderableEntity
 {
-	private static final int SEPARATOR = 1;
-
 	private String left;
 	private String right;
 
@@ -50,7 +48,7 @@ public class LineComponent implements LayoutableRenderableEntity
 	private Color rightColor = Color.WHITE;
 
 	@Builder.Default
-	private Dimension preferredSize = new Dimension();
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -107,7 +105,7 @@ public class LineComponent implements LayoutableRenderableEntity
 				rightLineComponent.setText(rightText);
 				rightLineComponent.setColor(rightColor);
 				rightLineComponent.render(graphics);
-				y += metrics.getHeight() + SEPARATOR;
+				y += metrics.getHeight();
 			}
 
 			return new Dimension(preferredSize.width, y);
@@ -124,7 +122,7 @@ public class LineComponent implements LayoutableRenderableEntity
 		rightLineComponent.setText(right);
 		rightLineComponent.setColor(rightColor);
 		rightLineComponent.render(graphics);
-		y += metrics.getHeight() + SEPARATOR;
+		y += metrics.getHeight();
 
 		return new Dimension(preferredSize.width, y);
 	}
