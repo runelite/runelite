@@ -127,7 +127,7 @@ public class class7 {
                   }
 
                   if(var11 == -2147483646) {
-                     var11 = var0.field780;
+                     var11 = var0.mouseY;
                   }
 
                   if(var11 == -2147483645) {

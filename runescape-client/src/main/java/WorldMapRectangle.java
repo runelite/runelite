@@ -449,7 +449,7 @@ public final class WorldMapRectangle {
                            var40 = new ScriptEvent();
                            var40.boolean1 = true;
                            var40.widget = var9;
-                           var40.field780 = Client.mouseWheelRotation;
+                           var40.mouseY = Client.mouseWheelRotation;
                            var40.objs = var9.onScrollWheelListener;
                            Client.field1049.addFront(var40);
                         }
@@ -467,7 +467,7 @@ public final class WorldMapRectangle {
                               var40.boolean1 = true;
                               var40.widget = var9;
                               var40.mouseX = MouseInput.mouseLastPressedX - var10;
-                              var40.field780 = MouseInput.mouseLastPressedY - var11;
+                              var40.mouseY = MouseInput.mouseLastPressedY - var11;
                               var40.objs = var9.onClickListener;
                               Client.field1049.addFront(var40);
                            }
@@ -478,7 +478,7 @@ public final class WorldMapRectangle {
                            var40.boolean1 = true;
                            var40.widget = var9;
                            var40.mouseX = MouseInput.mouseLastX - var10;
-                           var40.field780 = MouseInput.mouseLastY - var11;
+                           var40.mouseY = MouseInput.mouseLastY - var11;
                            var40.objs = var9.onClickRepeatListener;
                            Client.field1049.addFront(var40);
                         }
@@ -490,7 +490,7 @@ public final class WorldMapRectangle {
                               var40.boolean1 = true;
                               var40.widget = var9;
                               var40.mouseX = MouseInput.mouseLastX - var10;
-                              var40.field780 = MouseInput.mouseLastY - var11;
+                              var40.mouseY = MouseInput.mouseLastY - var11;
                               var40.objs = var9.onReleaseListener;
                               Client.field1051.addFront(var40);
                            }
@@ -501,7 +501,7 @@ public final class WorldMapRectangle {
                            var40.boolean1 = true;
                            var40.widget = var9;
                            var40.mouseX = MouseInput.mouseLastX - var10;
-                           var40.field780 = MouseInput.mouseLastY - var11;
+                           var40.mouseY = MouseInput.mouseLastY - var11;
                            var40.objs = var9.onHoldListener;
                            Client.field1049.addFront(var40);
                         }
@@ -513,7 +513,7 @@ public final class WorldMapRectangle {
                               var40.boolean1 = true;
                               var40.widget = var9;
                               var40.mouseX = MouseInput.mouseLastX - var10;
-                              var40.field780 = MouseInput.mouseLastY - var11;
+                              var40.mouseY = MouseInput.mouseLastY - var11;
                               var40.objs = var9.onMouseOverListener;
                               Client.field1049.addFront(var40);
                            }
@@ -524,7 +524,7 @@ public final class WorldMapRectangle {
                            var40.boolean1 = true;
                            var40.widget = var9;
                            var40.mouseX = MouseInput.mouseLastX - var10;
-                           var40.field780 = MouseInput.mouseLastY - var11;
+                           var40.mouseY = MouseInput.mouseLastY - var11;
                            var40.objs = var9.onMouseRepeatListener;
                            Client.field1049.addFront(var40);
                         }
@@ -536,7 +536,7 @@ public final class WorldMapRectangle {
                               var40.boolean1 = true;
                               var40.widget = var9;
                               var40.mouseX = MouseInput.mouseLastX - var10;
-                              var40.field780 = MouseInput.mouseLastY - var11;
+                              var40.mouseY = MouseInput.mouseLastY - var11;
                               var40.objs = var9.onMouseLeaveListener;
                               Client.field1051.addFront(var40);
                            }
