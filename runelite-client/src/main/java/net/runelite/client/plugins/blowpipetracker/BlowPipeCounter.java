@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Sir Girion <https://github.com/darakelian>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.infobox;
+package net.runelite.client.plugins.blowpipetracker;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class Counter extends InfoBox
+import java.awt.image.BufferedImage;
+
+public class BlowPipeCounter extends Counter
 {
-	private String text;
-	private Color color;
-
-	public Counter(BufferedImage image, Plugin plugin, String text)
+	public BlowPipeCounter(BufferedImage image, Plugin plugin, String text)
 	{
-		super(image, plugin);
-		this.text = text;
-		this.color = Color.WHITE;
+		super(image, plugin, text);
 	}
-
-	@Override
-	public String toString()
-	{
-		return "Counter{" + "text=" + text + '}';
-	}
-
-	@Override
-	public String getText()
-	{
-		return text;
-	}
-
-	public void setText(String text)
-	{
-		this.text = text;
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return color;
-	}
-
-	public void setTextColor(Color color)
-	{
-		this.color = color;
-	}
-
 }
