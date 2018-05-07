@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,48 +29,30 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
+import lombok.Builder;
 import lombok.Setter;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
 @Setter
-public class InfoBoxComponent implements RenderableEntity
+@Builder
+public class TitleComponent implements LayoutableRenderableEntity
 {
-	private static final int BOX_SIZE = 35;
-	private static final int SEPARATOR = 2;
-
 	private String text;
+
+	@Builder.Default
 	private Color color = Color.WHITE;
-	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
-	private Point position = new Point();
-	private BufferedImage image;
+
+	@Builder.Default
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		final FontMetrics metrics = graphics.getFontMetrics();
-		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
-		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setBackgroundColor(backgroundColor);
-		backgroundComponent.setRectangle(bounds);
-		backgroundComponent.render(graphics);
-
-		if (Objects.nonNull(image))
-		{
-			graphics.drawImage(image,
-				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				position.y + (BOX_SIZE - image.getHeight()) / 2, null);
-		}
-
-		final TextComponent textComponent = new TextComponent();
-		textComponent.setColor(color);
-		textComponent.setText(text);
-		textComponent.setPosition(new Point(
-			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
-			position.y + BOX_SIZE - SEPARATOR));
-		textComponent.render(graphics);
-		return new Dimension(BOX_SIZE, BOX_SIZE);
+		final TextComponent titleComponent = new TextComponent();
+		titleComponent.setText(text);
+		titleComponent.setColor(color);
+		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, 0));
+		final Dimension dimension = titleComponent.render(graphics);
+		return new Dimension(Math.max(preferredSize.width, dimension.width), Math.max(preferredSize.height, dimension.height));
 	}
 }

@@ -33,28 +33,16 @@ import java.awt.Point;
 import java.text.DecimalFormat;
 import lombok.Setter;
 
+@Setter
 public class ProgressBarComponent implements LayoutableRenderableEntity
 {
-	@Setter
 	private String text;
-
-	@Setter
 	private double progress;
-
-	@Setter
 	private Point position = new Point();
-
-	@Setter
 	private Color foregroundColor = new Color(82, 161, 82);
-
-	@Setter
 	private Color backgroundColor = new Color(255, 255, 255, 127);
-
-	@Setter
 	private Color fontColor = Color.WHITE;
-
-	@Setter
-	private Dimension preferredSize = new Dimension(129, 16);
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 16);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
