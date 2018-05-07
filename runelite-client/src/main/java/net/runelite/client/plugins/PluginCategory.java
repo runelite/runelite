@@ -5,6 +5,9 @@ public enum PluginCategory
 	ALL("All"),
 	COMBAT("Combat"),
 	SKILLS("Skills"),
+	ITEM("Item"),
+	ACTIVITY("Activity"),
+	MINIGAME("Minigame"),
 	UTILITY("Utility"),
 	CLIENT("Client");
 
