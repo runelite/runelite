@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +43,6 @@ public class PanelComponent implements LayoutableRenderableEntity
 		VERTICAL;
 	}
 
-	private static final int TOP_BORDER = ComponentConstants.STANDARD_PADDING;
-	private static final int LEFT_BORDER = ComponentConstants.STANDARD_PADDING;
-	private static final int RIGHT_BORDER = ComponentConstants.STANDARD_PADDING;
-	private static final int BOTTOM_BORDER = ComponentConstants.STANDARD_PADDING;
-
 	@Setter
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 
@@ -58,6 +54,16 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 	@Setter
 	private Orientation orientation = Orientation.VERTICAL;
+
+	@Setter
+	private Rectangle border = new Rectangle(
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER);
+
+	@Setter
+	private Point gap = new Point(0, 0);
 
 	private final Dimension childDimensions = new Dimension();
 
@@ -73,8 +79,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Render background
 		final Dimension dimension = new Dimension(
-			LEFT_BORDER + childDimensions.width + RIGHT_BORDER,
-			TOP_BORDER + childDimensions.height + BOTTOM_BORDER);
+			border.x + childDimensions.width + border.width,
+			border.y + childDimensions.height + border.height);
 
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setRectangle(new Rectangle(dimension));
@@ -82,8 +88,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 		backgroundComponent.render(graphics);
 
 		// Offset children
-		final int baseX = LEFT_BORDER;
-		final int baseY = TOP_BORDER + metrics.getHeight();
+		final int baseX = border.x;
+		final int baseY = border.y + metrics.getHeight();
 		int width = 0;
 		int height = 0;
 		int x = baseX;
@@ -91,8 +97,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Create child preferred size
 		final Dimension childPreferredSize = new Dimension(
-			preferredSize.width - LEFT_BORDER - RIGHT_BORDER,
-			preferredSize.height - TOP_BORDER - BOTTOM_BORDER);
+			preferredSize.width - border.x - border.width,
+			preferredSize.height - border.y - border.height);
 
 		// Render all children
 		for (final LayoutableRenderableEntity child : children)
@@ -105,17 +111,21 @@ public class PanelComponent implements LayoutableRenderableEntity
 			switch (orientation)
 			{
 				case VERTICAL:
-					height += childDimension.height;
+					height += childDimension.height + gap.y;
 					y = baseY + height;
 					width = Math.max(width, childDimension.width);
 					break;
 				case HORIZONTAL:
-					width += childDimension.width;
+					width += childDimension.width + gap.x;
 					x = baseX + width;
 					height = Math.max(height, childDimension.height);
 					break;
 			}
 		}
+
+		// Remove last child gap
+		width -= gap.x;
+		height -= gap.y;
 
 		// Cache children bounds
 		childDimensions.setSize(width, height);
