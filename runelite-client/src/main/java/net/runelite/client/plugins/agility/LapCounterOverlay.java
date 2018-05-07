@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class LapCounterOverlay extends Overlay
@@ -73,19 +74,18 @@ public class LapCounterOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getLines().clear();
-
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Total Laps",
-			Integer.toString(session.getTotalLaps())
-		));
+		panelComponent.getChildren().clear();
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Total Laps")
+			.right(Integer.toString(session.getTotalLaps()))
+			.build());
 
 		if (session.getLapsTillLevel() > 0)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-				"Laps till level",
-				Integer.toString(session.getLapsTillLevel())
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Laps till level")
+				.right(Integer.toString(session.getLapsTillLevel()))
+				.build());
 		}
 
 		return panelComponent.render(graphics);

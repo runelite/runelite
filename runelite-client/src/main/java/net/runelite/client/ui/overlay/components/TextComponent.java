@@ -60,13 +60,13 @@ public class TextComponent implements RenderableEntity
 
 		if (COL_TAG_PATTERN.matcher(text).find())
 		{
-			String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
+			final String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
 			int x = position.x;
-			for (int i = 0; i < parts.length; i++)
+
+			for (String textSplitOnCol : parts)
 			{
-				String textSplitOnCol = parts[i];
-				String textWithoutCol = textWithoutColTags(textSplitOnCol);
-				String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
+				final String textWithoutCol = textWithoutColTags(textSplitOnCol);
+				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
 
 				// shadow
 				graphics.setColor(Color.BLACK);
@@ -89,6 +89,7 @@ public class TextComponent implements RenderableEntity
 			graphics.setColor(color);
 			graphics.drawString(text, position.x, position.y);
 		}
+
 		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
 	}
 }

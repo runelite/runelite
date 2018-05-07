@@ -28,17 +28,18 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.RenderingHints;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyFocusListener;
@@ -56,6 +57,7 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -63,7 +65,7 @@ import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.WORLD_MAP;
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
@@ -158,7 +160,7 @@ public class Hooks
 	 */
 	private static void checkWorldMap()
 	{
-		Widget widget = client.getWidget(WORLD_MAP, 0);
+		Widget widget = client.getWidget(WORLD_MAP);
 		if (widget != null)
 		{
 			return;
@@ -486,6 +488,12 @@ public class Hooks
 		HitsplatApplied event = new HitsplatApplied();
 		event.setActor(actor);
 		event.setHitsplat(hitsplat);
+		eventBus.post(event);
+	}
+
+	public static void onGraphicsObjectCreated(GraphicsObject go, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
+	{
+		GraphicsObjectCreated event = new GraphicsObjectCreated(go);
 		eventBus.post(event);
 	}
 }

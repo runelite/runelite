@@ -27,6 +27,7 @@ package net.runelite.client.plugins.implings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
@@ -52,8 +53,8 @@ public class ImplingMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		NPC[] imps = plugin.getImplings();
-		if (imps == null)
+		List<NPC> imps = plugin.getImplings();
+		if (imps.isEmpty())
 		{
 			return null;
 		}
@@ -61,16 +62,18 @@ public class ImplingMinimapOverlay extends Overlay
 		for (NPC imp : imps)
 		{
 			Point impLocation = imp.getMinimapLocation();
-			if (impLocation != null)
+			Color color = plugin.npcToColor(imp);
+			if (!plugin.showNpc(imp) || impLocation == null || color == null)
 			{
-				Color color = plugin.getIds().get(imp.getId());
-				OverlayUtil.renderMinimapLocation(graphics, impLocation, color);
+				continue;
+			}
 
-				if (config.showName())
-				{
-					Point textLocation = new Point(impLocation.getX() + 1, impLocation.getY());
-					OverlayUtil.renderTextLocation(graphics, textLocation, imp.getName(), color);
-				}
+			OverlayUtil.renderMinimapLocation(graphics, impLocation, color);
+
+			if (config.showName())
+			{
+				Point textLocation = new Point(impLocation.getX() + 1, impLocation.getY());
+				OverlayUtil.renderTextLocation(graphics, textLocation, imp.getName(), color);
 			}
 		}
 
