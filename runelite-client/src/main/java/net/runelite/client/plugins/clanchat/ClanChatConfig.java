@@ -9,7 +9,8 @@ import net.runelite.client.config.ConfigItem;
 	keyName = "clanchat",
 	description = "Configuration for the clan chat plugin"
 )
-public interface ClanChatConfig extends Config {
+public interface ClanChatConfig extends Config
+{
 	@ConfigItem(
 		keyName = "showEnterAndLeaveMessages",
 		name = "Show member enter and leave messages",
