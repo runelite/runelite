@@ -87,6 +87,7 @@ public class ConfigPanel extends PluginPanel
 	private static BufferedImage CONFIG_ICON;
 	private static BufferedImage UNCHECK_ICON;
 	private static BufferedImage CHECK_ICON;
+	private static BufferedImage BACK_ICON;
 
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final int OFFSET = 6;
@@ -106,6 +107,7 @@ public class ConfigPanel extends PluginPanel
 				CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
 				UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
 				CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
+				BACK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("back.png"));
 			}
 		}
 		catch (IOException e)
@@ -162,7 +164,7 @@ public class ConfigPanel extends PluginPanel
 
 		topPanel = new JPanel();
 		topPanel.setBorder(BORDER_PADDING);
-		topPanel.setLayout(new GridLayout(0, 1));
+		topPanel.setLayout(new BorderLayout(0, OFFSET));
 		add(topPanel, BorderLayout.NORTH);
 
 		contents = new JPanel();
@@ -335,8 +337,8 @@ public class ConfigPanel extends PluginPanel
 	private void openConfigList()
 	{
 		topPanel.removeAll();
-		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), 0);
-		topPanel.add(searchBar, 1);
+		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), BorderLayout.NORTH);
+		topPanel.add(searchBar, BorderLayout.CENTER);
 		contents.removeAll();
 
 		onSearchBarChanged();
@@ -398,10 +400,16 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 		topPanel.removeAll();
 		contents.removeAll();
+
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name, SwingConstants.CENTER);
 		title.setToolTipText(cd.getGroup().description());
-		topPanel.add(title, 0);
+		topPanel.add(title, BorderLayout.CENTER);
+
+		JButton backArrow = new JButton(new ImageIcon(BACK_ICON));
+		backArrow.addActionListener(e -> openConfigList());
+		backArrow.setPreferredSize(new Dimension(25, 25));
+		topPanel.add(backArrow, BorderLayout.LINE_START);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
