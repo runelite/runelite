@@ -14,8 +14,8 @@ public class ScriptEvent extends Node {
    @Export("indexStore255")
    static IndexFile indexStore255;
    @ObfuscatedName("g")
-   @Export("objs")
-   Object[] objs;
+   @Export("params")
+   Object[] params;
    @ObfuscatedName("e")
    @Export("boolean1")
    boolean boolean1;
@@ -85,7 +85,7 @@ public class ScriptEvent extends Node {
       garbageValue = "621328388"
    )
    public void method1155(Object[] var1) {
-      this.objs = var1;
+      this.params = var1;
    }
 
    @ObfuscatedName("e")

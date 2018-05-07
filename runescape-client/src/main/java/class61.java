@@ -156,7 +156,7 @@ public final class class61 {
             if(var1 == 0 && var3.onDialogAbortListener != null) {
                var5 = new ScriptEvent();
                var5.source = var3;
-               var5.objs = var3.onDialogAbortListener;
+               var5.params = var3.onDialogAbortListener;
                class71.method1203(var5);
             }
 
@@ -170,7 +170,7 @@ public final class class61 {
 
                var5 = new ScriptEvent();
                var5.source = var3;
-               var5.objs = var3.onSubChangeListener;
+               var5.params = var3.onSubChangeListener;
                class71.method1203(var5);
             }
          }

@@ -297,7 +297,7 @@ public class FontName {
          if(var0 != null && var0.onTargetLeaveListener != null) {
             ScriptEvent var1 = new ScriptEvent();
             var1.source = var0;
-            var1.objs = var0.onTargetLeaveListener;
+            var1.params = var0.onTargetLeaveListener;
             class71.method1203(var1);
          }
 

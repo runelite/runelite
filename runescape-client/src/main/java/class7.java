@@ -74,7 +74,7 @@ public class class7 {
    )
    @Export("runScript")
    static void runScript(ScriptEvent var0, int var1) {
-      Object[] var2 = var0.objs;
+      Object[] var2 = var0.params;
       Script var3;
       int var19;
       if(GameObject.method3165(var0.field781)) {

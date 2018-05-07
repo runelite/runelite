@@ -4061,7 +4061,7 @@ public final class Client extends GameEngine implements class302 {
 
                var56[0] = new Integer(var3.readInt());
                ScriptEvent var58 = new ScriptEvent();
-               var58.objs = var56;
+               var58.params = var56;
                class71.method1203(var58);
                var1.serverPacket = null;
                return true;
@@ -5091,7 +5091,7 @@ public final class Client extends GameEngine implements class302 {
             var8.source = draggedWidget;
             var8.mouseX = var6;
             var8.mouseY = var7;
-            var8.objs = draggedWidget.onDragListener;
+            var8.params = draggedWidget.onDragListener;
             class71.method1203(var8);
          }
 
@@ -5103,7 +5103,7 @@ public final class Client extends GameEngine implements class302 {
                   var8.mouseX = var6;
                   var8.mouseY = var7;
                   var8.target = draggedOnWidget;
-                  var8.objs = draggedWidget.onDragCompleteListener;
+                  var8.params = draggedWidget.onDragCompleteListener;
                   class71.method1203(var8);
                }
 
