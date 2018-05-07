@@ -46,9 +46,10 @@ public class LocationOverlay extends Overlay
 	@Inject
 	LocationOverlay(Client client, DevToolsPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
+		panelComponent.setPreferredSize(new Dimension(150, 0));
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
@@ -59,8 +60,7 @@ public class LocationOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.setPreferredSize(new Dimension(150, 0));
-
+		panelComponent.getChildren().clear();
 		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
 		LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
 
