@@ -135,7 +135,7 @@ public class class7 {
                   }
 
                   if(var11 == -2147483644) {
-                     var11 = var0.field779;
+                     var11 = var0.op;
                   }
 
                   if(var11 == -2147483643) {

@@ -41,7 +41,8 @@ public class ScriptEvent extends Node {
    @ObfuscatedGetter(
       intValue = 300414353
    )
-   int field779;
+   @Export("op")
+   int op;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Liz;"
