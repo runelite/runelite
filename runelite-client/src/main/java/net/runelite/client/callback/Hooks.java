@@ -119,6 +119,9 @@ public class Hooks
 			_deferredEventBus.replay();
 
 			eventBus.post(tick);
+
+			int tick = client.getTickCount();
+			client.setTickCount(tick + 1);
 		}
 
 		clientThread.invoke();

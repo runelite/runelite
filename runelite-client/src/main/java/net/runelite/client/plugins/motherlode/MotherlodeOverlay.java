@@ -32,21 +32,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_ORN;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class MotherlodeOverlay extends Overlay
 {
@@ -100,18 +92,18 @@ class MotherlodeOverlay extends Overlay
 		{
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
 			{
-				panelComponent.setTitle("You are mining");
-				panelComponent.setTitleColor(Color.GREEN);
+				panelComponent.getChildren().add(TitleComponent.builder()
+					.text("Mining")
+					.color(Color.GREEN)
+					.build());
 			}
 			else
 			{
-				panelComponent.setTitle("You are NOT mining");
-				panelComponent.setTitleColor(Color.RED);
+				panelComponent.getChildren().add(TitleComponent.builder()
+					.text("NOT mining")
+					.color(Color.RED)
+					.build());
 			}
-		}
-		else
-		{
-			panelComponent.setTitle(null);
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()

@@ -92,10 +92,10 @@ public class MapIconReference {
       if(var5 != null) {
          if(var5.onOpListener != null) {
             ScriptEvent var6 = new ScriptEvent();
-            var6.widget = var5;
-            var6.field779 = var0;
-            var6.string = var4;
-            var6.objs = var5.onOpListener;
+            var6.source = var5;
+            var6.op = var0;
+            var6.opbase = var4;
+            var6.params = var5.onOpListener;
             class71.method1203(var6);
          }
 

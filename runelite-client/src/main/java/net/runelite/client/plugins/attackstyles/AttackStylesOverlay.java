@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class AttackStylesOverlay extends Overlay
 {
@@ -49,13 +50,18 @@ public class AttackStylesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		panelComponent.getChildren().clear();
 		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
 
 		if (warnedSkillSelected || config.alwaysShowStyle())
 		{
 			final String attackStyleString = plugin.getAttackStyle().getName();
-			panelComponent.setTitleColor(warnedSkillSelected ? Color.RED : Color.WHITE);
-			panelComponent.setTitle(attackStyleString);
+
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text(attackStyleString)
+				.color(warnedSkillSelected ? Color.RED : Color.WHITE)
+				.build());
+
 			panelComponent.setPreferredSize(new Dimension(
 				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
 				0));

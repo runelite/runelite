@@ -14,8 +14,8 @@ public class ScriptEvent extends Node {
    @Export("indexStore255")
    static IndexFile indexStore255;
    @ObfuscatedName("g")
-   @Export("objs")
-   Object[] objs;
+   @Export("params")
+   Object[] params;
    @ObfuscatedName("e")
    @Export("boolean1")
    boolean boolean1;
@@ -23,43 +23,47 @@ public class ScriptEvent extends Node {
    @ObfuscatedSignature(
       signature = "Liz;"
    )
-   @Export("widget")
-   Widget widget;
+   @Export("source")
+   Widget source;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -672052205
    )
-   int field787;
+   @Export("mouseX")
+   int mouseX;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 901295407
    )
-   int field780;
+   @Export("mouseY")
+   int mouseY;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 300414353
    )
-   int field779;
+   @Export("op")
+   int op;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Liz;"
    )
-   Widget field776;
+   @Export("target")
+   Widget target;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 1845549705
    )
-   @Export("pressedKey")
-   int pressedKey;
+   @Export("typedKeyCode")
+   int typedKeyCode;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 1973273457
    )
-   @Export("typedKey")
-   int typedKey;
+   @Export("typedKeyChar")
+   int typedKeyChar;
    @ObfuscatedName("h")
-   @Export("string")
-   String string;
+   @Export("opbase")
+   String opbase;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 255897807
@@ -81,7 +85,7 @@ public class ScriptEvent extends Node {
       garbageValue = "621328388"
    )
    public void method1155(Object[] var1) {
-      this.objs = var1;
+      this.params = var1;
    }
 
    @ObfuscatedName("e")

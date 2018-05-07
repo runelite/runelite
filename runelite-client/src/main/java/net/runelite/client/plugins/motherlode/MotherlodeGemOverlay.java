@@ -33,6 +33,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class MotherlodeGemOverlay extends Overlay
 {
@@ -72,8 +73,7 @@ public class MotherlodeGemOverlay extends Overlay
 		int sapphiresFound = session.getSapphiresFound();
 
 		panelComponent.getChildren().clear();
-
-		panelComponent.setTitle("Gems found");
+		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
 
 		if (diamondsFound > 0)
 		{

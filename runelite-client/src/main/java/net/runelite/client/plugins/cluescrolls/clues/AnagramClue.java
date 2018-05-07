@@ -38,6 +38,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMA
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
@@ -167,7 +168,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Anagram Clue");
+		panelComponent.getChildren().add(TitleComponent.builder().text("Anagram Clue").build());
 		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(getNpc())
