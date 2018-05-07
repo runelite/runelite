@@ -50,7 +50,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Barbarian Assault",
-	category = PluginCategory.COMBAT
+	category = PluginCategory.MINIGAME
 )
 public class BarbarianAssaultPlugin extends Plugin
 {

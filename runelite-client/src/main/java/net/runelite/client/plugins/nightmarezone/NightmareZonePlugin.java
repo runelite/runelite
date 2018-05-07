@@ -44,7 +44,7 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Nightmare Zone",
-	category = PluginCategory.COMBAT
+	category = PluginCategory.MINIGAME
 )
 public class NightmareZonePlugin extends Plugin
 {

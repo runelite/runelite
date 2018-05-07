@@ -31,7 +31,6 @@ import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.ui.overlay.Overlay;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import javax.inject.Inject;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -39,7 +38,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Jewellery Count",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.ITEM
 )
 public class JewelleryCountPlugin extends Plugin
 {

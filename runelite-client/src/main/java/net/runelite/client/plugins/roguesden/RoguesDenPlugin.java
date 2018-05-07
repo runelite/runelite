@@ -53,7 +53,7 @@ import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Rogues' Den",
-	category = PluginCategory.SKILLS
+	category = PluginCategory.MINIGAME
 )
 @Slf4j
 public class RoguesDenPlugin extends Plugin

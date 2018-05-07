@@ -32,7 +32,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Pest Control",
-	category = PluginCategory.COMBAT
+	category = PluginCategory.MINIGAME
 )
 public class PestControlPlugin extends Plugin
 {

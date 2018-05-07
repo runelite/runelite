@@ -35,7 +35,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Item Prices",
 	enabledByDefault = false,
-	category = PluginCategory.UTILITY
+	category = PluginCategory.ITEM
 )
 public class ItemPricesPlugin extends Plugin
 {

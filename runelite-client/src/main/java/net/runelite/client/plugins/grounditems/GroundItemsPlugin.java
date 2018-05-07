@@ -86,7 +86,7 @@ import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Ground Items",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.ITEM
 )
 @Slf4j
 public class GroundItemsPlugin extends Plugin

@@ -40,7 +40,7 @@ import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Fight Cave",
-	category = PluginCategory.COMBAT
+	category = PluginCategory.MINIGAME
 )
 public class FightCavePlugin extends Plugin
 {

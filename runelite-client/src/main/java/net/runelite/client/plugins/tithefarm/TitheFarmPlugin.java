@@ -47,7 +47,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 @PluginDescriptor(
 	name = "Tithe Farm",
-	category = PluginCategory.SKILLS
+	category = PluginCategory.MINIGAME
 )
 public class TitheFarmPlugin extends Plugin
 {

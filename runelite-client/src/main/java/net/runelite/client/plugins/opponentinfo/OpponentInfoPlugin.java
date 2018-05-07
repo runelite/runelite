@@ -47,7 +47,7 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "Opponent Information",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.COMBAT
 )
 public class OpponentInfoPlugin extends Plugin
 {

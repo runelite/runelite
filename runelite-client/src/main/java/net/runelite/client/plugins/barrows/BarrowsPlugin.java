@@ -72,7 +72,7 @@ import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
-	category = PluginCategory.COMBAT
+	category = PluginCategory.MINIGAME
 )
 @Slf4j
 public class BarrowsPlugin extends Plugin

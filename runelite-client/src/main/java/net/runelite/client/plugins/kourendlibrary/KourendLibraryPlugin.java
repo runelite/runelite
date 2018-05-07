@@ -52,7 +52,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Kourend Library",
-	category = PluginCategory.UTILITY
+	category = PluginCategory.ACTIVITY
 )
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
