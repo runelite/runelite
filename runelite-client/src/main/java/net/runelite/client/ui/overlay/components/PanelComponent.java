@@ -45,6 +45,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 	@Setter
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+
+	@Setter
 	private int wrapping = -1;
 
 	@Setter
@@ -104,8 +106,6 @@ public class PanelComponent implements LayoutableRenderableEntity
 			preferredSize.width - border.x - border.width,
 			preferredSize.height - border.y - border.height);
 
-		boolean wrapped = false;
-
 		for (int i = 0; i < children.size(); i ++)
 		{
 			final LayoutableRenderableEntity child = children.get(i);
@@ -129,22 +129,27 @@ public class PanelComponent implements LayoutableRenderableEntity
 					break;
 			}
 
-			if (wrapping > 0 && (i + 1) % wrapping == 0)
+			if (wrapping > 0 && i < children.size() - 1 && (i + 1)  % wrapping == 0)
 			{
-				wrapped = true;
 
 				switch (orientation)
 				{
 					case VERTICAL:
-						y = TOP_BORDER + metrics.getHeight();
-						width = x += childDimension.width + SEPARATOR;
+						height = 0;
+						y = baseY;
+						x += childDimension.width;
+						width += childDimension.width;
 						break;
 					case HORIZONTAL:
-						x = LEFT_BORDER;
-						height = y += childDimension.height + SEPARATOR;
+						width = 0;
+						x = baseX;
+						y += childDimension.height;
+						height += childDimension.height;
 						break;
 				}
+
 			}
+
 		}
 
 		// Remove last child gap
