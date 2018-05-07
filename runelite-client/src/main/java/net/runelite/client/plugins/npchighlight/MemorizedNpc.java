@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.npchighlight;
 
-public interface NPC extends Actor
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.coords.WorldPoint;
+
+public class MemorizedNpc
 {
-	int getId();
+	@Getter
+	private int npcIndex;
 
-	@Override
-	String getName();
+	@Getter
+	private String npcName;
 
-	@Override
-	int getCombatLevel();
+	@Getter
+	private int npcSize;
 
-	int getIndex();
+	/**
+	 * The time the npc died at, in game ticks, relative to the tick counter
+	 */
+	@Getter
+	@Setter
+	private int diedOnTick;
 
-	NPCComposition getComposition();
+	/**
+	 * The time it takes for the npc to respawn, in game ticks
+	 */
+	@Getter
+	@Setter
+	private int respawnTime;
 
-	NPCComposition getTransformedComposition();
+	@Getter
+	@Setter
+	private boolean tagged;
+
+	@Getter
+	@Setter
+	private List<WorldPoint> possibleRespawnLocations;
+
+	public MemorizedNpc(NPC npc)
+	{
+		this.npcName = npc.getName();
+		this.npcIndex = npc.getIndex();
+		NPCComposition composition = npc.getTransformedComposition();
+		if (composition != null)
+		{
+			this.npcSize = composition.getSize();
+		}
+		this.possibleRespawnLocations = new ArrayList<>();
+		this.respawnTime = -1;
+		this.diedOnTick = -1;
+	}
 }

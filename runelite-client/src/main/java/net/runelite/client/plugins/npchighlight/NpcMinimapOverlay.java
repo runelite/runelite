@@ -28,7 +28,7 @@ package net.runelite.client.plugins.npchighlight;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
@@ -54,10 +54,10 @@ public class NpcMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Map<NPC, String> npcMap = plugin.getHighlightedNpcs();
-		for (NPC npc : npcMap.keySet())
+		Set<NPC> npcMap = plugin.getHighlightedNpcs();
+		for (NPC npc : npcMap)
 		{
-			renderNpcOverlay(graphics, npc, npcMap.get(npc), config.getNpcColor());
+			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
 		}
 
 		for (NPC npc : plugin.getTaggedNpcs())
