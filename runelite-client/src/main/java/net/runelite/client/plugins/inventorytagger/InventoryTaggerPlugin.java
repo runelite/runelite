@@ -43,10 +43,10 @@ public class InventoryTaggerPlugin extends Plugin
 
 	private boolean editorMode = false;
 
-	private static final String SETNAME_MELE = "MELE";
-	private static final String SETNAME_RANGE = "RANGE";
-	private static final String SETNAME_MAGE = "MAGE";
-	private static final String SETNAME_OTHER = "OTHER";
+	private static final String SETNAME_MELEE = "Melee";
+	private static final String SETNAME_RANGE = "Ranged";
+	private static final String SETNAME_MAGE = "Mage";
+	private static final String SETNAME_OTHER = "Other";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
@@ -63,7 +63,7 @@ public class InventoryTaggerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		taggedItems = new HashMap<>();
-		taggedItems.put(SETNAME_MELE, new TaggedItems(SETNAME_MELE, new Color(255, 0, 0, 255)));
+		taggedItems.put(SETNAME_MELEE, new TaggedItems(SETNAME_MELEE, new Color(255, 0, 0, 255)));
 		taggedItems.put(SETNAME_RANGE, new TaggedItems(SETNAME_RANGE, new Color(0, 255, 0, 252)));
 		taggedItems.put(SETNAME_MAGE, new TaggedItems(SETNAME_MAGE, new Color(0, 0, 255, 255)));
 		taggedItems.put(SETNAME_OTHER, new TaggedItems(SETNAME_OTHER, new Color(255, 255, 0, 255)));
