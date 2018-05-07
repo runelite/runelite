@@ -45,7 +45,6 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class MotherlodeOverlay extends Overlay
@@ -94,7 +93,7 @@ class MotherlodeOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
+		panelComponent.getLines().clear();
 
 		if (config.showMiningState())
 		{
@@ -114,15 +113,17 @@ class MotherlodeOverlay extends Overlay
 			panelComponent.setTitle(null);
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt mined:")
-			.right(Integer.toString(session.getTotalMined()))
-			.build());
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Pay-dirt mined:",
+			Integer.toString(session.getTotalMined())
+		));
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt/hr:")
-			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
-			.build());
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Pay-dirt/hr:",
+			session.getRecentMined() > 2
+			? Integer.toString(session.getPerHour())
+			: ""
+		));
 
 		return panelComponent.render(graphics);
 	}

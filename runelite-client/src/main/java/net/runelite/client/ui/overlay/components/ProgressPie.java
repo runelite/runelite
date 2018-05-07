@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runepouch.config;
+package net.runelite.client.ui.overlay.components;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.geom.Arc2D;
+import lombok.Setter;
+import net.runelite.api.Point;
 
-@Getter
-@RequiredArgsConstructor
-public enum RunePouchOverlayMode
+
+public class ProgressPie
 {
-	INVENTORY("Inventory"),
-	MOUSE_HOVER("Mouse hover"),
-	BOTH("Both");
+	@Setter
+	private int diameter = 25;
 
-	private final String name;
+	@Setter
+	private Color borderColor = Color.WHITE;
 
-	@Override
-	public String toString()
+	@Setter
+	private Color fill = Color.WHITE;
+
+	@Setter
+	private Stroke stroke = new BasicStroke(1);
+
+	public Dimension render(Graphics2D graphics, Point position, double progress)
 	{
-		return name;
+		//Construct the arc
+		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
+		arc.setAngleStart(90);
+		arc.setAngleExtent(progress * 360);
+		arc.setFrame(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
+
+		//Draw the inside of the arc
+		graphics.setColor(fill);
+		graphics.fill(arc);
+
+		//Draw the outlines of the arc
+		graphics.setStroke(stroke);
+		graphics.setColor(borderColor);
+		graphics.drawOval(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
+
+		return new Dimension(diameter, diameter);
+	}
+
+	public void setBorder(Color border, int size)
+	{
+		this.borderColor = border;
+		stroke = new BasicStroke(size);
 	}
 }

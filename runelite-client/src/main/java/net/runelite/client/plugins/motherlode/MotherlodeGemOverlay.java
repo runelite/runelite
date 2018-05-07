@@ -31,7 +31,6 @@ import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class MotherlodeGemOverlay extends Overlay
@@ -71,42 +70,41 @@ public class MotherlodeGemOverlay extends Overlay
 		int emeraldsFound = session.getEmeraldsFound();
 		int sapphiresFound = session.getSapphiresFound();
 
-		panelComponent.getChildren().clear();
+		panelComponent.getLines().clear();
 
 		panelComponent.setTitle("Gems found");
 
 		if (diamondsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Diamonds:")
-				.right(Integer.toString(diamondsFound))
-				.build());
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Diamonds:",
+					Integer.toString(diamondsFound)
+			));
 		}
 
 		if (rubiesFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Rubies:")
-				.right(Integer.toString(rubiesFound))
-				.build());
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Rubies:",
+					Integer.toString(rubiesFound)
+			));
 		}
 
 		if (emeraldsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Emeralds:")
-				.right(Integer.toString(emeraldsFound))
-				.build());
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Emeralds:",
+					Integer.toString(emeraldsFound)
+			));
 		}
 
 		if (sapphiresFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Sapphires:")
-				.right(Integer.toString(sapphiresFound))
-				.build());
+			panelComponent.getLines().add(new PanelComponent.Line(
+					"Sapphires:",
+					Integer.toString(sapphiresFound)
+			));
 		}
-
 		return panelComponent.render(graphics);
 	}
 }

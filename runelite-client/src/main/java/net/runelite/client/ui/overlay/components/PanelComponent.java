@@ -33,25 +33,77 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class PanelComponent implements LayoutableRenderableEntity
+public class PanelComponent implements RenderableEntity
 {
-	public enum Orientation
-	{
-		HORIZONTAL,
-		VERTICAL;
-	}
-
 	private static final int TOP_BORDER = 4;
 	private static final int LEFT_BORDER = 4;
 	private static final int RIGHT_BORDER = 4;
 	private static final int BOTTOM_BORDER = 4;
 	private static final int SEPARATOR = 1;
 
-	@Setter
-	private int wrapping = -1;
+	@Data
+	@AllArgsConstructor
+	public static class Line
+	{
+		private boolean wrapWords;
+		private String left;
+		private Color leftColor = Color.WHITE;
+		private String right = "";
+		private Color rightColor = Color.WHITE;
+
+		public Line(String left)
+		{
+			this.left = left;
+		}
+
+		public Line(boolean wrapWords, String left)
+		{
+			this.wrapWords = wrapWords;
+			this.left = left;
+		}
+
+		public Line(String left, Color leftColor)
+		{
+			this.left = left;
+			this.leftColor = leftColor;
+		}
+
+		public Line(boolean wrapWords, String left, Color leftColor)
+		{
+			this.wrapWords = wrapWords;
+			this.left = left;
+			this.leftColor = leftColor;
+		}
+
+		public Line(String left, String right)
+		{
+			this.left = left;
+			this.right = right;
+		}
+
+		public Line(boolean wrapWords, String left, String right)
+		{
+			this.wrapWords = wrapWords;
+			this.left = left;
+			this.right = right;
+		}
+
+		public Line(String left, Color leftColor, String right, Color rightColor)
+		{
+			this.left = left;
+			this.leftColor = leftColor;
+			this.right = right;
+			this.rightColor = rightColor;
+		}
+	}
 
 	@Setter
 	private String title;
@@ -65,115 +117,152 @@ public class PanelComponent implements LayoutableRenderableEntity
 	@Setter
 	private Point position = new Point();
 
-	@Setter
-	private Dimension preferredSize = new Dimension(129, 0);
-
 	@Getter
-	private List<LayoutableRenderableEntity> children = new ArrayList<>();
+	private List<Line> lines = new ArrayList<>();
 
 	@Setter
-	private Orientation orientation = Orientation.VERTICAL;
+	private ProgressBarComponent progressBar;
 
-	private final Dimension savedChildrenSize = new Dimension();
+	@Setter
+	private int width = 129;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (Strings.isNullOrEmpty(title) && children.isEmpty())
-		{
-			return null;
-		}
-
 		final FontMetrics metrics = graphics.getFontMetrics();
 
-		// Calculate panel dimensions
-		int width = preferredSize.width;
-		int height = preferredSize.height;
-		int x = LEFT_BORDER;
-		int y = TOP_BORDER + metrics.getHeight();
-
-		// Set graphics offset at correct position
-		graphics.translate(position.x, position.y);
-
-		// Render background
-		final Dimension dimension = new Dimension(
-			savedChildrenSize.width + RIGHT_BORDER,
-			savedChildrenSize.height + BOTTOM_BORDER);
-
-		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setRectangle(new Rectangle(dimension));
-		backgroundComponent.setBackgroundColor(backgroundColor);
-		backgroundComponent.render(graphics);
-
-		if (!Strings.isNullOrEmpty(title))
+		// Do word wrapping
+		ListIterator<Line> iterator = lines.listIterator();
+		while (iterator.hasNext())
 		{
-			// Render title
-			final TextComponent titleComponent = new TextComponent();
-			titleComponent.setText(title);
-			titleComponent.setColor(titleColor);
-			titleComponent.setPosition(new Point((dimension.width - metrics.stringWidth(title)) / 2, y));
-			titleComponent.render(graphics);
+			Line line = iterator.next();
 
-			// Move children a bit
-			height = y += metrics.getHeight() + SEPARATOR;
-		}
-
-		// Render all children
-		final Dimension childPreferredSize = new Dimension(
-			preferredSize.width - RIGHT_BORDER,
-			preferredSize.height - BOTTOM_BORDER);
-
-		boolean wrapped = false;
-
-		for (int i = 0; i < children.size(); i ++)
-		{
-			final LayoutableRenderableEntity child = children.get(i);
-
-			child.setPreferredSize(childPreferredSize);
-			graphics.translate(x, y);
-			final Dimension childDimension = child.render(graphics);
-			graphics.translate(-x, -y);
-
-			switch (orientation)
+			if (line.wrapWords)
 			{
-				case VERTICAL:
-					y += childDimension.height + SEPARATOR;
-					height = wrapped ? height : y;
-					width = Math.max(width, x + childDimension.width);
-					break;
-				case HORIZONTAL:
-					x += childDimension.width + SEPARATOR;
-					width = wrapped ? width : x;
-					height = Math.max(height, y + childDimension.height);
-					break;
-			}
+				iterator.remove();
 
-			if (wrapping > 0 && (i + 1) % wrapping == 0)
-			{
-				wrapped = true;
-
-				switch (orientation)
+				int maxWidth = width;
+				if (line.right.length() > 0)
 				{
-					case VERTICAL:
-						y = TOP_BORDER + metrics.getHeight();
-						width = x += childDimension.width + SEPARATOR;
-						break;
-					case HORIZONTAL:
-						x = LEFT_BORDER;
-						height = y += childDimension.height + SEPARATOR;
-						break;
+					maxWidth /= 2;
+				}
+				maxWidth -= LEFT_BORDER + RIGHT_BORDER;
+
+				List<String> leftSplitLines = lineBreakText(line.getLeft(), maxWidth, metrics);
+				List<String> rightSplitLines = lineBreakText(line.getRight(), maxWidth, metrics);
+
+				int lineCount = Math.max(leftSplitLines.size(), rightSplitLines.size());
+
+				for (int i = 0; i < lineCount; i++)
+				{
+					String left = "";
+					String right = "";
+
+					if (i < leftSplitLines.size())
+					{
+						left = leftSplitLines.get(i);
+					}
+
+					if (i < rightSplitLines.size())
+					{
+						right = rightSplitLines.get(i);
+					}
+
+					iterator.add(new Line(false, left, line.getLeftColor(), right, line.getRightColor()));
 				}
 			}
 		}
 
-		// Reset the padding
-		height -= metrics.getHeight();
+		final Dimension dimension = new Dimension();
+		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size() + (Objects.isNull(progressBar) ? 0 : 1);
+		int height = elementNumber == 0 ? 0 :
+			TOP_BORDER + (graphics.getFontMetrics().getHeight() * elementNumber)
+				+ SEPARATOR * elementNumber + (Objects.isNull(progressBar) ? 0 : progressBar.getHeight() / 2)
+					+ BOTTOM_BORDER;
+		dimension.setSize(width, height);
 
-		// Save children size
-		savedChildrenSize.setSize(width, height);
+		if (dimension.height == 0)
+		{
+			return null;
+		}
 
-		// Reset graphics position
-		graphics.translate(-position.x, -position.y);
+		// Calculate panel dimensions
+		int y = position.y + TOP_BORDER + metrics.getHeight();
+
+		// Render background
+		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setBackgroundColor(backgroundColor);
+		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
+		backgroundComponent.render(graphics);
+
+		// Render title
+		if (!Strings.isNullOrEmpty(title))
+		{
+			final TextComponent titleComponent = new TextComponent();
+			titleComponent.setText(title);
+			titleComponent.setColor(titleColor);
+			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, y));
+			titleComponent.render(graphics);
+			y += metrics.getHeight() + SEPARATOR;
+		}
+
+		// Render all lines
+		for (final Line line : lines)
+		{
+			final TextComponent leftLineComponent = new TextComponent();
+			leftLineComponent.setPosition(new Point(position.x + LEFT_BORDER, y));
+			leftLineComponent.setText(line.getLeft());
+			leftLineComponent.setColor(line.getLeftColor());
+			leftLineComponent.render(graphics);
+
+			final TextComponent rightLineComponent = new TextComponent();
+			rightLineComponent.setPosition(new Point(position.x +  width - RIGHT_BORDER - metrics.stringWidth(TextComponent.textWithoutColTags(line.getRight())), y));
+			rightLineComponent.setText(line.getRight());
+			rightLineComponent.setColor(line.getRightColor());
+			rightLineComponent.render(graphics);
+			y += metrics.getHeight() + SEPARATOR;
+		}
+
+		//Render progress bar
+		if (!Objects.isNull(progressBar))
+		{
+			progressBar.setWidth(width - LEFT_BORDER - RIGHT_BORDER);
+			progressBar.setPosition(new Point(position.x + LEFT_BORDER, y - (metrics.getHeight() / 2)));
+			progressBar.render(graphics);
+		}
+
 		return dimension;
+	}
+
+	private List<String> lineBreakText(String text, int maxWidth, FontMetrics metrics)
+	{
+		List<String> lines = new ArrayList<>();
+
+		int pos = 0;
+		String[] words = text.split(" ");
+		String line = "";
+
+		while (pos < words.length)
+		{
+			String newLine = pos > 0 && !line.isEmpty()
+					? line + " " + words[pos]
+					: words[pos];
+			int width = metrics.stringWidth(newLine);
+
+			if (width >= maxWidth)
+			{
+				lines.add(line);
+				line = "";
+			}
+			else
+			{
+				line = newLine;
+				pos++;
+			}
+		}
+
+		lines.add(line);
+
+		return lines;
 	}
 }

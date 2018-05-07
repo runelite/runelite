@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.nightmarezone;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -36,7 +37,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.StackFormatter;
@@ -96,11 +96,13 @@ class NightmareZoneOverlay extends Overlay
 
 		renderAbsorptionCounter();
 
-		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Points: ")
-			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
-			.build());
+		panelComponent.getLines().clear();
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"Points: ",
+				Color.WHITE,
+				StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)),
+				Color.WHITE
+		));
 
 		return panelComponent.render(graphics);
 	}

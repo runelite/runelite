@@ -35,7 +35,6 @@ import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class FishingOverlay extends Overlay
@@ -82,7 +81,7 @@ class FishingOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
+		panelComponent.getLines().clear();
 		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
 			.contains(FISHING_SPOT))
 		{
@@ -98,17 +97,17 @@ class FishingOverlay extends Overlay
 		int actions = xpTrackerService.getActions(Skill.FISHING);
 		if (actions > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Caught fish:")
-				.right(Integer.toString(actions))
-				.build());
+			panelComponent.getLines().add(new PanelComponent.Line(
+				"Caught fish:",
+				Integer.toString(actions)
+			));
 
 			if (actions > 2)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Fish/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)))
-					.build());
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Fish/hr:",
+					Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING))
+				));
 			}
 		}
 

@@ -37,7 +37,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class MotherlodeSackOverlay extends Overlay
@@ -68,7 +67,7 @@ class MotherlodeSackOverlay extends Overlay
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
-		panelComponent.getChildren().clear();
+		panelComponent.getLines().clear();
 		panelComponent.setBackgroundColor(BackgroundComponent.DEFAULT_BACKGROUND_COLOR);
 
 		if (sack != null)
@@ -82,16 +81,23 @@ class MotherlodeSackOverlay extends Overlay
 					panelComponent.setBackgroundColor(DANGER);
 				}
 
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Pay-dirt in sack:")
-					.right(String.valueOf(client.getVar(Varbits.SACK_NUMBER)))
-					.build());
+				panelComponent.getLines().add(new PanelComponent.Line(
+					"Pay-dirt in sack:",
+					Color.WHITE,
+					String.valueOf(client.getVar(Varbits.SACK_NUMBER)),
+					Color.WHITE
+				));
 			}
 
 			if (config.showDepositsLeft())
 			{
 				final Integer depositsLeft = plugin.getDepositsLeft();
-				Color color = Color.WHITE;
+				final PanelComponent.Line line = new PanelComponent.Line(
+					"Deposits left:",
+					Color.WHITE,
+					depositsLeft == null ? "N/A" : String.valueOf(depositsLeft),
+					Color.WHITE
+				);
 
 				if (depositsLeft != null)
 				{
@@ -101,16 +107,12 @@ class MotherlodeSackOverlay extends Overlay
 					}
 					else if (depositsLeft == 1)
 					{
-						color = Color.RED;
+						line.setLeftColor(Color.RED);
+						line.setRightColor(Color.RED);
 					}
 				}
 
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Deposits left:")
-					.leftColor(color)
-					.right(depositsLeft == null ? "N/A" : String.valueOf(depositsLeft))
-					.rightColor(color)
-					.build());
+				panelComponent.getLines().add(line);
 			}
 		}
 

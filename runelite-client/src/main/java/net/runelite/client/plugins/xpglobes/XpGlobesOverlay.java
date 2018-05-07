@@ -47,7 +47,6 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 
@@ -58,7 +57,6 @@ public class XpGlobesOverlay extends Overlay
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
 	private final XpTrackerService xpTrackerService;
-	private final PanelComponent xpTooltip = new PanelComponent();
 
 	@Inject
 	private SkillIconManager iconManager;
@@ -230,46 +228,22 @@ public class XpGlobesOverlay extends Overlay
 		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
 
-		xpTooltip.getChildren().clear();
+		PanelComponent xpTooltip = new PanelComponent();
 		xpTooltip.setPosition(new java.awt.Point(x, y));
-		xpTooltip.setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
+		xpTooltip.setWidth(TOOLTIP_RECT_SIZE_X);
 
-		xpTooltip.getChildren().add(LineComponent.builder()
-			.left(skillName)
-			.right(skillLevel)
-			.build());
-
-		xpTooltip.getChildren().add(LineComponent.builder()
-			.left("Current xp:")
-			.leftColor(Color.ORANGE)
-			.right(skillCurrentXp)
-			.build());
-
+		List<PanelComponent.Line> lines = xpTooltip.getLines();
+		lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));
+		lines.add(new PanelComponent.Line("Current xp:", Color.ORANGE, skillCurrentXp, Color.WHITE));
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
 			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
 			String actionsLeftString = decimalFormat.format(actionsLeft);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Actions left:")
-				.leftColor(Color.ORANGE)
-				.right(actionsLeftString)
-				.build());
+			lines.add(new PanelComponent.Line("Actions left:", Color.ORANGE, actionsLeftString, Color.WHITE));
 
 			int xpLeft = mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp();
 			String skillXpToLvl = decimalFormat.format(xpLeft);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Xp to level:")
-				.leftColor(Color.ORANGE)
-				.right(skillXpToLvl)
-				.build());
-
-			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
-			String xpHrString = decimalFormat.format(xpHr);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Xp per hour:")
-				.leftColor(Color.ORANGE)
-				.right(xpHrString)
-				.build());
+			lines.add(new PanelComponent.Line("Xp to level:", Color.ORANGE, skillXpToLvl, Color.WHITE));
 
 			//Create progress bar for skill.
 			ProgressBarComponent progressBar = new ProgressBarComponent();
@@ -277,7 +251,7 @@ public class XpGlobesOverlay extends Overlay
 				mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
 			progressBar.setProgress(progress);
 
-			xpTooltip.getChildren().add(progressBar);
+			xpTooltip.setProgressBar(progressBar);
 		}
 
 		xpTooltip.render(graphics);

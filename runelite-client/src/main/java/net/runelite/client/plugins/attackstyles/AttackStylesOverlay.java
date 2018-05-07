@@ -34,6 +34,8 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class AttackStylesOverlay extends Overlay
 {
+	private static final int COMPONENT_WIDTH = 80;
+
 	private final AttackStylesPlugin plugin;
 	private final AttackStylesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -54,11 +56,10 @@ public class AttackStylesOverlay extends Overlay
 		if (warnedSkillSelected || config.alwaysShowStyle())
 		{
 			final String attackStyleString = plugin.getAttackStyle().getName();
+
 			panelComponent.setTitleColor(warnedSkillSelected ? Color.RED : Color.WHITE);
 			panelComponent.setTitle(attackStyleString);
-			panelComponent.setPreferredSize(new Dimension(
-				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
-				0));
+			panelComponent.setWidth(COMPONENT_WIDTH);
 
 			return panelComponent.render(graphics);
 		}

@@ -29,6 +29,7 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -37,8 +38,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
 @Slf4j
 public class FightCaveOverlay extends Overlay
@@ -47,7 +46,7 @@ public class FightCaveOverlay extends Overlay
 
 	private final Client client;
 	private final FightCavePlugin plugin;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
+
 	private BufferedImage protectFromMagicImg;
 	private BufferedImage protectFromMissilesImg;
 
@@ -69,14 +68,13 @@ public class FightCaveOverlay extends Overlay
 			return null;
 		}
 		BufferedImage prayerImage = getPrayerImage(attack);
+		ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
 		imagePanelComponent.setTitle("TzTok-Jad");
-		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
-
+		imagePanelComponent.getImages().add(prayerImage);
 		if (!client.isPrayerActive(attack.getPrayer()))
 		{
 			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
 		}
-
 		return imagePanelComponent.render(graphics);
 	}
 
