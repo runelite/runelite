@@ -27,6 +27,7 @@ package net.runelite.client.plugins.chompyhunting;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
@@ -76,37 +77,50 @@ public class ChompyHuntingKillsOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getLines().clear();
+		panelComponent.getChildren().clear();
 
-		if (plugin.getChompies().isEmpty())
+		int numLiveChompies = plugin.numLiveChompies();
+
+		if (numLiveChompies == 0)
 		{
 			panelComponent.setTitle("Waiting for chompies...");
 			panelComponent.setTitleColor(Color.GREEN);
 		}
+		else if (numLiveChompies == 1)
+		{
+			panelComponent.setTitle(Integer.toString(numLiveChompies) +
+				" chompy to kill");
+			panelComponent.setTitleColor(Color.RED);
+		}
 		else
 		{
-			panelComponent.setTitle(Integer.toString(plugin.getChompies().size()) +
-			" chompies to kill");
+			panelComponent.setTitle(Integer.toString(numLiveChompies) +
+				" chompies to kill");
 			panelComponent.setTitleColor(Color.RED);
 		}
 
-
 		if (config.displaySessionKillCount())
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("Session kills:",
-				Integer.toString(session.getRecentKilled())));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Session kills:")
+				.right(Integer.toString(session.getRecentKilled()))
+				.build());
 		}
 
 		if (config.displayLifetimeKillCount())
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("Lifetime kills:",
-				Integer.toString(session.getLifetimeKilled())));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Lifetime kills:")
+				.right(Integer.toString(session.getLifetimeKilled()))
+				.build());
 		}
 
 		if (config.displayKillsPerHour())
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("Kills/hr:",
-				session.getRecentKilled() >= 2 ? Integer.toString(session.getPerHour()) : ""));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Kills/hr:")
+				.right(Integer.toString(session.getPerHour()))
+				.build());
 		}
 
 		return panelComponent.render(graphics);

@@ -41,16 +41,18 @@ class ChompyHuntingInventoryOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
 	private final ChompyHuntingConfig config;
+	private final ChompyHuntingPlugin plugin;
 
 	private final TextComponent textComponent = new TextComponent();
 
 	@Inject
-	ChompyHuntingInventoryOverlay(QueryRunner queryRunner, ChompyHuntingConfig config)
+	ChompyHuntingInventoryOverlay(QueryRunner queryRunner, ChompyHuntingConfig config, ChompyHuntingPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -62,22 +64,25 @@ class ChompyHuntingInventoryOverlay extends Overlay
 		}
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryItems = queryRunner.runQuery(inventoryQuery);
-
-		for (WidgetItem item : inventoryItems)
+		if (plugin.getSession().getRecentChompyKilled() != null)
 		{
-			Bellows bellow = Bellows.getBellow(item.getId());
-			if (bellow == null)
-			{
-				continue;
-			}
+			Query inventoryQuery = new InventoryWidgetItemQuery();
+			WidgetItem[] inventoryItems = queryRunner.runQuery(inventoryQuery);
 
-			final Rectangle bounds = item.getCanvasBounds();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setColor(bellow.getColor());
-			textComponent.setText(String.valueOf(bellow.getCharges()));
-			textComponent.render(graphics);
+			for (WidgetItem item : inventoryItems)
+			{
+				Bellows bellow = Bellows.getBellow(item.getId());
+				if (bellow == null)
+				{
+					continue;
+				}
+
+				final Rectangle bounds = item.getCanvasBounds();
+				textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+				textComponent.setColor(bellow.getColor());
+				textComponent.setText(String.valueOf(bellow.getCharges()));
+				textComponent.render(graphics);
+			}
 		}
 		return null;
 	}

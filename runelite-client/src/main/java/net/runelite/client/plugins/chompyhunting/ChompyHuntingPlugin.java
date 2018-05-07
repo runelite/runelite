@@ -198,4 +198,17 @@ public class ChompyHuntingPlugin extends Plugin
 	{
 		return chompies.get(npc);
 	}
+
+	public int numLiveChompies()
+	{
+		int numLiveChompies = 0;
+		for (NPC chompy : chompies.keySet())
+		{
+			if (!isChompyDead(chompy))
+			{
+				numLiveChompies++;
+			}
+		}
+		return numLiveChompies;
+	}
 }
