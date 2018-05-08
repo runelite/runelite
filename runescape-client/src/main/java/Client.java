@@ -2937,7 +2937,7 @@ public final class Client extends GameEngine implements class302 {
                   field1028 = false;
                   field1089 = 0;
 
-                  while(class298.method5361() && field1089 < 128) {
+                  while(IgnoreContainer.method5361() && field1089 < 128) {
                      if(rights >= 2 && KeyFocusListener.keyPressed[82] && class303.currentPressedKey == 66) {
                         String var40 = class19.method162();
                         InvType.clientInstance.method905(var40);
@@ -4132,7 +4132,7 @@ public final class Client extends GameEngine implements class302 {
             }
 
             if(ServerPacket.field2357 == var1.serverPacket) {
-               CacheFile.friendManager.field1238.method5351(var3, var1.packetLength);
+               CacheFile.friendManager.ignoreContainer.method5351(var3, var1.packetLength);
                Size.method183();
                field1045 = cycleCntr;
                var1.serverPacket = null;

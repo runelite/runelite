@@ -2,7 +2,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("km")
-public class class298 extends NameableContainer {
+public class IgnoreContainer extends NameableContainer {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lly;"
@@ -12,7 +12,7 @@ public class class298 extends NameableContainer {
    @ObfuscatedSignature(
       signature = "(Lly;)V"
    )
-   public class298(JagexLoginType var1) {
+   public IgnoreContainer(JagexLoginType var1) {
       super(400);
       this.field3839 = var1;
    }

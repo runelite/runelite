@@ -17,7 +17,7 @@ public class class322 implements Comparator {
       garbageValue = "-1666509587"
    )
    int method5758(Nameable var1, Nameable var2) {
-      return this.field3942?var1.method5322().compareCleanName(var2.method5322()):var2.method5322().compareCleanName(var1.method5322());
+      return this.field3942?var1.getRsName().compareCleanName(var2.getRsName()):var2.getRsName().compareCleanName(var1.getRsName());
    }
 
    public int compare(Object var1, Object var2) {

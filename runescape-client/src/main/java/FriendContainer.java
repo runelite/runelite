@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ky")
-public class class304 extends NameableContainer {
+@Implements("FriendContainer")
+public class FriendContainer extends NameableContainer {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lly;"
@@ -23,7 +25,7 @@ public class class304 extends NameableContainer {
    @ObfuscatedSignature(
       signature = "(Lly;)V"
    )
-   public class304(JagexLoginType var1) {
+   public FriendContainer(JagexLoginType var1) {
       super(400);
       this.field3862 = 1;
       this.field3864 = new class220();

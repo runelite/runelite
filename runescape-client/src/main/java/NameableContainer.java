@@ -173,7 +173,7 @@ public abstract class NameableContainer {
          throw new IllegalStateException();
       } else {
          Nameable var3 = this.vmethod5513();
-         var3.method5325(var1, var2);
+         var3.setName(var1, var2);
          this.method5378(var3);
          this.method5379(var3);
          return var3;
@@ -215,7 +215,7 @@ public abstract class NameableContainer {
    )
    final void method5375(Nameable var1, Name var2, Name var3) {
       this.method5377(var1);
-      var1.method5325(var2, var3);
+      var1.setName(var2, var3);
       this.method5379(var1);
    }
 
@@ -243,8 +243,8 @@ public abstract class NameableContainer {
       if(this.field3844.remove(var1.name) == null) {
          throw new IllegalStateException();
       } else {
-         if(var1.field3832 != null) {
-            this.field3845.remove(var1.field3832);
+         if(var1.prevName != null) {
+            this.field3845.remove(var1.prevName);
          }
 
       }
@@ -266,10 +266,10 @@ public abstract class NameableContainer {
    )
    final void method5379(Nameable var1) {
       this.field3844.put(var1.name, var1);
-      if(var1.field3832 != null) {
-         Nameable var2 = (Nameable)this.field3845.put(var1.field3832, var1);
+      if(var1.prevName != null) {
+         Nameable var2 = (Nameable)this.field3845.put(var1.prevName, var1);
          if(var2 != null && var2 != var1) {
-            var2.field3832 = null;
+            var2.prevName = null;
          }
       }
 

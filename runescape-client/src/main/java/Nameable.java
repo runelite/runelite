@@ -16,14 +16,16 @@ public class Nameable implements Comparable {
    @ObfuscatedSignature(
       signature = "Lkb;"
    )
-   Name field3832;
+   @Export("prevName")
+   Name prevName;
 
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "(I)Lkb;",
       garbageValue = "2027427360"
    )
-   public Name method5322() {
+   @Export("getRsName")
+   public Name getRsName() {
       return this.name;
    }
 
@@ -32,7 +34,8 @@ public class Nameable implements Comparable {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "-397639951"
    )
-   public String method5323() {
+   @Export("getName")
+   public String getName() {
       return this.name == null?"":this.name.getName();
    }
 
@@ -41,8 +44,9 @@ public class Nameable implements Comparable {
       signature = "(B)Ljava/lang/String;",
       garbageValue = "43"
    )
-   public String method5332() {
-      return this.field3832 == null?"":this.field3832.getName();
+   @Export("getPrevName")
+   public String getPrevName() {
+      return this.prevName == null?"":this.prevName.getName();
    }
 
    @ObfuscatedName("ac")
@@ -50,12 +54,13 @@ public class Nameable implements Comparable {
       signature = "(Lkb;Lkb;I)V",
       garbageValue = "-2014040133"
    )
-   void method5325(Name var1, Name var2) {
+   @Export("setName")
+   void setName(Name var1, Name var2) {
       if(var1 == null) {
          throw new NullPointerException();
       } else {
          this.name = var1;
-         this.field3832 = var2;
+         this.prevName = var2;
       }
    }
 

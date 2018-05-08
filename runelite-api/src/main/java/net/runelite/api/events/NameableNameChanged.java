@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.events;
 
-import net.runelite.api.Friend;
+import lombok.Value;
+import net.runelite.api.Nameable;
 
-public interface RSFriend extends Friend, RSChatPlayer
+/**
+ * Event called when a nameable name changes
+ */
+@Value
+public class NameableNameChanged
 {
+	private final Nameable nameable;
 }

@@ -120,7 +120,7 @@ public class MessageNode extends CacheableNode {
       garbageValue = "2076618934"
    )
    void method1171() {
-      this.field809 = CacheFile.friendManager.field1237.isMember(this.field801)?class303.field3858:class303.field3855;
+      this.field809 = CacheFile.friendManager.friendContainer.isMember(this.field801)?class303.field3858:class303.field3855;
    }
 
    @ObfuscatedName("n")
@@ -151,7 +151,7 @@ public class MessageNode extends CacheableNode {
       garbageValue = "1415072439"
    )
    void method1174() {
-      this.field807 = CacheFile.friendManager.field1238.isMember(this.field801)?class303.field3858:class303.field3855;
+      this.field807 = CacheFile.friendManager.ignoreContainer.isMember(this.field801)?class303.field3858:class303.field3855;
    }
 
    @ObfuscatedName("y")

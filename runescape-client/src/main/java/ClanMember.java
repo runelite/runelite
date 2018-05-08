@@ -49,7 +49,7 @@ public class ClanMember extends ChatPlayer {
       garbageValue = "-1903870402"
    )
    void method5304() {
-      this.field3829 = CacheFile.friendManager.field1237.isMember(super.name)?class303.field3858:class303.field3855;
+      this.field3829 = CacheFile.friendManager.friendContainer.isMember(super.name)?class303.field3858:class303.field3855;
    }
 
    @ObfuscatedName("z")
@@ -80,6 +80,6 @@ public class ClanMember extends ChatPlayer {
       garbageValue = "2"
    )
    void method5312() {
-      this.field3828 = CacheFile.friendManager.field1238.isMember(super.name)?class303.field3858:class303.field3855;
+      this.field3828 = CacheFile.friendManager.ignoreContainer.isMember(super.name)?class303.field3858:class303.field3855;
    }
 }

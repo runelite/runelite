@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.Friend;
+import net.runelite.api.events.RemovedFriend;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.rs.api.RSFriend;
+import net.runelite.rs.api.RSFriendManager;
 
-public interface RSFriend extends Friend, RSChatPlayer
+@Mixin(RSFriendManager.class)
+public abstract class RSFriendManagerMixin implements RSFriend
 {
+	@MethodHook("removeFriend")
+	@Inject
+	public void rl$removeFriend(String friendName)
+	{
+		RemovedFriend removedFriend = new RemovedFriend(friendName);
+		eventBus.post(removedFriend);
+	}
 }
