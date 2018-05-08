@@ -91,12 +91,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "customMessage",
-			name = "Input Custom Message",
-			description = "Input the precise message that you want to get a notification for.  Leave empty to disable.",
+			keyName = "customMessages",
+			name = "Input Custom Messages",
+			description = "Input the precise messages that you want to get a notification for. Split with decimal.  Leave empty to disable.",
 			position = 6
 	)
-	default String customMessage()
+	default String customMessages()
 	{
 		return "";
 	}

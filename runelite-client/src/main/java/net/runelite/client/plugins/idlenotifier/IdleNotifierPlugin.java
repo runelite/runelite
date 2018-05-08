@@ -29,6 +29,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.*;
@@ -46,6 +49,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Idle Notifier"
@@ -54,6 +58,7 @@ public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+	private static final String DELIMITER_REGEX = "\\s*,\\s*";
 
 	@Inject
 	private Notifier notifier;
@@ -76,7 +81,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 
-	private String customMessage;
+	private List<String> customMessages = new ArrayList<>();
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -416,24 +421,32 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	private void onConfigChange(ConfigChanged event)
 	{
-		if (event.getGroup().equals("idlenotifier") && event.getKey().equals("customMessage"))
+		if (event.getGroup().equals("idlenotifier") && event.getKey().equals("customMessages"))
 		{
-			customMessage = event.getNewValue();
+			customMessages = Arrays.asList(event.getNewValue().split(DELIMITER_REGEX));
 		}
 	}
 
 	@Subscribe
 	private void onChatMessage(ChatMessage event)
 	{
-		if (!customMessage.equals("") && customMessage.equals(event.getMessage()))
+		if (!customMessages.isEmpty())
 		{
-			notifier.notify("Message: " + customMessage);
+			for(String message : customMessages)
+			{
+				if (WildcardMatcher.matches(message, event.getMessage()))
+				{
+					notifier.notify("Message: " + message);
+					break;
+				}
+			}
 		}
 	}
 
 	@Override
 	protected void startUp() throws  Exception
 	{
-		customMessage = config.customMessage();
+		String configMessagerList = config.customMessages();
+		customMessages = Arrays.asList(configMessagerList.split(DELIMITER_REGEX));
 	}
 }
