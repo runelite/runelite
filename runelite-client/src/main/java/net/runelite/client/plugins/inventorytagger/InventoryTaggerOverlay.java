@@ -26,7 +26,6 @@ package net.runelite.client.plugins.inventorytagger;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
