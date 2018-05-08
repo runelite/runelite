@@ -3553,7 +3553,7 @@ public final class ObjectID
 	public static final int NULL_3547 = 3547;
 	public static final int NULL_3548 = 3548;
 	public static final int NULL_3549 = 3549;
-	public static final int NULL_3550 = 3550;
+	public static final int ELF_OBSTACLES_3550 = 3550;
 	public static final int BALANCING_ROPE = 3551;
 	public static final int BALANCING_ROPE_3552 = 3552;
 	public static final int LOG_BALANCE = 3553;
@@ -3940,7 +3940,7 @@ public final class ObjectID
 	public static final int NULL_3934 = 3934;
 	public static final int NULL_3935 = 3935;
 	public static final int NULL_3936 = 3936;
-	public static final int DENSE_FOREST = 3937;
+	public static final int DENSE_FOREST_3937 = 3937;
 	public static final int DENSE_FOREST_3938 = 3938;
 	public static final int DENSE_FOREST_3939 = 3939;
 	public static final int NULL_3940 = 3940;

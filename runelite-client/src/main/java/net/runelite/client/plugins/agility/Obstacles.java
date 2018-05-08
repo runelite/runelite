@@ -175,6 +175,11 @@ public class Obstacles
 		// High Level Wilderness Dungeon
 		CREVICE_19043,
 		// Revenant Caves
-		PILLAR_31561
-	);
+		PILLAR_31561,
+	    //Elf Camp Isafdar/Tirranwn
+		LOG_BALANCE_3931, LOG_BALANCE_3930, LOG_BALANCE_3929,
+		DENSE_FOREST_3938, DENSE_FOREST_3939, DENSE_FOREST_3937,
+		ELF_OBSTACLES_3550
+
+			);
 }
