@@ -25,12 +25,12 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
@@ -58,7 +58,6 @@ public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
-	private static final String DELIMITER_REGEX = "\\s*,\\s*";
 
 	@Inject
 	private Notifier notifier;
@@ -423,7 +422,7 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		if (event.getGroup().equals("idlenotifier") && event.getKey().equals("customMessages"))
 		{
-			customMessages = Arrays.asList(event.getNewValue().split(DELIMITER_REGEX));
+			splitMessages(event.getNewValue());
 		}
 	}
 
@@ -440,13 +439,18 @@ public class IdleNotifierPlugin extends Plugin
 					break;
 				}
 			}
+
 		}
 	}
 
 	@Override
 	protected void startUp() throws  Exception
 	{
-		String configMessagerList = config.customMessages();
-		customMessages = Arrays.asList(configMessagerList.split(DELIMITER_REGEX));
+		splitMessages(config.customMessages());
+	}
+
+	private void splitMessages(String customMessage)
+	{
+		customMessages = Splitter.on(',').splitToList(customMessage);
 	}
 }
