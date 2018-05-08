@@ -335,6 +335,16 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
+		if (clue instanceof CoordinateClue)
+		{
+			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (container != null)
+			{
+				equippedItems = container.getItems();
+			}
+		}
+
 		ClueScroll clue = findClueScroll();
 
 		if (clue == null && this.clue != null)
