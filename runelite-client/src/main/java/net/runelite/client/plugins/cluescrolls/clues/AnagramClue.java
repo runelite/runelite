@@ -65,7 +65,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: CAR IF ICES", "Sacrifice", new WorldPoint(2209, 3056, 0), "Zul-Andra"),
 		new AnagramClue("This anagram reveals who to speak to next: CAREER IN MOON", "Oneiromancer", new WorldPoint(2150, 3866, 0), "Astral altar", "25"),
 		new AnagramClue("This anagram reveals who to speak to next: C ON GAME HOC", "Gnome Coach", new WorldPoint(2395, 3486, 0), "Gnome Ball course", "6"),
-		new AnagramClue("This anagram reveals who to speak to next: COOL NERD", "Old Crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "619"),
+		new AnagramClue("This anagram reveals who to speak to next: COOL NERD", "Old crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "619"),
 		new AnagramClue("This anagram reveals who to speak to next: COPPER ORE CRYPTS", "Prospector Percy", new WorldPoint(3061, 3377, 0), "Motherlode Mine", "12"),
 		new AnagramClue("This anagram reveals who to speak to next: DED WAR", "Edward", new WorldPoint(3284, 3943, 0), "Inside Rogue's Castle"),
 		new AnagramClue("This anagram reveals who to speak to next: DEKAGRAM", "Dark Mage", new WorldPoint(3039, 4835, 0), "Centre of the Abyss", "13"),
