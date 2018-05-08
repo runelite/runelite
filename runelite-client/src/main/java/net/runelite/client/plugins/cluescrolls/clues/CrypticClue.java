@@ -126,7 +126,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peska's Helmet Shop in Barbarian Village."),
 		new CrypticClue("Search the boxes of Falador's general store.", CRATES_24088, new WorldPoint(2955, 3390, 0), "Falador general store."),
 		new CrypticClue("In a village made of bamboo, look for some crates under one of the houses.", CRATE_356, new WorldPoint(2800, 3074, 0), "Search the crate by the house at the northern point of the broken jungle fence in Tai Bwo Wannai."),
-		new CrypticClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.", "Jorral", new WorldPoint(2437, 3347, 0), "Speak to Jorral to receive a strange device."),
 		new CrypticClue("This crate is mine, all mine, even if it is in the middle of the desert.", CRATE_18889, new WorldPoint(3289, 3022, 0), "Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter."),
 		new CrypticClue("Dig where 4 siblings and I all live with our evil overlord.", new WorldPoint(3195, 3357, 0), "Dig in the chicken pen inside the Champion's Guild"),
 		new CrypticClue("In a town where the guards are armed with maces, search the upstairs rooms of the Public House.", "Guard dog", 348, new WorldPoint(2574, 3326, 1), "Search the drawers upstairs in the pub north of Ardougne Castle. Kill a Guard dog at Handelmort Mansion to obtain the key."),
