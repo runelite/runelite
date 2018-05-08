@@ -45,6 +45,7 @@ import net.runelite.api.events.WallObjectSpawned;
 public class RegionTileManager
 {
 	private static final int REGION_SIZE = 104;
+	private static final int MAX_Z = 4;
 
 	private final EventBus eventBus = new EventBus();
 	private final Provider<Client> clientProvider;
@@ -71,20 +72,21 @@ public class RegionTileManager
 		final Region region = client.getRegion();
 		final Tile[][][] tiles = region.getTiles();
 
-		int z = client.getPlane();
-
 		for (int x = 0; x < REGION_SIZE; ++x)
 		{
 			for (int y = 0; y < REGION_SIZE; ++y)
 			{
-				Tile tile = tiles[z][x][y];
-
-				if (tile == null)
+				for (int z = 0; z < MAX_Z; ++z)
 				{
-					continue;
-				}
+					Tile tile = tiles[z][x][y];
 
-				consumer.accept(tile);
+					if (tile == null)
+					{
+						continue;
+					}
+
+					consumer.accept(tile);
+				}
 			}
 		}
 	}
