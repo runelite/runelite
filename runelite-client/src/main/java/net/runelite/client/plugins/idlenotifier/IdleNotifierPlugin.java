@@ -37,9 +37,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -73,6 +71,8 @@ public class IdleNotifierPlugin extends Plugin
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
+
+	private String customMessage;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -407,5 +407,29 @@ public class IdleNotifierPlugin extends Plugin
 		// Reset combat idle timer
 		lastOpponent = null;
 		lastInteracting = null;
+	}
+
+	@Subscribe
+	private void onConfigChange(ConfigChanged event)
+	{
+		if (event.getGroup().equals("idlenotifier") && event.getKey().equals("customMessage"))
+		{
+			customMessage = event.getNewValue();
+		}
+	}
+
+	@Subscribe
+	private void onChatMessage(ChatMessage event)
+	{
+		if (!customMessage.equals("") && customMessage.equals(event.getMessage()))
+		{
+			notifier.notify("Message: " + customMessage);
+		}
+	}
+
+	@Override
+	protected void startUp() throws  Exception
+	{
+		customMessage = config.customMessage();
 	}
 }
