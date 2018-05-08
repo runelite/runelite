@@ -92,21 +92,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "overlayColorMark",
-		name = "Change Overlay Color With Mark Of Grace",
-		description = "Enable/disable the overlay color change when a Mark of Grace has spawned",
-		position = 6
-	)
-	default boolean overlayColorMark()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "getOverlayColorMark",
 		name = "Overlay Color Mark Of Grace",
 		description = "Color of the agility overlay with a Mark of Grace spawned",
-		position = 7
+		position = 6
 	)
 	default Color getOverlayColorMark()
 	{
@@ -117,7 +106,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightShortcuts",
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
-		position = 8
+		position = 7
 	)
 	default boolean highlightShortcuts()
 	{
