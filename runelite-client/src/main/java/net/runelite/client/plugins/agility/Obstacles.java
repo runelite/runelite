@@ -177,4 +177,9 @@ public class Obstacles
 		// Revenant Caves
 		PILLAR_31561
 	);
+
+	public static final Set<Integer> TRAP_OBSTACLE_IDS = Sets.newHashSet(
+		// Agility pyramid
+		NULL_3550, NULL_10872, NULL_10873
+	);
 }
