@@ -41,6 +41,7 @@ import javax.inject.Inject;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -80,6 +81,8 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
 	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
 
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
@@ -87,6 +90,9 @@ public class SlayerPlugin extends Plugin
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
+
+	private static final int EXPEDITIOUS_CHARGE = 30;
+	private static final int SLAUGHTER_CHARGE = 30;
 
 	@Inject
 	private Client client;
@@ -126,6 +132,12 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int expeditiousChargeCount;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int slaughterChargeCount;
 
 	@Override
 	protected void startUp() throws Exception
@@ -136,6 +148,8 @@ public class SlayerPlugin extends Plugin
 		{
 			setPoints(config.points());
 			setStreak(config.streak());
+			setExpeditiousChargeCount(config.expeditious());
+			setSlaughterChargeCount(config.slaughter());
 			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
@@ -171,6 +185,8 @@ public class SlayerPlugin extends Plugin
 				{
 					setPoints(config.points());
 					setStreak(config.streak());
+					setExpeditiousChargeCount(config.expeditious());
+					setSlaughterChargeCount(config.slaughter());
 					setTask(config.taskName(), config.amount());
 					loginFlag = false;
 				}
@@ -184,6 +200,8 @@ public class SlayerPlugin extends Plugin
 		config.taskName(taskName);
 		config.points(points);
 		config.streak(streak);
+		config.expeditious(expeditiousChargeCount);
+		config.slaughter(slaughterChargeCount);
 	}
 
 	@Subscribe
@@ -201,10 +219,27 @@ public class SlayerPlugin extends Plugin
 			{
 				return;
 			}
+
 			String taskName = found1 ? mAssign.group(2) : mCurrent.group(1);
 			int amount = Integer.parseInt(found1 ? mAssign.group(1) : mCurrent.group(2));
 
 			setTask(taskName, amount);
+		}
+
+		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		if (braceletBreakWidget != null)
+		{
+			String braceletText = Text.removeTags(braceletBreakWidget.getText()); //remove color and linebreaks
+			if (braceletText.contains("bracelet of slaughter"))
+			{
+				slaughterChargeCount = SLAUGHTER_CHARGE;
+				config.slaughter(slaughterChargeCount);
+			}
+			else if (braceletText.contains("expeditious bracelet"))
+			{
+				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
+				config.expeditious(expeditiousChargeCount);
+			}
 		}
 
 		Widget rewardsBarWidget = client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR);
@@ -255,11 +290,30 @@ public class SlayerPlugin extends Plugin
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
 		{
 			amount++;
+			slaughterChargeCount = --slaughterChargeCount <= 0 ? SLAUGHTER_CHARGE : slaughterChargeCount;
+			config.slaughter(slaughterChargeCount);
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
 		{
 			amount--;
+			expeditiousChargeCount = --expeditiousChargeCount <= 0 ? EXPEDITIOUS_CHARGE : expeditiousChargeCount;
+			config.expeditious(expeditiousChargeCount);
+		}
+
+		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
+		{
+			expeditiousChargeCount = Integer.parseInt(chatMsg
+				.replace(CHAT_BRACELET_EXPEDITIOUS_CHARGE, "")
+				.replace(" charges left.", ""));
+			config.expeditious(expeditiousChargeCount);
+		}
+		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
+		{
+			slaughterChargeCount = Integer.parseInt(chatMsg
+				.replace(CHAT_BRACELET_SLAUGHTER_CHARGE, "")
+				.replace(" charges left.", ""));
+			config.slaughter(slaughterChargeCount);
 		}
 
 		if (chatMsg.endsWith("; return to a Slayer master."))

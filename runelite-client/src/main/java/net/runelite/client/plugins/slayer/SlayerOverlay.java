@@ -79,7 +79,9 @@ class SlayerOverlay extends Overlay
 		ItemID.TURQUOISE_SLAYER_HELMET_I,
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.ENCHANTED_GEM,
-		ItemID.ETERNAL_GEM
+		ItemID.ETERNAL_GEM,
+		ItemID.BRACELET_OF_SLAUGHTER,
+		ItemID.EXPEDITIOUS_BRACELET
 	);
 
 	@Inject
@@ -106,6 +108,9 @@ class SlayerOverlay extends Overlay
 			return null;
 		}
 
+		int slaughterCount = plugin.getSlaughterChargeCount();
+		int expeditiousCount = plugin.getExpeditiousChargeCount();
+
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : getSlayerWidgetItems())
@@ -119,7 +124,20 @@ class SlayerOverlay extends Overlay
 
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
-			textComponent.setText(String.valueOf(amount));
+
+			if (item.getId() == ItemID.EXPEDITIOUS_BRACELET)
+			{
+				textComponent.setText(String.valueOf(expeditiousCount));
+			}
+			else if (item.getId() == ItemID.BRACELET_OF_SLAUGHTER)
+			{
+				textComponent.setText(String.valueOf(slaughterCount));
+			}
+			else
+			{
+				textComponent.setText(String.valueOf(amount));
+			}
+
 			// Draw the counter in the bottom left for equipment, and top left for jewelry
 			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
 				? bounds.height
@@ -135,7 +153,7 @@ class SlayerOverlay extends Overlay
 		Query inventoryQuery = new InventoryWidgetItemQuery();
 		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING);
+		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING, WidgetInfo.EQUIPMENT_GLOVES);
 		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
 
 		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);

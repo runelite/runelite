@@ -175,4 +175,40 @@ public interface SlayerConfig extends Config
 		description = ""
 	)
 	void points(int points);
+
+	@ConfigItem(
+		keyName = "expeditious",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int expeditious()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "expeditious",
+		name = "",
+		description = ""
+	)
+	void expeditious(int expeditious);
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int slaughter()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = ""
+	)
+	void slaughter(int slaughter);
 }
