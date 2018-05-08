@@ -82,7 +82,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "markHighlight",
-		name = "Mark highlight Color",
+		name = "Mark Highlight Color",
 		description = "Color of highlighted Marks of Grace",
 		position = 5
 	)
@@ -100,5 +100,27 @@ public interface AgilityConfig extends Config
 	default boolean highlightShortcuts()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "trapOverlay",
+		name = "Show Trap Overlay",
+		description = "Enable/disable the highlighting of traps on Agility courses",
+		position = 7
+	)
+	default boolean showTrapOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "trapHighlight",
+		name = "Trap Overlay Color",
+		description = "Color of Agility trap overlay",
+		position = 8
+	)
+	default Color getTrapColor()
+	{
+		return Color.RED;
 	}
 }
