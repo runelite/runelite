@@ -56,6 +56,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -83,6 +84,10 @@ import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -112,6 +117,10 @@ public class ScreenshotPlugin extends Plugin
 	private Integer barrowsNumber;
 
 	private Integer raidsNumber;
+
+	private  Boolean IS_DMM_WORLD;
+
+	private WorldResult worldResult;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -197,6 +206,16 @@ public class ScreenshotPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.warn("Error adding screenshot button to titlebar", ex);
+		}
+
+		WorldClient worldClient = new WorldClient();
+		try
+		{
+			worldResult = worldClient.lookupWorlds();
+		}
+		catch (Exception e)
+		{
+			log.warn("Error getting worlds list. {}", e);
 		}
 	}
 
@@ -365,8 +384,33 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		if (config.enableDateInFilename())
+		{
+			fileName = TIME_FORMAT.format(new Date() + "-" + fileName);
+		}
+
 		takeScreenshot(fileName);
 	}
+
+	@Subscribe
+	private void onGameStateChange(GameStateChanged gameStateChanged)
+	{
+		int currentWorld = client.getWorld();
+		try
+		{
+			World world = worldResult.findWorld(currentWorld);
+
+			boolean deadman = world.getTypes().contains(WorldType.DEADMAN);
+			boolean seasonalDeadman = world.getTypes().contains(WorldType.SEASONAL_DEADMAN);
+
+			IS_DMM_WORLD = deadman || seasonalDeadman;
+		}
+		catch (Exception e)
+		{
+			log.warn("Error looking up world, Error: {}", e);
+		}
+	}
+
 
 	/**
 	 * Receives a WidgetInfo pointing to the middle widget of the level-up dialog,
@@ -438,7 +482,15 @@ public class ScreenshotPlugin extends Plugin
 			File playerFolder;
 			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 			{
-				playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				if (IS_DMM_WORLD)
+				{
+					playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName() + "-Deadman");
+				}
+				else
+				{
+					playerFolder = new File(SCREENSHOT_DIR, client.getLocalPlayer().getName());
+				}
+
 			}
 			else
 			{
