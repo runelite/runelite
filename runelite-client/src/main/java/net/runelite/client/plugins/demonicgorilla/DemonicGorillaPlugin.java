@@ -74,8 +74,6 @@ public class DemonicGorillaPlugin extends Plugin
 	@Getter
 	private Map<NPC, DemonicGorilla> gorillas;
 
-	private int tickCounter;
-
 	private List<WorldPoint> recentBoulders;
 
 	private List<PendingGorillaAttack> pendingAttacks;
@@ -85,7 +83,6 @@ public class DemonicGorillaPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		tickCounter = 0;
 		gorillas = new HashMap<>();
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
@@ -206,7 +203,7 @@ public class DemonicGorillaPlugin extends Plugin
 				// so we keep track of the attack here until the damage splat
 				// has appeared on the player.
 
-				int damagesOnTick = tickCounter;
+				int damagesOnTick = client.getTickCount();
 				if (attackStyle == DemonicGorilla.AttackStyle.MAGIC)
 				{
 					MemorizedPlayer mp = memorizedPlayers.get(target);
@@ -255,11 +252,13 @@ public class DemonicGorillaPlugin extends Plugin
 
 		checkGorillaAttackStyleSwitch(gorilla, protectedStyle);
 
+		int tickCounter = client.getTickCount();
 		gorilla.setNextAttackTick(tickCounter + DemonicGorilla.ATTACK_RATE);
 	}
 
 	private void checkGorillaAttacks()
 	{
+		int tickCounter = client.getTickCount();
 		for (DemonicGorilla gorilla : gorillas.values())
 		{
 			Player interacting = (Player)gorilla.getNpc().getInteracting();
@@ -544,6 +543,7 @@ public class DemonicGorillaPlugin extends Plugin
 	private void checkPendingAttacks()
 	{
 		Iterator<PendingGorillaAttack> it = pendingAttacks.iterator();
+		int tickCounter = client.getTickCount();
 		while (it.hasNext())
 		{
 			PendingGorillaAttack attack = it.next();
@@ -688,7 +688,5 @@ public class DemonicGorillaPlugin extends Plugin
 		checkPendingAttacks();
 		updatePlayers();
 		recentBoulders.clear();
-
-		tickCounter++;
 	}
 }

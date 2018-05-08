@@ -44,7 +44,9 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
@@ -124,7 +126,6 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peska's Helmet Shop in Barbarian Village."),
 		new CrypticClue("Search the boxes of Falador's general store.", CRATES_24088, new WorldPoint(2955, 3390, 0), "Falador general store."),
 		new CrypticClue("In a village made of bamboo, look for some crates under one of the houses.", CRATE_356, new WorldPoint(2800, 3074, 0), "Search the crate by the house at the northern point of the broken jungle fence in Tai Bwo Wannai."),
-		new CrypticClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.", "Jorral", new WorldPoint(2437, 3347, 0), "Speak to Jorral to receive a strange device."),
 		new CrypticClue("This crate is mine, all mine, even if it is in the middle of the desert.", CRATE_18889, new WorldPoint(3289, 3022, 0), "Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter."),
 		new CrypticClue("Dig where 4 siblings and I all live with our evil overlord.", new WorldPoint(3195, 3357, 0), "Dig in the chicken pen inside the Champion's Guild"),
 		new CrypticClue("In a town where the guards are armed with maces, search the upstairs rooms of the Public House.", "Guard dog", 348, new WorldPoint(2574, 3326, 1), "Search the drawers upstairs in the pub north of Ardougne Castle. Kill a Guard dog at Handelmort Mansion to obtain the key."),
@@ -280,7 +281,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Guthix left his mark in a fiery lake, dig at the tip of it.", new WorldPoint(3069, 3935, 0), "Dig at the tip of the lava lake that is shaped like a Guthixian symbol, west of the Mage Arena."),
 		new CrypticClue("Search the drawers in the upstairs of a house in Catherby.", DRAWERS_350, new WorldPoint(2809, 3451, 1), "Perdu's house in Catherby."),
 		new CrypticClue("Search a crate in the Haymaker's arms.", CRATE_27532, new WorldPoint(1720, 3652, 1), "Search the crate in the north-east corner of The Haymaker's Arms tavern east of Kourend Castle."),
-		new CrypticClue("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.", new WorldPoint(3307, 9505, 0), "Dig next to the Entomologist, Kalphite area, Stronghold Slayer Cave."),
+		new CrypticClue("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.", new WorldPoint(3307, 9505, 0), "Dig next to the Entomologist, Kalphite area, near Shantay Pass."),
 		new CrypticClue("Search the crates in the most north-western house in Al Kharid.", CRATE_358, new WorldPoint(3289, 3202, 0), "Search the crates in the house, marked with a icon, southeast of the gem stall."),
 		new CrypticClue("You will have to fly high where a sword cannot help you.", null, "Kill an Aviansie."),
 		new CrypticClue("A massive battle rages beneath so be careful when you dig by the large broken crossbow.", new WorldPoint(2927, 3761, 0), "NE of the God Wars Dungeon entrance, climb the rocky handholds & dig by large crossbow."),
@@ -337,16 +338,20 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Cryptic Clue");
-		panelComponent.setWidth(150);
-
-		panelComponent.getLines().add(new PanelComponent.Line("Clue:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getText(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Clue:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getText())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
 		if (getNpc() != null)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("NPC:"));
-			panelComponent.getLines().add(new PanelComponent.Line(getNpc(), TITLED_CONTENT_COLOR));
+			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getNpc())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 		}
 
 		if (objectId != -1)
@@ -355,13 +360,19 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 			if (object != null)
 			{
-				panelComponent.getLines().add(new PanelComponent.Line("Object:"));
-				panelComponent.getLines().add(new PanelComponent.Line(object.getName(), TITLED_CONTENT_COLOR));
+				panelComponent.getChildren().add(LineComponent.builder().left("Object:").build());
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(object.getName())
+					.leftColor(TITLED_CONTENT_COLOR)
+					.build());
 			}
 		}
 
-		panelComponent.getLines().add(new PanelComponent.Line("Solution:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getSolution(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(LineComponent.builder().left("Solution:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getSolution())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 	}
 
 	@Override

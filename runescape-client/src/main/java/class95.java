@@ -71,8 +71,8 @@ public class class95 {
                Widget var3 = var1[var2];
                if(var3.onLoadListener != null) {
                   ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.objs = var3.onLoadListener;
+                  var4.source = var3;
+                  var4.params = var3.onLoadListener;
                   class7.runScript(var4, 5000000);
                }
             }

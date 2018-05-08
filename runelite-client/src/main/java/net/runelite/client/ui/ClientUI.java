@@ -33,7 +33,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
@@ -178,6 +177,11 @@ public class ClientUI
 			if (event.getKey().equals("lockWindowSize"))
 			{
 				frame.setResizable(!config.lockWindowSize());
+			}
+
+			if (event.getKey().equals("automaticResizeType"))
+			{
+				frame.setExpandResizeType(config.automaticResizeType());
 			}
 
 			if (event.getKey().equals("containInScreen") ||
@@ -433,7 +437,8 @@ public class ClientUI
 
 			// Show frame
 			frame.pack();
-			revalidateMinimumSize();
+			frame.revalidateMinimumSize();
+
 			if (config.rememberScreenBounds())
 			{
 				try
@@ -621,11 +626,11 @@ public class ClientUI
 
 		if (sidebarOpen)
 		{
-			expandFrameBy(pluginToolbar.getWidth());
+			frame.expandBy(pluginToolbar.getWidth());
 		}
 		else
 		{
-			contractFrameBy(pluginToolbar.getWidth());
+			frame.contractBy(pluginToolbar.getWidth());
 		}
 	}
 
@@ -641,8 +646,11 @@ public class ClientUI
 			toggleSidebar();
 		}
 
+		int expandBy = panel.getWrappedPanel().getPreferredSize().width;
+
 		if (pluginPanel != null)
 		{
+			expandBy = pluginPanel.getWrappedPanel().getPreferredSize().width - expandBy;
 			navContainer.remove(0);
 		}
 
@@ -658,7 +666,16 @@ public class ClientUI
 		giveClientFocus();
 		panel.onActivate();
 		wrappedPanel.repaint();
-		expandFrameBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
+
+		// Check if frame was really expanded or contracted
+		if (expandBy > 0)
+		{
+			frame.expandBy(expandBy);
+		}
+		else if (expandBy < 0)
+		{
+			frame.contractBy(expandBy);
+		}
 	}
 
 	private void contract()
@@ -674,55 +691,8 @@ public class ClientUI
 		navContainer.setMaximumSize(new Dimension(0, 0));
 		navContainer.revalidate();
 		giveClientFocus();
-		contractFrameBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
+		frame.contractBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
 		pluginPanel = null;
-	}
-
-	private void expandFrameBy(final int value)
-	{
-		if (isFullScreen())
-		{
-			return;
-		}
-
-		final int result = getValidatedResult(value);
-
-		if (result != -1)
-		{
-			frame.setSize(result, frame.getHeight());
-		}
-	}
-
-	private void contractFrameBy(final int value)
-	{
-		if (isFullScreen())
-		{
-			return;
-		}
-
-		final int result = getValidatedResult(-value);
-
-		if (result != -1)
-		{
-			frame.setSize(result, frame.getHeight());
-		}
-	}
-
-	private int getValidatedResult(final int value)
-	{
-		revalidateMinimumSize();
-		final int result = frame.getWidth() + value;
-		return result <= frame.getMinimumSize().width ? result : -1;
-	}
-
-	private void revalidateMinimumSize()
-	{
-		frame.setMinimumSize(frame.getLayout().minimumLayoutSize(frame));
-	}
-
-	private boolean isFullScreen()
-	{
-		return (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 	}
 
 	private void giveClientFocus()
@@ -746,8 +716,22 @@ public class ClientUI
 		}
 		else
 		{
+			final Rectangle bounds = frame.getBounds();
+
+			// Try to contract sidebar
+			if (sidebarOpen)
+			{
+				bounds.width -= pluginToolbar.getWidth();
+			}
+
+			// Try to contract plugin panel
+			if (pluginPanel != null)
+			{
+				bounds.width -= pluginPanel.getWrappedPanel().getPreferredSize().width;
+			}
+
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
-			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, frame.getBounds());
+			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
 	}
 }

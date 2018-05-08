@@ -154,6 +154,15 @@ public class RuneLite
 			logger.setLevel(Level.DEBUG);
 		}
 
+		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
+		{
+			log.error("Uncaught exception:", throwable);
+			if (throwable instanceof AbstractMethodError)
+			{
+				log.error("Classes are out of date; Build with maven again.");
+			}
+		});
+
 		setInjector(Guice.createInjector(new RuneLiteModule()));
 		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));
 	}

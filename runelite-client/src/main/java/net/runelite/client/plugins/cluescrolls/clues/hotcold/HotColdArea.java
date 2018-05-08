@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.components;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.geom.Arc2D;
-import lombok.Setter;
-import net.runelite.api.Point;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-
-public class ProgressPie
+@AllArgsConstructor
+@Getter
+public enum HotColdArea
 {
-	@Setter
-	private int diameter = 25;
+	ASGARNIA("Asgarnia"),
+	DESERT("Desert"),
+	FELDIP_HILLS("Feldip Hills"),
+	FREMENNIK_PROVINCE("Fremennik Province"),
+	KANDARIN("Kandarin"),
+	KARAMJA("Karamja"),
+	MISTHALIN("Misthalin"),
+	MORYTANIA("Morytania"),
+	WESTERN_PROVINCE("Western Province"),
+	WILDERNESS("Wilderness"),
+	ZEAH("Zeah");
 
-	@Setter
-	private Color borderColor = Color.WHITE;
-
-	@Setter
-	private Color fill = Color.WHITE;
-
-	@Setter
-	private Stroke stroke = new BasicStroke(1);
-
-	public Dimension render(Graphics2D graphics, Point position, double progress)
-	{
-		//Construct the arc
-		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
-		arc.setAngleExtent(progress * 360);
-		arc.setFrame(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
-
-		//Draw the inside of the arc
-		graphics.setColor(fill);
-		graphics.fill(arc);
-
-		//Draw the outlines of the arc
-		graphics.setStroke(stroke);
-		graphics.setColor(borderColor);
-		graphics.drawOval(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
-
-		return new Dimension(diameter, diameter);
-	}
-
-	public void setBorder(Color border, int size)
-	{
-		this.borderColor = border;
-		stroke = new BasicStroke(size);
-	}
+	private final String name;
 }

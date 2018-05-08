@@ -296,8 +296,8 @@ public class FontName {
          Widget var0 = class44.getWidgetChild(BoundingBox3D.field261, Client.field1008);
          if(var0 != null && var0.onTargetLeaveListener != null) {
             ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.objs = var0.onTargetLeaveListener;
+            var1.source = var0;
+            var1.params = var0.onTargetLeaveListener;
             class71.method1203(var1);
          }
 
