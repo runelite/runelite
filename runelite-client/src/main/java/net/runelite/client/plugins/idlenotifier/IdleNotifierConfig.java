@@ -94,7 +94,7 @@ public interface IdleNotifierConfig extends Config
 			keyName = "customMessage",
 			name = "Input Custom Message",
 			description = "Input the precise message that you want to get a notification for.  Leave empty to disable.",
-            position = 6
+			position = 6
 	)
 	default String customMessage()
 	{
