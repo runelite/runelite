@@ -1516,7 +1516,7 @@ public class ScriptVarType implements Enumerated, class338 {
                var3 = 1;
             } else if(var0 == 3606) {
                var62 = class81.scriptStringStack[--class81.scriptStringStackSize];
-               CacheFile.friendManager.method1792(var62);
+               CacheFile.friendManager.removeFriend(var62);
                var3 = 1;
             } else if(var0 == 3607) {
                var62 = class81.scriptStringStack[--class81.scriptStringStackSize];

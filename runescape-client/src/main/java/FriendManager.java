@@ -235,7 +235,8 @@ public class FriendManager {
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "-123437788"
    )
-   final void method1792(String var1) {
+   @Export("removeFriend")
+   final void removeFriend(String var1) {
       if(var1 != null) {
          Name var2 = new Name(var1, this.jagexLoginType);
          if(var2.isCleanNameValid()) {
