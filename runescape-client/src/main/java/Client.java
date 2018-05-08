@@ -4132,7 +4132,7 @@ public final class Client extends GameEngine implements class302 {
             }
 
             if(ServerPacket.field2357 == var1.serverPacket) {
-               CacheFile.friendManager.field1238.method5351(var3, var1.packetLength);
+               CacheFile.friendManager.ignoreContainer.method5351(var3, var1.packetLength);
                Size.method183();
                field1045 = cycleCntr;
                var1.serverPacket = null;

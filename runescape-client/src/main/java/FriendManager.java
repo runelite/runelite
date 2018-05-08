@@ -12,17 +12,20 @@ public class FriendManager {
    @ObfuscatedSignature(
       signature = "Lly;"
    )
-   final JagexLoginType field1239;
+   @Export("jagexLoginType")
+   final JagexLoginType jagexLoginType;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lky;"
    )
-   public final FriendContainer field1237;
+   @Export("friendContainer")
+   public final FriendContainer friendContainer;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lkm;"
    )
-   public final IgnoreContainer field1238;
+   @Export("ignoreContainer")
+   public final IgnoreContainer ignoreContainer;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -554047583
@@ -34,9 +37,9 @@ public class FriendManager {
    )
    FriendManager(JagexLoginType var1) {
       this.field1234 = 0;
-      this.field1239 = var1;
-      this.field1237 = new FriendContainer(var1);
-      this.field1238 = new IgnoreContainer(var1);
+      this.jagexLoginType = var1;
+      this.friendContainer = new FriendContainer(var1);
+      this.ignoreContainer = new IgnoreContainer(var1);
    }
 
    @ObfuscatedName("g")
@@ -63,7 +66,7 @@ public class FriendManager {
       garbageValue = "46"
    )
    final void method1784(Buffer var1, int var2) {
-      this.field1237.method5473(var1, var2);
+      this.friendContainer.method5473(var1, var2);
       this.field1234 = 2;
 
       for(int var3 = 0; var3 < class93.playerIndexesCount; ++var3) {
@@ -90,7 +93,7 @@ public class FriendManager {
       garbageValue = "991129964"
    )
    final void method1785() {
-      for(class308 var1 = (class308)this.field1237.field3864.method4154(); var1 != null; var1 = (class308)this.field1237.field3864.method4152()) {
+      for(class308 var1 = (class308)this.friendContainer.field3864.method4154(); var1 != null; var1 = (class308)this.friendContainer.field3864.method4152()) {
          if((long)var1.field3877 < class289.method5267() / 1000L - 5L) {
             if(var1.field3879 > 0) {
                ChatPlayer.sendGameMessage(5, "", var1.field3878 + " has logged in.");
@@ -113,8 +116,8 @@ public class FriendManager {
    )
    final void method1802() {
       this.field1234 = 0;
-      this.field1237.method5363();
-      this.field1238.method5363();
+      this.friendContainer.method5363();
+      this.ignoreContainer.method5363();
    }
 
    @ObfuscatedName("l")
@@ -124,7 +127,7 @@ public class FriendManager {
    )
    @Export("isFriended")
    final boolean isFriended(Name var1, boolean var2) {
-      return var1 == null?false:(var1.equals(class265.localPlayer.name)?true:this.field1237.method5472(var1, var2));
+      return var1 == null?false:(var1.equals(class265.localPlayer.name)?true:this.friendContainer.method5472(var1, var2));
    }
 
    @ObfuscatedName("s")
@@ -134,7 +137,7 @@ public class FriendManager {
    )
    @Export("isIgnored")
    final boolean isIgnored(Name var1) {
-      return var1 == null?false:this.field1238.isMember(var1);
+      return var1 == null?false:this.ignoreContainer.isMember(var1);
    }
 
    @ObfuscatedName("y")
@@ -145,7 +148,7 @@ public class FriendManager {
    @Export("addToFriendsList")
    final void addToFriendsList(String var1) {
       if(var1 != null) {
-         Name var2 = new Name(var1, this.field1239);
+         Name var2 = new Name(var1, this.jagexLoginType);
          if(var2.isCleanNameValid()) {
             StringBuilder var10000;
             String var3;
@@ -178,7 +181,7 @@ public class FriendManager {
    )
    @Export("isFriendsListFull")
    final boolean isFriendsListFull() {
-      return this.field1237.method5365() || this.field1237.getCount() >= 200 && Client.field969 != 1;
+      return this.friendContainer.method5365() || this.friendContainer.getCount() >= 200 && Client.field969 != 1;
    }
 
    @ObfuscatedName("r")
@@ -189,7 +192,7 @@ public class FriendManager {
    @Export("addToIgnoreList")
    final void addToIgnoreList(String var1) {
       if(var1 != null) {
-         Name var2 = new Name(var1, this.field1239);
+         Name var2 = new Name(var1, this.jagexLoginType);
          if(var2.isCleanNameValid()) {
             StringBuilder var10000;
             String var4;
@@ -224,7 +227,7 @@ public class FriendManager {
       garbageValue = "103"
    )
    final boolean method1791() {
-      return this.field1238.method5365() || this.field1238.getCount() >= 100 && Client.field969 != 1;
+      return this.ignoreContainer.method5365() || this.ignoreContainer.getCount() >= 100 && Client.field969 != 1;
    }
 
    @ObfuscatedName("f")
@@ -234,9 +237,9 @@ public class FriendManager {
    )
    final void method1792(String var1) {
       if(var1 != null) {
-         Name var2 = new Name(var1, this.field1239);
+         Name var2 = new Name(var1, this.jagexLoginType);
          if(var2.isCleanNameValid()) {
-            if(this.field1237.method5369(var2)) {
+            if(this.friendContainer.method5369(var2)) {
                Client.field1045 = Client.cycleCntr;
                PacketNode var3 = AbstractSoundSystem.method2350(ClientPacket.field2371, Client.field911.field1460);
                var3.packetBuffer.putByte(class95.getLength(var1));
@@ -271,9 +274,9 @@ public class FriendManager {
    )
    final void method1806(String var1) {
       if(var1 != null) {
-         Name var2 = new Name(var1, this.field1239);
+         Name var2 = new Name(var1, this.jagexLoginType);
          if(var2.isCleanNameValid()) {
-            if(this.field1238.method5369(var2)) {
+            if(this.ignoreContainer.method5369(var2)) {
                Client.field1045 = Client.cycleCntr;
                PacketNode var3 = AbstractSoundSystem.method2350(ClientPacket.field2365, Client.field911.field1460);
                var3.packetBuffer.putByte(class95.getLength(var1));
@@ -296,7 +299,7 @@ public class FriendManager {
       garbageValue = "55"
    )
    final boolean method1794(Name var1) {
-      Friend var2 = (Friend)this.field1237.method5367(var1);
+      Friend var2 = (Friend)this.friendContainer.method5367(var1);
       return var2 != null && var2.method5458();
    }
 

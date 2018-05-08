@@ -1471,14 +1471,14 @@ public class ScriptVarType implements Enumerated, class338 {
                } else if(CacheFile.friendManager.field1234 == 1) {
                   class81.intStack[++class171.intStackSize - 1] = -1;
                } else {
-                  class81.intStack[++class171.intStackSize - 1] = CacheFile.friendManager.field1237.getCount();
+                  class81.intStack[++class171.intStackSize - 1] = CacheFile.friendManager.friendContainer.getCount();
                }
 
                var3 = 1;
             } else if(var0 == 3601) {
                var4 = class81.intStack[--class171.intStackSize];
-               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.field1237.getCount()) {
-                  Friend var71 = (Friend)CacheFile.friendManager.field1237.get(var4);
+               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.friendContainer.getCount()) {
+                  Friend var71 = (Friend)CacheFile.friendManager.friendContainer.get(var4);
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var71.getName();
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var71.getPrevName();
                } else {
@@ -1489,8 +1489,8 @@ public class ScriptVarType implements Enumerated, class338 {
                var3 = 1;
             } else if(var0 == 3602) {
                var4 = class81.intStack[--class171.intStackSize];
-               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.field1237.getCount()) {
-                  class81.intStack[++class171.intStackSize - 1] = ((ChatPlayer)CacheFile.friendManager.field1237.get(var4)).world;
+               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.friendContainer.getCount()) {
+                  class81.intStack[++class171.intStackSize - 1] = ((ChatPlayer)CacheFile.friendManager.friendContainer.get(var4)).world;
                } else {
                   class81.intStack[++class171.intStackSize - 1] = 0;
                }
@@ -1498,8 +1498,8 @@ public class ScriptVarType implements Enumerated, class338 {
                var3 = 1;
             } else if(var0 == 3603) {
                var4 = class81.intStack[--class171.intStackSize];
-               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.field1237.getCount()) {
-                  class81.intStack[++class171.intStackSize - 1] = ((ChatPlayer)CacheFile.friendManager.field1237.get(var4)).rank;
+               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.friendContainer.getCount()) {
+                  class81.intStack[++class171.intStackSize - 1] = ((ChatPlayer)CacheFile.friendManager.friendContainer.get(var4)).rank;
                } else {
                   class81.intStack[++class171.intStackSize - 1] = 0;
                }
@@ -1595,14 +1595,14 @@ public class ScriptVarType implements Enumerated, class338 {
                if(!CacheFile.friendManager.method1841()) {
                   class81.intStack[++class171.intStackSize - 1] = -1;
                } else {
-                  class81.intStack[++class171.intStackSize - 1] = CacheFile.friendManager.field1238.getCount();
+                  class81.intStack[++class171.intStackSize - 1] = CacheFile.friendManager.ignoreContainer.getCount();
                }
 
                var3 = 1;
             } else if(var0 == 3622) {
                var4 = class81.intStack[--class171.intStackSize];
-               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.field1238.getCount()) {
-                  Ignore var72 = (Ignore)CacheFile.friendManager.field1238.get(var4);
+               if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.ignoreContainer.getCount()) {
+                  Ignore var72 = (Ignore)CacheFile.friendManager.ignoreContainer.get(var4);
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var72.getName();
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var72.getPrevName();
                } else {
@@ -1652,64 +1652,64 @@ public class ScriptVarType implements Enumerated, class338 {
 
                var3 = 1;
             } else if(var0 == 3628) {
-               CacheFile.friendManager.field1237.method5400();
+               CacheFile.friendManager.friendContainer.method5400();
                var3 = 1;
             } else if(var0 == 3629) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class321(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class321(var43));
                var3 = 1;
             } else if(var0 == 3630) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class322(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class322(var43));
                var3 = 1;
             } else if(var0 == 3631) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class155(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class155(var43));
                var3 = 1;
             } else if(var0 == 3632) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class149(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class149(var43));
                var3 = 1;
             } else if(var0 == 3633) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class154(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class154(var43));
                var3 = 1;
             } else if(var0 == 3634) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class157(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class157(var43));
                var3 = 1;
             } else if(var0 == 3635) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class153(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class153(var43));
                var3 = 1;
             } else if(var0 == 3636) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class151(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class151(var43));
                var3 = 1;
             } else if(var0 == 3637) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class150(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class150(var43));
                var3 = 1;
             } else if(var0 == 3638) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class152(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class152(var43));
                var3 = 1;
             } else if(var0 == 3639) {
-               CacheFile.friendManager.field1237.method5362();
+               CacheFile.friendManager.friendContainer.method5362();
                var3 = 1;
             } else if(var0 == 3640) {
-               CacheFile.friendManager.field1238.method5400();
+               CacheFile.friendManager.ignoreContainer.method5400();
                var3 = 1;
             } else if(var0 == 3641) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1238.method5384(new class321(var43));
+               CacheFile.friendManager.ignoreContainer.method5384(new class321(var43));
                var3 = 1;
             } else if(var0 == 3642) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1238.method5384(new class322(var43));
+               CacheFile.friendManager.ignoreContainer.method5384(new class322(var43));
                var3 = 1;
             } else if(var0 == 3643) {
-               CacheFile.friendManager.field1238.method5362();
+               CacheFile.friendManager.ignoreContainer.method5362();
                var3 = 1;
             } else if(var0 == 3644) {
                if(LoginPacket.clanMemberManager != null) {
@@ -1795,7 +1795,7 @@ public class ScriptVarType implements Enumerated, class338 {
                var3 = 1;
             } else if(var0 == 3656) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
-               CacheFile.friendManager.field1237.method5384(new class156(var43));
+               CacheFile.friendManager.friendContainer.method5384(new class156(var43));
                var3 = 1;
             } else if(var0 == 3657) {
                var43 = class81.intStack[--class171.intStackSize] == 1;
