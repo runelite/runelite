@@ -80,7 +80,11 @@ public class AgilityOverlay extends Overlay
 				Area objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
-					Color configColor = markOfGrace != null ? RED : config.getOverlayColor();
+					Color configColor = config.getOverlayColor();
+					if (config.overlayColorMark() && (markOfGrace != null))
+					{
+						configColor = config.getOverlayColorMark();
+					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 					{
