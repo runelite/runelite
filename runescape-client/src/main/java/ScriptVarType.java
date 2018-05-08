@@ -1479,8 +1479,8 @@ public class ScriptVarType implements Enumerated, class338 {
                var4 = class81.intStack[--class171.intStackSize];
                if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.field1237.getCount()) {
                   Friend var71 = (Friend)CacheFile.friendManager.field1237.get(var4);
-                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var71.method5323();
-                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var71.method5332();
+                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var71.getName();
+                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var71.getPrevName();
                } else {
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = "";
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = "";
@@ -1550,7 +1550,7 @@ public class ScriptVarType implements Enumerated, class338 {
             } else if(var0 == 3613) {
                var4 = class81.intStack[--class171.intStackSize];
                if(LoginPacket.clanMemberManager != null && var4 < LoginPacket.clanMemberManager.getCount()) {
-                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = LoginPacket.clanMemberManager.get(var4).method5322().getName();
+                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = LoginPacket.clanMemberManager.get(var4).getRsName().getName();
                } else {
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = "";
                }
@@ -1603,8 +1603,8 @@ public class ScriptVarType implements Enumerated, class338 {
                var4 = class81.intStack[--class171.intStackSize];
                if(CacheFile.friendManager.method1841() && var4 >= 0 && var4 < CacheFile.friendManager.field1238.getCount()) {
                   Ignore var72 = (Ignore)CacheFile.friendManager.field1238.get(var4);
-                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var72.method5323();
-                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var72.method5332();
+                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var72.getName();
+                  class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var72.getPrevName();
                } else {
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = "";
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = "";
@@ -1618,7 +1618,7 @@ public class ScriptVarType implements Enumerated, class338 {
                var3 = 1;
             } else if(var0 == 3624) {
                var4 = class81.intStack[--class171.intStackSize];
-               if(LoginPacket.clanMemberManager != null && var4 < LoginPacket.clanMemberManager.getCount() && LoginPacket.clanMemberManager.get(var4).method5322().equals(class265.localPlayer.name)) {
+               if(LoginPacket.clanMemberManager != null && var4 < LoginPacket.clanMemberManager.getCount() && LoginPacket.clanMemberManager.get(var4).getRsName().equals(class265.localPlayer.name)) {
                   class81.intStack[++class171.intStackSize - 1] = 1;
                } else {
                   class81.intStack[++class171.intStackSize - 1] = 0;

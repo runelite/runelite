@@ -180,7 +180,7 @@ public class ClanMemberManager extends NameableContainer {
       garbageValue = "-70"
    )
    final void method5531(ClanMember var1) {
-      if(var1.method5322().equals(this.field3869.vmethod5463())) {
+      if(var1.getRsName().equals(this.field3869.vmethod5463())) {
          this.field3871 = var1.rank;
       }
 

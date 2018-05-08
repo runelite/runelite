@@ -17,7 +17,7 @@ public class class150 extends class297 {
       garbageValue = "1023742227"
    )
    int method3191(ChatPlayer var1, ChatPlayer var2) {
-      return Client.world == var1.world && var2.world == Client.world?(this.field2112?var1.method5322().compareCleanName(var2.method5322()):var2.method5322().compareCleanName(var1.method5322())):this.method5341(var1, var2);
+      return Client.world == var1.world && var2.world == Client.world?(this.field2112?var1.getRsName().compareCleanName(var2.getRsName()):var2.getRsName().compareCleanName(var1.getRsName())):this.method5341(var1, var2);
    }
 
    public int compare(Object var1, Object var2) {
