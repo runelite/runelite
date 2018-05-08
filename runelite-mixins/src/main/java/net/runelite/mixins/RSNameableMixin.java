@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.Friend;
+import net.runelite.api.events.NameableNameChanged;
+import net.runelite.api.mixins.FieldHook;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.rs.api.RSNameable;
 
-public interface RSFriend extends Friend, RSChatPlayer
+@Mixin(RSNameable.class)
+public abstract class RSNameableMixin implements RSNameable
 {
+	@FieldHook("prevName")
+	@Inject
+	public void onPrevNameChanged(int idx)
+	{
+		NameableNameChanged nameableNameChanged = new NameableNameChanged(this);
+		eventBus.post(nameableNameChanged);
+	}
 }
