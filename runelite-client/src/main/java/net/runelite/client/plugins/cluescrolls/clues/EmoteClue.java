@@ -105,6 +105,7 @@ import static net.runelite.api.ItemID.BLUE_DHIDE_CHAPS;
 import static net.runelite.api.ItemID.BLUE_DHIDE_VAMB;
 import static net.runelite.api.ItemID.BLUE_ROBE_TOP;
 import static net.runelite.api.ItemID.BLUE_WIZARD_HAT;
+import static net.runelite.api.ItemID.BLUE_WIZARD_ROBE;
 import static net.runelite.api.ItemID.BOBS_PURPLE_SHIRT;
 import static net.runelite.api.ItemID.BOBS_RED_SHIRT;
 import static net.runelite.api.ItemID.BODY_TIARA;
@@ -159,7 +160,6 @@ import static net.runelite.api.ItemID.DRAGON_PICKAXE;
 import static net.runelite.api.ItemID.DRAGON_PLATESKIRT;
 import static net.runelite.api.ItemID.DRAGON_SPEAR;
 import static net.runelite.api.ItemID.DRAGON_SQ_SHIELD;
-import static net.runelite.api.ItemID.EARTH_RUNE;
 import static net.runelite.api.ItemID.ELEMENTAL_SHIELD;
 import static net.runelite.api.ItemID.EMERALD_AMULET;
 import static net.runelite.api.ItemID.EMERALD_RING;
@@ -486,7 +486,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Jump for joy in the centre of Zul-Andra. Beware of double agents! Equip a dragon 2h sword, bandos boots and an obsidian cape.", new WorldPoint(2199, 3056, 0), JUMP_FOR_JOY, item(DRAGON_2H_SWORD), item(BANDOS_BOOTS), item(OBSIDIAN_CAPE)),
 		new EmoteClue("Laugh by the fountain of heroes. Equip splitbark legs, dragon boots and a Rune longsword.", new WorldPoint(2716, 6584, 0), LAUGH, item(SPLITBARK_LEGS), item(DRAGON_BOOTS), item(RUNE_LONGSWORD)),
 		new EmoteClue("Laugh in Jokul's tent in the Mountain Camp. Beware of double agents! Equip a rune full helmet, blue dragonhide chaps and a fire battlestaff.", new WorldPoint(2812, 3681, 0), LAUGH, item(RUNE_FULL_HELM), item(BLUE_DHIDE_CHAPS), item(FIRE_BATTLESTAFF)),
-		new EmoteClue("Laugh at the crossroads south of the Sinclair Mansion. Equip a cowl, a blue wizard robe top and an iron scimitar.", new WorldPoint(2741, 3536, 0), LAUGH, item(LEATHER_COWL), item(EARTH_RUNE), item(IRON_SCIMITAR)),
+		new EmoteClue("Laugh at the crossroads south of the Sinclair Mansion. Equip a cowl, a blue wizard robe top and an iron scimitar.", new WorldPoint(2741, 3536, 0), LAUGH, item(LEATHER_COWL), item(BLUE_WIZARD_ROBE), item(IRON_SCIMITAR)),
 		new EmoteClue("Laugh in front of the gem store in Ardougne market. Equip a Castlewars bracelet, a dragonstone amulet and a ring of forging.", new WorldPoint(2666, 3304, 0), LAUGH, any("Castle wars bracelet", range(CASTLE_WARS_BRACELET3, CASTLE_WARS_BRACELET1)), item(DRAGONSTONE_AMULET), item(RING_OF_FORGING)),
 		new EmoteClue("Panic in the Limestone Mine. Equip bronze platelegs, a steel pickaxe and a steel medium helmet.", new WorldPoint(3372, 3498, 0), PANIC, item(BRONZE_PLATELEGS), item(STEEL_PICKAXE), item(STEEL_MED_HELM)),
 		new EmoteClue("Panic by the mausoleum in Morytania. Wave before you speak to me. Equip a mithril plate skirt, a maple longbow and no boots.", new WorldPoint(3504, 3576, 0), PANIC, WAVE, item(MITHRIL_PLATESKIRT), item(MAPLE_LONGBOW), emptySlot("No boots", BOOTS)),
