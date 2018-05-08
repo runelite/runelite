@@ -37,6 +37,7 @@ import net.runelite.api.SpritePixels;
 @RequiredArgsConstructor
 class ItemOutline
 {
+	private BufferedImage generatedPicture = new BufferedImage(36, 36, BufferedImage.TYPE_INT_ARGB);
 	public static Map<String, BufferedImage> storedOutlines = new HashMap<>();
 	private final Client client;
 	private final int id;
@@ -58,10 +59,8 @@ class ItemOutline
 		SpritePixels itemSprite = client.createItemSprite(id, 1, this.stroke, 0, 0, true, 710);
 		itemSprite.setOutline(16777215);
 
-		BufferedImage generatedPicture = new BufferedImage(36, 36, BufferedImage.TYPE_INT_ARGB);
-
-		Graphics2D graphics2D = generatedPicture.createGraphics();
-		graphics2D.setColor(color);
+		Graphics2D graphics2D = this.generatedPicture.createGraphics();
+		graphics2D.setColor(this.color);
 		int x = 0;
 		int y = 0;
 		for (int pixelColor : itemSprite.getPixels())
@@ -79,7 +78,7 @@ class ItemOutline
 
 			x++;
 		}
-		storedOutlines.put(getStringGeneratedId(), generatedPicture);
-		return generatedPicture;
+		storedOutlines.put(getStringGeneratedId(), this.generatedPicture);
+		return this.generatedPicture;
 	}
 }
