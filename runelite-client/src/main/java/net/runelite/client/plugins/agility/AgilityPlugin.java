@@ -103,14 +103,6 @@ public class AgilityPlugin extends Plugin
 		return Arrays.asList(overlay, lapOverlay);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		markOfGrace = null;
-		obstacles.clear();
-		session = null;
-	}
-
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
