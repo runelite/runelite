@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.*;
@@ -58,6 +59,7 @@ public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
 
 	@Inject
 	private Notifier notifier;
@@ -431,7 +433,7 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		if (!customMessages.isEmpty())
 		{
-			for(String message : customMessages)
+			for (String message : customMessages)
 			{
 				if (WildcardMatcher.matches(message, event.getMessage()))
 				{
@@ -439,7 +441,6 @@ public class IdleNotifierPlugin extends Plugin
 					break;
 				}
 			}
-
 		}
 	}
 
@@ -451,6 +452,6 @@ public class IdleNotifierPlugin extends Plugin
 
 	private void splitMessages(String customMessage)
 	{
-		customMessages = Splitter.on(',').splitToList(customMessage);
+		customMessages = COMMA_SPLITTER.splitToList(customMessage);
 	}
 }
