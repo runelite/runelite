@@ -33,7 +33,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
-public @interface FieldHook
+public @interface MethodHook
 {
 	String value();
+
+	boolean end() default false;
 }
