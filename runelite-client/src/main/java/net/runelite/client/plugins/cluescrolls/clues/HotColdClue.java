@@ -235,7 +235,7 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		return null;
 	}
 
-	public void updatePossibleArea(WorldPoint wp, String temperature, String difference)
+	public void updatePossibleArea(WorldPoint currentWp, String temperature, String difference)
 	{
 		this.location = null;
 
@@ -282,10 +282,10 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		}
 
 		// rectangle r1 encompasses all of the points that are within the max possible distance from the player
-		Point p1 = new Point(wp.getX() - maxSquaresAway, wp.getY() - maxSquaresAway);
+		Point p1 = new Point(currentWp.getX() - maxSquaresAway, currentWp.getY() - maxSquaresAway);
 		Rectangle r1 = new Rectangle((int) p1.getX(), (int) p1.getY(), 2 * maxSquaresAway + 1, 2 * maxSquaresAway + 1);
 		// rectangle r2 encompasses all of the points that are within the min possible distance from the player
-		Point p2 = new Point(wp.getX() - minSquaresAway, wp.getY() - minSquaresAway);
+		Point p2 = new Point(currentWp.getX() - minSquaresAway, currentWp.getY() - minSquaresAway);
 		Rectangle r2 = new Rectangle((int) p2.getX(), (int) p2.getY(), 2 * minSquaresAway + 1, 2 * minSquaresAway + 1);
 
 		// eliminate from consideration dig spots that lie entirely within the min range or entirely outside of the max range
@@ -298,11 +298,11 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			{
 				case "but colder than":
 					// eliminate spots that are absolutely warmer
-					digLocations.removeIf(entry -> isCurrentPointCloser(wp, lastWorldPoint, entry.getRect()));
+					digLocations.removeIf(entry -> isFirstPointCloserRect(currentWp, lastWorldPoint, entry.getRect()));
 					break;
 				case "and warmer than":
 					// eliminate spots that are absolutely colder
-					digLocations.removeIf(entry -> !isCurrentPointCloser(wp, lastWorldPoint, entry.getRect()));
+					digLocations.removeIf(entry -> isFirstPointCloserRect(lastWorldPoint, currentWp, entry.getRect()));
 					break;
 				case "and the same temperature as":
 					// I couldn't figure out a clean implementation for this case
@@ -310,44 +310,41 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			}
 		}
 
-		lastWorldPoint = wp;
+		lastWorldPoint = currentWp;
 	}
 
-	private boolean isCurrentPointCloser(WorldPoint currentWp, WorldPoint lastWp, Rectangle2D r)
+	private boolean isFirstPointCloserRect(WorldPoint firstWp, WorldPoint secondWp, Rectangle2D r)
 	{
-		int lastDistance;
-		int currentDistance;
 		WorldPoint p1 = new WorldPoint((int) r.getMaxX(), (int) r.getMaxY(), 0);
-		lastDistance = lastWp.distanceTo2D(p1);
-		currentDistance = currentWp.distanceTo2D(p1);
 
-		if (lastDistance < currentDistance)
+		if (!isFirstPointCloser(firstWp, secondWp, p1))
 		{
 			return false;
 		}
 
 		WorldPoint p2 = new WorldPoint((int) r.getMaxX(), (int) r.getMinY(), 0);
-		lastDistance = lastWp.distanceTo2D(p2);
-		currentDistance = currentWp.distanceTo(p2);
 
-		if (lastDistance < currentDistance)
+		if (!isFirstPointCloser(firstWp, secondWp, p2))
 		{
 			return false;
 		}
 
 		WorldPoint p3 = new WorldPoint((int) r.getMinX(), (int)r.getMaxY(), 0);
-		lastDistance = lastWp.distanceTo2D(p3);
-		currentDistance = currentWp.distanceTo2D(p3);
 
-		if (lastDistance < currentDistance)
+		if (!isFirstPointCloser(firstWp, secondWp, p3))
 		{
 			return false;
 		}
 
 		WorldPoint p4 = new WorldPoint((int) r.getMinX(), (int) r.getMinY(), 0);
-		lastDistance = lastWp.distanceTo2D(p4);
-		currentDistance = currentWp.distanceTo2D(p4);
-		return (lastDistance >= currentDistance);
+		return (isFirstPointCloser(firstWp, secondWp, p4));
+	}
+
+	private boolean isFirstPointCloser(WorldPoint firstWp, WorldPoint secondWp, WorldPoint wp)
+	{
+		int firstDistance = firstWp.distanceTo2D(wp);
+		int secondDistance = secondWp.distanceTo2D(wp);
+		return (firstDistance < secondDistance);
 	}
 
 	public void markFinalSpot(WorldPoint wp)
