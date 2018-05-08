@@ -29,16 +29,18 @@ import com.google.common.eventbus.Subscribe;
 
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.ClanMember;
-import net.runelite.api.ClanMemberRank;
-import net.runelite.api.Client;
+import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.GameState;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -73,6 +75,9 @@ public class ClanChatPlugin extends Plugin
 
 	@Inject
 	private ClanChatConfig config;
+
+	@Inject
+	private ScheduledExecutorService executor;
 
 	private HashSet<ClanMember> previousMembersInClan;
 
@@ -165,11 +170,23 @@ public class ClanChatPlugin extends Plugin
 
 	private void sendChatMessage(Set<ClanMember> members, boolean newMembers)
 	{
-		int iconNumber = clanManager.getIconNumber(ClanMemberRank.OWNER);
 		members.forEach(member ->
 		{
 			String chatMessage = newMembers ? String.format(joinClanChatMessage, member.getUsername())
 				: String.format(leftClanChatMessage, member.getUsername());
+
+			ClanMemberRank rank = clanManager.getRank(member.getUsername());
+			int iconNumber = clanManager.getIconNumber(rank);
+			String sender;
+
+			if (rank == ClanMemberRank.UNRANKED)
+			{
+				sender = clanChannelName;
+			}
+			else
+			{
+				sender = clanChannelName + " <img=" + iconNumber + ">";
+			}
 
 			final String message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
@@ -179,9 +196,13 @@ public class ClanChatPlugin extends Plugin
 			chatMessageManager.queue(
 				QueuedMessage.builder()
 					.type(ChatMessageType.CLANCHAT)
-					.sender(clanChannelName + " <img=" + iconNumber + ">")
+					.sender(sender)
 					.runeLiteFormattedMessage(message)
 					.build());
+
+			executor.schedule(() -> {
+
+			}, 12, TimeUnit.SECONDS);
 		});
 	}
 
