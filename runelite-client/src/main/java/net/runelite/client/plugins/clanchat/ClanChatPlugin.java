@@ -76,9 +76,6 @@ public class ClanChatPlugin extends Plugin
 	@Inject
 	private ClanChatConfig config;
 
-	@Inject
-	private ScheduledExecutorService executor;
-
 	private HashSet<ClanMember> previousMembersInClan;
 
 	private String clanChannelName;
@@ -199,10 +196,6 @@ public class ClanChatPlugin extends Plugin
 					.sender(sender)
 					.runeLiteFormattedMessage(message)
 					.build());
-
-			executor.schedule(() -> {
-
-			}, 12, TimeUnit.SECONDS);
 		});
 	}
 
