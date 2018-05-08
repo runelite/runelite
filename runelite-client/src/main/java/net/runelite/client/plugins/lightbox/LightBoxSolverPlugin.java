@@ -97,17 +97,25 @@ public class LightBoxSolverPlugin extends Plugin
 
 				if (count < 7)
 				{
-					count++;
+					solution = solve();
+					if (solution == null)
+					{
+						count++;
+					}
+					else
+					{
+						solving = true;
+						count = 0;
+					}
 				}
 				else
 				{
 					solving = true;
-					count = 0;
 					solution = solve();
+					count = 0;
 				}
 			}
-
-			if (changed && solving)
+			else if (changed)
 			{
 				lightBoxState = deepCopy(tempLightBox);
 				count++;
@@ -140,22 +148,36 @@ public class LightBoxSolverPlugin extends Plugin
 
 		while (current[7] != 7)
 		{
-			tempLightBox = deepCopy(lightBoxState);
+			boolean optimal = true;
 
-			while (current[currentCount] != -1)
+			for (int i = 1; i < 7; i++)
 			{
-				tempLightBox = xor(current[currentCount], tempLightBox).clone();
-				currentCount++;
-				if (currentCount == 8)
+				if (current[i + 1] >= current[i] && current[i + 1] != -1)
 				{
-					return null;
+					optimal = false;
+					break;
 				}
 			}
 
-			currentCount = 0;
-			if (Arrays.deepEquals(tempLightBox, LightBox.SOLVED_STATE))
+			if (optimal)
 			{
-				break;
+				tempLightBox = deepCopy(lightBoxState);
+
+				while (current[currentCount] != -1)
+				{
+					tempLightBox = xor(current[currentCount], tempLightBox).clone();
+					currentCount++;
+					if (currentCount == count + 1)
+					{
+						return null;
+					}
+				}
+
+				currentCount = 0;
+				if (Arrays.deepEquals(tempLightBox, LightBox.SOLVED_STATE))
+				{
+					break;
+				}
 			}
 
 			current[0]++;

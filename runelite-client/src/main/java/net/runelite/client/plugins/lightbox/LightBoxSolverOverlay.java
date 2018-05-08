@@ -66,15 +66,15 @@ public class LightBoxSolverOverlay extends Overlay
 						WidgetInfo.LIGHT_BOX_BUTTON_A.getChildId() + plugin.getCount()).getBounds();
 				graphics.draw(childBounds);
 			}
-			else if (plugin.getCount() > 0)
+			else
 			{
 				if (plugin.getSolution() != null)
 				{
-					if (plugin.getSolution()[plugin.getCount() - 1] != -1)
+					if (plugin.getSolution()[plugin.getCount()] != -1)
 					{
 						graphics.setColor(Color.ORANGE);
 						Rectangle childBounds = client.getWidget(WidgetInfo.LIGHT_BOX.getGroupId(),
-								WidgetInfo.LIGHT_BOX_BUTTON_A.getChildId() + plugin.getSolution()[plugin.getCount() - 1]).getBounds();
+								WidgetInfo.LIGHT_BOX_BUTTON_A.getChildId() + plugin.getSolution()[plugin.getCount()]).getBounds();
 						graphics.draw(childBounds);
 					}
 				}
