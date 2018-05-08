@@ -3553,7 +3553,7 @@ public final class ObjectID
 	public static final int NULL_3547 = 3547;
 	public static final int NULL_3548 = 3548;
 	public static final int NULL_3549 = 3549;
-	public static final int ELF_OBSTACLES_3550 = 3550;
+	public static final int NULL_3550 = 3550;
 	public static final int BALANCING_ROPE = 3551;
 	public static final int BALANCING_ROPE_3552 = 3552;
 	public static final int LOG_BALANCE = 3553;
@@ -3924,9 +3924,9 @@ public final class ObjectID
 	public static final int ELVEN_LAMP = 3918;
 	public static final int TWIGS = 3919;
 	public static final int NULL_3920 = 3920;
-	public static final int TRIPWIRE = 3921;
-	public static final int STICKS = 3922;
-	public static final int LEAVES = 3923;
+	public static final int TRIPWIRE_3921 = 3921;
+	public static final int STICKS_3922= 3922;
+	public static final int LEAVES_3923 = 3923;
 	public static final int LEAVES_3924 = 3924;
 	public static final int LEAVES_3925 = 3925;
 	public static final int NULL_3926 = 3926;
