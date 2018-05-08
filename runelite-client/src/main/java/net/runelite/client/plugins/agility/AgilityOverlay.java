@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.Color;
-import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -81,7 +80,7 @@ public class AgilityOverlay extends Overlay
 				if (objectClickbox != null)
 				{
 					Color configColor = config.getOverlayColor();
-					if (config.overlayColorMark() && (markOfGrace != null))
+					if (config.highlightMarks() && markOfGrace != null)
 					{
 						configColor = config.getOverlayColorMark();
 					}
