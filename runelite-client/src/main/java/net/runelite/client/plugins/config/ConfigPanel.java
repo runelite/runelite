@@ -175,7 +175,7 @@ public class ConfigPanel extends PluginPanel
 
 
 		final JPanel groupPanel = buildGroupPanel();
-		groupPanel.add(new JLabel("RuneLite"), BorderLayout.CENTER);
+		groupPanel.add(new JLabel("General Settings"), BorderLayout.CENTER);
 
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
@@ -186,7 +186,7 @@ public class ConfigPanel extends PluginPanel
 
 		final JButton toggleButton = buildToggleButton(null);
 		buttonPanel.add(toggleButton);
-		newChildren.put("RuneLite", groupPanel);
+		newChildren.put("General Settings", groupPanel);
 
 		children = newChildren;
 		openConfigList();

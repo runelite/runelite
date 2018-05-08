@@ -30,8 +30,8 @@ import net.runelite.client.Notifier;
 
 @ConfigGroup(
 	keyName = "runelite",
-	name = "RuneLite",
-	description = "Configuration for RuneLite client options"
+	name = "General Settings",
+	description = "Configuration for general client options"
 )
 public interface RuneLiteConfig extends Config
 {
