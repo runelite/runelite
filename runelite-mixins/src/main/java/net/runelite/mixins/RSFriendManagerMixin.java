@@ -22,13 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.FriendManager;
-import net.runelite.mapping.Import;
+import net.runelite.api.events.RemovedFriend;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.rs.api.RSFriend;
+import net.runelite.rs.api.RSFriendManager;
 
-public interface RSFriendManager extends FriendManager
+@Mixin(RSFriendManager.class)
+public abstract class RSFriendManagerMixin implements RSFriend
 {
-	@Import("isFriended")
-	boolean isFriended(RSName var1, boolean var2);
+	@MethodHook("removeFriend")
+	@Inject
+	public void rl$removeFriend(String friendName)
+	{
+		RemovedFriend removedFriend = new RemovedFriend(friendName);
+		eventBus.post(removedFriend);
+	}
 }
