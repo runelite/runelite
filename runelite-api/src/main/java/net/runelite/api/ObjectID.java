@@ -3924,9 +3924,9 @@ public final class ObjectID
 	public static final int ELVEN_LAMP = 3918;
 	public static final int TWIGS = 3919;
 	public static final int NULL_3920 = 3920;
-	public static final int TRIPWIRE = 3921;
-	public static final int STICKS = 3922;
-	public static final int LEAVES = 3923;
+	public static final int TRIPWIRE_3921 = 3921;
+	public static final int STICKS_3922= 3922;
+	public static final int LEAVES_3923 = 3923;
 	public static final int LEAVES_3924 = 3924;
 	public static final int LEAVES_3925 = 3925;
 	public static final int NULL_3926 = 3926;
@@ -3940,7 +3940,7 @@ public final class ObjectID
 	public static final int NULL_3934 = 3934;
 	public static final int NULL_3935 = 3935;
 	public static final int NULL_3936 = 3936;
-	public static final int DENSE_FOREST = 3937;
+	public static final int DENSE_FOREST_3937 = 3937;
 	public static final int DENSE_FOREST_3938 = 3938;
 	public static final int DENSE_FOREST_3939 = 3939;
 	public static final int NULL_3940 = 3940;
