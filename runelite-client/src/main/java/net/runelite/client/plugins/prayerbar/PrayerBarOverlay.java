@@ -117,7 +117,7 @@ public class PrayerBarOverlay extends Overlay
 
 		float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / client.getRealSkillLevel(Skill.PRAYER);
 
-		int progressFill = (int) (barWidth * ratio);
+		int progressFill = Math.min((int) (barWidth * ratio), barWidth); // Restricted by the width to prevent the bar from being too long while you are boosted above your real prayer level.
 
 		graphics.setColor(backgroundColor);
 		graphics.fillRect(barX, barY, barWidth, barHeight);
