@@ -380,7 +380,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
-		if (option.equals("talk-to"))
+		if (config.shiftClickCustomization() && event.getActionParam1() == WidgetInfo.INVENTORY.getId())
+		{
+			client.setShiftClickModeForced(false); //reset this to false so we're not stuck in shift-click mode
+			int itemId = event.getIdentifier();
+			Boolean forced = getForceConfig(itemId);
+
+			if (forced != null || shiftModifier)
+			{
+				Integer customOption = getSwapConfig(itemId);
+
+				if (customOption != null && customOption == -1 && !option.equals("use"))
+				{
+					swap("use", option, target, true);
+				}
+				else if (forced != null)
+				{
+					client.setShiftClickModeForced(forced);
+				}
+			}
+		}
+		else if (option.equals("talk-to"))
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
 			{
@@ -470,43 +490,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
 			swap("chase", option, target, true);
-		}
-		else if (config.shiftClickCustomization() && event.getActionParam1() == WidgetInfo.INVENTORY.getId())
-		{
-			client.setShiftClickModeForced(false); //reset this to false so we're not stuck in shift-click mode
-			int itemId = event.getIdentifier();
-			Boolean forced = getForceConfig(itemId);
-
-			if (forced != null || shiftModifier)
-			{
-				Integer customOption = getSwapConfig(itemId);
-
-				if (customOption != null && customOption == -1 && !option.equals("use"))
-				{
-					swap("use", option, target, true);
-				}
-				else if (forced != null)
-				{
-					client.setShiftClickModeForced(forced);
-				}
-			}
-		}
-		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
-		{
-			swap("rub", option, target, true);
-			swap("teleport", option, target, true);
-		}
-		else if (option.equals("wield"))
-		{
-			if (config.swapTeleportItem())
-			{
-				swap("teleport", option, target, true);
-			}
-		}
-		else if (config.swapBones() && option.equals("bury"))
-		{
-			swap("use", option, target, true);
 		}
 	}
 
