@@ -319,6 +319,8 @@ public enum Varbits
 	DAILY_ESSENCE(4547),
 	DAILY_SAND(4549),
 	DAILY_ECTO(4543),
+	DAILY_BOWSTRING(4559),
+	DAILY_RUNES(4540),
 
 	/**
 	 * Fairy Ring

@@ -60,8 +60,8 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg;
-	private int prevHerbVarbVal, prevStavesVarbVal, prevEssVarbVal, prevSandVarbVal, prevEctoVarbVal;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg, hasSentBowstringMsg, hasSentRunesMsg;
+	private int prevHerbVarbVal, prevStavesVarbVal, prevEssVarbVal, prevSandVarbVal, prevEctoVarbVal, prevBowstringVarbVal, prevRunesVarbVal;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -72,8 +72,8 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = false;
-		prevHerbVarbVal = prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = 0;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = hasSentBowstringMsg = hasSentRunesMsg = false;
+		prevHerbVarbVal = prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = prevBowstringVarbVal = prevRunesVarbVal = 0;
 		cacheColors();
 	}
 
@@ -102,6 +102,7 @@ public class DailyTasksPlugin extends Plugin
 			{
 				hasSentEctoMsg = false;
 			}
+			resetSentMessages();
 			sendNotification();
 		}
 	}
@@ -109,6 +110,7 @@ public class DailyTasksPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
+		resetSentMessages();
 		sendNotification();
 	}
 
@@ -142,18 +144,42 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showEcto() && !hasSentEctoMsg && checkCanCollectEcto())
 			{
-				sendChatMessage("You have bonemeal and buckets of slime waiting to be collected from Robin.");
+				sendChatMessage("You can exchange bones for bonemeal and buckets of slime from Robin.");
 				hasSentEctoMsg = true;
+			}
+
+			if (config.showBowstring() && !hasSentBowstringMsg && checkCanExchangeFlax())
+			{
+				sendChatMessage("You can exchange flax for bowstring from the Flax keeper.");
+				hasSentBowstringMsg = true;
+			}
+
+			if (config.showRunes() && !hasSentRunesMsg && checkCanCollectRunes())
+			{
+				sendChatMessage("You have runes waiting to be collected from Lundail.");
+				hasSentRunesMsg = true;
 			}
 		}
 	}
 
+	/**
+	 * when Varbits.DAILY_HERB_BOX is 15, there is no
+	 * more herb boxes available to be collected
+	 *
+	 * @return can collect herb box
+	 */
 	private boolean checkCanCollectHerbBox()
 	{
 		int value = client.getVar(Varbits.DAILY_HERB_BOX);
 		return prevHerbVarbVal == value ? (prevHerbVarbVal = value) < 15 : false;
 	}
 
+	/**
+	 * Varbits.DAILY_STAVES turns to 1
+	 * when staves are collected
+	 *
+	 * @return can collect battlestaves
+	 */
 	private boolean checkCanCollectStaves()
 	{
 		if (didCompleteDiaries(Varbits.DIARY_VARROCK_EASY, Varbits.DIARY_VARROCK_MEDIUM, Varbits.DIARY_VARROCK_HARD, Varbits.DIARY_VARROCK_ELITE))
@@ -164,6 +190,12 @@ public class DailyTasksPlugin extends Plugin
 		return false;
 	}
 
+	/**
+	 * Varbits.DAILY_ESSENCE turns to 1
+	 * when pure essence are collected
+	 *
+	 * @return can collect pure essence
+	 */
 	private boolean checkCanCollectEssence()
 	{
 		if (didCompleteDiaries(Varbits.DIARY_ARDOUGNE_EASY, Varbits.DIARY_ARDOUGNE_MEDIUM, Varbits.DIARY_ARDOUGNE_HARD, Varbits.DIARY_ARDOUGNE_ELITE))
@@ -174,6 +206,12 @@ public class DailyTasksPlugin extends Plugin
 		return false;
 	}
 
+	/**
+	 * Varbits.DAILY_SAND turns to 1
+	 * when buckets of sand are collected
+	 *
+	 * @return can collect buckets of sand
+	 */
 	private boolean checkCanCollectSand()
 	{
 		if (client.getVar(Varbits.QUEST_A_HAND_IN_THE_SAND) == 160 && !didCompleteDiaries(Varbits.DIARY_ARDOUGNE_ELITE))
@@ -184,6 +222,15 @@ public class DailyTasksPlugin extends Plugin
 		return false;
 	}
 
+	/**
+	 * Varbits.DAILY_ECTO is incremented for every exchange, until
+	 * the maximum exchanges amount is reached.
+	 * The amount available to be exchanged depends on the player's
+	 * diary progression, so the value of Varbits.DAILY_ECTO
+	 * has to be checked in accordance to diary progress.
+	 *
+	 * @return can exchange bones for bonemeal and buckets of slime
+	 */
 	private boolean checkCanCollectEcto()
 	{
 		if (didCompleteDiaries(Varbits.DIARY_MORYTANIA_EASY, Varbits.DIARY_MORYTANIA_MEDIUM, Varbits.DIARY_MORYTANIA_HARD, Varbits.DIARY_MORYTANIA_ELITE))
@@ -201,6 +248,49 @@ public class DailyTasksPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	/**
+	 * Varbits.DAILY_BOWSTRING turns to 1
+	 * when flax is exchanged for bowstring
+	 *
+	 * @return can exchange noted flax for noted bowstring
+	 */
+	private boolean checkCanExchangeFlax()
+	{
+		if (didCompleteDiaries(Varbits.DIARY_KANDARIN_EASY, Varbits.DIARY_KANDARIN_MEDIUM, Varbits.DIARY_KANDARIN_HARD, Varbits.DIARY_KANDARIN_ELITE))
+		{
+			int value = client.getVar(Varbits.DAILY_BOWSTRING);
+			return prevBowstringVarbVal == value ? (prevBowstringVarbVal = value) == 0 : false;
+		}
+		return false;
+	}
+
+	/**
+	 * Varbits.DAILY_RUNES turns to 1
+	 * when the runes are collected
+	 *
+	 * @return can collect runes
+	 */
+	private boolean checkCanCollectRunes()
+	{
+		if (didCompleteDiaries(Varbits.DIARY_WILDERNESS_EASY, Varbits.DIARY_WILDERNESS_MEDIUM, Varbits.DIARY_WILDERNESS_HARD, Varbits.DIARY_WILDERNESS_ELITE))
+		{
+			int value = client.getVar(Varbits.DAILY_RUNES);
+			return prevRunesVarbVal == value ? (prevRunesVarbVal = value) == 0 : false;
+		}
+		return false;
+	}
+
+	private void resetSentMessages()
+	{
+		hasSentHerbMsg = client.getVar(Varbits.DAILY_HERB_BOX) != prevHerbVarbVal ? false : hasSentHerbMsg;
+		hasSentStavesMsg = client.getVar(Varbits.DAILY_STAVES) != prevStavesVarbVal ? false : hasSentStavesMsg;
+		hasSentEssenceMsg = client.getVar(Varbits.DAILY_ESSENCE) != prevEssVarbVal ? false : hasSentEssenceMsg;
+		hasSentSandMsg = client.getVar(Varbits.DAILY_SAND) != prevSandVarbVal ? false : hasSentSandMsg;
+		hasSentEctoMsg = client.getVar(Varbits.DAILY_ECTO) != prevEctoVarbVal ? false : hasSentEctoMsg;
+		hasSentBowstringMsg = client.getVar(Varbits.DAILY_BOWSTRING) != prevBowstringVarbVal ? false : hasSentBowstringMsg;
+		hasSentRunesMsg = client.getVar(Varbits.DAILY_RUNES) != prevRunesVarbVal ? false : hasSentRunesMsg;
 	}
 
 	private boolean didCompleteDiaries(Varbits... dairyVarbits)

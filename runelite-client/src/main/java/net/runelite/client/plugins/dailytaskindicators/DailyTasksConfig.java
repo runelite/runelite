@@ -81,11 +81,33 @@ public interface DailyTasksConfig extends Config
 
 	@ConfigItem(
 		keyName = "showEcto",
-		name = "Show Claimable Bonemeal & Slime",
+		name = "Show Claimable Bonemeal and Slime",
 		description = "Configures whether or not to show a message for daily bonemeal and slime",
 		position = 5
 	)
 	default boolean showEcto()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBowstring",
+		name = "Show Claimable Bowstring",
+		description = "Configures whether or not to show a message for daily flax to bowstring",
+		position = 6
+	)
+	default boolean showBowstring()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRunes",
+		name = "Show Claimable Runes",
+		description = "Configures whether or not to show a message for daily runes",
+		position = 7
+	)
+	default boolean showRunes()
 	{
 		return true;
 	}
