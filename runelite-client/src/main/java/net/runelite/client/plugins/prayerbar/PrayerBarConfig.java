@@ -37,29 +37,29 @@ import net.runelite.client.config.ConfigItem;
 )
 public interface PrayerBarConfig extends Config
 {
-    @ConfigItem(
-            keyName = "prayerBarHideIfNotPraying",
-            name = "Hide while prayer is inactive",
-            description = "Prayer bar will be hidden while prayers are inactivate.",
-            position = 1
-    )
-    default boolean hideIfNotPraying()
-    {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "prayerBarHideIfNotPraying",
+		name = "Hide while prayer is inactive",
+		description = "Prayer bar will be hidden while prayers are inactivate.",
+		position = 1
+	)
+	default boolean hideIfNotPraying()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "prayerBarHideIfNonCombat",
-            name = "Hide while out-of-combat",
-            description = "Prayer bar will be hidden while out-of-combat.",
-            position = 2
-    )
-    default boolean hideIfOutOfCombat()
-    {
-        return false;
-    }
+	@ConfigItem(
+		keyName = "prayerBarHideIfNonCombat",
+		name = "Hide while out-of-combat",
+		description = "Prayer bar will be hidden while out-of-combat.",
+		position = 2
+	)
+	default boolean hideIfOutOfCombat()
+	{
+		return false;
+	}
 
-    @ConfigItem(
+	@ConfigItem(
 		keyName = "prayerBarFgColor",
 		name = "Prayer Bar FG Color",
 		description = "Color of the overhead prayer bar",
@@ -67,14 +67,14 @@ public interface PrayerBarConfig extends Config
 	)
 	default Color getPrayerBarColor()
 	{
-		return Color.cyan; //new Color(0x67, 0xD4, 0xA9) // Prayer Potion color
+		return Color.cyan;
 	}
 
 	@ConfigItem(
-			keyName = "prayerBarBgColor",
-			name = "Prayer Bar BG Color",
-			description = "Color of the background of the overhead prayer bar",
-			position = 4
+		keyName = "prayerBarBgColor",
+		name = "Prayer Bar BG Color",
+		description = "Color of the background of the overhead prayer bar",
+		position = 4
 	)
 	default Color getPrayerBarBackgroundColor()
 	{
@@ -82,10 +82,10 @@ public interface PrayerBarConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "prayerBarBgAlpha",
-			name = "Prayer Bar BG Alpha",
-			description = "Translucency of the background of the overhead prayer bar",
-			position = 5
+		keyName = "prayerBarBgAlpha",
+		name = "Prayer Bar BG Alpha",
+		description = "Translucency of the background of the overhead prayer bar",
+		position = 5
 	)
 	default int getPrayerBarBackgroundAlpha()
 	{

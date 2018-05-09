@@ -35,8 +35,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-		name = "Prayer Bar",
-		enabledByDefault = false
+	name = "Prayer Bar",
+	enabledByDefault = false
 )
 public class PrayerBarPlugin extends Plugin
 {

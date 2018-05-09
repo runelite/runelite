@@ -98,10 +98,10 @@ public class PrayerBarOverlay extends Overlay
 	private Dimension renderPrayerBar(Graphics2D graphics, Player localPlayer)
 	{
 		Color backgroundColor = new Color(
-				config.getPrayerBarBackgroundColor().getRed(),
-				config.getPrayerBarBackgroundColor().getGreen(),
-				config.getPrayerBarBackgroundColor().getBlue(),
-				Math.min(config.getPrayerBarBackgroundAlpha(), 255)
+			config.getPrayerBarBackgroundColor().getRed(),
+			config.getPrayerBarBackgroundColor().getGreen(),
+			config.getPrayerBarBackgroundColor().getBlue(),
+			Math.min(config.getPrayerBarBackgroundAlpha(), 255)
 		);
 
 		int height = localPlayer.getLogicalHeight() + 15;
@@ -109,15 +109,15 @@ public class PrayerBarOverlay extends Overlay
 		Point canvasPoint = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane(), height);
 
 		//Draw bar
-		int barX = canvasPoint.getX() - 15; // (-15, 3) is to line it up with your healthbar, 1 pixel beneath it.
+		int barX = canvasPoint.getX() - 15; // (-15, 3) is to line it up with your health bar, 1 pixel beneath it.
 		int barY = canvasPoint.getY() + 3;
 
 		int barWidth = prayerBarSize.width;
 		int barHeight = prayerBarSize.height;
 
-		float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / (float) client.getRealSkillLevel(Skill.PRAYER);
+		float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / client.getRealSkillLevel(Skill.PRAYER);
 
-		int progressFill = (int) ((float) barWidth * ratio);
+		int progressFill = (int) (barWidth * ratio);
 
 		graphics.setColor(backgroundColor);
 		graphics.fillRect(barX, barY, barWidth, barHeight);
