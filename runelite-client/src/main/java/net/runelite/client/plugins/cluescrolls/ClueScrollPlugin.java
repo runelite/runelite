@@ -34,6 +34,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -76,6 +77,7 @@ import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
@@ -138,10 +140,9 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
-	private ClueScrollWorldMapPoint worldMapPoint;
-
 	private Integer clueItemId;
 	private boolean clueItemChanged = false;
+	private boolean worldMapPointsSet = false;
 
 	static
 	{
@@ -187,9 +188,9 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		if (clue instanceof HotColdClue)
+		if (clue instanceof LocationsClueScroll)
 		{
-			((HotColdClue)clue).update(event.getMessage(), this);
+			((LocationsClueScroll)clue).update(event.getMessage(), this);
 		}
 
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
@@ -257,6 +258,12 @@ public class ClueScrollPlugin extends Plugin
 		objectsToMark = null;
 		equippedItems = null;
 
+		if (clue instanceof LocationsClueScroll)
+		{
+			final List<WorldPoint> locations = ((LocationsClueScroll) clue).getLocations();
+			addMapPoints(locations.toArray(new WorldPoint[locations.size()]));
+		}
+
 		// If we have location clue, set world location before all other types of clues
 		// to allow NPCs and objects to override it when needed
 		if (clue instanceof LocationClueScroll)
@@ -268,7 +275,7 @@ public class ClueScrollPlugin extends Plugin
 				client.setHintArrow(location);
 			}
 
-			setMapPoint(location);
+			addMapPoints(location);
 		}
 
 		if (clue instanceof NpcClueScroll)
@@ -288,7 +295,7 @@ public class ClueScrollPlugin extends Plugin
 						client.setHintArrow(npcsToMark[0]);
 					}
 
-					setMapPoint(npcsToMark[0].getWorldLocation());
+					addMapPoints(npcsToMark[0].getWorldLocation());
 				}
 			}
 		}
@@ -381,19 +388,15 @@ public class ClueScrollPlugin extends Plugin
 			clueItemId = null;
 		}
 
-		if (clue instanceof HotColdClue)
+		if (clue instanceof LocationsClueScroll)
 		{
-			((HotColdClue) clue).resetHotCold();
+			((LocationsClueScroll) clue).reset();
 		}
 
 		clueItemChanged = false;
 		clue = null;
-
-		if (worldMapPoint != null)
-		{
-			worldMapPointManager.remove(worldMapPoint);
-			worldMapPoint = null;
-		}
+		worldMapPointManager.removeIf(point -> point instanceof ClueScrollWorldMapPoint);
+		worldMapPointsSet = false;
 
 		if (config.displayHintArrows())
 		{
@@ -549,12 +552,18 @@ public class ClueScrollPlugin extends Plugin
 		return new WorldPoint(x2, y2, 0);
 	}
 
-	private void setMapPoint(WorldPoint point)
+	private void addMapPoints(WorldPoint... points)
 	{
-		if (worldMapPoint == null)
+		if (worldMapPointsSet)
 		{
-			worldMapPoint = new ClueScrollWorldMapPoint(point);
-			worldMapPointManager.add(worldMapPoint);
+			return;
+		}
+
+		worldMapPointsSet = true;
+
+		for (final WorldPoint point : points)
+		{
+			worldMapPointManager.add(new ClueScrollWorldMapPoint(point));
 		}
 	}
 }
