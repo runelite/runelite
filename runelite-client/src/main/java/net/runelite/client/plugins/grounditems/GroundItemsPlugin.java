@@ -265,6 +265,7 @@ public class GroundItemsPlugin extends Plugin
 
 					if (groundItem != null)
 					{
+						groundItem.setHeight(itemLayer.getHeight());
 						groundItems.add(groundItem);
 					}
 				}
