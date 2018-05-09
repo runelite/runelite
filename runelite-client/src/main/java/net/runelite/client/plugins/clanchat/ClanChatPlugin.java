@@ -28,13 +28,9 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 
 import com.google.inject.Provides;
