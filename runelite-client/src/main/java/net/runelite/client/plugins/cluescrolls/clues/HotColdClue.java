@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.collect.Lists;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -58,7 +59,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @RequiredArgsConstructor
-public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
 {
 	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
 	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
@@ -75,6 +76,22 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String solution;
 	private WorldPoint location;
 	private WorldPoint lastWorldPoint;
+
+	public static HotColdClue forText(String text)
+	{
+		if (CLUE.text.equalsIgnoreCase(text))
+		{
+			return CLUE;
+		}
+
+		return null;
+	}
+
+	@Override
+	public List<WorldPoint> getLocations()
+	{
+		return Lists.transform(digLocations, HotColdLocation::getWorldPoint);
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -230,16 +247,7 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		}
 	}
 
-	public static HotColdClue forText(String text)
-	{
-		if (CLUE.text.equalsIgnoreCase(text))
-		{
-			return CLUE;
-		}
-
-		return null;
-	}
-
+	@Override
 	public void update(final String message, final ClueScrollPlugin plugin)
 	{
 		if (!message.startsWith("The device is"))
@@ -283,6 +291,13 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 				updatePossibleArea(localWorld, temperature, "");
 			}
 		}
+	}
+
+	@Override
+	public void reset()
+	{
+		this.lastWorldPoint = null;
+		digLocations.clear();
 	}
 
 	private void updatePossibleArea(WorldPoint currentWp, String temperature, String difference)
@@ -400,12 +415,6 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private void markFinalSpot(WorldPoint wp)
 	{
 		this.location = wp;
-		resetHotCold();
-	}
-
-	public void resetHotCold()
-	{
-		this.lastWorldPoint = null;
-		digLocations.clear();
+		reset();
 	}
 }
