@@ -56,7 +56,7 @@ class ItemOutline
 		}
 
 		SpritePixels itemSprite = client.createItemSprite(id, 1, this.stroke, 0, 0, true, 710);
-		this.generatedPicture = itemSprite.toBufferedOutline(this.color.getRGB());
+		this.generatedPicture = itemSprite.toBufferedOutline(this.color);
 
 		storedOutlines.put(getStringGeneratedId(), this.generatedPicture);
 		return this.generatedPicture;

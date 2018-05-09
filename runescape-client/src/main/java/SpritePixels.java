@@ -177,7 +177,6 @@ public final class SpritePixels extends Rasterizer2D {
    }
 
    @ObfuscatedName("y")
-   @Export("setOutline")
    public void setOutline(int var1) {
       int[] var2 = new int[this.width * this.height];
       int var3 = 0;

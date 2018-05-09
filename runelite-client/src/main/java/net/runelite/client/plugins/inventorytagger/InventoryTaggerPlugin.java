@@ -76,9 +76,11 @@ public class InventoryTaggerPlugin extends Plugin
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String MENU_TARGET = "<col=ff9040>Inventory Tagger";
+	private static final String MENU_TARGET_CLEAR = "<col=ff0000>Inventory Tagger";
 
 	private static final String MENU_SET = "Mark";
 	private static final String MENU_REMOVE = "Remove";
+	private static final String MENU_CLEAR_TAGS = "Clear Tags";
 
 	@Override
 	protected void startUp() throws Exception
@@ -108,6 +110,11 @@ public class InventoryTaggerPlugin extends Plugin
 		if (event.getMenuOption().equals(SAVE) && event.getMenuTarget().equals(MENU_TARGET))
 		{
 			editorMode = false;
+		}
+
+		if (event.getMenuOption().equals(MENU_CLEAR_TAGS) && event.getMenuTarget().equals(MENU_TARGET_CLEAR))
+		{
+			clearAllTags();
 		}
 
 		String selectedMenu = Text.removeTags(event.getMenuTarget());
@@ -146,13 +153,28 @@ public class InventoryTaggerPlugin extends Plugin
 
 			MenuEntry[] entries = event.getMenuEntries();
 
+			if (editorMode)
+			{
+				final MenuEntry configureClearTags = new MenuEntry();
+				configureClearTags.setOption(MENU_CLEAR_TAGS);
+				configureClearTags.setTarget(MENU_TARGET_CLEAR);
+				configureClearTags.setIdentifier(itemId);
+				configureClearTags.setParam1(widgetId);
+				configureClearTags.setType(MenuAction.RUNELITE.getId());
+
+				entries = ArrayUtils.addAll(entries, configureClearTags);
+			}
+
 			final MenuEntry configureOption = new MenuEntry();
 			configureOption.setOption(editorMode ? SAVE : CONFIGURE);
 			configureOption.setTarget(MENU_TARGET);
 			configureOption.setIdentifier(itemId);
 			configureOption.setParam1(widgetId);
 			configureOption.setType(MenuAction.RUNELITE.getId());
-			client.setMenuEntries(ArrayUtils.addAll(entries, configureOption));
+
+			entries = ArrayUtils.addAll(entries, configureOption);
+
+			client.setMenuEntries(entries);
 		}
 
 		if (widgetId == WidgetInfo.INVENTORY.getId() && editorMode)
@@ -201,6 +223,15 @@ public class InventoryTaggerPlugin extends Plugin
 		TaggedItems t = taggedItems.get(groupName);
 		t.removeItem(itemId);
 		taggedItems.put(groupName, t);
+	}
+
+	public void clearAllTags()
+	{
+		for (String f : taggedItems.keySet())
+		{
+			taggedItems.get(f).clearItem();
+			ItemOutline.storedOutlines = new HashMap<>();
+		}
 	}
 
 }

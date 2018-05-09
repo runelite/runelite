@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public interface SpritePixels
@@ -52,9 +53,7 @@ public interface SpritePixels
  	 */
 	void toBufferedImage(BufferedImage img);
 
-	void setOutline(int outlineColor);
-
-	BufferedImage toBufferedOutline(int color);
+	BufferedImage toBufferedOutline(Color color);
 
 	void toBufferedOutline(BufferedImage img, int color);
 }
