@@ -27,6 +27,7 @@ package net.runelite.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -41,13 +42,17 @@ public class RuneLiteProperties
 	private static final String RUNESCAPE_VERSION = "runescape.version";
 	private static final String DISCORD_APP_ID = "runelite.discord.appid";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
+	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
 
+	@Getter
+	private final String launcherVersion;
 	private final Properties properties = new Properties();
 
 	@Inject
 	public RuneLiteProperties()
 	{
-		InputStream in = getClass().getResourceAsStream("runelite.properties");
+		final InputStream in = getClass().getResourceAsStream("runelite.properties");
+
 		try
 		{
 			properties.load(in);
@@ -56,6 +61,8 @@ public class RuneLiteProperties
 		{
 			log.warn("unable to load propertries", ex);
 		}
+
+		launcherVersion = System.getProperty(LAUNCHER_VERSION_PROPERTY, "Unknown");
 	}
 
 	public String getTitle()
