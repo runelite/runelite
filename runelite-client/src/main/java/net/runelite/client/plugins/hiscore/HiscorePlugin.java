@@ -81,6 +81,9 @@ public class HiscorePlugin extends Plugin
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
 
+	@Inject
+	private NameAutocompleter autocompleter;
+
 	@Provides
 	HiscoreConfig provideConfig(ConfigManager configManager)
 	{
@@ -110,11 +113,16 @@ public class HiscorePlugin extends Plugin
 		{
 			menuManager.addPlayerMenuItem(LOOKUP);
 		}
+		if (config.autocomplete())
+		{
+			hiscorePanel.addInputKeyListener(autocompleter);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		hiscorePanel.removeInputKeyListener(autocompleter);
 		pluginToolbar.removeNavigation(navButton);
 		menuManager.removePlayerMenuItem(LOOKUP);
 	}
@@ -129,6 +137,18 @@ public class HiscorePlugin extends Plugin
 			if (config.playerOption())
 			{
 				menuManager.addPlayerMenuItem(LOOKUP);
+			}
+
+			if (event.getKey().equals("autocomplete"))
+			{
+				if (config.autocomplete())
+				{
+					hiscorePanel.addInputKeyListener(autocompleter);
+				}
+				else
+				{
+					hiscorePanel.removeInputKeyListener(autocompleter);
+				}
 			}
 		}
 	}
