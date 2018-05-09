@@ -26,29 +26,24 @@ package net.runelite.client.plugins.roguesden;
 
 import com.google.common.eventbus.Subscribe;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import javax.inject.Inject;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.*;
+
 import static net.runelite.api.ItemID.MYSTIC_JEWEL;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-import net.runelite.api.events.GameObjectChanged;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GroundObjectChanged;
-import net.runelite.api.events.GroundObjectDespawned;
-import net.runelite.api.events.GroundObjectSpawned;
+
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Rogues' Den"
@@ -69,8 +64,16 @@ public class RoguesDenPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	@Getter
 	private RoguesDenOverlay overlay;
+
+	@Inject
+	private RoguesDenMinimapOverlay minimapOverlay;
+
+	@Override
+	public Collection<Overlay> getOverlays()
+	{
+		return Arrays.asList(overlay, minimapOverlay);
+	}
 
 	@Override
 	protected void shutDown()
@@ -142,6 +145,42 @@ public class RoguesDenPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void WallObjectSpawned(WallObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getWallObject());
+	}
+
+	@Subscribe
+	public void WallObjecttChanged(WallObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
+	}
+
+	@Subscribe
+	public void WallObjectDespawned(WallObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getWallObject(), null);
+	}
+
+	@Subscribe
+	public void DecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void DecorativeObjecttChanged(DecorativeObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void DecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getDecorativeObject(), null);
+	}
+
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -154,15 +193,15 @@ public class RoguesDenPlugin extends Plugin
 	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
 		obstaclesHull.remove(oldObject);
-		if (newObject != null && Obstacles.OBSTACLE_IDS_HULL.contains(newObject.getId()))
+		if (newObject != null)
 		{
-			obstaclesHull.put(newObject, tile);
-		}
+			WorldPoint point = tile.getWorldLocation();
 
-		obstaclesTile.remove(oldObject);
-		if (newObject != null && Obstacles.OBSTACLE_IDS_TILE.contains(newObject.getId()))
-		{
-			obstaclesTile.put(newObject, tile);
+			Obstacles.Obstacle obstacle = Obstacles.TILE_MAP.get(point.getX(), point.getY());
+			if (obstacle != null && obstacle.objectId == newObject.getId()) {
+
+				obstaclesHull.put(newObject, tile);
+			}
 		}
 	}
 }
