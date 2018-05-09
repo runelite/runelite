@@ -35,6 +35,10 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -43,6 +47,9 @@ import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -73,16 +80,21 @@ public class RoguesDenPlugin extends Plugin
 	@Inject
 	private RoguesDenOverlay overlay;
 
+	@Inject
+	private RoguesDenMinimapOverlay minimapOverlay;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 		obstaclesHull.clear();
 		obstaclesTile.clear();
 		hasGem = false;
@@ -106,6 +118,16 @@ public class RoguesDenPlugin extends Plugin
 		}
 
 		hasGem = false;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			obstaclesHull.clear();
+			obstaclesTile.clear();
+		}
 	}
 
 	@Subscribe
@@ -145,27 +167,53 @@ public class RoguesDenPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			obstaclesHull.clear();
-			obstaclesTile.clear();
-		}
+		onTileObject(event.getTile(), null, event.getWallObject());
 	}
 
-	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectDespawned(WallObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getWallObject(), null);
+	}
+
+	@Subscribe
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getDecorativeObject(), null);
+	}
+
+	private void onTileObject(final Tile tile, final TileObject oldObject, final TileObject newObject)
 	{
 		obstaclesHull.remove(oldObject);
-		if (newObject != null && Obstacles.OBSTACLE_IDS_HULL.contains(newObject.getId()))
+		if (newObject != null)
 		{
-			obstaclesHull.put(newObject, tile);
-		}
+			WorldPoint point = tile.getWorldLocation();
 
-		obstaclesTile.remove(oldObject);
-		if (newObject != null && Obstacles.OBSTACLE_IDS_TILE.contains(newObject.getId()))
-		{
-			obstaclesTile.put(newObject, tile);
+			Obstacles.Obstacle obstacle = Obstacles.TILE_MAP.get(point);
+			if (obstacle != null && obstacle.getObjectId() == newObject.getId())
+			{
+				obstaclesHull.put(newObject, tile);
+			}
 		}
 	}
 }
