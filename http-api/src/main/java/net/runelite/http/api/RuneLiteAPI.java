@@ -58,6 +58,10 @@ public class RuneLiteAPI
 			version = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 		}
+		catch (NumberFormatException e)
+		{
+			throw new RuntimeException("Version string has not been substituted; Re-run maven");
+		}
 		catch (IOException ex)
 		{
 			logger.error(null, ex);
