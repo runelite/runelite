@@ -27,6 +27,10 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Actor;
 
+/**
+ * This event triggers whenever a player or NPC changed animation. This could e.g. happen when they stop woodcutting,
+ * start or stop attacking, etcetera.
+ */
 @Data
 public class AnimationChanged
 {

@@ -26,6 +26,9 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+/**
+ * This event gets triggered whenever a setting gets changed, either by the player or through some other means.
+ */
 @Data
 public class ConfigChanged
 {

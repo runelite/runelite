@@ -28,6 +28,10 @@ import lombok.Data;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.Tile;
 
+/**
+ * This event gets triggered when a DecorativeObject despawns.
+ * //TODO: Find out what a DecorativeObject is.
+ */
 @Data
 public class DecorativeObjectDespawned
 {
