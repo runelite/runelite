@@ -392,8 +392,7 @@ public class TimersPlugin extends Plugin
 			createGameTimer(SANFEW);
 		}
 
-		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
-		{
+		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance")) {
 			createGameTimer(PRAYER_ENHANCE);
 		}
 	}
