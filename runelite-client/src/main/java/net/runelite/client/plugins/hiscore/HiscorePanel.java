@@ -33,6 +33,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -341,6 +342,16 @@ public class HiscorePanel extends PluginPanel
 		c.weighty = 1;
 		gridBag.setConstraints(endpointPanel, c);
 		add(endpointPanel);
+	}
+
+	void addInputKeyListener(KeyListener l)
+	{
+		this.input.addKeyListener(l);
+	}
+
+	void removeInputKeyListener(KeyListener l)
+	{
+		this.input.removeKeyListener(l);
 	}
 
 	private void changeDetail(String skillName, HiscoreSkill skill)
