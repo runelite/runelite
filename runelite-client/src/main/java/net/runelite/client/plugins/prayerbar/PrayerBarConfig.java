@@ -37,11 +37,33 @@ import net.runelite.client.config.ConfigItem;
 )
 public interface PrayerBarConfig extends Config
 {
-	@ConfigItem(
+    @ConfigItem(
+            keyName = "prayerBarHideIfNotPraying",
+            name = "Hide while prayer is inactive",
+            description = "Prayer bar will be hidden while prayers are inactivate.",
+            position = 1
+    )
+    default boolean hideIfNotPraying()
+    {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "prayerBarHideIfNonCombat",
+            name = "Hide while out-of-combat",
+            description = "Prayer bar will be hidden while out-of-combat.",
+            position = 2
+    )
+    default boolean hideIfOutOfCombat()
+    {
+        return false;
+    }
+
+    @ConfigItem(
 		keyName = "prayerBarFgColor",
 		name = "Prayer Bar FG Color",
 		description = "Color of the overhead prayer bar",
-		position = 1
+		position = 3
 	)
 	default Color getPrayerBarColor()
 	{
@@ -52,7 +74,7 @@ public interface PrayerBarConfig extends Config
 			keyName = "prayerBarBgColor",
 			name = "Prayer Bar BG Color",
 			description = "Color of the background of the overhead prayer bar",
-			position = 2
+			position = 4
 	)
 	default Color getPrayerBarBackgroundColor()
 	{
@@ -63,7 +85,7 @@ public interface PrayerBarConfig extends Config
 			keyName = "prayerBarBgAlpha",
 			name = "Prayer Bar BG Alpha",
 			description = "Translucency of the background of the overhead prayer bar",
-			position = 3
+			position = 5
 	)
 	default int getPrayerBarBackgroundAlpha()
 	{

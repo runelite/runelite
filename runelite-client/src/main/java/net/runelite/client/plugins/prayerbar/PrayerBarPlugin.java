@@ -25,10 +25,10 @@
 package net.runelite.client.plugins.prayerbar;
 
 import com.google.inject.Provides;
-//import com.google.common.eventbus.Subscribe;
+import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-//import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -61,9 +61,9 @@ public class PrayerBarPlugin extends Plugin
 		return overlay;
 	}
 
-	/*@Subscribe
+	@Subscribe
 	public void onTick(GameTick tick)
 	{
 		overlay.onTick();
-	}*/
+	}
 }

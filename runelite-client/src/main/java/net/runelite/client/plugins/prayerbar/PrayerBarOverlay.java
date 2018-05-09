@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.*;
@@ -44,7 +45,7 @@ public class PrayerBarOverlay extends Overlay
 {
 	private final Client client;
 	private Player localPlayer;
-	//private boolean prayersActive = false;
+	private boolean showPrayerBar = true;
 	private final PrayerBarConfig config;
 	private Dimension prayerBarSize = new Dimension(30, 5); // 30x5 is the size of health bars
 	//private static final Logger logger = LoggerFactory.getLogger(PrayerBarOverlay.class);
@@ -60,21 +61,38 @@ public class PrayerBarOverlay extends Overlay
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
-	/*public void onTick()
+	public void onTick()
 	{
-		//prayersActive = isAnyPrayerActive();
-	}*/
+		showPrayerBar = true;
+
+		localPlayer = client.getLocalPlayer();
+
+		if (localPlayer == null)
+		{
+			showPrayerBar = false;
+			return;
+		}
+
+		if (config.hideIfNotPraying() && !isAnyPrayerActive())
+		{
+			showPrayerBar = false;
+			return;
+		}
+
+		if (config.hideIfOutOfCombat() && localPlayer.getHealth() == -1)
+		{
+			showPrayerBar = false;
+		}
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		localPlayer = client.getLocalPlayer();
-		if (localPlayer == null)
+		if (showPrayerBar)
 		{
-			return null;
+			return renderPrayerBar(graphics, localPlayer);
 		}
-
-		return renderPrayerBar(graphics, localPlayer);
+		return null;
 	}
 
 	private Dimension renderPrayerBar(Graphics2D graphics, Player localPlayer)
@@ -109,16 +127,15 @@ public class PrayerBarOverlay extends Overlay
 		return new Dimension(barWidth, barHeight);
 	}
 
-	/*private boolean isAnyPrayerActive()
+	private boolean isAnyPrayerActive()
 	{
-		for (Prayer pray : Prayer.values())//Check if any prayers are active
+		for (Prayer pray : Prayer.values()) // Check if any prayers are active
 		{
 			if (client.isPrayerActive(pray))
 			{
 				return true;
 			}
 		}
-
 		return false;
-	}*/
+	}
 }
