@@ -75,22 +75,22 @@ public class InfoPanel extends PluginPanel
 	void init()
 	{
 		setLayout(layout);
-
 		final Font smallFont = FontManager.getRunescapeSmallFont();
 
+		// RuneLite/RuneLite launcher version
 		final JLabel runeliteVersionHeader = new JLabel("RuneLite version");
 		runeliteVersionHeader.setFont(smallFont);
 		final JLabel runeliteVersion = new JLabel(runeLiteProperties.getVersion());
+		final JLabel runeliteLauncherVersionHeader = new JLabel("RuneLite launcher version");
+		runeliteLauncherVersionHeader.setFont(smallFont);
+		final JLabel runeliteLauncherVersion = new JLabel(runeLiteProperties.getLauncherVersion());
 
+		// RuneScape version
 		final JLabel runescapeVersionHeader = new JLabel("OldSchool Engine");
 		runescapeVersionHeader.setFont(smallFont);
-
-		String engineVer = "Unknown";
-		if (client != null)
-		{
-			engineVer = String.format("Rev %s", runeLiteProperties.getRunescapeVersion());
-		}
-		final JLabel runescapeVersion = new JLabel(engineVer);
+		final JLabel runescapeVersion = new JLabel(client != null
+			? String.format("Rev %s", runeLiteProperties.getRunescapeVersion())
+			: "Unknown");
 
 		usernameHeader.setFont(smallFont);
 		username.enableAutoLinkHandler(false);
@@ -120,15 +120,16 @@ public class InfoPanel extends PluginPanel
 		layout.setVerticalGroup(layout.createSequentialGroup()
 			.addGroup(layout.createParallelGroup()
 				.addComponent(runeliteVersionHeader)
-				.addComponent(runescapeVersionHeader)
-			).addGroup(layout.createParallelGroup()
-				.addComponent(runeliteVersion)
-				.addComponent(runescapeVersion)
-			).addGap(6)
-			.addComponent(usernameHeader)
+				.addComponent(runescapeVersionHeader))
 			.addGroup(layout.createParallelGroup()
-				.addComponent(username)
-			)
+				.addComponent(runeliteVersion)
+				.addComponent(runescapeVersion))
+			.addGap(3)
+			.addComponent(runeliteLauncherVersionHeader)
+			.addComponent(runeliteLauncherVersion)
+			.addGap(6)
+			.addComponent(usernameHeader)
+			.addGroup(layout.createParallelGroup().addComponent(username))
 			.addGap(12)
 			.addComponent(issueLink)
 		);
@@ -142,6 +143,8 @@ public class InfoPanel extends PluginPanel
 				.addComponent(runeliteVersion)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 				.addComponent(runescapeVersion))
+			.addComponent(runeliteLauncherVersionHeader)
+			.addComponent(runeliteLauncherVersion)
 			.addComponent(usernameHeader)
 			.addComponent(username)
 			.addComponent(issueLink)
