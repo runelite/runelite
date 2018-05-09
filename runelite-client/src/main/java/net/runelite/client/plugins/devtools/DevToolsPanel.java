@@ -204,6 +204,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(graphicsObjectsBtn);
 
+		final JButton tileTooltipBtn = new JButton("Tile Tooltip");
+		tileTooltipBtn.addActionListener(e ->
+		{
+			highlightButton(tileTooltipBtn);
+			plugin.toggleTileToolTip();
+		});
+		container.add(tileTooltipBtn);
+
 		return container;
 	}
 

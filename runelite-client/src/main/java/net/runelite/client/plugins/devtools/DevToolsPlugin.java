@@ -95,6 +95,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleValidMovement;
 	private boolean toggleLineOfSight;
 	private boolean toggleGraphicsObjects;
+	private boolean toggleTileToolTip;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -292,6 +293,11 @@ public class DevToolsPlugin extends Plugin
 		toggleMapSquares = !toggleMapSquares;
 	}
 
+	void toggleTileToolTip()
+	{
+		toggleTileToolTip = !toggleTileToolTip;
+	}
+
 	void toggleValidMovement()
 	{
 		toggleValidMovement = !toggleValidMovement;
@@ -365,6 +371,11 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleMapSquares()
 	{
 		return toggleMapSquares;
+	}
+
+	boolean isToggleTileToolTip()
+	{
+		return toggleTileToolTip;
 	}
 
 	boolean isToggleValidMovement()
