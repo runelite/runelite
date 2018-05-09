@@ -64,10 +64,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String RESET = "Reset";
+	private static final String FORCE = "Force";
 	private static final String MENU_TARGET = "<col=ff9040>Shift-click";
+	private static final char SELECTED_INDICATOR = '*';
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String FORCE_KEY_PREFIX = "force_item_";
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -172,6 +175,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 	}
 
+	private Boolean getForceConfig(int itemId)
+	{
+		String config = configManager.getConfiguration(CONFIG_GROUP, FORCE_KEY_PREFIX + itemId);
+		if (config == null || config.isEmpty())
+		{
+			return null;
+		}
+
+		return Boolean.valueOf(config);
+	}
+
+	private void setForceConfig(int itemId)
+	{
+		configManager.setConfiguration(CONFIG_GROUP, FORCE_KEY_PREFIX + itemId, true);
+	}
+
+	private void unsetForceConfig(int itemId)
+	{
+		configManager.unsetConfiguration(CONFIG_GROUP, FORCE_KEY_PREFIX + itemId);
+	}
+
 	private void enableCustomization()
 	{
 		keyManager.registerKeyListener(inputListener);
@@ -244,7 +268,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 				if (option.equals(entry.getOption()))
 				{
-					entry.setOption("* " + option);
+					entry.setOption(SELECTED_INDICATOR + " " + option);
 				}
 			}
 		}
@@ -255,7 +279,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		resetShiftClickEntry.setIdentifier(itemId);
 		resetShiftClickEntry.setParam1(widgetId);
 		resetShiftClickEntry.setType(MenuAction.RUNELITE.getId());
-		client.setMenuEntries(ArrayUtils.addAll(entries, resetShiftClickEntry));
+
+		Boolean forced = getForceConfig(itemId);
+		final MenuEntry forceShiftClickEntry = new MenuEntry();
+		forceShiftClickEntry.setOption((forced == null ? "" : SELECTED_INDICATOR + " ") + FORCE);
+		forceShiftClickEntry.setTarget(MENU_TARGET);
+		forceShiftClickEntry.setIdentifier(itemId);
+		forceShiftClickEntry.setParam1(widgetId);
+		forceShiftClickEntry.setType(MenuAction.RUNELITE.getId());
+
+		client.setMenuEntries(ArrayUtils.addAll(entries, forceShiftClickEntry, resetShiftClickEntry));
 	}
 
 	@Subscribe
@@ -277,11 +310,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String target = event.getMenuTarget();
 		ItemComposition itemComposition = client.getItemDefinition(itemId);
 
-		if (option.equals(RESET) && target.equals(MENU_TARGET))
+		if (target.equals(MENU_TARGET))
 		{
-			unsetSwapConfig(itemId);
-			itemComposition.resetShiftClickActionIndex();
-			return;
+			if (option.equals(RESET))
+			{
+				unsetSwapConfig(itemId);
+				unsetForceConfig(itemId);
+				itemComposition.resetShiftClickActionIndex();
+				return;
+			}
+			else if (option.endsWith(FORCE))
+			{
+				Boolean forced = getForceConfig(itemId);
+
+				if (forced != null)
+				{
+					unsetForceConfig(itemId);
+				}
+				else
+				{
+					setForceConfig(itemId);
+				}
+
+				return;
+			}
 		}
 
 		if (!itemComposition.getName().equals(Text.removeTags(target)))
@@ -325,7 +377,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
@@ -420,13 +471,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
-		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		else if (config.shiftClickCustomization() && event.getActionParam1() == WidgetInfo.INVENTORY.getId())
 		{
-			Integer customOption = getSwapConfig(itemId);
+			client.setShiftClickModeForced(false); //reset this to false so we're not stuck in shift-click mode
+			int itemId = event.getIdentifier();
+			Boolean forced = getForceConfig(itemId);
 
-			if (customOption != null && customOption == -1)
+			if (forced != null || shiftModifier)
 			{
-				swap("use", option, target, true);
+				Integer customOption = getSwapConfig(itemId);
+
+				if (customOption != null && customOption == -1 && !option.equals("use"))
+				{
+					swap("use", option, target, true);
+				}
+				else if (forced != null)
+				{
+					client.setShiftClickModeForced(forced);
+				}
 			}
 		}
 		// Put all item-related swapping after shift-click
