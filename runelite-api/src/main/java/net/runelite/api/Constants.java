@@ -36,4 +36,5 @@ public class Constants
 	public static final int CLIENT_DEFAULT_ZOOM = 512;
 	public static final int CHUNK_SIZE = 8;
 	public static final int REGION_SIZE = 104;
+	public static final int MAX_Z = 4;
 }
