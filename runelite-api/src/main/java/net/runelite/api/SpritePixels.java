@@ -38,6 +38,8 @@ public interface SpritePixels
 
 	int[] getPixels();
 
+	int[] getOutlinePixels(int color);
+
 	/**
 	 * Covert the SpritePixels to a BufferedImage
 	 *
@@ -53,4 +55,6 @@ public interface SpritePixels
 	void toBufferedImage(BufferedImage img);
 
 	void setOutline(int outlineColor);
+
+	BufferedImage toBufferedOutline(int color);
 }

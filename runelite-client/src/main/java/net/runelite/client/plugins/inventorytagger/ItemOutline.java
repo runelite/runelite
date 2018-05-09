@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.inventorytagger;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,27 +56,8 @@ class ItemOutline
 		}
 
 		SpritePixels itemSprite = client.createItemSprite(id, 1, this.stroke, 0, 0, true, 710);
-		itemSprite.setOutline(16777215);
+		this.generatedPicture = itemSprite.toBufferedOutline(this.color.getRGB());
 
-		Graphics2D graphics2D = this.generatedPicture.createGraphics();
-		graphics2D.setColor(this.color);
-		int x = 0;
-		int y = 0;
-		for (int pixelColor : itemSprite.getPixels())
-		{
-			if (x == 36)
-			{
-				y++;
-				x = 0 ;
-			}
-
-			if (pixelColor == 16777215)
-			{
-				graphics2D.drawLine(x, y, x, y);
-			}
-
-			x++;
-		}
 		storedOutlines.put(getStringGeneratedId(), this.generatedPicture);
 		return this.generatedPicture;
 	}
