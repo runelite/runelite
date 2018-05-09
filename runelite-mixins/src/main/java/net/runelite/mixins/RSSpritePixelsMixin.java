@@ -71,13 +71,28 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 
 	@Inject
 	@Override
-	public int[] getOutlinePixels(int color)
+	public BufferedImage toBufferedOutline(int color)
+	{
+		BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		toBufferedOutline(img, color);
+
+		return img;
+	}
+
+	@Inject
+	@Override
+	public void toBufferedOutline(BufferedImage img, int color)
 	{
 		int width = getWidth();
 		int height = getHeight();
 
-		int[] pixels = getPixels();
+		if (img.getWidth() != width || img.getHeight() != height)
+		{
+			throw new IllegalArgumentException("Image bounds do not match SpritePixels");
+		}
 
+		int[] pixels = getPixels();
 		int[] newPixels = new int[width * height];
 		int pixelIndex = 0;
 
@@ -114,36 +129,16 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 			}
 		}
 
-		return newPixels;
-	}
+		int[] transPixels = new int[newPixels.length];
 
-	@Inject
-	@Override
-	public BufferedImage toBufferedOutline(int color)
-	{
-		BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		int width = getWidth();
-		int height = getHeight();
-
-		if (img.getWidth() != width || img.getHeight() != height)
+		for (int i = 0; i < newPixels.length; i++)
 		{
-			throw new IllegalArgumentException("Image bounds do not match SpritePixels");
-		}
-
-		int[] pixels = getOutlinePixels(color);
-		int[] transPixels = new int[pixels.length];
-
-		for (int i = 0; i < pixels.length; i++)
-		{
-			if (pixels[i] != 0)
+			if (newPixels[i] != 0)
 			{
-				transPixels[i] = pixels[i] | 0xff000000;
+				transPixels[i] = newPixels[i] | 0xff000000;
 			}
 		}
 
 		img.setRGB(0, 0, width, height, transPixels, 0, width);
-
-		return img;
 	}
 }
