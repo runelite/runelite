@@ -96,12 +96,12 @@ public class RaidsPointsOverlay extends Overlay
 
 	private int averageCombat()
 	{
-		int sumOfCombatLvls = 0;
+		int sumOfCombatLevels = 0;
 
 		for (Player currPlayer :client.getPlayers())
 		{
-			sumOfCombatLvls += currPlayer.getCombatLevel();
+			sumOfCombatLevels += currPlayer.getCombatLevel();
 		}
-		return sumOfCombatLvls/client.getPlayers().size();
+		return sumOfCombatLevels / client.getPlayers().size();
 	}
 }
