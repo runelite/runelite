@@ -24,37 +24,41 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 import okhttp3.HttpUrl;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 class XpPanel extends PluginPanel
 {
+	private final ConfigManager configManager;
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	XpPanel(
+		XpTrackerPlugin xpTrackerPlugin,
+		Client client,
+		ConfigManager configManager,
+		SkillIconManager iconManager
+	)
 	{
 		super();
+
+		this.configManager = configManager;
 
 		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BorderLayout(0, 3));
@@ -143,8 +147,10 @@ class XpPanel extends PluginPanel
 	void updateSkillExperience(boolean updated, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
+		String skillConfig = configManager.getConfiguration("xptracker", "track" + skill.getName());
+		boolean trackSkill = Boolean.parseBoolean(skillConfig);
 
-		if (xpInfoBox != null)
+		if (xpInfoBox != null && trackSkill)
 		{
 			xpInfoBox.update(updated, xpSnapshotSingle);
 		}
