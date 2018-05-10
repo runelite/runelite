@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
  * All rights reserved.
  *
@@ -48,12 +49,31 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
+		keyName = "tickCount",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setTickCount(int newTickCount);
+
+	@ConfigItem(
 		keyName = "enableTock",
 		name = "Enable tock (alternating) sound",
 		description = "Toggles whether to play two alternating sounds",
 		position = 3
 	)
 	default boolean enableTock()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "syncWithAttack",
+			name = "Sync metronome with attacks",
+			description = "Toggles to sync the metronome with your attack speed to play a tick when you should flick offensive prayers.",
+			position = 4
+	)
+	default boolean syncWithAttack()
 	{
 		return false;
 	}
