@@ -14,8 +14,8 @@ public final class ItemLayer {
    @ObfuscatedGetter(
       intValue = -1016013399
    )
-   @Export("hash")
-   int hash;
+   @Export("tileHeight")
+   int tileHeight;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Ldz;"
@@ -50,7 +50,8 @@ public final class ItemLayer {
    @ObfuscatedGetter(
       longValue = 7654269406186050467L
    )
-   long field1476;
+   @Export("hash")
+   long hash;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1231787727

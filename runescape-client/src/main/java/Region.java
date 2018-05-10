@@ -379,13 +379,14 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(IIIILdz;JLdz;Ldz;)V"
    )
-   public void method2908(int var1, int var2, int var3, int var4, Renderable var5, long var6, Renderable var8, Renderable var9) {
+   @Export("addItemPile")
+   public void addItemPile(int var1, int var2, int var3, int var4, Renderable var5, long var6, Renderable var8, Renderable var9) {
       ItemLayer var10 = new ItemLayer();
       var10.bottom = var5;
       var10.x = var2 * 128 + 64;
       var10.y = var3 * 128 + 64;
-      var10.hash = var4;
-      var10.field1476 = var6;
+      var10.tileHeight = var4;
+      var10.hash = var6;
       var10.middle = var8;
       var10.top = var9;
       int var11 = 0;
@@ -1467,15 +1468,15 @@ public class Region {
                                     ItemLayer var23 = var3.itemLayer;
                                     if(var23 != null && var23.height == 0) {
                                        if(var23.middle != null) {
-                                          var23.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
+                                          var23.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.tileHeight - cameraY2, var23.y - cameraZ2, var23.hash);
                                        }
 
                                        if(var23.top != null) {
-                                          var23.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
+                                          var23.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.tileHeight - cameraY2, var23.y - cameraZ2, var23.hash);
                                        }
 
                                        if(var23.bottom != null) {
-                                          var23.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
+                                          var23.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.tileHeight - cameraY2, var23.y - cameraZ2, var23.hash);
                                        }
                                     }
                                  }
@@ -1685,15 +1686,15 @@ public class Region {
          ItemLayer var32 = var3.itemLayer;
          if(var32 != null && var32.height != 0) {
             if(var32.middle != null) {
-               var32.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
+               var32.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.tileHeight - cameraY2 - var32.height, var32.y - cameraZ2, var32.hash);
             }
 
             if(var32.top != null) {
-               var32.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
+               var32.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.tileHeight - cameraY2 - var32.height, var32.y - cameraZ2, var32.hash);
             }
 
             if(var32.bottom != null) {
-               var32.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
+               var32.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.tileHeight - cameraY2 - var32.height, var32.y - cameraZ2, var32.hash);
             }
          }
 

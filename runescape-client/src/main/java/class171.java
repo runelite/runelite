@@ -490,7 +490,7 @@ public class class171 {
             }
 
             long var9 = class59.method1129(var0, var1, 3, false, 0);
-            ScriptEvent.region.method2908(class192.plane, var0, var1, class264.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class192.plane), var5, var9, var12, var11);
+            ScriptEvent.region.addItemPile(class192.plane, var0, var1, class264.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class192.plane), var5, var9, var12, var11);
          }
       }
    }
