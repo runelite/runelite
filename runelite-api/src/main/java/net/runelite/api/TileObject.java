@@ -32,7 +32,7 @@ import net.runelite.api.coords.WorldPoint;
 
 public interface TileObject
 {
-	int getHash();
+	long getHash();
 
 	int getX();
 
