@@ -37,8 +37,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.*;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 @Singleton
 public class PrayerBarOverlay extends Overlay
@@ -48,7 +46,6 @@ public class PrayerBarOverlay extends Overlay
 	private boolean showPrayerBar = true;
 	private final PrayerBarConfig config;
 	private Dimension prayerBarSize = new Dimension(30, 5); // 30x5 is the size of health bars
-	//private static final Logger logger = LoggerFactory.getLogger(PrayerBarOverlay.class);
 
 	@Inject
 	private PrayerBarOverlay(PrayerBarConfig config, Client client)
