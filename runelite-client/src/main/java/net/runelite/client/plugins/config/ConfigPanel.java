@@ -63,6 +63,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -88,6 +89,7 @@ public class ConfigPanel extends PluginPanel
 	private static BufferedImage UNCHECK_ICON;
 	private static BufferedImage CHECK_ICON;
 	private static BufferedImage BACK_ICON;
+	private static BufferedImage CLEAR_ICON;
 
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final int OFFSET = 6;
@@ -108,6 +110,7 @@ public class ConfigPanel extends PluginPanel
 				UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
 				CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
 				BACK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("back.png"));
+				CLEAR_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("clear.png"));
 			}
 		}
 		catch (IOException e)
@@ -132,6 +135,9 @@ public class ConfigPanel extends PluginPanel
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
 
+
+		searchBar.setBorder(new EmptyBorder(5, 5, 5, 0));
+		searchBar.setPreferredSize(new Dimension (ITEM_PREFERRED_SIZE));
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
@@ -336,9 +342,26 @@ public class ConfigPanel extends PluginPanel
 
 	private void openConfigList()
 	{
+		JPanel searchPanel = new JPanel(new BorderLayout());
+		searchPanel.setBorder(new LineBorder(Color.BLACK, 1));
+		searchPanel.add(searchBar, BorderLayout.CENTER);
+
+		JButton clearButton = new JButton(new ImageIcon(CLEAR_ICON));
+		clearButton.setPreferredSize(new Dimension(20, 20));
+		clearButton.setBorderPainted(false);
+		clearButton.setOpaque(true);
+		clearButton.setContentAreaFilled(false);
+		clearButton.addActionListener((e) ->
+		{
+			searchBar.setText("");
+			searchBar.requestFocusInWindow();
+		});
+		searchPanel.add(clearButton, BorderLayout.LINE_END);
+
 		topPanel.removeAll();
 		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), BorderLayout.NORTH);
-		topPanel.add(searchBar, BorderLayout.CENTER);
+		topPanel.add(searchPanel, BorderLayout.CENTER);
+
 		contents.removeAll();
 
 		onSearchBarChanged();
@@ -408,7 +431,7 @@ public class ConfigPanel extends PluginPanel
 
 		JButton backArrow = new JButton(new ImageIcon(BACK_ICON));
 		backArrow.addActionListener(e -> openConfigList());
-		backArrow.setPreferredSize(new Dimension(25, 25));
+		backArrow.setPreferredSize(new Dimension(20, 25));
 		topPanel.add(backArrow, BorderLayout.LINE_START);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
