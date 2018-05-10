@@ -68,28 +68,28 @@ public class RaidsPointsOverlay extends Overlay
 
 		panel.getChildren().clear();
 		panel.getChildren().add(LineComponent.builder()
-			.left("Total:")
-			.right(POINTS_FORMAT.format(totalPoints))
-			.build());
+				.left("Total:")
+				.right(POINTS_FORMAT.format(totalPoints))
+				.build());
 
 		panel.getChildren().add(LineComponent.builder()
-			.left(client.getLocalPlayer().getName() + ":")
-			.right(POINTS_FORMAT.format(personalPoints))
-			.build());
+				.left(client.getLocalPlayer().getName() + ":")
+				.right(POINTS_FORMAT.format(personalPoints))
+				.build());
 
 		panel.getChildren().add(LineComponent.builder()
-			.left("Party size:")
-			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
-			.build());
+				.left("Party size:")
+				.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
+				.build());
 
 		if (totalPoints == 0) // Calculates average combat level of the party before the raid has begun
-        {
-            panel.getChildren().add(LineComponent.builder()
-                    .left("Average combat:")
-                    .right(String.valueOf(averageCombat()))
-                    .build());
+		{
+			panel.getChildren().add(LineComponent.builder()
+					.left("Average combat:")
+					.right(String.valueOf(averageCombat()))
+					.build());
 
-        }
+		}
 
 		return panel.render(graphics);
 	}
