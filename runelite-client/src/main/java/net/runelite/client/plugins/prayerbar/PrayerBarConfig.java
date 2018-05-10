@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.prayerbar;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
