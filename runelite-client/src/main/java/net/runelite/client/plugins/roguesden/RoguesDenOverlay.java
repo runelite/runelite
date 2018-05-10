@@ -44,7 +44,6 @@ public class RoguesDenOverlay extends Overlay
 
 	private final Client client;
 	private final RoguesDenPlugin plugin;
-	private static Font font;
 
 	public static final Color COL_GROUND = Color.GREEN;
 	public static final Color COL_GROUND_AVOID = Color.RED;
@@ -59,7 +58,6 @@ public class RoguesDenOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		font = FontManager.getRunescapeFont().deriveFont(Font.BOLD);
 	}
 
 	@Override
@@ -69,8 +67,6 @@ public class RoguesDenOverlay extends Overlay
 		{
 			return null;
 		}
-
-		graphics.setFont(font);
 
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
