@@ -197,7 +197,8 @@ public class RoguesDenPlugin extends Plugin
 			WorldPoint point = tile.getWorldLocation();
 
 			Obstacles.Obstacle obstacle = Obstacles.TILE_MAP.get(point.getX(), point.getY());
-			if (obstacle != null && obstacle.objectId == newObject.getId()) {
+			if (obstacle != null && obstacle.objectId == newObject.getId())
+			{
 
 				obstaclesHull.put(newObject, tile);
 			}
