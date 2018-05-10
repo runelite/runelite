@@ -49,6 +49,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.chatcommands.killsimulator.bosses.BossHandler;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -67,6 +68,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	private final BossHandler bossHandler = new BossHandler();
 
 	@Inject
 	private Client client;
@@ -174,7 +176,12 @@ public class ChatCommandsPlugin extends Plugin
 		// clear RuneLite formatted message as the message node is
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
-
+		if(message.toLowerCase().startsWith("!kill ")) {
+			String arguments = message.toLowerCase().substring(6);
+			String input = "zulrah";
+			int amountOfTimes = 1;
+			executor.submit(() -> bossHandler.simulateKills(BossHandler.getByName(input), amountOfTimes));
+		}
 		if (config.lvl() && message.toLowerCase().equals("!total"))
 		{
 			log.debug("Running total level lookup");
