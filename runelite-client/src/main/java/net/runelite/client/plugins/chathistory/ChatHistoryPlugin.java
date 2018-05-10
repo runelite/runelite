@@ -30,12 +30,16 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.chat.QueuedMessage.QueuedMessageBuilder;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -43,27 +47,27 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class ChatHistoryPlugin extends Plugin
 {
 	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
-	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
-		ChatMessageType.PUBLIC,
-		ChatMessageType.CLANCHAT,
-		ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
-		ChatMessageType.PRIVATE_MESSAGE_SENT,
-		ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
-		ChatMessageType.GAME,
-		ChatMessageType.FILTERED,
-		ChatMessageType.EXAMINE_ITEM,
-		ChatMessageType.EXAMINE_NPC,
-		ChatMessageType.EXAMINE_OBJECT
-	);
+
+	private Set<ChatMessageType> ALLOWED_HISTORY;
 
 	private Queue<QueuedMessage> messageQueue;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
-	
+
+	@Inject
+	private ChatHistoryConfig config;
+
+	@Provides
+	ChatHistoryConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChatHistoryConfig.class);
+	}
+
 	@Override
 	protected void startUp()
 	{
+		populateAllowedMessages();
 		messageQueue = EvictingQueue.create(100);
 	}
 
@@ -119,6 +123,107 @@ public class ChatHistoryPlugin extends Plugin
 			messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
 					e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("chathistory"))
+		{
+			populateAllowedMessages();
+
+			// If the event's new value is false, it means we need to check the message queue
+			// for any unwanted message types and remove them before the next hop or login
+			if (event.getNewValue().equals("false"))
+				purgeUnwantedMessages(event.getKey());
+		}
+	}
+
+	/**
+	 * Removes messages of unwanted types from the queue based on the event keyName
+	 */
+	private void purgeUnwantedMessages(String keyName)
+	{
+		switch (keyName)
+		{
+			case "savePublicChat":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.PUBLIC);
+				break;
+			case "savePrivateChat":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT
+					|| message.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED
+					|| message.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
+				break;
+			case "saveClanChat":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.CLANCHAT);
+				break;
+			case "saveGameMessages":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.GAME);
+				break;
+			case "saveFilteredMessages":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.FILTERED);
+				break;
+			case "saveExamineMessages":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.EXAMINE_ITEM
+					|| message.getType() == ChatMessageType.EXAMINE_NPC
+					|| message.getType() == ChatMessageType.EXAMINE_OBJECT);
+				break;
+			case "saveTradeMessages":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.TRADE
+					|| message.getType() == ChatMessageType.TRADE_RECEIVED
+					|| message.getType() == ChatMessageType.TRADE_SENT);
+				break;
+			case "saveDuelMessages":
+				messageQueue.removeIf(message -> message.getType() == ChatMessageType.DUEL);
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * Populates the set of message types allowed to be saved to the history
+	 */
+	private void populateAllowedMessages()
+	{
+
+		ALLOWED_HISTORY = Sets.newHashSet();
+
+		if (config.savePublicChat())
+			ALLOWED_HISTORY.add(ChatMessageType.PUBLIC);
+
+		if (config.savePrivateChat())
+		{
+			ALLOWED_HISTORY.add(ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			ALLOWED_HISTORY.add(ChatMessageType.PRIVATE_MESSAGE_SENT);
+			ALLOWED_HISTORY.add(ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
+		}
+
+		if (config.saveClanChat())
+			ALLOWED_HISTORY.add(ChatMessageType.CLANCHAT);
+
+		if (config.saveGameMessages())
+			ALLOWED_HISTORY.add(ChatMessageType.GAME);
+
+		if (config.saveFilteredMessages())
+			ALLOWED_HISTORY.add(ChatMessageType.FILTERED);
+
+		if (config.saveExamineMessages())
+		{
+			ALLOWED_HISTORY.add(ChatMessageType.EXAMINE_ITEM);
+			ALLOWED_HISTORY.add(ChatMessageType.EXAMINE_NPC);
+			ALLOWED_HISTORY.add(ChatMessageType.EXAMINE_OBJECT);
+		}
+
+		if (config.saveTradeMessages())
+		{
+			ALLOWED_HISTORY.add(ChatMessageType.TRADE);
+			ALLOWED_HISTORY.add(ChatMessageType.TRADE_RECEIVED);
+			ALLOWED_HISTORY.add(ChatMessageType.TRADE_SENT);
+		}
+
+		if (config.saveDuelMessages())
+			ALLOWED_HISTORY.add(ChatMessageType.DUEL);
 	}
 
 	/**
