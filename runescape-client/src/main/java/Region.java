@@ -444,12 +444,12 @@ public class Region {
    public void method2910(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long var11, int var13) {
       if(var5 != null) {
          DecorativeObject var14 = new DecorativeObject();
-         var14.field1851 = var11;
-         var14.field1857 = var13;
+         var14.hash = var11;
+         var14.renderInfoBitPacked = var13;
          var14.x = var2 * 128 + 64;
          var14.y = var3 * 128 + 64;
          var14.floor = var4;
-         var14.field1854 = var5;
+         var14.renderable1 = var5;
          var14.renderable2 = var6;
          var14.renderFlag = var7;
          var14.rotation = var8;
@@ -770,7 +770,7 @@ public class Region {
    @ObfuscatedName("aw")
    public long method2928(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
-      return var4 != null && var4.decorativeObject != null?var4.decorativeObject.field1851:0L;
+      return var4 != null && var4.decorativeObject != null?var4.decorativeObject.hash :0L;
    }
 
    @ObfuscatedName("ag")
@@ -806,8 +806,8 @@ public class Region {
          return -1;
       } else if(var6.wallObject != null && var6.wallObject.field1818 == var4) {
          return var6.wallObject.field1814 & 255;
-      } else if(var6.decorativeObject != null && var6.decorativeObject.field1851 == var4) {
-         return var6.decorativeObject.field1857 & 255;
+      } else if(var6.decorativeObject != null && var6.decorativeObject.hash == var4) {
+         return var6.decorativeObject.renderInfoBitPacked & 255;
       } else if(var6.groundObject != null && var6.groundObject.field1550 == var4) {
          return var6.groundObject.field1557 & 255;
       } else {
@@ -1429,9 +1429,9 @@ public class Region {
                                     }
                                  }
 
-                                 if(var13 != null && !this.isOccluded(var7, var4, var5, var13.field1854.modelHeight)) {
+                                 if(var13 != null && !this.isOccluded(var7, var4, var5, var13.renderable1.modelHeight)) {
                                     if((var13.renderFlag & var11) != 0) {
-                                       var13.field1854.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var13.x - cameraX2 + var13.offsetX, var13.floor - cameraY2, var13.y - cameraZ2 + var13.offsetY, var13.field1851);
+                                       var13.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var13.x - cameraX2 + var13.offsetX, var13.floor - cameraY2, var13.y - cameraZ2 + var13.offsetY, var13.hash);
                                     } else if(var13.renderFlag == 256) {
                                        var14 = var13.x - cameraX2;
                                        var15 = var13.floor - cameraY2;
@@ -1451,9 +1451,9 @@ public class Region {
                                        }
 
                                        if(var19 < var18) {
-                                          var13.field1854.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var14 + var13.offsetX, var15, var16 + var13.offsetY, var13.field1851);
+                                          var13.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var14 + var13.offsetX, var15, var16 + var13.offsetY, var13.hash);
                                        } else if(var13.renderable2 != null) {
-                                          var13.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var14, var15, var16, var13.field1851);
+                                          var13.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var14, var15, var16, var13.hash);
                                        }
                                     }
                                  }
@@ -1699,9 +1699,9 @@ public class Region {
 
          if(var3.wallDrawFlags != 0) {
             DecorativeObject var29 = var3.decorativeObject;
-            if(var29 != null && !this.isOccluded(var7, var4, var5, var29.field1854.modelHeight)) {
+            if(var29 != null && !this.isOccluded(var7, var4, var5, var29.renderable1.modelHeight)) {
                if((var29.renderFlag & var3.wallDrawFlags) != 0) {
-                  var29.field1854.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX2 + var29.offsetX, var29.floor - cameraY2, var29.y - cameraZ2 + var29.offsetY, var29.field1851);
+                  var29.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX2 + var29.offsetX, var29.floor - cameraY2, var29.y - cameraZ2 + var29.offsetY, var29.hash);
                } else if(var29.renderFlag == 256) {
                   var11 = var29.x - cameraX2;
                   var25 = var29.floor - cameraY2;
@@ -1720,9 +1720,9 @@ public class Region {
                   }
 
                   if(var16 >= var15) {
-                     var29.field1854.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var11 + var29.offsetX, var25, var24 + var29.offsetY, var29.field1851);
+                     var29.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var11 + var29.offsetX, var25, var24 + var29.offsetY, var29.hash);
                   } else if(var29.renderable2 != null) {
-                     var29.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var11, var25, var24, var29.field1851);
+                     var29.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var11, var25, var24, var29.hash);
                   }
                }
             }

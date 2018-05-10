@@ -557,18 +557,18 @@ public class MessageNode extends CacheableNode {
                   if(var9 == 1) {
                      DecorativeObject var42 = ScriptEvent.region.method2924(class192.plane, var3, var38);
                      if(var42 != null) {
-                        var11 = class8.method93(var42.field1851);
+                        var11 = class8.method93(var42.hash);
                         if(var31 != 4 && var31 != 5) {
                            if(var31 == 6) {
-                              var42.field1854 = new DynamicObject(var11, 4, var8 + 4, class192.plane, var3, var38, var5, false, var42.field1854);
+                              var42.renderable1 = new DynamicObject(var11, 4, var8 + 4, class192.plane, var3, var38, var5, false, var42.renderable1);
                            } else if(var31 == 7) {
-                              var42.field1854 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, class192.plane, var3, var38, var5, false, var42.field1854);
+                              var42.renderable1 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, class192.plane, var3, var38, var5, false, var42.renderable1);
                            } else if(var31 == 8) {
-                              var42.field1854 = new DynamicObject(var11, 4, var8 + 4, class192.plane, var3, var38, var5, false, var42.field1854);
+                              var42.renderable1 = new DynamicObject(var11, 4, var8 + 4, class192.plane, var3, var38, var5, false, var42.renderable1);
                               var42.renderable2 = new DynamicObject(var11, 4, (var8 + 2 & 3) + 4, class192.plane, var3, var38, var5, false, var42.renderable2);
                            }
                         } else {
-                           var42.field1854 = new DynamicObject(var11, 4, var8, class192.plane, var3, var38, var5, false, var42.field1854);
+                           var42.renderable1 = new DynamicObject(var11, 4, var8, class192.plane, var3, var38, var5, false, var42.renderable1);
                         }
                      }
                   }

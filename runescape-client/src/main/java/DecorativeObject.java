@@ -58,7 +58,8 @@ public final class DecorativeObject {
    @ObfuscatedSignature(
       signature = "Ldz;"
    )
-   public Renderable field1854;
+   @Export("renderable1")
+   public Renderable renderable1;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Ldz;"
@@ -69,16 +70,18 @@ public final class DecorativeObject {
    @ObfuscatedGetter(
       longValue = -5118687135473253869L
    )
-   public long field1851;
+   @Export("hash")
+   public long hash;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1042594383
    )
-   int field1857;
+   @Export("renderInfoBitPacked")
+   int renderInfoBitPacked;
 
    DecorativeObject() {
-      this.field1851 = 0L;
-      this.field1857 = 0;
+      this.hash = 0L;
+      this.renderInfoBitPacked = 0;
    }
 
    @ObfuscatedName("w")
