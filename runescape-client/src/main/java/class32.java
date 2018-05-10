@@ -507,7 +507,7 @@ public class class32 {
          class69.intStack[++class45.intStackSize - 1] = var3.field2640;
          return 1;
       } else if(var0 == 2613) {
-         class69.intStack[++class45.intStackSize - 1] = var3.field2700.vmethod5860();
+         class69.intStack[++class45.intStackSize - 1] = var3.field2700.rsOrdinal();
          return 1;
       } else if(var0 == 2614) {
          class69.intStack[++class45.intStackSize - 1] = var3.field2679?1:0;

@@ -2956,7 +2956,7 @@ public final class Client extends GameEngine implements class288 {
             int[] var12 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(class165.field2065 >> 32), (int)(class165.field2065 & -1L)};
             var17.offset = 0;
             var17.putByte(1);
-            var17.putByte(field716.vmethod5860());
+            var17.putByte(field716.rsOrdinal());
             var17.putInt(var12[0]);
             var17.putInt(var12[1]);
             var17.putInt(var12[2]);

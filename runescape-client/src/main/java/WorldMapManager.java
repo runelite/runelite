@@ -268,18 +268,18 @@ public final class WorldMapManager {
       boolean var6 = var2 <= 0;
       boolean var7 = var2 >= this.mapRegions[0].length - 1;
       if(var7) {
-         var3[class240.field3128.vmethod5860()] = null;
+         var3[class240.field3128.rsOrdinal()] = null;
       } else {
-         var3[class240.field3128.vmethod5860()] = this.mapRegions[var1][var2 + 1];
+         var3[class240.field3128.rsOrdinal()] = this.mapRegions[var1][var2 + 1];
       }
 
-      var3[class240.field3121.vmethod5860()] = !var7 && !var5?this.mapRegions[var1 + 1][var2 + 1]:null;
-      var3[class240.field3120.vmethod5860()] = !var7 && !var4?this.mapRegions[var1 - 1][var2 + 1]:null;
-      var3[class240.field3125.vmethod5860()] = var5?null:this.mapRegions[var1 + 1][var2];
-      var3[class240.field3127.vmethod5860()] = var4?null:this.mapRegions[var1 - 1][var2];
-      var3[class240.field3124.vmethod5860()] = var6?null:this.mapRegions[var1][var2 - 1];
-      var3[class240.field3123.vmethod5860()] = !var6 && !var5?this.mapRegions[var1 + 1][var2 - 1]:null;
-      var3[class240.field3122.vmethod5860()] = !var6 && !var4?this.mapRegions[var1 - 1][var2 - 1]:null;
+      var3[class240.field3121.rsOrdinal()] = !var7 && !var5?this.mapRegions[var1 + 1][var2 + 1]:null;
+      var3[class240.field3120.rsOrdinal()] = !var7 && !var4?this.mapRegions[var1 - 1][var2 + 1]:null;
+      var3[class240.field3125.rsOrdinal()] = var5?null:this.mapRegions[var1 + 1][var2];
+      var3[class240.field3127.rsOrdinal()] = var4?null:this.mapRegions[var1 - 1][var2];
+      var3[class240.field3124.rsOrdinal()] = var6?null:this.mapRegions[var1][var2 - 1];
+      var3[class240.field3123.rsOrdinal()] = !var6 && !var5?this.mapRegions[var1 + 1][var2 - 1]:null;
+      var3[class240.field3122.rsOrdinal()] = !var6 && !var4?this.mapRegions[var1 - 1][var2 - 1]:null;
    }
 
    @ObfuscatedName("a")

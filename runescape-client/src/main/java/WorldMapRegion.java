@@ -420,7 +420,7 @@ public class WorldMapRegion {
 
       for(int var6 = 0; var6 < var5.length; ++var6) {
          class240 var7 = var5[var6];
-         if(var1[var7.vmethod5860()] != null) {
+         if(var1[var7.rsOrdinal()] != null) {
             byte var8 = 0;
             byte var9 = 0;
             byte var10 = 64;
@@ -469,7 +469,7 @@ public class WorldMapRegion {
                var10 = 5;
             }
 
-            this.method326(var12, var13, var8, var9, var10, var11, var1[var7.vmethod5860()], var2);
+            this.method326(var12, var13, var8, var9, var10, var11, var1[var7.rsOrdinal()], var2);
          }
       }
 

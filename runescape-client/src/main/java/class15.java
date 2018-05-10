@@ -45,7 +45,7 @@ public enum class15 implements Enumerated {
       signature = "(B)I",
       garbageValue = "60"
    )
-   public int vmethod5860() {
+   public int rsOrdinal() {
       return this.field127;
    }
 

@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -10,5 +11,6 @@ public interface Enumerated {
       signature = "(B)I",
       garbageValue = "60"
    )
-   int vmethod5860();
+   @Export("rsOrdinal")
+   int rsOrdinal();
 }
