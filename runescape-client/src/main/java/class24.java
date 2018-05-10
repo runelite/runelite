@@ -675,7 +675,7 @@ public class class24 {
                   var29 = new DynamicObject(var4, 22, var5, var12, var2, var3, var15.animationId, true, (Renderable)null);
                }
 
-               var42.method2907(var0, var2, var3, var23, (Renderable)var29, var26, var28);
+               var42.groundObjectSpawned(var0, var2, var3, var23, (Renderable)var29, var26, var28);
                if(var15.clipType == 1) {
                   var14.method3424(var2, var3);
                }

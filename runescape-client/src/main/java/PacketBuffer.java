@@ -217,7 +217,7 @@ public final class PacketBuffer extends Buffer {
                   var22 = new DynamicObject(var3, 22, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
                }
 
-               var6.method2907(var0, var1, var2, var16, (Renderable)var22, var19, var21);
+               var6.groundObjectSpawned(var0, var1, var2, var16, (Renderable)var22, var19, var21);
                if(var8.clipType == 1 && var7 != null) {
                   var7.method3424(var1, var2);
                }

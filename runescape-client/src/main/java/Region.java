@@ -358,7 +358,8 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(IIIILdz;JI)V"
    )
-   public void method2907(int var1, int var2, int var3, int var4, Renderable var5, long var6, int var8) {
+   @Export("groundObjectSpawned")
+   public void groundObjectSpawned(int var1, int var2, int var3, int var4, Renderable var5, long var6, int var8) {
       if(var5 != null) {
          GroundObject var9 = new GroundObject();
          var9.renderable = var5;
