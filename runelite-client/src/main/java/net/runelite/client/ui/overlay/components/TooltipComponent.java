@@ -53,7 +53,7 @@ public class TooltipComponent implements RenderableEntity
 		// Tooltip size
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int textDescent = metrics.getDescent();
-		final int textHeight = graphics.getFontMetrics().getHeight();
+		final int textHeight = metrics.getHeight();
 		int tooltipWidth = 0;
 		int tooltipHeight = 0;
 		String[] lines = BR.split(text);

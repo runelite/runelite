@@ -190,10 +190,21 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "tooltipFontType",
+		name = "Tooltip Font",
+		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
+		position = 31
+	)
+	default FontType tooltipFontType()
+	{
+		return FontType.SMALL;
+	}
+
+	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 31
+		position = 32
 	)
 	default boolean infoBoxVertical()
 	{
@@ -204,7 +215,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 32
+		position = 33
 	)
 	default int infoBoxWrap()
 	{
