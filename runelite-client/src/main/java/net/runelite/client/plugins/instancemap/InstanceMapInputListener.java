@@ -41,6 +41,9 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 	@Inject
 	private InstanceMapOverlay overlay;
 
+	@Inject
+	private InstanceMapConfig config;
+
 	@Override
 	public void keyTyped(KeyEvent event)
 	{
@@ -78,13 +81,27 @@ public class InstanceMapInputListener extends MouseListener implements KeyListen
 
 		int direction = event.getWheelRotation();
 
-		if (direction > 0)
+		if (!config.inverseScroll())
 		{
-			plugin.ascendMap();
+			if (direction > 0)
+			{
+				plugin.ascendMap();
+			}
+			else
+			{
+				plugin.descendMap();
+			}
 		}
 		else
 		{
-			plugin.descendMap();
+			if (direction > 0)
+			{
+				plugin.descendMap();
+			}
+			else
+			{
+				plugin.ascendMap();
+			}
 		}
 
 		event.consume();
