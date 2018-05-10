@@ -65,7 +65,7 @@ import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
@@ -163,13 +163,15 @@ public class Hooks
 	 */
 	private static void checkWorldMap()
 	{
-		Widget widget = client.getWidget(WORLD_MAP);
+		Widget widget = client.getWidget(WORLD_MAP_VIEW);
+
 		if (widget != null)
 		{
 			return;
 		}
 
 		RenderOverview renderOverview = client.getRenderOverview();
+
 		if (renderOverview == null)
 		{
 			return;
