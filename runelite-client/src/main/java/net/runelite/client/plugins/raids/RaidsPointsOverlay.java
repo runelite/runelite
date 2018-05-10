@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
@@ -64,6 +65,7 @@ public class RaidsPointsOverlay extends Overlay
 		int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 		int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
+
 		panel.getChildren().clear();
 		panel.getChildren().add(LineComponent.builder()
 			.left("Total:")
@@ -80,6 +82,26 @@ public class RaidsPointsOverlay extends Overlay
 			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
 			.build());
 
+		if (totalPoints == 0) // Calculates average combat level of the party before the raid has begun
+        {
+            panel.getChildren().add(LineComponent.builder()
+                    .left("Average combat:")
+                    .right(String.valueOf(averageCombat()))
+                    .build());
+
+        }
+
 		return panel.render(graphics);
+	}
+
+	private int averageCombat()
+	{
+		int sumOfCombatLvls = 0;
+
+		for (Player currPlayer :client.getPlayers())
+		{
+			sumOfCombatLvls += currPlayer.getCombatLevel();
+		}
+		return sumOfCombatLvls/client.getPlayers().size();
 	}
 }
