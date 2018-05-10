@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,12 +26,21 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import com.google.common.base.Splitter;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+
+import static java.lang.Boolean.TRUE;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -38,6 +48,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
@@ -73,6 +85,9 @@ public class IdleNotifierPlugin extends Plugin
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
+
+	private LoadingCache<String, Boolean> notifiedMessages;
+	private List<String> notifiedMessagesList = new ArrayList<>();
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -407,5 +422,54 @@ public class IdleNotifierPlugin extends Plugin
 		// Reset combat idle timer
 		lastOpponent = null;
 		lastInteracting = null;
+	}
+
+	private void reset()
+	{
+		Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
+
+		// gets the highlighted items from the text box in the config
+		notifiedMessagesList = COMMA_SPLITTER.splitToList(config.getMessageNotification().trim());
+
+		notifiedMessages = CacheBuilder.newBuilder()
+			.maximumSize(512L)
+			.expireAfterAccess(10, TimeUnit.MINUTES)
+			.build(new WildcardMatchLoader(notifiedMessagesList));
+	}
+
+	@Override
+	protected void startUp()
+	{
+		reset();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		notifiedMessages.invalidateAll();
+		notifiedMessages = null;
+		notifiedMessagesList = null;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("idlenotifier"))
+		{
+			reset();
+		}
+	}
+
+	@Subscribe
+	public void onChatMessageReceived(ChatMessage event)
+	{
+		if (config.message() && isNotificationMessage(event.getMessage()))
+		{
+			notifier.notify(client.getLocalPlayer().getName() + " got message: " + event.getMessage());
+		}
+	}
+	public boolean isNotificationMessage(String message)
+	{
+		return TRUE.equals(notifiedMessages.getUnchecked(message));
 	}
 }
