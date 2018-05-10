@@ -41,11 +41,12 @@ import net.runelite.client.ui.overlay.*;
 @Singleton
 public class PrayerBarOverlay extends Overlay
 {
-	private final Client client;
-	private final PrayerBarConfig config;
 	private static final Color BAR_FILL_COLOR = Color.cyan;
 	private static final Color BAR_BG_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5); // 30x5 is the size of health bars
+
+	private final Client client;
+	private final PrayerBarConfig config;
 	private Player localPlayer;
 	private boolean showPrayerBar = true;
 
