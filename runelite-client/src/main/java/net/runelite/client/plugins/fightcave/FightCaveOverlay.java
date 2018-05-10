@@ -69,6 +69,7 @@ public class FightCaveOverlay extends Overlay
 			return null;
 		}
 		BufferedImage prayerImage = getPrayerImage(attack);
+		imagePanelComponent.getChildren().clear();
 		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
 
 		if (!client.isPrayerActive(attack.getPrayer()))
