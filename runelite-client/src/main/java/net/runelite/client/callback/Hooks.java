@@ -64,6 +64,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.Notifier;
@@ -102,6 +103,7 @@ public class Hooks
 	private static final GameTick tick = new GameTick();
 	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
 	private static final Notifier notifier = injector.getInstance(Notifier.class);
+	private static final VarbitChanged varbitChanged = new VarbitChanged();
 
 	private static Dimension lastStretchedDimensions;
 	private static BufferedImage stretchedImage;
@@ -115,6 +117,11 @@ public class Hooks
 		if (shouldProcessGameTick)
 		{
 			shouldProcessGameTick = false;
+
+			if (client.shouldPostVarbitEvent())
+			{
+				eventBus.post(varbitChanged);
+			}
 
 			_deferredEventBus.replay();
 
