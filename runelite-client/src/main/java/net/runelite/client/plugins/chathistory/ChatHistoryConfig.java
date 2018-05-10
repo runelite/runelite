@@ -29,89 +29,89 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-  name = "Chat History",
-  keyName = "chathistory",
-  description = "Configuration for the chat history plugin"
+	name = "Chat History",
+	keyName = "chathistory",
+	description = "Configuration for the chat history plugin"
 )
 public interface ChatHistoryConfig extends Config
 {
-  @ConfigItem(
-    keyName = "savePublicChat",
-    name = "Save public chat",
-    description = "Configures whether or not to save history for the public chat"
-  )
-  default boolean savePublicChat()
-  {
-    return true;
-  }
+	@ConfigItem(
+		keyName = "savePublicChat",
+		name = "Save public chat",
+		description = "Configures whether or not to save history for the public chat"
+	)
+	default boolean savePublicChat()
+	{
+		return true;
+	}
 
-  @ConfigItem(
-    keyName = "savePrivateChat",
-    name = "Save private chat",
-    description = "Configures whether or not to save history for the private chat"
-  )
-  default boolean savePrivateChat()
-  {
-    return true;
-  }
+	@ConfigItem(
+		keyName = "savePrivateChat",
+		name = "Save private chat",
+		description = "Configures whether or not to save history for the private chat"
+	)
+	default boolean savePrivateChat()
+	{
+		return true;
+	}
 
-  @ConfigItem(
-    keyName = "saveClanChat",
-    name = "Save clan chat",
-    description = "Configures whether or not to save history for the clan chat"
-  )
-  default boolean saveClanChat()
-  {
-    return true;
-  }
+	@ConfigItem(
+		keyName = "saveClanChat",
+		name = "Save clan chat",
+		description = "Configures whether or not to save history for the clan chat"
+	)
+	default boolean saveClanChat()
+	{
+		return true;
+	}
 
-  @ConfigItem(
-    keyName = "saveGameMessages",
-    name = "Save game messages",
-    description = "Configures whether or not to save history for messages from the game tab (does not include filtered ones)"
-  )
-  default boolean saveGameMessages()
-  {
-    return false;
-  }
+	@ConfigItem(
+		keyName = "saveGameMessages",
+		name = "Save game messages",
+		description = "Configures whether or not to save history for messages from the game tab (does not include filtered ones)"
+	)
+	default boolean saveGameMessages()
+	{
+		return false;
+	}
 
-  @ConfigItem(
-    keyName = "saveExamineMessages",
-    name = "Save examine messages",
-    description = "Configures whether or not to save history for examine messages (items, objects, NPCs) from the game tab"
-  )
-  default boolean saveExamineMessages()
-  {
-    return false;
-  }
+	@ConfigItem(
+		keyName = "saveExamineMessages",
+		name = "Save examine messages",
+		description = "Configures whether or not to save history for examine messages (items, objects, NPCs) from the game tab"
+	)
+	default boolean saveExamineMessages()
+	{
+		return false;
+	}
 
-  @ConfigItem(
-    keyName = "saveFilteredMessages",
-    name = "Save filtered messages",
-    description = "Configures whether or not to save history for filtered messages from the game tab"
-  )
-  default boolean saveFilteredMessages()
-  {
-    return false;
-  }
+	@ConfigItem(
+		keyName = "saveFilteredMessages",
+		name = "Save filtered messages",
+		description = "Configures whether or not to save history for filtered messages from the game tab"
+	)
+	default boolean saveFilteredMessages()
+	{
+		return false;
+	}
 
-  @ConfigItem(
-    keyName = "saveTradeMessages",
-    name = "Save trade messages",
-    description = "Configures whether or not to save history for trade messages"
-  )
-  default boolean saveTradeMessages()
-  {
-    return false;
-  }
+	@ConfigItem(
+		keyName = "saveTradeMessages",
+		name = "Save trade messages",
+		description = "Configures whether or not to save history for trade messages"
+	)
+	default boolean saveTradeMessages()
+	{
+		return false;
+	}
 
-  @ConfigItem(
-    keyName = "saveDuelMessages",
-    name = "Save duel messages",
-    description = "Configures whether or not to save history for duel messages"
-  )
-  default boolean saveDuelMessages()
-  {
-    return false;
-  }
+	@ConfigItem(
+		keyName = "saveDuelMessages",
+		name = "Save duel messages",
+		description = "Configures whether or not to save history for duel messages"
+	)
+	default boolean saveDuelMessages()
+	{
+		return false;
+	}
 }

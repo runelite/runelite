@@ -27,9 +27,11 @@ package net.runelite.client.plugins.chathistory;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
+
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
+
 import com.google.inject.Provides;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
@@ -121,7 +123,7 @@ public class ChatHistoryPlugin extends Plugin
 		if (event.getMenuOption().contains("Clear history"))
 		{
 			messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
-					e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
+				e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 	}
 
@@ -228,6 +230,7 @@ public class ChatHistoryPlugin extends Plugin
 
 	/**
 	 * Small hack to prevent plugins checking for specific messages to match
+	 *
 	 * @param message message
 	 * @return message with nbsp
 	 */
