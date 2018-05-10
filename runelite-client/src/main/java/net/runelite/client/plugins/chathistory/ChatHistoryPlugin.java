@@ -35,6 +35,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.chat.QueuedMessage.QueuedMessageBuilder;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -48,7 +49,11 @@ public class ChatHistoryPlugin extends Plugin
 		ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
 		ChatMessageType.PRIVATE_MESSAGE_SENT,
 		ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
-		ChatMessageType.GAME
+		ChatMessageType.GAME,
+		ChatMessageType.FILTERED,
+		ChatMessageType.EXAMINE_ITEM,
+		ChatMessageType.EXAMINE_NPC,
+		ChatMessageType.EXAMINE_OBJECT
 	);
 
 	private Queue<QueuedMessage> messageQueue;
@@ -88,18 +93,21 @@ public class ChatHistoryPlugin extends Plugin
 
 		if (ALLOWED_HISTORY.contains(message.getType()))
 		{
-			final QueuedMessage queuedMessage = QueuedMessage.builder()
+			final QueuedMessageBuilder queuedMessageBuilder = QueuedMessage.builder()
 				.type(message.getType())
 				.name(message.getName())
 				.sender(message.getSender())
-				.value(nbsp(message.getValue()))
-				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
-				.build();
+				.value(nbsp(message.getValue()));
 
-			if (!messageQueue.contains(queuedMessage))
-			{
-				messageQueue.offer(queuedMessage);
-			}
+			// Check to see if this is a formatted message from RuneLite - such the GE/HA value on examine
+			if (message.getValue().contains("<col"))
+				queuedMessageBuilder.runeLiteFormattedMessage(nbsp(message.getValue()));
+
+			QueuedMessage queuedMessage = queuedMessageBuilder.build();
+
+			// Removed check for message in the queue - this was filtering out messages that may
+			// be appearing more than once on purpose (eating two pieces of food, chopping logs, etc)
+			messageQueue.offer(queuedMessage);
 		}
 	}
 
