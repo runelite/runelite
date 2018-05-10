@@ -22,42 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.idlenotifier;
+package net.runelite.client.plugins.chatnotifier;
 
-import com.google.common.base.Strings;
-import com.google.common.cache.CacheLoader;
-import net.runelite.client.util.WildcardMatcher;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
-class WildcardMatchLoader extends CacheLoader<String, Boolean>
+@ConfigGroup(
+	keyName = "chatnotifier",
+	name = "Chat Notifier",
+	description = "Configuration for the chat notifier plugin"
+)
+public interface ChatNotifierConfig extends Config
 {
-	private final List<String> nameFilters;
-
-	WildcardMatchLoader(List<String> nameFilters)
+	@ConfigItem(
+		keyName = "messageNotification",
+		name = "Notified messages",
+		description = "Configures specifically which messages to notify you of. Leave blank to disable. Format: message, message",
+		position = 1
+	)
+	default String getMessageNotification()
 	{
-		this.nameFilters = nameFilters;
+		return "";
 	}
 
-	@Override
-	public Boolean load(@Nonnull final String key)
+	@ConfigItem(
+		keyName = "ignoreFiltered",
+		name = "Ignore filtered",
+		description = "Configures whether or not to ignore messages that are being filtered.",
+		position = 2
+	)
+	default boolean ignoreFiltered()
 	{
-		if (Strings.isNullOrEmpty(key))
-		{
-			return false;
-		}
+		return true;
+	}
 
-		final String filteredName = key.trim();
+	@ConfigItem(
+		keyName = "notifyTrade",
+		name = "Notify trades",
+		description = "Configures whether or not to send a notification on incoming trade requests",
+		position = 3
+	)
+	default boolean notifyTrade()
+	{
+		return false;
+	}
 
-		for (final String filter : nameFilters)
-		{
-			if (WildcardMatcher.matches(filter, filteredName))
-			{
-				return true;
-			}
-		}
-
+	@ConfigItem(
+		keyName = "notifyDuel",
+		name = "Notify duels",
+		description = "Configures whether or not to send a notification on incoming duels",
+		position = 4
+	)
+	default boolean notifyDuel()
+	{
 		return false;
 	}
 }

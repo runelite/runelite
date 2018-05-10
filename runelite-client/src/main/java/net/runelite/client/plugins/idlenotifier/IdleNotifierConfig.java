@@ -90,26 +90,4 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
-
-	@ConfigItem(
-		keyName = "message",
-		name = "Notify on message",
-		description = "Configures if notification by messages should be enabled.",
-		position = 6
-	)
-	default boolean message()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "messageNotification",
-		name = "Notified messages",
-		description = "Configures specifically which messages to notify you of. Format: (message), (message)",
-		position = 7
-	)
-	default String getMessageNotification()
-	{
-		return "";
-	}
 }
