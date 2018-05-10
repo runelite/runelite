@@ -27,24 +27,31 @@ package net.runelite.client.plugins.motherlode;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.item.ItemPrice;
 
 class MotherlodeOreOverlay extends Overlay
 {
-	private final MotherlodeSession session;
+	private long totalGEPrice = 0;
+
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeOreOverlay(MotherlodeSession session, MotherlodePlugin plugin, MotherlodeConfig config)
+	private ItemManager itemManager;
+
+	@Inject
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
-		this.session = session;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -73,10 +80,24 @@ class MotherlodeOreOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(TitleComponent.builder().text("Ores collected").build());
+
+		String panelTitle = "Ores" + (
+				totalGEPrice > 0 ? " (" + StackFormatter.quantityToStackSize(totalGEPrice) + ')' : ""
+			);
+
+		panelComponent.getChildren().add(TitleComponent.builder().text(panelTitle).build());
+
+		totalGEPrice = 0;
 
 		if (runiteCollected > 0)
 		{
+			final ItemPrice price = itemManager.getItemPriceAsync(ItemID.RUNITE_ORE);
+
+			if (price != null)
+			{
+				totalGEPrice += price.getPrice() * runiteCollected;
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Runite:")
 				.right(Integer.toString(runiteCollected))
@@ -85,6 +106,13 @@ class MotherlodeOreOverlay extends Overlay
 
 		if (adamantCollected > 0)
 		{
+			final ItemPrice price = itemManager.getItemPriceAsync(ItemID.ADAMANTITE_ORE);
+
+			if (price != null)
+			{
+				totalGEPrice += price.getPrice() * adamantCollected;
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Adamant:")
 				.right(Integer.toString(adamantCollected))
@@ -93,6 +121,13 @@ class MotherlodeOreOverlay extends Overlay
 
 		if (mithrilCollected > 0)
 		{
+			final ItemPrice price = itemManager.getItemPriceAsync(ItemID.MITHRIL_ORE);
+
+			if (price != null)
+			{
+				totalGEPrice += price.getPrice() * mithrilCollected;
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Mithril:")
 				.right(Integer.toString(mithrilCollected))
@@ -101,6 +136,13 @@ class MotherlodeOreOverlay extends Overlay
 
 		if (goldCollected > 0)
 		{
+			final ItemPrice price = itemManager.getItemPriceAsync(ItemID.GOLD_ORE);
+
+			if (price != null)
+			{
+				totalGEPrice += price.getPrice() * goldCollected;
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Gold:")
 				.right(Integer.toString(goldCollected))
@@ -109,6 +151,13 @@ class MotherlodeOreOverlay extends Overlay
 
 		if (coalCollected > 0)
 		{
+			final ItemPrice price = itemManager.getItemPriceAsync(ItemID.COAL);
+
+			if (price != null)
+			{
+				totalGEPrice += price.getPrice() * coalCollected;
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Coal:")
 				.right(Integer.toString(coalCollected))
@@ -122,7 +171,6 @@ class MotherlodeOreOverlay extends Overlay
 				.right(Integer.toString(nuggetsCollected))
 				.build());
 		}
-
 
 		return panelComponent.render(graphics);
 	}
