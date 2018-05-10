@@ -79,9 +79,11 @@ public class AgilityOverlay extends Overlay
 				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
 				// This assumes that the obstacle is not clickable.
-				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
+
+				Polygon tilePoly = object.getCanvasTilePoly();
+				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && tilePoly != null)
 				{
-					OverlayUtil.renderPolygon(graphics, object.getCanvasTilePoly(), config.getTrapColor());
+					OverlayUtil.renderPolygon(graphics, tilePoly, config.getTrapColor());
 					return;
 				}
 
