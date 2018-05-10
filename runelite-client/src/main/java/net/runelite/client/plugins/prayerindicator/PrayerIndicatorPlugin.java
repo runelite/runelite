@@ -29,12 +29,14 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Prayer Indicator"
+	name = "Prayer Indicator",
+	enabledByDefault = false
 )
 public class PrayerIndicatorPlugin extends Plugin
 {
@@ -46,12 +48,17 @@ public class PrayerIndicatorPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private SpriteManager spriteManager;
+
 	@Override
 	protected void startUp()
 	{
 		for (PrayerType prayerType : PrayerType.values())
 		{
-			prayerCounter[prayerType.ordinal()] = new PrayerCounter(prayerType.getImage(), PrayerIndicatorPlugin.this, prayerType);
+			prayerCounter[prayerType.ordinal()] = new PrayerCounter(this, prayerType);
+			spriteManager.getSpriteAsync(prayerType.getSpriteID(), 0,
+				prayerCounter[prayerType.ordinal()].imageConsumer);
 		}
 	}
 
@@ -68,7 +75,7 @@ public class PrayerIndicatorPlugin extends Plugin
 
 		for (Prayer prayer : Prayer.values())
 		{
-			if (client.getVar(prayer.getVarbit()) == 1)
+			if (client.isPrayerActive(prayer))
 			{
 				int index = PrayerType.getPrayerType(prayer).ordinal();
 				infoBoxManager.addInfoBox(prayerCounter[index]);

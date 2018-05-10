@@ -24,14 +24,11 @@
  */
 package net.runelite.client.plugins.prayerindicator;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
-import net.runelite.http.api.sprite.SpriteClient;
 
 @AllArgsConstructor
 @Slf4j
@@ -83,25 +80,5 @@ enum PrayerType
 			}
 		}
 		return null;
-	}
-
-	private static SpriteClient getSpriteClient()
-	{
-		return new SpriteClient();
-	}
-
-	public BufferedImage getImage()
-	{
-		SpriteClient spriteClient = getSpriteClient();
-
-		try
-		{
-			return spriteClient.getSprite(spriteID);
-		}
-		catch (IOException e)
-		{
-			log.warn("Unable to load image", e);
-		}
-		return new BufferedImage(30 , 30 , BufferedImage.TYPE_INT_RGB);
 	}
 }

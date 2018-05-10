@@ -25,23 +25,43 @@
 package net.runelite.client.plugins.prayerindicator;
 
 import java.awt.image.BufferedImage;
+import java.util.function.Consumer;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
 public class PrayerCounter extends Counter
 {
+	private BufferedImage image;
 	private PrayerType prayerType;
+
 	private static String text = "";
 
-	PrayerCounter(BufferedImage image, Plugin plugin, PrayerType prayerType)
+	Consumer<BufferedImage> imageConsumer = (image) ->
 	{
-		super(image, plugin, text);
+		this.image = image;
+	};
+
+	PrayerCounter(Plugin plugin, PrayerType prayerType)
+	{
+		super(null, plugin, text);
 		this.prayerType = prayerType;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Counter{" + "prayer=" + prayerType.getName() + '}';
 	}
 
 	@Override
 	public String getTooltip()
 	{
 		return prayerType.getDescription();
+	}
+
+	@Override
+	public BufferedImage getImage()
+	{
+		return image;
 	}
 }

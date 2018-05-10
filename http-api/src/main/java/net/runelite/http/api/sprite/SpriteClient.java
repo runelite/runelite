@@ -67,4 +67,34 @@ public class SpriteClient
 			}
 		}
 	}
+
+	public BufferedImage getSprite(int spriteID, int frameID) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("sprite")
+			.addQueryParameter("spriteId", "" + spriteID)
+			.addQueryParameter("frameId", "" + frameID)
+			.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error grabbing sprite {} frame {}: {}", spriteID, frameID, response.message());
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			synchronized (ImageIO.class)
+			{
+				return ImageIO.read(in);
+			}
+		}
+	}
 }
