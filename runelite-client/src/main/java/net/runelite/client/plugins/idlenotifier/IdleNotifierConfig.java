@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
- * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

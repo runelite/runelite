@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
  * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
- * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
