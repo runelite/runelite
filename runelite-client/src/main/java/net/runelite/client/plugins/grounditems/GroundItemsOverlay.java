@@ -242,7 +242,7 @@ public class GroundItemsOverlay extends Overlay
 			return Color.GRAY;
 		}
 
-		if (highlighted)
+		if (highlighted && !config.showRecolorItemPriority())
 		{
 			return config.highlightedColor();
 		}
@@ -266,6 +266,11 @@ public class GroundItemsOverlay extends Overlay
 		if (cost >= config.lowValuePrice())
 		{
 			return config.lowValueColor();
+		}
+
+		if (highlighted && config.showRecolorItemPriority())
+		{
+			return config.highlightedColor();
 		}
 
 		return config.defaultColor();
