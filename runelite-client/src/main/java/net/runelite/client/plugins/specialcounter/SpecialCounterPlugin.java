@@ -181,7 +181,14 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		Item[] items = equipment.getItems();
-		Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
+		int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+
+		if (items == null || weaponIdx >= items.length)
+		{
+			return null;
+		}
+
+		Item weapon = items[weaponIdx];
 
 		for (SpecialWeapon specialWeapon : SpecialWeapon.values())
 		{
