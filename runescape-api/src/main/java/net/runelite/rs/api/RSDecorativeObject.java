@@ -31,7 +31,7 @@ public interface RSDecorativeObject extends DecorativeObject
 {
 	@Import("hash")
 	@Override
-	int getHash();
+	long getHash();
 
 	@Import("x")
 	int getX();
