@@ -40,16 +40,14 @@ class Obstacles
 		new Obstacle(3029, 5003, "Run"),  // Floor tiles
 		new Obstacle(3024, 5001, "Open", GRILL_7255),  // Grill
 		new Obstacle(3011, 5005, "Run"),
-		new Obstacle(3008, 5003, "Run"),
 		new Obstacle(3004, 5003, "Run"),
 		new Obstacle(2994, 5004, "Climb"), new Obstacle(2993, 5004, LEDGE_7240),  // Ledge
 		new Obstacle(2994, 5005, "Climb"), new Obstacle(2993, 5005, LEDGE_7240),  // Ledge
-		new Obstacle(2969, 5016, "Jump"), new Obstacle(2969, 5017, "Jump"), new Obstacle(2969, 5018, "Jump"), new Obstacle(2969, 5019, "Jump"),
+		new Obstacle(2969, 5016, "Stand"), new Obstacle(2969, 5017, "Stand"), new Obstacle(2969, 5018, "Stand"), new Obstacle(2969, 5019, "Stand"),
 		new Obstacle(2958, 5031, "Cross"),
 		new Obstacle(2962, 5050, "Stand"),
 		new Obstacle(2963, 5056, "Run"),
 		new Obstacle(2957, 5068, "Enter"), new Obstacle(2957, 5069, PASSAGEWAY),  // Passageway
-		new Obstacle(2957, 5076, "Jump"),
 		new Obstacle(2955, 5094, "Enter"), new Obstacle(2955, 5095, PASSAGEWAY),
 		new Obstacle(2972, 5098, "Enter"), new Obstacle(2972, 5097, PASSAGEWAY),
 		new Obstacle(2972, 5094, "Open"), new Obstacle(2972, 5094, GRILL_7255),
@@ -88,10 +86,8 @@ class Obstacles
 		new Obstacle(2992, 5067, "Stand"),
 		new Obstacle(2992, 5075, "Run"),
 		new Obstacle(3009, 5063, "Take"),
-		new Obstacle(3014, 5063, "Stun NPC"),
-		new Obstacle(3028, 5056, "Stand"),
-		new Obstacle(3028, 5051, "Jump"),
-		new Obstacle(3028, 5047, "Jump"),
+		new Obstacle(3028, 5056, "Run"),
+		new Obstacle(3028, 5047, "Walk"),
 
 		new Obstacle(3018, 5047, "Crack", WALL_SAFE_7237),
 
@@ -109,6 +105,7 @@ class Obstacles
 		new Obstacle(2977, 5089, "AVOID"), new Obstacle(2978, 5089, "AVOID"), new Obstacle(2979, 5089, "AVOID"),
 		new Obstacle(2977, 5088, "AVOID"), new Obstacle(2978, 5088, "AVOID"), new Obstacle(2979, 5088, "AVOID"),
 
+		new Obstacle(3014, 5063, "Stun NPC"),
 		new Obstacle(2992, 5057, "GO NORTH"),  // Hint for 80 thieving shortcut!
 	};
 
