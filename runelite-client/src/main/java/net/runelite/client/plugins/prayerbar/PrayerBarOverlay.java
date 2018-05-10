@@ -43,7 +43,9 @@ public class PrayerBarOverlay extends Overlay
 {
 	private final Client client;
 	private final PrayerBarConfig config;
-	private final Dimension prayerBarSize = new Dimension(30, 5); // 30x5 is the size of health bars
+	private static final Color BAR_FILL_COLOR = Color.cyan;
+	private static final Color BAR_BG_COLOR = Color.white;
+	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5); // 30x5 is the size of health bars
 	private Player localPlayer;
 	private boolean showPrayerBar = true;
 
@@ -103,16 +105,16 @@ public class PrayerBarOverlay extends Overlay
 		int barX = canvasPoint.getX() - 15; // (-15, 3) is to line it up with your health bar, 1 pixel beneath it.
 		int barY = canvasPoint.getY() + 3;
 
-		int barWidth = prayerBarSize.width;
-		int barHeight = prayerBarSize.height;
+		int barWidth = PRAYER_BAR_SIZE.width;
+		int barHeight = PRAYER_BAR_SIZE.height;
 
 		float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / client.getRealSkillLevel(Skill.PRAYER);
 
 		int progressFill = (int) Math.ceil(Math.min((barWidth * ratio), barWidth)); // Restricted by the width to prevent the bar from being too long while you are boosted above your real prayer level.
 
-		graphics.setColor(Color.white);
+		graphics.setColor(BAR_BG_COLOR);
 		graphics.fillRect(barX, barY, barWidth, barHeight);
-		graphics.setColor(Color.cyan);
+		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
 		return new Dimension(barWidth, barHeight);
