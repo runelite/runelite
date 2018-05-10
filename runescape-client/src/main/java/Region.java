@@ -477,7 +477,7 @@ public class Region {
       } else {
          int var12 = var5 * 64 + var2 * 128;
          int var13 = var6 * 64 + var3 * 128;
-         return this.method2914(var1, var2, var3, var5, var6, var12, var13, var4, var7, var8, false, var9, var11);
+         return this.addEntityMarker(var1, var2, var3, var5, var6, var12, var13, var4, var7, var8, false, var9, var11);
       }
    }
 
@@ -515,7 +515,7 @@ public class Region {
          var12 /= 128;
          var13 /= 128;
          var14 /= 128;
-         return this.method2914(var1, var11, var12, var13 - var11 + 1, var14 - var12 + 1, var2, var3, var4, var6, var7, true, var8, 0);
+         return this.addEntityMarker(var1, var11, var12, var13 - var11 + 1, var14 - var12 + 1, var2, var3, var4, var6, var7, true, var8, 0);
       }
    }
 
@@ -524,14 +524,15 @@ public class Region {
       signature = "(IIIIILdz;IJIIII)Z"
    )
    public boolean method2971(int var1, int var2, int var3, int var4, int var5, Renderable var6, int var7, long var8, int var10, int var11, int var12, int var13) {
-      return var6 == null?true:this.method2914(var1, var10, var11, var12 - var10 + 1, var13 - var11 + 1, var2, var3, var4, var6, var7, true, var8, 0);
+      return var6 == null?true:this.addEntityMarker(var1, var10, var11, var12 - var10 + 1, var13 - var11 + 1, var2, var3, var4, var6, var7, true, var8, 0);
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(IIIIIIIILdz;IZJI)Z"
    )
-   boolean method2914(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, Renderable var9, int var10, boolean var11, long var12, int var14) {
+   @Export("addEntityMarker")
+   boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, Renderable var9, int var10, boolean var11, long var12, int var14) {
       int var16;
       for(int var15 = var2; var15 < var2 + var4; ++var15) {
          for(var16 = var3; var16 < var3 + var5; ++var16) {
