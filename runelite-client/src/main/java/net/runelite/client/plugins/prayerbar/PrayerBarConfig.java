@@ -55,39 +55,6 @@ public interface PrayerBarConfig extends Config
 	)
 	default boolean hideIfOutOfCombat()
 	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "prayerBarFgColor",
-		name = "Prayer Bar FG Color",
-		description = "Color of the overhead prayer bar",
-		position = 3
-	)
-	default Color getPrayerBarColor()
-	{
-		return Color.cyan;
-	}
-
-	@ConfigItem(
-		keyName = "prayerBarBgColor",
-		name = "Prayer Bar BG Color",
-		description = "Color of the background of the overhead prayer bar",
-		position = 4
-	)
-	default Color getPrayerBarBackgroundColor()
-	{
-		return Color.white;
-	}
-
-	@ConfigItem(
-		keyName = "prayerBarBgAlpha",
-		name = "Prayer Bar BG Alpha",
-		description = "Translucency of the background of the overhead prayer bar",
-		position = 5
-	)
-	default int getPrayerBarBackgroundAlpha()
-	{
-		return 255;
+		return true;
 	}
 }

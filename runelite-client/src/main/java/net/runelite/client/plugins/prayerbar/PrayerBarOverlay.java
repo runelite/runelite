@@ -51,17 +51,17 @@ public class PrayerBarOverlay extends Overlay
 	//private static final Logger logger = LoggerFactory.getLogger(PrayerBarOverlay.class);
 
 	@Inject
-	public PrayerBarOverlay(PrayerBarConfig config, Client client)
+	private PrayerBarOverlay(PrayerBarConfig config, Client client)
 	{
 		this.config = config;
 		this.client = client;
 
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.MED);
+		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
-	public void onTick()
+	public void checkToShowPrayerBar()
 	{
 		showPrayerBar = true;
 
@@ -97,13 +97,6 @@ public class PrayerBarOverlay extends Overlay
 
 	private Dimension renderPrayerBar(Graphics2D graphics, Player localPlayer)
 	{
-		Color backgroundColor = new Color(
-			config.getPrayerBarBackgroundColor().getRed(),
-			config.getPrayerBarBackgroundColor().getGreen(),
-			config.getPrayerBarBackgroundColor().getBlue(),
-			Math.min(config.getPrayerBarBackgroundAlpha(), 255)
-		);
-
 		int height = localPlayer.getLogicalHeight() + 15;
 		LocalPoint localLocation = localPlayer.getLocalLocation();
 		Point canvasPoint = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane(), height);
@@ -119,9 +112,9 @@ public class PrayerBarOverlay extends Overlay
 
 		int progressFill = (int) Math.ceil(Math.min((barWidth * ratio), barWidth)); // Restricted by the width to prevent the bar from being too long while you are boosted above your real prayer level.
 
-		graphics.setColor(backgroundColor);
+		graphics.setColor(Color.white);
 		graphics.fillRect(barX, barY, barWidth, barHeight);
-		graphics.setColor(config.getPrayerBarColor());
+		graphics.setColor(Color.cyan);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
 		return new Dimension(barWidth, barHeight);
@@ -136,6 +129,7 @@ public class PrayerBarOverlay extends Overlay
 				return true;
 			}
 		}
+
 		return false;
 	}
 }

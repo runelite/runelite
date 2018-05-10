@@ -62,8 +62,8 @@ public class PrayerBarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
-		overlay.onTick();
+		overlay.checkToShowPrayerBar();
 	}
 }
