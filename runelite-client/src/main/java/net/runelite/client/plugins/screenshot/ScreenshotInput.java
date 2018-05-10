@@ -36,6 +36,7 @@ public class ScreenshotInput implements KeyListener
 	private final ScreenshotPlugin plugin;
 
 	private boolean CONTROL_KEY_DOWN = false;
+	private int SCREENSHOT_KEY_EVENT = KeyEvent.VK_S;
 
 	@Inject
 	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
@@ -50,7 +51,7 @@ public class ScreenshotInput implements KeyListener
 		if (event.getKeyCode() == KeyEvent.VK_CONTROL)
 			this.CONTROL_KEY_DOWN = true;
 
-		if (event.getKeyCode() == KeyEvent.VK_S && this.CONTROL_KEY_DOWN)
+		if (event.getKeyCode() == SCREENSHOT_KEY_EVENT && this.CONTROL_KEY_DOWN)
 			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
 	}
 
