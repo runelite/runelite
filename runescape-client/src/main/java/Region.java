@@ -365,8 +365,8 @@ public class Region {
          var9.x = var2 * 128 + 64;
          var9.y = var3 * 128 + 64;
          var9.floor = var4;
-         var9.field1550 = var6;
-         var9.field1557 = var8;
+         var9.hash = var6;
+         var9.renderInfoBitPacked = var8;
          if(this.tiles[var1][var2][var3] == null) {
             this.tiles[var1][var2][var3] = new Tile(var1, var2, var3);
          }
@@ -796,7 +796,7 @@ public class Region {
    @ObfuscatedName("ah")
    public long method2930(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
-      return var4 != null && var4.groundObject != null?var4.groundObject.field1550:0L;
+      return var4 != null && var4.groundObject != null?var4.groundObject.hash :0L;
    }
 
    @ObfuscatedName("az")
@@ -808,8 +808,8 @@ public class Region {
          return var6.wallObject.field1814 & 255;
       } else if(var6.decorativeObject != null && var6.decorativeObject.hash == var4) {
          return var6.decorativeObject.renderInfoBitPacked & 255;
-      } else if(var6.groundObject != null && var6.groundObject.field1550 == var4) {
-         return var6.groundObject.field1557 & 255;
+      } else if(var6.groundObject != null && var6.groundObject.hash == var4) {
+         return var6.groundObject.renderInfoBitPacked & 255;
       } else {
          for(int var7 = 0; var7 < var6.entityCount; ++var7) {
             if(var6.objects[var7].hash == var4) {
@@ -1461,7 +1461,7 @@ public class Region {
                                  if(var20) {
                                     GroundObject var22 = var3.groundObject;
                                     if(var22 != null) {
-                                       var22.renderable.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var22.x - cameraX2, var22.floor - cameraY2, var22.y - cameraZ2, var22.field1550);
+                                       var22.renderable.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var22.x - cameraX2, var22.floor - cameraY2, var22.y - cameraZ2, var22.hash);
                                     }
 
                                     ItemLayer var23 = var3.itemLayer;

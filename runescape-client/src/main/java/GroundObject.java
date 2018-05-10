@@ -19,7 +19,8 @@ public final class GroundObject {
    @ObfuscatedGetter(
       longValue = 728614643722600121L
    )
-   public long field1550;
+   @Export("hash")
+   public long hash;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -112250021
@@ -42,7 +43,8 @@ public final class GroundObject {
    @ObfuscatedGetter(
       intValue = -159480023
    )
-   int field1557;
+   @Export("renderInfoBitPacked")
+   int renderInfoBitPacked;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(

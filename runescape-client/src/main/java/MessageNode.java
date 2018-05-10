@@ -587,7 +587,7 @@ public class MessageNode extends CacheableNode {
                   if(var9 == 3) {
                      GroundObject var44 = ScriptEvent.region.getFloorDecoration(class192.plane, var3, var38);
                      if(var44 != null) {
-                        var44.renderable = new DynamicObject(class8.method93(var44.field1550), 22, var8, class192.plane, var3, var38, var5, false, var44.renderable);
+                        var44.renderable = new DynamicObject(class8.method93(var44.hash), 22, var8, class192.plane, var3, var38, var5, false, var44.renderable);
                      }
                   }
                }
