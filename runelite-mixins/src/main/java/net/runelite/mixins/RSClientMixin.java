@@ -124,6 +124,12 @@ public abstract class RSClientMixin implements RSClient
 	private static RSNPC[] oldNpcs = new RSNPC[32768];
 
 	@Inject
+	private static int itemPressedDurationBuffer;
+
+	@Inject
+	private static int inventoryDragDelay;
+
+	@Inject
 	@Override
 	public boolean isInterpolatePlayerAnimations()
 	{
@@ -163,6 +169,13 @@ public abstract class RSClientMixin implements RSClient
 	public void setInterpolateObjectAnimations(boolean interpolate)
 	{
 		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public void setInventoryDragDelay(int delay)
+	{
+		inventoryDragDelay = delay;
 	}
 
 	@Inject
@@ -630,6 +643,28 @@ public abstract class RSClientMixin implements RSClient
 			WidgetLoaded event = new WidgetLoaded();
 			event.setGroupId(groupId);
 			eventBus.post(event);
+		}
+	}
+
+	@FieldHook("itemPressedDuration")
+	@Inject
+	public static void itemPressedDurationChanged(int idx)
+	{
+		if (client.getItemPressedDuration() > 0)
+		{
+			itemPressedDurationBuffer++;
+			if (itemPressedDurationBuffer >= inventoryDragDelay)
+			{
+				client.setItemPressedDuration(itemPressedDurationBuffer);
+			}
+			else
+			{
+				client.setItemPressedDuration(0);
+			}
+		}
+		else
+		{
+			itemPressedDurationBuffer = 0;
 		}
 	}
 
