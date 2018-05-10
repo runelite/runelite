@@ -1042,7 +1042,8 @@ public final class Client extends GameEngine implements class302 {
    @ObfuscatedName("kg")
    static boolean field1079;
    @ObfuscatedName("kl")
-   static boolean field998;
+   @Export("shiftClickModeForced")
+   static boolean shiftClickModeForced;
    @ObfuscatedName("km")
    static boolean field1112;
    @ObfuscatedName("kn")
@@ -1345,7 +1346,7 @@ public final class Client extends GameEngine implements class302 {
       menuBooleanArray = new boolean[500];
       field1111 = false;
       field1079 = false;
-      field998 = false;
+      shiftClickModeForced = false;
       field1112 = true;
       field1000 = -1;
       field1001 = -1;

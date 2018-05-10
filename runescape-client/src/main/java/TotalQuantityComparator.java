@@ -417,7 +417,7 @@ final class TotalQuantityComparator implements Comparator {
       garbageValue = "867165652"
    )
    static void method102(boolean var0) {
-      Client.field998 = var0;
+      Client.shiftClickModeForced = var0;
    }
 
    @ObfuscatedName("jg")

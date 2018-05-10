@@ -560,6 +560,6 @@ public class SoundTaskDataProvider implements class101 {
       garbageValue = "-1064641646"
    )
    static boolean method830() {
-      return Client.field998;
+      return Client.shiftClickModeForced;
    }
 }

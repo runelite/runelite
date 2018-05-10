@@ -905,7 +905,7 @@ public final class GameCanvas extends Canvas {
                         String[] var9 = var8.inventoryActions;
                         int var10 = -1;
                         if(Client.field1079) {
-                           boolean var11 = Client.field998 || KeyFocusListener.keyPressed[81];
+                           boolean var11 = Client.shiftClickModeForced || KeyFocusListener.keyPressed[81];
                            if(var11) {
                               var10 = var8.getShiftClickActionIndex();
                            }
