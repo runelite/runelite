@@ -1,142 +1,145 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("dh")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("er")
-   @ObfuscatedSignature(
-      signature = "Lfs;"
-   )
-   static class169 field1812;
-   @ObfuscatedName("g")
+   @ObfuscatedName("pk")
    @ObfuscatedGetter(
-      intValue = 138753183
+      intValue = -83791479
+   )
+   static int field1589;
+   @ObfuscatedName("eo")
+   @ObfuscatedSignature(
+      signature = "Led;"
+   )
+   static Task field1584;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1561524015
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1654232779
+      intValue = 1674601455
    )
    @Export("x")
    int x;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1040171339
+      intValue = -798044221
    )
    @Export("y")
    int y;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1081663913
+      intValue = -1001695283
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Ler;"
+      signature = "Ldi;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ldl;"
+      signature = "Lde;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Ldq;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Leo;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ldw;"
+      signature = "Ldj;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Ldo;"
+      signature = "Ldp;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -546143745
+      intValue = -1950200141
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Let;"
+      signature = "[Leg;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1535032315
+      intValue = -148362437
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 99522543
+      intValue = -1028803959
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("q")
+   @ObfuscatedName("y")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("v")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 989863761
+      intValue = 351668389
    )
    @Export("wallCullDirection")
    int wallCullDirection;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -82938123
+      intValue = -900292881
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("k")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1178380049
+      intValue = -568181011
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("w")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -799269623
+      intValue = 360429277
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("m")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Ldh;"
    )
    @Export("bridge")
    Tile bridge;
@@ -150,111 +153,17 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/io/File;Ljava/io/File;I)V",
-      garbageValue = "1613059520"
+      signature = "(IB)I",
+      garbageValue = "-6"
    )
-   static void method2778(File var0, File var1) {
-      try {
-         FileOnDisk var2 = new FileOnDisk(class167.jagexClDat, "rw", 10000L);
-         Buffer var3 = new Buffer(500);
-         var3.putByte(3);
-         var3.putByte(var1 != null?1:0);
-         var3.putCESU8(var0.getPath());
-         if(var1 != null) {
-            var3.putCESU8("");
-         }
-
-         var2.write(var3.payload, 0, var3.offset);
-         var2.close();
-      } catch (IOException var4) {
-         var4.printStackTrace();
-      }
-
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "([BB)V",
-      garbageValue = "1"
-   )
-   static synchronized void method2779(byte[] var0) {
-      if(var0.length == 100 && class195.field2576 < 1000) {
-         class195.field2578[++class195.field2576 - 1] = var0;
-      } else if(var0.length == 5000 && class195.field2573 < 250) {
-         class195.field2575[++class195.field2573 - 1] = var0;
-      } else if(var0.length == 30000 && class195.field2574 < 50) {
-         class195.field2580[++class195.field2574 - 1] = var0;
-      } else {
-         if(MilliTimer.field2156 != null) {
-            for(int var1 = 0; var1 < class195.field2572.length; ++var1) {
-               if(var0.length == class195.field2572[var1] && class195.field2579[var1] < MilliTimer.field2156[var1].length) {
-                  MilliTimer.field2156[var1][class195.field2579[var1]++] = var0;
-                  return;
-               }
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("kn")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)V",
-      garbageValue = "0"
-   )
-   static void method2780(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < ItemComposition.field3643; ++var4) {
-         ItemComposition var5 = NetWriter.getItemDefinition(var4);
-         if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               WidgetNode.field772 = -1;
-               Size.field366 = null;
-               return;
-            }
-
-            if(var3 >= var2.length) {
-               short[] var6 = new short[var2.length * 2];
-
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
-               }
-
-               var2 = var6;
-            }
-
-            var2[var3++] = (short)var4;
-         }
-      }
-
-      Size.field366 = var2;
-      OwnWorldComparator.field846 = 0;
-      WidgetNode.field772 = var3;
-      String[] var8 = new String[WidgetNode.field772];
-
-      for(int var9 = 0; var9 < WidgetNode.field772; ++var9) {
-         var8[var9] = NetWriter.getItemDefinition(var2[var9]).name;
-      }
-
-      WorldMapType1.method273(var8, Size.field366);
-   }
-
-   @ObfuscatedName("kx")
-   @ObfuscatedSignature(
-      signature = "(Lgg;B)V",
-      garbageValue = "106"
-   )
-   static void method2777(Buffer var0) {
-      if(Client.field1071 != null) {
-         var0.putBytes(Client.field1071, 0, Client.field1071.length);
-      } else {
-         byte[] var1 = Preferences.method1778();
-         var0.putBytes(var1, 0, var1.length);
-      }
+   public static int method2717(int var0) {
+      var0 = (var0 & 1431655765) + (var0 >>> 1 & 1431655765);
+      var0 = (var0 >>> 2 & 858993459) + (var0 & 858993459);
+      var0 = var0 + (var0 >>> 4) & 252645135;
+      var0 += var0 >>> 8;
+      var0 += var0 >>> 16;
+      return var0 & 255;
    }
 }

@@ -4,81 +4,81 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jr")
+@ObfuscatedName("iv")
 @Implements("IndexDataBase")
 public abstract class IndexDataBase {
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lfl;"
    )
    @Export("gzip")
    static GZipDecompressor gzip;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -763325975
-   )
-   static int field3379;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -225110591
+      intValue = -679236219
+   )
+   static int field3179;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1625132987
    )
    @Export("validArchivesCount")
    int validArchivesCount;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("archiveIds")
    int[] archiveIds;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @Export("archiveNames")
    int[] archiveNames;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Lgw;"
    )
    @Export("identifiers")
    Identifiers identifiers;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @Export("archiveCrcs")
    int[] archiveCrcs;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @Export("archiveRevisions")
    int[] archiveRevisions;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @Export("archiveNumberOfFiles")
    int[] archiveNumberOfFiles;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @Export("archiveFileIds")
    int[][] archiveFileIds;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @Export("archiveFileNames")
    int[][] archiveFileNames;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "[Lhk;"
+      signature = "[Lgw;"
    )
    @Export("childIdentifiers")
    Identifiers[] childIdentifiers;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @Export("archives")
    Object[] archives;
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @Export("childs")
    Object[][] childs;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 705106645
+      intValue = 424781117
    )
    @Export("crc")
    public int crc;
-   @ObfuscatedName("q")
+   @ObfuscatedName("y")
    @Export("releaseArchives")
    boolean releaseArchives;
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @Export("shallowRecords")
    boolean shallowRecords;
 
    static {
       gzip = new GZipDecompressor();
-      field3379 = 0;
+      field3179 = 0;
    }
 
    IndexDataBase(boolean var1, boolean var2) {
@@ -86,35 +86,28 @@ public abstract class IndexDataBase {
       this.shallowRecords = var2;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-744189284"
+      garbageValue = "-190680601"
    )
    @Export("setIndexReference")
    void setIndexReference(byte[] var1) {
       int var3 = var1.length;
-      int var5 = -1;
-
-      int var6;
-      for(var6 = 0; var6 < var3; ++var6) {
-         var5 = var5 >>> 8 ^ Buffer.crc32Table[(var5 ^ var1[var6]) & 255];
-      }
-
-      var5 = ~var5;
-      this.crc = var5;
-      Buffer var15 = new Buffer(CombatInfoListHolder.decodeContainer(var1));
-      var5 = var15.readUnsignedByte();
+      int var2 = class236.method4596(var1, 0, var3);
+      this.crc = var2;
+      Buffer var4 = new Buffer(GZipDecompressor.decodeContainer(var1));
+      int var5 = var4.readUnsignedByte();
       if(var5 >= 5 && var5 <= 7) {
          if(var5 >= 6) {
-            var15.readInt();
+            var4.readInt();
          }
 
-         var6 = var15.readUnsignedByte();
+         int var6 = var4.readUnsignedByte();
          if(var5 >= 7) {
-            this.validArchivesCount = var15.getLargeSmart();
+            this.validArchivesCount = var4.getLargeSmart();
          } else {
-            this.validArchivesCount = var15.readUnsignedShort();
+            this.validArchivesCount = var4.readUnsignedShort();
          }
 
          int var7 = 0;
@@ -123,14 +116,14 @@ public abstract class IndexDataBase {
          int var9;
          if(var5 >= 7) {
             for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveIds[var9] = var7 += var15.getLargeSmart();
+               this.archiveIds[var9] = var7 += var4.getLargeSmart();
                if(this.archiveIds[var9] > var8) {
                   var8 = this.archiveIds[var9];
                }
             }
          } else {
             for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveIds[var9] = var7 += var15.readUnsignedShort();
+               this.archiveIds[var9] = var7 += var4.readUnsignedShort();
                if(this.archiveIds[var9] > var8) {
                   var8 = this.archiveIds[var9];
                }
@@ -147,22 +140,22 @@ public abstract class IndexDataBase {
             this.archiveNames = new int[var8 + 1];
 
             for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-               this.archiveNames[this.archiveIds[var9]] = var15.readInt();
+               this.archiveNames[this.archiveIds[var9]] = var4.readInt();
             }
 
             this.identifiers = new Identifiers(this.archiveNames);
          }
 
          for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-            this.archiveCrcs[this.archiveIds[var9]] = var15.readInt();
+            this.archiveCrcs[this.archiveIds[var9]] = var4.readInt();
          }
 
          for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-            this.archiveRevisions[this.archiveIds[var9]] = var15.readInt();
+            this.archiveRevisions[this.archiveIds[var9]] = var4.readInt();
          }
 
          for(var9 = 0; var9 < this.validArchivesCount; ++var9) {
-            this.archiveNumberOfFiles[this.archiveIds[var9]] = var15.readUnsignedShort();
+            this.archiveNumberOfFiles[this.archiveIds[var9]] = var4.readUnsignedShort();
          }
 
          int var10;
@@ -179,7 +172,7 @@ public abstract class IndexDataBase {
                this.archiveFileIds[var10] = new int[var11];
 
                for(var13 = 0; var13 < var11; ++var13) {
-                  var14 = this.archiveFileIds[var10][var13] = var7 += var15.getLargeSmart();
+                  var14 = this.archiveFileIds[var10][var13] = var7 += var4.getLargeSmart();
                   if(var14 > var12) {
                      var12 = var14;
                   }
@@ -196,7 +189,7 @@ public abstract class IndexDataBase {
                this.archiveFileIds[var10] = new int[var11];
 
                for(var13 = 0; var13 < var11; ++var13) {
-                  var14 = this.archiveFileIds[var10][var13] = var7 += var15.readUnsignedShort();
+                  var14 = this.archiveFileIds[var10][var13] = var7 += var4.readUnsignedShort();
                   if(var14 > var12) {
                      var12 = var14;
                   }
@@ -216,7 +209,7 @@ public abstract class IndexDataBase {
                this.archiveFileNames[var10] = new int[this.childs[var10].length];
 
                for(var12 = 0; var12 < var11; ++var12) {
-                  this.archiveFileNames[var10][this.archiveFileIds[var10][var12]] = var15.readInt();
+                  this.archiveFileNames[var10][this.archiveFileIds[var10][var12]] = var4.readInt();
                }
 
                this.childIdentifiers[var10] = new Identifiers(this.archiveFileNames[var10]);
@@ -228,28 +221,28 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-333551024"
+      signature = "(IB)V",
+      garbageValue = "1"
    )
-   void vmethod4755(int var1) {
+   void vmethod4741(int var1) {
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(III)[B",
-      garbageValue = "928958327"
+      signature = "(IIS)[B",
+      garbageValue = "16149"
    )
    @Export("getConfigData")
    public byte[] getConfigData(int var1, int var2) {
       return this.getConfigDataKeys(var1, var2, (int[])null);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(II[II)[B",
-      garbageValue = "-16711936"
+      garbageValue = "-1627995834"
    )
    @Export("getConfigDataKeys")
    public byte[] getConfigDataKeys(int var1, int var2, int[] var3) {
@@ -265,7 +258,7 @@ public abstract class IndexDataBase {
             }
          }
 
-         byte[] var5 = class1.toByteArray(this.childs[var1][var2], false);
+         byte[] var5 = WorldMapType2.toByteArray(this.childs[var1][var2], false);
          if(this.shallowRecords) {
             this.childs[var1][var2] = null;
          }
@@ -276,10 +269,10 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "-1621879797"
+      garbageValue = "-667807327"
    )
    @Export("tryLoadRecord")
    public boolean tryLoadRecord(int var1, int var2) {
@@ -297,12 +290,12 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1460745810"
+      signature = "(IB)Z",
+      garbageValue = "21"
    )
-   public boolean method4646(int var1) {
+   public boolean method4629(int var1) {
       if(this.childs.length == 1) {
          return this.tryLoadRecord(0, var1);
       } else if(this.childs[var1].length == 1) {
@@ -312,10 +305,10 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1964881933"
+      signature = "(IB)Z",
+      garbageValue = "7"
    )
    @Export("containsFile")
    public boolean containsFile(int var1) {
@@ -327,12 +320,12 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-658121487"
+      signature = "(S)Z",
+      garbageValue = "-2638"
    )
-   public boolean method4666() {
+   public boolean method4631() {
       boolean var1 = true;
 
       for(int var2 = 0; var2 < this.archiveIds.length; ++var2) {
@@ -348,20 +341,20 @@ public abstract class IndexDataBase {
       return var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "374327103"
+      signature = "(IB)I",
+      garbageValue = "-45"
    )
    @Export("archiveLoadPercent")
    int archiveLoadPercent(int var1) {
       return this.archives[var1] != null?100:0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IB)[B",
-      garbageValue = "26"
+      signature = "(II)[B",
+      garbageValue = "1926011051"
    )
    @Export("takeRecordFlat")
    public byte[] takeRecordFlat(int var1) {
@@ -374,10 +367,10 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIB)[B",
-      garbageValue = "1"
+      garbageValue = "19"
    )
    @Export("getChild")
    public byte[] getChild(int var1, int var2) {
@@ -393,17 +386,17 @@ public abstract class IndexDataBase {
             }
          }
 
-         byte[] var4 = class1.toByteArray(this.childs[var1][var2], false);
+         byte[] var4 = WorldMapType2.toByteArray(this.childs[var1][var2], false);
          return var4;
       } else {
          return null;
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "1472239510"
+      garbageValue = "5000000"
    )
    @Export("getRecordFlat")
    public byte[] getRecordFlat(int var1) {
@@ -416,73 +409,73 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-27"
+      signature = "(II)V",
+      garbageValue = "1716933918"
    )
    @Export("loadArchive")
    void loadArchive(int var1) {
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "-928431992"
+      garbageValue = "-264770335"
    )
    @Export("getChilds")
    public int[] getChilds(int var1) {
       return this.archiveFileIds[var1];
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "-1742618333"
+      garbageValue = "1627732983"
    )
    @Export("fileCount")
    public int fileCount(int var1) {
       return this.childs[var1].length;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-20"
+      signature = "(I)I",
+      garbageValue = "1905738641"
    )
    @Export("size")
    public int size() {
       return this.childs.length;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2077691934"
+      garbageValue = "-2045891586"
    )
-   public void method4657() {
+   public void method4662() {
       for(int var1 = 0; var1 < this.archives.length; ++var1) {
          this.archives[var1] = null;
       }
 
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-500212489"
+      signature = "(IB)V",
+      garbageValue = "92"
    )
-   public void method4675(int var1) {
+   public void method4659(int var1) {
       for(int var2 = 0; var2 < this.childs[var1].length; ++var2) {
          this.childs[var1][var2] = null;
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-331387292"
+      garbageValue = "1450248011"
    )
    @Export("reset")
    public void reset() {
@@ -496,10 +489,10 @@ public abstract class IndexDataBase {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I[II)Z",
-      garbageValue = "-1527505885"
+      garbageValue = "465658564"
    )
    @Export("buildRecords")
    boolean buildRecords(int var1, int[] var2) {
@@ -522,15 +515,15 @@ public abstract class IndexDataBase {
             return true;
          } else {
             byte[] var18;
-            if(var2 == null || var2[0] == 0 && var2[1] == 0 && var2[2] == 0 && var2[3] == 0) {
-               var18 = class1.toByteArray(this.archives[var1], false);
-            } else {
-               var18 = class1.toByteArray(this.archives[var1], true);
+            if(var2 != null && (var2[0] != 0 || var2[1] != 0 || var2[2] != 0 || var2[3] != 0)) {
+               var18 = WorldMapType2.toByteArray(this.archives[var1], true);
                Buffer var8 = new Buffer(var18);
                var8.decryptXtea(var2, 5, var8.payload.length);
+            } else {
+               var18 = WorldMapType2.toByteArray(this.archives[var1], false);
             }
 
-            byte[] var20 = CombatInfoListHolder.decodeContainer(var18);
+            byte[] var20 = GZipDecompressor.decodeContainer(var18);
             if(this.releaseArchives) {
                this.archives[var1] = null;
             }
@@ -578,13 +571,13 @@ public abstract class IndexDataBase {
 
                for(var15 = 0; var15 < var3; ++var15) {
                   if(!this.shallowRecords) {
-                     var5[var4[var15]] = GraphicsObject.byteArrayToObject(var19[var15], false);
+                     var5[var4[var15]] = SceneTilePaint.byteArrayToObject(var19[var15], false);
                   } else {
                      var5[var4[var15]] = var19[var15];
                   }
                }
             } else if(!this.shallowRecords) {
-               var5[var4[0]] = GraphicsObject.byteArrayToObject(var20, false);
+               var5[var4[0]] = SceneTilePaint.byteArrayToObject(var20, false);
             } else {
                var5[var4[0]] = var20;
             }
@@ -594,107 +587,107 @@ public abstract class IndexDataBase {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;S)I",
-      garbageValue = "-8803"
+      garbageValue = "1124"
    )
    @Export("getFile")
    public int getFile(String var1) {
       var1 = var1.toLowerCase();
-      return this.identifiers.getFile(LoginPacket.djb2Hash(var1));
+      return this.identifiers.getFile(TextureProvider.djb2Hash(var1));
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("at")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;I)I",
-      garbageValue = "-1858357269"
+      garbageValue = "-1747890017"
    )
    @Export("getChild")
    public int getChild(int var1, String var2) {
       var2 = var2.toLowerCase();
-      return this.childIdentifiers[var1].getFile(LoginPacket.djb2Hash(var2));
+      return this.childIdentifiers[var1].getFile(TextureProvider.djb2Hash(var2));
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;I)Z",
-      garbageValue = "-1178222894"
+      garbageValue = "-591844980"
    )
-   public boolean method4663(String var1, String var2) {
+   public boolean method4689(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.identifiers.getFile(LoginPacket.djb2Hash(var1));
+      int var3 = this.identifiers.getFile(TextureProvider.djb2Hash(var1));
       if(var3 < 0) {
          return false;
       } else {
-         int var4 = this.childIdentifiers[var3].getFile(LoginPacket.djb2Hash(var2));
+         int var4 = this.childIdentifiers[var3].getFile(TextureProvider.djb2Hash(var2));
          return var4 >= 0;
       }
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;I)[B",
-      garbageValue = "-1507481076"
+      garbageValue = "1799910180"
    )
    @Export("takeRecordByNames")
    public byte[] takeRecordByNames(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.identifiers.getFile(LoginPacket.djb2Hash(var1));
-      int var4 = this.childIdentifiers[var3].getFile(LoginPacket.djb2Hash(var2));
+      int var3 = this.identifiers.getFile(TextureProvider.djb2Hash(var1));
+      int var4 = this.childIdentifiers[var3].getFile(TextureProvider.djb2Hash(var2));
       return this.getConfigData(var3, var4);
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;S)Z",
-      garbageValue = "-15681"
+      signature = "(Ljava/lang/String;Ljava/lang/String;I)Z",
+      garbageValue = "209083034"
    )
    @Export("tryLoadRecordByNames")
    public boolean tryLoadRecordByNames(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.identifiers.getFile(LoginPacket.djb2Hash(var1));
-      int var4 = this.childIdentifiers[var3].getFile(LoginPacket.djb2Hash(var2));
+      int var3 = this.identifiers.getFile(TextureProvider.djb2Hash(var1));
+      int var4 = this.childIdentifiers[var3].getFile(TextureProvider.djb2Hash(var2));
       return this.tryLoadRecord(var3, var4);
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;B)Z",
-      garbageValue = "1"
+      garbageValue = "0"
    )
    @Export("tryLoadArchiveByName")
    public boolean tryLoadArchiveByName(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.identifiers.getFile(LoginPacket.djb2Hash(var1));
+      int var2 = this.identifiers.getFile(TextureProvider.djb2Hash(var1));
       return this.containsFile(var2);
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1297734400"
+      garbageValue = "1985734087"
    )
-   public void method4667(String var1) {
+   public void method4650(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.identifiers.getFile(LoginPacket.djb2Hash(var1));
+      int var2 = this.identifiers.getFile(TextureProvider.djb2Hash(var1));
       if(var2 >= 0) {
-         this.vmethod4755(var2);
+         this.vmethod4741(var2);
       }
    }
 
-   @ObfuscatedName("ay")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;B)I",
-      garbageValue = "60"
+      garbageValue = "65"
    )
    @Export("archiveLoadPercentByName")
    public int archiveLoadPercentByName(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.identifiers.getFile(LoginPacket.djb2Hash(var1));
+      int var2 = this.identifiers.getFile(TextureProvider.djb2Hash(var1));
       return this.archiveLoadPercent(var2);
    }
 }

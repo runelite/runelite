@@ -3,74 +3,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ky")
+@ObfuscatedName("kn")
 @Implements("FriendContainer")
 public class FriendContainer extends NameableContainer {
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lly;"
+      signature = "Lla;"
    )
-   final JagexLoginType field3860;
-   @ObfuscatedName("h")
+   final JagexLoginType field3656;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -55642671
+      intValue = 325181365
    )
-   int field3862;
-   @ObfuscatedName("i")
+   int field3657;
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lhm;"
+      signature = "Lhi;"
    )
-   public class220 field3864;
+   public class208 field3658;
 
    @ObfuscatedSignature(
-      signature = "(Lly;)V"
+      signature = "(Lla;)V"
    )
    public FriendContainer(JagexLoginType var1) {
       super(400);
-      this.field3862 = 1;
-      this.field3864 = new class220();
-      this.field3860 = var1;
+      this.field3657 = 1;
+      this.field3658 = new class208();
+      this.field3656 = var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)Lkg;",
-      garbageValue = "1778408778"
+      signature = "(B)Ljn;",
+      garbageValue = "-39"
    )
-   Nameable vmethod5513() {
+   Nameable vmethod5491() {
       return new Friend();
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IB)[Lkg;",
-      garbageValue = "0"
+      signature = "(II)[Ljn;",
+      garbageValue = "-1283030275"
    )
-   Nameable[] vmethod5514(int var1) {
+   Nameable[] vmethod5492(int var1) {
       return new Friend[var1];
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lkb;ZS)Z",
-      garbageValue = "3311"
+      signature = "(Lkm;ZI)Z",
+      garbageValue = "-939317206"
    )
-   public boolean method5472(Name var1, boolean var2) {
-      Friend var3 = (Friend)this.method5367(var1);
+   public boolean method5457(Name var1, boolean var2) {
+      Friend var3 = (Friend)this.method5344(var1);
       return var3 == null?false:!var2 || var3.world != 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lgg;II)V",
-      garbageValue = "-245634554"
+      signature = "(Lgy;IB)V",
+      garbageValue = "-2"
    )
-   public void method5473(Buffer var1, int var2) {
+   public void method5449(Buffer var1, int var2) {
       while(true) {
          if(var1.offset < var2) {
             boolean var3 = var1.readUnsignedByte() == 1;
-            Name var4 = new Name(var1.readString(), this.field3860);
-            Name var5 = new Name(var1.readString(), this.field3860);
+            Name var4 = new Name(var1.readString(), this.field3656);
+            Name var5 = new Name(var1.readString(), this.field3656);
             int var6 = var1.readUnsignedShort();
             int var7 = var1.readUnsignedByte();
             int var8 = var1.readUnsignedByte();
@@ -84,12 +84,12 @@ public class FriendContainer extends NameableContainer {
 
             var1.readString();
             if(var4 != null && var4.isCleanNameValid()) {
-               Friend var11 = (Friend)this.method5368(var4);
+               Friend var11 = (Friend)this.method5374(var4);
                if(var3) {
-                  Friend var12 = (Friend)this.method5368(var5);
-                  if(var12 != null && var12 != var11) {
+                  Friend var12 = (Friend)this.method5374(var5);
+                  if(var12 != null && var11 != var12) {
                      if(var11 != null) {
-                        this.method5415(var12);
+                        this.method5362(var12);
                      } else {
                         var11 = var12;
                      }
@@ -97,24 +97,24 @@ public class FriendContainer extends NameableContainer {
                }
 
                if(var11 != null) {
-                  this.method5375(var11, var4, var5);
+                  this.method5339(var11, var4, var5);
                   if(var6 != var11.world) {
                      boolean var14 = true;
 
-                     for(class308 var13 = (class308)this.field3864.method4154(); var13 != null; var13 = (class308)this.field3864.method4152()) {
-                        if(var13.field3878.equals(var4)) {
-                           if(var6 != 0 && var13.field3879 == 0) {
-                              var13.method4165();
+                     for(class294 var13 = (class294)this.field3658.method4147(); var13 != null; var13 = (class294)this.field3658.method4146()) {
+                        if(var13.field3675.equals(var4)) {
+                           if(var6 != 0 && var13.field3677 == 0) {
+                              var13.method4156();
                               var14 = false;
-                           } else if(var6 == 0 && var13.field3879 != 0) {
-                              var13.method4165();
+                           } else if(var6 == 0 && var13.field3677 != 0) {
+                              var13.method4156();
                               var14 = false;
                            }
                         }
                      }
 
                      if(var14) {
-                        this.field3864.method4153(new class308(var4, var6));
+                        this.field3658.method4149(new class294(var4, var6));
                      }
                   }
                } else {
@@ -122,28 +122,28 @@ public class FriendContainer extends NameableContainer {
                      continue;
                   }
 
-                  var11 = (Friend)this.method5372(var4, var5);
+                  var11 = (Friend)this.method5373(var4, var5);
                }
 
                if(var6 != var11.world) {
-                  var11.field3851 = ++this.field3862 - 1;
+                  var11.field3649 = ++this.field3657 - 1;
                   if(var11.world == -1 && var6 == 0) {
-                     var11.field3851 = -(var11.field3851 * 1925630229) * -671924675;
+                     var11.field3649 = -(var11.field3649 * 237190023) * -467035593;
                   }
 
                   var11.world = var6;
                }
 
                var11.rank = var7;
-               var11.field3867 = var9;
-               var11.field3868 = var10;
+               var11.field3664 = var9;
+               var11.field3663 = var10;
                continue;
             }
 
             throw new IllegalStateException();
          }
 
-         this.method5362();
+         this.method5383();
          return;
       }
    }

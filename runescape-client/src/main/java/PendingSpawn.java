@@ -4,76 +4,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("be")
+@ObfuscatedName("bl")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("j")
-   public static String[] field1134;
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1557638447
+      intValue = 226227957
    )
    @Export("level")
    int level;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -452890025
+      intValue = 505925079
    )
    @Export("type")
    int type;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 966621815
+      intValue = 1543670839
    )
    @Export("x")
    int x;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 963470503
-   )
-   int field1130;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -723973393
+      intValue = 1791100097
    )
    @Export("y")
    int y;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 178603571
+      intValue = 668811263
    )
-   int field1128;
-   @ObfuscatedName("s")
+   int field870;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -424408731
+      intValue = 158853083
    )
-   int field1132;
-   @ObfuscatedName("y")
+   int field871;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1062376191
+      intValue = 1182445815
+   )
+   int field872;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1023279323
    )
    @Export("id")
    int id;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1580920681
+      intValue = -1500162581
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1112313113
+      intValue = -895946247
    )
-   int field1135;
-   @ObfuscatedName("i")
+   int field875;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1646880569
+      intValue = -1278571041
    )
    @Export("delay")
    int delay;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -149955841
+      intValue = -1231655143
    )
    @Export("hitpoints")
    int hitpoints;
@@ -83,85 +81,17 @@ public final class PendingSpawn extends Node {
       this.hitpoints = -1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljr;I)V",
-      garbageValue = "1127595273"
+      signature = "(IB)V",
+      garbageValue = "122"
    )
-   public static void method1700(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lgl;I)V",
-      garbageValue = "1166215988"
-   )
-   @Export("initializeGPI")
-   static final void initializeGPI(PacketBuffer var0) {
-      var0.bitAccess();
-      int var1 = Client.localInteractingIndex;
-      Player var2 = class265.localPlayer = Client.cachedPlayers[var1] = new Player();
-      var2.playerId = var1;
-      int var3 = var0.getBits(30);
-      byte var4 = (byte)(var3 >> 28);
-      int var5 = var3 >> 14 & 16383;
-      int var6 = var3 & 16383;
-      var2.pathX[0] = var5 - ClientPacket.baseX;
-      var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
-      var2.pathY[0] = var6 - MapIconReference.baseY;
-      var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);
-      ScriptVarType.plane = var2.field831 = var4;
-      if(class93.field1404[var1] != null) {
-         var2.decodeApperance(class93.field1404[var1]);
+   public static void method1578(int var0) {
+      if(class217.field2486 != 0) {
+         class21.field185 = var0;
+      } else {
+         class217.field2485.method4302(var0);
       }
 
-      class93.playerIndexesCount = 0;
-      class93.playerIndices[++class93.playerIndexesCount - 1] = var1;
-      class93.field1415[var1] = 0;
-      class93.field1409 = 0;
-
-      for(int var7 = 1; var7 < 2048; ++var7) {
-         if(var7 != var1) {
-            int var8 = var0.getBits(18);
-            int var9 = var8 >> 16;
-            int var10 = var8 >> 8 & 597;
-            int var11 = var8 & 597;
-            class93.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
-            class93.Players_orientations[var7] = 0;
-            class93.Players_targetIndices[var7] = -1;
-            class93.field1410[++class93.field1409 - 1] = var7;
-            class93.field1415[var7] = 0;
-         }
-      }
-
-      var0.byteAccess();
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-193029915"
-   )
-   public static final void method1701() {
-      while(true) {
-         BoundingBox var0 = (BoundingBox)class7.boundingBoxes.removeLast();
-         if(var0 == null) {
-            return;
-         }
-
-         var0.vmethod51();
-      }
-   }
-
-   @ObfuscatedName("ir")
-   @ObfuscatedSignature(
-      signature = "(IIIZI)V",
-      garbageValue = "943377856"
-   )
-   static final void method1698(int var0, int var1, int var2, boolean var3) {
-      if(class85.loadWidget(var0)) {
-         class45.method680(GZipDecompressor.widgets[var0], -1, var1, var2, var3);
-      }
    }
 }

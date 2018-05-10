@@ -4,29 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jw")
+@ObfuscatedName("it")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ljr;"
+      signature = "Liv;"
    )
-   public static IndexDataBase field3441;
-   @ObfuscatedName("e")
+   public static IndexDataBase field3247;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lgj;"
    )
    @Export("inventoryCache")
-   public static NodeCache inventoryCache;
-   @ObfuscatedName("ar")
-   @Export("clientInstance")
-   @ObfuscatedSignature(
-      signature = "Lclient;"
-   )
-   static Client clientInstance;
-   @ObfuscatedName("b")
+   static NodeCache inventoryCache;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -63196535
+      intValue = -1334662393
    )
    @Export("size")
    public int size;
@@ -35,54 +29,61 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   public InvType() {
+   InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgg;I)V",
-      garbageValue = "-1288197779"
+      signature = "(Lgy;I)V",
+      garbageValue = "-1627662832"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4832(var1, var2);
+         this.method4813(var1, var2);
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgg;IB)V",
-      garbageValue = "-25"
+      signature = "(Lgy;II)V",
+      garbageValue = "472098137"
    )
-   void method4832(Buffer var1, int var2) {
+   void method4813(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("jn")
    @ObfuscatedSignature(
-      signature = "(Ljr;I)V",
-      garbageValue = "3846221"
+      signature = "(IIIILlc;Lhr;I)V",
+      garbageValue = "1079660383"
    )
-   public static void method4838(IndexDataBase var0) {
-      IndexData.field3400 = var0;
-   }
+   @Export("drawDot")
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class224 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = Graphics3D.SINE[var6];
+            int var9 = Graphics3D.COSINE[var6];
+            int var10 = var3 * var8 + var9 * var2 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method5911(var10 + var5.field2570 / 2 - var4.maxWidth / 2, var5.field2575 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2570, var5.field2575, var5.field2573, var5.field2572);
+            } else {
+               var4.drawAt(var0 + var10 + var5.field2570 / 2 - var4.maxWidth / 2, var5.field2575 / 2 + var1 - var11 - var4.maxHeight / 2);
+            }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(CB)Z",
-      garbageValue = "-23"
-   )
-   public static boolean method4839(char var0) {
-      return var0 >= ' ' && var0 <= '~'?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
+         }
+      }
    }
 }

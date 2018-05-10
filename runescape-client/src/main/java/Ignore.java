@@ -1,75 +1,88 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ka")
+@ObfuscatedName("kj")
 @Implements("Ignore")
 public class Ignore extends Nameable {
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -249698307
+      intValue = 776785653
    )
-   int field3850;
-
-   @ObfuscatedName("g")
+   static int field3645;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lka;B)I",
-      garbageValue = "-1"
+      signature = "Lhc;"
    )
-   int method5442(Ignore var1) {
-      return this.field3850 - var1.field3850;
+   static Track1 field3644;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1405632693
+   )
+   int field3646;
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lkj;I)I",
+      garbageValue = "850817687"
+   )
+   int method5420(Ignore var1) {
+      return this.field3646 - var1.field3646;
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(Lkg;I)I",
-      garbageValue = "1389713193"
+      signature = "(Ljn;I)I",
+      garbageValue = "1707398523"
    )
-   public int vmethod5501(Nameable var1) {
-      return this.method5442((Ignore)var1);
+   public int vmethod5482(Nameable var1) {
+      return this.method5420((Ignore)var1);
    }
 
    public int compareTo(Object var1) {
-      return this.method5442((Ignore)var1);
+      return this.method5420((Ignore)var1);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/CharSequence;IIS)Ljava/lang/String;",
-      garbageValue = "27594"
+      signature = "(I)V",
+      garbageValue = "-2039609224"
    )
-   public static String method5441(CharSequence[] var0, int var1, int var2) {
-      if(var2 == 0) {
-         return "";
-      } else if(var2 == 1) {
-         CharSequence var3 = var0[var1];
-         return var3 == null?"null":var3.toString();
-      } else {
-         int var8 = var2 + var1;
-         int var4 = 0;
-
-         for(int var5 = var1; var5 < var8; ++var5) {
-            CharSequence var6 = var0[var5];
-            if(var6 == null) {
-               var4 += 4;
-            } else {
-               var4 += var6.length();
+   public static void method5431() {
+      try {
+         File var0 = new File(FaceNormal.userHome, "random.dat");
+         int var2;
+         if(var0.exists()) {
+            class155.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         } else {
+            label38:
+            for(int var1 = 0; var1 < class155.field1995.length; ++var1) {
+               for(var2 = 0; var2 < class155.cacheLocations.length; ++var2) {
+                  File var3 = new File(class155.cacheLocations[var2] + class155.field1995[var1] + File.separatorChar + "random.dat");
+                  if(var3.exists()) {
+                     class155.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label38;
+                  }
+               }
             }
          }
 
-         StringBuilder var9 = new StringBuilder(var4);
-
-         for(int var10 = var1; var10 < var8; ++var10) {
-            CharSequence var7 = var0[var10];
-            if(var7 == null) {
-               var9.append("null");
-            } else {
-               var9.append(var7);
-            }
+         if(class155.randomDat == null) {
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
+            class155.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          }
-
-         return var9.toString();
+      } catch (IOException var5) {
+         ;
       }
+
    }
 }

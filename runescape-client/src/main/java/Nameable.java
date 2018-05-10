@@ -3,56 +3,56 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kg")
+@ObfuscatedName("jn")
 @Implements("Nameable")
 public class Nameable implements Comparable {
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lkb;"
+      signature = "Lkm;"
    )
    @Export("name")
    Name name;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lkb;"
+      signature = "Lkm;"
    )
    @Export("prevName")
    Name prevName;
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "(I)Lkb;",
-      garbageValue = "2027427360"
+      signature = "(B)Lkm;",
+      garbageValue = "55"
    )
    @Export("getRsName")
    public Name getRsName() {
       return this.name;
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "-397639951"
+      garbageValue = "-2092094287"
    )
    @Export("getName")
    public String getName() {
       return this.name == null?"":this.name.getName();
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "(B)Ljava/lang/String;",
-      garbageValue = "43"
+      garbageValue = "47"
    )
    @Export("getPrevName")
    public String getPrevName() {
       return this.prevName == null?"":this.prevName.getName();
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(Lkb;Lkb;I)V",
-      garbageValue = "-2014040133"
+      signature = "(Lkm;Lkm;I)V",
+      garbageValue = "1050931041"
    )
    @Export("setName")
    void setName(Name var1, Name var2) {
@@ -64,16 +64,16 @@ public class Nameable implements Comparable {
       }
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(Lkg;I)I",
-      garbageValue = "1389713193"
+      signature = "(Ljn;I)I",
+      garbageValue = "1707398523"
    )
-   public int vmethod5501(Nameable var1) {
+   public int vmethod5482(Nameable var1) {
       return this.name.compareCleanName(var1.name);
    }
 
    public int compareTo(Object var1) {
-      return this.vmethod5501((Nameable)var1);
+      return this.vmethod5482((Nameable)var1);
    }
 }

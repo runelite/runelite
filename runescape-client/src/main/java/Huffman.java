@@ -1,18 +1,24 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("fv")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("g")
+   @ObfuscatedName("ix")
+   @ObfuscatedGetter(
+      intValue = -1176382725
+   )
+   static int field2296;
+   @ObfuscatedName("w")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("keys")
    int[] keys;
 
@@ -99,10 +105,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BII[BII)I",
-      garbageValue = "-1549310561"
+      garbageValue = "-452407484"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -150,10 +156,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "([BI[BIIB)I",
-      garbageValue = "1"
+      garbageValue = "4"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -294,12 +300,12 @@ public class Huffman {
       }
    }
 
-   @ObfuscatedName("il")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-2133172227"
+      signature = "(I)V",
+      garbageValue = "-1634844291"
    )
-   static String method3524(int var0) {
-      return var0 < 0?"":(Client.menuTargets[var0].length() > 0?Client.menuOptions[var0] + " " + Client.menuTargets[var0]:Client.menuOptions[var0]);
+   static final void method3498() {
+      CollisionData.method3448("You can\'t add yourself to your own friend list");
    }
 }
