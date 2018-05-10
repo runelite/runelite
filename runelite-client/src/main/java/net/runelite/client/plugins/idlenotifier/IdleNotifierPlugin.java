@@ -25,14 +25,10 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
-import com.google.common.base.Splitter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.*;
@@ -42,15 +38,12 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Idle Notifier"
@@ -59,7 +52,6 @@ public class IdleNotifierPlugin extends Plugin
 {
 	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
-	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
 
 	@Inject
 	private Notifier notifier;
@@ -81,8 +73,6 @@ public class IdleNotifierPlugin extends Plugin
 
 	private Instant sixHourWarningTime;
 	private boolean ready;
-
-	private List<String> customMessages = new ArrayList<>();
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -417,41 +407,5 @@ public class IdleNotifierPlugin extends Plugin
 		// Reset combat idle timer
 		lastOpponent = null;
 		lastInteracting = null;
-	}
-
-	@Subscribe
-	private void onConfigChange(ConfigChanged event)
-	{
-		if (event.getGroup().equals("idlenotifier") && event.getKey().equals("customMessages"))
-		{
-			splitMessages(event.getNewValue());
-		}
-	}
-
-	@Subscribe
-	private void onChatMessage(ChatMessage event)
-	{
-		if (!customMessages.isEmpty())
-		{
-			for (String message : customMessages)
-			{
-				if (WildcardMatcher.matches(message, event.getMessage()))
-				{
-					notifier.notify("Message: " + message);
-					break;
-				}
-			}
-		}
-	}
-
-	@Override
-	protected void startUp() throws  Exception
-	{
-		splitMessages(config.customMessages());
-	}
-
-	private void splitMessages(String customMessage)
-	{
-		customMessages = COMMA_SPLITTER.splitToList(customMessage);
 	}
 }

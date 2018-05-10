@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.idlenotifier;
+package net.runelite.client.plugins.chatnotifier;
 
+import net.runelite.api.ChatMessageType;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+
 @ConfigGroup(
-	keyName = "idlenotifier",
-	name = "Idle Notifier",
-	description = "Configuration for the idle notifier plugin"
+		keyName = "chatnotifier",
+		name = "Chat Notifier",
+		description = "Configuration for the Chat Notifier plugin"
 )
-public interface IdleNotifierConfig extends Config
-{
+public interface ChatNotifierConfig extends Config {
 	@ConfigItem(
-		keyName = "animationidle",
-		name = "Idle Animation Notifications",
-		description = "Configures if idle animation notifications are enabled",
+		keyName = "customMessages",
+		name = "Input Custom Messages",
+		description = "Input the precise messages that you want to get a notification for. Split with decimal.  Leave empty to disable.",
 		position = 1
 	)
-	default boolean animationIdle()
+	default String customMessages()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+			keyName = "onlySpecificMessages",
+			name = "Enable only specific message type",
+			description = "Enable this option to only show messages sent from one specific source. Select type below in option 3.",
+			position = 2
+	)
+	default boolean onlySpecificMessages()
+	{
+		return false;
+	}
+	@ConfigItem(
+			keyName = "onlyServerMessages",
+			name = "Select message type",
+			description = "Enable this option to only show messages sent from the server.",
+			position = 3
+	)
+	default ChatMessageType onlyTypeMessage()
+	{
+		return ChatMessageType.GAME;
+	}
+
+	@ConfigItem(
+			keyName = "notifyOnTrade",
+			name = "Get notified on trade request",
+			description = "Enable this option to get notified when a trade request have been received.",
+			position = 4
+	)
+	default boolean notifyOnTrade()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "combatidle",
-		name = "Combat Idle Notifications",
-		description = "Configures if out of combat notifications are enabled",
-		position = 2
+			keyName = "notifyOnDuel",
+			name = "Get notified on duel request",
+			description = "Enable this option to get notified when a duel request have been received.",
+			position = 5
 	)
-	default boolean combatIdle()
+	default boolean notifyOnDuel()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "timeout",
-		name = "Idle Notification Delay (ms)",
-		description = "The notification delay after the player is idle",
-		position = 3
-	)
-	default int getIdleNotificationDelay()
-	{
-		return 5000;
-	}
-
-	@ConfigItem(
-		keyName = "hitpoints",
-		name = "Hitpoints Notification Threshold",
-		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
-		position = 4
-	)
-	default int getHitpointsThreshold()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "prayer",
-		name = "Prayer Notification Threshold",
-		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 5
-	)
-	default int getPrayerThreshold()
-	{
-		return 0;
 	}
 }
