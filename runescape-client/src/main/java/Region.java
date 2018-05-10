@@ -1352,13 +1352,13 @@ public class Region {
 
                                     var10 = var9.wallObject;
                                     if(var10 != null) {
-                                       var10.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.field1818);
+                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.field1818);
                                     }
 
                                     for(var11 = 0; var11 < var9.entityCount; ++var11) {
                                        var12 = var9.objects[var11];
                                        if(var12 != null) {
-                                          var12.renderable.vmethod3079(var12.orientation, pitchSin, pitchCos, yawSin, yawCos, var12.x - cameraX2, var12.height - cameraY2, var12.y - cameraZ2, var12.hash);
+                                          var12.renderable.draw(var12.orientation, pitchSin, pitchCos, yawSin, yawCos, var12.x - cameraX2, var12.height - cameraY2, var12.y - cameraZ2, var12.hash);
                                        }
                                     }
                                  }
@@ -1421,17 +1421,17 @@ public class Region {
                                     }
 
                                     if((var31.orientationA & var11) != 0 && !this.isWallOccluded(var7, var4, var5, var31.orientationA)) {
-                                       var31.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.field1818);
+                                       var31.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.field1818);
                                     }
 
                                     if((var31.orientationB & var11) != 0 && !this.isWallOccluded(var7, var4, var5, var31.orientationB)) {
-                                       var31.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.field1818);
+                                       var31.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.field1818);
                                     }
                                  }
 
                                  if(var13 != null && !this.isOccluded(var7, var4, var5, var13.renderable1.modelHeight)) {
                                     if((var13.renderFlag & var11) != 0) {
-                                       var13.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var13.x - cameraX2 + var13.offsetX, var13.floor - cameraY2, var13.y - cameraZ2 + var13.offsetY, var13.hash);
+                                       var13.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var13.x - cameraX2 + var13.offsetX, var13.floor - cameraY2, var13.y - cameraZ2 + var13.offsetY, var13.hash);
                                     } else if(var13.renderFlag == 256) {
                                        var14 = var13.x - cameraX2;
                                        var15 = var13.floor - cameraY2;
@@ -1451,9 +1451,9 @@ public class Region {
                                        }
 
                                        if(var19 < var18) {
-                                          var13.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var14 + var13.offsetX, var15, var16 + var13.offsetY, var13.hash);
+                                          var13.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var14 + var13.offsetX, var15, var16 + var13.offsetY, var13.hash);
                                        } else if(var13.renderable2 != null) {
-                                          var13.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var14, var15, var16, var13.hash);
+                                          var13.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var14, var15, var16, var13.hash);
                                        }
                                     }
                                  }
@@ -1461,21 +1461,21 @@ public class Region {
                                  if(var20) {
                                     GroundObject var22 = var3.groundObject;
                                     if(var22 != null) {
-                                       var22.renderable.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var22.x - cameraX2, var22.floor - cameraY2, var22.y - cameraZ2, var22.hash);
+                                       var22.renderable.draw(0, pitchSin, pitchCos, yawSin, yawCos, var22.x - cameraX2, var22.floor - cameraY2, var22.y - cameraZ2, var22.hash);
                                     }
 
                                     ItemLayer var23 = var3.itemLayer;
                                     if(var23 != null && var23.height == 0) {
                                        if(var23.middle != null) {
-                                          var23.middle.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
+                                          var23.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
                                        }
 
                                        if(var23.top != null) {
-                                          var23.top.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
+                                          var23.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
                                        }
 
                                        if(var23.bottom != null) {
-                                          var23.bottom.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
+                                          var23.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.field1476);
                                        }
                                     }
                                  }
@@ -1526,7 +1526,7 @@ public class Region {
                                  if(var20) {
                                     var10 = var3.wallObject;
                                     if(!this.isWallOccluded(var7, var4, var5, var10.orientationA)) {
-                                       var10.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.field1818);
+                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.field1818);
                                     }
 
                                     var3.wallCullDirection = 0;
@@ -1626,7 +1626,7 @@ public class Region {
                                     GameObject var33 = entityBuffer[var25];
                                     var33.cycle = cycle;
                                     if(!this.isAreaOccluded(var7, var33.relativeX, var33.offsetX, var33.relativeY, var33.offsetY, var33.renderable.modelHeight)) {
-                                       var33.renderable.vmethod3079(var33.orientation, pitchSin, pitchCos, yawSin, yawCos, var33.x - cameraX2, var33.height - cameraY2, var33.y - cameraZ2, var33.hash);
+                                       var33.renderable.draw(var33.orientation, pitchSin, pitchCos, yawSin, yawCos, var33.x - cameraX2, var33.height - cameraY2, var33.y - cameraZ2, var33.hash);
                                     }
 
                                     for(var14 = var33.relativeX; var14 <= var33.offsetX; ++var14) {
@@ -1685,15 +1685,15 @@ public class Region {
          ItemLayer var32 = var3.itemLayer;
          if(var32 != null && var32.height != 0) {
             if(var32.middle != null) {
-               var32.middle.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
+               var32.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
             }
 
             if(var32.top != null) {
-               var32.top.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
+               var32.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
             }
 
             if(var32.bottom != null) {
-               var32.bottom.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
+               var32.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var32.x - cameraX2, var32.hash - cameraY2 - var32.height, var32.y - cameraZ2, var32.field1476);
             }
          }
 
@@ -1701,7 +1701,7 @@ public class Region {
             DecorativeObject var29 = var3.decorativeObject;
             if(var29 != null && !this.isOccluded(var7, var4, var5, var29.renderable1.modelHeight)) {
                if((var29.renderFlag & var3.wallDrawFlags) != 0) {
-                  var29.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX2 + var29.offsetX, var29.floor - cameraY2, var29.y - cameraZ2 + var29.offsetY, var29.hash);
+                  var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX2 + var29.offsetX, var29.floor - cameraY2, var29.y - cameraZ2 + var29.offsetY, var29.hash);
                } else if(var29.renderFlag == 256) {
                   var11 = var29.x - cameraX2;
                   var25 = var29.floor - cameraY2;
@@ -1720,9 +1720,9 @@ public class Region {
                   }
 
                   if(var16 >= var15) {
-                     var29.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var11 + var29.offsetX, var25, var24 + var29.offsetY, var29.hash);
+                     var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var11 + var29.offsetX, var25, var24 + var29.offsetY, var29.hash);
                   } else if(var29.renderable2 != null) {
-                     var29.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var11, var25, var24, var29.hash);
+                     var29.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var11, var25, var24, var29.hash);
                   }
                }
             }
@@ -1730,11 +1730,11 @@ public class Region {
             WallObject var27 = var3.wallObject;
             if(var27 != null) {
                if((var27.orientationB & var3.wallDrawFlags) != 0 && !this.isWallOccluded(var7, var4, var5, var27.orientationB)) {
-                  var27.renderable2.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.field1818);
+                  var27.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.field1818);
                }
 
                if((var27.orientationA & var3.wallDrawFlags) != 0 && !this.isWallOccluded(var7, var4, var5, var27.orientationA)) {
-                  var27.renderable1.vmethod3079(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.field1818);
+                  var27.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.field1818);
                }
             }
          }

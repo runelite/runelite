@@ -1560,7 +1560,8 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("cy")
-   void vmethod3079(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, long var9) {
+   @Export("draw")
+   void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, long var9) {
       field1658[0] = -1;
       if(this.boundsType != 1) {
          this.calculateBoundsCylinder();
