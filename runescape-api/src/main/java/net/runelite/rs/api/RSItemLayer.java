@@ -39,9 +39,6 @@ public interface RSItemLayer extends ItemLayer
 	@Override
 	int getHash();
 
-	@Import("flags")
-	int getFlags();
-
 	@Import("height")
 	int getHeight();
 
