@@ -760,7 +760,7 @@ public class class24 {
                         var29 = new DynamicObject(var4, 4, var5, var12, var2, var3, var15.animationId, true, (Renderable)null);
                      }
 
-                     var42.method2910(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field454[var5], 0, 0, 0, var26, var28);
+                     var42.addBoundaryDecoration(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field454[var5], 0, 0, 0, var26, var28);
                   } else {
                      Object var32;
                      long var36;
@@ -777,7 +777,7 @@ public class class24 {
                            var32 = new DynamicObject(var4, 4, var5, var12, var2, var3, var15.animationId, true, (Renderable)null);
                         }
 
-                        var42.method2910(var0, var2, var3, var23, (Renderable)var32, (Renderable)null, class50.field454[var5], 0, var35 * class50.field456[var5], var35 * class50.field457[var5], var26, var28);
+                        var42.addBoundaryDecoration(var0, var2, var3, var23, (Renderable)var32, (Renderable)null, class50.field454[var5], 0, var35 * class50.field456[var5], var35 * class50.field457[var5], var26, var28);
                      } else if(var6 == 6) {
                         var35 = 8;
                         var36 = var42.method2927(var0, var2, var3);
@@ -791,7 +791,7 @@ public class class24 {
                            var32 = new DynamicObject(var4, 4, var5 + 4, var12, var2, var3, var15.animationId, true, (Renderable)null);
                         }
 
-                        var42.method2910(var0, var2, var3, var23, (Renderable)var32, (Renderable)null, 256, var5, var35 * class50.field458[var5], var35 * class50.field459[var5], var26, var28);
+                        var42.addBoundaryDecoration(var0, var2, var3, var23, (Renderable)var32, (Renderable)null, 256, var5, var35 * class50.field458[var5], var35 * class50.field459[var5], var26, var28);
                      } else if(var6 == 7) {
                         int var38 = var5 + 2 & 3;
                         if(var15.animationId == -1 && var15.impostorIds == null) {
@@ -800,7 +800,7 @@ public class class24 {
                            var29 = new DynamicObject(var4, 4, var38 + 4, var12, var2, var3, var15.animationId, true, (Renderable)null);
                         }
 
-                        var42.method2910(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, 256, var38, 0, 0, var26, var28);
+                        var42.addBoundaryDecoration(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, 256, var38, 0, 0, var26, var28);
                      } else if(var6 == 8) {
                         var35 = 8;
                         var36 = var42.method2927(var0, var2, var3);
@@ -818,7 +818,7 @@ public class class24 {
                            var33 = new DynamicObject(var4, 4, var34 + 4, var12, var2, var3, var15.animationId, true, (Renderable)null);
                         }
 
-                        var42.method2910(var0, var2, var3, var23, (Renderable)var32, (Renderable)var33, 256, var5, var35 * class50.field458[var5], var35 * class50.field459[var5], var26, var28);
+                        var42.addBoundaryDecoration(var0, var2, var3, var23, (Renderable)var32, (Renderable)var33, 256, var5, var35 * class50.field458[var5], var35 * class50.field459[var5], var26, var28);
                      }
                   }
                }

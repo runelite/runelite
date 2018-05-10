@@ -443,7 +443,8 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(IIIILdz;Ldz;IIIIJI)V"
    )
-   public void method2910(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long var11, int var13) {
+   @Export("addBoundaryDecoration")
+   public void addBoundaryDecoration(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, int var9, int var10, long var11, int var13) {
       if(var5 != null) {
          DecorativeObject var14 = new DecorativeObject();
          var14.hash = var11;
