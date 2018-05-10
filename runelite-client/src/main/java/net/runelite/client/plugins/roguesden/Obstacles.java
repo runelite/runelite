@@ -106,7 +106,7 @@ class Obstacles
 		new Obstacle(2977, 5088, "AVOID"), new Obstacle(2978, 5088, "AVOID"), new Obstacle(2979, 5088, "AVOID"),
 
 		new Obstacle(3014, 5063, "Stun NPC"),
-		new Obstacle(2992, 5057, "GO NORTH"),  // Hint for 80 thieving shortcut!
+		new Obstacle(2992, 5057, "Continue North"),  // Hint for 80 thieving shortcut!
 	};
 
 	public static class Obstacle
