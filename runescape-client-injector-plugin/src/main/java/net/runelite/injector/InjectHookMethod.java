@@ -37,9 +37,11 @@ import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import org.slf4j.Logger;
@@ -47,7 +49,6 @@ import org.slf4j.LoggerFactory;
 
 public class InjectHookMethod
 {
-
 	private static final Logger logger = LoggerFactory.getLogger(InjectHookMethod.class);
 
 	public static final String HOOKS = "net/runelite/client/callback/Hooks";
@@ -73,8 +74,17 @@ public class InjectHookMethod
 			return;
 		}
 
+		String hookName = a.getElement().getString();
+		boolean end = a.getElements().size() == 2 && a.getElements().get(1).getValue().equals(true);
+
+		inject(null, method, hookName, end, true);
+	}
+
+	public void inject(Method hookMethod, Method method, String name, boolean end, boolean useHooks) throws InjectionException
+	{
+		Annotations an = method.getAnnotations();
+
 		// Method is hooked
-		//String hookName = DeobAnnotations.getHookName(an); // hook name
 		// Find equivalent method in vanilla, and insert callback at the beginning
 		ClassFile cf = method.getClassFile();
 		String obfuscatedMethodName = DeobAnnotations.getObfuscatedName(an),
@@ -94,14 +104,14 @@ public class InjectHookMethod
 		ClassGroup vanilla = inject.getVanilla();
 		ClassFile vanillaClass = vanilla.findClass(obfuscatedClassName);
 		Method vanillaMethod = vanillaClass.findMethod(obfuscatedMethodName, obfuscatedSignature);
+		assert method.isStatic() == vanillaMethod.isStatic();
 
 		// Insert instructions at beginning of method
-		injectHookMethod(a, method, vanillaMethod);
+		injectHookMethod(hookMethod, name, end, method, vanillaMethod, useHooks);
 	}
 
-	private void injectHookMethod(Annotation hook, Method deobMethod, Method vanillaMethod) throws InjectionException
+	private void injectHookMethod(Method hookMethod, String hookName, boolean end, Method deobMethod, Method vanillaMethod, boolean useHooks) throws InjectionException
 	{
-		String hookName = hook.getElement().getString();
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
 		Signature.Builder builder = new Signature.Builder()
@@ -114,15 +124,17 @@ public class InjectHookMethod
 
 		assert deobMethod.isStatic() == vanillaMethod.isStatic();
 
-		if (!deobMethod.isStatic())
+		boolean modifiedSignature = false;
+		if (!deobMethod.isStatic() && useHooks)
 		{
 			// Add variable to signature
 			builder.addArgument(0, inject.deobfuscatedTypeToApiType(new Type(deobMethod.getClassFile().getName())));
+			modifiedSignature = true;
 		}
 
 		Signature signature = builder.build();
 
-		List<Integer> insertIndexes = findHookLocations(hook, vanillaMethod);
+		List<Integer> insertIndexes = findHookLocations(hookName, end, vanillaMethod);
 		insertIndexes.sort((a, b) -> Integer.compare(b, a));
 
 		for (int insertPos : insertIndexes)
@@ -132,9 +144,10 @@ public class InjectHookMethod
 				instructions.addInstruction(insertPos++, new ALoad(instructions, 0));
 			}
 
+			int signatureStart = modifiedSignature ? 1 : 0;
 			int index = deobMethod.isStatic() ? 0 : 1; // current variable index
 
-			for (int i = index; i < signature.size(); ++i)
+			for (int i = signatureStart; i < signature.size(); ++i)
 			{
 				Type type = signature.getTypeOfArg(i);
 
@@ -144,16 +157,50 @@ public class InjectHookMethod
 				index += type.getSize();
 			}
 
-			// Invoke callback
-			InvokeStatic invoke = new InvokeStatic(instructions,
-				new net.runelite.asm.pool.Method(
-					new net.runelite.asm.pool.Class(HOOKS),
-					hookName,
-					signature
-				)
-			);
+			InvokeInstruction invoke;
 
-			instructions.addInstruction(insertPos++, invoke);
+			// use old Hooks callback
+			if (useHooks)
+			{
+				// Invoke callback
+				invoke = new InvokeStatic(instructions,
+					new net.runelite.asm.pool.Method(
+						new net.runelite.asm.pool.Class(HOOKS),
+						hookName,
+						signature
+					)
+				);
+			}
+			else
+			{
+				// Invoke methodhook
+				assert hookMethod != null;
+
+				if (vanillaMethod.isStatic())
+				{
+					invoke = new InvokeStatic(instructions,
+						new net.runelite.asm.pool.Method(
+							new net.runelite.asm.pool.Class(vanillaMethod.getClassFile().getName()),
+							hookMethod.getName(),
+							signature
+						)
+					);
+				}
+				else
+				{
+					// otherwise invoke member function
+					//instructions.addInstruction(insertPos++, new ALoad(instructions, 0));
+					invoke = new InvokeVirtual(instructions,
+						new net.runelite.asm.pool.Method(
+							new net.runelite.asm.pool.Class(vanillaMethod.getClassFile().getName()),
+							hookMethod.getName(),
+							signature
+						)
+					);
+				}
+			}
+
+			instructions.addInstruction(insertPos++, (Instruction) invoke);
 		}
 
 		logger.info("Injected method hook {} in {} with {} args: {}",
@@ -161,11 +208,10 @@ public class InjectHookMethod
 			signature.getArguments());
 	}
 
-	private List<Integer> findHookLocations(Annotation hook, Method vanillaMethod) throws InjectionException
+	private List<Integer> findHookLocations(String hookName, boolean end, Method vanillaMethod) throws InjectionException
 	{
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
-		boolean end = hook.getElements().size() == 2 && hook.getElements().get(1).getValue().equals(true);
 		if (end)
 		{
 			// find return

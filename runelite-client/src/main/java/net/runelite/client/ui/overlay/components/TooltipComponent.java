@@ -35,22 +35,16 @@ import lombok.Setter;
 import net.runelite.api.IndexedSprite;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
+@Setter
 public class TooltipComponent implements RenderableEntity
 {
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
 	private static final int MOD_ICON_WIDTH = 13; // they are generally 13px wide
 
-	@Setter
 	private String text;
-
-	@Setter
-	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
-
-	@Setter
+	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private Point position = new Point();
-
-	@Setter
 	private IndexedSprite[] modIcons;
 
 	@Override
@@ -59,7 +53,7 @@ public class TooltipComponent implements RenderableEntity
 		// Tooltip size
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int textDescent = metrics.getDescent();
-		final int textHeight = graphics.getFontMetrics().getHeight();
+		final int textHeight = metrics.getHeight();
 		int tooltipWidth = 0;
 		int tooltipHeight = 0;
 		String[] lines = BR.split(text);

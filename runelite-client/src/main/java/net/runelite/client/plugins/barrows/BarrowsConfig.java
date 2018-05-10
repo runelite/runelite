@@ -59,10 +59,21 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showChestValue",
+		name = "Show Value of Chests",
+		description = "Configure whether to show total exchange value of chest when opened",
+		position = 2
+	)
+	default boolean showChestValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
 		description = "Change the color of the name displayed on the minimap",
-		position = 2
+		position = 3
 	)
 	default Color brotherLocColor()
 	{
@@ -73,7 +84,7 @@ public interface BarrowsConfig extends Config
 		keyName = "deadBrotherLocColor",
 		name = "Dead Brother loc. color",
 		description = "Change the color of the name displayed on the minimap for a dead brother",
-		position = 3
+		position = 4
 	)
 	default Color deadBrotherLocColor()
 	{

@@ -30,6 +30,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 import java.awt.Color;
+import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
+import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 
 @ConfigGroup(
 	keyName = "grounditems",
@@ -83,25 +85,25 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightMenuOption",
-		name = "Highlight Menu Option",
-		description = "Configures whether or not to highlight the menu option",
+		keyName = "itemHighlightMode",
+		name = "Item Highlight Mode",
+		description = "Configures how ground items will be highlighted",
 		position = 5
 	)
-	default boolean highlightMenuOption()
+	default ItemHighlightMode itemHighlightMode()
 	{
-		return true;
+		return ItemHighlightMode.BOTH;
 	}
 
 	@ConfigItem(
-		keyName = "highlightMenuItemName",
-		name = "Highlight Menu Item Name",
-		description = "Configures whether or not to highlight the menu item name",
+		keyName = "menuHighlightMode",
+		name = "Menu Highlight Mode",
+		description = "Configures what to highlight in right-click menu",
 		position = 6
 	)
-	default boolean highlightMenuItemName()
+	default MenuHighlightMode menuHighlightMode()
 	{
-		return false;
+		return MenuHighlightMode.NAME;
 	}
 
 	@ConfigItem(

@@ -30,6 +30,39 @@ import net.runelite.mapping.Import;
 
 public interface RSRenderOverview extends RenderOverview
 {
+	@Import("worldMapX")
+	int getWorldMapX();
+
+	@Import("worldMapY")
+	int getWorldMapY();
+
+	@Import("worldMapZoom")
+	float getWorldMapZoom();
+
+	@Import("worldMapTargetX")
+	int getWorldMapTargetX();
+
+	@Import("worldMapTargetY")
+	int getWorldMapTargetY();
+
+	@Import("worldMapDisplayWidth")
+	int getWorldMapDisplayWidth();
+
+	@Import("worldMapDisplayHeight")
+	int getWorldMapDisplayHeight();
+
+	@Import("worldMapDisplayX")
+	int getWorldMapDisplayX();
+
+	@Import("worldMapDisplayY")
+	int getWorldMapDisplayY();
+
+	@Import("setWorldMapPosition")
+	void setWorldMapPosition(int worldMapX, int worldMapY, boolean changedSurface);
+
+	@Import("setWorldMapPositionTarget")
+	void setWorldMapPositionTarget(int worldPointX, int worldPointY);
+
 	@Import("worldMapManager")
 	@Override
 	RSWorldMapManager getWorldMapManager();

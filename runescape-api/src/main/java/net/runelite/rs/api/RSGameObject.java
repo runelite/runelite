@@ -63,7 +63,7 @@ public interface RSGameObject extends GameObject
 
 	@Import("hash")
 	@Override
-	int getHash();
+	long getHash();
 
 	@Import("flags")
 	int getFlags();

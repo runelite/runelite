@@ -41,7 +41,7 @@ public class WidgetID
 	public static final int EMOTES_GROUP_ID = 216;
 	public static final int RUNE_POUCH_GROUP_ID = 190;
 	public static final int DIARY_GROUP_ID = 259;
-	public static final int PESTRCONTROL_GROUP_ID = 408;
+	public static final int PEST_CONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
 	public static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
@@ -77,7 +77,7 @@ public class WidgetID
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
 	public static final int BLAST_FURNACE_GROUP_ID = 474;
-	public static final int WORLD_MAP = 595;
+	public static final int WORLD_MAP_GROUP_ID = 595;
 	public static final int PYRAMID_PLUNDER_GROUP_ID = 428;
 	public static final int RAIDS_REWARD_GROUP_ID = 539;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
@@ -88,6 +88,8 @@ public class WidgetID
 	static class WorldMap
 	{
 		static final int OPTION = 36;
+		static final int TOOLTIP = 35;
+		static final int MAPVIEW = 3;
 	}
 
 	static class SlayerRewards
@@ -420,5 +422,6 @@ public class WidgetID
 	{
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
+		static final int BARROWS_REWARD_INVENTORY = 3;
 	}
 }

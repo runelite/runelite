@@ -69,7 +69,8 @@ public class AgilityOverlay extends Overlay
 		final Tile markOfGrace = plugin.getMarkOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
-			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts())
+			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
+					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay())
 			{
 				return;
 			}
@@ -77,6 +78,13 @@ public class AgilityOverlay extends Overlay
 			if (tile.getPlane() == client.getPlane()
 				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
+				// This assumes that the obstacle is not clickable.
+				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
+				{
+					OverlayUtil.renderPolygon(graphics, object.getCanvasTilePoly(), config.getTrapColor());
+					return;
+				}
+
 				Area objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{

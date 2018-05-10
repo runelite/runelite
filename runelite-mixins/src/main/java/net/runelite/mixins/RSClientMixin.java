@@ -31,6 +31,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
@@ -51,10 +52,10 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
-import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.LocalPoint;
@@ -81,6 +82,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.Hooks;
@@ -102,6 +104,9 @@ public abstract class RSClientMixin implements RSClient
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private static int tickCount;
 
 	@Inject
 	private static boolean interpolatePlayerAnimations;
@@ -158,6 +163,25 @@ public abstract class RSClientMixin implements RSClient
 	public void setInterpolateObjectAnimations(boolean interpolate)
 	{
 		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public AccountType getAccountType()
+	{
+		int varbit = getVar(Varbits.ACCOUNT_TYPE);
+
+		switch (varbit)
+		{
+			case 1:
+				return AccountType.IRONMAN;
+			case 2:
+				return AccountType.ULTIMATE_IRONMAN;
+			case 3:
+				return AccountType.HARDCORE_IRONMAN;
+		}
+
+		return AccountType.NORMAL;
 	}
 
 	@Inject
@@ -316,17 +340,17 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public int getSetting(Setting setting)
+	public int getVar(VarPlayer varPlayer)
 	{
 		int[] varps = getVarps();
-		return varps[setting.getId()];
+		return varps[varPlayer.getId()];
 	}
 
 	@Inject
 	@Override
 	public boolean isPrayerActive(Prayer prayer)
 	{
-		return getSetting(prayer.getVarbit()) == 1;
+		return getVar(prayer.getVarbit()) == 1;
 	}
 
 	/**
@@ -380,7 +404,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		if (isResized())
 		{
-			if (getSetting(Varbits.SIDE_PANELS) == 1)
+			if (getVar(Varbits.SIDE_PANELS) == 1)
 			{
 				return getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE);
 			}
@@ -462,6 +486,22 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public List<GraphicsObject> getGraphicsObjects()
+	{
+		List<GraphicsObject> graphicsObjects = new ArrayList<GraphicsObject>();
+		RSDeque graphicsObjectDeque = this.getGraphicsObjectDeque();
+		Node head = graphicsObjectDeque.getHead();
+
+		for (Node node = head.getNext(); node != head; node = node.getNext())
+		{
+			graphicsObjects.add((GraphicsObject)node);
+		}
+
+		return graphicsObjects;
+	}
+
+	@Inject
+	@Override
 	public void setModIcons(IndexedSprite[] modIcons)
 	{
 		setRSModIcons((RSIndexedSprite[]) modIcons);
@@ -479,27 +519,6 @@ public abstract class RSClientMixin implements RSClient
 			return LocalPoint.fromRegion(regionX, regionY);
 		}
 		return null;
-	}
-
-	@Inject
-	@Override
-	public boolean getBoundingBoxAlwaysOnMode()
-	{
-		return getboundingBox3DDrawMode() == getALWAYSDrawMode();
-	}
-
-	@Inject
-	@Override
-	public void setBoundingBoxAlwaysOnMode(boolean alwaysDrawBoxes)
-	{
-		if (alwaysDrawBoxes)
-		{
-			setboundingBox3DDrawMode(getALWAYSDrawMode());
-		}
-		else
-		{
-			setboundingBox3DDrawMode(getON_MOUSEOVERDrawMode());
-		}
 	}
 
 	@Inject
@@ -845,5 +864,19 @@ public abstract class RSClientMixin implements RSClient
 	public static void onUsernameChanged(int idx)
 	{
 		eventBus.post(new UsernameChanged());
+	}
+
+	@Override
+	@Inject
+	public int getTickCount()
+	{
+		return tickCount;
+	}
+
+	@Override
+	@Inject
+	public void setTickCount(int tick)
+	{
+		tickCount = tick;
 	}
 }

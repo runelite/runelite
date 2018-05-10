@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.demonicgorilla;
 
 import com.google.common.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.HeadIcon;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -60,15 +60,11 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Demonic gorillas"
+	name = "Demonic Gorillas"
 )
 @Slf4j
 public class DemonicGorillaPlugin extends Plugin
 {
-	static final int OVERHEAD_ICON_MELEE = 0;
-	static final int OVERHEAD_ICON_RANGED = 1;
-	static final int OVERHEAD_ICON_MAGIC = 2;
-
 	@Inject
 	private Client client;
 
@@ -77,8 +73,6 @@ public class DemonicGorillaPlugin extends Plugin
 
 	@Getter
 	private Map<NPC, DemonicGorilla> gorillas;
-
-	private int tickCounter;
 
 	private List<WorldPoint> recentBoulders;
 
@@ -89,7 +83,6 @@ public class DemonicGorillaPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		tickCounter = 0;
 		gorillas = new HashMap<>();
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
@@ -146,7 +139,7 @@ public class DemonicGorillaPlugin extends Plugin
 		{
 			gorilla.setNextPosibleAttackStyles(Arrays
 				.stream(DemonicGorilla.ALL_REGULAR_ATTACK_STYLES)
-				.filter(x -> !Arrays.stream(protectedStyles).anyMatch(y -> x == y))
+				.filter(x -> Arrays.stream(protectedStyles).noneMatch(y -> x == y))
 				.collect(Collectors.toList()));
 			gorilla.setAttacksUntilSwitch(DemonicGorilla.ATTACKS_PER_SWITCH);
 			gorilla.setChangedAttackStyleThisTick(true);
@@ -155,19 +148,22 @@ public class DemonicGorillaPlugin extends Plugin
 
 	private DemonicGorilla.AttackStyle getProtectedStyle(Player player)
 	{
-		if (player.getOverheadIcon() == OVERHEAD_ICON_MELEE)
+		HeadIcon headIcon = player.getOverheadIcon();
+		if (headIcon == null)
 		{
-			return DemonicGorilla.AttackStyle.MELEE;
+			return null;
 		}
-		else if (player.getOverheadIcon() == OVERHEAD_ICON_RANGED)
+		switch (headIcon)
 		{
-			return DemonicGorilla.AttackStyle.RANGED;
+			case MELEE:
+				return DemonicGorilla.AttackStyle.MELEE;
+			case RANGED:
+				return DemonicGorilla.AttackStyle.RANGED;
+			case MAGIC:
+				return DemonicGorilla.AttackStyle.MAGIC;
+			default:
+				return null;
 		}
-		else if (player.getOverheadIcon() == OVERHEAD_ICON_MAGIC)
-		{
-			return DemonicGorilla.AttackStyle.MAGIC;
-		}
-		return null;
 	}
 
 	private void onGorillaAttack(DemonicGorilla gorilla, final DemonicGorilla.AttackStyle attackStyle)
@@ -207,7 +203,7 @@ public class DemonicGorillaPlugin extends Plugin
 				// so we keep track of the attack here until the damage splat
 				// has appeared on the player.
 
-				int damagesOnTick = tickCounter;
+				int damagesOnTick = client.getTickCount();
 				if (attackStyle == DemonicGorilla.AttackStyle.MAGIC)
 				{
 					MemorizedPlayer mp = memorizedPlayers.get(target);
@@ -256,11 +252,13 @@ public class DemonicGorillaPlugin extends Plugin
 
 		checkGorillaAttackStyleSwitch(gorilla, protectedStyle);
 
+		int tickCounter = client.getTickCount();
 		gorilla.setNextAttackTick(tickCounter + DemonicGorilla.ATTACK_RATE);
 	}
 
 	private void checkGorillaAttacks()
 	{
+		int tickCounter = client.getTickCount();
 		for (DemonicGorilla gorilla : gorillas.values())
 		{
 			Player interacting = (Player)gorilla.getNpc().getInteracting();
@@ -404,7 +402,7 @@ public class DemonicGorillaPlugin extends Plugin
 							// or other players
 							final WorldArea area1 = new WorldArea(x, 1, 1);
 							return area1 != null &&
-								!gorillas.values().stream().anyMatch(y ->
+								gorillas.values().stream().noneMatch(y ->
 								{
 									if (y == gorilla)
 									{
@@ -415,7 +413,7 @@ public class DemonicGorillaPlugin extends Plugin
 											y.getNpc().getWorldArea() : y.getLastWorldArea();
 									return area2 != null && area1.intersectsWith(area2);
 								}) &&
-								!memorizedPlayers.values().stream().anyMatch(y ->
+								memorizedPlayers.values().stream().noneMatch(y ->
 								{
 									final WorldArea area2 = y.getLastWorldArea();
 									return area2 != null && area1.intersectsWith(area2);
@@ -456,7 +454,7 @@ public class DemonicGorillaPlugin extends Plugin
 							}
 							else if (tickCounter >= gorilla.getNextAttackTick() &&
 								gorilla.getRecentProjectileId() == -1 &&
-								!recentBoulders.stream().anyMatch(x -> x.distanceTo(mp.getLastWorldArea()) == 0))
+								recentBoulders.stream().noneMatch(x -> x.distanceTo(mp.getLastWorldArea()) == 0))
 							{
 								gorilla.setNextPosibleAttackStyles(gorilla
 									.getNextPosibleAttackStyles()
@@ -545,6 +543,7 @@ public class DemonicGorillaPlugin extends Plugin
 	private void checkPendingAttacks()
 	{
 		Iterator<PendingGorillaAttack> it = pendingAttacks.iterator();
+		int tickCounter = client.getTickCount();
 		while (it.hasNext())
 		{
 			PendingGorillaAttack attack = it.next();
@@ -689,7 +688,5 @@ public class DemonicGorillaPlugin extends Plugin
 		checkPendingAttacks();
 		updatePlayers();
 		recentBoulders.clear();
-
-		tickCounter++;
 	}
 }

@@ -111,6 +111,7 @@ public class DiscordState
 				.state(lastEvent.getState())
 				.details(lastEvent.getDetails())
 				.startTimestamp(startOfAction)
+				.smallImageKey(newEvent.getImageKey())
 				.build();
 
 			needsFlush = true;
@@ -126,11 +127,6 @@ public class DiscordState
 
 		final Duration actionTimeout = Duration.ofMinutes(timeout);
 
-		if (Instant.now().compareTo(lastAction.plus(actionTimeout)) >= 0)
-		{
-			return true;
-		}
-
-		return false;
+		return Instant.now().isAfter(lastAction.plus(actionTimeout));
 	}
 }

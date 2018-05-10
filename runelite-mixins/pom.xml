@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.3.7-SNAPSHOT</version>
+		<version>1.3.9-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mixins</artifactId>
@@ -60,7 +60,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
 				<configuration>
 					<!-- RuneScape classes do not verify
 					 under Java 7+ due to the obfuscation

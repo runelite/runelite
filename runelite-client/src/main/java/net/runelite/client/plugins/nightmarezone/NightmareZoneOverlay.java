@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.nightmarezone;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -37,6 +36,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.StackFormatter;
@@ -96,20 +96,18 @@ class NightmareZoneOverlay extends Overlay
 
 		renderAbsorptionCounter();
 
-		panelComponent.getLines().clear();
-		panelComponent.getLines().add(new PanelComponent.Line(
-				"Points: ",
-				Color.WHITE,
-				StackFormatter.formatNumber(client.getSetting(Varbits.NMZ_POINTS)),
-				Color.WHITE
-		));
+		panelComponent.getChildren().clear();
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Points: ")
+			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
+			.build());
 
 		return panelComponent.render(graphics);
 	}
 
 	private void renderAbsorptionCounter()
 	{
-		int absorptionPoints = client.getSetting(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
 		if (absorptionPoints == 0)
 		{
 			if (absorptionCounter != null)

@@ -36,7 +36,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class MotherlodeSackOverlay extends Overlay
@@ -67,8 +68,8 @@ class MotherlodeSackOverlay extends Overlay
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
-		panelComponent.getLines().clear();
-		panelComponent.setBackgroundColor(BackgroundComponent.DEFAULT_BACKGROUND_COLOR);
+		panelComponent.getChildren().clear();
+		panelComponent.setBackgroundColor(ComponentConstants.STANDARD_BACKGROUND_COLOR);
 
 		if (sack != null)
 		{
@@ -81,23 +82,16 @@ class MotherlodeSackOverlay extends Overlay
 					panelComponent.setBackgroundColor(DANGER);
 				}
 
-				panelComponent.getLines().add(new PanelComponent.Line(
-					"Pay-dirt in sack:",
-					Color.WHITE,
-					String.valueOf(client.getSetting(Varbits.SACK_NUMBER)),
-					Color.WHITE
-				));
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Pay-dirt in sack:")
+					.right(String.valueOf(client.getVar(Varbits.SACK_NUMBER)))
+					.build());
 			}
 
 			if (config.showDepositsLeft())
 			{
 				final Integer depositsLeft = plugin.getDepositsLeft();
-				final PanelComponent.Line line = new PanelComponent.Line(
-					"Deposits left:",
-					Color.WHITE,
-					depositsLeft == null ? "N/A" : String.valueOf(depositsLeft),
-					Color.WHITE
-				);
+				Color color = Color.WHITE;
 
 				if (depositsLeft != null)
 				{
@@ -107,12 +101,16 @@ class MotherlodeSackOverlay extends Overlay
 					}
 					else if (depositsLeft == 1)
 					{
-						line.setLeftColor(Color.RED);
-						line.setRightColor(Color.RED);
+						color = Color.RED;
 					}
 				}
 
-				panelComponent.getLines().add(line);
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Deposits left:")
+					.leftColor(color)
+					.right(depositsLeft == null ? "N/A" : String.valueOf(depositsLeft))
+					.rightColor(color)
+					.build());
 			}
 		}
 

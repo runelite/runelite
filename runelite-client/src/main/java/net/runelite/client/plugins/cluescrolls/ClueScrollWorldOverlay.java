@@ -27,9 +27,6 @@ package net.runelite.client.plugins.cluescrolls;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,32 +37,11 @@ public class ClueScrollWorldOverlay extends Overlay
 {
 	public static final int IMAGE_Z_OFFSET = 30;
 
-	public static final BufferedImage EMOTE_IMAGE;
-	public static final BufferedImage CLUE_SCROLL_IMAGE;
-	public static final BufferedImage SPADE_IMAGE;
-
 	public static final Color CLICKBOX_BORDER_COLOR = Color.ORANGE;
 	public static final Color CLICKBOX_HOVER_BORDER_COLOR = CLICKBOX_BORDER_COLOR.darker();
 	public static final Color CLICKBOX_FILL_COLOR = new Color(0, 255, 0, 20);
 
 	private final ClueScrollPlugin plugin;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
-				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
-				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
 	@Inject
 	public ClueScrollWorldOverlay(ClueScrollPlugin plugin)

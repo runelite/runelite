@@ -33,6 +33,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.StackFormatter;
 
@@ -60,17 +61,18 @@ class BlastFurnaceCofferOverlay extends Overlay
 
 		Widget sack = client.getWidget(WidgetInfo.BLAST_FURNACE_COFFER);
 
-		panelComponent.getLines().clear();
+		panelComponent.getChildren().clear();
 
 		if (sack != null)
 		{
 			sack.setHidden(true);
 
-			panelComponent.getLines().add(new PanelComponent.Line(
-				"Coffer:",
-				StackFormatter.quantityToStackSize(client.getSetting(BLAST_FURNACE_COFFER)) + " gp"
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Coffer:")
+				.right(StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp")
+				.build());
 		}
+
 		return panelComponent.render(graphics);
 	}
 }

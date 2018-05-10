@@ -36,7 +36,7 @@ public abstract class RSClanMemberMixin implements RSClanMember
 	@Inject
 	public String getUsername()
 	{
-		return getName().getName();
+		return getRsName().getName();
 	}
 
 	@Override

@@ -31,43 +31,26 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.text.DecimalFormat;
-import lombok.Getter;
 import lombok.Setter;
 
-public class ProgressBarComponent
+@Setter
+public class ProgressBarComponent implements LayoutableRenderableEntity
 {
-	@Setter
 	private String text;
-
-	@Setter
 	private double progress;
-
-	@Setter
 	private Point position = new Point();
-
-	@Setter
 	private Color foregroundColor = new Color(82, 161, 82);
-
-	@Setter
 	private Color backgroundColor = new Color(255, 255, 255, 127);
-
-	@Setter
 	private Color fontColor = Color.WHITE;
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 16);
 
-	@Getter
-	@Setter
-	private int width = 140;
-
-	@Getter
-	@Setter
-	private int height = 16;
-
+	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		FontMetrics metrics = graphics.getFontMetrics();
 
 		int barX = position.x;
-		int barY = position.y;
+		int barY = position.y - metrics.getHeight();
 		String textToWrite;
 
 		if (Strings.isNullOrEmpty(text))
@@ -79,6 +62,9 @@ public class ProgressBarComponent
 		{
 			textToWrite = text;
 		}
+
+		int width = preferredSize.width;
+		int height = Math.max(preferredSize.height, 16);
 
 		int progressTextX = barX + (width - metrics.stringWidth(textToWrite)) / 2;
 		int progressTextY = barY + ((height - metrics.getHeight()) / 2) + metrics.getAscent();

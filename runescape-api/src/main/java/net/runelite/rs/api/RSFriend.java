@@ -24,6 +24,8 @@
  */
 package net.runelite.rs.api;
 
-public interface RSFriend extends RSChatPlayer
+import net.runelite.api.Friend;
+
+public interface RSFriend extends Friend, RSChatPlayer
 {
 }

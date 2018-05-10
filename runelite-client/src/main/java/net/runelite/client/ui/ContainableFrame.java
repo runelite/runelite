@@ -24,18 +24,25 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.Frame;
 import java.awt.Rectangle;
 import javax.swing.JFrame;
-import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.config.ExpandResizeType;
 
 public class ContainableFrame extends JFrame
 {
-	@Getter
+	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;
+
+	@Setter
+	private ExpandResizeType expandResizeType;
 	private boolean containedInScreen;
+	private boolean expandedClientOppositeDirection;
 
 	public void setContainedInScreen(boolean value)
 	{
 		this.containedInScreen = value;
+
 		if (value)
 		{
 			// Reposition the frame if it is intersecting with the bounds
@@ -55,6 +62,7 @@ public class ContainableFrame extends JFrame
 			y = Math.max(y, (int)bounds.getY());
 			y = Math.min(y, (int)(bounds.getY() + bounds.getHeight() - this.getHeight()));
 		}
+
 		super.setLocation(x, y);
 	}
 
@@ -71,6 +79,116 @@ public class ContainableFrame extends JFrame
 			width = Math.min(width, (int)(bounds.getX() + bounds.getWidth()) - x);
 			height = Math.min(height, (int)(bounds.getY() + bounds.getHeight()) - y);
 		}
+
 		super.setBounds(x, y, width, height);
+	}
+
+	/**
+	 * Expand frame by specified value. If the frame is going to be expanded outside of screen push the frame to
+	 * the side.
+	 * @param value size to expand frame by
+	 */
+	public void expandBy(final int value)
+	{
+		if (isFullScreen())
+		{
+			return;
+		}
+
+		int increment = value;
+		boolean forcedWidthIncrease = false;
+
+		if (expandResizeType == ExpandResizeType.KEEP_WINDOW_SIZE)
+		{
+			final int minimumWidth = getLayout().minimumLayoutSize(this).width;
+			final int currentWidth = getWidth();
+
+			if (minimumWidth > currentWidth)
+			{
+				forcedWidthIncrease = true;
+				increment = minimumWidth - currentWidth;
+			}
+		}
+
+		if (forcedWidthIncrease || expandResizeType == ExpandResizeType.KEEP_GAME_SIZE)
+		{
+			final int newWindowWidth = getWidth() + increment;
+			final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
+			final boolean wouldExpandThroughEdge = getX() + newWindowWidth > screenBounds.getX() + screenBounds.getWidth();
+			int newWindowX = getX();
+
+			if (wouldExpandThroughEdge)
+			{
+				if (!isFrameCloseToRightEdge())
+				{
+					// Move the window to the edge
+					newWindowX = (int)(screenBounds.getX() + screenBounds.getWidth()) - getWidth();
+				}
+
+				// Expand the window to the left as the user probably don't want the
+				// window to go through the screen
+				newWindowX -= increment;
+
+				expandedClientOppositeDirection = true;
+			}
+
+			setBounds(newWindowX, getY(), newWindowWidth, getHeight());
+		}
+
+		revalidateMinimumSize();
+	}
+
+	/**
+	 * Contract frame by specified value. If new frame size is less than it's minimum size, force the minimum size.
+	 * If the frame was pushed from side before, restore it's original position.
+	 * @param value value to contract frame by
+	 */
+	public void contractBy(final int value)
+	{
+		if (isFullScreen())
+		{
+			return;
+		}
+
+		revalidateMinimumSize();
+		final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
+		final boolean wasCloseToLeftEdge = Math.abs(getX() - screenBounds.getX()) <= SCREEN_EDGE_CLOSE_DISTANCE;
+		int newWindowX = getX();
+		int newWindowWidth = getWidth() - value;
+
+		if (isFrameCloseToRightEdge() && (expandedClientOppositeDirection || !wasCloseToLeftEdge))
+		{
+			// Keep the distance to the right edge
+			newWindowX += value;
+		}
+
+		if (expandResizeType == ExpandResizeType.KEEP_WINDOW_SIZE && newWindowWidth > getMinimumSize().width)
+		{
+			// The sidebar fits inside the window, do not resize and move
+			newWindowWidth = getWidth();
+			newWindowX = getX();
+		}
+
+		setBounds(newWindowX, getY(), newWindowWidth, getHeight());
+		expandedClientOppositeDirection = false;
+	}
+
+	/**
+	 * Force minimum size of frame to be it's layout manager's minimum size
+	 */
+	public void revalidateMinimumSize()
+	{
+		setMinimumSize(getLayout().minimumLayoutSize(this));
+	}
+
+	private boolean isFullScreen()
+	{
+		return (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+	}
+
+	private boolean isFrameCloseToRightEdge()
+	{
+		Rectangle screenBounds = getGraphicsConfiguration().getBounds();
+		return Math.abs((getX() + getWidth()) - (screenBounds.getX() + screenBounds.getWidth())) <= SCREEN_EDGE_CLOSE_DISTANCE;
 	}
 }

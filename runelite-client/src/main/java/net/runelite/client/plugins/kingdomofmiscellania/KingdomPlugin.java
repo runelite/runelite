@@ -79,8 +79,8 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		favor = client.getSetting(Varbits.KINGDOM_FAVOR);
-		coffer = client.getSetting(Varbits.KINGDOM_COFFER);
+		favor = client.getVar(Varbits.KINGDOM_FAVOR);
+		coffer = client.getVar(Varbits.KINGDOM_COFFER);
 		processInfobox();
 	}
 
@@ -130,7 +130,7 @@ public class KingdomPlugin extends Plugin
 
 	private boolean hasCompletedQuest()
 	{
-		return client.getSetting(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
+		return client.getVar(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
 	}
 
 	static int getFavorPercent(int favor)
