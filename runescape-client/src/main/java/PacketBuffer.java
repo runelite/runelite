@@ -249,7 +249,7 @@ public final class PacketBuffer extends Buffer {
                      var22 = new DynamicObject(var3, 0, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
                   }
 
-                  var6.method2909(var0, var1, var2, var16, (Renderable)var22, (Renderable)null, class50.field454[var4], 0, var19, var21);
+                  var6.addBoundary(var0, var1, var2, var16, (Renderable)var22, (Renderable)null, class50.field454[var4], 0, var19, var21);
                   if(var4 == 0) {
                      if(var8.clipped) {
                         class50.field449[var0][var1][var2] = 50;
@@ -303,7 +303,7 @@ public final class PacketBuffer extends Buffer {
                      var22 = new DynamicObject(var3, 1, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
                   }
 
-                  var6.method2909(var0, var1, var2, var16, (Renderable)var22, (Renderable)null, class50.field453[var4], 0, var19, var21);
+                  var6.addBoundary(var0, var1, var2, var16, (Renderable)var22, (Renderable)null, class50.field453[var4], 0, var19, var21);
                   if(var8.clipped) {
                      if(var4 == 0) {
                         class50.field449[var0][var1][var2 + 1] = 50;
@@ -334,7 +334,7 @@ public final class PacketBuffer extends Buffer {
                         var30 = new DynamicObject(var3, 2, var28, var0, var1, var2, var8.animationId, true, (Renderable)null);
                      }
 
-                     var6.method2909(var0, var1, var2, var16, (Renderable)var29, (Renderable)var30, class50.field454[var4], class50.field454[var28], var19, var21);
+                     var6.addBoundary(var0, var1, var2, var16, (Renderable)var29, (Renderable)var30, class50.field454[var4], class50.field454[var28], var19, var21);
                      if(var8.modelClipped) {
                         if(var4 == 0) {
                            MouseRecorder.field534[var0][var1][var2] |= 585;
@@ -366,7 +366,7 @@ public final class PacketBuffer extends Buffer {
                         var22 = new DynamicObject(var3, 3, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
                      }
 
-                     var6.method2909(var0, var1, var2, var16, (Renderable)var22, (Renderable)null, class50.field453[var4], 0, var19, var21);
+                     var6.addBoundary(var0, var1, var2, var16, (Renderable)var22, (Renderable)null, class50.field453[var4], 0, var19, var21);
                      if(var8.clipped) {
                         if(var4 == 0) {
                            class50.field449[var0][var1][var2 + 1] = 50;

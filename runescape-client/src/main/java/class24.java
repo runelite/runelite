@@ -698,7 +698,7 @@ public class class24 {
                      var29 = new DynamicObject(var4, 0, var5, var12, var2, var3, var15.animationId, true, (Renderable)null);
                   }
 
-                  var42.method2909(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field454[var5], 0, var26, var28);
+                  var42.addBoundary(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field454[var5], 0, var26, var28);
                   if(var15.clipType != 0) {
                      var14.removeWall(var2, var3, var6, var5, var15.blocksProjectile);
                   }
@@ -709,7 +709,7 @@ public class class24 {
                      var29 = new DynamicObject(var4, 1, var5, var12, var2, var3, var15.animationId, true, (Renderable)null);
                   }
 
-                  var42.method2909(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field453[var5], 0, var26, var28);
+                  var42.addBoundary(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field453[var5], 0, var26, var28);
                   if(var15.clipType != 0) {
                      var14.removeWall(var2, var3, var6, var5, var15.blocksProjectile);
                   }
@@ -727,7 +727,7 @@ public class class24 {
                         var31 = new DynamicObject(var4, 2, var35, var12, var2, var3, var15.animationId, true, (Renderable)null);
                      }
 
-                     var42.method2909(var0, var2, var3, var23, (Renderable)var30, (Renderable)var31, class50.field454[var5], class50.field454[var35], var26, var28);
+                     var42.addBoundary(var0, var2, var3, var23, (Renderable)var30, (Renderable)var31, class50.field454[var5], class50.field454[var35], var26, var28);
                      if(var15.clipType != 0) {
                         var14.removeWall(var2, var3, var6, var5, var15.blocksProjectile);
                      }
@@ -738,7 +738,7 @@ public class class24 {
                         var29 = new DynamicObject(var4, 3, var5, var12, var2, var3, var15.animationId, true, (Renderable)null);
                      }
 
-                     var42.method2909(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field453[var5], 0, var26, var28);
+                     var42.addBoundary(var0, var2, var3, var23, (Renderable)var29, (Renderable)null, class50.field453[var5], 0, var26, var28);
                      if(var15.clipType != 0) {
                         var14.removeWall(var2, var3, var6, var5, var15.blocksProjectile);
                      }

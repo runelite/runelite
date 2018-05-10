@@ -415,7 +415,8 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(IIIILdz;Ldz;IIJI)V"
    )
-   public void method2909(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, long var9, int var11) {
+   @Export("addBoundary")
+   public void addBoundary(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, long var9, int var11) {
       if(var5 != null || var6 != null) {
          WallObject var12 = new WallObject();
          var12.hash = var9;
