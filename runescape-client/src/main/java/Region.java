@@ -418,8 +418,8 @@ public class Region {
    public void method2909(int var1, int var2, int var3, int var4, Renderable var5, Renderable var6, int var7, int var8, long var9, int var11) {
       if(var5 != null || var6 != null) {
          WallObject var12 = new WallObject();
-         var12.field1818 = var9;
-         var12.field1814 = var11;
+         var12.hash = var9;
+         var12.config = var11;
          var12.x = var2 * 128 + 64;
          var12.y = var3 * 128 + 64;
          var12.floor = var4;
@@ -765,7 +765,7 @@ public class Region {
    @ObfuscatedName("as")
    public long method2927(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
-      return var4 != null && var4.wallObject != null?var4.wallObject.field1818:0L;
+      return var4 != null && var4.wallObject != null?var4.wallObject.hash :0L;
    }
 
    @ObfuscatedName("aw")
@@ -805,8 +805,8 @@ public class Region {
       Tile var6 = this.tiles[var1][var2][var3];
       if(var6 == null) {
          return -1;
-      } else if(var6.wallObject != null && var6.wallObject.field1818 == var4) {
-         return var6.wallObject.field1814 & 255;
+      } else if(var6.wallObject != null && var6.wallObject.hash == var4) {
+         return var6.wallObject.config & 255;
       } else if(var6.decorativeObject != null && var6.decorativeObject.hash == var4) {
          return var6.decorativeObject.renderInfoBitPacked & 255;
       } else if(var6.groundObject != null && var6.groundObject.hash == var4) {
@@ -1353,7 +1353,7 @@ public class Region {
 
                                     var10 = var9.wallObject;
                                     if(var10 != null) {
-                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.field1818);
+                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.hash);
                                     }
 
                                     for(var11 = 0; var11 < var9.entityCount; ++var11) {
@@ -1422,11 +1422,11 @@ public class Region {
                                     }
 
                                     if((var31.orientationA & var11) != 0 && !this.isWallOccluded(var7, var4, var5, var31.orientationA)) {
-                                       var31.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.field1818);
+                                       var31.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.hash);
                                     }
 
                                     if((var31.orientationB & var11) != 0 && !this.isWallOccluded(var7, var4, var5, var31.orientationB)) {
-                                       var31.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.field1818);
+                                       var31.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var31.x - cameraX2, var31.floor - cameraY2, var31.y - cameraZ2, var31.hash);
                                     }
                                  }
 
@@ -1527,7 +1527,7 @@ public class Region {
                                  if(var20) {
                                     var10 = var3.wallObject;
                                     if(!this.isWallOccluded(var7, var4, var5, var10.orientationA)) {
-                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.field1818);
+                                       var10.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var10.x - cameraX2, var10.floor - cameraY2, var10.y - cameraZ2, var10.hash);
                                     }
 
                                     var3.wallCullDirection = 0;
@@ -1731,11 +1731,11 @@ public class Region {
             WallObject var27 = var3.wallObject;
             if(var27 != null) {
                if((var27.orientationB & var3.wallDrawFlags) != 0 && !this.isWallOccluded(var7, var4, var5, var27.orientationB)) {
-                  var27.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.field1818);
+                  var27.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.hash);
                }
 
                if((var27.orientationA & var3.wallDrawFlags) != 0 && !this.isWallOccluded(var7, var4, var5, var27.orientationA)) {
-                  var27.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.field1818);
+                  var27.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var27.x - cameraX2, var27.floor - cameraY2, var27.y - cameraZ2, var27.hash);
                }
             }
          }

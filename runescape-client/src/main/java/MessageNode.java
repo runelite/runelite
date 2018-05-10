@@ -544,7 +544,7 @@ public class MessageNode extends CacheableNode {
                   if(var9 == 0) {
                      WallObject var34 = ScriptEvent.region.method3049(class192.plane, var3, var38);
                      if(var34 != null) {
-                        var11 = class8.method93(var34.field1818);
+                        var11 = class8.method93(var34.hash);
                         if(var31 == 2) {
                            var34.renderable1 = new DynamicObject(var11, 2, var8 + 4, class192.plane, var3, var38, var5, false, var34.renderable1);
                            var34.renderable2 = new DynamicObject(var11, 2, var8 + 1 & 3, class192.plane, var3, var38, var5, false, var34.renderable2);

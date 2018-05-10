@@ -59,16 +59,18 @@ public final class WallObject {
    @ObfuscatedGetter(
       longValue = -1278614877165058919L
    )
-   public long field1818;
+   @Export("hash")
+   public long hash;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1840176221
    )
-   int field1814;
+   @Export("config")
+   int config;
 
    WallObject() {
-      this.field1818 = 0L;
-      this.field1814 = 0;
+      this.hash = 0L;
+      this.config = 0;
    }
 
    @ObfuscatedName("i")
