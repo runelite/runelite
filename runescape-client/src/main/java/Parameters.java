@@ -3,110 +3,110 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kz")
+@ObfuscatedName("ji")
 @Implements("Parameters")
 public class Parameters {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lkz;"
+      signature = "Lji;"
    )
-   static final Parameters field3810;
-   @ObfuscatedName("e")
+   public static final Parameters field3612;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lkz;"
+      signature = "Lji;"
    )
-   static final Parameters field3801;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3802;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3813;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3804;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3805;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3806;
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3815;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3807;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3809;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3816;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3811;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   public static final Parameters field3812;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   public static final Parameters field3800;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lkz;"
-   )
-   static final Parameters field3803;
+   public static final Parameters field3598;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lkz;"
+      signature = "Lji;"
    )
-   static final Parameters field3808;
+   public static final Parameters field3605;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3600;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3599;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3601;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3603;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3604;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3597;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3606;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3602;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3608;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3609;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3610;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3607;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lji;"
+   )
+   public static final Parameters field3611;
+   @ObfuscatedName("c")
    @Export("key")
    public final String key;
 
    static {
-      field3810 = new Parameters("5", "5");
-      field3801 = new Parameters("8", "8");
-      field3802 = new Parameters("9", "9");
-      field3813 = new Parameters("11", "11");
-      field3804 = new Parameters("15", "15");
-      field3805 = new Parameters("6", "6");
-      field3806 = new Parameters("2", "2");
-      field3815 = new Parameters("10", "10");
-      field3807 = new Parameters("3", "3");
-      field3809 = new Parameters("16", "16");
-      field3816 = new Parameters("1", "1");
-      field3811 = new Parameters("13", "13");
-      field3812 = new Parameters("14", "14");
-      field3800 = new Parameters("12", "12");
-      field3803 = new Parameters("7", "7");
-      field3808 = new Parameters("4", "4");
+      field3612 = new Parameters("12", "12");
+      field3598 = new Parameters("5", "5");
+      field3605 = new Parameters("9", "9");
+      field3600 = new Parameters("6", "6");
+      field3599 = new Parameters("2", "2");
+      field3601 = new Parameters("15", "15");
+      field3603 = new Parameters("1", "1");
+      field3604 = new Parameters("14", "14");
+      field3597 = new Parameters("4", "4");
+      field3606 = new Parameters("13", "13");
+      field3602 = new Parameters("16", "16");
+      field3608 = new Parameters("11", "11");
+      field3609 = new Parameters("7", "7");
+      field3610 = new Parameters("3", "3");
+      field3607 = new Parameters("10", "10");
+      field3611 = new Parameters("8", "8");
    }
 
    Parameters(String var1, String var2) {

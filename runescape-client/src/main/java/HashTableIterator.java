@@ -4,33 +4,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hj")
 @Implements("HashTableIterator")
 public class HashTableIterator implements Iterator {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lgx;"
    )
    @Export("table")
    IterableHashTable table;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lht;"
+      signature = "Lgl;"
    )
    @Export("tail")
    Node tail;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("index")
    int index;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lht;"
+      signature = "Lgl;"
    )
    @Export("head")
    Node head;
 
    @ObfuscatedSignature(
-      signature = "(Lhh;)V"
+      signature = "(Lgx;)V"
    )
    HashTableIterator(IterableHashTable var1) {
       this.head = null;
@@ -38,7 +38,7 @@ public class HashTableIterator implements Iterator {
       this.reset();
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @Export("reset")
    void reset() {
       this.tail = this.table.buckets[0].next;
@@ -46,9 +46,21 @@ public class HashTableIterator implements Iterator {
       this.head = null;
    }
 
-   public void remove() {
-      this.head.unlink();
-      this.head = null;
+   public boolean hasNext() {
+      if(this.table.buckets[this.index - 1] != this.tail) {
+         return true;
+      } else {
+         while(this.index < this.table.size) {
+            if(this.table.buckets[this.index++].next != this.table.buckets[this.index - 1]) {
+               this.tail = this.table.buckets[this.index - 1].next;
+               return true;
+            }
+
+            this.tail = this.table.buckets[this.index - 1];
+         }
+
+         return false;
+      }
    }
 
    public Object next() {
@@ -73,20 +85,8 @@ public class HashTableIterator implements Iterator {
       }
    }
 
-   public boolean hasNext() {
-      if(this.table.buckets[this.index - 1] != this.tail) {
-         return true;
-      } else {
-         while(this.index < this.table.size) {
-            if(this.table.buckets[this.index++].next != this.table.buckets[this.index - 1]) {
-               this.tail = this.table.buckets[this.index - 1].next;
-               return true;
-            }
-
-            this.tail = this.table.buckets[this.index - 1];
-         }
-
-         return false;
-      }
+   public void remove() {
+      this.head.unlink();
+      this.head = null;
    }
 }

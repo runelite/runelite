@@ -4,132 +4,93 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("cs")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lgj;"
    )
-   static NodeCache field1437;
-   @ObfuscatedName("e")
+   static NodeCache field1214;
+   @ObfuscatedName("fk")
+   @ObfuscatedGetter(
+      intValue = 1986819395
+   )
+   static int field1219;
+   @ObfuscatedName("m")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -624934099
+      intValue = -234324811
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1417230295
+      intValue = -289334549
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 612836597
+      intValue = 461672635
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1063778083
+      intValue = 1932646591
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "[Lhh;"
+      signature = "[Lgx;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1437 = new NodeCache(128);
+      field1214 = new NodeCache(128);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II)[Lhh;",
-      garbageValue = "-935210531"
+      signature = "(II)[Lgx;",
+      garbageValue = "-717771929"
    )
-   IterableHashTable[] method2099(int var1) {
+   IterableHashTable[] method1989(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lji;IIIBZS)V",
-      garbageValue = "-17229"
+      signature = "(Liv;I)V",
+      garbageValue = "-968351460"
    )
-   @Export("requestNetFile")
-   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class264.NetCache_pendingPriorityWrites.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class264.NetCache_pendingPriorityResponses.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class264.NetCache_pendingWrites.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  --class264.NetCache_pendingWritesCount;
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               }
-
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class264.NetCache_pendingResponses.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class264.NetCache_pendingPriorityWrites.put(var8, var6);
-                  ++class264.NetCache_pendingPriorityWritesCount;
-               } else {
-                  class264.NetCache_pendingWritesQueue.push(var8);
-                  class264.NetCache_pendingWrites.put(var8, var6);
-                  ++class264.NetCache_pendingWritesCount;
-               }
-
-            }
-         }
-      }
+   public static void method2002(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("gb")
    @ObfuscatedSignature(
-      signature = "(Lgl;B)I",
-      garbageValue = "-35"
+      signature = "(Lbs;I)V",
+      garbageValue = "1256740677"
    )
-   static int method2103(PacketBuffer var0) {
-      int var1 = var0.getBits(2);
-      int var2;
-      if(var1 == 0) {
-         var2 = 0;
-      } else if(var1 == 1) {
-         var2 = var0.getBits(5);
-      } else if(var1 == 2) {
-         var2 = var0.getBits(8);
-      } else {
-         var2 = var0.getBits(11);
-      }
-
-      return var2;
+   static final void method1994(Actor var0) {
+      int var1 = var0.field896 - Client.gameCycle;
+      int var2 = var0.field925 * 128 + var0.field885 * 64;
+      int var3 = var0.field927 * 128 + var0.field885 * 64;
+      var0.x += (var2 - var0.x) / var1;
+      var0.y += (var3 - var0.y) / var1;
+      var0.field936 = 0;
+      var0.orientation = var0.field931;
    }
 }

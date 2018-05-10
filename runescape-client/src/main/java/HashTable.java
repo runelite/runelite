@@ -3,31 +3,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("gd")
 @Implements("HashTable")
 public final class HashTable {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @Export("size")
    int size;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "[Lht;"
+      signature = "[Lgl;"
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lht;"
+      signature = "Lgl;"
    )
    @Export("currentGet")
    Node currentGet;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lht;"
+      signature = "Lgl;"
    )
    @Export("current")
    Node current;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @Export("index")
    int index;
 
@@ -44,9 +44,9 @@ public final class HashTable {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(J)Lht;"
+      signature = "(J)Lgl;"
    )
    @Export("get")
    public Node get(long var1) {
@@ -64,9 +64,9 @@ public final class HashTable {
       return null;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lht;J)V"
+      signature = "(Lgl;J)V"
    )
    @Export("put")
    public void put(Node var1, long var2) {
@@ -82,7 +82,7 @@ public final class HashTable {
       var1.hash = var2;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("clear")
    void clear() {
       for(int var1 = 0; var1 < this.size; ++var1) {
@@ -102,9 +102,9 @@ public final class HashTable {
       this.current = null;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "()Lht;"
+      signature = "()Lgl;"
    )
    @Export("first")
    public Node first() {
@@ -112,9 +112,9 @@ public final class HashTable {
       return this.next();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "()Lht;"
+      signature = "()Lgl;"
    )
    @Export("next")
    public Node next() {

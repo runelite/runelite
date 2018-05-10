@@ -4,26 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ku")
+@ObfuscatedName("kd")
 @Implements("ChatPlayer")
 public class ChatPlayer extends Nameable {
-   @ObfuscatedName("c")
-   @Export("spritePixels")
-   static byte[][] spritePixels;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 2090131465
+      intValue = -1818299933
    )
    @Export("world")
    public int world;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -671924675
+      intValue = -467035593
    )
-   public int field3851;
-   @ObfuscatedName("s")
+   public int field3649;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -176529735
+      intValue = -1378703733
    )
    @Export("rank")
    public int rank;
@@ -32,41 +29,31 @@ public class ChatPlayer extends Nameable {
       this.world = -1;
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-509080454"
+      garbageValue = "698375569"
    )
-   void method5454(int var1, int var2) {
+   void method5432(int var1, int var2) {
       this.world = var1;
-      this.field3851 = var2;
+      this.field3649 = var2;
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-111"
+      garbageValue = "-21"
    )
-   public int method5456() {
+   public int method5433() {
       return this.world;
    }
 
-   @ObfuscatedName("an")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "28754"
+      signature = "(B)Z",
+      garbageValue = "5"
    )
-   public boolean method5458() {
+   public boolean method5438() {
       return this.world > 0;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1156402743"
-   )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      WorldMapRegion.addChatMessage(var0, var1, var2, (String)null);
    }
 }
