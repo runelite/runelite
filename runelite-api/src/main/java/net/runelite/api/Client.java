@@ -191,6 +191,8 @@ public interface Client extends GameEngine
 	@VisibleForDevtools
 	void setVarbitValue(int varbit, int value);
 
+	boolean shouldPostVarbitEvent();
+
 	HashTable getWidgetFlags();
 
 	HashTable getComponentTable();
