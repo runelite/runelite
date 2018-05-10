@@ -36,7 +36,7 @@ public class ScreenshotInput implements KeyListener
 	private final ScreenshotPlugin plugin;
 
 	private boolean CONTROL_KEY_DOWN = false;
-	private int SCREENSHOT_KEY_EVENT = KeyEvent.VK_S;
+	private final int SCREENSHOT_KEY_EVENT = KeyEvent.VK_S;
 
 	@Inject
 	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
