@@ -82,23 +82,26 @@ public class RaidsPointsOverlay extends Overlay
 			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
 			.build());
 
-		if(totalPoints==0) //Calculates average combat level of the party before the raid has begun
-		{
-			int sumOfCombatLvls = 0;
+		if (totalPoints == 0) // Calculates average combat level of the party before the raid has begun
+        {
+            panel.getChildren().add(LineComponent.builder()
+                    .left("Average combat:")
+                    .right(String.valueOf(averageCombat()))
+                    .build());
 
-			for(Player currPlayer :client.getPlayers())
-			{
-				sumOfCombatLvls += currPlayer.getCombatLevel();
-			}
-			int averageCombat = sumOfCombatLvls/client.getPlayers().size();
-
-			panel.getChildren().add(LineComponent.builder()
-					.left("Average combat:")
-					.right(String.valueOf(averageCombat))
-					.build());
-
-		}
+        }
 
 		return panel.render(graphics);
+	}
+
+	private int averageCombat()
+	{
+		int sumOfCombatLvls = 0;
+
+		for (Player currPlayer :client.getPlayers())
+		{
+			sumOfCombatLvls += currPlayer.getCombatLevel();
+		}
+		return sumOfCombatLvls/client.getPlayers().size();
 	}
 }
