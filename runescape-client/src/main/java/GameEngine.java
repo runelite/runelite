@@ -1087,11 +1087,11 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       for(var5 = 1; var5 < 103; ++var5) {
          for(var6 = 1; var6 < 103; ++var6) {
             if((class50.tileSettings[var0][var6][var5] & 24) == 0) {
-               Actor.method1596(var0, var6, var5, var3, var4);
+               Actor.drawObject(var0, var6, var5, var3, var4);
             }
 
             if(var0 < 3 && (class50.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
-               Actor.method1596(var0 + 1, var6, var5, var3, var4);
+               Actor.drawObject(var0 + 1, var6, var5, var3, var4);
             }
          }
       }

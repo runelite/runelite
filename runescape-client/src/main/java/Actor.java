@@ -531,7 +531,8 @@ public abstract class Actor extends Renderable {
       signature = "(IIIIII)V",
       garbageValue = "1296539398"
    )
-   static final void method1596(int var0, int var1, int var2, int var3, int var4) {
+   @Export("drawObject")
+   static final void drawObject(int var0, int var1, int var2, int var3, int var4) {
       long var5 = ScriptEvent.region.method2927(var0, var1, var2);
       int var7;
       int var8;
