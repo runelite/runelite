@@ -1,33 +1,36 @@
+import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kp")
-public class class308 extends class221 {
-   @ObfuscatedName("mi")
+@ObfuscatedName("kz")
+public class class308 implements Comparator {
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 2021021085
+      intValue = 1447092561
    )
-   static int field3880;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 1100300905
-   )
-   public int field3877;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lkb;"
-   )
-   public Name field3878;
-   @ObfuscatedName("n")
-   public short field3879;
+   static int field3746;
+   @ObfuscatedName("w")
+   final boolean field3745;
 
+   public class308(boolean var1) {
+      this.field3745 = var1;
+   }
+
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lkb;I)V"
+      signature = "(Ljn;Ljn;I)I",
+      garbageValue = "607151868"
    )
-   class308(Name var1, int var2) {
-      this.field3877 = (int)(class289.method5267() / 1000L);
-      this.field3878 = var1;
-      this.field3879 = (short)var2;
+   int method5706(Nameable var1, Nameable var2) {
+      return this.field3745?var1.vmethod5482(var2):var2.vmethod5482(var1);
+   }
+
+   public boolean equals(Object var1) {
+      return super.equals(var1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method5706((Nameable)var1, (Nameable)var2);
    }
 }

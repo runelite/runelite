@@ -1,19 +1,22 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gy")
-public class class196 {
-   @ObfuscatedName("rb")
-   @ObfuscatedSignature(
-      signature = "Lli;"
-   )
-   @Export("renderOverview")
-   static RenderOverview renderOverview;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      longValue = -2102607528282896077L
-   )
-   static long field2587;
+@ObfuscatedName("gf")
+public class class196 extends class212 {
+   @ObfuscatedName("w")
+   Object field2421;
+
+   class196(Object var1, int var2) {
+      super(var2);
+      this.field2421 = var1;
+   }
+
+   @ObfuscatedName("w")
+   Object vmethod4169() {
+      return this.field2421;
+   }
+
+   @ObfuscatedName("m")
+   boolean vmethod4175() {
+      return false;
+   }
 }

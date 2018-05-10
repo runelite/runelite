@@ -3,44 +3,47 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("ea")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @Export("javaVendor")
    public static String javaVendor;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("javaVersion")
    public static String javaVersion;
-   @ObfuscatedName("i")
-   public static boolean field2193;
-   @ObfuscatedName("gc")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -866153811
+      intValue = -717725833
    )
-   @Export("cameraY")
-   static int cameraY;
-   @ObfuscatedName("b")
+   static int field1980;
+   @ObfuscatedName("gd")
+   @ObfuscatedGetter(
+      intValue = 1240744529
+   )
+   static int field1979;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lfi;"
+      signature = "Led;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lfi;"
+      signature = "Led;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @Export("closed")
    boolean closed;
 
@@ -65,10 +68,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "43"
+      signature = "(I)V",
+      garbageValue = "-1910531284"
    )
    @Export("join")
    public final void join() {
@@ -85,10 +88,10 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;B)Lfi;",
-      garbageValue = "89"
+      signature = "(IIILjava/lang/Object;B)Led;",
+      garbageValue = "107"
    )
    @Export("newTask")
    final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -109,20 +112,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lfi;",
-      garbageValue = "677218124"
+      signature = "(Ljava/lang/String;II)Led;",
+      garbageValue = "-1394371433"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.newTask(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Lfi;",
-      garbageValue = "-771913685"
+      signature = "(Ljava/lang/Runnable;IB)Led;",
+      garbageValue = "1"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
@@ -178,39 +181,40 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("hy")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1665454409"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "214742600"
    )
-   static void method3322() {
-      class3.method6();
-      Client.menuOptions[0] = "Cancel";
-      Client.menuTargets[0] = "";
-      Client.menuTypes[0] = 1006;
-      Client.menuBooleanArray[0] = false;
-      Client.menuOptionCount = 1;
+   @Export("addChatMessage")
+   @Hook("addChatMessage")
+   static void addChatMessage(int var0, String var1, String var2, String var3) {
+      ChatLineBuffer var4 = (ChatLineBuffer)class83.chatLineMap.get(Integer.valueOf(var0));
+      if(var4 == null) {
+         var4 = new ChatLineBuffer();
+         class83.chatLineMap.put(Integer.valueOf(var0), var4);
+      }
+
+      MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
+      class83.messages.put(var5, (long)var5.id);
+      class83.field1205.add(var5);
+      Client.chatCycle = Client.cycleCntr;
    }
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-531002656"
+      signature = "(Lic;II)V",
+      garbageValue = "-95084124"
    )
-   static final void method3323() {
-      PacketNode var0 = AbstractSoundSystem.method2350(ClientPacket.field2400, Client.field911.field1460);
-      Client.field911.method2135(var0);
-
-      for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {
-         if(var1.owner == 0 || var1.owner == 3) {
-            IndexFile.closeWidget(var1, true);
-         }
+   static void method3242(IndexData var0, int var1) {
+      if(class325.NetCache_reference != null) {
+         class325.NetCache_reference.offset = var1 * 8 + 5;
+         int var2 = class325.NetCache_reference.readInt();
+         int var3 = class325.NetCache_reference.readInt();
+         var0.setInformation(var2, var3);
+      } else {
+         class37.requestNetFile((IndexData)null, 255, 255, 0, (byte)0, true);
+         class250.NetCache_indexCaches[var1] = var0;
       }
-
-      if(Client.field1017 != null) {
-         TotalQuantityComparator.method100(Client.field1017);
-         Client.field1017 = null;
-      }
-
    }
 }

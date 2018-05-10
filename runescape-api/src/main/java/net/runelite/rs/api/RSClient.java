@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
@@ -305,6 +306,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
+	@Import("getSpriteAsSpritePixels")
+	@Override
+	RSSpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+
+	@Import("indexSprites")
+	@Override
+	RSIndexDataBase getIndexSprites();
+
 	@Import("widgetFlags")
 	@Override
 	RSHashTable getWidgetFlags();
@@ -426,42 +435,6 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("queuedSoundEffectCount")
 	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
-
-	@Import("drawBoundingBoxes2D")
-	@Override
-	boolean getDrawBoundingBoxes2D();
-
-	@Import("drawBoundingBoxes2D")
-	@Override
-	void setDrawBoundingBoxes2D(boolean shouldDraw);
-
-	@Import("drawBoundingBoxes3D")
-	@Override
-	boolean getDrawBoundingBoxes3D();
-
-	@Import("drawBoundingBoxes3D")
-	@Override
-	void setDrawBoundingBoxes3D(boolean shouldDraw);
-
-	@Import("drawObjectGeometry2D")
-	@Override
-	boolean getdrawObjectGeometry2D();
-
-	@Import("drawObjectGeometry2D")
-	@Override
-	void setdrawObjectGeometry2D(boolean shouldDraw);
-
-	@Import("boundingBox3DDrawMode")
-	RSBoundingBox3DDrawMode getboundingBox3DDrawMode();
-
-	@Import("boundingBox3DDrawMode")
-	void setboundingBox3DDrawMode(RSBoundingBox3DDrawMode drawMode);
-
-	@Import("ON_MOUSEOVER")
-	RSBoundingBox3DDrawMode getON_MOUSEOVERDrawMode();
-
-	@Import("ALWAYS")
-	RSBoundingBox3DDrawMode getALWAYSDrawMode();
 
 	@Import("rasterProvider")
 	@Override

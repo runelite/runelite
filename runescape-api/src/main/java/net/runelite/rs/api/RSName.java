@@ -26,7 +26,7 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSName
+public interface RSName extends Comparable
 {
 	@Import("name")
 	String getName();

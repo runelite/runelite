@@ -43,8 +43,6 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -57,25 +55,6 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
-	@Getter
-	@RequiredArgsConstructor
-	public enum NotificationMode
-	{
-		TRAY("System tray"),
-		BEEP("System beep"),
-		MESSAGE("Game message"),
-		FLASH("Screen flash"),
-		OFF("Off");
-
-		private final String name;
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-	}
-
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
@@ -137,27 +116,30 @@ public class Notifier
 			clientUI.requestFocus();
 		}
 
-		switch (runeLiteConfig.notificationMode())
+		if (runeLiteConfig.enableTrayNotifications())
 		{
-			case TRAY:
-				sendNotification(appName, message, type);
-				break;
-			case BEEP:
-				Toolkit.getDefaultToolkit().beep();
-				break;
-			case MESSAGE:
-				final Client client = this.client.get();
+			sendNotification(appName, message, type);
+		}
 
-				if (client != null && client.getGameState() == GameState.LOGGED_IN)
-				{
-					client.addChatMessage(ChatMessageType.GAME, appName,
-						"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
-				}
+		if (runeLiteConfig.enableNotificationSound())
+		{
+			Toolkit.getDefaultToolkit().beep();
+		}
 
-				break;
-			case FLASH:
-				flashStart = Instant.now();
-				break;
+		if (runeLiteConfig.enableGameMessageNotification())
+		{
+			final Client client = this.client.get();
+
+			if (client != null && client.getGameState() == GameState.LOGGED_IN)
+			{
+				client.addChatMessage(ChatMessageType.GAME, appName,
+					"<col=" + MESSAGE_COLOR + ">" + message + "</col>", "");
+			}
+		}
+
+		if (runeLiteConfig.enableFlashNotification())
+		{
+			flashStart = Instant.now();
 		}
 	}
 
