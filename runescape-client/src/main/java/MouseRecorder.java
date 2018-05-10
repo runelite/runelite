@@ -55,7 +55,8 @@ public class MouseRecorder implements Runnable {
       signature = "(Lbr;II)V",
       garbageValue = "-406786730"
    )
-   static void method1092(ScriptEvent var0, int var1) {
+   @Export("runScript")
+   static void runScript(ScriptEvent var0, int var1) {
       Object[] var2 = var0.params;
       Script var3;
       int var20;

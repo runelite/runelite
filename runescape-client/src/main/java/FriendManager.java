@@ -294,6 +294,6 @@ public class FriendManager {
       garbageValue = "-1754453186"
    )
    public static void method1728(ScriptEvent var0) {
-      MouseRecorder.method1092(var0, 500000);
+      MouseRecorder.runScript(var0, 500000);
    }
 }

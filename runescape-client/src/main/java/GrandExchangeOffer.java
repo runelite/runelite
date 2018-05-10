@@ -157,7 +157,7 @@ public class GrandExchangeOffer {
                   ScriptEvent var4 = new ScriptEvent();
                   var4.source = var3;
                   var4.params = var3.onLoadListener;
-                  MouseRecorder.method1092(var4, 5000000);
+                  MouseRecorder.runScript(var4, 5000000);
                }
             }
 
