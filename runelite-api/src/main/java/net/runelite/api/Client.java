@@ -410,4 +410,6 @@ public interface Client extends GameEngine
 	int getTickCount();
 
 	void setTickCount(int tickCount);
+
+	void setInventoryDragDelay(int delay);
 }
