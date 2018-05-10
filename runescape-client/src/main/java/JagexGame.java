@@ -4,46 +4,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("ix")
 @Implements("JagexGame")
 public enum JagexGame implements Enumerated {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lix;"
    )
-   field3357("runescape", "RuneScape", 0),
-   @ObfuscatedName("e")
+   field3159("runescape", "RuneScape", 0),
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lix;"
    )
-   field3352("stellardawn", "Stellar Dawn", 1),
+   field3154("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lix;"
+   )
+   field3155("game3", "Game 3", 2),
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lix;"
    )
-   field3353("game3", "Game 3", 2),
-   @ObfuscatedName("z")
+   field3156("game4", "Game 4", 3),
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lix;"
    )
-   field3350("game4", "Game 4", 3),
+   field3153("game5", "Game 5", 4),
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lix;"
    )
-   field3354("game5", "Game 5", 4),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lij;"
-   )
-   field3355("oldscape", "RuneScape 2007", 5);
+   field3158("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @Export("name")
    public final String name;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1374023755
+      intValue = -514214381
    )
    @Export("id")
    final int id;
@@ -53,21 +53,25 @@ public enum JagexGame implements Enumerated {
       this.id = var5;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "19795"
+      signature = "(B)I",
+      garbageValue = "60"
    )
-   public int rsOrdinal() {
+   public int vmethod5860() {
       return this.id;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "1173889599"
+      signature = "(IIB)I",
+      garbageValue = "-26"
    )
-   public static boolean method4636(char var0) {
-      return var0 >= '0' && var0 <= '9';
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = MapCacheArchiveNames.method518(var0 - 1, var1 - 1) + MapCacheArchiveNames.method518(1 + var0, var1 - 1) + MapCacheArchiveNames.method518(var0 - 1, 1 + var1) + MapCacheArchiveNames.method518(1 + var0, var1 + 1);
+      int var3 = MapCacheArchiveNames.method518(var0 - 1, var1) + MapCacheArchiveNames.method518(1 + var0, var1) + MapCacheArchiveNames.method518(var0, var1 - 1) + MapCacheArchiveNames.method518(var0, 1 + var1);
+      int var4 = MapCacheArchiveNames.method518(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 }

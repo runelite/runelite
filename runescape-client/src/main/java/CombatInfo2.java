@@ -4,105 +4,105 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jj")
+@ObfuscatedName("jv")
 @Implements("CombatInfo2")
 public class CombatInfo2 extends CacheableNode {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ljr;"
+      signature = "Liv;"
    )
-   public static IndexDataBase field3526;
-   @ObfuscatedName("e")
+   public static IndexDataBase field3329;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Ljr;"
+      signature = "Liv;"
    )
-   static IndexDataBase field3523;
+   public static IndexDataBase field3322;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lgj;"
+   )
+   public static NodeCache field3323;
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lgj;"
    )
-   public static NodeCache field3524;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhi;"
-   )
-   static NodeCache field3525;
-   @ObfuscatedName("n")
+   public static NodeCache field3324;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1729527485
+      intValue = 1972548595
    )
-   public int field3535;
-   @ObfuscatedName("y")
+   public int field3325;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1864141589
+      intValue = -1255114555
    )
-   public int field3528;
-   @ObfuscatedName("c")
+   public int field3326;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 349276191
+      intValue = 248263857
    )
-   public int field3529;
-   @ObfuscatedName("h")
+   public int field3327;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1901296485
+      intValue = -2080656795
    )
-   public int field3530;
-   @ObfuscatedName("i")
+   public int field3328;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 896162011
+      intValue = 1915308625
    )
-   public int field3534;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1544330417
-   )
-   public int field3532;
+   public int field3321;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1614803455
+      intValue = -443880531
    )
-   int field3533;
-   @ObfuscatedName("r")
+   public int field3330;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1025931849
+      intValue = 532896571
    )
-   int field3531;
+   int field3331;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1734542527
+      intValue = -1168450783
+   )
+   int field3332;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 256184477
    )
    @Export("healthScale")
    public int healthScale;
-   @ObfuscatedName("q")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 83504381
+      intValue = 1793094733
    )
-   public int field3536;
+   public int field3334;
 
    static {
-      field3524 = new NodeCache(64);
-      field3525 = new NodeCache(64);
+      field3323 = new NodeCache(64);
+      field3324 = new NodeCache(64);
    }
 
-   public CombatInfo2() {
-      this.field3528 = 255;
-      this.field3529 = 255;
-      this.field3530 = -1;
-      this.field3534 = 1;
-      this.field3532 = 70;
-      this.field3533 = -1;
-      this.field3531 = -1;
+   CombatInfo2() {
+      this.field3326 = 255;
+      this.field3327 = 255;
+      this.field3328 = -1;
+      this.field3321 = 1;
+      this.field3330 = 70;
+      this.field3331 = -1;
+      this.field3332 = -1;
       this.healthScale = 30;
-      this.field3536 = 0;
+      this.field3334 = 0;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgg;I)V",
-      garbageValue = "1570389014"
+      signature = "(Lgy;I)V",
+      garbageValue = "777133345"
    )
    @Export("read")
-   public void read(Buffer var1) {
+   void read(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -113,55 +113,55 @@ public class CombatInfo2 extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgg;IB)V",
-      garbageValue = "-46"
+      signature = "(Lgy;II)V",
+      garbageValue = "1316496871"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          var1.readUnsignedShort();
       } else if(var2 == 2) {
-         this.field3528 = var1.readUnsignedByte();
+         this.field3326 = var1.readUnsignedByte();
       } else if(var2 == 3) {
-         this.field3529 = var1.readUnsignedByte();
+         this.field3327 = var1.readUnsignedByte();
       } else if(var2 == 4) {
-         this.field3530 = 0;
+         this.field3328 = 0;
       } else if(var2 == 5) {
-         this.field3532 = var1.readUnsignedShort();
+         this.field3330 = var1.readUnsignedShort();
       } else if(var2 == 6) {
          var1.readUnsignedByte();
       } else if(var2 == 7) {
-         this.field3533 = var1.method3614();
+         this.field3331 = var1.method3585();
       } else if(var2 == 8) {
-         this.field3531 = var1.method3614();
+         this.field3332 = var1.method3585();
       } else if(var2 == 11) {
-         this.field3530 = var1.readUnsignedShort();
+         this.field3328 = var1.readUnsignedShort();
       } else if(var2 == 14) {
          this.healthScale = var1.readUnsignedByte();
       } else if(var2 == 15) {
-         this.field3536 = var1.readUnsignedByte();
+         this.field3334 = var1.readUnsignedByte();
       }
 
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)Llv;",
-      garbageValue = "73"
+      signature = "(B)Llc;",
+      garbageValue = "0"
    )
-   public SpritePixels method4958() {
-      if(this.field3533 < 0) {
+   public SpritePixels method4928() {
+      if(this.field3331 < 0) {
          return null;
       } else {
-         SpritePixels var1 = (SpritePixels)field3525.get((long)this.field3533);
+         SpritePixels var1 = (SpritePixels)field3324.get((long)this.field3331);
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3523, this.field3533, 0);
+            var1 = ChatLineBuffer.getSpriteAsSpritePixels(field3322, this.field3331, 0);
             if(var1 != null) {
-               field3525.put(var1, (long)this.field3533);
+               field3324.put(var1, (long)this.field3331);
             }
 
             return var1;
@@ -169,22 +169,22 @@ public class CombatInfo2 extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(B)Llv;",
-      garbageValue = "33"
+      signature = "(I)Llc;",
+      garbageValue = "-1620214021"
    )
-   public SpritePixels method4959() {
-      if(this.field3531 < 0) {
+   public SpritePixels method4929() {
+      if(this.field3332 < 0) {
          return null;
       } else {
-         SpritePixels var1 = (SpritePixels)field3525.get((long)this.field3531);
+         SpritePixels var1 = (SpritePixels)field3324.get((long)this.field3332);
          if(var1 != null) {
             return var1;
          } else {
-            var1 = AbstractByteBuffer.getSpriteAsSpritePixels(field3523, this.field3531, 0);
+            var1 = ChatLineBuffer.getSpriteAsSpritePixels(field3322, this.field3332, 0);
             if(var1 != null) {
-               field3525.put(var1, (long)this.field3531);
+               field3324.put(var1, (long)this.field3332);
             }
 
             return var1;

@@ -1,87 +1,77 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("ik")
 @Implements("Permission")
 public enum Permission implements Enumerated {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lik;"
    )
-   field3339(0, -1, true, false, true),
-   @ObfuscatedName("e")
+   field3137(0, -1, true, false, true),
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lik;"
    )
-   field3340(1, 0, true, true, true),
+   field3135(1, 0, true, true, true),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   field3145(2, 1, true, true, false),
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lik;"
    )
-   field3335(2, 1, true, true, false),
-   @ObfuscatedName("z")
+   field3138(3, 2, false, false, true),
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lik;"
    )
-   field3336(3, 2, false, false, true),
+   field3139(4, 3, false, false, true),
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lix;"
+      signature = "Lik;"
    )
-   field3333(4, 3, false, false, true),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lix;"
-   )
-   field3338(5, 10, false, false, true);
+   field3140(5, 10, false, false, true);
 
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1883177373
+   @ObfuscatedName("mz")
+   @ObfuscatedSignature(
+      signature = "Lcw;"
    )
-   final int field3337;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1689579503
-   )
-   public final int field3334;
-   @ObfuscatedName("c")
-   public final boolean field3341;
+   @Export("varcs")
+   static Varcs varcs;
    @ObfuscatedName("h")
-   public final boolean field3342;
+   @ObfuscatedGetter(
+      intValue = -1916622673
+   )
+   final int field3141;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 788425041
+   )
+   public final int field3142;
+   @ObfuscatedName("j")
+   public final boolean field3143;
+   @ObfuscatedName("a")
+   public final boolean field3136;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3337 = var3;
-      this.field3334 = var4;
-      this.field3341 = var6;
-      this.field3342 = var7;
+      this.field3141 = var3;
+      this.field3142 = var4;
+      this.field3143 = var6;
+      this.field3136 = var7;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "19795"
+      signature = "(B)I",
+      garbageValue = "60"
    )
-   public int rsOrdinal() {
-      return this.field3337;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Lji;IB)V",
-      garbageValue = "-78"
-   )
-   static void method4628(IndexData var0, int var1) {
-      if(class264.NetCache_reference != null) {
-         class264.NetCache_reference.offset = var1 * 8 + 5;
-         int var2 = class264.NetCache_reference.readInt();
-         int var3 = class264.NetCache_reference.readInt();
-         var0.setInformation(var2, var3);
-      } else {
-         Script.requestNetFile((IndexData)null, 255, 255, 0, (byte)0, true);
-         class264.NetCache_indexCaches[var1] = var0;
-      }
+   public int vmethod5860() {
+      return this.field3141;
    }
 }

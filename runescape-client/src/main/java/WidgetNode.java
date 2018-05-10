@@ -4,89 +4,117 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("be")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("rm")
-   @ObfuscatedGetter(
-      intValue = -670202115
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "[Llh;"
    )
-   static int field772;
-   @ObfuscatedName("ar")
-   @ObfuscatedGetter(
-      intValue = 2103218605
+   @Export("titlemuteSprite")
+   static IndexedSprite[] titlemuteSprite;
+   @ObfuscatedName("da")
+   @ObfuscatedSignature(
+      signature = "Lic;"
    )
-   static int field770;
-   @ObfuscatedName("bo")
-   static String field767;
-   @ObfuscatedName("g")
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
+   @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Lkr;"
+   )
+   @Export("fontBold12")
+   static Font fontBold12;
+   @ObfuscatedName("gq")
    @ObfuscatedGetter(
-      intValue = 2125072835
+      intValue = 313816975
+   )
+   @Export("cameraYaw")
+   static int cameraYaw;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1841486463
    )
    @Export("id")
    int id;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -628523543
+      intValue = 1460070893
    )
    @Export("owner")
    int owner;
-   @ObfuscatedName("b")
-   boolean field769;
+   @ObfuscatedName("q")
+   boolean field500;
 
    WidgetNode() {
-      this.field769 = false;
+      this.field500 = false;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IB)Ljn;",
-      garbageValue = "-91"
+      signature = "(I)I",
+      garbageValue = "1096780829"
    )
-   @Export("getSpotAnimType")
-   public static Spotanim getSpotAnimType(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Spotanim.SpotAnimationDefinition_indexCache.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Spotanim.spotanims.put(var1, (long)var0);
-         return var1;
-      }
+   public static int method1076() {
+      return KeyFocusListener.keyboardIdleTicks;
    }
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "441418610"
-   )
-   public static void method1151() {
-      MouseInput var0 = MouseInput.mouse;
-      synchronized(MouseInput.mouse) {
-         MouseInput.mouseCurrentButton = MouseInput.MouseHandler_currentButton;
-         MouseInput.mouseLastX = MouseInput.mouseX;
-         MouseInput.mouseLastY = MouseInput.mouseY;
-         MouseInput.mouseLastButton = MouseInput.MouseHandler_lastButton;
-         MouseInput.mouseLastPressedX = MouseInput.MouseHandler_lastPressedX;
-         MouseInput.mouseLastPressedY = MouseInput.MouseHandler_lastPressedY;
-         MouseInput.mouseLastPressedTimeMillis = MouseInput.MouseHandler_lastPressedTimeMillis;
-         MouseInput.MouseHandler_lastButton = 0;
-      }
-   }
-
-   @ObfuscatedName("fh")
+   @ObfuscatedName("fy")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "10"
+      garbageValue = "62"
    )
-   static final void method1152() {
-      Region.regionLowMemory = false;
-      Client.lowMemory = false;
+   static final void method1074() {
+      class59.method1130();
+      CollisionData.method3447();
+      KitDefinition.identKits.reset();
+      ObjectComposition.objects.reset();
+      ObjectComposition.field3426.reset();
+      ObjectComposition.cachedModels.reset();
+      ObjectComposition.field3394.reset();
+      class34.method635();
+      class21.method303();
+      class24.method462();
+      Frames.method3092();
+      Varbit.varbits.reset();
+      class157.method3307();
+      class267.method5044();
+      CombatInfo2.field3323.reset();
+      CombatInfo2.field3324.reset();
+      class265.field3352.reset();
+      class264.field3345.reset();
+      Area.areaSpriteCache.reset();
+      PlayerComposition.field2597.reset();
+      Widget.field2617.reset();
+      Widget.Widget_cachedModels.reset();
+      Widget.Widget_cachedFonts.reset();
+      Widget.field2620.reset();
+      ((TextureProvider)Graphics3D.textureLoader).reset();
+      Script.field1214.reset();
+      FileSystem.indexInterfaces.reset();
+      Client.indexSoundEffects.reset();
+      WorldMapDecoration.indexCache3.reset();
+      FileOnDisk.indexCache4.reset();
+      class234.indexMaps.reset();
+      MouseInput.indexTrack1.reset();
+      class216.indexModels.reset();
+      class59.indexSprites.reset();
+      class183.indexTextures.reset();
+      MapLabel.indexCache10.reset();
+      indexTrack2.reset();
+      TotalQuantityComparator.indexScripts.reset();
+   }
+
+   @ObfuscatedName("fx")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2145213429"
+   )
+   static final void method1075() {
+      if(Client.field815 != class192.plane) {
+         Client.field815 = class192.plane;
+         GameEngine.method983(class192.plane);
+      }
+
    }
 }

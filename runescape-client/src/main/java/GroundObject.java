@@ -4,96 +4,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dw")
+@ObfuscatedName("dj")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("g")
+   @ObfuscatedName("af")
+   protected static String field1555;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1978395211
+      intValue = 133833155
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 937709269
+      longValue = 728614643722600121L
+   )
+   public long field1550;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -112250021
    )
    @Export("x")
    int x;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1797664371
+      intValue = 1699475917
    )
    @Export("y")
    int y;
-   @ObfuscatedName("z")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Ldz;"
    )
    @Export("renderable")
    public Renderable renderable;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1034101317
+      intValue = -159480023
    )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1197635451
-   )
-   @Export("renderInfoBitPacked")
-   int renderInfoBitPacked;
+   int field1557;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Ljz;",
-      garbageValue = "184284081"
+      signature = "(Liv;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "-230957517"
    )
-   public static Enum method2768(int var0) {
-      Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Enum.EnumDefinition_indexCache.getConfigData(8, var0);
-         var1 = new Enum();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Enum.EnumDefinition_cached.put(var1, (long)var0);
-         return var1;
-      }
+   public static void method2703(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.getFile(var1);
+      int var6 = var0.getChild(var5, var2);
+      class179.method3537(var0, var5, var6, var3, var4);
    }
 
-   @ObfuscatedName("jj")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-57"
+      signature = "(I)Lbb;",
+      garbageValue = "-863280267"
    )
-   static void method2767() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.first(); var0 != null; var0 = (WidgetNode)Client.componentTable.next()) {
-         int var1 = var0.id;
-         if(class85.loadWidget(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = GZipDecompressor.widgets[var1];
-
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(var3[var4] != null) {
-                  var2 = var3[var4].hasScript;
-                  break;
-               }
-            }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = UnitPriceComparator.getWidget(var4);
-               if(var5 != null) {
-                  TotalQuantityComparator.method100(var5);
-               }
-            }
-         }
-      }
-
+   static World method2704() {
+      return World.field956 < World.worldCount?class143.worldList[++World.field956 - 1]:null;
    }
 }

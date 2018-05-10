@@ -1,173 +1,113 @@
-import java.util.zip.CRC32;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jo")
-public class class264 {
-   @ObfuscatedName("g")
+@ObfuscatedName("jb")
+public class class264 extends CacheableNode {
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lfs;"
+      signature = "Liv;"
    )
-   @Export("NetCache_socket")
-   public static class169 NetCache_socket;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1722172279
+   static IndexDataBase field3346;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lgj;"
    )
-   public static int field3403;
+   public static NodeCache field3345;
+   @ObfuscatedName("q")
+   char field3344;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      longValue = 5931005655431114003L
+      intValue = -1903486205
    )
-   public static long field3404;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhu;"
-   )
-   @Export("NetCache_pendingPriorityWrites")
-   public static HashTable NetCache_pendingPriorityWrites;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1737823381
-   )
-   @Export("NetCache_pendingPriorityWritesCount")
-   public static int NetCache_pendingPriorityWritesCount;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhu;"
-   )
-   @Export("NetCache_pendingPriorityResponses")
-   public static HashTable NetCache_pendingPriorityResponses;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1063033309
-   )
-   @Export("NetCache_pendingPriorityResponsesCount")
-   public static int NetCache_pendingPriorityResponsesCount;
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lgz;"
-   )
-   @Export("NetCache_pendingWritesQueue")
-   public static Node2LinkedList NetCache_pendingWritesQueue;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhu;"
-   )
-   @Export("NetCache_pendingWrites")
-   public static HashTable NetCache_pendingWrites;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -87597517
-   )
-   @Export("NetCache_pendingWritesCount")
-   public static int NetCache_pendingWritesCount;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhu;"
-   )
-   @Export("NetCache_pendingResponses")
-   public static HashTable NetCache_pendingResponses;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -531282915
-   )
-   @Export("NetCache_pendingResponsesCount")
-   public static int NetCache_pendingResponsesCount;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lgg;"
-   )
-   @Export("NetCache_responseHeaderBuffer")
-   public static Buffer NetCache_responseHeaderBuffer;
+   public int field3348;
    @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1286559281
-   )
-   public static int field3423;
-   @ObfuscatedName("v")
-   @Export("NetCache_crc")
-   static CRC32 NetCache_crc;
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lgg;"
-   )
-   @Export("NetCache_reference")
-   static Buffer NetCache_reference;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "[Lji;"
-   )
-   @Export("NetCache_indexCaches")
-   static IndexData[] NetCache_indexCaches;
-   @ObfuscatedName("w")
-   public static byte field3419;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -2023887943
-   )
-   public static int field3420;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 418238609
-   )
-   public static int field3415;
-   @ObfuscatedName("ku")
-   @ObfuscatedSignature(
-      signature = "Lcm;"
-   )
-   @Export("topContextMenuRow")
-   static ContextMenuRow topContextMenuRow;
+   public String field3347;
+   @ObfuscatedName("n")
+   boolean field3349;
 
    static {
-      field3403 = 0;
-      NetCache_pendingPriorityWrites = new HashTable(4096);
-      NetCache_pendingPriorityWritesCount = 0;
-      NetCache_pendingPriorityResponses = new HashTable(32);
-      NetCache_pendingPriorityResponsesCount = 0;
-      NetCache_pendingWritesQueue = new Node2LinkedList();
-      NetCache_pendingWrites = new HashTable(4096);
-      NetCache_pendingWritesCount = 0;
-      NetCache_pendingResponses = new HashTable(4096);
-      NetCache_pendingResponsesCount = 0;
-      NetCache_responseHeaderBuffer = new Buffer(8);
-      field3423 = 0;
-      NetCache_crc = new CRC32();
-      NetCache_indexCaches = new IndexData[256];
-      field3419 = 0;
-      field3420 = 0;
-      field3415 = 0;
+      field3345 = new NodeCache(64);
    }
 
-   @ObfuscatedName("ih")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1351099264"
-   )
-   static void method4807() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
-               }
-            }
+   class264() {
+      this.field3349 = true;
+   }
 
-            --var0;
-            --Client.menuOptionCount;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "75"
+   )
+   void method4954() {
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lgy;I)V",
+      garbageValue = "-235335289"
+   )
+   void method4959(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
          }
+
+         this.method4957(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lgy;IB)V",
+      garbageValue = "-5"
+   )
+   void method4957(Buffer var1, int var2) {
+      if(var2 == 1) {
+         this.field3344 = class52.method1068(var1.readByte());
+      } else if(var2 == 2) {
+         this.field3348 = var1.readInt();
+      } else if(var2 == 4) {
+         this.field3349 = false;
+      } else if(var2 == 5) {
+         this.field3347 = var1.readString();
       }
 
-      class28.method243();
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "-69"
+   )
+   public boolean method4956() {
+      return this.field3344 == 's';
+   }
+
+   @ObfuscatedName("hi")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "66"
+   )
+   @Export("getTileHeight")
+   static final int getTileHeight(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && (class50.tileSettings[1][var3][var4] & 2) == 2) {
+            var5 = var2 + 1;
+         }
+
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = (128 - var6) * class50.tileHeights[var5][var3][var4] + var6 * class50.tileHeights[var5][var3 + 1][var4] >> 7;
+         int var9 = class50.tileHeights[var5][var3][var4 + 1] * (128 - var6) + var6 * class50.tileHeights[var5][var3 + 1][var4 + 1] >> 7;
+         return var9 * var7 + var8 * (128 - var7) >> 7;
+      } else {
+         return 0;
+      }
    }
 }

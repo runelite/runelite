@@ -1,96 +1,83 @@
+import java.io.IOException;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
-public class class157 extends class297 {
-   @ObfuscatedName("g")
-   final boolean field2133;
-
-   public class157(boolean var1) {
-      this.field2133 = var1;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lku;Lku;I)I",
-      garbageValue = "371462061"
+@ObfuscatedName("ft")
+public abstract class class157 {
+   @ObfuscatedName("py")
+   @ObfuscatedGetter(
+      intValue = 200599753
    )
-   int method3246(ChatPlayer var1, ChatPlayer var2) {
-      return var1.world != 0 && var2.world != 0?(this.field2133?var1.getRsName().compareCleanName(var2.getRsName()):var2.getRsName().compareCleanName(var1.getRsName())):this.method5341(var1, var2);
-   }
+   static int field1999;
 
-   public int compare(Object var1, Object var2) {
-      return this.method3246((ChatPlayer)var1, (ChatPlayer)var2);
-   }
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-27191"
+      signature = "(II)Z",
+      garbageValue = "-1138130565"
    )
-   static void method3254() {
-      if(Signlink.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-         KeyFocusListener.KeyHandler_keyCodes[186] = 57;
-         KeyFocusListener.KeyHandler_keyCodes[187] = 27;
-         KeyFocusListener.KeyHandler_keyCodes[188] = 71;
-         KeyFocusListener.KeyHandler_keyCodes[189] = 26;
-         KeyFocusListener.KeyHandler_keyCodes[190] = 72;
-         KeyFocusListener.KeyHandler_keyCodes[191] = 73;
-         KeyFocusListener.KeyHandler_keyCodes[192] = 58;
-         KeyFocusListener.KeyHandler_keyCodes[219] = 42;
-         KeyFocusListener.KeyHandler_keyCodes[220] = 74;
-         KeyFocusListener.KeyHandler_keyCodes[221] = 43;
-         KeyFocusListener.KeyHandler_keyCodes[222] = 59;
-         KeyFocusListener.KeyHandler_keyCodes[223] = 28;
-      } else {
-         KeyFocusListener.KeyHandler_keyCodes[44] = 71;
-         KeyFocusListener.KeyHandler_keyCodes[45] = 26;
-         KeyFocusListener.KeyHandler_keyCodes[46] = 72;
-         KeyFocusListener.KeyHandler_keyCodes[47] = 73;
-         KeyFocusListener.KeyHandler_keyCodes[59] = 57;
-         KeyFocusListener.KeyHandler_keyCodes[61] = 27;
-         KeyFocusListener.KeyHandler_keyCodes[91] = 42;
-         KeyFocusListener.KeyHandler_keyCodes[92] = 74;
-         KeyFocusListener.KeyHandler_keyCodes[93] = 43;
-         KeyFocusListener.KeyHandler_keyCodes[192] = 28;
-         KeyFocusListener.KeyHandler_keyCodes[222] = 58;
-         KeyFocusListener.KeyHandler_keyCodes[520] = 59;
-      }
+   public abstract boolean vmethod3355(int var1) throws IOException;
 
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "255159045"
+   )
+   public abstract int vmethod3354() throws IOException;
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1722557406"
+   )
+   public abstract int vmethod3353() throws IOException;
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "([BIII)I",
+      garbageValue = "-61239109"
+   )
+   public abstract int vmethod3356(byte[] var1, int var2, int var3) throws IOException;
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "-1450005148"
+   )
+   public abstract void vmethod3385(byte[] var1, int var2, int var3) throws IOException;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "188281095"
+   )
+   public abstract void vmethod3368();
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Liv;Liv;Liv;Liv;B)V",
+      garbageValue = "8"
+   )
+   public static void method3310(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2, IndexDataBase var3) {
+      Frames.widgetIndex = var0;
+      Widget.field2613 = var1;
+      KeyFocusListener.field354 = var2;
+      class217.field2489 = var3;
+      Widget.widgets = new Widget[Frames.widgetIndex.size()][];
+      Item.validInterfaces = new boolean[Frames.widgetIndex.size()];
    }
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "656791037"
-   )
-   static int method3252(int var0, int var1) {
-      Overlay var2 = class229.getOverlayDefinition(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else {
-         int var3;
-         if(var2.texture >= 0) {
-            var3 = MouseInput.method1058(Graphics3D.textureLoader.getAverageTextureRGB(var2.texture), 96);
-            return Graphics3D.colorPalette[var3] | -16777216;
-         } else if(var2.color == 16711935) {
-            return var1;
-         } else {
-            var3 = Spotanim.method4909(var2.hue, var2.saturation, var2.lightness);
-            int var4 = MouseInput.method1058(var3, 96);
-            return Graphics3D.colorPalette[var4] | -16777216;
-         }
-      }
+   @ObfuscatedName("m")
+   public static double method3303(double var0, double var2, double var4) {
+      return FileOnDisk.method2581((var0 - var2) / var4) / var4;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(III)Lav;",
-      garbageValue = "-1494031065"
+      signature = "(B)V",
+      garbageValue = "-6"
    )
-   static class33 method3253(int var0, int var1) {
-      return (class33)WorldMapRegion.field473.method4019(class167.method3334(var0, var1, 0));
+   public static void method3307() {
+      VarPlayerType.varplayers.reset();
    }
 }

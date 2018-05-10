@@ -1,3 +1,4 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -7,59 +8,39 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("f")
 @Implements("GrandExchangeOffer")
 public class GrandExchangeOffer {
-   @ObfuscatedName("pd")
-   @ObfuscatedGetter(
-      intValue = -1743088235
-   )
-   static int field311;
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Llh;"
-   )
-   @Export("logoSprite")
-   static IndexedSprite logoSprite;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Ldq;"
-   )
-   @Export("task")
-   static SoundTask task;
-   @ObfuscatedName("al")
-   @ObfuscatedSignature(
-      signature = "Llj;"
-   )
-   @Export("rasterProvider")
-   public static BufferProvider rasterProvider;
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
+   @ObfuscatedName("w")
    @Export("state")
    byte state;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 550117097
+      intValue = 767568315
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 549245207
+      intValue = -898523007
    )
    @Export("price")
    public int price;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 659693431
+      intValue = 2052595455
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1141687211
+      intValue = 256549175
    )
    @Export("quantitySold")
    public int quantitySold;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -325797749
+      intValue = 696708223
    )
    @Export("spent")
    public int spent;
@@ -68,7 +49,7 @@ public class GrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgg;Z)V",
+      signature = "(Lgy;Z)V",
       garbageValue = "0"
    )
    public GrandExchangeOffer(Buffer var1, boolean var2) {
@@ -80,42 +61,42 @@ public class GrandExchangeOffer {
       this.spent = var1.readInt();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1624057067"
+      signature = "(B)I",
+      garbageValue = "1"
    )
    @Export("status")
    public int status() {
       return this.state & 7;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-76"
+      signature = "(I)I",
+      garbageValue = "1682121096"
    )
    @Export("type")
    public int type() {
       return (this.state & 8) == 8?1:0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "16468"
+      signature = "(IB)V",
+      garbageValue = "32"
    )
-   void method114(int var1) {
+   void method52(int var1) {
       this.state &= -8;
       this.state = (byte)(this.state | var1 & 7);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-58019683"
+      garbageValue = "-194001658"
    )
-   void method113(int var1) {
+   void method36(int var1) {
       this.state &= -9;
       if(var1 == 1) {
          this.state = (byte)(this.state | 8);
@@ -123,22 +104,81 @@ public class GrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "-1892695296"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "102125315"
    )
-   public static int method122(String var0) {
-      return var0.length() + 2;
+   static void method53(Component var0) {
+      var0.removeKeyListener(KeyFocusListener.keyboard);
+      var0.removeFocusListener(KeyFocusListener.keyboard);
+      KeyFocusListener.field349 = -1;
    }
 
-   @ObfuscatedName("gz")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lbm;II)V",
-      garbageValue = "1429104717"
+      signature = "(ZZB)Llh;",
+      garbageValue = "96"
    )
-   @Export("characterToScreen")
-   static final void characterToScreen(Actor var0, int var1) {
-      Widget.worldToScreen(var0.x, var0.y, var1);
+   static IndexedSprite method54(boolean var0, boolean var1) {
+      return var0?(var1?Buffer.field2363:class78.field1110):(var1?CombatInfo1.field944:class78.field1109);
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIB)I",
+      garbageValue = "0"
+   )
+   public static int method56(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
+      }
+
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-824282945"
+   )
+   @Export("runWidgetOnLoadListener")
+   static void runWidgetOnLoadListener(int var0) {
+      if(var0 != -1) {
+         if(GameCanvas.loadWidget(var0)) {
+            Widget[] var1 = Widget.widgets[var0];
+
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.onLoadListener != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.source = var3;
+                  var4.params = var3.onLoadListener;
+                  MouseRecorder.method1092(var4, 5000000);
+               }
+            }
+
+         }
+      }
+   }
+
+   @ObfuscatedName("jg")
+   @ObfuscatedSignature(
+      signature = "(Lhl;IIIB)V",
+      garbageValue = "1"
+   )
+   static final void method57(Widget var0, int var1, int var2, int var3) {
+      class224 var4 = var0.method4561(false);
+      if(var4 != null) {
+         if(Client.field822 < 3) {
+            class35.compass.method5948(var1, var2, var4.field2570, var4.field2575, 25, 25, Client.mapAngle, 256, var4.field2573, var4.field2572);
+         } else {
+            Rasterizer2D.method5786(var1, var2, 0, var4.field2573, var4.field2572);
+         }
+
+      }
    }
 }

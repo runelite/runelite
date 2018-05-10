@@ -2,84 +2,84 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kd")
+@ObfuscatedName("jw")
 @Implements("ClanMember")
 public class ClanMember extends ChatPlayer {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lkf;"
+      signature = "Lke;"
    )
-   class303 field3829;
-   @ObfuscatedName("e")
+   class289 field3628;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lkf;"
+      signature = "Lke;"
    )
-   class303 field3828;
+   class289 field3626;
 
    ClanMember() {
-      this.field3829 = class303.field3856;
-      this.field3828 = class303.field3856;
+      this.field3628 = class289.field3652;
+      this.field3626 = class289.field3652;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-572466040"
+      signature = "(B)V",
+      garbageValue = "-19"
    )
-   void method5302() {
-      this.field3829 = class303.field3856;
+   void method5275() {
+      this.field3628 = class289.field3652;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "2114756487"
+      garbageValue = "-2033986770"
    )
-   public final boolean method5300() {
-      if(this.field3829 == class303.field3856) {
-         this.method5304();
+   public final boolean method5277() {
+      if(this.field3628 == class289.field3652) {
+         this.method5278();
       }
 
-      return this.field3829 == class303.field3858;
+      return this.field3628 == class289.field3651;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1903870402"
+      garbageValue = "-557789086"
    )
-   void method5304() {
-      this.field3829 = CacheFile.friendManager.friendContainer.isMember(super.name)?class303.field3858:class303.field3855;
+   void method5278() {
+      this.field3628 = CacheFile.friendManager.friendContainer.isMember(super.name)?class289.field3651:class289.field3650;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
+      signature = "(I)V",
+      garbageValue = "-185368231"
    )
-   void method5320() {
-      this.field3828 = class303.field3856;
+   void method5279() {
+      this.field3626 = class289.field3652;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "106"
+      garbageValue = "-11"
    )
-   public final boolean method5314() {
-      if(this.field3828 == class303.field3856) {
-         this.method5312();
+   public final boolean method5280() {
+      if(this.field3626 == class289.field3652) {
+         this.method5281();
       }
 
-      return this.field3828 == class303.field3858;
+      return this.field3626 == class289.field3651;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "2"
+      signature = "(I)V",
+      garbageValue = "-1991874456"
    )
-   void method5312() {
-      this.field3828 = CacheFile.friendManager.ignoreContainer.isMember(super.name)?class303.field3858:class303.field3855;
+   void method5281() {
+      this.field3626 = CacheFile.friendManager.ignoreContainer.isMember(super.name)?class289.field3651:class289.field3650;
    }
 }

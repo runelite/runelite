@@ -3,117 +3,94 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("et")
+@ObfuscatedName("eg")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1342979519
+      intValue = 275839015
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1420885365
+      intValue = 668222039
+   )
+   int field1866;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1206458065
    )
    @Export("height")
    int height;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 738968671
+      intValue = 1820642471
    )
    @Export("x")
    int x;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Ley;"
-   )
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -817930801
+      intValue = -1191748071
    )
    @Export("y")
    int y;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1628553067
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ldz;"
    )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("s")
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1208197889
+      intValue = 735631027
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1593201963
+      intValue = -387468821
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -218677999
+      intValue = -1306674737
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1388335241
+      intValue = -1663945835
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 993335671
+      intValue = -2079010547
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -867170549
+      intValue = -37820759
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -287107299
+      longValue = -4805703617808557861L
    )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("r")
+   public long field1863;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2019313501
+      intValue = -1655703577
    )
-   @Export("flags")
-   int flags;
+   int field1874;
 
    GameObject() {
-      this.hash = 0;
-      this.flags = 0;
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "874939923"
-   )
-   @Export("loadClassFromDescriptor")
-   static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Liv;B)Z",
-      garbageValue = "-55"
-   )
-   public static boolean method3165(class245 var0) {
-      return class245.field2960 == var0 || class245.field2961 == var0 || class245.field2962 == var0 || class245.field2969 == var0 || class245.field2963 == var0 || class245.field2964 == var0 || class245.field2965 == var0 || class245.field2966 == var0;
+      this.field1863 = 0L;
+      this.field1874 = 0;
    }
 }
