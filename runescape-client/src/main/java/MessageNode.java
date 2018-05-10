@@ -580,7 +580,7 @@ public class MessageNode extends CacheableNode {
                      }
 
                      if(var43 != null) {
-                        var43.renderable = new DynamicObject(class8.method93(var43.field1863), var31, var8, class192.plane, var3, var38, var5, false, var43.renderable);
+                        var43.renderable = new DynamicObject(class8.method93(var43.hash), var31, var8, class192.plane, var3, var38, var5, false, var43.renderable);
                      }
                   }
 

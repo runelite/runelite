@@ -17,7 +17,8 @@ public final class GameObject {
    @ObfuscatedGetter(
       intValue = 668222039
    )
-   int field1866;
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1206458065
@@ -82,15 +83,17 @@ public final class GameObject {
    @ObfuscatedGetter(
       longValue = -4805703617808557861L
    )
-   public long field1863;
+   @Export("hash")
+   public long hash;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1655703577
    )
-   int field1874;
+   @Export("flags")
+   int flags;
 
    GameObject() {
-      this.field1863 = 0L;
-      this.field1874 = 0;
+      this.hash = 0L;
+      this.flags = 0;
    }
 }

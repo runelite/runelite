@@ -289,7 +289,7 @@ public class Region {
 
             for(int var6 = 0; var6 < var5.entityCount; ++var6) {
                GameObject var7 = var5.objects[var6];
-               long var9 = var7.field1863;
+               long var9 = var7.hash;
                int var11 = (int)(var9 >>> 14 & 3L);
                boolean var8 = var11 == 2;
                if(var8 && var7.relativeX == var1 && var2 == var7.relativeY) {
@@ -392,7 +392,7 @@ public class Region {
       Tile var12 = this.tiles[var1][var2][var3];
       if(var12 != null) {
          for(int var13 = 0; var13 < var12.entityCount; ++var13) {
-            if((var12.objects[var13].field1874 & 256) == 256 && var12.objects[var13].renderable instanceof Model) {
+            if((var12.objects[var13].flags & 256) == 256 && var12.objects[var13].renderable instanceof Model) {
                Model var14 = (Model)var12.objects[var13].renderable;
                var14.calculateBoundsCylinder();
                if(var14.modelHeight > var11) {
@@ -546,14 +546,14 @@ public class Region {
       }
 
       GameObject var21 = new GameObject();
-      var21.field1863 = var12;
-      var21.field1874 = var14;
+      var21.hash = var12;
+      var21.flags = var14;
       var21.plane = var1;
       var21.x = var6;
       var21.y = var7;
       var21.height = var8;
       var21.renderable = var9;
-      var21.field1866 = var10;
+      var21.orientation = var10;
       var21.relativeX = var2;
       var21.relativeY = var3;
       var21.offsetX = var2 + var4 - 1;
@@ -681,7 +681,7 @@ public class Region {
       if(var4 != null) {
          for(int var5 = 0; var5 < var4.entityCount; ++var5) {
             GameObject var6 = var4.objects[var5];
-            long var8 = var6.field1863;
+            long var8 = var6.hash;
             int var10 = (int)(var8 >>> 14 & 3L);
             boolean var7 = var10 == 2;
             if(var7 && var2 == var6.relativeX && var3 == var6.relativeY) {
@@ -739,7 +739,7 @@ public class Region {
       } else {
          for(int var5 = 0; var5 < var4.entityCount; ++var5) {
             GameObject var6 = var4.objects[var5];
-            long var8 = var6.field1863;
+            long var8 = var6.hash;
             int var10 = (int)(var8 >>> 14 & 3L);
             boolean var7 = var10 == 2;
             if(var7 && var2 == var6.relativeX && var3 == var6.relativeY) {
@@ -781,11 +781,11 @@ public class Region {
       } else {
          for(int var5 = 0; var5 < var4.entityCount; ++var5) {
             GameObject var6 = var4.objects[var5];
-            long var8 = var6.field1863;
+            long var8 = var6.hash;
             int var10 = (int)(var8 >>> 14 & 3L);
             boolean var7 = var10 == 2;
             if(var7 && var2 == var6.relativeX && var3 == var6.relativeY) {
-               return var6.field1863;
+               return var6.hash;
             }
          }
 
@@ -812,8 +812,8 @@ public class Region {
          return var6.groundObject.field1557 & 255;
       } else {
          for(int var7 = 0; var7 < var6.entityCount; ++var7) {
-            if(var6.objects[var7].field1863 == var4) {
-               return var6.objects[var7].field1874 & 255;
+            if(var6.objects[var7].hash == var4) {
+               return var6.objects[var7].flags & 255;
             }
          }
 
@@ -1358,7 +1358,7 @@ public class Region {
                                     for(var11 = 0; var11 < var9.entityCount; ++var11) {
                                        var12 = var9.objects[var11];
                                        if(var12 != null) {
-                                          var12.renderable.vmethod3079(var12.field1866, pitchSin, pitchCos, yawSin, yawCos, var12.x - cameraX2, var12.height - cameraY2, var12.y - cameraZ2, var12.field1863);
+                                          var12.renderable.vmethod3079(var12.orientation, pitchSin, pitchCos, yawSin, yawCos, var12.x - cameraX2, var12.height - cameraY2, var12.y - cameraZ2, var12.hash);
                                        }
                                     }
                                  }
@@ -1626,7 +1626,7 @@ public class Region {
                                     GameObject var33 = entityBuffer[var25];
                                     var33.cycle = cycle;
                                     if(!this.isAreaOccluded(var7, var33.relativeX, var33.offsetX, var33.relativeY, var33.offsetY, var33.renderable.modelHeight)) {
-                                       var33.renderable.vmethod3079(var33.field1866, pitchSin, pitchCos, yawSin, yawCos, var33.x - cameraX2, var33.height - cameraY2, var33.y - cameraZ2, var33.field1863);
+                                       var33.renderable.vmethod3079(var33.orientation, pitchSin, pitchCos, yawSin, yawCos, var33.x - cameraX2, var33.height - cameraY2, var33.y - cameraZ2, var33.hash);
                                     }
 
                                     for(var14 = var33.relativeX; var14 <= var33.offsetX; ++var14) {
