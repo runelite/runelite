@@ -113,6 +113,10 @@ public class GroundItemsOverlay extends Overlay
 
 			final boolean highlighted = plugin.isHighlighted(item.getName());
 			final boolean hidden = plugin.isHidden(item.getName());
+			if (highlighted)
+			{
+				plugin.setNotify(true);
+			}
 
 			if (!plugin.isHotKeyPressed())
 			{
@@ -307,5 +311,4 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 	}
-
 }

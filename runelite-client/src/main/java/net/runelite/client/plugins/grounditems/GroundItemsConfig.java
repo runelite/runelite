@@ -273,4 +273,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return 10000000;
 	}
+
+	@ConfigItem(
+		keyName = "notifyDrop",
+		name = "Notification on Drop",
+		description = "Configures whether to notify the player of an item from highlighted items list being dropped.",
+		position = 21
+	)
+	default boolean notifyDrop()
+	{
+		return false;
+	}
 }
