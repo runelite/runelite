@@ -113,15 +113,13 @@ public class TextRecolorPlugin extends Plugin
 			return;
 		}
 
-		final ChatMessageBuilder messageBuilder = new ChatMessageBuilder();
-		final ChatMessageBuilder usernameBuilder = new ChatMessageBuilder();
-		final ChatMessageBuilder clanChannelBuilder = new ChatMessageBuilder();
-
 		MessageNode messageNode = setMessage.getMessageNode();
 
 		//Username Colouring
 		if (setMessage.getName() != "")
 		{
+			final ChatMessageBuilder usernameBuilder = new ChatMessageBuilder();
+
 			switch (setMessage.getType())
 			{
 				case PRIVATE_MESSAGE_RECEIVED_MOD:
@@ -151,8 +149,10 @@ public class TextRecolorPlugin extends Plugin
 		}
 
 		//Clan Channel Name Recolour
-		if (setMessage.getSender() != "")
+		if (!setMessage.getSender().equals(""))
 		{
+			final ChatMessageBuilder clanChannelBuilder = new ChatMessageBuilder();
+
 			clanChannelBuilder.append(wrapTextWithColour(setMessage.getSender(),
 				isChatboxTransparent ? config.transparentClanChannelName() : config.opaqueClanChannelName()));
 
@@ -160,6 +160,8 @@ public class TextRecolorPlugin extends Plugin
 		}
 
 		String message = setMessage.getValue();
+
+		final ChatMessageBuilder messageBuilder = new ChatMessageBuilder();
 
 		if (message.contains("<br>"))
 		{
