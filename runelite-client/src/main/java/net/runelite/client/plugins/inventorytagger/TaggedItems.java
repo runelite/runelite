@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018 kulers
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.inventorytagger;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Getter;
 
-public interface SpritePixels
+class TaggedItems
 {
-	int DEFAULT_SHADOW_COLOR = 3153952;
+	@Getter
+	public Color overlayColor;
 
-	void drawAt(int x, int y);
+	@Getter
+	public String panelName;
 
-	int getWidth();
+	@Getter
+	public Set<Integer> itemIdList = new HashSet<>();
 
-	int getHeight();
+	public TaggedItems(String panelName, Color overlayColor)
+	{
+		this.overlayColor = overlayColor;
+		this.panelName = panelName;
+	}
 
-	int[] getPixels();
+	public void addItem(Integer itemID)
+	{
+		itemIdList.add(itemID);
+	}
 
-	/**
-	 * Covert the SpritePixels to a BufferedImage
-	 *
-	 * @return
-	 */
-	BufferedImage toBufferedImage();
+	public void removeItem(Integer itemID)
+	{
+		itemIdList.remove(itemID);
+	}
 
-	/**
-	 * Writes the contents of the SpritePixels to the BufferedImage.
-	 * Width and Height must match
- 	 */
-	void toBufferedImage(BufferedImage img);
+	public String getHexColor()
+	{
+		return String.format("%02x%02x%02x", overlayColor.getRed(), overlayColor.getGreen(), overlayColor.getBlue());
+	}
 
-	BufferedImage toBufferedOutline(Color color);
+	public void clearItem()
+	{
+		itemIdList.clear();
+	}
 
-	void toBufferedOutline(BufferedImage img, int color);
+	public boolean containsItem(Integer itemID)
+	{
+		return this.itemIdList.contains(itemID);
+	}
 }
