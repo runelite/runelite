@@ -112,6 +112,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
+	public static final int MAGIC_IBANS_BLAST = 708;
 	public static final int BURYING_BONES = 827;
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
