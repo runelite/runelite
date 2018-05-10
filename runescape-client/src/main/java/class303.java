@@ -1,35 +1,11 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kf")
-public class class303 {
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lkf;"
-   )
-   public static final class303 field3856;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lkf;"
-   )
-   public static final class303 field3858;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lkf;"
-   )
-   public static final class303 field3855;
-   @ObfuscatedName("cg")
-   @ObfuscatedGetter(
-      intValue = 1170951389
-   )
-   @Export("currentPressedKey")
-   public static int currentPressedKey;
+@ObfuscatedName("kw")
+public final class class303 {
+   @ObfuscatedName("w")
+   public static final char[] field3732;
 
    static {
-      field3856 = new class303();
-      field3858 = new class303();
-      field3855 = new class303();
+      field3732 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
    }
 }

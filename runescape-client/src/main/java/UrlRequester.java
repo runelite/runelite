@@ -10,16 +10,19 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ep")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
+   @Export("osName")
+   public static String osName;
+   @ObfuscatedName("w")
    @Export("thread")
    final Thread thread;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("isClosed")
    volatile boolean isClosed;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("requests")
    Queue requests;
 
@@ -30,10 +33,10 @@ public class UrlRequester implements Runnable {
       this.thread.start();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Lek;",
-      garbageValue = "-1802143692"
+      signature = "(Ljava/net/URL;I)Ler;",
+      garbageValue = "-1125383185"
    )
    @Export("request")
    public UrlRequest request(URL var1) {
@@ -45,10 +48,10 @@ public class UrlRequester implements Runnable {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-22"
+      signature = "(I)V",
+      garbageValue = "-317870921"
    )
    @Export("close")
    public void close() {
@@ -113,9 +116,41 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            class253.processClientError((String)null, var17);
+            class43.processClientError((String)null, var17);
          }
       }
 
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1745487182"
+   )
+   public static int method3116() {
+      return ++MouseInput.mouseIdleTicks - 1;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(IB)Lij;",
+      garbageValue = "2"
+   )
+   @Export("getUnderlayDefinition")
+   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
+      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class231.underlay_ref.getConfigData(1, var0);
+         var1 = new FloorUnderlayDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
+         }
+
+         var1.post();
+         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

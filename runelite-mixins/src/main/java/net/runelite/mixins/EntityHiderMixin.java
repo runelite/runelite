@@ -77,10 +77,10 @@ public abstract class EntityHiderMixin implements RSRegion
 	private static boolean hideProjectiles;
 
 	@Copy("addEntityMarker")
-	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, int var12, int var13);
+	abstract boolean addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13);
 
 	@Replace("addEntityMarker")
-	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, int var12, int var13)
+	boolean rl$addEntityMarker(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, RSRenderable renderable, int var10, boolean var11, long var12, int var13)
 	{
 		return shouldDraw(renderable, false) && addEntityMarker(var1, var2, var3, var4, var5, var6, var7, var8, renderable, var10, var11, var12, var13);
 	}

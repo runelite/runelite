@@ -108,6 +108,10 @@ public interface Client extends GameEngine
 
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
 
+	SpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+
+	IndexDataBase getIndexSprites();
+
 	int getBaseX();
 
 	int getBaseY();
@@ -258,51 +262,6 @@ public interface Client extends GameEngine
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
 
-	boolean getDrawBoundingBoxes2D();
-
-	/**
-	 * When {@code shouldDraw} is true, a 2D bounding box will be drawn for
-	 * all on-screen objects
-	 *
-	 * @param shouldDraw whether or not to draw 2D bounding boxes
-	 */
-	void setDrawBoundingBoxes2D(boolean shouldDraw);
-
-	boolean getDrawBoundingBoxes3D();
-
-	/**
-	 * When {@code shouldDraw} is true, 3D bounding boxes will be drawn
-	 * either for the object under the cursor, or every object on screen
-	 * according to
-	 * {@link #setBoundingBoxAlwaysOnMode(boolean) BoundingBoxAlwaysOnMode}
-	 *
-	 * @param shouldDraw whether or not to draw 3D bounding boxes
-	 */
-	void setDrawBoundingBoxes3D(boolean shouldDraw);
-
-	boolean getdrawObjectGeometry2D();
-
-	/**
-	 * When {@code shouldDraw} is true, the clickbox geometry for the object
-	 * under the cursor will be displayed
-	 *
-	 * @param shouldDraw whether or not to draw the clickbox geometry
-	 */
-	void setdrawObjectGeometry2D(boolean shouldDraw);
-
-	boolean getBoundingBoxAlwaysOnMode();
-
-	/**
-	 * Changes how {@link #getDrawBoundingBoxes3D()} behaves when active.
-	 * When {@code alwaysDrawBoxes} is true, 3D bounding boxes will be
-	 * drawn. When false, a 3D bounding box will only be drawn for the
-	 * object under the cursor
-	 *
-	 * @param alwaysDrawBoxes whether or not to draw every 3D bounding box,
-	 * when 3D bounding boxes are enabled
-	 */
-	void setBoundingBoxAlwaysOnMode(boolean alwaysDrawBoxes);
-
 	BufferProvider getBufferProvider();
 
 	int getMouseIdleTicks();
@@ -447,4 +406,8 @@ public interface Client extends GameEngine
 
 	@VisibleForDevtools
 	void setChangedSkillsCount(int i);
+
+	int getTickCount();
+
+	void setTickCount(int tickCount);
 }

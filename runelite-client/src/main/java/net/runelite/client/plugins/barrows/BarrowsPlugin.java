@@ -29,13 +29,23 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import static net.runelite.api.ItemID.COINS_995;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.GameObjectChanged;
@@ -45,14 +55,24 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
 	name = "Barrows Brothers"
 )
+@Slf4j
 public class BarrowsPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
@@ -88,6 +108,20 @@ public class BarrowsPlugin extends Plugin
 	{
 		return Arrays.asList(barrowsOverlay, brotherOverlay);
 	}
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private BarrowsConfig config;
+
+	private long chestPrice;
 
 	@Override
 	protected void shutDown()
@@ -164,6 +198,78 @@ public class BarrowsPlugin extends Plugin
 			// on region changes the tiles get set to null
 			walls.clear();
 			ladders.clear();
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
+		{
+			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
+			Map<Integer, Integer> itemMap = new HashMap<>();
+			chestPrice = 0;
+
+			for (Item item : barrowsRewardContainer.getItems())
+			{
+				if (item.getId() != -1)
+				{
+					if (item.getId() == COINS_995)
+					{
+						chestPrice += item.getQuantity();
+						continue;
+					}
+					itemMap.put(item.getId(), item.getQuantity());
+				}
+			}
+
+			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemMap.keySet());
+			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
+			{
+				if (ex != null)
+				{
+					log.debug("Error looking up item prices", ex);
+					return;
+				}
+
+				if (itemPrices == null)
+				{
+					log.debug("Error looking up item prices");
+					return;
+				}
+
+				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
+
+				try
+				{
+					for (ItemPrice itemPrice : itemPrices)
+					{
+						if (itemPrice.getItem() == null)
+						{
+							continue; // cached no price
+						}
+
+						long itemStack = (long) itemPrice.getPrice() * (long) itemMap.get(itemPrice.getItem().getId());
+						chestPrice += itemStack;
+					}
+
+					final ChatMessageBuilder message = new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Your chest is worth around ")
+						.append(StackFormatter.formatNumber(chestPrice))
+						.append(" coins.")
+						.append(ChatColorType.NORMAL);
+
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.EXAMINE_ITEM)
+						.runeLiteFormattedMessage(message.build())
+						.build());
+				}
+				catch (Exception ex2)
+				{
+					log.warn("error calculating price", ex2);
+				}
+			});
 		}
 	}
 }

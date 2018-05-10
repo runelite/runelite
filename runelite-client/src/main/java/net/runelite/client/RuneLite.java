@@ -34,6 +34,7 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 import java.applet.Applet;
 import java.io.File;
+import java.util.Locale;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -119,6 +120,8 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		Locale.setDefault(Locale.ENGLISH);
+
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
@@ -153,6 +156,15 @@ public class RuneLite
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 			logger.setLevel(Level.DEBUG);
 		}
+
+		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
+		{
+			log.error("Uncaught exception:", throwable);
+			if (throwable instanceof AbstractMethodError)
+			{
+				log.error("Classes are out of date; Build with maven again.");
+			}
+		});
 
 		setInjector(Guice.createInjector(new RuneLiteModule()));
 		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));

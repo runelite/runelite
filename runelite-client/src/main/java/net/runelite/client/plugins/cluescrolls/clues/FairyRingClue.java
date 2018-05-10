@@ -35,7 +35,9 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_C
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class FairyRingClue extends ClueScroll implements TextClueScroll, LocationClueScroll
@@ -65,14 +67,16 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Fairy Ring Clue");
-		panelComponent.setWidth(140);
+		panelComponent.getChildren().add(TitleComponent.builder().text("Fairy Ring Clue").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Code:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getText().substring(0, 5))
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
-		panelComponent.getLines().add(new PanelComponent.Line("Code:"));
-		panelComponent.getLines().add(new PanelComponent.Line(getText().substring(0, 5), TITLED_CONTENT_COLOR));
-
-		panelComponent.getLines().add(new PanelComponent.Line("Travel to the fairy ring"));
-		panelComponent.getLines().add(new PanelComponent.Line("to see where to dig."));
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Travel to the fairy ring to see where to dig.")
+			.build());
 	}
 
 	@Override

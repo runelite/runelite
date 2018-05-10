@@ -31,7 +31,9 @@ import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class MotherlodeGemOverlay extends Overlay
 {
@@ -70,41 +72,41 @@ public class MotherlodeGemOverlay extends Overlay
 		int emeraldsFound = session.getEmeraldsFound();
 		int sapphiresFound = session.getSapphiresFound();
 
-		panelComponent.getLines().clear();
-
-		panelComponent.setTitle("Gems found");
+		panelComponent.getChildren().clear();
+		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
 
 		if (diamondsFound > 0)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-					"Diamonds:",
-					Integer.toString(diamondsFound)
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Diamonds:")
+				.right(Integer.toString(diamondsFound))
+				.build());
 		}
 
 		if (rubiesFound > 0)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-					"Rubies:",
-					Integer.toString(rubiesFound)
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Rubies:")
+				.right(Integer.toString(rubiesFound))
+				.build());
 		}
 
 		if (emeraldsFound > 0)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-					"Emeralds:",
-					Integer.toString(emeraldsFound)
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Emeralds:")
+				.right(Integer.toString(emeraldsFound))
+				.build());
 		}
 
 		if (sapphiresFound > 0)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-					"Sapphires:",
-					Integer.toString(sapphiresFound)
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Sapphires:")
+				.right(Integer.toString(sapphiresFound))
+				.build());
 		}
+
 		return panelComponent.render(graphics);
 	}
 }

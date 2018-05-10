@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -166,7 +167,7 @@ public class ItemManager
 	 * @param itemIds array of item Ids
 	 * @return a future called with the looked up prices
 	 */
-	public CompletableFuture<ItemPrice[]> getItemPriceBatch(List<Integer> itemIds)
+	public CompletableFuture<ItemPrice[]> getItemPriceBatch(Collection<Integer> itemIds)
 	{
 		final List<Integer> lookup = new ArrayList<>();
 		final List<ItemPrice> existing = new ArrayList<>();

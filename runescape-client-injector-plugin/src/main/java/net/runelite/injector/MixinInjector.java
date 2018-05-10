@@ -72,6 +72,7 @@ public class MixinInjector
 	private static final Type COPY = new Type("Lnet/runelite/api/mixins/Copy;");
 	private static final Type REPLACE = new Type("Lnet/runelite/api/mixins/Replace;");
 	private static final Type FIELDHOOK = new Type("Lnet/runelite/api/mixins/FieldHook;");
+	private static final Type METHODHOOK = new Type("Lnet/runelite/api/mixins/MethodHook;");
 
 	private static final String MIXIN_BASE = "net.runelite.mixins";
 	private static final String ASSERTION_FIELD = "$assertionsDisabled";
@@ -156,6 +157,7 @@ public class MixinInjector
 		}
 
 		injectFieldHooks(mixinClasses);
+		injectMethodHooks(mixinClasses);
 	}
 
 	/**
@@ -894,6 +896,57 @@ public class MixinInjector
 		injectHook.run();
 
 		logger.info("Injected {} field hooks", injectHook.getInjectedHooks());
+	}
+
+	private void injectMethodHooks(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
+	{
+		InjectHookMethod injectHookMethod = new InjectHookMethod(inject);
+
+		for (Class<?> mixinClass : mixinClasses.keySet())
+		{
+			ClassFile mixinCf;
+
+			try
+			{
+				mixinCf = loadClass(mixinClass);
+			}
+			catch (IOException ex)
+			{
+				throw new InjectionException(ex);
+			}
+
+			List<ClassFile> targetCfs = mixinClasses.get(mixinClass);
+
+			for (ClassFile cf : targetCfs)
+			{
+				for (Method method : mixinCf.getMethods())
+				{
+					Annotation methodHook = method.getAnnotations().find(METHODHOOK);
+
+					if (methodHook == null)
+					{
+						continue;
+					}
+
+					String hookName = methodHook.getElement().getString();
+					boolean end = methodHook.getElements().size() == 2 && methodHook.getElements().get(1).getValue().equals(true);
+					ClassFile deobCf = inject.toDeobClass(cf);
+					Method targetMethod = findDeobMethod(deobCf, hookName, method.getDescriptor());
+
+					if (targetMethod == null)
+					{
+						throw new InjectionException("Method hook for nonexistent method " + hookName + " on " + method);
+					}
+
+					if (method.isStatic() != targetMethod.isStatic())
+					{
+						throw new InjectionException("Method hook static flag must match target");
+					}
+
+					injectHookMethod.inject(method, targetMethod, hookName, end, false);
+				}
+			}
+		}
 	}
 
 	private static class CopiedMethod
