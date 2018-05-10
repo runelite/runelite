@@ -64,11 +64,15 @@ public class FightCaveOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		JadAttack attack = plugin.getAttack();
+
 		if (attack == null)
 		{
 			return null;
 		}
+
 		BufferedImage prayerImage = getPrayerImage(attack);
+
+		imagePanelComponent.getChildren().clear();
 		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
 
 		if (!client.isPrayerActive(attack.getPrayer()))
