@@ -42,8 +42,8 @@ import net.runelite.client.ui.overlay.*;
 public class PrayerBarOverlay extends Overlay
 {
 	private final Client client;
-    private final PrayerBarConfig config;
-    private final Dimension prayerBarSize = new Dimension(30, 5); // 30x5 is the size of health bars
+	private final PrayerBarConfig config;
+	private final Dimension prayerBarSize = new Dimension(30, 5); // 30x5 is the size of health bars
 	private Player localPlayer;
 	private boolean showPrayerBar = true;
 
