@@ -523,27 +523,6 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public boolean getBoundingBoxAlwaysOnMode()
-	{
-		return getboundingBox3DDrawMode() == getALWAYSDrawMode();
-	}
-
-	@Inject
-	@Override
-	public void setBoundingBoxAlwaysOnMode(boolean alwaysDrawBoxes)
-	{
-		if (alwaysDrawBoxes)
-		{
-			setboundingBox3DDrawMode(getALWAYSDrawMode());
-		}
-		else
-		{
-			setboundingBox3DDrawMode(getON_MOUSEOVERDrawMode());
-		}
-	}
-
-	@Inject
-	@Override
 	public void changeMemoryMode(boolean lowMemory)
 	{
 		setLowMemory(lowMemory);
