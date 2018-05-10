@@ -85,7 +85,7 @@ public class WidgetNode extends Node {
       class264.field3345.reset();
       Area.areaSpriteCache.reset();
       PlayerComposition.field2597.reset();
-      Widget.field2617.reset();
+      Widget.widgetSpriteCache.reset();
       Widget.Widget_cachedModels.reset();
       Widget.Widget_cachedFonts.reset();
       Widget.field2620.reset();
