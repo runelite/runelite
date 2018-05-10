@@ -24,18 +24,23 @@
  */
 package net.runelite.client.plugins.roguesden;
 
-import java.awt.*;
-import java.awt.geom.Area;
-import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import javax.inject.Inject;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.geom.Area;
 
 @Slf4j
 public class RoguesDenOverlay extends Overlay
@@ -75,7 +80,8 @@ public class RoguesDenOverlay extends Overlay
 			if (tile.getPlane() == client.getPlane() && obstacle.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
 				Area clickBox = obstacle.getClickbox();
-				if (clickBox != null) {
+				if (clickBox != null)
+				{
 					Point mouse = client.getMouseCanvasPosition();
 					if (clickBox.contains(mouse.getX(), mouse.getY()))
 					{
@@ -90,14 +96,17 @@ public class RoguesDenOverlay extends Overlay
 					graphics.setColor(COL_OBJ);
 					graphics.fill(clickBox);
 
-				} else {
+				}
+				else
+				{
 					Polygon p;
 					if (obstacle instanceof GameObject)
 						p = ((GameObject) obstacle).getConvexHull();
 					else
 						p = obstacle.getCanvasTilePoly();
 
-					if (p != null) {
+					if (p != null)
+					{
 						graphics.setColor(COL_OBJ);
 						graphics.drawPolygon(p);
 					}
@@ -105,7 +114,8 @@ public class RoguesDenOverlay extends Overlay
 			}
 		});
 
-		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES) {
+		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
+		{
 			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.tile);
 
 			if (localPoint != null && obstacle.tile.getPlane() == client.getPlane() && localPoint.distanceTo(playerLocation) < MAX_DISTANCE)
@@ -114,9 +124,11 @@ public class RoguesDenOverlay extends Overlay
 				if (mp != null)
 					OverlayUtil.renderMinimapLocation(graphics, mp, obstacle.objectId == -1 ? COL_GROUND : COL_OBJ_BORDER);
 
-				if (obstacle.hint.length() > 0) {
+				if (obstacle.hint.length() > 0)
+				{
 					Polygon p = Perspective.getCanvasTilePoly(client, localPoint);
-					if (p != null) {
+					if (p != null)
+					{
 						graphics.setColor(COL_GROUND);
 						graphics.drawPolygon(p);
 					}
@@ -134,7 +146,8 @@ public class RoguesDenOverlay extends Overlay
 			}
 		}
 
-		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES_AVOID) {
+		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES_AVOID)
+		{
 			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.tile);
 
 			if (localPoint != null && obstacle.tile.getPlane() == client.getPlane() && localPoint.distanceTo(playerLocation) < MAX_DISTANCE)
@@ -143,9 +156,11 @@ public class RoguesDenOverlay extends Overlay
 				if (mp != null)
 					OverlayUtil.renderMinimapLocation(graphics, mp, COL_GROUND_AVOID);
 
-				if (obstacle.hint.length() > 0) {
+				if (obstacle.hint.length() > 0)
+				{
 					Polygon p = Perspective.getCanvasTilePoly(client, localPoint);
-					if (p != null) {
+					if (p != null)
+					{
 						graphics.setColor(COL_GROUND_AVOID);
 						graphics.drawPolygon(p);
 					}
@@ -167,13 +182,15 @@ public class RoguesDenOverlay extends Overlay
 }
 
 @Slf4j
-class RoguesDenMinimapOverlay extends Overlay {
+class RoguesDenMinimapOverlay extends Overlay
+{
 
 	private Client client;
 	private RoguesDenPlugin plugin;
 
 	@Inject
-	public RoguesDenMinimapOverlay(Client client, RoguesDenPlugin plugin) {
+	public RoguesDenMinimapOverlay(Client client, RoguesDenPlugin plugin)
+	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
@@ -181,13 +198,15 @@ class RoguesDenMinimapOverlay extends Overlay {
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
+	public Dimension render(Graphics2D graphics)
+	{
 		if (!plugin.isHasGem())
 		{
 			return null;
 		}
 
-		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES) {
+		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
+		{
 			LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.tile);
 
 			if (localPoint == null || obstacle.tile.getPlane() != client.getPlane())
