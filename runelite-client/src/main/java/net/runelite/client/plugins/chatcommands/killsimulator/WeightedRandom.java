@@ -36,11 +36,4 @@ public class WeightedRandom<T> extends HashMap<T, Double> {
 	public T getRandom() {
 		return getRandom(1D);
 	}
-	
-	private double getTotalWeight() {
-		double totalWeight = 0.0D;
-		for(double value : values())
-			totalWeight += value;
-		return totalWeight;
-	}
 }
