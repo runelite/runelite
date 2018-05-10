@@ -33,7 +33,8 @@ class Obstacles
 {
 	public static HashBasedTable<Integer, Integer, Obstacle> TILE_MAP = HashBasedTable.create();
 
-	public static Obstacle[] OBSTACLES = {
+	public static Obstacle[] OBSTACLES =
+	{
 		new Obstacle(3050, 4997, "Enter"), new Obstacle(3049, 4997, CONTORTION_BARS),  // Contortion bars
 		new Obstacle(3039, 4999, "Stand"),  // Pendulum
 		new Obstacle(3029, 5003, "Run"),  // Floor tiles
@@ -102,7 +103,8 @@ class Obstacles
 		new Obstacle(2989, 5057, "Open", GRILL_7255), new Obstacle(2989, 5058, "Open", GRILL_7255),
 	};
 
-	public static Obstacle[] OBSTACLES_AVOID = {
+	public static Obstacle[] OBSTACLES_AVOID =
+    {
 		new Obstacle(2977, 5090, "AVOID"), new Obstacle(2978, 5090, "AVOID"), new Obstacle(2979, 5090, "AVOID"),
 		new Obstacle(2977, 5089, "AVOID"), new Obstacle(2978, 5089, "AVOID"), new Obstacle(2979, 5089, "AVOID"),
 		new Obstacle(2977, 5088, "AVOID"), new Obstacle(2978, 5088, "AVOID"), new Obstacle(2979, 5088, "AVOID"),
@@ -110,22 +112,26 @@ class Obstacles
 		new Obstacle(2992, 5057, "GO NORTH"),  // Hint for 80 thieving shortcut!
 	};
 
-	public static class Obstacle {
+	public static class Obstacle
+	{
 		public WorldPoint tile;
 		public String hint;
 		public int objectId = -1;
 
-		public Obstacle(int x, int y, int id) {
+		public Obstacle(int x, int y, int id)
+		{
 			this(x, y, "");
 			this.objectId = id;
 			TILE_MAP.put(x, y, this);
 		}
 
-		public Obstacle(int x, int y, String hint) {
+		public Obstacle(int x, int y, String hint)
+		{
 			tile = new WorldPoint(x, y, 1);
 			this.hint = hint;
 		}
-		public Obstacle(int x, int y, String hint, int id) {
+		public Obstacle(int x, int y, String hint, int id)
+		{
 			this(x, y, id);
 			this.hint = hint;
 		}
