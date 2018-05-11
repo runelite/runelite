@@ -181,7 +181,8 @@ public class GroundItemsOverlay extends Overlay
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
 				graphics,
 				groundPoint,
-				itemString, OFFSET_Z);
+				itemString,
+				item.getHeight() + OFFSET_Z);
 
 			if (textPoint == null)
 			{

@@ -38,6 +38,7 @@ class GroundItem
 	private String name;
 	private int quantity;
 	private WorldPoint location;
+	private int height;
 	private int haPrice;
 	private int gePrice;
 
