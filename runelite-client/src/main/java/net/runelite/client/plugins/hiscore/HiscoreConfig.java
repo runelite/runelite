@@ -67,4 +67,15 @@ public interface HiscoreConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "autocomplete",
+		name = "Autocomplete",
+		description = "Predict names when typing a name to lookup"
+	)
+	default boolean autocomplete()
+	{
+		return true;
+	}
 }

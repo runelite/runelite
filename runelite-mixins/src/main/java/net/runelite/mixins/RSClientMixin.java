@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
+import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
@@ -74,7 +75,6 @@ import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.UsernameChanged;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -91,11 +91,14 @@ import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
+import net.runelite.rs.api.RSFriendContainer;
+import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSNameable;
 import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSWidget;
 
@@ -128,6 +131,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static int inventoryDragDelay;
+
+	@Inject
+	private static boolean hasVarbitChanged;
 
 	@Inject
 	@Override
@@ -578,6 +584,26 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public Friend[] getFriends()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return null;
+		}
+
+		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		if (friendContainer == null)
+		{
+			return null;
+		}
+
+		RSNameable[] nameables = friendContainer.getNameables();
+		return (Friend[]) nameables;
+	}
+
+	@Inject
+	@Override
 	public boolean isClanMember(String name)
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
@@ -815,8 +841,16 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void settingsChanged(int idx)
 	{
-		VarbitChanged varbitChanged = new VarbitChanged();
-		eventBus.post(varbitChanged);
+		hasVarbitChanged = true;
+	}
+
+	@Inject
+	@Override
+	public boolean shouldPostVarbitEvent()
+	{
+		boolean ret = hasVarbitChanged;
+		hasVarbitChanged = false;
+		return ret;
 	}
 
 	@FieldHook("isResized")

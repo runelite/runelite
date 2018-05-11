@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.rs.api;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
-
-@Data
-@Builder
-class GroundItem
+public interface RSFriendContainer extends RSNameableContainer
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-
-	@Value
-	static class GroundItemKey
-	{
-		private int itemId;
-		private WorldPoint location;
-	}
 }
