@@ -27,56 +27,16 @@ package net.runelite.client.plugins.timers;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.Prayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GraphicChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.VarbitChanged;
+
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.BIND;
-import static net.runelite.client.plugins.timers.GameTimer.CANNON;
-import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
-import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
-import static net.runelite.client.plugins.timers.GameTimer.GOD_WARS_ALTAR;
-import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
-import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
-import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
-import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
-import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
-import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
-import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
-import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
-import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
-import static net.runelite.client.plugins.timers.GameTimer.SNARE;
-import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
-import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
-import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+
+import static net.runelite.client.plugins.timers.GameTimer.*;
+
 
 @PluginDescriptor(
 	name = "Timers"
@@ -434,64 +394,120 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(VENGEANCE);
 		}
+	}
 
+	@Subscribe
+	public void onFreezeStarted(ActorFreeze event)
+	{
 		if (config.showFreezes())
 		{
-			if (actor.getGraphic() == BIND.getGraphicId())
+			Actor freezee = event.getActor();
+
+			if (freezee != client.getLocalPlayer())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
-				{
-					createGameTimer(HALFBIND);
-				}
-				else
-				{
-					createGameTimer(BIND);
-				}
+				return;
 			}
 
-			if (actor.getGraphic() == SNARE.getGraphicId())
+			FreezeInfo info = freezee.getFreeze();
+
+			switch (info.getType())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
-				{
-					createGameTimer(HALFSNARE);
-				}
-				else
-				{
-					createGameTimer(SNARE);
-				}
+				case BIND:
+					if (info.getFrozen() < FreezeType.BIND.getTicks()) //if halved
+						createGameTimer(HALFBIND);
+					else
+						createGameTimer(BIND);
+					break;
+				case SNARE:
+					if (info.getFrozen() < FreezeType.SNARE.getTicks()) //if halved
+						createGameTimer(HALFSNARE);
+					else
+						createGameTimer(SNARE);
+					break;
+				case ENTANGLE:
+					if (info.getFrozen() < FreezeType.ENTANGLE.getTicks()) //if halved
+						createGameTimer(HALFENTANGLE);
+					else
+						createGameTimer(ENTANGLE);
+					break;
+				case ICE_RUSH:
+					createGameTimer(ICERUSH);
+					break;
+				case ICE_BURST:
+					createGameTimer(ICEBURST);
+					break;
+				case ICE_BLITZ:
+					createGameTimer(ICEBLITZ);
+					break;
+				case ICE_BARRAGE:
+					createGameTimer(ICEBARRAGE);
+					break;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onFreezeEnded(ActorFreezeEnded event)
+	{
+		if (config.showFreezes())
+		{
+			Actor actor = event.getActor();
+
+			if (actor != client.getLocalPlayer())
+			{
+				return;
 			}
 
-			if (actor.getGraphic() == ENTANGLE.getGraphicId())
+			//freeze information is lost after freeze ends so attempt to remove all relevant timers
+			removeGameTimer(BIND);
+			removeGameTimer(HALFBIND);
+			removeGameTimer(SNARE);
+			removeGameTimer(HALFSNARE);
+			removeGameTimer(ENTANGLE);
+			removeGameTimer(HALFENTANGLE);
+			removeGameTimer(ICERUSH);
+			removeGameTimer(ICEBURST);
+			removeGameTimer(ICEBLITZ);
+			removeGameTimer(ICEBARRAGE);
+		}
+	}
+
+	@Subscribe
+	public void onFreezeImmunity(ActorFreezeImmune event)
+	{
+		if (config.showFreezes())
+		{
+			if (event.getActor() != client.getLocalPlayer())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
-				{
-					createGameTimer(HALFENTANGLE);
-				}
-				else
-				{
-					createGameTimer(ENTANGLE);
-				}
+				return;
 			}
 
-			if (actor.getGraphic() == ICERUSH.getGraphicId())
+			removeGameTimer(BIND);
+			removeGameTimer(HALFBIND);
+			removeGameTimer(SNARE);
+			removeGameTimer(HALFSNARE);
+			removeGameTimer(ENTANGLE);
+			removeGameTimer(HALFENTANGLE);
+			removeGameTimer(ICERUSH);
+			removeGameTimer(ICEBURST);
+			removeGameTimer(ICEBLITZ);
+			removeGameTimer(ICEBARRAGE);
+
+			createGameTimer(FREEZEIMMUNE);
+		}
+	}
+
+	@Subscribe
+	public void onFreezeImmunityEnded(ActorFreezeImmuneEnded event)
+	{
+		if (config.showFreezes())
+		{
+			if (event.getActor() != client.getLocalPlayer())
 			{
-				createGameTimer(ICERUSH);
+				return;
 			}
 
-			if (actor.getGraphic() == ICEBURST.getGraphicId())
-			{
-				createGameTimer(ICEBURST);
-			}
-
-			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
-			{
-				createGameTimer(ICEBLITZ);
-			}
-
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				createGameTimer(ICEBARRAGE);
-			}
+			removeGameTimer(FREEZEIMMUNE);
 		}
 	}
 

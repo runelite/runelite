@@ -35,6 +35,7 @@ import static net.runelite.api.HeadIcon.REDEMPTION;
 import static net.runelite.api.HeadIcon.RETRIBUTION;
 import static net.runelite.api.HeadIcon.SMITE;
 import net.runelite.api.Model;
+import net.runelite.api.OverheadPrayer;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Copy;
