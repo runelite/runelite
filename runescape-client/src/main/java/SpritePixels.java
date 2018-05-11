@@ -699,7 +699,8 @@ public final class SpritePixels extends Rasterizer2D {
    }
 
    @ObfuscatedName("ag")
-   public void method5948(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
+   @Export("drawOnMinimap")
+   public void drawOnMinimap(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
       try {
          int var11 = -var3 / 2;
          int var12 = -var4 / 2;
