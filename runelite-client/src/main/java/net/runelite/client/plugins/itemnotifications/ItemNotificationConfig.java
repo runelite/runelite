@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
 
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.PluginDescriptor;
+package net.runelite.client.plugins.itemnotifications;
 
-@PluginDescriptor(
-	name = "Jewellery Count"
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "itemnotification",
+	name = "Item Notifications",
+	description = "Item notifications for multiple items (e.g recoil break / ectophial refill)"
 )
-public class JewelleryCountPlugin extends Plugin
+public interface ItemNotificationConfig extends Config
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
-
-	@Inject
-	private JewelleryCountConfig config;
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "notifydelay",
+		name = "Delay (seconds)",
+		description = "Delay before notification happens for certain events (e.g ectophial)"
+	)
+	default int notificationDelay()
 	{
-		return overlay;
+		return 3;
 	}
 
-	@Provides
-	JewelleryCountConfig getConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "ringofrecoil",
+		name = "Ring of Recoil",
+		description = "Notify when ring of recoil breaks"
+	)
+	default boolean notifyOnRecoilBreak()
 	{
-		return configManager.getConfig(JewelleryCountConfig.class);
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ectophial",
+		name = "Ectophial",
+		description = "Notifies if ectophial is not refilled after the user is teleported"
+	)
+	default boolean notifyOnEmptyEctophial()
+	{
+		return true;
 	}
 }
