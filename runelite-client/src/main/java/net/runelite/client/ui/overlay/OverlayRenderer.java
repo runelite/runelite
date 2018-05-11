@@ -55,6 +55,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.OverlaysChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -152,6 +153,12 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
+	{
+		rebuildOverlays();
+	}
+
+	@Subscribe
+	public void onOverlaysChanged(OverlaysChanged event)
 	{
 		rebuildOverlays();
 	}
