@@ -596,9 +596,8 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (worldMapPoint == null)
 		{
-			worldMapPoint = new ClueScrollWorldMapPoint();
+			worldMapPoint = new ClueScrollWorldMapPoint(point);
 			worldMapPointManager.add(worldMapPoint);
 		}
-		worldMapPoint.setWorldPoint(point);
 	}
 }
