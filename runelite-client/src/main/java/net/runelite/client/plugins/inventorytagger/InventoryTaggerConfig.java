@@ -62,7 +62,7 @@ public interface InventoryTaggerConfig extends Config
 	)
 	default Color getGroup5Color()
 	{
-		return new Color(255, 255,0);
+		return new Color(255, 255, 0);
 	}
 	@ConfigItem(
 			position = 5,
