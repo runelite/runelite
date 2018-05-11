@@ -74,6 +74,8 @@ public class MinimapPlugin extends Plugin
 
 		storeOriginalDots();
 		replaceMapDots();
+
+		client.setHdMinimap(config.hdMinimap());
 	}
 
 	@Override
@@ -87,6 +89,7 @@ public class MinimapPlugin extends Plugin
 		}
 
 		restoreOriginalDots();
+		client.setHdMinimap(false);
 	}
 
 	@Subscribe
@@ -140,6 +143,12 @@ public class MinimapPlugin extends Plugin
 	{
 		if (!event.getGroup().equals("minimap"))
 		{
+			return;
+		}
+
+		if (event.getKey().equals("hdMinimap"))
+		{
+			client.setHdMinimap(config.hdMinimap());
 			return;
 		}
 

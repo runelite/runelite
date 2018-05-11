@@ -36,6 +36,16 @@ import net.runelite.client.config.ConfigItem;
 public interface MinimapConfig extends Config
 {
 	@ConfigItem(
+		keyName = "hdMinimap",
+		name = "HD Minimap",
+		description = "Configures whether to show the minimap in higher detail (relog to see changes)"
+	)
+	default boolean hdMinimap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "item",
 		name = "Item color",
 		description = "Set the minimap color items are drawn in"
