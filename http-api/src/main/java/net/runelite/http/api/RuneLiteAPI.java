@@ -70,12 +70,22 @@ public class RuneLiteAPI
 
 	public static HttpUrl getApiBase()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		String base = System.getenv("RUNELITE_API_BASE");
+		if (base == null)
+		{
+			base = BASE;
+		}
+		return HttpUrl.parse(base + getVersion());
 	}
 
 	public static String getWsEndpoint()
 	{
-		return WSBASE + getVersion() + "/ws";
+		String wsbase = System.getenv("RUNELITE_WS_BASE");
+		if (wsbase == null)
+		{
+			wsbase = WSBASE;
+		}
+		return wsbase + getVersion() + "/ws";
 	}
 
 	public static String getVersion()
