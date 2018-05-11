@@ -34,7 +34,6 @@ import javax.inject.Inject;
 
 import com.google.inject.Provides;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
