@@ -63,11 +63,11 @@ public class ScreenshotInput implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent event)
 	{
-		if (!config.isScreenshotEnabled())
-			return;
-
 		if (event.getKeyCode() == KeyEvent.VK_CONTROL)
 			this.CONTROL_KEY_DOWN = false;
+
+		if (!config.isScreenshotEnabled())
+			return;
 
 		if (event.getKeyCode() == KeyEvent.VK_INSERT)
 		{
