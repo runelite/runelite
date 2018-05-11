@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
+import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
@@ -90,11 +91,14 @@ import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
+import net.runelite.rs.api.RSFriendContainer;
+import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSNameable;
 import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSWidget;
 
@@ -576,6 +580,26 @@ public abstract class RSClientMixin implements RSClient
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
 		return clanMemberManager != null ? (ClanMember[]) getClanMemberManager().getNameables() : null;
+	}
+
+	@Inject
+	@Override
+	public Friend[] getFriends()
+	{
+		final RSFriendManager friendManager = getFriendManager();
+		if (friendManager == null)
+		{
+			return null;
+		}
+
+		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		if (friendContainer == null)
+		{
+			return null;
+		}
+
+		RSNameable[] nameables = friendContainer.getNameables();
+		return (Friend[]) nameables;
 	}
 
 	@Inject
