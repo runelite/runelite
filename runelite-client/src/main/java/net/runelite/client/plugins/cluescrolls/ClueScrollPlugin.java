@@ -174,14 +174,9 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
 	protected void shutDown() throws Exception
 	{
-		clearMapPoint();
+		resetClue();
 	}
 
 	@Override
@@ -437,7 +432,11 @@ public class ClueScrollPlugin extends Plugin
 		clueItemChanged = false;
 		clue = null;
 
-		clearMapPoint();
+		if (worldMapPoint != null)
+		{
+			worldMapPointManager.remove(worldMapPoint);
+			worldMapPoint = null;
+		}
 
 		if (config.displayHintArrows())
 		{
@@ -601,14 +600,5 @@ public class ClueScrollPlugin extends Plugin
 			worldMapPointManager.add(worldMapPoint);
 		}
 		worldMapPoint.setWorldPoint(point);
-	}
-
-	private void clearMapPoint()
-	{
-		if (worldMapPoint != null)
-		{
-			worldMapPointManager.remove(worldMapPoint);
-			worldMapPoint = null;
-		}
 	}
 }
