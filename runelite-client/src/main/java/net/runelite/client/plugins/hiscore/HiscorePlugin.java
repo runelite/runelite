@@ -25,11 +25,11 @@
 package net.runelite.client.plugins.hiscore;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -49,7 +49,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -60,7 +59,7 @@ public class HiscorePlugin extends Plugin
 	private static final String LOOKUP = "Lookup";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Delete");
 
 	@Inject
 	@Nullable
@@ -196,15 +195,18 @@ public class HiscorePlugin extends Plugin
 
 	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
 	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
+		entries = Arrays.copyOf(entries, entries.length + 1);
 
+		entries[entries.length - 1] = newEntry;
 		if (after)
 		{
-			int menuEntryCount = newMenu.length;
-			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
+			MenuEntry holder = entries[entries.length - 2];
+			System.out.println("Holder: " + holder);
+			entries[entries.length - 2] = entries[entries.length - 1];
+			entries[entries.length - 1] = holder;
 		}
 
-		client.setMenuEntries(newMenu);
+		client.setMenuEntries(entries);
 	}
 
 	@Subscribe
