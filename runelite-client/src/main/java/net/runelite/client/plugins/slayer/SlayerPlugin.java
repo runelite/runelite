@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
@@ -48,6 +49,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -58,6 +61,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.Widget;
@@ -140,6 +144,8 @@ public class SlayerPlugin extends Plugin
 	private String taskName;
 	private int amount;
 	private TaskCounter counter;
+	private TaskCounter expeditiousCounter;
+	private TaskCounter slaughterCounter;
 	private int streak;
 	private int points;
 	private int cachedXp;
@@ -151,6 +157,10 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private int slaughterChargeCount;
+	private boolean hasExpeditiousEquip = false;
+	private boolean hasSlaughterEquip = false;
+	private boolean hasExpeditiousInvent = false;
+	private boolean hasSlaughterInvent = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -171,6 +181,8 @@ public class SlayerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		removeCounter();
+		removeSlaughterCounter();
+		removeExpeditiousCounter();
 	}
 
 	@Provides
@@ -302,6 +314,33 @@ public class SlayerPlugin extends Plugin
 
 		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
 		slayerItems = ImmutableList.copyOf(items);
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
+			hasExpeditiousEquip = (items.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == ItemID.EXPEDITIOUS_BRACELET));
+			final Stream<Item> seconds = Arrays.stream(event.getItemContainer().getItems());
+			hasSlaughterEquip = (seconds.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == ItemID.BRACELET_OF_SLAUGHTER));
+			save();
+			removeExpeditiousCounter();
+			addExpeditiousCounter();
+			infoTimer = Instant.now();
+		}
+		else if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		{
+			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
+			hasExpeditiousInvent = (items.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == ItemID.EXPEDITIOUS_BRACELET));
+			final Stream<Item> seconds = Arrays.stream(event.getItemContainer().getItems());
+			hasSlaughterInvent = (seconds.anyMatch(item -> itemManager.getItemComposition(item.getId()).getId() == ItemID.BRACELET_OF_SLAUGHTER));
+			save();
+			removeSlaughterCounter();
+			addSlaughterCounter();
+			infoTimer = Instant.now();
+		}
 	}
 
 	@Subscribe
@@ -437,6 +476,17 @@ public class SlayerPlugin extends Plugin
 		{
 			removeCounter();
 		}
+
+		if (config.showBraceletInfoBox())
+		{
+			clientThread.invokeLater(this::addExpeditiousCounter);
+			clientThread.invokeLater(this::addSlaughterCounter);
+		}
+		else
+		{
+			removeExpeditiousCounter();
+			removeSlaughterCounter();
+		}
 	}
 
 	private void killedOne()
@@ -449,14 +499,27 @@ public class SlayerPlugin extends Plugin
 		amount--;
 		config.amount(amount); // save changed value
 
-		if (!config.showInfobox())
+		if (config.showInfobox())
 		{
-			return;
+			// add and update counter, set timer
+			addCounter();
+			counter.setText(String.valueOf(amount));
 		}
 
-		// add and update counter, set timer
-		addCounter();
-		counter.setText(String.valueOf(amount));
+		if (config.showBraceletInfoBox())
+		{
+			if (hasExpeditiousEquip || hasExpeditiousInvent)
+			{
+				addExpeditiousCounter();
+				expeditiousCounter.setText(String.valueOf(expeditiousChargeCount));
+			}
+			if (hasSlaughterEquip || hasSlaughterInvent)
+			{
+				addSlaughterCounter();
+				slaughterCounter.setText(String.valueOf(slaughterChargeCount));
+			}
+		}
+
 		infoTimer = Instant.now();
 	}
 
@@ -466,7 +529,11 @@ public class SlayerPlugin extends Plugin
 		amount = amt;
 		save();
 		removeCounter();
+		removeSlaughterCounter();
+		removeExpeditiousCounter();
 		addCounter();
+		addExpeditiousCounter();
+		addSlaughterCounter();
 		infoTimer = Instant.now();
 	}
 
@@ -492,6 +559,30 @@ public class SlayerPlugin extends Plugin
 		infoBoxManager.addInfoBox(counter);
 	}
 
+	private void addSlaughterCounter()
+	{
+		if (!config.showBraceletInfoBox() || slaughterCounter != null || (!hasSlaughterEquip && !hasSlaughterInvent))
+		{
+			return;
+		}
+
+		BufferedImage slaughterImg = itemManager.getImage(ItemID.BRACELET_OF_SLAUGHTER);
+		slaughterCounter = new TaskCounter(slaughterImg, this, slaughterChargeCount);
+		infoBoxManager.addInfoBox(slaughterCounter);
+	}
+
+	private void addExpeditiousCounter()
+	{
+		if (!config.showBraceletInfoBox() || expeditiousCounter != null || (!hasExpeditiousEquip && !hasExpeditiousInvent))
+		{
+			return;
+		}
+
+		BufferedImage expeditiousImg = itemManager.getImage(ItemID.EXPEDITIOUS_BRACELET);
+		expeditiousCounter = new TaskCounter(expeditiousImg, this, expeditiousChargeCount);
+		infoBoxManager.addInfoBox(expeditiousCounter);
+	}
+
 	private void removeCounter()
 	{
 		if (counter == null)
@@ -501,6 +592,28 @@ public class SlayerPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void removeSlaughterCounter()
+	{
+		if (slaughterCounter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(slaughterCounter);
+		slaughterCounter = null;
+	}
+
+	private void removeExpeditiousCounter()
+	{
+		if (expeditiousCounter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(expeditiousCounter);
+		expeditiousCounter = null;
 	}
 
 	private List<NPC> buildTargetsToHighlight()
