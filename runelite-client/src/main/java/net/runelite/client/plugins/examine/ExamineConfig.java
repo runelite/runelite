@@ -79,4 +79,15 @@ public interface ExamineConfig extends Config
 	{
 		return Color.decode("#9090FF");
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "examineValueOption",
+		name = "Value to display",
+		description = "Which price to show when examining items"
+	)
+	default ExamineConfigType getExamineConfigType()
+	{
+		return ExamineConfigType.BOTH;
+	}
 }
