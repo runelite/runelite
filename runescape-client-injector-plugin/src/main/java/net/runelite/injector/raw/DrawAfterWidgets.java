@@ -35,7 +35,6 @@ import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,12 +102,7 @@ public class DrawAfterWidgets
 
 		boolean injected = false;
 
-		Method noClip = findStaticMethod("noClip");
-
-		if (noClip == null)
-		{
-			throw new InjectionException("Mapped method \"noClip\" could not be found.");
-		}
+		Method noClip = inject.findDeobMethod("noClip");
 
 		net.runelite.asm.pool.Method poolNoClip = noClip.getPoolMethod();
 
@@ -256,28 +250,5 @@ public class DrawAfterWidgets
 		{
 			throw new InjectionException("injectDrawAfterWidgets failed to inject!");
 		}
-	}
-
-	private Method findStaticMethod(String name)
-	{
-		for (ClassFile c : inject.getDeobfuscated().getClasses())
-		{
-			for (Method m : c.getMethods())
-			{
-				if (!m.getName().equals(name))
-				{
-					continue;
-				}
-
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
-				Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(m);
-
-				ClassFile c2 = inject.toObClass(c);
-
-				return c2.findMethod(obfuscatedName, (obfuscatedSignature != null) ? obfuscatedSignature : m.getDescriptor());
-			}
-		}
-
-		return null;
 	}
 }

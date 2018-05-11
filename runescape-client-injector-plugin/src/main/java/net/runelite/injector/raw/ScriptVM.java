@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
@@ -104,12 +103,12 @@ public class ScriptVM
 
 		 */
 		String scriptObName = DeobAnnotations.getObfuscatedName(inject.getDeobfuscated().findClass("Script").getAnnotations());
-		Method runScript = findObMethod("copy$runScript");
-		Method vmExecuteOpcode = findObMethod("vmExecuteOpcode");
-		Field scriptInstructions = findDeobField("instructions");
-		Field scriptStatePC = findDeobField("invokedFromPc");
-		Field currentScriptField = findObField("currentScript");
-		Field currentScriptPCField = findObField("currentScriptPC");
+		Method runScript = inject.findObMethod("copy$runScript");
+		Method vmExecuteOpcode = inject.findObMethod("vmExecuteOpcode");
+		Field scriptInstructions = inject.findDeobField("instructions");
+		Field scriptStatePC = inject.findDeobField("invokedFromPc");
+		Field currentScriptField = inject.findObField("currentScript");
+		Field currentScriptPCField = inject.findObField("currentScriptPC");
 
 		Execution e = new Execution(inject.getVanilla());
 		e.addMethod(runScript);
@@ -294,60 +293,5 @@ public class ScriptVM
 		instrs.addInstruction(istorepc + 1, new ILoad(instrs, currentOpcodeStore.getVariableIndex()));
 		instrs.addInstruction(istorepc + 2, new InvokeStatic(instrs, vmExecuteOpcode.getPoolMethod()));
 		instrs.addInstruction(istorepc + 3, new IfNe(instrs, nextIteration));
-	}
-
-	private Method findObMethod(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getVanilla().getClasses())
-		{
-			for (Method m : c.getMethods())
-			{
-				if (!m.getName().equals(name))
-				{
-					continue;
-				}
-				return m;
-			}
-		}
-
-		throw new InjectionException(String.format("Method \"%s\" could not be found.", name));
-	}
-
-	private Field findObField(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getVanilla().getClasses())
-		{
-			for (Field f : c.getFields())
-			{
-				if (!f.getName().equals(name))
-				{
-					continue;
-				}
-				return f;
-			}
-		}
-
-		throw new InjectionException(String.format("Field \"%s\" could not be found.", name));
-	}
-
-	private Field findDeobField(String name) throws InjectionException
-	{
-		for (ClassFile c : inject.getDeobfuscated().getClasses())
-		{
-			for (Field f : c.getFields())
-			{
-				if (!f.getName().equals(name))
-				{
-					continue;
-				}
-
-				String obfuscatedName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
-
-				ClassFile c2 = inject.toObClass(c);
-				return c2.findField(obfuscatedName);
-			}
-		}
-
-		throw new InjectionException(String.format("Mapped field \"%s\" could not be found.", name));
 	}
 }
