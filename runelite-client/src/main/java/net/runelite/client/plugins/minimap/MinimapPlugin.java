@@ -34,6 +34,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -107,9 +108,24 @@ public class MinimapPlugin extends Plugin
 
 		if (event.getKey().equals("leftAlignOrbs"))
 		{
-			if (config.leftAlignOrbs())
+			if (config.leftAlignOrbs() != AlignmentMode.OFF)
 			{
-				moveOrbs();
+				if (config.leftAlignOrbs() == AlignmentMode.BOTH)
+				{
+					moveOrbs();
+				}
+				else if (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
+				{
+					moveOrbs();
+				}
+				else if (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE)
+				{
+					moveOrbs();
+				}
+				else
+				{
+					resetOrbs();
+				}
 			}
 			else
 			{
@@ -118,6 +134,27 @@ public class MinimapPlugin extends Plugin
 		}
 
 		replaceMapDots();
+	}
+
+	@Subscribe
+	public void onResizeableChanged(ResizeableChanged event)
+	{
+		if (config.leftAlignOrbs() == AlignmentMode.BOTH)
+		{
+			moveOrbs();
+		}
+		else if (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
+		{
+			moveOrbs();
+		}
+		else if (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE)
+		{
+			moveOrbs();
+		}
+		else
+		{
+			resetOrbs();
+		}
 	}
 
 	@Subscribe
@@ -206,9 +243,20 @@ public class MinimapPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
 		{
-			if (config.leftAlignOrbs())
+			if (config.leftAlignOrbs() != AlignmentMode.OFF)
 			{
-				moveOrbs();
+				if (config.leftAlignOrbs() == AlignmentMode.BOTH)
+				{
+					moveOrbs();
+				}
+				else if (!client.isResized() && config.leftAlignOrbs() == AlignmentMode.FIXED)
+				{
+					moveOrbs();
+				}
+				else if (client.isResized() && config.leftAlignOrbs() == AlignmentMode.RESIZEABLE)
+				{
+					moveOrbs();
+				}
 			}
 		}
 	}

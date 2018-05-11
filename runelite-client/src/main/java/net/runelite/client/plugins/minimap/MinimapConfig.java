@@ -107,8 +107,8 @@ public interface MinimapConfig extends Config
 		name = "Left Align Orbs",
 		description = "Align the Health, Prayer, Run and Special Attack orbs to the left."
 	)
-	default boolean leftAlignOrbs()
+	default AlignmentMode leftAlignOrbs()
 	{
-		return false;
+		return AlignmentMode.OFF;
 	}
 }
