@@ -27,6 +27,10 @@ package net.runelite.client.ui.overlay;
 public enum OverlayPosition
 {
 	/**
+	 * Overlay initially places itself but allows modification afterwards
+	 */
+	DETACHED,
+	/**
 	 * Overlay places itself where it wants
 	 */
 	DYNAMIC,
