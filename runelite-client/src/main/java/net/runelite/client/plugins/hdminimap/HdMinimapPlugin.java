@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.hdminimap;
 
-import net.runelite.api.Region;
-import net.runelite.api.Tile;
-import net.runelite.mapping.Import;
+import net.runelite.api.Client;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import javax.inject.Inject;
 
-public interface RSRegion extends Region
+@PluginDescriptor(
+	name = "HD Minimap",
+	enabledByDefault = false
+)
+public class HdMinimapPlugin extends Plugin
 {
-	@Import("objects")
-	RSGameObject[] getObjects();
+	@Inject
+	private Client client;
 
-	@Import("tiles")
 	@Override
-	Tile[][][] getTiles();
+	protected void startUp() throws Exception
+	{
+		client.setHdMinimap(true);
+	}
 
-	@Import("tileShape2D")
-	int[][] getTileShape2D();
-
-	@Import("tileRotation2D")
-	int[][] getTileRotation2D();
-
-	@Import("drawTile")
-	void drawTile(int[] pixels, int pixelOffset, int width, int z, int x, int y);
+	@Override
+	protected void shutDown() throws Exception
+	{
+		client.setHdMinimap(false);
+	}
 }
