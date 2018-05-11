@@ -35,7 +35,9 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -101,6 +103,18 @@ public class MinimapPlugin extends Plugin
 		{
 			updateMinimapWidgetVisibility(config.hideMinimap());
 			return;
+		}
+
+		if (event.getKey().equals("leftAlignOrbs"))
+		{
+			if (config.leftAlignOrbs())
+			{
+				moveOrbs();
+			}
+			else
+			{
+				resetOrbs();
+			}
 		}
 
 		replaceMapDots();
@@ -186,5 +200,88 @@ public class MinimapPlugin extends Plugin
 		}
 
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
+	}
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
+		{
+			if (config.leftAlignOrbs())
+			{
+				moveOrbs();
+			}
+		}
+	}
+
+	private void moveOrbs()
+	{
+		Widget healthOrb = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB);
+		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
+		Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB);
+		Widget specOrb = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
+
+		if (healthOrb != null)
+		{
+			healthOrb.setRelativeY(33);
+			healthOrb.setOriginalY(33);
+		}
+
+		if (prayerOrb != null)
+		{
+			prayerOrb.setRelativeY(65);
+			prayerOrb.setOriginalY(65);
+		}
+
+		if (runOrb != null)
+		{
+			runOrb.setRelativeX(0);
+			runOrb.setRelativeY(97);
+			runOrb.setOriginalX(0);
+			runOrb.setOriginalY(97);
+		}
+
+		if (specOrb != null)
+		{
+			specOrb.setRelativeX(0);
+			specOrb.setRelativeY(129);
+			specOrb.setOriginalX(0);
+			specOrb.setOriginalY(129);
+		}
+	}
+
+	private void resetOrbs()
+	{
+		Widget healthOrb = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB);
+		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
+		Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB);
+		Widget specOrb = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
+
+		if (healthOrb != null)
+		{
+			healthOrb.setRelativeY(37);
+			healthOrb.setOriginalY(37);
+		}
+
+		if (prayerOrb != null)
+		{
+			prayerOrb.setRelativeY(71);
+			prayerOrb.setOriginalY(71);
+		}
+
+		if (runOrb != null)
+		{
+			runOrb.setRelativeX(10);
+			runOrb.setRelativeY(103);
+			runOrb.setOriginalX(10);
+			runOrb.setOriginalY(103);
+		}
+
+		if (specOrb != null)
+		{
+			specOrb.setRelativeX(32);
+			specOrb.setRelativeY(128);
+			specOrb.setOriginalX(32);
+			specOrb.setOriginalY(128);
+		}
 	}
 }

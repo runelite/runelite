@@ -101,4 +101,14 @@ public interface MinimapConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "leftAlignOrbs",
+		name = "Left Align Orbs",
+		description = "Align the Health, Prayer, Run and Special Attack orbs to the left."
+	)
+	default boolean leftAlignOrbs()
+	{
+		return false;
+	}
 }
