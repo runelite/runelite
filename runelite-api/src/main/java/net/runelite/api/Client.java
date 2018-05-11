@@ -303,6 +303,8 @@ public interface Client extends GameEngine
 
 	ClanMember[] getClanMembers();
 
+	Friend[] getFriends();
+
 	boolean isClanMember(String name);
 
 	Preferences getPreferences();
