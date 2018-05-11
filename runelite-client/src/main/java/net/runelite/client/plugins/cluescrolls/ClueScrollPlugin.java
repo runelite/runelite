@@ -34,8 +34,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -94,10 +92,6 @@ import net.runelite.client.util.Text;
 public class ClueScrollPlugin extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
-
-	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
-	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
-	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
 
 	public static final BufferedImage CLUE_SCROLL_IMAGE;
 	public static final BufferedImage MAP_ARROW;
@@ -193,46 +187,9 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		if (clue instanceof HotColdClue && event.getMessage().startsWith("The device is"))
+		if (clue instanceof HotColdClue)
 		{
-			HotColdClue hotColdClue = (HotColdClue) clue;
-			String message = event.getMessage();
-			Matcher m1 = FINAL_STRANGE_DEVICE_MESSAGE.matcher(message);
-			Matcher m2 = STRANGE_DEVICE_MESSAGE.matcher(message);
-			Matcher m3 = INITIAL_STRANGE_DEVICE_MESSAGE.matcher(message);
-
-			// the order that these pattern matchers are checked is important
-			if (m1.find())
-			{
-				// final location for hot cold clue has been found
-				WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
-
-				if (localWorld != null)
-				{
-					hotColdClue.markFinalSpot(localWorld);
-				}
-			}
-			else if (m2.find())
-			{
-				String temperature = m2.group(1);
-				String difference = m2.group(2);
-				WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
-
-				if (localWorld != null)
-				{
-					hotColdClue.updatePossibleArea(localWorld, temperature, difference);
-				}
-			}
-			else if (m3.find())
-			{
-				String temperature = m3.group(1);
-				WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
-
-				if (localWorld != null)
-				{
-					hotColdClue.updatePossibleArea(localWorld, temperature, "");
-				}
-			}
+			((HotColdClue)clue).update(event.getMessage(), this);
 		}
 
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
