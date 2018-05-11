@@ -153,21 +153,21 @@ class OpponentInfoOverlay extends Overlay
 
 			if (lastMaxHealth != null)
 			{
-                int health = 0;
-                if (lastRatio > 0)
-                {
-                    // This is the reverse of the calculation of healthRatio done by the server
-                    // which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
-                    // It's able to recover the exact health if maxHealth <= healthScale.
-                    int minHealth = (lastMaxHealth * (lastRatio - 1) - 1) / (lastHealthScale - 1) + 1;
-                    int maxHealth = (lastMaxHealth * lastRatio - 1) / (lastHealthScale - 1);
-                    if (maxHealth > lastMaxHealth)
-                    {
-                        maxHealth = lastMaxHealth;
-                    }
-                    // Take the average of min and max possible healts
-                    health = (minHealth + maxHealth + 1) / 2;
-                }
+				int health = 0;
+				if (lastRatio > 0)
+				{
+					// This is the reverse of the calculation of healthRatio done by the server
+					// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
+					// It's able to recover the exact health if maxHealth <= healthScale.
+					int minHealth = (lastMaxHealth * (lastRatio - 1) - 1) / (lastHealthScale - 1) + 1;
+					int maxHealth = (lastMaxHealth * lastRatio - 1) / (lastHealthScale - 1);
+					if (maxHealth > lastMaxHealth)
+					{
+						maxHealth = lastMaxHealth;
+					}
+					// Take the average of min and max possible healts
+					health = (minHealth + maxHealth + 1) / 2;
+				}
 
 				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
 				progressBarComponent.setMaximum(lastMaxHealth);
@@ -175,7 +175,7 @@ class OpponentInfoOverlay extends Overlay
 			}
 			else
 			{
-                float floatRatio = (float) lastRatio / (float) lastHealthScale;
+				float floatRatio = (float) lastRatio / (float) lastHealthScale;
 				progressBarComponent.setValue(floatRatio * 100d);
 			}
 
