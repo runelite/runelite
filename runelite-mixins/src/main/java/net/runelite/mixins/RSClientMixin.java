@@ -67,6 +67,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
@@ -122,6 +123,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static RSNPC[] oldNpcs = new RSNPC[32768];
+
+	@Inject
+	private static int oldMenuEntryCount;
 
 	@Inject
 	@Override
@@ -466,6 +470,31 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		setMenuOptionCount(count);
+		oldMenuEntryCount = count;
+	}
+
+	@FieldHook("menuOptionCount")
+	@Inject
+	public static void onMenuOptionsChanged(int idx)
+	{
+		int oldCount = oldMenuEntryCount;
+		int newCount = client.getMenuOptionCount();
+
+		oldMenuEntryCount = newCount;
+
+		if (newCount == oldCount + 1)
+		{
+			MenuEntryAdded event = new MenuEntryAdded(
+				client.getMenuOptions()[newCount - 1],
+				client.getMenuTargets()[newCount - 1],
+				client.getMenuTypes()[newCount - 1],
+				client.getMenuIdentifiers()[newCount - 1],
+				client.getMenuActionParams0()[newCount - 1],
+				client.getMenuActionParams1()[newCount - 1]
+			);
+
+			eventBus.post(event);
+		}
 	}
 
 	@Inject
