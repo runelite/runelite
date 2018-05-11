@@ -68,7 +68,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		switch (labelDisplayMode)
 		{
 			case PERCENTAGE:
-				textToWrite = DECIMAL_FORMAT.format(Math.floor(pc)) + "%";
+				textToWrite = DECIMAL_FORMAT.format(Math.floor(pc * 100d)) + "%";
 				break;
 			default:
 				textToWrite = DECIMAL_FORMAT2.format(Math.floor(currentValue)) + "/" + maximum;
