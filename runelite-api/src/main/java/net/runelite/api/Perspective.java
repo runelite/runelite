@@ -34,6 +34,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
@@ -71,7 +72,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(Client client, int x, int y, int plane)
+	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane)
 	{
 		return worldToCanvas(client, x, y, plane, 0);
 	}
@@ -88,7 +89,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(Client client, int x, int y, int plane, int zOffset)
+	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int zOffset)
 	{
 		return worldToCanvas(client, x, y, plane, x, y, zOffset);
 	}
@@ -110,7 +111,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(Client client, int x, int y, int plane, int tileX, int tileY)
+	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int tileX, int tileY)
 	{
 		return worldToCanvas(client, x, y, plane, tileX, tileY, 0);
 	}
@@ -133,7 +134,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToCanvas(Client client, int x, int y, int plane, int tileX, int tileY, int zOffset)
+	public static Point worldToCanvas(@Nonnull Client client, int x, int y, int plane, int tileX, int tileY, int zOffset)
 	{
 		if (x >= 128 && y >= 128 && x <= 13056 && y <= 13056)
 		{
@@ -179,7 +180,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToMiniMap(Client client, int x, int y)
+	public static Point worldToMiniMap(@Nonnull Client client, int x, int y)
 	{
 		return worldToMiniMap(client, x, y, 6400);
 	}
@@ -195,7 +196,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
-	public static Point worldToMiniMap(Client client, int x, int y, int distance)
+	public static Point worldToMiniMap(@Nonnull Client client, int x, int y, int distance)
 	{
 		int angle = client.getMapAngle() & 0x7FF;
 
@@ -233,7 +234,7 @@ public class Perspective
 	 * @param plane the client plane/ground level
 	 * @return the offset from the ground of the tile
 	 */
-	public static int getTileHeight(Client client, int localX, int localY, int plane)
+	public static int getTileHeight(@Nonnull Client client, int localX, int localY, int plane)
 	{
 		int sceneX = localX >> LOCAL_COORD_BITS;
 		int sceneY = localY >> LOCAL_COORD_BITS;
@@ -266,7 +267,7 @@ public class Perspective
 	 * @return a {@link Polygon} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Polygon getCanvasTilePoly(Client client, LocalPoint localLocation)
+	public static Polygon getCanvasTilePoly(@Nonnull Client client, @Nonnull LocalPoint localLocation)
 	{
 		return getCanvasTileAreaPoly(client, localLocation, 1);
 	}
@@ -280,7 +281,7 @@ public class Perspective
 	 * size = 3
 	 * @return a polygon representing the tiles in the area
 	 */
-	public static Polygon getCanvasTileAreaPoly(Client client, LocalPoint localLocation, int size)
+	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
 		int plane = client.getPlane();
 		int halfTile = LOCAL_TILE_SIZE / 2;
@@ -329,7 +330,13 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasTextLocation(Client client, Graphics2D graphics, LocalPoint localLocation, String text, int zOffset)
+	public static Point getCanvasTextLocation(
+		@Nonnull Client client,
+		@Nonnull Graphics2D graphics,
+		@Nonnull LocalPoint localLocation,
+		@Nonnull String text,
+		int zOffset
+	)
 	{
 		int plane = client.getPlane();
 
@@ -358,7 +365,12 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasImageLocation(Client client, Graphics2D graphics, LocalPoint localLocation, BufferedImage image, int zOffset)
+	public static Point getCanvasImageLocation(
+		@Nonnull Client client,
+		@Nonnull Graphics2D graphics,
+		@Nonnull LocalPoint localLocation,
+		@Nonnull BufferedImage image,
+		int zOffset)
 	{
 		int plane = client.getPlane();
 
@@ -384,7 +396,11 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getMiniMapImageLocation(Client client, LocalPoint localLocation, BufferedImage image)
+	public static Point getMiniMapImageLocation(
+		@Nonnull Client client,
+		@Nonnull LocalPoint localLocation,
+		@Nonnull BufferedImage image
+	)
 	{
 		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
 
@@ -410,7 +426,13 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasSpriteLocation(Client client, Graphics2D graphics, LocalPoint localLocation, SpritePixels sprite, int zOffset)
+	public static Point getCanvasSpriteLocation(
+		@Nonnull Client client,
+		@Nonnull Graphics2D graphics,
+		@Nonnull LocalPoint localLocation,
+		@Nonnull SpritePixels sprite,
+		int zOffset
+	)
 	{
 		int plane = client.getPlane();
 
@@ -440,7 +462,7 @@ public class Perspective
 	 * @param tileY the Y coordinate of the tile that the object using the model is on
 	 * @return the clickable area of {@code model}, rotated to angle {@code orientation}, at the height of tile ({@code tileX}, {@code tileY})
 	 */
-	public static Area getClickbox(Client client, Model model, int orientation, int tileX, int tileY)
+	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, int tileX, int tileY)
 	{
 		if (model == null)
 		{
@@ -467,7 +489,13 @@ public class Perspective
 		return clickBox;
 	}
 
-	private static Area get2DGeometry(Client client, List<Triangle> triangles, int orientation, int tileX, int tileY)
+	private static Area get2DGeometry(
+		@Nonnull Client client,
+		@Nonnull List<Triangle> triangles,
+		int orientation,
+		int tileX,
+		int tileY
+	)
 	{
 		int radius = 5;
 		Area geometry = new Area();
@@ -530,7 +558,13 @@ public class Perspective
 		return geometry;
 	}
 
-	private static Area getAABB(Client client, List<Vertex> vertices, int orientation, int tileX, int tileY)
+	private static Area getAABB(
+		@Nonnull Client client,
+		@Nonnull List<Vertex> vertices,
+		int orientation,
+		int tileX,
+		int tileY
+	)
 	{
 		int maxX = 0;
 		int minX = 0;
@@ -656,7 +690,12 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the given
 	 * localLocation.
 	 */
-	public static Point getCanvasTextMiniMapLocation(Client client, Graphics2D graphics, LocalPoint localLocation, String text)
+	public static Point getCanvasTextMiniMapLocation(
+		@Nonnull Client client,
+		@Nonnull Graphics2D graphics,
+		@Nonnull LocalPoint localLocation,
+		@Nonnull String text
+	)
 	{
 		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
 
