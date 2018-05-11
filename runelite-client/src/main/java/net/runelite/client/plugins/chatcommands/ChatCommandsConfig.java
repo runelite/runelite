@@ -36,6 +36,18 @@ import net.runelite.client.config.ConfigItem;
 )
 public interface ChatCommandsConfig extends Config
 {
+
+	@ConfigItem(
+			position = 0,
+			keyName = "killsimulator",
+			name = "Kill Simulator Command",
+			description = "Configures whether the Kill Simulator command is enabled"
+	)
+	default boolean killsimulator()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "price",
