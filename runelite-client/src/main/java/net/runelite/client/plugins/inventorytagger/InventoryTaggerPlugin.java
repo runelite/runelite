@@ -25,21 +25,27 @@
 package net.runelite.client.plugins.inventorytagger;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
+
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @PluginDescriptor(
 	name = "Inventory Item Tagging",
@@ -54,9 +60,12 @@ public class InventoryTaggerPlugin extends Plugin
 	private InventoryTaggerPlugin plugin;
 
 	@Inject
+	private InventoryTaggerConfig config;
+
+	@Inject
 	private InventoryTaggerOverlay overlay;
 
-	public Map<String, TaggedItems> taggedItems = new HashMap<>();
+	public Map<String, TaggedItems> taggedItems = new LinkedHashMap<>();
 
 	@Override
 	public Overlay getOverlay()
@@ -66,32 +75,50 @@ public class InventoryTaggerPlugin extends Plugin
 
 	private boolean editorMode = false;
 
-	private static final String SETNAME_ALPHA = "Red";
-	private static final String SETNAME_BETA = "Lime";
-	private static final String SETNAME_GAMMA = "Blue";
-	private static final String SETNAME_DELTA = "Yellow";
-	private static final String SETNAME_EPSILON = "Cyan";
-	private static final String SETNAME_ZETA = "Magenta";
+	private static final String SETNAME_GROUP_1 = "Group 1";
+	private static final String SETNAME_GROUP_2 = "Group 2";
+	private static final String SETNAME_GROUP_3 = "Group 3";
+	private static final String SETNAME_GROUP_4 = "Group 4";
+	private static final String SETNAME_GROUP_5 = "Group 5";
+	private static final String SETNAME_GROUP_6 = "Group 6";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String MENU_TARGET = "<col=ff9040>Inventory Tagger";
-	private static final String MENU_TARGET_CLEAR = "<col=ff0000>Inventory Tagger";
 
 	private static final String MENU_SET = "Mark";
 	private static final String MENU_REMOVE = "Remove";
 	private static final String MENU_CLEAR_TAGS = "Clear Tags";
 
+	@Provides
+	InventoryTaggerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InventoryTaggerConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("inventoryitemtagging"))
+		{
+			return;
+		}
+
+		updateAllConfigColors();
+		//Clear cached outlines
+		ItemOutline.storedOutlines = new HashMap<>();
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		taggedItems = new HashMap<>();
-		taggedItems.put(SETNAME_ALPHA, new TaggedItems(SETNAME_ALPHA, new Color(255, 0, 0, 255)));
-		taggedItems.put(SETNAME_BETA, new TaggedItems(SETNAME_BETA, new Color(0, 255, 0, 255)));
-		taggedItems.put(SETNAME_GAMMA, new TaggedItems(SETNAME_GAMMA, new Color(0, 0, 255, 255)));
-		taggedItems.put(SETNAME_DELTA, new TaggedItems(SETNAME_DELTA, new Color(255, 255, 0, 255)));
-		taggedItems.put(SETNAME_EPSILON, new TaggedItems(SETNAME_EPSILON, new Color(0, 255, 255, 255)));
-		taggedItems.put(SETNAME_ZETA, new TaggedItems(SETNAME_ZETA, new Color(255, 0, 255, 255)));
+		taggedItems = new LinkedHashMap<>();
+		taggedItems.put(SETNAME_GROUP_6, new TaggedItems(SETNAME_GROUP_6, config.getGroup6Color()));
+		taggedItems.put(SETNAME_GROUP_5, new TaggedItems(SETNAME_GROUP_5, config.getGroup5Color()));
+		taggedItems.put(SETNAME_GROUP_4, new TaggedItems(SETNAME_GROUP_4, config.getGroup4Color()));
+		taggedItems.put(SETNAME_GROUP_3, new TaggedItems(SETNAME_GROUP_3, config.getGroup3Color()));
+		taggedItems.put(SETNAME_GROUP_2, new TaggedItems(SETNAME_GROUP_2, config.getGroup2Color()));
+		taggedItems.put(SETNAME_GROUP_1, new TaggedItems(SETNAME_GROUP_1, config.getGroup1Color()));
 	}
 
 	@Subscribe
@@ -112,7 +139,7 @@ public class InventoryTaggerPlugin extends Plugin
 			editorMode = false;
 		}
 
-		if (event.getMenuOption().equals(MENU_CLEAR_TAGS) && event.getMenuTarget().equals(MENU_TARGET_CLEAR))
+		if (event.getMenuOption().equals(MENU_CLEAR_TAGS) && event.getMenuTarget().equals(MENU_TARGET))
 		{
 			clearAllTags();
 		}
@@ -157,7 +184,7 @@ public class InventoryTaggerPlugin extends Plugin
 			{
 				final MenuEntry configureClearTags = new MenuEntry();
 				configureClearTags.setOption(MENU_CLEAR_TAGS);
-				configureClearTags.setTarget(MENU_TARGET_CLEAR);
+				configureClearTags.setTarget(MENU_TARGET);
 				configureClearTags.setIdentifier(itemId);
 				configureClearTags.setParam1(widgetId);
 				configureClearTags.setType(MenuAction.RUNELITE.getId());
@@ -201,8 +228,6 @@ public class InventoryTaggerPlugin extends Plugin
 			}
 			client.setMenuEntries(menuList);
 		}
-
-
 	}
 
 	public void addItemToGroup(String groupName, Integer itemId)
@@ -230,8 +255,18 @@ public class InventoryTaggerPlugin extends Plugin
 		for (String f : taggedItems.keySet())
 		{
 			taggedItems.get(f).clearItem();
-			ItemOutline.storedOutlines = new HashMap<>();
 		}
+		ItemOutline.storedOutlines = new HashMap<>();
+	}
+
+	public void updateAllConfigColors()
+	{
+		taggedItems.get(SETNAME_GROUP_1).updateColor(config.getGroup1Color());
+		taggedItems.get(SETNAME_GROUP_2).updateColor(config.getGroup2Color());
+		taggedItems.get(SETNAME_GROUP_3).updateColor(config.getGroup3Color());
+		taggedItems.get(SETNAME_GROUP_4).updateColor(config.getGroup4Color());
+		taggedItems.get(SETNAME_GROUP_5).updateColor(config.getGroup5Color());
+		taggedItems.get(SETNAME_GROUP_6).updateColor(config.getGroup6Color());
 	}
 
 }
