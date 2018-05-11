@@ -317,20 +317,17 @@ public class SwingUtil
 
 	public static void showReducedFunctionalityDialog() throws Exception
 	{
-		SwingUtilities.invokeAndWait(() ->
+		SwingUtilities.invokeLater(() ->
 		{
 			JLabel text = new JLabel(
-					"<html>" +
-							"RuneLite has not yet been updated for use with the latest<br>" +
-							"OSRS update.<br>" +
-							"As a result RuneLite is running in reduced functionality mode.<br>" +
-							"A new version of RuneLite for use with the new game update<br>" +
-							"should be available shortly.<br><br>" +
-							"Thank you for your patience." +
-							"</html>"
-			);
+				"<html>" + "RuneLite has not yet been updated for use with the latest<br>" +
+				"OSRS update.<br>" +
+				"As a result RuneLite is running in reduced functionality mode.<br>" +
+				"A new version of RuneLite for use with the new game update<br>" +
+				"should be available shortly.<br><br>" +
+				"Thank you for your patience." +
+				"</html>");
 			text.setBorder(new EmptyBorder(0, 0, 15, 10));
-
 			JOptionPane.showMessageDialog(null, text, "Reduced Functionality Mode", JOptionPane.ERROR_MESSAGE);
 		});
 	}
