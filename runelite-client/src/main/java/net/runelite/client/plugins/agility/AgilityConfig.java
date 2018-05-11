@@ -88,7 +88,7 @@ public interface AgilityConfig extends Config
 	)
 	default Color getMarkColor()
 	{
-		return Color.ORANGE;
+		return Color.RED;
 	}
 
 	@ConfigItem(
