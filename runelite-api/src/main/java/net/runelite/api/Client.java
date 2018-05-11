@@ -412,4 +412,8 @@ public interface Client extends GameEngine
 	void setTickCount(int tickCount);
 
 	void setInventoryDragDelay(int delay);
+
+	boolean isHdMinimap();
+
+	void setHdMinimap(boolean hd);
 }

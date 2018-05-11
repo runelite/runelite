@@ -130,6 +130,9 @@ public abstract class RSClientMixin implements RSClient
 	private static int inventoryDragDelay;
 
 	@Inject
+	private static boolean hdMinimap;
+
+	@Inject
 	@Override
 	public boolean isInterpolatePlayerAnimations()
 	{
@@ -176,6 +179,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setInventoryDragDelay(int delay)
 	{
 		inventoryDragDelay = delay;
+	}
+
+	@Inject
+	@Override
+	public boolean isHdMinimap()
+	{
+		return hdMinimap;
+	}
+
+	@Inject
+	@Override
+	public void setHdMinimap(boolean hd)
+	{
+		hdMinimap = hd;
 	}
 
 	@Inject
