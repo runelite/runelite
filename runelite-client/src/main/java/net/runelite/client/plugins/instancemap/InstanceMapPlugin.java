@@ -31,7 +31,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class InstanceMapPlugin extends Plugin
 {
-	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
+	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP_OPTION);
 
 	@Inject
 	private InstanceMapInputListener inputListener;
@@ -116,7 +116,7 @@ public class InstanceMapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
-		if (event.getWidget() != WORLD_MAP)
+		if (event.getWidget() != WORLD_MAP_OPTION)
 		{
 			return;
 		}
