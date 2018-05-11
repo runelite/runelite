@@ -30,6 +30,11 @@ import static java.lang.Math.max;
 public class Experience
 {
 	/**
+	 * Maximum skill level
+	 */
+	public static final int MAX_LEVEL = 99;
+
+	/**
 	 * Maximum virtual skill level at 200m xp
 	 */
 	public static final int MAX_VIRT_LEVEL = 126;

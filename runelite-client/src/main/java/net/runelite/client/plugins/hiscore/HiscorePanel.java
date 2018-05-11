@@ -62,6 +62,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsConfig;
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsPlugin;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -126,6 +128,8 @@ public class HiscorePanel extends PluginPanel
 	private Client client;
 
 	private final HiscoreConfig config;
+	private final VirtualLevelsConfig virtualLevelsConfig;
+	private final VirtualLevelsPlugin virtualLevelsPlugin;
 	private final IconTextField input;
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
@@ -141,10 +145,12 @@ public class HiscorePanel extends PluginPanel
 	private HiscoreResult result;
 
 	@Inject
-	public HiscorePanel(HiscoreConfig config)
+	public HiscorePanel(HiscoreConfig config, VirtualLevelsPlugin virtPlugin, VirtualLevelsConfig virtConfig)
 	{
 		super();
 		this.config = config;
+		this.virtualLevelsPlugin = virtPlugin;
+		this.virtualLevelsConfig = virtConfig;
 
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
@@ -591,7 +597,7 @@ public class HiscorePanel extends PluginPanel
 				Skill s = result.getSkill(skill);
 
 				int level;
-				if (config.virtualLevels() && SKILLS.contains(skill))
+				if (virtualLevelsPlugin.isEnabled() && virtualLevelsConfig.showOnHiScoresPanel() && SKILLS.contains(skill))
 				{
 					level = Experience.getLevelForXp((int) s.getExperience());
 				}

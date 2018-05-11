@@ -41,6 +41,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsConfig;
+import net.runelite.client.plugins.virtuallevels.VirtualLevelsPlugin;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
@@ -49,6 +51,7 @@ import net.runelite.client.ui.overlay.Overlay;
 	name = "XP Globes"
 )
 @PluginDependency(XpTrackerPlugin.class)
+@PluginDependency(VirtualLevelsPlugin.class)
 public class XpGlobesPlugin extends Plugin
 {
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
@@ -64,6 +67,12 @@ public class XpGlobesPlugin extends Plugin
 
 	@Inject
 	private XpGlobesOverlay overlay;
+
+	@Inject
+	private VirtualLevelsConfig virtualLevelsConfig;
+
+	@Inject
+	private VirtualLevelsPlugin virtualLevelsPlugin;
 
 	@Provides
 	XpGlobesConfig getConfig(ConfigManager configManager)
@@ -92,8 +101,14 @@ public class XpGlobesPlugin extends Plugin
 			return;
 		}
 
+		boolean virtualEnabled = virtualLevelsPlugin.isEnabled() && virtualLevelsConfig.showOnSkillOrb();
+		int maxLevel = virtualEnabled ? Experience.MAX_VIRT_LEVEL : Experience.MAX_LEVEL;
+
+		// lower current level to the maxLevel if needed
+		currentLevel = Math.min(currentLevel, maxLevel);
+
 		int startingXp = Experience.getXpForLevel(currentLevel);
-		int goalXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+		int goalXp = currentLevel + 1 <= maxLevel ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
 		if (cachedGlobe != null)
 		{
