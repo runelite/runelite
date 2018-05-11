@@ -502,10 +502,10 @@ public class Hooks
 	}
 
 	public static void onSceneTileModelCreated(SceneTileModel sceneTileModel, int shape, int rotation, int texture,
-												int x, int y, int heightSw, int heightSe, int heightNe, int heightNw,
-												int underlaySwColor, int underlaySeColor, int underlayNeColor,
-												int underlayNwColor, int overlaySwColor, int overlaySeColor,
-												int overlayNeColor, int overlayNwColor, int underlayRgb, int overlayRgb)
+							int x, int y, int heightSw, int heightSe, int heightNe, int heightNw,
+							int underlaySwColor, int underlaySeColor, int underlayNeColor,
+							int underlayNwColor, int overlaySwColor, int overlaySeColor,
+							int overlayNeColor, int overlayNwColor, int underlayRgb, int overlayRgb)
 	{
 		sceneTileModel.setUnderlaySwColor(underlaySwColor);
 		sceneTileModel.setUnderlaySeColor(underlaySeColor);
