@@ -132,53 +132,6 @@ public class ChatHistoryPlugin extends Plugin
 		if (event.getGroup().equals("chathistory"))
 		{
 			populateAllowedMessages();
-
-			// If the event's new value is false, it means we need to check the message queue
-			// for any unwanted message types and remove them before the next hop or login
-			if (event.getNewValue().equals("false"))
-				purgeUnwantedMessages(event.getKey());
-		}
-	}
-
-	/**
-	 * Removes messages of unwanted types from the queue based on the event keyName
-	 */
-	private void purgeUnwantedMessages(String keyName)
-	{
-		switch (keyName)
-		{
-			case "savePublicChat":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.PUBLIC);
-				break;
-			case "savePrivateChat":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT
-					|| message.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED
-					|| message.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
-				break;
-			case "saveClanChat":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.CLANCHAT);
-				break;
-			case "saveGameMessages":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.GAME);
-				break;
-			case "saveFilteredMessages":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.FILTERED);
-				break;
-			case "saveExamineMessages":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.EXAMINE_ITEM
-					|| message.getType() == ChatMessageType.EXAMINE_NPC
-					|| message.getType() == ChatMessageType.EXAMINE_OBJECT);
-				break;
-			case "saveTradeMessages":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.TRADE
-					|| message.getType() == ChatMessageType.TRADE_RECEIVED
-					|| message.getType() == ChatMessageType.TRADE_SENT);
-				break;
-			case "saveDuelMessages":
-				messageQueue.removeIf(message -> message.getType() == ChatMessageType.DUEL);
-				break;
-			default:
-				break;
 		}
 	}
 
