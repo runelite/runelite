@@ -81,7 +81,11 @@ public class AgilityOverlay extends Overlay
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
 				{
-					OverlayUtil.renderPolygon(graphics, object.getCanvasTilePoly(), config.getTrapColor());
+					Polygon polygon = object.getCanvasTilePoly();
+					if (polygon != null)
+					{
+						OverlayUtil.renderPolygon(graphics, polygon, config.getTrapColor());
+					}
 					return;
 				}
 
