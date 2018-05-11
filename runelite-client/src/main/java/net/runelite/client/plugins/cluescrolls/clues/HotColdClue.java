@@ -36,6 +36,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
@@ -58,6 +60,9 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @RequiredArgsConstructor
 public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueScroll
 {
+	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
+	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
+	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
 	private static final HotColdClue CLUE =
 		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
 			"Jorral",
@@ -235,7 +240,52 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		return null;
 	}
 
-	public void updatePossibleArea(WorldPoint currentWp, String temperature, String difference)
+	public void update(final String message, final ClueScrollPlugin plugin)
+	{
+		if (!message.startsWith("The device is"))
+		{
+			return;
+		}
+
+		Matcher m1 = FINAL_STRANGE_DEVICE_MESSAGE.matcher(message);
+		Matcher m2 = STRANGE_DEVICE_MESSAGE.matcher(message);
+		Matcher m3 = INITIAL_STRANGE_DEVICE_MESSAGE.matcher(message);
+
+		// the order that these pattern matchers are checked is important
+		if (m1.find())
+		{
+			// final location for hot cold clue has been found
+			WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+
+			if (localWorld != null)
+			{
+				markFinalSpot(localWorld);
+			}
+		}
+		else if (m2.find())
+		{
+			String temperature = m2.group(1);
+			String difference = m2.group(2);
+			WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+
+			if (localWorld != null)
+			{
+				updatePossibleArea(localWorld, temperature, difference);
+			}
+		}
+		else if (m3.find())
+		{
+			String temperature = m3.group(1);
+			WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+
+			if (localWorld != null)
+			{
+				updatePossibleArea(localWorld, temperature, "");
+			}
+		}
+	}
+
+	private void updatePossibleArea(WorldPoint currentWp, String temperature, String difference)
 	{
 		this.location = null;
 
@@ -347,7 +397,7 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		return (firstDistance < secondDistance);
 	}
 
-	public void markFinalSpot(WorldPoint wp)
+	private void markFinalSpot(WorldPoint wp)
 	{
 		this.location = wp;
 		resetHotCold();
