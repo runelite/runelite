@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.common.collect.ImmutableList;
+import static com.google.common.collect.ObjectArrays.concat;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -49,14 +51,18 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.Query;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.queries.EquipmentItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -65,6 +71,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QueryRunner;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -116,6 +123,9 @@ public class SlayerPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
+	private QueryRunner queryRunner;
+
+	@Inject
 	private TargetClickboxOverlay targetClickboxOverlay;
 
 	@Inject
@@ -123,6 +133,9 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Collection<WidgetItem> slayerItems = Collections.emptyList();
 
 	private String taskName;
 	private int amount;
@@ -207,6 +220,8 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		checkInventories();
+
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
 		{
@@ -275,6 +290,18 @@ public class SlayerPlugin extends Plugin
 		{
 			highlightedTargets.clear();
 		}
+	}
+
+	private void checkInventories()
+	{
+		Query inventoryQuery = new InventoryWidgetItemQuery();
+		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
+
+		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING, WidgetInfo.EQUIPMENT_GLOVES);
+		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
+
+		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
+		slayerItems = ImmutableList.copyOf(items);
 	}
 
 	@Subscribe
