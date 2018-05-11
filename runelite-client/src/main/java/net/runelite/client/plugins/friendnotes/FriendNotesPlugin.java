@@ -28,8 +28,8 @@
 package net.runelite.client.plugins.friendnotes;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
-import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -136,7 +136,8 @@ public class FriendNotesPlugin extends Plugin
 	{
 		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId())
+		// look for "Message" on friends list
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
 			setCurrentFriend(event.getTarget());
 
@@ -147,11 +148,8 @@ public class FriendNotesPlugin extends Plugin
 			addNote.setParam0(event.getActionParam0());
 			addNote.setParam1(event.getActionParam1());
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-			menuEntries[menuEntries.length - 1] = addNote;
-
+			// Add menu entry
+			MenuEntry[] menuEntries = ObjectArrays.concat(client.getMenuEntries(), addNote);
 			client.setMenuEntries(menuEntries);
 		}
 		else if (hoveredFriend != null)
