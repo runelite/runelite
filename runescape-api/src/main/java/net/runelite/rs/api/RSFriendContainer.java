@@ -24,14 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.FriendManager;
-import net.runelite.mapping.Import;
-
-public interface RSFriendManager extends FriendManager
+public interface RSFriendContainer extends RSNameableContainer
 {
-	@Import("friendContainer")
-	RSFriendContainer getFriendContainer();
-
-	@Import("isFriended")
-	boolean isFriended(RSName var1, boolean var2);
 }
