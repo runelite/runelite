@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.cluescrolls.clues;
 
-package net.runelite.mixins;
+import java.util.List;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.mixins.FieldHook;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.eventBus;
-import net.runelite.rs.api.RSClient;
-
-
-@Mixin(RSClient.class)
-public abstract class MenuEntryEventMixin implements RSClient
+public interface LocationsClueScroll
 {
-	@Shadow("clientInstance")
-	private static RSClient client;
+	void update(String message, ClueScrollPlugin plugin);
 
-	@Inject
-	private static int oldMenuEntryCount;
+	void reset();
 
-	@FieldHook("menuOptionCount")
-	@Inject
-	public static void onMenuOptionsChanged(int idx)
-	{
-		int newCount = client.getMenuOptionCount();
-
-		if (newCount == oldMenuEntryCount + 1)
-		{
-			MenuEntryAdded event = new MenuEntryAdded(
-					client.getMenuOptions()[newCount - 1],
-					client.getMenuTargets()[newCount - 1],
-					client.getMenuTypes()[newCount - 1],
-					client.getMenuIdentifiers()[newCount - 1],
-					client.getMenuActionParams0()[newCount - 1],
-					client.getMenuActionParams1()[newCount - 1]
-			);
-
-			eventBus.post(event);
-		}
-
-		oldMenuEntryCount = newCount;
-	}
+	List<WorldPoint> getLocations();
 }

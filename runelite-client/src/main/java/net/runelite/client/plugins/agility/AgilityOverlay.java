@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.Color;
-import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -81,14 +80,22 @@ public class AgilityOverlay extends Overlay
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
 				{
-					OverlayUtil.renderPolygon(graphics, object.getCanvasTilePoly(), config.getTrapColor());
+					Polygon polygon = object.getCanvasTilePoly();
+					if (polygon != null)
+					{
+						OverlayUtil.renderPolygon(graphics, polygon, config.getTrapColor());
+					}
 					return;
 				}
 
 				Area objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
-					Color configColor = markOfGrace != null ? RED : config.getOverlayColor();
+					Color configColor = config.getOverlayColor();
+					if (config.highlightMarks() && markOfGrace != null)
+					{
+						configColor = config.getMarkColor();
+					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 					{
