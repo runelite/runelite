@@ -2,7 +2,6 @@ package net.runelite.client.plugins;
 
 public enum PluginCategory
 {
-	ALL("All"),
 	COMBAT("Combat"),
 	SKILLS("Skills"),
 	ITEM("Item"),

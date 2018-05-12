@@ -34,6 +34,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.NavigationButton;
@@ -42,7 +43,8 @@ import net.runelite.client.ui.PluginToolbar;
 @PluginDescriptor(
 	name = "Configuration",
 	loadWhenOutdated = true,
-	hidden = true // prevent users from disabling
+	hidden = true, // prevent users from disabling
+	category = PluginCategory.CLIENT
 )
 public class ConfigPlugin extends Plugin
 {
