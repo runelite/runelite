@@ -505,13 +505,12 @@ public class SlayerPlugin extends Plugin
 
 	private List<NPC> buildTargetsToHighlight()
 	{
-		if (Strings.isNullOrEmpty(taskName))
+		if (Strings.isNullOrEmpty(taskName) || Task.getTask(taskName) == null)
 			return Collections.EMPTY_LIST;
 
 		List<NPC> npcs = new ArrayList<>();
 		List<String> highlightedNpcs = new ArrayList<>(Arrays.asList(Task.getTask(taskName).getTargetNames()));
 		highlightedNpcs.add(taskName.replaceAll("s$", ""));
-
 		for (NPC npc : client.getNpcs())
 		{
 			NPCComposition composition = getComposition(npc);
@@ -525,13 +524,57 @@ public class SlayerPlugin extends Plugin
 				if (name.toLowerCase().contains(highlight.toLowerCase())
 					&& Arrays.asList(composition.getActions()).contains("Attack"))
 				{
-					npcs.add(npc);
-					break;
+					// Handle baby dragons specially since they are all named the same
+					boolean shouldAdd = !highlight.equalsIgnoreCase("baby dragon")
+							|| isBabyDragonCorrectColor(composition.getId());
+					if (shouldAdd)
+					{
+						npcs.add(npc);
+						break;
+					}
 				}
 			}
 		}
 
 		return npcs;
+	}
+
+	private boolean isBabyDragonCorrectColor(int babyDragonId)
+	{
+		/*
+		 * I ran around and visited all baby dragons in RuneScape to figure out the different ids here.
+		 * Only a couple are actually "Baby _color_ Dragon" in runescape-data/npcs. The rest are just "Baby Dragon"
+		 * so I had to run to certain baby dragons and see what npc ids were registering.
+		 *
+		 * Green - 5194, 5872, 5873
+		 * Blue - 241, 242, 243
+		 * Red - 137, 244, 245, 246
+		 * Black - 1871, 1872, 7955
+		 */
+		if (Strings.isNullOrEmpty(taskName))
+		{
+			return false;
+		}
+		else if (taskName.toLowerCase().contains("green"))
+		{
+			return babyDragonId == 5194 || babyDragonId == 5872 || babyDragonId == 5873;
+		}
+		else if (taskName.toLowerCase().contains("blue"))
+		{
+			return babyDragonId == 241 || babyDragonId == 242 || babyDragonId == 243;
+		}
+		else if (taskName.toLowerCase().contains("red"))
+		{
+			return babyDragonId == 244 || babyDragonId == 245 || babyDragonId == 246;
+		}
+		else if (taskName.toLowerCase().contains("black"))
+		{
+			return babyDragonId == 1871 || babyDragonId == 1872 || babyDragonId == 7955;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
