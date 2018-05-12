@@ -3,12 +3,12 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("ch")
 @Implements("SoundTask")
 public class SoundTask implements Runnable {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "[Ldk;"
+      signature = "[Lcc;"
    )
    @Export("systems")
    volatile AbstractSoundSystem[] systems;
@@ -22,12 +22,21 @@ public class SoundTask implements Runnable {
          for(int var1 = 0; var1 < 2; ++var1) {
             AbstractSoundSystem var2 = this.systems[var1];
             if(var2 != null) {
-               var2.method2328();
+               var2.method2192();
             }
          }
       } catch (Exception var4) {
-         class253.processClientError((String)null, var4);
+         class43.processClientError((String)null, var4);
       }
 
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "116813309"
+   )
+   public static boolean method2272(int var0) {
+      return (var0 >> 30 & 1) != 0;
    }
 }

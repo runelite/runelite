@@ -193,7 +193,7 @@ public class ConfigManager
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
-				final String[] split = ((String) groupAndKey).split("\\.");
+				final String[] split = ((String) groupAndKey).split("\\.", 2);
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);

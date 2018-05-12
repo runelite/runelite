@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
+ * Copyright (c) 2018, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +31,6 @@ import com.google.inject.Binder;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
@@ -77,7 +76,7 @@ public class XpTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 
-	private final Map<Skill, SkillXPInfo> xpInfos = new HashMap<>();
+	private final XpState xpState = new XpState();
 
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
@@ -154,7 +153,7 @@ public class XpTrackerPlugin extends Plugin
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;
-				xpPanel.resetAllInfoBoxes();
+				resetState();
 			}
 		}
 		else if (event.getGameState() == GameState.LOGIN_SCREEN)
@@ -213,20 +212,78 @@ public class XpTrackerPlugin extends Plugin
 		return xpType;
 	}
 
-	public SkillXPInfo getSkillXpInfo(Skill skill)
+	/**
+	 * Reset internal state and re-initialize all skills with XP currently cached by the RS client
+	 * This is called by the user manually clicking resetSkillState in the UI.
+	 * It reloads the current skills from the client after resetting internal state.
+	 */
+	public void resetAndInitState()
 	{
-		return xpInfos.computeIfAbsent(skill, SkillXPInfo::new);
+		resetState();
+
+		for (Skill skill : Skill.values())
+		{
+			int currentXp = client.getSkillExperience(skill);
+			xpState.initializeSkill(skill, currentXp);
+		}
 	}
+
+	/**
+	 * Throw out everything, the user has chosen a different account or world type.
+	 * This resets both the internal state and UI elements
+	 */
+	public void resetState()
+	{
+		xpState.reset();
+		xpPanel.resetAllInfoBoxes();
+		xpPanel.updateTotal(XpSnapshotTotal.zero());
+	}
+
+	/**
+	 * Reset an individual skill with the client's current known state of the skill
+	 * Will also clear the skill from the UI.
+	 * @param skill Skill to reset
+	 */
+	public void resetSkillState(Skill skill)
+	{
+		int currentXp = client.getSkillExperience(skill);
+		xpState.resetSkill(skill, currentXp);
+		xpState.recalculateTotal();
+		xpPanel.resetSkill(skill);
+		xpPanel.updateTotal(xpState.getTotalSnapshot());
+	}
+
 
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
 	{
-		xpPanel.updateSkillExperience(event.getSkill());
+		final Skill skill = event.getSkill();
+		int currentXp = client.getSkillExperience(skill);
+
+		XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp);
+
+		boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
+
+		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill));
+		xpState.recalculateTotal();
+		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		xpPanel.updateAllInfoBoxes();
+		// Rebuild calculated values like xp/hr in panel
+		for (Skill skill : Skill.values())
+		{
+			xpPanel.updateSkillExperience(false, skill, xpState.getSkillSnapshot(skill));
+		}
+
+		xpState.recalculateTotal();
+		xpPanel.updateTotal(xpState.getTotalSnapshot());
+	}
+
+	public XpSnapshotSingle getSkillSnapshot(Skill skill)
+	{
+		return xpState.getSkillSnapshot(skill);
 	}
 }

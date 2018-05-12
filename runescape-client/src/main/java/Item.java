@@ -4,37 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("cn")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("g")
+   @ObfuscatedName("h")
+   @Export("validInterfaces")
+   static boolean[] validInterfaces;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 93039809
+      intValue = 577260357
    )
    @Export("id")
    int id;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 274535397
+      intValue = 70858691
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)Lee;",
-      garbageValue = "-1967116980"
+      signature = "(B)Ldk;",
+      garbageValue = "111"
    )
    protected final Model getModel() {
-      return NetWriter.getItemDefinition(this.id).getModel(this.quantity);
+      return class120.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "1061563213"
+      signature = "(I[BLff;I)V",
+      garbageValue = "494698684"
    )
-   public static int method2020(CharSequence var0) {
-      return class46.parseInt(var0, 10, true);
+   static void method1906(int var0, byte[] var1, IndexFile var2) {
+      FileSystem var3 = new FileSystem();
+      var3.type = 0;
+      var3.hash = (long)var0;
+      var3.field3165 = var1;
+      var3.index = var2;
+      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
+      }
+
+      class158.method3313();
    }
 }

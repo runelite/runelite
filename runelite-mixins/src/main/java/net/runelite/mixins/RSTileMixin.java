@@ -25,11 +25,13 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Actor;
+import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -52,6 +54,7 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSCollisionData;
 import net.runelite.rs.api.RSGameObject;
 import net.runelite.rs.api.RSTile;
 
@@ -271,5 +274,116 @@ public abstract class RSTileMixin implements RSTile
 
 		ItemLayerChanged itemLayerChanged = new ItemLayerChanged(this);
 		eventBus.post(itemLayerChanged);
+	}
+
+	@Inject
+	@Override
+	public boolean hasLineOfSightTo(Tile other)
+	{
+		// Thanks to Henke for this method :)
+
+		if (this.getPlane() != other.getPlane())
+		{
+			return false;
+		}
+
+		RSCollisionData[] collisionData = client.getCollisionMaps();
+		int z = this.getPlane();
+		int[][] collisionDataFlags = collisionData[z].getFlags();
+
+		Point p1 = this.getRegionLocation();
+		Point p2 = other.getRegionLocation();
+		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
+		{
+			return true;
+		}
+
+		int dx = p2.getX() - p1.getX();
+		int dy = p2.getY() - p1.getY();
+		int dxAbs = Math.abs(dx);
+		int dyAbs = Math.abs(dy);
+
+		int xFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		int yFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		if (dx < 0)
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_EAST;
+		}
+		else
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_WEST;
+		}
+		if (dy < 0)
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_NORTH;
+		}
+		else
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_SOUTH;
+		}
+
+		if (dxAbs > dyAbs)
+		{
+			int x = p1.getX();
+			int yBig = p1.getY() << 16; // The y position is represented as a bigger number to handle rounding
+			int slope = (dy << 16) / dxAbs;
+			yBig += 0x8000; // Add half of a tile
+			if (dy < 0)
+			{
+				yBig--; // For correct rounding
+			}
+			int direction = dx < 0 ? -1 : 1;
+
+			while (x != p2.getX())
+			{
+				x += direction;
+				int y = yBig >>> 16;
+				if ((collisionDataFlags[x][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+				yBig += slope;
+				int nextY = yBig >>> 16;
+				if (nextY != y && (collisionDataFlags[x][nextY] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+			}
+		}
+		else
+		{
+			int y = p1.getY();
+			int xBig = p1.getX() << 16; // The x position is represented as a bigger number to handle rounding
+			int slope = (dx << 16) / dyAbs;
+			xBig += 0x8000; // Add half of a tile
+			if (dx < 0)
+			{
+				xBig--; // For correct rounding
+			}
+			int direction = dy < 0 ? -1 : 1;
+
+			while (y != p2.getY())
+			{
+				y += direction;
+				int x = xBig >>> 16;
+				if ((collisionDataFlags[x][y] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+				xBig += slope;
+				int nextX = xBig >>> 16;
+				if (nextX != x && (collisionDataFlags[nextX][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+			}
+		}
+
+		// No collision
+		return true;
 	}
 }

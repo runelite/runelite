@@ -33,15 +33,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -67,6 +64,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
+import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 
 @Singleton
 @Slf4j
@@ -94,8 +92,8 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private final ConfigManager configManager;
 	private final RuneLiteConfig runeLiteConfig;
 	private final TooltipOverlay tooltipOverlay;
+	private final WorldMapOverlay worldMapOverlay;
 	private final List<Overlay> allOverlays = new CopyOnWriteArrayList<>();
-	private final ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
 	private final String runeliteGroupName = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).keyName();
 
 	// Overlay movement variables
@@ -121,6 +119,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		final KeyManager keyManager,
 		final TooltipOverlay tooltipOverlay,
 		final InfoBoxOverlay infoBoxOverlay,
+		final WorldMapOverlay worldMapOverlay,
 		final ConfigManager configManager,
 		final RuneLiteConfig runeLiteConfig)
 	{
@@ -128,6 +127,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		this.pluginManager = pluginManager;
 		this.tooltipOverlay = tooltipOverlay;
 		this.infoBoxOverlay = infoBoxOverlay;
+		this.worldMapOverlay = worldMapOverlay;
 		this.configManager = configManager;
 		this.runeLiteConfig = runeLiteConfig;
 		keyManager.registerKeyListener(this);
@@ -173,7 +173,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					.stream()
 					.filter(pluginManager::isPluginEnabled)
 					.flatMap(plugin -> plugin.getOverlays().stream()),
-				Stream.of(infoBoxOverlay, tooltipOverlay))
+				Stream.of(infoBoxOverlay, tooltipOverlay, worldMapOverlay))
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
 
@@ -517,7 +517,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(FontManager.getRunescapeSmallFont());
+			subGraphics.setFont(runeLiteConfig.tooltipFontType().getFont());
 		}
 		else
 		{
@@ -654,26 +654,5 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	{
 		final String locationKey = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(runeliteGroupName, locationKey, OverlayPosition.class);
-	}
-
-	public void provideScreenshot(BufferedImage image)
-	{
-		Consumer<BufferedImage> consumer;
-		while ((consumer = screenshotRequests.poll()) != null)
-		{
-			try
-			{
-				consumer.accept(image);
-			}
-			catch (Exception ex)
-			{
-				log.warn("error in screenshot callback", ex);
-			}
-		}
-	}
-
-	public void requestScreenshot(Consumer<BufferedImage> consumer)
-	{
-		screenshotRequests.add(consumer);
 	}
 }

@@ -34,7 +34,6 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.Varcs;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
 
@@ -62,8 +61,7 @@ public class CommandManager
 		}
 
 		Client client = clientProvider.get();
-		Varcs varcs = client.getVarcs();
-		String typedText = varcs.getStrVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
+		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
 		log.debug("Command: {}", typedText);
 

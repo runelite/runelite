@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
@@ -44,8 +45,6 @@ import net.runelite.api.events.WallObjectSpawned;
 @Singleton
 public class RegionTileManager
 {
-	private static final int REGION_SIZE = 104;
-
 	private final EventBus eventBus = new EventBus();
 	private final Provider<Client> clientProvider;
 
@@ -71,20 +70,21 @@ public class RegionTileManager
 		final Region region = client.getRegion();
 		final Tile[][][] tiles = region.getTiles();
 
-		int z = client.getPlane();
-
-		for (int x = 0; x < REGION_SIZE; ++x)
+		for (int z = 0; z < Constants.MAX_Z; ++z)
 		{
-			for (int y = 0; y < REGION_SIZE; ++y)
+			for (int x = 0; x < Constants.REGION_SIZE; ++x)
 			{
-				Tile tile = tiles[z][x][y];
-
-				if (tile == null)
+				for (int y = 0; y < Constants.REGION_SIZE; ++y)
 				{
-					continue;
-				}
+					Tile tile = tiles[z][x][y];
 
-				consumer.accept(tile);
+					if (tile == null)
+					{
+						continue;
+					}
+
+					consumer.accept(tile);
+				}
 			}
 		}
 	}

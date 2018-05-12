@@ -24,9 +24,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import static com.google.common.collect.ObjectArrays.concat;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -35,25 +33,19 @@ import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
-import net.runelite.api.Query;
-import net.runelite.api.queries.EquipmentItemQuery;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.client.util.QueryRunner;
 
 class SlayerOverlay extends Overlay
 {
-	private final QueryRunner queryRunner;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
-	private final Set<Integer> slayerJewelry = Sets.newHashSet(
+	private final Set<Integer> slayerJewelry = ImmutableSet.of(
 		ItemID.SLAYER_RING_1,
 		ItemID.SLAYER_RING_2,
 		ItemID.SLAYER_RING_3,
@@ -64,7 +56,7 @@ class SlayerOverlay extends Overlay
 		ItemID.SLAYER_RING_8
 	);
 
-	private final Set<Integer> slayerEquipment = Sets.newHashSet(
+	private final Set<Integer> slayerEquipment = ImmutableSet.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
 		ItemID.BLACK_SLAYER_HELMET,
@@ -79,15 +71,16 @@ class SlayerOverlay extends Overlay
 		ItemID.TURQUOISE_SLAYER_HELMET_I,
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.ENCHANTED_GEM,
-		ItemID.ETERNAL_GEM
+		ItemID.ETERNAL_GEM,
+		ItemID.BRACELET_OF_SLAUGHTER,
+		ItemID.EXPEDITIOUS_BRACELET
 	);
 
 	@Inject
-	SlayerOverlay(QueryRunner queryRunner, SlayerPlugin plugin, SlayerConfig config)
+	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.queryRunner = queryRunner;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -106,9 +99,13 @@ class SlayerOverlay extends Overlay
 			return null;
 		}
 
+		int slaughterCount = plugin.getSlaughterChargeCount();
+		int expeditiousCount = plugin.getExpeditiousChargeCount();
+
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getSlayerWidgetItems())
+		Collection<WidgetItem> items = plugin.getSlayerItems();
+		for (WidgetItem item : items)
 		{
 			int itemId = item.getId();
 
@@ -119,7 +116,20 @@ class SlayerOverlay extends Overlay
 
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
-			textComponent.setText(String.valueOf(amount));
+
+			switch (item.getId())
+			{
+				case ItemID.EXPEDITIOUS_BRACELET:
+					textComponent.setText(String.valueOf(expeditiousCount));
+					break;
+				case ItemID.BRACELET_OF_SLAUGHTER:
+					textComponent.setText(String.valueOf(slaughterCount));
+					break;
+				default:
+					textComponent.setText(String.valueOf(amount));
+					break;
+			}
+
 			// Draw the counter in the bottom left for equipment, and top left for jewelry
 			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
 				? bounds.height
@@ -128,17 +138,5 @@ class SlayerOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	private Collection<WidgetItem> getSlayerWidgetItems()
-	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
-
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING);
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
-
-		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
-		return ImmutableList.copyOf(items);
 	}
 }

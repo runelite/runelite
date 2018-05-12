@@ -45,7 +45,9 @@ import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class WoodcuttingOverlay extends Overlay
 {
@@ -95,33 +97,37 @@ class WoodcuttingOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getLines().clear();
+		panelComponent.getChildren().clear();
 
 		if (IntStream.of(animationIds).anyMatch(x -> x == client.getLocalPlayer().getAnimation()))
 		{
-			panelComponent.setTitle("Woodcutting");
-			panelComponent.setTitleColor(Color.GREEN);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Woodcutting")
+				.color(Color.GREEN)
+				.build());
 		}
 		else
 		{
-			panelComponent.setTitle("NOT woodcutting");
-			panelComponent.setTitleColor(Color.RED);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("NOT woodcutting")
+				.color(Color.RED)
+				.build());
 		}
 
 		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
 		if (actions > 0)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line(
-				"Logs cut:",
-				Integer.toString(actions)
-			));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Logs cut:")
+				.right(Integer.toString(actions))
+				.build());
 
 			if (actions > 2)
 			{
-				panelComponent.getLines().add(new PanelComponent.Line(
-					"Logs/hr:",
-					Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING))
-				));
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Logs/hr:")
+					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
+					.build());
 			}
 		}
 

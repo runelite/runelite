@@ -120,6 +120,17 @@ public class WorldPoint
 	}
 
 	/**
+	 * Find the shortest distance from this point to a WorldArea
+	 *
+	 * @param other The WorldArea to find the distance to
+	 * @return Returns the shortest distance
+	 */
+	public int distanceTo(WorldArea other)
+	{
+		return new WorldArea(this, 1, 1).distanceTo(other);
+	}
+
+	/**
 	 * Find the distance from this point to another point. Returns Integer.MAX_VALUE if other is on
 	 * a different plane.
 	 *
@@ -133,7 +144,7 @@ public class WorldPoint
 			return Integer.MAX_VALUE;
 		}
 
-		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
+		return distanceTo2D(other);
 	}
 
 
@@ -145,7 +156,7 @@ public class WorldPoint
 	 */
 	public int distanceTo2D(WorldPoint other)
 	{
-		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
+		return Math.max(Math.abs(getX() - other.getX()), Math.abs(getY() - other.getY()));
 	}
 
 	/**

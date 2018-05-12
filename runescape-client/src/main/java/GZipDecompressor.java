@@ -4,18 +4,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("fl")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "[[Liz;"
-   )
-   @Export("widgets")
-   public static Widget[][] widgets;
-   @ObfuscatedName("o")
-   static int[] field2501;
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @Export("inflator")
    Inflater inflator;
 
@@ -30,10 +22,10 @@ public class GZipDecompressor {
    GZipDecompressor(int var1, int var2, int var3) {
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgg;[BB)V",
-      garbageValue = "-19"
+      signature = "(Lgy;[BI)V",
+      garbageValue = "1499837314"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -56,12 +48,36 @@ public class GZipDecompressor {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "993066626"
+      signature = "([BB)[B",
+      garbageValue = "1"
    )
-   public static boolean method3535(int var0) {
-      return (var0 & 1) != 0;
+   @Export("decodeContainer")
+   static final byte[] decodeContainer(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.readInt();
+      if(var3 < 0 || IndexDataBase.field3179 != 0 && var3 > IndexDataBase.field3179) {
+         throw new RuntimeException();
+      } else if(var2 == 0) {
+         byte[] var4 = new byte[var3];
+         var1.readBytes(var4, 0, var3);
+         return var4;
+      } else {
+         int var6 = var1.readInt();
+         if(var6 >= 0 && (IndexDataBase.field3179 == 0 || var6 <= IndexDataBase.field3179)) {
+            byte[] var5 = new byte[var6];
+            if(var2 == 1) {
+               class176.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
+            } else {
+               IndexDataBase.gzip.decompress(var1, var5);
+            }
+
+            return var5;
+         } else {
+            throw new RuntimeException();
+         }
+      }
    }
 }

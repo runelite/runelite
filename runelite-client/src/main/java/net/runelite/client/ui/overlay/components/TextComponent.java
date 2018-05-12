@@ -33,19 +33,15 @@ import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
+@Setter
 public class TextComponent implements RenderableEntity
 {
 	private static final String COL_TAG_REGEX = "(<col=([0-9a-fA-F]){2,6}>)";
 	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("(?=" + COL_TAG_REGEX + ")");
 	private static final Pattern COL_TAG_PATTERN = Pattern.compile(COL_TAG_REGEX);
 
-	@Setter
 	private String text;
-
-	@Setter
 	private Point position = new Point();
-
-	@Setter
 	private Color color = Color.WHITE;
 
 	public static String textWithoutColTags(String text)
@@ -60,13 +56,13 @@ public class TextComponent implements RenderableEntity
 
 		if (COL_TAG_PATTERN.matcher(text).find())
 		{
-			String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
+			final String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
 			int x = position.x;
-			for (int i = 0; i < parts.length; i++)
+
+			for (String textSplitOnCol : parts)
 			{
-				String textSplitOnCol = parts[i];
-				String textWithoutCol = textWithoutColTags(textSplitOnCol);
-				String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
+				final String textWithoutCol = textWithoutColTags(textSplitOnCol);
+				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
 
 				// shadow
 				graphics.setColor(Color.BLACK);
@@ -89,6 +85,7 @@ public class TextComponent implements RenderableEntity
 			graphics.setColor(color);
 			graphics.drawString(text, position.x, position.y);
 		}
+
 		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
 	}
 }

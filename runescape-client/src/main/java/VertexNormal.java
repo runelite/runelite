@@ -1,36 +1,38 @@
-import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("dv")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("n")
-   public static File field1912;
-   @ObfuscatedName("g")
+   @ObfuscatedName("ep")
+   @ObfuscatedSignature(
+      signature = "Lft;"
+   )
+   static class157 field1697;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1868193879
+      intValue = 1111459119
    )
    @Export("x")
    int x;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1652211909
+      intValue = 1093572535
    )
    @Export("y")
    int y;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -661566551
+      intValue = 557806907
    )
    @Export("z")
    int z;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -163743625
+      intValue = -1099818287
    )
    @Export("magnitude")
    int magnitude;
@@ -39,7 +41,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lec;)V"
+      signature = "(Ldv;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -48,25 +50,13 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("ia")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-46"
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
+      garbageValue = "762356543"
    )
-   public static int method2875(int var0, int var1) {
-      int var2;
-      for(var2 = 1; var1 > 1; var1 >>= 1) {
-         if((var1 & 1) != 0) {
-            var2 = var0 * var2;
-         }
-
-         var0 *= var0;
-      }
-
-      if(var1 == 1) {
-         return var0 * var2;
-      } else {
-         return var2;
-      }
+   @Export("addMenuEntry")
+   public static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
+      class98.method2289(var0, var1, var2, var3, var4, var5, false);
    }
 }

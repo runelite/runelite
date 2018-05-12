@@ -1,79 +1,78 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kk")
+@ObfuscatedName("jf")
 @Implements("Overlay")
 public class Overlay extends CacheableNode {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ljr;"
+      signature = "Liv;"
    )
    @Export("overlay_ref")
-   static IndexDataBase overlay_ref;
-   @ObfuscatedName("e")
+   public static IndexDataBase overlay_ref;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lgj;"
    )
    @Export("overlays")
    static NodeCache overlays;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 296128499
+      intValue = 501927119
    )
    @Export("color")
    public int color;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 898544963
+      intValue = 1646524769
    )
    @Export("texture")
    public int texture;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @Export("isHidden")
    public boolean isHidden;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 106910007
+      intValue = -921475837
    )
    @Export("otherRgbColor")
    public int otherRgbColor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1544511045
+      intValue = 1998822279
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1904771251
+      intValue = 798518713
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1433625771
+      intValue = 951289099
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 99790759
+      intValue = -139363617
    )
    @Export("otherHue")
    public int otherHue;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1733563211
+      intValue = 762625637
    )
    @Export("otherSaturation")
    public int otherSaturation;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 454279179
+      intValue = -1916651771
    )
    @Export("otherLightness")
    public int otherLightness;
@@ -89,10 +88,10 @@ public class Overlay extends CacheableNode {
       this.otherRgbColor = -1;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "1"
+      garbageValue = "-48"
    )
    @Export("post")
    void post() {
@@ -106,10 +105,10 @@ public class Overlay extends CacheableNode {
       this.setHSL(this.color);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgg;II)V",
-      garbageValue = "-547591725"
+      signature = "(Lgy;II)V",
+      garbageValue = "-393961327"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -123,10 +122,10 @@ public class Overlay extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lgg;III)V",
-      garbageValue = "8461062"
+      signature = "(Lgy;IIS)V",
+      garbageValue = "-256"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2, int var3) {
@@ -144,10 +143,10 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "402349799"
+      garbageValue = "-1490003908"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -174,29 +173,29 @@ public class Overlay extends CacheableNode {
 
       double var12 = 0.0D;
       double var14 = 0.0D;
-      double var16 = (var8 + var10) / 2.0D;
+      double var16 = (var10 + var8) / 2.0D;
       if(var8 != var10) {
          if(var16 < 0.5D) {
-            var14 = (var10 - var8) / (var10 + var8);
+            var14 = (var10 - var8) / (var8 + var10);
          }
 
          if(var16 >= 0.5D) {
             var14 = (var10 - var8) / (2.0D - var10 - var8);
          }
 
-         if(var2 == var10) {
+         if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
          } else if(var4 == var10) {
-            var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-         } else if(var10 == var6) {
-            var12 = 4.0D + (var2 - var4) / (var10 - var8);
+            var12 = 2.0D + (var6 - var2) / (var10 - var8);
+         } else if(var6 == var10) {
+            var12 = (var2 - var4) / (var10 - var8) + 4.0D;
          }
       }
 
       var12 /= 6.0D;
-      this.hue = (int)(256.0D * var12);
-      this.saturation = (int)(var14 * 256.0D);
-      this.lightness = (int)(var16 * 256.0D);
+      this.hue = (int)(var12 * 256.0D);
+      this.saturation = (int)(256.0D * var14);
+      this.lightness = (int)(256.0D * var16);
       if(this.saturation < 0) {
          this.saturation = 0;
       } else if(this.saturation > 255) {
@@ -209,30 +208,5 @@ public class Overlay extends CacheableNode {
          this.lightness = 255;
       }
 
-   }
-
-   @ObfuscatedName("hi")
-   @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "-44"
-   )
-   @Export("flush")
-   static final void flush(boolean var0) {
-      class36.method545();
-      ++Client.field911.field1466;
-      if(Client.field911.field1466 >= 50 || var0) {
-         Client.field911.field1466 = 0;
-         if(!Client.socketError && Client.field911.getSocket() != null) {
-            PacketNode var1 = AbstractSoundSystem.method2350(ClientPacket.field2383, Client.field911.field1460);
-            Client.field911.method2135(var1);
-
-            try {
-               Client.field911.method2134();
-            } catch (IOException var3) {
-               Client.socketError = true;
-            }
-         }
-
-      }
    }
 }

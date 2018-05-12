@@ -29,8 +29,10 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -55,6 +57,11 @@ public interface Client extends GameEngine
 	String getUsername();
 
 	void setUsername(String name);
+
+	/**
+	 * Gets the account type for the logged in player.
+	 */
+	AccountType getAccountType();
 
 	Canvas getCanvas();
 
@@ -100,6 +107,10 @@ public interface Client extends GameEngine
 	ItemComposition getItemDefinition(int id);
 
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
+
+	SpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
+
+	IndexDataBase getIndexSprites();
 
 	int getBaseX();
 
@@ -163,17 +174,24 @@ public interface Client extends GameEngine
 
 	int[] getVarps();
 
-	Varcs getVarcs();
+	int getVar(VarPlayer varPlayer);
 
-	int getSetting(Setting setting);
+	int getVar(Varbits varbit);
 
-	int getSetting(Varbits varbit);
+	int getVar(VarClientInt varClientInt);
 
+	String getVar(VarClientStr varClientStr);
+
+	@VisibleForDevtools
 	void setSetting(Varbits varbit, int value);
 
+	@VisibleForDevtools
 	int getVarbitValue(int varbit);
 
+	@VisibleForDevtools
 	void setVarbitValue(int varbit, int value);
+
+	boolean shouldPostVarbitEvent();
 
 	HashTable getWidgetFlags();
 
@@ -222,6 +240,8 @@ public interface Client extends GameEngine
 
 	List<Projectile> getProjectiles();
 
+	List<GraphicsObject> getGraphicsObjects();
+
 	/**
 	 * Play a sound effect at the player's current location. This is how UI,
 	 * and player-generated (e.g. mining, woodcutting) sound effects are
@@ -243,51 +263,6 @@ public interface Client extends GameEngine
 	 * from
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
-
-	boolean getDrawBoundingBoxes2D();
-
-	/**
-	 * When {@code shouldDraw} is true, a 2D bounding box will be drawn for
-	 * all on-screen objects
-	 *
-	 * @param shouldDraw whether or not to draw 2D bounding boxes
-	 */
-	void setDrawBoundingBoxes2D(boolean shouldDraw);
-
-	boolean getDrawBoundingBoxes3D();
-
-	/**
-	 * When {@code shouldDraw} is true, 3D bounding boxes will be drawn
-	 * either for the object under the cursor, or every object on screen
-	 * according to
-	 * {@link #setBoundingBoxAlwaysOnMode(boolean) BoundingBoxAlwaysOnMode}
-	 *
-	 * @param shouldDraw whether or not to draw 3D bounding boxes
-	 */
-	void setDrawBoundingBoxes3D(boolean shouldDraw);
-
-	boolean getdrawObjectGeometry2D();
-
-	/**
-	 * When {@code shouldDraw} is true, the clickbox geometry for the object
-	 * under the cursor will be displayed
-	 *
-	 * @param shouldDraw whether or not to draw the clickbox geometry
-	 */
-	void setdrawObjectGeometry2D(boolean shouldDraw);
-
-	boolean getBoundingBoxAlwaysOnMode();
-
-	/**
-	 * Changes how {@link #getDrawBoundingBoxes3D()} behaves when active.
-	 * When {@code alwaysDrawBoxes} is true, 3D bounding boxes will be
-	 * drawn. When false, a 3D bounding box will only be drawn for the
-	 * object under the cursor
-	 *
-	 * @param alwaysDrawBoxes whether or not to draw every 3D bounding box,
-	 * when 3D bounding boxes are enabled
-	 */
-	void setBoundingBoxAlwaysOnMode(boolean alwaysDrawBoxes);
 
 	BufferProvider getBufferProvider();
 
@@ -329,6 +304,8 @@ public interface Client extends GameEngine
 	int getClanChatCount();
 
 	ClanMember[] getClanMembers();
+
+	Friend[] getFriends();
 
 	boolean isClanMember(String name);
 
@@ -413,4 +390,30 @@ public interface Client extends GameEngine
 	void setAttackersHidden(boolean state);
 
 	void setProjectilesHidden(boolean state);
+
+	CollisionData[] getCollisionMaps();
+
+	@VisibleForDevtools
+	int[] getBoostedSkillLevels();
+
+	@VisibleForDevtools
+	int[] getRealSkillLevels();
+
+	@VisibleForDevtools
+	int[] getSkillExperiences();
+
+	@VisibleForDevtools
+	int[] getChangedSkills();
+
+	@VisibleForDevtools
+	int getChangedSkillsCount();
+
+	@VisibleForDevtools
+	void setChangedSkillsCount(int i);
+
+	int getTickCount();
+
+	void setTickCount(int tickCount);
+
+	void setInventoryDragDelay(int delay);
 }

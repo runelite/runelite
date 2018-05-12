@@ -287,6 +287,16 @@ public class ExaminePlugin extends Plugin
 					itemId = widgetItem.getItemId();
 				}
 			}
+			else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget[] children = widget.getDynamicChildren();
+				if (pendingExamine.getActionParam() < children.length)
+				{
+					Widget widgetItem = children[pendingExamine.getActionParam()];
+					quantity = 1;
+					itemId = widgetItem.getItemId();
+				}
+			}
 		}
 
 		if (itemId == -1)

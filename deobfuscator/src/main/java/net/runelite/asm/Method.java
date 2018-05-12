@@ -31,9 +31,12 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.LocalVariable;
+import net.runelite.asm.attributes.code.Parameter;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_NATIVE;
@@ -54,6 +57,7 @@ public class Method
 	private Signature arguments;
 	private Exceptions exceptions;
 	private Annotations annotations;
+	private List<Parameter> parameters;
 	private Code code;
 
 	public Method(ClassFile classFile, String name, Signature signature)
@@ -63,6 +67,7 @@ public class Method
 		this.arguments = signature;
 		exceptions = new Exceptions();
 		annotations = new Annotations();
+		parameters = new ArrayList<>();
 	}
 
 	public ClassFile getClassFile()
@@ -78,6 +83,12 @@ public class Method
 
 	public void accept(MethodVisitor visitor)
 	{
+		//This is required to name unused parameters
+		for (Parameter p : parameters)
+		{
+			visitor.visitParameter(p.getName(), p.getAccess());
+		}
+
 		for (Annotation annotation : annotations.getAnnotations())
 		{
 			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
@@ -117,6 +128,33 @@ public class Method
 			for (Instruction i : code.getInstructions().getInstructions())
 			{
 				i.accept(visitor);
+			}
+
+			//Find first and last label for this method
+			if (parameters.size() > 0)
+			{
+				Label startLabel = null;
+				Label endLabel = null;
+				for (Instruction i : code.getInstructions().getInstructions())
+				{
+					if (i instanceof net.runelite.asm.attributes.code.Label)
+					{
+						if (startLabel == null)
+						{
+							startLabel = ((net.runelite.asm.attributes.code.Label) i).getLabel();
+						}
+						endLabel = ((net.runelite.asm.attributes.code.Label) i).getLabel();
+					}
+				}
+
+				for (Parameter p : parameters)
+				{
+					LocalVariable lv = p.getLocalVariable();
+					if (lv != null)
+					{
+						visitor.visitLocalVariable(lv.getName(), lv.getDesc(), lv.getSignature(), startLabel, endLabel, lv.getIndex());
+					}
+				}
 			}
 
 			visitor.visitMaxs(code.getMaxStack(), code.getMaxLocals());
@@ -262,5 +300,15 @@ public class Method
 			name,
 			arguments
 		);
+	}
+
+	public List<Parameter> getParameters()
+	{
+		return parameters;
+	}
+
+	public void setParameters(List<Parameter> parameters)
+	{
+		this.parameters = parameters;
 	}
 }

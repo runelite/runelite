@@ -33,6 +33,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -52,6 +53,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
@@ -132,6 +134,7 @@ public class HiscorePanel extends PluginPanel
 	private final JPanel statsPanel = new JPanel();
 	private final ButtonGroup endpointButtonGroup = new ButtonGroup();
 	private final JTextArea details = new JTextArea();
+	private final JProgressBar progressBar;
 
 	private List<JToggleButton> endpointButtons;
 
@@ -275,6 +278,16 @@ public class HiscorePanel extends PluginPanel
 
 		detailsPanel.add(details, BorderLayout.CENTER);
 
+		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setValue(0);
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(100);
+		progressBar.setBackground(Color.RED);
+		progressBar.setVisible(false);
+
+		detailsPanel.add(progressBar, BorderLayout.SOUTH);
+
 		c.gridx = 0;
 		c.gridy = 4;
 		gridBag.setConstraints(detailsPanel, c);
@@ -331,6 +344,16 @@ public class HiscorePanel extends PluginPanel
 		add(endpointPanel);
 	}
 
+	void addInputKeyListener(KeyListener l)
+	{
+		this.input.addKeyListener(l);
+	}
+
+	void removeInputKeyListener(KeyListener l)
+	{
+		this.input.removeKeyListener(l);
+	}
+
 	private void changeDetail(String skillName, HiscoreSkill skill)
 	{
 		if (result == null || result.getPlayer() == null)
@@ -339,6 +362,7 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		String text;
+		int progress = -1;
 		switch (skillName)
 		{
 			case "Combat":
@@ -426,7 +450,16 @@ public class HiscorePanel extends PluginPanel
 				else
 				{
 					int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+					int currentXp = (int) requestedSkill.getExperience();
+					int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
+					int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+
+					remainingXp = xpForNextLevel != -1 ? StackFormatter.formatNumber(xpForNextLevel - currentXp) : "0";
+
+					double xpGained = currentXp - xpForCurrentLevel;
+					double xpGoal = xpForNextLevel != -1 ? xpForNextLevel - xpForCurrentLevel : 100;
+					progress = (int) ((xpGained / xpGoal) * 100f);
+
 				}
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
@@ -438,6 +471,18 @@ public class HiscorePanel extends PluginPanel
 
 		details.setFont(UIManager.getFont("Label.font"));
 		details.setText(text);
+
+		if (progress >= 0)
+		{
+			progressBar.setVisible(true);
+			progressBar.setValue(progress);
+			progressBar.setBackground(Color.getHSBColor((progress / 100.f) * (120.f / 360.f), 1, 1));
+		}
+		else
+		{
+			progressBar.setVisible(false);
+		}
+
 	}
 
 	@Override
@@ -502,6 +547,7 @@ public class HiscorePanel extends PluginPanel
 	{
 		String lookup = input.getText();
 		details.setText("Loading...");
+		progressBar.setVisible(false);
 
 		lookup = sanitize(lookup);
 
@@ -526,6 +572,7 @@ public class HiscorePanel extends PluginPanel
 		{
 			log.warn("Error fetching Hiscore data " + ex.getMessage());
 			details.setText("Error fetching Hiscore data");
+			progressBar.setVisible(false);
 			return;
 		}
 
@@ -571,6 +618,7 @@ public class HiscorePanel extends PluginPanel
 		// Clear details panel
 		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
 		details.setText("Hover over a skill for details");
+		progressBar.setVisible(false);
 	}
 
 	private static String sanitize(String lookup)

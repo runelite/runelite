@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.raids;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -34,6 +33,7 @@ import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class RaidsPointsOverlay extends Overlay
@@ -61,19 +61,24 @@ public class RaidsPointsOverlay extends Overlay
 			return null;
 		}
 
-		int totalPoints = client.getSetting(Varbits.TOTAL_POINTS);
-		int personalPoints = client.getSetting(Varbits.PERSONAL_POINTS);
+		int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
+		int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
-		panel.getLines().clear();
-		panel.getLines().add(new PanelComponent.Line(
-			"Total:", Color.WHITE, POINTS_FORMAT.format(totalPoints), Color.WHITE
-		));
-		panel.getLines().add(new PanelComponent.Line(
-			client.getLocalPlayer().getName() + ":", Color.WHITE, POINTS_FORMAT.format(personalPoints), Color.WHITE
-		));
-		panel.getLines().add(new PanelComponent.Line(
-			"Party size:", Color.WHITE, String.valueOf(client.getSetting(Varbits.RAID_PARTY_SIZE)), Color.WHITE
-		));
+		panel.getChildren().clear();
+		panel.getChildren().add(LineComponent.builder()
+			.left("Total:")
+			.right(POINTS_FORMAT.format(totalPoints))
+			.build());
+
+		panel.getChildren().add(LineComponent.builder()
+			.left(client.getLocalPlayer().getName() + ":")
+			.right(POINTS_FORMAT.format(personalPoints))
+			.build());
+
+		panel.getChildren().add(LineComponent.builder()
+			.left("Party size:")
+			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
+			.build());
 
 		return panel.render(graphics);
 	}

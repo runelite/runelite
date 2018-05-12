@@ -75,6 +75,11 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
+import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
+import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
+import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
+import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -260,6 +265,7 @@ public class GroundItemsPlugin extends Plugin
 
 					if (groundItem != null)
 					{
+						groundItem.setHeight(itemLayer.getHeight());
 						groundItems.add(groundItem);
 					}
 				}
@@ -338,7 +344,8 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if ((config.highlightMenuOption() || config.highlightMenuItemName()) && event.getOption().equals("Take")
+		if (config.itemHighlightMode() != OVERLAY
+			&& event.getOption().equals("Take")
 			&& event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId())
 		{
 			int itemId = event.getIdentifier();
@@ -382,11 +389,14 @@ public class GroundItemsPlugin extends Plugin
 			{
 				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
 				String colTag = "<col=" + hexColor + ">";
-				if (config.highlightMenuOption())
+				final MenuHighlightMode mode = config.menuHighlightMode();
+
+				if (mode == BOTH || mode == OPTION)
 				{
 					lastEntry.setOption(colTag + "Take");
 				}
-				if (config.highlightMenuItemName())
+
+				if (mode == BOTH || mode == NAME)
 				{
 					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
 					lastEntry.setTarget(colTag + target);

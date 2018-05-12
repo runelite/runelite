@@ -1,21 +1,26 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("fg")
 @Implements("Timer")
 public abstract class Timer {
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
+   @Export("tt")
+   static int[] tt;
+
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1727690798"
+      garbageValue = "1218447375"
    )
-   public abstract void vmethod3396();
+   public abstract void vmethod3346();
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "2016091306"
+      garbageValue = "2000882213"
    )
-   public abstract int vmethod3398(int var1, int var2);
+   public abstract int vmethod3348(int var1, int var2);
 }

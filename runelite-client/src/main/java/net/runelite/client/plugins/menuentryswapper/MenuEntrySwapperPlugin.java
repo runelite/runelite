@@ -373,6 +373,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("rellekka", option, target, true);
 				swap("follow", option, target, true);
 				swap("quick-travel", option, target, true);
+				swap("transport", option, target, true);
 			}
 
 			if (config.swapPay())

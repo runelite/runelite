@@ -128,7 +128,7 @@ public class FarmingTrackerPlugin extends Plugin
 
 		WorldPoint loc = lastTickLoc;
 		lastTickLoc = client.getLocalPlayer().getWorldLocation();
-		if (loc == null)
+		if (loc == null || loc.getRegionID() != lastTickLoc.getRegionID())
 		{
 			return;
 		}
@@ -137,7 +137,7 @@ public class FarmingTrackerPlugin extends Plugin
 
 		{
 			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername();
-			String autoweed = Integer.toString(client.getSetting(Varbits.AUTOWEED));
+			String autoweed = Integer.toString(client.getVar(Varbits.AUTOWEED));
 			if (!autoweed.equals(configManager.getConfiguration(group, FarmingTrackerConfig.AUTOWEED)))
 			{
 				configManager.setConfiguration(group, FarmingTrackerConfig.AUTOWEED, autoweed);
@@ -156,7 +156,7 @@ public class FarmingTrackerPlugin extends Plugin
 			{
 				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
 				String key = Integer.toString(varbit.getId());
-				String strVarbit = Integer.toString(client.getSetting(varbit));
+				String strVarbit = Integer.toString(client.getVar(varbit));
 				String storedValue = configManager.getConfiguration(group, key);
 				if (storedValue != null)
 				{

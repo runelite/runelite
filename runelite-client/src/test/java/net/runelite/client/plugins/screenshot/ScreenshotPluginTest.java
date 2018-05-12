@@ -43,7 +43,7 @@ import static net.runelite.api.widgets.WidgetInfo.PACK;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.DrawManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,7 +83,7 @@ public class ScreenshotPluginTest
 
 	@Mock
 	@Bind
-	private OverlayRenderer overlayRenderer;
+	DrawManager drawManager;
 
 	@Mock
 	@Bind
@@ -146,7 +146,7 @@ public class ScreenshotPluginTest
 		event.setWidget(widget);
 		screenshotPlugin.hideWidgets(event);
 
-		verify(overlayRenderer).requestScreenshot(Matchers.any(Consumer.class));
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class ScreenshotPluginTest
 		event.setWidget(widget);
 		screenshotPlugin.hideWidgets(event);
 
-		verify(overlayRenderer).requestScreenshot(Matchers.any(Consumer.class));
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class ScreenshotPluginTest
 		event.setWidget(widget);
 		screenshotPlugin.hideWidgets(event);
 
-		verify(overlayRenderer).requestScreenshot(Matchers.any(Consumer.class));
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -206,6 +206,6 @@ public class ScreenshotPluginTest
 		event.setWidget(widget);
 		screenshotPlugin.hideWidgets(event);
 
-		verify(overlayRenderer).requestScreenshot(Matchers.any(Consumer.class));
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 }

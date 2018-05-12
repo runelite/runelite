@@ -27,10 +27,7 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +40,7 @@ public class DevToolsPanel extends PluginPanel
 	private final Client client;
 	private final DevToolsPlugin plugin;
 
-	private final SettingsTracker settingsTracker;
+	private final VarTracker varTracker;
 
 	private WidgetInspector widgetInspector;
 
@@ -55,7 +52,7 @@ public class DevToolsPanel extends PluginPanel
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 
-		settingsTracker = new SettingsTracker(client);
+		varTracker = new VarTracker(client);
 		add(createOptionsPanel());
 	}
 
@@ -136,16 +133,13 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderProjectilesBtn);
 
-		final JPanel boundsDebugPanel = createBoundsDebugMultiButton();
-		container.add(boundsDebugPanel);
+		final JButton varSnapshotBtn = new JButton("Snapshot Vars");
+		varSnapshotBtn.addActionListener(varTracker::snapshot);
+		container.add(varSnapshotBtn);
 
-		final JButton settingsSnapshotBtn = new JButton("Get Settings");
-		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
-		container.add(settingsSnapshotBtn);
-
-		final JButton settingsClearBtn = new JButton("Clear Settings");
-		settingsClearBtn.addActionListener(settingsTracker::clear);
-		container.add(settingsClearBtn);
+		final JButton varClearBtn = new JButton("Clear Vars");
+		varClearBtn.addActionListener(varTracker::clear);
+		container.add(varClearBtn);
 
 		final JButton renderLocationBtn = new JButton("Location");
 		renderLocationBtn.addActionListener(e ->
@@ -180,74 +174,31 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(mapSquaresBtn);
 
+		final JButton validMovementBtn = new JButton("Valid Moves");
+		validMovementBtn.addActionListener(e ->
+		{
+			highlightButton(validMovementBtn);
+			plugin.toggleValidMovement();
+		});
+		container.add(validMovementBtn);
+
+		final JButton lineOfSightBtn = new JButton("Line of Sight");
+		lineOfSightBtn.addActionListener(e ->
+		{
+			highlightButton(lineOfSightBtn);
+			plugin.toggleLineOfSight();
+		});
+		container.add(lineOfSightBtn);
+
+		final JButton graphicsObjectsBtn = new JButton("Graphics objects");
+		graphicsObjectsBtn.addActionListener(e ->
+		{
+			highlightButton(graphicsObjectsBtn);
+			plugin.toggleGraphicsObjects();
+		});
+		container.add(graphicsObjectsBtn);
+
 		return container;
-	}
-
-	private JPanel createBoundsDebugMultiButton()
-	{
-		ImageIcon bBox2DIcon;
-		ImageIcon bBox3DIcon;
-		ImageIcon clickBoxIcon;
-		ImageIcon bBox3DMousoverIcon;
-
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				bBox2DIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("2D_bounding_box.png")));
-				bBox3DIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("3D_bounding_box.png")));
-				clickBoxIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("2D_clickbox_geometry.png")));
-				bBox3DMousoverIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("mouseover_3D_bounding_box.png")));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load bounding box images", ex);
-			return new JPanel();
-		}
-
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 4));
-		JButton bBox2DButton = new JButton(bBox2DIcon);
-		bBox2DButton.addActionListener(e ->
-		{
-			client.setDrawBoundingBoxes2D(!client.getDrawBoundingBoxes2D());
-			highlightButton(bBox2DButton);
-		});
-		buttonPanel.add(bBox2DButton);
-
-		JButton bBox3DButton = new JButton(bBox3DIcon);
-		bBox3DButton.addActionListener(e ->
-		{
-			client.setDrawBoundingBoxes3D(!client.getDrawBoundingBoxes3D());
-			highlightButton(bBox3DButton);
-		});
-		buttonPanel.add(bBox3DButton);
-
-		JButton clickBoxButton = new JButton(clickBoxIcon);
-		clickBoxButton.addActionListener(e ->
-		{
-			client.setdrawObjectGeometry2D(!client.getdrawObjectGeometry2D());
-			highlightButton(clickBoxButton);
-		});
-		buttonPanel.add(clickBoxButton);
-
-		JButton mouseoverModeButton = new JButton(client.getBoundingBoxAlwaysOnMode() ? bBox3DIcon : bBox3DMousoverIcon);
-		mouseoverModeButton.addActionListener(e ->
-		{
-			client.setBoundingBoxAlwaysOnMode(!client.getBoundingBoxAlwaysOnMode());
-			if (client.getBoundingBoxAlwaysOnMode())
-			{
-				mouseoverModeButton.setIcon(bBox3DIcon);
-			}
-			else
-			{
-				mouseoverModeButton.setIcon(bBox3DMousoverIcon);
-			}
-		});
-		buttonPanel.add(mouseoverModeButton);
-
-		return buttonPanel;
 	}
 
 	private void highlightButton(JButton button)

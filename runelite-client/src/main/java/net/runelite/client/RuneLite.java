@@ -34,10 +34,12 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 import java.applet.Applet;
 import java.io.File;
-import java.util.Optional;
+import java.util.Locale;
 import javax.inject.Singleton;
+import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.util.EnumConverter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
@@ -50,6 +52,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import org.slf4j.LoggerFactory;
@@ -90,6 +93,9 @@ public class RuneLite
 	private OverlayRenderer overlayRenderer;
 
 	@Inject
+	private DrawManager drawManager;
+
+	@Inject
 	private SessionManager sessionManager;
 
 	@Inject
@@ -114,11 +120,31 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		Locale.setDefault(Locale.ENGLISH);
+
 		OptionParser parser = new OptionParser();
-		parser.accepts("developer-mode");
-		parser.accepts("no-rs");
-		parser.accepts("debug");
+		parser.accepts("developer-mode", "Enable developer tools");
+		parser.accepts("debug", "Show extra debugging output");
+		ArgumentAcceptingOptionSpec<UpdateCheckMode> updateMode = parser.accepts("rs", "Select client type")
+			.withRequiredArg()
+			.ofType(UpdateCheckMode.class)
+			.defaultsTo(UpdateCheckMode.AUTO)
+			.withValuesConvertedBy(new EnumConverter<UpdateCheckMode>(UpdateCheckMode.class)
+			{
+				@Override
+				public UpdateCheckMode convert(String v)
+				{
+					return super.convert(v.toUpperCase());
+				}
+			});
+		parser.accepts("help", "Show this text").forHelp();
 		setOptions(parser.parse(args));
+
+		if (getOptions().has("help"))
+		{
+			parser.printHelpOn(System.out);
+			System.exit(0);
+		}
 
 		PROFILES_DIR.mkdirs();
 
@@ -131,26 +157,25 @@ public class RuneLite
 			logger.setLevel(Level.DEBUG);
 		}
 
+		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
+		{
+			log.error("Uncaught exception:", throwable);
+			if (throwable instanceof AbstractMethodError)
+			{
+				log.error("Classes are out of date; Build with maven again.");
+			}
+		});
+
 		setInjector(Guice.createInjector(new RuneLiteModule()));
-		injector.getInstance(RuneLite.class).start();
+		injector.getInstance(RuneLite.class).start(getOptions().valueOf(updateMode));
 	}
 
-	public void start() throws Exception
+	public void start(UpdateCheckMode updateMode) throws Exception
 	{
 		// Load RuneLite or Vanilla client
-		final boolean hasRs = !getOptions().has("no-rs");
-		final Optional<Applet> optionalClient = hasRs
-			? new ClientLoader().loadRs()
-			: Optional.empty();
+		final Applet client = new ClientLoader().loadRs(updateMode);
 
-		if (!optionalClient.isPresent() && hasRs)
-		{
-			System.exit(-1);
-			return;
-		}
-
-		final Applet client = optionalClient.orElse(null);
-		final boolean isOutdated = client == null || !(client instanceof Client);
+		final boolean isOutdated = !(client instanceof Client);
 
 		if (!isOutdated)
 		{
@@ -166,12 +191,13 @@ public class RuneLite
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(overlayRenderer);
+		eventBus.register(drawManager);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(commandManager);
 		eventBus.register(pluginManager);
 		eventBus.register(clanManager);
-		if (client != null)
+		if (this.client != null)
 		{
 			eventBus.register(itemManager.get());
 		}
