@@ -190,7 +190,10 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof LocationsClueScroll)
 		{
-			((LocationsClueScroll)clue).update(event.getMessage(), this);
+			if (((LocationsClueScroll)clue).update(event.getMessage(), this))
+			{
+				worldMapPointsSet = false;
+			}
 		}
 
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
@@ -261,7 +264,11 @@ public class ClueScrollPlugin extends Plugin
 		if (clue instanceof LocationsClueScroll)
 		{
 			final List<WorldPoint> locations = ((LocationsClueScroll) clue).getLocations();
-			addMapPoints(locations.toArray(new WorldPoint[locations.size()]));
+
+			if (!locations.isEmpty())
+			{
+				addMapPoints(locations.toArray(new WorldPoint[locations.size()]));
+			}
 		}
 
 		// If we have location clue, set world location before all other types of clues
@@ -270,12 +277,15 @@ public class ClueScrollPlugin extends Plugin
 		{
 			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
 
-			if (config.displayHintArrows() && location != null)
+			if (location != null)
 			{
-				client.setHintArrow(location);
-			}
+				if (config.displayHintArrows())
+				{
+					client.setHintArrow(location);
+				}
 
-			addMapPoints(location);
+				addMapPoints(location);
+			}
 		}
 
 		if (clue instanceof NpcClueScroll)
@@ -395,7 +405,7 @@ public class ClueScrollPlugin extends Plugin
 
 		clueItemChanged = false;
 		clue = null;
-		worldMapPointManager.removeIf(point -> point instanceof ClueScrollWorldMapPoint);
+		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
 		worldMapPointsSet = false;
 
 		if (config.displayHintArrows())
@@ -560,6 +570,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		worldMapPointsSet = true;
+		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
 
 		for (final WorldPoint point : points)
 		{
