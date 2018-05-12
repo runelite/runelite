@@ -1,0 +1,229 @@
+.id                 1351
+.int_stack_count    7
+.string_stack_count 1
+.int_var_count      11
+.string_var_count   2
+   iload                  0
+   widget_unset_children 
+   iload                  3
+   load_int               0
+   if_icmple              LABEL6
+   jump                   LABEL8
+LABEL6:
+   load_int               0
+   return                
+LABEL8:
+   load_string            ""
+   sstore                 1
+   load_int               0
+   istore                 7
+   load_int               2
+   load_int               16
+   pow                   
+   istore                 8
+   iload                  3
+   array_initialize       105
+   load_int               0
+   istore                 9
+LABEL20:
+   iload                  9
+   iload                  3
+   if_icmplt              LABEL24
+   jump                   LABEL69
+LABEL24:
+   iload                  0
+   load_int               4
+   iload                  9
+   widget_create_child
+   iload                  9                                 ; quest item index - for use later
+   iload                  0                                 ; which list we're working on
+   iload                  4                                 ; f2p
+   if_icmpeq              LABEL5001                         ; if we're working on f2p, go to label 5001
+   iload                  0                                 ; which list we're working on
+   iload                  5                                 ; members
+   if_icmpeq              LABEL5002                         ; if we're working on members, go to label 5002
+   iload                  0                                 ; which list we're working on
+   iload                  6                                 ; miniquests
+   if_icmpeq              LABEL5003                         ; if we're working on miniquests, go to label 5003
+LABEL5001:                                                  ;
+   invoke                 1357                              ; invoke script 1357 which gives progress status for f2p quests
+   jump                   LABEL50001                        ;
+LABEL5002:                                                  ;
+   invoke                 1358                              ; invoke script 1358 which gives progress status for members quests
+   jump                   LABEL50001                        ;
+LABEL5003:                                                  ;
+   invoke                 1359                              ; invoke script 1359 which gives progress status for miniquests
+   jump                   LABEL50001                        ;
+LABEL50001:                                                 ; decide what to do based on progress value returned from status script
+   istore                 10                                ; store progress value in parameter 10
+   iload                  10                                ;
+   load_int               2                                 ; load constant value 2 (quest complete)
+   if_icmpeq              LABEL10001                        ; if quest complete then jump to 10001
+   iload                  10                                ;
+   load_int               0                                 ; load constant value 0 (quest in progress)
+   if_icmpeq              LABEL20001                        ; if quest in progress then jump to 20001
+   iload                  10                                ;
+   load_int               1                                 ; load constant value 1 (quest not started)
+   if_icmpeq              LABEL30001                        ; if quest not started then jump to 30001
+   jump                   LABEL10002                        ;
+LABEL10001:                                                 ;
+   load_int               0                                 ;
+   load_string            "questListFilterComplete"         ; check QuestTabPlugin for completed filter
+   runelite_callback                                        ;
+   load_int               1                                 ;
+   if_icmpeq              LABEL40001                        ; if we're filtering then go to filter
+   jump                   LABEL10002                        ; else go to setup
+LABEL20001:                                                 ;
+   load_int               0                                 ;
+   load_string            "questListFilterInProgress"       ; check QuestTabPlugin for in progress filter
+   runelite_callback                                        ;
+   load_int               1                                 ;
+   if_icmpeq              LABEL40001                        ; if we're filtering then go to filter
+   jump                   LABEL10002                        ; else go to setup
+LABEL30001:                                                 ;
+   load_int               0                                 ;
+   load_string            "questListFilterNotStarted"       ; check QuestTabPlugin for not started filter
+   runelite_callback                                        ;
+   load_int               1                                 ;
+   if_icmpeq              LABEL40001                        ; if we're filtering then go to filter
+   jump                   LABEL10002                        ; else go to setup
+LABEL40001:                                                 ;
+   load_int               1                                 ;
+   widget_put_hidden                                        ; hide the widget
+LABEL10002:                                                 ; continue with setup of the widget (even if hidden)
+   load_int               0
+   load_int               15
+   load_int               1
+   load_int               0
+   widget_put_size
+   load_int               494
+   widget_put_fontid     
+   load_int               1
+   widget_put_text_shadowed
+   load_int               0
+   load_int               0
+   load_int               0
+   widget_put_text_alignment
+   load_int               105
+   load_int               115
+   iload                  1
+   iload                  9
+   get_enum_value        
+   sstore                 1
+   sload                  1
+   widget_put_text       
+   load_string            "<col=ff9040>"
+   sload                  1
+   load_string            "</col>"
+   string_append          3
+   widget_put_name       
+   iload                  9
+   iload                  7
+   iload                  8
+   imul                  
+   iload                  9
+   iadd                  
+   array_store           
+   load_int               1
+   load_string            "Read Journal:"
+   widget_put_action
+   iload                  9
+   load_int               1
+   iadd                  
+   istore                 9
+   jump                   LABEL20
+LABEL69:
+   iload                  3
+   load_int               1
+   if_icmpgt              LABEL73
+   jump                   LABEL81
+LABEL73:
+   load_int               0
+   load_int               0
+   iload                  3
+   load_int               1
+   isub                  
+   iload                  2
+   iload                  8
+   invoke                 1352
+LABEL81:
+   load_int               20
+   istore                 10
+   load_int               0
+   istore                 9
+LABEL85:
+   iload                  9
+   iload                  3
+   if_icmplt              LABEL89
+   jump                   LABEL112
+LABEL89:
+   iload                  0
+   iload                  9
+   array_load            
+   iload                  8
+   modulo                
+   widget_load_child     
+   load_int               1
+   if_icmpeq              LABEL98
+   jump                   LABEL103
+LABEL98:
+   load_int               0
+   iload                  10
+   load_int               1
+   load_int               0
+   widget_put_position   
+LABEL103:
+   widget_get_hidden                                        ; check if the current quest item widget is set to hidden
+   load_int               1                                 ;
+   if_icmpne              LABEL10003                        ; if current quest item widget is not set to hidden, skip this next part
+   iload                  10                                ; load the current list height
+   load_int               15                                ; load constant value 15 (height of one quest list item)
+   isub                                                     ; subtract 15 from the list height - this nullifies the height added to the list in the next part
+   istore                 10                                ;
+LABEL10003:                                                 ; continue setup for next list item
+   iload                  9
+   load_int               1
+   iadd
+   iload                  10
+   load_int               15
+   iadd
+   istore                 10
+   istore                 9
+   jump                   LABEL85
+LABEL112:
+   iload                  0
+   load_int               4
+   iload                  9
+   widget_create_child   
+   load_int               0
+   load_int               20
+   load_int               1
+   load_int               0
+   widget_put_size       
+   load_int               0
+   load_int               0
+   load_int               1
+   load_int               0
+   widget_put_position   
+   load_int               16750623
+   widget_put_textcolor  
+   load_int               496
+   widget_put_fontid     
+   load_int               1
+   widget_put_text_shadowed
+   load_int               0
+   load_int               0
+   load_int               0
+   widget_put_text_alignment
+   sload                  0
+   widget_put_text       
+   load_int               0
+   iload                  10
+   load_int               1
+   load_int               0
+   iload                  0
+   widget_put_size_widget
+   iload                  10
+   return                
+   load_int               0
+   return                
