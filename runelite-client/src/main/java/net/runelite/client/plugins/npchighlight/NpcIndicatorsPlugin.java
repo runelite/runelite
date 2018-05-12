@@ -56,7 +56,7 @@ import net.runelite.client.util.WildcardMatcher;
 public class NpcIndicatorsPlugin extends Plugin
 {
 	// Option added to NPC menu
-	private static final String TAG = "Tag";
+	private static final String TAG = "Toggle tag";
 
 	// Regex for splitting the hidden items in the config.
 	private static final String DELIMITER_REGEX = "\\s*,\\s*";

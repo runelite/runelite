@@ -64,7 +64,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
-	private static final String MARK = "Mark tile";
+	private static final String MARK = "Toggle mark tile";
 	private static final String WALK_HERE = "Walk here";
 
 	private static final Gson gson = new Gson();
