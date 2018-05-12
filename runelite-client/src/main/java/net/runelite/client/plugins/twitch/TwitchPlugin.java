@@ -139,6 +139,8 @@ public class TwitchPlugin extends Plugin
                 message = message + arg + " ";
             }
 
+            //Spare your eyes, look away from the if statements
+            //You have been warned
             irc.sendMessage("#" + config.nickName(), message);
             //Echos the message back in in-game chat
             if(irc.getChannels().toString().contains("#" + config.nickName()))
@@ -152,24 +154,39 @@ public class TwitchPlugin extends Plugin
                 else if (client.getGameState().equals(GameState.LOGGED_IN ) && (subscribed && subsOnly))
                 {
                     client.addChatMessage(ChatMessageType.TRADE, "",
-                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
+                            "<col=000000>[</col><col=3D2BAD>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
                 }
                 //If the user is logged in, the chat is in subs only mode and they are not a subscriber
+                else if (client.getGameState().equals(GameState.LOGGED_IN ) && (!subscribed && subsOnly) && isChatboxTransparent())
+                {
+                    client.addChatMessage(ChatMessageType.TRADE, "",
+                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=3D2BAD>This channel is in Subscriber only mode!</col>", "Twitch");
+                }
                 else if (client.getGameState().equals(GameState.LOGGED_IN ) && (!subscribed && subsOnly))
                 {
                     client.addChatMessage(ChatMessageType.TRADE, "",
-                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=ff0000>This channel is in Subscriber only mode!</col>", "Twitch");
+                            "<col=000000>[</col><col=3D2BAD>Twitch</col>] Notification: <col=3D2BAD>This channel is in Subscriber only mode!</col>", "Twitch");
+                }
+                else if(client.getGameState().equals(GameState.LOGGED_IN ) && emoteOnly && (mod || broadcaster) && isChatboxTransparent())
+                {
+                    client.addChatMessage(ChatMessageType.TRADE, "",
+                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
                 }
                 else if(client.getGameState().equals(GameState.LOGGED_IN ) && emoteOnly && (mod || broadcaster))
                 {
                     client.addChatMessage(ChatMessageType.TRADE, "",
-                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
+                            "<col=000000>[</col><col=3D2BAD>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
                 }
                 //If the chat is in emote only mode
+                else if (client.getGameState().equals(GameState.LOGGED_IN ) && emoteOnly && isChatboxTransparent())
+                {
+                    client.addChatMessage(ChatMessageType.TRADE, "",
+                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=3D2BAD>This channel is in emote only mode!<br><col=3D2BAD>Function coming soon to a Runelite client near you.</col>", "Twitch");
+                }
                 else if (client.getGameState().equals(GameState.LOGGED_IN ) && emoteOnly)
                 {
                     client.addChatMessage(ChatMessageType.TRADE, "",
-                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=ff0000>This channel is in emote only mode!<br><col=ff0000>Function coming soon to a Runelite client near you.</col>", "Twitch");
+                            "<col=000000>[</col><col=3D2BAD>Twitch</col>] Notification: <col=3D2BAD>This channel is in emote only mode!<br><col=3D2BAD>Function coming soon to a Runelite client near you.</col>", "Twitch");
                 }
                 //If chat is transparent and there are no room states
                 else if(client.getGameState().equals(GameState.LOGGED_IN) && isChatboxTransparent())
@@ -181,7 +198,7 @@ public class TwitchPlugin extends Plugin
                 else if(client.getGameState().equals(GameState.LOGGED_IN))
                 {
                     client.addChatMessage(ChatMessageType.TRADE, "",
-                            "<col=ffffff>[</col><col=9070ff>Twitch</col>] " + badges +  config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
+                            "<col=000000>[</col><col=3D2BAD>Twitch</col>] " + badges +  config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
                 }
             }
         }
@@ -244,7 +261,7 @@ public class TwitchPlugin extends Plugin
         else if (client.getGameState().equals(GameState.LOGGED_IN))
         {
             client.addChatMessage(ChatMessageType.TRADE, "",
-                    "<col=ffffff>[</col><col=9070ff>Twitch</col>] " + username + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
+                    "<col=000000>[</col><col=3D2BAD>Twitch</col>] " + username + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
         }
     }
 
@@ -254,7 +271,6 @@ public class TwitchPlugin extends Plugin
     public void onUserStateEvent(UserStateEvent u)
     {
         String originalMessage = u.getOriginalMessage().toString();
-        System.out.println(originalMessage);
         badges = "";
 
         //Finding if the user is a subscriber
@@ -321,7 +337,6 @@ public class TwitchPlugin extends Plugin
     public void onRoomStateEvent(RoomStateEvent r)
     {
         String originalMessage = r.getOriginalMessage().toString();
-        System.out.println(originalMessage);
         //Checking if the subs-only state has changed
         if (originalMessage.contains("subs-only=1"))
         {
@@ -366,7 +381,7 @@ public class TwitchPlugin extends Plugin
             else if(client.getGameState().equals(GameState.LOGGED_IN))
             {
                 client.addChatMessage(ChatMessageType.TRADE, "",
-                        "<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=" + Integer.toHexString(config.subsOColor().getRGB() & 0xFFFFFF) + ">" + newSubMessage + "</col>", "Twitch");
+                        "<col=000000>[</col><col=ff0000>Twitch</col>] Notification: <col=" + Integer.toHexString(config.subsOColor().getRGB() & 0xFFFFFF) + ">" + newSubMessage + "</col>", "Twitch");
             }
         }
     }
