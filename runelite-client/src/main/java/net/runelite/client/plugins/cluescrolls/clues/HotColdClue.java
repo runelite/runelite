@@ -248,11 +248,11 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public void update(final String message, final ClueScrollPlugin plugin)
+	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
 		if (!message.startsWith("The device is"))
 		{
-			return;
+			return false;
 		}
 
 		Matcher m1 = FINAL_STRANGE_DEVICE_MESSAGE.matcher(message);
@@ -268,6 +268,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			if (localWorld != null)
 			{
 				markFinalSpot(localWorld);
+				return true;
 			}
 		}
 		else if (m2.find())
@@ -279,6 +280,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			if (localWorld != null)
 			{
 				updatePossibleArea(localWorld, temperature, difference);
+				return true;
 			}
 		}
 		else if (m3.find())
@@ -289,8 +291,11 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			if (localWorld != null)
 			{
 				updatePossibleArea(localWorld, temperature, "");
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	@Override
