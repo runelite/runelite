@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * All rights reserved.
@@ -67,6 +68,54 @@ public interface DailyTasksConfig extends Config
 		position = 3
 	)
 	default boolean showEssence()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
+		keyName = "showSand",
+		name = "Show Claimable Sand",
+		description = "Configures whether or not to show a message when you can" +
+			" collect your daily sand from bert",
+		position = 4
+	)
+	default boolean showSand()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
+		keyName = "showRunes",
+		name = "Show Claimable Runes",
+		description = "Configures whether or not to show a message when you can" +
+			" collect your daily runes from Lundail",
+		position = 5
+	)
+	default boolean showRunes()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
+		keyName = "showFlax",
+		name = "Show Claimable Flax",
+		description = "Configures whether or not to show a message when you can" +
+			" collect your daily flax from the Flax Keeper",
+		position = 6
+	)
+	default boolean showFlax()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
+		keyName = "showBonemeal",
+		name = "Show Claimable Bonemeal",
+		description = "Configures whether or not to show a message when you can" +
+			" collect your daily BoneMeal from Robin",
+		position = 7
+	)
+	default boolean showBoneMeal()
 	{
 		return true;
 	}
