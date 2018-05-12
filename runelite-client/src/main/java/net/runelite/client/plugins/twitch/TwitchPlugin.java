@@ -66,7 +66,8 @@ public class TwitchPlugin extends Plugin
 		try
 		{
 			twitchShutdown(irc);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			log.debug("No chat yet");
 		}
@@ -79,7 +80,8 @@ public class TwitchPlugin extends Plugin
 		try
 		{
 			twitchShutdown(irc);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			log.debug("No chat yet");
 		}
@@ -93,7 +95,8 @@ public class TwitchPlugin extends Plugin
 			try
 			{
 				twitchShutdown(irc);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				log.debug("No chat yet");
 			}
@@ -162,15 +165,18 @@ public class TwitchPlugin extends Plugin
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
 							"<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=3D2BAD>This channel is in Subscriber only mode!</col>", "Twitch");
-				} else if (client.getGameState().equals(GameState.LOGGED_IN) && (!subscribed && subsOnly))
+				}
+				else if (client.getGameState().equals(GameState.LOGGED_IN) && (!subscribed && subsOnly))
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
 							"<col=000000>[</col><col=3D2BAD>Twitch</col>] Notification: <col=3D2BAD>This channel is in Subscriber only mode!</col>", "Twitch");
-				} else if (client.getGameState().equals(GameState.LOGGED_IN) && emoteOnly && (mod || broadcaster) && isChatboxTransparent())
+				}
+				else if (client.getGameState().equals(GameState.LOGGED_IN) && emoteOnly && (mod || broadcaster) && isChatboxTransparent())
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
 							"<col=ffffff>[</col><col=9070ff>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
-				} else if (client.getGameState().equals(GameState.LOGGED_IN) && emoteOnly && (mod || broadcaster))
+				}
+				else if (client.getGameState().equals(GameState.LOGGED_IN) && emoteOnly && (mod || broadcaster))
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
 							"<col=000000>[</col><col=3D2BAD>Twitch</col>] " + badges + config.channelName() + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
@@ -180,7 +186,8 @@ public class TwitchPlugin extends Plugin
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
 							"<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=3D2BAD>This channel is in emote only mode!<br><col=3D2BAD>Function coming soon to a Runelite client near you.</col>", "Twitch");
-				} else if (client.getGameState().equals(GameState.LOGGED_IN) && emoteOnly)
+				}
+				else if (client.getGameState().equals(GameState.LOGGED_IN) && emoteOnly)
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
 							"<col=000000>[</col><col=3D2BAD>Twitch</col>] Notification: <col=3D2BAD>This channel is in emote only mode!<br><col=3D2BAD>Function coming soon to a Runelite client near you.</col>", "Twitch");
@@ -217,19 +224,24 @@ public class TwitchPlugin extends Plugin
 		if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/0"))
 		{
 			username = "<img=9>" + username;
-		} else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/3"))
+		}
+		else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/3"))
 		{
 			username = "<img=8>" + username;
-		} else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/6"))
+		}
+		else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/6"))
 		{
 			username = "<img=7>" + username;
-		} else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/12"))
+		}
+		else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/12"))
 		{
 			username = "<img=6>" + username;
-		} else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/24"))
+		}
+		else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/24"))
 		{
 			username = "<img=5>" + username;
-		} else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/48"))
+		}
+		else if (a.getOriginalMessages().get(0).getTag("badges").toString().contains("subscriber/48"))
 		{
 			username = "<img=4>" + username;
 		}
@@ -252,7 +264,8 @@ public class TwitchPlugin extends Plugin
 		{
 			client.addChatMessage(ChatMessageType.TRADE, "",
 					"<col=ffffff>[</col><col=9070ff>Twitch</col>] " + username + ": <col=" + Integer.toHexString(config.chatTColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
-		} else if (client.getGameState().equals(GameState.LOGGED_IN))
+		}
+		else if (client.getGameState().equals(GameState.LOGGED_IN))
 		{
 			client.addChatMessage(ChatMessageType.TRADE, "",
 					"<col=000000>[</col><col=3D2BAD>Twitch</col>] " + username + ": <col=" + Integer.toHexString(config.chatOColor().getRGB() & 0xFFFFFF) + ">" + message + "</col>", "Twitch");
@@ -276,24 +289,30 @@ public class TwitchPlugin extends Plugin
 				if (originalMessage.contains("subscriber/0"))
 				{
 					badges = "<img=9>" + badges;
-				} else if (originalMessage.contains("subscriber/3"))
+				}
+				else if (originalMessage.contains("subscriber/3"))
 				{
 					badges = "<img=8>" + badges;
-				} else if (originalMessage.contains("subscriber/6"))
+				}
+				else if (originalMessage.contains("subscriber/6"))
 				{
 					badges = "<img=7>" + badges;
-				} else if (originalMessage.contains("subscriber/12"))
+				}
+				else if (originalMessage.contains("subscriber/12"))
 				{
 					badges = "<img=6>" + badges;
-				} else if (originalMessage.contains("subscriber/24"))
+				}
+				else if (originalMessage.contains("subscriber/24"))
 				{
 					badges = "<img=5>" + badges;
-				} else if (originalMessage.contains("subscriber/48"))
+				}
+				else if (originalMessage.contains("subscriber/48"))
 				{
 					badges = "<img=4>" + badges;
 				}
 			}
-		} else
+		}
+		else
 		{
 			subscribed = false;
 		}
@@ -303,7 +322,8 @@ public class TwitchPlugin extends Plugin
 		{
 			mod = true;
 			badges = "<img=26>" + badges;
-		} else
+		}
+		else
 		{
 			mod = false;
 		}
@@ -312,7 +332,8 @@ public class TwitchPlugin extends Plugin
 		{
 			broadcaster = true;
 			badges = "<img=27>" + badges;
-		} else
+		}
+		else
 		{
 			broadcaster = false;
 		}
@@ -327,7 +348,8 @@ public class TwitchPlugin extends Plugin
 		if (originalMessage.contains("subs-only=1"))
 		{
 			subsOnly = true;
-		} else
+		}
+		else
 		{
 			subsOnly = false;
 		}
@@ -336,7 +358,8 @@ public class TwitchPlugin extends Plugin
 		if (originalMessage.contains("emote-only=1"))
 		{
 			emoteOnly = true;
-		} else
+		}
+		else
 		{
 			emoteOnly = false;
 		}
@@ -361,7 +384,8 @@ public class TwitchPlugin extends Plugin
 			{
 				client.addChatMessage(ChatMessageType.TRADE, "",
 						"<col=ffffff>[</col><col=9070ff>Twitch</col>] Notification: <col=" + Integer.toHexString(config.subsTColor().getRGB() & 0xFFFFFF) + "><b>" + newSubMessage + "</b></col>", "Twitch");
-			} else if (client.getGameState().equals(GameState.LOGGED_IN))
+			}
+			else if (client.getGameState().equals(GameState.LOGGED_IN))
 			{
 				client.addChatMessage(ChatMessageType.TRADE, "",
 						"<col=000000>[</col><col=ff0000>Twitch</col>] Notification: <col=" + Integer.toHexString(config.subsOColor().getRGB() & 0xFFFFFF) + ">" + newSubMessage + "</col>", "Twitch");
