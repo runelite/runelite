@@ -48,7 +48,7 @@ class HerbiboarOverlay extends Overlay
 	public HerbiboarOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.BELOW_OBJECTS);
 		this.plugin = plugin;
 		this.config = config;
 	}

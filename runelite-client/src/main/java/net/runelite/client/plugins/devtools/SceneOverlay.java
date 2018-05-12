@@ -68,7 +68,7 @@ public class SceneOverlay extends Overlay
 	public SceneOverlay(Client client, DevToolsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.BELOW_OBJECTS);
 		this.client = client;
 		this.plugin = plugin;
 	}

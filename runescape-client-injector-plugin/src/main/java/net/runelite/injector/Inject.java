@@ -46,6 +46,7 @@ import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
+import net.runelite.injector.raw.DrawUnderObjects;
 import net.runelite.injector.raw.ScriptVM;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
@@ -71,6 +72,7 @@ public class Inject
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
 	private final ScriptVM scriptVM = new ScriptVM(this);
+	private final DrawUnderObjects drawUnderObjects = new DrawUnderObjects(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -321,6 +323,7 @@ public class Inject
 
 		drawAfterWidgets.inject();
 		scriptVM.inject();
+		drawUnderObjects.inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
@@ -607,5 +610,114 @@ public class Inject
 	public ClassGroup getVanilla()
 	{
 		return vanilla;
+	}
+
+	/**
+	 * Find a method in any class by it's "obfuscated" name. Typically used
+	 * to find methods from Mixins
+	 */
+	public Method findObMethod(String name) throws InjectionException
+	{
+		for (ClassFile c : getVanilla().getClasses())
+		{
+			for (Method m : c.getMethods())
+			{
+				if (!m.getName().equals(name))
+				{
+					continue;
+				}
+				return m;
+			}
+		}
+
+		throw new InjectionException(String.format("Method \"%s\" could not be found.", name));
+	}
+
+	/**
+	 * Find a field in any class by it's "obfuscated" name. Typically used
+	 * to find fields from Mixins
+	 */
+	public Field findObField(String name) throws InjectionException
+	{
+		for (ClassFile c : getVanilla().getClasses())
+		{
+			for (Field f : c.getFields())
+			{
+				if (!f.getName().equals(name))
+				{
+					continue;
+				}
+				return f;
+			}
+		}
+
+		throw new InjectionException(String.format("Field \"%s\" could not be found.", name));
+	}
+
+
+	/**
+	 * Find a method in any class by it's deobfuscated name. Used to find
+	 * methods <code>@Export</code>ed in the deobfuscated client
+	 */
+	public Method findDeobMethod(String name) throws InjectionException
+	{
+		return findDeobMethod(null, name);
+	}
+
+	/**
+	 * Find a method in the named class by it's deobfuscated name. Used to find
+	 * methods <code>@Export</code>ed in the deobfuscated client
+	 */
+	public Method findDeobMethod(String clazz, String name) throws InjectionException
+	{
+		for (ClassFile c : getDeobfuscated().getClasses())
+		{
+			if (clazz != null && !c.getName().equals(clazz))
+			{
+				continue;
+			}
+
+			for (Method m : c.getMethods())
+			{
+				if (!m.getName().equals(name))
+				{
+					continue;
+				}
+
+				String obfuscatedName = DeobAnnotations.getObfuscatedName(m.getAnnotations());
+				Signature obfuscatedSignature = DeobAnnotations.getObfuscatedSignature(m);
+
+				ClassFile c2 = toObClass(c);
+
+				return c2.findMethod(obfuscatedName, (obfuscatedSignature != null) ? obfuscatedSignature : m.getDescriptor());
+			}
+		}
+
+		throw new InjectionException(String.format("Method \"%s\" could not be found.", name));
+	}
+
+	/**
+	 * Find a field in any class by it's deobfuscated name. Used to find
+	 * fields <code>@Export</code>ed in the deobfuscated client
+	 */
+	public Field findDeobField(String name) throws InjectionException
+	{
+		for (ClassFile c : getDeobfuscated().getClasses())
+		{
+			for (Field f : c.getFields())
+			{
+				if (!f.getName().equals(name))
+				{
+					continue;
+				}
+
+				String obfuscatedName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
+
+				ClassFile c2 = toObClass(c);
+				return c2.findField(obfuscatedName);
+			}
+		}
+
+		throw new InjectionException(String.format("Mapped field \"%s\" could not be found.", name));
 	}
 }

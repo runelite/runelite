@@ -49,7 +49,7 @@ class FishingSpotOverlay extends Overlay
 	public FishingSpotOverlay(FishingPlugin plugin, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.BELOW_OBJECTS);
 		this.plugin = plugin;
 		this.config = config;
 	}

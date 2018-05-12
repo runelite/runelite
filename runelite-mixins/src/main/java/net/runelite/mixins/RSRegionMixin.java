@@ -30,6 +30,7 @@ import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
+import net.runelite.client.callback.Hooks;
 import net.runelite.rs.api.RSDecorativeObject;
 import net.runelite.rs.api.RSGroundObject;
 import net.runelite.rs.api.RSItemLayer;
@@ -48,6 +49,7 @@ public abstract class RSRegionMixin implements RSRegion
 	@Replace("drawRegion")
 	void rl$drawRegion(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
+		Hooks.beforeDrawRegion();
 		try
 		{
 			isDrawingRegion = true;
@@ -57,6 +59,7 @@ public abstract class RSRegionMixin implements RSRegion
 		{
 			isDrawingRegion = false;
 		}
+		Hooks.afterDrawRegion();
 	}
 
 	@Copy("addBoundaryDecoration")

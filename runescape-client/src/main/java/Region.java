@@ -1053,10 +1053,6 @@ public class Region {
 
    @ObfuscatedName("aa")
    @Export("drawRegion")
-   @Hook(
-      value = "drawRegion",
-      end = true
-   )
    public void drawRegion(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 < 0) {
          var1 = 0;

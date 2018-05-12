@@ -607,7 +607,7 @@ public class MixinInjector
 		}
 	}
 
-	private void moveCode(Method method, Code code)
+	public static void moveCode(Method method, Code code)
 	{
 		Code newCode = new Code(method);
 		newCode.setMaxStack(code.getMaxStack());

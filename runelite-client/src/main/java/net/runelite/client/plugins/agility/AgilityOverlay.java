@@ -54,7 +54,7 @@ public class AgilityOverlay extends Overlay
 	public AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.BELOW_OBJECTS);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
