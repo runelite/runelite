@@ -365,7 +365,7 @@ public class RaidsPlugin extends Plugin
 			Matcher m = ROTATION_REGEX.matcher(input);
 			while (m.find())
 			{
-				String rotation = m.group(1).toLowerCase();
+				String rotation = m.group(1).toLowerCase().replaceAll(" ", "");
 
 				if (!list.contains(rotation))
 				{
@@ -388,41 +388,46 @@ public class RaidsPlugin extends Plugin
 				.refreshAll();
 	}
 
-	public int getRotationMatches()
+	public boolean isRotationWhitelisted()
 	{
 		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
 
 		if (rotationWhitelist.contains(rotation))
 		{
-			return bosses.length;
+			return true;
 		}
 
+		String[] bosses = rotation.split(SPLIT_REGEX);
 		for (String whitelisted : rotationWhitelist)
 		{
-			int matches = 0;
 			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
 
-			for (int i = 0; i < whitelistedBosses.length; i++)
+			if (bosses.length >= whitelistedBosses.length)
 			{
-				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
-				{
-					matches++;
-				}
-				else
-				{
-					matches = 0;
-					break;
-				}
+				continue;
 			}
 
-			if (matches >= 2)
+			boolean matches = false;
+
+			for (int i = 0; i < bosses.length; i++)
 			{
-				return matches;
+				if (!whitelistedBosses[i].equals(bosses[i]))
+				{
+					matches = false;
+					break;
+				}
+
+				matches = true;
+			}
+
+			if (matches)
+			{
+				return true;
 			}
 		}
 
-		return 0;
+
+		return false;
 	}
 
 	private Point findLobbyBase()
