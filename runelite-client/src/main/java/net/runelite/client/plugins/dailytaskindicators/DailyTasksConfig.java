@@ -27,6 +27,7 @@ package net.runelite.client.plugins.dailytaskindicators;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
 
 @ConfigGroup(
 	keyName = "dailytaskindicators",
@@ -69,5 +70,27 @@ public interface DailyTasksConfig extends Config
 	default boolean showEssence()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "dailyTaskColor",
+		name = "Color",
+		description = "Choose what color the daily task messages will be",
+		position = 4
+	)
+	default Color dailyTaskColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "dailyTaskColorTransparent",
+		name = "Color (Transparent Chat)",
+		description = "Choose what color the daily task messages will be in the transparent chatbox",
+		position = 5
+	)
+	default Color dailyTaskColorTransparent()
+	{
+		return Color.RED;
 	}
 }

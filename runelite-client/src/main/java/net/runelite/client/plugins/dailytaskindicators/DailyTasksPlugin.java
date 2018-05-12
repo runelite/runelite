@@ -27,7 +27,6 @@ package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -99,6 +98,10 @@ public class DailyTasksPlugin extends Plugin
 			{
 				hasSentEssenceMsg = false;
 			}
+			else if (event.getKey().equals("dailyTaskColor") || event.getKey().equals("dailyTaskColorTransparent"))
+			{
+				cacheColors();
+			}
 		}
 	}
 
@@ -145,7 +148,9 @@ public class DailyTasksPlugin extends Plugin
 
 	private void cacheColors()
 	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.GAME).refreshAll();
+		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.dailyTaskColor(), false), ChatMessageType.GAME);
+		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.dailyTaskColorTransparent(), true), ChatMessageType.GAME);
+		chatMessageManager.refreshAll();
 	}
 
 	private void sendChatMessage(String chatMessage)
