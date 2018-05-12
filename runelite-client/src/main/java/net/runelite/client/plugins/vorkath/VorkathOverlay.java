@@ -1,7 +1,10 @@
 package net.runelite.client.plugins.vorkath;
 
+import com.google.common.eventbus.Subscribe;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -17,102 +20,99 @@ public class VorkathOverlay extends Overlay {
     private Client client;
 
     @Inject
-    private VorkathPlugin vorkathPlugin;
+    private VorkathPlugin plugin;
 
     private LocalPoint fireballProjectileLocation;
     private LocalPoint spiderProjectileLocation;
 
-    private static BufferedImage FIREBALLS;
-
-
     private boolean fireballProjectileEnded = true;
     private boolean spiderProjectileEnded = true;
 
-    static {
-        try {
-            FIREBALLS = ImageIO.read(VorkathPlugin.class.getResourceAsStream("fireball.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
-    public Dimension render(Graphics2D graphics)
-    {
+    public Dimension render(Graphics2D graphics) {
 
-        renderFireball(graphics);
-        renderSpider(graphics);
+        renderProjectiles(graphics);
 
         return null;
     }
-// y trop grand
-    private void renderFireball(Graphics2D graphics) {
-        for (Projectile projectile : client.getProjectiles()) {
-            if (projectile.getId() == ProjectileID.VORKATH_BOMB_AOE) {
-                if (fireballProjectileEnded) {
-                    System.out.println(projectile.getX1());
-                    System.out.println(((int) (projectile.getVelocityX() * 120)));
-                    System.out.println(((int)(projectile.getScalar() * projectile.getVelocityX())));
-                    System.out.println(projectile.getY1());
-                    System.out.println(((int)(projectile.getVelocityY() * 120)) - 135);
-                    fireballProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (projectile.getVelocityX() * 120)) - ((int)(projectile.getScalar() * projectile.getVelocityX()))
-                            , projectile.getY1() + ((int)(projectile.getVelocityY() * 120)) - 135);
-                    fireballProjectileEnded = false;
-                }
 
-                System.out.println("Projectile start X: " + projectile.getX1());
-                System.out.println("Projectile start Y: " + projectile.getY1());
-                System.out.println("Projectile velocity X: " + projectile.getVelocityX());
-                System.out.println("Projectile velocity Y: " + projectile.getVelocityY());
-                System.out.println("Projectile expected X: " + fireballProjectileLocation.getX());
-                System.out.println("Projectile expected Y: " + fireballProjectileLocation.getY());
-                System.out.println("Player X: " + client.getLocalPlayer().getLocalLocation().getX());
-                System.out.println("Player Y: " + client.getLocalPlayer().getLocalLocation().getY());
-                System.out.println(projectile.getScalar());
-                System.out.println();
+    private void renderProjectiles(Graphics2D graphics) {
+        Projectile projectile = plugin.getCurrentProjectile();
+        LocalPoint projectileLocation = plugin.getCurrentProjectileLocation();
 
-                Polygon poly = Perspective.getCanvasTilePoly(client, fireballProjectileLocation);
-                OverlayUtil.renderTileOverlay(client, graphics, fireballProjectileLocation, FIREBALLS, Color.RED);
+        if (projectile == null)
+            return;
 
-                /*if (poly != null)
-                    OverlayUtil.renderPolygon(graphics, poly, Color.red);*/
-            } else
-                fireballProjectileEnded = true;
+        if (projectile.getId() == ProjectileID.VORKATH_BOMB_AOE) {
+            renderFireBall(graphics);
+        } else if (projectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
+            renderSpider(graphics);
+        } else {
+
         }
     }
+
+    private void renderFireBall(Graphics2D graphics) {
+        /*if (fireballProjectileEnded) {
+            System.out.println(projectile.getX1());
+            System.out.println(((int) (projectile.getVelocityX() * 120)));
+            System.out.println(((int) (projectile.getScalar() * projectile.getVelocityX())));
+            System.out.println(projectile.getY1());
+            System.out.println(((int) (projectile.getVelocityY() * 120)) - 135);
+            fireballProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (projectile.getVelocityX() * 120)) - ((int) (projectile.getScalar() * projectile.getVelocityX()))
+                    , projectile.getY1() + ((int) (projectile.getVelocityY() * 120)) - 135);
+            fireballProjectileEnded = false;
+        }
+
+        System.out.println("Projectile start X: " + projectile.getX1());
+        System.out.println("Projectile start Y: " + projectile.getY1());
+        System.out.println("Projectile velocity X: " + projectile.getVelocityX());
+        System.out.println("Projectile velocity Y: " + projectile.getVelocityY());
+        System.out.println("Projectile expected X: " + fireballProjectileLocation.getX());
+        System.out.println("Projectile expected Y: " + fireballProjectileLocation.getY());
+        System.out.println("Player X: " + client.getLocalPlayer().getLocalLocation().getX());
+        System.out.println("Player Y: " + client.getLocalPlayer().getLocalLocation().getY());
+        System.out.println(projectile.getScalar());
+        System.out.println();*/
+
+        LocalPoint location = new LocalPoint(plugin.getCurrentProjectileLocation().getX(), plugin.getCurrentProjectileLocation().getY());
+        fireballProjectileLocation = location;
+
+        Polygon poly = Perspective.getCanvasTilePoly(client, fireballProjectileLocation);
+
+        if (poly != null)
+            OverlayUtil.renderPolygon(graphics, poly, Color.red);
+    }
+
     // y trop grand
     private void renderSpider(Graphics2D graphics) {
-        for (Projectile projectile : client.getProjectiles()) {
-            if (projectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
-                if (spiderProjectileEnded) {
-                    System.out.println(projectile.getX1());
-                    System.out.println(((int) (projectile.getVelocityX() * 120)));
-                    System.out.println(((int)(projectile.getScalar() * projectile.getVelocityX())));
-                    System.out.println(projectile.getY1());
-                    System.out.println(((int)(projectile.getVelocityY() * 120)) - 135);
+        /*if (spiderProjectileEnded) {
+            System.out.println(projectile.getX1());
+            System.out.println(((int) (projectile.getVelocityX() * 120)));
+            System.out.println(((int) (projectile.getScalar() * projectile.getVelocityX())));
+            System.out.println(projectile.getY1());
+            System.out.println(((int) (projectile.getVelocityY() * 120)) - 135);
 
-                    spiderProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (projectile.getVelocityX() * 120)) - ((int)(projectile.getScalar() * projectile.getVelocityX()))
-                            , projectile.getY1() + ((int)(projectile.getVelocityY() * 120)) - 135);
-                    spiderProjectileEnded = false;
-                }
-
-                System.out.println("Projectile start X: " + projectile.getX1());
-                System.out.println("Projectile start Y: " + projectile.getY1());
-                System.out.println("Projectile velocity X: " + projectile.getVelocityX());
-                System.out.println("Projectile velocity Y: " + projectile.getVelocityY());
-                System.out.println("Projectile expected X: " + spiderProjectileLocation.getX());
-                System.out.println("Projectile expected Y: " + spiderProjectileLocation.getY());
-                System.out.println("Projectile cycles: " + projectile.getRemainingCycles());
-                System.out.println(projectile.getScalar());
-                System.out.println();
-
-                //Polygon poly = Perspective.getCanvasTilePoly(client, projectileLocation);
-                OverlayUtil.renderTileOverlay(client, graphics, spiderProjectileLocation, FIREBALLS, Color.RED);
-
-                /*if (poly != null)
-                    OverlayUtil.renderPolygon(graphics, poly, Color.red);*/
-            } else
-                spiderProjectileEnded = true;
+            spiderProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (projectile.getVelocityX() * 120)) - ((int) (projectile.getScalar() * projectile.getVelocityX()))
+                    , projectile.getY1() + ((int) (projectile.getVelocityY() * 120)) - ((int) (projectile.getScalar() * projectile.getVelocityY())));
+            spiderProjectileEnded = false;
         }
+
+        System.out.println("Projectile start X: " + projectile.getX1());
+        System.out.println("Projectile start Y: " + projectile.getY1());
+        System.out.println("Projectile velocity X: " + projectile.getVelocityX());
+        System.out.println("Projectile velocity Y: " + projectile.getVelocityY());
+        System.out.println("Projectile expected X: " + spiderProjectileLocation.getX());
+        System.out.println("Projectile expected Y: " + spiderProjectileLocation.getY());
+        System.out.println("Projectile cycles: " + projectile.getRemainingCycles());
+        System.out.println(projectile.getScalar());
+        System.out.println();*/
+
+        spiderProjectileLocation = plugin.getCurrentProjectileLocation();
+        Polygon poly = Perspective.getCanvasTilePoly(client, spiderProjectileLocation);
+
+        if (poly != null)
+            OverlayUtil.renderPolygon(graphics, poly, Color.red);
     }
 }
+
