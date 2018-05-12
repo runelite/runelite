@@ -61,7 +61,7 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentFlaxMsg, hasSentRunesMsg,  hasSentBoneMealMsg, hasSentSandMsg;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -72,14 +72,14 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentFlaxMsg = hasSentRunesMsg = hasSentBoneMealMsg = hasSentSandMsg = false;
 		cacheColors();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentFlaxMsg = hasSentRunesMsg = hasSentBoneMealMsg = hasSentSandMsg = false;
 	}
 
 	@Subscribe
@@ -99,6 +99,22 @@ public class DailyTasksPlugin extends Plugin
 			{
 				hasSentEssenceMsg = false;
 			}
+			else if (event.getKey().equals("showRunes"))
+			{
+				hasSentRunesMsg = false;
+			}
+			else if (event.getKey().equals("showBoneMeal"))
+			{
+				hasSentBoneMealMsg = false;
+			}
+			else if (event.getKey().equals("showSand"))
+			{
+				hasSentSandMsg = false;
+			}
+			else if (event.getKey().equals("showFlax"))
+			{
+				hasSentFlaxMsg = false;
+			}
 		}
 	}
 
@@ -111,6 +127,26 @@ public class DailyTasksPlugin extends Plugin
 			{
 				sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
 				hasSentHerbMsg = true;
+			}
+			if (config.showFlax() && !hasSentFlaxMsg && checkCanCollectFlax())
+			{
+				sendChatMessage("You have flax waiting to be collected from the Flax Keeper.");
+				hasSentFlaxMsg = true;
+			}
+			if (config.showSand() && !hasSentSandMsg && checkCanCollectSand())
+			{
+				sendChatMessage("You have sand waiting to be collect from Bert.");
+				hasSentSandMsg = true;
+			}
+			if (config.showBoneMeal() && !hasSentBoneMealMsg && checkCanCollectBoneMeal())
+			{
+				sendChatMessage("You have bonemeal waiting to be collected from Robin.");
+				hasSentBoneMealMsg = true;
+			}
+			if (config.showRunes() && !hasSentRunesMsg && checkCanCollectRunes())
+			{
+				sendChatMessage("You have runes waiting to be collect from Lundail.");
+				hasSentSandMsg = true;
 			}
 			if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
 			{
@@ -142,6 +178,31 @@ public class DailyTasksPlugin extends Plugin
 		int value = client.getVar(Varbits.DAILY_ESSENCE);
 		return value == 0; // 1 = can't claim
 	}
+	
+	private boolean checkCanCollectFlax()
+	{
+		int value = client.getVar(Varbits.DAILY_FLAX);
+		return value == 0; // 1 = can't claim
+	}
+
+	private boolean checkCanCollectRunes()
+	{
+		int value = client.getVar(Varbits.DAILY_RUNES);
+		return value == 0; // 1 = can't claim
+	}
+
+	private boolean checkCanCollectBoneMeal()
+	{
+		int value = client.getVar(Varbits.DAILY_BONEMEAL);
+		return value == 0; // 1 = can't claim
+	}
+
+	private boolean checkCanCollectSand()
+	{
+		int value = client.getVar(Varbits.DAILY_SAND);
+		return value == 0; // 1 = can't claim
+	}
+
 
 	private void cacheColors()
 	{
