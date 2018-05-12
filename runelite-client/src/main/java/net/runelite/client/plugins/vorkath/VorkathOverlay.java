@@ -50,8 +50,13 @@ public class VorkathOverlay extends Overlay {
         for (Projectile projectile : client.getProjectiles()) {
             if (projectile.getId() == ProjectileID.VORKATH_BOMB_AOE) {
                 if (fireballProjectileEnded) {
-                    fireballProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (Math.floor((projectile.getVelocityX() * 120))) - ((int)(Math.floor(Math.ceil(projectile.getScalar()) * Math.ceil(projectile.getVelocityX())))))
-                            , projectile.getY1() + ((int)(projectile.getVelocityY()) * 120) - 135);
+                    System.out.println(projectile.getX1());
+                    System.out.println(((int) (projectile.getVelocityX() * 120)));
+                    System.out.println(((int)(projectile.getScalar() * projectile.getVelocityX())));
+                    System.out.println(projectile.getY1());
+                    System.out.println(((int)(projectile.getVelocityY() * 120)) - 135);
+                    fireballProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (projectile.getVelocityX() * 120)) - ((int)(projectile.getScalar() * projectile.getVelocityX()))
+                            , projectile.getY1() + ((int)(projectile.getVelocityY() * 120)) - 135);
                     fireballProjectileEnded = false;
                 }
 
@@ -75,13 +80,19 @@ public class VorkathOverlay extends Overlay {
                 fireballProjectileEnded = true;
         }
     }
-    // x trop grand
+    // y trop grand
     private void renderSpider(Graphics2D graphics) {
         for (Projectile projectile : client.getProjectiles()) {
             if (projectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
                 if (spiderProjectileEnded) {
-                    spiderProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (Math.floor((projectile.getVelocityX() * 120))) - ((int)(Math.ceil(Math.ceil(projectile.getScalar()) * Math.ceil(projectile.getVelocityX())))))
-                            , projectile.getY1() + ((int) (Math.floor(projectile.getVelocityY() * 120))) - ((int)Math.floor(((Math.floor(projectile.getScalar()) * Math.floor(projectile.getVelocityY()))))));
+                    System.out.println(projectile.getX1());
+                    System.out.println(((int) (projectile.getVelocityX() * 120)));
+                    System.out.println(((int)(projectile.getScalar() * projectile.getVelocityX())));
+                    System.out.println(projectile.getY1());
+                    System.out.println(((int)(projectile.getVelocityY() * 120)) - 135);
+
+                    spiderProjectileLocation = new LocalPoint(projectile.getX1() + ((int) (projectile.getVelocityX() * 120)) - ((int)(projectile.getScalar() * projectile.getVelocityX()))
+                            , projectile.getY1() + ((int)(projectile.getVelocityY() * 120)) - 135);
                     spiderProjectileEnded = false;
                 }
 
