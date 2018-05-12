@@ -172,7 +172,7 @@ public class DailyTasksPlugin extends Plugin
 	private boolean checkCanCollectHerbBox()
 	{
 		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return prevHerbVarbVal == value ? (prevHerbVarbVal = value) < 15 : false;
+		return prevHerbVarbVal != value ? (prevHerbVarbVal = value) < 15 : false;
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_VARROCK_EASY, Varbits.DIARY_VARROCK_MEDIUM, Varbits.DIARY_VARROCK_HARD, Varbits.DIARY_VARROCK_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_STAVES);
-			return prevStavesVarbVal == value ? (prevStavesVarbVal = value) == 0 : false;
+			return prevStavesVarbVal != value ? (prevStavesVarbVal = value) == 0 : false;
 		}
 		return false;
 	}
@@ -202,7 +202,7 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_ARDOUGNE_EASY, Varbits.DIARY_ARDOUGNE_MEDIUM, Varbits.DIARY_ARDOUGNE_HARD, Varbits.DIARY_ARDOUGNE_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_ESSENCE);
-			return prevEssVarbVal == value ? (prevEssVarbVal = value) == 0 : false;
+			return prevEssVarbVal != value ? (prevEssVarbVal = value) == 0 : false;
 		}
 		return false;
 	}
@@ -218,7 +218,7 @@ public class DailyTasksPlugin extends Plugin
 		if (client.getVar(Varbits.QUEST_A_HAND_IN_THE_SAND) == 160 && !didCompleteDiaries(Varbits.DIARY_ARDOUGNE_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_SAND);
-			return prevSandVarbVal == value ? (prevSandVarbVal = value) == 0 : false;
+			return prevSandVarbVal != value ? (prevSandVarbVal = value) == 0 : false;
 		}
 		return false;
 	}
@@ -237,7 +237,7 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_MORYTANIA_EASY, Varbits.DIARY_MORYTANIA_MEDIUM, Varbits.DIARY_MORYTANIA_HARD, Varbits.DIARY_MORYTANIA_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_ECTO);
-			if (prevEctoVarbVal == value ? (prevEctoVarbVal = value) == 0 : false)
+			if (prevEctoVarbVal != value ? (prevEctoVarbVal = value) == 0 : false)
 			{
 				if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
 					|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
@@ -262,7 +262,7 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_KANDARIN_EASY, Varbits.DIARY_KANDARIN_MEDIUM, Varbits.DIARY_KANDARIN_HARD, Varbits.DIARY_KANDARIN_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_BOWSTRING);
-			return prevBowstringVarbVal == value ? (prevBowstringVarbVal = value) == 0 : false;
+			return prevBowstringVarbVal != value ? (prevBowstringVarbVal = value) == 0 : false;
 		}
 		return false;
 	}
@@ -278,7 +278,7 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_WILDERNESS_EASY, Varbits.DIARY_WILDERNESS_MEDIUM, Varbits.DIARY_WILDERNESS_HARD, Varbits.DIARY_WILDERNESS_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_RUNES);
-			return prevRunesVarbVal == value ? (prevRunesVarbVal = value) == 0 : false;
+			return prevRunesVarbVal != value ? (prevRunesVarbVal = value) == 0 : false;
 		}
 		return false;
 	}
