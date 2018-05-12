@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -57,7 +58,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -86,7 +87,6 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 public class ConfigPanel extends PluginPanel
 {
-	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private static final ImageIcon CONFIG_ICON;
@@ -402,9 +402,9 @@ public class ConfigPanel extends PluginPanel
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
 
-		if (component instanceof JTextField)
+		if (component instanceof JTextArea)
 		{
-			JTextField textField = (JTextField) component;
+			JTextArea textField = (JTextArea) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
 		}
 
@@ -426,10 +426,10 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name);
+		JLabel title = new JLabel(name, SwingConstants.CENTER);
 		title.setForeground(Color.WHITE);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		add(title);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -472,7 +472,10 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextField textField = new JTextField("", TEXT_FIELD_WIDTH);
+				JTextArea textField = new JTextArea();
+				textField.setLineWrap(true);
+				textField.setWrapStyleWord(true);
+				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
 
 				textField.addFocusListener(new FocusAdapter()
@@ -485,14 +488,8 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 
-				textField.addActionListener(e ->
-				{
-					changeConfiguration(config, textField, cd, cid);
-					textField.setToolTipText(textField.getText());
-				});
-
 				textField.setToolTipText(textField.getText());
-				item.add(textField, BorderLayout.EAST);
+				item.add(textField, BorderLayout.SOUTH);
 			}
 
 			if (cid.getType() == Color.class)
