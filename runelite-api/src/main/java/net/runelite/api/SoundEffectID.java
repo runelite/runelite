@@ -50,6 +50,19 @@ public final class SoundEffectID
 	public final static int SMITH_ANVIL_TINK = 3790;
 	public final static int SMITH_ANVIL_TONK = 3791;
 
+	public final static int MAGIC_TELEPORT = 200;
+	public final static int PLAYER_ATTACK_RUBBER_CHICKEN = 354;
+
+	// Environmental sounds from NPCs like bob the cat and ducks
+	public final static int NPC_BOB_MEOW = 333;
+	public final static int NPC_DUCK_QUACK = 412;
+	public final static int NPC_DUCK_EEP = 413;
+
+	// NPC combat sounds
+	public final static int NCP_GOBLIN_DAMAGE_OUCH = 462;
+	public final static int NPC_GHAST_ATTACK_OOH = 438;
+	public final static int NPC_DEMON_DEATH_DRAMATIC = 403;
+
 	/**
 	 * Used for random event NPCs spawning, and the imp teleport
 	 */
