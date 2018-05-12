@@ -47,6 +47,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 
 	@Setter
+	private int wrapping = -1;
+
+	@Setter
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Getter
@@ -100,9 +103,10 @@ public class PanelComponent implements LayoutableRenderableEntity
 			preferredSize.width - border.x - border.width,
 			preferredSize.height - border.y - border.height);
 
-		// Render all children
-		for (final LayoutableRenderableEntity child : children)
+		for (int i = 0; i < children.size(); i ++)
 		{
+			final LayoutableRenderableEntity child = children.get(i);
+
 			child.setPreferredSize(childPreferredSize);
 			graphics.translate(x, y);
 			final Dimension childDimension = child.render(graphics);
@@ -121,6 +125,27 @@ public class PanelComponent implements LayoutableRenderableEntity
 					height = Math.max(height, childDimension.height);
 					break;
 			}
+
+			if (wrapping > 0 && i < children.size() - 1 && (i + 1)  % wrapping == 0)
+			{
+				switch (orientation)
+				{
+					case VERTICAL:
+						height = 0;
+						y = baseY;
+						x += childDimension.width;
+						width += childDimension.width;
+						break;
+					case HORIZONTAL:
+						width = 0;
+						x = baseX;
+						y += childDimension.height;
+						height += childDimension.height;
+						break;
+				}
+
+			}
+
 		}
 
 		// Remove last child gap
