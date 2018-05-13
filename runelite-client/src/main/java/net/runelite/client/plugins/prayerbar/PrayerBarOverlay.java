@@ -33,7 +33,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.*;
@@ -46,51 +45,27 @@ public class PrayerBarOverlay extends Overlay
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5); // 30x5 is the size of health bars
 
 	private final Client client;
+	private final PrayerBarPlugin plugin;
 	private final PrayerBarConfig config;
-	private Player localPlayer;
-	private boolean showPrayerBar = true;
 
 	@Inject
-	private PrayerBarOverlay(PrayerBarConfig config, Client client)
+	private PrayerBarOverlay(PrayerBarPlugin plugin, PrayerBarConfig config, Client client)
 	{
-		this.config = config;
 		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
-	public void checkToShowPrayerBar()
-	{
-		showPrayerBar = true;
-
-		localPlayer = client.getLocalPlayer();
-
-		if (localPlayer == null)
-		{
-			showPrayerBar = false;
-			return;
-		}
-
-		if (config.hideIfNotPraying() && !isAnyPrayerActive())
-		{
-			showPrayerBar = false;
-			return;
-		}
-
-		if (config.hideIfOutOfCombat() && localPlayer.getHealth() == -1)
-		{
-			showPrayerBar = false;
-		}
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (showPrayerBar)
+		if (plugin.isShowingPrayerBar())
 		{
-			return renderPrayerBar(graphics, localPlayer);
+			return renderPrayerBar(graphics, client.getLocalPlayer());
 		}
 
 		return null;
@@ -119,18 +94,5 @@ public class PrayerBarOverlay extends Overlay
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
 		return new Dimension(barWidth, barHeight);
-	}
-
-	private boolean isAnyPrayerActive()
-	{
-		for (Prayer pray : Prayer.values()) // Check if any prayers are active
-		{
-			if (client.isPrayerActive(pray))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }

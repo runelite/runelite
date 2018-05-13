@@ -54,6 +54,6 @@ public interface PrayerBarConfig extends Config
 	)
 	default boolean hideIfOutOfCombat()
 	{
-		return true;
+		return false;
 	}
 }

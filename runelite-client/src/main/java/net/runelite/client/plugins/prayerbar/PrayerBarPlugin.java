@@ -27,7 +27,10 @@ package net.runelite.client.plugins.prayerbar;
 import com.google.inject.Provides;
 import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.Prayer;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -49,6 +52,14 @@ public class PrayerBarPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Getter
+	private boolean showingPrayerBar;
+
+	@Getter
+	private boolean anyPrayerActive;
+
+	private Player localPlayer;
+
 	@Provides
 	PrayerBarConfig provideConfig(ConfigManager configManager)
 	{
@@ -64,6 +75,39 @@ public class PrayerBarPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		overlay.checkToShowPrayerBar();
+		anyPrayerActive = CheckIfAnyPrayerIsActive();
+		showingPrayerBar = true;
+
+		localPlayer = client.getLocalPlayer();
+
+		if (localPlayer == null)
+		{
+			showingPrayerBar = false;
+			return;
+		}
+
+		if (config.hideIfNotPraying() && !anyPrayerActive)
+		{
+			showingPrayerBar = false;
+			return;
+		}
+
+		if (config.hideIfOutOfCombat() && localPlayer.getHealth() == -1)
+		{
+			showingPrayerBar = false;
+		}
+	}
+
+	private boolean CheckIfAnyPrayerIsActive()
+	{
+		for (Prayer pray : Prayer.values()) // Check if any prayers are active
+		{
+			if (client.isPrayerActive(pray))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
