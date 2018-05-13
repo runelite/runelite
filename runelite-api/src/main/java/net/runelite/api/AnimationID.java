@@ -126,6 +126,10 @@ public final class AnimationID
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int VORKATH_REGULAR_ATTACK = 7952;
+	public static final int VORKATH_POISON_SPRAY = 7957;
+	public static final int VORKATH_TOSS = 7960;
+	public static final int VORKATH_DEATH = 7949;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
