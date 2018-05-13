@@ -56,6 +56,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private Orientation orientation = Orientation.VERTICAL;
 
 	@Setter
+	private int wrapping = -1;
+
+	@Setter
 	private Rectangle border = new Rectangle(
 		ComponentConstants.STANDARD_BORDER,
 		ComponentConstants.STANDARD_BORDER,
@@ -116,9 +119,13 @@ public class PanelComponent implements LayoutableRenderableEntity
 				break;
 		}
 
+		int totalHeight = 0;
+		int totalWidth = 0;
+
 		// Render all children
-		for (final LayoutableRenderableEntity child : children)
+		for (int i = 0; i < children.size(); i ++)
 		{
+			final LayoutableRenderableEntity child = children.get(i);
 			child.setPreferredSize(childPreferredSize);
 			graphics.translate(x, y);
 			final Dimension childDimension = child.render(graphics);
@@ -137,14 +144,43 @@ public class PanelComponent implements LayoutableRenderableEntity
 					height = Math.max(height, childDimension.height);
 					break;
 			}
+
+			// Calculate total size
+			totalWidth = Math.max(totalWidth, width);
+			totalHeight = Math.max(totalHeight, height);
+
+			if (wrapping > 0 && i < children.size() - 1 && (i + 1)  % wrapping == 0)
+			{
+				switch (orientation)
+				{
+					case VERTICAL:
+					{
+						height = 0;
+						y = baseY;
+						int diff = childDimension.width + gap.x;
+						x += diff;
+						width += diff;
+						break;
+					}
+					case HORIZONTAL:
+					{
+						width = 0;
+						x = baseX;
+						int diff = childDimension.height + gap.y;
+						y += diff;
+						height += diff;
+						break;
+					}
+				}
+			}
 		}
 
 		// Remove last child gap
-		width -= gap.x;
-		height -= gap.y;
+		totalWidth -= gap.x;
+		totalHeight -= gap.y;
 
 		// Cache children bounds
-		childDimensions.setSize(width, height);
+		childDimensions.setSize(totalWidth, totalHeight);
 
 		return dimension;
 	}
