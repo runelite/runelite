@@ -56,16 +56,16 @@ class PingInfoboxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Color color = Color.decode("#00ff00");
+		Color color = Color.GREEN;
 		int ping = plugin.getPing();
 
 		if (ping >= 100)
 		{
-			color = Color.decode("#ff0000");
+			color = Color.RED;
 		}
 		else if (ping >= 50)
 		{
-			color = Color.decode("#ffff00");
+			color = Color.YELLOW;
 		}
 
 		Dimension dimension = new Dimension(100, 15);

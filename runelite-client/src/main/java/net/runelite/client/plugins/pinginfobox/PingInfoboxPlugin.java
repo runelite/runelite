@@ -27,6 +27,7 @@ package net.runelite.client.plugins.pinginfobox;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ScheduledExecutorService;
@@ -42,16 +43,13 @@ import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Ping Infobox",
-	enabledByDefault = false )
-
+	enabledByDefault = false
+)
 @Slf4j
 public class PingInfoboxPlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
-	@Inject
-	private ScheduledExecutorService executor;
 
 	@Getter
 	private int ping;
@@ -70,14 +68,21 @@ public class PingInfoboxPlugin extends Plugin
 		period = 5,
 		unit = ChronoUnit.SECONDS
 	)
-	public long getPingToCurrentWorld() throws Exception
+	public long getPingToCurrentWorld()
 	{
 		InetAddress host = null;
 		Instant start;
-		Exception ex;
 		if (client.getGameState().equals(GameState.LOGGED_IN))
 		{
-			host = InetAddress.getByName(client.getWorldHostname());
+			try
+			{
+				host = InetAddress.getByName(client.getWorldHostname());
+			}
+			catch (UnknownHostException he)
+			{
+				log.warn("Cannot ping host", he);
+			}
+
 			start = Instant.now();
 			Socket sock = null;
 			try
@@ -86,7 +91,8 @@ public class PingInfoboxPlugin extends Plugin
 			}
 			catch (Exception e)
 			{
-				ex = e;
+				log.warn("Could not create new socket", e);
+				return -1;
 			}
 			finally
 			{
