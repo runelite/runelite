@@ -28,11 +28,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -199,31 +196,20 @@ public class ItemController
 			itemIds = Arrays.copyOf(itemIds, MAX_BATCH_LOOKUP);
 		}
 
-		Set<Integer> seen = new HashSet<>();
-		List<ItemPrice> itemPrices = new ArrayList<>(itemIds.length);
-		for (int itemId : itemIds)
-		{
-			if (seen.contains(itemId))
+		List<PriceEntry> prices = itemService.getPrices(itemIds);
+
+		return prices.stream()
+			.map(priceEntry ->
 			{
-				continue;
-			}
-			seen.add(itemId);
+				Item item = new Item();
+				item.setId(priceEntry.getItem()); // fake item
 
-			ItemEntry item = itemService.getItem(itemId);
-			PriceEntry priceEntry = itemService.getPrice(itemId, null);
-
-			if (item == null || priceEntry == null)
-			{
-				continue;
-			}
-
-			ItemPrice itemPrice = new ItemPrice();
-			itemPrice.setItem(item.toItem());
-			itemPrice.setPrice(priceEntry.getPrice());
-			itemPrice.setTime(priceEntry.getTime());
-			itemPrices.add(itemPrice);
-		}
-
-		return itemPrices.toArray(new ItemPrice[itemPrices.size()]);
+				ItemPrice itemPrice = new ItemPrice();
+				itemPrice.setItem(item);
+				itemPrice.setPrice(priceEntry.getPrice());
+				itemPrice.setTime(priceEntry.getTime());
+				return itemPrice;
+			})
+			.toArray(ItemPrice[]::new);
 	}
 }

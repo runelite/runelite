@@ -30,8 +30,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
@@ -123,23 +125,57 @@ public class ItemService
 		}
 	}
 
+	private PriceEntry getPrice(Connection con, int itemId, Instant time)
+	{
+		if (time != null)
+		{
+			return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
+				.addParameter("item", itemId)
+				.addParameter("time", time.toString())
+				.executeAndFetchFirst(PriceEntry.class);
+		}
+		else
+		{
+			return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
+				.addParameter("item", itemId)
+				.executeAndFetchFirst(PriceEntry.class);
+		}
+	}
+
 	public PriceEntry getPrice(int itemId, Instant time)
 	{
 		try (Connection con = sql2o.open())
 		{
-			if (time != null)
+			return getPrice(con, itemId, time);
+		}
+	}
+
+	public List<PriceEntry> getPrices(int... itemIds)
+	{
+		try (Connection con = sql2o.open())
+		{
+			Set<Integer> seen = new HashSet<>();
+			List<PriceEntry> priceEntries = new ArrayList<>(itemIds.length);
+
+			for (int itemId : itemIds)
 			{
-				return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
-					.addParameter("item", itemId)
-					.addParameter("time", time.toString())
-					.executeAndFetchFirst(PriceEntry.class);
+				if (seen.contains(itemId))
+				{
+					continue;
+				}
+				seen.add(itemId);
+
+				PriceEntry priceEntry = getPrice(con, itemId, null);
+
+				if (priceEntry == null)
+				{
+					continue;
+				}
+
+				priceEntries.add(priceEntry);
 			}
-			else
-			{
-				return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
-					.addParameter("item", itemId)
-					.executeAndFetchFirst(PriceEntry.class);
-			}
+
+			return priceEntries;
 		}
 	}
 
