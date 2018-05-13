@@ -221,4 +221,12 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "swapLeapingFish",
+			name = "Drop Leaping Fish",
+			description = "Swaps use with drop on leaping trout, leaping salmon, and leaping sturgeon."
+	)
+	default boolean swapLeapingFish() { return true; }
 }
