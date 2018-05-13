@@ -39,7 +39,6 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
@@ -49,52 +48,53 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 
 @Slf4j
 public class XpGlobesOverlay extends Overlay
 {
+	private static final int MINIMUM_STEP = 10;
+	private static final int PROGRESS_RADIUS_START = 90;
+	private static final int PROGRESS_RADIUS_REMAINDER = 0;
+	private static final int DEFAULT_START_Y = 10;
+	private static final int TOOLTIP_RECT_SIZE_X = 150;
+
 	private final Client client;
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
 	private final XpTrackerService xpTrackerService;
+	private final SkillIconManager iconManager;
 	private final PanelComponent xpTooltip = new PanelComponent();
 
 	@Inject
-	private SkillIconManager iconManager;
-
-	private static final int MINIMUM_STEP = 10;
-
-	private static final int PROGRESS_RADIUS_START = 90;
-	private static final int PROGRESS_RADIUS_REMAINDER = 0;
-
-	private static final int DEFAULT_START_Y = 10;
-
-	private static final int TOOLTIP_RECT_SIZE_X = 150;
-
-	@Inject
-	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config, XpTrackerService xpTrackerService)
+	public XpGlobesOverlay(
+		Client client,
+		XpGlobesPlugin plugin,
+		XpGlobesConfig config,
+		XpTrackerService xpTrackerService,
+		SkillIconManager iconManager)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		this.iconManager = iconManager;
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		//if this is null there is no reason to draw e.g. switching between resizable and fixed
+		// if this is null there is no reason to draw e.g. switching between resizable and fixed
 		Widget viewportWidget = client.getViewportWidget();
 		if (viewportWidget == null)
 		{
 			return null;
 		}
 
-		//check the width of the client if we can draw properly
+		// check the width of the client if we can draw properly
 		int clientWidth;
+
 		switch (config.centerOrbs())
 		{
 			case MIDDLE_CANVAS:
@@ -110,12 +110,14 @@ public class XpGlobesOverlay extends Overlay
 				clientWidth = client.getViewportWidth();
 				break;
 		}
+
 		if (clientWidth <= 0)
 		{
 			return null;
 		}
 		
-		int queueSize = plugin.getXpGlobesSize();
+		int queueSize = plugin.getXpGlobes().size();
+
 		if (queueSize > 0)
 		{
 			List<XpGlobe> xpChangedQueue = plugin.getXpGlobes();
@@ -147,8 +149,8 @@ public class XpGlobesOverlay extends Overlay
 			config.xpOrbSize(), config.xpOrbSize(),
 			PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
 			5,
-			config.progressOrbOutLineColor()
-		);
+			config.progressOrbOutLineColor());
+
 		drawProgressArc(
 			graphics,
 			x, y,
@@ -158,7 +160,6 @@ public class XpGlobesOverlay extends Overlay
 			config.progressArcColor());
 
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, renderHint);
-
 		drawSkillImage(graphics, skillToDraw, x, y);
 
 		if (config.enableTooltips())
@@ -172,11 +173,13 @@ public class XpGlobesOverlay extends Overlay
 		Stroke stroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		graphics.setColor(color);
+
 		graphics.draw(new Arc2D.Double(
 			x, y,
 			w, h,
 			radiusStart, radiusEnd,
 			Arc2D.OPEN));
+
 		graphics.setStroke(stroke);
 	}
 
@@ -202,8 +205,7 @@ public class XpGlobesOverlay extends Overlay
 			skillImage,
 			x + (config.xpOrbSize() / 2) - (skillImage.getWidth() / 2),
 			y + (config.xpOrbSize() / 2) - (skillImage.getHeight() / 2),
-			null
-		);
+			null);
 	}
 
 	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
@@ -270,13 +272,6 @@ public class XpGlobesOverlay extends Overlay
 				.leftColor(Color.ORANGE)
 				.right(xpHrString)
 				.build());
-
-			//Create progress bar for skill.
-			ProgressBarComponent progressBar = new ProgressBarComponent();
-			double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
-				mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
-			progressBar.setValue(progress);
-			xpTooltip.getChildren().add(progressBar);
 		}
 
 		xpTooltip.render(graphics);

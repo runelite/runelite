@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -52,8 +53,9 @@ import net.runelite.client.ui.overlay.Overlay;
 public class XpGlobesPlugin extends Plugin
 {
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
-
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+
+	@Getter
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
 	@Inject
@@ -113,30 +115,6 @@ public class XpGlobesPlugin extends Plugin
 		}
 	}
 
-	public List<XpGlobe> getXpGlobes()
-	{
-		return xpGlobes;
-	}
-
-	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
-	{
-		if (xpGlobes.contains(xpGlobe))
-		{
-			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
-			xpGlobes.remove(xpGlobe);
-		}
-		if (getXpGlobesSize() >= maxLength)
-		{
-			xpGlobes.remove(0);
-		}
-		xpGlobes.add(xpGlobe);
-	}
-
-	public int getXpGlobesSize()
-	{
-		return xpGlobes.size();
-	}
-
 	@Schedule(
 		period = 1,
 		unit = ChronoUnit.SECONDS
@@ -160,12 +138,6 @@ public class XpGlobesPlugin extends Plugin
 		}
 	}
 
-	public void resetGlobeState()
-	{
-		xpGlobes.clear();
-		globeCache = new XpGlobe[Skill.values().length - 1];
-	}
-
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -178,4 +150,25 @@ public class XpGlobesPlugin extends Plugin
 		}
 	}
 
+	private void addXpGlobe(XpGlobe xpGlobe, int maxLength)
+	{
+		if (xpGlobes.contains(xpGlobe))
+		{
+			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
+			xpGlobes.remove(xpGlobe);
+		}
+
+		if (xpGlobes.size() >= maxLength)
+		{
+			xpGlobes.remove(0);
+		}
+
+		xpGlobes.add(xpGlobe);
+	}
+
+	private void resetGlobeState()
+	{
+		xpGlobes.clear();
+		globeCache = new XpGlobe[Skill.values().length - 1];
+	}
 }
