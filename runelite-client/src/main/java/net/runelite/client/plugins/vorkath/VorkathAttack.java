@@ -7,7 +7,8 @@ public enum VorkathAttack
     REGULAR(AnimationID.VORKATH_REGULAR_ATTACK),
     TOSS(AnimationID.VORKATH_TOSS),
     POISON(AnimationID.VORKATH_POISON_SPRAY),
-    DEATH(AnimationID.VORKATH_DEATH);
+    DEATH(AnimationID.VORKATH_DEATH),
+    MELEE(AnimationID.VORKATH_MELEE);
 
     private final int animation;
 

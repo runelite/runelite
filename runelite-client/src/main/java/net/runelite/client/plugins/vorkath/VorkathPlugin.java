@@ -55,7 +55,7 @@ public class VorkathPlugin extends Plugin
         NPC vorkath = findVorkath();
         if (vorkath != null)
         {
-            if ((vorkath.getAnimation() == VorkathAttack.REGULAR.getAnimation() || vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation()) && vorkathAttackCounter > 0 && !vorkathHasAttacked)
+            if ((vorkath.getAnimation() == VorkathAttack.REGULAR.getAnimation() || vorkath.getAnimation() == VorkathAttack.MELEE.getAnimation() || vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation()) && vorkathAttackCounter > 0 && !vorkathHasAttacked)
             {
                 attack = VorkathAttack.REGULAR;
                 vorkathAttackCounter--;

@@ -130,6 +130,7 @@ public final class AnimationID
 	public static final int VORKATH_POISON_SPRAY = 7957;
 	public static final int VORKATH_TOSS = 7960;
 	public static final int VORKATH_DEATH = 7949;
+	public static final int VORKATH_MELEE = 7951;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
