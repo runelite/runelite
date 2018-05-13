@@ -24,11 +24,14 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNPC;
@@ -91,6 +94,16 @@ public abstract class RSNPCMixin implements RSNPC
 	public void setIndex(int id)
 	{
 		npcIndex = id;
+	}
+
+	@FieldHook(value = "composition", before = true)
+	@Inject
+	public void onCompositionChanged(RSNPCComposition composition)
+	{
+		if (composition == null)
+		{
+			eventBus.post(new NpcDespawned(this));
+		}
 	}
 
 	@Copy("getModel")

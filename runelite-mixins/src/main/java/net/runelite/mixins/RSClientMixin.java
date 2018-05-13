@@ -71,7 +71,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -125,9 +124,6 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static RSPlayer[] oldPlayers = new RSPlayer[2048];
-
-	@Inject
-	private static RSNPC[] oldNpcs = new RSNPC[32768];
 
 	@Inject
 	private static int itemPressedDurationBuffer;
@@ -807,17 +803,7 @@ public abstract class RSClientMixin implements RSClient
 		if (npc != null)
 		{
 			npc.setIndex(idx);
-		}
 
-		RSNPC oldNpc = oldNpcs[idx];
-		oldNpcs[idx] = npc;
-
-		if (oldNpc != null)
-		{
-			eventBus.post(new NpcDespawned(oldNpc));
-		}
-		if (npc != null)
-		{
 			deferredEventBus.post(new NpcSpawned(npc));
 		}
 	}
