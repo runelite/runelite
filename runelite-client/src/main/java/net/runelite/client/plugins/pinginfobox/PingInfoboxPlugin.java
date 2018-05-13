@@ -30,7 +30,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -70,8 +69,7 @@ public class PingInfoboxPlugin extends Plugin
 	)
 	public long getPingToCurrentWorld()
 	{
-		InetAddress host = null;
-		Instant start;
+		InetAddress host;
 		if (client.getGameState().equals(GameState.LOGGED_IN))
 		{
 			try
@@ -81,9 +79,10 @@ public class PingInfoboxPlugin extends Plugin
 			catch (UnknownHostException he)
 			{
 				log.warn("Cannot ping host", he);
+				return -1;
 			}
 
-			start = Instant.now();
+			Instant start = Instant.now();
 			Socket sock = null;
 			try
 			{
