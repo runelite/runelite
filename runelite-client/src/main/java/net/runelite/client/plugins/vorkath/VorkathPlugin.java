@@ -30,7 +30,7 @@ public class VorkathPlugin extends Plugin
 
     private VorkathAttack attack;
 
-    int vorkathAttackCounter = 7;
+    int vorkathAttackCounter = 6;
     String vorkathNextSpecial = "Unknown";
     private boolean vorkathHasAttacked = false;
 
@@ -41,7 +41,7 @@ public class VorkathPlugin extends Plugin
     }
 
     @Schedule(
-        period = 600,
+        period = 1000,
         unit = ChronoUnit.MILLIS
     )
 
@@ -61,23 +61,23 @@ public class VorkathPlugin extends Plugin
                 vorkathAttackCounter--;
                 vorkathHasAttacked = true;
             }
-            else if (vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation() && !vorkathHasAttacked)
+            else if (vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation() && vorkathAttackCounter == 0 && !vorkathHasAttacked)
             {
                 attack = VorkathAttack.TOSS;
-                vorkathAttackCounter = 7;
+                vorkathAttackCounter = 6;
                 vorkathNextSpecial = "Poison";
                 vorkathHasAttacked = true;
             }
             else if (vorkath.getAnimation() == VorkathAttack.POISON.getAnimation())
             {
                 attack = VorkathAttack.POISON;
-                vorkathAttackCounter = 7;
+                vorkathAttackCounter = 6;
                 vorkathNextSpecial = "Ice";
             }
             else if (vorkath.getAnimation() == VorkathAttack.DEATH.getAnimation())
             {
                 attack = VorkathAttack.DEATH;
-                vorkathAttackCounter = 7;
+                vorkathAttackCounter = 6;
                 vorkathNextSpecial = "Unknown";
             }
             else
