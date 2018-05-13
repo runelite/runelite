@@ -153,12 +153,12 @@ class OpponentInfoOverlay extends Overlay
 
 			if (lastMaxHealth != null)
 			{
+				// This is the reverse of the calculation of healthRatio done by the server
+				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
+				// It's able to recover the exact health if maxHealth <= healthScale.
 				int health = 0;
 				if (lastRatio > 0)
 				{
-					// This is the reverse of the calculation of healthRatio done by the server
-					// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
-					// It's able to recover the exact health if maxHealth <= healthScale.
 					int minHealth = 1;
 					int maxHealth;
 					if (lastHealthScale > 1)
