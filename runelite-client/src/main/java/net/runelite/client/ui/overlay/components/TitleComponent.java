@@ -42,17 +42,22 @@ public class TitleComponent implements LayoutableRenderableEntity
 	private Color color = Color.WHITE;
 
 	@Builder.Default
+	private Point preferredPosition = new Point();
+
+	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		graphics.translate(preferredPosition.x, preferredPosition.y);
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final TextComponent titleComponent = new TextComponent();
 		titleComponent.setText(text);
 		titleComponent.setColor(color);
-		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, 0));
+		titleComponent.setPosition(new Point((preferredSize.width - metrics.stringWidth(text)) / 2, metrics.getHeight()));
 		final Dimension dimension = titleComponent.render(graphics);
+		graphics.translate(-preferredPosition.x, -preferredPosition.y);
 		return new Dimension(Math.max(preferredSize.width, dimension.width), Math.max(preferredSize.height, dimension.height));
 	}
 }
