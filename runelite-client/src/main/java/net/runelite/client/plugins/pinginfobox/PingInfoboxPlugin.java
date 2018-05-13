@@ -27,11 +27,12 @@ package net.runelite.client.plugins.pinginfobox;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.plugins.Plugin;
@@ -40,10 +41,10 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-		name = "Ping Infobox",
-		enabledByDefault = false
-)
+	name = "Ping Infobox",
+	enabledByDefault = false )
 
+@Slf4j
 public class PingInfoboxPlugin extends Plugin
 {
 	@Inject
@@ -52,33 +53,32 @@ public class PingInfoboxPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	private InetAddress host = null;
-
-	private int start;
-
+	@Getter
 	private int ping;
 
 	@Inject
 	private PingInfoboxOverlay pingOverlay;
 
 	@Override
-	public List<Overlay> getOverlays()
+	public Overlay getOverlay()
 	{
-		return Arrays.asList(pingOverlay);
+		return pingOverlay;
 	}
 
 	@Schedule(
-			asynchronous = true,
-			period = 5,
-			unit = ChronoUnit.SECONDS
+		asynchronous = true,
+		period = 5,
+		unit = ChronoUnit.SECONDS
 	)
-	public int getPingToCurrentWorld() throws Exception
+	public long getPingToCurrentWorld() throws Exception
 	{
+		InetAddress host = null;
+		Instant start;
 		Exception ex;
 		if (client.getGameState().equals(GameState.LOGGED_IN))
 		{
 			host = InetAddress.getByName(client.getWorldHostname());
-			start = (int) System.currentTimeMillis();
+			start = Instant.now();
 			Socket sock = null;
 			try
 			{
@@ -102,18 +102,12 @@ public class PingInfoboxPlugin extends Plugin
 				}
 				if (sock != null && sock.isConnected())
 				{
-					ping = (int) System.currentTimeMillis() - start;
+					ping = (int) ChronoUnit.MILLIS.between(start, Instant.now());
 					return ping;
 				}
-				ex = new Exception(String.format("Host '%s' at '%s' is not reachable.", host));
+				log.warn(String.format("Host '%s' at '%s' is not reachable.", host));
 			}
-			throw ex;
 		}
 		return ping = -1;
-	}
-
-	public int getPing()
-	{
-		return ping;
 	}
 }
