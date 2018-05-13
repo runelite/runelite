@@ -41,7 +41,7 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Ping Infobox",
+	name = "Ping Indicator",
 	enabledByDefault = false
 )
 @Slf4j
