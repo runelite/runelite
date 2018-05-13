@@ -255,6 +255,15 @@ LABEL224:
    if_icmpeq              LABEL230
    jump                   LABEL254
 LABEL230:
+
+LABEL1000:
+   load_int               1                     ; push 1 to check against
+   load_int               0                     ; push 0 for script to switch if active
+   load_string            "filterActive"        ;
+   runelite_callback                            ;
+   if_icmpeq              LABEL1001             ; if script modified stack, jump to filter
+   jump                   LABEL1002             ; continue with original instructions
+LABEL1001:
    iload                  23                    ; push world region
    iload                  22                    ; push world type
    sload                  0                     ; push world description
@@ -264,6 +273,7 @@ LABEL230:
    load_int               1                     ;
    if_icmpeq              LABEL254              ; skip to next world if we hide this world type
    pop_int                                      ; pop world region int
+LABEL1002:
    iload                  0
    iload                  20
    iload                  12

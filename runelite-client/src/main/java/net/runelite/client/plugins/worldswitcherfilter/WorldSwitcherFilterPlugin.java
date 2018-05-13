@@ -69,6 +69,11 @@ public class WorldSwitcherFilterPlugin extends Plugin
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
+		if (eventName.equals("filterActive"))
+		{
+			intStack[intStackSize - 1] = 1;
+		}
+
 		if (eventName.equals("hideWorldCheck"))
 		{
 			int worldTypeFlag = intStack[intStackSize - 1];
