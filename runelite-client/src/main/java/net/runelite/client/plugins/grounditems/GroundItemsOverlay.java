@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
@@ -170,8 +171,16 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.showHAValue() && item.getHaPrice() > 0)
 			{
+				int haPrice = item.getHaPrice();
+
+				if (config.includeNatureCost())
+				{
+					final ItemPrice natureRunePrice = itemManager.getItemPriceAsync(ItemID.NATURE_RUNE);
+					haPrice -= natureRunePrice == null ? 0 : natureRunePrice.getPrice();
+				}
+
 				itemStringBuilder.append(" (HA: ")
-					.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
+					.append(StackFormatter.quantityToStackSize(haPrice))
 					.append(" gp)");
 			}
 
