@@ -213,6 +213,12 @@ public class ItemManager
 			}
 			catch (Exception ex)
 			{
+				// cache unable to lookup
+				for (int itemId : lookup)
+				{
+					itemPriceCache.put(itemId, NONE);
+				}
+
 				future.completeExceptionally(ex);
 			}
 		});
