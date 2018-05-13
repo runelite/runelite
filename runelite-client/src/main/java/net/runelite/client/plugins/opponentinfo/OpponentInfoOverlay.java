@@ -166,11 +166,12 @@ class OpponentInfoOverlay extends Overlay
 						if (lastRatio > 1)
 						{
 							// This doesn't apply if healthRatio = 1, because of the special case in the server calculation that
-							// health = 0 forces healthRatio = 0 instead of the expected healthRatio = 1
+							// health = 0 forces healthRatio = 0 instead of the expected healthRatio = 1.
 							minHealth = (lastMaxHealth * (lastRatio - 1) + lastHealthScale - 2) / (lastHealthScale - 1);
 						}
 						maxHealth = (lastMaxHealth * lastRatio - 1) / (lastHealthScale - 1);
-						if (maxHealth > lastMaxHealth) {
+						if (maxHealth > lastMaxHealth)
+						{
 							maxHealth = lastMaxHealth;
 						}
 					}
