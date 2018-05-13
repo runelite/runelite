@@ -59,7 +59,7 @@ class PingInfoboxOverlay extends Overlay
 		Color color = Color.decode("#00ff00");
 		int ping = plugin.getPing();
 
-		if(ping >= 100)
+		if (ping >= 100)
 		{
 			color = Color.decode("#ff0000");
 		}

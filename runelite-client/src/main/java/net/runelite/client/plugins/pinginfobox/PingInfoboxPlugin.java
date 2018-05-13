@@ -92,7 +92,7 @@ public class PingInfoboxPlugin extends Plugin
 			{
 				try
 				{
-					if(sock != null)
+					if (sock != null)
 					{
 						sock.close();
 					}
