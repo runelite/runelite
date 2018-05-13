@@ -25,6 +25,7 @@
 package net.runelite.mixins;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
@@ -59,6 +60,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -976,5 +978,13 @@ public abstract class RSClientMixin implements RSClient
 	public void setTickCount(int tick)
 	{
 		tickCount = tick;
+	}
+
+	@Inject
+	@Override
+	public EnumSet<WorldType> getWorldType()
+	{
+		int flags = getFlags();
+		return WorldType.fromMask(flags);
 	}
 }
