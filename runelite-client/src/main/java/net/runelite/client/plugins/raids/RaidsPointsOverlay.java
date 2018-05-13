@@ -49,7 +49,7 @@ public class RaidsPointsOverlay extends Overlay
 	@Inject
 	public RaidsPointsOverlay()
 	{
-		setPosition(OverlayPosition.BOTTOM_LEFT);
+		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.HIGH);
 	}
 
