@@ -34,10 +34,21 @@ public interface WorldSwitcherFilterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideDeadmanSeasonal",
+		name = "Hide Deadman seasonal worlds",
+		description = "Hides Deadman seasonal worlds",
+		position = 2
+	)
+	default boolean hideDeadmanSeasonal()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hideF2p",
 		name = "Hide F2P worlds",
 		description = "Hides F2P worlds",
-		position = 2
+		position = 3
 	)
 	default boolean hideF2p()
 	{
@@ -48,7 +59,7 @@ public interface WorldSwitcherFilterConfig extends Config
 		keyName = "hideMembers",
 		name = "Hide Member worlds",
 		description = "Hides Member worlds",
-		position = 3
+		position = 4
 	)
 	default boolean hideMember()
 	{
@@ -58,8 +69,8 @@ public interface WorldSwitcherFilterConfig extends Config
 	@ConfigItem(
 		keyName = "hideIneligibleTotal",
 		name = "Hide ineligible total worlds",
-		description = "Hides ineligible total worlds",
-		position = 4
+		description = "Hides total level worlds you're not eligible for",
+		position = 5
 	)
 	default boolean hideIneligibleTotal()
 	{
@@ -70,7 +81,7 @@ public interface WorldSwitcherFilterConfig extends Config
 		keyName = "hideUk",
 		name = "Hide UK worlds",
 		description = "Hides UK worlds",
-		position = 5
+		position = 6
 	)
 	default boolean hideUk()
 	{
@@ -81,7 +92,7 @@ public interface WorldSwitcherFilterConfig extends Config
 		keyName = "hideUsa",
 		name = "Hide USA worlds",
 		description = "Hides USA worlds",
-		position = 6
+		position = 7
 	)
 	default boolean hideUsa()
 	{
@@ -92,7 +103,7 @@ public interface WorldSwitcherFilterConfig extends Config
 		keyName = "hideAus",
 		name = "Hide Australia worlds",
 		description = "Hides Australia worlds",
-		position = 7
+		position = 8
 	)
 	default boolean hideAus()
 	{
@@ -103,7 +114,7 @@ public interface WorldSwitcherFilterConfig extends Config
 		keyName = "hideGermany",
 		name = "Hide Germany worlds",
 		description = "Hides Germany worlds",
-		position = 8
+		position = 9
 	)
 	default boolean hideGermany()
 	{

@@ -101,6 +101,11 @@ public class WorldSwitcherFilterPlugin extends Plugin
 				intStack[intStackSize - 1] = 1;
 				return;
 			}
+			if (worldTypes.contains(WorldType.SEASONAL_DEADMAN) && config.hideDeadmanSeasonal())
+			{
+				intStack[intStackSize - 1] = 1;
+				return;
+			}
 
 			int regionId = intStack[intStackSize - 2];
 
