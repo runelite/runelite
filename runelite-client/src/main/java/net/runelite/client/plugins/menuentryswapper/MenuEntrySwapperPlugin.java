@@ -430,7 +430,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (config.swapTeleportItem() && option.equals("wear") && !(itemId == 1704 || itemId == 2572 || itemId == 11113))
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
