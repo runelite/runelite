@@ -25,18 +25,10 @@
 package net.runelite.http.service.item;
 
 import java.util.List;
+import lombok.Data;
 
+@Data
 public class RSSearch
 {
 	private List<RSItem> items;
-
-	public List<RSItem> getItems()
-	{
-		return items;
-	}
-
-	public void setItems(List<RSItem> items)
-	{
-		this.items = items;
-	}
 }

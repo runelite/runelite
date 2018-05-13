@@ -24,9 +24,11 @@
  */
 package net.runelite.http.service.item;
 
+import lombok.Data;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemType;
 
+@Data
 public class RSItem
 {
 	private int id;
@@ -35,66 +37,6 @@ public class RSItem
 	private String type;
 	private String icon;
 	private String icon_large;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-
-	public String getType()
-	{
-		return type;
-	}
-
-	public void setType(String type)
-	{
-		this.type = type;
-	}
-
-	public String getIcon()
-	{
-		return icon;
-	}
-
-	public void setIcon(String icon)
-	{
-		this.icon = icon;
-	}
-
-	public String getIcon_large()
-	{
-		return icon_large;
-	}
-
-	public void setIcon_large(String icon_large)
-	{
-		this.icon_large = icon_large;
-	}
 
 	public Item toItem()
 	{

@@ -25,21 +25,13 @@
 package net.runelite.http.service.item;
 
 import java.util.Map;
+import lombok.Data;
 
+@Data
 public class RSPrices
 {
 	/**
 	 * unix time in ms to price in gp
 	 */
 	private Map<Long, Integer> daily;
-
-	public Map<Long, Integer> getDaily()
-	{
-		return daily;
-	}
-
-	public void setDaily(Map<Long, Integer> daily)
-	{
-		this.daily = daily;
-	}
 }
