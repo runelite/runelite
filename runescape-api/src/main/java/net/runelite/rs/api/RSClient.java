@@ -618,4 +618,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("itemPressedDuration")
 	void setItemPressedDuration(int duration);
+
+	@Import("host")
+	@Override
+	String getWorldHostname();
 }

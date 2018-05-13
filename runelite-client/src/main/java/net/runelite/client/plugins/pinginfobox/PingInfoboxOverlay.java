@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, William Gray <wgray5093@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
 
+package net.runelite.client.plugins.pinginfobox;
+
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
-import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class RaidsPointsOverlay extends Overlay
+class PingInfoboxOverlay extends Overlay
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private RaidsPlugin plugin;
+	private PingInfoboxPlugin plugin;
 
 	private final PanelComponent panel = new PanelComponent();
 
 	@Inject
-	public RaidsPointsOverlay()
+	private PingInfoboxOverlay()
 	{
-		setPosition(OverlayPosition.BOTTOM_LEFT);
+		setPosition(OverlayPosition.TOP_RIGHT);
 		setPriority(OverlayPriority.HIGH);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInRaidChambers())
+		Color color = Color.decode("#00ff00");
+		int ping = plugin.getPing();
+
+		if(ping >= 100)
 		{
-			return null;
+			color = Color.decode("#ff0000");
+		}
+		else if (ping >= 50)
+		{
+			color = Color.decode("#ffff00");
 		}
 
-		int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
-		int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
-
+		Dimension dimension = new Dimension(100, 15);
+		panel.setPreferredSize(dimension);
 		panel.getChildren().clear();
 		panel.getChildren().add(LineComponent.builder()
-			.left("Total:")
-			.right(POINTS_FORMAT.format(totalPoints))
-			.build());
-
-		panel.getChildren().add(LineComponent.builder()
-			.left(client.getLocalPlayer().getName() + ":")
-			.right(POINTS_FORMAT.format(personalPoints))
-			.build());
-
-		panel.getChildren().add(LineComponent.builder()
-			.left("Party size:")
-			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
-			.build());
-
+				.left("Latency:")
+				.right(ping + "ms")
+				.rightColor(color)
+				.build());
 		return panel.render(graphics);
 	}
 }

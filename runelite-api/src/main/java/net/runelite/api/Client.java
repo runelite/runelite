@@ -416,4 +416,6 @@ public interface Client extends GameEngine
 	void setTickCount(int tickCount);
 
 	void setInventoryDragDelay(int delay);
+
+	String getWorldHostname();
 }
