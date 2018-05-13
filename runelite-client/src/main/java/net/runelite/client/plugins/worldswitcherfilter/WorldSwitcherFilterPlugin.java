@@ -122,7 +122,6 @@ public class WorldSwitcherFilterPlugin extends Plugin
 			if (regionId == WorldRegions.USA.getRegionId() && config.hideUsa())
 			{
 				intStack[intStackSize - 1] = 1;
-				return;
 			}
 		}
 	}
