@@ -169,31 +169,69 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String message = setMessage.getValue();
+
+		if (message.replaceAll(" ", "").isEmpty())
+		{
+			return;
+		}
+
 		MessageNode messageNode = setMessage.getMessageNode();
 
 		// clear RuneLite formatted message as the message node is
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
+		String command = message.split(" ")[0];
 
-		if (config.lvl() && message.toLowerCase().equals("!total"))
+		if (message.length() > command.length() + 1)
 		{
-			log.debug("Running total level lookup");
-			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
+			String args = message.substring(command.length() + 1);
+			executeCommand(setMessage, command, args);
 		}
-		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
+		else
 		{
-			String search = message.substring(7);
-
-			log.debug("Running price lookup for {}", search);
-
-			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
+			executeCommand(setMessage, command);
 		}
-		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
-		{
-			String search = message.substring(5);
+	}
 
-			log.debug("Running level lookup for {}", search);
-			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
+	private void executeCommand(SetMessage setMessage, String command)
+	{
+		switch (command.toLowerCase())
+		{
+			case "!total":
+				if (config.lvl())
+				{
+					log.debug("Running total level lookup");
+					executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
+				}
+				break;
+		}
+	}
+
+	private void executeCommand(SetMessage setMessage, String command, String args)
+	{
+		switch (command.toLowerCase())
+		{
+			case "!pc":
+			case "!price":
+				if (config.price())
+				{
+					log.debug("Running price lookup for {}", args);
+					executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), args));
+				}
+				break;
+
+			case "!lvl":
+			case "!level":
+				if (config.lvl())
+				{
+					log.debug("Running level lookup for {}", args);
+					executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, args));
+				}
+				break;
+
+			default: //fall back to default command without args
+				executeCommand(setMessage, command);
+				break;
 		}
 	}
 
