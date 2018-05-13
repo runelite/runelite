@@ -618,4 +618,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("itemPressedDuration")
 	void setItemPressedDuration(int duration);
+
+	@Import("flags")
+	int getFlags();
 }
