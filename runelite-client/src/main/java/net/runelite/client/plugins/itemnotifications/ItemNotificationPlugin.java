@@ -85,7 +85,12 @@ public class ItemNotificationPlugin extends Plugin
 
 			case "...and the world changes around you.": // ectophial teleported message
 				if (config.notifyOnEmptyEctophial())
-					notifyIfNotPresent("Ectophial", ItemID.ECTOPHIAL, notificationDelay);
+					notifyIfNotPresent(
+						"Ectophial",
+						ItemID.ECTOPHIAL,
+						notificationDelay,
+						"You forgot to refill your Ectophial!"
+					);
 				break;
 		}
 	}
@@ -94,8 +99,9 @@ public class ItemNotificationPlugin extends Plugin
 	 * @param itemName name of item that will be used in notification
 	 * @param itemId item id to check for
 	 * @param waitDelay wait delay before notification appears (if item id is not present)
+	 * @param notifyMessage optional message to override default message
 	 */
-	private void notifyIfNotPresent(String itemName, int itemId, int waitDelay)
+	private void notifyIfNotPresent(String itemName, int itemId, int waitDelay, String... notifyMessage)
 	{
 		Timer timer = new Timer();
 
@@ -114,7 +120,14 @@ public class ItemNotificationPlugin extends Plugin
 
 				if (!inventory.contains(itemId))
 				{
-					notifier.notify(String.format("Item %s is missing from your inventory.", itemName));
+					if (notifyMessage == null)
+					{
+						notifier.notify(String.format("Item %s is missing from your inventory.", itemName));
+					}
+					else
+					{
+						notifier.notify(String.format(notifyMessage[0], itemName));
+					}
 				}
 			}
 		};
