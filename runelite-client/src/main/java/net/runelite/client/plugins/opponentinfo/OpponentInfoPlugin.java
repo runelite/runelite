@@ -24,16 +24,25 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.EnumSet;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.WorldType;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "Opponent Information"
@@ -41,12 +50,41 @@ import net.runelite.client.ui.overlay.Overlay;
 public class OpponentInfoPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private OpponentInfoOverlay overlay;
+
+	@Getter(AccessLevel.PACKAGE)
+	private HiscoreEndpoint hiscoreEndpoint = HiscoreEndpoint.NORMAL;
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		EnumSet<WorldType> worldType = client.getWorldType();
+		if (worldType.contains(WorldType.DEADMAN))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
+		}
+		else if (worldType.contains(WorldType.SEASONAL_DEADMAN))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
+		}
+		else
+		{
+			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
+		}
 	}
 
 	public static Map<String, Integer> loadNpcHealth()

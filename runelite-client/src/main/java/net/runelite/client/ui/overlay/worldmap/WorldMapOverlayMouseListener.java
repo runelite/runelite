@@ -56,7 +56,8 @@ public class WorldMapOverlayMouseListener extends MouseListener
 	@Override
 	public MouseEvent mousePressed(MouseEvent e)
 	{
-		List<WorldMapPoint> worldMapPoints = worldMapPointManager.getWorldMapPoints();
+		final List<WorldMapPoint> worldMapPoints = worldMapPointManager.getWorldMapPoints();
+
 		if (SwingUtilities.isLeftMouseButton(e) && !worldMapPoints.isEmpty())
 		{
 			Point mousePos = clientProvider.get().getMouseCanvasPosition();
@@ -84,7 +85,8 @@ public class WorldMapOverlayMouseListener extends MouseListener
 	@Override
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
-		List<WorldMapPoint> worldMapPoints = worldMapPointManager.getWorldMapPoints();
+		final List<WorldMapPoint> worldMapPoints = worldMapPointManager.getWorldMapPoints();
+
 		if (worldMapPoints.isEmpty())
 		{
 			return mouseEvent;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.worldmap;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import javax.inject.Singleton;
-import lombok.AccessLevel;
-import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
-@Singleton
-public class WorldMapPointManager
+public interface LocationsClueScroll
 {
-	@Getter(AccessLevel.PACKAGE)
-	private final List<WorldMapPoint> worldMapPoints = new ArrayList<>();
+	boolean update(String message, ClueScrollPlugin plugin);
 
-	public void add(WorldMapPoint worldMapPoint)
-	{
-		worldMapPoints.add(worldMapPoint);
-	}
+	void reset();
 
-	public void remove(WorldMapPoint worldMapPoint)
-	{
-		worldMapPoints.remove(worldMapPoint);
-	}
-
-	public void removeIf(Predicate<WorldMapPoint> filter)
-	{
-		worldMapPoints.removeIf(filter);
-	}
+	List<WorldPoint> getLocations();
 }

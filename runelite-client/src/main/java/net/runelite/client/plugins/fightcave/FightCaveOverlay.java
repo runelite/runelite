@@ -24,19 +24,19 @@
  */
 package net.runelite.client.plugins.fightcave;
 
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -70,15 +70,13 @@ public class FightCaveOverlay extends Overlay
 			return null;
 		}
 
-		BufferedImage prayerImage = getPrayerImage(attack);
+		final BufferedImage prayerImage = getPrayerImage(attack);
 
 		imagePanelComponent.getChildren().clear();
 		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
-
-		if (!client.isPrayerActive(attack.getPrayer()))
-		{
-			imagePanelComponent.setBackgroundColor(NOT_ACTIVATED_BACKGROUND_COLOR);
-		}
+		imagePanelComponent.setBackgroundColor(client.isPrayerActive(attack.getPrayer())
+			? ComponentConstants.STANDARD_BACKGROUND_COLOR
+			: NOT_ACTIVATED_BACKGROUND_COLOR);
 
 		return imagePanelComponent.render(graphics);
 	}

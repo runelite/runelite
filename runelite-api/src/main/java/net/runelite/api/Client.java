@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -417,5 +418,8 @@ public interface Client extends GameEngine
 
 	void setInventoryDragDelay(int delay);
 
+	EnumSet<WorldType> getWorldType();
+
 	String getWorldHostname();
+
 }
