@@ -110,7 +110,8 @@ public class FpsOverlay extends Overlay
 		final int fps = client.getFPS();
 		if (fps < FPS_SIZE)
 		{
-			final int width = client.getCanvas().getWidth();
+			final Dimension dimension = client.getRealDimensions();
+			final int width = (int) dimension.getWidth();
 			final Point point = new Point(width - VALUE_X_OFFSET, Y_OFFSET);
 
 			OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps], getFpsValueColor());

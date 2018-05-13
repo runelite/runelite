@@ -30,10 +30,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class PingInfoboxOverlay extends Overlay
@@ -49,8 +51,9 @@ class PingInfoboxOverlay extends Overlay
 	@Inject
 	private PingInfoboxOverlay()
 	{
-		setPosition(OverlayPosition.TOP_RIGHT);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
+		setPosition(OverlayPosition.DYNAMIC);
 	}
 
 	@Override
@@ -68,14 +71,13 @@ class PingInfoboxOverlay extends Overlay
 			color = Color.YELLOW;
 		}
 
-		Dimension dimension = new Dimension(100, 15);
-		panel.setPreferredSize(dimension);
-		panel.getChildren().clear();
-		panel.getChildren().add(LineComponent.builder()
-				.left("Latency:")
-				.right(ping + "ms")
-				.rightColor(color)
-				.build());
-		return panel.render(graphics);
+		Dimension dimension = client.getRealDimensions();
+		int textWidth = graphics.getFontMetrics().stringWidth(ping + "ms");
+		int width = (int) dimension.getWidth();
+		Point point = new Point(width - textWidth - 2, 25);
+		OverlayUtil.renderTextLocation(graphics, point, ping + "ms", color);
+
+
+		return null;
 	}
 }
