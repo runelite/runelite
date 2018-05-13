@@ -24,8 +24,10 @@
  */
 package net.runelite.http.service.session;
 
+import com.google.gson.Gson;
 import java.time.Instant;
 import java.util.UUID;
+import net.runelite.http.api.RuneLiteAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,6 +38,7 @@ import org.sql2o.Sql2o;
 @Service
 public class SessionService
 {
+	private final Gson gson = RuneLiteAPI.GSON;
 	private final Sql2o sql2o;
 
 	@Autowired
@@ -50,10 +53,11 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into session (uuid, ip, start, last) "
-				+ "values (:uuid, :ip, :start, :last)")
+			con.createQuery("insert into session (uuid, ip, ingame, start, last) "
+				+ "values (:uuid, :ip, :ingame, :start, :last)")
 				.addParameter("uuid", session.getUuid().toString())
 				.addParameter("ip", session.getIp())
+				.addParameter("ingame", session.getIngame())
 				.addParameter("start", session.getStart())
 				.addParameter("last", session.getLast())
 				.executeUpdate();
@@ -64,7 +68,7 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			return con.createQuery("select uuid, ip, start, last from session where uuid = :uuid")
+			return con.createQuery("select uuid, ip, ingame, start, last from session where uuid = :uuid")
 				.addParameter("uuid", id.toString())
 				.executeAndFetchFirst(SessionEntry.class);
 		}
@@ -80,13 +84,14 @@ public class SessionService
 		}
 	}
 
-	public void updateLast(UUID session)
+	public void updateLast(UUID session, boolean inGame)
 	{
 		try (Connection con = sql2o.open())
 		{
 			Instant last = Instant.now();
-			con.createQuery("update session set last = :last where uuid = :uuid")
+			con.createQuery("update session set last = :last, ingame = :ingame where uuid = :uuid")
 				.addParameter("last", last)
+				.addParameter("ingame", inGame)
 				.addParameter("uuid", session.toString())
 				.executeUpdate();
 		}
@@ -98,6 +103,22 @@ public class SessionService
 		{
 			con.createQuery("delete from session where last + interval 5 minute < current_timestamp()")
 				.executeUpdate();
+		}
+	}
+
+	public String getStatistics()
+	{
+		try (Connection con = sql2o.open())
+		{
+			int clientCount = con.createQuery("select count(*) from session")
+				.executeScalar(Integer.class);
+
+			int inGameCount = con.createQuery("SELECT count(*) from session WHERE ingame IS NOT FALSE;")
+				.executeScalar(Integer.class);
+
+			StatisticsInfo statistics = new StatisticsInfo(inGameCount, clientCount);
+
+			return gson.toJson(statistics);
 		}
 	}
 

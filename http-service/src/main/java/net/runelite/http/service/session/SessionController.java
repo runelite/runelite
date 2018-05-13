@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,14 +56,15 @@ public class SessionController
 		SessionEntry sessionEntry = new SessionEntry();
 		sessionEntry.setUuid(uuid);
 		sessionEntry.setIp(addr);
+		sessionEntry.setIngame(false);
 		sessionEntry.setStart(now);
 		sessionEntry.setLast(now);
 		sessionService.createSession(sessionEntry);
 		return uuid;
 	}
 
-	@RequestMapping("/ping")
-	public ResponseEntity ping(@RequestParam("session") UUID uuid)
+	@PostMapping("/ping")
+	public ResponseEntity ping(@RequestParam("session") UUID uuid, @RequestParam("ingame") boolean inGame)
 	{
 		SessionEntry sessionEntry = sessionService.findSessionByUUID(uuid);
 		if (sessionEntry == null)
@@ -70,7 +72,7 @@ public class SessionController
 			return ResponseEntity.notFound().build();
 		}
 
-		sessionService.updateLast(uuid);
+		sessionService.updateLast(uuid, inGame);
 		return ResponseEntity.ok().build();
 	}
 
@@ -91,5 +93,11 @@ public class SessionController
 	public int count()
 	{
 		return sessionService.getCount();
+	}
+
+	@RequestMapping("/statistics")
+	public String statistics()
+	{
+		return sessionService.getStatistics();
 	}
 }

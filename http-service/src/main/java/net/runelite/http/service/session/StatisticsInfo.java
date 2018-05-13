@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.http.service.session;
 
-import java.time.Instant;
-import java.util.UUID;
-import lombok.Data;
-
-@Data
-public class SessionEntry
+class StatisticsInfo
 {
-	private int id;
-	private UUID uuid;
-	private String ip;
-	private boolean ingame;
-	private Instant start;
-	private Instant last;
+	private int ingame;
+	private int clients;
+
+	StatisticsInfo(int ingameCount, int clientCount)
+	{
+		this.ingame = ingameCount;
+		this.clients = clientCount;
+	}
 }
