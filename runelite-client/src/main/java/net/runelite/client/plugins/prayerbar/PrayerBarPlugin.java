@@ -75,7 +75,7 @@ public class PrayerBarPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		anyPrayerActive = CheckIfAnyPrayerIsActive();
+		anyPrayerActive = checkIfAnyPrayerIsActive();
 		showingPrayerBar = true;
 
 		localPlayer = client.getLocalPlayer();
@@ -98,7 +98,7 @@ public class PrayerBarPlugin extends Plugin
 		}
 	}
 
-	private boolean CheckIfAnyPrayerIsActive()
+	private boolean checkIfAnyPrayerIsActive()
 	{
 		for (Prayer pray : Prayer.values()) // Check if any prayers are active
 		{
