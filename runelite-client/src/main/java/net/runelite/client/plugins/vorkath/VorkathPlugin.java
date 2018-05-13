@@ -93,9 +93,16 @@ public class VorkathPlugin extends Plugin
 
 	NPC findVorkath()
 	{
-		Query query = new NPCQuery().idEquals(8061);
-		NPC[] result = queryRunner.runQuery(query);
-		return result.length >= 1 ? result[0] : null;
+		if (client.isInInstancedRegion())
+		{
+			Query query = new NPCQuery().idEquals(8061);
+			NPC[] result = queryRunner.runQuery(query);
+			return result.length >= 1 ? result[0] : null;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	VorkathAttack getAttack()
