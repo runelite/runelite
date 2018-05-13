@@ -25,10 +25,8 @@
 
 package net.runelite.client.plugins.pinginfobox;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
