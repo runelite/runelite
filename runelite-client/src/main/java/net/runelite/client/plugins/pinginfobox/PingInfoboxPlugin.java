@@ -105,7 +105,7 @@ public class PingInfoboxPlugin extends Plugin
 					ping = (int) ChronoUnit.MILLIS.between(start, Instant.now());
 					return ping;
 				}
-				log.warn(String.format("Host '%s' at '%s' is not reachable.", host));
+				log.warn("Host {} is not reachable", host);
 			}
 		}
 		return ping = -1;
