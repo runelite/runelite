@@ -15,92 +15,92 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-        name = "Vorkath"
+		name = "Vorkath"
 )
 public class VorkathPlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private QueryRunner queryRunner;
+	@Inject
+	private QueryRunner queryRunner;
 
-    @Inject
-    private VorkathOverlay overlay;
+	@Inject
+	private VorkathOverlay overlay;
 
-    private VorkathAttack attack;
+	private VorkathAttack attack;
 
-    int vorkathAttackCounter = 6;
-    String vorkathNextSpecial = "Unknown";
-    private boolean vorkathHasAttacked = false;
+	int vorkathAttackCounter = 6;
+	String vorkathNextSpecial = "Unknown";
+	private boolean vorkathHasAttacked = false;
 
-    @Override
-    public Overlay getOverlay()
-    {
-        return overlay;
-    }
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-    @Schedule(
-        period = 1000,
-        unit = ChronoUnit.MILLIS
-    )
+	@Schedule(
+		period = 1000,
+		unit = ChronoUnit.MILLIS
+	)
 
-    public void update()
-    {
-        if (client.getGameState() != GameState.LOGGED_IN)
-        {
-            return;
-        }
+	public void update()
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
 
-        NPC vorkath = findVorkath();
-        if (vorkath != null)
-        {
-            if ((vorkath.getAnimation() == VorkathAttack.REGULAR.getAnimation() || vorkath.getAnimation() == VorkathAttack.MELEE.getAnimation() || vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation()) && vorkathAttackCounter > 0 && !vorkathHasAttacked)
-            {
-                attack = VorkathAttack.REGULAR;
-                vorkathAttackCounter--;
-                vorkathHasAttacked = true;
-            }
-            else if (vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation() && vorkathAttackCounter == 0 && !vorkathHasAttacked)
-            {
-                attack = VorkathAttack.TOSS;
-                vorkathAttackCounter = 6;
-                vorkathNextSpecial = "Poison";
-                vorkathHasAttacked = true;
-            }
-            else if (vorkath.getAnimation() == VorkathAttack.POISON.getAnimation())
-            {
-                attack = VorkathAttack.POISON;
-                vorkathAttackCounter = 6;
-                vorkathNextSpecial = "Ice";
-            }
-            else if (vorkath.getAnimation() == VorkathAttack.DEATH.getAnimation())
-            {
-                attack = VorkathAttack.DEATH;
-                vorkathAttackCounter = 6;
-                vorkathNextSpecial = "Unknown";
-            }
-            else
-            {
-                vorkathHasAttacked = false;
-            }
-        }
-        else
-        {
-            attack = null;
-        }
-    }
+		NPC vorkath = findVorkath();
+		if (vorkath != null)
+		{
+			if ((vorkath.getAnimation() == VorkathAttack.REGULAR.getAnimation() || vorkath.getAnimation() == VorkathAttack.MELEE.getAnimation() || vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation()) && vorkathAttackCounter > 0 && !vorkathHasAttacked)
+			{
+				attack = VorkathAttack.REGULAR;
+				vorkathAttackCounter--;
+				vorkathHasAttacked = true;
+			}
+			else if (vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation() && vorkathAttackCounter == 0 && !vorkathHasAttacked)
+			{
+				attack = VorkathAttack.TOSS;
+				vorkathAttackCounter = 6;
+				vorkathNextSpecial = "Poison";
+				vorkathHasAttacked = true;
+			}
+			else if (vorkath.getAnimation() == VorkathAttack.POISON.getAnimation())
+			{
+				attack = VorkathAttack.POISON;
+				vorkathAttackCounter = 6;
+				vorkathNextSpecial = "Ice";
+			}
+			else if (vorkath.getAnimation() == VorkathAttack.DEATH.getAnimation())
+			{
+				attack = VorkathAttack.DEATH;
+				vorkathAttackCounter = 6;
+				vorkathNextSpecial = "Unknown";
+			}
+			else
+			{
+				vorkathHasAttacked = false;
+			}
+		}
+		else
+		{
+			attack = null;
+		}
+	}
 
-    NPC findVorkath()
-    {
-        Query query = new NPCQuery().idEquals(8061);
-        NPC[] result = queryRunner.runQuery(query);
-        return result.length >= 1 ? result[0] : null;
-    }
+	NPC findVorkath()
+	{
+		Query query = new NPCQuery().idEquals(8061);
+		NPC[] result = queryRunner.runQuery(query);
+		return result.length >= 1 ? result[0] : null;
+	}
 
-    VorkathAttack getAttack()
-    {
-        return attack;
-    }
+	VorkathAttack getAttack()
+	{
+		return attack;
+	}
 
 }
