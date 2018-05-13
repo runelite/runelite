@@ -80,10 +80,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
     @ConfigItem(
-            position = 4,
-            keyName = "claimSlime",
-            name = "Claim Slime",
-            description = "Swap Talk-to with Claim Slime from Morytania diaries"
+        position = 4,
+        keyName = "claimSlime",
+        name = "Claim Slime",
+        description = "Swap Talk-to with Claim Slime from Morytania diaries"
     )
     default boolean claimSlime()
     {
@@ -102,10 +102,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
     @ConfigItem(
-            position = 6,
-            keyName = "swapLeapingFish",
-            name = "Drop Leaping Fish",
-            description = "Swaps use with drop on leaping trout, leaping salmon, and leaping sturgeon."
+        position = 6,
+        keyName = "swapLeapingFish",
+        name = "Drop Leaping Fish",
+        description = "Swaps use with drop on leaping trout, leaping salmon, and leaping sturgeon."
     )
     default boolean swapLeapingFish() { return true; }
 
