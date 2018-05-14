@@ -63,7 +63,8 @@ class OpponentInfoOverlay extends Overlay
 	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	private Integer lastMaxHealth;
-	private float lastRatio = 0;
+	private int lastRatio = 0;
+	private int lastHealthScale = 0;
 	private Instant lastTime = Instant.now();
 	private String opponentName;
 	private String opponentsOpponentName;
@@ -122,7 +123,8 @@ class OpponentInfoOverlay extends Overlay
 		if (opponent != null && opponent.getHealth() > 0)
 		{
 			lastTime = Instant.now();
-			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
+			lastRatio = opponent.getHealthRatio();
+			lastHealthScale = opponent.getHealth();
 			opponentName = Text.removeTags(opponent.getName());
 
 			lastMaxHealth = null;
@@ -168,7 +170,7 @@ class OpponentInfoOverlay extends Overlay
 			.build());
 
 		// Health bar
-		if (lastRatio >= 0)
+		if (lastRatio >= 0 && lastHealthScale > 0)
 		{
 			final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
 			progressBarComponent.setBackgroundColor(HP_RED);
@@ -176,13 +178,46 @@ class OpponentInfoOverlay extends Overlay
 
 			if (lastMaxHealth != null)
 			{
+				// This is the reverse of the calculation of healthRatio done by the server
+				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
+				// It's able to recover the exact health if maxHealth <= healthScale.
+				int health = 0;
+				if (lastRatio > 0)
+				{
+					int minHealth = 1;
+					int maxHealth;
+					if (lastHealthScale > 1)
+					{
+						if (lastRatio > 1)
+						{
+							// This doesn't apply if healthRatio = 1, because of the special case in the server calculation that
+							// health = 0 forces healthRatio = 0 instead of the expected healthRatio = 1.
+							minHealth = (lastMaxHealth * (lastRatio - 1) + lastHealthScale - 2) / (lastHealthScale - 1);
+						}
+						maxHealth = (lastMaxHealth * lastRatio - 1) / (lastHealthScale - 1);
+						if (maxHealth > lastMaxHealth)
+						{
+							maxHealth = lastMaxHealth;
+						}
+					}
+					else
+					{
+						// If healthScale is 1, healthRatio will always be 1 unless health = 0
+						// so we know nothing about the upper limit except that it can't be higher than maxHealth
+						maxHealth = lastMaxHealth;
+					}
+					// Take the average of min and max possible healths
+					health = (minHealth + maxHealth + 1) / 2;
+				}
+
 				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
 				progressBarComponent.setMaximum(lastMaxHealth);
-				progressBarComponent.setValue(lastRatio * lastMaxHealth);
+				progressBarComponent.setValue(health);
 			}
 			else
 			{
-				progressBarComponent.setValue(lastRatio * 100d);
+				float floatRatio = (float) lastRatio / (float) lastHealthScale;
+				progressBarComponent.setValue(floatRatio * 100d);
 			}
 
 			panelComponent.getChildren().add(progressBarComponent);
