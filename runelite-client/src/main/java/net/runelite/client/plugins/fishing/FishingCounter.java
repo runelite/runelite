@@ -26,7 +26,8 @@ package net.runelite.client.plugins.fishing;
 
 import lombok.Getter;
 
-public class FishingCounter {
+public class FishingCounter
+{
     @Getter
     private int amount;
 
