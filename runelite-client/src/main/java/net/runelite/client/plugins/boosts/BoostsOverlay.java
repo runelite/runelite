@@ -123,10 +123,10 @@ class BoostsOverlay extends Overlay
 				if (!infoBoxManager.getInfoBoxes().contains(indicator))
 				{
 					infoBoxManager.addInfoBox(indicator);
-					if(config.limitBoostAmount())
+					if (config.limitBoostAmount())
 					{
 						displayedBoosts++;
-						if(displayedBoosts == displayedLimit)
+						if (displayedBoosts == displayedLimit)
 						{
 							break;
 						}
@@ -161,10 +161,10 @@ class BoostsOverlay extends Overlay
 					.right(str)
 					.rightColor(strColor)
 					.build());
-				if(config.limitBoostAmount())
+				if (config.limitBoostAmount())
 				{
 					displayedBoosts++;
-					if(displayedBoosts == displayedLimit)
+					if (displayedBoosts == displayedLimit)
 					{
 						break;
 					}
