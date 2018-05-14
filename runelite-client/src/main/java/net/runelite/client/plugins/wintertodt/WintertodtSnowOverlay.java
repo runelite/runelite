@@ -26,10 +26,12 @@
 package net.runelite.client.plugins.wintertodt;
 
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -46,19 +48,58 @@ public class WintertodtSnowOverlay extends Overlay
 
 	private static final int MAX_DISTANCE = 2350; //Grabbed from the cannon plugin, magic number to keep overlay from rendering in unloaded tiles
 	private static final int SNOW_ATTACK_CENTER_ID = 502; //Id of the graphics object at center of snow attack
+	private static final int SNOW_PARTICLES_ID = 1311; //Id of the particles that spawn around an attack that was spawned on a player
 
 
-	//The location the snow attack graphics object will spawn at for a south east brazier attack
-	private static final WorldPoint SOUTH_EAST_BRAZIER_ATTACK_CENTER = new WorldPoint(1638, 3997, 0);
-	//The center of the snow attacks AOE damage
-	private static final WorldPoint SOUTH_EAST_BRAZIER_DAMAGE_CENTER = new WorldPoint(1640, 3998, 0);
+	Brazier[] Braziers = {
+			//south east brazier
+			new Brazier(
+					//The location the snow attack graphics object will spawn at for a south east brazier attack
+					new WorldPoint(1638, 3997, 0),
+					//The center of the snow attacks AOE damage
+					new WorldPoint(1640, 3998, 0)
+			),
+			//south west brazier
+			new Brazier(
+					new WorldPoint(1620, 3997, 0),
+					new WorldPoint(1621, 3998, 0)
+			),
+			//north west brazier
+			new Brazier(
+					new WorldPoint(1620, 4015, 0),
+					new WorldPoint(1621, 4017, 0)
+			),
+			//north east brazier
+			new Brazier(
+					new WorldPoint(1638, 4015, 0),
+					new WorldPoint(1640, 4017, 0)
+			)
+	};
 
-	private static final WorldPoint SOUTH_WEST_BRAZIER_ATTACK_CENTER = new WorldPoint(1620, 3997, 0);
-	private static final WorldPoint SOUTH_WEST_BRAZIER_DAMAGE_CENTER = new WorldPoint(1621, 3998, 0);
+	private boolean isAttackingPyromancer(int x, int y, List<GraphicsObject> graphicsObjects)
+	{
+		for (int i = 0; i < graphicsObjects.size(); i++)
+		{
+			GraphicsObject object = graphicsObjects.get(i);
+			if (object.getId() == SNOW_PARTICLES_ID)
+			{
+				WorldPoint particleLocation = WorldPoint.fromLocal(client, object.getLocation());
+				int particleX = particleLocation.getX();
+				int particleY = particleLocation.getY();
 
-	private static final WorldPoint NORTH_WEST_BRAZIER_DAMAGE_CENTER = new WorldPoint(1621, 4017, 0);
-
-	private static final WorldPoint NORTH_EAST_BRAZIER_DAMAGE_CENTER = new WorldPoint(1640, 4017, 0);
+				//particles spawn on the tiles diagonal to the main attack object
+				if (particleX == x - 1 && particleY == y - 1 ||
+						particleX == x - 1 && particleY == y + 1 ||
+						particleX == x + 1 && particleY == y - 1 ||
+						particleX == x + 1 && particleY == y + 1)
+				{
+					return false;
+				}
+			}
+		}
+		//if there are no particles around an attack object, and it's not attacking a brazier, it is a non-damaging pyro hit
+		return true;
+	}
 
 	@Inject
 	WintertodtSnowOverlay(Client client, WintertodtPlugin plugin, WintertodtConfig config)
@@ -77,6 +118,9 @@ public class WintertodtSnowOverlay extends Overlay
 			List<GraphicsObject> graphicsObjects = client.getGraphicsObjects();
 			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
+			GameObjectQuery query = new GameObjectQuery();
+			GameObject[] gameObjects = query.result(client);
+
 			for (int i = 0; i < graphicsObjects.size(); i++)
 			{
 				GraphicsObject object = graphicsObjects.get(i);
@@ -89,27 +133,33 @@ public class WintertodtSnowOverlay extends Overlay
 					int worldX = worldCenter.getX();
 					int worldY = worldCenter.getY();
 
-					if (worldX == SOUTH_EAST_BRAZIER_ATTACK_CENTER.getX() && worldY == SOUTH_EAST_BRAZIER_ATTACK_CENTER.getY())
+					boolean brazierHit = false;
+
+					for (int j = 0; i < Braziers.length; i++)
 					{
-						LocalPoint AOECenter = LocalPoint.fromWorld(client, SOUTH_EAST_BRAZIER_DAMAGE_CENTER);
-						dangerZone = Perspective.getCanvasTileAreaPoly(client, AOECenter, 4);
+						if (Braziers[i].isAttackingBrazier(worldX, worldY))
+						{
+							brazierHit = true;
+							if (Braziers[i].isBrazierAttackDangerous(gameObjects))
+							{
+								dangerZone = Braziers[i].dangerZone(client);
+								break;
+							}
+							else
+							{
+								break;
+							}
+						}
 					}
-					else if (worldX == SOUTH_WEST_BRAZIER_ATTACK_CENTER.getX() && worldY == SOUTH_WEST_BRAZIER_ATTACK_CENTER.getY())
-					{
-						LocalPoint AOECenter = LocalPoint.fromWorld(client, SOUTH_WEST_BRAZIER_DAMAGE_CENTER);
-						dangerZone = Perspective.getCanvasTileAreaPoly(client, AOECenter, 4);
-					}
-					else
+
+					if (dangerZone == null && brazierHit == false && !isAttackingPyromancer(worldX, worldY, graphicsObjects))
 					{
 						dangerZone = Perspective.getCanvasTileAreaPoly(client, localCenter, 3);
 					}
 
-					if (dangerZone != null  && localLocation.distanceTo(localCenter) <= MAX_DISTANCE)
+					if (dangerZone != null && localLocation.distanceTo(localCenter) <= MAX_DISTANCE)
 					{
 						OverlayUtil.renderPolygon(graphics, dangerZone, Color.RED);
-						WorldPoint tile = WorldPoint.fromLocal(client, localCenter);
-						System.out.println("Snow attack at " + tile.toString());
-						//TODO, FIND SPAWN POINT OF NORTHERN BRAZIERS
 					}
 				}
 			}

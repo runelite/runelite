@@ -84,23 +84,6 @@ public class WintertodtPlugin extends Plugin
 		return configManager.getConfig(WintertodtConfig.class);
 	}
 
-	@Schedule(
-			period = 1,
-			unit = ChronoUnit.SECONDS
-	)
-	public void update()
-	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-		if (isInWintertodt())
-		{
-			WorldPoint location = client.getLocalPlayer().getWorldLocation();
-			//System.out.println(Integer.toString(location.getX()) + "," + Integer.toString(location.getY()) + "," + Integer.toString(location.getPlane()));
-		}
-	}
-
 	public boolean isInWintertodt()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
