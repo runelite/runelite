@@ -52,7 +52,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
-	name = "UI Customizer"
+	name = "UI Customizer",
+	enabledByDefault = false
 )
 public class UICustomizerPlugin extends Plugin
 {
@@ -108,12 +109,6 @@ public class UICustomizerPlugin extends Plugin
 	private void loadSkin()
 	{
 		removeSkin();
-
-		if (config.skin() == Skin.NONE)
-		{
-			restoreDimensions();
-			return;
-		}
 
 		Map<Integer, SpritePixels> overrides = new HashMap<>();
 

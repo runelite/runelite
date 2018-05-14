@@ -1213,8 +1213,8 @@ public class Widget extends Node {
       signature = "(ZI)Llc;",
       garbageValue = "-215938927"
    )
-   @Import("getspriteunid")
-   public SpritePixels getspriteunid(boolean var1) {
+   @Import("getWidgetSprite")
+   public SpritePixels getWidgetSprite(boolean var1) {
       field2621 = false;
       int var2;
       if(var1) {
@@ -1435,7 +1435,7 @@ public class Widget extends Node {
          if(var5 != null) {
             return var5;
          } else {
-            SpritePixels var6 = this.getspriteunid(var1);
+            SpritePixels var6 = this.getWidgetSprite(var1);
             if(var6 == null) {
                return null;
             } else {

@@ -40,14 +40,14 @@ public abstract class UICustomizerMixin2 implements RSWidget
 	@Shadow("widgetSpriteOverrides")
 	private static Map<Integer, SpritePixels> widgetSpriteOverrides;
 
-	@Copy("getspriteunid")
-	public RSSpritePixels rs$getspriteunid(boolean var1)
+	@Copy("getWidgetSprite")
+	public RSSpritePixels rs$getWidgetSprite(boolean var1)
 	{
 		throw new RuntimeException();
 	}
 
-	@Replace("getspriteunid")
-	public RSSpritePixels rl$getspriteunid(boolean var1)
+	@Replace("getWidgetSprite")
+	public RSSpritePixels rl$getWidgetSprite(boolean var1)
 	{
 		if (getSpriteId() != -1 && widgetSpriteOverrides != null)
 		{
@@ -59,6 +59,6 @@ public abstract class UICustomizerMixin2 implements RSWidget
 			}
 		}
 
-		return rs$getspriteunid(var1);
+		return rs$getWidgetSprite(var1);
 	}
 }
