@@ -90,6 +90,8 @@ class BoostsOverlay extends Overlay
 		}
 
 		overlayActive = false;
+		int displayedBoosts = 0;
+		int displayedLimit = config.limitBoostsTo();
 
 		for (Skill skill : plugin.getShownSkills())
 		{
@@ -121,6 +123,14 @@ class BoostsOverlay extends Overlay
 				if (!infoBoxManager.getInfoBoxes().contains(indicator))
 				{
 					infoBoxManager.addInfoBox(indicator);
+					if(config.limitBoostAmount())
+					{
+						displayedBoosts++;
+						if(displayedBoosts == displayedLimit)
+						{
+							break;
+						}
+					}
 				}
 			}
 			else
@@ -151,6 +161,14 @@ class BoostsOverlay extends Overlay
 					.right(str)
 					.rightColor(strColor)
 					.build());
+				if(config.limitBoostAmount())
+				{
+					displayedBoosts++;
+					if(displayedBoosts == displayedLimit)
+					{
+						break;
+					}
+				}
 			}
 		}
 
