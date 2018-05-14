@@ -63,6 +63,17 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showExLabel",
+		name = "Show 'EX' Label",
+		description = "Configures whether or not to draw GE prices with 'EX' label",
+		position = 3
+	)
+	default boolean showEXLabel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showHAValue",
 		name = "Show High Alchemy Values",
 		description = "Configures whether or not to draw High Alchemy values alongside ground items",

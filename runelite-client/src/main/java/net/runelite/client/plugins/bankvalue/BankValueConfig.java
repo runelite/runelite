@@ -45,6 +45,16 @@ public interface BankValueConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showExLabel",
+			name = "Show 'EX' Label",
+			description = "Configures whether or not to draw GE prices with 'EX' label"
+	)
+	default boolean showEXLabel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showHA",
 		name = "Show high alchemy price",
 		description = "Show high alchemy price total (HA)")
