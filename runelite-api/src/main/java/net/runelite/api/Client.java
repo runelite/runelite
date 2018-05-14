@@ -175,6 +175,12 @@ public interface Client extends GameEngine
 
 	int[] getVarps();
 
+	@VisibleForDevtools
+	int[] getIntVarcs();
+
+	@VisibleForDevtools
+	String[] getStrVarcs();
+
 	int getVar(VarPlayer varPlayer);
 
 	int getVar(Varbits varbit);
