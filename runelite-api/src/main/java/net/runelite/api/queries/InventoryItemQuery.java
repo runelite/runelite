@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,48 +25,73 @@
  */
 package net.runelite.api.queries;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Query;
 
-@RequiredArgsConstructor
 public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
 {
-	private final InventoryID inventory;
+	private final InventoryID[] inventories;
+	private boolean findAll = false;
+	private Integer[] itemIDs;
+
+	public InventoryItemQuery(InventoryID... inventories)
+	{
+		this.inventories = inventories;
+	}
 
 	@Override
 	public Item[] result(Client client)
 	{
-		ItemContainer container = client.getItemContainer(inventory);
-		if (container == null)
+		List<Integer> inputIDs = itemIDs == null ? new ArrayList<>() : new ArrayList<>(Arrays.asList(itemIDs));
+		List<Integer> foundIDs = new ArrayList<>();
+		List<Item> inputItems = new ArrayList<>();
+		List<Item> foundItems = new ArrayList<>();
+
+		for (InventoryID inventory : inventories)
+		{
+			ItemContainer container = client.getItemContainer(inventory);
+			if (container != null)
+			{
+				inputItems.addAll(Arrays.asList(container.getItems()));
+			}
+		}
+
+		for (Item item : inputItems)
+		{
+			if (item != null)
+			{
+				if (inputIDs.contains(item.getId()) || (inputIDs.isEmpty() && item.getId() > 0))
+				{
+					foundIDs.add(item.getId());
+					foundItems.add(item);
+				}
+			}
+		}
+
+		//todo: make this work with multiples of the same item in inputIDs
+		if (foundItems.isEmpty() || (findAll && !foundIDs.containsAll(inputIDs)))
 		{
 			return null;
 		}
-		return Arrays.stream(container.getItems())
-				.filter(Objects::nonNull)
-				.filter(predicate)
-				.toArray(Item[]::new);
+
+		return foundItems.toArray(new Item[0]);
 	}
 
-	public InventoryItemQuery idEquals(int... ids)
+	public InventoryItemQuery findAll()
 	{
-		predicate = and(item ->
-		{
-			for (int id : ids)
-			{
-				if (item.getId() == id)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
+		this.findAll = true;
 		return this;
 	}
 
+	public InventoryItemQuery idEquals(Integer... itemIDs)
+	{
+		this.itemIDs = itemIDs;
+		return this;
+	}
 }
