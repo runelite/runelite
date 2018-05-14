@@ -250,6 +250,8 @@ public class WidgetID
 		static final int QUEST_TAB = 53;
 		static final int INVENTORY_TAB = 54;
 		static final int PRAYER_TAB = 56;
+		static final int COMBAT_ICON = 58;
+		static final int MAGIC_ICON = 64;
 	}
 
 	static class ResizableViewportBottomLine

@@ -416,6 +416,8 @@ public interface Client extends GameEngine
 
 	void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides);
 
+	void setCompass(SpritePixels spritePixels);
+
 	int getTickCount();
 
 	void setTickCount(int tickCount);

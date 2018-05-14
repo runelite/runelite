@@ -38,14 +38,15 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -60,6 +61,9 @@ public class UICustomizerPlugin extends Plugin
 
 	@Inject
 	private UICustomizerConfig config;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Provides
 	UICustomizerConfig provideConfig(ConfigManager configManager)
@@ -92,19 +96,13 @@ public class UICustomizerPlugin extends Plugin
 	@Subscribe
 	public void onResizableChanged(ResizeableChanged event)
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			adjustDimensions();
-		}
+		adjustDimensions();
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			adjustDimensions();
-		}
+		adjustDimensions();
 	}
 
 	private void loadSkin()
@@ -137,7 +135,15 @@ public class UICustomizerPlugin extends Plugin
 				try
 				{
 					SpritePixels pixels = getSpritePixels(file.getName());
-					overrides.put(Integer.parseInt(name), pixels);
+
+					if (name.equals(String.valueOf(SpriteID.COMPASS_TEXTURE)))
+					{
+						client.setCompass(pixels);
+					}
+					else
+					{
+						overrides.put(Integer.parseInt(name), pixels);
+					}
 				}
 				catch (NumberFormatException exception)
 				{
@@ -266,16 +272,24 @@ public class UICustomizerPlugin extends Plugin
 
 			if (widget != null)
 			{
-					widget.setRelativeX(widget.getOriginalX());
-					widget.setRelativeY(widget.getOriginalY());
-					widget.setHeight(widget.getOriginalHeight());
-					widget.setWidth(widget.getOriginalWidth());
+				widget.setRelativeX(widget.getOriginalX());
+				widget.setRelativeY(widget.getOriginalY());
+				widget.setHeight(widget.getOriginalHeight());
+				widget.setWidth(widget.getOriginalWidth());
 			}
 		}
 	}
 
 	private void removeSkin()
 	{
+		BufferedImage compassImage = spriteManager.getSprite(SpriteID.COMPASS_TEXTURE, 0);
+
+		if (compassImage != null)
+		{
+			SpritePixels compass = fileToSpritePixels(compassImage);
+			client.setCompass(compass);
+		}
+
 		client.setSpriteOverrides(null);
 		client.setWidgetSpriteOverrides(null);
 	}
