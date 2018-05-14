@@ -627,4 +627,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("colorPalette")
 	int[] getColorPalette();
+
+	@Import("flags")
+	int getFlags();
 }

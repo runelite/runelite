@@ -25,6 +25,7 @@
 package net.runelite.mixins;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.runelite.api.ChatMessageType;
@@ -59,6 +60,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -68,6 +70,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
@@ -137,6 +140,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean hasVarbitChanged;
+
+	@Inject
+	private static int oldMenuEntryCount;
 
 	@Inject
 	@Override
@@ -502,6 +508,31 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		setMenuOptionCount(count);
+		oldMenuEntryCount = count;
+	}
+
+	@FieldHook("menuOptionCount")
+	@Inject
+	public static void onMenuOptionsChanged(int idx)
+	{
+		int oldCount = oldMenuEntryCount;
+		int newCount = client.getMenuOptionCount();
+
+		oldMenuEntryCount = newCount;
+
+		if (newCount == oldCount + 1)
+		{
+			MenuEntryAdded event = new MenuEntryAdded(
+				client.getMenuOptions()[newCount - 1],
+				client.getMenuTargets()[newCount - 1],
+				client.getMenuTypes()[newCount - 1],
+				client.getMenuIdentifiers()[newCount - 1],
+				client.getMenuActionParams0()[newCount - 1],
+				client.getMenuActionParams1()[newCount - 1]
+			);
+
+			eventBus.post(event);
+		}
 	}
 
 	@Inject
@@ -964,5 +995,13 @@ public abstract class RSClientMixin implements RSClient
 	public void setTickCount(int tick)
 	{
 		tickCount = tick;
+	}
+
+	@Inject
+	@Override
+	public EnumSet<WorldType> getWorldType()
+	{
+		int flags = getFlags();
+		return WorldType.fromMask(flags);
 	}
 }

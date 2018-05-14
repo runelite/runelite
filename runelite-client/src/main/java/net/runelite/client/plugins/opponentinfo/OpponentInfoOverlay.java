@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -45,6 +46,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.hiscore.HiscoreResult;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -53,6 +55,9 @@ class OpponentInfoOverlay extends Overlay
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
 	private final Client client;
+	private final OpponentInfoPlugin opponentInfoPlugin;
+	private final HiscoreManager hiscoreManager;
+
 	private final NPC[] clientNpcs;
 	private final PanelComponent panelComponent = new PanelComponent();
 	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
@@ -65,9 +70,12 @@ class OpponentInfoOverlay extends Overlay
 	private NPC lastOpponent;
 
 	@Inject
-	private OpponentInfoOverlay(Client client)
+	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin, HiscoreManager hiscoreManager)
 	{
 		this.client = client;
+		this.opponentInfoPlugin = opponentInfoPlugin;
+		this.hiscoreManager = hiscoreManager;
+
 		this.clientNpcs = client.getCachedNPCs();
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
@@ -116,7 +124,24 @@ class OpponentInfoOverlay extends Overlay
 			lastTime = Instant.now();
 			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
 			opponentName = Text.removeTags(opponent.getName());
-			lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
+
+			lastMaxHealth = null;
+			if (opponent instanceof NPC)
+			{
+				lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
+			}
+			else if (opponent instanceof Player)
+			{
+				HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
+				if (hiscoreResult != null)
+				{
+					int hp = hiscoreResult.getHitpoints().getLevel();
+					if (hp > 0)
+					{
+						lastMaxHealth = hp;
+					}
+				}
+			}
 
 			Actor opponentsOpponent = opponent.getInteracting();
 			if (opponentsOpponent != null
