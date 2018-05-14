@@ -35,7 +35,6 @@ import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
