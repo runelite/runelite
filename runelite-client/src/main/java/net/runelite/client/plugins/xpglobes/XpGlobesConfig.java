@@ -53,7 +53,10 @@ public interface XpGlobesConfig extends Config
 			description = "Stop globes from showing up for level 99 skills",
 			position = 1
 	)
-	default boolean hideMaxed(){return false;}
+	default boolean hideMaxed()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "Progress arc color",
