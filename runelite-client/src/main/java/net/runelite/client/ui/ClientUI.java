@@ -127,7 +127,10 @@ public class ClientUI
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
 	private Applet client;
+
+	@Getter
 	private ContainableFrame frame;
+
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
@@ -135,10 +138,7 @@ public class ClientUI
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
-
-	@Getter
 	private JPanel container;
-
 	private PluginPanel lastPluginPanel;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
