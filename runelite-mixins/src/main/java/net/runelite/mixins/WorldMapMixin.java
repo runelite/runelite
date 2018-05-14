@@ -49,5 +49,4 @@ public abstract class WorldMapMixin implements RSRenderOverview
 	{
 		setWorldMapPositionTarget(worldPoint.getX(), worldPoint.getY());
 	}
-
 }

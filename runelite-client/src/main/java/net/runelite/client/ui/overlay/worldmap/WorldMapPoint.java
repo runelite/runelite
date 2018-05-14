@@ -28,10 +28,12 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 
 @Data
+@EqualsAndHashCode(exclude = {"clickbox", "currentlyEdgeSnapped", "tooltipVisible", "imagePoint"})
 public class WorldMapPoint
 {
 	private BufferedImage image;

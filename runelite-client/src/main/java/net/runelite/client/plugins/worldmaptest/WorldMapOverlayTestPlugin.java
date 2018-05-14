@@ -37,11 +37,12 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "WorldMapOverlayTest",
+	name = "World Map Debug Tools",
 	developerPlugin = true,
 	enabledByDefault = false
 )
@@ -57,6 +58,15 @@ public class WorldMapOverlayTestPlugin extends Plugin
 
 	private WorldMapPoint playerDot;
 
+	@Inject
+	private WorldMapDebugOverlay worldMapDebugOverlay;
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return worldMapDebugOverlay;
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -65,9 +75,9 @@ public class WorldMapOverlayTestPlugin extends Plugin
 		markGraphics.setColor(Color.ORANGE);
 		markGraphics.fillOval(0, 0, 10, 10);
 
-		BufferedImage playerImage = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage playerImage = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
 		playerImage.getGraphics().setColor(Color.WHITE);
-		playerImage.getGraphics().fillRect(0, 0, 5, 5);
+		playerImage.getGraphics().fillRect(0, 0, 8, 8);
 		playerDot = new WorldMapPoint(null, playerImage);
 
 		worldMapPointManager.add(playerDot);
