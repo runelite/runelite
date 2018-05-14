@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +38,12 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -72,47 +76,34 @@ public class UICustomizerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		restoreDimensions();
 		removeSkin();
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+	public void onConfigChanged(ConfigChanged config)
 	{
-		if (e.getGroup().equals("uiCustomizer"))
+		if (config.getGroup().equals("uiCustomizer"))
 		{
-			adjustWidth();
 			loadSkin();
 		}
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widget)
+	public void onResizableChanged(ResizeableChanged event)
 	{
-		adjustWidth();
-	}
-
-	private void adjustWidth()
-	{
-		//Resize width of widgets to 33 so highlight sprite won't extend to adjacent widgets
-		setWidgetSize(548, 32, 33, null);
-		setWidgetSize(548, 50, 33, null);
-		setWidgetSize(163, 53, 33, null);
-		setWidgetSize(161, 53, 33, null);
-	}
-
-	private void setWidgetSize(int groupID, int childID, Integer width, Integer height)
-	{
-		if (client.getWidget(groupID, childID) != null)
+		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (width != null)
-			{
-				client.getWidget(groupID, childID).setWidth(width);
-			}
+			adjustDimensions();
+		}
+	}
 
-			if (height != null)
-			{
-				client.getWidget(groupID, childID).setHeight(height);
-			}
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			adjustDimensions();
 		}
 	}
 
@@ -120,8 +111,9 @@ public class UICustomizerPlugin extends Plugin
 	{
 		removeSkin();
 
-		if(config.skin() == Skin.NONE)
+		if (config.skin() == Skin.NONE)
 		{
+			restoreDimensions();
 			return;
 		}
 
@@ -138,56 +130,46 @@ public class UICustomizerPlugin extends Plugin
 				{
 					continue;
 				}
-				log.debug(config.skin().toString() + "\\" + file.getName());
+
 				String name = file.getName();
 				name = name.substring(0, name.length() - 4);
 
 				try
 				{
-					int spriteId = Integer.parseInt(name);
-
 					SpritePixels pixels = getSpritePixels(file.getName());
-					overrides.put(spriteId, pixels);
+					overrides.put(Integer.parseInt(name), pixels);
 				}
-				catch (NumberFormatException e)
+				catch (NumberFormatException exception)
 				{
-					e.printStackTrace();
+					log.debug("Invalid format: " + exception);
 				}
 			}
 
 			client.setSpriteOverrides(overrides);
 		}
 
-		if(config.skin() == Skin.AROUND_2005)
-		{
-			Map<Integer, SpritePixels> widgetOverrides = new HashMap<>();
-
-			SpritePixels topSprite = getSpritePixels( "\\widget\\1030_top.png");
-			widgetOverrides.put(WidgetInfo.PACK(548, 49), topSprite);
-			widgetOverrides.put(WidgetInfo.PACK(548, 50), topSprite);
-			widgetOverrides.put(WidgetInfo.PACK(548, 52), topSprite);
-			widgetOverrides.put(WidgetInfo.PACK(548, 53), topSprite);
-
-			widgetOverrides.put(WidgetInfo.PACK(548, 51),
-				getSpritePixels("\\widget\\1030_middle.png"));
-
-			SpritePixels bottomSprite = getSpritePixels("\\widget\\1030_bottom.png");
-			widgetOverrides.put(WidgetInfo.PACK(548, 32), bottomSprite);
-			widgetOverrides.put(WidgetInfo.PACK(548, 33), bottomSprite);
-			widgetOverrides.put(WidgetInfo.PACK(548, 35), bottomSprite);
-			widgetOverrides.put(WidgetInfo.PACK(548, 36), bottomSprite);
-
-			widgetOverrides.put(WidgetInfo.PACK(548, 34),
-				getSpritePixels("\\widget\\1030_middle_bottom.png"));
-
-			client.setWidgetSpriteOverrides(widgetOverrides);
-		}
+		setupWidgets();
 	}
 
-	private void removeSkin()
+	private void setupWidgets()
 	{
-		client.setSpriteOverrides(null);
-		client.setWidgetSpriteOverrides(null);
+		Map<Integer, SpritePixels> widgetOverrides = new HashMap<>();
+
+		for (WidgetOverride widgetOverride : WidgetOverride.values())
+		{
+			if (widgetOverride.getSkin() == config.skin())
+			{
+				SpritePixels spritePixels = getSpritePixels(getPath(widgetOverride));
+
+				for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+				{
+					widgetOverrides.put(widgetInfo.getPackedId(), spritePixels);
+				}
+			}
+		}
+
+		client.setWidgetSpriteOverrides(widgetOverrides);
+		adjustDimensions();
 	}
 
 	private SpritePixels getSpritePixels(String path)
@@ -196,6 +178,7 @@ public class UICustomizerPlugin extends Plugin
 		{
 			try
 			{
+				log.debug("Loading skin: " + config.skin().toString() + " - file: " + path);
 				BufferedImage image = ImageIO.read(getClass().getResourceAsStream(config.skin().toString()
 					+ "\\" + path));
 				return fileToSpritePixels(image);
@@ -223,5 +206,77 @@ public class UICustomizerPlugin extends Plugin
 		}
 
 		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
+	}
+
+	private String getPath(WidgetOverride widgetOverride)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+
+		if (widgetOverride.getSubfolder() != null)
+		{
+			stringBuilder.append(widgetOverride.getSubfolder());
+			stringBuilder.append("\\");
+		}
+
+		stringBuilder.append(widgetOverride.getName());
+		stringBuilder.append(".png");
+		return stringBuilder.toString();
+	}
+
+	private void adjustDimensions()
+	{
+		restoreDimensions();
+
+		for (WidgetOffset widgetOffset : WidgetOffset.values())
+		{
+			if (widgetOffset.getSkin() != config.skin())
+			{
+				continue;
+			}
+
+			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
+
+			if (widget != null)
+			{
+				if (widgetOffset.getOffsetX() != null)
+				{
+					widget.setRelativeX(widgetOffset.getOffsetX());
+				}
+				if (widgetOffset.getOffsetY() != null)
+				{
+					widget.setRelativeY(widgetOffset.getOffsetY());
+				}
+				if (widgetOffset.getWidth() != null)
+				{
+					widget.setWidth(widgetOffset.getWidth());
+				}
+				if (widgetOffset.getHeight() != null)
+				{
+					widget.setHeight(widgetOffset.getHeight());
+				}
+			}
+		}
+	}
+
+	private void restoreDimensions()
+	{
+		for (WidgetOffset widgetOffset : WidgetOffset.values())
+		{
+			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
+
+			if (widget != null)
+			{
+					widget.setRelativeX(widget.getOriginalX());
+					widget.setRelativeY(widget.getOriginalY());
+					widget.setHeight(widget.getOriginalHeight());
+					widget.setWidth(widget.getOriginalWidth());
+			}
+		}
+	}
+
+	private void removeSkin()
+	{
+		client.setSpriteOverrides(null);
+		client.setWidgetSpriteOverrides(null);
 	}
 }

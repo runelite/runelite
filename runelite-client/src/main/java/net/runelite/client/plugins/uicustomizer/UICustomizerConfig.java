@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +38,9 @@ import net.runelite.client.config.ConfigItem;
 public interface UICustomizerConfig extends Config
 {
 	@ConfigItem(
-			keyName = "interface",
-			name = "Skin",
-			description = "The skin to use"
+			keyName = "gameframe",
+			name = "Gameframe",
+			description = "The gameframe to use for the interface"
 	)
 	default Skin skin()
 	{
