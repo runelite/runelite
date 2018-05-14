@@ -140,17 +140,17 @@ public class FishingPlugin extends Plugin
 					continue;
 				}
 
-				boolean machine = false;
+				boolean match = false;
 				for (FishingCounter FC : catchCounter)
 				{
 					if (FC.getName().contains(name))
 					{
-						machine = true;
+						match = true;
 						FC.addAnotherCatch();
 						break;
 					}
 				}
-				if (!machine)
+				if (!match)
 				{
 					catchCounter.add(new FishingCounter(name));
 				}
