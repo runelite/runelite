@@ -45,7 +45,6 @@ import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
 import org.kitteh.irc.client.library.feature.twitch.TwitchDelaySender;
 import org.kitteh.irc.client.library.feature.twitch.TwitchListener;
 import org.kitteh.irc.client.library.feature.twitch.event.RoomStateEvent;
-import org.apache.commons.lang3.StringUtils.*;
 import org.kitteh.irc.client.library.feature.twitch.event.UserNoticeEvent;
 import org.kitteh.irc.client.library.feature.twitch.event.UserStateEvent;
 
@@ -173,7 +172,7 @@ public class TwitchPlugin extends Plugin
 			//Echos the message back in in-game chat
 			if (irc.getChannels().toString().contains("#" + config.nickName()))
 			{
-				//If chatbox is transparent, chat is in subs only, user is a sub and they are logged in
+				//If chatbox is transparent, chat is in subs only, user is a sub and they are logged in to game
 				if (isChatboxTransparent() && client.getGameState().equals(GameState.LOGGED_IN) && (subscribed && subsOnly))
 				{
 					client.addChatMessage(ChatMessageType.TRADE, "",
@@ -236,7 +235,7 @@ public class TwitchPlugin extends Plugin
 	//Shut off current running irc client
 	public void twitchShutdown(Client c)
 	{
-		irc.shutdown();
+		c.shutdown();
 	}
 
 	//Triggers when a message is sent to twitch chat
@@ -283,7 +282,7 @@ public class TwitchPlugin extends Plugin
 			username = "<img=27>" + username;
 		}
 
-		//Send the message with color based on if the chat is transparent or not
+		//Show the message in game with color based on if the chat is transparent or not
 		String message = a.getMessage();
 		if (isChatboxTransparent() && client.getGameState().equals(GameState.LOGGED_IN))
 		{
