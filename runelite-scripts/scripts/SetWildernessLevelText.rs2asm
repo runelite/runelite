@@ -1,0 +1,107 @@
+.id                 388
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      2
+.string_var_count   0
+   invoke                 384
+   istore                 1
+   invoke                 1138
+   load_int               1
+   if_icmpeq              LABEL6
+   jump                   LABEL49
+LABEL6:
+   get_varbit             4965
+   load_int               0
+   if_icmpgt              LABEL10
+   jump                   LABEL14
+LABEL10:
+   load_string            "Protection"
+   iload                  0
+   widget_put_text_widget
+   jump                   LABEL48
+LABEL14:
+   iload                  1
+   load_int               0
+   if_icmpgt              LABEL18
+   jump                   LABEL29
+LABEL18:
+   get_varbit             5954
+   load_int               1
+   if_icmpeq              LABEL22
+   jump                   LABEL29
+LABEL22:
+   load_string            "Level: "
+   iload                  1
+   int_to_string
+   string_append          2
+   iload                  0
+   widget_put_text_widget
+   jump                   LABEL48
+LABEL29:
+   get_varc               78
+   load_int               1
+   if_icmpeq              LABEL33
+   jump                   LABEL37
+LABEL33:
+   load_string            "Guarded"
+   iload                  0
+   widget_put_text_widget
+   jump                   LABEL48
+LABEL37:
+   get_varc               78
+   load_int               2
+   if_icmpeq              LABEL41
+   jump                   LABEL45
+LABEL41:
+   load_string            "No PvP"
+   iload                  0
+   widget_put_text_widget
+   jump                   LABEL48
+LABEL45:
+   load_string            "Deadman"
+   iload                  0
+   widget_put_text_widget
+LABEL48:
+   jump                   LABEL63
+LABEL49:
+   iload                  1
+   load_int               0
+   if_icmpgt              LABEL53
+   jump                   LABEL60
+LABEL53:
+   load_string            "Level: "
+   iload                  1
+   int_to_string
+   string_append          2
+   iload                  1
+   iload                  0
+   widget_put_text_widget
+   jump                   LABEL63
+LABEL60:
+   load_string            ""
+   iload                  0
+   widget_put_text_widget
+LABEL63:
+   load_int               0                         ; plugin active
+   load_string            "levelAttackRangeActive"  ; push event name
+   runelite_callback                                ; invoke callback
+   load_int               1                         ; load true
+   if_icmpeq              LABEL64                   ; if the plugin is active
+   jump                   LABEL65                   ; else jump to the unedited instructions
+LABEL64:
+   invoke                 383                       ; load is in pvp world
+   load_int               1                         ; load true
+   if_icmpeq              LABEL65                   ; if in pvp world dont subtract 15 from the wild level
+   jump                   LABEL66                   ; if not in the pvp world and in wildy then subtract 15 from the
+                                                    ; wild level because in pvp worlds the attack range starts from 15
+LABEL65:
+    iload                  1                        ; load wilderness level
+    invoke                 387                      ; set the attack range text
+    jump                   LABEL67                  ; jump to return
+LABEL66:
+   iload                  1                         ; load wilderness level
+   load_int               15                        ; push 15
+   isub                                             ; subtract 15 from the wilderness level
+   invoke                 387                       ; set the attack range text
+LABEL67:
+   return
