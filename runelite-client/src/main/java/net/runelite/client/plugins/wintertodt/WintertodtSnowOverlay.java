@@ -27,7 +27,9 @@ package net.runelite.client.plugins.wintertodt;
 
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -36,7 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.util.List;
 
 public class WintertodtSnowOverlay extends Overlay
@@ -46,8 +51,8 @@ public class WintertodtSnowOverlay extends Overlay
 	private final WintertodtConfig config;
 
 	private static final int MAX_DISTANCE = 2350; //Grabbed from the cannon plugin, magic number to keep overlay from rendering in unloaded tiles
-	private static final int SNOW_ATTACK_CENTER_ID = 502; //Id of the graphics object at center of snow attack
-	private static final int SNOW_PARTICLES_ID = 1311; //Id of the particles that spawn around an attack that was spawned on a player
+	private static final int SNOW_ATTACK_CENTER_ID = ObjectID.NULL_502; //Id of the graphics object at center of snow attack
+	private static final int SNOW_PARTICLES_ID = GraphicID.SNOW_PARTICLES_ID; //Id of the particles that spawn around an attack that was spawned on a player
 
 
 	Brazier[] Braziers = {
