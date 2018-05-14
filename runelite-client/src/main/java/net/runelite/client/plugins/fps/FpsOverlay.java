@@ -51,7 +51,7 @@ public class FpsOverlay extends Overlay
 	private static final int FPS_SIZE = MAX_FPS + 1;
 	private static final int Y_OFFSET = 14;
 	private static final int VALUE_X_OFFSET = 15;
-    private static final String FPS_STRING = " FPS";
+	private static final String FPS_STRING = " FPS";
 
 	// Cache of FPS number strings from 00-50
 	private final String[] fpsNums;
