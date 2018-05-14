@@ -28,20 +28,20 @@ import lombok.Getter;
 
 public class FishingCounter
 {
-    @Getter
-    private int amount;
+	@Getter
+	private int amount;
 
-    @Getter
-    private String name;
+	@Getter
+	private String name;
 
-    public FishingCounter(String name)
-    {
-        this.name = name;
-        this.amount = 1; //It is the first catch
-    }
+	public FishingCounter(String name)
+	{
+		this.name = name;
+		this.amount = 1; //It is the first catch
+	}
 
-    public void addAnotherCatch()
-    {
-        amount++;
-    }
+	public void addAnotherCatch()
+	{
+		amount++;
+	}
 }
