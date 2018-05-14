@@ -63,7 +63,7 @@ enum Task
 	DARK_BEASTS("dark beasts", ItemID.DARK_BEAST, "night beast"),
 	DESERT_LIZARDS("desert lizards", ItemID.DESERT_LIZARD),
 	DOGS("dogs", ItemID.GUARD_DOG, "jackal"),
-	DUST_DEVILS("dust devils", ItemID.DUST_DEVIL, "choke devil"),
+	DUST_DEVILS("dust devils", ItemID.DUST_DEVIL, 1.00, "Dust devil_110", "Choke devil_264", "choke devil"),
 	DWARVES("dwarves", ItemID.DWARVEN_HELMET, "dwarf"),
 	EARTH_WARRIORS("earth warriors", ItemID.BRONZE_FULL_HELM_T),
 	ELVES("elves", ItemID.ELF, "elf"),
@@ -115,10 +115,10 @@ enum Task
 	SHADOW_WARRIORS("shadow warriors", ItemID.BLACK_FULL_HELM),
 	SKELETAL_WYVERNS("skeletal wyverns", ItemID.SKELETAL_WYVERN),
 	SKELETONS("skeletons", ItemID.SKELETON_GUARD),
-	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL),
+	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL, 1.00, "Smoke devil_160", "Nuclear smoke devil_280"),
 	SPIDERS("spiders", ItemID.HUGE_SPIDER),
 	STEEL_DRAGONS("steel dragons", ItemID.STEEL_DRAGON),
-	SUQAHS("suqahs", ItemID.SUQAH_TOOTH),
+	SUQAHS("suqahs", ItemID.SUQAH_TOOTH, 1.025, "Suqah_111", "None"),
 	TERROR_DOGS("terror dogs", ItemID.TERROR_DOG),
 	TROLLS("trolls", ItemID.TROLL_GUARD),
 	TUROTH("turoth", ItemID.TUROTH),
@@ -135,6 +135,9 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
+	private double xpMultiplier = -1.00;
+	private String healthName = "None";
+	private String superiorName = "None";
 	private final String[] targetNames;
 
 	static
@@ -150,6 +153,17 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.targetNames = targetNames;
+	}
+
+	Task(String name, int itemSpriteId, double xpMultiplier, String healthName, String superiorName, String... targetNames)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.xpMultiplier = xpMultiplier;
+		this.healthName = healthName;
+		this.superiorName = superiorName;
 		this.targetNames = targetNames;
 	}
 
@@ -171,5 +185,20 @@ enum Task
 	public String[] getTargetNames()
 	{
 		return this.targetNames;
+	}
+
+	public double getXpMultiplier()
+	{
+		return this.xpMultiplier;
+	}
+
+	public String getHealthName()
+	{
+		return this.healthName;
+	}
+
+	public String getSuperiorName()
+	{
+		return this.superiorName;
 	}
 }

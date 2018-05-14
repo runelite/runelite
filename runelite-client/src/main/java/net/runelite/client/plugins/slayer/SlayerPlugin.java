@@ -28,15 +28,16 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.collect.ImmutableList;
 import static com.google.common.collect.ObjectArrays.concat;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -133,6 +134,7 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
+	private Map<String, Integer> npcHealth = loadNpcHealth();
 
 	@Getter(AccessLevel.PACKAGE)
 	private Collection<WidgetItem> slayerItems = Collections.emptyList();
@@ -143,6 +145,7 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 	private int points;
 	private int cachedXp;
+	private int gainedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
 	@Getter(AccessLevel.PACKAGE)
@@ -417,6 +420,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
+		gainedXp = slayerExp - cachedXp;
 		killedOne();
 		cachedXp = slayerExp;
 	}
@@ -445,8 +449,25 @@ public class SlayerPlugin extends Plugin
 		{
 			return;
 		}
+		Task task = Task.getTask(taskName);
+		if (npcHealth.get(task.getHealthName()) != null)
+		{
+			int regularXp = (int) Math.ceil(task.getXpMultiplier() * npcHealth.get(task.getHealthName()));
+			if ((task.getXpMultiplier() != -1.00 && task.getSuperiorName() == "None" && gainedXp > regularXp) ||
+					(task.getXpMultiplier() != -1.00 && task.getSuperiorName() != "None" && gainedXp > regularXp && gainedXp < 10 * npcHealth.get(task.getSuperiorName())))
+			{
+				amount -= (int) Math.ceil((double) gainedXp / regularXp);
+			}
+			else
+			{
+				amount--;
+			}
+		}
+		else
+		{
+			amount--;
+		}
 
-		amount--;
 		config.amount(amount); // save changed value
 
 		if (!config.showInfobox())
@@ -605,5 +626,16 @@ public class SlayerPlugin extends Plugin
 	private String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+
+	public static Map<String, Integer> loadNpcHealth()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		InputStream healthFile = SlayerPlugin.class.getResourceAsStream("/npc_health.json");
+		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 }
