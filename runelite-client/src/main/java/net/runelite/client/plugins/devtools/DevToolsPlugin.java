@@ -174,7 +174,7 @@ public class DevToolsPlugin extends Plugin
 			case "getvar":
 			{
 				int varbit = Integer.parseInt(args[0]);
-				int value = client.getVarbitValue(varbit);
+				int value = client.getVarbitValue(client.getVarps(), varbit);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
@@ -182,7 +182,7 @@ public class DevToolsPlugin extends Plugin
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
-				client.setVarbitValue(varbit, value);
+				client.setVarbitValue(client.getVarps(), varbit, value);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
