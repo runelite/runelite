@@ -78,4 +78,26 @@ public interface BoostsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "limitBoostAmount",
+		name = "Limit boosts shown",
+		description = "Configures whether or not to limit the amount of boosts shown",
+		position = 5
+	)
+	default boolean limitBoostAmount()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "limitBoostsTo",
+		name = "Amount to show",
+		description = "Configures how many boosts can be shown at a time",
+		position = 6
+	)
+	default int limitBoostsTo()
+	{
+		return 5;
+	}
 }
