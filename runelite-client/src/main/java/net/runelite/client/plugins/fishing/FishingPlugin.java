@@ -61,6 +61,8 @@ import net.runelite.client.util.QueryRunner;
 public class FishingPlugin extends Plugin
 {
 	private final List<Integer> spotIds = new ArrayList<>();
+	@Getter
+	private final List<FishingCounter> catchCounter = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
@@ -104,6 +106,12 @@ public class FishingPlugin extends Plugin
 		return Arrays.asList(overlay, spotOverlay, fishingSpotMinimapOverlay);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		catchCounter.clear();
+	}
+
 	public FishingSession getSession()
 	{
 		return session;
@@ -120,6 +128,33 @@ public class FishingPlugin extends Plugin
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
 			session.setLastFishCaught();
+		}
+
+		for (FishingSpot FS : FishingSpot.values())
+		{
+			String[] names = FS.getName().split(", ");
+			for (String name : names)
+			{
+				if (!event.getMessage().toLowerCase().contains(name.toLowerCase()))
+				{
+					break;
+				}
+
+				boolean machine = false;
+				for (FishingCounter FC : catchCounter)
+				{
+					if (FC.getName().contains(name))
+					{
+						machine = true;
+						FC.addAnotherCatch();
+						break;
+					}
+				}
+				if (!machine)
+				{
+					catchCounter.add(new FishingCounter(name));
+				}
+			}
 		}
 	}
 
