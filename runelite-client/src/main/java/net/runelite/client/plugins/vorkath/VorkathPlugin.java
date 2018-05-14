@@ -1,16 +1,12 @@
 package net.runelite.client.plugins.vorkath;
 
-import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Query;
-import net.runelite.api.queries.NPCQuery;
+import com.google.common.eventbus.Subscribe;
+import net.runelite.api.*;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
@@ -32,7 +28,7 @@ public class VorkathPlugin extends Plugin
 
 	int vorkathAttackCounter = 6;
 	String vorkathNextSpecial = "Unknown";
-	private boolean vorkathHasAttacked = false;
+	boolean vorkathIsAlive = false;
 
 	@Override
 	public Overlay getOverlay()
@@ -40,41 +36,41 @@ public class VorkathPlugin extends Plugin
 		return overlay;
 	}
 
-	@Schedule(
-		period = 1000,
-		unit = ChronoUnit.MILLIS
-	)
-
-	public void update()
+	@Subscribe
+	public void onAimationChanged(AnimationChanged event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || !client.isInInstancedRegion())
 		{
+			vorkathIsAlive = false;
+			vorkathAttackCounter = 6;
+			vorkathNextSpecial = "Unknown";
 			return;
 		}
 
-		NPC vorkath = findVorkath();
-		if (vorkath != null)
+		Actor actor = event.getActor();
+
+		if (actor != null && actor.getName().equals("Vorkath"))
 		{
-			if ((vorkath.getAnimation() == VorkathAttack.REGULAR.getAnimation() || vorkath.getAnimation() == VorkathAttack.MELEE.getAnimation() || vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation()) && vorkathAttackCounter > 0 && !vorkathHasAttacked)
+			vorkathIsAlive = true;
+
+			if ((actor.getAnimation() == VorkathAttack.REGULAR.getAnimation() || actor.getAnimation() == VorkathAttack.MELEE.getAnimation() || actor.getAnimation() == VorkathAttack.TOSS.getAnimation()) && vorkathAttackCounter > 0)
 			{
 				attack = VorkathAttack.REGULAR;
 				vorkathAttackCounter--;
-				vorkathHasAttacked = true;
 			}
-			else if (vorkath.getAnimation() == VorkathAttack.TOSS.getAnimation() && vorkathAttackCounter == 0 && !vorkathHasAttacked)
+			else if (actor.getAnimation() == VorkathAttack.TOSS.getAnimation() && vorkathAttackCounter == 0)
 			{
 				attack = VorkathAttack.TOSS;
 				vorkathAttackCounter = 6;
 				vorkathNextSpecial = "Poison";
-				vorkathHasAttacked = true;
 			}
-			else if (vorkath.getAnimation() == VorkathAttack.POISON.getAnimation())
+			else if (actor.getAnimation() == VorkathAttack.POISON.getAnimation())
 			{
 				attack = VorkathAttack.POISON;
 				vorkathAttackCounter = 6;
 				vorkathNextSpecial = "Ice";
 			}
-			else if (vorkath.getAnimation() == VorkathAttack.DEATH.getAnimation())
+			else if (actor.getAnimation() == VorkathAttack.DEATH.getAnimation())
 			{
 				attack = VorkathAttack.DEATH;
 				vorkathAttackCounter = 6;
@@ -82,26 +78,8 @@ public class VorkathPlugin extends Plugin
 			}
 			else
 			{
-				vorkathHasAttacked = false;
+				attack = null;
 			}
-		}
-		else
-		{
-			attack = null;
-		}
-	}
-
-	NPC findVorkath()
-	{
-		if (client.isInInstancedRegion())
-		{
-			Query query = new NPCQuery().nameContains("Vorkath");
-			NPC[] result = queryRunner.runQuery(query);
-			return result.length >= 1 ? result[0] : null;
-		}
-		else
-		{
-			return null;
 		}
 	}
 

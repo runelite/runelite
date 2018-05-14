@@ -74,7 +74,7 @@ public class VorkathOverlay extends Overlay
 			.text(plugin.vorkathNextSpecial)
 			.build());
 
-		if (plugin.findVorkath() != null)
+		if (plugin.vorkathIsAlive)
 		{
 			return panelComponent.render(graphics);
 		}
