@@ -77,6 +77,7 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.DeferredEventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -295,7 +296,10 @@ public class Hooks
 				/*
 					Reuse the resulting image instance to avoid creating an extreme amount of objects
 				 */
-				stretchedImage = new BufferedImage(stretchedDimensions.width, stretchedDimensions.height, BufferedImage.TYPE_INT_RGB);
+				stretchedImage = SwingUtil.createCompatibleImage(new BufferedImage(
+					stretchedDimensions.width,
+					stretchedDimensions.height,
+					BufferedImage.TYPE_INT_RGB));
 
 				if (stretchedGraphics != null)
 				{
@@ -304,7 +308,7 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
-				
+
 				/*
 					Fill Canvas before drawing stretched image to prevent artifacts.
 				*/
