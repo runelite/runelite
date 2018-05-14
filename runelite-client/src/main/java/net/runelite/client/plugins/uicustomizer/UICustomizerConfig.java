@@ -31,9 +31,9 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "uiCustomizer",
-		name = "UI Customizer",
-		description = "Configuration for the UI Customizer plugin"
+	keyName = "uiCustomizer",
+	name = "UI Customizer",
+	description = "Configuration for the UI Customizer plugin"
 )
 public interface UICustomizerConfig extends Config
 {

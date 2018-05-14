@@ -32,27 +32,25 @@ import net.runelite.api.widgets.WidgetInfo;
 @Getter
 enum WidgetOverride
 {
-	FIXED_TOP_LEFT_2005(Skin.AROUND_2005, "1030_top_left", "widget", WidgetInfo.FIXED_VIEWPORT_SKILLS_TAB, WidgetInfo.FIXED_VIEWPORT_QUEST_TAB),
-	FIXED_TOP_RIGHT_2005(Skin.AROUND_2005, "1030_top_right", "widget", WidgetInfo.FIXED_VIEWPORT_EQUIPMENT_TAB, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB),
-	FIXED_TOP_MIDDLE_2005(Skin.AROUND_2005, "1030_top_middle", "widget", WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB),
-	FIXED_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1030_bottom_left", "widget", WidgetInfo.FIXED_VIEWPORT_FRIEND_TAB, WidgetInfo.FIXED_VIEWPORT_IGNORE_TAB),
-	FIXED_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1030_bottom_middle", "widget", WidgetInfo.FIXED_VIEWPORT_LOGOUT_TAB),
-	FIXED_BOTTOM_MIDDLE_2005(Skin.AROUND_2005, "1030_bottom_right", "widget", WidgetInfo.FIXED_VIEWPORT_SETTINGS_TAB, WidgetInfo.FIXED_VIEWPORT_EMOTE_TAB),
-	FIXED_CORNER_TOP_LEFT_2005(Skin.AROUND_2005, "1026", "widget", WidgetInfo.FIXED_VIEWPORT_COMBAT_TAB),
-	FIXED_CORNER_TOP_RIGHT_2005(Skin.AROUND_2005, "1027", "widget", WidgetInfo.FIXED_VIEWPORT_MAGIC_TAB),
-	FIXED_CORNER_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1028", "widget", WidgetInfo.FIXED_VIEWPORT_CLAN_TAB),
-	FIXED_CORNER_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1029", "widget", WidgetInfo.FIXED_VIEWPORT_MUSIC_TAB);
+	FIXED_TOP_LEFT_2005(Skin.AROUND_2005, "1030_top_left", WidgetInfo.FIXED_VIEWPORT_SKILLS_TAB, WidgetInfo.FIXED_VIEWPORT_QUEST_TAB),
+	FIXED_TOP_RIGHT_2005(Skin.AROUND_2005, "1030_top_right",  WidgetInfo.FIXED_VIEWPORT_EQUIPMENT_TAB, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB),
+	FIXED_TOP_MIDDLE_2005(Skin.AROUND_2005, "1030_top_middle", WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB),
+	FIXED_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1030_bottom_left", WidgetInfo.FIXED_VIEWPORT_FRIEND_TAB, WidgetInfo.FIXED_VIEWPORT_IGNORE_TAB),
+	FIXED_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1030_bottom_middle",  WidgetInfo.FIXED_VIEWPORT_LOGOUT_TAB),
+	FIXED_BOTTOM_MIDDLE_2005(Skin.AROUND_2005, "1030_bottom_right", WidgetInfo.FIXED_VIEWPORT_SETTINGS_TAB, WidgetInfo.FIXED_VIEWPORT_EMOTE_TAB),
+	FIXED_CORNER_TOP_LEFT_2005(Skin.AROUND_2005, "1026", WidgetInfo.FIXED_VIEWPORT_COMBAT_TAB),
+	FIXED_CORNER_TOP_RIGHT_2005(Skin.AROUND_2005, "1027", WidgetInfo.FIXED_VIEWPORT_MAGIC_TAB),
+	FIXED_CORNER_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1028", WidgetInfo.FIXED_VIEWPORT_CLAN_TAB),
+	FIXED_CORNER_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1029",  WidgetInfo.FIXED_VIEWPORT_MUSIC_TAB);
 
 	private Skin skin;
 	private String name;
-	private String subfolder;
 	private WidgetInfo[] widgetInfo;
 
-	WidgetOverride(Skin skin, String name, String subfolder, WidgetInfo... widgetInfo)
+	WidgetOverride(Skin skin, String name, WidgetInfo... widgetInfo)
 	{
 		this.skin = skin;
 		this.name = name;
-		this.subfolder = subfolder;
 		this.widgetInfo = widgetInfo;
 	}
 }

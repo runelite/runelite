@@ -627,10 +627,4 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("widgetSpriteCache")
 	RSNodeCache getWidgetSpriteCache();
-
-	@Override
-	void setSpriteOverrides(Map<Integer, SpritePixels> overrides);
-
-	@Override
-	void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides);
 }

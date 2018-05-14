@@ -35,7 +35,7 @@ import net.runelite.rs.api.RSSpritePixels;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
-public abstract class UICustomizerMixin2 implements RSWidget
+public abstract class UICustomizerWidgetMixin implements RSWidget
 {
 	@Shadow("widgetSpriteOverrides")
 	private static Map<Integer, SpritePixels> widgetSpriteOverrides;
