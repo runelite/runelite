@@ -95,7 +95,7 @@ public class VorkathPlugin extends Plugin
 	{
 		if (client.isInInstancedRegion())
 		{
-			Query query = new NPCQuery().idEquals(8061);
+			Query query = new NPCQuery().nameContains("Vorkath");
 			NPC[] result = queryRunner.runQuery(query);
 			return result.length >= 1 ? result[0] : null;
 		}
