@@ -173,6 +173,7 @@ public interface Client extends GameEngine
 
 	int[][] getXteaKeys();
 
+	@VisibleForDevtools
 	int[] getVarps();
 
 	@VisibleForDevtools
@@ -193,10 +194,10 @@ public interface Client extends GameEngine
 	void setSetting(Varbits varbit, int value);
 
 	@VisibleForDevtools
-	int getVarbitValue(int varbit);
+	int getVarbitValue(int[] varps, int varbitId);
 
 	@VisibleForDevtools
-	void setVarbitValue(int varbit, int value);
+	void setVarbitValue(int[] varps, int varbit, int value);
 
 	HashTable getWidgetFlags();
 
