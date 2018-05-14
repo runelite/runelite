@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Yoav Ram <Yoavram2000@gmail.com>
+ * Copyright (c) 2018, Yoav Ram <https://github.com/yoyo421>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
