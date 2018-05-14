@@ -137,7 +137,7 @@ public class FishingPlugin extends Plugin
 			{
 				if (!event.getMessage().toLowerCase().contains(name.toLowerCase()))
 				{
-					break;
+					continue;
 				}
 
 				boolean machine = false;
