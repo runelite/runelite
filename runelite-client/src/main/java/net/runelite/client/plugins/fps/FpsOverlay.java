@@ -54,7 +54,7 @@ public class FpsOverlay extends Overlay
 
 	// Cache of FPS number strings from 00-50
 	private final String[] fpsNums;
-	private final String fpsString = " FPS";
+	private static final String FPS_STRING = " FPS";
 
 	// Local dependencies
 	private final FpsConfig config;
@@ -112,8 +112,8 @@ public class FpsOverlay extends Overlay
 		if (fps < FPS_SIZE)
 		{
 			final int width = client.getCanvas().getWidth();
-			final Point point = new Point(width - VALUE_X_OFFSET - graphics.getFontMetrics().stringWidth(fpsString), Y_OFFSET);
-			OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps] + fpsString, getFpsValueColor());
+			final Point point = new Point(width - VALUE_X_OFFSET - graphics.getFontMetrics().stringWidth(FPS_STRING), Y_OFFSET);
+			OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps] + FPS_STRING, getFpsValueColor());
 		}
 
 		return null;
