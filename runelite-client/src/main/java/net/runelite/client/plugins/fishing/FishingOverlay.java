@@ -106,7 +106,7 @@ class FishingOverlay extends Overlay
 			if (FC.getAmount() > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-						.left(FC.getName() + " fished:")
+						.left(FC.getName() + " caught:")
 						.right(Integer.toString(FC.getAmount()))
 						.build());
 			}
