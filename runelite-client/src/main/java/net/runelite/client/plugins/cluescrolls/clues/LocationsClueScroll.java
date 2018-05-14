@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.util.Map;
-import lombok.Data;
+import java.util.List;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
-@Data
-public class RSPrices
+public interface LocationsClueScroll
 {
-	/**
-	 * unix time in ms to price in gp
-	 */
-	private Map<Long, Integer> daily;
+	boolean update(String message, ClueScrollPlugin plugin);
+
+	void reset();
+
+	List<WorldPoint> getLocations();
 }

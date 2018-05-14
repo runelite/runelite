@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay.worldmap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,5 +45,10 @@ public class WorldMapPointManager
 	public void remove(WorldMapPoint worldMapPoint)
 	{
 		worldMapPoints.remove(worldMapPoint);
+	}
+
+	public void removeIf(Predicate<WorldMapPoint> filter)
+	{
+		worldMapPoints.removeIf(filter);
 	}
 }

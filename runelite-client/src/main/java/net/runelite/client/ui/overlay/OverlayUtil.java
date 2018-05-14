@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
@@ -48,10 +49,12 @@ public class OverlayUtil
 	public static void renderPolygon(Graphics2D graphics, Polygon poly, Color color)
 	{
 		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawPolygon(poly);
 		graphics.setColor(new Color(0, 0, 0, 50));
 		graphics.fillPolygon(poly);
+		graphics.setStroke(originalStroke);
 	}
 
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
