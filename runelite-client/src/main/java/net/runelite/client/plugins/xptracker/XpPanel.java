@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -51,10 +52,14 @@ class XpPanel extends PluginPanel
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
+	private final JPanel infoBoxPanel = new JPanel();
+	private XpInfoBoxOrderState xpInfoBoxOrderState;
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager, XpInfoBoxOrderState xpInfoBoxOrderState)
 	{
 		super();
+
+		this.xpInfoBoxOrderState = xpInfoBoxOrderState;
 
 		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BorderLayout(0, 3));
@@ -84,7 +89,6 @@ class XpPanel extends PluginPanel
 		totalPanel.add(infoPanel, BorderLayout.CENTER);
 		layoutPanel.add(totalPanel, BorderLayout.NORTH);
 
-		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 
@@ -97,7 +101,7 @@ class XpPanel extends PluginPanel
 					break;
 				}
 
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
+				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, this, skill, iconManager));
 			}
 		}
 		catch (IOException e)
@@ -126,6 +130,22 @@ class XpPanel extends PluginPanel
 			.toString();
 	}
 
+	static String formatLine(double number, String description)
+	{
+		String numberStr;
+		if (number < 100000)
+		{
+			numberStr = StackFormatter.formatNumber(number);
+		}
+		else
+		{
+			int num = (int) (Math.log(number) / Math.log(1000));
+			numberStr = String.format("%.1f%c", number / Math.pow(1000, num), "KMB".charAt(num - 1));
+		}
+
+		return numberStr + " " + description;
+	}
+
 	void resetAllInfoBoxes()
 	{
 		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.reset());
@@ -150,6 +170,28 @@ class XpPanel extends PluginPanel
 		}
 	}
 
+	void renderInfoBoxOrder()
+	{
+		List<XpInfoBox> xpInfoBoxes = xpInfoBoxOrderState.getInfoBoxes();
+
+		if (xpInfoBoxes == null || infoBoxPanel.getComponentCount() < 1)
+		{
+			return;
+		}
+
+		xpInfoBoxes.forEach(infoBoxPanel::add);
+
+		infoBoxPanel.revalidate();
+		infoBoxPanel.repaint();
+	}
+
+	void setInfoBoxOrder(XpInfoBox infoBox)
+	{
+		xpInfoBoxOrderState.setInfoBoxOrderState(infoBox, infoBoxPanel.getComponents());
+		xpInfoBoxOrderState.reorderInfoBoxOrderState();
+		renderInfoBoxOrder();
+	}
+
 	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
 		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
@@ -159,21 +201,5 @@ class XpPanel extends PluginPanel
 	{
 		totalXpGained.setText(formatLine(xpSnapshotTotal.getXpGainedInSession(), "total xp gained"));
 		totalXpHr.setText(formatLine(xpSnapshotTotal.getXpPerHour(), "total xp/hr"));
-	}
-
-	static String formatLine(double number, String description)
-	{
-		String numberStr;
-		if (number < 100000)
-		{
-			numberStr = StackFormatter.formatNumber(number);
-		}
-		else
-		{
-			int num = (int) (Math.log(number) / Math.log(1000));
-			numberStr = String.format("%.1f%c", number / Math.pow(1000, num), "KMB".charAt(num - 1));
-		}
-
-		return numberStr + " " + description;
 	}
 }
