@@ -31,6 +31,6 @@ public interface RSVarcs
 	@Import("varCInts")
 	int[] getIntVarcs();
 
-	@Import("varcstrings")
+	@Import("varCStrings")
 	String[] getStrVarcs();
 }
