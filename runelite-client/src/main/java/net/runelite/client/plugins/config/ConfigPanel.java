@@ -110,6 +110,7 @@ public class ConfigPanel extends PluginPanel
 	private final JTextField searchBar = new JTextField();
 	private Map<String, JPanel> children = new TreeMap<>();
 	private int scrollBarPosition = 0;
+	private boolean groupConfigPanel = false;
 
 	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
 	{
@@ -164,7 +165,7 @@ public class ConfigPanel extends PluginPanel
 					buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
 					groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
-					final JButton editConfigButton = buildConfigButton(pluginConfigProxy);
+					final JButton editConfigButton = buildConfigButton(pluginConfigProxy, plugin);
 					buttonPanel.add(editConfigButton);
 
 					final JButton toggleButton = buildToggleButton(plugin);
@@ -181,7 +182,7 @@ public class ConfigPanel extends PluginPanel
 		buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
 		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
-		final JButton editConfigButton = buildConfigButton(runeLiteConfig);
+		final JButton editConfigButton = buildConfigButton(runeLiteConfig, null);
 		buttonPanel.add(editConfigButton);
 
 		final JButton toggleButton = buildToggleButton(null);
@@ -189,7 +190,11 @@ public class ConfigPanel extends PluginPanel
 		newChildren.put("RuneLite", groupPanel);
 
 		children = newChildren;
-		openConfigList();
+
+		if (!groupConfigPanel)
+		{
+			openConfigList();
+		}
 	}
 
 	private JPanel buildGroupPanel()
@@ -200,7 +205,7 @@ public class ConfigPanel extends PluginPanel
 		return groupPanel;
 	}
 
-	private JButton buildConfigButton(Config config)
+	private JButton buildConfigButton(Config config, Plugin plugin)
 	{
 		// Create edit config button and disable it by default
 		final JButton editConfigButton = new JButton(new ImageIcon(CONFIG_ICON));
@@ -215,7 +220,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (!configEmpty)
 			{
-				editConfigButton.addActionListener(ae -> openGroupConfigPanel(config, configDescriptor, configManager));
+				editConfigButton.addActionListener(ae -> openGroupConfigPanel(config, configDescriptor, configManager, plugin));
 				editConfigButton.setEnabled(true);
 				editConfigButton.setToolTipText("Edit plugin configuration");
 			}
@@ -300,6 +305,7 @@ public class ConfigPanel extends PluginPanel
 
 	private void openConfigList()
 	{
+		groupConfigPanel = false;
 		removeAll();
 		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
 		add(searchBar);
@@ -311,7 +317,7 @@ public class ConfigPanel extends PluginPanel
 		scrollbar.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
-	private void changeConfiguration(Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
+	private void changeConfiguration(Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid, Plugin plugin)
 	{
 		ConfigItem configItem = cid.getItem();
 
@@ -323,7 +329,7 @@ public class ConfigPanel extends PluginPanel
 
 			if (result != JOptionPane.YES_OPTION)
 			{
-				openGroupConfigPanel(config, cd, configManager);
+				openGroupConfigPanel(config, cd, configManager, plugin);
 				return;
 			}
 		}
@@ -359,14 +365,23 @@ public class ConfigPanel extends PluginPanel
 		}
 	}
 
-	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager)
+	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager, Plugin plugin)
 	{
+		groupConfigPanel = true;
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
+
+		JPanel groupPanel = buildGroupPanel();
+
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		groupPanel.add(title, SwingConstants.CENTER);
+
+		JButton toggleButton = buildToggleButton(plugin);
+		groupPanel.add(toggleButton, BorderLayout.LINE_END);
+
+		add(groupPanel);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -386,7 +401,7 @@ public class ConfigPanel extends PluginPanel
 			{
 				JCheckBox checkbox = new JCheckBox();
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
-				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
+				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid, plugin));
 
 				item.add(checkbox, BorderLayout.EAST);
 			}
@@ -400,7 +415,7 @@ public class ConfigPanel extends PluginPanel
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-				spinner.addChangeListener(ce -> changeConfiguration(config, spinner, cd, cid));
+				spinner.addChangeListener(ce -> changeConfiguration(config, spinner, cd, cid, plugin));
 
 				item.add(spinner, BorderLayout.EAST);
 			}
@@ -415,14 +430,14 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void focusLost(FocusEvent e)
 					{
-						changeConfiguration(config, textField, cd, cid);
+						changeConfiguration(config, textField, cd, cid, plugin);
 						textField.setToolTipText(textField.getText());
 					}
 				});
 
 				textField.addActionListener(e ->
 				{
-					changeConfiguration(config, textField, cd, cid);
+					changeConfiguration(config, textField, cd, cid, plugin);
 					textField.setToolTipText(textField.getText());
 				});
 
@@ -448,7 +463,7 @@ public class ConfigPanel extends PluginPanel
 							@Override
 							public void windowClosing(WindowEvent e)
 							{
-								changeConfiguration(config, jColorChooser, cd, cid);
+								changeConfiguration(config, jColorChooser, cd, cid, plugin);
 							}
 						});
 						parent.add(jColorChooser);
@@ -514,7 +529,7 @@ public class ConfigPanel extends PluginPanel
 				{
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
-						changeConfiguration(config, box, cd, cid);
+						changeConfiguration(config, box, cd, cid, plugin);
 						box.setToolTipText(box.getSelectedItem().toString());
 					}
 				});
@@ -530,7 +545,7 @@ public class ConfigPanel extends PluginPanel
 			configManager.setDefaultConfiguration(config, true);
 
 			// Reload configuration panel
-			openGroupConfigPanel(config, cd, configManager);
+			openGroupConfigPanel(config, cd, configManager, plugin);
 		});
 		add(resetButton);
 
