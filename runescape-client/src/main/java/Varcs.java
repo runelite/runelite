@@ -21,8 +21,8 @@ public class Varcs {
    @Export("varcstringSerials")
    boolean[] varcstringSerials;
    @ObfuscatedName("f")
-   @Export("varcs")
-   int[] varcs;
+   @Export("varCInts")
+   int[] varCInts;
    @ObfuscatedName("n")
    @Export("varcstrings")
    String[] varcstrings;
@@ -37,12 +37,12 @@ public class Varcs {
 
    Varcs() {
       this.changed = false;
-      this.varcs = new int[class9.configsIndex.fileCount(19)];
+      this.varCInts = new int[class9.configsIndex.fileCount(19)];
       this.varcstrings = new String[class9.configsIndex.fileCount(15)];
-      this.varcSerials = new boolean[this.varcs.length];
+      this.varcSerials = new boolean[this.varCInts.length];
 
       int var1;
-      for(var1 = 0; var1 < this.varcs.length; ++var1) {
+      for(var1 = 0; var1 < this.varCInts.length; ++var1) {
          VarCInt var2 = ItemComposition.method5162(var1);
          this.varcSerials[var1] = var2.field3280;
       }
@@ -68,8 +68,8 @@ public class Varcs {
          this.varcstringSerials[var1] = var5.field3284;
       }
 
-      for(var1 = 0; var1 < this.varcs.length; ++var1) {
-         this.varcs[var1] = -1;
+      for(var1 = 0; var1 < this.varCInts.length; ++var1) {
+         this.varCInts[var1] = -1;
       }
 
       this.deserialize();
@@ -82,7 +82,7 @@ public class Varcs {
    )
    @Export("putVarc")
    void putVarc(int var1, int var2) {
-      this.varcs[var1] = var2;
+      this.varCInts[var1] = var2;
       if(this.varcSerials[var1]) {
          this.changed = true;
       }
@@ -96,7 +96,7 @@ public class Varcs {
    )
    @Export("getVarc")
    int getVarc(int var1) {
-      return this.varcs[var1];
+      return this.varCInts[var1];
    }
 
    @ObfuscatedName("q")
@@ -131,9 +131,9 @@ public class Varcs {
    @Export("reset")
    void reset() {
       int var1;
-      for(var1 = 0; var1 < this.varcs.length; ++var1) {
+      for(var1 = 0; var1 < this.varCInts.length; ++var1) {
          if(!this.varcSerials[var1]) {
-            this.varcs[var1] = -1;
+            this.varCInts[var1] = -1;
          }
       }
 
@@ -169,8 +169,8 @@ public class Varcs {
          int var3 = 0;
 
          int var4;
-         for(var4 = 0; var4 < this.varcs.length; ++var4) {
-            if(this.varcSerials[var4] && this.varcs[var4] != -1) {
+         for(var4 = 0; var4 < this.varCInts.length; ++var4) {
+            if(this.varcSerials[var4] && this.varCInts[var4] != -1) {
                var2 += 6;
                ++var3;
             }
@@ -191,10 +191,10 @@ public class Varcs {
          var9.putShort(var3);
 
          int var6;
-         for(var6 = 0; var6 < this.varcs.length; ++var6) {
-            if(this.varcSerials[var6] && this.varcs[var6] != -1) {
+         for(var6 = 0; var6 < this.varCInts.length; ++var6) {
+            if(this.varcSerials[var6] && this.varCInts[var6] != -1) {
                var9.putShort(var6);
-               var9.putInt(this.varcs[var6]);
+               var9.putInt(this.varCInts[var6]);
             }
          }
 
@@ -262,7 +262,7 @@ public class Varcs {
             var8 = var13.readUnsignedShort();
             var9 = var13.readInt();
             if(this.varcSerials[var8]) {
-               this.varcs[var8] = var9;
+               this.varCInts[var8] = var9;
             }
          }
 
