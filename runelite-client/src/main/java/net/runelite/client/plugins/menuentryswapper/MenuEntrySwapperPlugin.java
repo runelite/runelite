@@ -420,6 +420,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		else if (config.cancelFiller() && option.equals("clear-all"))
+		{
+			swap("cancel", option, target, false);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
@@ -481,7 +485,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 			else
 			{
-				if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
+				if (entryOption.contains(option.toLowerCase()))
 				{
 					return i;
 				}
@@ -507,6 +511,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			client.setMenuEntries(entries);
 		}
 	}
+
+
 
 	private void removeShiftClickCustomizationMenus()
 	{

@@ -221,4 +221,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "cancelFiller",
+		name = "Bank Filler",
+		description = "Swap Cancel with Clear-All from bank fillers"
+	)
+	default boolean cancelFiller()
+	{
+		return false;
+	}
 }
