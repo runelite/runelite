@@ -68,6 +68,9 @@ public class WidgetID
 	public static final int BA_HEALER_GROUP_ID = 488;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
+	public static final int DIALOG_PLAYER_GROUP_ID = 217;
+	public static final int DIALOG_OPTION_GROUP_ID = 219;
+	public static final int DIALOG_NOTIFICATION_GROUP_ID = 229;
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
@@ -104,6 +107,31 @@ public class WidgetID
 		static final int CONTINUE = 2;
 		static final int TEXT = 3;
 	}
+
+	static class DialogPlayer
+	{
+		static final int HEAD_MODEL = 0;
+		static final int NAME = 1;
+		static final int CONTINUE = 2;
+		static final int TEXT = 3;
+	}
+
+	static class DialogNotification
+	{
+		static final int TEXT = 0;
+		static final int CONTINUE = 1;
+	}
+
+	static class DialogOption
+	{
+		static final int TEXT = 0;
+		static final int OPTION1 = 1;
+		static final int OPTION2 = 2;
+		static final int OPTION3 = 3;
+		static final int OPTION4 = 4;
+		static final int OPTION5 = 5;
+	}
+
 
 	static class LogoutPanel
 	{

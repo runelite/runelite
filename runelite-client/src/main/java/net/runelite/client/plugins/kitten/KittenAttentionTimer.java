@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Nachtmerrie <https://github.com/Nachtmerrie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.kitten;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.ui.overlay.infobox.Timer;
+import net.runelite.client.plugins.Plugin;
 
-@AllArgsConstructor
-@Getter
-public enum VarPlayer
+import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
+
+public class KittenAttentionTimer extends Timer
 {
-	ATTACK_STYLE(43),
 
-	BANK_TAB(115),
-
-	SPECIAL_ATTACK_PERCENT(300),
-	SPECIAL_ATTACK_ENABLED(301),
-
-	FOLLOWER(447),
-
-	IN_RAID_PARTY(1427);
-
-	private final int id;
+	public KittenAttentionTimer(BufferedImage infoImage, Plugin plugin, Duration seconds)
+	{
+		super(seconds.toMillis(), ChronoUnit.MILLIS, infoImage, plugin);
+	}
 }
