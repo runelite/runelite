@@ -35,6 +35,9 @@ public class ScreenshotInput implements KeyListener
 	private final ScreenshotConfig config;
 	private final ScreenshotPlugin plugin;
 
+	private boolean CONTROL_KEY_DOWN = false;
+	private final int SCREENSHOT_KEY_EVENT = KeyEvent.VK_S;
+
 	@Inject
 	ScreenshotInput(ScreenshotConfig config, ScreenshotPlugin plugin)
 	{
@@ -45,6 +48,11 @@ public class ScreenshotInput implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
+		if (event.getKeyCode() == KeyEvent.VK_CONTROL)
+			this.CONTROL_KEY_DOWN = true;
+
+		if (event.getKeyCode() == SCREENSHOT_KEY_EVENT && this.CONTROL_KEY_DOWN)
+			plugin.takeScreenshot(TIME_FORMAT.format(new Date()));
 	}
 
 	@Override
@@ -55,6 +63,9 @@ public class ScreenshotInput implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent event)
 	{
+		if (event.getKeyCode() == KeyEvent.VK_CONTROL)
+			this.CONTROL_KEY_DOWN = false;
+
 		if (!config.isScreenshotEnabled())
 			return;
 
