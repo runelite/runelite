@@ -22,127 +22,127 @@ import java.util.Collection;
 public class VorkathPlugin extends Plugin
 {
 
-    @Inject
-    private Client client;
+	private static final int POISON_PHASE = 1;
+	private static final int SPIDER_PHASE = 2;
+	@Inject
+	private Client client;
+	@Inject
+	private VorkathOverlay vorkathOverlay;
+	@Getter
+	private Player player;
+	@Getter(AccessLevel.PACKAGE)
+	private Projectile currentProjectile;
 
-    @Inject
-    private VorkathOverlay vorkathOverlay;
+	@Getter(AccessLevel.PACKAGE)
+	private int attacksInARow = 0;
 
-    @Getter
-    private Player player;
+	@Getter(AccessLevel.PACKAGE)
+	private int nextPhase = -1;
 
-    private static final int POISON_PHASE = 1;
-    private static final int SPIDER_PHASE = 2;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean atVorkath = false;
 
-    @Getter(AccessLevel.PACKAGE)
-    private Projectile currentProjectile;
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
 
-    @Getter(AccessLevel.PACKAGE)
-    private int attacksInARow = 0;
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+	}
 
-    @Getter(AccessLevel.PACKAGE)
-    private int nextPhase = -1;
+	@Subscribe
+	public void onRegionChanged(MapRegionChanged event)
+	{
+		if (atVorkath)
+			onLeaveInstance();
+	}
 
-    @Getter(AccessLevel.PACKAGE)
-    private boolean atVorkath = false;
+	/**
+	 * Process the incoming attacks from Vorkath
+	 * @param event
+	 */
+	@Subscribe
+	public void onProjectile(ProjectileMoved event)
+	{
+		if (!atVorkath)
+			return;
 
-    @Subscribe
-    public void onGameTick(GameTick event)
-    {
+		// Process the projectile only if aimed at the attacking player
+		if (event.getProjectile().getInteracting() != null)
+			if (event.getProjectile().getInteracting() != client.getLocalPlayer())
+				return;
 
-        if (client.getGameState() != GameState.LOGGED_IN)
-        {
-            return;
-        }
-    }
+		currentProjectile = event.getProjectile();
 
-    @Subscribe
-    public void onRegionChanged(MapRegionChanged event)
-    {
-        if (atVorkath)
-            onLeaveInstance();
-    }
+		/**
+		 * Resets the attack counter if we encounter a special phase
+		 * Increments the counter only if vorkath uses a normal attack
+		 */
+		if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE)
+		{
+			attacksInARow = 0;
+			nextPhase = POISON_PHASE;
+		}
+		else if (currentProjectile.getId() == ProjectileID.VORKATH_POISON_POOL_AOE)
+		{
+			attacksInARow = 0;
+			nextPhase = SPIDER_PHASE;
+		}
+		else if (currentProjectile.getId() == ProjectileID.VORKATH_TICK_FIRE_AOE || currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE)
+		{
 
-    /**
-     * Process the incoming attacks from Vorkath
-     * @param event
-     */
-    @Subscribe
-    public void onProjectile(ProjectileMoved event)
-    {
-        if (!atVorkath)
-            return;
+		}
+		else
+		{
+			if (client.getGameCycle() == currentProjectile.getStartMovementCycle())
+				++attacksInARow;
+		}
+	}
 
-        // Process the projectile only if aimed at the attacking player
-        if (event.getProjectile().getInteracting() != null)
-            if (event.getProjectile().getInteracting() != client.getLocalPlayer())
-                return;
+	/**
+	 * Initialises a new plugin only if we enter the lair
+	 * or if vorkath is dead and we're still in the lair.
+	 * Otherwise, shutdown the plugin.
+	 * @param event
+	 */
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		NPC npc = event.getNpc();
+		if (npc.getId() == NpcID.VORKATH_8059)
+		{
+			init();
+		}
+		else if (npc.getId() == NpcID.VORKATH_8058)
+		{
+			onLeaveInstance();
+		}
+	}
 
-        currentProjectile = event.getProjectile();
+	private void init()
+	{
+		atVorkath = true;
+		attacksInARow = 0;
+		nextPhase = -1;
+	}
 
-        /**
-         * Resets the attack counter if we encounter a special phase
-         * Increments the counter only if vorkath uses a normal attack
-         */
-        if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE)
-        {
-            attacksInARow = 0;
-            nextPhase = POISON_PHASE;
-        } else if (currentProjectile.getId() == ProjectileID.VORKATH_POISON_POOL_AOE)
-        {
-            attacksInARow = 0;
-            nextPhase = SPIDER_PHASE;
-        } else if (currentProjectile.getId() == ProjectileID.VORKATH_TICK_FIRE_AOE || currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE)
-        {
+	private void shutdown()
+	{
+		atVorkath = false;
+		attacksInARow = 0;
+		nextPhase = -1;
+	}
 
-        } else
-        {
-            if (client.getGameCycle() == currentProjectile.getStartMovementCycle())
-                ++attacksInARow;
-        }
-    }
+	private void onLeaveInstance()
+	{
+		shutdown();
+	}
 
-    /**
-     * Initialises a new plugin only if we enter the lair
-     * or if vorkath is dead and we're still in the lair.
-     * Otherwise, shutdown the plugin.
-     * @param event
-     */
-    @Subscribe
-    public void onNpcSpawned(NpcSpawned event)
-    {
-        NPC npc = event.getNpc();
-        if (npc.getId() == NpcID.VORKATH_8059)
-        {
-            init();
-        } else if (npc.getId() == NpcID.VORKATH_8058)
-        {
-            onLeaveInstance();
-        }
-    }
-
-    private void init()
-    {
-        atVorkath = true;
-        attacksInARow = 0;
-        nextPhase = -1;
-    }
-
-    private void shutdown()
-    {
-        atVorkath = false;
-        attacksInARow = 0;
-        nextPhase = -1;
-    }
-
-    private void onLeaveInstance()
-    {
-        shutdown();
-    }
-
-    @Override
-    public Collection<Overlay> getOverlays()
-    {
-        return Arrays.asList(vorkathOverlay);
-    }
+	@Override
+	public Collection<Overlay> getOverlays()
+	{
+		return Arrays.asList(vorkathOverlay);
+	}
 }

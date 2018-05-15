@@ -82,6 +82,7 @@ public class VorkathOverlay extends Overlay
 
 	/**
 	 * The text to display for the next special phase
+	 *
 	 * @return nextPhase
 	 */
 	private String getNextPhaseText()
@@ -111,6 +112,7 @@ public class VorkathOverlay extends Overlay
 
 	/**
 	 * The text color, depending on the attacks remaining till the next phase
+	 *
 	 * @return color
 	 */
 	private Color getTextColor()
