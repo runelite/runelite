@@ -2,6 +2,7 @@
  *
  * Copyright (c) 2017, Robbie <https://github.com/rbbi>
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,15 @@
 package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -93,15 +100,43 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private GrandExchangeConfig config;
 
+	private static Map<String, Integer> geLimitInfo;
+
+
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(GrandExchangeConfig.class);
 	}
 
+	private Map<String, Integer> loadGeLimits()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		InputStream limitsFile = GrandExchangePlugin.class.getResourceAsStream("/ge_limits.json");
+		return gson.fromJson(new InputStreamReader(limitsFile), type);
+	}
+
+	static int getLimit(String itemName)
+	{
+
+		if (!geLimitInfo.containsKey(itemName))
+		{
+			return -1;
+		}
+
+		return geLimitInfo.get(itemName);
+
+	}
+
 	@Override
 	protected void startUp() throws IOException
 	{
+		geLimitInfo = loadGeLimits();
+
 		panel = injector.getInstance(GrandExchangePanel.class);
 
 		BufferedImage icon;
