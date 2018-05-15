@@ -1,0 +1,52 @@
+{
+  "bonuses": [
+    {
+      "name": "Farmer's Outfit (+2.5%)",
+      "value": 0.025
+    }
+  ],
+  "actions": [
+    {
+      "level": 1,
+      "icon": 1942,
+      "name": "Potatoes",
+      "xp": 8
+    },
+    {
+      "level": 5,
+      "icon": 1957,
+      "name": "Onions",
+      "xp": 10
+    },
+    {
+      "level": 7,
+      "icon": 1965,
+      "name": "Cabbages",
+      "xp": 10
+    },
+    {
+      "level": 12,
+      "icon": 1982,
+      "name": "Tomatoes",
+      "xp": 12.5
+    },
+    {
+      "level": 20,
+      "icon": 5986,
+      "name": "Sweetcorn",
+      "xp": 17
+    },
+    {
+      "level": 31,
+      "icon": 5504,
+      "name": "Strawberries",
+      "xp": 26
+    },
+    {
+      "level": 47,
+      "icon": 5982,
+      "name": "Watermelons",
+      "xp": 49
+    }
+  ]
+}

@@ -188,7 +188,7 @@ public final class WorldMapManager {
       int[] var12 = new int[4];
       Rasterizer2D.copyDrawRegion(var12);
       WorldMapRectangle var13 = this.getRegionRectForViewport(var1, var2, var3, var4);
-      float var14 = this.method522(x2 - x1, var3 - var1);
+      float var14 = this.getPixelsPerTile(x2 - x1, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       this.field269 = var15;
       if(!this.field270.containsKey(Integer.valueOf(var15))) {
@@ -230,7 +230,7 @@ public final class WorldMapManager {
    @Export("drawMapIcons")
    public final void drawMapIcons(int x1, int y1, int x2, int y2, int graphicsX1, int var6, int graphicsX2, int var8, HashSet var9, HashSet var10, int var11, int var12, boolean var13) {
       WorldMapRectangle var14 = this.getRegionRectForViewport(x1, y1, x2, y2);
-      float var15 = this.method522(graphicsX2 - graphicsX1, x2 - x1);
+      float var15 = this.getPixelsPerTile(graphicsX2 - graphicsX1, x2 - x1);
       int var16 = (int)(var15 * 64.0F);
       int var17 = this.mapSurfaceBaseOffsetX + x1;
       int var18 = y1 + this.mapSurfaceBaseOffsetY;
@@ -332,7 +332,7 @@ public final class WorldMapManager {
          return var11;
       } else {
          WorldMapRectangle var12 = this.getRegionRectForViewport(var1, var2, var3, var4);
-         float var13 = this.method522(var7, var3 - var1);
+         float var13 = this.getPixelsPerTile(var7, var3 - var1);
          int var14 = (int)(64.0F * var13);
          int var15 = this.mapSurfaceBaseOffsetX + var1;
          int var16 = var2 + this.mapSurfaceBaseOffsetY;
@@ -451,7 +451,8 @@ public final class WorldMapManager {
       signature = "(III)F",
       garbageValue = "1789202139"
    )
-   float method522(int graphicsDiff, int worldDiff) {
+   @Export("getPixelsPerTile")
+   float getPixelsPerTile(int graphicsDiff, int worldDiff) {
       float var3 = (float)graphicsDiff / (float)worldDiff;
       if(var3 > 8.0F) {
          return 8.0F;

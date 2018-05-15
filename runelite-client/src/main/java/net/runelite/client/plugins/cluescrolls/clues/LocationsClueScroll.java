@@ -30,7 +30,7 @@ import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
 public interface LocationsClueScroll
 {
-	void update(String message, ClueScrollPlugin plugin);
+	boolean update(String message, ClueScrollPlugin plugin);
 
 	void reset();
 
