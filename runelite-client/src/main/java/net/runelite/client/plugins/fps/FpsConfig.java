@@ -36,6 +36,14 @@ import net.runelite.client.config.ConfigItem;
 public interface FpsConfig extends Config
 {
 	@ConfigItem(
+			keyName = "indicatorLocation",
+			name = "Indicator Location",
+			description = "Position the indicators will show on screen",
+			position = 0
+	)
+	default FpsIndicatorLocation indicatorLocation() { return FpsIndicatorLocation.TOPRIGHT; }
+
+	@ConfigItem(
 		keyName = "limitMode",
 		name = "Limit Mode",
 		description = "Stay at or under the target frames per second even when in this mode",
@@ -67,4 +75,12 @@ public interface FpsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "drawPing",
+			name = "Draw ping indicator",
+			description = "Show a number in the corner for the current ping",
+			position = 4
+	)
+	default boolean drawPing() { return true; }
 }

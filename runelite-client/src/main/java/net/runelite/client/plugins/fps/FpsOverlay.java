@@ -36,6 +36,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 /**
  * The built in FPS overlay has a few problems that this one does not have, most of all: it is distracting.
@@ -50,7 +51,8 @@ public class FpsOverlay extends Overlay
 	private static final int MAX_FPS = 50;
 	private static final int FPS_SIZE = MAX_FPS + 1;
 	private static final int Y_OFFSET = 14;
-	private static final int VALUE_X_OFFSET = 15;
+	private static int VALUE_X_OFFSET = 15;
+	private final PanelComponent panel = new PanelComponent();
 
 	// Cache of FPS number strings from 00-50
 	private final String[] fpsNums;
@@ -59,15 +61,20 @@ public class FpsOverlay extends Overlay
 	private final FpsConfig config;
 	private final Client client;
 
+	@Inject
+	private FpsPlugin plugin;
+
 	// Often changing values
 	private boolean isFocused = true;
+	private int VALUE_Y_AXIS_PING;
+	private Point point;
 
 	@Inject
 	private FpsOverlay(FpsConfig config, Client client)
 	{
 		this.config = config;
 		this.client = client;
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
 
@@ -102,19 +109,65 @@ public class FpsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawFps())
+		//FPS indicator
+		if (config.drawFps())
 		{
-			return null;
+			if(config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
+			{
+				VALUE_X_OFFSET = (int) client.getRealDimensions().getWidth() - 3;
+			}
+			else
+			{
+				VALUE_X_OFFSET = 15;
+			}
+
+			final int fps = client.getFPS();
+			if (fps < FPS_SIZE)
+			{
+				final Dimension dimension = client.getRealDimensions();
+				final int width = (int) dimension.getWidth();
+				final Point point = new Point(width - VALUE_X_OFFSET, Y_OFFSET);
+
+				OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps], getFpsValueColor());
+			}
 		}
 
-		final int fps = client.getFPS();
-		if (fps < FPS_SIZE)
+		//Ping indicator
+		if(config.drawPing())
 		{
-			final Dimension dimension = client.getRealDimensions();
-			final int width = (int) dimension.getWidth();
-			final Point point = new Point(width - VALUE_X_OFFSET, Y_OFFSET);
+			Color color = Color.GREEN;
+			int ping = plugin.getPing();
 
-			OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps], getFpsValueColor());
+			if (ping >= 100)
+			{
+				color = Color.RED;
+			}
+			else if (ping >= 50)
+			{
+				color = Color.YELLOW;
+			}
+
+			if(config.drawFps())
+			{
+				VALUE_Y_AXIS_PING = 25;
+			}
+			else
+			{
+				VALUE_Y_AXIS_PING = 14;
+			}
+
+			Dimension dimension = client.getRealDimensions();
+			int width = (int) dimension.getWidth();
+			if(config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
+			{
+				point = new Point(width - VALUE_X_OFFSET, VALUE_Y_AXIS_PING);
+			}
+			else
+			{
+				int textWidth = graphics.getFontMetrics().stringWidth(ping + "ms");
+				point = new Point(width - textWidth - 2, VALUE_Y_AXIS_PING);
+			}
+			OverlayUtil.renderTextLocation(graphics, point, ping + "ms", color);
 		}
 
 		return null;
