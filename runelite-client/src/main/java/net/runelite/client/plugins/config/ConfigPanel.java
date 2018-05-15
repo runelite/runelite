@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -57,6 +58,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -80,7 +82,6 @@ import net.runelite.client.ui.PluginPanel;
 @Slf4j
 public class ConfigPanel extends PluginPanel
 {
-	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
 	private static BufferedImage CONFIG_ICON;
 	private static BufferedImage UNCHECK_ICON;
@@ -197,6 +198,7 @@ public class ConfigPanel extends PluginPanel
 		// Create base panel for the config button and enabled/disabled button
 		final JPanel groupPanel = new JPanel();
 		groupPanel.setLayout(new BorderLayout(3, 0));
+		groupPanel.setPreferredSize(new Dimension(0, 24));
 		return groupPanel;
 	}
 
@@ -340,9 +342,9 @@ public class ConfigPanel extends PluginPanel
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + spinner.getValue());
 		}
 
-		if (component instanceof JTextField)
+		if (component instanceof JTextArea)
 		{
-			JTextField textField = (JTextField) component;
+			JTextArea textField = (JTextArea) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), textField.getText());
 		}
 
@@ -364,9 +366,9 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name);
+		JLabel title = new JLabel(name, SwingConstants.CENTER);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		add(title);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -407,7 +409,10 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == String.class)
 			{
-				JTextField textField = new JTextField("", TEXT_FIELD_WIDTH);
+				JTextArea textField = new JTextArea();
+				textField.setLineWrap(true);
+				textField.setWrapStyleWord(true);
+				textField.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 				textField.setText(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
 
 				textField.addFocusListener(new FocusAdapter()
@@ -420,14 +425,8 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 
-				textField.addActionListener(e ->
-				{
-					changeConfiguration(config, textField, cd, cid);
-					textField.setToolTipText(textField.getText());
-				});
-
 				textField.setToolTipText(textField.getText());
-				item.add(textField, BorderLayout.EAST);
+				item.add(textField, BorderLayout.SOUTH);
 			}
 
 			if (cid.getType() == Color.class)
