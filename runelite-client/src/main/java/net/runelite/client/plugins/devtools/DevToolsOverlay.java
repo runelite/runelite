@@ -35,6 +35,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import javax.inject.Inject;
+
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -61,6 +62,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class DevToolsOverlay extends Overlay
 {
@@ -92,6 +95,9 @@ public class DevToolsOverlay extends Overlay
 		this.plugin = plugin;
 	}
 
+	@Inject
+	private TooltipManager tooltipManager;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -111,7 +117,7 @@ public class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor())
+		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileToolTip())
 		{
 			renderTileObjects(graphics);
 		}
@@ -233,7 +239,22 @@ public class DevToolsOverlay extends Overlay
 				{
 					renderDecorObject(graphics, tile, player);
 				}
+
+				if (plugin.isToggleTileToolTip())
+				{
+					renderTileTooltip(graphics, tile);
+				}
 			}
+		}
+	}
+
+	private void renderTileTooltip(Graphics2D graphics, Tile tile)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			tooltipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}
 
