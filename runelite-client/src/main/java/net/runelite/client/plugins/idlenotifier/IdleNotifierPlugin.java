@@ -67,7 +67,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant lastInteracting;
 	private boolean notifyIdle = false;
 	private boolean notifyHitpoints = true;
-	private boolean notifyHP = true;
+	private boolean notifyHighHitpoints = false;
 	private boolean notifyPrayer = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
@@ -286,23 +286,23 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkHighHitpoints()
 	{
-		if (config.getHPThreshold() <= 0)
+		if (config.getHighHitpointsThreshold() <= 0)
 		{
 			return false;
 		}
-		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHPThreshold())
+		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHighHitpointsThreshold())
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) >= config.getHPThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) >= config.getHighHitpointsThreshold())
 			{
-				if (!notifyHP)
+				if (!notifyHighHitpoints)
 				{
-					notifyHP = true;
+					notifyHighHitpoints = true;
 					return true;
 				}
 			}
 			else
 			{
-				notifyHP = false;
+				notifyHighHitpoints = false;
 			}
 		}
 

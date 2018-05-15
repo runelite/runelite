@@ -80,12 +80,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hp",
-			name = "High Hitpoints Threshold",
-			description = "Send a notification when you are above this amount of hitpoints. A value of 0 will disable notification.",
-			position = 5
+		keyName = "highhitpoints",
+		name = "High Hitpoints Threshold",
+		description = "Send a notification when you are above this amount of hitpoints. A value of 0 will disable notification.",
+		position = 5
 	)
-	default int getHPThreshold()
+	default int getHighHitpointsThreshold()
 	{
 		return 0;
 	}
