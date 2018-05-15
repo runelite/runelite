@@ -58,7 +58,8 @@ public class TileIndicatorsOverlay extends Overlay
 	{
 		if (config.highlightCurrentLocation())
 		{
-			highlightTile(graphics, client.getLocalPlayer().getLocalLocation(), config.highlightCurrentLocationColor());
+			LocalPoint position = LocalPoint.fromWorld(client, client.getLocalPlayer().getWorldLocation());
+			highlightTile(graphics, position, config.highlightCurrentLocationColor());
 		}
 
 		if (config.highlightDestination())
