@@ -45,6 +45,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -62,14 +63,26 @@ public class FishingPlugin extends Plugin
 {
 	private final List<Integer> spotIds = new ArrayList<>();
 
+	private boolean hasNotifiedIdle;
+	private long lastSpotInteraction;
+
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
+
+
+	@Inject
+	private Client client;
+
 
 	@Inject
 	private Client client;
 
 	@Inject
 	private QueryRunner queryRunner;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private FishingConfig config;
@@ -180,6 +193,32 @@ public class FishingPlugin extends Plugin
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWAN.getIds()));
 		}
+	}
+
+	@Subscribe
+	public void checkIdle(GameTick event){
+
+		if(config.notifyWhenIdle()) {
+
+			// We could check if we are fishing, but would rather not notify players every time they swap fishing spots
+			if (client.getLocalPlayer().getInteracting() != null) {
+				lastSpotInteraction = System.currentTimeMillis();
+
+				if (hasNotifiedIdle) {
+					hasNotifiedIdle = false;
+				}
+			} else {
+
+				if (!hasNotifiedIdle) {
+					if (lastSpotInteraction - System.currentTimeMillis() < 0) {
+						notifier.notify("You have stopped fishing!");
+						hasNotifiedIdle = true;
+					}
+				}
+
+			}
+		}
+
 	}
 
 	@Subscribe
