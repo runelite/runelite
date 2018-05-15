@@ -84,6 +84,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int QUEST_LIST_GROUP_ID = 399;
 
 	static class WorldMap
 	{
@@ -452,5 +453,16 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class QuestList
+	{
+		static final int QUEST_LIST_QP = 0;
+		static final int QUEST_LIST_CONTROL = 4;
+		static final int QUEST_LIST_LISTS = 6;
+		static final int QUEST_LIST_FREE = 7;
+		static final int QUEST_LIST_MEMBERS = 8;
+		static final int QUEST_LIST_MINIQUESTS = 9;
+		static final int QUEST_LIST_SCROLLBAR = 10;
 	}
 }
