@@ -40,6 +40,11 @@ import lombok.EqualsAndHashCode;
 public class NavigationButton
 {
 	/**
+	 * If the button is placed before or after delimiter
+	 */
+	private boolean delimited;
+
+	/**
 	 * Button name.
 	 */
 	private final String name;

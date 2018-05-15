@@ -24,17 +24,48 @@
  */
 package net.runelite.client.ui;
 
+import java.applet.Applet;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
+import net.runelite.api.Client;
 import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.MouseListener;
 
-class UiKeyListener implements KeyListener
+class ClientUIInputListener extends MouseListener implements KeyListener
 {
+	private final Applet client;
 	private final ClientUI clientUi;
 
-	UiKeyListener(ClientUI clientUi)
+	ClientUIInputListener(Applet client, ClientUI clientUi)
 	{
+		this.client = client;
 		this.clientUi = clientUi;
+	}
+
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		if (client == null || !(client instanceof Client) || !SwingUtilities.isLeftMouseButton(mouseEvent))
+		{
+			return mouseEvent;
+		}
+
+		final Client client = (Client)this.client;
+		final Rectangle bounds = new Rectangle(
+			client.getRealDimensions().width - ClientUI.SIDEBAR_OPEN.getWidth() - 5,
+			5,
+			ClientUI.SIDEBAR_OPEN.getWidth(),
+			ClientUI.SIDEBAR_OPEN.getHeight());
+
+		if (bounds.contains(mouseEvent.getPoint()))
+		{
+			SwingUtilities.invokeLater(clientUi::toggleSidebar);
+			mouseEvent.consume();
+		}
+
+		return mouseEvent;
 	}
 
 	@Override

@@ -44,7 +44,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
@@ -62,7 +62,7 @@ public class DiscordPlugin extends Plugin
 	private DiscordService discordService;
 
 	@Inject
-	private TitleToolbar titleToolbar;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private RuneLiteProperties properties;
@@ -88,19 +88,21 @@ public class DiscordPlugin extends Plugin
 		}
 
 		discordButton = NavigationButton.builder()
+			.delimited(true)
+			.name("Discord")
 			.tooltip("Join Discord")
 			.icon(icon)
 			.onClick(() -> LinkBrowser.browse(properties.getDiscordInvite()))
 			.build();
 
-		titleToolbar.addNavigation(discordButton);
+		pluginToolbar.addNavigation(discordButton);
 		updateGameStatus(client.getGameState(), true);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		titleToolbar.removeNavigation(discordButton);
+		pluginToolbar.removeNavigation(discordButton);
 		discordService.clearPresence();
 		discordState.reset();
 	}

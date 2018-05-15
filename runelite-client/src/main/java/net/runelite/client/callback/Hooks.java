@@ -72,6 +72,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -89,6 +90,7 @@ public class Hooks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
+	private static final ClientUI clientUI = injector.getInstance(ClientUI.class);
 	public static final EventBus eventBus = injector.getInstance(EventBus.class); // symbol must match mixin Hook
 	private static final DeferredEventBus _deferredEventBus = injector.getInstance(DeferredEventBus.class);
 	public static final EventBus deferredEventBus = _deferredEventBus; // symbol must match mixin Hook
@@ -277,6 +279,9 @@ public class Hooks
 		}
 
 		notifier.processFlash(graphics2d);
+
+		// Draw clientUI overlays
+		clientUI.paintOverlays(graphics2d);
 
 		// Stretch the game image if the user has that enabled
 		if (!client.isResized() && client.isStretchedEnabled())

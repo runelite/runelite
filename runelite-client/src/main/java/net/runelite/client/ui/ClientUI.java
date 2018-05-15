@@ -29,12 +29,10 @@ import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.LayoutManager;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
@@ -44,12 +42,9 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -65,15 +60,12 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
-import net.runelite.client.events.TitleToolbarButtonAdded;
-import net.runelite.client.events.TitleToolbarButtonRemoved;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
 /**
  * Client UI.
@@ -88,7 +80,7 @@ public class ClientUI
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static final BufferedImage ICON;
-	private static final BufferedImage SIDEBAR_OPEN;
+	static final BufferedImage SIDEBAR_OPEN;
 	private static final BufferedImage SIDEBAR_CLOSE;
 
 	static
@@ -124,22 +116,18 @@ public class ClientUI
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
+	private final MouseManager mouseManager;
+	private final ConfigManager configManager;
 	private Applet client;
 	private ContainableFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
-	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
 	private JPanel container;
 	private PluginPanel lastPluginPanel;
-	private NavigationButton sidebarNavigationButton;
-	private JButton sidebarNavigationJButton;
-
-	@Inject
-	private ConfigManager configManager;
 
 	@Inject
 	private ClientUI(
@@ -147,13 +135,17 @@ public class ClientUI
 		RuneLiteProperties properties,
 		RuneLiteConfig config,
 		EventBus eventBus,
-		KeyManager keyManager)
+		KeyManager keyManager,
+		MouseManager mouseManager,
+		ConfigManager configManager)
 	{
 		this.runelite = runelite;
 		this.properties = properties;
 		this.config = config;
 		this.eventBus = eventBus;
 		this.keyManager = keyManager;
+		this.mouseManager = mouseManager;
+		this.configManager = configManager;
 	}
 
 	@Subscribe
@@ -182,12 +174,6 @@ public class ClientUI
 			if (event.getKey().equals("automaticResizeType"))
 			{
 				frame.setExpandResizeType(config.automaticResizeType());
-			}
-
-			if (event.getKey().equals("containInScreen") ||
-				event.getKey().equals("uiEnableCustomChrome"))
-			{
-				frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
 			}
 
 			if (event.getKey().equals("rememberScreenBounds") && event.getNewValue().equals("false"))
@@ -229,7 +215,7 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (navButton, jButton) ->
+			final JButton button = SwingUtil.createSwingButton(event.getButton(), 16, (navButton, jButton) ->
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -268,7 +254,7 @@ public class ClientUI
 				}
 			});
 
-			pluginToolbar.addComponent(event.getIndex(), event.getButton(), button);
+			pluginToolbar.addComponent(event.getButton(), button);
 		});
 	}
 
@@ -276,39 +262,6 @@ public class ClientUI
 	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
 	{
 		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonAdded(final TitleToolbarButtonAdded event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			final int iconSize = ClientTitleToolbar.TITLEBAR_SIZE - 6;
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), iconSize, null);
-
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
-			{
-				titleToolbar.addComponent(event.getButton(), button);
-				return;
-			}
-
-			pluginToolbar.addComponent(-1, event.getButton(), button);
-		});
-	}
-
-	@Subscribe
-	public void onTitleToolbarButtonRemoved(final TitleToolbarButtonRemoved event)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			if (config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame))
-			{
-				titleToolbar.removeComponent(event.getButton());
-				return;
-			}
-
-			pluginToolbar.removeComponent(event.getButton());
-		});
 	}
 
 	/**
@@ -365,13 +318,13 @@ public class ClientUI
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
-			titleToolbar = new ClientTitleToolbar();
 			frame.add(container);
 
-			// Add key listener
-			final UiKeyListener uiKeyListener = new UiKeyListener(this);
-			frame.addKeyListener(uiKeyListener);
-			keyManager.registerKeyListener(uiKeyListener);
+			// Add input listener
+			final ClientUIInputListener inputListener = new ClientUIInputListener(client, this);
+			frame.addKeyListener(inputListener);
+			keyManager.registerKeyListener(inputListener);
+			mouseManager.registerMouseListener(inputListener);
 		});
 	}
 
@@ -382,59 +335,8 @@ public class ClientUI
 	 */
 	public void show() throws Exception
 	{
-		final boolean withTitleBar = config.enableCustomChrome();
-
 		SwingUtilities.invokeAndWait(() ->
 		{
-			frame.setUndecorated(withTitleBar);
-
-			if (withTitleBar)
-			{
-				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
-				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-				titleBar.add(titleToolbar);
-
-				// Substance's default layout manager for the title bar only lays out substance's components
-				// This wraps the default manager and lays out the TitleToolbar as well.
-				LayoutManager delegate = titleBar.getLayout();
-				titleBar.setLayout(new LayoutManager()
-				{
-					@Override
-					public void addLayoutComponent(String name, Component comp)
-					{
-						delegate.addLayoutComponent(name, comp);
-					}
-
-					@Override
-					public void removeLayoutComponent(Component comp)
-					{
-						delegate.removeLayoutComponent(comp);
-					}
-
-					@Override
-					public Dimension preferredLayoutSize(Container parent)
-					{
-						return delegate.preferredLayoutSize(parent);
-					}
-
-					@Override
-					public Dimension minimumLayoutSize(Container parent)
-					{
-						return delegate.minimumLayoutSize(parent);
-					}
-
-					@Override
-					public void layoutContainer(Container parent)
-					{
-						delegate.layoutContainer(parent);
-						final int width = titleToolbar.getPreferredSize().width;
-						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					}
-				});
-			}
-
 			// Show frame
 			frame.pack();
 			frame.revalidateMinimumSize();
@@ -490,19 +392,6 @@ public class ClientUI
 				frame.setLocationRelativeTo(frame.getOwner());
 			}
 
-			// Create hide sidebar button
-			sidebarNavigationButton = NavigationButton
-				.builder()
-				.icon(SIDEBAR_CLOSE)
-				.onClick(this::toggleSidebar)
-				.build();
-
-			sidebarNavigationJButton = SwingUtil.createSwingButton(
-				sidebarNavigationButton,
-				0,
-				null);
-
-			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
 		});
 
@@ -578,6 +467,24 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
+	/**
+	 * Paint UI related overlays to target graphics
+	 * @param graphics target graphics
+	 */
+	public void paintOverlays(final Graphics2D graphics)
+	{
+		if (client == null || !(client instanceof Client))
+		{
+			return;
+		}
+
+		final Client client = (Client)this.client;
+		final int x = client.getRealDimensions().width - SIDEBAR_OPEN.getWidth() - 5;
+		final int y = 5;
+		final BufferedImage image = sidebarOpen ? SIDEBAR_OPEN : SIDEBAR_CLOSE;
+		graphics.drawImage(image, x, y, null);
+	}
+
 	void toggleSidebar()
 	{
 		// Toggle sidebar open
@@ -597,9 +504,6 @@ public class ClientUI
 
 		if (isSidebarOpen)
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
-			sidebarNavigationJButton.setToolTipText("Open SideBar");
-
 			// Save last panel and close current one
 			lastPluginPanel = pluginPanel;
 			contract();
@@ -609,9 +513,6 @@ public class ClientUI
 		}
 		else
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_CLOSE));
-			sidebarNavigationJButton.setToolTipText("Close SideBar");
-
 			// Try to restore last panel
 			expand(lastPluginPanel);
 

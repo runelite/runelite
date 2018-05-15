@@ -78,7 +78,7 @@ import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.TitleToolbar;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
@@ -128,7 +128,7 @@ public class ScreenshotPlugin extends Plugin
 	private ClientUI clientUi;
 
 	@Inject
-	private TitleToolbar titleToolbar;
+	private PluginToolbar pluginToolbar;
 
 	@Inject
 	private DrawManager drawManager;
@@ -171,6 +171,8 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			titleBarButton = NavigationButton.builder()
+				.delimited(true)
+				.name("Screenshot")
 				.tooltip("Take screenshot")
 				.icon(iconImage)
 				.onClick(() -> takeScreenshot(TIME_FORMAT.format(new Date())))
@@ -191,7 +193,7 @@ public class ScreenshotPlugin extends Plugin
 					.build())
 				.build();
 
-			titleToolbar.addNavigation(titleBarButton);
+			pluginToolbar.addNavigation(titleBarButton);
 		}
 		catch (IOException ex)
 		{
@@ -202,7 +204,7 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		titleToolbar.removeNavigation(titleBarButton);
+		pluginToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
