@@ -56,7 +56,7 @@ import net.runelite.client.ui.overlay.Overlay;
  * game and system load, it usually finds the sweet spot in about two seconds.
  */
 @PluginDescriptor(
-	name = "FPS Control",
+	name = "Performance",
 	enabledByDefault = false
 )
 public class FpsPlugin extends Plugin
