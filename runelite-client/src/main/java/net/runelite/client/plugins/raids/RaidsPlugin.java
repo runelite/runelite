@@ -210,7 +210,7 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		if (event.isHidden())
+		if (!inRaidChambers || event.isHidden())
 		{
 			return;
 		}
