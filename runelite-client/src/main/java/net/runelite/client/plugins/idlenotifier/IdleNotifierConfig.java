@@ -70,8 +70,8 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "hitpoints",
-		name = "Hitpoints Notification Threshold",
-		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
+		name = "Low Hitpoints Threshold",
+		description = "Send a notification when you fall below this amount of hitpoints. A value of 0 will disable notification.",
 		position = 4
 	)
 	default int getHitpointsThreshold()
@@ -80,10 +80,21 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highhitpoints",
+		name = "High Hitpoints Threshold",
+		description = "Send a notification when you are above this amount of hitpoints. A value of 0 will disable notification.",
+		position = 5
+	)
+	default int getHighHitpointsThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "prayer",
 		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 5
+		position = 6
 	)
 	default int getPrayerThreshold()
 	{
