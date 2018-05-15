@@ -1,13 +1,11 @@
 package net.runelite.client.plugins.vorkath;
 
 import com.google.common.eventbus.Subscribe;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.*;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,17 +40,24 @@ public class VorkathPlugin extends Plugin {
     private static final int POISON_PHASE = 1;
     private static final int SPIDER_PHASE = 2;
 
-    private static final int VORKATH_ID = 8061;
+    private static final int VORKATH_ID = 8059;
     private static final int VORKATH_ATTACK_TIOKS = 5;
 
     private Projectile currentProjectile;
     private LocalPoint currentProjectileLocation = null;
 
+    @Getter(AccessLevel.PACKAGE)
     private int attacksInARow = 0;
+    @Getter(AccessLevel.PACKAGE)
     private int nextPhase = -1;
 
     private boolean stall = false;
     private int ticks;
+
+    private int mapRegionId = 0;
+
+    @Getter(AccessLevel.PACKAGE)
+    private boolean atVorkath = false;
 
     private NPC vorkath = null;
 
@@ -63,35 +68,39 @@ public class VorkathPlugin extends Plugin {
             return;
         }
 
+        if (!atVorkath)
+            return;
+
         if (stall) {
             if (client.getTickCount() >= ticks)
                 stall = false;
         }
 
-        for (NPC npc : client.getNpcs()) {
-            if (npc != null)
-                if (npc.getId() == VORKATH_ID) {
-                    vorkath = npc;
-                    break;
-                }
-        }
-
-        if (vorkath != null && vorkath.getAnimation() != -1)
-            System.out.println("Animation Id: " + vorkath.getAnimation());
-
         currentPlayerLocation = client.getLocalPlayer().getLocalLocation();
-
-        getNextAttack();
     }
 
-    private void getNextAttack() {
-        //System.out.println(client.getTickCount());
+    @Subscribe
+    public void onRegionChanged(MapRegionChanged event) {
+        if (client.isInInstancedRegion()) {
+            atVorkath = true;
+            mapRegionId = client.getLocalPlayer().getWorldLocation().getRegionID();
+        } else
+            onLeaveInstance();
+    }
+
+    @Subscribe
+    public void onGameObjectSpawned(GameObjectSpawned event)
+    {
+        GameObject gameObject = event.getGameObject();
+        if (gameObject.getId() == 4525)
+            onLeaveInstance();
     }
 
     @Subscribe
     public void onProjectile(ProjectileMoved event) {
         if (stall)
             return;
+
         currentProjectile = event.getProjectile();
         currentProjectileLocation = event.getPosition();
 
@@ -101,12 +110,14 @@ public class VorkathPlugin extends Plugin {
             ticks = client.getTickCount() + 3;
         }
 
-        if (currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
+        if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE) {
             attacksInARow = 0;
             nextPhase = POISON_PHASE;
         } else if (currentProjectile.getId() == ProjectileID.VORKATH_POISON_POOL_AOE) {
             attacksInARow = 0;
             nextPhase = SPIDER_PHASE;
+        } else if (currentProjectile.getId() == ProjectileID.VORKATH_TICK_FIRE_AOE || currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
+
         } else {
             if (client.getGameCycle() == currentProjectile.getStartMovementCycle())
                 attacksInARow++;
@@ -116,10 +127,21 @@ public class VorkathPlugin extends Plugin {
     @Subscribe
     public void onNpcSpawned(NpcSpawned event) {
         NPC npc = event.getNpc();
-        if (npc.getId() == VORKATH_ID) {
+        if (npc.getId() == VORKATH_ID)
             vorkath = npc;
-            System.out.println("Vorkath spawned.");
-        }
+    }
+
+    private void reset() {
+        vorkath = null;
+        attacksInARow = 0;
+        nextPhase = -1;
+        mapRegionId = 0;
+        stall = false;
+        atVorkath = false;
+    }
+
+    private void onLeaveInstance() {
+        reset();
     }
 
     @Override
@@ -137,5 +159,13 @@ public class VorkathPlugin extends Plugin {
 
     public LocalPoint getCurrentProjectileLocation() {
         return currentProjectileLocation;
+    }
+
+    public int getAttacksInARow() {
+        return attacksInARow;
+    }
+
+    public int getNextPhase() {
+        return nextPhase;
     }
 }
