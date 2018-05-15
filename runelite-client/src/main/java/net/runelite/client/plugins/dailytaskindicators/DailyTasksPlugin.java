@@ -86,29 +86,9 @@ public class DailyTasksPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("dailytaskindicators"))
+		if (event.getGroup().equals("dailytaskindicators") && event.getNewValue().equals("true"))
 		{
-			if (event.getKey().equals("showHerbBoxes"))
-			{
-				hasSentHerbMsg = false;
-			}
-			else if (event.getKey().equals("showStaves"))
-			{
-				hasSentStavesMsg = false;
-			}
-			else if (event.getKey().equals("showEssence"))
-			{
-				hasSentEssenceMsg = false;
-			}
-			else if (event.getKey().equals("showSand"))
-			{
-				hasSentSandMsg = false;
-			}
-			else if (event.getKey().equals("showEcto"))
-			{
-				hasSentEctoMsg = false;
-			}
-			resetSentMessages();
+			resetVariables();
 			sendNotification();
 		}
 	}
@@ -119,10 +99,9 @@ public class DailyTasksPlugin extends Plugin
 	{
 		if (event.getGameState().equals(GameState.LOGGED_IN))
 		{
-			if (previousUserName != client.getUsername())
+			if (!previousUserName.equals(client.getUsername()))
 			{
 				log.debug("User logged into new account ({} -> {})", previousUserName.equals("") ? "null" : previousUserName, client.getUsername());
-				resetSentMessages();
 				previousUserName = client.getUsername();
 				didNameChange = true;
 			}
@@ -134,8 +113,7 @@ public class DailyTasksPlugin extends Plugin
 	{
 		if (didNameChange)
 		{
-			resetSentMessages();
-			didNameChange = false;
+			resetVariables();
 		}
 		sendNotification();
 	}
@@ -263,7 +241,6 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_MORYTANIA_EASY, Varbits.DIARY_MORYTANIA_MEDIUM, Varbits.DIARY_MORYTANIA_HARD, Varbits.DIARY_MORYTANIA_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_ECTO);
-			log.debug("Prev: {} | Current: {} | Condition 1: {} | Condition 2: {}", prevEctoVarbVal, value, prevEctoVarbVal != value, value == 0);
 			if (prevEctoVarbVal != value)
 			{
 				prevEctoVarbVal = value;
@@ -311,15 +288,12 @@ public class DailyTasksPlugin extends Plugin
 		return false;
 	}
 
-	private void resetSentMessages()
+	private void resetVariables()
 	{
-		hasSentHerbMsg = client.getVar(Varbits.DAILY_HERB_BOX) != prevHerbVarbVal ? false : hasSentHerbMsg;
-		hasSentStavesMsg = client.getVar(Varbits.DAILY_STAVES) != prevStavesVarbVal ? false : hasSentStavesMsg;
-		hasSentEssenceMsg = client.getVar(Varbits.DAILY_ESSENCE) != prevEssVarbVal ? false : hasSentEssenceMsg;
-		hasSentSandMsg = client.getVar(Varbits.DAILY_SAND) != prevSandVarbVal ? false : hasSentSandMsg;
-		hasSentEctoMsg = client.getVar(Varbits.DAILY_ECTO) != prevEctoVarbVal ? false : hasSentEctoMsg;
-		hasSentBowstringMsg = client.getVar(Varbits.DAILY_BOWSTRING) != prevBowstringVarbVal ? false : hasSentBowstringMsg;
-		hasSentRunesMsg = client.getVar(Varbits.DAILY_RUNES) != prevRunesVarbVal ? false : hasSentRunesMsg;
+		log.debug("Resetting variables...");
+		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = hasSentBowstringMsg = hasSentRunesMsg = false;
+		prevHerbVarbVal = prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = prevBowstringVarbVal = prevRunesVarbVal = -1;
+		didNameChange = false;
 	}
 
 	private boolean didCompleteDiaries(Varbits... dairyVarbits)
