@@ -49,6 +49,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
 	static final String CONFIG_KEY_FAIRY_RING_ICON = "fairyRingIcon";
+	static final String CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS = "agilityShortcutTooltips";
 
 	static
 	{
@@ -106,6 +107,17 @@ public class WorldMapPlugin extends Plugin
 				case CONFIG_KEY_FAIRY_RING_ICON:
 					FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
 					break;
+				case CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS:
+					if (config.agilityShortcutTooltips())
+					{
+						Arrays.stream(AgilityShortcutLocation.values())
+							.map(AgilityShortcutLocation::getAgilityShortcutPoint)
+							.forEach(worldMapPointManager::add);
+					}
+					else
+					{
+						worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
+					}
 			}
 		}
 	}
@@ -121,11 +133,18 @@ public class WorldMapPlugin extends Plugin
 				.map(FairyRingLocation::getFairyRingPoint)
 				.forEach(worldMapPointManager::add);
 		}
+		if (config.agilityShortcutTooltips())
+		{
+			Arrays.stream(AgilityShortcutLocation.values())
+				.map(AgilityShortcutLocation::getAgilityShortcutPoint)
+				.forEach(worldMapPointManager::add);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
+		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 	}
 }

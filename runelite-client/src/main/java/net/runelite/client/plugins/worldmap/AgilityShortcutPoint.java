@@ -25,47 +25,14 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-@ConfigGroup(
-	keyName = WorldMapPlugin.CONFIG_KEY,
-	name = "World Map",
-	description = "Various World Map enhancements"
-)
-public interface WorldMapConfig extends Config
+public class AgilityShortcutPoint extends WorldMapPoint
 {
-	@ConfigItem(
-		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_TOOLTIPS,
-		name = "Show fairy ring codes in tooltip",
-		description = "Display the code for fairy rings in the icon tooltip",
-		position = 1
-	)
-	default boolean fairyRingTooltips()
+	public AgilityShortcutPoint(String tooltip, WorldPoint worldPoint)
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_ICON,
-		name = "Show fairy ring travel icon",
-		description = "Override the travel icon for fairy rings",
-		position = 2
-	)
-	default boolean fairyRingIcon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS,
-		name = "Show Agility level requirement",
-		description = "Display the required Agility level in the icon tooltip",
-		position = 3
-	)
-	default boolean agilityShortcutTooltips()
-	{
-		return true;
+		super(worldPoint, WorldMapPlugin.BLANK_ICON);
+		setTooltip(tooltip);
 	}
 }
