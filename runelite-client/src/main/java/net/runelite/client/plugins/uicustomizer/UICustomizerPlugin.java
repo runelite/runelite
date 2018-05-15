@@ -75,14 +75,17 @@ public class UICustomizerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		loadSkin();
+		overrideSprites();
+		overrideWidgetSprites();
+		restoreWidgetDimensions();
+		adjustWidgetDimensions();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		restoreDimensions();
-		removeSkin();
+		restoreWidgetDimensions();
+		removeGameframe();
 	}
 
 	@Subscribe
@@ -90,70 +93,56 @@ public class UICustomizerPlugin extends Plugin
 	{
 		if (config.getGroup().equals("uiCustomizer"))
 		{
-			loadSkin();
+			removeGameframe();
+			overrideSprites();
+			overrideWidgetSprites();
+			restoreWidgetDimensions();
+			adjustWidgetDimensions();
 		}
 	}
 
 	@Subscribe
 	public void onResizableChanged(ResizeableChanged event)
 	{
-		adjustDimensions();
+		restoreWidgetDimensions();
+		adjustWidgetDimensions();
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		adjustDimensions();
+		restoreWidgetDimensions();
+		adjustWidgetDimensions();
 	}
 
-	private void loadSkin()
+	private void overrideSprites()
 	{
-		removeSkin();
-
 		Map<Integer, SpritePixels> overrides = new HashMap<>();
 
 		for (SpriteOverride spriteOverride : SpriteOverride.values())
 		{
-			String path = config.skin().toString() + "/" + spriteOverride.getSpriteID() + ".png";
-
-			if (spriteOverride.getSkin() == config.skin())
+			for (Skin skin : spriteOverride.getSkin())
 			{
-				synchronized (ImageIO.class)
+				if (skin == config.skin())
 				{
+					SpritePixels spritePixels = getFileSpritePixels(String.valueOf(spriteOverride.getSpriteID()), null);
 
-					try
+					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
 					{
-						InputStream in = UICustomizerPlugin.class.getResourceAsStream(path);
-						BufferedImage image = ImageIO.read(in);
-
-						if (image != null)
-						{
-							SpritePixels spritePixels = fileToSpritePixels(image);
-
-							if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
-							{
-								client.setCompass(spritePixels);
-							}
-							else
-							{
-								overrides.put(spriteOverride.getSpriteID(), spritePixels);
-							}
-						}
+						client.setCompass(spritePixels);
 					}
-					catch (IOException ex)
+					else
 					{
-						log.debug("Failed to load: ", ex);
+						overrides.put(spriteOverride.getSpriteID(), spritePixels);
 					}
 				}
-
-				client.setSpriteOverrides(overrides);
 			}
 		}
 
-		setupWidgets();
+		client.setSpriteOverrides(overrides);
 	}
 
-	private void setupWidgets()
+	private void overrideWidgetSprites()
 	{
 		Map<Integer, SpritePixels> widgetOverrides = new HashMap<>();
 
@@ -161,41 +150,49 @@ public class UICustomizerPlugin extends Plugin
 		{
 			if (widgetOverride.getSkin() == config.skin())
 			{
-				String path = config.skin().toString() + "/widget/" + widgetOverride.getName() + ".png";
+				SpritePixels spritePixels = getFileSpritePixels(widgetOverride.getName(), "widget");
 
-				SpritePixels spritePixels = getSpritePixels(path);
-
-				for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+				if (spritePixels != null)
 				{
-					widgetOverrides.put(widgetInfo.getPackedId(), spritePixels);
+					for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+					{
+						widgetOverrides.put(widgetInfo.getPackedId(), spritePixels);
+					}
 				}
 			}
 		}
 
 		client.setWidgetSpriteOverrides(widgetOverrides);
-		adjustDimensions();
 	}
 
-	private SpritePixels getSpritePixels(String path)
+	private SpritePixels getFileSpritePixels(String file, String subfolder)
 	{
-		synchronized (ImageIO.class)
-		{
-			try
-			{
-				log.debug("Loading skin: " + config.skin().toString() + " - file: " + path);
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(config.skin().toString() + "/");
 
-				BufferedImage image = ImageIO.read(getClass().getResourceAsStream(path));
-				return fileToSpritePixels(image);
-			}
-			catch (IOException ex)
-			{
-				log.debug("Unable to load image: ", ex);
-			}
+		if (subfolder != null)
+		{
+			stringBuilder.append(subfolder + "/");
 		}
+
+		stringBuilder.append(file + ".png");
+		String filePath = stringBuilder.toString();
+
+		try (InputStream inputStream = UICustomizerPlugin.class.getResourceAsStream(filePath))
+		{
+			log.debug("Loading: " + filePath);
+			BufferedImage spriteImage = ImageIO.read(inputStream);
+			return getImageSpritePixels(spriteImage);
+		}
+		catch (IOException ex)
+		{
+			log.debug("Unable to load image: ", ex);
+		}
+
 		return null;
 	}
 
-	private SpritePixels fileToSpritePixels(BufferedImage image)
+	private SpritePixels getImageSpritePixels(BufferedImage image)
 	{
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
 
@@ -212,10 +209,8 @@ public class UICustomizerPlugin extends Plugin
 		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
 	}
 
-	private void adjustDimensions()
+	private void adjustWidgetDimensions()
 	{
-		restoreDimensions();
-
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
 			if (widgetOffset.getSkin() != config.skin())
@@ -231,14 +226,17 @@ public class UICustomizerPlugin extends Plugin
 				{
 					widget.setRelativeX(widgetOffset.getOffsetX());
 				}
+
 				if (widgetOffset.getOffsetY() != null)
 				{
 					widget.setRelativeY(widgetOffset.getOffsetY());
 				}
+
 				if (widgetOffset.getWidth() != null)
 				{
 					widget.setWidth(widgetOffset.getWidth());
 				}
+
 				if (widgetOffset.getHeight() != null)
 				{
 					widget.setHeight(widgetOffset.getHeight());
@@ -247,7 +245,7 @@ public class UICustomizerPlugin extends Plugin
 		}
 	}
 
-	private void restoreDimensions()
+	private void restoreWidgetDimensions()
 	{
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
@@ -263,17 +261,17 @@ public class UICustomizerPlugin extends Plugin
 		}
 	}
 
-	private void removeSkin()
+	private void removeGameframe()
 	{
+		client.setSpriteOverrides(null);
+		client.setWidgetSpriteOverrides(null);
+
 		BufferedImage compassImage = spriteManager.getSprite(SpriteID.COMPASS_TEXTURE, 0);
 
 		if (compassImage != null)
 		{
-			SpritePixels compass = fileToSpritePixels(compassImage);
+			SpritePixels compass = getImageSpritePixels(compassImage);
 			client.setCompass(compass);
 		}
-
-		client.setSpriteOverrides(null);
-		client.setWidgetSpriteOverrides(null);
 	}
 }
