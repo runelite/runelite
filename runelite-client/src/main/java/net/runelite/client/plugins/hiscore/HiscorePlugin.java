@@ -183,7 +183,7 @@ public class HiscorePlugin extends Plugin
 				return;
 			}
 
-			final MenuEntry lookup = new MenuEntry();
+			final MenuEntry lookup = MenuEntry.builder().build();
 			lookup.setOption(LOOKUP);
 			lookup.setTarget(event.getTarget());
 			lookup.setType(MenuAction.RUNELITE.getId());

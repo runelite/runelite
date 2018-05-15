@@ -450,7 +450,7 @@ public abstract class RSClientMixin implements RSClient
 		MenuEntry[] entries = new MenuEntry[count];
 		for (int i = 0; i < count; ++i)
 		{
-			MenuEntry entry = entries[i] = new MenuEntry();
+			MenuEntry entry = entries[i] = MenuEntry.builder().build();
 			entry.setOption(menuOptions[i]);
 			entry.setTarget(menuTargets[i]);
 			entry.setIdentifier(menuIdentifiers[i]);

@@ -141,12 +141,13 @@ public class FriendNotesPlugin extends Plugin
 		{
 			setCurrentFriend(event.getTarget());
 
-			final MenuEntry addNote = new MenuEntry();
-			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
-			addNote.setType(MenuAction.RUNELITE.getId());
-			addNote.setTarget(event.getTarget());
-			addNote.setParam0(event.getActionParam0());
-			addNote.setParam1(event.getActionParam1());
+			final MenuEntry addNote = MenuEntry.builder()
+				.option(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE)
+				.type(MenuAction.RUNELITE.getId())
+				.target(event.getTarget())
+				.param0(event.getActionParam0())
+				.param1(event.getActionParam1())
+				.build();
 
 			// Add menu entry
 			MenuEntry[] menuEntries = ObjectArrays.concat(client.getMenuEntries(), addNote);

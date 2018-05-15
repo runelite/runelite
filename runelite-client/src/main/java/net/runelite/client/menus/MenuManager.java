@@ -180,7 +180,7 @@ public class MenuManager
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = MenuEntry.builder().build();
 				menuEntry.setOption(currentMenu.getMenuOption());
 				menuEntry.setParam1(widgetId);
 				menuEntry.setTarget(currentMenu.getMenuTarget());

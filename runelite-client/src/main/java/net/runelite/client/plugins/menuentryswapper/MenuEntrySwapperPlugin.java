@@ -249,7 +249,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
-		final MenuEntry resetShiftClickEntry = new MenuEntry();
+		final MenuEntry resetShiftClickEntry = MenuEntry.builder().build();
 		resetShiftClickEntry.setOption(RESET);
 		resetShiftClickEntry.setTarget(MENU_TARGET);
 		resetShiftClickEntry.setIdentifier(itemId);

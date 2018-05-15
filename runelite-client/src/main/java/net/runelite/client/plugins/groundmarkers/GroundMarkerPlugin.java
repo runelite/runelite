@@ -261,7 +261,7 @@ public class GroundMarkerPlugin extends Plugin
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = MenuEntry.builder().build();
 
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
