@@ -38,21 +38,17 @@ public class VorkathPlugin extends Plugin {
     private static final int POISON_PHASE = 1;
     private static final int SPIDER_PHASE = 2;
 
-    private static final int VORKATH_ID = 8059;
-
+    @Getter(AccessLevel.PACKAGE)
     private Projectile currentProjectile;
 
     @Getter(AccessLevel.PACKAGE)
     private int attacksInARow = 0;
+
     @Getter(AccessLevel.PACKAGE)
     private int nextPhase = -1;
 
-    private int mapRegionId = 0;
-
     @Getter(AccessLevel.PACKAGE)
     private boolean atVorkath = false;
-
-    private NPC vorkath = null;
 
     @Subscribe
     public void onGameTick(GameTick event) {
@@ -67,25 +63,30 @@ public class VorkathPlugin extends Plugin {
 
     @Subscribe
     public void onRegionChanged(MapRegionChanged event) {
-        if (client.isInInstancedRegion()) {
-            atVorkath = true;
-            mapRegionId = client.getLocalPlayer().getWorldLocation().getRegionID();
-        } else
+        if (atVorkath)
             onLeaveInstance();
     }
 
-    @Subscribe
-    public void onGameObjectSpawned(GameObjectSpawned event)
-    {
-        GameObject gameObject = event.getGameObject();
-        if (gameObject.getId() == 4525)
-            onLeaveInstance();
-    }
-
+    /**
+     * Process the incoming attacks from Vorkath
+     * @param event
+     */
     @Subscribe
     public void onProjectile(ProjectileMoved event) {
+        if (!atVorkath)
+            return;
+
+        // Process the projectile only if aimed at the attacking player
+        if (event.getProjectile().getInteracting() != null)
+            if (event.getProjectile().getInteracting() != client.getLocalPlayer())
+                return;
+
         currentProjectile = event.getProjectile();
 
+        /**
+         * Resets the attack counter if we encounter a special phase
+         * Increments the counter only if vorkath uses a normal attack
+         */
         if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE) {
             attacksInARow = 0;
             nextPhase = POISON_PHASE;
@@ -96,43 +97,44 @@ public class VorkathPlugin extends Plugin {
 
         } else {
             if (client.getGameCycle() == currentProjectile.getStartMovementCycle())
-                attacksInARow++;
+                ++attacksInARow;
         }
     }
 
+    /**
+     * Initialises a new plugin only if we enter the lair
+     * or if vorkath is dead and we're still in the lair.
+     * Otherwise, shutdown the plugin.
+     * @param event
+     */
     @Subscribe
     public void onNpcSpawned(NpcSpawned event) {
         NPC npc = event.getNpc();
-        if (npc.getId() == VORKATH_ID)
-            vorkath = npc;
+        if (npc.getId() == NpcID.VORKATH_8059) {
+            init();
+        } else if (npc.getId() == NpcID.VORKATH_8058) {
+            onLeaveInstance();
+        }
     }
 
-    private void reset() {
-        vorkath = null;
+    private void init() {
+        atVorkath = true;
         attacksInARow = 0;
         nextPhase = -1;
-        mapRegionId = 0;
+    }
+
+    private void shutdown() {
         atVorkath = false;
+        attacksInARow = 0;
+        nextPhase = -1;
     }
 
     private void onLeaveInstance() {
-        reset();
+        shutdown();
     }
 
     @Override
     public Collection<Overlay> getOverlays() {
         return Arrays.asList(vorkathOverlay);
-    }
-
-    public Projectile getCurrentProjectile() {
-        return currentProjectile;
-    }
-
-    public int getAttacksInARow() {
-        return attacksInARow;
-    }
-
-    public int getNextPhase() {
-        return nextPhase;
     }
 }
