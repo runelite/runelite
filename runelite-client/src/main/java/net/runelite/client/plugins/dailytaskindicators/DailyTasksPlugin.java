@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
@@ -63,6 +64,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, hasSentSandMsg, hasSentEctoMsg, hasSentBowstringMsg, hasSentRunesMsg;
 	private int prevHerbVarbVal, prevStavesVarbVal, prevEssVarbVal, prevSandVarbVal, prevEctoVarbVal, prevBowstringVarbVal, prevRunesVarbVal;
+	private String previousUserName;
+	private boolean didNameChange;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -74,7 +77,9 @@ public class DailyTasksPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = hasSentSandMsg = hasSentEctoMsg = hasSentBowstringMsg = hasSentRunesMsg = false;
-		prevHerbVarbVal = prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = prevBowstringVarbVal = prevRunesVarbVal = 0;
+		prevHerbVarbVal = prevStavesVarbVal = prevEssVarbVal = prevSandVarbVal = prevEctoVarbVal = prevBowstringVarbVal = prevRunesVarbVal = -1;
+		previousUserName = "";
+		didNameChange = false;
 		cacheColors();
 	}
 
@@ -108,12 +113,33 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState().equals(GameState.LOGGED_IN))
+		{
+			if (previousUserName != client.getUsername())
+			{
+				log.debug("User logged into new account ({} -> {})", previousUserName.equals("") ? "null" : previousUserName, client.getUsername());
+				resetSentMessages();
+				previousUserName = client.getUsername();
+				didNameChange = true;
+			}
+		}
+	}
+
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		resetSentMessages();
+		if (didNameChange)
+		{
+			resetSentMessages();
+			didNameChange = false;
+		}
 		sendNotification();
 	}
+
 
 	private void sendNotification()
 	{
@@ -237,8 +263,10 @@ public class DailyTasksPlugin extends Plugin
 		if (didCompleteDiaries(Varbits.DIARY_MORYTANIA_EASY, Varbits.DIARY_MORYTANIA_MEDIUM, Varbits.DIARY_MORYTANIA_HARD, Varbits.DIARY_MORYTANIA_ELITE))
 		{
 			int value = client.getVar(Varbits.DAILY_ECTO);
-			if (prevEctoVarbVal != value ? (prevEctoVarbVal = value) == 0 : false)
+			log.debug("Prev: {} | Current: {} | Condition 1: {} | Condition 2: {}", prevEctoVarbVal, value, prevEctoVarbVal != value, value == 0);
+			if (prevEctoVarbVal != value)
 			{
+				prevEctoVarbVal = value;
 				if ((client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1 && value < 39)
 					|| (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1 && value < 26)
 					|| (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1 && value < 13))
