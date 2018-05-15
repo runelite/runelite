@@ -446,6 +446,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.swapLeapingFish() && (target.equals("leaping trout") || target.equals("leaping salmon") || target.equals("leaping sturgeon")))
+		{
+			swap("drop", option, target, true);
+		}
 	}
 
 	@Subscribe
