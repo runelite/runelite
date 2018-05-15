@@ -290,7 +290,8 @@ public class InventoryTaggerPlugin extends Plugin
 		String cFullString = "";
 		for (String i : taggedItems.keySet())
 		{
-			if(cFullString != ""){
+			if (!cFullString.equals(""))
+			{
 				cFullString += ":";
 			}
 			cFullString += i + "=" + taggedItems.get(i).itemIdList.toString();
