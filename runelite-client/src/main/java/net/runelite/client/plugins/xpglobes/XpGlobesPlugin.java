@@ -86,6 +86,12 @@ public class XpGlobesPlugin extends Plugin
 		int skillIdx = skill.ordinal();
 		XpGlobe cachedGlobe = globeCache[skillIdx];
 
+		// prevent globe from showing if skill level is above 98 only if no cache exists (meaning we didn't just level up)
+		if (cachedGlobe == null && config.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
+		{
+			return;
+		}
+
 		// ExperienceChanged event occurs when stats drain/boost check we have an change to actual xp
 		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
 		{
