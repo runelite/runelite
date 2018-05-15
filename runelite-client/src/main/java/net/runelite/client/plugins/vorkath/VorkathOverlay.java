@@ -55,7 +55,7 @@ public class VorkathOverlay extends Overlay
 		 */
 		if (plugin.getCurrentProjectile() != null)
 			if (plugin.getCurrentProjectile().getId() == ProjectileID.VORKATH_BOMB_AOE)
-				panelComponent.setBackgroundColor(Color.RED);
+				panelComponent.setBackgroundColor(warningColor);
 			else
 				panelComponent.setBackgroundColor(backgroundColor);
 
@@ -82,7 +82,6 @@ public class VorkathOverlay extends Overlay
 
 	/**
 	 * The text to display for the next special phase
-	 *
 	 * @return nextPhase
 	 */
 	private String getNextPhaseText()
@@ -112,7 +111,6 @@ public class VorkathOverlay extends Overlay
 
 	/**
 	 * The text color, depending on the attacks remaining till the next phase
-	 *
 	 * @return color
 	 */
 	private Color getTextColor()
