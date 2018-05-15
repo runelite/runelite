@@ -35,24 +35,17 @@ public class VorkathPlugin extends Plugin {
     @Getter
     private Player player;
 
-    private LocalPoint currentPlayerLocation;
-
     private static final int POISON_PHASE = 1;
     private static final int SPIDER_PHASE = 2;
 
     private static final int VORKATH_ID = 8059;
-    private static final int VORKATH_ATTACK_TIOKS = 5;
 
     private Projectile currentProjectile;
-    private LocalPoint currentProjectileLocation = null;
 
     @Getter(AccessLevel.PACKAGE)
     private int attacksInARow = 0;
     @Getter(AccessLevel.PACKAGE)
     private int nextPhase = -1;
-
-    private boolean stall = false;
-    private int ticks;
 
     private int mapRegionId = 0;
 
@@ -70,13 +63,6 @@ public class VorkathPlugin extends Plugin {
 
         if (!atVorkath)
             return;
-
-        if (stall) {
-            if (client.getTickCount() >= ticks)
-                stall = false;
-        }
-
-        currentPlayerLocation = client.getLocalPlayer().getLocalLocation();
     }
 
     @Subscribe
@@ -98,17 +84,7 @@ public class VorkathPlugin extends Plugin {
 
     @Subscribe
     public void onProjectile(ProjectileMoved event) {
-        if (stall)
-            return;
-
         currentProjectile = event.getProjectile();
-        currentProjectileLocation = event.getPosition();
-
-
-        if (currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
-            stall = true;
-            ticks = client.getTickCount() + 3;
-        }
 
         if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE) {
             attacksInARow = 0;
@@ -136,7 +112,6 @@ public class VorkathPlugin extends Plugin {
         attacksInARow = 0;
         nextPhase = -1;
         mapRegionId = 0;
-        stall = false;
         atVorkath = false;
     }
 
@@ -149,16 +124,8 @@ public class VorkathPlugin extends Plugin {
         return Arrays.asList(vorkathOverlay);
     }
 
-    public LocalPoint getPlayerCurrentLocation() {
-        return currentPlayerLocation;
-    }
-
     public Projectile getCurrentProjectile() {
         return currentProjectile;
-    }
-
-    public LocalPoint getCurrentProjectileLocation() {
-        return currentProjectileLocation;
     }
 
     public int getAttacksInARow() {
