@@ -53,6 +53,7 @@ public class FpsOverlay extends Overlay
 	private static final int Y_OFFSET = 14;
 	private static int VALUE_X_OFFSET = 15;
 	private final PanelComponent panel = new PanelComponent();
+	private static final String FPS_STRING = " FPS";
 
 	// Cache of FPS number strings from 00-50
 	private final String[] fpsNums;
@@ -124,11 +125,18 @@ public class FpsOverlay extends Overlay
 			final int fps = client.getFPS();
 			if (fps < FPS_SIZE)
 			{
-				final Dimension dimension = client.getRealDimensions();
-				final int width = (int) dimension.getWidth();
-				final Point point = new Point(width - VALUE_X_OFFSET, Y_OFFSET);
+				final int width = (int) client.getRealDimensions().getWidth();
+				if (config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
+				{
+					point = new Point(width - VALUE_X_OFFSET, Y_OFFSET);
+				}
+				else
+				{
+					int fpsTextWidth = graphics.getFontMetrics().stringWidth(fpsNums[fps] + FPS_STRING);
+					point = new Point(width - fpsTextWidth - 2, Y_OFFSET);
+				}
+				OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps] + FPS_STRING, getFpsValueColor());
 
-				OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps], getFpsValueColor());
 			}
 		}
 
@@ -168,6 +176,7 @@ public class FpsOverlay extends Overlay
 				point = new Point(width - textWidth - 2, VALUE_Y_AXIS_PING);
 			}
 			OverlayUtil.renderTextLocation(graphics, point, ping + "ms", color);
+
 		}
 
 		return null;

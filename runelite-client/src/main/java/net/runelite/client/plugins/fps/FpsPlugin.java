@@ -78,6 +78,9 @@ public class FpsPlugin extends Plugin
 	@Inject
 	private DrawManager drawManager;
 
+	@Inject
+	private FpsConfig fpsConfig;
+
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
 	{
@@ -127,7 +130,7 @@ public class FpsPlugin extends Plugin
 	public long getPingToCurrentWorld()
 	{
 		InetAddress host;
-		if (client.getGameState().equals(GameState.LOGGED_IN))
+		if (client.getGameState().equals(GameState.LOGGED_IN) && fpsConfig.drawPing())
 		{
 			try
 			{
