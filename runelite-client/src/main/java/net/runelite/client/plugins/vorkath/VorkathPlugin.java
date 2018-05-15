@@ -56,9 +56,6 @@ public class VorkathPlugin extends Plugin {
         if (client.getGameState() != GameState.LOGGED_IN) {
             return;
         }
-
-        if (!atVorkath)
-            return;
     }
 
     @Subscribe

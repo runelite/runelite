@@ -49,6 +49,7 @@ public class VorkathOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
+        // Clears the overlay if not at vorkath
         if (!plugin.isAtVorkath()) {
             panelComponent.getChildren().clear();
             return null;
