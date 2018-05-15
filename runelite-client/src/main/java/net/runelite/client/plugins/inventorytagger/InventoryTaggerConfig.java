@@ -74,4 +74,21 @@ public interface InventoryTaggerConfig extends Config
 	{
 		return new Color(0, 255, 255);
 	}
+	@ConfigItem(
+			keyName = "taggeditems",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default String getTaggedItems()
+	{
+		return "";
+	}
+	@ConfigItem(
+			keyName = "taggeditems",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	void setTaggedItems(String t);
 }

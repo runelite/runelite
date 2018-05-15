@@ -46,6 +46,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @PluginDescriptor(
 	name = "Inventory Item Tagging",
@@ -90,6 +92,8 @@ public class InventoryTaggerPlugin extends Plugin
 	private static final String MENU_REMOVE = "Remove";
 	private static final String MENU_CLEAR_TAGS = "Clear Tags";
 
+	private static final Pattern loadConfigRegex = Pattern.compile("([\\w\\s]+)\\=(\\[.*?\\])");
+
 	@Provides
 	InventoryTaggerConfig provideConfig(ConfigManager configManager)
 	{
@@ -119,6 +123,17 @@ public class InventoryTaggerPlugin extends Plugin
 		taggedItems.put(SETNAME_GROUP_3, new TaggedItems(SETNAME_GROUP_3, config.getGroup3Color()));
 		taggedItems.put(SETNAME_GROUP_2, new TaggedItems(SETNAME_GROUP_2, config.getGroup2Color()));
 		taggedItems.put(SETNAME_GROUP_1, new TaggedItems(SETNAME_GROUP_1, config.getGroup1Color()));
+
+		if (!config.getTaggedItems().equals(""))
+		{
+			loadSavedTags();
+		}
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		config.setTaggedItems(convertTaggedItemsToString());
 	}
 
 	@Subscribe
@@ -137,6 +152,7 @@ public class InventoryTaggerPlugin extends Plugin
 		if (event.getMenuOption().equals(SAVE) && event.getMenuTarget().equals(MENU_TARGET))
 		{
 			editorMode = false;
+			config.setTaggedItems(convertTaggedItemsToString());
 		}
 
 		if (event.getMenuOption().equals(MENU_CLEAR_TAGS) && event.getMenuTarget().equals(MENU_TARGET))
@@ -267,6 +283,36 @@ public class InventoryTaggerPlugin extends Plugin
 		taggedItems.get(SETNAME_GROUP_4).updateColor(config.getGroup4Color());
 		taggedItems.get(SETNAME_GROUP_5).updateColor(config.getGroup5Color());
 		taggedItems.get(SETNAME_GROUP_6).updateColor(config.getGroup6Color());
+	}
+
+	public String convertTaggedItemsToString()
+	{
+		String cFullString = "";
+		for (String i : taggedItems.keySet())
+		{
+			if(cFullString != ""){
+				cFullString += ":";
+			}
+			cFullString += i + "=" + taggedItems.get(i).itemIdList.toString();
+		}
+
+		return cFullString;
+	}
+
+	public void loadSavedTags()
+	{
+		Matcher matcher = loadConfigRegex.matcher(config.getTaggedItems());
+		while (matcher.find())
+		{
+			String tagName = matcher.group(1);
+			String tagList = matcher.group(2);
+			Matcher matcher2 = Pattern.compile("(\\d+)").matcher(tagList);
+			//loop all ids, parse from string to id and add
+			while (matcher2.find())
+			{
+				addItemToGroup(tagName,Integer.parseInt(matcher2.group(0)));
+			}
+		}
 	}
 
 }
