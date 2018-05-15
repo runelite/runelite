@@ -27,22 +27,23 @@ package net.runelite.client.plugins.questtab;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Quest List Filtering"
 )
 public class QuestTabPlugin extends Plugin
 {
-	@Getter
-	private boolean showApplyChangesOverlay = false;
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private Client client;
@@ -50,28 +51,25 @@ public class QuestTabPlugin extends Plugin
 	@Inject
 	private QuestTabConfig config;
 
-	@Inject
-	private QuestTabOverlay overlay;
-
 	@Provides
 	QuestTabConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(QuestTabConfig.class);
 	}
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
 	@Subscribe
 	public void onConfigChanged(ConfigChanged e)
 	{
-		if (e.getGroup().equals("questtab"))
-		{
-			showApplyChangesOverlay = true;
-		}
+		clientThread.invokeLater(() -> client.runScript(
+			ScriptID.QUEST_LIST_INIT,
+			WidgetInfo.QUEST_LIST_CONTROL.getId(),
+			WidgetInfo.QUEST_LIST_LISTS.getId(),
+			WidgetInfo.QUEST_LIST_SCROLLBAR.getId(),
+			WidgetInfo.QUEST_LIST_QP.getId(),
+			WidgetInfo.QUEST_LIST_FREE.getId(),
+			WidgetInfo.QUEST_LIST_MEMBERS.getId(),
+			WidgetInfo.QUEST_LIST_MINIQUESTS.getId()
+		));
 	}
 
 	@Subscribe
@@ -83,29 +81,49 @@ public class QuestTabPlugin extends Plugin
 
 		switch (eventName)
 		{
-			case "initFreeQuests":
-				intStack[intStackSize - 1] = config.hideFree() ? 1 : 0;
-				showApplyChangesOverlay = false;
+			case "questListTypeFilter":
+
+				if (intStack[intStackSize - 3] == WidgetInfo.QUEST_LIST_FREE.getId())
+				{
+					intStack[intStackSize - 1] = config.hideFree() ? 1 : 0;
+					// -8 will be the return value of QuestListItemInit.rs2asm
+					// this effectively nullifies the gap added after the free quest list section
+					intStack[intStackSize - 3] = -8;
+				}
+				else if (intStack[intStackSize - 3] == WidgetInfo.QUEST_LIST_MEMBERS.getId())
+				{
+					intStack[intStackSize - 1] = config.hideMembers() ? 1 : 0;
+					// -8 will be the return value of QuestListItemInit.rs2asm
+					// this effectively nullifies the gap added after the members quest list section
+					intStack[intStackSize - 3] = -8;
+				}
+				else if (intStack[intStackSize - 3] == WidgetInfo.QUEST_LIST_MINIQUESTS.getId())
+				{
+					intStack[intStackSize - 1] = config.hideMiniquests() ? 1 : 0;
+					// 0 will be the return value of QuestListItemInit.rs2asm
+					// the gap normally at the bottom of the quest list will remain the same, no matter what is filtered
+					intStack[intStackSize - 3] = 0;
+				}
+
 				break;
-			case "initMembersQuests":
-				intStack[intStackSize - 1] = config.hideMembers() ? 1 : 0;
-				showApplyChangesOverlay = false;
-				break;
-			case "initMiniquests":
-				intStack[intStackSize - 1] = config.hideMiniquests() ? 1 : 0;
-				showApplyChangesOverlay = false;
-				break;
-			case "questListFilterComplete":
-				intStack[intStackSize - 1] = config.hideCompleted() ? 1 : 0;
-				showApplyChangesOverlay = false;
-				break;
-			case "questListFilterInProgress":
-				intStack[intStackSize - 1] = config.hideInProgress() ? 1 : 0;
-				showApplyChangesOverlay = false;
-				break;
-			case "questListFilterNotStarted":
-				intStack[intStackSize - 1] = config.hideNotStarted() ? 1 : 0;
-				showApplyChangesOverlay = false;
+			case "questListProgressFilter":
+
+				// progress == 2 means completed
+				if (intStack[intStackSize - 3] == 2)
+				{
+					intStack[intStackSize - 1] = config.hideCompleted() ? 1 : 0;
+				}
+				// progress == 0 means in progress
+				else if (intStack[intStackSize - 3] == 0)
+				{
+					intStack[intStackSize - 1] = config.hideInProgress() ? 1 : 0;
+				}
+				// progress == 1 means not started
+				else if (intStack[intStackSize - 3] == 1)
+				{
+					intStack[intStackSize - 1] = config.hideNotStarted() ? 1 : 0;
+				}
+
 				break;
 		}
 	}
