@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018 kulers
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.inventorytagger;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
+import net.runelite.api.SpritePixels;
 
-public interface SpritePixels
+@RequiredArgsConstructor
+class ItemOutline
 {
-	int DEFAULT_SHADOW_COLOR = 3153952;
+	public static Map<String, BufferedImage> storedOutlines = new HashMap<>();
 
-	void drawAt(int x, int y);
+	private final Client client;
+	private final int id;
+	private final int stroke;
+	private final Color color;
 
-	int getWidth();
+	private BufferedImage generatedPicture = new BufferedImage(36, 36, BufferedImage.TYPE_INT_ARGB);
 
-	int getHeight();
+	private String getStringGeneratedId()
+	{
+		return this.id + "." + this.stroke + "." + this.color.getRGB();
+	}
 
-	int[] getPixels();
+	public BufferedImage getPicture()
+	{
+		if (storedOutlines.containsKey(getStringGeneratedId()))
+		{
+			return storedOutlines.get(getStringGeneratedId());
+		}
 
-	/**
-	 * Covert the SpritePixels to a BufferedImage
-	 *
-	 * @return
-	 */
-	BufferedImage toBufferedImage();
+		SpritePixels itemSprite = client.createItemSprite(id, 1, this.stroke, 0, 0, true, 710);
+		this.generatedPicture = itemSprite.toBufferedOutline(this.color);
 
-	/**
-	 * Writes the contents of the SpritePixels to the BufferedImage.
-	 * Width and Height must match
- 	 */
-	void toBufferedImage(BufferedImage img);
-
-	BufferedImage toBufferedOutline(Color color);
-
-	void toBufferedOutline(BufferedImage img, int color);
+		storedOutlines.put(getStringGeneratedId(), this.generatedPicture);
+		return this.generatedPicture;
+	}
 }
