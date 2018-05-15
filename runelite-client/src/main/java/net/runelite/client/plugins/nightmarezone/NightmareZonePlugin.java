@@ -26,11 +26,14 @@ package net.runelite.client.plugins.nightmarezone;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+
+import lombok.Getter;
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -48,6 +51,9 @@ public class NightmareZonePlugin extends Plugin
 {
 	private static final int[] NMZ_MAP_REGION = {9033};
 
+	@Getter
+	private Instant firstAnimTime;
+
 	@Inject
 	private Notifier notifier;
 
@@ -60,9 +66,18 @@ public class NightmareZonePlugin extends Plugin
 	@Inject
 	private NightmareZoneOverlay overlay;
 
+
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+
+	// This starts as true since you need to
+	// drink an overload before sending notifications
+	private boolean overloadNotificationSend = true;
+
+	// Becomes true once the first overload damage
+	// animation is triggered
+	private boolean animationFlag = false;
 
 	@Override
 	protected void shutDown()
@@ -97,12 +112,19 @@ public class NightmareZonePlugin extends Plugin
 			{
 				absorptionNotificationSend = true;
 			}
-
+			if (!overloadNotificationSend)
+			{
+				overloadNotificationSend = true;
+			}
 			return;
 		}
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
+		}
+		if (config.overloadWarningNotification())
+		{
+			checkOverloadTimer();
 		}
 	}
 
@@ -166,6 +188,38 @@ public class NightmareZonePlugin extends Plugin
 			if (absorptionPoints > config.absorptionThreshold())
 			{
 				absorptionNotificationSend = false;
+			}
+		}
+	}
+
+
+	private void checkOverloadTimer()
+	{
+		final Player local = client.getLocalPlayer();
+		int warningTime = config.overloadWarningTime();
+		int timeToWait = (300 - warningTime);
+
+		if (local.getAnimation() == (AnimationID.OVERLOAD_DAMAGE) && animationFlag == false)
+		{
+			firstAnimTime = Instant.now();
+			animationFlag = true;
+		}
+		if (firstAnimTime != null)
+		{
+			if (!overloadNotificationSend)
+			{
+				if (Duration.between(firstAnimTime, Instant.now()).getSeconds() >= timeToWait)
+				{
+					notifier.notify("[" + local.getName() + "]'s overload expires in " + warningTime + " seconds!");
+					overloadNotificationSend = true;
+				}
+			}
+			else
+			{
+				if (Duration.between(firstAnimTime, Instant.now()).getSeconds() < timeToWait)
+				{
+					overloadNotificationSend = false;
+				}
 			}
 		}
 	}
