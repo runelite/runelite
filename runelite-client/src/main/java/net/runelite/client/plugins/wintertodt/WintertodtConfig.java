@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, EmptySet <https://github.com/OTRD5k>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-public class GraphicID
+package net.runelite.client.plugins.wintertodt;
+
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+		keyName = "wintertodt",
+		name = "Wintertodt",
+		description = "Configuration for the Wintertodt plugin"
+)
+
+public interface WintertodtConfig extends Config
 {
-	public static final int ENTANGLE = 179;
-	public static final int SNARE = 180;
-	public static final int BIND = 181;
-	public static final int ICE_RUSH = 361;
-	public static final int ICE_BURST = 363;
-	public static final int ICE_BLITZ = 367;
-	public static final int ICE_BARRAGE = 369;
-	public static final int VENGEANCE = 726;
-	public static final int SNOW_PARTICLES_ID = 1311;
-	public static final int IMBUED_HEART = 1316;
-	public static final int FLYING_FISH = 1387;
+	@ConfigItem(
+			position = 0,
+			keyName = "showSafespot",
+			name = "Safespot Marker",
+			description = "Whether or not snow attack safespots are shown"
+	)
+	default boolean showSafespot()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 1,
+			keyName = "showDangerTiles",
+			name = "Highlight Dangerous Tiles",
+			description = "Highlight tiles that a snow attack is about to hit"
+	)
+	default boolean showDangerTiles()
+	{
+		return true;
+	}
 }
