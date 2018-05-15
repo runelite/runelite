@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.inventorytagger;
 
 import com.google.common.eventbus.Subscribe;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
