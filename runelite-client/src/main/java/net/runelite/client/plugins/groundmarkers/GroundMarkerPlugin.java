@@ -65,6 +65,7 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
+	private static final String CLEAR = "Clear visible tiles";
 	private static final String WALK_HERE = "Walk here";
 
 	private static final Gson gson = new Gson();
@@ -81,6 +82,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private GroundMarkerInputListener inputListener;
+
+	@Inject
+	private GroundMarkerConfig config;
 
 	@Inject
 	private ConfigManager configManager;
@@ -259,14 +263,25 @@ public class GroundMarkerPlugin extends Plugin
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+			if (config.clearTiles())
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+				MenuEntry clearTiles = menuEntries[menuEntries.length - 2] = new MenuEntry();
+
+				clearTiles.setOption(CLEAR);
+				clearTiles.setTarget(event.getTarget());
+				clearTiles.setType(MenuAction.CANCEL.getId());
+			}
+			else
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			}
 
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setType(MenuAction.CANCEL.getId());
-
 			client.setMenuEntries(menuEntries);
 		}
 	}
@@ -274,13 +289,15 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (event.getMenuOption().equals(MARK))
 		{
-			return;
+			Tile target = client.getSelectedRegionTile();
+			markTile(target.getLocalLocation());
 		}
-
-		Tile target = client.getSelectedRegionTile();
-		markTile(target.getLocalLocation());
+		else if (event.getMenuOption().equals(CLEAR))
+		{
+			clearPoints();
+		}
 	}
 
 	@Override
@@ -357,6 +374,19 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		savePoints(regionId, points);
+
+		loadPoints();
+	}
+
+	private void clearPoints()
+	{
+		points.clear();
+		int[] regions = client.getMapRegions();
+
+		for (int regionId : regions)
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
+		}
 
 		loadPoints();
 	}

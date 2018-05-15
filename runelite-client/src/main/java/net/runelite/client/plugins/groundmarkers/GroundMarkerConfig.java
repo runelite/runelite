@@ -48,4 +48,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+		keyName = "clearTiles",
+		name = "Allow 'Clear Visible Tiles'",
+		description = "Allows the Clear all visible tiles option when holding shift. Only clears tiles visible."
+	)
+	default boolean clearTiles()
+	{
+		return true;
+	}
 }
