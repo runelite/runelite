@@ -24,11 +24,14 @@
  */
 package net.runelite.client.plugins.tileindicators;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -53,20 +56,56 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		LocalPoint dest = client.getLocalDestinationLocation();
+		if (config.highlightCurrentLocation())
+		{
+			highlightTile(graphics, client.getLocalPlayer().getLocalLocation(), config.highlightCurrentLocationColor());
+		}
+
+		if (config.highlightDestination())
+		{
+			highlightTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
+		}
+
+		if (config.highlightMousePosition())
+		{
+			Tile[][][] tiles = client.getRegion().getTiles();
+			int z = client.getPlane();
+
+			for (int x = 0; x < Constants.REGION_SIZE; x++)
+			{
+				for (int y = 0; y < Constants.REGION_SIZE; ++y)
+				{
+					Tile tile = tiles[z][x][y];
+
+					if (tile != null)
+					{
+						Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+
+						if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+						{
+							highlightTile(graphics, tile.getLocalLocation(), config.highlightMousePositionColor());
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private void highlightTile(Graphics2D graphics, LocalPoint dest, Color color)
+	{
 		if (dest == null)
 		{
-			return null;
+			return;
 		}
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, dest);
 		if (poly == null)
 		{
-			return null;
+			return;
 		}
-		
-		OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
 
-		return null;
+		OverlayUtil.renderPolygon(graphics, poly, color);
+
 	}
 }
