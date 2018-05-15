@@ -49,6 +49,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.chatcommands.killsimulator.BossHandler;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -67,6 +68,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	private final BossHandler bossHandler = new BossHandler();
 
 	@Inject
 	private Client client;
@@ -174,7 +176,15 @@ public class ChatCommandsPlugin extends Plugin
 		// clear RuneLite formatted message as the message node is
 		// being reused
 		messageNode.setRuneLiteFormatMessage(null);
-
+		if(config.killsimulator() && message.toLowerCase().startsWith("!kill")) {
+			String[] args = message.split(" ");
+			if(args.length != 3) {
+				client.addChatMessage(ChatMessageType.SERVER, "", "Invalid syntax please use !kill [amount] [npc_name]", null);
+			}
+			int amount = Integer.parseInt(args[1]);
+			String npcName = args[2].toLowerCase();
+			executor.submit(() -> bossHandler.simulateKills(client, npcName, amount));
+		}
 		if (config.lvl() && message.toLowerCase().equals("!total"))
 		{
 			log.debug("Running total level lookup");
