@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Sir Girion <https://github.com/darakelian>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.infobox;
+package net.runelite.client.plugins.blowpipetracker;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.plugins.Plugin;
+import net.runelite.api.ItemID;
 
-public class Counter extends InfoBox
+public enum AttractorDefinition
 {
-	private String text;
-	private Color color;
 
-	public Counter(BufferedImage image, Plugin plugin, String text)
+	ATTRACTOR(ItemID.AVAS_ATTRACTOR, 0.2f, 0.16f, 0.64f),
+	ACCUMULATOR(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f),
+	ACCUMULATOR_RANGE_CAPE(ItemID.RANGING_CAPE, 0.2f, 0.08f, 0.72f),
+	ACCUMULATOR_MAX_CAPE(ItemID.ACCUMULATOR_MAX_CAPE, 0.2f, 0.08f, 0.72f),
+	ASSEMBLER(ItemID.AVAS_ASSEMBLER, 0.2f, 0.0f, 0.8f),
+	ASSEMBLER_MAX_CAPE(ItemID.ASSEMBLER_MAX_CAPE, 0.2f, 0.0f, 0.8f);
+
+	private int itemId;
+	private float breakOnImpactChance, dropToFloorChance, savedChance;
+
+	AttractorDefinition(int itemId, float breakOnImpact, float dropToFloor, float saved)
 	{
-		super(image, plugin);
-		this.text = text;
-		this.color = Color.WHITE;
+		this.itemId = itemId;
+		breakOnImpactChance = breakOnImpact;
+		dropToFloorChance = dropToFloor;
+		savedChance = saved;
 	}
 
-	@Override
-	public String toString()
+	public float getItemId()
 	{
-		return "Counter{" + "text=" + text + '}';
+		return itemId;
 	}
 
-	@Override
-	public String getText()
+	public float getBreakOnImpactPercentage()
 	{
-		return text;
+		return breakOnImpactChance;
 	}
 
-	public void setText(String text)
+	public float getDropToFloorChance()
 	{
-		this.text = text;
+		return dropToFloorChance;
 	}
 
-	@Override
-	public Color getTextColor()
+	public float getSavedChance()
 	{
-		return color;
+		return savedChance;
 	}
 
-	public void setTextColor(Color color)
+	public static AttractorDefinition getAttractorById(int itemId)
 	{
-		this.color = color;
-	}
+		for (AttractorDefinition attractorDefinition : values())
+		{
+			if (attractorDefinition.getItemId() == itemId)
+				return attractorDefinition;
+		}
 
+		return null;
+	}
 }
