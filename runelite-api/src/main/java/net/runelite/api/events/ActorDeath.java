@@ -27,8 +27,14 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Actor;
 
+/**
+ * This event triggers whenever a player or NPC dies.
+ */
 @Data
 public class ActorDeath
 {
+	/**
+	 * The player or NPC who died.
+	 */
 	private Actor actor;
 }

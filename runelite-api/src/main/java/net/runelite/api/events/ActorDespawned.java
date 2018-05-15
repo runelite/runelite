@@ -26,7 +26,14 @@ package net.runelite.api.events;
 
 import net.runelite.api.Actor;
 
+/**
+ * This event triggers whenever a player or NPC despawns.
+ */
 public interface ActorDespawned
 {
+	/**
+	 * Returns the player or NPC who died.
+	 * @return The dead player or NPC.
+	 */
 	Actor getActor();
 }

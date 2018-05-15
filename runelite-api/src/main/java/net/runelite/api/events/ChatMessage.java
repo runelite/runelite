@@ -28,6 +28,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.runelite.api.ChatMessageType;
 
+/**
+ * This event is triggered whenever a chat message appears in the chat box or in private message. This also happens
+ * whenever the player sends a message.
+ */
 @Data
 @AllArgsConstructor
 public class ChatMessage

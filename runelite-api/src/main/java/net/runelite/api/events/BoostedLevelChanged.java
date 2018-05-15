@@ -27,6 +27,10 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Skill;
 
+/**
+ * This event gets triggered whenever the player boosts a skill or the boost expires.
+ * //TODO: Find out if this also triggers when skill goes below normal level.
+ */
 @Data
 public class BoostedLevelChanged
 {

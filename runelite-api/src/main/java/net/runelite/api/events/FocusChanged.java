@@ -26,6 +26,10 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+/**
+ * This event is triggered whenever the client loses or gets focus. This happens when the player alt-tabs to, or clicks
+ * on another window or opens the client after losing focus.
+ */
 @Data
 public class FocusChanged
 {

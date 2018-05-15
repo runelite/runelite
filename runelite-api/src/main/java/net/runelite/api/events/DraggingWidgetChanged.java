@@ -26,6 +26,9 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+/**
+ * This event is used in the Prayer Reorder Plugin to determine when a prayer is moved.
+ */
 @Data
 public class DraggingWidgetChanged
 {

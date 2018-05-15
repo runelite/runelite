@@ -28,6 +28,9 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Skill;
 
+/**
+ * This event is triggered whenever the player gains XP.
+ */
 @Data
 public class ExperienceChanged
 {

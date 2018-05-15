@@ -26,6 +26,9 @@ package net.runelite.api.events;
 
 import lombok.Value;
 
+/**
+ * This event gets triggered whenever the player uses a command in chat like '!skill attack' or '!total'
+ */
 @Value
 public class CommandExecuted
 {

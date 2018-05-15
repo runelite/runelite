@@ -26,6 +26,9 @@ package net.runelite.api.events;
 
 import lombok.Value;
 
+/**
+ * This event gets triggered whenever the player joins or leaves a clan chat.
+ */
 @Value
 public class ClanChanged
 {
