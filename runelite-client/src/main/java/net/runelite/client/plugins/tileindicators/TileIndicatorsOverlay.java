@@ -58,7 +58,7 @@ public class TileIndicatorsOverlay extends Overlay
 	{
 		if (config.highlightCurrentLocation())
 		{
-			LocalPoint position = LocalPoint.fromWorld(client, client.getLocalPlayer().getWorldLocation());
+			final LocalPoint position = LocalPoint.fromWorld(client, client.getLocalPlayer().getWorldLocation());
 			highlightTile(graphics, position, config.highlightCurrentLocationColor());
 		}
 
@@ -69,7 +69,7 @@ public class TileIndicatorsOverlay extends Overlay
 
 		if (config.highlightMousePosition())
 		{
-			Tile[][][] tiles = client.getRegion().getTiles();
+			final Tile[][][] tiles = client.getRegion().getTiles();
 			int z = client.getPlane();
 
 			for (int x = 0; x < Constants.REGION_SIZE; x++)
@@ -90,6 +90,7 @@ public class TileIndicatorsOverlay extends Overlay
 				}
 			}
 		}
+
 		return null;
 	}
 
@@ -107,6 +108,5 @@ public class TileIndicatorsOverlay extends Overlay
 		}
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
-
 	}
 }
