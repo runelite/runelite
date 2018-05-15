@@ -53,10 +53,10 @@ class SkillCalculator extends JPanel
 
 	private CacheSkillData cacheSkillData = new CacheSkillData();
 
-	static SpriteManager spriteManager;
-	static ItemManager itemManager;
+	private SpriteManager spriteManager;
+	private ItemManager itemManager;
 
-	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
+	private UICombinedActionSlot combinedActionSlot;
 	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 
 	private int currentLevel = 1;
@@ -69,19 +69,24 @@ class SkillCalculator extends JPanel
 
 	private static DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput)
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
+
+		this.spriteManager = spriteManager;
+		this.itemManager = itemManager;
+
+		this.combinedActionSlot = new UICombinedActionSlot(this.spriteManager);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createLineBorder(getBackground().brighter()));
 
 		// Register listeners on the input fields..
-		uiInput.uiFieldCurrentLevel.addActionListener(e -> onFieldCurrentLevelUpdated());
-		uiInput.uiFieldCurrentXP.addActionListener(e -> onFieldCurrentXPUpdated());
-		uiInput.uiFieldTargetLevel.addActionListener(e -> onFieldTargetLevelUpdated());
-		uiInput.uiFieldTargetXP.addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.addCurrentLevelFieldListener(e -> onFieldCurrentLevelUpdated());
+		uiInput.addCurrentXPFieldListener(e -> onFieldCurrentXPUpdated());
+		uiInput.addTargetLevelFieldListener(e -> onFieldTargetLevelUpdated());
+		uiInput.addTargetXPFieldListener(e -> onFieldTargetXPUpdated());
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -137,7 +142,7 @@ class SkillCalculator extends JPanel
 		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
-			xp += slot.value;
+			xp += slot.getValue();
 
 		if (neededXP > 0)
 			actionCount = (int) Math.ceil(neededXP / xp);
@@ -155,19 +160,19 @@ class SkillCalculator extends JPanel
 
 	private void renderBonusOptions()
 	{
-		if (skillData.bonuses != null)
+		if (skillData.getBonuses() != null)
 		{
-			for (SkillDataBonus bonus : skillData.bonuses)
+			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(bonus.name);
+				JLabel uiLabel = new JLabel(bonus.getName());
 				JCheckBox uiCheckbox = new JCheckBox();
 
 				// Adding an empty 8-pixel border on the left gives us nice padding.
 				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.value));
+				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
 				uiOption.add(uiCheckbox, BorderLayout.EAST);
@@ -182,9 +187,9 @@ class SkillCalculator extends JPanel
 		uiActionSlots.clear();
 
 		// Create new components for the action slots.
-		for (SkillDataEntry action : skillData.actions)
+		for (SkillDataEntry action : skillData.getActions())
 		{
-			UIActionSlot slot = new UIActionSlot(action);
+			UIActionSlot slot = new UIActionSlot(action, this.itemManager, this.spriteManager);
 			uiActionSlots.add(slot); // Keep our own reference.
 			add(slot); // Add component to the panel.
 
@@ -196,12 +201,12 @@ class SkillCalculator extends JPanel
 					if (!e.isShiftDown())
 						clearCombinedSlots();
 
-					if (slot.isSelected)
+					if (slot.isSelected())
 						combinedActionSlots.remove(slot);
 					else
 						combinedActionSlots.add(slot);
 
-					slot.setSelected(!slot.isSelected);
+					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
 				}
 			});
@@ -218,14 +223,14 @@ class SkillCalculator extends JPanel
 		{
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
-			double xp = slot.action.xp * xpFactor;
+			double xp = slot.getAction().getXp() * xpFactor;
 
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
 			slot.setText(formatXPActionString(xp, actionCount));
-			slot.setAvailable(currentLevel >= slot.action.level);
-			slot.value = xp;
+			slot.setAvailable(currentLevel >= slot.getAction().getLevel());
+			slot.setValue(xp);
 		}
 	}
 

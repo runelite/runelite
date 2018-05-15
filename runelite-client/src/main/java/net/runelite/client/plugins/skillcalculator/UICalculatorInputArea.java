@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -39,10 +40,10 @@ class UICalculatorInputArea extends JPanel
 	private int gridX = 0;
 	private int gridY = 0;
 
-	JTextField uiFieldCurrentLevel;
-	JTextField uiFieldCurrentXP;
-	JTextField uiFieldTargetLevel;
-	JTextField uiFieldTargetXP;
+	private JTextField uiFieldCurrentLevel;
+	private JTextField uiFieldCurrentXP;
+	private JTextField uiFieldTargetLevel;
+	private JTextField uiFieldTargetXP;
 
 	UICalculatorInputArea()
 	{
@@ -95,6 +96,26 @@ class UICalculatorInputArea extends JPanel
 	void setTargetXPInput(Object value)
 	{
 		setInput(uiFieldTargetXP, value);
+	}
+
+	void addCurrentLevelFieldListener(ActionListener listener)
+	{
+		this.uiFieldCurrentLevel.addActionListener(listener);
+	}
+
+	void addCurrentXPFieldListener(ActionListener listener)
+	{
+		this.uiFieldCurrentXP.addActionListener(listener);
+	}
+
+	void addTargetLevelFieldListener(ActionListener listener)
+	{
+		this.uiFieldTargetLevel.addActionListener(listener);
+	}
+
+	void addTargetXPFieldListener(ActionListener listener)
+	{
+		this.uiFieldTargetXP.addActionListener(listener);
 	}
 
 	private int getInput(JTextField field)
