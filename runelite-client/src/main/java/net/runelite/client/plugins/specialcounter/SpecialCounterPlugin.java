@@ -34,6 +34,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -166,7 +167,8 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor actor = death.getActor();
 
-		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId)
+		// 963 = 1st phase KQ, add condition so infobox stays during second phase too (965 = 2nd phase KQ)
+		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId && interactedNpcId != NpcID.KALPHITE_QUEEN_963)
 		{
 			removeCounters();
 		}
@@ -204,7 +206,6 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
 		int hit = getHit(specialWeapon, deltaExperience);
-
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this,

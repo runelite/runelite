@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
