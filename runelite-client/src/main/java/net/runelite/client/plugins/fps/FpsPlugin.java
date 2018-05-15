@@ -143,34 +143,19 @@ public class FpsPlugin extends Plugin
 			}
 
 			Instant start = Instant.now();
-			Socket sock = null;
-			try
+			try(Socket sock = new Socket(host, 443))
 			{
-				sock = new Socket(host, 443);
-			}
-			catch (Exception e)
-			{
-				log.warn("Could not create new socket", e);
-				return -1;
-			}
-			finally
-			{
-				try
-				{
-					if (sock != null)
-					{
-						sock.close();
-					}
-				}
-				catch (Exception e)
-				{
-				}
 				if (sock != null && sock.isConnected())
 				{
 					ping = (int) ChronoUnit.MILLIS.between(start, Instant.now());
 					return ping;
 				}
 				log.warn("Host {} is not reachable", host);
+			}
+			catch (Exception e)
+			{
+				log.warn("Could not create new socket", e);
+				return -1;
 			}
 		}
 		return ping = -1;
