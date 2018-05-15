@@ -208,9 +208,8 @@ public class SwingUtil
 					if (confirmRequired.call())
 					{
 						result = JOptionPane.showConfirmDialog(
-							frame,
-							"Are you sure you want to exit?", "Exit",
-							JOptionPane .OK_CANCEL_OPTION,
+							frame, "Are you sure you want to exit?", "Exit",
+							JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					}
 				}

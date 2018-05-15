@@ -55,7 +55,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
@@ -350,9 +349,7 @@ public class ClientUI
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
-				() -> client != null
-					&& client instanceof Client
-					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
+					() -> config.confirmOnClose());
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
