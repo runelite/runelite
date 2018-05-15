@@ -78,6 +78,7 @@ import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.UsernameChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -134,9 +135,6 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static int inventoryDragDelay;
-
-	@Inject
-	private static boolean hasVarbitChanged;
 
 	@Inject
 	private static int oldMenuEntryCount;
@@ -872,16 +870,8 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void settingsChanged(int idx)
 	{
-		hasVarbitChanged = true;
-	}
-
-	@Inject
-	@Override
-	public boolean shouldPostVarbitEvent()
-	{
-		boolean ret = hasVarbitChanged;
-		hasVarbitChanged = false;
-		return ret;
+		VarbitChanged varbitChanged = new VarbitChanged();
+		eventBus.post(varbitChanged);
 	}
 
 	@FieldHook("isResized")
