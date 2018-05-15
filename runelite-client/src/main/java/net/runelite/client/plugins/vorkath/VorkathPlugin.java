@@ -4,27 +4,23 @@ import com.google.common.eventbus.Subscribe;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.*;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.demonicgorilla.DemonicGorilla;
-import net.runelite.client.plugins.fightcave.JadAttack;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.QueryRunner;
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 
 @PluginDescriptor(name = "Vorkath")
 @Singleton
-public class VorkathPlugin extends Plugin {
+public class VorkathPlugin extends Plugin
+{
 
     @Inject
     private Client client;
@@ -51,15 +47,18 @@ public class VorkathPlugin extends Plugin {
     private boolean atVorkath = false;
 
     @Subscribe
-    public void onGameTick(GameTick event) {
+    public void onGameTick(GameTick event)
+    {
 
-        if (client.getGameState() != GameState.LOGGED_IN) {
+        if (client.getGameState() != GameState.LOGGED_IN)
+        {
             return;
         }
     }
 
     @Subscribe
-    public void onRegionChanged(MapRegionChanged event) {
+    public void onRegionChanged(MapRegionChanged event)
+    {
         if (atVorkath)
             onLeaveInstance();
     }
@@ -69,7 +68,8 @@ public class VorkathPlugin extends Plugin {
      * @param event
      */
     @Subscribe
-    public void onProjectile(ProjectileMoved event) {
+    public void onProjectile(ProjectileMoved event)
+    {
         if (!atVorkath)
             return;
 
@@ -84,15 +84,19 @@ public class VorkathPlugin extends Plugin {
          * Resets the attack counter if we encounter a special phase
          * Increments the counter only if vorkath uses a normal attack
          */
-        if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE) {
+        if (currentProjectile.getId() == ProjectileID.VORKATH_FREEZE)
+        {
             attacksInARow = 0;
             nextPhase = POISON_PHASE;
-        } else if (currentProjectile.getId() == ProjectileID.VORKATH_POISON_POOL_AOE) {
+        } else if (currentProjectile.getId() == ProjectileID.VORKATH_POISON_POOL_AOE)
+        {
             attacksInARow = 0;
             nextPhase = SPIDER_PHASE;
-        } else if (currentProjectile.getId() == ProjectileID.VORKATH_TICK_FIRE_AOE || currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE) {
+        } else if (currentProjectile.getId() == ProjectileID.VORKATH_TICK_FIRE_AOE || currentProjectile.getId() == ProjectileID.VORKATH_SPAWN_AOE)
+        {
 
-        } else {
+        } else
+        {
             if (client.getGameCycle() == currentProjectile.getStartMovementCycle())
                 ++attacksInARow;
         }
@@ -105,33 +109,40 @@ public class VorkathPlugin extends Plugin {
      * @param event
      */
     @Subscribe
-    public void onNpcSpawned(NpcSpawned event) {
+    public void onNpcSpawned(NpcSpawned event)
+    {
         NPC npc = event.getNpc();
-        if (npc.getId() == NpcID.VORKATH_8059) {
+        if (npc.getId() == NpcID.VORKATH_8059)
+        {
             init();
-        } else if (npc.getId() == NpcID.VORKATH_8058) {
+        } else if (npc.getId() == NpcID.VORKATH_8058)
+        {
             onLeaveInstance();
         }
     }
 
-    private void init() {
+    private void init()
+    {
         atVorkath = true;
         attacksInARow = 0;
         nextPhase = -1;
     }
 
-    private void shutdown() {
+    private void shutdown()
+    {
         atVorkath = false;
         attacksInARow = 0;
         nextPhase = -1;
     }
 
-    private void onLeaveInstance() {
+    private void onLeaveInstance()
+    {
         shutdown();
     }
 
     @Override
-    public Collection<Overlay> getOverlays() {
+    public Collection<Overlay> getOverlays()
+    {
         return Arrays.asList(vorkathOverlay);
     }
 }
