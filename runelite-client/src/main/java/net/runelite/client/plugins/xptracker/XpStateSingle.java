@@ -28,10 +28,12 @@ package net.runelite.client.plugins.xptracker;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.Map;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 
 @Data
 @Slf4j
@@ -45,21 +47,24 @@ class XpStateSingle
 	private int nextLevelExp = 0;
 	private int startLevelExp = 0;
 	private int level = 0;
+	private boolean initialized = false;
+	private int opponentHealth = Integer.MAX_VALUE;
+	private int killsRemaining = 0;
 	private boolean actionsHistoryInitialized = false;
 	private int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
-
+	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 	int getXpHr()
 	{
 		return toHourly(xpGained);
 	}
 
-	int getXpSec()
+	private int getXpSec()
 	{
 		return getXpHr() / 3600;
 	}
 
-	int getActionsHr()
+	private int getActionsHr()
 	{
 		return toHourly(actions);
 	}
@@ -79,12 +84,13 @@ class XpStateSingle
 		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
 	}
 
-	int getXpRemaining()
+	private int getXpRemaining()
 	{
 		return nextLevelExp - (startXp + xpGained);
 	}
 
-	int getActionsRemaining()
+	// Method will return kills left based on recent monster killed if it's a combat skill.
+	private int getActionsRemaining()
 	{
 		if (actionsHistoryInitialized)
 		{
@@ -109,7 +115,7 @@ class XpStateSingle
 		return Integer.MAX_VALUE;
 	}
 
-	int getSkillProgress()
+	private int getSkillProgress()
 	{
 		int currentXp = startXp + xpGained;
 
@@ -118,7 +124,7 @@ class XpStateSingle
 		return (int) ((xpGained / xpGoal) * 100);
 	}
 
-	String getTimeTillLevel()
+	private String getTimeTillLevel()
 	{
 		if (getXpSec() > 0)
 		{

@@ -36,6 +36,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -50,9 +52,15 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.attackstyles.AttackStyle;
+import net.runelite.client.plugins.attackstyles.WeaponType;
+import net.runelite.client.plugins.opponentinfo.OpponentInfoPlugin;
 import net.runelite.client.ui.JShadowedLabel;
 import net.runelite.client.util.LinkBrowser;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -74,6 +82,12 @@ class XpInfoBox extends JPanel
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
+
+	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	private static final Skill[] COMBAT = new Skill[]
+			{
+					Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS
+			};
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
@@ -220,11 +234,17 @@ class XpInfoBox extends JPanel
 				panel.add(this);
 				panel.revalidate();
 			}
-
 			levelLabel.setText(String.valueOf(xpSnapshotSingle.getCurrentLevel()));
 			xpGained.setText(XpPanel.formatLine(xpSnapshotSingle.getXpGainedInSession(), "xp gained"));
 			xpLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getXpRemainingToGoal(), "xp left"));
-			actionsLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getActionsRemainingToGoal(), "actions left"));
+			if (Arrays.asList(COMBAT).contains(skill))
+			{
+				actionsLeft.setText(XpPanel.formatLine(getKillsRemaining(xpSnapshotSingle), getTextActionKills()));
+			}
+			else
+			{
+				actionsLeft.setText(XpPanel.formatLine(xpSnapshotSingle.getActionsRemainingToGoal(), getTextActionKills()));
+			}
 
 			final int progress = xpSnapshotSingle.getSkillProgressToGoal();
 
@@ -242,6 +262,43 @@ class XpInfoBox extends JPanel
 
 		// Always update xp/hr as time always changes
 		xpHr.setText(XpPanel.formatLine(xpSnapshotSingle.getXpPerHour(), "xp/hr"));
+	}
+
+	// Replaces the actions remaining with kills remaining
+	private int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
+	{
+		int killsRemaining = Integer.MAX_VALUE;
+		Actor opponent = client.getLocalPlayer().getInteracting();
+		if (opponent != null)
+		{
+			int opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+			double modifier = getCombatXPModifier(skill);
+			double actionExp = (opponentHealth * modifier);
+			killsRemaining = (int)(xpSnapshotSingle.getXpRemainingToGoal() / actionExp);
+		}
+		return killsRemaining;
+	}
+
+	// Calculates the xp modifier based on combat style
+	private double getCombatXPModifier(Skill skill)
+	{
+		final double sharedXPModifier = 4.0 / 3.0;
+		final double longRangedXPModifier = 2.0;
+		final double defaultModifier = 4;
+		if (skill.equals(Skill.HITPOINTS))
+		{
+			return sharedXPModifier;
+		}
+		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
+		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
+		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED) ? sharedXPModifier :
+				weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE) ? longRangedXPModifier : defaultModifier;
+	}
+
+	// Return the text of the action, depending if it's a combat skill.
+	private String getTextActionKills()
+	{
+		return Arrays.asList(COMBAT).contains(skill) ? "kills left" : "actions left";
 	}
 
 	private static BufferedImage createHoverImage(BufferedImage image)
