@@ -32,22 +32,35 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JShadowedLabel;
 
 class UIActionSlot extends JPanel
 {
-	SkillDataEntry action;
-	private JShadowedLabel uiLabelActions;
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private JShadowedLabel uiLabelActions;
 
-	boolean isAvailable = false;
-	boolean isSelected = false;
+	@Getter(AccessLevel.PACKAGE)
+	private SkillDataEntry action;
 
-	double value = 0;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isAvailable;
 
-	UIActionSlot(SkillDataEntry action)
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isSelected;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private double value = 0;
+
+	UIActionSlot(SkillDataEntry action, ItemManager itemManager, SpriteManager spriteManager)
 	{
 		this.action = action;
 
@@ -59,10 +72,10 @@ class UIActionSlot extends JPanel
 
 		JLabel uiIcon = new JLabel();
 
-		if (action.icon != null)
-			SkillCalculator.itemManager.getImage(action.icon).addTo(uiIcon);
-		else if (action.sprite != null)
-			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.sprite, 0);
+		if (action.getIcon() != null)
+			itemManager.getImage(action.getIcon()).addTo(uiIcon);
+		else if (action.getSprite() != null)
+			spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
@@ -73,7 +86,7 @@ class UIActionSlot extends JPanel
 		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
 		uiInfo.setOpaque(false);
 
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.name);
+		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
 		uiInfo.add(uiLabelName);
 
 		uiLabelActions = new JShadowedLabel("Unknown");
@@ -102,9 +115,9 @@ class UIActionSlot extends JPanel
 
 	private void updateBackground()
 	{
-		if (isSelected)
-			this.setBackground(isAvailable ? Color.GREEN : Color.RED);
+		if (this.isSelected())
+			this.setBackground(this.isAvailable() ? Color.GREEN : Color.RED);
 		else
-			this.setBackground(isAvailable ? Color.GREEN.darker() : Color.RED.darker());
+			this.setBackground(this.isAvailable() ? Color.GREEN.darker() : Color.RED.darker());
 	}
 }

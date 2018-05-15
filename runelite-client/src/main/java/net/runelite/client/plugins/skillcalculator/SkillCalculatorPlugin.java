@@ -60,7 +60,6 @@ public class SkillCalculatorPlugin extends Plugin
 	private PluginToolbar pluginToolbar;
 
 	private NavigationButton uiNavigationButton;
-	private SkillCalculatorPanel uiPanel;
 
 	@Override
 	protected void startUp() throws Exception
@@ -71,10 +70,7 @@ public class SkillCalculatorPlugin extends Plugin
 			icon = ImageIO.read(getClass().getResourceAsStream("calc.png"));
 		}
 
-		SkillCalculator.spriteManager = spriteManager;
-		SkillCalculator.itemManager = itemManager;
-
-		uiPanel = new SkillCalculatorPanel(skillIconManager, client);
+		SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
 		uiNavigationButton = NavigationButton.builder().name("Skill Calculator").icon(icon).panel(uiPanel).build();
 		pluginToolbar.addNavigation(uiNavigationButton);
 	}

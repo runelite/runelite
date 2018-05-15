@@ -37,7 +37,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.PluginPanel;
 
 class SkillCalculatorPanel extends PluginPanel
@@ -50,7 +52,7 @@ class SkillCalculatorPanel extends PluginPanel
 	private final GridBagLayout uiButtonGridLayout = new GridBagLayout();
 	private final GridBagConstraints uiButtonGridConstraints = new GridBagConstraints();
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
+	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		super();
 		this.iconManager = iconManager;
@@ -68,7 +70,7 @@ class SkillCalculatorPanel extends PluginPanel
 		addCalculatorButtons();
 
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
-		uiCalculator = new SkillCalculator(client, uiInput);
+		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager);
 
 		add(uiButtonGrid);
 		add(Box.createRigidArea(new Dimension(0, 8)));
