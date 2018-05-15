@@ -87,7 +87,7 @@ public class XpGlobesPlugin extends Plugin
 		XpGlobe cachedGlobe = globeCache[skillIdx];
 
 		// prevent globe from showing if skill level is above 98 only if no cache exists (meaning we didn't just level up)
-		if (cachedGlobe == null && config.hideMaxed() && currentLevel > 98)
+		if (cachedGlobe == null && config.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
 		{
 			return;
 		}
