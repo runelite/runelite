@@ -311,7 +311,7 @@ public class InventoryTaggerPlugin extends Plugin
 			//loop all ids, parse from string to id and add
 			while (matcher2.find())
 			{
-				addItemToGroup(tagName,Integer.parseInt(matcher2.group(0)));
+				addItemToGroup(tagName, Integer.parseInt(matcher2.group(0)));
 			}
 		}
 	}
