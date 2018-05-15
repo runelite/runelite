@@ -27,22 +27,19 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Collection;
-import java.util.Collections;
+
+import java.util.*;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.*;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
@@ -404,6 +401,111 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("last-destination (", option, target, false);
 		}
+		else if(config.removeBA() && client.getSetting(Varbits.IN_GAME_BA) == 1 && !option.contains("tell-"))//if in barbarian assault and menu isnt from a horn
+		{
+			if(itemId == ItemID.LOGS && !target.contains("healing vial"))
+			{
+				if(client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null)
+					remove(new String[]{"take", "light"}, target, true);
+				else//remove "Light" option (and "Take" option if not defender).
+					remove("light", target, true);
+			}
+			else if(option.equals("use"))
+			{
+				Widget healer = client.getWidget(WidgetInfo.BA_HEAL_LISTEN_TEXT);
+				if (healer != null) {
+					String item = target.split("-")[0].trim();
+					List<String> poison = Arrays.asList("poisoned tofu", "poisoned meat", "poisoned worms");
+					List<String> vials = Arrays.asList("healing vial", "healing vial(1)", "healing vial(2)", "healing vial(3)","healing vial(4)");//"healing vial(4)"
+					if (poison.contains(item)){//if item is a poison item
+						int calledPoison = 0;
+						switch (healer.getText())//choose which poison to hide the use/destroy option for
+						{
+							case "Pois. Tofu":
+								calledPoison = ItemID.POISONED_TOFU;
+								break;
+							case "Pois. Meat":
+								calledPoison = ItemID.POISONED_MEAT;
+								break;
+							case "Pois. Worms":
+								calledPoison = ItemID.POISONED_WORMS;
+								break;
+						}
+						if(target.equals(item))//if targeting the item itself
+						{
+							if(calledPoison != 0 && itemId != calledPoison)//if no call or chosen item is not the called one
+							{
+								remove(new String[]{"use", "destroy", "examine"}, target, true);//remove options
+							}
+						}
+						else if(!target.contains("penance healer"))
+						{
+							remove(option, target, true);
+						}
+					}
+					else if(vials.contains(item))//if item is the healer's healing vial
+					{
+
+						if(!target.equals(item))//if target is not the vial itself
+						{
+
+							if(!target.contains("level") || target.contains("penance") || target.contains("queen spawn"))//if someone has "penance" or "queen spawn" in their name, gg...
+							{
+								remove(option, target, true);
+							}
+						}
+					}
+				}
+			}
+			else if(option.equals("attack") && client.getWidget(WidgetInfo.BA_ATK_ROLE_TEXT) == null && !target.equals("queen spawn"))//if not attacker
+			{//remove attack option from everything but queen spawns
+				remove(option, target, true);
+			}
+			else if((option.equals("fix") || (option.equals("block") && target.equals("penance cave"))) && client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null)//if not defender
+			{//the check for option requires checking target as well because defensive attack style option is also called "block".
+				remove(option, target, true);
+			}
+			else if((option.equals("load")) && client.getWidget(WidgetInfo.BA_COLL_ROLE_TEXT) == null)//if not collector, remove hopper options
+			{
+				remove(new String[]{option, "look-in"}, target, true);
+			}
+			else if(option.equals("take"))
+			{
+				Widget eggToColl = client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT);
+				if(eggToColl != null)//if we're a collector
+				{
+					List<Integer> eggsToHide = new ArrayList<>();
+					eggsToHide.add(ItemID.HAMMER);
+					switch(eggToColl.getText())//choose which eggs to hide take option for
+					{
+						case "Red eggs":
+							eggsToHide.add(ItemID.BLUE_EGG);
+							eggsToHide.add(ItemID.GREEN_EGG);
+							break;
+						case "Blue eggs":
+							eggsToHide.add(ItemID.RED_EGG);
+							eggsToHide.add(ItemID.GREEN_EGG);
+							break;
+						case "Green eggs":
+							eggsToHide.add(ItemID.RED_EGG);
+							eggsToHide.add(ItemID.BLUE_EGG);
+							break;
+					}
+					if(eggsToHide.contains(itemId))
+					{
+						remove(option, target, true);//hide wrong eggs
+					}
+				}
+				else
+				{
+					List<Integer> defenderItems = Arrays.asList(ItemID.HAMMER, ItemID.TOFU, ItemID.CRACKERS, ItemID.WORMS);//logs are handled separately due to hiding "light" option too.
+					if(client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null || !defenderItems.contains(itemId))//if not defender, or item is not a defenderItem
+					{
+						remove(option, target, true);//hide everything except hammer/logs and bait if Defender
+					}
+				}
+			}
+		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap("reset", option, target, true);
@@ -445,6 +547,53 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
+		}
+		else if(config.swapBAHorn() && option.equals("tell-red"))
+		{
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_ATK_CALL_TEXT);
+			switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Blue egg":
+					swap("tell-blue", option, target, true);
+					break;
+				case "Green egg":
+					swap("tell-green", option, target, true);
+					break;
+			}
+		}
+		else if(config.swapBAHorn() && option.equals("tell-controlled"))
+		{
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_COLL_CALL_TEXT);
+			switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Accurate/Field/Water":
+					swap("tell-accurate", option, target, true);
+					break;
+				case "Aggressive/Blunt/Earth":
+					swap("tell-aggressive", option, target, true);
+					break;
+				case "Defensive/Barbed/Fire":
+					swap("tell-defensive", option, target, true);
+					break;
+			}
+		}
+		else if(config.swapBAHorn() && option.equals("tell-tofu"))
+		{
+			//healer and defender horns share first option so we handle them in the same if statement
+			Widget roleToCall = client.getWidget(WidgetInfo.BA_HEAL_CALL_TEXT) != null ? client.getWidget(WidgetInfo.BA_HEAL_CALL_TEXT) : client.getWidget(WidgetInfo.BA_DEF_CALL_TEXT);
+			switch(roleToCall != null ? roleToCall.getText() : "")
+			{
+				case "Pois. Meat":
+					swap("tell-meat", option, target, true);
+					break;
+				case "Crackers":
+					swap("tell-crackers", option, target, true);
+					break;
+				case "Worms":
+				case "Pois. Worms":
+					swap("tell-worms", option, target, true);
+					break;
+			}
 		}
 	}
 
@@ -489,6 +638,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		return -1;
+	}
+
+	private void remove(String option, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		int idx = searchIndex(entries, option, target, strict);
+        if(idx >= 0 && entries[idx] != null)
+        {
+            entries = ArrayUtils.removeElement(entries, entries[idx]);
+            client.setMenuEntries(entries);
+        }
+	}
+
+	private void remove(String[] options, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		for(int i = 0; i < options.length; i++)
+		{
+			int idx = searchIndex(entries, options[i], target, strict);
+			if(idx >= 0 && entries[idx] != null)
+			    entries = ArrayUtils.removeElement(entries, entries[idx]);
+		}
+
+		client.setMenuEntries(entries);
 	}
 
 	private void swap(String optionA, String optionB, String target, boolean strict)

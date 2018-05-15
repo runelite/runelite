@@ -221,4 +221,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "swapBAHorn",
+		name = "Barbarian Assault Horn",
+		description = "Swap Horn options to the correct option to call"
+	)
+	default boolean swapBAHorn()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "removeBA",
+		name = "Barbarian Assault Helper",
+		description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
+	)
+	default boolean removeBA()
+	{
+		return false;
+	}
 }
