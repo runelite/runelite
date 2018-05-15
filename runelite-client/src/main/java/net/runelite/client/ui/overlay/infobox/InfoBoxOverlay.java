@@ -26,10 +26,8 @@
 package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Strings;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -99,13 +97,22 @@ public class InfoBoxOverlay extends Overlay
 				continue;
 			}
 
-
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
+			Font originalFont = graphics.getFont();
+
+			if (config.infoBoxSmall())
+			{
+				infoBoxComponent.setScale(true);
+				graphics.setFont(config.fontType().getFont());
+			}
+
 			infoBoxComponent.setColor(box.getTextColor());
 			infoBoxComponent.setImage(box.getImage());
 			infoBoxComponent.setText(box.getText());
 			infoBoxComponent.setPosition(new Point(x, y));
 			final Dimension infoBoxBounds = infoBoxComponent.render(graphics);
+
+			graphics.setFont(originalFont);
 
 			if (!Strings.isNullOrEmpty(box.getTooltip()))
 			{

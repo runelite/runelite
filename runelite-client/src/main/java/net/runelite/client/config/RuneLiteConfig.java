@@ -221,4 +221,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 4;
 	}
+	@ConfigItem(
+			keyName = "infoBoxScale",
+			name = "Display smaller infoboxes",
+			description = "Toggles the infoboxes to displayed smaller",
+			position = 34
+	)
+	default boolean infoBoxSmall()
+	{
+		return false;
+	}
+
 }
