@@ -171,7 +171,7 @@ public class WorldMapOverlay extends Overlay
 		return null;
 	}
 
-	private Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
+	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
 	{
 		RenderOverview ro = clientProvider.get().getRenderOverview();
 
