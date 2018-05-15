@@ -156,9 +156,19 @@ public class ConfigPanel extends PluginPanel
 				{
 					final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
 					final String pluginName = plugin.getClass().getAnnotation(PluginDescriptor.class).name();
+					String pluginDesc = plugin.getClass().getAnnotation(PluginDescriptor.class).description();
 
 					final JPanel groupPanel = buildGroupPanel();
-					groupPanel.add(new JLabel(pluginName), BorderLayout.CENTER);
+					final JLabel label = new JLabel(pluginName);
+					if ((pluginDesc == null || pluginDesc.isEmpty()) && pluginConfigProxy != null)
+					{
+						pluginDesc = configManager.getConfigDescriptor(pluginConfigProxy).getGroup().description();
+					}
+					if (pluginDesc != null && !pluginDesc.isEmpty())
+					{
+						label.setToolTipText(pluginDesc);
+					}
+					groupPanel.add(label, BorderLayout.CENTER);
 
 					final JPanel buttonPanel = new JPanel();
 					buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
