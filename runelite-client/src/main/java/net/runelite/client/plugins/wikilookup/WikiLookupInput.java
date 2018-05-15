@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tanner <https://github.com/Reasel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.wikilookup;
 
-import lombok.Builder;
-import lombok.Data;
+import net.runelite.client.input.KeyListener;
 
-@Builder(toBuilder = true)
-@Data
-public class MenuEntry
+import javax.inject.Inject;
+import java.awt.event.KeyEvent;
+
+public class WikiLookupInput implements KeyListener
 {
-	private String option;
-	private String target;
-	private int identifier;
-	private int type;
-	private int param0;
-	private int param1;
+	private static final int HOTKEY = KeyEvent.VK_SHIFT;
+
+	@Inject
+	private WikiLookupPlugin plugin;
 
 	@Override
-	public String toString()
+	public void keyTyped(KeyEvent e)
 	{
-		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == HOTKEY)
+		{
+			plugin.setHotKeyPressed(true);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == HOTKEY)
+		{
+			plugin.setHotKeyPressed(false);
+		}
 	}
 }
