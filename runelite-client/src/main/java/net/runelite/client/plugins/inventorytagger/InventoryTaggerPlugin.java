@@ -26,9 +26,15 @@ package net.runelite.client.plugins.inventorytagger;
 
 import com.google.common.eventbus.Subscribe;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
-
 import com.google.inject.Provides;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -43,40 +49,12 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @PluginDescriptor(
 	name = "Inventory Item Tagging",
 	enabledByDefault = true
 )
 public class InventoryTaggerPlugin extends Plugin
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private InventoryTaggerPlugin plugin;
-
-	@Inject
-	private InventoryTaggerConfig config;
-
-	@Inject
-	private InventoryTaggerOverlay overlay;
-
-	public Map<String, TaggedItems> taggedItems = new LinkedHashMap<>();
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	private boolean editorMode = false;
-
 	private static final String SETNAME_GROUP_1 = "Group 1";
 	private static final String SETNAME_GROUP_2 = "Group 2";
 	private static final String SETNAME_GROUP_3 = "Group 3";
@@ -92,7 +70,29 @@ public class InventoryTaggerPlugin extends Plugin
 	private static final String MENU_REMOVE = "Remove";
 	private static final String MENU_CLEAR_TAGS = "Clear Tags";
 
-	private static final Pattern loadConfigRegex = Pattern.compile("([\\w\\s]+)\\=(\\[.*?\\])");
+	private static final Pattern LOADCONFIGREGEX = Pattern.compile("([\\w\\s]+)\\=(\\[.*?\\])");
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<String, TaggedItems> taggedItems = new LinkedHashMap<>();
+	private boolean editorMode = false;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private InventoryTaggerPlugin plugin;
+
+	@Inject
+	private InventoryTaggerConfig config;
+
+	@Inject
+	private InventoryTaggerOverlay overlay;
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
 	@Provides
 	InventoryTaggerConfig provideConfig(ConfigManager configManager)
@@ -302,7 +302,7 @@ public class InventoryTaggerPlugin extends Plugin
 
 	public void loadSavedTags()
 	{
-		Matcher matcher = loadConfigRegex.matcher(config.getTaggedItems());
+		Matcher matcher = LOADCONFIGREGEX.matcher(config.getTaggedItems());
 		while (matcher.find())
 		{
 			String tagName = matcher.group(1);

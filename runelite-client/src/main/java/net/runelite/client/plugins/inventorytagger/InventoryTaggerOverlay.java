@@ -65,7 +65,7 @@ public class InventoryTaggerOverlay extends Overlay
 
 		for (WidgetItem item : widgetItems)
 		{
-			for (Map.Entry<String, TaggedItems> tI: plugin.taggedItems.entrySet())
+			for (Map.Entry<String, TaggedItems> tI: plugin.getTaggedItems().entrySet())
 			{
 				if (tI.getValue().containsItem(item.getId()))
 				{
@@ -73,9 +73,7 @@ public class InventoryTaggerOverlay extends Overlay
 					graphics.drawImage(pic.getPicture(), item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
 				}
 			}
-
 		}
-
 		return null;
 	}
 }

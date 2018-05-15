@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.SpritePixels;
@@ -36,12 +35,14 @@ import net.runelite.api.SpritePixels;
 @RequiredArgsConstructor
 class ItemOutline
 {
-	private BufferedImage generatedPicture = new BufferedImage(36, 36, BufferedImage.TYPE_INT_ARGB);
 	public static Map<String, BufferedImage> storedOutlines = new HashMap<>();
+
 	private final Client client;
 	private final int id;
 	private final int stroke;
 	private final Color color;
+
+	private BufferedImage generatedPicture = new BufferedImage(36, 36, BufferedImage.TYPE_INT_ARGB);
 
 	private String getStringGeneratedId()
 	{
