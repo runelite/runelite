@@ -89,7 +89,7 @@ public class InfoBoxComponent implements RenderableEntity
 		if (scale)
 			textComponent.setPosition(new Point(
 				position.x + ((BOX_SIZE) / SCALE_FACTOR),
-				position.y +14));
+				position.y + 14 ));
 		else
 			textComponent.setPosition(new Point(
 				position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
