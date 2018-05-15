@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay.worldmap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.inject.Singleton;
@@ -37,18 +38,28 @@ public class WorldMapPointManager
 	@Getter(AccessLevel.PACKAGE)
 	private final List<WorldMapPoint> worldMapPoints = new ArrayList<>();
 
-	public void add(WorldMapPoint worldMapPoint)
+	public boolean add(WorldMapPoint worldMapPoint)
 	{
-		worldMapPoints.add(worldMapPoint);
+		return worldMapPoints.add(worldMapPoint);
 	}
 
-	public void remove(WorldMapPoint worldMapPoint)
+	public boolean addAll(Collection<WorldMapPoint> collection)
 	{
-		worldMapPoints.remove(worldMapPoint);
+		return worldMapPoints.addAll(collection);
 	}
 
 	public void removeIf(Predicate<WorldMapPoint> filter)
 	{
 		worldMapPoints.removeIf(filter);
+	}
+
+	public boolean remove(WorldMapPoint worldMapPoint)
+	{
+		return worldMapPoints.remove(worldMapPoint);
+	}
+
+	public boolean removeAll(Collection<WorldMapPoint> collection)
+	{
+		return worldMapPoints.removeAll(collection);
 	}
 }
