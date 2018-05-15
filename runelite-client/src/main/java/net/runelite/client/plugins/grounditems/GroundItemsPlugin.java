@@ -108,6 +108,10 @@ public class GroundItemsPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hotKeyPressed;
 
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hideAll;
+
 	private List<String> hiddenItemList = new ArrayList<>();
 	private List<String> highlightedItemsList = new ArrayList<>();
 	private boolean dirty;

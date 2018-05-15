@@ -27,6 +27,8 @@ package net.runelite.client.plugins.grounditems;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -37,6 +39,8 @@ import net.runelite.client.input.MouseListener;
 public class GroundItemInputListener extends MouseListener implements KeyListener
 {
 	private static final int HOTKEY = KeyEvent.VK_ALT;
+
+	private Instant lastPress;
 
 	@Inject
 	private Client client;
@@ -55,7 +59,17 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 	{
 		if (e.getKeyCode() == HOTKEY)
 		{
-			plugin.setHotKeyPressed(true);
+			if (lastPress != null && !plugin.isHotKeyPressed() && Duration.between(lastPress, Instant.now()).getNano() < 250000000)
+			{
+				plugin.setHideAll(!plugin.isHideAll());
+				lastPress = null;
+			}
+			else
+			{
+				plugin.setHotKeyPressed(true);
+			}
+
+			lastPress = Instant.now();
 		}
 	}
 
