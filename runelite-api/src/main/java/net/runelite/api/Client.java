@@ -59,6 +59,10 @@ public interface Client extends GameEngine
 
 	void setUsername(String name);
 
+	void setPassword(String password);
+
+	int getCurrentLoginField();
+
 	/**
 	 * Gets the account type for the logged in player.
 	 */
