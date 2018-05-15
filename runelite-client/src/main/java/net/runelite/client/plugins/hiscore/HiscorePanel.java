@@ -38,6 +38,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -119,6 +120,8 @@ public class HiscorePanel extends PluginPanel
 		CONSTRUCTION, HUNTER
 	));
 
+	private static final DecimalFormat TOTAL_EHP_FORMAT = new DecimalFormat("#.0");
+
 	@Inject
 	ScheduledExecutorService executor;
 
@@ -140,6 +143,9 @@ public class HiscorePanel extends PluginPanel
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private HiscoreResult result;
+
+	private CmlClient cmlClient = new CmlClient();
+	private CmlResult cmlResult;
 
 	@Inject
 	public HiscorePanel(HiscoreConfig config)
@@ -235,10 +241,11 @@ public class HiscorePanel extends PluginPanel
 
 		JPanel totalPanel = new JPanel();
 		totalPanel.setBorder(subPanelBorder);
-		totalPanel.setLayout(new GridLayout(1, 2));
+		totalPanel.setLayout(new GridLayout(1, 3));
 
 		totalPanel.add(makeSkillPanel(OVERALL.getName(), OVERALL));
 		totalPanel.add(makeSkillPanel("Combat", null));
+		totalPanel.add(makeSkillPanel("CML", null));
 
 		c.gridx = 0;
 		c.gridy = 2;
@@ -382,6 +389,20 @@ public class HiscorePanel extends PluginPanel
 					+ result.getStrength().getExperience() + result.getDefence().getExperience()
 					+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 					+ result.getRanged().getExperience() + result.getPrayer().getExperience());
+				break;
+			}
+			case "CML":
+			{
+				if (cmlResult != null)
+				{
+					text = "Total EHP: " + cmlResult.getTotalEhp() + System.lineSeparator()
+							+ "Last 7d EHP: " + cmlResult.getWeekEhp() + System.lineSeparator()
+							+ "Last 7d EHP Rank Gain: " + cmlResult.getWeekRankGain();
+				}
+				else
+				{
+					return;
+				}
 				break;
 			}
 			case "Clue Scrolls (all)":
@@ -561,11 +582,11 @@ public class HiscorePanel extends PluginPanel
 			label.setText("--");
 		}
 
+		HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
+		log.debug("Hiscore endpoint " + endpoint.name() + " selected");
+
 		try
 		{
-			HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
-			log.debug("Hiscore endpoint " + endpoint.name() + " selected");
-
 			result = hiscoreClient.lookup(lookup, endpoint);
 		}
 		catch (IOException ex)
@@ -581,7 +602,22 @@ public class HiscorePanel extends PluginPanel
 			String skillName = (String) label.getClientProperty(SKILL_NAME);
 			HiscoreSkill skill = (HiscoreSkill) label.getClientProperty(SKILL);
 
-			if (skillName.equals("Combat"))
+			if (skillName.equals("CML") && endpoint == HiscoreEndpoint.NORMAL)
+			{
+				try
+				{
+					cmlResult = cmlClient.lookup(lookup);
+					if (cmlResult != null)
+					{
+						label.setText(TOTAL_EHP_FORMAT.format(cmlResult.getTotalEhp()));
+					}
+				}
+				catch (IOException ex)
+				{
+					log.warn("Error fetching CML hiscore data " + ex.getMessage());
+				}
+			}
+			else if (skillName.equals("Combat"))
 			{
 				if (result.getPlayer() != null)
 				{
