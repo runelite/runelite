@@ -48,7 +48,8 @@ import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUSPOISON;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUSVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.BIND;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
 import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
@@ -180,7 +181,8 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showAntiVenomPlus())
 		{
-			removeGameTimer(ANTIVENOMPLUS);
+			removeGameTimer(ANTIVENOMPLUSVENOM);
+			removeGameTimer(ANTIVENOMPLUSPOISON);
 		}
 
 		if (!config.showSanfew())
@@ -344,7 +346,8 @@ public class TimersPlugin extends Plugin
 
 		if (config.showAntiVenomPlus() && event.getMessage().contains("You drink some of your super antivenom potion"))
 		{
-			createGameTimer(ANTIVENOMPLUS);
+			createGameTimer(ANTIVENOMPLUSVENOM);
+			createGameTimer(ANTIVENOMPLUSPOISON);
 		}
 
 		if (config.showMagicImbue() && event.getMessage().equals("You are charged to combine runes!"))
