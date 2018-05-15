@@ -24,14 +24,6 @@
  */
 package net.runelite.client.plugins.jewellerycount;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import javax.inject.Inject;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
@@ -43,6 +35,15 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QueryRunner;
+
+import javax.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 class JewelleryCountOverlay extends Overlay
 {
@@ -77,10 +78,13 @@ class JewelleryCountOverlay extends Overlay
 				continue;
 			}
 
+			String chargesQty = String.valueOf(charges.getCharges());
+			int chargesWidth = graphics.getFontMetrics().stringWidth(chargesQty);
+
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(String.valueOf(charges.getCharges()));
+			textComponent.setPosition(new Point(bounds.x + 31 - chargesWidth, bounds.y + 34));
+			textComponent.setText(chargesQty);
 			textComponent.render(graphics);
 		}
 
