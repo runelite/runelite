@@ -41,7 +41,10 @@ public interface FpsConfig extends Config
 			description = "Position the indicators will show on screen",
 			position = 0
 	)
-	default FpsIndicatorLocation indicatorLocation() { return FpsIndicatorLocation.TOPRIGHT; }
+	default FpsIndicatorLocation indicatorLocation()
+	{
+		return FpsIndicatorLocation.TOPRIGHT;
+	}
 
 	@ConfigItem(
 		keyName = "limitMode",
@@ -82,5 +85,8 @@ public interface FpsConfig extends Config
 			description = "Show a number in the corner for the current ping",
 			position = 4
 	)
-	default boolean drawPing() { return true; }
+	default boolean drawPing()
+	{
+		return true;
+	}
 }

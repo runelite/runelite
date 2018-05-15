@@ -98,7 +98,7 @@ public class FpsOverlay extends Overlay
 	private boolean isEnforced()
 	{
 		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+				|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
 	}
 
 	private Color getFpsValueColor()
@@ -112,7 +112,7 @@ public class FpsOverlay extends Overlay
 		//FPS indicator
 		if (config.drawFps())
 		{
-			if(config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
+			if (config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
 			{
 				VALUE_X_OFFSET = (int) client.getRealDimensions().getWidth() - 3;
 			}
@@ -133,7 +133,7 @@ public class FpsOverlay extends Overlay
 		}
 
 		//Ping indicator
-		if(config.drawPing())
+		if (config.drawPing())
 		{
 			Color color = Color.GREEN;
 			int ping = plugin.getPing();
@@ -147,7 +147,7 @@ public class FpsOverlay extends Overlay
 				color = Color.YELLOW;
 			}
 
-			if(config.drawFps())
+			if (config.drawFps())
 			{
 				VALUE_Y_AXIS_PING = 25;
 			}
@@ -158,7 +158,7 @@ public class FpsOverlay extends Overlay
 
 			Dimension dimension = client.getRealDimensions();
 			int width = (int) dimension.getWidth();
-			if(config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
+			if (config.indicatorLocation().equals(FpsIndicatorLocation.TOPLEFT))
 			{
 				point = new Point(width - VALUE_X_OFFSET, VALUE_Y_AXIS_PING);
 			}

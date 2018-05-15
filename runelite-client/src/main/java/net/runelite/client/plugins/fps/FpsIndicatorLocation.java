@@ -13,6 +13,9 @@ public enum FpsIndicatorLocation
 	private final String location;
 
 	@Override
-	public String toString() { return location; }
+	public String toString()
+	{
+		return location;
+	}
 
 }
