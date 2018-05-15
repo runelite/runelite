@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.skillcalculator.beans;
 
-import net.runelite.api.WorldMapManager;
-import net.runelite.mapping.Import;
-
-public interface RSWorldMapManager extends WorldMapManager
+public class SkillData
 {
-	@Import("loaded")
-	@Override
-	boolean isLoaded();
-
-	@Import("mapSurfaceBaseOffsetX")
-	int getSurfaceOffsetX();
-
-	@Import("mapSurfaceBaseOffsetY")
-	int getSurfaceOffsetY();
-
-	@Import("getPixelsPerTile")
-	float getPixelsPerTile(int graphicsDiff, int worldDiff);
+	public SkillDataEntry[] actions;
+	public SkillDataBonus[] bonuses;
 }

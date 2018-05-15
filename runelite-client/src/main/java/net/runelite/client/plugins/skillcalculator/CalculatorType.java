@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.skillcalculator;
 
-import net.runelite.api.WorldMapManager;
-import net.runelite.mapping.Import;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Skill;
 
-public interface RSWorldMapManager extends WorldMapManager
+@AllArgsConstructor
+@Getter
+enum CalculatorType
 {
-	@Import("loaded")
-	@Override
-	boolean isLoaded();
+	MINING(Skill.MINING, "skill_mining.json"),
+	AGILITY(Skill.AGILITY, "skill_agility.json"),
+	SMITHING(Skill.SMITHING, "skill_smithing.json"),
+	HERBLORE(Skill.HERBLORE, "skill_herblore.json"),
+	FISHING(Skill.FISHING, "skill_fishing.json"),
+	THIEVING(Skill.THIEVING, "skill_thieving.json"),
+	COOKING(Skill.COOKING, "skill_cooking.json"),
+	PRAYER(Skill.PRAYER, "skill_prayer.json"),
+	CRAFTING(Skill.CRAFTING, "skill_crafting.json"),
+	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json"),
+	MAGIC(Skill.MAGIC, "skill_magic.json"),
+	FLETCHING(Skill.FLETCHING, "skill_fletching.json"),
+	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json"),
+	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json"),
+	FARMING(Skill.FARMING, "skill_farming.json"),
+	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json"),
+	HUNTER(Skill.HUNTER, "skill_hunter.json");
 
-	@Import("mapSurfaceBaseOffsetX")
-	int getSurfaceOffsetX();
-
-	@Import("mapSurfaceBaseOffsetY")
-	int getSurfaceOffsetY();
-
-	@Import("getPixelsPerTile")
-	float getPixelsPerTile(int graphicsDiff, int worldDiff);
+	private final Skill skill;
+	private final String dataFile;
 }
