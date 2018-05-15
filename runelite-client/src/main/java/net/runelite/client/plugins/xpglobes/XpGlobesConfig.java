@@ -48,10 +48,10 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName =  "hideMaxed",
-			name = "Hide maxed skills",
-			description = "Stop globes from showing up for level 99 skills",
-			position = 1
+		keyName =  "hideMaxed",
+		name = "Hide maxed skills",
+		description = "Stop globes from showing up for level 99 skills",
+		position = 1
 	)
 	default boolean hideMaxed()
 	{
