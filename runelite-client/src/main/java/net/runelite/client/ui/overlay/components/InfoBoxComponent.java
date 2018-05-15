@@ -24,12 +24,7 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import lombok.Setter;
@@ -40,7 +35,9 @@ public class InfoBoxComponent implements RenderableEntity
 {
 	private static final int BOX_SIZE = 35;
 	private static final int SEPARATOR = 2;
+	private static final int SCALE_FACTOR = 2;
 
+	private boolean scale = false;
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
@@ -52,24 +49,52 @@ public class InfoBoxComponent implements RenderableEntity
 	{
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
+		final Rectangle scaledBounds = new Rectangle(position.x, position.y, BOX_SIZE / SCALE_FACTOR, BOX_SIZE / SCALE_FACTOR);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
-		backgroundComponent.setRectangle(bounds);
+
+		if (scale)
+			backgroundComponent.setRectangle(scaledBounds);
+		else
+			backgroundComponent.setRectangle(bounds);
+		
 		backgroundComponent.render(graphics);
 
 		if (Objects.nonNull(image))
 		{
-			graphics.drawImage(image,
-				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				position.y + (BOX_SIZE - image.getHeight()) / 2, null);
+			if (scale)
+			{
+				BufferedImage resizedImage = new BufferedImage(image.getWidth() / SCALE_FACTOR, image.getHeight() / SCALE_FACTOR, image.TYPE_INT_ARGB);
+				Graphics2D g = resizedImage.createGraphics();
+				g.drawImage( image, 0, 0, image.getWidth() / SCALE_FACTOR, image.getHeight() / SCALE_FACTOR, null);
+				g.dispose();
+				image = resizedImage;
+
+				graphics.drawImage(image,
+					position.x + (BOX_SIZE / SCALE_FACTOR - image.getWidth()) / 2,
+					position.y + (BOX_SIZE / SCALE_FACTOR - image.getHeight()) / 2, null);
+			}
+			else
+			{
+				graphics.drawImage(image,
+					position.x + (BOX_SIZE - image.getWidth()) / 2,
+					position.y + (BOX_SIZE - image.getHeight()) / 2, null);
+			}
 		}
 
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setColor(color);
 		textComponent.setText(text);
-		textComponent.setPosition(new Point(
-			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
-			position.y + BOX_SIZE - SEPARATOR));
+
+		if (scale)
+			textComponent.setPosition(new Point(
+				position.x + ((BOX_SIZE) / SCALE_FACTOR),
+				position.y +14));
+		else
+			textComponent.setPosition(new Point(
+				position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
+				position.y + BOX_SIZE - SEPARATOR));
+
 		textComponent.render(graphics);
 		return new Dimension(BOX_SIZE, BOX_SIZE);
 	}
