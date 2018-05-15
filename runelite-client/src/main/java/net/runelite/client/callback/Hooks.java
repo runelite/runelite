@@ -50,6 +50,7 @@ import net.runelite.api.PacketBuffer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
+import net.runelite.api.SceneTileModel;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.coords.LocalPoint;
@@ -507,5 +508,22 @@ public class Hooks
 	{
 		GraphicsObjectCreated event = new GraphicsObjectCreated(go);
 		eventBus.post(event);
+	}
+
+	public static void onSceneTileModelCreated(SceneTileModel sceneTileModel, int shape, int rotation, int texture,
+							int x, int y, int heightSw, int heightSe, int heightNe, int heightNw,
+							int underlaySwColor, int underlaySeColor, int underlayNeColor,
+							int underlayNwColor, int overlaySwColor, int overlaySeColor,
+							int overlayNeColor, int overlayNwColor, int underlayRgb, int overlayRgb)
+	{
+		sceneTileModel.setUnderlaySwColor(underlaySwColor);
+		sceneTileModel.setUnderlaySeColor(underlaySeColor);
+		sceneTileModel.setUnderlayNeColor(underlayNeColor);
+		sceneTileModel.setUnderlayNwColor(underlayNwColor);
+
+		sceneTileModel.setOverlaySwColor(overlaySwColor);
+		sceneTileModel.setOverlaySeColor(overlaySeColor);
+		sceneTileModel.setOverlayNeColor(overlayNeColor);
+		sceneTileModel.setOverlayNwColor(overlayNwColor);
 	}
 }

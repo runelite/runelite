@@ -460,7 +460,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
                            var20 = Client.mapAngle & 2047;
                            var21 = MilliTimer.localPlayer.x / 32 + 48;
                            var22 = 464 - MilliTimer.localPlayer.y / 32;
-                           class283.minimapSprite.method5948(var55, var13, var58.field2570, var58.field2575, var21, var22, var20, 256, var58.field2573, var58.field2572);
+                           class283.minimapSprite.drawOnMinimap(var55, var13, var58.field2570, var58.field2575, var21, var22, var20, 256, var58.field2573, var58.field2572);
 
                            for(var23 = 0; var23 < Client.field651; ++var23) {
                               var24 = Client.field817[var23] * 4 + 2 - MilliTimer.localPlayer.x / 32;

@@ -418,5 +418,9 @@ public interface Client extends GameEngine
 
 	void setInventoryDragDelay(int delay);
 
+	boolean isHdMinimap();
+
+	void setHdMinimap(boolean hd);
+
 	EnumSet<WorldType> getWorldType();
 }

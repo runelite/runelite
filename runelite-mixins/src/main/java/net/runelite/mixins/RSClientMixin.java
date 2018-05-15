@@ -136,6 +136,9 @@ public abstract class RSClientMixin implements RSClient
 	private static int inventoryDragDelay;
 
 	@Inject
+	private static boolean hdMinimap;
+
+	@Inject
 	private static boolean hasVarbitChanged;
 
 	@Inject
@@ -188,6 +191,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setInventoryDragDelay(int delay)
 	{
 		inventoryDragDelay = delay;
+	}
+
+	@Inject
+	@Override
+	public boolean isHdMinimap()
+	{
+		return hdMinimap;
+	}
+
+	@Inject
+	@Override
+	public void setHdMinimap(boolean hd)
+	{
+		hdMinimap = hd;
 	}
 
 	@Inject

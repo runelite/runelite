@@ -37,6 +37,12 @@ public interface RSRegion extends Region
 	@Override
 	Tile[][][] getTiles();
 
+	@Import("tileShape2D")
+	int[][] getTileShape2D();
+
+	@Import("tileRotation2D")
+	int[][] getTileRotation2D();
+
 	@Import("drawTile")
 	void drawTile(int[] pixels, int pixelOffset, int width, int z, int x, int y);
 }

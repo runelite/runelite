@@ -33,4 +33,38 @@ public interface SceneTileModel
 	int getShape();
 
 	int getRotation();
+
+	int[] getTriangleTextureId();
+
+	int getUnderlaySwColor();
+
+	void setUnderlaySwColor(int color);
+
+	int getUnderlaySeColor();
+
+	void setUnderlaySeColor(int color);
+
+	int getUnderlayNeColor();
+
+	void setUnderlayNeColor(int color);
+
+	int getUnderlayNwColor();
+
+	void setUnderlayNwColor(int color);
+
+	int getOverlaySwColor();
+
+	void setOverlaySwColor(int color);
+
+	int getOverlaySeColor();
+
+	void setOverlaySeColor(int color);
+
+	int getOverlayNeColor();
+
+	void setOverlayNeColor(int color);
+
+	int getOverlayNwColor();
+
+	void setOverlayNwColor(int color);
 }

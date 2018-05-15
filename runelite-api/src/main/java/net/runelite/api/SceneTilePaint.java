@@ -27,4 +27,14 @@ package net.runelite.api;
 public interface SceneTilePaint
 {
 	int getRBG();
+
+	int getSwColor();
+
+	int getSeColor();
+
+	int getNeColor();
+
+	int getNwColor();
+
+	int getTexture();
 }

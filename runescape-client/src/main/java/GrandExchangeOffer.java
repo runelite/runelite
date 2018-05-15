@@ -174,7 +174,7 @@ public class GrandExchangeOffer {
       class224 var4 = var0.method4561(false);
       if(var4 != null) {
          if(Client.field822 < 3) {
-            class35.compass.method5948(var1, var2, var4.field2570, var4.field2575, 25, 25, Client.mapAngle, 256, var4.field2573, var4.field2572);
+            class35.compass.drawOnMinimap(var1, var2, var4.field2570, var4.field2575, 25, 25, Client.mapAngle, 256, var4.field2573, var4.field2572);
          } else {
             Rasterizer2D.method5786(var1, var2, 0, var4.field2573, var4.field2572);
          }
