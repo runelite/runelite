@@ -53,6 +53,7 @@ public class FpsOverlay extends Overlay
 	private static final int Y_OFFSET = 14;
 	private static int VALUE_X_OFFSET = 15;
 	private final PanelComponent panel = new PanelComponent();
+
 	private static final String FPS_STRING = " FPS";
 
 	// Cache of FPS number strings from 00-50
@@ -176,9 +177,7 @@ public class FpsOverlay extends Overlay
 				point = new Point(width - textWidth - 2, VALUE_Y_AXIS_PING);
 			}
 			OverlayUtil.renderTextLocation(graphics, point, ping + "ms", color);
-
 		}
-
 		return null;
 	}
 }

@@ -1,0 +1,508 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "icon": 315,
+      "name": "Shrimps",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 2140,
+      "name": "Cooked Chicken",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 2142,
+      "name": "Cooked Meat",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 3228,
+      "name": "Cooked Rabbit",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 325,
+      "name": "Sardine",
+      "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 2309,
+      "name": "Bread",
+      "xp": 40
+    },
+    {
+      "level": 3,
+      "icon": 9436,
+      "name": "Sinew",
+      "xp": 3
+    },
+    {
+      "level": 5,
+      "icon": 347,
+      "name": "Herring",
+      "xp": 50
+    },
+    {
+      "level": 6,
+      "icon": 2084,
+      "name": "Fruit Blast",
+      "xp": 50
+    },
+    {
+      "level": 7,
+      "icon": 6701,
+      "name": "Baked Potato",
+      "xp": 15
+    },
+    {
+      "level": 8,
+      "icon": 2048,
+      "name": "Pineapple Punch",
+      "xp": 70
+    },
+    {
+      "level": 9,
+      "icon": 7072,
+      "name": "Spicy Sauce",
+      "xp": 24
+    },
+    {
+      "level": 10,
+      "icon": 355,
+      "name": "Mackerel",
+      "xp": 60
+    },
+    {
+      "level": 10,
+      "icon": 2325,
+      "name": "Redberry Pie",
+      "xp": 78
+    },
+    {
+      "level": 10,
+      "icon": 2217,
+      "name": "Toad Crunchies",
+      "xp": 100
+    },
+    {
+      "level": 11,
+      "icon": 7062,
+      "name": "Chilli Con Carne",
+      "xp": 55
+    },
+    {
+      "level": 11,
+      "icon": 9980,
+      "name": "Roast Bird Meat",
+      "xp": 62.5
+    },
+    {
+      "level": 12,
+      "icon": 3369,
+      "name": "Thin Snail Meat",
+      "xp": 70
+    },
+    {
+      "level": 13,
+      "icon": 7078,
+      "name": "Scrambled Egg",
+      "xp": 50
+    },
+    {
+      "level": 14,
+      "icon": 5763,
+      "name": "Cider",
+      "xp": 182
+    },
+    {
+      "level": 14,
+      "icon": 2205,
+      "name": "Worm Crunchies",
+      "xp": 104
+    },
+    {
+      "level": 15,
+      "icon": 319,
+      "name": "Anchovies",
+      "xp": 30
+    },
+    {
+      "level": 15,
+      "icon": 333,
+      "name": "Trout",
+      "xp": 70
+    },
+    {
+      "level": 16,
+      "icon": 7223,
+      "name": "Roast Rabbit",
+      "xp": 72.5
+    },
+    {
+      "level": 17,
+      "icon": 3371,
+      "name": "Lean Snail Meat",
+      "xp": 80
+    },
+    {
+      "level": 18,
+      "icon": 339,
+      "name": "Cod",
+      "xp": 75
+    },
+    {
+      "level": 18,
+      "icon": 2054,
+      "name": "Wizard Blizzard",
+      "xp": 110
+    },
+    {
+      "level": 19,
+      "icon": 1913,
+      "name": "Dwarven Stout",
+      "xp": 215
+    },
+    {
+      "level": 20,
+      "icon": 2080,
+      "name": "Short Green Guy",
+      "xp": 120
+    },
+    {
+      "level": 20,
+      "icon": 2327,
+      "name": "Meat Pie",
+      "xp": 110
+    },
+    {
+      "level": 20,
+      "icon": 351,
+      "name": "Pike",
+      "xp": 80
+    },
+    {
+      "level": 21,
+      "icon": 9988,
+      "name": "Roast Beast Meat",
+      "xp": 82.5
+    },
+    {
+      "level": 22,
+      "icon": 3373,
+      "name": "Fat Snail Meat",
+      "xp": 95
+    },
+    {
+      "level": 23,
+      "icon": 7064,
+      "name": "Egg And Tomato",
+      "xp": 50
+    },
+    {
+      "level": 24,
+      "icon": 1905,
+      "name": "Asgarnian Ale",
+      "xp": 248
+    },
+    {
+      "level": 25,
+      "icon": 329,
+      "name": "Salmon",
+      "xp": 90
+    },
+    {
+      "level": 25,
+      "icon": 2003,
+      "name": "Stew",
+      "xp": 117
+    },
+    {
+      "level": 25,
+      "icon": 2277,
+      "name": "Fruit Batta",
+      "xp": 150
+    },
+    {
+      "level": 26,
+      "icon": 2255,
+      "name": "Toad Batta",
+      "xp": 152
+    },
+    {
+      "level": 27,
+      "icon": 2253,
+      "name": "Worm Batta",
+      "xp": 154
+    },
+    {
+      "level": 28,
+      "icon": 2281,
+      "name": "Vegetable Batta",
+      "xp": 156
+    },
+    {
+      "level": 28,
+      "icon": 5988,
+      "name": "Sweetcorn",
+      "xp": 104
+    },
+    {
+      "level": 28,
+      "icon": 3381,
+      "name": "Cooked Slimy Eel",
+      "xp": 95
+    },
+    {
+      "level": 29,
+      "icon": 7170,
+      "name": "Mud Pie",
+      "xp": 128
+    },
+    {
+      "level": 30,
+      "icon": 361,
+      "name": "Tuna",
+      "xp": 100
+    },
+    {
+      "level": 30,
+      "icon": 2323,
+      "name": "Apple Pie",
+      "xp": 130
+    },
+    {
+      "level": 30,
+      "icon": 2191,
+      "name": "Worm Hole",
+      "xp": 170
+    },
+    {
+      "level": 30,
+      "icon": 3144,
+      "name": "Cooked Karambwan",
+      "xp": 190
+    },
+    {
+      "level": 32,
+      "icon": 2092,
+      "name": "Drunk Dragon",
+      "xp": 160
+    },
+    {
+      "level": 34,
+      "icon": 7178,
+      "name": "Garden Pie",
+      "xp": 138
+    },
+    {
+      "level": 35,
+      "icon": 1993,
+      "name": "Jug Of Wine",
+      "xp": 200
+    },
+    {
+      "level": 35,
+      "icon": 2289,
+      "name": "Plain Pizza",
+      "xp": 143
+    },
+    {
+      "level": 35,
+      "icon": 10136,
+      "name": "Rainbow Fish",
+      "xp": 110
+    },
+    {
+      "level": 37,
+      "icon": 2064,
+      "name": "Blurberry Special",
+      "xp": 180
+    },
+    {
+      "level": 38,
+      "icon": 5003,
+      "name": "Cave Eel",
+      "xp": 115
+    },
+    {
+      "level": 39,
+      "icon": 1911,
+      "name": "Dragon Bitter",
+      "xp": 347
+    },
+    {
+      "level": 40,
+      "icon": 379,
+      "name": "Lobster",
+      "xp": 120
+    },
+    {
+      "level": 40,
+      "icon": 1891,
+      "name": "Cake",
+      "xp": 180
+    },
+    {
+      "level": 41,
+      "icon": 7054,
+      "name": "Chilli Potato",
+      "xp": 165.5
+    },
+    {
+      "level": 42,
+      "icon": 2185,
+      "name": "Chocolate Bomb",
+      "xp": 190
+    },
+    {
+      "level": 43,
+      "icon": 365,
+      "name": "Bass",
+      "xp": 130
+    },
+    {
+      "level": 44,
+      "icon": 2955,
+      "name": "Moonlight Mead",
+      "xp": 380
+    },
+    {
+      "level": 45,
+      "icon": 373,
+      "name": "Swordfish",
+      "xp": 140
+    },
+    {
+      "level": 45,
+      "icon": 2293,
+      "name": "Meat Pizza",
+      "xp": 169
+    },
+    {
+      "level": 47,
+      "icon": 7188,
+      "name": "Fish Pie",
+      "xp": 164
+    },
+    {
+      "level": 50,
+      "icon": 2343,
+      "name": "Cooked Oomlie Wrap",
+      "xp": 30
+    },
+    {
+      "level": 50,
+      "icon": 1897,
+      "name": "Chocolate Cake",
+      "xp": 210
+    },
+    {
+      "level": 51,
+      "icon": 7056,
+      "name": "Egg Potato",
+      "xp": 195.5
+    },
+    {
+      "level": 55,
+      "icon": 2297,
+      "name": "Anchovy Pizza",
+      "xp": 182
+    },
+    {
+      "level": 58,
+      "icon": 1883,
+      "name": "Ugthanki Kebab (Fresh)",
+      "xp": 80
+    },
+    {
+      "level": 60,
+      "icon": 2011,
+      "name": "Curry",
+      "xp": 280
+    },
+    {
+      "level": 62,
+      "icon": 7946,
+      "name": "Monkfish",
+      "xp": 150
+    },
+    {
+      "level": 64,
+      "icon": 7058,
+      "name": "Mushroom Potato",
+      "xp": 270.5
+    },
+    {
+      "level": 65,
+      "icon": 2301,
+      "name": "Pineapple Pizza",
+      "xp": 188
+    },
+    {
+      "level": 67,
+      "icon": 7068,
+      "name": "Tuna And Corn",
+      "xp": 204
+    },
+    {
+      "level": 68,
+      "icon": 7060,
+      "name": "Tuna Potato",
+      "xp": 309.5
+    },
+    {
+      "level": 70,
+      "icon": 7198,
+      "name": "Admiral Pie",
+      "xp": 210
+    },
+    {
+      "level": 80,
+      "icon": 385,
+      "name": "Shark",
+      "xp": 210
+    },
+    {
+      "level": 82,
+      "icon": 397,
+      "name": "Sea Turtle",
+      "xp": 211.3
+    },
+    {
+      "level": 84,
+      "icon": 13441,
+      "name": "Anglerfish",
+      "xp": 230
+    },
+    {
+      "level": 85,
+      "icon": 11936,
+      "name": "Dark Crab",
+      "xp": 215
+    },
+    {
+      "level": 85,
+      "icon": 7208,
+      "name": "Wild Pie",
+      "xp": 240
+    },
+    {
+      "level": 91,
+      "icon": 391,
+      "name": "Manta Ray",
+      "xp": 216.3
+    },
+    {
+      "level": 95,
+      "icon": 7218,
+      "name": "Summer Pie",
+      "xp": 260
+    }
+  ]
+}
