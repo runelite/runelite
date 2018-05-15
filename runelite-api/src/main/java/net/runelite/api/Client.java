@@ -417,4 +417,7 @@ public interface Client extends GameEngine
 	void setInventoryDragDelay(int delay);
 
 	EnumSet<WorldType> getWorldType();
+
+	String getWorldHostname();
+
 }

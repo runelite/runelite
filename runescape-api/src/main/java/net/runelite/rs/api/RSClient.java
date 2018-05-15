@@ -621,4 +621,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("flags")
 	int getFlags();
+
+	@Import("host")
+	@Override
+	String getWorldHostname();
 }

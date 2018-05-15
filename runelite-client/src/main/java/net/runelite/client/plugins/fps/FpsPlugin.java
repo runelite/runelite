@@ -27,11 +27,21 @@ package net.runelite.client.plugins.fps;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.Overlay;
 
@@ -46,12 +56,18 @@ import net.runelite.client.ui.overlay.Overlay;
  * game and system load, it usually finds the sweet spot in about two seconds.
  */
 @PluginDescriptor(
-	name = "FPS Control",
+	name = "Performance",
 	enabledByDefault = false
 )
 public class FpsPlugin extends Plugin
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
+
+	@Getter
+	private int ping;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private FpsOverlay overlay;
@@ -61,6 +77,9 @@ public class FpsPlugin extends Plugin
 
 	@Inject
 	private DrawManager drawManager;
+
+	@Inject
+	private FpsConfig fpsConfig;
 
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
@@ -102,4 +121,44 @@ public class FpsPlugin extends Plugin
 	{
 		drawManager.unregisterEveryFrameListener(drawListener);
 	}
+
+	@Schedule(
+			asynchronous = true,
+			period = 5,
+			unit = ChronoUnit.SECONDS
+	)
+	public long getPingToCurrentWorld()
+	{
+		InetAddress host;
+		if (client.getGameState().equals(GameState.LOGGED_IN) && fpsConfig.drawPing())
+		{
+			try
+			{
+				host = InetAddress.getByName(client.getWorldHostname());
+			}
+			catch (UnknownHostException he)
+			{
+				log.warn("Cannot ping host", he);
+				return -1;
+			}
+
+			Instant start = Instant.now();
+			try (Socket sock = new Socket(host, 443))
+			{
+				if (sock != null && sock.isConnected())
+				{
+					ping = (int) ChronoUnit.MILLIS.between(start, Instant.now());
+					return ping;
+				}
+				log.warn("Host {} is not reachable", host);
+			}
+			catch (Exception e)
+			{
+				log.warn("Could not create new socket", e);
+				return -1;
+			}
+		}
+		return ping = -1;
+	}
 }
+
