@@ -143,7 +143,7 @@ public class FpsPlugin extends Plugin
 			}
 
 			Instant start = Instant.now();
-			try(Socket sock = new Socket(host, 443))
+			try (Socket sock = new Socket(host, 443))
 			{
 				if (sock != null && sock.isConnected())
 				{
