@@ -610,8 +610,15 @@ public class HiscorePanel extends PluginPanel
 				{
 					level = s.getLevel();
 				}
-
-				label.setText(Integer.toString(level));
+				
+				if (s.getExperience() == 200000000)
+				{
+					label.setText("Max");
+				}
+				else
+				{
+					label.setText(Integer.toString(level));
+				}
 			}
 		}
 
