@@ -837,7 +837,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
                         } else if(var10.type == 5) {
                            SpritePixels var57;
                            if(!var10.hasScript) {
-                              var57 = var10.method4562(class9.method96(var10));
+                              var57 = var10.getWidgetSprite(class9.method96(var10));
                               if(var57 != null) {
                                  var57.drawAt(var55, var13);
                               } else if(Widget.field2621) {
@@ -847,7 +847,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
                               if(var10.itemId != -1) {
                                  var57 = class171.createSprite(var10.itemId, var10.itemQuantity, var10.borderThickness, var10.sprite2, var10.field2645, false);
                               } else {
-                                 var57 = var10.method4562(false);
+                                 var57 = var10.getWidgetSprite(false);
                               }
 
                               if(var57 == null) {

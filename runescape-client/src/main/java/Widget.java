@@ -1,5 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.Import;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -22,7 +23,8 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Lgj;"
    )
-   public static NodeCache field2617;
+   @Export("widgetSpriteCache")
+   public static NodeCache widgetSpriteCache;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lgj;"
@@ -643,7 +645,7 @@ public class Widget extends Node {
    public boolean noScrollThrough;
 
    static {
-      field2617 = new NodeCache(200);
+      widgetSpriteCache = new NodeCache(200);
       Widget_cachedModels = new NodeCache(50);
       Widget_cachedFonts = new NodeCache(20);
       field2620 = new NodeCache(8);
@@ -1211,7 +1213,8 @@ public class Widget extends Node {
       signature = "(ZI)Llc;",
       garbageValue = "-215938927"
    )
-   public SpritePixels method4562(boolean var1) {
+   @Import("getWidgetSprite")
+   public SpritePixels getWidgetSprite(boolean var1) {
       field2621 = false;
       int var2;
       if(var1) {
@@ -1224,7 +1227,7 @@ public class Widget extends Node {
          return null;
       } else {
          long var3 = (long)var2 + ((long)this.borderThickness << 36) + ((this.flippedVertically?1L:0L) << 38) + ((this.flippedHorizontally?1L:0L) << 39) + ((long)this.sprite2 << 40);
-         SpritePixels var5 = (SpritePixels)field2617.get(var3);
+         SpritePixels var5 = (SpritePixels) widgetSpriteCache.get(var3);
          if(var5 != null) {
             return var5;
          } else {
@@ -1257,7 +1260,7 @@ public class Widget extends Node {
                   var5.method5892(this.sprite2);
                }
 
-               field2617.put(var5, var3);
+               widgetSpriteCache.put(var5, var3);
                return var5;
             }
          }
@@ -1312,13 +1315,13 @@ public class Widget extends Node {
          if(var2 == -1) {
             return null;
          } else {
-            SpritePixels var3 = (SpritePixels)field2617.get((long)var2);
+            SpritePixels var3 = (SpritePixels) widgetSpriteCache.get((long)var2);
             if(var3 != null) {
                return var3;
             } else {
                var3 = ChatLineBuffer.getSpriteAsSpritePixels(KeyFocusListener.field354, var2, 0);
                if(var3 != null) {
-                  field2617.put(var3, (long)var2);
+                  widgetSpriteCache.put(var3, (long)var2);
                } else {
                   field2621 = true;
                }
@@ -1432,7 +1435,7 @@ public class Widget extends Node {
          if(var5 != null) {
             return var5;
          } else {
-            SpritePixels var6 = this.method4562(var1);
+            SpritePixels var6 = this.getWidgetSprite(var1);
             if(var6 == null) {
                return null;
             } else {

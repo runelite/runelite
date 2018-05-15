@@ -30,4 +30,7 @@ public interface RSNodeCache
 {
 	@Import("get")
 	RSCacheableNode get(long id);
+
+	@Import("reset")
+	void reset();
 }
