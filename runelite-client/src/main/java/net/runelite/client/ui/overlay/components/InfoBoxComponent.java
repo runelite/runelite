@@ -32,26 +32,34 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
+import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
 @Setter
-public class InfoBoxComponent implements RenderableEntity
+public class InfoBoxComponent implements LayoutableRenderableEntity
 {
 	private static final int BOX_SIZE = 35;
 	private static final int SEPARATOR = 2;
 
+	@Getter
+	private String tooltip;
+
+	@Getter
+	private Point preferredPosition = new Point();
+
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
-	private Point position = new Point();
 	private BufferedImage image;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		graphics.translate(preferredPosition.x, preferredPosition.y);
 		final FontMetrics metrics = graphics.getFontMetrics();
-		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
+		final int w = BOX_SIZE;
+		final int h = BOX_SIZE;
+		final Rectangle bounds = new Rectangle(w, h);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(bounds);
@@ -59,18 +67,30 @@ public class InfoBoxComponent implements RenderableEntity
 
 		if (Objects.nonNull(image))
 		{
-			graphics.drawImage(image,
-				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				position.y + (BOX_SIZE - image.getHeight()) / 2, null);
+			graphics.drawImage(
+				image,
+				(w - image.getWidth()) / 2,
+				(h - image.getHeight()) / 2,
+				null);
 		}
 
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setColor(color);
 		textComponent.setText(text);
-		textComponent.setPosition(new Point(
-			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
-			position.y + BOX_SIZE - SEPARATOR));
+		textComponent.setPosition(new Point(((w - metrics.stringWidth(text)) / 2), h - SEPARATOR));
 		textComponent.render(graphics);
+		graphics.translate(-preferredPosition.x, -preferredPosition.y);
+		return bounds.getSize();
+	}
+
+	public Dimension getPreferredSize()
+	{
 		return new Dimension(BOX_SIZE, BOX_SIZE);
+	}
+
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
+		// Just use infobox dimensions for now
 	}
 }

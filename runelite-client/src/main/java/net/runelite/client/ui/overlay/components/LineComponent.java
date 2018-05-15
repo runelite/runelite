@@ -48,18 +48,22 @@ public class LineComponent implements LayoutableRenderableEntity
 	private Color rightColor = Color.WHITE;
 
 	@Builder.Default
+	private Point preferredPosition = new Point();
+
+	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		graphics.translate(preferredPosition.x, preferredPosition.y);
 		// Prevent NPEs
 		final String left = MoreObjects.firstNonNull(this.left, "");
 		final String right = MoreObjects.firstNonNull(this.right, "");
 
 		final FontMetrics metrics = graphics.getFontMetrics();
 		int x = 0;
-		int y = 0;
+		int y = metrics.getHeight();
 		final int leftFullWidth = getLineWidth(left, metrics);
 		final int rightFullWidth = getLineWidth(right, metrics);
 
@@ -124,7 +128,8 @@ public class LineComponent implements LayoutableRenderableEntity
 		rightLineComponent.render(graphics);
 		y += metrics.getHeight();
 
-		return new Dimension(preferredSize.width, y);
+		graphics.translate(-preferredPosition.x, -preferredPosition.y);
+		return new Dimension(preferredSize.width, y - metrics.getHeight());
 	}
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)
