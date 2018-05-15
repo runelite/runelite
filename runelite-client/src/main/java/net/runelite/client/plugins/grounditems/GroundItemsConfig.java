@@ -25,13 +25,13 @@
 
 package net.runelite.client.plugins.grounditems;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-
-import java.awt.Color;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
+import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 
 @ConfigGroup(
 	keyName = "grounditems",
@@ -44,7 +44,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showHighlightedOnly",
 		name = "Show Highlighted items only",
 		description = "Configures whether or not to draw items only on your highlighted list",
-		position = 1
+		position = 0
 	)
 	default boolean showHighlightedOnly()
 	{
@@ -52,43 +52,32 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGEPrice",
-		name = "Show Grand Exchange Prices",
-		description = "Configures whether or not to draw GE prices alongside ground items",
+		keyName = "dontHideUntradeables",
+		name = "Do not hide untradeables",
+		description = "Configures whether or not untradeable items ignore hiding under settings",
+		position = 1
+	)
+	default boolean dontHideUntradeables()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "priceDisplayMode",
+		name = "Price Display Mode",
+		description = "Configures what price types are shown alongside of ground item name",
 		position = 2
 	)
-	default boolean showGEPrice()
+	default PriceDisplayMode priceDisplayMode()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showHAValue",
-		name = "Show High Alchemy Values",
-		description = "Configures whether or not to draw High Alchemy values alongside ground items",
-		position = 3
-	)
-	default boolean showHAValue()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showMenuItemQuantities",
-		name = "Show Menu Item Quantities",
-		description = "Configures whether or not to show the item quantities in the menu",
-		position = 4
-	)
-	default boolean showMenuItemQuantities()
-	{
-		return true;
+		return PriceDisplayMode.BOTH;
 	}
 
 	@ConfigItem(
 		keyName = "itemHighlightMode",
 		name = "Item Highlight Mode",
 		description = "Configures how ground items will be highlighted",
-		position = 5
+		position = 3
 	)
 	default ItemHighlightMode itemHighlightMode()
 	{
@@ -99,7 +88,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "menuHighlightMode",
 		name = "Menu Highlight Mode",
 		description = "Configures what to highlight in right-click menu",
-		position = 6
+		position = 4
 	)
 	default MenuHighlightMode menuHighlightMode()
 	{
@@ -107,23 +96,23 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideUnderGeValue",
-		name = "Hide < GE Value",
-		description = "Configures hidden ground items under GE value",
-		position = 7
+		keyName = "highlightOverValue",
+		name = "Highlight > Value",
+		description = "Configures highlighted ground items over either GE or HA value",
+		position = 5
 	)
-	default int getHideUnderGeValue()
+	default int getHighlightOverValue()
 	{
-		return 0;
+		return 20000;
 	}
 
 	@ConfigItem(
-		keyName = "hideUnderHaValue",
-		name = "Hide < HA Value",
-		description = "Configures hidden ground items under High Alch value",
-		position = 8
+		keyName = "hideUnderValue",
+		name = "Hide < Value",
+		description = "Configures hidden ground items under both GE and HA value",
+		position = 6
 	)
-	default int getHideUnderHAValue()
+	default int getHideUnderValue()
 	{
 		return 0;
 	}
@@ -132,7 +121,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 9
+		position = 7
 	)
 	default String getHighlightItems()
 	{
@@ -150,7 +139,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 10
+		position = 8
 	)
 	default String getHiddenItems()
 	{
@@ -168,7 +157,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "defaultColor",
 		name = "Default items color",
 		description = "Configures the color for default, non-highlighted items",
-		position = 11
+		position = 9
 	)
 	default Color defaultColor()
 	{
@@ -179,7 +168,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightedColor",
 		name = "Highlighted items color",
 		description = "Configures the color for highlighted items",
-		position = 12
+		position = 10
 	)
 	default Color highlightedColor()
 	{
@@ -187,32 +176,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lowValueColor",
-		name = "Low value items color",
-		description = "Configures the color for low value items",
-		position = 13
-	)
-	default Color lowValueColor()
-	{
-		return Color.decode("#66B2FF");
-	}
-
-	@ConfigItem(
-		keyName = "lowValuePrice",
-		name = "Low value price",
-		description = "Configures the start price for low value items",
-		position = 14
-	)
-	default int lowValuePrice()
-	{
-		return 20000;
-	}
-
-	@ConfigItem(
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 15
+		position = 11
 	)
 	default Color mediumValueColor()
 	{
@@ -223,7 +190,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValuePrice",
 		name = "Medium value price",
 		description = "Configures the start price for medium value items",
-		position = 16
+		position = 12
 	)
 	default int mediumValuePrice()
 	{
@@ -234,7 +201,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 17
+		position = 13
 	)
 	default Color highValueColor()
 	{
@@ -245,7 +212,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValuePrice",
 		name = "High value price",
 		description = "Configures the start price for high value items",
-		position = 18
+		position = 14
 	)
 	default int highValuePrice()
 	{
@@ -256,7 +223,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 19
+		position = 15
 	)
 	default Color insaneValueColor()
 	{
@@ -267,7 +234,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
-		position = 20
+		position = 16
 	)
 	default int insaneValuePrice()
 	{

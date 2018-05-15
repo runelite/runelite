@@ -22,32 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.grounditems.config;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@Builder
-class GroundItem
+@Getter
+@RequiredArgsConstructor
+public enum PriceDisplayMode
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
+	HA("High Alchemy"),
+	GE("Grand Exchange"),
+	BOTH("Both"),
+	OFF("Off");
 
-	@Value
-	static class GroundItemKey
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		private int itemId;
-		private WorldPoint location;
+		return name;
 	}
 }
