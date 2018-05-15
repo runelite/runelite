@@ -28,7 +28,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -197,24 +196,20 @@ public class ItemController
 			itemIds = Arrays.copyOf(itemIds, MAX_BATCH_LOOKUP);
 		}
 
-		List<ItemPrice> itemPrices = new ArrayList<>(itemIds.length);
-		for (int itemId : itemIds)
-		{
-			ItemEntry item = itemService.getItem(itemId);
-			PriceEntry priceEntry = itemService.getPrice(itemId, null);
+		List<PriceEntry> prices = itemService.getPrices(itemIds);
 
-			if (item == null || priceEntry == null)
+		return prices.stream()
+			.map(priceEntry ->
 			{
-				continue;
-			}
+				Item item = new Item();
+				item.setId(priceEntry.getItem()); // fake item
 
-			ItemPrice itemPrice = new ItemPrice();
-			itemPrice.setItem(item.toItem());
-			itemPrice.setPrice(priceEntry.getPrice());
-			itemPrice.setTime(priceEntry.getTime());
-			itemPrices.add(itemPrice);
-		}
-
-		return itemPrices.toArray(new ItemPrice[itemPrices.size()]);
+				ItemPrice itemPrice = new ItemPrice();
+				itemPrice.setItem(item);
+				itemPrice.setPrice(priceEntry.getPrice());
+				itemPrice.setTime(priceEntry.getTime());
+				return itemPrice;
+			})
+			.toArray(ItemPrice[]::new);
 	}
 }

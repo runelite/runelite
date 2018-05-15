@@ -36,4 +36,6 @@ import java.lang.annotation.Target;
 public @interface FieldHook
 {
 	String value();
+
+	boolean before() default false;
 }
