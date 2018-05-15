@@ -390,8 +390,15 @@ public class ConfigManager
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
-			if (item == null || !method.isDefault())
+			if (item == null)
 			{
+				continue;
+			}
+
+			if (!method.isDefault())
+			{
+				// no default value
+				unsetConfiguration(group.keyName(), item.keyName());
 				continue;
 			}
 

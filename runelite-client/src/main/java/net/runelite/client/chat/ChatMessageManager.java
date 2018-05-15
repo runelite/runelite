@@ -97,6 +97,11 @@ public class ChatMessageManager
 		return this;
 	}
 
+	public void clearColors()
+	{
+		colorCache.clear();
+	}
+
 	public void queue(QueuedMessage message)
 	{
 		queuedMessages.add(message);

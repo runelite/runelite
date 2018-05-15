@@ -65,6 +65,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
@@ -107,17 +108,20 @@ public class ConfigPanel extends PluginPanel
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executorService;
 	private final RuneLiteConfig runeLiteConfig;
+	private final ChatColorConfig chatColorConfig;
 	private final JTextField searchBar = new JTextField();
 	private Map<String, JPanel> children = new TreeMap<>();
 	private int scrollBarPosition = 0;
 
-	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
+	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
+		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
 	{
 		super();
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
+		this.chatColorConfig = chatColorConfig;
 
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
@@ -173,23 +177,28 @@ public class ConfigPanel extends PluginPanel
 					newChildren.put(pluginName, groupPanel);
 				});
 
+		addCoreConfig(newChildren, "RuneLite", runeLiteConfig);
+		addCoreConfig(newChildren, "Chat Color", chatColorConfig);
 
+		children = newChildren;
+		openConfigList();
+	}
+
+	private void addCoreConfig(Map<String, JPanel> newChildren, String name, Config config)
+	{
 		final JPanel groupPanel = buildGroupPanel();
-		groupPanel.add(new JLabel("RuneLite"), BorderLayout.CENTER);
+		groupPanel.add(new JLabel(name), BorderLayout.CENTER);
 
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
 		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
-		final JButton editConfigButton = buildConfigButton(runeLiteConfig);
+		final JButton editConfigButton = buildConfigButton(config);
 		buttonPanel.add(editConfigButton);
 
 		final JButton toggleButton = buildToggleButton(null);
 		buttonPanel.add(toggleButton);
-		newChildren.put("RuneLite", groupPanel);
-
-		children = newChildren;
-		openConfigList();
+		newChildren.put(name, groupPanel);
 	}
 
 	private JPanel buildGroupPanel()
@@ -432,16 +441,19 @@ public class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Color.class)
 			{
+				String existing = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				Color existingColor = existing == null ? Color.BLACK : Color.decode(existing);
+
 				JButton colorPicker = new JButton("Pick a color");
 				colorPicker.setFocusable(false);
-				colorPicker.setBackground(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+				colorPicker.setBackground(existingColor);
 				colorPicker.addMouseListener(new MouseAdapter()
 				{
 					@Override
 					public void mouseClicked(MouseEvent e)
 					{
 						final JFrame parent = new JFrame();
-						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
+						JColorChooser jColorChooser = new JColorChooser(existingColor);
 						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
 						parent.addWindowListener(new WindowAdapter()
 						{
