@@ -10,10 +10,12 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 @Slf4j
-public class FlippingItemPanel extends JPanel {
+public class FlippingItemPanel extends JPanel
+{
     private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-    FlippingItemPanel(String itemName, Icon icon, Long buyPrice, Long sellPrice) {
+    FlippingItemPanel(String itemName, Icon icon, Long buyPrice, Long sellPrice)
+    {
         BorderLayout layout = new BorderLayout();
         layout.setHgap(5);
         setLayout(layout);

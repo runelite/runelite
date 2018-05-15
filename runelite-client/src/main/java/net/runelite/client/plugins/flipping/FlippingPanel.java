@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
 @Slf4j
-public class FlippingPanel extends PluginPanel {
+public class FlippingPanel extends PluginPanel
+{
 
     private final ScheduledExecutorService executor;
 
@@ -35,20 +36,24 @@ public class FlippingPanel extends PluginPanel {
     private JLabel searchingLabel = new JLabel();
 
     @Inject
-    FlippingPanel(ScheduledExecutorService executor) {
+    FlippingPanel(ScheduledExecutorService executor)
+    {
         this.executor = executor;
 
         setLayout(new BorderLayout());
         container.setLayout(new BorderLayout());
 
-        try {
+        try
+        {
             BufferedImage icon;
             synchronized (ImageIO.class)
             {
                 icon = ImageIO.read(GrandExchangePlugin.class.getResourceAsStream("search.png"));
             }
             search = new ImageIcon(icon);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 
@@ -70,22 +75,28 @@ public class FlippingPanel extends PluginPanel {
         add(scrollPane, BorderLayout.NORTH);
     }
 
-    private void searchForFlipPrices() {
+    private void searchForFlipPrices()
+    {
         String itemName = searchBox.getText();
 
         searchItemsPanel.removeAll();
 
-        if (itemName == null || itemName.isEmpty()) {
+        if (itemName == null || itemName.isEmpty())
+        {
             return;
         }
 
         showSearchString("Searching...");
 
         List<FlippingItem> flippingItems = searchFlippingItem(itemName);
-        SwingUtilities.invokeLater(() -> {
-            if (flippingItems != null) {
-                if (!flippingItems.isEmpty()) {
-                    for (FlippingItem flippingItem : flippingItems) {
+        SwingUtilities.invokeLater(() ->
+        {
+            if (flippingItems != null)
+            {
+                if (!flippingItems.isEmpty())
+                {
+                    for (FlippingItem flippingItem : flippingItems)
+                    {
                         FlippingItemPanel panel = new FlippingItemPanel(flippingItem.getItemName(), flippingItem.getIcon(),
                                 flippingItem.getBuyPrice(), flippingItem.getSellPrice());
 
@@ -94,16 +105,21 @@ public class FlippingPanel extends PluginPanel {
 
                     showSearchString(null);
                     flippingItems.clear();
-                } else {
+                }
+                else
+                {
                     showSearchString("No results found.");
                 }
-            } else {
+            }
+            else
+            {
                 showSearchString("Something went wrong...");
             }
         });
     }
 
-    private void showSearchString(String str) {
+    private void showSearchString(String str)
+    {
         if (str != null)
         {
             remove(searchingLabel);
@@ -119,13 +135,16 @@ public class FlippingPanel extends PluginPanel {
         repaint();
     }
 
-    private List<FlippingItem> searchFlippingItem(String itemName) {
-        try {
+    private List<FlippingItem> searchFlippingItem(String itemName)
+    {
+        try
+        {
             List<FlippingItem> flippingItems = new ArrayList<>();
 
             Document document = Jsoup.connect(String.format("https://www.ge-tracker.com/names/%s", itemName)).timeout(6000).get();
             Elements elements = document.getElementsByClass("item-row");
-            for(Element element : elements) {
+            for(Element element : elements)
+            {
                 String fullItemName = element.getElementsByTag("img").attr("alt");
 
                 URL imageURL = new URL(element.getElementsByTag("img").attr("src"));
@@ -137,20 +156,24 @@ public class FlippingPanel extends PluginPanel {
 
                 flippingItems.add(new FlippingItem(fullItemName, icon, buyPrice, sellPrice));
 
-                if(flippingItems.size() == 10) {
+                if(flippingItems.size() == 10)
+                {
                     break;
                 }
             }
 
             return flippingItems;
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    private Icon resizeImageIcon(ImageIcon icon) {
+    private Icon resizeImageIcon(ImageIcon icon)
+    {
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
         icon = new ImageIcon(resizedImage);

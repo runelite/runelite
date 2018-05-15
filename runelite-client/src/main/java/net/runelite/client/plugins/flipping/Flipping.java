@@ -29,7 +29,8 @@ import java.io.IOException;
 )
 
 @Slf4j
-public class Flipping extends Plugin {
+public class Flipping extends Plugin
+{
 
     @Inject
     private Client client;
@@ -47,7 +48,8 @@ public class Flipping extends Plugin {
     private FlippingPanel panel;
 
     @Override
-    protected void startUp() throws IOException {
+    protected void startUp() throws IOException
+    {
         panel = injector.getInstance(FlippingPanel.class);
 
         BufferedImage icon;
@@ -66,33 +68,43 @@ public class Flipping extends Plugin {
     }
 
     @Override
-    protected void shutDown() {
+    protected void shutDown()
+    {
         pluginToolbar.removeNavigation(button);
     }
 
     @Subscribe
     public void onSetMessage(SetMessage setMessage)
     {
-        if(setMessage.getType() == ChatMessageType.PUBLIC) {
+        if(setMessage.getType() == ChatMessageType.PUBLIC)
+        {
             String message = setMessage.getValue();
             MessageNode messageNode = setMessage.getMessageNode();
 
-            if(message.toLowerCase().startsWith("!flipping") || message.toLowerCase().startsWith("!flip")) {
+            if(message.toLowerCase().startsWith("!flipping") || message.toLowerCase().startsWith("!flip"))
+            {
                 String response;
-                if(message.toLowerCase().contains(" ")) {
+                if(message.toLowerCase().contains(" "))
+                {
                     String[] messageSplit = message.split(" ");
-                    if (messageSplit.length >= 2) {
+                    if (messageSplit.length >= 2)
+                    {
                         String itemName = null;
-                        for(int i = 1; i < messageSplit.length; i++) {
-                            if(itemName == null) {
+                        for(int i = 1; i < messageSplit.length; i++)
+                        {
+                            if(itemName == null)
+                            {
                                 itemName = messageSplit[i];
-                            } else {
+                            }
+                            else
+                            {
                                 itemName += " " + messageSplit[i];
                             }
                         }
 
                         Long[] prices = getPricesOfItem(itemName);
-                        if(prices != null) {
+                        if(prices != null)
+                        {
                             response = new ChatMessageBuilder()
                                     .append(ChatColorType.NORMAL)
                                     .append("Item: ")
@@ -107,13 +119,19 @@ public class Flipping extends Plugin {
                                     .append(ChatColorType.HIGHLIGHT)
                                     .append(String.format("%,d", prices[1]))
                                     .build();
-                        } else {
+                        }
+                        else
+                        {
                             response = getNoPricesErrorResponseMessage();
                         }
-                    } else {
+                    }
+                    else
+                    {
                         response = getErrorResponseMessage();
                     }
-                } else {
+                }
+                else
+                {
                     response = getErrorResponseMessage();
                 }
 
@@ -124,23 +142,28 @@ public class Flipping extends Plugin {
         }
     }
 
-    private String getErrorResponseMessage() {
+    private String getErrorResponseMessage()
+    {
         return new ChatMessageBuilder()
                 .append(ChatColorType.NORMAL)
                 .append("INVALID SYNTAX!")
                 .build();
     }
 
-    private String getNoPricesErrorResponseMessage() {
+    private String getNoPricesErrorResponseMessage()
+    {
         return new ChatMessageBuilder()
                 .append(ChatColorType.NORMAL)
                 .append("NO PRICES FOUND!")
                 .build();
     }
 
-    private Long[] getPricesOfItem(String itemName) {
-        try {
-            if(itemName.contains(" ")) {
+    private Long[] getPricesOfItem(String itemName)
+    {
+        try
+        {
+            if(itemName.contains(" "))
+            {
                 itemName = itemName.replace(" ", "-");
             }
 
@@ -148,7 +171,8 @@ public class Flipping extends Plugin {
             String buyPrice = document.getElementById("item_stat_offer_price").text();
             String sellPrice = document.getElementById("item_stat_sell_price").text();
 
-            if(buyPrice != null && sellPrice != null) {
+            if(buyPrice != null && sellPrice != null)
+            {
                 buyPrice = buyPrice.replace(",", "");
                 sellPrice = sellPrice.replace(",", "");
 
@@ -157,7 +181,9 @@ public class Flipping extends Plugin {
 
                 return prices;
             }
-        } catch(IOException e) {
+        }
+        catch(IOException e)
+        {
             e.printStackTrace();
         }
 
