@@ -122,4 +122,15 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "dateInName",
+			name = "Show date in the filename",
+			description = "Enable to show the date in the filename",
+			position = 8
+	)
+	default boolean enableDateInFilename()
+	{
+		return true;
+	}
 }
