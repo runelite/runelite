@@ -55,6 +55,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.util.SwingUtil;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
@@ -230,6 +231,11 @@ public class RuneLite
 
 		// Show UI after all plugins are loaded
 		clientUI.show();
+
+		if (isOutdated)
+		{
+			SwingUtil.showReducedFunctionalityDialog();
+		}
 	}
 
 	public void shutdown()

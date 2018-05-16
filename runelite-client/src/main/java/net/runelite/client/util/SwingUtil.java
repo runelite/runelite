@@ -48,14 +48,17 @@ import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.NavigationButton;
@@ -304,4 +307,29 @@ public class SwingUtil
 	{
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
+
+	/**
+	 * Creates and displays message dialog about reduced functionality mode.
+	 * IMPORTANT! Should only be called if client is outdated.
+	 *
+	 * @throws Exception if interrupted / unsuccessful.
+	 */
+
+	public static void showReducedFunctionalityDialog() throws Exception
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			JLabel text = new JLabel(
+				"<html>" + "RuneLite has not yet been updated for use with the latest<br>" +
+				"OSRS update.<br>" +
+				"As a result RuneLite is running in reduced functionality mode.<br>" +
+				"A new version of RuneLite for use with the new game update<br>" +
+				"should be available shortly.<br><br>" +
+				"Thank you for your patience." +
+				"</html>");
+			text.setBorder(new EmptyBorder(0, 0, 15, 10));
+			JOptionPane.showMessageDialog(null, text, "Reduced Functionality Mode", JOptionPane.ERROR_MESSAGE);
+		});
+	}
+
 }
