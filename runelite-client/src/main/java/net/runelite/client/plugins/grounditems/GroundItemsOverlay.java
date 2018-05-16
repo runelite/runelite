@@ -178,7 +178,7 @@ public class GroundItemsOverlay extends Overlay
 					.append(" gp)");
 			}
 
-			if(config.showTradeValue())
+			if (config.showTradeValue())
 			{
 				String itemName = item.getName().replace(" ", "-").toLowerCase();
 
