@@ -84,10 +84,17 @@ class MouseHighlightOverlay extends Overlay
 			case "Walk here":
 			case "Cancel":
 			case "Continue":
+			case "Scroll map":
+			case "Focus":
 				return null;
 			case "Move":
 				// Hide overlay on sliding puzzle boxes
 				if (target.contains("Sliding piece"))
+				{
+					return null;
+				}
+			case "Open":
+				if (target.equalsIgnoreCase("map"))
 				{
 					return null;
 				}
