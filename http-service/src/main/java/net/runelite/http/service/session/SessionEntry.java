@@ -33,7 +33,6 @@ public class SessionEntry
 {
 	private int id;
 	private UUID uuid;
-	private String ip;
 	private Instant start;
 	private Instant last;
 }
