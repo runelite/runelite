@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -36,6 +37,7 @@ import net.runelite.client.config.ConfigItem;
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
 		description = "Configures the time until statistic is reset"
@@ -46,22 +48,57 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 2,
 		keyName = "showNestNotification",
 		name = "Bird nest notification",
 		description = "Configures whether to notify you of a bird nest spawn"
 	)
 	default boolean showNestNotification()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "showWoodcuttingStats",
 		name = "Show Woodcutting session stats",
 		description = "Configures whether to display woodcutting session stats"
 	)
 	default boolean showWoodcuttingStats()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "showAvailableTrees",
+		name = "Show available trees",
+		description = "Configures whether to show a indicator for available trees. Shows you recent Trees"
+	)
+	default boolean showAvailebleTrees()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "getIndicatorColor",
+			name = "Indicator Color",
+			description = "Configures which color should be shown when an indicator is drawn"
+	)
+	default Color getIndicatorColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "treeIndicatorTimeout",
+			name = "Hide tree Spawns (minutes)",
+			description = "Configures the time until the tree indicator is hidden"
+	)
+	default int treeIndicatorTimeout()
+	{
+		return 5;
 	}
 }
