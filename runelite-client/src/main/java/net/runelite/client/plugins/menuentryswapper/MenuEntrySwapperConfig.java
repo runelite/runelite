@@ -201,7 +201,18 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+			position = 15,
+			keyName = "swapBuyPlank",
+			name = "Buy-plank",
+			description = "Swap Talk-to with Buy-plank on Sawmill Operator<br>This overrides swapping the trade option."
+	)
+	default boolean swapBuyPlank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 16,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
@@ -212,7 +223,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 17,
 		keyName = "claimSlime",
 		name = "Claim Slime",
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
