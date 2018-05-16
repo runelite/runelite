@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.deob.util;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class PrimitiveUtils
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public static Class<?> unbox(Class<?> c)
 	{
-		this.eventBus = eventBus;
+		if (c == int.class)
+			return Integer.class;
+		else if (c == long.class)
+			return Long.class;
+		else if (c == byte.class)
+			return Byte.class;
+		else if (c == char.class)
+			return Character.class;
+		else if (c == short.class)
+			return Short.class;
+		else if (c == boolean.class)
+			return Boolean.class;
+		else if (c == float.class)
+			return Float.class;
+		else if (c == double.class)
+			return Double.class;
+		else if (c == void.class)
+			return Void.class;
+		else
+			return c;
 	}
-
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	
+	public static Object convert(Number n, Class<?> c)
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		c = unbox(c);
+		
+		if (c == Integer.class)
+			return n.intValue();
+		else if (c == Long.class)
+			return n.longValue();
+		else if (c == Byte.class)
+			return n.byteValue();
+		else if (c == Short.class)
+			return n.shortValue();
+		else if (c == Float.class)
+			return n.floatValue();
+		else if (c == Double.class)
+			return n.doubleValue();
+		
+		throw new IllegalArgumentException();
 	}
 }

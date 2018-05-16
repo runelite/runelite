@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.asm.attributes.code.instruction.types;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.List;
+import net.runelite.asm.attributes.code.Label;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public interface JumpingInstruction
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	List<Label> getJumps();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
-	{
-		this.eventBus = eventBus;
-	}
+	void setJumps(List<Label> labels);
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
-	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
-	}
+	void setLabel(org.objectweb.asm.Label label);
 }

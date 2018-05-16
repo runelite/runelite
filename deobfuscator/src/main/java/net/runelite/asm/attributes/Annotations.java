@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.attributes;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.ArrayList;
+import java.util.List;
+
+import net.runelite.asm.Type;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
+
+public class Annotations
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final List<Annotation> annotations = new ArrayList<>();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public List<Annotation> getAnnotations()
 	{
-		this.eventBus = eventBus;
+		return annotations;
+	}
+	
+	public void addAnnotation(Annotation annotation)
+	{
+		annotations.add(annotation);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public void removeAnnotation(Annotation annotation)
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		annotations.remove(annotation);
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public void clearAnnotations()
 	{
-		int index = buttons.headSet(button).size();
+		annotations.clear();
+	}
+	
+	public Annotation find(Type type)
+	{
+		for (Annotation a : annotations)
+			if (a.getType().equals(type))
+				return a;
+		return null;
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	public int size()
+	{
+		return annotations.size();
+	}
+	
+	public Annotation addAnnotation(Type type, String name, Object value)
+	{
+		Annotation annotation = new Annotation(this);
+		annotation.setType(type);
+		addAnnotation(annotation);
+		
+		Element element = new Element(annotation);
+		element.setName(name);
+		element.setValue(value);
+		annotation.addElement(element);
+
+		return annotation;
 	}
 }

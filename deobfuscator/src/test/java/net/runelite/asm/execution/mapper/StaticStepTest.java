@@ -22,64 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.asm.execution.mapper;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
-
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class StaticStepTest
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	static void func2()
 	{
-		this.eventBus = eventBus;
+
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	static void func1()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		func2();
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	void map()
 	{
-		int index = buttons.headSet(button).size();
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	static void entry()
+	{
+		func1();
+		func1();
+		new StaticStepTest().map();
 	}
 }

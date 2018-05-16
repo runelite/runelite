@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.execution;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import net.runelite.asm.attributes.code.Instruction;
+
+public class WeakInstructionContext
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private Instruction ins;
+	private List<Instruction> stack = new ArrayList<>();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public WeakInstructionContext(Instruction ins)
 	{
-		this.eventBus = eventBus;
+		this.ins = ins;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public void addStack(Instruction i)
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		stack.add(i);
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	@Override
+	public int hashCode()
 	{
-		int index = buttons.headSet(button).size();
+		int hash = 3;
+		hash = 37 * hash + Objects.hashCode(this.ins);
+		hash = 37 * hash + Objects.hashCode(this.stack);
+		return hash;
+	}
 
-		if (buttons.remove(button))
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			return true;
 		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final WeakInstructionContext other = (WeakInstructionContext) obj;
+		if (!Objects.equals(this.ins, other.ins))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.stack, other.stack))
+		{
+			return false;
+		}
+		return true;
 	}
 }

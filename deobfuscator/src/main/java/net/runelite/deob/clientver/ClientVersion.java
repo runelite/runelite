@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.deob.clientver;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import org.objectweb.asm.ClassReader;
+
+public class ClientVersion
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final File jar;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public ClientVersion(File jar)
 	{
-		this.eventBus = eventBus;
+		this.jar = jar;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public int getVersion() throws IOException
 	{
-		if (buttons.contains(button))
+		try (JarFile jar = new JarFile(this.jar))
 		{
-			return;
+			for (Enumeration<JarEntry> it = jar.entries(); it.hasMoreElements();)
+			{
+				JarEntry entry = it.nextElement();
+
+				if (!entry.getName().equals("client.class"))
+					continue;
+
+				InputStream in = jar.getInputStream(entry);
+
+				ClassReader reader = new ClassReader(in);
+				VersionClassVisitor v = new VersionClassVisitor();
+				reader.accept(v, 0);
+				return v.getVersion();
+			}
 		}
 
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		return -1;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.attributes;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.pool.Class;
+
+public class Exceptions
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final List<Class> classes = new ArrayList<>();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public void addException(Class cl)
 	{
-		this.eventBus = eventBus;
+		classes.add(cl);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public List<Class> getExceptions()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return classes;
 	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	
+	public void renameClass(ClassFile cf, String name)
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
+		for (Class c : new ArrayList<>(classes))
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			if (c.getName().equals(cf.getName()))
+			{
+				int idx = classes.indexOf(c);
+				classes.remove(idx);
+				classes.add(idx, new Class(name));
+			}
 		}
 	}
 }

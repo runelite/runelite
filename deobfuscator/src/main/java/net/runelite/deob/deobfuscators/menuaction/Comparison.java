@@ -22,64 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators.menuaction;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.Objects;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+class Comparison
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	LVTInstruction lvt;
+	Instruction ldc;
+	Instruction cmp;
+	
+	Label next;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	Number getConstant()
 	{
-		this.eventBus = eventBus;
+		return (Number) ((PushConstantInstruction) ldc).getConstant();
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public int hashCode()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		int hash = 3;
+		hash = 41 * hash + Objects.hashCode(this.cmp);
+		return hash;
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	@Override
+	public boolean equals(Object obj)
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
+		if (this == obj)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			return true;
 		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Comparison other = (Comparison) obj;
+		if (!Objects.equals(this.cmp, other.cmp))
+		{
+			return false;
+		}
+		return true;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Comparison{" + "lvt=" + lvt + ", ldc=" + ldc + ", cmp=" + cmp + ", next=" + next + '}';
+	}
+
 }

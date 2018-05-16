@@ -22,64 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.io.InputStream;
+import java.util.Properties;
+import org.junit.rules.ExternalResource;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class DeobTestProperties extends ExternalResource
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private String rsClient;
+	private int rsVersion;
+	private String vanillaClient;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	@Override
+	protected void before() throws Throwable
 	{
-		this.eventBus = eventBus;
+		Properties properties = new Properties();
+		InputStream resourceAsStream = getClass().getResourceAsStream("/deob-test.properties");
+		properties.load(resourceAsStream);
+
+		rsClient = (String) properties.get("rs.client");
+		rsVersion = Integer.parseInt((String) properties.get("rs.version"));
+		vanillaClient = (String) properties.get("vanilla.client");
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public String getRsClient()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return rsClient;
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public int getRsVersion()
 	{
-		int index = buttons.headSet(button).size();
+		return rsVersion;
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	public String getVanillaClient()
+	{
+		return vanillaClient;
 	}
 }

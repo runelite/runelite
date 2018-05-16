@@ -22,64 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators.transformers.buffer;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobTestProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class BufferFinderTest
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	@Rule
+	public DeobTestProperties properties = new DeobTestProperties();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
+
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		this.eventBus = eventBus;
+		group = JarUtil.loadJar(new File(properties.getRsClient()));
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Test
+	@Ignore
+	public void testRun() throws IOException
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		BufferFinder bf = new BufferFinder(group);
+		bf.find();
 	}
 }

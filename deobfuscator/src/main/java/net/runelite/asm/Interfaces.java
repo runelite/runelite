@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.asm;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import net.runelite.asm.pool.Class;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class Interfaces
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final ClassFile classFile;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	private final List<Class> interfaces = new ArrayList<>();
+
+	Interfaces(ClassFile c)
 	{
-		this.eventBus = eventBus;
+		classFile = c;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public void addInterface(Class clazz)
 	{
-		if (buttons.contains(button))
+		if (!interfaces.contains(clazz))
 		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
+			interfaces.add(clazz);
 		}
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public List<Class> getInterfaces()
 	{
-		int index = buttons.headSet(button).size();
+		return interfaces;
+	}
 
-		if (buttons.remove(button))
+	public void clear()
+	{
+		interfaces.clear();
+	}
+
+	public List<ClassFile> getMyInterfaces()
+	{
+		List<ClassFile> l = new ArrayList<>();
+		for (Class clazz : interfaces)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
+			if (iface != null)
+			{
+				l.add(iface);
+			}
 		}
+		return l;
+	}
+
+	public List<Class> getNonMyInterfaces()
+	{
+		return interfaces.stream().filter(clazz -> classFile.getGroup().findClass(clazz.getName()) == null).collect(Collectors.toList());
+	}
+
+	public boolean instanceOf(ClassFile cf)
+	{
+		for (Class clazz : interfaces)
+		{
+			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
+			if (iface.instanceOf(cf))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

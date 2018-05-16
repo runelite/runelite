@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.attributes.code.instructions;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import net.runelite.asm.Type;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.Stack;
+import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.execution.Value;
+
+public class LOr extends Instruction
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public LOr(Instructions instructions, InstructionType type)
 	{
-		this.eventBus = eventBus;
+		super(instructions, type);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public InstructionContext execute(Frame frame)
 	{
-		if (buttons.contains(button))
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		
+		StackContext two = stack.pop();
+		StackContext one = stack.pop();
+		
+		ins.pop(two, one);
+		
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
-			return;
+			long l2 = (long) two.getValue().getValue(),
+				l1 = (long) one.getValue().getValue();
+			
+			result = new Value(l1 | l2);
 		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		
+		StackContext ctx = new StackContext(ins, Type.LONG, result);
+		stack.push(ctx);
+		
+		ins.push(ctx);
+		
+		return ins;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators.mapping;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.asm.attributes.code.Instruction;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class Mapping
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private Object from;
+	private Object object;
+	private int count;
+	private List<Instruction> ins = new ArrayList<>();
+	public boolean wasExecuted;
+	public int weight; // weight of mapping, based on same instruction count
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public Mapping(Object from, Object object)
 	{
-		this.eventBus = eventBus;
+		this.from = from;
+		this.object = object;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public String toString()
 	{
-		if (buttons.contains(button))
+		return "Mapping{" + "from=" + from + ", object=" + object + ", count=" + count + '}';
+	}
+
+	public Object getFrom()
+	{
+		return from;
+	}
+
+	public Object getObject()
+	{
+		return object;
+	}
+
+	public int getCount()
+	{
+		return count;
+	}
+
+	public void inc()
+	{
+		++count;
+	}
+
+	public void merge(Mapping other)
+	{
+		assert object == other.object;
+		count += other.count;
+		for (Instruction i : other.ins)
 		{
-			return;
+			addInstruction(i);
 		}
+		wasExecuted |= other.wasExecuted;
+		weight = Math.max(weight, other.weight);
+	}
 
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
+	public void addInstruction(Instruction i)
+	{
+		if (!ins.contains(i))
 		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
+			ins.add(i);
 		}
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public void setWeight(int w)
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
+		if (w > weight)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			weight = w;
 		}
 	}
 }

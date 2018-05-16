@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.deob.deobfuscators.mapping;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+
+public class ClassGroupMapper
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final ClassGroup one, two;
+	private final Map<ClassFile, ClassFile> map = new HashMap<>();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public ClassGroupMapper(ClassGroup one, ClassGroup two)
 	{
-		this.eventBus = eventBus;
+		this.one = one;
+		this.two = two;
+	}
+	
+	public void map()
+	{
+		for (ClassFile cf1 : one.getClasses())
+			for (ClassFile cf2 : two.getClasses())
+			{
+				if (!MappingExecutorUtil.isMaybeEqual(cf1, cf2))
+					continue;
+				
+				ClassMapper m = new ClassMapper(cf1, cf2);
+				if (!m.same())
+					continue;
+				
+				map.put(cf1, cf2);
+			}
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public Map<ClassFile, ClassFile> getMap()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return map;
 	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	
+	public ClassFile get(ClassFile c)
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		return map.get(c);
 	}
 }

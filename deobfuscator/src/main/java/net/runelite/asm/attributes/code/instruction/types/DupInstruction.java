@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.attributes.code.instruction.types;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.List;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.StackContext;
+
+public interface DupInstruction
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
-	{
-		this.eventBus = eventBus;
-	}
+	StackContext getOriginal(StackContext sctx);
+	
+	StackContext getOtherBranch(StackContext sctx);
 
 	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
+	 * get the duplicated stackcontexts (which is popped from this)
+	 * @param ictx instruction context for this instruction
+	 * @return
 	 */
-	public void addNavigation(final NavigationButton button)
-	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
+	List<StackContext> getDuplicated(InstructionContext ictx);
 
 	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
+	 * get the copied stackcontexts (pushed from this)
+	 * @param ictx
+	 * @return
 	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
-	}
+	List<StackContext> getCopies(InstructionContext ictx);
 }

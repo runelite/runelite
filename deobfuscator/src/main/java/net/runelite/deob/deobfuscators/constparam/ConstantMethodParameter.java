@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators.constparam;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+class ConstantMethodParameter
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	List<Method> methods; // methods this is a parameter for
+	int paramIndex;
+	int lvtIndex;
+	List<Number> values = new ArrayList<>(); // possible values for the parameter
+	List<Instruction> operations = new ArrayList<>(); // conditional jumps based on the parameter
+	Boolean result; // result of the jumps (branch taken or not)
+	boolean invalid;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	@Override
+	public int hashCode()
 	{
-		this.eventBus = eventBus;
+		int hash = 3;
+		hash = 47 * hash + Objects.hashCode(this.methods);
+		hash = 47 * hash + this.lvtIndex;
+		return hash;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public boolean equals(Object obj)
 	{
-		if (buttons.contains(button))
+		if (obj == null)
 		{
-			return;
+			return false;
 		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
+		if (getClass() != obj.getClass())
 		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
+			return false;
 		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
+		final ConstantMethodParameter other = (ConstantMethodParameter) obj;
+		if (!Objects.equals(this.methods, other.methods))
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			return false;
 		}
+		if (this.lvtIndex != other.lvtIndex)
+		{
+			return false;
+		}
+		return true;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.attributes.code.instructions;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+
+public class IfCmpLe extends If
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public IfCmpLe(Instructions instructions, InstructionType type)
 	{
-		this.eventBus = eventBus;
+		super(instructions, type);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		if (buttons.contains(button))
+		if (!this.isSameField(thisIc, otherIc))
+			return false;
+		
+		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
+			return true;
+		
+		if (otherIc.getInstruction() instanceof IfCmpGt)
 		{
-			return;
+			return true;
 		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+	
+		return false;
 	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
+		if (other.getInstruction() instanceof IfCmpGt)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
 		}
 	}
 }

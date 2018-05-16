@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.attributes.annotation;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.ArrayList;
+import java.util.List;
+
+import net.runelite.asm.Type;
+import net.runelite.asm.attributes.Annotations;
+import org.objectweb.asm.AnnotationVisitor;
+
+public class Annotation
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final Annotations annotations;
+	private Type type;
+	private final List<Element> elements = new ArrayList<>();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public Annotation(Annotations annotations)
 	{
-		this.eventBus = eventBus;
+		this.annotations = annotations;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public Annotations getAnnotations()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return annotations;
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public void setType(Type type)
 	{
-		int index = buttons.headSet(button).size();
+		this.type = type;
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	public Type getType()
+	{
+		return type;
+	}
+
+	public List<Element> getElements()
+	{
+		return elements;
+	}
+	
+	public Element getElement()
+	{
+		return elements.get(0);
+	}
+	
+	public void addElement(Element element)
+	{
+		elements.add(element);
+	}
+	
+	public void accept(AnnotationVisitor visitor)
+	{
+		for (Element element : elements)
+			visitor.visit(element.getName(), element.getValue());
+		visitor.visitEnd();
 	}
 }

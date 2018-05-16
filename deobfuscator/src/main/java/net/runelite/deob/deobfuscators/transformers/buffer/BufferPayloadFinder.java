@@ -22,64 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators.transformers.buffer;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Field;
+import net.runelite.asm.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class BufferPayloadFinder
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private static final Logger logger = LoggerFactory.getLogger(BufferPayloadFinder.class);
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	private final ClassFile bufferClass;
+
+	private Field offset;
+	private Field buffer;
+
+	public BufferPayloadFinder(ClassFile bufferClass)
 	{
-		this.eventBus = eventBus;
+		this.bufferClass = bufferClass;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public void find()
 	{
-		if (buttons.contains(button))
+		for (Field field : bufferClass.getFields())
 		{
-			return;
+			if (field.getType().equals(Type.INT))
+			{
+				offset = field;
+			}
+			else if (field.getType().equals(new Type("[B")))
+			{
+				buffer = field;
+			}
 		}
 
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		logger.info("Found offset {} buffer {}", offset, buffer);
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public Field getOffset()
 	{
-		int index = buttons.headSet(button).size();
+		return offset;
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	public Field getBuffer()
+	{
+		return buffer;
 	}
 }

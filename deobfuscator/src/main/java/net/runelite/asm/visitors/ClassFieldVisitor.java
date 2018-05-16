@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.visitors;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Field;
+import net.runelite.asm.Type;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Opcodes;
+
+public class ClassFieldVisitor extends FieldVisitor
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final ClassFile classFile;
+	private final Field field;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public ClassFieldVisitor(ClassFile cf, int access, String name, Type desc, Object value)
 	{
-		this.eventBus = eventBus;
+		super(Opcodes.ASM5);
+
+		this.classFile = cf;
+
+		field = new Field(cf, name, desc);
+		field.setAccessFlags(access);
+		field.setValue(value);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public AnnotationVisitor visitAnnotation(String desc, boolean visible)
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		Type type = new Type(desc);
+		return new FieldAnnotationVisitor(field, type);
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	@Override
+	public void visitAttribute(Attribute attr)
 	{
-		int index = buttons.headSet(button).size();
+		System.out.println(attr);
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	@Override
+	public void visitEnd()
+	{
+		classFile.addField(field);
 	}
 }

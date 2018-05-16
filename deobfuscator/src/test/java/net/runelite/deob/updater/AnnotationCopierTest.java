@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.updater;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class AnnotationCopierTest
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
+	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
+	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
+	
+	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\116.2-SNAPSHOT\\in.jar",
+		JAR2 = "d:/rs/07/gamepack_116_deobfuscated.jar",
+		OUT = "d:/rs/07/adamout.jar";
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	private ClassGroup group1, group2;
+
+	@Before
+	public void before() throws IOException
 	{
-		this.eventBus = eventBus;
+		group1 = JarUtil.loadJar(new File(JAR1));
+		group2 = JarUtil.loadJar(new File(JAR2));
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@After
+	public void after() throws IOException
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		JarUtil.saveJar(group2, new File(OUT));
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	//@Test
+	public void testCopy()
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		AnnotationCopier ac = new AnnotationCopier(group1, group2, EXPORT, IMPLEMENTS, REPLACE);
+		ac.copy();
 	}
+
 }

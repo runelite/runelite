@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.deob.deobfuscators.mapping;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.util.Collection;
+import net.runelite.asm.Method;
+
+public class ExecutionMapper
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	// method1 maps to one of methods2, find out based on mappings
+	
+	private Method method1;
+	private Collection<Method> methods2;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public ExecutionMapper(Method method1, Collection<Method> methods2)
 	{
-		this.eventBus = eventBus;
+		this.method1 = method1;
+		this.methods2 = methods2;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public ParallelExecutorMapping run()
 	{
-		if (buttons.contains(button))
+		ParallelExecutorMapping highest = null;
+		boolean multiple = false;
+
+		for (Method m : methods2)
 		{
-			return;
+			ParallelExecutorMapping mapping = MappingExecutorUtil.map(method1, m);
+
+			if (highest == null || mapping.same > highest.same)
+			{
+				highest = mapping;
+				multiple = false;
+			}
+			else if (mapping.same == highest.same)
+			{
+				multiple = true;
+			}
 		}
 
-		button.setTooltip(button.getName());
+		if (multiple)
+			return null;
 
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		return highest;
 	}
 }

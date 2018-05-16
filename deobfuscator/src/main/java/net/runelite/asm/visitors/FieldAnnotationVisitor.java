@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.visitors;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import net.runelite.asm.Field;
+import net.runelite.asm.Type;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Opcodes;
+
+public class FieldAnnotationVisitor extends AnnotationVisitor
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	private final Field field;
+	private final Type type;
+	private final Annotation annotation;
+	
+	public FieldAnnotationVisitor(Field field, Type type)
 	{
-		this.eventBus = eventBus;
+		super(Opcodes.ASM5);
+		
+		this.field = field;
+		this.type = type;
+		
+		annotation = new Annotation(field.getAnnotations());
+		annotation.setType(type);
+	}
+	
+	@Override
+	public void visit(String name, Object value)
+	{
+		Element element = new Element(annotation);
+		
+		element.setName(name);
+		element.setValue(value);
+		
+		annotation.addElement(element);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public void visitEnd()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		field.getAnnotations().addAnnotation(annotation);
 	}
 }

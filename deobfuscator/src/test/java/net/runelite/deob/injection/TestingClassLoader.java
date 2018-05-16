@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.injection;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.util.JarUtil;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class TestingClassLoader extends ClassLoader
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private ClassGroup group;
+	private Map<String, Class<?>> classes = new HashMap<>();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public TestingClassLoader(ClassGroup group)
 	{
-		this.eventBus = eventBus;
+		this.group = group;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public Class<?> findClass(String name) throws ClassNotFoundException
 	{
-		if (buttons.contains(button))
+		ClassFile cf = group.findClass(name);
+		if (cf == null)
 		{
-			return;
+			return super.findClass(name);
 		}
 
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
+		Class<?> c = classes.get(name);
+		if (c != null)
 		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
+			return c;
 		}
+
+		byte[] clazz = JarUtil.writeClass(group, cf);
+		return defineClass(name, clazz);
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	private Class<?> defineClass(String name, byte[] b)
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		Class<?> c = super.defineClass(name.replace('/', '.'), b, 0, b.length);
+		classes.put(name, c);
+		return c;
 	}
 }

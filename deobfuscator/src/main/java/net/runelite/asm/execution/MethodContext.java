@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.asm.execution;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import java.util.Collection;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class MethodContext
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private Execution execution;
+	private Method method;
+	private Multimap<InstructionContext, Instruction> visited = HashMultimap.create();
+	public Multimap<Instruction, InstructionContext> contexts = HashMultimap.create();
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public MethodContext(Execution execution, Method method)
 	{
-		this.eventBus = eventBus;
+		this.execution = execution;
+		this.method = method;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public Execution getExecution()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return execution;
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public Method getMethod()
 	{
-		int index = buttons.headSet(button).size();
+		return method;
+	}
 
-		if (buttons.remove(button))
+	protected boolean hasJumped(InstructionContext from, Instruction to)
+	{
+		Collection<Instruction> i = visited.get(from);
+		if (i != null && i.contains(to))
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			return true;
 		}
+
+		visited.put(from, to);
+		return false;
+	}
+
+	public Collection<InstructionContext> getInstructonContexts(Instruction i)
+	{
+		return contexts.get(i);
+	}
+
+	public Collection<InstructionContext> getInstructionContexts()
+	{
+		return (Collection) contexts.values();
+	}
+
+	public void reset()
+	{
+		contexts.clear();
+		visited.clear();
 	}
 }

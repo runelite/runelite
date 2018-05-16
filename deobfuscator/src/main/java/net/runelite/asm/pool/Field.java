@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,85 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.asm.pool;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import net.runelite.asm.Type;
+
+import java.util.Objects;
+
+public class Field
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final Class clazz;
+	private final String name;
+	private final Type type;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public Field(Class clazz, String name, Type type)
 	{
-		this.eventBus = eventBus;
+		this.clazz = clazz;
+		this.name = name;
+		this.type = type;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@Override
+	public String toString()
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return "Field{" + "clazz=" + clazz + ", name=" + name + ", type=" + type + '}';
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	@Override
+	public int hashCode()
 	{
-		int index = buttons.headSet(button).size();
+		int hash = 3;
+		hash = 97 * hash + Objects.hashCode(this.clazz);
+		hash = 97 * hash + Objects.hashCode(this.name);
+		hash = 97 * hash + Objects.hashCode(this.type);
+		return hash;
+	}
 
-		if (buttons.remove(button))
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			return true;
 		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Field other = (Field) obj;
+		if (!Objects.equals(this.name, other.name))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clazz, other.clazz))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.type, other.type))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public Class getClazz()
+	{
+		return clazz;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public Type getType()
+	{
+		return type;
 	}
 }

@@ -22,64 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.s2c;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.List;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class PacketHandlers
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final ClassGroup group;
+	private final Field packetType;
+	private final List<PacketHandler> handlers;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public PacketHandlers(ClassGroup group, Field packetType, List<PacketHandler> handlers)
 	{
-		this.eventBus = eventBus;
+		this.group = group;
+		this.packetType = packetType;
+		this.handlers = handlers;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public PacketHandler find(int opcode)
 	{
-		if (buttons.contains(button))
+		for (PacketHandler handler : handlers)
 		{
-			return;
+			if (handler.getOpcode() == opcode)
+			{
+				return handler;
+			}
 		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return null;
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	public ClassGroup getGroup()
 	{
-		int index = buttons.headSet(button).size();
+		return group;
+	}
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+	public Field getPacketType()
+	{
+		return packetType;
+	}
+
+	public List<PacketHandler> getHandlers()
+	{
+		return handlers;
 	}
 }

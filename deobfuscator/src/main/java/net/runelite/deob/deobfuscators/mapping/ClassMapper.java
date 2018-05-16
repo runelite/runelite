@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators.mapping;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
+import java.util.List;
+import java.util.stream.Collectors;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Type;
+import net.runelite.asm.signature.Signature;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class ClassMapper
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private final ClassFile one, two;
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	public ClassMapper(ClassFile one, ClassFile two)
 	{
-		this.eventBus = eventBus;
+		this.one = one;
+		this.two = two;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	private Multiset<Type> fieldCardinalities(ClassFile cf)
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
+		List<Type> t = cf.getFields().stream()
+			.filter(f -> !f.isStatic())
+			.map(f -> f.getType())
+			.collect(Collectors.toList());
 
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		return ImmutableMultiset.copyOf(t);
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	private Multiset<Signature> methodCardinalities(ClassFile cf)
 	{
-		int index = buttons.headSet(button).size();
+		List<Signature> t = cf.getMethods().stream()
+			.filter(m -> !m.isStatic())
+			.filter(m -> !m.getName().startsWith("<"))
+			.map(m -> m.getDescriptor())
+			.collect(Collectors.toList());
 
-		if (buttons.remove(button))
+		return ImmutableMultiset.copyOf(t);
+	}
+
+	public boolean same()
+	{
+		Multiset<Type> c1 = fieldCardinalities(one), c2 = fieldCardinalities(two);
+
+		if (!c1.equals(c2))
 		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
+			return false;
 		}
+
+		Multiset<Signature> s1 = methodCardinalities(one);
+		Multiset<Signature> s2 = methodCardinalities(two);
+
+		if (!s1.equals(s2))
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

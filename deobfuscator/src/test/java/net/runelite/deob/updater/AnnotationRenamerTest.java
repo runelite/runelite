@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+package net.runelite.deob.updater;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class AnnotationRenamerTest
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private static final String JAR = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\120.2-SNAPSHOT\\rs-client-120.2-SNAPSHOT.jar",
+		OUT = "d:/rs/07/adamout.jar";
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		this.eventBus = eventBus;
+		group = JarUtil.loadJar(new File(JAR));
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	@After
+	public void after() throws IOException
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
+		JarUtil.saveJar(group, new File(OUT));
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
+	//@Test
+	public void testRename()
 	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		AnnotationRenamer ar = new AnnotationRenamer(group);
+		ar.run();
 	}
+
 }

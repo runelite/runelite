@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.deob.deobfuscators;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.util.ArrayList;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class UnusedClass implements Deobfuscator
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
+	private static final Logger logger = LoggerFactory.getLogger(UnusedClass.class);
 
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	@Override
+	public void run(ClassGroup group)
 	{
-		this.eventBus = eventBus;
+		int count = 0;
+		for (ClassFile cf : new ArrayList<>(group.getClasses()))
+		{
+			if (!cf.getFields().isEmpty())
+			{
+				continue;
+			}
+
+			if (!cf.getMethods().isEmpty())
+			{
+				continue;
+			}
+
+			if (isImplemented(group, cf))
+			{
+				continue;
+			}
+
+			group.removeClass(cf);
+			++count;
+		}
+		
+		logger.info("Removed {} classes", count);
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	private boolean isImplemented(ClassGroup group, ClassFile iface)
 	{
-		if (buttons.contains(button))
+		for (ClassFile cf : group.getClasses())
 		{
-			return;
+			if (cf.getInterfaces().getMyInterfaces().contains(iface))
+			{
+				return true;
+			}
 		}
-
-		button.setTooltip(button.getName());
-
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
-
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
-
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		return false;
 	}
 }

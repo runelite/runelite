@@ -22,64 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.asm.execution;
 
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-import java.util.TreeSet;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.events.PluginToolbarButtonAdded;
-import net.runelite.client.events.PluginToolbarButtonRemoved;
+import java.io.IOException;
+import java.io.InputStream;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.ClassUtil;
+import net.runelite.asm.Method;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import org.junit.Assert;
+import org.junit.Test;
 
-/**
- * Plugin toolbar buttons holder.
- */
-@Singleton
-public class PluginToolbar
+public class ParallelMappingExecutorTest
 {
-	private final EventBus eventBus;
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-
-	@Inject
-	private PluginToolbar(final EventBus eventBus)
+	@Test
+	public void testTableswitch() throws IOException
 	{
-		this.eventBus = eventBus;
-	}
+		InputStream in = ParallelMappingExecutorTest.class.getResourceAsStream("tests/TableSwitch.class");
+		Assert.assertNotNull(in);
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
-	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
+		ClassGroup group = new ClassGroup();
+		ClassFile cf = ClassUtil.loadClass(in);
+		group.addClass(cf);
 
-		button.setTooltip(button.getName());
+		in = ParallelMappingExecutorTest.class.getResourceAsStream("tests/TableSwitch.class");
+		Assert.assertNotNull(in);
 
-		if (buttons.add(button))
-		{
-			int index = buttons.headSet(button).size();
-			eventBus.post(new PluginToolbarButtonAdded(button, index));
-		}
-	}
+		ClassGroup group2 = new ClassGroup();
+		ClassFile cf2 = ClassUtil.loadClass(in);
+		group2.addClass(cf2);
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
-	public void removeNavigation(final NavigationButton button)
-	{
-		int index = buttons.headSet(button).size();
+		Method m1 = cf.findMethod("method");
+		Method m2 = cf2.findMethod("method");
 
-		if (buttons.remove(button))
-		{
-			eventBus.post(new PluginToolbarButtonRemoved(button, index));
-		}
+		ParallelExecutorMapping map = MappingExecutorUtil.map(m1, m2);
+		Assert.assertEquals(cf2.findField("field2"), map.get(cf.findField("field2")));
 	}
 }
