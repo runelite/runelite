@@ -27,6 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.menuentryswapper.swapConfigs.*;
 
 @ConfigGroup(
 	keyName = "menuentryswapper",
@@ -113,14 +114,14 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
-		keyName = "swapHome",
-		name = "Home",
-		description = "Swap Enter with Home on Portal"
+			position = 7,
+			keyName =  "swapPortalMode",
+			name = "Home Portal",
+			description = "Swap Enter with Home or Build mode"
 	)
-	default boolean swapHome()
+	default SwapPortalMode swapPortalMode()
 	{
-		return true;
+		return SwapPortalMode.HOME;
 	}
 
 	@ConfigItem(
@@ -141,6 +142,17 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Pickpocket on H.A.M members"
 	)
 	default boolean swapPickpocket()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 9,
+			keyName = "swapPickpocketMartin",
+			name = "Pickpocket on Martin the Master Farmer",
+			description = "Swap Talk-to with Pickpocket on Martin the Master Farmer"
+	)
+	default boolean swapPickpocketMartin()
 	{
 		return true;
 	}
@@ -220,5 +232,27 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean claimSlime()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "swapConCape",
+			name = "Con Cape",
+			description = "Swap wear with Tele to POH or Teleport"
+	)
+	default SwapConCape swapConCape()
+	{
+		return SwapConCape.TELEPOH;
+	}
+
+	@ConfigItem(
+			position = 18,
+			keyName = "swapRazmire",
+			name = "Razmire Trade",
+			description = "Swap talk-to with General or Builders-Store"
+	)
+	default SwapRazmire swapRazmire()
+	{
+		return SwapRazmire.BUILDERS;
 	}
 }

@@ -336,6 +336,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("pickpocket", option, target, true);
 			}
 
+			if (config.swapPickpocketMartin() && target.contains("martin"))
+			{
+				swap("pickpocket", option, target, true);
+			}
+
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
 			{
 				swap("teleport", option, target, true);
@@ -353,7 +358,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			if (config.swapTrade())
 			{
-				swap("trade", option, target, true);
+				if (target.contains("razmire"))
+				{
+					switch (config.swapRazmire())
+					{
+						case OFF:
+							break;
+						case GENERAL:
+							swap("trade-general-store", option, target, true);
+							break;
+						case BUILDERS:
+							swap("trade-builders-store", option, target, true);
+							break;
+					}
+				}
+				else
+				{
+					swap("trade", option, target, true);
+				}
 			}
 
 			if (config.claimSlime() && target.equals("robin"))
@@ -396,9 +418,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
-		else if (config.swapHome() && option.equals("enter"))
+		else if (target.contains("portal"))
 		{
-			swap("home", option, target, true);
+			switch (config.swapPortalMode())
+			{
+				case OFF:
+					break;
+				case HOME:
+					swap("home", option, target, true);
+					break;
+				case BUILD_MODE:
+					swap("build mode", option, target, true);
+					break;
+			}
 		}
 		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
 		{
@@ -434,6 +466,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
+			if (target.contains("construct"))
+			{
+				switch (config.swapConCape())
+				{
+					case TELEPOH:
+						swap("tele to poh", option, target, true);
+						break;
+					case TELE:
+						swap("teleport", option, target, true);
+				}
+			}
+			else if (target.contains("morytania legs"))
+			{
+				swap("burgh teleport", option, target, true);
+			}
+			else
+			{
+				swap("teleport", option, target, true);
+			}
 		}
 		else if (option.equals("wield"))
 		{
