@@ -32,7 +32,9 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -62,16 +64,22 @@ public class SessionClient
 		}
 	}
 
-	public void ping(UUID uuid) throws IOException
+	public void ping(UUID uuid, boolean inGame) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("session")
 			.addPathSegment("ping")
-			.addQueryParameter("session", uuid.toString())
+			.build();
+
+		RequestBody requestBody = new MultipartBody.Builder()
+			.setType(MultipartBody.FORM)
+			.addFormDataPart("session", uuid.toString())
+			.addFormDataPart("ingame", inGame ? "1" : "0")
 			.build();
 
 		Request request = new Request.Builder()
 			.url(url)
+			.post(requestBody)
 			.build();
 
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
