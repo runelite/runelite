@@ -1,34 +1,17 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("im")
+@ObfuscatedName("ia")
 public class class237 {
-   @ObfuscatedName("g")
-   @Export("varpsMasks")
-   public static int[] varpsMasks;
-   @ObfuscatedName("e")
-   @Export("serverVarps")
-   public static int[] serverVarps;
-   @ObfuscatedName("b")
-   @Export("clientVarps")
-   public static int[] clientVarps;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Ldc;"
-   )
-   static class110 field2788;
+   @ObfuscatedName("jk")
+   public static String field2928;
+   @ObfuscatedName("jv")
+   public static String field3073;
+   @ObfuscatedName("jc")
+   public static String field2832;
 
    static {
-      varpsMasks = new int[32];
-      int var0 = 2;
-
-      for(int var1 = 0; var1 < 32; ++var1) {
-         varpsMasks[var1] = var0 - 1;
-         var0 += var0;
-      }
-
-      serverVarps = new int[2000];
-      clientVarps = new int[2000];
+      field2928 = "";
+      field3073 = "Page has opened in a new window.";
+      field2832 = "(Please check your popup blocker.)";
    }
 }

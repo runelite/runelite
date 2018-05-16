@@ -32,7 +32,7 @@ public interface RSWallObject extends WallObject
 {
 	@Import("hash")
 	@Override
-	int getHash();
+	long getHash();
 
 	@Import("x")
 	@Override

@@ -31,18 +31,21 @@ import java.util.Map;
 import java.util.Set;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
+import net.runelite.asm.attributes.code.instructions.Dup;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutField;
+import net.runelite.asm.attributes.code.instructions.Swap;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
@@ -58,8 +61,8 @@ public class InjectHook
 	{
 		String fieldName;
 		String clazz;
-		String method;
-		boolean staticMethod = true;
+		Method method;
+		boolean before;
 	}
 
 	private static final String HOOK_METHOD_SIGNATURE = "(I)V";
@@ -131,7 +134,8 @@ public class InjectHook
 			logger.trace("Found injection location for hook {} at instruction {}", hookName, sfi);
 			++injectedHooks;
 
-			Instruction objectInstruction = new AConstNull(ins);
+			StackContext value = ic.getPops().get(0);
+
 			StackContext objectStackContext = null;
 			if (sfi instanceof PutField)
 			{
@@ -144,8 +148,15 @@ public class InjectHook
 
 			try
 			{
-				// idx + 1 to insert after the set
-				injectCallback(ins, idx + 1, hookInfo, null, objectStackContext);
+				if (hookInfo.before)
+				{
+					injectCallbackBefore(ins, idx, hookInfo, null, objectStackContext, value);
+				}
+				else
+				{
+					// idx + 1 to insert after the set
+					injectCallback(ins, idx + 1, hookInfo, null, objectStackContext);
+				}
 			}
 			catch (InjectionException ex)
 			{
@@ -196,7 +207,7 @@ public class InjectHook
 
 			String hookName = hookInfo.fieldName;
 
-			// assume this is always at index 1
+			StackContext value = ic.getPops().get(0);
 			StackContext index = ic.getPops().get(1);
 
 			StackContext arrayReference = ic.getPops().get(2);
@@ -218,7 +229,14 @@ public class InjectHook
 
 			try
 			{
-				injectCallback(ins, idx + 1, hookInfo, index, objectStackContext);
+				if (hookInfo.before)
+				{
+					injectCallbackBefore(ins, idx, hookInfo, index, objectStackContext, value);
+				}
+				else
+				{
+					injectCallback(ins, idx + 1, hookInfo, index, objectStackContext);
+				}
 			}
 			catch (InjectionException ex)
 			{
@@ -227,6 +245,66 @@ public class InjectHook
 		});
 
 		e.run();
+	}
+
+	private void injectCallbackBefore(Instructions ins, int idx, HookInfo hookInfo, StackContext index, StackContext object, StackContext value) throws InjectionException
+	{
+		Signature signature = hookInfo.method.getDescriptor();
+		Type methodArgumentType = signature.getTypeOfArg(0);
+
+		if (!hookInfo.method.isStatic())
+		{
+			if (object == null)
+			{
+				throw new InjectionException("null object");
+			}
+
+			ins.getInstructions().add(idx++, new Dup(ins)); // dup value
+			idx = recursivelyPush(ins, idx, object);
+			ins.getInstructions().add(idx++, new Swap(ins));
+			if (!value.type.equals(methodArgumentType))
+			{
+				CheckCast checkCast = new CheckCast(ins);
+				checkCast.setType(methodArgumentType);
+				ins.getInstructions().add(idx++, checkCast);
+			}
+			if (index != null)
+			{
+				idx = recursivelyPush(ins, idx, index);
+			}
+
+			InvokeVirtual invoke = new InvokeVirtual(ins,
+				new net.runelite.asm.pool.Method(
+					new net.runelite.asm.pool.Class(hookInfo.clazz),
+					hookInfo.method.getName(),
+					signature
+				)
+			);
+			ins.getInstructions().add(idx++, invoke);
+		}
+		else
+		{
+			ins.getInstructions().add(idx++, new Dup(ins)); // dup value
+			if (!value.type.equals(methodArgumentType))
+			{
+				CheckCast checkCast = new CheckCast(ins);
+				checkCast.setType(methodArgumentType);
+				ins.getInstructions().add(idx++, checkCast);
+			}
+			if (index != null)
+			{
+				idx = recursivelyPush(ins, idx, index);
+			}
+
+			InvokeStatic invoke = new InvokeStatic(ins,
+				new net.runelite.asm.pool.Method(
+					new net.runelite.asm.pool.Class(hookInfo.clazz),
+					hookInfo.method.getName(),
+					signature
+				)
+			);
+			ins.getInstructions().add(idx++, invoke);
+		}
 	}
 
 	private int recursivelyPush(Instructions ins, int idx, StackContext sctx)
@@ -250,7 +328,7 @@ public class InjectHook
 
 	private void injectCallback(Instructions ins, int idx, HookInfo hookInfo, StackContext index, StackContext objectPusher) throws InjectionException
 	{
-		if (hookInfo.staticMethod == false)
+		if (!hookInfo.method.isStatic())
 		{
 			if (objectPusher == null)
 			{
@@ -270,7 +348,7 @@ public class InjectHook
 			InvokeVirtual invoke = new InvokeVirtual(ins,
 				new net.runelite.asm.pool.Method(
 					new net.runelite.asm.pool.Class(hookInfo.clazz),
-					hookInfo.method,
+					hookInfo.method.getName(),
 					new Signature(HOOK_METHOD_SIGNATURE)
 				)
 			);
@@ -291,7 +369,7 @@ public class InjectHook
 			InvokeStatic invoke = new InvokeStatic(ins,
 				new net.runelite.asm.pool.Method(
 					new net.runelite.asm.pool.Class(hookInfo.clazz),
-					hookInfo.method,
+					hookInfo.method.getName(),
 					new Signature(HOOK_METHOD_SIGNATURE)
 				)
 			);

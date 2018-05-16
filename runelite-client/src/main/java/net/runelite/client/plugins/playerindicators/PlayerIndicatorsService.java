@@ -46,8 +46,8 @@ public class PlayerIndicatorsService
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.drawOwnName() && !config.drawClanMemberNames()
-			&& !config.drawFriendNames() && !config.drawNonClanMemberNames())
+		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
+			&& !config.highlightFriends() && !config.highlightNonClanMembers())
 		{
 			return;
 		}
@@ -65,24 +65,24 @@ public class PlayerIndicatorsService
 
 			if (player == localPlayer)
 			{
-				if (config.drawOwnName())
+				if (config.highlightOwnPlayer())
 				{
-					consumer.accept(player, config.getOwnNameColor());
+					consumer.accept(player, config.getOwnPlayerColor());
 				}
 			}
-			else if (config.drawFriendNames() && player.isFriend())
+			else if (config.highlightFriends() && player.isFriend())
 			{
-				consumer.accept(player, config.getFriendNameColor());
+				consumer.accept(player, config.getFriendColor());
 			}
 			else if (config.drawClanMemberNames() && isClanMember)
 			{
 				consumer.accept(player, config.getClanMemberColor());
 			}
-			else if (config.drawTeamMemberNames() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
 			{
 				consumer.accept(player, config.getTeamMemberColor());
 			}
-			else if (config.drawNonClanMemberNames() && !isClanMember)
+			else if (config.highlightNonClanMembers() && !isClanMember)
 			{
 				consumer.accept(player, config.getNonClanMemberColor());
 			}

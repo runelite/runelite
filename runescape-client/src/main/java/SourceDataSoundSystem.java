@@ -9,39 +9,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("au")
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @Export("audioFormat")
    AudioFormat audioFormat;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("source")
    SourceDataLine source;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1163005383
+      intValue = 316529917
    )
    @Export("size")
    int size;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "16"
+      signature = "(I)V",
+      garbageValue = "2011832996"
    )
-   protected void vmethod2334() {
+   protected void vmethod2190() {
       this.audioFormat = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, AbstractSoundSystem.audioHighMemory?2:1, true, false);
       this.bytes = new byte[256 << (AbstractSoundSystem.audioHighMemory?2:1)];
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1556805769"
+      signature = "(IB)V",
+      garbageValue = "4"
    )
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
@@ -51,33 +51,27 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
          this.source.open();
          this.source.start();
          this.size = var1;
-      } catch (LineUnavailableException var5) {
-         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
-         var4 = (var4 >>> 4) + var4 & 252645135;
-         var4 += var4 >>> 8;
-         var4 += var4 >>> 16;
-         int var3 = var4 & 255;
-         if(var3 != 1) {
-            this.create(CacheFile.nextPowerOfTwo(var1));
+      } catch (LineUnavailableException var3) {
+         if(Tile.method2717(var1) != 1) {
+            this.create(class81.nextPowerOfTwo(var1));
          } else {
             this.source = null;
-            throw var5;
+            throw var3;
          }
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1113283435"
+      garbageValue = "1202910483"
    )
    @Export("size")
    protected int size() {
       return this.size - (this.source.available() >> (AbstractSoundSystem.audioHighMemory?2:1));
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @Export("write")
    protected void write() {
       int var1 = 256;
@@ -98,10 +92,10 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1465476948"
+      signature = "(B)V",
+      garbageValue = "82"
    )
    @Export("close")
    protected void close() {
@@ -112,10 +106,10 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-541164961"
+      garbageValue = "2019010178"
    )
    @Export("flush")
    protected void flush() {

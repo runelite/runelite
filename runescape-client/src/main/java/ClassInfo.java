@@ -6,72 +6,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lu")
+@ObfuscatedName("lt")
 @Implements("ClassInfo")
 public class ClassInfo extends Node {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 658911629
+      intValue = 2094893415
    )
-   int field3956;
-   @ObfuscatedName("e")
+   public int field3758;
+   @ObfuscatedName("m")
+   @Export("args")
+   public byte[][][] args;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1475470325
+      intValue = -1610310061
    )
    @Export("count")
-   int count;
+   public int count;
    @ObfuscatedName("b")
    @Export("type")
-   int[] type;
-   @ObfuscatedName("z")
-   @Export("errorIdentifiers")
-   int[] errorIdentifiers;
+   public int[] type;
+   @ObfuscatedName("f")
+   public int[] field3757;
    @ObfuscatedName("n")
+   @Export("errorIdentifiers")
+   public int[] errorIdentifiers;
+   @ObfuscatedName("h")
    @Export("fields")
-   Field[] fields;
-   @ObfuscatedName("l")
-   int[] field3955;
-   @ObfuscatedName("s")
+   public Field[] fields;
+   @ObfuscatedName("x")
    @Export("methods")
-   Method[] methods;
-   @ObfuscatedName("y")
-   @Export("args")
-   byte[][][] args;
+   public Method[] methods;
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljr;II)Llh;",
-      garbageValue = "-384956499"
+      signature = "(Liv;I)V",
+      garbageValue = "-288900723"
    )
-   public static IndexedSprite method5782(IndexDataBase var0, int var1) {
-      byte[] var3 = var0.takeRecordFlat(var1);
-      boolean var2;
-      if(var3 == null) {
-         var2 = false;
-      } else {
-         WorldMapType2.decodeSprite(var3);
-         var2 = true;
-      }
-
-      if(!var2) {
-         return null;
-      } else {
-         IndexedSprite var4 = new IndexedSprite();
-         var4.originalWidth = class332.indexedSpriteWidth;
-         var4.originalHeight = class332.indexedSpriteHeight;
-         var4.offsetX = class332.indexedSpriteOffsetXs[0];
-         var4.offsetY = WorldComparator.indexedSpriteOffsetYs[0];
-         var4.width = class332.indexSpriteWidths[0];
-         var4.height = GrandExchangeEvents.indexedSpriteHeights[0];
-         var4.palette = class332.indexedSpritePalette;
-         var4.pixels = ChatPlayer.spritePixels[0];
-         class332.indexedSpriteOffsetXs = null;
-         WorldComparator.indexedSpriteOffsetYs = null;
-         class332.indexSpriteWidths = null;
-         GrandExchangeEvents.indexedSpriteHeights = null;
-         class332.indexedSpritePalette = null;
-         ChatPlayer.spritePixels = null;
-         return var4;
-      }
+   public static void method5752(IndexDataBase var0) {
+      class265.field3351 = var0;
    }
 }

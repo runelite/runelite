@@ -31,12 +31,14 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
@@ -48,13 +50,13 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("The cipher reveals who to speak to next: ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance", "150"),
 		new CipherClue("The cipher reveals who to speak to next: ECRVCKP MJCNGF", "Captain Khaled", new WorldPoint(1845, 3754, 0), "Large eastern building in Piscarilius House", "5"),
 		new CipherClue("The cipher reveals who to speak to next: OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya", "53,000"),
-		new CipherClue("The cipher reveals who to speak to next: VTYR APCNTGLW", "King Percival", new WorldPoint(2638, 4686, 0), "Fisher Realm", "5"),
+		new CipherClue("The cipher reveals who to speak to next: VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor", "5"),
 		new CipherClue("The cipher reveals who to speak to next: UZZU MUJHRKYYKJ", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "3"),
-		new CipherClue("The cipher reveals who to speak to next: USBJCPSO", "Traiborn", new WorldPoint(3112, 3162, 0), "Wizard's Tower, 2nd floor", "3150"),
+		new CipherClue("The cipher reveals who to speak to next: USBJCPSO", "Traiborn", new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower", "3150"),
 		new CipherClue("The cipher reveals who to speak to next: HCKTA IQFHCVJGT", "Fairy Godfather", new WorldPoint(2446, 4428, 0), "Zanaris throne room", "64"),
 		new CipherClue("The cipher reveals who to speak to next: ZSBKDO ZODO", "Pirate Pete", new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofunctus", "Puzzle"),
 		new CipherClue("The cipher reveals who to speak to next: GBJSZ RVFFO", "Fairy Queen", new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout", "Puzzle"),
-		new CipherClue("The cipher reveals who to speak to next: QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", new WorldPoint(1625, 3802, 0), "Arceuus House Library, ground floor", "9")
+		new CipherClue("The cipher reveals who to speak to next: QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus House Library", "9")
 	);
 
 	private String text;
@@ -75,19 +77,26 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Cipher Clue");
-		panelComponent.setWidth(150);
+		panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getNpc())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
-		panelComponent.getLines().add(new PanelComponent.Line("NPC:"));
-		panelComponent.getLines().add(new PanelComponent.Line(getNpc(), TITLED_CONTENT_COLOR));
-
-		panelComponent.getLines().add(new PanelComponent.Line("Area:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getArea(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getArea())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
 		if (getAnswer() != null)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("Answer:"));
-			panelComponent.getLines().add(new PanelComponent.Line(true, getAnswer(), TITLED_CONTENT_COLOR));
+			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getAnswer())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 		}
 	}
 

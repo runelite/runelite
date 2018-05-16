@@ -32,18 +32,23 @@ import lombok.Getter;
 import net.runelite.api.GameObject;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
-import static net.runelite.api.ObjectID.*;
+import static net.runelite.api.ObjectID.CRATE_18506;
+import static net.runelite.api.ObjectID.CRATE_2620;
+import static net.runelite.api.ObjectID.CRATE_354;
+import static net.runelite.api.ObjectID.CRATE_357;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.SPADE_IMAGE;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class MapClue extends ClueScroll implements ObjectClueScroll
@@ -67,15 +72,19 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0)),
 		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0)),
-		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3502, 0), CRATE_2620),
+		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620),
 		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0)),
 		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2616, 3077, 0)),
 		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(3458, 3182, 0), CRATE_18506),
+		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506),
 		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3629, 0), CRATE_354),
 		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
 		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0))
+		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1)),
+		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
+		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0))
 	);
 
 	private int itemId;
@@ -97,29 +106,28 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Map Clue");
+		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
 
 		if (objectId != -1)
 		{
-			panelComponent.setWidth(150);
-
 			ObjectComposition objectToClick = plugin.getClient().getObjectDefinition(getObjectId());
 
 			String objectName = "N/A";
+
 			if (objectToClick != null)
 			{
 				objectName = objectToClick.getName();
 			}
 
-			panelComponent.getLines().add(new PanelComponent.Line("Travel to the destination"));
-			panelComponent.getLines().add(new PanelComponent.Line("and click the " + objectName + "."));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Travel to the destination and click the " + objectName + ".")
+				.build());
 		}
 		else
 		{
-			panelComponent.setWidth(160);
-
-			panelComponent.getLines().add(new PanelComponent.Line("Travel to the destination"));
-			panelComponent.getLines().add(new PanelComponent.Line("and dig on the marked tile."));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Travel to the destination and dig on the marked tile.")
+				.build());
 		}
 	}
 

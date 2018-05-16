@@ -40,6 +40,7 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
+import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -83,6 +84,11 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.isHotKeyPressed() && config.itemHighlightMode() == MENU)
+		{
+			return null;
+		}
+
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
@@ -175,7 +181,8 @@ public class GroundItemsOverlay extends Overlay
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
 				graphics,
 				groundPoint,
-				itemString, OFFSET_Z);
+				itemString,
+				item.getHeight() + OFFSET_Z);
 
 			if (textPoint == null)
 			{

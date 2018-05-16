@@ -4,49 +4,43 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jz")
+@ObfuscatedName("jy")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Ljr;"
-   )
-   @Export("EnumDefinition_indexCache")
-   static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lgj;"
    )
    @Export("EnumDefinition_cached")
    static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1948597767
+      intValue = 67416857
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1897020051
+      intValue = -303547453
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -59,10 +53,10 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgg;I)V",
-      garbageValue = "155654623"
+      signature = "(Lgy;I)V",
+      garbageValue = "-1038789195"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -76,10 +70,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lgg;II)V",
-      garbageValue = "-1633125485"
+      signature = "(Lgy;II)V",
+      garbageValue = "-1216349647"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -116,51 +110,38 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "56"
+      garbageValue = "3"
    )
-   public int method5029() {
+   public int method4998() {
       return this.size;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljr;Ljr;IZB)Leu;",
-      garbageValue = "4"
+      signature = "(I)V",
+      garbageValue = "296702561"
    )
-   public static Frames method5042(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
-      boolean var4 = true;
-      int[] var5 = var0.getChilds(var2);
+   static void method5008() {
+      FileOnDisk var0 = null;
 
-      for(int var6 = 0; var6 < var5.length; ++var6) {
-         byte[] var7 = var0.getChild(var2, var5[var6]);
-         if(var7 == null) {
-            var4 = false;
-         } else {
-            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-            byte[] var9;
-            if(var3) {
-               var9 = var1.getChild(0, var8);
-            } else {
-               var9 = var1.getChild(var8, 0);
-            }
-
-            if(var9 == null) {
-               var4 = false;
-            }
-         }
+      try {
+         var0 = class240.getPreferencesFile("", LoginPacket.field2265.name, true);
+         Buffer var1 = ScriptState.preferences.serialize();
+         var0.write(var1.payload, 0, var1.offset);
+      } catch (Exception var3) {
+         ;
       }
 
-      if(!var4) {
-         return null;
-      } else {
-         try {
-            return new Frames(var0, var1, var2, var3);
-         } catch (Exception var11) {
-            return null;
+      try {
+         if(var0 != null) {
+            var0.closeSync(true);
          }
+      } catch (Exception var2) {
+         ;
       }
+
    }
 }

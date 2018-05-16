@@ -4,131 +4,127 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("al")
+@ObfuscatedName("ad")
 @Implements("MapIcon")
 public class MapIcon {
-   @ObfuscatedName("bb")
-   static String field531;
-   @ObfuscatedName("dk")
-   @ObfuscatedSignature(
-      signature = "Lji;"
-   )
-   @Export("indexScripts")
-   static IndexData indexScripts;
-   @ObfuscatedName("fk")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
-   @ObfuscatedName("g")
+   @ObfuscatedName("rt")
    @ObfuscatedGetter(
-      intValue = 625796147
+      intValue = -746124839
+   )
+   static int field256;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1483125627
    )
    @Export("areaId")
    public final int areaId;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lhh;"
    )
-   public final Coordinates field522;
+   public final Coordinates field247;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhh;"
+   )
+   public final Coordinates field253;
    @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   public final Coordinates field528;
-   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1406147063
+      intValue = 858502729
    )
-   final int field524;
+   final int field249;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -2026664191
+   )
+   final int field250;
    @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1334609219
-   )
-   final int field521;
-   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lao;"
+      signature = "Lk;"
    )
-   final MapLabel field526;
-   @ObfuscatedName("s")
+   final MapLabel field255;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1605812407
+      intValue = -394071001
    )
    @Export("screenX")
    int screenX;
-   @ObfuscatedName("y")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 968035903
+      intValue = 1383282331
    )
    @Export("screenY")
    int screenY;
 
    @ObfuscatedSignature(
-      signature = "(ILio;Lio;Lao;)V"
+      signature = "(ILhh;Lhh;Lk;)V"
    )
    MapIcon(int var1, Coordinates var2, Coordinates var3, MapLabel var4) {
       this.areaId = var1;
-      this.field528 = var2;
-      this.field522 = var3;
-      this.field526 = var4;
-      Area var5 = class190.mapAreaType[this.areaId];
+      this.field253 = var2;
+      this.field247 = var3;
+      this.field255 = var4;
+      Area var5 = Area.mapAreaType[this.areaId];
       SpritePixels var6 = var5.getMapIcon(false);
       if(var6 != null) {
-         this.field524 = var6.width;
-         this.field521 = var6.height;
+         this.field249 = var6.width;
+         this.field250 = var6.height;
       } else {
-         this.field524 = 0;
-         this.field521 = 0;
+         this.field249 = 0;
+         this.field250 = 0;
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "903572246"
+      garbageValue = "1416629849"
    )
-   boolean method583(int var1, int var2) {
-      return this.method584(var1, var2)?true:this.method585(var1, var2);
+   boolean method504(int var1, int var2) {
+      return this.method514(var1, var2)?true:this.method513(var1, var2);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-8"
+      signature = "(III)Z",
+      garbageValue = "-1576406958"
    )
-   boolean method584(int var1, int var2) {
-      Area var3 = class190.mapAreaType[this.areaId];
+   boolean method514(int var1, int var2) {
+      Area var3 = Area.mapAreaType[this.areaId];
       switch(var3.horizontalAlignment.value) {
       case 0:
-         if(var1 <= this.screenX - this.field524 || var1 > this.screenX) {
-            return false;
+         if(var1 >= this.screenX - this.field249 / 2 && var1 <= this.field249 / 2 + this.screenX) {
+            break;
          }
-         break;
+
+         return false;
       case 1:
-         if(var1 < this.screenX - this.field524 / 2 || var1 > this.field524 / 2 + this.screenX) {
-            return false;
+         if(var1 >= this.screenX && var1 < this.field249 + this.screenX) {
+            break;
          }
-         break;
+
+         return false;
       case 2:
-         if(var1 < this.screenX || var1 >= this.field524 + this.screenX) {
+         if(var1 <= this.screenX - this.field249 || var1 > this.screenX) {
             return false;
          }
       }
 
       switch(var3.verticalAlignment.value) {
       case 0:
-         if(var2 >= this.screenY && var2 < this.field521 + this.screenY) {
+         if(var2 >= this.screenY && var2 < this.screenY + this.field250) {
             break;
          }
 
          return false;
       case 1:
-         if(var2 <= this.screenY - this.field521 || var2 > this.screenY) {
+         if(var2 < this.screenY - this.field250 / 2 || var2 > this.field250 / 2 + this.screenY) {
             return false;
          }
          break;
       case 2:
-         if(var2 < this.screenY - this.field521 / 2 || var2 > this.field521 / 2 + this.screenY) {
+         if(var2 <= this.screenY - this.field250 || var2 > this.screenY) {
             return false;
          }
       }
@@ -136,54 +132,74 @@ public class MapIcon {
       return true;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "-2033685043"
+      garbageValue = "-1116017209"
    )
-   boolean method585(int var1, int var2) {
-      return this.field526 == null?false:(var1 >= this.screenX - this.field526.field460 / 2 && var1 <= this.field526.field460 / 2 + this.screenX?var2 >= this.screenY && var2 <= this.field526.field462 + this.screenY:false);
+   boolean method513(int var1, int var2) {
+      return this.field255 == null?false:(var1 >= this.screenX - this.field255.field192 / 2 && var1 <= this.field255.field192 / 2 + this.screenX?var2 >= this.screenY && var2 <= this.field255.field193 + this.screenY:false);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIIIII)V",
-      garbageValue = "-1655105158"
+      signature = "(IZB)Ljava/lang/String;",
+      garbageValue = "-51"
    )
-   static final void method597(int var0, int var1, int var2, int var3, int var4) {
-      class7.boundingBoxes.addFirst(new BoundingBox2D(var0, var1, var2, var3, var4));
-   }
+   public static String method517(int var0, boolean var1) {
+      if(var1 && var0 >= 0) {
+         int var3 = var0;
+         String var2;
+         if(var1 && var0 >= 0) {
+            int var4 = 2;
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(BB)C",
-      garbageValue = "-93"
-   )
-   public static char method598(byte var0) {
-      int var1 = var0 & 255;
-      if(var1 == 0) {
-         throw new IllegalArgumentException("");
-      } else {
-         if(var1 >= 128 && var1 < 160) {
-            char var2 = class314.cp1252AsciiExtension[var1 - 128];
-            if(var2 == 0) {
-               var2 = '?';
+            for(int var5 = var0 / 10; var5 != 0; ++var4) {
+               var5 /= 10;
             }
 
-            var1 = var2;
+            char[] var6 = new char[var4];
+            var6[0] = '+';
+
+            for(int var7 = var4 - 1; var7 > 0; --var7) {
+               int var8 = var3;
+               var3 /= 10;
+               int var9 = var8 - var3 * 10;
+               if(var9 >= 10) {
+                  var6[var7] = (char)(var9 + 87);
+               } else {
+                  var6[var7] = (char)(var9 + 48);
+               }
+            }
+
+            var2 = new String(var6);
+         } else {
+            var2 = Integer.toString(var0, 10);
          }
 
-         return (char)var1;
+         return var2;
+      } else {
+         return Integer.toString(var0);
       }
    }
 
-   @ObfuscatedName("kc")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "(IIIILlv;Lin;B)V",
-      garbageValue = "-48"
+      signature = "(IIIZI)V",
+      garbageValue = "1207880527"
+   )
+   static final void method515(int var0, int var1, int var2, boolean var3) {
+      if(GameCanvas.loadWidget(var0)) {
+         class9.method100(Widget.widgets[var0], -1, var1, var2, var3);
+      }
+   }
+
+   @ObfuscatedName("jw")
+   @ObfuscatedSignature(
+      signature = "(IIIILlc;Lhr;S)V",
+      garbageValue = "15771"
    )
    @Export("worldToMinimap")
-   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class236 var5) {
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class224 var5) {
       int var6 = var3 * var3 + var2 * var2;
       if(var6 > 4225 && var6 < 90000) {
          int var7 = Client.mapAngle & 2047;
@@ -192,28 +208,14 @@ public class MapIcon {
          int var10 = var9 * var2 + var3 * var8 >> 16;
          int var11 = var3 * var9 - var8 * var2 >> 16;
          double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = var5.field2780 / 2 - 25;
+         int var14 = var5.field2570 / 2 - 25;
          int var15 = (int)(Math.sin(var12) * (double)var14);
          int var16 = (int)(Math.cos(var12) * (double)var14);
          byte var17 = 20;
-         class230.mapedge.method5967(var15 + (var0 + var5.field2780 / 2 - var17 / 2), var5.field2782 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+         Renderable.mapedge.method5913(var15 + (var0 + var5.field2570 / 2 - var17 / 2), var5.field2575 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
       } else {
-         ClanMemberManager.drawDot(var0, var1, var2, var3, var4, var5);
+         InvType.drawDot(var0, var1, var2, var3, var4, var5);
       }
 
-   }
-
-   @ObfuscatedName("ky")
-   @ObfuscatedSignature(
-      signature = "(IIIZB)V",
-      garbageValue = "-97"
-   )
-   public static void method596(int var0, int var1, int var2, boolean var3) {
-      PacketNode var4 = AbstractSoundSystem.method2350(ClientPacket.field2366, Client.field911.field1460);
-      var4.packetBuffer.putShort(var0);
-      var4.packetBuffer.putShort(var1);
-      var4.packetBuffer.method3624(var2);
-      var4.packetBuffer.putInt(var3?Client.field933:0);
-      Client.field911.method2135(var4);
    }
 }

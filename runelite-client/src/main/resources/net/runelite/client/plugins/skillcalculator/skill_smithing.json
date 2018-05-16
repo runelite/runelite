@@ -1,0 +1,1036 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "icon": 2349,
+      "name": "Bronze Bar",
+      "xp": 6.3
+    },
+    {
+      "level": 1,
+      "icon": 1351,
+      "name": "Bronze Axe",
+      "xp": 12.5
+    },
+    {
+      "level": 1,
+      "icon": 1205,
+      "name": "Bronze Dagger",
+      "xp": 12.5
+    },
+    {
+      "level": 2,
+      "icon": 1422,
+      "name": "Bronze Mace",
+      "xp": 12.5
+    },
+    {
+      "level": 3,
+      "icon": 1139,
+      "name": "Bronze Med Helm",
+      "xp": 12.5
+    },
+    {
+      "level": 3,
+      "icon": 9375,
+      "name": "Bronze Bolts (Unf)",
+      "xp": 12.5
+    },
+    {
+      "level": 4,
+      "icon": 4819,
+      "name": "Bronze Nails",
+      "xp": 12.5
+    },
+    {
+      "level": 4,
+      "icon": 1277,
+      "name": "Bronze Sword",
+      "xp": 12.5
+    },
+    {
+      "level": 4,
+      "icon": 1794,
+      "name": "Bronze Wire",
+      "xp": 12.5
+    },
+    {
+      "level": 4,
+      "icon": 819,
+      "name": "Bronze Dart Tip",
+      "xp": 12.5
+    },
+    {
+      "level": 5,
+      "icon": 39,
+      "name": "Bronze Arrowtips",
+      "xp": 12.5
+    },
+    {
+      "level": 5,
+      "icon": 1321,
+      "name": "Bronze Scimitar",
+      "xp": 25
+    },
+    {
+      "level": 6,
+      "icon": 19570,
+      "name": "Bronze Javelin Heads",
+      "xp": 12.5
+    },
+    {
+      "level": 6,
+      "icon": 1291,
+      "name": "Bronze Longsword",
+      "xp": 25
+    },
+    {
+      "level": 6,
+      "icon": 9420,
+      "name": "Bronze Limbs",
+      "xp": 12.5
+    },
+    {
+      "level": 7,
+      "icon": 864,
+      "name": "Bronze Knife",
+      "xp": 12.5
+    },
+    {
+      "level": 7,
+      "icon": 1155,
+      "name": "Bronze Full Helm",
+      "xp": 25
+    },
+    {
+      "level": 8,
+      "icon": 1173,
+      "name": "Bronze Sq Shield",
+      "xp": 25
+    },
+    {
+      "level": 9,
+      "icon": 1337,
+      "name": "Bronze Warhammer",
+      "xp": 37.5
+    },
+    {
+      "level": 10,
+      "icon": 1375,
+      "name": "Bronze Battleaxe",
+      "xp": 37.5
+    },
+    {
+      "level": 11,
+      "icon": 1103,
+      "name": "Bronze Chainbody",
+      "xp": 37.5
+    },
+    {
+      "level": 12,
+      "icon": 1189,
+      "name": "Bronze Kiteshield",
+      "xp": 37.5
+    },
+    {
+      "level": 13,
+      "icon": 3095,
+      "name": "Bronze Claws",
+      "xp": 25
+    },
+    {
+      "level": 14,
+      "icon": 1307,
+      "name": "Bronze 2h Sword",
+      "xp": 37.5
+    },
+    {
+      "level": 15,
+      "icon": 2351,
+      "name": "Iron Bar",
+      "xp": 12.5
+    },
+    {
+      "level": 15,
+      "icon": 1203,
+      "name": "Iron Dagger",
+      "xp": 25
+    },
+    {
+      "level": 16,
+      "icon": 1349,
+      "name": "Iron Axe",
+      "xp": 25
+    },
+    {
+      "level": 16,
+      "icon": 1075,
+      "name": "Bronze Platelegs",
+      "xp": 37.5
+    },
+    {
+      "level": 16,
+      "icon": 1087,
+      "name": "Bronze Plateskirt",
+      "xp": 37.5
+    },
+    {
+      "level": 17,
+      "icon": 7225,
+      "name": "Iron Spit",
+      "xp": 25
+    },
+    {
+      "level": 17,
+      "icon": 1420,
+      "name": "Iron Mace",
+      "xp": 25
+    },
+    {
+      "level": 18,
+      "icon": 9377,
+      "name": "Iron Bolts (Unf)",
+      "xp": 25
+    },
+    {
+      "level": 18,
+      "icon": 1117,
+      "name": "Bronze Platebody",
+      "xp": 62.5
+    },
+    {
+      "level": 18,
+      "icon": 1137,
+      "name": "Iron Med Helm",
+      "xp": 25
+    },
+    {
+      "level": 19,
+      "icon": 4820,
+      "name": "Iron Nails",
+      "xp": 25
+    },
+    {
+      "level": 19,
+      "icon": 820,
+      "name": "Iron Dart Tip",
+      "xp": 25
+    },
+    {
+      "level": 19,
+      "icon": 1279,
+      "name": "Iron Sword",
+      "xp": 25
+    },
+    {
+      "level": 20,
+      "icon": 2355,
+      "name": "Silver Bar",
+      "xp": 13.7
+    },
+    {
+      "level": 20,
+      "icon": 40,
+      "name": "Iron Arrowtips",
+      "xp": 25
+    },
+    {
+      "level": 20,
+      "icon": 1323,
+      "name": "Iron Scimitar",
+      "xp": 50
+    },
+    {
+      "level": 21,
+      "icon": 1293,
+      "name": "Iron Longsword",
+      "xp": 50
+    },
+    {
+      "level": 21,
+      "icon": 19572,
+      "name": "Iron Javelin Heads",
+      "xp": 25
+    },
+    {
+      "level": 22,
+      "icon": 1153,
+      "name": "Iron Full Helm",
+      "xp": 50
+    },
+    {
+      "level": 22,
+      "icon": 863,
+      "name": "Iron Knife",
+      "xp": 25
+    },
+    {
+      "level": 23,
+      "icon": 9423,
+      "name": "Iron Limbs",
+      "xp": 25
+    },
+    {
+      "level": 23,
+      "icon": 1175,
+      "name": "Iron Sq Shield",
+      "xp": 50
+    },
+    {
+      "level": 24,
+      "icon": 1335,
+      "name": "Iron Warhammer",
+      "xp": 75
+    },
+    {
+      "level": 25,
+      "icon": 1363,
+      "name": "Iron Battleaxe",
+      "xp": 75
+    },
+    {
+      "level": 26,
+      "icon": 4540,
+      "name": "Oil Lantern Frame",
+      "xp": 25
+    },
+    {
+      "level": 26,
+      "icon": 1101,
+      "name": "Iron Chainbody",
+      "xp": 75
+    },
+    {
+      "level": 27,
+      "icon": 1191,
+      "name": "Iron Kiteshield",
+      "xp": 75
+    },
+    {
+      "level": 28,
+      "icon": 3096,
+      "name": "Iron Claws",
+      "xp": 50
+    },
+    {
+      "level": 29,
+      "icon": 1309,
+      "name": "Iron 2h Sword",
+      "xp": 75
+    },
+    {
+      "level": 30,
+      "icon": 2353,
+      "name": "Steel Bar (Blast Furnace)",
+      "xp": 17.5
+    },
+    {
+      "level": 30,
+      "icon": 1207,
+      "name": "Steel Dagger",
+      "xp": 27
+    },
+    {
+      "level": 30,
+      "icon": 2353,
+      "name": "Steel Bar",
+      "xp": 17.5
+    },
+    {
+      "level": 31,
+      "icon": 1081,
+      "name": "Iron Plateskirt",
+      "xp": 75
+    },
+    {
+      "level": 31,
+      "icon": 1067,
+      "name": "Iron Platelegs",
+      "xp": 75
+    },
+    {
+      "level": 31,
+      "icon": 1353,
+      "name": "Steel Axe",
+      "xp": 37
+    },
+    {
+      "level": 32,
+      "icon": 1424,
+      "name": "Steel Mace",
+      "xp": 37
+    },
+    {
+      "level": 33,
+      "icon": 1115,
+      "name": "Iron Platebody",
+      "xp": 125
+    },
+    {
+      "level": 33,
+      "icon": 1141,
+      "name": "Steel Med Helm",
+      "xp": 37
+    },
+    {
+      "level": 33,
+      "icon": 9378,
+      "name": "Steel Bolts (Unf)",
+      "xp": 37
+    },
+    {
+      "level": 34,
+      "icon": 821,
+      "name": "Steel Dart Tip",
+      "xp": 37
+    },
+    {
+      "level": 34,
+      "icon": 1539,
+      "name": "Steel Nails",
+      "xp": 37
+    },
+    {
+      "level": 34,
+      "icon": 1281,
+      "name": "Steel Sword",
+      "xp": 37
+    },
+    {
+      "level": 35,
+      "icon": 2,
+      "name": "Cannonball",
+      "xp": 25.6
+    },
+    {
+      "level": 35,
+      "icon": 1325,
+      "name": "Steel Scimitar",
+      "xp": 75
+    },
+    {
+      "level": 35,
+      "icon": 41,
+      "name": "Steel Arrowtips",
+      "xp": 37
+    },
+    {
+      "level": 36,
+      "icon": 9425,
+      "name": "Steel Limbs",
+      "xp": 37
+    },
+    {
+      "level": 36,
+      "icon": 2370,
+      "name": "Steel Studs",
+      "xp": 37
+    },
+    {
+      "level": 36,
+      "icon": 1295,
+      "name": "Steel Longsword",
+      "xp": 75
+    },
+    {
+      "level": 36,
+      "icon": 19574,
+      "name": "Steel Javelin Heads",
+      "xp": 37.5
+    },
+    {
+      "level": 37,
+      "icon": 865,
+      "name": "Steel Knife",
+      "xp": 37.5
+    },
+    {
+      "level": 37,
+      "icon": 1157,
+      "name": "Steel Full Helm",
+      "xp": 75
+    },
+    {
+      "level": 38,
+      "icon": 1177,
+      "name": "Steel Sq Shield",
+      "xp": 75
+    },
+    {
+      "level": 39,
+      "icon": 1339,
+      "name": "Steel Warhammer",
+      "xp": 112
+    },
+    {
+      "level": 40,
+      "icon": 1365,
+      "name": "Steel Battleaxe",
+      "xp": 112
+    },
+    {
+      "level": 40,
+      "icon": 2357,
+      "name": "Gold Bar (Goldsmith Gauntlets)",
+      "xp": 56.2
+    },
+    {
+      "level": 40,
+      "icon": 2357,
+      "name": "Gold Bar",
+      "xp": 22.5
+    },
+    {
+      "level": 41,
+      "icon": 1105,
+      "name": "Steel Chainbody",
+      "xp": 112
+    },
+    {
+      "level": 42,
+      "icon": 1193,
+      "name": "Steel Kiteshield",
+      "xp": 112
+    },
+    {
+      "level": 43,
+      "icon": 3097,
+      "name": "Steel Claws",
+      "xp": 75
+    },
+    {
+      "level": 44,
+      "icon": 1311,
+      "name": "Steel 2h Sword",
+      "xp": 112
+    },
+    {
+      "level": 46,
+      "icon": 1069,
+      "name": "Steel Platelegs",
+      "xp": 112
+    },
+    {
+      "level": 46,
+      "icon": 1083,
+      "name": "Steel Plateskirt",
+      "xp": 112
+    },
+    {
+      "level": 48,
+      "icon": 1119,
+      "name": "Steel Platebody",
+      "xp": 187.5
+    },
+    {
+      "level": 49,
+      "icon": 4544,
+      "name": "Bullseye Lantern (Unf)",
+      "xp": 37
+    },
+    {
+      "level": 50,
+      "icon": 1209,
+      "name": "Mithril Dagger",
+      "xp": 50
+    },
+    {
+      "level": 50,
+      "icon": 2359,
+      "name": "Mithril Bar (Blast Furnace)",
+      "xp": 30
+    },
+    {
+      "level": 50,
+      "icon": 2359,
+      "name": "Mithril Bar",
+      "xp": 30
+    },
+    {
+      "level": 51,
+      "icon": 1355,
+      "name": "Mithril Axe",
+      "xp": 50
+    },
+    {
+      "level": 52,
+      "icon": 1428,
+      "name": "Mithril Mace",
+      "xp": 50
+    },
+    {
+      "level": 53,
+      "icon": 1143,
+      "name": "Mithril Med Helm",
+      "xp": 50
+    },
+    {
+      "level": 53,
+      "icon": 9379,
+      "name": "Mithril Bolts (Unf)",
+      "xp": 50
+    },
+    {
+      "level": 54,
+      "icon": 1285,
+      "name": "Mithril Sword",
+      "xp": 50
+    },
+    {
+      "level": 54,
+      "icon": 822,
+      "name": "Mithril Dart Tip",
+      "xp": 50
+    },
+    {
+      "level": 54,
+      "icon": 4822,
+      "name": "Mithril Nails",
+      "xp": 50
+    },
+    {
+      "level": 55,
+      "icon": 42,
+      "name": "Mithril Arrowtips",
+      "xp": 50
+    },
+    {
+      "level": 55,
+      "icon": 1329,
+      "name": "Mithril Scimitar",
+      "xp": 100
+    },
+    {
+      "level": 56,
+      "icon": 1299,
+      "name": "Mithril Longsword",
+      "xp": 100
+    },
+    {
+      "level": 56,
+      "icon": 19576,
+      "name": "Mithril Javelin Heads",
+      "xp": 50
+    },
+    {
+      "level": 56,
+      "icon": 9427,
+      "name": "Mithril Limbs",
+      "xp": 50
+    },
+    {
+      "level": 57,
+      "icon": 1159,
+      "name": "Mithril Full Helm",
+      "xp": 100
+    },
+    {
+      "level": 57,
+      "icon": 866,
+      "name": "Mithril Knife",
+      "xp": 50
+    },
+    {
+      "level": 58,
+      "icon": 1181,
+      "name": "Mithril Sq Shield",
+      "xp": 100
+    },
+    {
+      "level": 59,
+      "icon": 9416,
+      "name": "Mith Grapple Tip",
+      "xp": 50
+    },
+    {
+      "level": 59,
+      "icon": 1343,
+      "name": "Mithril Warhammer",
+      "xp": 150
+    },
+    {
+      "level": 60,
+      "icon": 1187,
+      "name": "Dragon Sq Shield",
+      "xp": 75
+    },
+    {
+      "level": 60,
+      "icon": 1369,
+      "name": "Mithril Battleaxe",
+      "xp": 150
+    },
+    {
+      "level": 61,
+      "icon": 1109,
+      "name": "Mithril Chainbody",
+      "xp": 150
+    },
+    {
+      "level": 62,
+      "icon": 1197,
+      "name": "Mithril Kiteshield",
+      "xp": 150
+    },
+    {
+      "level": 63,
+      "icon": 3099,
+      "name": "Mithril Claws",
+      "xp": 100
+    },
+    {
+      "level": 64,
+      "icon": 1315,
+      "name": "Mithril 2h Sword",
+      "xp": 150
+    },
+    {
+      "level": 66,
+      "icon": 1085,
+      "name": "Mithril Plateskirt",
+      "xp": 150
+    },
+    {
+      "level": 66,
+      "icon": 1071,
+      "name": "Mithril Platelegs",
+      "xp": 150
+    },
+    {
+      "level": 68,
+      "icon": 1121,
+      "name": "Mithril Platebody",
+      "xp": 250
+    },
+    {
+      "level": 70,
+      "icon": 2361,
+      "name": "Adamantite Bar (Blast Furnace)",
+      "xp": 37.5
+    },
+    {
+      "level": 70,
+      "icon": 1211,
+      "name": "Adamant Dagger",
+      "xp": 62.5
+    },
+    {
+      "level": 70,
+      "icon": 2361,
+      "name": "Adamantite Bar",
+      "xp": 37.5
+    },
+    {
+      "level": 71,
+      "icon": 1357,
+      "name": "Adamant Axe",
+      "xp": 62.5
+    },
+    {
+      "level": 72,
+      "icon": 1430,
+      "name": "Adamant Mace",
+      "xp": 62.5
+    },
+    {
+      "level": 73,
+      "icon": 9380,
+      "name": "Adamant Bolts (Unf)",
+      "xp": 62.5
+    },
+    {
+      "level": 73,
+      "icon": 1145,
+      "name": "Adamant Med Helm",
+      "xp": 62.5
+    },
+    {
+      "level": 74,
+      "icon": 823,
+      "name": "Adamant Dart Tip",
+      "xp": 62.5
+    },
+    {
+      "level": 74,
+      "icon": 1287,
+      "name": "Adamant Sword",
+      "xp": 62.5
+    },
+    {
+      "level": 74,
+      "icon": 4823,
+      "name": "Adamantite Nails",
+      "xp": 62.5
+    },
+    {
+      "level": 75,
+      "icon": 43,
+      "name": "Adamant Arrowtips",
+      "xp": 62.5
+    },
+    {
+      "level": 75,
+      "icon": 1331,
+      "name": "Adamant Scimitar",
+      "xp": 125
+    },
+    {
+      "level": 76,
+      "icon": 9429,
+      "name": "Adamantite Limbs",
+      "xp": 62.5
+    },
+    {
+      "level": 76,
+      "icon": 1301,
+      "name": "Adamant Longsword",
+      "xp": 125
+    },
+    {
+      "level": 76,
+      "icon": 19578,
+      "name": "Adamant Javelin Heads",
+      "xp": 62.5
+    },
+    {
+      "level": 77,
+      "icon": 1161,
+      "name": "Adamant Full Helm",
+      "xp": 125
+    },
+    {
+      "level": 77,
+      "icon": 867,
+      "name": "Adamant Knife",
+      "xp": 62.5
+    },
+    {
+      "level": 78,
+      "icon": 1183,
+      "name": "Adamant Sq Shield",
+      "xp": 125
+    },
+    {
+      "level": 79,
+      "icon": 1345,
+      "name": "Adamant Warhammer",
+      "xp": 187.5
+    },
+    {
+      "level": 80,
+      "icon": 1371,
+      "name": "Adamant Battleaxe",
+      "xp": 187.5
+    },
+    {
+      "level": 81,
+      "icon": 1111,
+      "name": "Adamant Chainbody",
+      "xp": 187.5
+    },
+    {
+      "level": 82,
+      "icon": 1199,
+      "name": "Adamant Kiteshield",
+      "xp": 187.5
+    },
+    {
+      "level": 83,
+      "icon": 3100,
+      "name": "Adamant Claws",
+      "xp": 125
+    },
+    {
+      "level": 84,
+      "icon": 1317,
+      "name": "Adamant 2h Sword",
+      "xp": 187.5
+    },
+    {
+      "level": 85,
+      "icon": 2363,
+      "name": "Runite Bar",
+      "xp": 50
+    },
+    {
+      "level": 85,
+      "icon": 2363,
+      "name": "Runite Bar (Blast Furnace)",
+      "xp": 50
+    },
+    {
+      "level": 85,
+      "icon": 1213,
+      "name": "Rune Dagger",
+      "xp": 75
+    },
+    {
+      "level": 86,
+      "icon": 1359,
+      "name": "Rune Axe",
+      "xp": 75
+    },
+    {
+      "level": 86,
+      "icon": 1091,
+      "name": "Adamant Plateskirt",
+      "xp": 187.5
+    },
+    {
+      "level": 86,
+      "icon": 1073,
+      "name": "Adamant Platelegs",
+      "xp": 187.5
+    },
+    {
+      "level": 87,
+      "icon": 1432,
+      "name": "Rune Mace",
+      "xp": 75
+    },
+    {
+      "level": 88,
+      "icon": 9381,
+      "name": "Runite Bolts (Unf)",
+      "xp": 75
+    },
+    {
+      "level": 88,
+      "icon": 1147,
+      "name": "Rune Med Helm",
+      "xp": 75
+    },
+    {
+      "level": 88,
+      "icon": 1123,
+      "name": "Adamant Platebody",
+      "xp": 312
+    },
+    {
+      "level": 89,
+      "icon": 1289,
+      "name": "Rune Sword",
+      "xp": 75
+    },
+    {
+      "level": 89,
+      "icon": 4824,
+      "name": "Rune Nails",
+      "xp": 75
+    },
+    {
+      "level": 89,
+      "icon": 824,
+      "name": "Rune Dart Tip",
+      "xp": 75
+    },
+    {
+      "level": 90,
+      "icon": 44,
+      "name": "Rune Arrowtips",
+      "xp": 75
+    },
+    {
+      "level": 90,
+      "icon": 1333,
+      "name": "Rune Scimitar",
+      "xp": 150
+    },
+    {
+      "level": 90,
+      "icon": 11283,
+      "name": "Dragonfire Shield",
+      "xp": 2000
+    },
+    {
+      "level": 91,
+      "icon": 1303,
+      "name": "Rune Longsword",
+      "xp": 150
+    },
+    {
+      "level": 91,
+      "icon": 19580,
+      "name": "Rune Javelin Heads",
+      "xp": 75
+    },
+    {
+      "level": 91,
+      "icon": 9431,
+      "name": "Runite Limbs",
+      "xp": 75
+    },
+    {
+      "level": 92,
+      "icon": 868,
+      "name": "Rune Knife",
+      "xp": 75
+    },
+    {
+      "level": 92,
+      "icon": 1163,
+      "name": "Rune Full Helm",
+      "xp": 150
+    },
+    {
+      "level": 93,
+      "icon": 1185,
+      "name": "Rune Sq Shield",
+      "xp": 150
+    },
+    {
+      "level": 94,
+      "icon": 1347,
+      "name": "Rune Warhammer",
+      "xp": 225
+    },
+    {
+      "level": 95,
+      "icon": 1373,
+      "name": "Rune Battleaxe",
+      "xp": 225
+    },
+    {
+      "level": 96,
+      "icon": 1113,
+      "name": "Rune Chainbody",
+      "xp": 225
+    },
+    {
+      "level": 97,
+      "icon": 1201,
+      "name": "Rune Kiteshield",
+      "xp": 225
+    },
+    {
+      "level": 98,
+      "icon": 3101,
+      "name": "Rune Claws",
+      "xp": 150
+    },
+    {
+      "level": 99,
+      "icon": 1127,
+      "name": "Rune Platebody",
+      "xp": 375
+    },
+    {
+      "level": 99,
+      "icon": 1093,
+      "name": "Rune Plateskirt",
+      "xp": 225
+    },
+    {
+      "level": 99,
+      "icon": 1079,
+      "name": "Rune Platelegs",
+      "xp": 225
+    },
+    {
+      "level": 99,
+      "icon": 1319,
+      "name": "Rune 2h Sword",
+      "xp": 225
+    }
+  ]
+}

@@ -7,34 +7,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("lj")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -203501949
+      intValue = 1635145089
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -918146377
+      intValue = 1906369409
    )
    @Export("height")
    public int height;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-360800952"
+      signature = "(IIB)V",
+      garbageValue = "31"
    )
    @Export("drawFull")
    public abstract void drawFull(int var1, int var2);
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "-1782370233"
+      garbageValue = "1328513548"
    )
    @Export("draw")
    public abstract void draw(int var1, int var2, int var3, int var4);
@@ -42,7 +42,7 @@ public abstract class BufferProvider {
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "862890977"
+      garbageValue = "753961560"
    )
    @Export("setRaster")
    public final void setRaster() {

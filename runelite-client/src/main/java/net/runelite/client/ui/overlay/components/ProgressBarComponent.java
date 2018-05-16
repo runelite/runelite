@@ -24,66 +24,61 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.text.DecimalFormat;
-import lombok.Getter;
 import lombok.Setter;
 
-public class ProgressBarComponent
+@Setter
+public class ProgressBarComponent implements LayoutableRenderableEntity
 {
-	@Setter
-	private String text;
+	public enum LabelDisplayMode
+	{
+		PERCENTAGE,
+		FULL
+	}
 
-	@Setter
-	private double progress;
-
-	@Setter
-	private Point position = new Point();
-
-	@Setter
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
+	private static final DecimalFormat DECIMAL_FORMAT_ABS = new DecimalFormat("#0");
+	private long minimum;
+	private long maximum = 100;
+	private double value;
+	private LabelDisplayMode labelDisplayMode = LabelDisplayMode.PERCENTAGE;
 	private Color foregroundColor = new Color(82, 161, 82);
-
-	@Setter
 	private Color backgroundColor = new Color(255, 255, 255, 127);
-
-	@Setter
 	private Color fontColor = Color.WHITE;
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 16);
 
-	@Getter
-	@Setter
-	private int width = 140;
-
-	@Getter
-	@Setter
-	private int height = 16;
-
+	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		FontMetrics metrics = graphics.getFontMetrics();
+		final FontMetrics metrics = graphics.getFontMetrics();
 
-		int barX = position.x;
-		int barY = position.y;
-		String textToWrite;
+		final int barX = 0;
+		final int barY = -metrics.getHeight();
 
-		if (Strings.isNullOrEmpty(text))
+		final long span = maximum - minimum;
+		final double currentValue = value - minimum;
+		final double pc = currentValue / span;
+		final String textToWrite;
+
+		switch (labelDisplayMode)
 		{
-			DecimalFormat df = new DecimalFormat("#0");
-			textToWrite = df.format(Math.floor(progress)) + "%";
-		}
-		else
-		{
-			textToWrite = text;
+			case PERCENTAGE:
+				textToWrite = DECIMAL_FORMAT.format(pc * 100d) + "%";
+				break;
+			default:
+				textToWrite = DECIMAL_FORMAT_ABS.format(Math.floor(currentValue)) + "/" + maximum;
 		}
 
-		int progressTextX = barX + (width - metrics.stringWidth(textToWrite)) / 2;
-		int progressTextY = barY + ((height - metrics.getHeight()) / 2) + metrics.getAscent();
-
-		int progressFill = (int) ((width / 100F) * progress);
+		final int width = preferredSize.width;
+		final int height = Math.max(preferredSize.height, 16);
+		final int progressTextX = barX + (width - metrics.stringWidth(textToWrite)) / 2;
+		final int progressTextY = barY + ((height - metrics.getHeight()) / 2) + metrics.getHeight();
+		final int progressFill = (int) (width * pc);
 
 		//Draw bar
 		graphics.setColor(backgroundColor);
@@ -91,7 +86,7 @@ public class ProgressBarComponent
 		graphics.setColor(foregroundColor);
 		graphics.fillRect(barX, barY, progressFill, height);
 
-		TextComponent textComponent = new TextComponent();
+		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(progressTextX, progressTextY));
 		textComponent.setColor(fontColor);
 		textComponent.setText(textToWrite);

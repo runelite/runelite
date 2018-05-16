@@ -138,6 +138,12 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp()
+	{
+		inMlm = checkInMlm();
+	}
+
+	@Override
 	protected void shutDown() throws Exception
 	{
 		veins.clear();

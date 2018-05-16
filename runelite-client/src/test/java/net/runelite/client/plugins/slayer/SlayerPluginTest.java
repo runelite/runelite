@@ -31,6 +31,9 @@ import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -39,6 +42,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -59,6 +63,12 @@ public class SlayerPluginTest
 
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
 	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
+
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
+
+	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
+	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
 
 	@Mock
 	@Bind
@@ -173,10 +183,31 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
 
 		slayerPlugin.setAmount(42);
+		slayerPlugin.setSlaughterChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
+		assertEquals(9, slayerPlugin.getSlaughterChargeCount());
 		assertEquals(43, slayerPlugin.getAmount());
+
+		chatMessageEvent = new ChatMessage(SERVER, "", CHAT_BRACELET_SLAUGHTER_CHARGE, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(12, slayerPlugin.getSlaughterChargeCount());
+
+		slayerPlugin.setSlaughterChargeCount(1);
+		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
+
+		Widget braceletBreakWidget = mock(Widget.class);
+		when(braceletBreakWidget.getText()).thenReturn(BREAK_SLAUGHTER);
+		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
+
+		slayerPlugin.setSlaughterChargeCount(-1);
+		slayerPlugin.onGameTick(new GameTick());
+		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
 	}
 
 	@Test
@@ -185,9 +216,30 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS, null);
 
 		slayerPlugin.setAmount(42);
+		slayerPlugin.setExpeditiousChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(41, slayerPlugin.getAmount());
+		assertEquals(9, slayerPlugin.getExpeditiousChargeCount());
+
+		chatMessageEvent = new ChatMessage(SERVER, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(12, slayerPlugin.getExpeditiousChargeCount());
+
+		slayerPlugin.setExpeditiousChargeCount(1);
+		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS, null);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
+
+		Widget braceletBreakWidget = mock(Widget.class);
+		when(braceletBreakWidget.getText()).thenReturn(BREAK_EXPEDITIOUS);
+		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
+
+		slayerPlugin.setExpeditiousChargeCount(-1);
+		slayerPlugin.onGameTick(new GameTick());
+		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
 	}
 }

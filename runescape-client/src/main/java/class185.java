@@ -1,29 +1,25 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("go")
 public class class185 {
-   @ObfuscatedName("dy")
-   @Export("host")
-   static String host;
+   @ObfuscatedName("x")
+   @Export("colorsToReplace")
+   public static short[][] colorsToReplace;
+   @ObfuscatedName("a")
+   static final int[] field2387;
+   @ObfuscatedName("l")
+   static final int[] field2388;
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "([Lgh;IB)Lgh;",
-      garbageValue = "69"
-   )
-   @Export("forOrdinal")
-   public static Enumerated forOrdinal(Enumerated[] var0, int var1) {
-      Enumerated[] var2 = var0;
+   static {
+      field2387 = new int[2048];
+      field2388 = new int[2048];
+      double var0 = 0.0030679615757712823D;
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         Enumerated var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
-            return var4;
-         }
+      for(int var2 = 0; var2 < 2048; ++var2) {
+         field2387[var2] = (int)(65536.0D * Math.sin(var0 * (double)var2));
+         field2388[var2] = (int)(65536.0D * Math.cos(var0 * (double)var2));
       }
 
-      return null;
    }
 }

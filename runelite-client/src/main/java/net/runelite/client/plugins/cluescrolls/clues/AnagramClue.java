@@ -31,12 +31,14 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLUE_SCROLL_IMAGE;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
@@ -63,7 +65,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: CAR IF ICES", "Sacrifice", new WorldPoint(2209, 3056, 0), "Zul-Andra"),
 		new AnagramClue("This anagram reveals who to speak to next: CAREER IN MOON", "Oneiromancer", new WorldPoint(2150, 3866, 0), "Astral altar", "25"),
 		new AnagramClue("This anagram reveals who to speak to next: C ON GAME HOC", "Gnome Coach", new WorldPoint(2395, 3486, 0), "Gnome Ball course", "6"),
-		new AnagramClue("This anagram reveals who to speak to next: COOL NERD", "Old Crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "619"),
+		new AnagramClue("This anagram reveals who to speak to next: COOL NERD", "Old crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "619"),
 		new AnagramClue("This anagram reveals who to speak to next: COPPER ORE CRYPTS", "Prospector Percy", new WorldPoint(3061, 3377, 0), "Motherlode Mine", "12"),
 		new AnagramClue("This anagram reveals who to speak to next: DED WAR", "Edward", new WorldPoint(3284, 3943, 0), "Inside Rogue's Castle"),
 		new AnagramClue("This anagram reveals who to speak to next: DEKAGRAM", "Dark Mage", new WorldPoint(3039, 4835, 0), "Centre of the Abyss", "13"),
@@ -84,7 +86,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: GOBLETS ODD TOES", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja", "33 (or none)"),
 		new AnagramClue("This anagram reveals who to speak to next: HE DO POSE. IT IS CULTRRL, MK?", "Riki the sculptor's model", new WorldPoint(2904, 10206, 0), "East Keldagrim, south of kebab seller."),
-		new AnagramClue("This anagram reveals who to speak to next: HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Burthorpe Castle, top floor", "36"),
+		new AnagramClue("This anagram reveals who to speak to next: HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Top floor of Burthorpe Castle", "36"),
 		new AnagramClue("This anagram reveals who to speak to next: HIS PHOR", "Horphis", new WorldPoint(1639, 3812, 0), "Arceuus Library, Zeah", "1"),
 		new AnagramClue("This anagram reveals who to speak to next: I AM SIR", "Marisi", new WorldPoint(1813, 3488, 0), "Allotment patch, South coast Zeah", "5"),
 		new AnagramClue("This anagram reveals who to speak to next: ICY FE", "Fycie", new WorldPoint(2630, 2997, 0), "East Feldip Hills"),
@@ -92,7 +94,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: I EAT ITS CHART HINTS DO U", "Shiratti the Custodian", new WorldPoint(3427, 2927, 0), "North of fountain, Nardah"),
 		new AnagramClue("This anagram reveals who to speak to next: I EVEN", "Nieve", new WorldPoint(2432, 3422, 0), "The slayer master in Gnome Stronghold", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: I FAFFY RUN", "Fairy Nuff", new WorldPoint(3201, 3169, 0), "North of the bank in Zanaris"),
-		new AnagramClue("This anagram reveals who to speak to next: IM N ZEZIM", "Immenizz", new WorldPoint(2592, 4324, 0), "The Imp inside Puro-Puro"),
+		new AnagramClue("This anagram reveals who to speak to next: IM N ZEZIM", "Impling", new WorldPoint(2592, 4324, 0), "The Imp inside Puro-Puro"),
 		new AnagramClue("This anagram reveals who to speak to next: KAY SIR", "Sir Kay", new WorldPoint(2760, 3496, 0), "The courtyard in Camelot Castle", "6"),
 		new AnagramClue("This anagram reveals who to speak to next: LEAKEY", "Kaylee", new WorldPoint(2957, 3370, 0), "Rising Sun Inn in Falador", "18"),
 		new AnagramClue("This anagram reveals who to speak to next: LAND DOOMD", "Odd Old Man", new WorldPoint(3359, 3506, 0), "Limestone mine northeast of Varrock"),
@@ -116,7 +118,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: PACINNG A TAIE", "Captain Ginea", new WorldPoint(1561, 3602, 0), "Building east of Shayzien combat ring", "113"),
 		new AnagramClue("This anagram reveals who to speak to next: PEAK REFLEX", "Flax keeper", new WorldPoint(2744, 3444, 0), "Flax field south of Seers Village", "676"),
 		new AnagramClue("This anagram reveals who to speak to next: PEATY PERT", "Party Pete", new WorldPoint(3047, 3376, 0), "Falador Party Room"),
-		new AnagramClue("This anagram reveals who to speak to next: PROFS LOSE WRONG PIE", "Professor Onglewip", new WorldPoint(3113, 3162, 0), "Ground floor Wizards Tower"),
+		new AnagramClue("This anagram reveals who to speak to next: PROFS LOSE WRONG PIE", "Professor Onglewip", new WorldPoint(3113, 3162, 0), "Ground floor of Wizards Tower"),
 		new AnagramClue("This anagram reveals who to speak to next: QUIT HORRIBLE TYRANT", "Brother Tranquility", new WorldPoint(3681, 2963, 0), "Mos Le'Harmless or Harmony Island", "7"),
 		new AnagramClue("This anagram reveals who to speak to next: QUE SIR", "Squire", new WorldPoint(2975, 3343, 0), "Falador Castle Courtyard", "654"),
 		new AnagramClue("This anagram reveals who to speak to next: R AK MI", "Karim", new WorldPoint(3273, 3181, 0), "Al Kharid Kebab shop", "5"),
@@ -139,7 +141,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "2"),
 		new AnagramClue("This anagram reveals who to speak to next: VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "666"),
 		new AnagramClue("This anagram reveals who to speak to next: WOO AN EGG KIWI", "Awowogei", new WorldPoint(2802, 2764, 0), "Ape Atoll", "24"),
-		new AnagramClue("This anagram reveals who to speak to next: YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya")
+		new AnagramClue("This anagram reveals who to speak to next: YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya"),
+		new AnagramClue("This anagram reveals who to speak to next: MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "2505")
 	);
 
 	private String text;
@@ -165,19 +168,26 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.setTitle("Anagram Clue");
-		panelComponent.setWidth(150);
+		panelComponent.getChildren().add(TitleComponent.builder().text("Anagram Clue").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getNpc())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
-		panelComponent.getLines().add(new PanelComponent.Line("NPC:"));
-		panelComponent.getLines().add(new PanelComponent.Line(getNpc(), TITLED_CONTENT_COLOR));
-
-		panelComponent.getLines().add(new PanelComponent.Line("Area:"));
-		panelComponent.getLines().add(new PanelComponent.Line(true, getArea(), TITLED_CONTENT_COLOR));
+		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(getArea())
+			.leftColor(TITLED_CONTENT_COLOR)
+			.build());
 
 		if (getAnswer() != null)
 		{
-			panelComponent.getLines().add(new PanelComponent.Line("Answer:"));
-			panelComponent.getLines().add(new PanelComponent.Line(true, getAnswer(), TITLED_CONTENT_COLOR));
+			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getAnswer())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 		}
 	}
 

@@ -6,33 +6,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("ff")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Ldm;"
+      signature = "Ldd;"
    )
    @Export("dataFile")
    CacheFile dataFile;
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ldm;"
+      signature = "Ldd;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("z")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 678105897
+      intValue = 69040701
    )
    @Export("index")
    int index;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1681128857
+      intValue = 1834258411
    )
    @Export("maxSize")
    int maxSize;
@@ -42,7 +42,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdm;Ldm;I)V"
+      signature = "(ILdd;Ldd;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -54,10 +54,10 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "-415495778"
+      signature = "(IB)[B",
+      garbageValue = "127"
    )
    @Export("read")
    public byte[] read(int var1) {
@@ -101,7 +101,7 @@ public final class IndexFile {
                      int var10 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                      int var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                      int var12 = IndexStore_buffer[7] & 255;
-                     if(var9 == var1 && var10 == var7 && var12 == this.index) {
+                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
                         if(var11 >= 0 && (long)var11 <= this.dataFile.length() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
                               var5[var6++] = IndexStore_buffer[var13 + 8];
@@ -130,10 +130,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I[BIB)Z",
-      garbageValue = "33"
+      garbageValue = "-8"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -152,10 +152,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I[BIZB)Z",
-      garbageValue = "-54"
+      garbageValue = "-14"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -197,32 +197,28 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label135: {
+                  label146: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
-                        label154: {
-                           this.dataFile.seek((long)(var6 * 520));
+                        this.dataFile.seek((long)(var6 * 520));
 
-                           try {
-                              this.dataFile.read(IndexStore_buffer, 0, 8);
-                           } catch (EOFException var16) {
-                              break label135;
-                           }
+                        try {
+                           this.dataFile.read(IndexStore_buffer, 0, 8);
+                        } catch (EOFException var16) {
+                           break label146;
+                        }
 
-                           var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
-                           int var11 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
-                           var9 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
-                           int var12 = IndexStore_buffer[7] & 255;
-                           if(var14 == var1 && var8 == var11 && var12 == this.index) {
-                              if(var9 >= 0 && (long)var9 <= this.dataFile.length() / 520L) {
-                                 break label154;
-                              }
+                        var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
+                        int var11 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
+                        var9 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
+                        int var12 = IndexStore_buffer[7] & 255;
+                        if(var14 != var1 || var8 != var11 || var12 != this.index) {
+                           var10000 = false;
+                           return var10000;
+                        }
 
-                              var10000 = false;
-                              return var10000;
-                           }
-
+                        if(var9 < 0 || (long)var9 > this.dataFile.length() / 520L) {
                            var10000 = false;
                            return var10000;
                         }
@@ -276,54 +272,41 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("jt")
+   @ObfuscatedName("jj")
    @ObfuscatedSignature(
-      signature = "(Lbt;ZB)V",
-      garbageValue = "-31"
+      signature = "(Lhl;B)Lhl;",
+      garbageValue = "48"
    )
-   @Export("closeWidget")
-   static final void closeWidget(WidgetNode var0, boolean var1) {
-      int var2 = var0.id;
-      int var3 = (int)var0.hash;
-      var0.unlink();
-      if(var1 && var2 != -1 && class250.validInterfaces[var2]) {
-         Widget.widgetIndex.method4675(var2);
-         if(GZipDecompressor.widgets[var2] != null) {
-            boolean var6 = true;
+   static Widget method3387(Widget var0) {
+      Widget var2 = var0;
+      int var3 = PlayerComposition.method4514(AbstractSoundSystem.getWidgetClickMask(var0));
+      Widget var1;
+      if(var3 == 0) {
+         var1 = null;
+      } else {
+         int var4 = 0;
 
-            for(int var5 = 0; var5 < GZipDecompressor.widgets[var2].length; ++var5) {
-               if(GZipDecompressor.widgets[var2][var5] != null) {
-                  if(GZipDecompressor.widgets[var2][var5].type != 2) {
-                     GZipDecompressor.widgets[var2][var5] = null;
-                  } else {
-                     var6 = false;
-                  }
-               }
+         while(true) {
+            if(var4 >= var3) {
+               var1 = var2;
+               break;
             }
 
-            if(var6) {
-               GZipDecompressor.widgets[var2] = null;
+            var2 = OwnWorldComparator.getWidget(var2.parentId);
+            if(var2 == null) {
+               var1 = null;
+               break;
             }
 
-            class250.validInterfaces[var2] = false;
+            ++var4;
          }
       }
 
-      for(IntegerNode var4 = (IntegerNode)Client.widgetFlags.first(); var4 != null; var4 = (IntegerNode)Client.widgetFlags.next()) {
-         if((var4.hash >> 48 & 65535L) == (long)var2) {
-            var4.unlink();
-         }
+      Widget var5 = var1;
+      if(var1 == null) {
+         var5 = var0.dragParent;
       }
 
-      Widget var7 = UnitPriceComparator.getWidget(var3);
-      if(var7 != null) {
-         TotalQuantityComparator.method100(var7);
-      }
-
-      class264.method4807();
-      if(Client.widgetRoot != -1) {
-         GraphicsObject.method1920(Client.widgetRoot, 1);
-      }
-
+      return var5;
    }
 }
