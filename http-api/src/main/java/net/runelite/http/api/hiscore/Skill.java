@@ -49,7 +49,7 @@ public class Skill
 
 	public long getExperience()
 	{
-		return experience;
+		return experience < 0 ? 0 : experience;
 	}
 
 	@Override
