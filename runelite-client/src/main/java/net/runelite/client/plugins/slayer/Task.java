@@ -117,6 +117,7 @@ enum Task
 	SKELETONS("skeletons", ItemID.SKELETON_GUARD),
 	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL),
 	SPIDERS("spiders", ItemID.HUGE_SPIDER),
+	SPIRITUAL_CREATURES("spiritual creatures", 11844, "spiritual ranger", "spiritual warrior", "spiritual mage"),
 	STEEL_DRAGONS("steel dragons", ItemID.STEEL_DRAGON),
 	SUQAHS("suqahs", ItemID.SUQAH_TOOTH),
 	TERROR_DOGS("terror dogs", ItemID.TERROR_DOG),
