@@ -34,7 +34,7 @@ public class SessionEntry
 	private int id;
 	private UUID uuid;
 	private String ip;
-	private boolean ingame;
+	private Boolean ingame;
 	private Instant start;
 	private Instant last;
 }
