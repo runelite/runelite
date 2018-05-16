@@ -35,6 +35,8 @@ import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -43,6 +45,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -73,6 +76,9 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Inject
+	private XpTrackerConfig config;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 
@@ -83,6 +89,12 @@ public class XpTrackerPlugin extends Plugin
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
+
+	@Provides
+	XpTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -111,7 +123,7 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = new XpPanel(this, client, skillIconManager);
+		xpPanel = new XpPanel(this, config, client, skillIconManager);
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)

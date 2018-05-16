@@ -29,9 +29,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
@@ -64,6 +62,8 @@ class XpInfoBox extends JPanel
 
 	private final Client client;
 	private final JPanel panel;
+	private final XpTrackerConfig config;
+
 	private final Skill skill;
 
 	private final JPanel container = new JPanel();
@@ -74,13 +74,23 @@ class XpInfoBox extends JPanel
 	private final JLabel xpLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JLabel levelLabel = new JShadowedLabel();
+	private final JButton skillIcon = new JButton();
+	private ActionListener iconClick;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
+	private boolean showInfo;
+	private boolean resetIcon;
+
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, XpTrackerConfig config, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
+		this.config = config;
 		this.panel = panel;
 		this.skill = skill;
 
+		iconClick = e -> xpTrackerPlugin.resetSkillState(skill);
+
+		showInfo = !config.showMoreInfo();
+		resetIcon = !config.resetSkillViaIcon();
 		setLayout(new BorderLayout());
 		setBorder(new CompoundBorder
 		(
@@ -108,7 +118,7 @@ class XpInfoBox extends JPanel
 			{
 				if (SwingUtilities.isLeftMouseButton(e))
 				{
-					showStatsPanel();
+					showStatsPanel(true);
 				}
 			}
 		};
@@ -121,9 +131,14 @@ class XpInfoBox extends JPanel
 		final JMenuItem openXpTracker = new JMenuItem("Open XP tracker");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
+		// Create reset menu
+		final JMenuItem resetButton = new JMenuItem("Reset skill");
+		resetButton.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.add(openXpTracker);
+		popupMenu.add(resetButton);
 		container.setComponentPopupMenu(popupMenu);
 
 		// Create icon panel
@@ -133,15 +148,12 @@ class XpInfoBox extends JPanel
 
 		// Create skill/reset icon
 		final BufferedImage skillImage = iconManager.getSkillImage(skill);
-		final JButton skillIcon = new JButton();
 
 		skillIcon.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		skillIcon.putClientProperty(SubstanceSynapse.BUTTON_NEVER_PAINT_BACKGROUND, Boolean.TRUE);
 		skillIcon.setIcon(new ImageIcon(skillImage));
 		skillIcon.setRolloverIcon(new ImageIcon(createHoverImage(skillImage)));
 
-		skillIcon.setToolTipText("Reset " + skill.getName() + " tracker");
-		skillIcon.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 		skillIcon.setBounds(ICON_BOUNDS);
 		skillIcon.setOpaque(false);
 		skillIcon.setFocusPainted(false);
@@ -185,9 +197,19 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.CENTER);
 	}
 
-	private void showStatsPanel()
+	void reset()
 	{
-		if (statsPanel.isShowing())
+		if (!showInfo)
+		{
+			container.remove(statsPanel);
+		}
+		panel.remove(this);
+		panel.revalidate();
+	}
+
+	private void showStatsPanel(boolean state)
+	{
+		if (statsPanel.isShowing() || !state)
 		{
 			container.remove(statsPanel);
 			revalidate();
@@ -199,15 +221,28 @@ class XpInfoBox extends JPanel
 		}
 	}
 
-	void reset()
-	{
-		container.remove(statsPanel);
-		panel.remove(this);
-		panel.revalidate();
-	}
-
 	void update(boolean updated, XpSnapshotSingle xpSnapshotSingle)
 	{
+		if (showInfo != config.showMoreInfo())
+		{
+			showInfo = config.showMoreInfo();
+			showStatsPanel(showInfo);
+		}
+
+		if (resetIcon != config.resetSkillViaIcon())
+		{
+			resetIcon = config.resetSkillViaIcon();
+			if (resetIcon)
+			{
+				skillIcon.setToolTipText("Reset " + skill.getName() + " tracker");
+				skillIcon.addActionListener(iconClick);
+			}
+			else
+			{
+				skillIcon.setToolTipText("");
+				skillIcon.removeActionListener(iconClick);
+			}
+		}
 		SwingUtilities.invokeLater(() -> rebuildAsync(updated, xpSnapshotSingle));
 	}
 
