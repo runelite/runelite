@@ -32,7 +32,7 @@
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
-	<description>Open source RuneScape client and deobfuscator</description>
+	<description>Open source RuneScape client</description>
 	<url>http://runelite.net</url>
 
 	<properties>
@@ -115,7 +115,6 @@
 		<module>cache-client</module>
 		<module>cache-server</module>
 		<module>cache-updater</module>
-		<module>deobfuscator</module>
 		<module>model-viewer</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
@@ -123,9 +122,6 @@
 		<module>runelite-script-assembler-plugin</module>
 		<module>runelite-scripts</module>
 		<module>runescape-api</module>
-		<module>runescape-client</module>
-		<module>runescape-client-injector</module>
-		<module>runescape-client-injector-plugin</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>protocol-api</module>
