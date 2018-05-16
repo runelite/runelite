@@ -32,6 +32,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -43,6 +46,14 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.SwingUtilities;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -55,6 +66,23 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
+	@Getter
+	@RequiredArgsConstructor
+	public enum NativeCustomOff
+	{
+		NATIVE("Native"),
+		CUSTOM("Custom"),
+		OFF("Off");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
 	// Default timeout of notification in milliseconds
 	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
@@ -77,11 +105,11 @@ public class Notifier
 
 	@Inject
 	private Notifier(
-			final Provider<ClientUI> clientUI,
-			final Provider<Client> client,
-			final RuneLiteConfig runeliteConfig,
-			final RuneLiteProperties runeLiteProperties,
-			final ScheduledExecutorService executorService)
+		final Provider<ClientUI> clientUI,
+		final Provider<Client> client,
+		final RuneLiteConfig runeliteConfig,
+		final RuneLiteProperties runeLiteProperties,
+		final ScheduledExecutorService executorService)
 	{
 		this.client = client;
 		this.appName = runeLiteProperties.getTitle();
@@ -116,14 +144,23 @@ public class Notifier
 			clientUI.requestFocus();
 		}
 
-		if (runeLiteConfig.enableTrayNotifications())
+		switch (runeLiteConfig.trayNotifications())
 		{
-			sendNotification(appName, message, type);
+			case NATIVE:
+				sendNotification(appName, message, type);
+				break;
+			case CUSTOM:
+				SwingUtilities.invokeLater(() -> clientUI.sendCustomNotification(appName, message, type));
+				break;
 		}
 
-		if (runeLiteConfig.enableNotificationSound())
+		switch (runeLiteConfig.notificationSound())
 		{
-			Toolkit.getDefaultToolkit().beep();
+			case NATIVE:
+				Toolkit.getDefaultToolkit().beep();
+				break;
+			case CUSTOM:
+				executorService.submit(this::playCustomSound);
 		}
 
 		if (runeLiteConfig.enableGameMessageNotification())
@@ -227,8 +264,8 @@ public class Notifier
 		executorService.submit(() ->
 		{
 			final boolean success = sendCommand(commands)
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
+				.map(process -> process.exitValue() == 0)
+				.orElse(false);
 
 			if (!success)
 			{
@@ -310,5 +347,47 @@ public class Notifier
 			default:
 				return "normal";
 		}
+	}
+
+	private void playCustomSound()
+	{
+		Clip clip = null;
+
+		// Try to load the user sound from ~/.runelite/notification.wav
+		File file = new File(RuneLite.RUNELITE_DIR, "notification.wav");
+		if (file.exists())
+		{
+			try
+			{
+				InputStream fileStream = new BufferedInputStream(new FileInputStream(file));
+				try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+				{
+					clip = AudioSystem.getClip();
+					clip.open(sound);
+				}
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				clip = null;
+				log.warn("Unable to play notification sound", e);
+			}
+		}
+
+		if (clip == null)
+		{
+			// Otherwise load from the classpath
+			InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
+			try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+			{
+				clip = AudioSystem.getClip();
+				clip.open(sound);
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				log.warn("Unable to play builtin notification sound", e);
+				return;
+			}
+		}
+		clip.start();
 	}
 }

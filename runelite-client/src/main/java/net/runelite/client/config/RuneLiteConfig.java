@@ -26,6 +26,8 @@ package net.runelite.client.config;
 
 import java.awt.Dimension;
 import net.runelite.api.Constants;
+import net.runelite.client.Notifier;
+import net.runelite.client.util.OSType;
 
 @ConfigGroup(
 	keyName = "runelite",
@@ -113,14 +115,16 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationTray",
-		name = "Enable tray notifications",
+		keyName = "notificationTray_",
+		name = "Tray notifications",
 		description = "Enables tray notifications",
 		position = 20
 	)
-	default boolean enableTrayNotifications()
+	default Notifier.NativeCustomOff trayNotifications()
 	{
-		return true;
+		return OSType.getOSType() == OSType.Windows
+			? Notifier.NativeCustomOff.CUSTOM
+			: Notifier.NativeCustomOff.NATIVE;
 	}
 
 	@ConfigItem(
@@ -135,14 +139,14 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notificationSound",
-		name = "Enable sound on notifications",
+		keyName = "notificationSound_",
+		name = "Notification sound",
 		description = "Enables the playing of a beep sound when notifications are displayed",
 		position = 22
 	)
-	default boolean enableNotificationSound()
+	default Notifier.NativeCustomOff notificationSound()
 	{
-		return true;
+		return Notifier.NativeCustomOff.OFF;
 	}
 
 	@ConfigItem(

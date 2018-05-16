@@ -50,6 +50,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
 import javax.swing.ToolTipManager;
@@ -303,5 +304,13 @@ public class SwingUtil
 	public static boolean isCustomTitlePanePresent(final Window frame)
 	{
 		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
+	}
+
+	/**
+	 * Sets the substance Colorization factor to 1.0 so colors don't appear desaturated.
+	 */
+	public static void fullySaturateColors(JFrame window)
+	{
+		((JPanel) window.getContentPane()).putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 	}
 }
