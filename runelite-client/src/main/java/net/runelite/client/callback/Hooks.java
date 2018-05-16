@@ -71,6 +71,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.game.FreezeManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -99,6 +100,7 @@ public class Hooks
 	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
+	private static final FreezeManager freeze = new FreezeManager(client, eventBus);
 	private static final GameTick tick = new GameTick();
 	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
 	private static final Notifier notifier = injector.getInstance(Notifier.class);
