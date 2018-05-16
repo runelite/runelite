@@ -31,7 +31,6 @@ import java.io.IOException;
 @Slf4j
 public class Flipping extends Plugin
 {
-
 	@Inject
 	private Client client;
 
@@ -176,7 +175,6 @@ public class Flipping extends Plugin
 				buyPrice = buyPrice.replace(",", "");
 				sellPrice = sellPrice.replace(",", "");
 
-				System.out.print(buyPrice);
 				Long[] prices = {Long.parseLong(buyPrice), Long.parseLong(sellPrice)};
 
 				return prices;

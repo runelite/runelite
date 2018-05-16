@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -47,6 +48,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -173,6 +176,39 @@ public class GroundItemsOverlay extends Overlay
 				itemStringBuilder.append(" (HA: ")
 					.append(StackFormatter.quantityToStackSize(item.getHaPrice()))
 					.append(" gp)");
+			}
+
+			if(config.showTradeValue())
+			{
+				String itemName = item.getName().replace(" ", "-").toLowerCase();
+
+				try
+				{
+					Document document = Jsoup.connect(String.format("https://www.ge-tracker.com/item/%s", itemName)).timeout(6000).get();
+
+					String buyPriceString = document.getElementById("item_stat_offer_price").text();
+					String sellPriceString = document.getElementById("item_stat_sell_price").text();
+
+					if (buyPriceString != null && sellPriceString != null)
+					{
+						buyPriceString = buyPriceString.replace(",", "");
+						sellPriceString = sellPriceString.replace(",", "");
+
+						Long buyPrice = Long.parseLong(buyPriceString);
+						Long sellPrice = Long.parseLong(sellPriceString);
+
+						itemStringBuilder.append(" (Buy: ")
+								.append(buyPrice)
+								.append(" gp)")
+								.append(" (Sell: ")
+								.append(sellPrice)
+								.append(" gp)");
+					}
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			final String itemString = itemStringBuilder.toString();
