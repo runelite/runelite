@@ -42,6 +42,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 
+/**
+ * This class is used to deal with logging in and out of RuneLite accounts and sessions associated with those accounts.
+ */
 @PluginDescriptor(
 	name = "Account",
 	loadWhenOutdated = true
@@ -97,6 +100,10 @@ public class AccountPlugin extends Plugin
 		addAndRemoveButtons();
 	}
 
+	/**
+	 * Adds login or logout option to the top menu bar if the custom windows chrome option is enabled,
+	 * otherwise adds these to the bottom of the side bar.
+	 */
 	private void addAndRemoveButtons()
 	{
 		titleToolbar.removeNavigation(loginButton);

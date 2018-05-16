@@ -40,10 +40,19 @@ public abstract class Plugin implements Module
 	{
 	}
 
+	/**
+	 * Any code put here will run when the plugin is loaded or gets enabled in the settings
+	 * @throws Exception
+	 */
 	protected void startUp() throws Exception
 	{
 	}
 
+	/**
+	 * Any code put here will run when the plugin is disabled in the settings. This method will not be triggered
+	 * by exiting the client.
+	 * @throws Exception
+	 */
 	protected void shutDown() throws Exception
 	{
 	}
