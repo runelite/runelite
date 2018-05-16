@@ -54,13 +54,13 @@ public class MotherlodeGemOverlay extends Overlay
 	{
 		MotherlodeSession session = plugin.getSession();
 
-		if (session.getLastGemFound() == null || !plugin.isInMlm() || !config.showGemsFound())
+		if (session.getLastPayDirtMined() == null || !plugin.isInMlm() || !config.showGemsFound())
 		{
 			return null;
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastGemFound(), Instant.now());
+		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
@@ -74,6 +74,11 @@ public class MotherlodeGemOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
+
+		if (diamondsFound == 0 && rubiesFound == 0 && emeraldsFound == 0 && sapphiresFound == 0)
+		{
+			return null;
+		}
 
 		if (diamondsFound > 0)
 		{
