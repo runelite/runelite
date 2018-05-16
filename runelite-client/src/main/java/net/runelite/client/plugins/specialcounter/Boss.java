@@ -24,29 +24,51 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import com.google.common.collect.Sets;
+import java.util.HashSet;
 import lombok.Getter;
 import lombok.ToString;
+import net.runelite.api.NpcID;
 
-@AllArgsConstructor
 @Getter
 @ToString
 enum Boss
 {
-	ABYSSAL_SIRE("Abyssal sire", 1.25d),
+	ABYSSAL_SIRE("Abyssal sire", 1.25d, null, NpcID.RESPIRATORY_SYSTEM),
 	CALLISTO("Callisto", 1.225d),
 	CERBERUS("Cerberus", 1.15d),
 	CHAOS_ELEMENTAL("Chaos elemental", 1.075d),
-	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
-	GENERAL_GRAARDOR("General Graardor", 1.325d),
+	CORPOREAL_BEAST("Corporeal Beast", 1.55d, null, NpcID.DARK_ENERGY_CORE),
+	GENERAL_GRAARDOR("General Graardor", 1.325d, null, NpcID.SERGEANT_STRONGSTACK, NpcID.SERGEANT_STEELWILL, NpcID.SERGEANT_GRIMSPIKE),
 	GIANT_MOLE("Giant Mole", 1.075d),
 	KALPHITE_QUEEN("Kalphite Queen", 1.05d),
 	KING_BLACK_DRAGON("King Black Dragon", 1.075d),
-	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d),
+	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d, null, NpcID.BALFRUG_KREEYATH, NpcID.TSTANON_KARLAK, NpcID.ZAKLN_GRITCH),
 	VENETENATIS("Venenatis", 1.4d),
-	VETION("Vet'ion", 1.225d);
+	VETION("Vet'ion", 1.225d, NpcID.VETION, NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND);
 
 	private final String name;
 	private final double modifier; // Some NPCs have a modifier to the experience a player receives.
+	private final Integer npcId; // id of the NPC, if multiple forms
+	private final HashSet<Integer> minions;
+
+	Boss(String name, double modifier, Integer npcId, Integer... minions)
+	{
+		this.name = name;
+		this.modifier = modifier;
+		this.npcId = npcId;
+		this.minions = minions != null ? Sets.newHashSet(minions) : Sets.newHashSet();
+	}
+
+	Boss(String name, double modifier, Integer npcId)
+	{
+		this(name, modifier, npcId, null);
+	}
+
+	Boss(String name, double modifier)
+	{
+		this(name, modifier, null, null);
+	}
 
 	public static Boss getBoss(String name)
 	{
@@ -58,6 +80,18 @@ enum Boss
 			}
 		}
 		return null;
+	}
+
+	public static boolean isMinion(Integer npcId)
+	{
+		for (Boss boss : values())
+		{
+			if (!boss.getMinions().isEmpty() && boss.getMinions().contains(npcId))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -34,7 +34,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -151,12 +150,13 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			int interactingId = ((NPC) interacting).getId();
 
-			if (interactedNpcId != interactingId)
+			if (interactedNpcId != interactingId && !Boss.isMinion(interactingId)
+				&& Boss.getBoss(interacting.getName().equals("Vet'ion Reborn") ? "Vet'ion" : interacting.getName()) == null)
 			{
 				interactedNpcId = interactingId;
 				removeCounters();
 
-				Boss boss = Boss.getBoss(interacting.getName());
+				Boss boss = Boss.getBoss(interacting.getName().equals("Vet'ion Reborn") ? "Vet'ion" : interacting.getName());
 				modifier = boss != null ? boss.getModifier() : 1d;
 			}
 		}
@@ -167,9 +167,15 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor actor = death.getActor();
 
-		// 963 = 1st phase KQ, add condition so infobox stays during second phase too (965 = 2nd phase KQ)
-		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId && interactedNpcId != NpcID.KALPHITE_QUEEN_963)
+		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId)
 		{
+			Boss boss = Boss.getBoss(actor.getName().equals("Vet'ion Reborn") ? "Vet'ion" : actor.getName());
+			if (boss != null && boss.getNpcId() != null && boss.getNpcId().equals(interactedNpcId))
+			{
+				// boss has a second form
+				return;
+			}
+
 			removeCounters();
 		}
 	}
