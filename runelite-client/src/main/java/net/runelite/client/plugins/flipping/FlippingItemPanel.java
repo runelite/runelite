@@ -12,48 +12,48 @@ import java.awt.*;
 @Slf4j
 public class FlippingItemPanel extends JPanel
 {
-    private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-    FlippingItemPanel(String itemName, Icon icon, Long buyPrice, Long sellPrice)
-    {
-        BorderLayout layout = new BorderLayout();
-        layout.setHgap(5);
-        setLayout(layout);
-        setToolTipText(itemName);
+	FlippingItemPanel(String itemName, Icon icon, Long buyPrice, Long sellPrice)
+	{
+		BorderLayout layout = new BorderLayout();
+		layout.setHgap(5);
+		setLayout(layout);
+		setToolTipText(itemName);
 
-        Color background = getBackground();
+		Color background = getBackground();
 
-        setBorder(new CompoundBorder
-                (
-                        new LineBorder(getBackground().brighter(), 1),
-                        new EmptyBorder(5, 5, 5, 5)
-                ));
+		setBorder(new CompoundBorder
+				(
+						new LineBorder(getBackground().brighter(), 1),
+						new EmptyBorder(5, 5, 5, 5)
+				));
 
-        JLabel itemIcon = new JLabel();
-        itemIcon.setPreferredSize(ICON_SIZE);
-        if (icon != null)
-        {
-            itemIcon.setIcon(icon);
-        }
-        add(itemIcon, BorderLayout.LINE_START);
+		JLabel itemIcon = new JLabel();
+		itemIcon.setPreferredSize(ICON_SIZE);
+		if (icon != null)
+		{
+			itemIcon.setIcon(icon);
+		}
+		add(itemIcon, BorderLayout.LINE_START);
 
-        JPanel rightPanel = new JPanel(new GridLayout(3, 1));
-        rightPanel.setOpaque(false);
+		JPanel rightPanel = new JPanel(new GridLayout(3, 1));
+		rightPanel.setOpaque(false);
 
-        JLabel itemNameLabel = new JLabel();
-        itemNameLabel.setText(itemName);
-        rightPanel.add(itemNameLabel);
+		JLabel itemNameLabel = new JLabel();
+		itemNameLabel.setText(itemName);
+		rightPanel.add(itemNameLabel);
 
-        JLabel buyPriceLabel = new JLabel();
-        buyPriceLabel.setText("Buy: " + StackFormatter.formatNumber(buyPrice));
-        buyPriceLabel.setForeground(Color.GREEN);
-        rightPanel.add(buyPriceLabel);
+		JLabel buyPriceLabel = new JLabel();
+		buyPriceLabel.setText("Buy: " + StackFormatter.formatNumber(buyPrice));
+		buyPriceLabel.setForeground(Color.GREEN);
+		rightPanel.add(buyPriceLabel);
 
-        JLabel sellPriceLabel = new JLabel();
-        sellPriceLabel.setText("Sell: " + StackFormatter.formatNumber(sellPrice));
-        sellPriceLabel.setForeground(Color.GREEN);
-        rightPanel.add(sellPriceLabel);
+		JLabel sellPriceLabel = new JLabel();
+		sellPriceLabel.setText("Sell: " + StackFormatter.formatNumber(sellPrice));
+		sellPriceLabel.setForeground(Color.GREEN);
+		rightPanel.add(sellPriceLabel);
 
-        add(rightPanel, BorderLayout.CENTER);
-    }
+		add(rightPanel, BorderLayout.CENTER);
+	}
 }
