@@ -60,9 +60,9 @@ public class TwitterService
 
 	@Autowired
 	public TwitterService(
-		@Value("${runelite.twitter.consumerkey}") String consumerKey,
-		@Value("${runelite.twitter.secretkey}") String consumerSecret,
-		@Value("${runelite.twitter.listid}") String listId
+		@Value("${twitter.consumerkey}") String consumerKey,
+		@Value("${twitter.secretkey}") String consumerSecret,
+		@Value("${twitter.listid}") String listId
 	)
 	{
 		this.credentials = consumerKey + ":" + consumerSecret;

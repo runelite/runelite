@@ -28,35 +28,34 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class RuneLiteAPI
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
-
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
-
 	public static final OkHttpClient CLIENT = new OkHttpClient();
 	public static final Gson GSON = new Gson();
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
-	private static final Properties properties = new Properties();
-	private static String version;
-	private static int rsVersion;
+	private static String VERSION;
+	private static int RS_VERSION;
+	private static String HTTP_URL;
+	private static String WS_URL;
 
 	static
 	{
 		try
 		{
-			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
+			final Properties properties = new Properties();
+			final InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
 
-			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			VERSION = properties.getProperty("runelite.version");
+			RS_VERSION = Integer.parseInt(properties.getProperty("rs.version"));
+			HTTP_URL = properties.getProperty("url.http");
+			WS_URL = properties.getProperty("url.ws");
 		}
 		catch (NumberFormatException e)
 		{
@@ -64,33 +63,27 @@ public class RuneLiteAPI
 		}
 		catch (IOException ex)
 		{
-			logger.error(null, ex);
+			log.error(null, ex);
 		}
 	}
 
 	public static HttpUrl getApiBase()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		return HttpUrl.parse(HTTP_URL);
 	}
 
-	public static String getWsEndpoint()
+	public static HttpUrl getWsEndpoint()
 	{
-		return WSBASE + getVersion() + "/ws";
+		return HttpUrl.parse(WS_URL + "/ws");
 	}
 
 	public static String getVersion()
 	{
-		return version;
-	}
-
-	public static void setVersion(String version)
-	{
-		RuneLiteAPI.version = version;
+		return VERSION;
 	}
 
 	public static int getRsVersion()
 	{
-		return rsVersion;
+		return RS_VERSION;
 	}
-
 }

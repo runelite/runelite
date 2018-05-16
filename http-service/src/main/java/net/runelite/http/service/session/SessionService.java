@@ -36,6 +36,17 @@ import org.sql2o.Sql2o;
 @Service
 public class SessionService
 {
+	private static final String CREATE_SQL = "CREATE TABLE IF NOT EXISTS `session` (\n" +
+		"  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+		"  `uuid` varchar(36) NOT NULL,\n" +
+		"  `ip` varchar(39) NOT NULL,\n" +
+		"  `start` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n" +
+		"  `last` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n" +
+		"  PRIMARY KEY (`id`),\n" +
+		"  UNIQUE KEY `uuid` (`uuid`),\n" +
+		"  KEY `last` (`last`)\n" +
+		") ENGINE=InnoDB";
+
 	private final Sql2o sql2o;
 
 	@Autowired
@@ -44,6 +55,12 @@ public class SessionService
 	)
 	{
 		this.sql2o = sql2o;
+
+		try (Connection con = sql2o.beginTransaction())
+		{
+			con.createQuery(CREATE_SQL)
+				.executeUpdate();
+		}
 	}
 
 	public void createSession(SessionEntry session)

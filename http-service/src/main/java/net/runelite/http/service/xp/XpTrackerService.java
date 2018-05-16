@@ -44,12 +44,110 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class XpTrackerService
 {
-	@Autowired
-	@Qualifier("Runelite XP Tracker SQL2O")
-	private Sql2o sql2o;
+	private static final String CREATE_PLAYER_SQL = "CREATE TABLE IF NOT EXISTS `player` (\n" +
+		"  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+		"  `name` varchar(32) NOT NULL,\n" +
+		"  `tracked_since` timestamp NOT NULL DEFAULT current_timestamp(),\n" +
+		"  PRIMARY KEY (`id`),\n" +
+		"  UNIQUE KEY `name` (`name`)\n" +
+		") ENGINE=InnoDB\n";
+
+	private static final String CREATE_XP_SQL = "CREATE TABLE IF NOT EXISTS `xp` (\n" +
+		"  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+		"  `time` timestamp NOT NULL DEFAULT current_timestamp(),\n" +
+		"  `player` int(11) NOT NULL,\n" +
+		"  `attack_xp` int(11) NOT NULL,\n" +
+		"  `defence_xp` int(11) NOT NULL,\n" +
+		"  `strength_xp` int(11) NOT NULL,\n" +
+		"  `hitpoints_xp` int(11) NOT NULL,\n" +
+		"  `ranged_xp` int(11) NOT NULL,\n" +
+		"  `prayer_xp` int(11) NOT NULL,\n" +
+		"  `magic_xp` int(11) NOT NULL,\n" +
+		"  `cooking_xp` int(11) NOT NULL,\n" +
+		"  `woodcutting_xp` int(11) NOT NULL,\n" +
+		"  `fletching_xp` int(11) NOT NULL,\n" +
+		"  `fishing_xp` int(11) NOT NULL,\n" +
+		"  `firemaking_xp` int(11) NOT NULL,\n" +
+		"  `crafting_xp` int(11) NOT NULL,\n" +
+		"  `smithing_xp` int(11) NOT NULL,\n" +
+		"  `mining_xp` int(11) NOT NULL,\n" +
+		"  `herblore_xp` int(11) NOT NULL,\n" +
+		"  `agility_xp` int(11) NOT NULL,\n" +
+		"  `thieving_xp` int(11) NOT NULL,\n" +
+		"  `slayer_xp` int(11) NOT NULL,\n" +
+		"  `farming_xp` int(11) NOT NULL,\n" +
+		"  `runecraft_xp` int(11) NOT NULL,\n" +
+		"  `hunter_xp` int(11) NOT NULL,\n" +
+		"  `construction_xp` int(11) NOT NULL,\n" +
+		"  `overall_xp` int(11) NOT NULL,\n" +
+		"  `attack_level` int(11) NOT NULL ,\n" +
+		"  `defence_level` int(11) NOT NULL ,\n" +
+		"  `strength_level` int(11) NOT NULL ,\n" +
+		"  `hitpoints_level` int(11) NOT NULL ,\n" +
+		"  `ranged_level` int(11) NOT NULL ,\n" +
+		"  `prayer_level` int(11) NOT NULL ,\n" +
+		"  `magic_level` int(11) NOT NULL ,\n" +
+		"  `cooking_level` int(11) NOT NULL ,\n" +
+		"  `woodcutting_level` int(11) NOT NULL ,\n" +
+		"  `fletching_level` int(11) NOT NULL ,\n" +
+		"  `fishing_level` int(11) NOT NULL ,\n" +
+		"  `firemaking_level` int(11) NOT NULL ,\n" +
+		"  `crafting_level` int(11) NOT NULL ,\n" +
+		"  `smithing_level` int(11) NOT NULL ,\n" +
+		"  `mining_level` int(11) NOT NULL ,\n" +
+		"  `herblore_level` int(11) NOT NULL ,\n" +
+		"  `agility_level` int(11) NOT NULL ,\n" +
+		"  `thieving_level` int(11) NOT NULL ,\n" +
+		"  `slayer_level` int(11) NOT NULL ,\n" +
+		"  `farming_level` int(11) NOT NULL ,\n" +
+		"  `runecraft_level` int(11) NOT NULL ,\n" +
+		"  `hunter_level` int(11) NOT NULL ,\n" +
+		"  `construction_level` int(11) NOT NULL ,\n" +
+		"  `overall_level` int(11) NOT NULL ,\n" +
+		"  `attack_rank` int(11) NOT NULL,\n" +
+		"  `defence_rank` int(11) NOT NULL,\n" +
+		"  `strength_rank` int(11) NOT NULL,\n" +
+		"  `hitpoints_rank` int(11) NOT NULL,\n" +
+		"  `ranged_rank` int(11) NOT NULL,\n" +
+		"  `prayer_rank` int(11) NOT NULL,\n" +
+		"  `magic_rank` int(11) NOT NULL,\n" +
+		"  `cooking_rank` int(11) NOT NULL,\n" +
+		"  `woodcutting_rank` int(11) NOT NULL,\n" +
+		"  `fletching_rank` int(11) NOT NULL,\n" +
+		"  `fishing_rank` int(11) NOT NULL,\n" +
+		"  `firemaking_rank` int(11) NOT NULL,\n" +
+		"  `crafting_rank` int(11) NOT NULL,\n" +
+		"  `smithing_rank` int(11) NOT NULL,\n" +
+		"  `mining_rank` int(11) NOT NULL,\n" +
+		"  `herblore_rank` int(11) NOT NULL,\n" +
+		"  `agility_rank` int(11) NOT NULL,\n" +
+		"  `thieving_rank` int(11) NOT NULL,\n" +
+		"  `slayer_rank` int(11) NOT NULL,\n" +
+		"  `farming_rank` int(11) NOT NULL,\n" +
+		"  `runecraft_rank` int(11) NOT NULL,\n" +
+		"  `hunter_rank` int(11) NOT NULL,\n" +
+		"  `construction_rank` int(11) NOT NULL,\n" +
+		"  `overall_rank` int(11) NOT NULL,\n" +
+		"  PRIMARY KEY (`id`),\n" +
+		"  UNIQUE KEY `player_time` (`player`,`time`),\n" +
+		"  CONSTRAINT `fk_player` FOREIGN KEY (`player`) REFERENCES `player` (`id`)\n" +
+		") ENGINE=InnoDB\n";
+
+	private final Sql2o sql2o;
+	private final HiscoreService hiscoreService;
 
 	@Autowired
-	private HiscoreService hiscoreService;
+	public XpTrackerService(@Qualifier("Runelite XP Tracker SQL2O") Sql2o sql2o, HiscoreService hiscoreService)
+	{
+		this.sql2o = sql2o;
+		this.hiscoreService = hiscoreService;
+
+		try (Connection con = sql2o.beginTransaction())
+		{
+			con.createQuery(CREATE_PLAYER_SQL).executeUpdate();
+			con.createQuery(CREATE_XP_SQL).executeUpdate();
+		}
+	}
 
 	public void update(String username) throws IOException
 	{
@@ -79,12 +177,16 @@ public class XpTrackerService
 
 			con.createQuery("insert into xp (player,attack_xp,defence_xp,strength_xp,hitpoints_xp,ranged_xp,prayer_xp,magic_xp,cooking_xp,woodcutting_xp,"
 				+ "fletching_xp,fishing_xp,firemaking_xp,crafting_xp,smithing_xp,mining_xp,herblore_xp,agility_xp,thieving_xp,slayer_xp,farming_xp,"
-				+ "runecraft_xp,hunter_xp,construction_xp,attack_rank,defence_rank,strength_rank,hitpoints_rank,ranged_rank,prayer_rank,magic_rank,"
+				+ "runecraft_xp,hunter_xp,construction_xp,overall_xp,attack_level,defence_level,strength_level,hitpoints_level,ranged_level,prayer_level,magic_level,cooking_level,woodcutting_level,"
+				+ "fletching_level,fishing_level,firemaking_level,crafting_level,smithing_level,mining_level,herblore_level,agility_level,thieving_level,slayer_level,farming_level,"
+				+ "runecraft_level,hunter_level,construction_level,overall_level,attack_rank,defence_rank,strength_rank,hitpoints_rank,ranged_rank,prayer_rank,magic_rank,"
 				+ "cooking_rank,woodcutting_rank,fletching_rank,fishing_rank,firemaking_rank,crafting_rank,smithing_rank,mining_rank,herblore_rank,"
 				+ "agility_rank,thieving_rank,slayer_rank,farming_rank,runecraft_rank,hunter_rank,construction_rank,overall_rank) values (:player,:attack_xp,:defence_xp,"
 				+ ":strength_xp,:hitpoints_xp,:ranged_xp,:prayer_xp,:magic_xp,:cooking_xp,:woodcutting_xp,:fletching_xp,:fishing_xp,:firemaking_xp,"
 				+ ":crafting_xp,:smithing_xp,:mining_xp,:herblore_xp,:agility_xp,:thieving_xp,:slayer_xp,:farming_xp,:runecraft_xp,:hunter_xp,"
-				+ ":construction_xp,:attack_rank,:defence_rank,:strength_rank,:hitpoints_rank,:ranged_rank,:prayer_rank,:magic_rank,:cooking_rank,"
+				+ ":construction_xp,:overall_xp,:attack_level,:defence_level,:strength_level,:hitpoints_level,:ranged_level,:prayer_level,:magic_level,:cooking_level,:woodcutting_level,"
+				+ ":fletching_level,:fishing_level,:firemaking_level,:crafting_level,:smithing_level,:mining_level,:herblore_level,:agility_level,:thieving_level,:slayer_level,:farming_level,"
+				+ ":runecraft_level,:hunter_level,:construction_level,:overall_level,:attack_rank,:defence_rank,:strength_rank,:hitpoints_rank,:ranged_rank,:prayer_rank,:magic_rank,:cooking_rank,"
 				+ ":woodcutting_rank,:fletching_rank,:fishing_rank,:firemaking_rank,:crafting_rank,:smithing_rank,:mining_rank,:herblore_rank,"
 				+ ":agility_rank,:thieving_rank,:slayer_rank,:farming_rank,:runecraft_rank,:hunter_rank,:construction_rank,:overall_rank)")
 				.addParameter("player", playerEntity.getId())
@@ -111,6 +213,31 @@ public class XpTrackerService
 				.addParameter("runecraft_xp", hiscoreResult.getRunecraft().getExperience())
 				.addParameter("hunter_xp", hiscoreResult.getHunter().getExperience())
 				.addParameter("construction_xp", hiscoreResult.getConstruction().getExperience())
+				.addParameter("overall_xp", hiscoreResult.getOverall().getExperience())
+				.addParameter("attack_level", hiscoreResult.getAttack().getLevel())
+				.addParameter("defence_level", hiscoreResult.getDefence().getLevel())
+				.addParameter("strength_level", hiscoreResult.getStrength().getLevel())
+				.addParameter("hitpoints_level", hiscoreResult.getHitpoints().getLevel())
+				.addParameter("ranged_level", hiscoreResult.getRanged().getLevel())
+				.addParameter("prayer_level", hiscoreResult.getPrayer().getLevel())
+				.addParameter("magic_level", hiscoreResult.getMagic().getLevel())
+				.addParameter("cooking_level", hiscoreResult.getCooking().getLevel())
+				.addParameter("woodcutting_level", hiscoreResult.getWoodcutting().getLevel())
+				.addParameter("fletching_level", hiscoreResult.getFletching().getLevel())
+				.addParameter("fishing_level", hiscoreResult.getFishing().getLevel())
+				.addParameter("firemaking_level", hiscoreResult.getFiremaking().getLevel())
+				.addParameter("crafting_level", hiscoreResult.getCrafting().getLevel())
+				.addParameter("smithing_level", hiscoreResult.getSmithing().getLevel())
+				.addParameter("mining_level", hiscoreResult.getMining().getLevel())
+				.addParameter("herblore_level", hiscoreResult.getHerblore().getLevel())
+				.addParameter("agility_level", hiscoreResult.getAgility().getLevel())
+				.addParameter("thieving_level", hiscoreResult.getThieving().getLevel())
+				.addParameter("slayer_level", hiscoreResult.getSlayer().getLevel())
+				.addParameter("farming_level", hiscoreResult.getFarming().getLevel())
+				.addParameter("runecraft_level", hiscoreResult.getRunecraft().getLevel())
+				.addParameter("hunter_level", hiscoreResult.getHunter().getLevel())
+				.addParameter("construction_level", hiscoreResult.getConstruction().getLevel())
+				.addParameter("overall_level", hiscoreResult.getOverall().getLevel())
 				.addParameter("attack_rank", hiscoreResult.getAttack().getRank())
 				.addParameter("defence_rank", hiscoreResult.getDefence().getRank())
 				.addParameter("strength_rank", hiscoreResult.getStrength().getRank())

@@ -58,6 +58,30 @@ public class XpData
 	private int hunter_xp;
 	private int construction_xp;
 
+	private int attack_level;
+	private int defence_level;
+	private int strength_level;
+	private int hitpoints_level;
+	private int ranged_level;
+	private int prayer_level;
+	private int magic_level;
+	private int cooking_level;
+	private int woodcutting_level;
+	private int fletching_level;
+	private int fishing_level;
+	private int firemaking_level;
+	private int crafting_level;
+	private int smithing_level;
+	private int mining_level;
+	private int herblore_level;
+	private int agility_level;
+	private int thieving_level;
+	private int slayer_level;
+	private int farming_level;
+	private int runecraft_level;
+	private int hunter_level;
+	private int construction_level;
+
 	private int overall_rank;
 	private int attack_rank;
 	private int defence_rank;
