@@ -26,9 +26,24 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -45,6 +60,18 @@ public class WoodcuttingPlugin extends Plugin
 {
 	@Inject
 	private Notifier notifier;
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<GameObject> treeObject = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private List<Integer> lastTree = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Instant clickTime;
+
+	@Getter(AccessLevel.PACKAGE)
+	public static BufferedImage AXE_IMAGE;
 
 	@Inject
 	private WoodcuttingOverlay overlay;
@@ -71,6 +98,23 @@ public class WoodcuttingPlugin extends Plugin
 		return session;
 	}
 
+	public static BufferedImage getAxeImage()
+	{
+		BufferedImage AXE_IMAGE;
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				AXE_IMAGE = ImageIO.read(WoodcuttingPlugin.class.getResourceAsStream("axe.png"));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		return AXE_IMAGE;
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
@@ -85,6 +129,46 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
+		}
+	}
+
+	@Subscribe
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		for (TreeSpawn treeEnum : TreeSpawn.values())
+		{
+			for (Integer treeID : treeEnum.getTreeID())
+			{
+				if (treeID == event.getId())
+				{
+					lastTree = Arrays.asList(TreeSpawn.valueOf(treeEnum.name()).getTreeID());
+					clickTime = Instant.now();
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	private void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		if (TreeSpawn.GetTrees().contains(event.getGameObject().getId()))
+		{
+			treeObject.add(event.getGameObject());
+		}
+	}
+
+	@Subscribe
+	private void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		treeObject.remove(event.getGameObject());
+	}
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			treeObject = new ArrayList<>();
 		}
 	}
 }

@@ -41,10 +41,14 @@ import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -65,6 +69,9 @@ class WoodcuttingOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
+	private ItemManager itemManager;
+
+	@Inject
 	public WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -77,6 +84,23 @@ class WoodcuttingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (config.showAvailebleTrees() && plugin.getClickTime() != null)
+		{
+			Duration timeOutAfter = Duration.ofMinutes(config.treeIndicatorTimeout());
+			Integer timeOut = Duration.between(plugin.getClickTime() , Instant.now()).compareTo(timeOutAfter);
+			if (timeOut <= 0)
+			{
+				for (GameObject tree : plugin.getTreeObject())
+				{
+					int playerDistance = tree.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation());
+					if (plugin.getLastTree().contains(tree.getId()) && playerDistance <= 12)
+					{
+						OverlayUtil.renderImageLocation(client, graphics, tree.getLocalLocation(), itemManager.getImage(ItemID.BRONZE_AXE), 120);
+					}
+				}
+			}
+		}
+
 		if (!config.showWoodcuttingStats())
 		{
 			return null;
