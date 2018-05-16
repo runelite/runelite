@@ -58,9 +58,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -85,6 +88,17 @@ public class ConfigPanel extends PluginPanel
 	private static BufferedImage CONFIG_ICON;
 	private static BufferedImage UNCHECK_ICON;
 	private static BufferedImage CHECK_ICON;
+	private static BufferedImage BACK_ICON;
+	private static BufferedImage CLEAR_ICON;
+
+	private static final int SCROLLBAR_WIDTH = 17;
+	private static final int OFFSET = 6;
+	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+	private static final Dimension ITEM_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 2 * OFFSET, 25);
+
+	private JPanel topPanel;
+	private JPanel contents;
+	private JScrollPane scrollPane;
 
 	static
 	{
@@ -95,6 +109,8 @@ public class ConfigPanel extends PluginPanel
 				CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
 				UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("disabled.png"));
 				CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("enabled.png"));
+				BACK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("back.png"));
+				CLEAR_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("clear.png"));
 			}
 		}
 		catch (IOException e)
@@ -113,12 +129,15 @@ public class ConfigPanel extends PluginPanel
 
 	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
 	{
-		super();
+		super(false);
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
 
+
+		searchBar.setBorder(new EmptyBorder(5, 5, 5, 0));
+		searchBar.setPreferredSize(new Dimension (ITEM_PREFERRED_SIZE));
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
@@ -140,13 +159,37 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
+		createPanel();
 		rebuildPluginList();
 		openConfigList();
 	}
 
+	private final void createPanel()
+	{
+		setLayout(new BorderLayout());
+
+		topPanel = new JPanel();
+		topPanel.setBorder(BORDER_PADDING);
+		topPanel.setLayout(new BorderLayout(0, OFFSET));
+		add(topPanel, BorderLayout.NORTH);
+
+		contents = new JPanel();
+		contents.setBorder(BORDER_PADDING);
+		contents.setLayout(new GridLayout(0, 1, 0, 3));
+
+		JPanel northPanel = new JPanel();
+		northPanel.setLayout(new BorderLayout());
+		northPanel.add(contents, BorderLayout.NORTH);
+
+		scrollPane = new JScrollPane(northPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add(scrollPane, BorderLayout.CENTER);
+	}
+
 	final void rebuildPluginList()
 	{
-		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
+		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 		Map<String, JPanel> newChildren = new TreeMap<>();
 
 		pluginManager.getPlugins().stream()
@@ -204,7 +247,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create edit config button and disable it by default
 		final JButton editConfigButton = new JButton(new ImageIcon(CONFIG_ICON));
-		editConfigButton.setPreferredSize(new Dimension(32, 0));
+		editConfigButton.setPreferredSize(new Dimension(32, 25));
 		editConfigButton.setEnabled(false);
 
 		// If we have configuration proxy enable the button and add edit config listener
@@ -228,7 +271,7 @@ public class ConfigPanel extends PluginPanel
 	{
 		// Create enabling/disabling button
 		final JButton toggleButton = new JButton(new ImageIcon(CHECK_ICON));
-		toggleButton.setPreferredSize(new Dimension(32, 0));
+		toggleButton.setPreferredSize(new Dimension(32, 25));
 
 		if (plugin == null)
 		{
@@ -275,16 +318,15 @@ public class ConfigPanel extends PluginPanel
 	{
 		final String text = searchBar.getText();
 
-		children.values().forEach(this::remove);
-
+		children.values().forEach(contents::remove);
 		if (text.isEmpty())
 		{
-			children.values().forEach(this::add);
+			children.values().forEach(contents::add);
 			revalidate();
 			return;
 		}
 
-		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> add(children.get(k)));
+		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> contents.add(children.get(k)));
 		revalidate();
 	}
 
@@ -300,15 +342,32 @@ public class ConfigPanel extends PluginPanel
 
 	private void openConfigList()
 	{
-		removeAll();
-		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
-		add(searchBar);
+		JPanel searchPanel = new JPanel(new BorderLayout());
+		searchPanel.setBorder(new LineBorder(Color.BLACK, 1));
+		searchPanel.add(searchBar, BorderLayout.CENTER);
+
+		JButton clearButton = new JButton(new ImageIcon(CLEAR_ICON));
+		clearButton.setPreferredSize(new Dimension(20, 20));
+		clearButton.setBorderPainted(false);
+		clearButton.setOpaque(true);
+		clearButton.setContentAreaFilled(false);
+		clearButton.addActionListener((e) ->
+		{
+			searchBar.setText("");
+			searchBar.requestFocusInWindow();
+		});
+		searchPanel.add(clearButton, BorderLayout.LINE_END);
+
+		topPanel.removeAll();
+		topPanel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER), BorderLayout.NORTH);
+		topPanel.add(searchPanel, BorderLayout.CENTER);
+
+		contents.removeAll();
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
-		JScrollPane scrollbar = getScrollPane();
-		scrollbar.validate();
-		scrollbar.getVerticalScrollBar().setValue(scrollBarPosition);
+		scrollPane.validate();
+		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
 	private void changeConfiguration(Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
@@ -361,12 +420,19 @@ public class ConfigPanel extends PluginPanel
 
 	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager)
 	{
-		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
-		removeAll();
+		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
+		topPanel.removeAll();
+		contents.removeAll();
+
 		String name = cd.getGroup().name() + " Configuration";
-		JLabel title = new JLabel(name);
+		JLabel title = new JLabel(name, SwingConstants.CENTER);
 		title.setToolTipText(cd.getGroup().description());
-		add(title, SwingConstants.CENTER);
+		topPanel.add(title, BorderLayout.CENTER);
+
+		JButton backArrow = new JButton(new ImageIcon(BACK_ICON));
+		backArrow.addActionListener(e -> openConfigList());
+		backArrow.setPreferredSize(new Dimension(20, 25));
+		topPanel.add(backArrow, BorderLayout.LINE_START);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -377,6 +443,7 @@ public class ConfigPanel extends PluginPanel
 
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
+			item.setPreferredSize(ITEM_PREFERRED_SIZE);
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
@@ -521,10 +588,11 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			add(item);
+			contents.add(item);
 		}
 
 		JButton resetButton = new JButton("Reset");
+		resetButton.setPreferredSize(ITEM_PREFERRED_SIZE);
 		resetButton.addActionListener((e) ->
 		{
 			configManager.setDefaultConfiguration(config, true);
@@ -532,13 +600,21 @@ public class ConfigPanel extends PluginPanel
 			// Reload configuration panel
 			openGroupConfigPanel(config, cd, configManager);
 		});
-		add(resetButton);
+		contents.add(resetButton);
 
 		JButton backButton = new JButton("Back");
+		backButton.setPreferredSize(ITEM_PREFERRED_SIZE);
 		backButton.addActionListener(e -> openConfigList());
-		add(backButton);
+		contents.add(backButton);
 
 		revalidate();
-		getScrollPane().getVerticalScrollBar().setValue(0);
+		scrollPane.getVerticalScrollBar().setValue(0);
+	}
+
+	@Override
+	public Dimension getPreferredSize()
+	{
+		int width = PANEL_WIDTH + SCROLLBAR_WIDTH;
+		return new Dimension(width, super.getPreferredSize().height);
 	}
 }
