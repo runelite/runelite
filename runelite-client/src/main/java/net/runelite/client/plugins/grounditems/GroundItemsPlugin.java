@@ -35,6 +35,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -139,6 +140,8 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
+	private List<RealTimePrice> realTimePrices = new ArrayList<>();
+
 	// Collects similar ground items
 	private final Collector<GroundItem, ?, Map<GroundItem.GroundItemKey, GroundItem>> groundItemMapCollector = Collectors
 		.toMap
@@ -147,6 +150,8 @@ public class GroundItemsPlugin extends Plugin
 					b.setHaPrice(a.getHaPrice() + b.getHaPrice());
 					b.setGePrice(a.getGePrice() + b.getGePrice());
 					b.setQuantity(a.getQuantity() + b.getQuantity());
+					b.setBuyPrice(a.getBuyPrice() + b.getBuyPrice());
+					b.setSellPrice(a.getSellPrice() + b.getSellPrice());
 					return b;
 				},
 				() -> collectedGroundItems);
@@ -287,14 +292,15 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 
 		final GroundItem groundItem = GroundItem.builder()
-			.id(itemId)
-			.location(tile.getWorldLocation())
-			.itemId(realItemId)
-			.quantity(item.getQuantity())
-			.name(itemComposition.getName())
-			.haPrice(alchPrice * item.getQuantity())
-			.build();
+				.id(itemId)
+				.location(tile.getWorldLocation())
+				.itemId(realItemId)
+				.quantity(item.getQuantity())
+				.name(itemComposition.getName())
+				.haPrice(alchPrice * item.getQuantity())
+				.build();
 
+		doesRealTimePriceExists(groundItem);
 
 		// Update item price in case it is coins
 		if (realItemId == COINS)
@@ -451,5 +457,39 @@ public class GroundItemsPlugin extends Plugin
 		{
 			setHotKeyPressed(false);
 		}
+	}
+
+	private void doesRealTimePriceExists(GroundItem groundItem)
+	{
+		RealTimePrice toRemove = null;
+
+		for(RealTimePrice realTimePrice : realTimePrices)
+		{
+			if(realTimePrice.getItemName().equalsIgnoreCase(groundItem.getName()))
+			{
+				if(realTimePrice.getLastUpdated() + 6000 >= System.currentTimeMillis()) {
+					groundItem.setBuyPrice(realTimePrice.getBuyPrice());
+					groundItem.setSellPrice(realTimePrice.getSellPrice());
+				}
+				else
+				{
+					toRemove = realTimePrice;
+				}
+			}
+		}
+
+		if(toRemove != null)
+		{
+			realTimePrices.remove(toRemove);
+		}
+		else
+		{
+			new RealTimePrices(groundItem, this).start();
+		}
+	}
+
+	public void addRealTimePrice(RealTimePrice realTimePrice)
+	{
+		realTimePrices.add(realTimePrice);
 	}
 }
