@@ -24,8 +24,23 @@
  */
 package net.runelite.client.plugins.loot-recorder;
 
-public class LootEntry
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import lombok.Getter;
+
+class LootEntry
 {
-    public Integer kill_count;
-    public ArrayList drops;
+	public LootEntry(Integer kill_count,ArrayList drops)
+	{
+		this.kill_count = kill_count;
+		this.drops = drops;
+	}
+
+	@Getter
+	private final Integer kill_count;
+
+	@Getter
+	private final ArrayList drops;
 }

@@ -24,8 +24,23 @@
  */
 package net.runelite.client.plugins.loot-recorder;
 
-public class DropEntry
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import lombok.Getter;
+
+class DropEntry
 {
-	public String item_name;
-	public Integer item_amount;
+	public DropEntry(String item_name, Integer item_amount)
+	{
+		this.item_name = item_name;
+		this.item_amount = item_amount;
+	}
+
+	@Getter
+	private final String item_name;
+
+	@Getter
+	private final Integer item_amount;
 }
