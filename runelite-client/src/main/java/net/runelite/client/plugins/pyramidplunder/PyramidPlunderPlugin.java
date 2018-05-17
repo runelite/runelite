@@ -62,7 +62,7 @@ public class PyramidPlunderPlugin extends Plugin
 			}
 			else
 			{
-				if(infoBoxManager.getInfoBoxes().contains(plunderTimer))
+				if (infoBoxManager.getInfoBoxes().contains(plunderTimer))
 				{
 					infoBoxManager.removeInfoBox(plunderTimer);
 				}
