@@ -177,7 +177,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.showTradeValue())
 			{
-				if(item.getBuyPrice() > 0 && item.getSellPrice() > 0)
+				if (item.getBuyPrice() > 0 && item.getSellPrice() > 0)
 				{
 					itemStringBuilder.append(" (Buy: ")
 							.append(String.format("%,d", item.getBuyPrice()))
