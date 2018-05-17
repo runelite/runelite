@@ -59,6 +59,8 @@ public class PluginToolbar
 			return;
 		}
 
+		button.setTooltip(button.getName());
+
 		if (buttons.add(button))
 		{
 			int index = buttons.headSet(button).size();
