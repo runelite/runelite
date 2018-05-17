@@ -28,14 +28,20 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import net.runelite.client.plugins.Plugin;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.plugins.Plugin;
+
 public class Counter extends InfoBox
 {
 	private String text;
+	private Color color;
 
 	public Counter(BufferedImage image, Plugin plugin, String text)
 	{
 		super(image, plugin);
 		this.text = text;
+		this.color = Color.WHITE;
 	}
 
 	@Override
@@ -58,7 +64,12 @@ public class Counter extends InfoBox
 	@Override
 	public Color getTextColor()
 	{
-		return Color.WHITE;
+		return color;
+	}
+
+	public void setTextColor(Color color)
+	{
+		this.color = color;
 	}
 
 }

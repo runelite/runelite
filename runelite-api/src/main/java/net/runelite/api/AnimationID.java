@@ -143,4 +143,7 @@ public final class AnimationID
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
+
+	// Blowpipe animation
+	public static final int BLOWPIPE_ATTACK_ANIMATION = 5061;
 }
