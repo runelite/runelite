@@ -319,12 +319,7 @@ public class SlayerPlugin extends Plugin
 			amount++;
 			slaughterChargeCount = --slaughterChargeCount <= 0 ? SLAUGHTER_CHARGE : slaughterChargeCount;
 			config.slaughter(slaughterChargeCount);
-			if (!config.showInfobox())
-			{
-				return;
-			}
-			addCounter();
-			counter.setText(String.valueOf(amount));
+			updateCounter();
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
@@ -332,12 +327,7 @@ public class SlayerPlugin extends Plugin
 			amount--;
 			expeditiousChargeCount = --expeditiousChargeCount <= 0 ? EXPEDITIOUS_CHARGE : expeditiousChargeCount;
 			config.expeditious(expeditiousChargeCount);
-			if (!config.showInfobox())
-			{
-				return;
-			}
-			addCounter();
-			counter.setText(String.valueOf(amount));
+			updateCounter();
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
@@ -460,16 +450,7 @@ public class SlayerPlugin extends Plugin
 
 		amount--;
 		config.amount(amount); // save changed value
-
-		if (!config.showInfobox())
-		{
-			return;
-		}
-
-		// add and update counter, set timer
-		addCounter();
-		counter.setText(String.valueOf(amount));
-		infoTimer = Instant.now();
+		updateCounter();
 	}
 
 	private void setTask(String name, int amt)
@@ -513,6 +494,17 @@ public class SlayerPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void updateCounter()
+	{
+		if (!config.showInfobox())
+		{
+			return;
+		}
+
+		addCounter();
+		counter.setText(String.valueOf(amount));
 	}
 
 	private List<NPC> buildTargetsToHighlight()
