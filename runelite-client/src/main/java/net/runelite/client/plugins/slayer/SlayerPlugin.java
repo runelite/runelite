@@ -317,19 +317,27 @@ public class SlayerPlugin extends Plugin
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
 		{
 			amount++;
-			addCounter();
-			counter.setText(String.valueOf(amount));
 			slaughterChargeCount = --slaughterChargeCount <= 0 ? SLAUGHTER_CHARGE : slaughterChargeCount;
 			config.slaughter(slaughterChargeCount);
+			if (!config.showInfobox())
+			{
+				return;
+			}
+			addCounter();
+			counter.setText(String.valueOf(amount));
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
 		{
 			amount--;
-			addCounter();
-			counter.setText(String.valueOf(amount));
 			expeditiousChargeCount = --expeditiousChargeCount <= 0 ? EXPEDITIOUS_CHARGE : expeditiousChargeCount;
 			config.expeditious(expeditiousChargeCount);
+			if (!config.showInfobox())
+			{
+				return;
+			}
+			addCounter();
+			counter.setText(String.valueOf(amount));
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
