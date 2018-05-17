@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Cameron Moberg <Moberg@tuta.io>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, magic fTail
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,10 +27,13 @@
 package net.runelite.client.plugins.bosstimer;
 
 import com.google.common.eventbus.Subscribe;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ActorDespawned;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -51,7 +55,10 @@ public class BossTimersPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
+		deadBoss.clear();
 	}
+
+	private static final Map<Actor, String> deadBoss = new HashMap<>();
 
 	@Subscribe
 	public void onActorDeath(ActorDeath death)
@@ -59,6 +66,22 @@ public class BossTimersPlugin extends Plugin
 		Actor actor = death.getActor();
 
 		Boss boss = Boss.find(actor.getName());
+
+		if (boss == null)
+		{
+			return;
+		}
+
+		deadBoss.put(actor, actor.getName());
+	}
+
+	@Subscribe
+	public void onActorDespawned(ActorDespawned event)
+	{
+		Actor actor = event.getActor();
+
+		Boss boss = Boss.find(deadBoss.get(actor));
+
 		if (boss == null)
 		{
 			return;
@@ -67,10 +90,11 @@ public class BossTimersPlugin extends Plugin
 		// remove existing timer
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
 
-		log.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
+		log.debug("Creating spawn timer for {} ({} seconds)", deadBoss.get(actor), boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
 		timer.setTooltip(boss.getName());
 		infoBoxManager.addInfoBox(timer);
+		deadBoss.remove(actor);
 	}
 }
