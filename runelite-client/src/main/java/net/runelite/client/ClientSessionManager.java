@@ -32,6 +32,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.http.api.session.SessionClient;
 
 @Singleton
@@ -44,10 +46,13 @@ public class ClientSessionManager
 	private ScheduledFuture<?> scheduledFuture;
 	private UUID sessionId;
 
+	@Inject
+	private RuneLite runelite;
 
 	@Inject
-	ClientSessionManager(ScheduledExecutorService executorService)
+	ClientSessionManager(ScheduledExecutorService executorService, RuneLite runelite)
 	{
+		this.runelite = runelite;
 		this.executorService = executorService;
 	}
 
@@ -86,6 +91,8 @@ public class ClientSessionManager
 
 	private void ping()
 	{
+		final Client client = runelite.client;
+
 		try
 		{
 			if (sessionId == null)
@@ -100,15 +107,17 @@ public class ClientSessionManager
 			log.warn(null, ex);
 		}
 
+		boolean inGame = client.getGameState() != GameState.LOGIN_SCREEN;
+
 		try
 		{
-			sessionClient.ping(sessionId);
+			sessionClient.ping(sessionId, inGame);
+			log.debug("Successfully pinged session. In-game status set to: ", inGame);
 		}
 		catch (IOException ex)
 		{
-			log.warn("Resetting session", ex);
+			log.warn("Unable to update client state. Resetting session.", ex);
 			sessionId = null;
 		}
-
 	}
 }
