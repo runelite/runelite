@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -25,7 +26,10 @@ public class PyramidPlunderPlugin extends Plugin
 	private Client client;
 	@Inject
 	private InfoBoxManager infoBoxManager;
+	@Inject
+	private GameObjectQuery gameObjectQuery;
 	private boolean startingPlunder;
+	private boolean inPyramid;
 	private Timer plunderTimer;
 	private SkillIconManager skillIconManager = new SkillIconManager();
 	private BufferedImage icon = skillIconManager.getSkillImage(Skill.THIEVING);
@@ -64,7 +68,17 @@ public class PyramidPlunderPlugin extends Plugin
 			{
 				if (infoBoxManager.getInfoBoxes().contains(plunderTimer))
 				{
-					infoBoxManager.removeInfoBox(plunderTimer);
+					for (GameObject list: gameObjectQuery.result(client))
+					{
+						if (list.getId() == 21280)
+						{
+							inPyramid = true;
+						}
+					}
+					if (!inPyramid)
+					{
+						infoBoxManager.removeInfoBox(plunderTimer);
+					}
 				}
 			}
 		}
