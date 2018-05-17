@@ -27,6 +27,7 @@ package net.runelite.client.plugins.combatlevel;
 import com.google.common.eventbus.Subscribe;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
@@ -34,6 +35,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -46,6 +48,15 @@ public class CombatLevelPlugin extends Plugin
 
 	@Inject
 	Client client;
+
+	@Inject
+	private CombatLevelConfig config;
+
+	@Provides
+	CombatLevelConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CombatLevelConfig.class);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -76,17 +87,32 @@ public class CombatLevelPlugin extends Plugin
 		{
 			return;
 		}
+		if (config.includePrayerLevel())
+		{
+			double combatLevelPrecise = Experience.getCombatLevelPrecise(
+					client.getRealSkillLevel(Skill.ATTACK),
+					client.getRealSkillLevel(Skill.STRENGTH),
+					client.getRealSkillLevel(Skill.DEFENCE),
+					client.getRealSkillLevel(Skill.HITPOINTS),
+					client.getRealSkillLevel(Skill.MAGIC),
+					client.getRealSkillLevel(Skill.RANGED),
+					client.getRealSkillLevel(Skill.PRAYER)
+			);
+			combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
+		}
+		else if (!config.includePrayerLevel())
+		{
+			double combatLevelPreciseNoPrayer = Experience.getCombatLevelPreciseNoPrayer(
+					client.getRealSkillLevel(Skill.ATTACK),
+					client.getRealSkillLevel(Skill.STRENGTH),
+					client.getRealSkillLevel(Skill.DEFENCE),
+					client.getRealSkillLevel(Skill.HITPOINTS),
+					client.getRealSkillLevel(Skill.MAGIC),
+					client.getRealSkillLevel(Skill.RANGED)
+			);
+			combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPreciseNoPrayer));
+		}
 
-		double combatLevelPrecise = Experience.getCombatLevelPrecise(
-				client.getRealSkillLevel(Skill.ATTACK),
-				client.getRealSkillLevel(Skill.STRENGTH),
-				client.getRealSkillLevel(Skill.DEFENCE),
-				client.getRealSkillLevel(Skill.HITPOINTS),
-				client.getRealSkillLevel(Skill.MAGIC),
-				client.getRealSkillLevel(Skill.RANGED),
-				client.getRealSkillLevel(Skill.PRAYER)
-		);
 
-		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
 	}
 }
