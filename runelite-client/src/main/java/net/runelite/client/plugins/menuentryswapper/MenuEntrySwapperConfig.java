@@ -158,17 +158,6 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 11,
-		keyName = "swapPickpocket",
-		name = "Pickpocket on H.A.M.",
-		description = "Swap Talk-to with Pickpocket on H.A.M members"
-	)
-	default boolean swapPickpocket()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 12,
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
@@ -179,7 +168,40 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 12,
+		keyName = "swapPick",
+		name = "Pick-lots Gourd tree",
+		description = "Swap Pick with Pick-lots of the Gourd tree"
+	)
+	default boolean swapPick()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 13,
+		keyName = "swapPickpocket",
+		name = "Pickpocket on H.A.M.",
+		description = "Swap Talk-to with Pickpocket on H.A.M members"
+	)
+	default boolean swapPickpocket()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "swapRaidsChest",
+		name = "Raids Storage unit",
+		description = "Swap Public and Private Storage unit while holding shift "
+	)
+	default boolean swapRaidsChest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
 		keyName = "swapBoxTrap",
 		name = "Reset",
 		description = "Swap Check with Reset on box trap"
@@ -190,7 +212,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 16,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
@@ -201,7 +223,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 17,
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
@@ -212,7 +234,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 18,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -223,7 +245,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 19,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
