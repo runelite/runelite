@@ -24,12 +24,17 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
@@ -47,18 +52,23 @@ import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.InteractChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Player Indicators"
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
+	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
+
 	@Inject
 	private PlayerIndicatorsConfig config;
 
@@ -73,6 +83,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClanManager clanManager;
+
+	private Map<String, Actor> highlightedPlayers = new HashMap<>();
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateHighlightList();
+	}
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -143,6 +161,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				color = config.getTeamMemberColor();
 			}
+			else if (config.drawHighlightedNames() && isHighlighted(player))
+			{
+				color = config.getHighlightedNamesColor();
+			}
+			else if (config.drawHighlightedTargetNames() && isHighlightedTarget(player))
+			{
+				color = config.getHighlightedTargetColor();
+			}
 			else if (config.highlightNonClanMembers() && !player.isClanMember())
 			{
 				color = config.getNonClanMemberColor();
@@ -174,5 +200,52 @@ public class PlayerIndicatorsPlugin extends Plugin
 				client.setMenuEntries(menuEntries);
 			}
 		}
+	}
+
+	@Subscribe
+	public void onInteractChanged(InteractChanged event)
+	{
+		Actor actor = event.getActor();
+		if (actor != null
+			&& actor.getName() != null
+			&& isHighlighted(actor))
+		{
+			highlightedPlayers.put(actor.getName().toLowerCase(), actor.getInteracting());
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("playerindicators") && event.getKey().equals("highlightedNames"))
+		{
+			updateHighlightList();
+		}
+	}
+
+	private void updateHighlightList()
+	{
+		highlightedPlayers.clear();
+		for (String player : COMMA_SPLITTER.splitToList(config.getHighlightedNames().toLowerCase().trim()))
+		{
+			highlightedPlayers.put(player, null);
+		}
+	}
+
+	boolean isHighlighted(Actor player)
+	{
+		for (Map.Entry<String, Actor> map : highlightedPlayers.entrySet())
+		{
+			if (WildcardMatcher.matches(map.getKey(), player.getName()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	boolean isHighlightedTarget(Player player)
+	{
+		return highlightedPlayers.containsValue(player);
 	}
 }

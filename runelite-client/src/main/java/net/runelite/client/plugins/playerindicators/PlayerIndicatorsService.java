@@ -35,19 +35,22 @@ import net.runelite.api.Player;
 public class PlayerIndicatorsService
 {
 	private final Client client;
+	private final PlayerIndicatorsPlugin plugin;
 	private final PlayerIndicatorsConfig config;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsPlugin plugin, PlayerIndicatorsConfig config)
 	{
 		this.config = config;
+		this.plugin = plugin;
 		this.client = client;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-			&& !config.highlightFriends() && !config.highlightNonClanMembers())
+			&& !config.highlightFriends() && !config.highlightNonClanMembers()
+			&& !config.drawHighlightedNames() && !config.drawHighlightedTargetNames())
 		{
 			return;
 		}
@@ -81,6 +84,14 @@ public class PlayerIndicatorsService
 			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
 			{
 				consumer.accept(player, config.getTeamMemberColor());
+			}
+			else if (config.drawHighlightedNames() && plugin.isHighlighted(player))
+			{
+				consumer.accept(player, config.getHighlightedNamesColor());
+			}
+			else if (config.drawHighlightedTargetNames() && plugin.isHighlightedTarget(player))
+			{
+				consumer.accept(player, config.getHighlightedTargetColor());
 			}
 			else if (config.highlightNonClanMembers() && !isClanMember)
 			{

@@ -148,6 +148,61 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 10,
+		keyName = "drawHighlightedNames",
+		name = "Draw highlighted player names",
+		description = "Configures whether or not highlighted player names should be drawn"
+	)
+	default boolean drawHighlightedNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "highlightedNames",
+		name = "Highlighted names",
+		description = "Clan caller names separated by a comma"
+	)
+	default String getHighlightedNames()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "highlightedNamesColor",
+		name = "Highlighted names color",
+		description = "Color of highlighted names"
+	)
+	default Color getHighlightedNamesColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "drawHighlightedTargetNames",
+		name = "Draw highlighted target names",
+		description = "Configures whether or not highlighted target names should be drawn"
+	)
+	default boolean drawHighlightedTargetNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "highlightedTargetColor",
+		name = "Highlighted target color",
+		description = "Color of highlighted target names"
+	)
+	default Color getHighlightedTargetColor()
+	{
+		return new Color(255, 100, 183);
+	}
+
+	@ConfigItem(
+		position = 15,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles under players",
 		description = "Configures whether or not tiles under highlighted players should be drawn"
@@ -158,7 +213,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 16,
 		keyName = "drawOverheadPlayerNames",
 		name = "Draw names above players",
 		description = "Configures whether or not player names should be drawn above players"
@@ -169,7 +224,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 17,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -180,7 +235,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 18,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right click menu for players"
@@ -191,7 +246,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 19,
 		keyName = "clanMenuIcons",
 		name = "Show clan ranks",
 		description = "Add clan rank to right click menu and next to player names"
