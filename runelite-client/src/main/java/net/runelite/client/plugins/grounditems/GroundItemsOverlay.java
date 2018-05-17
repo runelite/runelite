@@ -178,39 +178,6 @@ public class GroundItemsOverlay extends Overlay
 					.append(" gp)");
 			}
 
-			if (config.showTradeValue())
-			{
-				String itemName = item.getName().replace(" ", "-").toLowerCase();
-
-				try
-				{
-					Document document = Jsoup.connect(String.format("https://www.ge-tracker.com/item/%s", itemName)).timeout(6000).get();
-
-					String buyPriceString = document.getElementById("item_stat_offer_price").text();
-					String sellPriceString = document.getElementById("item_stat_sell_price").text();
-
-					if (buyPriceString != null && sellPriceString != null)
-					{
-						buyPriceString = buyPriceString.replace(",", "");
-						sellPriceString = sellPriceString.replace(",", "");
-
-						Long buyPrice = Long.parseLong(buyPriceString);
-						Long sellPrice = Long.parseLong(sellPriceString);
-
-						itemStringBuilder.append(" (Buy: ")
-								.append(buyPrice)
-								.append(" gp)")
-								.append(" (Sell: ")
-								.append(sellPrice)
-								.append(" gp)");
-					}
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
 
