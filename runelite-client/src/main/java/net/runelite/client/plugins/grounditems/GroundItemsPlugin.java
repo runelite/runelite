@@ -467,7 +467,8 @@ public class GroundItemsPlugin extends Plugin
 		{
 			if(realTimePrice.getItemName().equalsIgnoreCase(groundItem.getName()))
 			{
-				if(realTimePrice.getLastUpdated() + 6000 >= System.currentTimeMillis()) {
+				if(realTimePrice.getLastUpdated() + 6000 >= System.currentTimeMillis())
+				{
 					groundItem.setBuyPrice(realTimePrice.getBuyPrice());
 					groundItem.setSellPrice(realTimePrice.getSellPrice());
 				}
