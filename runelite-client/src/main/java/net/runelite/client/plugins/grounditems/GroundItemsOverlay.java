@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -48,8 +47,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -180,7 +177,8 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.showTradeValue())
 			{
-				if(item.getBuyPrice() > 0 && item.getSellPrice() > 0) {
+				if(item.getBuyPrice() > 0 && item.getSellPrice() > 0)
+				{
 					itemStringBuilder.append(" (Buy: ")
 							.append(String.format("%,d", item.getBuyPrice()))
 							.append(" gp)")

@@ -463,11 +463,11 @@ public class GroundItemsPlugin extends Plugin
 	{
 		RealTimePrice toRemove = null;
 
-		for(RealTimePrice realTimePrice : realTimePrices)
+		for (RealTimePrice realTimePrice : realTimePrices)
 		{
-			if(realTimePrice.getItemName().equalsIgnoreCase(groundItem.getName()))
+			if (realTimePrice.getItemName().equalsIgnoreCase(groundItem.getName()))
 			{
-				if(realTimePrice.getLastUpdated() + 6000 >= System.currentTimeMillis())
+				if (realTimePrice.getLastUpdated() + 6000 >= System.currentTimeMillis())
 				{
 					groundItem.setBuyPrice(realTimePrice.getBuyPrice());
 					groundItem.setSellPrice(realTimePrice.getSellPrice());
@@ -479,7 +479,7 @@ public class GroundItemsPlugin extends Plugin
 			}
 		}
 
-		if(toRemove != null)
+		if (toRemove != null)
 		{
 			realTimePrices.remove(toRemove);
 		}

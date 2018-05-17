@@ -162,7 +162,7 @@ public class Flipping extends Plugin
 		{
 			if (itemName.contains(" "))
 			{
-				itemName = itemName.replace(" ", "-");
+				itemName = itemName.replace(")", "").replace("(", "-").replace("'", "-").replace(" ", "-");
 			}
 
 			Document document = Jsoup.connect(String.format("https://www.ge-tracker.com/item/%s", itemName)).timeout(6000).get();

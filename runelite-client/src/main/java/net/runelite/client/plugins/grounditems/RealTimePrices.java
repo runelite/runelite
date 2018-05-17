@@ -23,7 +23,7 @@ public class RealTimePrices implements Runnable
 	{
 		try
 		{
-			Document document = Jsoup.connect(String.format("https://www.ge-tracker.com/item/%s", groundItem.getName().replace(" ", "-").toLowerCase())).timeout(6000).get();
+			Document document = Jsoup.connect(String.format("https://www.ge-tracker.com/item/%s", groundItem.getName().replace(")", "").replace("(", "-").replace("'", "-").replace(" ", "-").toLowerCase())).timeout(6000).get();
 
 			String buyPriceString = document.getElementById("item_stat_offer_price").text();
 			String sellPriceString = document.getElementById("item_stat_sell_price").text();
@@ -36,7 +36,7 @@ public class RealTimePrices implements Runnable
 				Integer buyPrice = Integer.parseInt(buyPriceString);
 				Integer sellPrice = Integer.parseInt(sellPriceString);
 
-				if(buyPrice != null && sellPrice != null)
+				if (buyPrice != null && sellPrice != null)
 				{
 					plugin.addRealTimePrice(new RealTimePrice(groundItem.getName(), buyPrice, sellPrice, System.currentTimeMillis()));
 
