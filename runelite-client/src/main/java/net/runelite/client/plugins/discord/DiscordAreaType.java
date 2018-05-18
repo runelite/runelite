@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, PandahRS <https://github.com/PandahRS>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,32 +24,10 @@
  */
 package net.runelite.client.plugins.discord;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("discord")
-public interface DiscordConfig extends Config
+enum DiscordAreaType
 {
-	@ConfigItem(
-		keyName = "actionTimeout",
-		name = "Action timeout (minutes)",
-		description = "Configures after how long of not updating status will be reset (in minutes)",
-		position = 1
-	)
-	default int actionTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-		keyName = "showSkillActivity",
-		name = "Show activity while skilling",
-		description = "Configures if your activity while training skills should be shown.",
-		position = 2
-	)
-	default boolean showSkillingActivity()
-	{
-		return true;
-	}
+	BOSSES,
+	CITIES,
+	DUNGEONS,
+	MINIGAMES;
 }

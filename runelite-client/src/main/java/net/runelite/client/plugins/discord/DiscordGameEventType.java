@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, PandahRS <https://github.com/PandahRS>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,103 +25,100 @@
  */
 package net.runelite.client.plugins.discord;
 
-import com.google.common.collect.ImmutableSet;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.Skill;
-import static net.runelite.api.Skill.AGILITY;
-import static net.runelite.api.Skill.ATTACK;
-import static net.runelite.api.Skill.CONSTRUCTION;
-import static net.runelite.api.Skill.COOKING;
-import static net.runelite.api.Skill.CRAFTING;
-import static net.runelite.api.Skill.DEFENCE;
-import static net.runelite.api.Skill.FARMING;
-import static net.runelite.api.Skill.FIREMAKING;
-import static net.runelite.api.Skill.FISHING;
-import static net.runelite.api.Skill.FLETCHING;
-import static net.runelite.api.Skill.HERBLORE;
-import static net.runelite.api.Skill.HITPOINTS;
-import static net.runelite.api.Skill.HUNTER;
-import static net.runelite.api.Skill.MAGIC;
-import static net.runelite.api.Skill.MINING;
-import static net.runelite.api.Skill.PRAYER;
-import static net.runelite.api.Skill.RANGED;
-import static net.runelite.api.Skill.RUNECRAFT;
-import static net.runelite.api.Skill.SLAYER;
-import static net.runelite.api.Skill.SMITHING;
-import static net.runelite.api.Skill.STRENGTH;
-import static net.runelite.api.Skill.THIEVING;
-import static net.runelite.api.Skill.WOODCUTTING;
 
-@RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
-public enum DiscordGameEventType
+enum DiscordGameEventType
 {
-	IN_GAME("In Game", false),
-	IN_MENU("In Menu", false),
-	TRAINING_ATTACK(ATTACK, DiscordGameEventType::combatSkillChanged),
-	TRAINING_DEFENCE(DEFENCE, DiscordGameEventType::combatSkillChanged),
-	TRAINING_STRENGTH(STRENGTH, DiscordGameEventType::combatSkillChanged),
-	TRAINING_HITPOINTS(HITPOINTS, DiscordGameEventType::combatSkillChanged),
-	TRAINING_SLAYER(SLAYER, 1, DiscordGameEventType::combatSkillChanged),
-	TRAINING_RANGED(RANGED, DiscordGameEventType::combatSkillChanged),
-	TRAINING_MAGIC(MAGIC, DiscordGameEventType::combatSkillChanged),
-	TRAINING_PRAYER(PRAYER),
-	TRAINING_COOKING(COOKING),
-	TRAINING_WOODCUTTING(WOODCUTTING),
-	TRAINING_FLETCHING(FLETCHING),
-	TRAINING_FISHING(FISHING),
-	TRAINING_FIREMAKING(FIREMAKING),
-	TRAINING_CRAFTING(CRAFTING),
-	TRAINING_SMITHING(SMITHING),
-	TRAINING_MINING(MINING),
-	TRAINING_HERBLORE(HERBLORE),
-	TRAINING_AGILITY(AGILITY),
-	TRAINING_THIEVING(THIEVING),
-	TRAINING_FARMING(FARMING),
-	TRAINING_RUNECRAFT(RUNECRAFT),
-	TRAINING_HUNTER(HUNTER),
-	TRAINING_CONSTRUCTION(CONSTRUCTION);
 
-	private static final Set<Skill> COMBAT_SKILLS = ImmutableSet.of(ATTACK, STRENGTH, DEFENCE, HITPOINTS, SLAYER, RANGED, MAGIC);
+	IN_GAME("In Game", -3),
+	IN_MENU("In Menu", -3),
+	TRAINING_ATTACK(Skill.ATTACK),
+	TRAINING_DEFENCE(Skill.DEFENCE),
+	TRAINING_STRENGTH(Skill.STRENGTH),
+	TRAINING_HITPOINTS(Skill.HITPOINTS, -1),
+	TRAINING_SLAYER(Skill.SLAYER, 1),
+	TRAINING_RANGED(Skill.RANGED),
+	TRAINING_MAGIC(Skill.MAGIC),
+	TRAINING_PRAYER(Skill.PRAYER),
+	TRAINING_COOKING(Skill.COOKING),
+	TRAINING_WOODCUTTING(Skill.WOODCUTTING),
+	TRAINING_FLETCHING(Skill.FLETCHING),
+	TRAINING_FISHING(Skill.FISHING),
+	TRAINING_FIREMAKING(Skill.FIREMAKING),
+	TRAINING_CRAFTING(Skill.CRAFTING),
+	TRAINING_SMITHING(Skill.SMITHING),
+	TRAINING_MINING(Skill.MINING),
+	TRAINING_HERBLORE(Skill.HERBLORE),
+	TRAINING_AGILITY(Skill.AGILITY),
+	TRAINING_THIEVING(Skill.THIEVING),
+	TRAINING_FARMING(Skill.FARMING),
+	TRAINING_RUNECRAFT(Skill.RUNECRAFT),
+	TRAINING_HUNTER(Skill.HUNTER),
+	TRAINING_CONSTRUCTION(Skill.CONSTRUCTION);
 
-	private final String state;
-	private final String imageKey;
+	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
+
+	static
+	{
+		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
+		{
+			if (discordGameEventType.getRegionIds() == null)
+			{
+				continue;
+			}
+
+			for (int region : discordGameEventType.getRegionIds())
+			{
+				assert !FROM_REGION.containsKey(region);
+				FROM_REGION.put(region, discordGameEventType);
+			}
+		}
+	}
+
+	private String imageKey;
+	private String state;
 	private String details;
-	private boolean considerDelay = true;
-	private Function<DiscordGameEventType, Boolean> isChanged = (l) -> true;
-	private int priority = 0;
+	private int priority;
+	private boolean shouldClear;
+	private boolean shouldTimeout;
 
-	DiscordGameEventType(String state, boolean considerDelay)
-	{
-		this.state = state;
-		this.imageKey = "default";
-		this.considerDelay = considerDelay;
-	}
-
-	DiscordGameEventType(Skill skill, int priority, Function<DiscordGameEventType, Boolean> isChanged)
-	{
-		this.state = training(skill);
-		this.imageKey = imageKeyOf(skill);
-		this.priority = priority;
-		this.isChanged = isChanged;
-	}
-
-	DiscordGameEventType(Skill skill, Function<DiscordGameEventType, Boolean> isChanged)
-	{
-		this.state = training(skill);
-		this.imageKey = imageKeyOf(skill);
-		this.isChanged = isChanged;
-	}
+	private DiscordAreaType discordAreaType;
+	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
 	{
+		this(skill, 0);
+	}
+
+	DiscordGameEventType(Skill skill, int priority)
+	{
 		this.state = training(skill);
+		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
+		this.priority = priority;
+		this.shouldTimeout = true;
+	}
+
+	DiscordGameEventType(String areaName, DiscordAreaType areaType, int... regionIds)
+	{
+		this.details = exploring(areaType, areaName);
+		this.priority = -2;
+		this.discordAreaType = areaType;
+		this.regionIds = regionIds;
+		this.shouldClear = true;
+	}
+
+	DiscordGameEventType(String state, int priority)
+	{
+		this.details = state;
+		this.priority = priority;
+		this.shouldClear = true;
 	}
 
 	private static String training(final Skill skill)
@@ -143,17 +141,21 @@ public enum DiscordGameEventType
 		return "icon_" + what;
 	}
 
-	private static boolean combatSkillChanged(final DiscordGameEventType l)
+	private static String exploring(DiscordAreaType areaType, String areaName)
 	{
-		for (Skill skill : Skill.values())
+		switch (areaType)
 		{
-			if (l.getState().contains(skill.getName()))
-			{
-				return !COMBAT_SKILLS.contains(skill);
-			}
+			case BOSSES:
+				return "Fighting: " + areaName;
+			case DUNGEONS:
+				return "Exploring: " + areaName;
+			case CITIES:
+				return "Location: " + areaName;
+			case MINIGAMES:
+				return "Playing: " + areaName;
 		}
 
-		return true;
+		return "";
 	}
 
 	public static DiscordGameEventType fromSkill(final Skill skill)
@@ -184,5 +186,10 @@ public enum DiscordGameEventType
 			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
 			default: return null;
 		}
+	}
+
+	public static DiscordGameEventType fromRegion(final int regionId)
+	{
+		return FROM_REGION.get(regionId);
 	}
 }
