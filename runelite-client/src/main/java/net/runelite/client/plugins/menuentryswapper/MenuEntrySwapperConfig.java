@@ -221,4 +221,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "walkHere",
+		name = "Walk Here",
+		description = "Will only display Walk here when shift is held."
+	)
+	default boolean walkHere()
+	{
+		return false;
+	}
 }
