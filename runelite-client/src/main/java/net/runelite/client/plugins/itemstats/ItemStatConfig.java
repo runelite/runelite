@@ -70,6 +70,14 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "bankToggle",
+		name = "Show While Banking",
+		description = "Show inventory tooltip while viewing bank"
+	)
+
+	default boolean bankToggle() { return true; }
+
+	@ConfigItem(
 		keyName = "colorBetterUncapped",
 		name = "Better (Uncapped)",
 		description = "Color to show when the stat change is fully consumed",
