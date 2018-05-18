@@ -246,6 +246,7 @@ public class LootRecorderPlugin extends Plugin
 		loadLootEntries(raidsFilename, raids);
 	}
 
+	protected void refreshPanel()
 	{
 		log.info("refreshing panel");
 		loadAllData();
