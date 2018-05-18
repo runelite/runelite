@@ -29,6 +29,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import javax.swing.Icon;
+
 @RequiredArgsConstructor(
 	access = AccessLevel.PACKAGE
 )
@@ -39,4 +41,20 @@ class LootRecord
 	private String item_name;
 	@Setter(AccessLevel.PACKAGE)
 	private int amount;
+	@Setter(AccessLevel.PACKAGE)
+	private int value;
+	@Setter(AccessLevel.PACKAGE)
+	private int total;
+	@Setter(AccessLevel.PACKAGE)
+	private Icon icon;
+
+	LootRecord(String item_name, int amount, int value, Icon icon)
+	{
+		this.item_name = item_name;
+		this.amount = amount;
+		this.icon = icon;
+		this.value = value;
+
+		this.total = this.amount * this.value;
+	}
 }

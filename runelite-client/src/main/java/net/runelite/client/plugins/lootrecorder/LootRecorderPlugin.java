@@ -41,14 +41,13 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -91,7 +90,9 @@ public class LootRecorderPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 
+	@Getter
 	private ArrayList<LootEntry> barrows = new ArrayList<LootEntry>();
+	@Getter
 	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
 
 	@Inject
@@ -105,9 +106,6 @@ public class LootRecorderPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private ScheduledExecutorService executorService;
 
 	private LootRecorderPanel panel;
 
@@ -171,7 +169,7 @@ public class LootRecorderPlugin extends Plugin
 		removePanel();
 	}
 
-	protected void removePanel()
+	private void removePanel()
 	{
 		pluginToolbar.removeNavigation(navButton);
 	}
@@ -246,7 +244,7 @@ public class LootRecorderPlugin extends Plugin
 		loadLootEntries(raidsFilename, raids);
 	}
 
-	protected void refreshPanel()
+	void refreshPanel()
 	{
 		log.info("refreshing panel");
 		loadAllData();
@@ -366,6 +364,18 @@ public class LootRecorderPlugin extends Plugin
 		log.info(String.valueOf(data));
 	}
 
+	ArrayList getData(String type)
+	{
+		switch (type)
+		{
+			case "BARROWS":
+				return barrows;
+			case "RAIDS":
+				return raids;
+			default:
+				return null;
+		}
+	}
 
 	@VisibleForTesting
 	int getBarrowsNumber()

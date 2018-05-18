@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -49,17 +50,16 @@ class LootRecorderPanel extends PluginPanel
 {
 	private final Client client;
 	private final ItemManager itemManager;
-
-	@Inject
-	private LootRecorderPlugin lootRecorderPlugin;
+	private final LootRecorderPlugin lootRecorderPlugin;
 
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
 	@Inject
-	LootRecorderPanel(Client client, ItemManager itemManager)
+	LootRecorderPanel(Client client, ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
+		this.lootRecorderPlugin = lootRecorderPlugin;
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -96,6 +96,11 @@ class LootRecorderPanel extends PluginPanel
 			log.info("Created " + String.valueOf(tab) + " tab");
 		}
 
+		LootRecorderSubPanel subPanel = new LootRecorderSubPanel(new ArrayList<>());
+		ArrayList<LootEntry> data = this.lootRecorderPlugin.getBarrows();
+		log.info(String.valueOf(data));
+        //LootRecorderSubPanel subPanel2 = new LootRecorderSubPanel(data);
+
 		JButton refresh = new JButton("Refresh Data");
 		refresh.addActionListener(e ->
 		{
@@ -105,10 +110,12 @@ class LootRecorderPanel extends PluginPanel
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(tabsPanel)
+				//.addComponent(subPanel)
 				.addComponent(refresh)
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(tabsPanel)
+				//.addComponent(subPanel)
 				.addComponent(refresh)
 		);
 	}

@@ -24,33 +24,24 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.util.ArrayList;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import com.google.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.ItemComposition;
-import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.FontManager;
 
 @Getter
-class LootRecorderSubPanel extends JPanel
+class LootRecordPanel extends JPanel
 {
-	private final ArrayList<LootEntry> records;
-	private ArrayList<LootRecord> uniques;
-	private final JLabel icon = new JLabel();
-	private final JLabel amount = new JLabel();
+	private LootRecord record;
+	private JLabel icon = new JLabel();
+	private JLabel amount = new JLabel();
 
-	@Inject
-	private ItemManager itemManager;
-
-	LootRecorderSubPanel(ArrayList<LootEntry> records)
+	LootRecordPanel(LootRecord record, int gridy)
 	{
-		this.records = records;
-		this.uniques = new ArrayList<LootRecord>();
-
+		this.record = record;
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 
@@ -58,27 +49,33 @@ class LootRecorderSubPanel extends JPanel
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = gridy;
 
-		this.records.forEach(rec ->
-		{
-			// Convert DropEntries records into consolidated entries
-			ArrayList<DropEntry> drops = rec.getDrops();
-			drops.forEach(de ->
-			{
-				Integer id = de.getItem_id();
-				ItemComposition item = itemManager.getItemComposition(id);
-				item.getName();
-			});
-		});
+		final JLabel item_name = new JLabel("Item Name");
+		amount.setText(String.valueOf(this.record.getAmount()));
+		icon.setIcon(this.record.getIcon());
+		item_name.setFont(FontManager.getRunescapeSmallFont());
+		icon.setMinimumSize(new Dimension(36, 32));
 
-		this.uniques.forEach(lr ->
-		{
-			LootRecordPanel p = new LootRecordPanel(lr, 1);
-			c.gridy++;
+		layout.setVerticalGroup(layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						.addComponent(icon)
+						.addComponent(item_name)
+						.addGroup(layout.createSequentialGroup()
+								.addGap(4)
+								.addComponent(amount)
+						)
+				)
+		);
 
-
-			layout.addLayoutComponent(p, null);
-		});
+		layout.setHorizontalGroup(layout.createParallelGroup()
+				.addGroup(layout.createSequentialGroup()
+						.addComponent(icon)
+						.addComponent(item_name)
+						.addGroup(layout.createParallelGroup()
+								.addComponent(amount)
+						)
+				)
+		);
 	}
 }
