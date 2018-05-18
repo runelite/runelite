@@ -208,6 +208,14 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(cameraPositionBtn);
 
+		final JButton worldMapBtn = new JButton("World Map Location");
+		worldMapBtn.addActionListener(e ->
+		{
+			highlightButton(worldMapBtn);
+			plugin.toggleWorldMapLocation();
+		});
+		container.add(worldMapBtn);
+
 		return container;
 	}
 
