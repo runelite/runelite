@@ -28,8 +28,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import javax.swing.Icon;
+import net.runelite.api.ItemComposition;
+import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.game.ItemManager;
 
 @RequiredArgsConstructor(
 	access = AccessLevel.PACKAGE
@@ -40,21 +41,39 @@ class LootRecord
 	@Setter(AccessLevel.PACKAGE)
 	private String item_name;
 	@Setter(AccessLevel.PACKAGE)
-	private int amount;
+	private Integer item_id;
 	@Setter(AccessLevel.PACKAGE)
-	private int value;
+	private Integer amount;
 	@Setter(AccessLevel.PACKAGE)
-	private int total;
+	private Integer value;
 	@Setter(AccessLevel.PACKAGE)
-	private Icon icon;
+	private Integer total;
+	@Setter(AccessLevel.PACKAGE)
+	private AsyncBufferedImage icon;
+	@Setter(AccessLevel.PACKAGE)
+	private ItemComposition item;
 
-	LootRecord(String item_name, int amount, int value, Icon icon)
+	LootRecord(String item_name, Integer item_id, Integer amount, Integer value, AsyncBufferedImage icon, ItemComposition item)
 	{
+		this.item = item;
+		this.item_id = item_id;
 		this.item_name = item_name;
 		this.amount = amount;
 		this.icon = icon;
 		this.value = value;
 
 		this.total = this.amount * this.value;
+	}
+
+	void incrementAmount(LootRecord l, Integer amount)
+	{
+		l.amount = l.amount + amount;
+		l.total = l.amount * l.value;
+	}
+
+	void updateIconAmount(LootRecord l, ItemManager itemManager)
+	{
+		Boolean stackable = l.item.isStackable() || l.amount > 1;
+		l.icon = itemManager.getImage(l.item_id, l.amount, stackable);
 	}
 }

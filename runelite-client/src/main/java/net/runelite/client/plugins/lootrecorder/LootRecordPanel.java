@@ -29,6 +29,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import lombok.Getter;
 import net.runelite.client.ui.FontManager;
 
@@ -36,8 +37,6 @@ import net.runelite.client.ui.FontManager;
 class LootRecordPanel extends JPanel
 {
 	private LootRecord record;
-	private JLabel icon = new JLabel();
-	private JLabel amount = new JLabel();
 
 	LootRecordPanel(LootRecord record, int gridy)
 	{
@@ -45,16 +44,10 @@ class LootRecordPanel extends JPanel
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
-		c.gridx = 0;
-		c.gridy = gridy;
-
 		final JLabel item_name = new JLabel("Item Name");
-		amount.setText(String.valueOf(this.record.getAmount()));
-		icon.setIcon(this.record.getIcon());
-		item_name.setFont(FontManager.getRunescapeSmallFont());
+		final JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
+		final JLabel icon = new JLabel();
+		this.record.getIcon().addTo(icon);
 		icon.setMinimumSize(new Dimension(36, 32));
 
 		layout.setVerticalGroup(layout.createSequentialGroup()

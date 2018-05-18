@@ -26,30 +26,29 @@ package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.google.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
 @Getter
 class LootRecorderSubPanel extends JPanel
 {
 	private final ArrayList<LootEntry> records;
-	private ArrayList<LootRecord> uniques;
+	private Map<String, LootRecord> uniques;
 	private final JLabel icon = new JLabel();
 	private final JLabel amount = new JLabel();
 
-	@Inject
-	private ItemManager itemManager;
-
-	LootRecorderSubPanel(ArrayList<LootEntry> records)
+	LootRecorderSubPanel(ArrayList<LootEntry> records, ItemManager itemManager)
 	{
 		this.records = records;
-		this.uniques = new ArrayList<LootRecord>();
+		this.uniques = new HashMap<>();
 
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
@@ -66,15 +65,28 @@ class LootRecorderSubPanel extends JPanel
 			ArrayList<DropEntry> drops = rec.getDrops();
 			drops.forEach(de ->
 			{
-				Integer id = de.getItem_id();
-				ItemComposition item = itemManager.getItemComposition(id);
-				item.getName();
+				ItemComposition item = itemManager.getItemComposition(de.getItem_id());
+				LootRecord uniq = this.uniques.get(item.getName());
+				if (uniq == null)
+				{
+					// Create new entry
+					boolean shouldStack = item.isStackable() || de.getItem_amount() > 1;
+					AsyncBufferedImage icon = itemManager.getImage(de.getItem_id(), de.getItem_amount(), shouldStack);
+					LootRecord entry = new LootRecord(item.getName(), de.getItem_amount(), item.getId(), item.getPrice(), icon, item);
+					this.uniques.put(item.getName(), entry);
+				}
+				else
+				{
+					// Update Entry
+					uniq.incrementAmount(uniq, de.getItem_amount());
+					uniq.updateIconAmount(uniq, itemManager);
+				}
 			});
 		});
 
-		this.uniques.forEach(lr ->
+		this.uniques.forEach((lr, item) ->
 		{
-			LootRecordPanel p = new LootRecordPanel(lr, 1);
+			LootRecordPanel p = new LootRecordPanel(item, c.gridy);
 			c.gridy++;
 
 

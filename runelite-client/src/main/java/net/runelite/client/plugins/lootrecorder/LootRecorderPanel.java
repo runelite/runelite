@@ -96,27 +96,28 @@ class LootRecorderPanel extends PluginPanel
 			log.info("Created " + String.valueOf(tab) + " tab");
 		}
 
-		LootRecorderSubPanel subPanel = new LootRecorderSubPanel(new ArrayList<>());
 		ArrayList<LootEntry> data = this.lootRecorderPlugin.getBarrows();
 		log.info(String.valueOf(data));
-        //LootRecorderSubPanel subPanel2 = new LootRecorderSubPanel(data);
+		log.info("Got Barrows");
+		LootRecorderSubPanel subPanel = new LootRecorderSubPanel(data, itemManager);
 
 		JButton refresh = new JButton("Refresh Data");
 		refresh.addActionListener(e ->
 		{
 			lootRecorderPlugin.refreshPanel();
-			log.info("Refreshing Data by Button");
 		});
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(tabsPanel)
-				//.addComponent(subPanel)
+				.addComponent(subPanel)
 				.addComponent(refresh)
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(tabsPanel)
-				//.addComponent(subPanel)
+				.addComponent(subPanel)
 				.addComponent(refresh)
 		);
+		log.info("subpanel");
+		System.out.print(subPanel.getAmount());
 	}
 }

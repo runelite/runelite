@@ -140,7 +140,7 @@ public class LootRecorderPlugin extends Plugin
 	// Separated from startUp for the panel toggling
 	private void createPanel()
 	{
-		panel = injector.getInstance(LootRecorderPanel.class);
+		panel = new LootRecorderPanel(client, itemManager, this);
 
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
@@ -327,7 +327,7 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	// Receive Loot from the necessary file
-	private synchronized void loadLootEntries(String fileName, ArrayList data)
+	private synchronized void loadLootEntries(String fileName, ArrayList<LootEntry> data)
 	{
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
@@ -360,8 +360,6 @@ public class LootRecorderPlugin extends Plugin
 		{
 			log.warn("Unexpected error", e);
 		}
-		log.info("Loaded Data:");
-		log.info(String.valueOf(data));
 	}
 
 	ArrayList getData(String type)
