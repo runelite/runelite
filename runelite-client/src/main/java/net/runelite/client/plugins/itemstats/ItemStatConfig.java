@@ -70,9 +70,9 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "bankToggle",
-			name = "Show While Banking",
-			description = "Show inventory tooltip while viewing bank"
+		keyName = "bankToggle",
+		name = "Show While Banking",
+		description = "Show inventory tooltip while viewing bank"
 	)
 
 	default boolean bankToggle()
