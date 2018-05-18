@@ -68,4 +68,17 @@ public interface LootRecorderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "activeTab",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default Tab activeTab()
+	{
+		return Tab.BARROWS;
+	}
+
+	void setActiveTab(Tab activeTab);
 }

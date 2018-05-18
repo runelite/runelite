@@ -24,16 +24,19 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
@@ -51,31 +54,29 @@ class LootRecorderPanel extends PluginPanel
 	private final Client client;
 	private final ItemManager itemManager;
 	private final LootRecorderPlugin lootRecorderPlugin;
+	private final LootRecorderConfig lootRecorderConfig;
+
+	private List<LootRecorderSubPanel> lootPanels = new ArrayList<>();
 
 	@Inject
-	LootRecorderPanel(Client client, ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin)
+	LootRecorderPanel(Client client, ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
 	{
+		super(false);
+
 		this.client = client;
 		this.itemManager = itemManager;
 		this.lootRecorderPlugin = lootRecorderPlugin;
+		this.lootRecorderConfig = lootRecorderConfig;
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 
 		JTabbedPane tabsPanel = new JTabbedPane();
 
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
-		c.gridx = 0;
-		c.gridy = 0;
-
 		// Create each Tab of the Panel
-		log.info(String.valueOf(Tab.values()));
 		for (Tab tab : Tab.values())
 		{
-			JPanel subPanel = new JPanel(new GridBagLayout())
+			JPanel panel = new JPanel(new GridBagLayout())
 			{
 				@Override
 				public Dimension getPreferredSize()
@@ -83,25 +84,33 @@ class LootRecorderPanel extends PluginPanel
 					return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 				}
 			};
-			subPanel.setBorder(new EmptyBorder(2, 6, 6, 6));
+			panel.setBorder(new EmptyBorder(2, 6, 6, 6));
 
-			// Add the necessary items to the sub panel
-			GridBagConstraints c2 = new GridBagConstraints();
-			c2.fill = GridBagConstraints.HORIZONTAL;
-			c2.weightx = 1;
-			c2.gridx = 0;
-			c2.gridy = 10;
+			GridBagConstraints c = new GridBagConstraints();
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 1;
+			c.gridx = 0;
+			c.gridy = 3;
 
 			// Create the Entries for this tab
 			ArrayList<LootEntry> data = this.lootRecorderPlugin.getData(tab.getName());
+			log.info("Got drops for: ");
+			log.info(tab.getName());
 			log.info(String.valueOf(data));
-			log.info("Got Barrows");
 			LootRecorderSubPanel itemsPanel = new LootRecorderSubPanel(data, itemManager);
+			lootPanels.add(itemsPanel);
+			panel.add(itemsPanel, c);
+			c.gridy++;
 
-			subPanel.add(itemsPanel);
+			JPanel wrapped = new JPanel(new BorderLayout());
+			wrapped.add(panel, BorderLayout.NORTH);
+			JScrollPane scroller = new JScrollPane(wrapped);
+			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scroller.getVerticalScrollBar().setUnitIncrement(16);
+
 
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
-			tabsPanel.addTab(null, null, null, tab.getName());
+			tabsPanel.addTab(null, null, scroller, tab.getName());
 			int idx = tabsPanel.getTabCount() - 1;
 			Runnable resize = () ->
 			{
@@ -109,6 +118,18 @@ class LootRecorderPanel extends PluginPanel
 			};
 			icon.onChanged(resize);
 			resize.run();
+
+			if (this.lootRecorderConfig.activeTab() == tab)
+			{
+				tabsPanel.setSelectedComponent(scroller);
+			}
+			tabsPanel.addChangeListener(e ->
+			{
+				if (tabsPanel.getSelectedComponent() == scroller)
+				{
+					this.lootRecorderConfig.setActiveTab(tab);
+				}
+			});
 			log.info("Created " + String.valueOf(tab) + " tab");
 		}
 

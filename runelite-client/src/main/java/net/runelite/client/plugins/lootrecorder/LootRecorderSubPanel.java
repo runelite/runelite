@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +52,9 @@ class LootRecorderSubPanel extends JPanel
 		this.uniques = new HashMap<>();
 
 		GroupLayout layout = new GroupLayout(this);
-		this.setLayout(layout);
+		setLayout(layout);
 
+		JPanel recs = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
@@ -86,11 +88,14 @@ class LootRecorderSubPanel extends JPanel
 
 		this.uniques.forEach((lr, item) ->
 		{
-			LootRecordPanel p = new LootRecordPanel(item, c.gridy);
+			LootRecordPanel p = new LootRecordPanel(item);
 			c.gridy++;
 
 
 			layout.addLayoutComponent(p, null);
+			add(p, c);
+			this.add(p, c);
+			recs.add(p, c);
 		});
 	}
 }

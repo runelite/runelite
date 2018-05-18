@@ -36,15 +36,16 @@ class LootRecordPanel extends JPanel
 {
 	private LootRecord record;
 
-	LootRecordPanel(LootRecord record, int gridy)
+	LootRecordPanel(LootRecord record)
 	{
 		this.record = record;
-		GroupLayout layout = new GroupLayout(this);
-		this.setLayout(layout);
 
-		final JLabel item_name = new JLabel("Item Name");
-		final JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
-		final JLabel icon = new JLabel();
+		GroupLayout layout = new GroupLayout(this);
+		setLayout(layout);
+
+		JLabel item_name = new JLabel(this.record.getItem_name());
+		JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
+		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
 		icon.setMinimumSize(new Dimension(36, 32));
 
@@ -53,16 +54,21 @@ class LootRecordPanel extends JPanel
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(icon)
-				.addComponent(item_name)
-				.addGap(4)
-				.addComponent(amount)
+				.addGap(8)
+				.addGroup(layout.createParallelGroup()
+					.addComponent(item_name)
+					.addComponent(amount)
+				)
 		);
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(icon)
-				.addComponent(item_name)
-				.addGap(4)
-				.addComponent(amount)
+				.addGroup(layout.createSequentialGroup()
+						.addComponent(item_name)
+						.addComponent(amount)
+				)
 		);
+
+		setComponentZOrder(icon, getComponentCount() - 1);
 	}
 }

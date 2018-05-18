@@ -140,7 +140,7 @@ public class LootRecorderPlugin extends Plugin
 	// Separated from startUp for the panel toggling
 	private void createPanel()
 	{
-		panel = new LootRecorderPanel(client, itemManager, this);
+		panel = new LootRecorderPanel(client, itemManager, this, lootRecorderConfig);
 
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
@@ -362,7 +362,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	ArrayList getData(String type)
+	ArrayList<LootEntry> getData(String type)
 	{
 		switch (type.toUpperCase())
 		{
