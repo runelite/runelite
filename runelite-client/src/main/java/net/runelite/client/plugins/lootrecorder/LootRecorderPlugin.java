@@ -121,6 +121,15 @@ public class LootRecorderPlugin extends Plugin
 	protected void startUp() throws IOException
 	{
 		LOOTS_DIR.mkdirs();
+		if (lootRecorderConfig.showLootTotals())
+		{
+			createPanel();
+		}
+	}
+
+	// Separated from startUp for the panel toggling
+	protected void createPanel() throws IOException
+	{
 		panel = injector.getInstance(LootRecorderPanel.class);
 
 		BufferedImage icon;
@@ -137,6 +146,16 @@ public class LootRecorderPlugin extends Plugin
 		pluginToolbar.addNavigation(navButton);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		removePanel();
+	}
+
+	protected void removePanel()
+	{
+		pluginToolbar.removeNavigation(navButton);
+	}
 	// Checks for loot that is rewarded via interfaces
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
@@ -165,7 +184,7 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event) throws IOException
 	{
 		// Only update if our plugin config was changed
 		if (!event.getGroup().equals("loot-recorder"))
@@ -178,7 +197,14 @@ public class LootRecorderPlugin extends Plugin
 		{
 			loadLootEntries(barrowsFilename, barrows);
 			loadLootEntries(raidsFilename, raids);
-			return;
+			if (lootRecorderConfig.showLootTotals())
+			{
+				createPanel();
+			}
+			else
+			{
+				removePanel();
+			}
 		}
 	}
 
@@ -211,7 +237,6 @@ public class LootRecorderPlugin extends Plugin
 			if (m.find())
 			{
 				raidsNumber = Integer.valueOf(m.group());
-				return;
 			}
 		}
 	}

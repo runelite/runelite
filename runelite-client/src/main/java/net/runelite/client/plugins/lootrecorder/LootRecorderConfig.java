@@ -60,8 +60,8 @@ public interface LootRecorderConfig extends Config
 
 	@ConfigItem(
 		keyName = "showLootTotals",
-		name = "Show Recorded Loots Overlay",
-		description = "Configures whether or not the Recorded Loots Overlay is shown",
+		name = "Show Recorded Loots Panel",
+		description = "Configures whether or not the Recorded Loots Panel is shown",
 		position = 2
 	)
 	default boolean showLootTotals()
