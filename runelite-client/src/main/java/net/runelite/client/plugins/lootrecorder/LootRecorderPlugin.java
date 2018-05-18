@@ -140,7 +140,7 @@ public class LootRecorderPlugin extends Plugin
 	// Separated from startUp for the panel toggling
 	private void createPanel()
 	{
-		panel = new LootRecorderPanel(client, itemManager, this, lootRecorderConfig);
+		panel = new LootRecorderPanel(itemManager, this, lootRecorderConfig);
 
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)

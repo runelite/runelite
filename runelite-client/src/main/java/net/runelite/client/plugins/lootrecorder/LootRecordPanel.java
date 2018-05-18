@@ -43,6 +43,8 @@ class LootRecordPanel extends JPanel
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 
+		JPanel panel = new JPanel();
+
 		JLabel item_name = new JLabel(this.record.getItem_name());
 		JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
 		JLabel icon = new JLabel();
@@ -70,5 +72,9 @@ class LootRecordPanel extends JPanel
 		);
 
 		setComponentZOrder(icon, getComponentCount() - 1);
+		panel.add(icon);
+		panel.add(item_name);
+		panel.add(amount);
+		add(panel);
 	}
 }

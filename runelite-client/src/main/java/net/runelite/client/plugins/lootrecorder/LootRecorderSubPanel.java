@@ -29,9 +29,9 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
@@ -45,16 +45,17 @@ class LootRecorderSubPanel extends JPanel
 	private Map<String, LootRecord> uniques;
 	private final JLabel icon = new JLabel();
 	private final JLabel amount = new JLabel();
+	private JPanel lootPanel = new JPanel();
 
 	LootRecorderSubPanel(ArrayList<LootEntry> records, ItemManager itemManager)
 	{
+		super();
 		this.records = records;
 		this.uniques = new HashMap<>();
 
-		GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
-
-		JPanel recs = new JPanel(new GridBagLayout());
+		GridBagLayout layout = new GridBagLayout();
+		lootPanel.setLayout(layout);
+		lootPanel.setBorder(new EmptyBorder(2, 6, 6, 6));
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
@@ -89,13 +90,9 @@ class LootRecorderSubPanel extends JPanel
 		this.uniques.forEach((lr, item) ->
 		{
 			LootRecordPanel p = new LootRecordPanel(item);
-			c.gridy++;
-
-
-			layout.addLayoutComponent(p, null);
 			add(p, c);
-			this.add(p, c);
-			recs.add(p, c);
+			lootPanel.add(p, c);
 		});
+		add(lootPanel);
 	}
 }

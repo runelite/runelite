@@ -31,13 +31,16 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,22 +54,28 @@ import net.runelite.client.ui.PluginPanel;
 @Slf4j
 class LootRecorderPanel extends PluginPanel
 {
-	private final Client client;
+	@Inject
+	@Nullable
+	private Client client;
+
 	private final ItemManager itemManager;
 	private final LootRecorderPlugin lootRecorderPlugin;
 	private final LootRecorderConfig lootRecorderConfig;
 
-	private List<LootRecorderSubPanel> lootPanels = new ArrayList<>();
+	private JTabbedPane tabsPanel = new JTabbedPane();
+	private JPanel lootPanels = new JPanel();
+	private ButtonGroup actionButtonGroup = new ButtonGroup();
+
+	private List<JToggleButton> actionButtons;
 
 	@Inject
-	LootRecorderPanel(Client client, ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
+	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
 	{
-		super(false);
-
-		this.client = client;
+		super();
 		this.itemManager = itemManager;
 		this.lootRecorderPlugin = lootRecorderPlugin;
 		this.lootRecorderConfig = lootRecorderConfig;
+
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -76,7 +85,7 @@ class LootRecorderPanel extends PluginPanel
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			JPanel panel = new JPanel(new GridBagLayout())
+			JPanel panel = new JPanel()
 			{
 				@Override
 				public Dimension getPreferredSize()
@@ -84,13 +93,16 @@ class LootRecorderPanel extends PluginPanel
 					return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 				}
 			};
+			panel.setLayout(new GridBagLayout());
 			panel.setBorder(new EmptyBorder(2, 6, 6, 6));
+			panel.setOpaque(false);
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.HORIZONTAL;
+			c.anchor = GridBagConstraints.NORTH;
 			c.weightx = 1;
 			c.gridx = 0;
-			c.gridy = 3;
+			c.gridy = 0;
 
 			// Create the Entries for this tab
 			ArrayList<LootEntry> data = this.lootRecorderPlugin.getData(tab.getName());
@@ -98,7 +110,7 @@ class LootRecorderPanel extends PluginPanel
 			log.info(tab.getName());
 			log.info(String.valueOf(data));
 			LootRecorderSubPanel itemsPanel = new LootRecorderSubPanel(data, itemManager);
-			lootPanels.add(itemsPanel);
+			lootPanels.add(itemsPanel, c);
 			panel.add(itemsPanel, c);
 			c.gridy++;
 
@@ -131,6 +143,7 @@ class LootRecorderPanel extends PluginPanel
 				}
 			});
 			log.info("Created " + String.valueOf(tab) + " tab");
+			tabsPanel.add(panel);
 		}
 
 		JButton refresh = new JButton("Refresh Data");
@@ -141,10 +154,12 @@ class LootRecorderPanel extends PluginPanel
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(tabsPanel)
+				.addComponent(lootPanels)
 				.addComponent(refresh)
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(tabsPanel)
+				.addComponent(lootPanels)
 				.addComponent(refresh)
 		);
 		log.info("subpanel");
