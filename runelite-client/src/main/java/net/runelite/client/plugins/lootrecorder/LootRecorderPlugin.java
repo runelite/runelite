@@ -28,7 +28,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,13 +40,15 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
@@ -82,8 +88,6 @@ public class LootRecorderPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	private final Properties properties = new Properties();
-
 
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
@@ -110,13 +114,21 @@ public class LootRecorderPlugin extends Plugin
 		// Barrows Chests
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && lootRecorderConfig.recordBarrowsChest())
 		{
-
+			ItemContainer rewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
+			LootEntry entry = createLootEntry(barrowsNumber, rewardContainer);
+			barrows.add(entry);
+			addLootEntry(barrowsFilename, entry);
+			log.info("Recorded a barrows chest!");
 		}
 
 		// Raids Chest
 		if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && lootRecorderConfig.recordRaidsChest())
 		{
-			
+			ItemContainer rewardContainer = client.getItemContainer(InventoryID.valueOf("RAIDS_REWARD_GROUP_ID")); // TODO: Update to RAIDS REWARD ONCE implemented
+			LootEntry entry = createLootEntry(raidsNumber, rewardContainer);
+			raids.add(entry);
+			addLootEntry(raidsFilename, entry);
+			log.info("Recorded a raids chest!");
 		}
 	}
 
@@ -170,10 +182,24 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	private LootEntry createLootEntry(Integer kill_count, ItemContainer container)
+	{
+		ArrayList<DropEntry> drops = new ArrayList<>();
+		for (Item item : container.getItems())
+		{
+			int id = item.getId();
+			String name = item.toString();
+			Integer amount = item.getQuantity();
+			drops.add(new DropEntry(id, name, amount));
+		}
+		return new LootEntry(kill_count, drops);
+	}
+
 
 	// Add Loot Entry to the necessary file
-	private void addLootEntry(String fileName, String dataAsString)
+	private void addLootEntry(String fileName, LootEntry entry)
 	{
+		String dataAsString = "PLACEHOLDER DATA"; // TODO: Convert LootEntry to String format
 		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
@@ -193,28 +219,21 @@ public class LootRecorderPlugin extends Plugin
 		}
 		catch (IOException ioe)
 		{
-			log.warn("Error writting loot data in file.", ioe);
+			log.warn("Error witting loot data in file.", ioe);
 		}
 	}
 
-	// Recieve Loot from the necessary file
+	// Receive Loot from the necessary file
 	private synchronized void loadLootEntries(File file, ArrayList data)
 	{
 		// Read the loot log line by line
 		try (BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
 			String line;
-			Integer kc = 1;
 			while ((line = br.readLine()) != null)
 			{
-				final String[] split = line.split("||", 2);
-				if (split.length == 2)
-				{
-					final String item_name = split[0];
-					final Integer item_amount = Integer.parseInt(split[1]);
-					data.add(kc, new DropEntry(item_name, item_amount) );
-				}
-				kc = kc + 1;
+				// Read the data from each line..Not sure how to store this yet.
+				final String[] split = line.split("||", 3);
 			}
 		}
 		catch (FileNotFoundException e)
