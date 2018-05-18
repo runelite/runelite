@@ -25,13 +25,18 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import javax.inject.Inject;
-import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
 
@@ -43,8 +48,7 @@ class LootRecorderPanel extends PluginPanel
 	private final Client client;
 	private final ItemManager itemManager;
 
-	private JPanel panel = new JPanel();
-	private JTabbedPane tabbedPane = new JTabbedPane();
+	private JTabbedPane tabsPanel = new JTabbedPane();
 
 	@Inject
 	LootRecorderPanel(Client client, ItemManager itemManager)
@@ -52,10 +56,33 @@ class LootRecorderPanel extends PluginPanel
 		this.client = client;
 		this.itemManager = itemManager;
 		setLayout(new BorderLayout());
-		add(tabbedPane, BorderLayout.NORTH);
+		add(tabsPanel, BorderLayout.NORTH);
 
-		// Main Panel
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		tabbedPane.addTab("Barrows", panel);
+		// Create each Tab of the Panel
+		log.info(String.valueOf(Tab.values()));
+		for (Tab tab : Tab.values())
+		{
+			JPanel subPanel = new JPanel(new GridBagLayout())
+			{
+				@Override
+				public Dimension getPreferredSize()
+				{
+					return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
+				}
+			};
+			subPanel.setBorder(new EmptyBorder(2, 6, 6, 6));
+
+			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
+			tabsPanel.addTab(null, null, null, tab.getName());
+			int idx = tabsPanel.getTabCount() - 1;
+			Runnable resize = () ->
+			{
+				tabsPanel.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
+			};
+			icon.onChanged(resize);
+			resize.run();
+			log.info("Created " + String.valueOf(tab) + " tab");
+		}
+
 	}
 }
