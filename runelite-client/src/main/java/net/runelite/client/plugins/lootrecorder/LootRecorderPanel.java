@@ -83,6 +83,5 @@ class LootRecorderPanel extends PluginPanel
 			resize.run();
 			log.info("Created " + String.valueOf(tab) + " tab");
 		}
-
 	}
 }

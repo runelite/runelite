@@ -41,18 +41,24 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
@@ -76,9 +82,12 @@ public class LootRecorderPlugin extends Plugin
 {
 	private Integer barrowsNumber;
 	private Integer raidsNumber;
+	private Boolean logged_in = false;
 
 	private String barrowsFilename = "barrows.log";
 	private String raidsFilename = "raids.log";
+
+	private File playerFolder;
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 
@@ -96,6 +105,9 @@ public class LootRecorderPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private ScheduledExecutorService executorService;
 
 	private LootRecorderPanel panel;
 
@@ -128,14 +140,21 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	// Separated from startUp for the panel toggling
-	protected void createPanel() throws IOException
+	private void createPanel()
 	{
 		panel = injector.getInstance(LootRecorderPanel.class);
 
-		BufferedImage icon;
+		BufferedImage icon = null;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("panel_icon.png"));
+			try
+			{
+				icon = ImageIO.read(getClass().getResourceAsStream("panel_icon.png"));
+			}
+			catch (IOException e)
+			{
+				log.info("Error getting panel icon:", e);
+			}
 		}
 		navButton = NavigationButton.builder()
 			.name("Loot Recorder")
@@ -195,8 +214,7 @@ public class LootRecorderPlugin extends Plugin
 		// Overlay Toggle
 		if (event.getKey().equals("showLootTotals"))
 		{
-			loadLootEntries(barrowsFilename, barrows);
-			loadLootEntries(raidsFilename, raids);
+			loadAllData();
 			if (lootRecorderConfig.showLootTotals())
 			{
 				createPanel();
@@ -208,6 +226,32 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			log.info(client.getLocalPlayer().getName());
+			logged_in = true;
+		}
+		else if (client.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			logged_in = false;
+		}
+	}
+
+	private void loadAllData()
+	{
+		loadLootEntries(barrowsFilename, barrows);
+		loadLootEntries(raidsFilename, raids);
+	}
+
+	{
+		log.info("refreshing panel");
+		loadAllData();
+		SwingUtilities.invokeLater(this::removePanel);
+		SwingUtilities.invokeLater(this::createPanel);
+	}
 
 	// Update KC variables on chat message event
 	@Subscribe
@@ -260,7 +304,6 @@ public class LootRecorderPlugin extends Plugin
 		String dataAsString = RuneLiteAPI.GSON.toJson(entry);
 		log.info(dataAsString);
 
-		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
@@ -270,8 +313,9 @@ public class LootRecorderPlugin extends Plugin
 			playerFolder = LOOTS_DIR;
 		}
 		playerFolder.mkdirs();
-		File lootFile = new File(playerFolder, fileName);
+		log.info(String.valueOf(playerFolder));
 
+		File lootFile = new File(playerFolder, fileName);
 		try
 		{
 			final Path path = Paths.get(String.valueOf(lootFile));
@@ -286,7 +330,6 @@ public class LootRecorderPlugin extends Plugin
 	// Receive Loot from the necessary file
 	private synchronized void loadLootEntries(String fileName, ArrayList data)
 	{
-		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
@@ -296,8 +339,9 @@ public class LootRecorderPlugin extends Plugin
 			playerFolder = LOOTS_DIR;
 		}
 		playerFolder.mkdirs();
-		File file = new File(playerFolder, fileName);
+		log.info(String.valueOf(playerFolder));
 
+		File file = new File(playerFolder, fileName);
 		// Read the loot log line by line
 		try (BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
@@ -310,7 +354,7 @@ public class LootRecorderPlugin extends Plugin
 			}
 		}
 		catch (FileNotFoundException e)
-			{
+		{
 			log.warn("File not found");
 		}
 		catch (IOException e)
