@@ -32,7 +32,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -46,10 +50,13 @@ public class WorldMapPlugin extends Plugin
 {
 	static final BufferedImage BLANK_ICON;
 	static final BufferedImage FAIRY_TRAVEL_ICON;
+	static final BufferedImage NOPE_ICON;
 
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
 	static final String CONFIG_KEY_FAIRY_RING_ICON = "fairyRingIcon";
+	static final String CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS = "agilityShortcutTooltips";
+	static final String CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON = "agilityShortcutIcon";
 	static final String CONFIG_KEY_NORMAL_TELEPORT_ICON = "standardSpellbookIcon";
 	static final String CONFIG_KEY_ANCIENT_TELEPORT_ICON = "ancientSpellbookIcon";
 	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
@@ -70,6 +77,10 @@ public class WorldMapPlugin extends Plugin
 				FAIRY_TRAVEL_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 				final BufferedImage icon = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("fairy_ring_travel.png"));
 				FAIRY_TRAVEL_ICON.getGraphics().drawImage(icon, 1, 1, null);
+
+				NOPE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+				final BufferedImage nopeImage = ImageIO.read(WorldMapPlugin.class.getResourceAsStream("nope_icon.png"));
+				NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
 			}
 		}
 		catch (IOException e)
@@ -79,6 +90,9 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Inject
+	private Client client;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -86,6 +100,8 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
+
+	private int agilityLevel = 0;
 
 	@Provides
 	WorldMapConfig provideConfig(ConfigManager configManager)
@@ -115,6 +131,17 @@ public class WorldMapPlugin extends Plugin
 				case CONFIG_KEY_FAIRY_RING_ICON:
 					FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
 					break;
+				case CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS:
+				case CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON:
+					worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
+
+					if (config.agilityShortcutTooltips())
+					{
+						int agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
+						Arrays.stream(AgilityShortcutLocation.values())
+							.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
+							.forEach(worldMapPointManager::add);
+					}
 				case CONFIG_KEY_NORMAL_TELEPORT_ICON:
 				case CONFIG_KEY_ANCIENT_TELEPORT_ICON:
 				case CONFIG_KEY_LUNAR_TELEPORT_ICON:
@@ -149,6 +176,12 @@ public class WorldMapPlugin extends Plugin
 				.map(FairyRingLocation::getFairyRingPoint)
 				.forEach(worldMapPointManager::add);
 		}
+		if (config.agilityShortcutTooltips())
+		{
+			Arrays.stream(AgilityShortcutLocation.values())
+				.map(value -> new AgilityShortcutPoint(value, BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
 
 		if (config.normalTeleportIcon()
 			|| config.ancientTeleportIcon()
@@ -170,8 +203,27 @@ public class WorldMapPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
+		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(MagicTeleportPoint.class::isInstance);
 		worldMapPointManager.removeIf(JewelleryTeleportPoint.class::isInstance);
+	}
+
+	@Subscribe
+	public void onXpChanged(ExperienceChanged event)
+	{
+		if (event.getSkill() == Skill.AGILITY)
+		{
+			int newAgilityLevel = Experience.getLevelForXp(client.getSkillExperience(Skill.AGILITY));
+			if (config.agilityShortcutLevelIcon() && newAgilityLevel != agilityLevel)
+			{
+				agilityLevel = newAgilityLevel;
+
+				worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
+				Arrays.stream(AgilityShortcutLocation.values())
+					.map(value -> new AgilityShortcutPoint(value, config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON))
+					.forEach(worldMapPointManager::add);
+			}
+		}
 	}
 
 	private void createMagicTeleportPoints()
