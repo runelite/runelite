@@ -81,6 +81,9 @@ public class DevToolsPlugin extends Plugin
 	private CameraOverlay cameraOverlay;
 
 	@Inject
+	private WorldMapLocationOverlay worldMapLocationOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
 	private boolean togglePlayers;
@@ -99,6 +102,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleLineOfSight;
 	private boolean toggleGraphicsObjects;
 	private boolean toggleCamera;
+	private boolean toggleWorldMapLocation;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -145,7 +149,7 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, locationOverlay, sceneOverlay, cameraOverlay);
+		return Arrays.asList(overlay, locationOverlay, sceneOverlay, cameraOverlay, worldMapLocationOverlay);
 	}
 
 	@Subscribe
@@ -317,6 +321,11 @@ public class DevToolsPlugin extends Plugin
 		toggleCamera = !toggleCamera;
 	}
 
+	void toggleWorldMapLocation()
+	{
+		toggleWorldMapLocation = !toggleWorldMapLocation;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -395,5 +404,10 @@ public class DevToolsPlugin extends Plugin
 	boolean isToggleCamera()
 	{
 		return toggleCamera;
+	}
+
+	boolean isToggleWorldMapLocation()
+	{
+		return toggleWorldMapLocation;
 	}
 }
