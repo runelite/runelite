@@ -293,6 +293,7 @@ public class WidgetID
 	static class ResizableViewportBottomLine
 	{
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
+		static final int LOGOUT_BUTTON = 30;
 		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 		static final int QUESTS_ICON = 57;

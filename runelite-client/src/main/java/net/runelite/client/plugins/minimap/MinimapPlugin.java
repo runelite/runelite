@@ -49,7 +49,7 @@ public class MinimapPlugin extends Plugin
 	private static final int NUM_MAPDOTS = 6;
 
 	private static final int BOTTOM_LINE_MINIMAP = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_WIDGET.getId();
-	private static final int BOX_MINIMAP = WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_MINIMAP_WIDGET.getId();
+	private static final int BOX_MINIMAP = WidgetInfo.RESIZABLE_VIEWPORT_MINIMAP_WIDGET.getId();
 
 	@Inject
 	private Client client;
@@ -176,10 +176,19 @@ public class MinimapPlugin extends Plugin
 
 		if (minimapWidget != null)
 		{
-			minimapWidget.setHidden(option);
+			Widget logoutClickbox = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON_OVERLAY);
+			Widget logoutIcon = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON);
+			// don't hide the log out button
+			for (Widget widget : minimapWidget.getStaticChildren())
+			{
+				if (widget != logoutClickbox && widget != logoutIcon)
+				{
+					widget.setHidden(option);
+				}
+			}
 		}
 
-		minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_MINIMAP_WIDGET);
+		minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_MINIMAP_WIDGET);
 
 		if (minimapWidget != null)
 		{
