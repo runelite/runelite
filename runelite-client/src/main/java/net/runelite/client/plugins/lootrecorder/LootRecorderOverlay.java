@@ -26,13 +26,13 @@ package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class LootRecorderOverlay extends Overlay
 {
@@ -40,7 +40,7 @@ class LootRecorderOverlay extends Overlay
 	private final LootRecorderConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	// Wrapper functions for overlay manipluation
+	// Wrapper functions for overlay manipulation
 	private void resetOverlay()
 	{
 		panelComponent.getChildren().clear();
@@ -74,7 +74,7 @@ class LootRecorderOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		resetOverlay();
-		if(!config.showLootTotals())
+		if (!config.showLootTotals())
 		{
 			return null;
 		}

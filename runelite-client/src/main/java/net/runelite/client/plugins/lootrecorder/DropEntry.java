@@ -28,7 +28,7 @@ import lombok.Getter;
 
 class DropEntry
 {
-	public DropEntry(String item_name, Integer item_amount)
+	DropEntry(String item_name, Integer item_amount)
 	{
 		this.item_name = item_name;
 		this.item_amount = item_amount;
