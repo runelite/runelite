@@ -58,6 +58,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.RuneLiteAPI;
 
 import static net.runelite.client.RuneLite.LOOTS_DIR;
 
@@ -119,6 +120,7 @@ public class LootRecorderPlugin extends Plugin
 			barrows.add(entry);
 			addLootEntry(barrowsFilename, entry);
 			log.info("Recorded a barrows chest!");
+			log.info("Entry:", entry);
 		}
 
 		// Raids Chest
@@ -129,6 +131,7 @@ public class LootRecorderPlugin extends Plugin
 			raids.add(entry);
 			addLootEntry(raidsFilename, entry);
 			log.info("Recorded a raids chest!");
+			log.info("Entry:", entry);
 		}
 	}
 
@@ -144,6 +147,8 @@ public class LootRecorderPlugin extends Plugin
 		// Overlay Toggle
 		if (event.getKey().equals("showLootTotals"))
 		{
+			loadLootEntries(barrowsFilename, barrows);
+			loadLootEntries(raidsFilename, raids);
 			return;
 		}
 	}
@@ -199,7 +204,9 @@ public class LootRecorderPlugin extends Plugin
 	// Add Loot Entry to the necessary file
 	private void addLootEntry(String fileName, LootEntry entry)
 	{
-		String dataAsString = "PLACEHOLDER DATA"; // TODO: Convert LootEntry to String format
+		String dataAsString = RuneLiteAPI.GSON.toJson(entry);
+		log.info(dataAsString);
+
 		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
@@ -224,16 +231,31 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	// Receive Loot from the necessary file
-	private synchronized void loadLootEntries(File file, ArrayList data)
+	private synchronized void loadLootEntries(String fileName, ArrayList data)
 	{
+		File playerFolder;
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
+			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
+		}
+		else
+		{
+			playerFolder = LOOTS_DIR;
+		}
+		playerFolder.mkdirs();
+		File file = new File(playerFolder, fileName);
+
 		// Read the loot log line by line
 		try (BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				// Read the data from each line..Not sure how to store this yet.
-				final String[] split = line.split("||", 3);
+				// Read the data from each line
+				LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
+				data.add(entry);
+				log.info(line);
+				log.info(String.valueOf(entry));
 			}
 		}
 		catch (FileNotFoundException e)
@@ -244,6 +266,8 @@ public class LootRecorderPlugin extends Plugin
 		{
 			log.warn("Unexpected error", e);
 		}
+		log.info("Loaded Data:");
+		log.info(String.valueOf(data));
 	}
 
 

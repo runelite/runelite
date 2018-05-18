@@ -29,7 +29,7 @@ import lombok.Getter;
 
 class LootEntry
 {
-	public LootEntry(Integer kill_count, ArrayList drops)
+	LootEntry(Integer kill_count, ArrayList<DropEntry> drops)
 	{
 		this.kill_count = kill_count;
 		this.drops = drops;
