@@ -131,5 +131,9 @@ public class PohOverlay extends Overlay
 		{
 			iconList.add(PohIcons.MAGICTRAVEL);
 		}
+		if (config.showLectern())
+		{
+			iconList.add(PohIcons.LECTERN);
+		}
 	}
 }
