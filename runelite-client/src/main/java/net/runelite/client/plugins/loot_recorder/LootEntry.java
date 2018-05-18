@@ -22,17 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loot_recorder;
+package net.runelite.client.plugins.lootrecorder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import lombok.Getter;
 
 class LootEntry
 {
-	public LootEntry(Integer kill_count,ArrayList drops)
+	public LootEntry(Integer kill_count, ArrayList drops)
 	{
 		this.kill_count = kill_count;
 		this.drops = drops;

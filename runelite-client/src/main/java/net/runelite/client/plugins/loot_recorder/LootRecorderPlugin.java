@@ -22,37 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loot_recorder;
+package net.runelite.client.plugins.lootrecorder;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.inject.Inject;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
-import static net.runelite.client.Runelite.LOOTS_DIR;
+import static net.runelite.client.RuneLite.LOOTS_DIR;
 
 @PluginDescriptor(
 	name = "Loot Recorder"
@@ -105,13 +98,13 @@ public class LootRecorderPlugin extends Plugin
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		// Barrows Chests
-		if(event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_IP && config.recordBarrowsChest())
+		if(event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_IP && lootRecorderConfig.recordBarrowsChest())
 		{
 
 		}
 
 		// Raids Chest
-		if(event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && config.recordRaidsChest())
+		if(event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && lootRecorderConfig.recordRaidsChest())
 		{
 			
 		}

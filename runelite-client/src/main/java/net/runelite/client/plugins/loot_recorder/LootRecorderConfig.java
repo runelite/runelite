@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loot_recorder;
+package net.runelite.client.plugins.lootrecorder;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -42,7 +42,7 @@ public interface LootRecorderConfig extends Config
 		description = "Configures whether or not loot from Barrows Chests is recorded",
 		position = 0
 	)
-	default boolean recordRaidsChest()
+	default boolean recordBarrowsChest()
 	{
 		return true;
 	}
