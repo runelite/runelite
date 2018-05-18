@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import net.runelite.api.Client;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
