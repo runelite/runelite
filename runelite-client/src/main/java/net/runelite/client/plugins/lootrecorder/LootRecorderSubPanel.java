@@ -29,6 +29,7 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -47,21 +48,27 @@ class LootRecorderSubPanel extends JPanel
 	private final JLabel amount = new JLabel();
 	private JPanel lootPanel = new JPanel();
 
+
+	private final HashMap<LootRecord, LootRecordPanel> recordPanels = new HashMap<>();
+
 	LootRecorderSubPanel(ArrayList<LootEntry> records, ItemManager itemManager)
 	{
 		super();
 		this.records = records;
 		this.uniques = new HashMap<>();
 
-		GridBagLayout layout = new GridBagLayout();
-		lootPanel.setLayout(layout);
-		lootPanel.setBorder(new EmptyBorder(2, 6, 6, 6));
+		GroupLayout layout = new GroupLayout(this);
+		this.setLayout(layout);
+		this.setBorder(new EmptyBorder(2, 6, 6, 6));
+
+		JPanel recs = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
 
+		// Compile the DropEntries for unique totals
 		this.records.forEach(rec ->
 		{
 			// Convert DropEntries records into consolidated entries
@@ -87,12 +94,22 @@ class LootRecorderSubPanel extends JPanel
 			});
 		});
 
+		// Actually create the Panel elements for the unique data
 		this.uniques.forEach((lr, item) ->
 		{
 			LootRecordPanel p = new LootRecordPanel(item);
-			add(p, c);
+			recordPanels.put(item, p);
 			lootPanel.add(p, c);
+			recs.add(p, c);
+			c.gridy++;
 		});
-		add(lootPanel);
+
+		layout.setHorizontalGroup(layout.createParallelGroup()
+				.addComponent(recs)
+		);
+
+		layout.setVerticalGroup(layout.createSequentialGroup()
+				.addComponent(recs)
+		);
 	}
 }

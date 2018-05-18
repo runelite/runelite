@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
-import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,29 +40,18 @@ class LootRecordPanel extends JPanel
 		this.record = record;
 
 		GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
+		this.setLayout(layout);
 
 		JPanel panel = new JPanel();
 
-		JLabel item_name = new JLabel(this.record.getItem_name());
-		JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
-		icon.setMinimumSize(new Dimension(36, 32));
+		JLabel item_name = new JLabel(this.record.getItem_name());
+		JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
 
-		System.out.println(this.record.getAmount());
-		System.out.println(this.record.getItem_name());
 
-		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addComponent(icon)
-				.addGap(8)
-				.addGroup(layout.createParallelGroup()
-					.addComponent(item_name)
-					.addComponent(amount)
-				)
-		);
 
-		layout.setHorizontalGroup(layout.createParallelGroup()
+		layout.setVerticalGroup(layout.createParallelGroup()
 				.addComponent(icon)
 				.addGroup(layout.createSequentialGroup()
 						.addComponent(item_name)
@@ -71,10 +59,15 @@ class LootRecordPanel extends JPanel
 				)
 		);
 
+		layout.setHorizontalGroup(layout.createSequentialGroup()
+				.addComponent(icon)
+				.addGap(8)
+				.addGroup(layout.createParallelGroup()
+						.addComponent(item_name)
+						.addComponent(amount)
+				)
+		);
+
 		setComponentZOrder(icon, getComponentCount() - 1);
-		panel.add(icon);
-		panel.add(item_name);
-		panel.add(amount);
-		add(panel);
 	}
 }

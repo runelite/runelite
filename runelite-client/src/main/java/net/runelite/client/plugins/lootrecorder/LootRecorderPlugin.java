@@ -51,13 +51,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
@@ -80,7 +78,6 @@ public class LootRecorderPlugin extends Plugin
 {
 	private Integer barrowsNumber;
 	private Integer raidsNumber;
-	private Boolean logged_in = false;
 
 	private String barrowsFilename = "barrows.log";
 	private String raidsFilename = "raids.log";
@@ -131,6 +128,7 @@ public class LootRecorderPlugin extends Plugin
 	private void createPanel()
 	{
 		panel = new LootRecorderPanel(itemManager, this, lootRecorderConfig);
+		panel.setOpaque(false);
 
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
@@ -211,20 +209,6 @@ public class LootRecorderPlugin extends Plugin
 			{
 				removePanel();
 			}
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			log.info(client.getLocalPlayer().getName());
-			logged_in = true;
-		}
-		else if (client.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			logged_in = false;
 		}
 	}
 

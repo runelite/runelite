@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -41,7 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -85,7 +86,7 @@ class LootRecorderPanel extends PluginPanel
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			JPanel panel = new JPanel()
+			JPanel panel = new JPanel(new GridBagLayout())
 			{
 				@Override
 				public Dimension getPreferredSize()
@@ -93,9 +94,7 @@ class LootRecorderPanel extends PluginPanel
 					return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
 				}
 			};
-			panel.setLayout(new GridBagLayout());
-			panel.setBorder(new EmptyBorder(2, 6, 6, 6));
-			panel.setOpaque(false);
+			panel.setBorder(new LineBorder(Color.getColor("red")));
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.HORIZONTAL;
@@ -110,17 +109,19 @@ class LootRecorderPanel extends PluginPanel
 			log.info(tab.getName());
 			log.info(String.valueOf(data));
 			LootRecorderSubPanel itemsPanel = new LootRecorderSubPanel(data, itemManager);
+
 			lootPanels.add(itemsPanel, c);
 			panel.add(itemsPanel, c);
 			c.gridy++;
 
+			// Scrolling Ability
 			JPanel wrapped = new JPanel(new BorderLayout());
 			wrapped.add(panel, BorderLayout.NORTH);
 			JScrollPane scroller = new JScrollPane(wrapped);
 			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scroller.getVerticalScrollBar().setUnitIncrement(16);
 
-
+			// Tab Icons
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
 			tabsPanel.addTab(null, null, scroller, tab.getName());
 			int idx = tabsPanel.getTabCount() - 1;
@@ -130,7 +131,7 @@ class LootRecorderPanel extends PluginPanel
 			};
 			icon.onChanged(resize);
 			resize.run();
-
+			/*
 			if (this.lootRecorderConfig.activeTab() == tab)
 			{
 				tabsPanel.setSelectedComponent(scroller);
@@ -142,8 +143,8 @@ class LootRecorderPanel extends PluginPanel
 					this.lootRecorderConfig.setActiveTab(tab);
 				}
 			});
+			*/
 			log.info("Created " + String.valueOf(tab) + " tab");
-			tabsPanel.add(panel);
 		}
 
 		JButton refresh = new JButton("Refresh Data");
