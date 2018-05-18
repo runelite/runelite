@@ -33,12 +33,16 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 
-@PluginDescriptor(name = "Skill Calculator")
+@PluginDescriptor(
+	name = "Skill Calculator",
+	category = PluginCategory.CLIENT
+)
 public class SkillCalculatorPlugin extends Plugin
 {
 	@Inject
