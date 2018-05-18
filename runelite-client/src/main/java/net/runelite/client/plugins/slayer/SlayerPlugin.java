@@ -505,6 +505,7 @@ public class SlayerPlugin extends Plugin
 
 		addCounter();
 		counter.setText(String.valueOf(amount));
+		infoTimer = Instant.now();
 	}
 
 	private List<NPC> buildTargetsToHighlight()
