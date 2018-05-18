@@ -24,38 +24,48 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
-import java.awt.BorderLayout;
-import javax.inject.Inject;
-import javax.swing.BoxLayout;
+import java.awt.Dimension;
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import lombok.Getter;
+import net.runelite.client.ui.FontManager;
 
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.PluginPanel;
-
-
-
-@Slf4j
-class LootRecorderPanel extends PluginPanel
+@Getter
+class LootRecorderSubPanel extends JPanel
 {
-	private final Client client;
-	private final ItemManager itemManager;
+	private final LootRecord record;
+	private final JLabel icon = new JLabel();
+	private final JLabel amount = new JLabel();
 
-	private JPanel panel = new JPanel();
-	private JTabbedPane tabbedPane = new JTabbedPane();
-
-	@Inject
-	LootRecorderPanel(Client client, ItemManager itemManager)
+	LootRecorderSubPanel(LootRecord record)
 	{
-		this.client = client;
-		this.itemManager = itemManager;
-		setLayout(new BorderLayout());
-		add(tabbedPane, BorderLayout.NORTH);
+		this.record = record;
 
-		// Main Panel
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		tabbedPane.addTab("Barrows", panel);
+		GroupLayout layout = new GroupLayout(this);
+		this.setLayout(layout);
+
+		final JLabel item_name = new JLabel("Item Name");
+		item_name.setFont(FontManager.getRunescapeSmallFont());
+		icon.setMinimumSize(new Dimension(36, 32));
+
+		layout.setVerticalGroup(layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+				.addComponent(icon)
+				.addGroup(layout.createSequentialGroup()
+					.addGap(4)
+					.addComponent(amount)
+				)
+			)
+		);
+
+		layout.setHorizontalGroup(layout.createParallelGroup()
+			.addGroup(layout.createSequentialGroup()
+				.addComponent(icon)
+				.addGroup(layout.createParallelGroup()
+					.addComponent(amount)
+				)
+			)
+		);
 	}
 }

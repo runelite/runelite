@@ -28,6 +28,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,6 +43,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -54,8 +56,11 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
@@ -89,6 +94,15 @@ public class LootRecorderPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private ItemManager itemManager;
+
+	private LootRecorderPanel panel;
+
+	private NavigationButton navButton;
+
+	private PluginToolbar pluginToolbar;
+
 
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
@@ -103,9 +117,24 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp()
+	protected void startUp() throws IOException
 	{
 		LOOTS_DIR.mkdirs();
+		panel = injector.getInstance(LootRecorderPanel.class);
+
+		BufferedImage icon = null;
+		synchronized (ImageIO.class)
+		{
+			icon = ImageIO.read(getClass().getResourceAsStream("ge_icon.png"));
+		}
+		panel = new LootRecorderPanel(client, itemManager);
+		navButton = NavigationButton.builder()
+			.name("Loot Recorder")
+			.icon(icon)
+			.panel(panel)
+			.build();
+
+		pluginToolbar.addNavigation(navButton);
 	}
 
 	// Checks for loot that is rewarded via interfaces
