@@ -124,6 +124,22 @@ public class Experience
 
 		return base + max(melee, max(range, magic));
 	}
+	/**
+	 * Calculates a high-precision combat level without integer rounding and without factoring in prayer.
+	 *
+	 * @return Combat level between 1.15 and ~126.1 (assuming non-virtual levels).
+	 * */
+	public static double getCombatLevelPreciseNoPrayer(int attackLevel, int strengthLevel,
+		int defenceLevel, int hitpointsLevel, int magicLevel, int rangeLevel)
+	{
+		double base = 0.25 * (defenceLevel + hitpointsLevel);
+
+		double melee = 0.325 * (attackLevel + strengthLevel);
+		double range = 0.325 * (floor(rangeLevel / 2) + rangeLevel);
+		double magic = 0.325 * (floor(magicLevel / 2) + magicLevel);
+
+		return base + max(melee, max(range, magic));
+	}
 
 	/**
 	 * Calculates a regular combat level.
@@ -131,9 +147,20 @@ public class Experience
 	 * @return Combat level between 1 and 126 (assuming non-virtual levels).
 	 */
 	public static int getCombatLevel(int attackLevel, int strengthLevel,
-		int defenceLevel, int hitpointsLevel, int magicLevel,
-		int rangeLevel, int prayerLevel)
+		int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel, int prayerLevel)
 	{
 		return (int) getCombatLevelPrecise(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel);
+	}
+	/**
+	 * Calculates a regular combat level without factoring in prayer.
+	 *
+	 * @return Combat level between 1 and 126 (assuming non-virtual levels).
+	 */
+	public static int getCombatLevelNoPrayer(int attackLevel, int strengthLevel,
+		int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel)
+	{
+		return (int) getCombatLevelPreciseNoPrayer(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel);
 	}
 }
