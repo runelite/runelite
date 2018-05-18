@@ -101,6 +101,7 @@ public class LootRecorderPlugin extends Plugin
 
 	private NavigationButton navButton;
 
+	@Inject
 	private PluginToolbar pluginToolbar;
 
 
@@ -122,12 +123,11 @@ public class LootRecorderPlugin extends Plugin
 		LOOTS_DIR.mkdirs();
 		panel = injector.getInstance(LootRecorderPanel.class);
 
-		BufferedImage icon = null;
+		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("ge_icon.png"));
+			icon = ImageIO.read(getClass().getResourceAsStream("panel_icon.png"));
 		}
-		panel = new LootRecorderPanel(client, itemManager);
 		navButton = NavigationButton.builder()
 			.name("Loot Recorder")
 			.icon(icon)
