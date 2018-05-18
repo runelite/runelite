@@ -140,5 +140,8 @@ public interface PohConfig extends Config
 		name = "Show Lectern",
 		description = "Configures whether or not the Lectern is displayed"
 	)
-	default boolean showLectern() { return true; }
+	default boolean showLectern()
+	{
+		return true;
+	}
 }
