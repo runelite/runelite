@@ -80,13 +80,6 @@
 		<url>https://travis-ci.org/runelite/runelite</url>
 	</ciManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>runelite</id>
-			<url>dav:http://repo.runelite.net</url>
-		</repository>
-	</distributionManagement>
-
 	<repositories>
 		<repository>
 			<id>maven-central</id>
@@ -226,12 +219,5 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.12</version>
-			</extension>
-		</extensions>
 	</build>
 </project>
