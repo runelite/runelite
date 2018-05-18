@@ -30,8 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import net.runelite.api.Client;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -59,11 +57,6 @@ public class ItemStatOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (client.isMenuOpen() || (!config.relative() && !config.absolute() && !config.theoretical()))
-		{
-			return null;
-		}
-
-		if (client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER) != null && !config.bankToggle())
 		{
 			return null;
 		}
