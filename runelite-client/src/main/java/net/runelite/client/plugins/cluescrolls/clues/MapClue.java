@@ -108,6 +108,10 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
 
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Click the clue scroll along the edge of your world map to see your destination.")
+				.build());
+
 		if (objectId != -1)
 		{
 			ObjectComposition objectToClick = plugin.getClient().getObjectDefinition(getObjectId());
