@@ -24,19 +24,48 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import java.awt.Dimension;
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import lombok.Getter;
+import net.runelite.client.ui.FontManager;
 
-class DropEntry
+@Getter
+class LootRecorderPanel extends JPanel
 {
-	DropEntry(Integer item_id, Integer item_amount)
+	private final LootRecord record;
+	private final JLabel icon = new JLabel();
+	private final JLabel amount = new JLabel();
+
+	LootRecorderPanel(LootRecord record)
 	{
-		this.item_id = item_id;
-		this.item_amount = item_amount;
+		this.record = record;
+
+		GroupLayout layout = new GroupLayout(this);
+		this.setLayout(layout);
+
+		final JLabel item_name = new JLabel("Item Name");
+		item_name.setFont(FontManager.getRunescapeSmallFont());
+		icon.setMinimumSize(new Dimension(36, 32));
+
+		layout.setVerticalGroup(layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+				.addComponent(icon)
+				.addGroup(layout.createSequentialGroup()
+					.addGap(4)
+					.addComponent(amount)
+				)
+			)
+		);
+
+		layout.setHorizontalGroup(layout.createParallelGroup()
+			.addGroup(layout.createSequentialGroup()
+				.addComponent(icon)
+				.addGroup(layout.createParallelGroup()
+					.addComponent(amount)
+				)
+			)
+		);
 	}
-
-	@Getter
-	private final Integer item_id;
-
-	@Getter
-	private final Integer item_amount;
 }

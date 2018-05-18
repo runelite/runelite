@@ -25,18 +25,16 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.ItemID;
 
-class DropEntry
+@RequiredArgsConstructor
+@Getter
+public enum Tab
 {
-	DropEntry(Integer item_id, Integer item_amount)
-	{
-		this.item_id = item_id;
-		this.item_amount = item_amount;
-	}
-
-	@Getter
-	private final Integer item_id;
-
-	@Getter
-	private final Integer item_amount;
+	BARROWS("Barrows", ItemID.BARROWS_TELEPORT),
+	RAIDS("Raids", ItemID.XERICS_TALISMAN);
+	
+	private final String name;
+	private final int itemID;
 }

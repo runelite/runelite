@@ -24,19 +24,19 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-class DropEntry
+@RequiredArgsConstructor(
+	access = AccessLevel.PACKAGE
+)
+@Getter
+class LootRecord
 {
-	DropEntry(Integer item_id, Integer item_amount)
-	{
-		this.item_id = item_id;
-		this.item_amount = item_amount;
-	}
-
-	@Getter
-	private final Integer item_id;
-
-	@Getter
-	private final Integer item_amount;
+	@Setter(AccessLevel.PACKAGE)
+	private String item_name;
+	@Setter(AccessLevel.PACKAGE)
+	private int amount;
 }

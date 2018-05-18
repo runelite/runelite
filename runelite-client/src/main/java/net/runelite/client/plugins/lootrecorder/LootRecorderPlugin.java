@@ -193,9 +193,8 @@ public class LootRecorderPlugin extends Plugin
 		for (Item item : container.getItems())
 		{
 			int id = item.getId();
-			String name = item.toString();
-			Integer amount = item.getQuantity();
-			drops.add(new DropEntry(id, name, amount));
+			int amount = item.getQuantity();
+			drops.add(new DropEntry(id, amount));
 		}
 		return new LootEntry(kill_count, drops);
 	}
@@ -254,8 +253,6 @@ public class LootRecorderPlugin extends Plugin
 				// Read the data from each line
 				LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
 				data.add(entry);
-				log.info(line);
-				log.info(String.valueOf(entry));
 			}
 		}
 		catch (FileNotFoundException e)
