@@ -66,7 +66,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 
@@ -96,9 +95,6 @@ public class LootRecorderPlugin extends Plugin
 	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
 
 	@Inject
-	private LootRecorderOverlay lootRecorderOverlay;
-
-	@Inject
 	private LootRecorderConfig lootRecorderConfig;
 
 	@Inject
@@ -119,12 +115,6 @@ public class LootRecorderPlugin extends Plugin
 	LootRecorderConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(LootRecorderConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return lootRecorderOverlay;
 	}
 
 	@Override
@@ -209,7 +199,7 @@ public class LootRecorderPlugin extends Plugin
 			return;
 		}
 
-		// Overlay Toggle
+		// Panel Toggle
 		if (event.getKey().equals("showLootTotals"))
 		{
 			loadAllData();
