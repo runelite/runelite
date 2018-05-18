@@ -364,7 +364,7 @@ public class LootRecorderPlugin extends Plugin
 
 	ArrayList getData(String type)
 	{
-		switch (type)
+		switch (type.toUpperCase())
 		{
 			case "BARROWS":
 				return barrows;

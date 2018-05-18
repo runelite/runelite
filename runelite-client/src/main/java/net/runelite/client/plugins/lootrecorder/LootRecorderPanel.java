@@ -52,8 +52,6 @@ class LootRecorderPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final LootRecorderPlugin lootRecorderPlugin;
 
-	private JTabbedPane tabsPanel = new JTabbedPane();
-
 	@Inject
 	LootRecorderPanel(Client client, ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin)
 	{
@@ -63,6 +61,9 @@ class LootRecorderPanel extends PluginPanel
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
+
+		JTabbedPane tabsPanel = new JTabbedPane();
+
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -84,6 +85,21 @@ class LootRecorderPanel extends PluginPanel
 			};
 			subPanel.setBorder(new EmptyBorder(2, 6, 6, 6));
 
+			// Add the necessary items to the sub panel
+			GridBagConstraints c2 = new GridBagConstraints();
+			c2.fill = GridBagConstraints.HORIZONTAL;
+			c2.weightx = 1;
+			c2.gridx = 0;
+			c2.gridy = 10;
+
+			// Create the Entries for this tab
+			ArrayList<LootEntry> data = this.lootRecorderPlugin.getData(tab.getName());
+			log.info(String.valueOf(data));
+			log.info("Got Barrows");
+			LootRecorderSubPanel itemsPanel = new LootRecorderSubPanel(data, itemManager);
+
+			subPanel.add(itemsPanel);
+
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
 			tabsPanel.addTab(null, null, null, tab.getName());
 			int idx = tabsPanel.getTabCount() - 1;
@@ -96,11 +112,6 @@ class LootRecorderPanel extends PluginPanel
 			log.info("Created " + String.valueOf(tab) + " tab");
 		}
 
-		ArrayList<LootEntry> data = this.lootRecorderPlugin.getBarrows();
-		log.info(String.valueOf(data));
-		log.info("Got Barrows");
-		LootRecorderSubPanel subPanel = new LootRecorderSubPanel(data, itemManager);
-
 		JButton refresh = new JButton("Refresh Data");
 		refresh.addActionListener(e ->
 		{
@@ -109,15 +120,13 @@ class LootRecorderPanel extends PluginPanel
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(tabsPanel)
-				.addComponent(subPanel)
 				.addComponent(refresh)
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(tabsPanel)
-				.addComponent(subPanel)
 				.addComponent(refresh)
 		);
 		log.info("subpanel");
-		System.out.print(subPanel.getAmount());
+		System.out.print(this);
 	}
 }
