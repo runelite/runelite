@@ -211,6 +211,21 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	void loadTabData(String tabName)
+	{
+		switch (tabName.toUpperCase())
+		{
+			case "BARROWS":
+				loadLootEntries(barrowsFilename, barrows);
+				break;
+			case "RAIDS":
+				loadLootEntries(raidsFilename, raids);
+				break;
+			default:
+				break;
+		}
+	}
+
 	void loadAllData()
 	{
 		loadLootEntries(barrowsFilename, barrows);
