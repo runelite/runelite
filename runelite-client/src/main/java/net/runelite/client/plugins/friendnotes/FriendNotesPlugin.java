@@ -151,11 +151,11 @@ public class FriendNotesPlugin extends Plugin
 	{
 		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 
-		// look for "Message" on friends list
+		// Look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
-			final String sanitizedTarget = Text.removeTags(event.getTarget());
-			setHoveredFriend(sanitizedTarget);
+			// Assume the display name text is untagged
+			setHoveredFriend(event.getTarget());
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
