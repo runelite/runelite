@@ -25,8 +25,10 @@
 package net.runelite.client.plugins.jewellerycount;
 
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -43,6 +45,7 @@ import net.runelite.client.util.QueryRunner;
 @PluginDescriptor(
 	name = "Jewellery Count"
 )
+@Slf4j
 public class JewelleryCountPlugin extends Plugin
 {
 	@Inject
@@ -88,6 +91,27 @@ public class JewelleryCountPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("jewelleryCount"))
+		{
+			log.info(event.getNewValue());
+			if (event.getKey().equals("showAmuletInfobox") && event.getNewValue().equals("false"))
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+			}
+			else if (event.getKey().equals("showBraceletInfobox") && event.getNewValue().equals("false"))
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.GLOVES);
+			}
+			else if (event.getKey().equals("showRingInfobox") && event.getNewValue().equals("false"))
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.RING);
+			}
+		}
+	}
+
+	@Subscribe
 	public void onInventoryChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer().getItems().length > 13)
@@ -95,18 +119,27 @@ public class JewelleryCountPlugin extends Plugin
 			return;
 		}
 
-		int amulet;
+		int amulet = -2;
 		int bracelet = -2;
 		int ring = -2;
 		if (event.getItemContainer().getItems().length >= 3)
 		{
-			amulet = event.getItemContainer().getItems()[EquipmentInventorySlot.AMULET.getSlotIdx()].getId();
+			if (config.showAmuletInfobox())
+			{
+				amulet = event.getItemContainer().getItems()[EquipmentInventorySlot.AMULET.getSlotIdx()].getId();
+			}
 			if (event.getItemContainer().getItems().length >= 10)
 			{
-				bracelet = event.getItemContainer().getItems()[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId();
+				if (config.showBraceletInfobox())
+				{
+					bracelet = event.getItemContainer().getItems()[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId();
+				}
 				if (event.getItemContainer().getItems().length == 13)
 				{
-					ring = event.getItemContainer().getItems()[EquipmentInventorySlot.RING.getSlotIdx()].getId();
+					if (config.showRingInfobox())
+					{
+						ring = event.getItemContainer().getItems()[EquipmentInventorySlot.RING.getSlotIdx()].getId();
+					}
 				}
 			}
 		}
@@ -124,12 +157,12 @@ public class JewelleryCountPlugin extends Plugin
 			}
 			else
 			{
-				removeGameTimer(EquipmentInventorySlot.AMULET);
+				removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
 			}
 		}
 		else
 		{
-			removeGameTimer(EquipmentInventorySlot.AMULET);
+			removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
 		}
 
 		if (bracelet > 0)
@@ -141,12 +174,12 @@ public class JewelleryCountPlugin extends Plugin
 			}
 			else
 			{
-				removeGameTimer(EquipmentInventorySlot.GLOVES);
+				removeJewelleryInfobox(EquipmentInventorySlot.GLOVES);
 			}
 		}
 		else
 		{
-			removeGameTimer(EquipmentInventorySlot.GLOVES);
+			removeJewelleryInfobox(EquipmentInventorySlot.GLOVES);
 		}
 
 		if (ring > 0)
@@ -158,24 +191,23 @@ public class JewelleryCountPlugin extends Plugin
 			}
 			else
 			{
-				removeGameTimer(EquipmentInventorySlot.RING);
+				removeJewelleryInfobox(EquipmentInventorySlot.RING);
 			}
 		}
 		else
 		{
-			removeGameTimer(EquipmentInventorySlot.RING);
+			removeJewelleryInfobox(EquipmentInventorySlot.RING);
 		}
 	}
 
-
 	private void createJewelleryInfobox(int id, int charges, EquipmentInventorySlot slotID)
 	{
-		removeGameTimer(slotID);
+		removeJewelleryInfobox(slotID);
 		JewelleryInfobox i = new JewelleryInfobox(itemManager.getImage(id), this, charges, slotID);
 		infoBoxManager.addInfoBox(i);
 	}
 
-	public void removeGameTimer(EquipmentInventorySlot slotID)
+	public void removeJewelleryInfobox(EquipmentInventorySlot slotID)
 	{
 		infoBoxManager.removeIf(t -> t instanceof JewelleryInfobox && ((JewelleryInfobox) t).getSlotID() == slotID);
 	}
