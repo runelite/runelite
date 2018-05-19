@@ -43,6 +43,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataMultiplier;
 
 class SkillCalculator extends JPanel
 {
@@ -174,6 +175,25 @@ class SkillCalculator extends JPanel
 				add(uiOption);
 			}
 		}
+		if (skillData.multipliers != null)
+		{
+			for (SkillDataMultiplier multiplier : skillData.multipliers)
+			{
+				JPanel uiOption = new JPanel(new BorderLayout());
+				JLabel uiLabel = new JLabel(multiplier.name);
+				JCheckBox uiCheckbox = new JCheckBox();
+
+				// Adding an empty 8-pixel border on the left gives us nice padding.
+				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
+
+				// Adjust XP bonus depending on check-state of the boxes.
+				uiCheckbox.addActionListener(e -> adjustXPMultiplier(uiCheckbox.isSelected(), multiplier.value));
+
+				uiOption.add(uiLabel, BorderLayout.WEST);
+				uiOption.add(uiCheckbox, BorderLayout.EAST);
+				add(uiOption);
+			}
+		}
 	}
 
 	private void renderActionSlots()
@@ -252,6 +272,12 @@ class SkillCalculator extends JPanel
 	private void adjustXPBonus(boolean addBonus, float value)
 	{
 		xpFactor += addBonus ? value : -value;
+		calculate();
+	}
+
+	private void adjustXPMultiplier (boolean addMultiplier, float value)
+	{
+		xpFactor = addMultiplier ? value : 1.0f;
 		calculate();
 	}
 
