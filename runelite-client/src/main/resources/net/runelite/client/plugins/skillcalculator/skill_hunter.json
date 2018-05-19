@@ -25,6 +25,12 @@
       "xp": 47
     },
     {
+      "level": 5,
+      "icon": 21512,
+      "name": "Regular Bird House",
+      "xp": 280
+    },
+    {
       "level": 7,
       "icon": 9955,
       "name": "Feldip Weasel",
@@ -49,6 +55,12 @@
       "xp": 66
     },
     {
+      "level": 14,
+      "icon": 21515,
+      "name": "Oak Bird House",
+      "xp": 420
+    },
+    {
       "level": 15,
       "icon": 9970,
       "name": "Ruby Harvest",
@@ -65,6 +77,12 @@
       "icon": 9953,
       "name": "Wild Kebbit",
       "xp": 128
+    },
+    {
+      "level": 24,
+      "icon": 21518,
+      "name": "Willow Bird House",
+      "xp": 560
     },
     {
       "level": 25,
@@ -103,6 +121,12 @@
       "xp": 168
     },
     {
+      "level": 34,
+      "icon": 21521,
+      "name": "Teak Bird House",
+      "xp": 700
+    },
+    {
       "level": 35,
       "icon": 9972,
       "name": "Snowy Knight",
@@ -127,6 +151,12 @@
       "xp": 104
     },
     {
+      "level": 44,
+      "icon": 22192,
+      "name": "Maple Bird House",
+      "xp": 820
+    },
+    {
       "level": 45,
       "icon": 9973,
       "name": "Black Warlock",
@@ -143,6 +173,12 @@
       "icon": 9961,
       "name": "Razor-backed Kebbit",
       "xp": 348
+    },
+    {
+      "level": 49,
+      "icon": 22195,
+      "name": "Mahogany Bird House",
+      "xp": 960
     },
     {
       "level": 51,
@@ -175,6 +211,12 @@
       "xp": 272
     },
     {
+      "level": 59,
+      "icon": 22198,
+      "name": "Yew Bird House",
+      "xp": 1020
+    },
+    {
       "level": 60,
       "icon": 19556,
       "name": "Maniacal Monkey",
@@ -203,6 +245,18 @@
       "icon": 5091,
       "name": "Black Chinchompa",
       "xp": 315
+    },
+    {
+      "level": 74,
+      "icon": 22201,
+      "name": "Magic Bird House",
+      "xp": 1140
+    },
+    {
+      "level": 89,
+      "icon": 22204,
+      "name": "Redwood Bird House",
+      "xp": 1200
     }
   ]
 }
