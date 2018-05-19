@@ -26,15 +26,19 @@ package net.runelite.client.plugins.jewellerycount;
 
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import javax.inject.Inject;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Jewellery Count"
@@ -49,6 +53,15 @@ public class JewelleryCountPlugin extends Plugin
 
 	@Inject
 	private JewelleryCountConfig config;
+
+	@Inject
+	private QueryRunner queryRunner;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Override
 	public Overlay getOverlay()
@@ -72,5 +85,98 @@ public class JewelleryCountPlugin extends Plugin
 				notifier.notify("Your Ring of Recoil has shattered");
 			}
 		}
+	}
+
+	@Subscribe
+	public void onInventoryChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer().getItems().length > 13)
+		{
+			return;
+		}
+
+		int amulet;
+		int bracelet = -2;
+		int ring = -2;
+		if (event.getItemContainer().getItems().length >= 3)
+		{
+			amulet = event.getItemContainer().getItems()[EquipmentInventorySlot.AMULET.getSlotIdx()].getId();
+			if (event.getItemContainer().getItems().length >= 10)
+			{
+				bracelet = event.getItemContainer().getItems()[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId();
+				if (event.getItemContainer().getItems().length == 13)
+				{
+					ring = event.getItemContainer().getItems()[EquipmentInventorySlot.RING.getSlotIdx()].getId();
+				}
+			}
+		}
+		else
+		{
+			return;
+		}
+
+		if (amulet > 0)
+		{
+			JewelleryCharges amuletCharges = JewelleryCharges.getCharges(amulet);
+			if (amuletCharges != null)
+			{
+				createJewelleryInfobox(amulet, amuletCharges.getCharges(), EquipmentInventorySlot.AMULET);
+			}
+			else
+			{
+				removeGameTimer(EquipmentInventorySlot.AMULET);
+			}
+		}
+		else
+		{
+			removeGameTimer(EquipmentInventorySlot.AMULET);
+		}
+
+		if (bracelet > 0)
+		{
+			JewelleryCharges braceletCharges = JewelleryCharges.getCharges(bracelet);
+			if (braceletCharges != null)
+			{
+				createJewelleryInfobox(bracelet, braceletCharges.getCharges(), EquipmentInventorySlot.GLOVES);
+			}
+			else
+			{
+				removeGameTimer(EquipmentInventorySlot.GLOVES);
+			}
+		}
+		else
+		{
+			removeGameTimer(EquipmentInventorySlot.GLOVES);
+		}
+
+		if (ring > 0)
+		{
+			JewelleryCharges ringCharges = JewelleryCharges.getCharges(ring);
+			if (ringCharges != null)
+			{
+				createJewelleryInfobox(ring, ringCharges.getCharges(), EquipmentInventorySlot.RING);
+			}
+			else
+			{
+				removeGameTimer(EquipmentInventorySlot.RING);
+			}
+		}
+		else
+		{
+			removeGameTimer(EquipmentInventorySlot.RING);
+		}
+	}
+
+
+	private void createJewelleryInfobox(int id, int charges, EquipmentInventorySlot slotID)
+	{
+		removeGameTimer(slotID);
+		JewelleryInfobox i = new JewelleryInfobox(itemManager.getImage(id), this, charges, slotID);
+		infoBoxManager.addInfoBox(i);
+	}
+
+	public void removeGameTimer(EquipmentInventorySlot slotID)
+	{
+		infoBoxManager.removeIf(t -> t instanceof JewelleryInfobox && ((JewelleryInfobox) t).getSlotID() == slotID);
 	}
 }
