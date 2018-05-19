@@ -98,6 +98,7 @@ public class FarmingTrackerPlugin extends Plugin
 			.name("Farming Tracker")
 			.icon(icon)
 			.panel(panel)
+			.priority(4)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);

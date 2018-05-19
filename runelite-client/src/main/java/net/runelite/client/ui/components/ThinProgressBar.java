@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,54 +23,71 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hiscore;
+package net.runelite.client.ui.components;
 
-import java.awt.Graphics;
-import java.awt.Insets;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import lombok.Setter;
+import net.runelite.client.ui.ColorScheme;
 
-public class IconTextField extends JTextField
+/**
+ * A progress bar to be displayed underneath the GE offer item panels
+ */
+public class ThinProgressBar extends JPanel
 {
-	private Border border;
-	private Icon icon;
+	@Setter
+	private int maximumValue;
+
+	@Setter
+	private int value;
+
+	private final JPanel topBar = new JPanel();
+
+	public ThinProgressBar()
+	{
+		setLayout(new BorderLayout());
+		setBackground(Color.GREEN.darker());
+
+		topBar.setPreferredSize(new Dimension(100, 4));
+		topBar.setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
+
+		add(topBar, BorderLayout.WEST);
+	}
+
+	/**
+	 * Updates the UI based on the percentage progress
+	 */
+	public void update()
+	{
+		double percentage = getPercentage();
+		int topWidth = (int) (getSize().width * (percentage / 100));
+
+		topBar.setPreferredSize(new Dimension(topWidth, 4));
+		topBar.repaint();
+
+		revalidate();
+		repaint();
+	}
+
+	public double getPercentage()
+	{
+		if (value == 0)
+		{
+			return 0;
+		}
+
+		return (value * 100) / maximumValue;
+	}
 
 	@Override
-	public void setBorder(Border border)
+	public void setForeground(Color color)
 	{
-		this.border = border;
-
-		if (icon == null)
+		if (topBar != null)
 		{
-			super.setBorder(border);
+			topBar.setBackground(color);
 		}
-		else
-		{
-			Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 4, 0, 0);
-			Border compound = BorderFactory.createCompoundBorder(border, margin);
-			super.setBorder(compound);
-		}
-	}
-
-	@Override
-	public void paintComponent(Graphics graphics)
-	{
-		super.paintComponent(graphics);
-
-		Insets iconInsets = border.getBorderInsets(this);
-		icon.paintIcon(this, graphics, iconInsets.left, iconInsets.top);
-	}
-
-	public void setIcon(Icon icon)
-	{
-		this.icon = icon;
-		resetBorder();
-	}
-
-	private void resetBorder()
-	{
-		setBorder(border);
+		setBackground(color.darker());
 	}
 }

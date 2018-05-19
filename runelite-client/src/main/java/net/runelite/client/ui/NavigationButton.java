@@ -74,6 +74,12 @@ public class NavigationButton
 	 */
 	private PluginPanel panel;
 
+
+	/**
+	 * The order in which the button should be displayed in the side bar. (from lower to higher)
+	 */
+	private int priority;
+
 	/**
 	 * Map of key-value pairs for setting the popup menu
 	 */
