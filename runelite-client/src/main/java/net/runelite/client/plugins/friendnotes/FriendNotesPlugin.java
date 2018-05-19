@@ -30,6 +30,7 @@ package net.runelite.client.plugins.friendnotes;
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -102,6 +103,7 @@ public class FriendNotesPlugin extends Plugin
 	/**
 	 * Get the friend note of a display name, or null if no friend note exists for it.
 	 */
+	@Nullable
 	private String getFriendNote(String friend)
 	{
 		return configManager.getConfiguration(CONFIG_GROUP, "note_" + friend);
@@ -111,7 +113,7 @@ public class FriendNotesPlugin extends Plugin
 	 * Migrate a friend note to a new display name, and remove the previous one.
 	 * If current name already has a note, or previous name had none, do nothing.
 	 */
-	private void checkNameChange(String currentDisplayName, String previousDisplayName)
+	private void migrateFriendNote(String currentDisplayName, String previousDisplayName)
 	{
 		String currentNote = getFriendNote(currentDisplayName);
 		if (currentNote == null)
@@ -129,7 +131,7 @@ public class FriendNotesPlugin extends Plugin
 	/**
 	 * Set the currently hovered display name, if a friend note exists for it.
 	 */
-	private void setCurrentFriend(String target)
+	private void setHoveredFriend(String target)
 	{
 		hoveredFriend = null;
 
@@ -155,7 +157,7 @@ public class FriendNotesPlugin extends Plugin
 		// look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
-			setCurrentFriend(event.getTarget());
+			setHoveredFriend(event.getTarget());
 
 			final MenuEntry addNote = new MenuEntry();
 			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
@@ -225,7 +227,7 @@ public class FriendNotesPlugin extends Plugin
 			Friend friend = (Friend) nameable;
 			String name = friend.getName();
 			String prevName = friend.getPrevName();
-			checkNameChange(name, prevName);
+			migrateFriendNote(name, prevName);
 		}
 	}
 
