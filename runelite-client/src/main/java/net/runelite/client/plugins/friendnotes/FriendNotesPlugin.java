@@ -122,9 +122,9 @@ public class FriendNotesPlugin extends Plugin
 			final String prevNote = getFriendNote(prevDisplayName);
 			if (prevNote != null)
 			{
+				log.debug("Update friend's username: '{}' -> '{}'", prevDisplayName, currentDisplayName);
 				setFriendNote(prevDisplayName, null);
 				setFriendNote(currentDisplayName, prevNote);
-				log.debug("Updating friends username: '{}' '{}'", currentDisplayName, prevDisplayName);
 			}
 		}
 	}
@@ -237,7 +237,7 @@ public class FriendNotesPlugin extends Plugin
 	public void onRemoveFriend(RemovedFriend event)
 	{
 		final String displayName = event.getName();
-		log.debug("Removed friend: '{}'", displayName);
+		log.debug("Remove friend: '{}'", displayName);
 		setFriendNote(displayName, null);
 	}
 }
