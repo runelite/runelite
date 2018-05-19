@@ -78,7 +78,7 @@ class LootPanel extends JPanel
 					// Create new entry
 					boolean shouldStack = item.isStackable() || de.getItem_amount() > 1;
 					AsyncBufferedImage icon = itemManager.getImage(de.getItem_id(), de.getItem_amount(), shouldStack);
-					LootRecord entry = new LootRecord(item.getName(), de.getItem_amount(), item.getId(), item.getPrice(), icon, item);
+					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItem_amount(), item.getPrice(), icon, item);
 					this.uniques.put(item.getName(), entry);
 				}
 				else
