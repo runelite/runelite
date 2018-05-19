@@ -51,8 +51,12 @@ class LootRecordPanel extends JPanel
 
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
+
 		JLabel item_name = new JLabel(this.record.getItem_name());
+		ColorLabel(item_name, this.record.getValue());
+
 		JLabel total = new JLabel(numberToString(this.record.getTotal()), SwingConstants.RIGHT);
+		ColorLabel(total, this.record.getTotal());
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -72,20 +76,32 @@ class LootRecordPanel extends JPanel
 	{
 		Float v = Float.valueOf(num);
 		String suffix = " gp";
-		// Over 10m
-		if(v >= 10000000)
+		if (v >= 10000000)
 		{
 			v = v / 1000000;
 			suffix = "M" + suffix;
 
 		}
-		// Over 100k
-		else if(v >= 100000)
+		else if (v >= 100000)
 		{
 			v = v / 1000;
 			suffix = "K" + suffix;
 		}
 
 		return (new DecimalFormat("#,###.#").format(v) + suffix);
+	}
+
+	void ColorLabel(JLabel label, Integer val)
+	{
+		Color labelColor = Color.yellow;
+		if (val >= 10000000)
+		{
+			labelColor = Color.green;
+		}
+		else if (val >= 100000)
+		{
+			labelColor = Color.white;
+		}
+		label.setForeground(labelColor);
 	}
 }
