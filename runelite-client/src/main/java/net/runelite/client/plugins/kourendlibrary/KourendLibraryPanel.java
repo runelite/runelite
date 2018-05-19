@@ -90,7 +90,6 @@ public class KourendLibraryPanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		JPanel books = new JPanel(new GridBagLayout());
-		books.setOpaque(false);
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
@@ -126,7 +125,6 @@ public class KourendLibraryPanel extends PluginPanel
 		});
 
 		JPanel header = new JPanel();
-		header.setOpaque(false);
 		header.setLayout(new BorderLayout());
 		header.setBorder(new CompoundBorder(
 			BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(58, 58, 58)),

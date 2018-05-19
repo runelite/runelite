@@ -71,7 +71,6 @@ class XpPanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		final JPanel layoutPanel = new JPanel();
-		layoutPanel.setOpaque(false);
 		layoutPanel.setLayout(new BorderLayout());
 		add(layoutPanel);
 
@@ -98,7 +97,7 @@ class XpPanel extends PluginPanel
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
 
 		final JPanel overallInfo = new JPanel();
-		overallInfo.setOpaque(false);
+		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new GridLayout(2, 1));
 		overallInfo.setBorder(new EmptyBorder(0, 10, 0, 0));
 
@@ -113,7 +112,6 @@ class XpPanel extends PluginPanel
 
 
 		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setOpaque(false);
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 		layoutPanel.add(overallPanel, BorderLayout.NORTH);

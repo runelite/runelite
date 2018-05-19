@@ -180,7 +180,6 @@ public class ConfigPanel extends PluginPanel
 				groupPanel.add(name, BorderLayout.CENTER);
 
 				final JPanel buttonPanel = new JPanel();
-				buttonPanel.setOpaque(false);
 				buttonPanel.setLayout(new GridLayout(1, 2));
 				groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
@@ -202,7 +201,6 @@ public class ConfigPanel extends PluginPanel
 		groupPanel.add(name, BorderLayout.CENTER);
 
 		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setOpaque(false);
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
@@ -225,7 +223,6 @@ public class ConfigPanel extends PluginPanel
 		final JPanel groupPanel = new JPanel();
 		groupPanel.setLayout(new BorderLayout(3, 0));
 		groupPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
-		groupPanel.setOpaque(false);
 		return groupPanel;
 	}
 
@@ -378,7 +375,6 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			checkbox.setOpaque(false);
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 
@@ -426,7 +422,6 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			JPanel item = new JPanel();
-			item.setOpaque(false);
 			item.setLayout(new BorderLayout());
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
@@ -436,7 +431,6 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == boolean.class)
 			{
 				JCheckBox checkbox = new JCheckBox();
-				checkbox.setOpaque(false);
 				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 				checkbox.addActionListener(ae -> changeConfiguration(config, checkbox, cd, cid));
@@ -515,7 +509,6 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == Dimension.class)
 			{
 				JPanel dimensionPanel = new JPanel();
-				dimensionPanel.setOpaque(false);
 				dimensionPanel.setLayout(new BorderLayout());
 
 				String str = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
