@@ -420,6 +420,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
+		// This won't interfere with swapBanker, as long as this check occurs later.
+		else if (config.swapCollectToBank() && option.equals("collect"))
+		{
+			swap("bank", option, target, true);
+		}
+		else if (config.swapCollectToBank() && option.equals("collect to inventory"))
+		{
+			swap("collect to bank", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(itemId);
