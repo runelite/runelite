@@ -28,8 +28,7 @@ public class PyramidPlunderPlugin extends Plugin
 	private InfoBoxManager infoBoxManager;
 	@Inject
 	private GameObjectQuery gameObjectQuery;
-	private boolean startingPlunder;
-	private boolean inPyramid;
+	private boolean plundering;
 	private Timer plunderTimer;
 	private SkillIconManager skillIconManager = new SkillIconManager();
 	private BufferedImage icon = skillIconManager.getSkillImage(Skill.THIEVING);
@@ -39,18 +38,21 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		if (event.getMenuOption().matches("Start-minigame"))
 		{
-			for (NPC list: client.getNpcs())
+			for (NPC NPClist: client.getNpcs())
 			{
-				if (list.getName().matches("Guardian mummy"))
+				if (NPClist.getName().matches("Guardian mummy"))
 				{
-					startingPlunder = true;
+					plundering = true;
 					break;
 				}
 			}
 		}
 		else
 		{
-			startingPlunder = false;
+			if (event.getMenuOption().matches("Leave Tomb") || event.getMenuOption().matches("Quick-leave"))
+			{
+				plundering = false;
+			}
 		}
 	}
 	@Subscribe
@@ -58,28 +60,18 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
-			if (startingPlunder)
+
+			if (plundering)
 			{
-				plunderTimer = new Timer(5, ChronoUnit.MINUTES, icon, this);
-				infoBoxManager.addInfoBox(plunderTimer);
-				startingPlunder = false;
+				if (!infoBoxManager.getInfoBoxes().contains(plunderTimer))
+				{
+					plunderTimer = new Timer(5, ChronoUnit.MINUTES, icon, this);
+					infoBoxManager.addInfoBox(plunderTimer);
+				}
 			}
 			else
 			{
-				if (infoBoxManager.getInfoBoxes().contains(plunderTimer))
-				{
-					for (GameObject list: gameObjectQuery.result(client))
-					{
-						if (list.getId() == 21280)
-						{
-							inPyramid = true;
-						}
-					}
-					if (!inPyramid)
-					{
-						infoBoxManager.removeInfoBox(plunderTimer);
-					}
-				}
+				infoBoxManager.removeInfoBox(plunderTimer);
 			}
 		}
 	}
