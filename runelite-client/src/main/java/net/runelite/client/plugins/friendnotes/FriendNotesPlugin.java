@@ -59,6 +59,7 @@ public class FriendNotesPlugin extends Plugin
 
 	private static final int CHARACTER_LIMIT = 128;
 
+	private static final String KEY_PREFIX = "note_";
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
@@ -92,11 +93,11 @@ public class FriendNotesPlugin extends Plugin
 	{
 		if (Strings.isNullOrEmpty(note))
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "note_" + displayName);
+			configManager.unsetConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName);
 		}
 		else
 		{
-			configManager.setConfiguration(CONFIG_GROUP, "note_" + displayName, note);
+			configManager.setConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName, note);
 		}
 	}
 
@@ -106,7 +107,7 @@ public class FriendNotesPlugin extends Plugin
 	@Nullable
 	private String getFriendNote(String displayName)
 	{
-		return configManager.getConfiguration(CONFIG_GROUP, "note_" + displayName);
+		return configManager.getConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName);
 	}
 
 	/**
@@ -115,10 +116,10 @@ public class FriendNotesPlugin extends Plugin
 	 */
 	private void migrateFriendNote(String currentDisplayName, String prevDisplayName)
 	{
-		String currentNote = getFriendNote(currentDisplayName);
+		final String currentNote = getFriendNote(currentDisplayName);
 		if (currentNote == null)
 		{
-			String prevNote = getFriendNote(prevDisplayName);
+			final String prevNote = getFriendNote(prevDisplayName);
 			if (prevNote != null)
 			{
 				setFriendNote(prevDisplayName, null);
@@ -137,7 +138,7 @@ public class FriendNotesPlugin extends Plugin
 
 		if (!Strings.isNullOrEmpty(displayName))
 		{
-			String note = getFriendNote(displayName);
+			final String note = getFriendNote(displayName);
 			if (note != null)
 			{
 				hoveredFriend = new HoveredFriend(displayName, note);
@@ -167,7 +168,7 @@ public class FriendNotesPlugin extends Plugin
 			addNote.setParam1(event.getActionParam1());
 
 			// Add menu entry
-			MenuEntry[] menuEntries = ObjectArrays.concat(client.getMenuEntries(), addNote);
+			final MenuEntry[] menuEntries = ObjectArrays.concat(client.getMenuEntries(), addNote);
 			client.setMenuEntries(menuEntries);
 		}
 		else if (hoveredFriend != null)
@@ -195,7 +196,7 @@ public class FriendNotesPlugin extends Plugin
 			{
 				event.consume();
 
-				String note = getFriendNote(sanitizedTarget);
+				final String note = getFriendNote(sanitizedTarget);
 
 				chatboxInputManager.openInputWindow(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget,
 					CHARACTER_LIMIT), Strings.nullToEmpty(note), CHARACTER_LIMIT, (content) ->
@@ -220,11 +221,11 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onNameableNameChange(NameableNameChanged event)
 	{
-		Nameable nameable = event.getNameable();
+		final Nameable nameable = event.getNameable();
 
 		if (nameable instanceof Friend)
 		{
-			Friend friend = (Friend) nameable;
+			final Friend friend = (Friend) nameable;
 			migrateFriendNote(friend.getName(), friend.getPrevName());
 		}
 	}
@@ -235,7 +236,7 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onRemoveFriend(RemovedFriend event)
 	{
-		String displayName = event.getName();
+		final String displayName = event.getName();
 		log.debug("Removed friend: '{}'", displayName);
 		setFriendNote(displayName, null);
 	}
