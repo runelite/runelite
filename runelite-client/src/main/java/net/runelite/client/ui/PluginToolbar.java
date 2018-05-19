@@ -42,7 +42,7 @@ public class PluginToolbar
 	private final TreeSet<NavigationButton> buttons = new TreeSet<>((a, b) ->
 		ComparisonChain.start()
 			.compare(a.getPriority(), b.getPriority())
-			.compare(a.getName(), b.getName())
+			.compare(a.getTooltip(), b.getTooltip())
 			.result());
 
 	@Inject
@@ -62,8 +62,6 @@ public class PluginToolbar
 		{
 			return;
 		}
-
-		button.setTooltip(button.getName());
 
 		if (buttons.add(button))
 		{
