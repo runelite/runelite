@@ -24,11 +24,17 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.MatteBorder;
 
 import lombok.Getter;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 @Getter
 class LootRecordPanel extends JPanel
@@ -39,35 +45,25 @@ class LootRecordPanel extends JPanel
 	{
 		this.record = record;
 
-		GroupLayout layout = new GroupLayout(this);
+		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
-
-		JPanel panel = new JPanel();
-
+		this.setBorder(new MatteBorder( 2, 2, 2, 2, Color.GRAY));
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
 		JLabel item_name = new JLabel(this.record.getItem_name());
-		JLabel amount = new JLabel(String.valueOf(this.record.getAmount()));
+		JLabel total = new JLabel(String.valueOf(this.record.getTotal()));
 
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
 
-
-		layout.setVerticalGroup(layout.createParallelGroup()
-				.addComponent(icon)
-				.addGroup(layout.createSequentialGroup()
-						.addComponent(item_name)
-						.addComponent(amount)
-				)
-		);
-
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addComponent(icon)
-				.addGap(8)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(item_name)
-						.addComponent(amount)
-				)
-		);
-
-		setComponentZOrder(icon, getComponentCount() - 1);
+		this.add(icon, c);
+		c.gridx++;
+		this.add(item_name, c);
+		c.gridx++;
+		this.add(total, c);
 	}
 }
