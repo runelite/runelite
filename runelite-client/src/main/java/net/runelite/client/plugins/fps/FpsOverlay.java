@@ -49,8 +49,8 @@ public class FpsOverlay extends Overlay
 {
 	private static final int MAX_FPS = 50;
 	private static final int FPS_SIZE = MAX_FPS + 1;
-	private static final int Y_OFFSET = 14;
-	private static final int VALUE_X_OFFSET = 15;
+	private static final int Y_OFFSET = 1;
+	private static final int VALUE_X_OFFSET = 1;
 	private static final String FPS_STRING = " FPS";
 
 	// Cache of FPS number strings from 00-50
@@ -111,9 +111,13 @@ public class FpsOverlay extends Overlay
 		final int fps = client.getFPS();
 		if (fps < FPS_SIZE)
 		{
+			final String text = fpsNums[fps] + FPS_STRING;
+			final int textWidth = graphics.getFontMetrics().stringWidth(text);
+			final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
+
 			final int width = (int) client.getRealDimensions().getWidth();
-			final Point point = new Point(width - VALUE_X_OFFSET - graphics.getFontMetrics().stringWidth(FPS_STRING), Y_OFFSET);
-			OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps] + FPS_STRING, getFpsValueColor());
+			final Point point = new Point(width - textWidth - VALUE_X_OFFSET, textHeight + Y_OFFSET);
+			OverlayUtil.renderTextLocation(graphics, point, text, getFpsValueColor());
 		}
 
 		return null;
