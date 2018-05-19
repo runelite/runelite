@@ -47,7 +47,7 @@ public class NavigationButton
 	/**
 	 * Tooltip to show when hovered.
 	 */
-	private String tooltip;
+	private final String tooltip;
 
 	/**
 	 * Button selection state
