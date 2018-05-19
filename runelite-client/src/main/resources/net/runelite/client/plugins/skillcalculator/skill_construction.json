@@ -836,6 +836,12 @@
     },
     {
       "level": 66,
+      "icon": 20649,
+      "name": "Teak Garden Bench",
+      "xp": 540
+    },
+    {
+      "level": 66,
       "icon": 8353,
       "name": "Crystal of Power",
       "xp": 890
