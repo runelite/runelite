@@ -41,6 +41,7 @@ class UIActionSlot extends JPanel
 	SkillDataEntry action;
 	private JShadowedLabel uiLabelActions;
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private final JPanel uiInfo;
 
 	boolean isAvailable = false;
 	boolean isSelected = false;
@@ -70,8 +71,7 @@ class UIActionSlot extends JPanel
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 		add(uiIcon, BorderLayout.LINE_START);
 
-		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
-		uiInfo.setOpaque(false);
+		uiInfo = new JPanel(new GridLayout(2, 1));
 
 		JShadowedLabel uiLabelName = new JShadowedLabel(action.name);
 		uiInfo.add(uiLabelName);
@@ -106,5 +106,7 @@ class UIActionSlot extends JPanel
 			this.setBackground(isAvailable ? Color.GREEN : Color.RED);
 		else
 			this.setBackground(isAvailable ? Color.GREEN.darker() : Color.RED.darker());
+
+		uiInfo.setBackground(getBackground());
 	}
 }

@@ -159,7 +159,6 @@ public class InfoPanel extends PluginPanel
 
 		JPanel actionsContainer = new JPanel();
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
-		actionsContainer.setOpaque(false);
 		actionsContainer.setLayout(new GridLayout(3, 1, 0, 10));
 
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
@@ -194,7 +193,7 @@ public class InfoPanel extends PluginPanel
 		container.add(iconLabel, BorderLayout.WEST);
 
 		JPanel textContainer = new JPanel();
-		textContainer.setOpaque(false);
+		textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		textContainer.setLayout(new GridLayout(2, 1));
 		textContainer.setBorder(new EmptyBorder(5, 10, 5, 10));
 
