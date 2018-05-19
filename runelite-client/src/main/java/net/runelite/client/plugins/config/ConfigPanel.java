@@ -45,6 +45,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -249,8 +250,12 @@ public class ConfigPanel extends PluginPanel
 
 		for (PluginCategory c: PluginCategory.values())
 		{
-			final JLabel categoryLabel = new JLabel(c.toString(), SwingConstants.CENTER);
-			categoryLabel.setFont(FontManager.getRunescapeBoldFont());
+			final JLabel categoryLabel = new JLabel(c.toString(), SwingConstants.LEFT);
+			categoryLabel.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createEmptyBorder(c == PluginCategory.COMBAT ? 8 : 18, 0, 6, 0),
+					BorderFactory.createMatteBorder(0, 0, 2, 0, ColorScheme.BRAND_ORANGE_TRANSPARENT)));
+			categoryLabel.setFont(FontManager.getRunescapeBoldFont().deriveFont(32f));
+			categoryLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			map.put(c, categoryLabel);
 		}
 
