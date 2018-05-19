@@ -54,11 +54,6 @@ class XpStateSingle
 		return toHourly(xpGained);
 	}
 
-	int getXpSec()
-	{
-		return getXpHr() / 3600;
-	}
-
 	int getActionsHr()
 	{
 		return toHourly(actions);
@@ -71,12 +66,21 @@ class XpStateSingle
 			return 0;
 		}
 
+		return (int) ((1.0 / (getTimeElapsedInSeconds() / 3600.0)) * value);
+	}
+
+	private long getTimeElapsedInSeconds()
+	{
+		if (skillTimeStart == null)
+		{
+			return 0;
+		}
+
 		// If the skill started just now, we can divide by near zero, this results in odd behavior.
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
 		// but it isn't ridiculous like saying 2 billion XP per hour.
-		long timeElapsedInSeconds = Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
-		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
+		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
 	}
 
 	int getXpRemaining()
@@ -120,10 +124,14 @@ class XpStateSingle
 
 	String getTimeTillLevel()
 	{
-		if (getXpSec() > 0)
+		float xpPerSecond = (float)xpGained / (float)getTimeElapsedInSeconds();
+
+		if (xpPerSecond > 0)
 		{
-			return LocalTime.MIN.plusSeconds( getXpRemaining() / getXpSec() ).toString();
+			float remainingSeconds = getXpRemaining() / xpPerSecond;
+			return LocalTime.MIN.plusSeconds((long)remainingSeconds).toString();
 		}
+
 		return "\u221e";
 	}
 
