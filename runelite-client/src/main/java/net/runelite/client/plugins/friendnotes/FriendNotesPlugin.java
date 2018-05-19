@@ -90,13 +90,13 @@ public class FriendNotesPlugin extends Plugin
 	 */
 	private void setFriendNote(String displayName, String note)
 	{
-		if (!Strings.isNullOrEmpty(note))
+		if (Strings.isNullOrEmpty(note))
 		{
-			configManager.setConfiguration(CONFIG_GROUP, "note_" + displayName, note);
+			configManager.unsetConfiguration(CONFIG_GROUP, "note_" + displayName);
 		}
 		else
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "note_" + displayName);
+			configManager.setConfiguration(CONFIG_GROUP, "note_" + displayName, note);
 		}
 	}
 
