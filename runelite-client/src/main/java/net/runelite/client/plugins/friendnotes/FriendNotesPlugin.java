@@ -88,15 +88,15 @@ public class FriendNotesPlugin extends Plugin
 	/**
 	 * Set a friend note, or unset by passing a null/empty note.
 	 */
-	private void setFriendNote(String friend, String note)
+	private void setFriendNote(String displayName, String note)
 	{
 		if (!Strings.isNullOrEmpty(note))
 		{
-			configManager.setConfiguration(CONFIG_GROUP, "note_" + friend, note);
+			configManager.setConfiguration(CONFIG_GROUP, "note_" + displayName, note);
 		}
 		else
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "note_" + friend);
+			configManager.unsetConfiguration(CONFIG_GROUP, "note_" + displayName);
 		}
 	}
 
@@ -104,26 +104,26 @@ public class FriendNotesPlugin extends Plugin
 	 * Get the friend note of a display name, or null if no friend note exists for it.
 	 */
 	@Nullable
-	private String getFriendNote(String friend)
+	private String getFriendNote(String displayName)
 	{
-		return configManager.getConfiguration(CONFIG_GROUP, "note_" + friend);
+		return configManager.getConfiguration(CONFIG_GROUP, "note_" + displayName);
 	}
 
 	/**
 	 * Migrate a friend note to a new display name, and remove the previous one.
 	 * If current name already has a note, or previous name had none, do nothing.
 	 */
-	private void migrateFriendNote(String currentDisplayName, String previousDisplayName)
+	private void migrateFriendNote(String currentDisplayName, String prevDisplayName)
 	{
 		String currentNote = getFriendNote(currentDisplayName);
 		if (currentNote == null)
 		{
-			String prevNote = getFriendNote(previousDisplayName);
+			String prevNote = getFriendNote(prevDisplayName);
 			if (prevNote != null)
 			{
-				setFriendNote(previousDisplayName, null);
+				setFriendNote(prevDisplayName, null);
 				setFriendNote(currentDisplayName, prevNote);
-				log.debug("Updating friends username: '{}' '{}'", currentDisplayName, previousDisplayName);
+				log.debug("Updating friends username: '{}' '{}'", currentDisplayName, prevDisplayName);
 			}
 		}
 	}
@@ -218,16 +218,14 @@ public class FriendNotesPlugin extends Plugin
 	 * Migrate a friend's note if they change display names.
 	 */
 	@Subscribe
-	public void onNameableNameChange(NameableNameChanged nameableNameChanged)
+	public void onNameableNameChange(NameableNameChanged event)
 	{
-		Nameable nameable = nameableNameChanged.getNameable();
+		Nameable nameable = event.getNameable();
 
 		if (nameable instanceof Friend)
 		{
 			Friend friend = (Friend) nameable;
-			String name = friend.getName();
-			String prevName = friend.getPrevName();
-			migrateFriendNote(name, prevName);
+			migrateFriendNote(friend.getName(), friend.getPrevName());
 		}
 	}
 
@@ -235,10 +233,10 @@ public class FriendNotesPlugin extends Plugin
 	 * Delete a friend's note if they are removed.
 	 */
 	@Subscribe
-	public void onRemoveFriend(RemovedFriend removedFriend)
+	public void onRemoveFriend(RemovedFriend event)
 	{
-		String name = removedFriend.getName();
-		log.debug("Removed friend: '{}'", name);
-		setFriendNote(name, null);
+		String displayName = event.getName();
+		log.debug("Removed friend: '{}'", displayName);
+		setFriendNote(displayName, null);
 	}
 }
