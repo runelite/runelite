@@ -146,9 +146,6 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Insert "Add Note" or "Edit Note" menu option into friend list menus.
-	 */
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
@@ -160,6 +157,7 @@ public class FriendNotesPlugin extends Plugin
 			final String sanitizedTarget = Text.removeTags(event.getTarget());
 			setHoveredFriend(sanitizedTarget);
 
+			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
 			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
 			addNote.setType(MenuAction.RUNELITE.getId());
@@ -177,9 +175,6 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Respond to "Add Note" and "Edit Note" menu options by opening the chatbox dialog.
-	 */
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
@@ -192,12 +187,14 @@ public class FriendNotesPlugin extends Plugin
 
 			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
 
+			// Handle clicks on "Add Note" or "Edit Note"
 			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
 			{
 				event.consume();
 
 				final String note = getFriendNote(sanitizedTarget);
 
+				// Open the chatbox input dialog
 				chatboxInputManager.openInputWindow(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget,
 					CHARACTER_LIMIT), Strings.nullToEmpty(note), CHARACTER_LIMIT, (content) ->
 				{
@@ -215,9 +212,6 @@ public class FriendNotesPlugin extends Plugin
 
 	}
 
-	/**
-	 * Migrate a friend's note if they change display names.
-	 */
 	@Subscribe
 	public void onNameableNameChange(NameableNameChanged event)
 	{
@@ -225,17 +219,16 @@ public class FriendNotesPlugin extends Plugin
 
 		if (nameable instanceof Friend)
 		{
+			// Migrate a friend's note to their new display name
 			final Friend friend = (Friend) nameable;
 			migrateFriendNote(friend.getName(), friend.getPrevName());
 		}
 	}
 
-	/**
-	 * Delete a friend's note if they are removed.
-	 */
 	@Subscribe
 	public void onRemoveFriend(RemovedFriend event)
 	{
+		// Delete a friend's note if they are removed
 		final String displayName = event.getName();
 		log.debug("Remove friend: '{}'", displayName);
 		setFriendNote(displayName, null);
