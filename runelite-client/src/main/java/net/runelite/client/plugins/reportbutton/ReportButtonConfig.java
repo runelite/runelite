@@ -46,7 +46,7 @@ public interface ReportButtonConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "otherCour",
+			keyName = "otherClock",
 			name = "24-hour clock",
 			description = "Adds a twenty-four hour clock on report button"
 	)
