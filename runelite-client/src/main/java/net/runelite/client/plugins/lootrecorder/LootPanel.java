@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
