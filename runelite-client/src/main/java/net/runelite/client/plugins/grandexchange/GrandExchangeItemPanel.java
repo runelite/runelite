@@ -94,7 +94,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Item details panel
 		JPanel rightPanel = new JPanel(new GridLayout(3, 1));
-		rightPanel.setOpaque(false);
+		rightPanel.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		// Item name
 		JLabel itemName = new JLabel();

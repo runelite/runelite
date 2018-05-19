@@ -216,7 +216,6 @@ public class HiscorePanel extends PluginPanel
 
 		/* The container for all the endpoint selectors */
 		JPanel endpointPanel = new JPanel();
-		endpointPanel.setOpaque(false);
 		endpointPanel.setLayout(new GridLayout(1, 5, 7, 1));
 
 		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
@@ -281,7 +280,6 @@ public class HiscorePanel extends PluginPanel
 		for (HiscoreSkill skill : SKILLS)
 		{
 			JPanel panel = makeSkillPanel(skill);
-			panel.setOpaque(false);
 			statsPanel.add(panel);
 		}
 
@@ -354,7 +352,7 @@ public class HiscorePanel extends PluginPanel
 		label.setIconTextGap(totalLabel ? 10 : 4);
 
 		JPanel skillPanel = new JPanel();
-		skillPanel.setOpaque(false);
+		skillPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		skillPanel.setBorder(new EmptyBorder(2, 0, 2, 0));
 		skillLabels.add(label);
 		skillPanel.add(skillLabels.get(skillLabels.size() - 1));

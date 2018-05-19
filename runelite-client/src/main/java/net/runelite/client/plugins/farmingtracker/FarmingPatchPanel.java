@@ -52,7 +52,6 @@ class FarmingPatchPanel extends JPanel
 		this.patch = patch;
 
 		setLayout(new BorderLayout());
-		setOpaque(false);
 		setBorder(new EmptyBorder(7, 0, 0, 0));
 
 		JPanel topContainer = new JPanel();
@@ -63,7 +62,7 @@ class FarmingPatchPanel extends JPanel
 		icon.setMinimumSize(new Dimension(36, 32));
 
 		JPanel infoPanel = new JPanel();
-		infoPanel.setOpaque(false);
+		infoPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		infoPanel.setLayout(new GridLayout(2, 1));
 		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
