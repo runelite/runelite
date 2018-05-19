@@ -25,27 +25,20 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
@@ -64,9 +57,6 @@ public class LRP extends PluginPanel
 	private final LootRecorderConfig lootRecorderConfig;
 
 	private JTabbedPane tabsPanel = new JTabbedPane();
-	private ButtonGroup actionButtonGroup = new ButtonGroup();
-
-	private List<JToggleButton> actionButtons;
 
 	@Inject
 	LRP(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
@@ -76,11 +66,8 @@ public class LRP extends PluginPanel
 		this.lootRecorderPlugin = lootRecorderPlugin;
 		this.lootRecorderConfig = lootRecorderConfig;
 
-
-		// Set Frame Layout
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(layout);
-
 
 		createPanel(this);
 	}
@@ -90,20 +77,26 @@ public class LRP extends PluginPanel
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			// Create a Container Panel for this tab
+			// Container Panel for this tab
 			JPanel tabPanel = new JPanel();
 			tabPanel.setLayout(new BoxLayout(tabPanel, BoxLayout.Y_AXIS));
 			tabPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
 
-			// Create a Container to hold all Buttons
+			// Button Container
 			JPanel buttons = new JPanel();
 			buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 			buttons.setBorder(new EmptyBorder(0, 0, 4, 0));
 
-			// Create a Container to hold all Loot Data
-			JPanel lootPanel = new JPanel();
-			lootPanel.setLayout(new BoxLayout(lootPanel, BoxLayout.Y_AXIS));
-			lootPanel.setBorder(new MatteBorder(0, 2, 0, 2, Color.GRAY));
+			// Loot Panel
+			LootPanel lootPanel = createLootPanel(tab);
+
+			// Scrolling Ability for lootPanel
+			JPanel wrapped = new JPanel(new BorderLayout());
+			wrapped.add(lootPanel, BorderLayout.NORTH);
+			JScrollPane scroller = new JScrollPane(lootPanel);
+			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scroller.getVerticalScrollBar().setUnitIncrement(16);
+
 
 			// Refresh Button
 			JButton refresh = new JButton("Refresh Data");
@@ -113,24 +106,13 @@ public class LRP extends PluginPanel
 			});
 			buttons.add(refresh);
 
-			// Add buttons to tabPanel
+			// Add components to Tab Panel
 			tabPanel.add(buttons);
-
-			// create Loot Panel for this tab
-			createLootPanel(lootPanel, tab);
-
-			// Scrolling Ability for lootPanel
-			JPanel wrapped = new JPanel(new BorderLayout());
-			wrapped.add(lootPanel, BorderLayout.NORTH);
-			JScrollPane scroller = new JScrollPane(lootPanel);
-			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			scroller.getVerticalScrollBar().setUnitIncrement(16);
-
-			// Add loot panel with scroller to the panel
 			tabPanel.add(scroller);
 
 			// Add new tab to panel
 			tabsPanel.addTab(null, null, tabPanel, tab.getName());
+
 			// Add Tab Icon
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
 			int idx = tabsPanel.getTabCount() - 1;
@@ -140,10 +122,11 @@ public class LRP extends PluginPanel
 			};
 			icon.onChanged(resize);
 			resize.run();
+
 			log.info("Created " + String.valueOf(tab) + " tab");
 		}
 
-		// Refresh Button
+		// Refresh Panel Button
 		JButton refresh = new JButton("Refresh Panel");
 		refresh.addActionListener(e ->
 		{
@@ -156,26 +139,14 @@ public class LRP extends PluginPanel
 		log.info("Panel Created");
 	}
 
-	void createLootPanel(JPanel lootPanel, Tab tab)
+	LootPanel createLootPanel(Tab tab)
 	{
-		// Creates and Appends necessary data to tabPanel
+		// Grab Tab Data
 		ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
-		log.info("Got drops for: ");
-		log.info(tab.getName());
-		log.info(String.valueOf(data));
-
-		// Loop over each LootEntry
-		data.forEach(d ->
-				{
-					ArrayList<DropEntry> drops = d.getDrops();
-					drops.forEach(dr ->
-					{
-						ItemComposition item = itemManager.getItemComposition(dr.getItem_id());
-						JLabel label = new JLabel(item.getName());
-						lootPanel.add(label);
-					});
-				}
-		);
+		// Create Loot Panel
+		LootPanel lootPanel = new LootPanel(data, itemManager);
+		// Return Panel
+		return lootPanel;
 	}
 
 	void refreshPanel(LRP panel)
@@ -193,13 +164,12 @@ public class LRP extends PluginPanel
 		log.info("Refreshed Panel");
 	}
 
-	void refreshLootPanel(JPanel lootPanel, Tab tab)
+	void refreshLootPanel(LootPanel lootPanel, Tab tab)
 	{
 		// Refresh data for necessary tab
 		lootRecorderPlugin.loadTabData(tab.getName());
 		// Recreate the loot panel
-		lootPanel.removeAll();
-		createLootPanel(lootPanel, tab);
+		lootPanel.refreshPanel();
 		// Ensure changes are applied
 		this.revalidate();
 		this.repaint();
