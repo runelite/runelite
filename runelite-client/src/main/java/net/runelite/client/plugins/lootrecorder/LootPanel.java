@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +52,7 @@ class LootPanel extends JPanel
 		this.uniques = new HashMap<>();
 		this.itemManager = itemManager;
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new GridBagLayout());
 		setBorder(new MatteBorder(0, 2, 0, 2, Color.GRAY));
 
 		createUniques();
@@ -91,11 +93,18 @@ class LootPanel extends JPanel
 
 	void createPanel(LootPanel panel)
 	{
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+
 		// Loop over each unique item and create a LootRecordPanel
 		this.uniques.forEach((lr, item) ->
 		{
 			LootRecordPanel p = new LootRecordPanel(item);
-			panel.add(p);
+			panel.add(p, c);
+			c.gridy++;
 		});
 	}
 

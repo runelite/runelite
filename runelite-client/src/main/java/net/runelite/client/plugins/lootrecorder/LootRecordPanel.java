@@ -47,18 +47,18 @@ class LootRecordPanel extends JPanel
 
 		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
-		this.setBorder(new MatteBorder( 2, 2, 2, 2, Color.GRAY));
+		this.setBorder(new MatteBorder( 0, 0, 1, 0, Color.GRAY));
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
 		JLabel item_name = new JLabel(this.record.getItem_name());
 		JLabel total = new JLabel(String.valueOf(this.record.getTotal()));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.NORTH;
+		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
+		c.ipady = 20;
 
 		this.add(icon, c);
 		c.gridx++;
