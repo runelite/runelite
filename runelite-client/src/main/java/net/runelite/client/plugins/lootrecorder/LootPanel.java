@@ -30,8 +30,8 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 import lombok.Getter;
@@ -53,7 +53,7 @@ class LootPanel extends JPanel
 		this.itemManager = itemManager;
 
 		setLayout(new GridBagLayout());
-		setBorder(new MatteBorder(0, 2, 0, 2, Color.GRAY));
+		setBorder(new EmptyBorder(0, 2, 0, 2));
 
 		createUniques();
 		createPanel(this);

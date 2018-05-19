@@ -93,7 +93,7 @@ public class LRP extends PluginPanel
 			// Scrolling Ability for lootPanel
 			JPanel wrapped = new JPanel(new BorderLayout());
 			wrapped.add(lootPanel, BorderLayout.NORTH);
-			JScrollPane scroller = new JScrollPane(lootPanel);
+			JScrollPane scroller = new JScrollPane(wrapped);
 			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scroller.getVerticalScrollBar().setUnitIncrement(16);
 

@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 
 import lombok.Getter;
@@ -51,7 +50,7 @@ class LootRecordPanel extends JPanel
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
 		JLabel item_name = new JLabel(this.record.getItem_name());
-		JLabel total = new JLabel(String.valueOf(this.record.getTotal()));
+		JLabel total = new JLabel(String.valueOf(this.record.getTotal()), SwingConstants.RIGHT);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
