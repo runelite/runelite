@@ -46,7 +46,7 @@ import net.runelite.client.ui.PluginPanel;
 
 
 @Slf4j
-public class LRP extends PluginPanel
+public class LootRecorderPanel extends PluginPanel
 {
 	@Inject
 	@Nullable
@@ -59,7 +59,7 @@ public class LRP extends PluginPanel
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
 	@Inject
-	LRP(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
+	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
 	{
 		super(false);
 		this.itemManager = itemManager;
@@ -72,7 +72,7 @@ public class LRP extends PluginPanel
 		createPanel(this);
 	}
 
-	void createPanel(LRP panel)
+	void createPanel(LootRecorderPanel panel)
 	{
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
@@ -149,7 +149,7 @@ public class LRP extends PluginPanel
 		return lootPanel;
 	}
 
-	void refreshPanel(LRP panel)
+	void refreshPanel(LootRecorderPanel panel)
 	{
 		// Refresh Log Data
 		lootRecorderPlugin.loadAllData();

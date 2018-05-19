@@ -100,7 +100,7 @@ public class LootRecorderPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	private LRP panel;
+	private LootRecorderPanel panel;
 
 	private NavigationButton navButton;
 
@@ -127,7 +127,7 @@ public class LootRecorderPlugin extends Plugin
 	// Separated from startUp for the panel toggling
 	private void createPanel()
 	{
-		panel = new LRP(itemManager, this, lootRecorderConfig);
+		panel = new LootRecorderPanel(itemManager, this, lootRecorderConfig);
 
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
