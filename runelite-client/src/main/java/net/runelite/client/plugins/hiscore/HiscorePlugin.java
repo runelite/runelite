@@ -102,7 +102,7 @@ public class HiscorePlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
-			.name("Hiscore")
+			.tooltip("Hiscore")
 			.icon(icon)
 			.priority(5)
 			.panel(hiscorePanel)
