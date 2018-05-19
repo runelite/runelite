@@ -35,6 +35,17 @@ import net.runelite.api.Constants;
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(
+		keyName = "showUsernameInTitle",
+		name = "Show username in title",
+		description = "Show the last account you logged onto in the window title",
+		position = 9
+	)
+	default UsernameTitlePosition showUsernameInTitle()
+	{
+		return UsernameTitlePosition.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",
 		description = "The game will resize to this resolution upon starting the client",

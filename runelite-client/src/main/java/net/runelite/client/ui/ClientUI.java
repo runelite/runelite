@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
@@ -39,6 +40,7 @@ import java.awt.Rectangle;
 import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -56,8 +58,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
@@ -138,6 +142,9 @@ public class ClientUI
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 
+	/** The player's username on the previous GameTick. */
+	private String usernameLastTick;
+
 	@Inject
 	private ConfigManager configManager;
 
@@ -172,6 +179,11 @@ public class ClientUI
 				{
 					frame.setAlwaysOnTop(config.gameAlwaysOnTop());
 				}
+			}
+
+			if (event.getKey().equals("showUsernameInTitle"))
+			{
+				updateWindowTitle(getUsername());
 			}
 
 			if (event.getKey().equals("lockWindowSize"))
@@ -222,6 +234,17 @@ public class ClientUI
 				frame.pack();
 			}
 		});
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		final String username = getUsername();
+		if (!Objects.equals(username, usernameLastTick))
+		{
+			// Update title if username has changed since the previous GameTick.
+			updateWindowTitle(username);
+		}
 	}
 
 	@Subscribe
@@ -350,8 +373,7 @@ public class ClientUI
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
-				() -> client != null
-					&& client instanceof Client
+				() -> client instanceof Client
 					&& ((Client) client).getGameState() != GameState.LOGIN_SCREEN);
 
 			container = new JPanel();
@@ -733,5 +755,52 @@ public class ClientUI
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
+	}
+
+	/**
+	 * @return The username of the current LocalPlayer.
+	 */
+	@Nullable
+	private String getUsername()
+	{
+		final Player player = ((Client) client).getLocalPlayer();
+		if (player == null)
+		{
+			return null;
+		}
+		return player.getName();
+	}
+
+	/**
+	 * Updates the window title based on config settings.
+	 */
+	private void updateWindowTitle(final String username)
+	{
+		final String titleBase = properties.getTitle(); // eg. "RuneLite"
+
+		if (Strings.isNullOrEmpty(username))
+		{
+			// Reset the title if username is ever null or empty.
+			frame.setTitle(titleBase);
+		}
+		else
+		{
+			switch (config.showUsernameInTitle())
+			{
+				default: // fallthrough
+				case OFF:
+					frame.setTitle(titleBase);
+					break;
+				case PREFIX:
+					frame.setTitle(username + " - " + titleBase);
+					break;
+				case SUFFIX:
+					frame.setTitle(titleBase + " - " + username);
+					break;
+			}
+		}
+
+		// Remember username so this method can be skipped when necessary.
+		usernameLastTick = username;
 	}
 }
