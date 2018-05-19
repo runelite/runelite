@@ -67,10 +67,22 @@
       "xp": 24
     },
     {
+      "level": 17,
+      "icon": 11238,
+      "name": "Baby Impling",
+      "xp": 18
+    },
+    {
       "level": 19,
       "icon": 9969,
       "name": "Tropical Wagtail",
       "xp": 95
+    },
+    {
+      "level": 22,
+      "icon": 11240,
+      "name": "Young Impling",
+      "xp": 20
     },
     {
       "level": 23,
@@ -103,6 +115,12 @@
       "xp": 144
     },
     {
+      "level": 28,
+      "icon": 11242,
+      "name": "Gourmet Impling",
+      "xp": 22
+    },
+    {
       "level": 29,
       "icon": 10149,
       "name": "Swamp Lizard",
@@ -133,6 +151,12 @@
       "xp": 44
     },
     {
+      "level": 36,
+      "icon": 11244,
+      "name": "Earth Impling",
+      "xp": 25
+    },
+    {
       "level": 37,
       "icon": 9957,
       "name": "Prickly Kebbit",
@@ -143,6 +167,12 @@
       "icon": 10051,
       "name": "Horned Graahk",
       "xp": 240
+    },
+    {
+      "level": 42,
+      "icon": 11246,
+      "name": "Essence Impling",
+      "xp": 27
     },
     {
       "level": 43,
@@ -181,6 +211,12 @@
       "xp": 960
     },
     {
+      "level": 50,
+      "icon": 11248,
+      "name": "Eclectic Impling",
+      "xp": 32
+    },
+    {
       "level": 51,
       "icon": 9959,
       "name": "Sabre-toothed Kebbit",
@@ -203,6 +239,12 @@
       "icon": 9963,
       "name": "Dark Kebbit",
       "xp": 132
+    },
+    {
+      "level": 58,
+      "icon": 11250,
+      "name": "Nature Impling",
+      "xp": 34
     },
     {
       "level": 59,
@@ -229,6 +271,18 @@
       "xp": 265
     },
     {
+      "level": 65,
+      "icon": 11252,
+      "name": "Magpie Impling",
+      "xp": 44
+    },
+    {
+      "level": 65,
+      "icon": 11252,
+      "name": "Magpie Impling (Gielinor)",
+      "xp": 216
+    },
+    {
       "level": 67,
       "icon": 10148,
       "name": "Black Salamander",
@@ -253,10 +307,40 @@
       "xp": 1140
     },
     {
+      "level": 74,
+      "icon": 11254,
+      "name": "Ninja Impling",
+      "xp": 52
+    },
+    {
+      "level": 74,
+      "icon": 11254,
+      "name": "Ninja Impling (Gielinor)",
+      "xp": 240
+    },
+    {
+      "level": 83,
+      "icon": 11256,
+      "name": "Dragon Impling",
+      "xp": 65
+    },
+    {
+      "level": 83,
+      "icon": 11256,
+      "name": "Dragon Impling (Gielinor)",
+      "xp": 300
+    },
+    {
       "level": 89,
       "icon": 22204,
       "name": "Redwood Bird House",
       "xp": 1200
+    },
+    {
+      "level": 89,
+      "icon": 19732,
+      "name": "Lucky Impling",
+      "xp": 380
     }
   ]
 }
