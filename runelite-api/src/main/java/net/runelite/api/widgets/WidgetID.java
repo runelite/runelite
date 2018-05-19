@@ -215,14 +215,43 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int CLAN_CHAT_TAB = 31;
+		static final int FRIENDS_TAB = 32;
+		static final int IGNORES_TAB = 33;
+		static final int LOGOUT_TAB = 34;
+		static final int OPTIONS_TAB = 35;
+		static final int EMOTES_TAB = 36;
+		static final int MUSIC_TAB = 37;
+		static final int CLAN_CHAT_ICON = 38;
+		static final int FRIENDS_ICON = 39;
+		static final int IGNORES_ICON = 40;
+		static final int LOGOUT_ICON = 41;
+		static final int OPTIONS_ICON = 42;
+		static final int EMOTES_ICON = 43;
+		static final int MUSIC_ICON = 44;
+		static final int COMBAT_TAB = 48;
+		static final int STATS_TAB = 49;
+		static final int QUESTS_TAB = 50;
 		static final int INVENTORY_TAB = 51;
+		static final int EQUIPMENT_TAB = 52;
 		static final int PRAYER_TAB = 53;
+		static final int MAGIC_TAB = 54;
+		static final int COMBAT_ICON = 55;
+		static final int STATS_ICON = 56;
+		static final int QUESTS_ICON = 57;
+		static final int INVENTORY_ICON = 58;
+		static final int EQUIPMENT_ICON = 59;
+		static final int PRAYER_ICON = 60;
+		static final int MAGIC_ICON = 61;
 	}
 
 	static class ResizableViewport
 	{
+		static final int QUESTS_TAB = 53;
 		static final int INVENTORY_TAB = 54;
 		static final int PRAYER_TAB = 56;
+		static final int COMBAT_ICON = 58;
+		static final int MAGIC_ICON = 64;
 	}
 
 	static class ResizableViewportBottomLine
