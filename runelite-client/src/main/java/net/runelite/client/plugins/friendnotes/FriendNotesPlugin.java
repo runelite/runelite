@@ -84,6 +84,9 @@ public class FriendNotesPlugin extends Plugin
 		return overlay;
 	}
 
+	/**
+	 * Set a friend note, or unset by passing a null/empty note.
+	 */
 	private void setFriendNote(String friend, String note)
 	{
 		if (!Strings.isNullOrEmpty(note))
@@ -96,11 +99,18 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Get the friend note of a display name, or null if no friend note exists for it.
+	 */
 	private String getFriendNote(String friend)
 	{
 		return configManager.getConfiguration(CONFIG_GROUP, "note_" + friend);
 	}
 
+	/**
+	 * Migrate a friend note to a new display name, and remove the previous one.
+	 * If current name already has a note, or previous name had none, do nothing.
+	 */
 	private void checkNameChange(String currentDisplayName, String previousDisplayName)
 	{
 		String currentNote = getFriendNote(currentDisplayName);
@@ -116,6 +126,9 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Set the currently hovered display name, if a friend note exists for it.
+	 */
 	private void setCurrentFriend(String target)
 	{
 		hoveredFriend = null;
@@ -131,6 +144,9 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Insert "Add Note" or "Edit Note" menu option into friend list menus.
+	 */
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
@@ -158,6 +174,9 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Respond to "Add Note" and "Edit Note" menu options by opening the chatbox dialog.
+	 */
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
@@ -193,6 +212,9 @@ public class FriendNotesPlugin extends Plugin
 
 	}
 
+	/**
+	 * Migrate a friend's note if they change display names.
+	 */
 	@Subscribe
 	public void onNameableNameChange(NameableNameChanged nameableNameChanged)
 	{
@@ -207,6 +229,9 @@ public class FriendNotesPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Delete a friend's note if they are removed.
+	 */
 	@Subscribe
 	public void onRemoveFriend(RemovedFriend removedFriend)
 	{

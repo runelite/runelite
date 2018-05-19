@@ -49,6 +49,9 @@ class FriendNoteOverlay extends Overlay
 		this.tooltipManager = tooltipManager;
 	}
 
+	/**
+	 * Add a friend note tooltip to a hovered friend list entry, if note exists.
+	 */
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
