@@ -25,12 +25,14 @@
 package net.runelite.client.util;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -40,6 +42,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.LookupOp;
+import java.awt.image.LookupTable;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -59,6 +63,7 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -77,7 +82,12 @@ public class SwingUtil
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		ToolTipManager.sharedInstance().setInitialDelay(300);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+		UIManager.put("Button.foreground", Color.WHITE);
+		UIManager.put("MenuItem.foreground", Color.WHITE);
+		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
@@ -86,6 +96,48 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
+	}
+
+	/**
+	 * Offsets an image in the grayscale (darkens/brightens) by an offset
+	 */
+	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
+	{
+		int numComponents = image.getColorModel().getNumComponents();
+		int index = numComponents - 1;
+
+		LookupTable lookup = new LookupTable(0, numComponents)
+		{
+			@Override
+			public int[] lookupPixel(int[] src, int[] dest)
+			{
+				if (dest[index] != 0)
+				{
+					dest[index] = dest[index] + offset;
+					if (dest[index] < 0)
+					{
+						dest[index] = 0;
+					}
+					else if (dest[index] > 255)
+					{
+						dest[index] = 255;
+					}
+				}
+
+				return dest;
+			}
+		};
+
+		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
+		return op.filter(image, null);
+	}
+
+	/**
+	 * Converts a given color to it's hexidecimal equivalent.
+	 */
+	public static String toHexColor(Color color)
+	{
+		return "#" + Integer.toHexString(color.getRGB()).substring(2);
 	}
 
 	/**
@@ -210,7 +262,7 @@ public class SwingUtil
 						result = JOptionPane.showConfirmDialog(
 							frame,
 							"Are you sure you want to exit?", "Exit",
-							JOptionPane .OK_CANCEL_OPTION,
+							JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
 					}
 				}
@@ -258,6 +310,7 @@ public class SwingUtil
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
+		button.setMaximumSize(new Dimension(30, 30));
 		button.setName(navigationButton.getName());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
