@@ -25,24 +25,26 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Color;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
+import javax.swing.border.MatteBorder;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
@@ -50,7 +52,7 @@ import net.runelite.client.ui.PluginPanel;
 
 
 @Slf4j
-public class LootRecorderPanel extends PluginPanel
+public class LRP extends PluginPanel
 {
 	@Inject
 	@Nullable
@@ -61,50 +63,69 @@ public class LootRecorderPanel extends PluginPanel
 	private final LootRecorderConfig lootRecorderConfig;
 
 	private JTabbedPane tabsPanel = new JTabbedPane();
-	private JPanel lootPanels = new JPanel();
 	private ButtonGroup actionButtonGroup = new ButtonGroup();
 
 	private List<JToggleButton> actionButtons;
 
 	@Inject
-	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
+	LRP(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
 	{
 		super();
 		this.itemManager = itemManager;
 		this.lootRecorderPlugin = lootRecorderPlugin;
 		this.lootRecorderConfig = lootRecorderConfig;
 
-		GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
 
-		JTabbedPane tabsPanel = new JTabbedPane();
+		// Set Frame Layout
+		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		this.setLayout(layout);
+
+
+		createPanel(this);
+	}
+
+	void createPanel(LRP panel)
+	{
+		// Create Container Panel for Loot Entries
+		JPanel lootPanels = new JPanel();
+		lootPanels.setLayout(new BoxLayout(lootPanels, BoxLayout.Y_AXIS));
+		lootPanels.setBorder(new MatteBorder(5, 5, 5, 5, Color.black));
+
+
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.BOTH;
-			c.anchor = GridBagConstraints.NORTH;
-			c.weightx = 1;
-			c.gridx = 0;
-			c.gridy = 0;
+			// Create a Panel to hold all Data for this Panel
+			JPanel tabPanel = new JPanel();
+			tabPanel.setLayout(new BoxLayout(tabPanel, BoxLayout.Y_AXIS));
+			tabPanel.setBorder(new MatteBorder(2, 2, 2, 2, Color.pink));
 
-			// Create the Entries for this tab
-			ArrayList<LootEntry> data = this.lootRecorderPlugin.getData(tab.getName());
+			// Creates and Appends necessary data to tabPanel
+			ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
 			log.info("Got drops for: ");
 			log.info(tab.getName());
 			log.info(String.valueOf(data));
-			LootRecorderSubPanel itemsPanel = new LootRecorderSubPanel(data, itemManager);
 
-			tabsPanel.add(itemsPanel, c);
-			lootPanels.add(itemsPanel, c);
-			c.gridy++;
+			// Loop over each LootEntry
+			data.forEach(d ->
+					{
+						ArrayList<DropEntry> drops = d.getDrops();
+						drops.forEach(dr ->
+						{
+							ItemComposition item = itemManager.getItemComposition(dr.getItem_id());
+							JLabel label = new JLabel(item.getName());
+							tabPanel.add(label);
+						});
+					}
+			);
 
-			// Scrolling Ability
+			// Scrolling Ability for tabsPanel
 			JPanel wrapped = new JPanel(new BorderLayout());
-			wrapped.add(itemsPanel, BorderLayout.NORTH);
+			wrapped.add(tabPanel, BorderLayout.NORTH);
 			JScrollPane scroller = new JScrollPane(wrapped);
 			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scroller.getVerticalScrollBar().setUnitIncrement(16);
+
 
 			// Tab Icons
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
@@ -116,41 +137,35 @@ public class LootRecorderPanel extends PluginPanel
 			};
 			icon.onChanged(resize);
 			resize.run();
-			/*
-			if (this.lootRecorderConfig.activeTab() == tab)
-			{
-				tabsPanel.setSelectedComponent(scroller);
-			}
-			tabsPanel.addChangeListener(e ->
-			{
-				if (tabsPanel.getSelectedComponent() == scroller)
-				{
-					this.lootRecorderConfig.setActiveTab(tab);
-				}
-			});
-			*/
 			log.info("Created " + String.valueOf(tab) + " tab");
+
 		}
 
-		JButton refresh = new JButton("Refresh Data");
+		// Refresh Button
+		JButton refresh = new JButton("Refresh Panel");
 		refresh.addActionListener(e ->
 		{
-			lootRecorderPlugin.refreshPanel();
+			refreshPanel(panel);
 		});
 
-		layout.setHorizontalGroup(layout.createParallelGroup()
-				.addComponent(tabsPanel)
-				.addGap(2)
-				.addComponent(lootPanels)
-				.addComponent(refresh)
-		);
-		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addComponent(tabsPanel)
-				.addGap(2)
-				.addComponent(lootPanels)
-				.addComponent(refresh)
-		);
-		log.info("subpanel");
-		System.out.print(this);
+		// Add to Panel
+		panel.add(tabsPanel);
+		panel.add(refresh);
+		log.info("Panel Created");
+	}
+
+	void refreshPanel(LRP panel)
+	{
+		// Refresh Log Data
+		lootRecorderPlugin.loadAllData();
+		// Remove All Panel Components
+		panel.removeAll();
+		tabsPanel.removeAll();
+		// Recreate Panel Components
+		createPanel(panel);
+		// Ensure panel updates are applied
+		panel.revalidate();
+		panel.repaint();
+		log.info("Refreshed Panel");
 	}
 }
