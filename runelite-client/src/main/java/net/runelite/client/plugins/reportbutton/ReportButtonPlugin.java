@@ -56,6 +56,7 @@ public class ReportButtonPlugin extends Plugin
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter DATE_TIME_FORMAT_OTHER = DateTimeFormatter.ofPattern("kk:mm:ss");
 
 	private Instant loginTime;
 	private boolean ready;
@@ -162,7 +163,7 @@ public class ReportButtonPlugin extends Plugin
 	{
 		if (config.showOtherClock())
 		{
-			return getOtherFormat(LocalTime.now());
+			return LocalTime.now().format(DATE_TIME_FORMAT_OTHER);
 		}
 		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
@@ -184,7 +185,7 @@ public class ReportButtonPlugin extends Plugin
 		LocalTime time = LocalTime.now(UTC);
 		if (config.showOtherClock())
 		{
-			return getOtherFormat(time);
+			return time.format(DATE_TIME_FORMAT_OTHER);
 		}
 		return time.format(DATE_TIME_FORMAT);
 	}
@@ -194,13 +195,8 @@ public class ReportButtonPlugin extends Plugin
 		LocalTime time = LocalTime.now(JAGEX);
 		if (config.showOtherClock())
 		{
-			return getOtherFormat(time);
+			return time.format(DATE_TIME_FORMAT_OTHER);
 		}
 		return time.format(DATE_TIME_FORMAT);
-	}
-
-	private String getOtherFormat(LocalTime time)
-	{
-		return (Integer.toString(time.getHour()).length() == 2 ? time.getHour() : "0" + time.getHour()) + ":" + (Integer.toString(time.getMinute()).length() == 2 ? time.getMinute() : "0" + time.getMinute()) + ":" + (Integer.toString(time.getSecond()).length() == 2 ? time.getSecond() : "0" + time.getSecond());
 	}
 }
