@@ -34,6 +34,7 @@ import lombok.Getter;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.text.DecimalFormat;
 
 @Getter
 class LootRecordPanel extends JPanel
@@ -51,7 +52,7 @@ class LootRecordPanel extends JPanel
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
 		JLabel item_name = new JLabel(this.record.getItem_name());
-		JLabel total = new JLabel(String.valueOf(this.record.getTotal()), SwingConstants.RIGHT);
+		JLabel total = new JLabel(numberToString(this.record.getTotal()), SwingConstants.RIGHT);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -65,5 +66,26 @@ class LootRecordPanel extends JPanel
 		this.add(item_name, c);
 		c.gridx++;
 		this.add(total, c);
+	}
+
+	String numberToString(Integer num)
+	{
+		Float v = Float.valueOf(num);
+		String suffix = " gp";
+		// Over 10m
+		if(v >= 10000000)
+		{
+			v = v / 1000000;
+			suffix = "M" + suffix;
+
+		}
+		// Over 100k
+		else if(v >= 100000)
+		{
+			v = v / 1000;
+			suffix = "K" + suffix;
+		}
+
+		return (new DecimalFormat("#,###.#").format(v) + suffix);
 	}
 }
