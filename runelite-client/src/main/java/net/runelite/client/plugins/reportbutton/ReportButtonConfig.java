@@ -44,4 +44,15 @@ public interface ReportButtonConfig extends Config
 	{
 		return TimeStyle.LOGIN_TIME;
 	}
+
+	@ConfigItem(
+			keyName = "otherClock",
+			name = "24-hour clock",
+			description = "Adds a twenty-four hour clock on report button"
+	)
+	default boolean showOtherClock()
+	{
+		return false;
+	}
+
 }

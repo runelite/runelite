@@ -160,15 +160,19 @@ public class ReportButtonPlugin extends Plugin
 
 	private String getLocalTime()
 	{
+        	if (config.showOtherClock())
+        	{
+            		return getOtherFormat(LocalTime.now());
+        	}
 		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
 
 	private String getLoginTime()
 	{
-		if (loginTime == null)
-		{
-			return "Report";
-		}
+        	if (loginTime == null)
+        	{
+            		return "Report";
+        	}
 
 		Duration duration = Duration.between(loginTime, Instant.now());
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
@@ -177,13 +181,26 @@ public class ReportButtonPlugin extends Plugin
 
 	private String getUTCTime()
 	{
-		LocalTime time = LocalTime.now(UTC);
-		return time.format(DATE_TIME_FORMAT);
+        	LocalTime time = LocalTime.now(UTC);
+        	if (config.showOtherClock())
+        	{
+            		return getOtherFormat(time);
+        	}
+        	return time.format(DATE_TIME_FORMAT);
 	}
 
-	private String getJagexTime()
-	{
-		LocalTime time = LocalTime.now(JAGEX);
-		return time.format(DATE_TIME_FORMAT);
-	}
+    	private String getJagexTime()
+    	{
+        	LocalTime time = LocalTime.now(JAGEX);
+        	if (config.showOtherClock())
+        	{
+            		return getOtherFormat(time);
+        	}
+        	return time.format(DATE_TIME_FORMAT);
+    	}
+
+    	private String getOtherFormat(LocalTime time)
+    	{
+        	return (Integer.toString(time.getHour()).length() == 2 ? time.getHour() : "0" + time.getHour()) + ":" + (Integer.toString(time.getMinute()).length() == 2 ? time.getMinute() : "0" + time.getMinute()) + ":" + (Integer.toString(time.getSecond()).length() == 2 ? time.getSecond() : "0" + time.getSecond());
+    	}
 }
