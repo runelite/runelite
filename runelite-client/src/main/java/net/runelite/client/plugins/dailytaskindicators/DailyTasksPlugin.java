@@ -36,6 +36,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -62,6 +63,7 @@ public class DailyTasksPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
+	private int sendOnTick;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -106,6 +108,15 @@ public class DailyTasksPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState().equals(GameState.LOGGED_IN))
+		{
+			sendOnTick = client.getTickCount();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (sendOnTick == client.getTickCount())
 		{
 			if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
 			{
