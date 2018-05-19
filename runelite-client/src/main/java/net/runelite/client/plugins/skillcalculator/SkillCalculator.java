@@ -156,19 +156,19 @@ class SkillCalculator extends JPanel
 
 	private void renderBonusOptions()
 	{
-		if (skillData.bonuses != null)
+		if (skillData.getBonuses() != null)
 		{
-			for (SkillDataBonus bonus : skillData.bonuses)
+			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(bonus.name);
+				JLabel uiLabel = new JLabel(bonus.getName());
 				JCheckBox uiCheckbox = new JCheckBox();
 
 				// Adding an empty 8-pixel border on the left gives us nice padding.
 				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.value));
+				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
 				uiOption.add(uiCheckbox, BorderLayout.EAST);
@@ -176,19 +176,19 @@ class SkillCalculator extends JPanel
 			}
 		}
 
-		if (skillData.multipliers != null)
+		if (skillData.getMultipliers() != null)
 		{
-			for (SkillDataMultiplier multiplier : skillData.multipliers)
+			for (SkillDataMultiplier multiplier : skillData.getMultipliers())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(multiplier.name);
+				JLabel uiLabel = new JLabel(multiplier.getName());
 				JCheckBox uiCheckbox = new JCheckBox();
 
 				// Adding an empty 8-pixel border on the left gives us nice padding.
 				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPMultiplier(uiCheckbox.isSelected(), multiplier.value));
+				uiCheckbox.addActionListener(e -> adjustXPMultiplier(uiCheckbox.isSelected(), multiplier.getValue()));
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
 				uiOption.add(uiCheckbox, BorderLayout.EAST);
@@ -203,7 +203,7 @@ class SkillCalculator extends JPanel
 		uiActionSlots.clear();
 
 		// Create new components for the action slots.
-		for (SkillDataEntry action : skillData.actions)
+		for (SkillDataEntry action : skillData.getActions())
 		{
 			UIActionSlot slot = new UIActionSlot(action);
 			uiActionSlots.add(slot); // Keep our own reference.
@@ -239,13 +239,13 @@ class SkillCalculator extends JPanel
 		{
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
-			double xp = slot.action.xp * xpFactor;
+			double xp = slot.action.getXp() * xpFactor;
 
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
 			slot.setText(formatXPActionString(xp, actionCount));
-			slot.setAvailable(currentLevel >= slot.action.level);
+			slot.setAvailable(currentLevel >= slot.action.getLevel());
 			slot.value = xp;
 		}
 	}

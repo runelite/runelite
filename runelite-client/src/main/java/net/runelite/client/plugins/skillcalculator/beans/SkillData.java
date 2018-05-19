@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.skillcalculator.beans;
 
+import lombok.Getter;
+
+@Getter
 public class SkillData
 {
-	public SkillDataEntry[] actions;
-	public SkillDataBonus[] bonuses;
-	public SkillDataMultiplier[] multipliers;
+	private SkillDataEntry[] actions;
+	private SkillDataBonus[] bonuses;
+	private SkillDataMultiplier[] multipliers;
 }

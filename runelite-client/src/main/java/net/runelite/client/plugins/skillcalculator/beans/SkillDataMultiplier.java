@@ -24,8 +24,11 @@
  */
 package net.runelite.client.plugins.skillcalculator.beans;
 
+import lombok.Getter;
+
+@Getter
 public class SkillDataMultiplier
 {
-	public String name;
-	public float value;
+	private String name;
+	private float value;
 }
