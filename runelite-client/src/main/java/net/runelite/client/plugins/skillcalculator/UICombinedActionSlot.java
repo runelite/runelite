@@ -33,7 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.JShadowedLabel;
+import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UICombinedActionSlot extends JPanel
 {
