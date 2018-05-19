@@ -175,6 +175,7 @@ class SkillCalculator extends JPanel
 				add(uiOption);
 			}
 		}
+
 		if (skillData.multipliers != null)
 		{
 			for (SkillDataMultiplier multiplier : skillData.multipliers)
