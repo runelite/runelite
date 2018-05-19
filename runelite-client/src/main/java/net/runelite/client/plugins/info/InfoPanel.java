@@ -28,10 +28,8 @@ package net.runelite.client.plugins.info;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -181,12 +179,39 @@ public class InfoPanel extends PluginPanel
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		container.setLayout(new BorderLayout());
 		container.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+		final Color hoverColor = ColorScheme.DARKER_GRAY_COLOR.brighter().brighter();
+		final Color pressedColor = ColorScheme.DARKER_GRAY_COLOR.brighter();
+
+
 		container.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				LinkBrowser.browse(url);
+				container.setBackground(pressedColor);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				container.setBackground(hoverColor);
+				LinkBrowser.browse(url);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				container.setBackground(hoverColor);
+				container.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+				container.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
 
