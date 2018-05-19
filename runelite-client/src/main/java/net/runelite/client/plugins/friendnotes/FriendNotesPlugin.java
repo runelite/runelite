@@ -131,17 +131,16 @@ public class FriendNotesPlugin extends Plugin
 	/**
 	 * Set the currently hovered display name, if a friend note exists for it.
 	 */
-	private void setHoveredFriend(String target)
+	private void setHoveredFriend(String displayName)
 	{
 		hoveredFriend = null;
 
-		if (!Strings.isNullOrEmpty(target))
+		if (!Strings.isNullOrEmpty(displayName))
 		{
-			target = Text.removeTags(target);
-			String targetNote = getFriendNote(target);
-			if (targetNote != null)
+			String note = getFriendNote(displayName);
+			if (note != null)
 			{
-				hoveredFriend = new HoveredFriend(target, targetNote);
+				hoveredFriend = new HoveredFriend(displayName, note);
 			}
 		}
 	}
@@ -157,7 +156,8 @@ public class FriendNotesPlugin extends Plugin
 		// look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
-			setHoveredFriend(event.getTarget());
+			final String sanitizedTarget = Text.removeTags(event.getTarget());
+			setHoveredFriend(sanitizedTarget);
 
 			final MenuEntry addNote = new MenuEntry();
 			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
