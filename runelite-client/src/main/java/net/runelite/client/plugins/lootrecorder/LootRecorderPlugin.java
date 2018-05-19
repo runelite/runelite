@@ -302,6 +302,10 @@ public class LootRecorderPlugin extends Plugin
 	// Receive Loot from the necessary file
 	private synchronized void loadLootEntries(String fileName, ArrayList<LootEntry> data)
 	{
+		// Empty Array
+		data.clear();
+
+		// Grab file by username or loots directory if not logged in
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
@@ -310,24 +314,24 @@ public class LootRecorderPlugin extends Plugin
 		{
 			playerFolder = LOOTS_DIR;
 		}
+		// Ensure there is actually a player folder
 		playerFolder.mkdirs();
-		log.info(String.valueOf(playerFolder));
 
+		// Open File and read line by line
 		File file = new File(playerFolder, fileName);
-		// Read the loot log line by line
 		try (BufferedReader br = new BufferedReader(new FileReader(file)))
 		{
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				// Read the data from each line
+				// Convert JSON to LootEntry and add to data ArrayList
 				LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
 				data.add(entry);
 			}
 		}
 		catch (FileNotFoundException e)
 		{
-			log.warn("File not found");
+			log.warn("File not found: " + fileName);
 		}
 		catch (IOException e)
 		{
