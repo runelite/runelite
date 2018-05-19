@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -74,7 +75,7 @@ public class ScreenshotOverlay extends Overlay
 	private final Client client;
 	private final DrawManager drawManager;
 
-	private final Queue<Consumer<BufferedImage>> consumers = new ConcurrentLinkedQueue<>();
+	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	public ScreenshotOverlay(Client client, DrawManager drawManager)
@@ -118,7 +119,7 @@ public class ScreenshotOverlay extends Overlay
 
 		// Request the queued screenshots to be taken,
 		// now that the timestamp is visible.
-		Consumer<BufferedImage> consumer;
+		Consumer<Image> consumer;
 		while ((consumer = consumers.poll()) != null)
 		{
 			drawManager.requestNextFrameListener(consumer);
@@ -127,7 +128,7 @@ public class ScreenshotOverlay extends Overlay
 		return null;
 	}
 
-	public void queueForTimestamp(Consumer<BufferedImage> screenshotConsumer)
+	public void queueForTimestamp(Consumer<Image> screenshotConsumer)
 	{
 		if (REPORT_BUTTON == null)
 		{
