@@ -129,6 +129,61 @@ public class StackFormatter
 	}
 
 	/**
+	 * Convert a quantity to stack size as it would
+	 * appear in RuneScape. (with decimals)
+	 * <p>
+	 * This differs from quantityToRSStack in that it displays
+	 * decimals. Ex: 27100 is 27,1k (not 27k)
+	 * <p>
+	 * This uses the NumberFormat singleton instead of the
+	 * NUMBER_FORMATTER variable to ensure the UK locale.
+	 *
+	 * @param quantity The quantity to convert.
+	 * @return The stack size as it would appear in RS, with decimals,
+	 * with K after 100,000 and M after 10,000,000
+	 */
+	public static String quantityToRSDecimalStack(int quantity)
+	{
+
+		if (quantity < 10_000)
+		{
+			return Integer.toString(quantity);
+		}
+		else if (quantity < 1_000_000)
+		{
+			if (quantity % 1000 == 0)
+			{
+				return quantity / 1000 + "K";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 1) + "K";
+		}
+		else if (quantity < 10_000_000)
+		{
+			if (quantity % 1_000_000 == 0)
+			{
+				return quantity / 1_000_000 + "M";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
+		}
+		else if (quantity < 1_000_000_000)
+		{
+			if (quantity % 1_000_000 == 0)
+			{
+				return quantity / 1_000_000 + "M";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
+		}
+		else
+		{
+			if (quantity % 1_000_000_000 == 0)
+			{
+				return quantity / 1_000_000_000 + "B";
+			}
+			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 7) + "B";
+		}
+	}
+
+	/**
 	 * Converts a string representation of a stack
 	 * back to (close to) it's original value.
 	 *
@@ -147,8 +202,8 @@ public class StackFormatter
 	 *
 	 * @param number the long number to format
 	 * @return the formatted String
-	 * @exception        ArithmeticException if rounding is needed with rounding
-	 *                   mode being set to RoundingMode.UNNECESSARY
+	 * @throws ArithmeticException if rounding is needed with rounding
+	 *                             mode being set to RoundingMode.UNNECESSARY
 	 * @see java.text.Format#format
 	 */
 	public static String formatNumber(final long number)
@@ -161,8 +216,8 @@ public class StackFormatter
 	 *
 	 * @param number the double number to format
 	 * @return the formatted String
-	 * @exception        ArithmeticException if rounding is needed with rounding
-	 *                   mode being set to RoundingMode.UNNECESSARY
+	 * @throws ArithmeticException if rounding is needed with rounding
+	 *                             mode being set to RoundingMode.UNNECESSARY
 	 * @see java.text.Format#format
 	 */
 	public static String formatNumber(double number)

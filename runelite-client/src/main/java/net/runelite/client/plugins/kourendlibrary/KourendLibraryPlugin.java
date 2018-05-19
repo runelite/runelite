@@ -94,6 +94,7 @@ public class KourendLibraryPlugin extends Plugin
 
 		navButton = NavigationButton.builder()
 			.name("Kourend Library")
+			.priority(6)
 			.icon(icon)
 			.panel(panel)
 			.build();
