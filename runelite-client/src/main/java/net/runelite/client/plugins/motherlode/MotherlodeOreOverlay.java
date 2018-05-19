@@ -26,23 +26,32 @@ package net.runelite.client.plugins.motherlode;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
+import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.item.ItemPrice;
 
-public class MotherlodeGemOverlay extends Overlay
+@Slf4j
+class MotherlodeOreOverlay extends Overlay
 {
+	private long totalGEPrice = 0;
+
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
+	private ItemManager itemManager;
+
+	@Inject
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
@@ -52,63 +61,53 @@ public class MotherlodeGemOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.isInMlm() || !config.showOresCollected())
+		{
+			return null;
+		}
+
 		MotherlodeSession session = plugin.getSession();
+		MotherlodeOreType[] oreTypes = MotherlodeOreType.values();
 
-		if (session.getLastPayDirtMined() == null || !plugin.isInMlm() || !config.showGemsFound())
-		{
-			return null;
-		}
+		MotherlodeOreType anyCollected = Arrays.stream(oreTypes)
+			.filter(v -> session.getCollected(v.oreId) > 0)
+			.findAny()
+			.orElse(null);
 
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
-		{
-			return null;
-		}
-
-		int diamondsFound = session.getDiamondsFound();
-		int rubiesFound = session.getRubiesFound();
-		int emeraldsFound = session.getEmeraldsFound();
-		int sapphiresFound = session.getSapphiresFound();
-
-		if (diamondsFound == 0 && rubiesFound == 0 && emeraldsFound == 0 && sapphiresFound == 0)
+		if (anyCollected == null)
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
 
-		if (diamondsFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Diamonds:")
-				.right(Integer.toString(diamondsFound))
-				.build());
-		}
+		String panelTitle = "Ores" + (
+				totalGEPrice > 0 ? " (" + StackFormatter.quantityToStackSize(totalGEPrice) + ')' : ""
+			);
 
-		if (rubiesFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Rubies:")
-				.right(Integer.toString(rubiesFound))
-				.build());
-		}
+		panelComponent.getChildren().add(TitleComponent.builder().text(panelTitle).build());
 
-		if (emeraldsFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Emeralds:")
-				.right(Integer.toString(emeraldsFound))
-				.build());
-		}
+		totalGEPrice = 0;
 
-		if (sapphiresFound > 0)
+		for (MotherlodeOreType oreType : oreTypes)
 		{
+			Integer collected = session.getCollected(oreType.oreId);
+
+			if (collected == null)
+			{
+				continue;
+			}
+
+			final ItemPrice price = itemManager.getItemPrice(oreType.oreId);
+
+			if (price != null)
+			{
+				totalGEPrice += price.getPrice() * collected;
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Sapphires:")
-				.right(Integer.toString(sapphiresFound))
+				.left(oreType.oreName + ':')
+				.right(Integer.toString(collected))
 				.build());
 		}
 

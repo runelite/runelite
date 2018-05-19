@@ -45,9 +45,6 @@ public class MotherlodeSession
 	private int recentMined;
 
 	@Getter(AccessLevel.PACKAGE)
-	private Instant lastGemFound;
-
-	@Getter(AccessLevel.PACKAGE)
 	private int diamondsFound;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -59,10 +56,80 @@ public class MotherlodeSession
 	@Getter(AccessLevel.PACKAGE)
 	private int sapphiresFound;
 
+	private int runiteCollected;
+
+	private int adamantCollected;
+
+	private int mithrilCollected;
+
+	private int goldCollected;
+
+	private int coalCollected;
+
+	private int nuggetsCollected;
+
+	Integer getCollected(int oreId)
+	{
+		switch (oreId)
+		{
+			case ItemID.RUNITE_ORE:
+				return runiteCollected;
+
+			case ItemID.ADAMANTITE_ORE:
+				return adamantCollected;
+
+			case ItemID.MITHRIL_ORE:
+				return mithrilCollected;
+
+			case ItemID.GOLD_ORE:
+				return goldCollected;
+
+			case ItemID.COAL:
+				return coalCollected;
+
+			case ItemID.GOLDEN_NUGGET:
+				return nuggetsCollected;
+
+			default:
+				return null;
+		}
+	}
+
+	public void incrementCollected(int oreId, int... quantity)
+	{
+		switch (oreId)
+		{
+			case ItemID.RUNITE_ORE:
+				runiteCollected++;
+				break;
+
+			case ItemID.ADAMANTITE_ORE:
+				adamantCollected++;
+				break;
+
+			case ItemID.MITHRIL_ORE:
+				mithrilCollected++;
+				break;
+
+			case ItemID.GOLD_ORE:
+				goldCollected++;
+				break;
+
+			case ItemID.COAL:
+				coalCollected++;
+				break;
+
+			case ItemID.GOLDEN_NUGGET:
+				nuggetsCollected += quantity[0];
+				break;
+
+			default:
+				log.error("Invalid item id specified. The value for the specified item will not be incremented.");
+		}
+	}
+
 	public void incrementGemFound(int gemID)
 	{
-		lastGemFound = Instant.now();
-
 		switch (gemID)
 		{
 			case ItemID.UNCUT_DIAMOND:

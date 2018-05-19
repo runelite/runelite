@@ -32,6 +32,8 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -60,6 +62,7 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -80,14 +83,14 @@ public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
-	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
 
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
+
+	private static final int EMPTY_INVENTORY_SPACE = -1;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -105,6 +108,9 @@ public class MotherlodePlugin extends Plugin
 	private MotherlodeGemOverlay motherlodeGemOverlay;
 
 	@Inject
+	private MotherlodeOreOverlay motherlodeOreOverlay;
+
+	@Inject
 	private MotherlodeConfig config;
 
 	@Inject
@@ -113,6 +119,11 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
+	private Item[] currentInventory;
+	private ArrayList<Item> previousInventory = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private int prevSackSize;
 	@Getter(AccessLevel.PACKAGE)
 	private int curSackSize;
 	@Getter(AccessLevel.PACKAGE)
@@ -140,6 +151,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(rocksOverlay);
 		overlayManager.add(motherlodeGemOverlay);
 		overlayManager.add(motherlodeSackOverlay);
+		overlayManager.add(motherlodeOreOverlay);
 
 		session = new MotherlodeSession();
 		inMlm = checkInMlm();
@@ -157,6 +169,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
+		overlayManager.remove(motherlodeOreOverlay);
 		session = null;
 		veins.clear();
 		rocks.clear();
@@ -175,11 +188,124 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY) || !inMlm)
+		{
+			return;
+		}
+
+		// Clear previous inventory items
+		previousInventory.clear();
+
+		if (currentInventory != null)
+		{
+			// Copy current inventory items over to previous inventory
+			previousInventory.addAll(Arrays.asList(currentInventory));
+		}
+		else
+		{
+			// NullPointerExceptions were being raised after logon and emptying the sack.
+			// This ensures that previousInventory contains the current inventory structure in those cases,
+			// so ores are counted correctly if client is restarted and a user logs on and empties the sack
+			// before ItemContainerChanged event fires twice.
+			previousInventory.addAll(Arrays.asList(event.getItemContainer().getItems()));
+		}
+
+		currentInventory = event.getItemContainer().getItems();
+
+		boolean sackValueDecreasing = prevSackSize > curSackSize;
+
+		// Check whether sackValueDecreasing is false, as we will only count ores collected when the sack
+		// is decreasing.
+
+		if (previousInventory.size() <= 0 || !sackValueDecreasing)
+		{
+			return;
+		}
+
+		for (int i = 0; i < currentInventory.length; i++)
+		{
+			Item item = currentInventory[i];
+
+			// Fetch previous item id and quantity from the previous inventory index
+			int previousItemId = previousInventory.get(i).getId();
+			int previousItemQty = previousInventory.get(i).getQuantity();
+
+			// Verify that it's a new item before ores are counted to prevent false counts.
+			// Examples of this are when you empty the sack, fill coal sack then empty the sack again.
+			//
+			// Another example is with golden nuggets (being the only stackable item you can receive).
+			// If you deposit pay-dirt into the hopper, empty sack (before it has reached the sack),
+			// then once it has reached the sack again there is a chance you will receive golden nuggets again.
+			boolean isNewItem =
+					previousItemId == EMPTY_INVENTORY_SPACE
+							|| (previousItemId == ItemID.GOLDEN_NUGGET && (item.getQuantity() > previousItemQty))
+							&& item.getId() != EMPTY_INVENTORY_SPACE;
+
+			if (!isNewItem)
+			{
+				continue;
+			}
+
+			// Calculate nuggetAmount, account for above statement where it's possible to receive nuggets
+			// twice in one inventory.
+			int nuggetAmount =
+					item.getId() == ItemID.GOLDEN_NUGGET && previousItemId == ItemID.GOLDEN_NUGGET ?
+							item.getQuantity() - previousItemQty : item.getQuantity();
+
+			switch (item.getId())
+			{
+				case ItemID.RUNITE_ORE:
+					session.incrementCollected(ItemID.RUNITE_ORE);
+					break;
+
+				case ItemID.ADAMANTITE_ORE:
+					session.incrementCollected(ItemID.ADAMANTITE_ORE);
+					break;
+
+				case ItemID.MITHRIL_ORE:
+					session.incrementCollected(ItemID.MITHRIL_ORE);
+					break;
+
+				case ItemID.GOLD_ORE:
+					session.incrementCollected(ItemID.GOLD_ORE);
+					break;
+
+				case ItemID.COAL:
+					session.incrementCollected(ItemID.COAL);
+					break;
+
+				case ItemID.GOLDEN_NUGGET:
+					session.incrementCollected(ItemID.GOLDEN_NUGGET, nuggetAmount);
+					break;
+			}
+		}
+
+		/*
+		 * Update sack values for next ItemContainerChanged event
+		 * This is necessary to stop the decrease.
+		 */
+		refreshSackValues();
+	}
+
+	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (inMlm)
+		if (!inMlm)
 		{
-			refreshSackValues();
+			return;
+		}
+
+		refreshSackValues();
+
+		/*
+		 * Keep prevSackSize same or less than curSackSize, so we
+		 * can check whether there has been a decrease or not in the ItemContainerChanged event.
+		 */
+		if (curSackSize > prevSackSize)
+		{
+			prevSackSize = curSackSize;
 		}
 	}
 
@@ -379,7 +505,7 @@ public class MotherlodePlugin extends Plugin
 			// so the user doesn't see the Overlay switch between deposits left and N/A.
 			//
 			// Count other items at nonPayDirtItems so depositsLeft is calculated accordingly.
-			if (item.getId() != ItemID.PAYDIRT && item.getId() != -1 && !MLM_ORE_TYPES.contains(item.getId()))
+			if (item.getId() != ItemID.PAYDIRT && item.getId() != EMPTY_INVENTORY_SPACE && MotherlodeOreType.containsOreId(item.getId()))
 			{
 				nonPayDirtItems += 1;
 			}
