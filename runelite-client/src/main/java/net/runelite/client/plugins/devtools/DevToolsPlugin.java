@@ -120,7 +120,7 @@ public class DevToolsPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
-			.name("Developer Tools")
+			.tooltip("Developer Tools")
 			.icon(icon)
 			.priority(1)
 			.panel(panel)
