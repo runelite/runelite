@@ -29,9 +29,9 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "reportButton",
-	name = "Report Button",
-	description = "Configuration for report button"
+		keyName = "reportButton",
+		name = "Report Button",
+		description = "Configuration for report button"
 )
 public interface ReportButtonConfig extends Config
 {
@@ -44,4 +44,15 @@ public interface ReportButtonConfig extends Config
 	{
 		return TimeStyle.LOGIN_TIME;
 	}
+
+	@ConfigItem(
+		keyName = "clock",
+		name = "24-hour clock",
+		description = "Configuration for using a 24-hour clock format"
+	)
+	default boolean showOtherClock()
+	{
+		return false;
+	}
+
 }
