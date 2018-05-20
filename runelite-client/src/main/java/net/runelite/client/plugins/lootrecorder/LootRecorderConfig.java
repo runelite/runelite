@@ -59,10 +59,32 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showChatMessages",
+			name = "Chat Message Alerts",
+			description = "In-Game Chat Messages when Loot Recorded",
+			position = 2
+	)
+	default boolean showChatMessages()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showTrayAlerts",
+			name = "Notification Tray Alerts",
+			description = "Create Notification Tray alerts when Loot Recorded?",
+			position = 2
+	)
+	default boolean showTrayAlerts()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showLootTotals",
 		name = "Show Recorded Loots Panel",
 		description = "Configures whether or not the Recorded Loots Panel is shown",
-		position = 2
+		position = 3
 	)
 	default boolean showLootTotals()
 	{

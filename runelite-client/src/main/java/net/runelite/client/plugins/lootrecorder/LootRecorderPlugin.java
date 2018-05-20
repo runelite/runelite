@@ -28,6 +28,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 
+import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,6 +59,11 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -99,6 +105,12 @@ public class LootRecorderPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	private LootRecorderPanel panel;
 
@@ -173,6 +185,7 @@ public class LootRecorderPlugin extends Plugin
 			addLootEntry(barrowsFilename, entry);
 			log.info("Recorded a barrows chest!");
 			log.info("Entry:", entry);
+			lootRecordedAlert("Barrows Chest added to log.");
 		}
 
 		// Raids Chest
@@ -184,6 +197,7 @@ public class LootRecorderPlugin extends Plugin
 			addLootEntry(raidsFilename, entry);
 			log.info("Recorded a raids chest!");
 			log.info("Entry:", entry);
+			lootRecordedAlert("Raid Loot added to log.");
 		}
 	}
 
@@ -220,6 +234,27 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	void lootRecordedAlert(String message)
+	{
+		message = "Loot Recorder: " + message;
+		if (lootRecorderConfig.showChatMessages())
+		{
+			final ChatMessageBuilder chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append(message)
+					.append(ChatColorType.NORMAL);
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.EXAMINE_ITEM)
+					.runeLiteFormattedMessage(chatMessage.build())
+					.build());
+		}
+
+		if (lootRecorderConfig.showTrayAlerts())
+		{
+			notifier.notify(message);
+		}
+	}
 
 	void ToggleTab(String tabName, Boolean status)
 	{
