@@ -24,14 +24,18 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 
+import com.sun.scenario.DelayedRunnable;
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.util.SwingUtil;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -39,6 +43,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -49,11 +55,11 @@ class UniqueItemPanel extends JPanel
 	private ArrayList<UniqueItem> items;
 	private Map<String, LootRecord> loots;
 
-	UniqueItemPanel(ArrayList<UniqueItem> items, Map<String, LootRecord> loots, ItemManager itemManager)
+	UniqueItemPanel(ArrayList<UniqueItem> _items, Map<String, LootRecord> _loots, ItemManager _itemManager)
 	{
-		this.items = items;
-		this.loots = loots;
-		this.itemManager = itemManager;
+		items = _items;
+		loots = _loots;
+		itemManager = _itemManager;
 
 		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
@@ -69,7 +75,8 @@ class UniqueItemPanel extends JPanel
 		// Add each Item icon to the panel
 		this.items.forEach(item ->
 			{
-				ItemComposition comp = this.itemManager.getItemComposition(item.getItemID());
+				Integer id = item.getItemID();
+				ItemComposition comp = _itemManager.getItemComposition(id);
 				LootRecord it = loots.get(comp.getName());
 				boolean shouldStack = comp.isStackable();
 				Integer quantity = 0;
@@ -82,29 +89,33 @@ class UniqueItemPanel extends JPanel
 					shouldStack = shouldStack || it.getAmount() > 1;
 				}
 				AsyncBufferedImage image = itemManager.getImage(imageID, quantity, shouldStack);
-				JLabel icon = new JLabel()
+				Runnable task = () ->
 				{
-					@Override
-					protected void paintComponent(Graphics g)
-					{
-						super.paintComponent(g);
-						Graphics2D g2d = (Graphics2D)g;
-						if (it != null && it.getAmount() > 0)
-						{
-							g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-						}
-						else
-						{
-							g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-						}
-						g2d.drawImage(image, null, 0, ((c.ipady - image.getHeight()) / 2));
-						g2d.dispose();
-					}
+					this.attachImage(image, c);
 				};
-
-				this.add(icon, c);
-				c.gridx++;
+				image.onChanged(() -> SwingUtilities.invokeLater(task));
 			}
 		);
+
+	}
+
+	void attachImage(AsyncBufferedImage image, GridBagConstraints c)
+	{
+		BufferedImage opqaue = createOpaqueImage(image);
+		ImageIcon o = new ImageIcon(opqaue);
+		JLabel icon = new JLabel(o);
+		this.add(icon, c);
+		c.gridx++;
+		this.revalidate();
+	}
+
+	private BufferedImage createOpaqueImage(AsyncBufferedImage image)
+	{
+		BufferedImage x = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = (Graphics2D)x.getGraphics();
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		g2d.drawImage(image, null, 0, 0);
+		g2d.dispose();
+		return x;
 	}
 }
