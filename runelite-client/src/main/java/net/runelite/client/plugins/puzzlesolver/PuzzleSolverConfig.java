@@ -65,4 +65,11 @@ public interface PuzzleSolverConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "displayNumbers",
+			name = "Display numbers",
+			description = "Show the number of each tile"
+	)
+	default boolean displayNumbers() { return false; }
 }

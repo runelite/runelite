@@ -60,6 +60,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Slf4j
 public class PuzzleSolverOverlay extends Overlay
@@ -126,6 +127,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 		String infoString = "Solving..";
 
+		// Puzzle pieces
 		int[] itemIds = getItemIds(container);
 		boolean shouldCache = false;
 
@@ -137,6 +139,27 @@ public class PuzzleSolverOverlay extends Overlay
 			}
 			else
 			{
+				if (config.displayNumbers()) {
+					for (int id : itemIds)
+					{
+						if (id != BLANK_TILE_VALUE)
+						{
+							int indexOfTile = ArrayUtils.indexOf(itemIds, id);
+
+							int x = puzzleBoxLocation.getX() + (indexOfTile % 5) * PUZZLE_TILE_SIZE;
+							int y = puzzleBoxLocation.getY() + (indexOfTile / 5) * PUZZLE_TILE_SIZE;
+
+							FontMetrics fm = graphics.getFontMetrics();
+							int fontHeight = fm.getHeight();
+
+							TextComponent textComponent = new TextComponent();
+							textComponent.setPosition(new Point(x, y + fontHeight));
+							textComponent.setText(String.valueOf(id));
+							textComponent.render(graphics);
+						}
+					}
+				}
+
 				if (solver.hasSolution())
 				{
 					boolean foundPosition = false;
