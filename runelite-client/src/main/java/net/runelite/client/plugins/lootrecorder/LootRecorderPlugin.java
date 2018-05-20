@@ -150,9 +150,10 @@ public class LootRecorderPlugin extends Plugin
 			}
 		}
 		navButton = NavigationButton.builder()
-			.name("Loot Recorder")
+			.tooltip("Loot Recorder")
 			.icon(icon)
 			.panel(panel)
+			.priority(10)
 			.build();
 
 		pluginToolbar.addNavigation(navButton);

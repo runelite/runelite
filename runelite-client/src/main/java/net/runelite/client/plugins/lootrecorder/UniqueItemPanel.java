@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
@@ -36,15 +35,10 @@ import net.runelite.client.game.ItemManager;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -75,7 +69,7 @@ class UniqueItemPanel extends JPanel
 		// Add each Item icon to the panel
 		this.items.forEach(item ->
 			{
-				ItemComposition comp = itemManager.getItemComposition(item.getItemID());
+				ItemComposition comp = this.itemManager.getItemComposition(item.getItemID());
 				LootRecord it = loots.get(comp.getName());
 				boolean shouldStack = comp.isStackable();
 				Integer quantity = 0;
