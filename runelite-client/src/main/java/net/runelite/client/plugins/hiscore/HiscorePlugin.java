@@ -98,12 +98,13 @@ public class HiscorePlugin extends Plugin
 		BufferedImage icon;
 		synchronized (ImageIO.class)
 		{
-			icon = ImageIO.read(getClass().getResourceAsStream("hiscore.gif"));
+			icon = ImageIO.read(getClass().getResourceAsStream("normal.png"));
 		}
 
 		navButton = NavigationButton.builder()
-			.name("Hiscore")
+			.tooltip("Hiscore")
 			.icon(icon)
+			.priority(5)
 			.panel(hiscorePanel)
 			.build();
 
