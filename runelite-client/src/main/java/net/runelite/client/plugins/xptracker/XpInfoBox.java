@@ -55,6 +55,7 @@ import net.runelite.client.util.SwingUtil;
 class XpInfoBox extends JPanel
 {
 	private final JPanel panel;
+	private final XpPanel xpPanel;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
@@ -75,10 +76,14 @@ class XpInfoBox extends JPanel
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
+	@Getter
+	private int addedOrder = -1;
+
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, XpPanel xpPanel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
 		this.panel = panel;
 		this.skill = skill;
+		this.xpPanel = xpPanel;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -158,6 +163,22 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.NORTH);
 	}
 
+	public static String htmlLabel(String key, int value)
+	{
+		String valueStr = value + "";
+
+		if (value > 9999999 || value < -9999999)
+		{
+			valueStr = "Lots!";
+		}
+		else
+		{
+			valueStr = StackFormatter.quantityToRSDecimalStack(value);
+		}
+
+		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
+	}
+
 	void reset()
 	{
 		container.remove(statsPanel);
@@ -178,7 +199,10 @@ class XpInfoBox extends JPanel
 			{
 				panel.add(this);
 				panel.revalidate();
+				addedOrder = panel.getComponentCount() + 1;
 			}
+
+			xpPanel.setInfoBoxOrder(this);
 
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
@@ -205,21 +229,4 @@ class XpInfoBox extends JPanel
 		// Update exp per hour seperately, everytime (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
 	}
-
-	public static String htmlLabel(String key, int value)
-	{
-		String valueStr = value + "";
-
-		if (value > 9999999 || value < -9999999)
-		{
-			valueStr = "Lots!";
-		}
-		else
-		{
-			valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		}
-
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + key + "<span style = 'color:white'>" + valueStr + "</span></body></html>";
-	}
-
 }

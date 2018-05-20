@@ -28,6 +28,7 @@ package net.runelite.client.plugins.xptracker;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
@@ -41,9 +42,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,6 +65,8 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	private final XpState xpState = new XpState();
+	private final XpClient xpClient = new XpClient();
 	@Inject
 	private PluginToolbar pluginToolbar;
 
@@ -76,14 +81,19 @@ public class XpTrackerPlugin extends Plugin
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
-
-	private final XpState xpState = new XpState();
-
+	private XpInfoBoxOrderState xpInfoBoxOrderState;
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
-	private final XpClient xpClient = new XpClient();
+	@Inject
+	private XpTrackerConfig config;
+
+	@Provides
+	XpTrackerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(XpTrackerConfig.class);
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -112,7 +122,8 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = new XpPanel(this, client, skillIconManager);
+		xpInfoBoxOrderState = new XpInfoBoxOrderState(config);
+		xpPanel = new XpPanel(this, client, skillIconManager, xpInfoBoxOrderState);
 
 		BufferedImage icon;
 		synchronized (ImageIO.class)
@@ -285,6 +296,18 @@ public class XpTrackerPlugin extends Plugin
 
 		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("xpTracker"))
+		{
+			return;
+		}
+
+		xpInfoBoxOrderState.reorderInfoBoxOrderState();
+		xpPanel.renderInfoBoxOrder();
 	}
 
 	public XpSnapshotSingle getSkillSnapshot(Skill skill)

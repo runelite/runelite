@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -53,6 +54,7 @@ import okhttp3.HttpUrl;
 @Slf4j
 class XpPanel extends PluginPanel
 {
+	private final JPanel infoBoxPanel = new JPanel();
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 
 	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("Gained: ", 0));
@@ -63,9 +65,13 @@ class XpPanel extends PluginPanel
 	/* This displays the "No exp gained" text */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	private XpInfoBoxOrderState xpInfoBoxOrderState;
+
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager, XpInfoBoxOrderState xpInfoBoxOrderState)
 	{
 		super();
+
+		this.xpInfoBoxOrderState = xpInfoBoxOrderState;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -111,7 +117,7 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
 
-		final JPanel infoBoxPanel = new JPanel();
+		infoBoxPanel.setOpaque(false);
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 		layoutPanel.add(overallPanel, BorderLayout.NORTH);
@@ -124,7 +130,7 @@ class XpPanel extends PluginPanel
 				{
 					break;
 				}
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
+				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, this, skill, iconManager));
 			}
 		}
 		catch (IOException e)
@@ -181,6 +187,27 @@ class XpPanel extends PluginPanel
 		}
 	}
 
+	void renderInfoBoxOrder()
+	{
+		List<XpInfoBox> xpInfoBoxes = xpInfoBoxOrderState.getInfoBoxes();
+
+		if (xpInfoBoxes == null || infoBoxPanel.getComponentCount() < 1)
+		{
+			return;
+		}
+
+		xpInfoBoxes.forEach(infoBoxPanel::add);
+
+		infoBoxPanel.revalidate();
+		infoBoxPanel.repaint();
+	}
+
+	void setInfoBoxOrder(XpInfoBox infoBox)
+	{
+		xpInfoBoxOrderState.setInfoBoxOrderState(infoBox, infoBoxPanel.getComponents());
+		xpInfoBoxOrderState.reorderInfoBoxOrderState();
+		renderInfoBoxOrder();
+	}
 
 	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
