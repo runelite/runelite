@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
@@ -33,20 +34,31 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Getter
 class UniqueItemPanel extends JPanel
 {
 	private ItemManager itemManager;
 	private ArrayList<UniqueItem> items;
+	private Map<String, LootRecord> loots;
 
-	UniqueItemPanel(ArrayList<UniqueItem> items, ItemManager itemManager)
+	UniqueItemPanel(ArrayList<UniqueItem> items, Map<String, LootRecord> loots, ItemManager itemManager)
 	{
 		this.items = items;
+		this.loots = loots;
 		this.itemManager = itemManager;
 
 		GridBagLayout layout = new GridBagLayout();
@@ -58,23 +70,44 @@ class UniqueItemPanel extends JPanel
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.ipady = 20;
+		c.ipady = 50;
 
 		// Add each Item icon to the panel
 		this.items.forEach(item ->
 			{
 				ItemComposition comp = itemManager.getItemComposition(item.getItemID());
-				/*
-				if (amount <= 0)
-				{
-					AsyncBufferedImage icon = itemManager.getImage(comp.getPlaceholderId(), amount, shouldStack);
-				}
-				*/
-
+				LootRecord it = loots.get(comp.getName());
 				boolean shouldStack = comp.isStackable();
-				AsyncBufferedImage image = itemManager.getImage(comp.getId(), 1, shouldStack);
-				JLabel icon = new JLabel();
-				image.addTo(icon);
+				Integer quantity = 0;
+				Integer imageID = comp.getId();
+
+				// If we have a loot entry for this item then update the icon accordingly
+				if (it != null)
+				{
+					quantity = it.getAmount();
+					shouldStack = shouldStack || it.getAmount() > 1;
+				}
+				AsyncBufferedImage image = itemManager.getImage(imageID, quantity, shouldStack);
+				JLabel icon = new JLabel()
+				{
+					@Override
+					protected void paintComponent(Graphics g)
+					{
+						super.paintComponent(g);
+						Graphics2D g2d = (Graphics2D)g;
+						if (it != null && it.getAmount() > 0)
+						{
+							g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+						}
+						else
+						{
+							g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+						}
+						g2d.drawImage(image, null, 0, ((c.ipady - image.getHeight()) / 2));
+						g2d.dispose();
+						this.repaint();
+					}
+				};
 
 				this.add(icon, c);
 				c.gridx++;
