@@ -159,9 +159,13 @@ public class KittenPlugin extends Plugin
 		{
 			s = "0" + s;
 		}
-
+		int previousFollowerID = followerID;
 		// followerID is the first 2 octets converted into decimals
 		followerID = Integer.parseInt(s.substring(0, 16), 2);
+		if (followerID == previousFollowerID)
+		{
+			return;
+		}
 		if (followerID != 0) //Varbit needs to fill up first after logging in
 		{
 			newFollower();
