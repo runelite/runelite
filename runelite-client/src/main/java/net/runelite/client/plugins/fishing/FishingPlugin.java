@@ -62,6 +62,9 @@ public class FishingPlugin extends Plugin
 {
 	private final List<Integer> spotIds = new ArrayList<>();
 
+	@Getter
+	private final List<FishingCounter> catchCounter = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC[] fishingSpots;
 
@@ -120,6 +123,33 @@ public class FishingPlugin extends Plugin
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
 			session.setLastFishCaught();
+		}
+
+		for (FishingSpot FS : FishingSpot.values())
+		{
+			String[] names = FS.getName().split(", ");
+			for (String name : names)
+			{
+				if (!event.getMessage().toLowerCase().contains(name.toLowerCase()))
+				{
+					continue;
+				}
+
+				boolean match = false;
+				for (FishingCounter FC : catchCounter)
+				{
+					if (FC.getName().contains(name))
+					{
+						match = true;
+						FC.addAnotherCatch();
+						break;
+					}
+				}
+				if (!match)
+				{
+					catchCounter.add(new FishingCounter(name));
+				}
+			}
 		}
 	}
 
