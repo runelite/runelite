@@ -24,11 +24,9 @@
  */
 package net.runelite.client.plugins.lootrecorder;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 
-import java.awt.TrayIcon;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,7 +44,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -127,9 +124,8 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws IOException
+	protected void startUp()
 	{
-		LOOTS_DIR.mkdirs();
 		if (lootRecorderConfig.showLootTotals())
 		{
 			createPanel();
@@ -139,7 +135,7 @@ public class LootRecorderPlugin extends Plugin
 	// Separated from startUp for the panel toggling
 	private void createPanel()
 	{
-		panel = new LootRecorderPanel(itemManager, this, lootRecorderConfig);
+		panel = new LootRecorderPanel(itemManager, this);
 
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
@@ -202,7 +198,7 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event) throws IOException
+	public void onConfigChanged(ConfigChanged event)
 	{
 		// Only update if our plugin config was changed
 		if (!event.getGroup().equals("loot-recorder"))
@@ -234,7 +230,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	void lootRecordedAlert(String message)
+	private void lootRecordedAlert(String message)
 	{
 		message = "Loot Recorder: " + message;
 		if (lootRecorderConfig.showChatMessages())
@@ -256,7 +252,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	void ToggleTab(String tabName, Boolean status)
+	private void ToggleTab(String tabName, Boolean status)
 	{
 		if (lootRecorderConfig.showLootTotals())
 		{
@@ -283,14 +279,6 @@ public class LootRecorderPlugin extends Plugin
 	{
 		loadLootEntries(barrowsFilename, barrows);
 		loadLootEntries(raidsFilename, raids);
-	}
-
-	void refreshPanel()
-	{
-		log.info("refreshing panel");
-		loadAllData();
-		SwingUtilities.invokeLater(this::removePanel);
-		SwingUtilities.invokeLater(this::createPanel);
 	}
 
 	// Update KC variables on chat message event
@@ -352,7 +340,6 @@ public class LootRecorderPlugin extends Plugin
 		{
 			playerFolder = LOOTS_DIR;
 		}
-		playerFolder.mkdirs();
 		log.info(String.valueOf(playerFolder));
 
 		File lootFile = new File(playerFolder, fileName);
@@ -382,8 +369,6 @@ public class LootRecorderPlugin extends Plugin
 		{
 			playerFolder = LOOTS_DIR;
 		}
-		// Ensure there is actually a player folder
-		playerFolder.mkdirs();
 
 		// Open File and read line by line
 		File file = new File(playerFolder, fileName);
@@ -431,17 +416,5 @@ public class LootRecorderPlugin extends Plugin
 			default:
 				return null;
 		}
-	}
-
-	@VisibleForTesting
-	int getBarrowsNumber()
-	{
-		return barrowsNumber;
-	}
-
-	@VisibleForTesting
-	int getRaidsNumber()
-	{
-		return raidsNumber;
 	}
 }

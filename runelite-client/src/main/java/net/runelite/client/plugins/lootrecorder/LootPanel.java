@@ -61,7 +61,7 @@ class LootPanel extends JPanel
 		createPanel(this);
 	}
 
-	void createUniques()
+	private void createUniques()
 	{
 		// Clear uniques array
 		this.uniques.clear();
@@ -117,7 +117,7 @@ class LootPanel extends JPanel
 				//.forEach(System.out::println);
 	}
 
-	void createPanel(LootPanel panel)
+	private void createPanel(LootPanel panel)
 	{
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;

@@ -29,7 +29,6 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -40,7 +39,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
@@ -48,27 +46,21 @@ import net.runelite.client.ui.PluginPanel;
 
 
 @Slf4j
-public class LootRecorderPanel extends PluginPanel
+class LootRecorderPanel extends PluginPanel
 {
-	@Inject
-	@Nullable
-	private Client client;
-
 	private final ItemManager itemManager;
 	private final LootRecorderPlugin lootRecorderPlugin;
-	private final LootRecorderConfig lootRecorderConfig;
 
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
 	private Map<String, JPanel> tabsMap = new HashMap<>();
 
 	@Inject
-	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
+	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin)
 	{
 		super(false);
 		this.itemManager = itemManager;
 		this.lootRecorderPlugin = lootRecorderPlugin;
-		this.lootRecorderConfig = lootRecorderConfig;
 
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(layout);
@@ -76,7 +68,7 @@ public class LootRecorderPanel extends PluginPanel
 		createPanel(this);
 	}
 
-	void createPanel(LootRecorderPanel panel)
+	private void createPanel(LootRecorderPanel panel)
 	{
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
@@ -91,9 +83,7 @@ public class LootRecorderPanel extends PluginPanel
 		// Refresh Panel Button
 		JButton refresh = new JButton("Refresh Panel");
 		refresh.addActionListener(e ->
-		{
-			refreshPanel(panel);
-		});
+				refreshPanel(panel));
 
 		// Add to Panel
 		panel.add(tabsPanel);
@@ -101,17 +91,15 @@ public class LootRecorderPanel extends PluginPanel
 		log.info("Panel Created");
 	}
 
-	LootPanel createLootPanel(Tab tab)
+	private LootPanel createLootPanel(Tab tab)
 	{
 		// Grab Tab Data
 		ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
-		// Create Loot Panel
-		LootPanel lootPanel = new LootPanel(data, itemManager);
-		// Return Panel
-		return lootPanel;
+		// Create & Return Loot Panel
+		return new LootPanel(data, itemManager);
 	}
 
-	void refreshPanel(LootRecorderPanel panel)
+	private void refreshPanel(LootRecorderPanel panel)
 	{
 		// Refresh Log Data
 		lootRecorderPlugin.loadAllData();
@@ -126,7 +114,7 @@ public class LootRecorderPanel extends PluginPanel
 		log.info("Refreshed Panel");
 	}
 
-	void refreshLootPanel(LootPanel lootPanel, Tab tab)
+	private void refreshLootPanel(LootPanel lootPanel, Tab tab)
 	{
 		// Refresh data for necessary tab
 		lootRecorderPlugin.loadTabData(tab.getName());
@@ -137,7 +125,7 @@ public class LootRecorderPanel extends PluginPanel
 		this.repaint();
 	}
 
-	void createTab(Tab tab)
+	private void createTab(Tab tab)
 	{
 		// Container Panel for this tab
 		JPanel tabPanel = new JPanel();
@@ -163,9 +151,7 @@ public class LootRecorderPanel extends PluginPanel
 		// Refresh Button
 		JButton refresh = new JButton("Refresh Data");
 		refresh.addActionListener(e ->
-		{
-			refreshLootPanel(lootPanel, tab);
-		});
+				refreshLootPanel(lootPanel, tab));
 		buttons.add(refresh);
 
 		// Add components to Tab Panel
@@ -179,9 +165,7 @@ public class LootRecorderPanel extends PluginPanel
 		AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
 		int idx = tabsPanel.getTabCount() - 1;
 		Runnable resize = () ->
-		{
-			tabsPanel.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
-		};
+				tabsPanel.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
 		icon.onChanged(resize);
 		resize.run();
 
@@ -189,7 +173,7 @@ public class LootRecorderPanel extends PluginPanel
 		log.info("Created " + String.valueOf(tab) + " tab");
 	}
 
-	void removeTab(Tab tab)
+	private void removeTab(Tab tab)
 	{
 		JPanel panel = tabsMap.get(tab.getName().toUpperCase());
 

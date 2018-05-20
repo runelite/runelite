@@ -72,7 +72,7 @@ class LootRecordPanel extends JPanel
 		this.add(total, c);
 	}
 
-	String numberToString(Integer num)
+	private String numberToString(Integer num)
 	{
 		Float v = Float.valueOf(num);
 		String suffix = " gp";
@@ -91,7 +91,7 @@ class LootRecordPanel extends JPanel
 		return (new DecimalFormat("#,###.#").format(v) + suffix);
 	}
 
-	void ColorLabel(JLabel label, Integer val)
+	private void ColorLabel(JLabel label, Integer val)
 	{
 		Color labelColor = Color.yellow;
 		if (val >= 10000000)
