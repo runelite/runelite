@@ -159,7 +159,12 @@ public class KittenPlugin extends Plugin
 		{
 			s = "0" + s;
 		}
-		int previousFollowerID = followerID;
+		int previousFollowerID = 0;
+		if (followerID != 0)
+		{
+			previousFollowerID = followerID;
+		}
+
 		// followerID is the first 2 octets converted into decimals
 		followerID = Integer.parseInt(s.substring(0, 16), 2);
 		if (followerID == previousFollowerID)
@@ -232,6 +237,7 @@ public class KittenPlugin extends Plugin
 		{
 			if (followerID == previousFeline) // The same cat is back!
 			{
+				catSpawned = Instant.now();
 				timeSpendGrowing = config.secondsAlive();
 				addKittenGrowthBox((14400 - timeSpendGrowing));
 			}
@@ -259,7 +265,6 @@ public class KittenPlugin extends Plugin
 			saveGrowthProgress();
 			catSpawned = null;
 		}
-
 		infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
 		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
 		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
