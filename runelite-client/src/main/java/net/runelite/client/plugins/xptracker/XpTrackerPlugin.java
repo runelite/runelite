@@ -120,8 +120,9 @@ public class XpTrackerPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
-			.name("XP Tracker")
+			.tooltip("XP Tracker")
 			.icon(icon)
+			.priority(2)
 			.panel(xpPanel)
 			.build();
 

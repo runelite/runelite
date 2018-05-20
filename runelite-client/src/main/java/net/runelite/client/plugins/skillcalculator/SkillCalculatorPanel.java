@@ -38,6 +38,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 class SkillCalculatorPanel extends PluginPanel
@@ -64,10 +65,13 @@ class SkillCalculatorPanel extends PluginPanel
 		uiButtonGridConstraints.insets = new Insets(2, 2, 2, 2);
 
 		uiButtonGrid.setLayout(uiButtonGridLayout);
+		uiButtonGrid.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		uiButtonGrid.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		addCalculatorButtons();
 
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
+		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
 		uiCalculator = new SkillCalculator(client, uiInput);
 
 		add(uiButtonGrid);
