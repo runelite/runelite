@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalTime;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
@@ -124,15 +123,43 @@ class XpStateSingle
 
 	String getTimeTillLevel()
 	{
-		float xpPerSecond = (float)xpGained / (float)getTimeElapsedInSeconds();
+		long seconds = getTimeElapsedInSeconds();
 
-		if (xpPerSecond > 0)
+		if (seconds <= 0 || xpGained <= 0)
 		{
-			float remainingSeconds = getXpRemaining() / xpPerSecond;
-			return LocalTime.MIN.plusSeconds((long)remainingSeconds).toString();
+			// Infinity symbol
+			return "\u221e";
 		}
 
-		return "\u221e";
+		// formula is xpRemaining / xpPerSecond
+		// xpPerSecond being xpGained / seconds
+		// This can be simplified so division is only done once and we can work in whole numbers!
+		long remainingSeconds = (getXpRemaining() * seconds) / xpGained;
+
+		// Java 8 doesn't have good duration / period objects to represent spans of time that can be formatted
+		// Rather than importing another dependency like joda time (which is practically built into java 10)
+		// below will be a custom formatter that handles spans larger than 1 day
+
+		long durationDays = remainingSeconds / (24 * 60 * 60);
+		long durationHours = (remainingSeconds % (24 * 60 * 60)) / (60 * 60);
+		long durationMinutes = (remainingSeconds % (60 * 60)) / 60;
+		long durationSeconds = remainingSeconds % 60;
+
+		if (durationDays > 1)
+		{
+			return String.format("%d days %02d:%02d:%02d", durationDays, durationHours, durationMinutes, durationSeconds);
+		}
+		else if (durationDays == 1)
+		{
+			return String.format("1 day %02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
+		}
+		else if (durationHours > 0)
+		{
+			return String.format("%02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
+		}
+
+		// Minutes and seconds will always be present
+		return String.format("%02d:%02d", durationMinutes, durationSeconds);
 	}
 
 
