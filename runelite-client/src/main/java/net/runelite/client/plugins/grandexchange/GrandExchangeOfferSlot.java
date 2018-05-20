@@ -140,7 +140,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		JPanel faceCard = new JPanel();
-		faceCard.setOpaque(false);
+		faceCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
 		faceCard.addMouseListener(ml);
 
@@ -162,7 +162,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		switchFaceViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerFaceDetails = new JPanel();
-		offerFaceDetails.setOpaque(false);
+		offerFaceDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		offerFaceDetails.setLayout(new GridLayout(2, 1, 0, 2));
 
 		offerFaceDetails.add(itemName);
@@ -173,7 +173,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		faceCard.add(switchFaceViewIcon, BorderLayout.EAST);
 
 		JPanel detailsCard = new JPanel();
-		detailsCard.setOpaque(false);
+		detailsCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
 		detailsCard.addMouseListener(ml);
@@ -192,7 +192,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerDetails = new JPanel();
-		offerDetails.setOpaque(false);
+		offerDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 		offerDetails.setLayout(new GridLayout(2, 1));
 
 		offerDetails.add(itemPrice);

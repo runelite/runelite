@@ -60,7 +60,7 @@ class UICombinedActionSlot extends JPanel
 		add(uiIcon, BorderLayout.LINE_START);
 
 		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
-		uiInfo.setOpaque(false);
+		uiInfo.setBackground(Color.ORANGE);
 
 		uiLabelTitle = new JShadowedLabel("No Action Selected");
 		uiInfo.add(uiLabelTitle);

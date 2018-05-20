@@ -91,7 +91,6 @@ class FarmingTrackerPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		display.setOpaque(false);
 		display.setBorder(new EmptyBorder(10, 10, 8, 10));
 
 		tabGroup.setBorder(new EmptyBorder(10, 1, 0, 0));
