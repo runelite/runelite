@@ -116,21 +116,6 @@ public class Raid
 		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
 	}
 
-	public String getFullRotationString()
-	{
-		return Joiner.on(", ").join(Arrays.stream(rooms).map((raidRoom) ->
-		{
-			switch(raidRoom.getType())
-			{
-				case COMBAT:
-					return raidRoom.getBoss().getName();
-				case PUZZLE:
-					return raidRoom.getPuzzle().getName();
-			}
-			return null;
-		}).toArray());
-	}
-
 	public String toCode()
 	{
 		StringBuilder builder = new StringBuilder();
