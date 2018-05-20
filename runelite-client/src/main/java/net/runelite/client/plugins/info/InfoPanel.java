@@ -183,7 +183,6 @@ public class InfoPanel extends PluginPanel
 		final Color hoverColor = ColorScheme.DARKER_GRAY_COLOR.brighter().brighter();
 		final Color pressedColor = ColorScheme.DARKER_GRAY_COLOR.brighter();
 
-
 		container.addMouseListener(new MouseAdapter()
 		{
 			@Override
