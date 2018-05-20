@@ -85,11 +85,11 @@ public enum UniqueItem
 	DRAGON_SWORD("Dragon sword", ItemID.DRAGON_SWORD, "Raids", "Melee", 2),
 	DRAGON_CLAWS("Dragon claws", ItemID.DRAGON_CLAWS, "Raids", "Melee", 2),
 	DINHS_BULWARK("Dinh's bulwark", ItemID.DINHS_BULWARK, "Raids", "Melee", 2),
-	ELDER_MAUL("Elder maul", ItemID.ELDER_MAUL, "Raids", "Melee", 2),
+	ELDER_MAUL("Elder maul", ItemID.ELDER_MAUL_21003, "Raids", "Melee", 2),
 	// Prayers
-	DEXTEROUS_PRAYER_SCROLL("Dexterous prayer scroll", ItemID.DEXTEROUS_PRAYER_SCROLL, "Raids", "Prayer", 3),
 	TORN_PRAYER_SCROLL("Torn prayer scroll", ItemID.TORN_PRAYER_SCROLL, "Raids", "Prayer", 3),
 	ARCANE_PRAYER_SCROLL("Arcane prayer scroll", ItemID.ARCANE_PRAYER_SCROLL, "Raids", "Prayer", 3),
+	DEXTEROUS_PRAYER_SCROLL("Dexterous prayer scroll", ItemID.DEXTEROUS_PRAYER_SCROLL, "Raids", "Prayer", 3),
 	// Other
 	DRAGON_HARPOON("Dragon harpoon", ItemID.DRAGON_HARPOON, "Raids", "Other", 4),
 	DARK_RELIC("Dark relic", ItemID.DARK_RELIC, "Raids", "Other", 4);

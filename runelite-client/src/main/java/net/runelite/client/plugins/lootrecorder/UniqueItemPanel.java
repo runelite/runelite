@@ -101,11 +101,10 @@ class UniqueItemPanel extends JPanel
 						}
 						else
 						{
-							g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+							g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 						}
 						g2d.drawImage(image, null, 0, ((c.ipady - image.getHeight()) / 2));
 						g2d.dispose();
-						this.repaint();
 					}
 				};
 
