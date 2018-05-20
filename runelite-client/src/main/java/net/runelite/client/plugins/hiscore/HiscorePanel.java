@@ -251,6 +251,18 @@ public class HiscorePanel extends PluginPanel
 						selectedEndPoint = endpoint;
 						updateButtons();
 					}
+
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+						panel.setBackground(ColorScheme.DARKER_GRAY_COLOR.brighter().brighter());
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+						panel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+					}
 				});
 
 				endPoints.add(panel);

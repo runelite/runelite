@@ -37,6 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -80,6 +81,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.SwingUtil;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -88,6 +90,8 @@ public class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private static final ImageIcon CONFIG_ICON;
+	private static final ImageIcon CONFIG_ICON_HOVEER;
+	private static final ImageIcon CONFIG_ICON_CLICKED;
 	private static final ImageIcon ON_SWITCHER;
 	private static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon SEARCH;
@@ -98,7 +102,10 @@ public class ConfigPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				CONFIG_ICON = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png")));
+				BufferedImage configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
+				CONFIG_ICON = new ImageIcon(configIcon);
+				CONFIG_ICON_CLICKED = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -200));
+				CONFIG_ICON_HOVEER = new ImageIcon(SwingUtil.grayscaleOffset(SwingUtil.resizeImage(configIcon, (int)(configIcon.getWidth() * 1.1), (int)(configIcon.getHeight() * 1.1)), -100));
 				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
 				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
@@ -234,6 +241,8 @@ public class ConfigPanel extends PluginPanel
 		// Create edit config button and disable it by default
 		final JLabel editConfigButton = new JLabel(CONFIG_ICON);
 		editConfigButton.setPreferredSize(new Dimension(25, 0));
+		editConfigButton.setOpaque(true);
+		editConfigButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		editConfigButton.setVisible(false);
 
 		// If we have configuration proxy enable the button and add edit config listener
@@ -249,7 +258,26 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void mousePressed(MouseEvent mouseEvent)
 					{
+						editConfigButton.setIcon(CONFIG_ICON_CLICKED);
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e)
+					{
 						openGroupConfigPanel(config, configDescriptor, configManager);
+						editConfigButton.setIcon(CONFIG_ICON);
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+						editConfigButton.setIcon(CONFIG_ICON_HOVEER);
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+						editConfigButton.setIcon(CONFIG_ICON);
 					}
 				});
 				editConfigButton.setVisible(true);
