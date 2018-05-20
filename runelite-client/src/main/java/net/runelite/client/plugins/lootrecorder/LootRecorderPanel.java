@@ -81,8 +81,11 @@ public class LootRecorderPanel extends PluginPanel
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			// Check if this is being recorded?
-			createTab(tab);
+			// Only show tabs for recorded options
+			if (lootRecorderPlugin.isBeingRecorded(tab.getName()))
+			{
+				createTab(tab);
+			}
 		}
 
 		// Refresh Panel Button

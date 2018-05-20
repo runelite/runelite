@@ -385,6 +385,19 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	Boolean isBeingRecorded(String tabName)
+	{
+		switch (tabName.toUpperCase())
+		{
+			case "BARROWS":
+				return lootRecorderConfig.recordBarrowsChest();
+			case "RAIDS":
+				return lootRecorderConfig.recordRaidsChest();
+			default:
+				return null;
+		}
+	}
+
 	@VisibleForTesting
 	int getBarrowsNumber()
 	{
