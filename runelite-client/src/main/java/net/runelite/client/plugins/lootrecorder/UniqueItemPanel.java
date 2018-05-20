@@ -66,7 +66,7 @@ class UniqueItemPanel extends JPanel
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.ipady = 50;
+		c.ipady = 20;
 
 		// Add each Item icon to the panel
 		for (UniqueItem item : items)
@@ -97,27 +97,26 @@ class UniqueItemPanel extends JPanel
 
 	void attachImage(AsyncBufferedImage image, GridBagConstraints c, Integer quantity)
 	{
+		BufferedImage opaque;
 		if (quantity <= 0)
 		{
-			BufferedImage opqaue = createOpaqueImage(image);
-			ImageIcon o = new ImageIcon(opqaue);
-			JLabel icon = new JLabel(o);
-			this.add(icon, c);
+			opaque = createOpaqueImage(image, 0.3f);
 		}
 		else
 		{
-			JLabel icon = new JLabel();
-			image.addTo(icon);
-			this.add(icon, c);
+			opaque = createOpaqueImage(image, 1.0f);
 		}
+		ImageIcon o = new ImageIcon(opaque);
+		JLabel icon = new JLabel(o);
+		this.add(icon, c);
 		c.gridx++;
 	}
 
-	private BufferedImage createOpaqueImage(AsyncBufferedImage image)
+	private BufferedImage createOpaqueImage(AsyncBufferedImage image, Float alpha)
 	{
 		BufferedImage x = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D)x.getGraphics();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		g2d.drawImage(image, null, 0, 0);
 		g2d.dispose();
 		return x;
