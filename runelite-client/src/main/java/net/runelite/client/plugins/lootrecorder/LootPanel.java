@@ -26,6 +26,7 @@ package net.runelite.client.plugins.lootrecorder;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,7 @@ import lombok.Getter;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
+import net.runelite.http.api.item.ItemPrice;
 
 @Getter
 class LootPanel extends JPanel
@@ -76,7 +78,24 @@ class LootPanel extends JPanel
 					// Create new entry
 					boolean shouldStack = item.isStackable() || de.getItem_amount() > 1;
 					AsyncBufferedImage icon = itemManager.getImage(de.getItem_id(), de.getItem_amount(), shouldStack);
-					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItem_amount(), item.getPrice(), icon, item);
+					Integer price;
+					try
+					{
+						ItemPrice IM = itemManager.getItemPrice(item.getId());
+						if (IM == null)
+						{
+							price = 1;
+						}
+						else
+						{
+							price = IM.getPrice();
+						}
+					}
+					catch (IOException e)
+					{
+						price = item.getPrice();
+					}
+					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItem_amount(), price, icon, item);
 					this.uniques.put(item.getName(), entry);
 				}
 				else
