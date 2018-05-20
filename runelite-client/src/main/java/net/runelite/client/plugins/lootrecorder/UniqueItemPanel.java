@@ -89,9 +89,10 @@ class UniqueItemPanel extends JPanel
 					shouldStack = shouldStack || it.getAmount() > 1;
 				}
 				AsyncBufferedImage image = itemManager.getImage(imageID, quantity, shouldStack);
+				Integer finalQuantity = quantity;
 				Runnable task = () ->
 				{
-					this.attachImage(image, c);
+					attachImage(image, c, finalQuantity);
 				};
 				image.onChanged(() -> SwingUtilities.invokeLater(task));
 			}
@@ -99,12 +100,21 @@ class UniqueItemPanel extends JPanel
 
 	}
 
-	void attachImage(AsyncBufferedImage image, GridBagConstraints c)
+	void attachImage(AsyncBufferedImage image, GridBagConstraints c, Integer quantity)
 	{
-		BufferedImage opqaue = createOpaqueImage(image);
-		ImageIcon o = new ImageIcon(opqaue);
-		JLabel icon = new JLabel(o);
-		this.add(icon, c);
+		if(quantity <= 0)
+		{
+			BufferedImage opqaue = createOpaqueImage(image);
+			ImageIcon o = new ImageIcon(opqaue);
+			JLabel icon = new JLabel(o);
+			this.add(icon, c);
+		}
+		else
+		{
+			JLabel icon = new JLabel();
+			image.addTo(icon);
+			this.add(icon, c);
+		}
 		c.gridx++;
 		this.revalidate();
 	}
