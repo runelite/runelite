@@ -54,7 +54,6 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 class XpInfoBox extends JPanel
 {
-	private final Client client;
 	private final JPanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -78,7 +77,6 @@ class XpInfoBox extends JPanel
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
-		this.client = client;
 		this.panel = panel;
 		this.skill = skill;
 
@@ -94,7 +92,7 @@ class XpInfoBox extends JPanel
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
-		reset.addActionListener(e -> reset());
+		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
