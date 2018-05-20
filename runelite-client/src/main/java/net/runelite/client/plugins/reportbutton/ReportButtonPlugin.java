@@ -45,6 +45,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.RuneLite;
 
 @PluginDescriptor(
 		name = "Report Button"
@@ -55,8 +56,8 @@ public class ReportButtonPlugin extends Plugin
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
-	private static final DateTimeFormatter DATE_TIME_FORMAT_OTHER = DateTimeFormatter.ofPattern("kk:mm:ss");
+	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)
+			.withLocale(RuneLite.locale);
 
 	private Instant loginTime;
 	private boolean ready;
@@ -161,10 +162,6 @@ public class ReportButtonPlugin extends Plugin
 
 	private String getLocalTime()
 	{
-		if (config.showOtherClock())
-		{
-			return LocalTime.now().format(DATE_TIME_FORMAT_OTHER);
-		}
 		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
 
@@ -183,20 +180,12 @@ public class ReportButtonPlugin extends Plugin
 	private String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
-		if (config.showOtherClock())
-		{
-			return time.format(DATE_TIME_FORMAT_OTHER);
-		}
 		return time.format(DATE_TIME_FORMAT);
 	}
 
 	private String getJagexTime()
 	{
 		LocalTime time = LocalTime.now(JAGEX);
-		if (config.showOtherClock())
-		{
-			return time.format(DATE_TIME_FORMAT_OTHER);
-		}
 		return time.format(DATE_TIME_FORMAT);
 	}
 }

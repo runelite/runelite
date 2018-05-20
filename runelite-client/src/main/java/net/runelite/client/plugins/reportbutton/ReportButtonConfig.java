@@ -45,14 +45,4 @@ public interface ReportButtonConfig extends Config
 		return TimeStyle.LOGIN_TIME;
 	}
 
-	@ConfigItem(
-		keyName = "clock",
-		name = "24-hour clock",
-		description = "Configuration for using a 24-hour clock format"
-	)
-	default boolean showOtherClock()
-	{
-		return false;
-	}
-
 }
