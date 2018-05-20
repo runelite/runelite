@@ -254,6 +254,17 @@ public class RaidsPlugin extends Plugin
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
+
+				String chatMessage = new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append(raid.toRoomsString())
+						.append(ChatColorType.NORMAL)
+						.build();
+
+				chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.CLANCHAT_INFO)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -320,9 +331,9 @@ public class RaidsPlugin extends Plugin
 							.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
-						.build());
+							.type(ChatMessageType.CLANCHAT_INFO)
+							.runeLiteFormattedMessage(chatMessage)
+							.build());
 				}
 			}
 		}
