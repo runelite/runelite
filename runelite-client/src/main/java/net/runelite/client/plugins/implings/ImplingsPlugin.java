@@ -34,7 +34,9 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -87,6 +89,15 @@ public class ImplingsPlugin extends Plugin
 		if (impling != null)
 		{
 			implings.add(npc);
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			implings.clear();
 		}
 	}
 
