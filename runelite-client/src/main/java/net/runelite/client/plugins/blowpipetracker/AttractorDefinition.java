@@ -26,7 +26,8 @@ package net.runelite.client.plugins.blowpipetracker;
 
 import net.runelite.api.ItemID;
 
-public enum AttractorDefinition {
+public enum AttractorDefinition
+{
 
 	ATTRACTOR(ItemID.AVAS_ATTRACTOR, 0.2f, 0.16f, 0.64f),
 	ACCUMULATOR(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f),
