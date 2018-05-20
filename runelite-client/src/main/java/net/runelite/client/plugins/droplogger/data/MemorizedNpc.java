@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.droplogger.data;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+import lombok.Getter;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+
+public class MemorizedNpc extends MemorizedActor
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory and clue scroll rewards.
-	 */
-	REWARD_CHEST(141),
-	/**
-	 * Chambers of Xeric reward chest inventory at the end of the raid.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581);
+	@Getter
+	private NPCComposition npcComposition;
 
-	private final int id;
-
-	InventoryID(int id)
+	public MemorizedNpc(NPC npc)
 	{
-		this.id = id;
-	}
-
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
-	{
-		return id;
+		super(npc);
+		NPCComposition composition = npc.getComposition();
+		if (composition == null)
+		{
+			composition = composition.transform();
+		}
+		this.npcComposition = composition;
 	}
 }

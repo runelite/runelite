@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.ui.components;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+import net.runelite.client.ui.ColorScheme;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.Component;
+
+public class RuneliteListItemRenderer extends JLabel implements ListCellRenderer
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory and clue scroll rewards.
-	 */
-	REWARD_CHEST(141),
-	/**
-	 * Chambers of Xeric reward chest inventory at the end of the raid.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581);
-
-	private final int id;
-
-	InventoryID(int id)
+	@Override
+	public Component getListCellRendererComponent(JList jlist, Object o, int index, boolean isSelected, boolean cellHasFocus)
 	{
-		this.id = id;
-	}
+		RuneliteList list = (RuneliteList)jlist;
+		if (isSelected)
+		{
+			setBackground(ColorScheme.BRAND_ORANGE_TRANSPARENT);
+			setForeground(Color.WHITE);
+			setOpaque(true);
+		}
+		else
+		{
+			setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			setOpaque(false);
+		}
+		if (list.getHoveredIndex() == index)
+		{
+			setForeground(Color.WHITE);
+		}
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
-	{
-		return id;
+		setBorder(new EmptyBorder(1, 4, 1, 4));
+
+		String text = o.toString();
+		setText(text);
+
+		return this;
 	}
 }
