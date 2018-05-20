@@ -196,7 +196,6 @@ public class InfoPanel extends PluginPanel
 			public void mouseReleased(MouseEvent e)
 			{
 				container.setBackground(hoverColor);
-				LinkBrowser.browse(url);
 			}
 
 			@Override
