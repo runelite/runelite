@@ -29,7 +29,9 @@ import java.awt.GridBagLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -106,6 +108,13 @@ class LootPanel extends JPanel
 				}
 			});
 		});
+
+		// Sort Uniques
+		this.uniques = this.uniques.entrySet()
+				.stream()
+				.sorted(Map.Entry.comparingByKey())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+				//.forEach(System.out::println);
 	}
 
 	void createPanel(LootPanel panel)
