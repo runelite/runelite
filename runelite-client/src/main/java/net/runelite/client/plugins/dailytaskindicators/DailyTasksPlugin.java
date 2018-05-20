@@ -33,8 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -102,9 +102,9 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (event.getType() != ChatMessageType.SERVER || !event.getMessage().equals("Welcome to RuneScape."))
+		if (event.getPlayer() != client.getLocalPlayer())
 		{
 			return;
 		}
