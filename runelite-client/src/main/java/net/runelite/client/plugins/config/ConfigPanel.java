@@ -234,6 +234,8 @@ public class ConfigPanel extends PluginPanel
 		// Create edit config button and disable it by default
 		final JLabel editConfigButton = new JLabel(CONFIG_ICON);
 		editConfigButton.setPreferredSize(new Dimension(25, 0));
+		editConfigButton.setOpaque(true);
+		editConfigButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		editConfigButton.setVisible(false);
 
 		// If we have configuration proxy enable the button and add edit config listener
@@ -250,6 +252,20 @@ public class ConfigPanel extends PluginPanel
 					public void mousePressed(MouseEvent mouseEvent)
 					{
 						openGroupConfigPanel(config, configDescriptor, configManager);
+						editConfigButton.setBackground(ColorScheme.DARK_GRAY_COLOR); // done to prevent hover color from staying
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+						editConfigButton.setBackground(ColorScheme.DARK_GRAY_COLOR.brighter().brighter());
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+						super.mouseExited(e);
+						editConfigButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
 					}
 				});
 				editConfigButton.setVisible(true);
