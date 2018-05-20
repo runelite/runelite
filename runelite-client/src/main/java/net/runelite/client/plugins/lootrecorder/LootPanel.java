@@ -134,13 +134,14 @@ class LootPanel extends JPanel
 		c.gridy = 0;
 
 		// Attach all the Unique Items
+		/*
 		this.uniqueMap.forEach((setPosition, set) ->
 		{
 			UniqueItemPanel p = new UniqueItemPanel(set, this.uniques, this.itemManager);
 			panel.add(p, c);
 			c.gridy++;
 		});
-
+		*/
 		// Loop over each unique item and create a LootRecordPanel
 		this.uniques.forEach((lr, item) ->
 		{

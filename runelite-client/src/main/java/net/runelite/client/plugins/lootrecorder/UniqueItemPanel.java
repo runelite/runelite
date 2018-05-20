@@ -30,28 +30,24 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 
-import com.sun.scenario.DelayedRunnable;
 import lombok.Getter;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.util.SwingUtil;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Map;
 
 @Getter
 class UniqueItemPanel extends JPanel
 {
-	private ItemManager itemManager;
+	private final ItemManager itemManager;
 	private ArrayList<UniqueItem> items;
 	private Map<String, LootRecord> loots;
 
@@ -73,36 +69,37 @@ class UniqueItemPanel extends JPanel
 		c.ipady = 50;
 
 		// Add each Item icon to the panel
-		this.items.forEach(item ->
-			{
-				Integer id = item.getItemID();
-				ItemComposition comp = _itemManager.getItemComposition(id);
-				LootRecord it = loots.get(comp.getName());
-				boolean shouldStack = comp.isStackable();
-				Integer quantity = 0;
-				Integer imageID = comp.getId();
+		for (UniqueItem item : items)
+		{
+			System.out.println(item);
+			Integer id = item.getItemID();
+			System.out.println(id);
+			ItemComposition comp = itemManager.getItemComposition(id);
+			LootRecord it = loots.get(comp.getName());
+			boolean shouldStack = comp.isStackable();
+			Integer quantity = 0;
+			Integer imageID = comp.getId();
 
-				// If we have a loot entry for this item then update the icon accordingly
-				if (it != null)
-				{
-					quantity = it.getAmount();
-					shouldStack = shouldStack || it.getAmount() > 1;
-				}
-				AsyncBufferedImage image = itemManager.getImage(imageID, quantity, shouldStack);
-				Integer finalQuantity = quantity;
-				Runnable task = () ->
-				{
-					attachImage(image, c, finalQuantity);
-				};
-				image.onChanged(() -> SwingUtilities.invokeLater(task));
+			// If we have a loot entry for this item then update the icon accordingly
+			if (it != null)
+			{
+				quantity = it.getAmount();
+				shouldStack = shouldStack || it.getAmount() > 1;
 			}
-		);
+			AsyncBufferedImage image = itemManager.getImage(imageID, quantity, shouldStack);
+			Integer finalQuantity = quantity;
+			Runnable task = () ->
+			{
+				attachImage(image, c, finalQuantity);
+			};
+			image.onChanged(() -> SwingUtilities.invokeLater(task));
+		}
 
 	}
 
 	void attachImage(AsyncBufferedImage image, GridBagConstraints c, Integer quantity)
 	{
-		if(quantity <= 0)
+		if (quantity <= 0)
 		{
 			BufferedImage opqaue = createOpaqueImage(image);
 			ImageIcon o = new ImageIcon(opqaue);
