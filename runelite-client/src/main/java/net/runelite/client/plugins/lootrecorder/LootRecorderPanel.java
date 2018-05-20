@@ -36,13 +36,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
-
 
 
 @Slf4j
@@ -181,6 +181,16 @@ class LootRecorderPanel extends PluginPanel
 		JPanel panel = tabsMap.get(tab.getName().toUpperCase());
 
 		panel.getParent().remove(panel);
+	}
+
+	void updateTab(String tabName)
+	{
+		// Recreating tab
+		JPanel panel = tabsMap.get(tabName.toUpperCase());
+		panel.getParent().remove(panel);
+		final Tab tab = Tab.getByName(tabName);
+		SwingUtilities.invokeLater(() -> createTab(tab));
+		//createTab(Tab.getByName(tabName));
 	}
 
 	void toggleTab(String tabName, Boolean status)

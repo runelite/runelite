@@ -29,10 +29,13 @@ import com.google.inject.Provides;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -183,6 +186,7 @@ public class LootRecorderPlugin extends Plugin
 			log.info("Recorded a barrows chest!");
 			log.info("Entry:", entry);
 			lootRecordedAlert("Barrows Chest added to log.");
+			panel.updateTab("Barrows");
 		}
 
 		// Raids Chest
@@ -195,6 +199,7 @@ public class LootRecorderPlugin extends Plugin
 			log.info("Recorded a raids chest!");
 			log.info("Entry:", entry);
 			lootRecordedAlert("Raid Loot added to log.");
+			panel.updateTab("Barrows");
 		}
 	}
 
@@ -286,6 +291,15 @@ public class LootRecorderPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		if (event.getMessage().equals("Test"))
+		{
+			ArrayList<DropEntry> drops = new ArrayList<>();
+			drops.add(new DropEntry(4755, 20));
+			LootEntry entry = new LootEntry(999, drops);
+			barrows.add(entry);
+			addLootEntry(barrowsFilename, entry);
+			panel.updateTab("Barrows");
+		}
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
@@ -346,8 +360,12 @@ public class LootRecorderPlugin extends Plugin
 		File lootFile = new File(playerFolder, fileName);
 		try
 		{
-			final Path path = Paths.get(String.valueOf(lootFile));
-			Files.write(path, Collections.singletonList(dataAsString), StandardCharsets.UTF_8, Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
+			//final Path path = Paths.get(String.valueOf(lootFile));
+			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), true));
+			file.append(dataAsString);
+			file.newLine();
+			file.close();
+			//Files.write(path, Collections.singletonList(dataAsString), StandardCharsets.UTF_8, Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
 		}
 		catch (IOException ioe)
 		{
