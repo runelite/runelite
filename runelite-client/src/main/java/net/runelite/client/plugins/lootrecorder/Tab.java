@@ -28,6 +28,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequiredArgsConstructor
 @Getter
 public enum Tab
@@ -37,4 +40,22 @@ public enum Tab
 	
 	private final String name;
 	private final int itemID;
+
+	private static final Map<String, Tab> byName = buildMap();
+
+	public static Tab getByName(String name)
+	{
+		return byName.get(name.toUpperCase());
+	}
+
+	private static Map<String, Tab> buildMap()
+	{
+		Map<String, Tab> byName = new HashMap<>();
+		for (Tab tab : values())
+		{
+			byName.put(tab.getName().toUpperCase(), tab);
+		}
+
+		return byName;
+	}
 }

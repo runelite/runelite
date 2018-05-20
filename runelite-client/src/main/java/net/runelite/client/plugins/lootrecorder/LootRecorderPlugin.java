@@ -196,18 +196,36 @@ public class LootRecorderPlugin extends Plugin
 			return;
 		}
 
-		// Panel Toggle
-		if (event.getKey().equals("showLootTotals"))
+		switch (event.getKey())
 		{
-			loadAllData();
-			if (lootRecorderConfig.showLootTotals())
-			{
-				createPanel();
-			}
-			else
-			{
-				removePanel();
-			}
+			case "showLootTotals":
+				loadAllData();
+				if (lootRecorderConfig.showLootTotals())
+				{
+					createPanel();
+				}
+				else
+				{
+					removePanel();
+				}
+				return;
+			case "recordBarrowsChest":
+				ToggleTab("Barrows", lootRecorderConfig.recordBarrowsChest());
+				return;
+			case "recordRaidsChest":
+				ToggleTab("Raids", lootRecorderConfig.recordRaidsChest());
+				return;
+			default:
+				break;
+		}
+	}
+
+
+	void ToggleTab(String tabName, Boolean status)
+	{
+		if (lootRecorderConfig.showLootTotals())
+		{
+			panel.toggleTab(tabName, status);
 		}
 	}
 

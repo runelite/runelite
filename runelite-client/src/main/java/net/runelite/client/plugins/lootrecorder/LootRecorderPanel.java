@@ -27,6 +27,8 @@ package net.runelite.client.plugins.lootrecorder;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.BoxLayout;
@@ -58,6 +60,8 @@ public class LootRecorderPanel extends PluginPanel
 
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
+	private Map<String, JPanel> tabsMap = new HashMap<>();
+
 	@Inject
 	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin, LootRecorderConfig lootRecorderConfig)
 	{
@@ -77,53 +81,8 @@ public class LootRecorderPanel extends PluginPanel
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			// Container Panel for this tab
-			JPanel tabPanel = new JPanel();
-			tabPanel.setLayout(new BoxLayout(tabPanel, BoxLayout.Y_AXIS));
-			tabPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
-
-			// Button Container
-			JPanel buttons = new JPanel();
-			buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
-			buttons.setBorder(new EmptyBorder(0, 0, 4, 0));
-
-			// Loot Panel
-			LootPanel lootPanel = createLootPanel(tab);
-
-			// Scrolling Ability for lootPanel
-			JPanel wrapped = new JPanel(new BorderLayout());
-			wrapped.add(lootPanel, BorderLayout.NORTH);
-			JScrollPane scroller = new JScrollPane(wrapped);
-			scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			scroller.getVerticalScrollBar().setUnitIncrement(16);
-
-
-			// Refresh Button
-			JButton refresh = new JButton("Refresh Data");
-			refresh.addActionListener(e ->
-			{
-				refreshLootPanel(lootPanel, tab);
-			});
-			buttons.add(refresh);
-
-			// Add components to Tab Panel
-			tabPanel.add(buttons);
-			tabPanel.add(scroller);
-
-			// Add new tab to panel
-			tabsPanel.addTab(null, null, tabPanel, tab.getName());
-
-			// Add Tab Icon
-			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
-			int idx = tabsPanel.getTabCount() - 1;
-			Runnable resize = () ->
-			{
-				tabsPanel.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
-			};
-			icon.onChanged(resize);
-			resize.run();
-
-			log.info("Created " + String.valueOf(tab) + " tab");
+			// Check if this is being recorded?
+			createTab(tab);
 		}
 
 		// Refresh Panel Button
@@ -173,5 +132,79 @@ public class LootRecorderPanel extends PluginPanel
 		// Ensure changes are applied
 		this.revalidate();
 		this.repaint();
+	}
+
+	void createTab(Tab tab)
+	{
+		// Container Panel for this tab
+		JPanel tabPanel = new JPanel();
+		tabPanel.setLayout(new BoxLayout(tabPanel, BoxLayout.Y_AXIS));
+		tabPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
+
+		// Button Container
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+		buttons.setBorder(new EmptyBorder(0, 0, 4, 0));
+
+		// Loot Panel
+		LootPanel lootPanel = createLootPanel(tab);
+
+		// Scrolling Ability for lootPanel
+		JPanel wrapped = new JPanel(new BorderLayout());
+		wrapped.add(lootPanel, BorderLayout.NORTH);
+		JScrollPane scroller = new JScrollPane(wrapped);
+		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroller.getVerticalScrollBar().setUnitIncrement(16);
+
+
+		// Refresh Button
+		JButton refresh = new JButton("Refresh Data");
+		refresh.addActionListener(e ->
+		{
+			refreshLootPanel(lootPanel, tab);
+		});
+		buttons.add(refresh);
+
+		// Add components to Tab Panel
+		tabPanel.add(buttons);
+		tabPanel.add(scroller);
+
+		// Add new tab to panel
+		tabsPanel.addTab(tab.getName(), null, tabPanel, tab.getName());
+
+		// Add Tab Icon
+		AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
+		int idx = tabsPanel.getTabCount() - 1;
+		Runnable resize = () ->
+		{
+			tabsPanel.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
+		};
+		icon.onChanged(resize);
+		resize.run();
+
+		tabsMap.put(tab.getName().toUpperCase(), tabPanel);
+		log.info("Created " + String.valueOf(tab) + " tab");
+	}
+
+	void removeTab(Tab tab)
+	{
+		JPanel panel = tabsMap.get(tab.getName().toUpperCase());
+
+		panel.getParent().remove(panel);
+	}
+
+	void toggleTab(String tabName, Boolean status)
+	{
+		Tab tab = Tab.getByName(tabName);
+		log.info("Toggling: ");
+		log.info(tab.getName());
+		if (status)
+		{
+			createTab(tab);
+		}
+		else
+		{
+			removeTab(tab);
+		}
 	}
 }
