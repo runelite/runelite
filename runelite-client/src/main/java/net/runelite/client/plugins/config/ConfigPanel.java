@@ -264,7 +264,6 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void mouseExited(MouseEvent e)
 					{
-						super.mouseExited(e);
 						editConfigButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
 					}
 				});
