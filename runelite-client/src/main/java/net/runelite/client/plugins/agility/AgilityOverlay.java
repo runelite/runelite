@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
+import static net.runelite.client.plugins.agility.Obstacles.AGILITY_PYRAMID_REGIONS;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -68,8 +69,8 @@ public class AgilityOverlay extends Overlay
 		final Tile markOfGrace = plugin.getMarkOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
 		{
-			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay())
+			if (!config.highlightShortcuts() && Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) ||
+				!config.showTrapOverlay() && Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
 			{
 				return;
 			}
@@ -80,11 +81,15 @@ public class AgilityOverlay extends Overlay
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
 				{
-					Polygon polygon = object.getCanvasTilePoly();
-					if (polygon != null)
+					if (AGILITY_PYRAMID_REGIONS.contains(object.getWorldLocation().getRegionID()))
 					{
-						OverlayUtil.renderPolygon(graphics, polygon, config.getTrapColor());
+						Polygon polygon = object.getCanvasTilePoly();
+						if (polygon != null)
+						{
+							OverlayUtil.renderPolygon(graphics, polygon, config.getTrapColor());
+						}
 					}
+
 					return;
 				}
 
