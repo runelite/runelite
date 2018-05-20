@@ -28,6 +28,7 @@ import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.FontManager;
 
 class BookPanel extends JPanel
@@ -36,6 +37,9 @@ class BookPanel extends JPanel
 
 	BookPanel(Book b)
 	{
+		setBorder(new EmptyBorder(3, 3, 3, 3));
+		setOpaque(false);
+
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 

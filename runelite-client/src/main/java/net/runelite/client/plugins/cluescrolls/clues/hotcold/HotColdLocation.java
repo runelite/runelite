@@ -105,7 +105,7 @@ public enum HotColdLocation
 	KANDARIN_KHAZARD_BATTLEFIELD(new WorldPoint(2518, 3249, 0), KANDARIN, "Khazard Battlefield, in the small ruins south of tracker gnome 2."),
 	KANDARIN_WEST_ARDY(new WorldPoint(2533, 3320, 0), KANDARIN, "West Ardougne, near the staircase outside the Civic Office."),
 	KANDARIN_SW_TREE_GNOME_STRONGHOLD(new WorldPoint(2411, 3431, 0), KANDARIN, "South-west Tree Gnome Stronghold"),
-	KANDARIN_OUTPOST(new WorldPoint(3458, 3364, 0), KANDARIN, "South of the Tree Gnome Stronghold, north-east of the Outpost."),
+	KANDARIN_OUTPOST(new WorldPoint(2458, 3364, 0), KANDARIN, "South of the Tree Gnome Stronghold, north-east of the Outpost."),
 	KANDARIN_BAXTORIAN_FALLS(new WorldPoint(2534, 3479, 0), KANDARIN, "South-east of Almera's house on Baxtorian Falls."),
 	KANDARIN_BA_AGILITY_COURSE(new WorldPoint(2536, 3546, 0), KANDARIN, "Inside the Barbarian Agility Course. Completion of Alfred Grimhand's Barcrawl is required."),
 	KARAMJA_MUSA_POINT(new WorldPoint(2914, 3168, 0), KARAMJA, "Musa Point, banana plantation."),

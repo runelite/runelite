@@ -192,8 +192,6 @@ public interface Client extends GameEngine
 	@VisibleForDevtools
 	void setVarbitValue(int varbit, int value);
 
-	boolean shouldPostVarbitEvent();
-
 	HashTable getWidgetFlags();
 
 	HashTable getComponentTable();
@@ -411,6 +409,12 @@ public interface Client extends GameEngine
 
 	@VisibleForDevtools
 	void setChangedSkillsCount(int i);
+
+	void setSpriteOverrides(Map<Integer, SpritePixels> overrides);
+
+	void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides);
+
+	void setCompass(SpritePixels spritePixels);
 
 	int getTickCount();
 

@@ -1,0 +1,148 @@
+{
+  "bonuses": [
+    {
+      "name": "Prospector Outfit (+2.5%)",
+      "value": 0.025
+    }
+  ],
+  "actions": [
+    {
+      "level": 1,
+      "icon": 434,
+      "name": "Clay",
+      "xp": 5
+    },
+    {
+      "level": 1,
+      "icon": 1436,
+      "name": "Rune Essence",
+      "xp": 5
+    },
+    {
+      "level": 1,
+      "icon": 436,
+      "name": "Copper Ore",
+      "xp": 17.5
+    },
+    {
+      "level": 1,
+      "icon": 438,
+      "name": "Tin Ore",
+      "xp": 17.5
+    },
+    {
+      "level": 10,
+      "icon": 3211,
+      "name": "Limestone",
+      "xp": 26.5
+    },
+    {
+      "level": 15,
+      "icon": 440,
+      "name": "Iron Ore",
+      "xp": 35
+    },
+    {
+      "level": 20,
+      "icon": 442,
+      "name": "Silver Ore",
+      "xp": 40
+    },
+    {
+      "level": 30,
+      "icon": 7936,
+      "name": "Pure Essence",
+      "xp": 5
+    },
+    {
+      "level": 30,
+      "icon": 453,
+      "name": "Coal",
+      "xp": 50
+    },
+    {
+      "level": 35,
+      "icon": 6977,
+      "name": "Sandstone (10kg)",
+      "xp": 60
+    },
+    {
+      "level": 35,
+      "icon": 6975,
+      "name": "Sandstone (5kg)",
+      "xp": 50
+    },
+    {
+      "level": 35,
+      "icon": 6973,
+      "name": "Sandstone (2kg)",
+      "xp": 40
+    },
+    {
+      "level": 35,
+      "icon": 6971,
+      "name": "Sandstone (1kg)",
+      "xp": 30
+    },
+    {
+      "level": 38,
+      "icon": 13445,
+      "name": "Dense Essence Block",
+      "xp": 12
+    },
+    {
+      "level": 40,
+      "icon": 444,
+      "name": "Gold Ore",
+      "xp": 65
+    },
+    {
+      "level": 40,
+      "icon": 1629,
+      "name": "Gem Rocks",
+      "xp": 65
+    },
+    {
+      "level": 45,
+      "icon": 6979,
+      "name": "Granite (500g)",
+      "xp": 50
+    },
+    {
+      "level": 45,
+      "icon": 6981,
+      "name": "Granite (2kg)",
+      "xp": 60
+    },
+    {
+      "level": 45,
+      "icon": 6983,
+      "name": "Granite (5kg)",
+      "xp": 75
+    },
+    {
+      "level": 55,
+      "icon": 447,
+      "name": "Mithril Ore",
+      "xp": 80
+    },
+    {
+      "level": 70,
+      "icon": 449,
+      "name": "Adamantite Ore",
+      "xp": 95
+    },
+    {
+      "level": 85,
+      "icon": 451,
+      "name": "Runite Ore",
+      "xp": 125
+    },
+    {
+      "level": 92,
+      "icon": 21347,
+      "name": "Amethyst",
+      "xp": 240
+    }
+  ]
+}

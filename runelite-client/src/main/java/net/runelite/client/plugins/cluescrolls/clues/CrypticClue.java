@@ -98,7 +98,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("One of the sailors in Port Sarim is your next destination.", "Captain Tobias", new WorldPoint(3026, 3216, 0), "Speak to Captain Tobias on the docks of Port Sarim."),
 		new CrypticClue("THEY'RE EVERYWHERE!!!! But they were here first. Dig for treasure where the ground is rich with ore.", new WorldPoint(3081, 3421, 0), "Dig at Barbarian Village, next to the Stronghold of Security."),
 		new CrypticClue("Talk to the mother of a basement dwelling son.", "Doris", new WorldPoint(3079, 3493, 0), "Evil Dave's mother, Doris is located in the house west of Edgeville bank."),
-		new CrypticClue("Speak to Ned in Draynor Village.", "Ned", new WorldPoint(3098, 3258, 0), "Ned is found north or the Draynor bank."),
+		new CrypticClue("Speak to Ned in Draynor Village.", "Ned", new WorldPoint(3098, 3258, 0), "Ned is found north of the Draynor bank."),
 		new CrypticClue("Speak to Hans to solve the clue.", "Hans", new WorldPoint(3211, 3219, 0), "Hans can be found at Lumbridge Castle."),
 		new CrypticClue("Search the crates in Canifis.", CRATE_24344, new WorldPoint(3509, 3497, 0), "Search inside the shop, Rufus' Meat Emporium."),
 		new CrypticClue("Search the crates in the Dwarven mine.", CRATE_357, new WorldPoint(3035, 9849, 0), "Search the crate in the room east of the Ice Mountain ladder entrance in the Drogo's Mining Emporium."),

@@ -1,0 +1,1066 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "sprite": 15,
+      "name": "Wind Strike",
+      "xp": 5.5
+    },
+    {
+      "level": 3,
+      "sprite": 1247,
+      "name": "Reanimate Goblin",
+      "xp": 6
+    },
+    {
+      "level": 3,
+      "sprite": 16,
+      "name": "Confuse",
+      "xp": 13
+    },
+    {
+      "level": 4,
+      "sprite": 358,
+      "name": "Enchant Opal Bolt",
+      "xp": 9
+    },
+    {
+      "level": 5,
+      "sprite": 17,
+      "name": "Water Strike",
+      "xp": 7.5
+    },
+    {
+      "level": 6,
+      "sprite": 1269,
+      "name": "Lumbridge Graveyard Teleport",
+      "xp": 10
+    },
+    {
+      "level": 7,
+      "sprite": 18,
+      "name": "Enchant Sapphire Jewellery",
+      "xp": 17.5
+    },
+    {
+      "level": 7,
+      "sprite": 358,
+      "name": "Enchant Sapphire Bolt",
+      "xp": 17.5
+    },
+    {
+      "level": 7,
+      "sprite": 1264,
+      "name": "Reanimate Monkey",
+      "xp": 14
+    },
+    {
+      "level": 9,
+      "sprite": 19,
+      "name": "Earth Strike",
+      "xp": 9.5
+    },
+    {
+      "level": 11,
+      "sprite": 20,
+      "name": "Weaken",
+      "xp": 21
+    },
+    {
+      "level": 12,
+      "sprite": 1258,
+      "name": "Reanimate Imp",
+      "xp": 24
+    },
+    {
+      "level": 13,
+      "sprite": 21,
+      "name": "Fire Strike",
+      "xp": 11.5
+    },
+    {
+      "level": 14,
+      "sprite": 358,
+      "name": "Enchant Jade Bolt",
+      "xp": 19
+    },
+    {
+      "level": 15,
+      "sprite": 22,
+      "name": "Bones To Bananas",
+      "xp": 25
+    },
+    {
+      "level": 16,
+      "sprite": 1259,
+      "name": "Reanimate Minotaur",
+      "xp": 32
+    },
+    {
+      "level": 17,
+      "sprite": 1269,
+      "name": "Draynor Manor Teleport",
+      "xp": 16
+    },
+    {
+      "level": 17,
+      "sprite": 23,
+      "name": "Wind Bolt",
+      "xp": 13.5
+    },
+    {
+      "level": 19,
+      "sprite": 1257,
+      "name": "Reanimate Scorpion",
+      "xp": 38
+    },
+    {
+      "level": 19,
+      "sprite": 24,
+      "name": "Curse",
+      "xp": 29
+    },
+    {
+      "level": 20,
+      "sprite": 319,
+      "name": "Bind",
+      "xp": 30
+    },
+    {
+      "level": 21,
+      "sprite": 25,
+      "name": "Low Level Alchemy",
+      "xp": 31
+    },
+    {
+      "level": 21,
+      "sprite": 1256,
+      "name": "Reanimate Bear",
+      "xp": 42
+    },
+    {
+      "level": 22,
+      "sprite": 1260,
+      "name": "Reanimate Unicorn",
+      "xp": 44
+    },
+    {
+      "level": 23,
+      "sprite": 26,
+      "name": "Water Bolt",
+      "xp": 16.5
+    },
+    {
+      "level": 24,
+      "sprite": 358,
+      "name": "Enchant Pearl Bolt",
+      "xp": 29
+    },
+    {
+      "level": 25,
+      "sprite": 27,
+      "name": "Varrock Teleport",
+      "xp": 35
+    },
+    {
+      "level": 26,
+      "sprite": 1268,
+      "name": "Reanimate Dog",
+      "xp": 52
+    },
+    {
+      "level": 27,
+      "sprite": 28,
+      "name": "Enchant Emerald Jewellery",
+      "xp": 37
+    },
+    {
+      "level": 27,
+      "sprite": 358,
+      "name": "Enchant Emerald Bolt",
+      "xp": 37
+    },
+    {
+      "level": 28,
+      "sprite": 1271,
+      "name": "Mind Altar Teleport",
+      "xp": 22
+    },
+    {
+      "level": 29,
+      "sprite": 358,
+      "name": "Enchant Topaz Bolt",
+      "xp": 33
+    },
+    {
+      "level": 29,
+      "sprite": 29,
+      "name": "Earth Bolt",
+      "xp": 19.5
+    },
+    {
+      "level": 30,
+      "sprite": 1251,
+      "name": "Reanimate Chaos Druid",
+      "xp": 60
+    },
+    {
+      "level": 31,
+      "sprite": 30,
+      "name": "Lumbridge Teleport",
+      "xp": 41
+    },
+    {
+      "level": 33,
+      "sprite": 31,
+      "name": "Telekinetic Grab",
+      "xp": 43
+    },
+    {
+      "level": 34,
+      "sprite": 1300,
+      "name": "Respawn Teleport",
+      "xp": 27
+    },
+    {
+      "level": 35,
+      "sprite": 32,
+      "name": "Fire Bolt",
+      "xp": 22.5
+    },
+    {
+      "level": 37,
+      "sprite": 1255,
+      "name": "Reanimate Giant",
+      "xp": 74
+    },
+    {
+      "level": 37,
+      "sprite": 33,
+      "name": "Falador Teleport",
+      "xp": 47
+    },
+    {
+      "level": 39,
+      "sprite": 34,
+      "name": "Crumble Undead",
+      "xp": 24.5
+    },
+    {
+      "level": 40,
+      "sprite": 1301,
+      "name": "Salve Graveyard Teleport",
+      "xp": 30
+    },
+    {
+      "level": 40,
+      "sprite": 1254,
+      "name": "Reanimate Ogre",
+      "xp": 80
+    },
+    {
+      "level": 40,
+      "sprite": 355,
+      "name": "Teleport To House",
+      "xp": 30
+    },
+    {
+      "level": 41,
+      "sprite": 35,
+      "name": "Wind Blast",
+      "xp": 25.5
+    },
+    {
+      "level": 43,
+      "sprite": 36,
+      "name": "Superheat Item",
+      "xp": 53
+    },
+    {
+      "level": 43,
+      "sprite": 1250,
+      "name": "Reanimate Elf",
+      "xp": 86
+    },
+    {
+      "level": 45,
+      "sprite": 37,
+      "name": "Camelot Teleport",
+      "xp": 55.5
+    },
+    {
+      "level": 46,
+      "sprite": 1252,
+      "name": "Reanimate Troll",
+      "xp": 92
+    },
+    {
+      "level": 47,
+      "sprite": 38,
+      "name": "Water Blast",
+      "xp": 28.5
+    },
+    {
+      "level": 48,
+      "sprite": 1302,
+      "name": "Fenkenstrain's Castle Teleport",
+      "xp": 50
+    },
+    {
+      "level": 49,
+      "sprite": 39,
+      "name": "Enchant Ruby Jewellery",
+      "xp": 59
+    },
+    {
+      "level": 49,
+      "sprite": 358,
+      "name": "Enchant Ruby Bolt",
+      "xp": 59
+    },
+    {
+      "level": 50,
+      "sprite": 53,
+      "name": "Iban Blast",
+      "xp": 30
+    },
+    {
+      "level": 50,
+      "sprite": 329,
+      "name": "Smoke Rush",
+      "xp": 30
+    },
+    {
+      "level": 50,
+      "sprite": 324,
+      "name": "Magic Dart",
+      "xp": 30
+    },
+    {
+      "level": 50,
+      "sprite": 320,
+      "name": "Snare",
+      "xp": 60
+    },
+    {
+      "level": 51,
+      "sprite": 54,
+      "name": "Ardougne Teleport",
+      "xp": 61
+    },
+    {
+      "level": 52,
+      "sprite": 1266,
+      "name": "Reanimate Horror",
+      "xp": 104
+    },
+    {
+      "level": 52,
+      "sprite": 337,
+      "name": "Shadow Rush",
+      "xp": 31
+    },
+    {
+      "level": 53,
+      "sprite": 40,
+      "name": "Earth Blast",
+      "xp": 31.5
+    },
+    {
+      "level": 54,
+      "sprite": 341,
+      "name": "Paddewwa Teleport",
+      "xp": 64
+    },
+    {
+      "level": 55,
+      "sprite": 41,
+      "name": "High Level Alchemy",
+      "xp": 65
+    },
+    {
+      "level": 56,
+      "sprite": 42,
+      "name": "Charge Water Orb",
+      "xp": 56
+    },
+    {
+      "level": 56,
+      "sprite": 333,
+      "name": "Blood Rush",
+      "xp": 33
+    },
+    {
+      "level": 57,
+      "sprite": 358,
+      "name": "Enchant Diamond Bolt",
+      "xp": 67
+    },
+    {
+      "level": 57,
+      "sprite": 43,
+      "name": "Enchant Diamond Jewellery",
+      "xp": 67
+    },
+    {
+      "level": 57,
+      "sprite": 1261,
+      "name": "Reanimate Kalphite",
+      "xp": 114
+    },
+    {
+      "level": 58,
+      "sprite": 55,
+      "name": "Watchtower Teleport",
+      "xp": 68
+    },
+    {
+      "level": 58,
+      "sprite": 325,
+      "name": "Ice Rush",
+      "xp": 34
+    },
+    {
+      "level": 59,
+      "sprite": 44,
+      "name": "Fire Blast",
+      "xp": 34.5
+    },
+    {
+      "level": 60,
+      "sprite": 342,
+      "name": "Senntisten Teleport",
+      "xp": 70
+    },
+    {
+      "level": 60,
+      "sprite": 60,
+      "name": "Claws Of Guthix",
+      "xp": 35
+    },
+    {
+      "level": 60,
+      "sprite": 59,
+      "name": "Flames Of Zamorak",
+      "xp": 35
+    },
+    {
+      "level": 60,
+      "sprite": 61,
+      "name": "Saradomin Strike",
+      "xp": 35
+    },
+    {
+      "level": 60,
+      "sprite": 45,
+      "name": "Charge Earth Orb",
+      "xp": 70
+    },
+    {
+      "level": 60,
+      "sprite": 354,
+      "name": "Bones To Peaches",
+      "xp": 65
+    },
+    {
+      "level": 61,
+      "sprite": 1303,
+      "name": "West Ardougne Teleport",
+      "xp": 68
+    },
+    {
+      "level": 61,
+      "sprite": 323,
+      "name": "Trollheim Teleport",
+      "xp": 68
+    },
+    {
+      "level": 62,
+      "sprite": 1253,
+      "name": "Reanimate Dagannoth",
+      "xp": 124
+    },
+    {
+      "level": 62,
+      "sprite": 330,
+      "name": "Smoke Burst",
+      "xp": 36
+    },
+    {
+      "level": 62,
+      "sprite": 46,
+      "name": "Wind Wave",
+      "xp": 36
+    },
+    {
+      "level": 63,
+      "sprite": 47,
+      "name": "Charge Fire Orb",
+      "xp": 73
+    },
+    {
+      "level": 64,
+      "sprite": 338,
+      "name": "Shadow Burst",
+      "xp": 37
+    },
+    {
+      "level": 64,
+      "sprite": 357,
+      "name": "Teleport Ape Atoll",
+      "xp": 74
+    },
+    {
+      "level": 65,
+      "sprite": 543,
+      "name": "Bake Pie",
+      "xp": 60
+    },
+    {
+      "level": 65,
+      "sprite": 1304,
+      "name": "Harmony Island Teleport",
+      "xp": 74
+    },
+    {
+      "level": 65,
+      "sprite": 1267,
+      "name": "Reanimate Bloodveld",
+      "xp": 130
+    },
+    {
+      "level": 65,
+      "sprite": 563,
+      "name": "Geomancy",
+      "xp": 60
+    },
+    {
+      "level": 65,
+      "sprite": 48,
+      "name": "Water Wave",
+      "xp": 37.5
+    },
+    {
+      "level": 66,
+      "sprite": 49,
+      "name": "Charge Air Orb",
+      "xp": 76
+    },
+    {
+      "level": 66,
+      "sprite": 567,
+      "name": "Cure Plant",
+      "xp": 60
+    },
+    {
+      "level": 66,
+      "sprite": 343,
+      "name": "Kharyrll Teleport",
+      "xp": 76
+    },
+    {
+      "level": 66,
+      "sprite": 56,
+      "name": "Vulnerability",
+      "xp": 76
+    },
+    {
+      "level": 66,
+      "sprite": 577,
+      "name": "Monster Examine",
+      "xp": 61
+    },
+    {
+      "level": 67,
+      "sprite": 568,
+      "name": "Npc Contact",
+      "xp": 63
+    },
+    {
+      "level": 68,
+      "sprite": 334,
+      "name": "Blood Burst",
+      "xp": 39
+    },
+    {
+      "level": 68,
+      "sprite": 559,
+      "name": "Cure Other",
+      "xp": 65
+    },
+    {
+      "level": 68,
+      "sprite": 50,
+      "name": "Enchant Dragonstone Jewellery",
+      "xp": 78
+    },
+    {
+      "level": 68,
+      "sprite": 358,
+      "name": "Enchant Dragonstone Bolt",
+      "xp": 78
+    },
+    {
+      "level": 68,
+      "sprite": 578,
+      "name": "Humidify",
+      "xp": 65
+    },
+    {
+      "level": 69,
+      "sprite": 544,
+      "name": "Moonclan Teleport",
+      "xp": 66
+    },
+    {
+      "level": 69,
+      "sprite": 1262,
+      "name": "Reanimate Tzhaar",
+      "xp": 138
+    },
+    {
+      "level": 70,
+      "sprite": 51,
+      "name": "Earth Wave",
+      "xp": 40
+    },
+    {
+      "level": 70,
+      "sprite": 326,
+      "name": "Ice Burst",
+      "xp": 40
+    },
+    {
+      "level": 70,
+      "sprite": 569,
+      "name": "Tele Group Moonclan",
+      "xp": 67
+    },
+    {
+      "level": 71,
+      "sprite": 1305,
+      "name": "Cemetery Teleport",
+      "xp": 82
+    },
+    {
+      "level": 71,
+      "sprite": 562,
+      "name": "Cure Me",
+      "xp": 69
+    },
+    {
+      "level": 71,
+      "sprite": 579,
+      "name": "Hunter Kit",
+      "xp": 70
+    },
+    {
+      "level": 72,
+      "sprite": 344,
+      "name": "Lassar Teleport",
+      "xp": 82
+    },
+    {
+      "level": 72,
+      "sprite": 1248,
+      "name": "Reanimate Demon",
+      "xp": 144
+    },
+    {
+      "level": 72,
+      "sprite": 545,
+      "name": "Waterbirth Teleport",
+      "xp": 71
+    },
+    {
+      "level": 73,
+      "sprite": 570,
+      "name": "Tele Group Waterbirth",
+      "xp": 72
+    },
+    {
+      "level": 73,
+      "sprite": 57,
+      "name": "Enfeeble",
+      "xp": 83
+    },
+    {
+      "level": 74,
+      "sprite": 349,
+      "name": "Teleother Lumbridge",
+      "xp": 84
+    },
+    {
+      "level": 74,
+      "sprite": 331,
+      "name": "Smoke Blitz",
+      "xp": 42
+    },
+    {
+      "level": 74,
+      "sprite": 565,
+      "name": "Cure Group",
+      "xp": 74
+    },
+    {
+      "level": 75,
+      "sprite": 576,
+      "name": "Stat Spy",
+      "xp": 76
+    },
+    {
+      "level": 75,
+      "sprite": 547,
+      "name": "Barbarian Teleport",
+      "xp": 76
+    },
+    {
+      "level": 75,
+      "sprite": 52,
+      "name": "Fire Wave",
+      "xp": 42.5
+    },
+    {
+      "level": 76,
+      "sprite": 575,
+      "name": "Tele Group Barbarian",
+      "xp": 77
+    },
+    {
+      "level": 76,
+      "sprite": 339,
+      "name": "Shadow Blitz",
+      "xp": 43
+    },
+    {
+      "level": 76,
+      "sprite": 585,
+      "name": "Spin Flax",
+      "xp": 75
+    },
+    {
+      "level": 77,
+      "sprite": 548,
+      "name": "Superglass Make",
+      "xp": 78
+    },
+    {
+      "level": 78,
+      "sprite": 583,
+      "name": "Tan Leather",
+      "xp": 81
+    },
+    {
+      "level": 78,
+      "sprite": 549,
+      "name": "Khazard Teleport",
+      "xp": 80
+    },
+    {
+      "level": 78,
+      "sprite": 345,
+      "name": "Dareeyak Teleport",
+      "xp": 88
+    },
+    {
+      "level": 78,
+      "sprite": 1308,
+      "name": "Resurrect Crops",
+      "xp": 90
+    },
+    {
+      "level": 78,
+      "sprite": 1263,
+      "name": "Reanimate Aviansie",
+      "xp": 156
+    },
+    {
+      "level": 79,
+      "sprite": 321,
+      "name": "Entangle",
+      "xp": 89
+    },
+    {
+      "level": 79,
+      "sprite": 572,
+      "name": "Tele Group Khazard",
+      "xp": 81
+    },
+    {
+      "level": 79,
+      "sprite": 580,
+      "name": "Dream",
+      "xp": 82
+    },
+    {
+      "level": 80,
+      "sprite": 322,
+      "name": "Charge",
+      "xp": 180
+    },
+    {
+      "level": 80,
+      "sprite": 335,
+      "name": "Blood Blitz",
+      "xp": 45
+    },
+    {
+      "level": 80,
+      "sprite": 58,
+      "name": "Stun",
+      "xp": 90
+    },
+    {
+      "level": 80,
+      "sprite": 550,
+      "name": "String Jewellery",
+      "xp": 83
+    },
+    {
+      "level": 81,
+      "sprite": 554,
+      "name": "Stat Restore Pot Share",
+      "xp": 84
+    },
+    {
+      "level": 81,
+      "sprite": 362,
+      "name": "Wind Surge",
+      "xp": 44
+    },
+    {
+      "level": 82,
+      "sprite": 350,
+      "name": "Teleother Falador",
+      "xp": 92
+    },
+    {
+      "level": 82,
+      "sprite": 552,
+      "name": "Magic Imbue",
+      "xp": 86
+    },
+    {
+      "level": 82,
+      "sprite": 327,
+      "name": "Ice Blitz",
+      "xp": 46
+    },
+    {
+      "level": 83,
+      "sprite": 553,
+      "name": "Fertile Soil",
+      "xp": 87
+    },
+    {
+      "level": 83,
+      "sprite": 1306,
+      "name": "Barrows Teleport",
+      "xp": 90
+    },
+    {
+      "level": 84,
+      "sprite": 346,
+      "name": "Carrallangar Teleport",
+      "xp": 82
+    },
+    {
+      "level": 84,
+      "sprite": 551,
+      "name": "Boost Potion Share",
+      "xp": 88
+    },
+    {
+      "level": 85,
+      "sprite": 1265,
+      "name": "Reanimate Abyssal Creature",
+      "xp": 170
+    },
+    {
+      "level": 85,
+      "sprite": 363,
+      "name": "Water Surge",
+      "xp": 46
+    },
+    {
+      "level": 85,
+      "sprite": 555,
+      "name": "Fishing Guild Teleport",
+      "xp": 89
+    },
+    {
+      "level": 85,
+      "sprite": 352,
+      "name": "Tele Block",
+      "xp": 80
+    },
+    {
+      "level": 85,
+      "sprite": 359,
+      "name": "Teleport To Bounty Target",
+      "xp": 45
+    },
+    {
+      "level": 86,
+      "sprite": 332,
+      "name": "Smoke Barrage",
+      "xp": 48
+    },
+    {
+      "level": 86,
+      "sprite": 573,
+      "name": "Tele Group Fishing Guild",
+      "xp": 90
+    },
+    {
+      "level": 86,
+      "sprite": 581,
+      "name": "Plank Make",
+      "xp": 90
+    },
+    {
+      "level": 87,
+      "sprite": 556,
+      "name": "Catherby Teleport",
+      "xp": 92
+    },
+    {
+      "level": 87,
+      "sprite": 353,
+      "name": "Enchant Onyx Jewellery",
+      "xp": 97
+    },
+    {
+      "level": 87,
+      "sprite": 358,
+      "name": "Enchant Onyx Bolt",
+      "xp": 97
+    },
+    {
+      "level": 88,
+      "sprite": 340,
+      "name": "Shadow Barrage",
+      "xp": 48
+    },
+    {
+      "level": 88,
+      "sprite": 574,
+      "name": "Tele Group Catherby",
+      "xp": 93
+    },
+    {
+      "level": 89,
+      "sprite": 557,
+      "name": "Ice Plateau Teleport",
+      "xp": 96
+    },
+    {
+      "level": 89,
+      "sprite": 584,
+      "name": "Recharge Dragonstone",
+      "xp": 97.5
+    },
+    {
+      "level": 90,
+      "sprite": 347,
+      "name": "Annakarl Teleport",
+      "xp": 100
+    },
+    {
+      "level": 90,
+      "sprite": 364,
+      "name": "Earth Surge",
+      "xp": 48
+    },
+    {
+      "level": 90,
+      "sprite": 575,
+      "name": "Tele Group Ice Plateau",
+      "xp": 99
+    },
+    {
+      "level": 90,
+      "sprite": 351,
+      "name": "Teleother Camelot",
+      "xp": 100
+    },
+    {
+      "level": 90,
+      "sprite": 1307,
+      "name": "Ape Atoll Teleport",
+      "xp": 100
+    },
+    {
+      "level": 91,
+      "sprite": 558,
+      "name": "Energy Transfer",
+      "xp": 100
+    },
+    {
+      "level": 92,
+      "sprite": 336,
+      "name": "Blood Barrage",
+      "xp": 51
+    },
+    {
+      "level": 92,
+      "sprite": 560,
+      "name": "Heal Other",
+      "xp": 101
+    },
+    {
+      "level": 93,
+      "sprite": 561,
+      "name": "Vengeance Other",
+      "xp": 108
+    },
+    {
+      "level": 93,
+      "sprite": 361,
+      "name": "Enchant Zenyte Jewellery",
+      "xp": 110
+    },
+    {
+      "level": 93,
+      "sprite": 1249,
+      "name": "Reanimate Dragon",
+      "xp": 186
+    },
+    {
+      "level": 94,
+      "sprite": 328,
+      "name": "Ice Barrage",
+      "xp": 52
+    },
+    {
+      "level": 94,
+      "sprite": 564,
+      "name": "Vengeance",
+      "xp": 112
+    },
+    {
+      "level": 95,
+      "sprite": 566,
+      "name": "Heal Group",
+      "xp": 124
+    },
+    {
+      "level": 95,
+      "sprite": 361,
+      "name": "Fire Surge",
+      "xp": 51
+    },
+    {
+      "level": 96,
+      "sprite": 348,
+      "name": "Ghorrock Teleport",
+      "xp": 106
+    },
+    {
+      "level": 96,
+      "sprite": 582,
+      "name": "Spellbook Swap",
+      "xp": 130
+    }
+  ]
+}

@@ -38,4 +38,7 @@ public interface RSWorldMapManager extends WorldMapManager
 
 	@Import("mapSurfaceBaseOffsetY")
 	int getSurfaceOffsetY();
+
+	@Import("getPixelsPerTile")
+	float getPixelsPerTile(int graphicsDiff, int worldDiff);
 }

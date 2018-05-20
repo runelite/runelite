@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.List;
 import java.util.Set;
 import static net.runelite.api.ObjectID.*;
 
@@ -99,7 +101,7 @@ public class Obstacles
 		// Yanille
 		CASTLE_WALL, HOLE_16520, WALL_17047,
 		// Observatory
-		PUPPET_ARMS,
+		NULL_31852,
 		// Gnome Stronghold
 		ROCKS_16534, ROCKS_16535,
 		// Karamja Volcano
@@ -185,4 +187,6 @@ public class Obstacles
 		// Agility pyramid
 		NULL_3550, NULL_10872, NULL_10873
 	);
+
+	public static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
 }

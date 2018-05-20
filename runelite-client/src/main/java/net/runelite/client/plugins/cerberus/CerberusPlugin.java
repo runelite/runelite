@@ -33,7 +33,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -61,6 +63,15 @@ public class CerberusPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			ghosts.clear();
+		}
 	}
 
 	@Subscribe

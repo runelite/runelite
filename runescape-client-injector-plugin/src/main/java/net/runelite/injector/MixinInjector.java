@@ -861,6 +861,7 @@ public class MixinInjector
 					if (fieldHook != null)
 					{
 						String hookName = fieldHook.getElement().getString();
+						boolean before = fieldHook.getElements().size() == 2 && fieldHook.getElements().get(1).getValue().equals(true);
 						ClassFile deobCf = inject.toDeobClass(cf);
 						Field targetField = deobCf.findField(hookName);
 						if (targetField == null)
@@ -885,8 +886,8 @@ public class MixinInjector
 						InjectHook.HookInfo hookInfo = new InjectHook.HookInfo();
 						hookInfo.clazz = cf.getName();
 						hookInfo.fieldName = hookName;
-						hookInfo.method = method.getName();
-						hookInfo.staticMethod = method.isStatic();
+						hookInfo.method = method;
+						hookInfo.before = before;
 						injectHook.hook(obField, hookInfo);
 					}
 				}
