@@ -10,235 +10,274 @@
       "level": 1,
       "icon": 1942,
       "name": "Potatoes",
-      "xp": 8
+      "xp": 8,
+      "addBonus": true
     },
     {
       "level": 5,
       "icon": 1957,
       "name": "Onions",
-      "xp": 10
+      "xp": 10,
+      "addBonus": true
     },
     {
       "level": 7,
       "icon": 1965,
       "name": "Cabbages",
-      "xp": 10
+      "xp": 10,
+      "addBonus": true
     },
     {
       "level": 9,
       "icon": 249,
       "name": "Guam Leaf",
-      "xp": 11
+      "xp": 11,
+      "addBonus": true
     },
     {
       "level": 12,
       "icon": 1982,
       "name": "Tomatoes",
-      "xp": 12.5
+      "xp": 12.5,
+      "addBonus": true
     },
     {
       "level": 14,
       "icon": 251,
       "name": "Marrentill",
-      "xp": 13.5
+      "xp": 13.5,
+      "addBonus": true
     },
     {
       "level": 15,
       "icon": 1521,
       "name": "Oak Tree",
-      "xp": 481.3
+      "xp": 481.3,
+      "addBonus": true
     },
     {
       "level": 19,
       "icon": 253,
       "name": "Tarromin",
-      "xp": 16
+      "xp": 16,
+      "addBonus": true
     },
     {
       "level": 20,
       "icon": 5986,
       "name": "Sweetcorn",
-      "xp": 17
+      "xp": 17,
+      "addBonus": true
     },
     {
       "level": 26,
       "icon": 255,
       "name": "Harralander",
-      "xp": 21.5
+      "xp": 21.5,
+      "addBonus": true
     },
     {
       "level": 26,
       "icon": 225,
       "name": "Limpwurt Plant",
-      "xp": 40
+      "xp": 40,
+      "addBonus": true
     },
     {
       "level": 27,
       "icon": 1955,
       "name": "Apple Tree",
-      "xp": 1221.5
+      "xp": 1221.5,
+      "addBonus": true
     },
     {
       "level": 29,
       "icon": 3261,
       "name": "Goutweed",
-      "xp": 105
+      "xp": 105,
+      "addBonus": true
     },
     {
       "level": 30,
       "icon": 1519,
       "name": "Willow Tree",
-      "xp": 1481.5
+      "xp": 1481.5,
+      "addBonus": true
     },
     {
       "level": 31,
       "icon": 5504,
       "name": "Strawberries",
-      "xp": 26
+      "xp": 26,
+      "addBonus": true
     },
     {
       "level": 32,
       "icon": 257,
       "name": "Ranarr Weed",
-      "xp": 27
+      "xp": 27,
+      "addBonus": true
     },
     {
       "level": 33,
       "icon": 1963,
       "name": "Banana Tree",
-      "xp": 1778.5
+      "xp": 1778.5,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 6333,
       "name": "Teak Tree",
-      "xp": 7315
+      "xp": 7315,
+      "addBonus": true
     },
     {
       "level": 38,
       "icon": 2998,
       "name": "Toadflax",
-      "xp": 34
+      "xp": 34,
+      "addBonus": true
     },
     {
       "level": 39,
       "icon": 2108,
       "name": "Orange Tree",
-      "xp": 2505.7
+      "xp": 2505.7,
+      "addBonus": true
     },
     {
       "level": 42,
       "icon": 5970,
       "name": "Curry Tree",
-      "xp": 2946.9
+      "xp": 2946.9,
+      "addBonus": true
     },
     {
       "level": 44,
       "icon": 259,
       "name": "Irit Leaf",
-      "xp": 43
+      "xp": 43,
+      "addBonus": true
     },
     {
       "level": 45,
       "icon": 1517,
       "name": "Maple Tree",
-      "xp": 3448.4
+      "xp": 3448.4,
+      "addBonus": true
     },
     {
       "level": 47,
       "icon": 5982,
       "name": "Watermelons",
-      "xp": 49
+      "xp": 49,
+      "addBonus": true
     },
     {
       "level": 50,
       "icon": 261,
       "name": "Avantoe",
-      "xp": 54.5
+      "xp": 54.5,
+      "addBonus": true
     },
     {
       "level": 51,
       "icon": 2114,
       "name": "Pineapple Plant",
-      "xp": 4662.7
+      "xp": 4662.7,
+      "addBonus": true
     },
     {
       "level": 55,
       "icon": 6332,
       "name": "Mahogany Tree",
-      "xp": 15783
+      "xp": 15783,
+      "addBonus": true
     },
     {
       "level": 56,
       "icon": 263,
       "name": "Kwuarm",
-      "xp": 69
+      "xp": 69,
+      "addBonus": true
     },
     {
       "level": 57,
       "icon": 5972,
       "name": "Papaya Tree",
-      "xp": 6218.4
+      "xp": 6218.4,
+      "addBonus": true
     },
     {
       "level": 60,
       "icon": 1515,
       "name": "Yew Tree",
-      "xp": 7150.9
+      "xp": 7150.9,
+      "addBonus": true
     },
     {
       "level": 62,
       "icon": 3000,
       "name": "Snapdragon",
-      "xp": 87.5
+      "xp": 87.5,
+      "addBonus": true
     },
     {
       "level": 67,
       "icon": 265,
       "name": "Cadantine",
-      "xp": 106.5
+      "xp": 106.5,
+      "addBonus": true
     },
     {
       "level": 68,
       "icon": 5974,
       "name": "Palm Tree",
-      "xp": 10260.6
+      "xp": 10260.6,
+      "addBonus": true
     },
     {
       "level": 72,
       "icon": 5980,
       "name": "Calquat Tree",
-      "xp": 12225.5
+      "xp": 12225.5,
+      "addBonus": true
     },
     {
       "level": 73,
       "icon": 2481,
       "name": "Lantadyme",
-      "xp": 134.5
+      "xp": 134.5,
+      "addBonus": true
     },
     {
       "level": 75,
       "icon": 1513,
       "name": "Magic Tree",
-      "xp": 13913.8
+      "xp": 13913.8,
+      "addBonus": true
     },
     {
       "level": 79,
       "icon": 267,
       "name": "Dwarf Weed",
-      "xp": 170.5
+      "xp": 170.5,
+      "addBonus": true
     },
     {
       "level": 83,
       "icon": 6063,
       "name": "Spirit Tree",
-      "xp": 19501.3
+      "xp": 19501.3,
+      "addBonus": true
     },
     {
       "level": 85,
       "icon": 269,
       "name": "Torstol",
-      "xp": 199.5
+      "xp": 199.5,
+      "addBonus": true
     }
   ]
 }

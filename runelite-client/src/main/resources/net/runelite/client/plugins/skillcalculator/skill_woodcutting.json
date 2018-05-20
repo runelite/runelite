@@ -7,73 +7,85 @@
       "level": 1,
       "icon": 1511,
       "name": "Logs",
-      "xp": 25
+      "xp": 25,
+      "addBonus": true
     },
     {
       "level": 1,
       "icon": 2862,
       "name": "Achey Tree Logs",
-      "xp": 25
+      "xp": 25,
+      "addBonus": true
     },
     {
       "level": 15,
       "icon": 1521,
       "name": "Oak Logs",
-      "xp": 37.5
+      "xp": 37.5,
+      "addBonus": true
     },
     {
       "level": 30,
       "icon": 1519,
       "name": "Willow Logs",
-      "xp": 67.5
+      "xp": 67.5,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 6333,
       "name": "Teak Logs",
-      "xp": 85
+      "xp": 85,
+      "addBonus": true
     },
     {
       "level": 45,
       "icon": 3239,
       "name": "Bark",
-      "xp": 82.5
+      "xp": 82.5,
+      "addBonus": true
     },
     {
       "level": 45,
       "icon": 1517,
       "name": "Maple Logs",
-      "xp": 100
+      "xp": 100,
+      "addBonus": true
     },
     {
       "level": 50,
       "icon": 6332,
       "name": "Mahogany Logs",
-      "xp": 125
+      "xp": 125,
+      "addBonus": true
     },
     {
       "level": 54,
       "icon": 10810,
       "name": "Arctic Pine Logs",
-      "xp": 140.2
+      "xp": 140.2,
+      "addBonus": true
     },
     {
       "level": 60,
       "icon": 1515,
       "name": "Yew Logs",
-      "xp": 175
+      "xp": 175,
+      "addBonus": true
     },
     {
       "level": 75,
       "icon": 1513,
       "name": "Magic Logs",
-      "xp": 250
+      "xp": 250,
+      "addBonus": true
     },
     {
       "level": 90,
       "icon": 19669,
       "name": "Redwood Logs",
-      "xp": 380
+      "xp": 380,
+      "addBonus": true
     }
   ]
 }

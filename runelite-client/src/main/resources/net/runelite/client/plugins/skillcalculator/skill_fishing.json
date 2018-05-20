@@ -10,181 +10,211 @@
       "level": 1,
       "icon": 317,
       "name": "Raw Shrimps",
-      "xp": 10
+      "xp": 10,
+      "addBonus": true
     },
     {
       "level": 5,
       "icon": 327,
       "name": "Raw Sardine",
-      "xp": 20
+      "xp": 20,
+      "addBonus": true
     },
     {
       "level": 5,
       "icon": 3150,
       "name": "Raw Karambwanji",
-      "xp": 5
+      "xp": 5,
+      "addBonus": true
     },
     {
       "level": 10,
       "icon": 345,
       "name": "Raw Herring",
-      "xp": 30
+      "xp": 30,
+      "addBonus": true
     },
     {
       "level": 15,
       "icon": 321,
       "name": "Raw Anchovies",
-      "xp": 40
+      "xp": 40,
+      "addBonus": true
     },
     {
       "level": 16,
       "icon": 353,
       "name": "Raw Mackerel",
-      "xp": 20
+      "xp": 20,
+      "addBonus": true
     },
     {
       "level": 20,
       "icon": 335,
       "name": "Raw Trout",
-      "xp": 50
+      "xp": 50,
+      "addBonus": true
     },
     {
       "level": 23,
       "icon": 341,
       "name": "Raw Cod",
-      "xp": 45
+      "xp": 45,
+      "addBonus": true
     },
     {
       "level": 25,
       "icon": 349,
       "name": "Raw Pike",
-      "xp": 60
+      "xp": 60,
+      "addBonus": true
     },
     {
       "level": 28,
       "icon": 3379,
       "name": "Raw Slimy Eel",
-      "xp": 65
+      "xp": 65,
+      "addBonus": true
     },
     {
       "level": 30,
       "icon": 331,
       "name": "Raw Salmon",
-      "xp": 70
+      "xp": 70,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 359,
       "name": "Raw Tuna",
-      "xp": 80
+      "xp": 80,
+      "addBonus": true
     },
     {
       "level": 38,
       "icon": 10138,
       "name": "Raw Rainbow Fish",
-      "xp": 80
+      "xp": 80,
+      "addBonus": true
     },
     {
       "level": 38,
       "icon": 5001,
       "name": "Raw Cave Eel",
-      "xp": 80
+      "xp": 80,
+      "addBonus": true
     },
     {
       "level": 40,
       "icon": 377,
       "name": "Raw Lobster",
-      "xp": 90
+      "xp": 90,
+      "addBonus": true
     },
     {
       "level": 46,
       "icon": 363,
       "name": "Raw Bass",
-      "xp": 100
+      "xp": 100,
+      "addBonus": true
     },
     {
       "level": 48,
       "icon": 11328,
       "name": "Leaping Trout",
-      "xp": 50
+      "xp": 50,
+      "addBonus": true
     },
     {
       "level": 50,
       "icon": 371,
       "name": "Raw Swordfish",
-      "xp": 100
+      "xp": 100,
+      "addBonus": true
     },
     {
       "level": 58,
       "icon": 11330,
       "name": "Leaping Salmon",
-      "xp": 70
+      "xp": 70,
+      "addBonus": true
     },
     {
       "level": 62,
       "icon": 7944,
       "name": "Raw Monkfish",
-      "xp": 120
+      "xp": 120,
+      "addBonus": true
     },
     {
       "level": 65,
       "icon": 3142,
       "name": "Raw Karambwan",
-      "xp": 50
+      "xp": 50,
+      "addBonus": true
     },
     {
       "level": 70,
       "icon": 11332,
       "name": "Leaping Sturgeon",
-      "xp": 80
+      "xp": 80,
+      "addBonus": true
     },
     {
       "level": 76,
       "icon": 383,
       "name": "Raw Shark",
-      "xp": 110
+      "xp": 110,
+      "addBonus": true
     },
     {
       "level": 79,
       "icon": 395,
       "name": "Raw Sea Turtle",
-      "xp": 38
+      "xp": 38,
+      "addBonus": true
     },
     {
       "level": 80,
       "icon": 21293,
       "name": "Infernal Eel",
-      "xp": 95
+      "xp": 95,
+      "addBonus": true
     },
     {
       "level": 81,
       "icon": 389,
       "name": "Raw Manta Ray",
-      "xp": 46
+      "xp": 46,
+      "addBonus": true
     },
     {
       "level": 82,
       "icon": 13439,
       "name": "Raw Anglerfish",
-      "xp": 120
+      "xp": 120,
+      "addBonus": true
     },
     {
       "level": 82,
       "icon": 21356,
       "name": "Minnow",
-      "xp": 26.5
+      "xp": 26.5,
+      "addBonus": true
     },
     {
       "level": 85,
       "icon": 11934,
       "name": "Raw Dark Crab",
-      "xp": 130
+      "xp": 130,
+      "addBonus": true
     },
     {
       "level": 87,
       "icon": 13339,
       "name": "Sacred Eel",
-      "xp": 105
+      "xp": 105,
+      "addBonus": true
     }
   ]
 }

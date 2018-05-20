@@ -10,133 +10,155 @@
       "level": 1,
       "icon": 434,
       "name": "Clay",
-      "xp": 5
+      "xp": 5,
+      "addBonus": true
     },
     {
       "level": 1,
       "icon": 1436,
       "name": "Rune Essence",
-      "xp": 5
+      "xp": 5,
+      "addBonus": true
     },
     {
       "level": 1,
       "icon": 436,
       "name": "Copper Ore",
-      "xp": 17.5
+      "xp": 17.5,
+      "addBonus": true
     },
     {
       "level": 1,
       "icon": 438,
       "name": "Tin Ore",
-      "xp": 17.5
+      "xp": 17.5,
+      "addBonus": true
     },
     {
       "level": 10,
       "icon": 3211,
       "name": "Limestone",
-      "xp": 26.5
+      "xp": 26.5,
+      "addBonus": true
     },
     {
       "level": 15,
       "icon": 440,
       "name": "Iron Ore",
-      "xp": 35
+      "xp": 35,
+      "addBonus": true
     },
     {
       "level": 20,
       "icon": 442,
       "name": "Silver Ore",
-      "xp": 40
+      "xp": 40,
+      "addBonus": true
     },
     {
       "level": 30,
       "icon": 7936,
       "name": "Pure Essence",
-      "xp": 5
+      "xp": 5,
+      "addBonus": true
     },
     {
       "level": 30,
       "icon": 453,
       "name": "Coal",
-      "xp": 50
+      "xp": 50,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 6977,
       "name": "Sandstone (10kg)",
-      "xp": 60
+      "xp": 60,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 6975,
       "name": "Sandstone (5kg)",
-      "xp": 50
+      "xp": 50,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 6973,
       "name": "Sandstone (2kg)",
-      "xp": 40
+      "xp": 40,
+      "addBonus": true
     },
     {
       "level": 35,
       "icon": 6971,
       "name": "Sandstone (1kg)",
-      "xp": 30
+      "xp": 30,
+      "addBonus": true
     },
     {
       "level": 38,
       "icon": 13445,
       "name": "Dense Essence Block",
-      "xp": 12
+      "xp": 12,
+      "addBonus": true
     },
     {
       "level": 40,
       "icon": 444,
       "name": "Gold Ore",
-      "xp": 65
+      "xp": 65,
+      "addBonus": true
     },
     {
       "level": 45,
       "icon": 6979,
       "name": "Granite (500g)",
-      "xp": 50
+      "xp": 50,
+      "addBonus": true
     },
     {
       "level": 45,
       "icon": 6981,
       "name": "Granite (2kg)",
-      "xp": 60
+      "xp": 60,
+      "addBonus": true
     },
     {
       "level": 45,
       "icon": 6983,
       "name": "Granite (5kg)",
-      "xp": 75
+      "xp": 75,
+      "addBonus": true
     },
     {
       "level": 55,
       "icon": 447,
       "name": "Mithril Ore",
-      "xp": 80
+      "xp": 80,
+      "addBonus": true
     },
     {
       "level": 70,
       "icon": 449,
       "name": "Adamantite Ore",
-      "xp": 95
+      "xp": 95,
+      "addBonus": true
     },
     {
       "level": 85,
       "icon": 451,
       "name": "Runite Ore",
-      "xp": 125
+      "xp": 125,
+      "addBonus": true
     },
     {
       "level": 92,
       "icon": 21347,
       "name": "Amethyst",
-      "xp": 240
+      "xp": 240,
+      "addBonus": true
     }
   ]
 }
