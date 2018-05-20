@@ -32,18 +32,17 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Getter
 class UniquePanel extends JPanel
 {
-	private final ArrayList<UniqueItem> records;
-	private final String set_name;
+	private final Map<String, ArrayList<UniqueItem>> records;
 	private ItemManager itemManager;
 
-	UniquePanel(ArrayList<UniqueItem> records, String set_name, ItemManager itemManager)
+	UniquePanel(Map<String, ArrayList<UniqueItem>> records, ItemManager itemManager)
 	{
 		this.records = records;
-		this.set_name = set_name;
 		this.itemManager = itemManager;
 
 		setLayout(new GridBagLayout());
@@ -60,9 +59,11 @@ class UniquePanel extends JPanel
 		c.gridx = 0;
 		c.gridy = 0;
 
-
-		UniqueItemPanel p = new UniqueItemPanel(this.records, this.set_name, this.itemManager);
-		panel.add(p, c);
-		c.gridy++;
+		this.records.forEach((setName, set) ->
+		{
+			UniqueItemPanel p = new UniqueItemPanel(set, this.itemManager);
+			panel.add(p, c);
+			c.gridy++;
+		});
 	}
 }

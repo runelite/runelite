@@ -43,12 +43,10 @@ class UniqueItemPanel extends JPanel
 {
 	private ItemManager itemManager;
 	private ArrayList<UniqueItem> items;
-	private String setName;
 
-	UniqueItemPanel(ArrayList<UniqueItem> items, String setName, ItemManager itemManager)
+	UniqueItemPanel(ArrayList<UniqueItem> items, ItemManager itemManager)
 	{
 		this.items = items;
-		this.setName = setName;
 		this.itemManager = itemManager;
 
 		GridBagLayout layout = new GridBagLayout();

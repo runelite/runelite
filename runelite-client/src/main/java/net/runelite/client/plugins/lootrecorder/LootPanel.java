@@ -45,13 +45,15 @@ import net.runelite.http.api.item.ItemPrice;
 class LootPanel extends JPanel
 {
 	private final ArrayList<LootEntry> records;
+	private Map<Integer, ArrayList<UniqueItem>> uniqueMap;
 	private Map<String, LootRecord> uniques;
 	private ItemManager itemManager;
 
-	LootPanel(ArrayList<LootEntry> records, ItemManager itemManager)
+	LootPanel(ArrayList<LootEntry> records, Map<Integer, ArrayList<UniqueItem>> uniqueMap, ItemManager itemManager)
 	{
 		this.records = records;
 		this.uniques = new HashMap<>();
+		this.uniqueMap = uniqueMap;
 		this.itemManager = itemManager;
 
 		setLayout(new GridBagLayout());
@@ -115,6 +117,12 @@ class LootPanel extends JPanel
 				.sorted(Map.Entry.comparingByKey())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 				//.forEach(System.out::println);
+
+		// Sort Unique Map
+		this.uniqueMap = this.uniqueMap.entrySet()
+				.stream()
+				.sorted(Map.Entry.comparingByKey())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 
 	private void createPanel(LootPanel panel)
@@ -124,6 +132,14 @@ class LootPanel extends JPanel
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
+
+		// Attach all the Unique Items
+		this.uniqueMap.forEach((setPosition, set) ->
+		{
+			UniqueItemPanel p = new UniqueItemPanel(set, this.itemManager);
+			panel.add(p, c);
+			c.gridy++;
+		});
 
 		// Loop over each unique item and create a LootRecordPanel
 		this.uniques.forEach((lr, item) ->

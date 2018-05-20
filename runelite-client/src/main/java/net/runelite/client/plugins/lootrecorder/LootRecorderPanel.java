@@ -66,7 +66,6 @@ class LootRecorderPanel extends PluginPanel
 		this.setLayout(layout);
 
 		createPanel(this);
-		createUniquePanel(this);
 	}
 
 	private void createPanel(LootRecorderPanel panel)
@@ -92,28 +91,15 @@ class LootRecorderPanel extends PluginPanel
 		log.info("Panel Created");
 	}
 
-
-	private void createUniquePanel(LootRecorderPanel panel)
-	{
-		JPanel uniques = new JPanel();
-
-		final ArrayList<UniqueItem> barrows = UniqueItem.getByActivityName("Raids");
-		Map<String, ArrayList<UniqueItem>> sets = UniqueItem.createSetMap(barrows);
-		sets.forEach((setName, set) ->
-		{
-			UniquePanel p = new UniquePanel(set, setName, this.itemManager);
-			uniques.add(p);
-		});
-		panel.add(uniques);
-	}
-
-
 	private LootPanel createLootPanel(Tab tab)
 	{
 		// Grab Tab Data
 		ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
+		// Unique Items Info
+		final ArrayList<UniqueItem> list = UniqueItem.getByActivityName(tab.getName());
+		Map<Integer, ArrayList<UniqueItem>> sets = UniqueItem.createSetMap(list);
 		// Create & Return Loot Panel
-		return new LootPanel(data, itemManager);
+		return new LootPanel(data, sets, itemManager);
 	}
 
 	private void refreshPanel(LootRecorderPanel panel)
