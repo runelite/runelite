@@ -165,7 +165,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
-	private void rebuildOverlays()
+	public void rebuildOverlays()
 	{
 		final List<Overlay> overlays = Stream
 			.concat(
@@ -199,7 +199,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				overlay.setPreferredLocation(null);
 				saveOverlayLocation(overlay);
 			}
-			else
+			else if (location != null)
 			{
 				overlay.setPreferredLocation(location);
 			}
@@ -289,7 +289,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
-		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null)
+		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null && movedOverlay.getPosition() != OverlayPosition.DETACHED)
 		{
 			final OverlayBounds translatedSnapCorners = snapCorners.translated(
 				-SNAP_CORNER_SIZE.width,
@@ -333,7 +333,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				final Dimension dimension = overlay.getBounds().getSize();
 
 				// If the final position is not modified, layout it
-				if (overlay.getPreferredLocation() == null || overlay.getPreferredPosition() != null)
+				if (overlayPosition != OverlayPosition.DETACHED && (overlay.getPreferredLocation() == null || overlay.getPreferredPosition() != null))
 				{
 					final Rectangle snapCorner = snapCorners.forPosition(overlayPosition);
 					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension);
@@ -382,11 +382,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			{
 				if (SwingUtilities.isRightMouseButton(mouseEvent))
 				{
-					overlay.setPreferredLocation(null);
-					overlay.setPreferredPosition(null);
-					saveOverlayPosition(overlay);
-					saveOverlayLocation(overlay);
-					rebuildOverlayLayers();
+					// detached overlays have no place to reset back to
+					if (overlay.getPosition() != OverlayPosition.DETACHED)
+					{
+						overlay.setPreferredLocation(null);
+						overlay.setPreferredPosition(null);
+						saveOverlayPosition(overlay);
+						saveOverlayLocation(overlay);
+						rebuildOverlayLayers();
+					}
 				}
 				else
 				{
@@ -445,27 +449,33 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		if (movedOverlay != null)
 		{
 			mousePosition.setLocation(-1, -1);
-			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
 
-			for (Rectangle snapCorner : snapCorners.getBounds())
+			// do not snapcorner detached overlays
+			if (movedOverlay.getPosition() != OverlayPosition.DETACHED)
 			{
-				if (snapCorner.contains(mouseEvent.getPoint()))
+				final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
+
+				for (Rectangle snapCorner : snapCorners.getBounds())
 				{
-					OverlayPosition position = snapCorners.fromBounds(snapCorner);
-					if (position == movedOverlay.getPosition())
+					if (snapCorner.contains(mouseEvent.getPoint()))
 					{
-						// overlay moves back to default position
-						position = null;
+						OverlayPosition position = snapCorners.fromBounds(snapCorner);
+						if (position == movedOverlay.getPosition())
+						{
+							// overlay moves back to default position
+							position = null;
+						}
+						movedOverlay.setPreferredPosition(position);
+						movedOverlay.setPreferredLocation(null); // from dragging
+						break;
 					}
-					movedOverlay.setPreferredPosition(position);
-					movedOverlay.setPreferredLocation(null); // from dragging
-					break;
 				}
+
+				saveOverlayPosition(movedOverlay);
+				saveOverlayLocation(movedOverlay);
+				rebuildOverlayLayers();
 			}
 
-			saveOverlayPosition(movedOverlay);
-			saveOverlayLocation(movedOverlay);
-			rebuildOverlayLayers();
 			movedOverlay = null;
 			mouseEvent.consume();
 		}
