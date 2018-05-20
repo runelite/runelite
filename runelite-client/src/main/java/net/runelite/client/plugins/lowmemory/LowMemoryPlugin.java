@@ -42,12 +42,6 @@ public class LowMemoryPlugin extends Plugin
 	private Client client;
 
 	@Override
-	protected void startUp() throws Exception
-	{
-		client.changeMemoryMode(true);
-	}
-
-	@Override
 	protected void shutDown() throws Exception
 	{
 		client.changeMemoryMode(false);
