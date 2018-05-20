@@ -189,19 +189,19 @@ class FarmingTrackerPanel extends PluginPanel
 
 			materialTab.setOnSelectEvent(() -> config.setPatch(tab));
 			materialTab.addMouseListener(new MouseAdapter()
-            {
-                @Override
-                public void mouseEntered(MouseEvent e)
-                {
-                    materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR.brighter().brighter());
-                }
+			{
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR.brighter().brighter());
+				}
 
-                @Override
-                public void mouseExited(MouseEvent e)
-                {
-                    materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-                }
-            });
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+				}
+			});
 
 			tabGroup.addTab(materialTab);
 			if (config.patch() == tab)
