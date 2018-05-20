@@ -34,5 +34,5 @@ public class SkillDataEntry
 	private double xp;
 	private Integer icon;
 	private Integer sprite;
-	private boolean addBonus;
+	private boolean ignoreBonus;
 }
