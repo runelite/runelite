@@ -38,8 +38,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -346,7 +346,7 @@ public class LootRecorderPlugin extends Plugin
 		try
 		{
 			final Path path = Paths.get(String.valueOf(lootFile));
-			Files.write(path, Arrays.asList(dataAsString), StandardCharsets.UTF_8, Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
+			Files.write(path, Collections.singletonList(dataAsString), StandardCharsets.UTF_8, Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
 		}
 		catch (IOException ioe)
 		{
