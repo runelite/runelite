@@ -147,8 +147,6 @@ class LootPanel extends JPanel
 			panel.add(p, c);
 			c.gridy++;
 		});
-
-		//createUniquesPanel(panel);
 	}
 
 	void refreshPanel()

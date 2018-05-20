@@ -71,10 +71,8 @@ class UniqueItemPanel extends JPanel
 		// Add each Item icon to the panel
 		for (UniqueItem item : items)
 		{
-			System.out.println(item);
 			Integer id = item.getItemID();
-			System.out.println(id);
-			ItemComposition comp = itemManager.getItemComposition(id);
+			ItemComposition comp = this.getItemManager().getItemComposition(id);
 			LootRecord it = loots.get(comp.getName());
 			boolean shouldStack = comp.isStackable();
 			Integer quantity = 0;
@@ -113,7 +111,6 @@ class UniqueItemPanel extends JPanel
 			this.add(icon, c);
 		}
 		c.gridx++;
-		this.revalidate();
 	}
 
 	private BufferedImage createOpaqueImage(AsyncBufferedImage image)
