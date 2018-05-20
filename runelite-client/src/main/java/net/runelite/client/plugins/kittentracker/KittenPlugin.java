@@ -140,6 +140,11 @@ public class KittenPlugin extends Plugin
 			getFollowerID();
 		}
 
+		if (playerHasFollower() & followerID != 0) // follower changed ID
+		{
+			getFollowerID();
+		}
+
 		if (!playerHasFollower() & followerID != 0) // player lost it's follower
 		{
 			byeFollower();
@@ -161,7 +166,6 @@ public class KittenPlugin extends Plugin
 		{
 			newFollower();
 		}
-
 	}
 
 	private void newFollower()
@@ -216,6 +220,7 @@ public class KittenPlugin extends Plugin
 				addKittenGrowthBox(14400);
 				addHungryTimer(1800);
 				addAttentionTimer(1800);
+				saveGrowthProgress();
 			}
 
 		}
@@ -230,6 +235,7 @@ public class KittenPlugin extends Plugin
 			{
 				catSpawned = Instant.now();
 				addKittenGrowthBox(14400);
+				saveGrowthProgress();
 			}
 		}
 	}
