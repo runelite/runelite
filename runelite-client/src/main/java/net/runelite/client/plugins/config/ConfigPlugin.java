@@ -76,8 +76,9 @@ public class ConfigPlugin extends Plugin
 		}
 
 		navButton = NavigationButton.builder()
-			.name("Configuration")
+			.tooltip("Configuration")
 			.icon(icon)
+			.priority(0)
 			.panel(configPanel)
 			.build();
 

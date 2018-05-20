@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.3.10-SNAPSHOT</version>
+		<version>1.4.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -77,12 +77,12 @@
 		<dependency>
 			<groupId>net.runelite.pushingpixels</groupId>
 			<artifactId>substance</artifactId>
-			<version>8.0.00-dev</version>
+			<version>8.0.02</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.pushingpixels</groupId>
 			<artifactId>trident</artifactId>
-			<version>1.4</version>
+			<version>1.5.00</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

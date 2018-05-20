@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -52,6 +53,8 @@ public class DevToolsPanel extends PluginPanel
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+
 		varTracker = new VarTracker(client);
 		add(createOptionsPanel());
 	}
@@ -59,6 +62,7 @@ public class DevToolsPanel extends PluginPanel
 	private JPanel createOptionsPanel()
 	{
 		final JPanel container = new JPanel();
+		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
 		final JButton renderPlayersBtn = new JButton("Players");
