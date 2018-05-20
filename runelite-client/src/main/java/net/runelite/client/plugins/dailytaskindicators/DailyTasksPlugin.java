@@ -34,6 +34,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
@@ -61,6 +62,7 @@ public class DailyTasksPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
+	private int updateTick;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -105,6 +107,18 @@ public class DailyTasksPlugin extends Plugin
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
 		if (event.getPlayer() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		//load the varbits one tick after spawning
+		updateTick = client.getTickCount() + 1;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (client.getTickCount() != updateTick)
 		{
 			return;
 		}
