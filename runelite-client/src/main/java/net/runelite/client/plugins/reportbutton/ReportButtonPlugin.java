@@ -45,9 +45,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.RuneLite;
 
 @PluginDescriptor(
-	name = "Report Button"
+		name = "Report Button"
 )
 @Slf4j
 public class ReportButtonPlugin extends Plugin
@@ -55,7 +56,8 @@ public class ReportButtonPlugin extends Plugin
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)
+			.withLocale(RuneLite.locale);
 
 	private Instant loginTime;
 	private boolean ready;

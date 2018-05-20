@@ -68,6 +68,7 @@ public class RuneLite
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
 
+	public static Locale locale;
 	private static Injector injector;
 	private static OptionSet options;
 
@@ -120,6 +121,7 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		locale = Locale.getDefault();
 		Locale.setDefault(Locale.ENGLISH);
 
 		OptionParser parser = new OptionParser();
