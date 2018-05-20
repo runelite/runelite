@@ -5,16 +5,6 @@
 .string_var_count   2
    iload                  0
    widget_unset_children
-   iload                  0                                 ; quest list type
-   load_int               1                                 ;
-   load_int               0                                 ;
-   load_string            "questListTypeFilter"             ; check if we're filtering this type of quest (f2p, mem, mini)
-   runelite_callback                                        ;
-   if_icmpeq              LABEL1001                         ;
-   jump                   LABEL1002                         ;
-LABEL1001:                                                  ; case we are filtering
-   return                                                   ; early return - return value holds negative height value if widgets need shifted up
-LABEL1002:                                                  ; case we aren't filtering - continue setup
    iload                  3
    load_int               0
    if_icmple              LABEL6
@@ -45,7 +35,12 @@ LABEL24:
    load_int               4
    iload                  9
    widget_create_child
-   iload                  9                                 ; quest item index - for use later
+   load_int               105                               ;
+   load_int               115                               ;
+   iload                  1                                 ;
+   iload                  9                                 ;
+   get_enum_value                                           ; the enum value gives us the quest name string
+   iload                  9                                 ; quest item index - argument for script 1357, 1358, or 1359
    iload                  0                                 ; which list we're working on
    iload                  4                                 ; f2p
    if_icmpeq              LABEL10001                        ; if we're working on f2p, go to label 5001
@@ -65,10 +60,11 @@ LABEL10003:                                                 ;
    invoke                 1359                              ; invoke script 1359 which gives progress status for miniquests
    jump                   LABEL20001                        ;
 LABEL20001:                                                 ; decide what to do based on progress value returned from status script
-   load_int               1                                 ;
+   iload                  0                                 ; which list we're working on - used for calculations in questTabPlugin
    load_int               0                                 ;
-   load_string            "questListProgressFilter"          ; check if we need to filter this item based on its current progress
+   load_string            "questListFilter"                 ; check if we need to filter this item based on its current progress
    runelite_callback                                        ;
+   pop_string                                               ; pop string that was holding quest name
    if_icmpeq              LABEL30001                        ; if we're filtering then go to filter
    jump                   LABEL40001                        ; else go to setup
 LABEL30001:                                                 ;
@@ -179,21 +175,21 @@ LABEL112:
    iload                  0
    load_int               4
    iload                  9
-   widget_create_child   
+   widget_create_child
    load_int               0
    load_int               20
    load_int               1
    load_int               0
-   widget_put_size       
+   widget_put_size
    load_int               0
    load_int               0
    load_int               1
    load_int               0
-   widget_put_position   
+   widget_put_position
    load_int               16750623
-   widget_put_textcolor  
+   widget_put_textcolor
    load_int               496
-   widget_put_fontid     
+   widget_put_fontid
    load_int               1
    widget_put_text_shadowed
    load_int               0
@@ -201,7 +197,25 @@ LABEL112:
    load_int               0
    widget_put_text_alignment
    sload                  0
-   widget_put_text       
+   widget_put_text
+   load_int               0                                 ; this int will hold the y position after calling questTabPlugin
+   load_int               1                                 ;
+   iload                  0                                 ; which list we're working on - used by questTabPlugin
+   load_string            "questListSetupDone"              ;
+   runelite_callback                                        ;
+   if_icmpeq              LABEL60001                        ; if we're filtering this list, go to label 60001
+   jump                   LABEL60002                        ; else go to 60002 and finish the list
+LABEL60001:                                                 ; filter the current list
+   istore                 10                                ; store the y position (0 or -8) for later
+   load_int               0                                 ;
+   load_int               0                                 ;
+   load_int               0                                 ;
+   load_int               0                                 ;
+   iload                  0                                 ; which list we're working on
+   widget_put_size_widget                                   ; set the size of the list to 0
+   iload                  10                                ; load the y position
+   return                                                   ; early return
+LABEL60002:                                                 ; else continue finishing the list
    load_int               0
    iload                  10
    load_int               1

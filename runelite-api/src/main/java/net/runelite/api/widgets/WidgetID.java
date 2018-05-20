@@ -257,6 +257,7 @@ public class WidgetID
 
 	static class ResizableViewportBottomLine
 	{
+		static final int QUESTS_TAB = 50;
 		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 	}

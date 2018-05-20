@@ -31,45 +31,12 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(
 	keyName = "questtab",
 	name = "Quest Tab",
-	description = "Choose filtering options for the quest tab."
+	description = "Choose filter and sorting options for the quest tab."
 )
 public interface QuestTabConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
-		keyName = "hideCompleted",
-		name = "Hide Completed Quests",
-		description = "Configures whether or not completed quests are hidden"
-	)
-	default boolean hideCompleted()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "hideInProgress",
-		name = "Hide In-Progress Quests",
-		description = "Configures whether or not in-progress quests are hidden"
-	)
-	default boolean hideInProgress()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "hideNotStarted",
-		name = "Hide Not Started Quests",
-		description = "Configures whether or not quest that have not been started are hidden"
-	)
-
-	default boolean hideNotStarted()
-	{
-		return false;
-	}
-	@ConfigItem(
-		position = 4,
 		keyName = "hideFree",
 		name = "Hide F2P Quests",
 		description = "Configures whether or not f2p quests are hidden"
@@ -80,7 +47,7 @@ public interface QuestTabConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 2,
 		keyName = "hideMembers",
 		name = "Hide Members Quests",
 		description = "Configures whether or not members quests are hidden"
@@ -91,7 +58,7 @@ public interface QuestTabConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 3,
 		keyName = "hideMiniquests",
 		name = "Hide Miniquests",
 		description = "Configures whether or not miniquests are hidden"
@@ -99,6 +66,105 @@ public interface QuestTabConfig extends Config
 	default boolean hideMiniquests()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "hideCompleted",
+		name = "Hide Completed Quests",
+		description = "Configures whether or not completed quests are hidden"
+	)
+	default boolean hideCompleted()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "hideInProgress",
+		name = "Hide In-Progress Quests",
+		description = "Configures whether or not in-progress quests are hidden"
+	)
+	default boolean hideInProgress()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "hideNotStarted",
+		name = "Hide Not Started Quests",
+		description = "Configures whether or not quest that have not been started are hidden"
+	)
+	default boolean hideNotStarted()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "hideCantDo",
+		name = "Hide Can't Do",
+		description = "Configures whether or not quests that cannot be done because of missing reqs will be hidden"
+	)
+	default boolean hideCantDo()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "showDifficulty",
+		name = "Show Difficulty",
+		description = "Configures whether or not to show a letter signifying difficulty next to quest list items"
+	)
+	default boolean showDifficulty()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "sortDifficulty",
+		name = "Sort on Difficulty",
+		description = "Configures whether or not quests are sorted from least difficult to most difficult"
+	)
+	default boolean sortDifficulty()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "showLength",
+		name = "Show Length",
+		description = "Configures whether or not to show a letter signifying length next to quest list items"
+	)
+	default boolean showLength()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "sortLength",
+		name = "Sort on Length",
+		description = "Configures whether or not quests are sorted from shortest to longest"
+	)
+	default boolean sortLength()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "menuOption",
+		name = "Menu option",
+		description = "Show filter and sort options when right clicking quest tab"
+	)
+	default boolean menuOption()
+	{
+		return true;
 	}
 
 }
