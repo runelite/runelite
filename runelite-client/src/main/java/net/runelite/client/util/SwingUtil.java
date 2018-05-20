@@ -288,6 +288,14 @@ public class SwingUtil
 		});
 	}
 
+	/**
+	 * Re-size a BufferedImage to the given dimensions.
+	 *
+	 * @param image the BufferedImage.
+	 * @param newWidth The width to set the BufferedImage to.
+	 * @param newHeight The height to set the BufferedImage to.
+	 * @return The BufferedImage with the specified dimensions
+	 */
 	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
 	{
 		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
