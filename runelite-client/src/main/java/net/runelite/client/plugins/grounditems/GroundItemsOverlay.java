@@ -157,7 +157,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 				else
 				{
-					itemStringBuilder.append(" (").append(item.getQuantity()).append(")");
+					itemStringBuilder.append(" (").append(String.format("%,d", item.getQuantity())).append(")");
 				}
 			}
 
