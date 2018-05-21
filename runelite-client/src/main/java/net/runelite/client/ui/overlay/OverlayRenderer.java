@@ -85,6 +85,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
 	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
 	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
+	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
 
 	private final PluginManager pluginManager;
 	private final Provider<Client> clientProvider;
@@ -165,6 +166,34 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
+	/**
+	 * Force save overlay data
+	 * @param overlay overlay to save
+	 */
+	public void saveOverlay(final Overlay overlay)
+	{
+		saveOverlayPosition(overlay);
+		saveOverlaySize(overlay);
+		saveOverlayLocation(overlay);
+	}
+
+	/**
+	 * Resets stored overlay position data
+	 * @param overlay overlay to reset
+	 */
+	public void resetOverlay(final Overlay overlay)
+	{
+		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
+		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
+		final String sizeKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
+		configManager.unsetConfiguration(runeliteGroupName, locationKey);
+		configManager.unsetConfiguration(runeliteGroupName, positionKey);
+		configManager.unsetConfiguration(runeliteGroupName, sizeKey);
+	}
+
+	/**
+	 * Rebuild overlay cache for rendering
+	 */
 	public void rebuildOverlays()
 	{
 		final List<Overlay> overlays = Stream
@@ -202,6 +231,13 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 			else if (location != null)
 			{
 				overlay.setPreferredLocation(location);
+			}
+
+			final Dimension size = loadOverlaySize(overlay);
+
+			if (size != null)
+			{
+				overlay.setPreferredSize(size);
 			}
 
 			final OverlayPosition position = loadOverlayPosition(overlay);
@@ -343,7 +379,15 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 				}
 				else
 				{
-					location.setLocation(overlay.getPreferredLocation());
+					if (overlay.getPreferredLocation() != null)
+					{
+						location.setLocation(overlay.getPreferredLocation());
+					}
+				}
+
+				if (overlay.getPreferredSize() != null)
+				{
+					overlay.getBounds().setSize(overlay.getPreferredSize());
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
@@ -385,10 +429,10 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 					// detached overlays have no place to reset back to
 					if (overlay.getPosition() != OverlayPosition.DETACHED)
 					{
-						overlay.setPreferredLocation(null);
 						overlay.setPreferredPosition(null);
-						saveOverlayPosition(overlay);
-						saveOverlayLocation(overlay);
+						overlay.setPreferredSize(null);
+						overlay.setPreferredLocation(null);
+						saveOverlay(overlay);
 						rebuildOverlayLayers();
 					}
 				}
@@ -470,12 +514,11 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 						break;
 					}
 				}
-
-				saveOverlayPosition(movedOverlay);
-				saveOverlayLocation(movedOverlay);
-				rebuildOverlayLayers();
 			}
 
+			saveOverlayPosition(movedOverlay);
+			saveOverlayLocation(movedOverlay);
+			rebuildOverlayLayers();
 			movedOverlay = null;
 			mouseEvent.consume();
 		}
@@ -620,7 +663,7 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	private void saveOverlayLocation(final Overlay overlay)
 	{
-		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
+		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
 		if (overlay.getPreferredLocation() != null)
 		{
 			configManager.setConfiguration(
@@ -636,9 +679,27 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 		}
 	}
 
+	private void saveOverlaySize(final Overlay overlay)
+	{
+		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
+		if (overlay.getPreferredSize() != null)
+		{
+			configManager.setConfiguration(
+				runeliteGroupName,
+				key,
+				overlay.getPreferredSize());
+		}
+		else
+		{
+			configManager.unsetConfiguration(
+				runeliteGroupName,
+				key);
+		}
+	}
+
 	private void saveOverlayPosition(final Overlay overlay)
 	{
-		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
+		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		if (overlay.getPreferredPosition() != null)
 		{
 			configManager.setConfiguration(
@@ -656,13 +717,19 @@ public class OverlayRenderer extends MouseListener implements KeyListener
 
 	private Point loadOverlayLocation(final Overlay overlay)
 	{
-		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
+		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
 		return configManager.getConfiguration(runeliteGroupName, key, Point.class);
+	}
+
+	private Dimension loadOverlaySize(final Overlay overlay)
+	{
+		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
+		return configManager.getConfiguration(runeliteGroupName, key, Dimension.class);
 	}
 
 	private OverlayPosition loadOverlayPosition(final Overlay overlay)
 	{
-		final String locationKey = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
+		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(runeliteGroupName, locationKey, OverlayPosition.class);
 	}
 }
