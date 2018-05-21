@@ -56,6 +56,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -182,7 +183,7 @@ public class HiscorePanel extends PluginPanel
 		input.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		input.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		input.setIcon(SEARCH_ICON);
-		input.addActionListener(e -> executor.execute(this::lookup));
+		input.addActionListener(e -> executor.execute(RunnableExceptionLogger.wrap(this::lookup)));
 		input.addMouseListener(new MouseAdapter()
 		{
 			@Override
