@@ -27,7 +27,6 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Stroke;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
@@ -37,12 +36,13 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class ScreenMarkerCreationOverlay extends Overlay
 {
-	@Inject
 	private ScreenMarkerPlugin plugin;
 
-	public ScreenMarkerCreationOverlay()
+	@Inject
+	private ScreenMarkerCreationOverlay(final ScreenMarkerPlugin plugin)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
+		this.plugin = plugin;
+		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
 	}
@@ -57,17 +57,16 @@ public class ScreenMarkerCreationOverlay extends Overlay
 			return null;
 		}
 
-		Rectangle bounds = marker.getBounds();
 		int thickness = marker.getBorderThickness();
 		int offset = thickness / 2;
-		int width = bounds.width - thickness;
-		int height = bounds.height - thickness;
+		int width = getBounds().width - thickness;
+		int height = getBounds().height - thickness;
 
 		graphics.setStroke(createStripedStroke(thickness));
 		graphics.setColor(marker.getColor());
-		graphics.drawRect(bounds.x + offset, bounds.y + offset, width, height);
+		graphics.drawRect(offset, offset, width, height);
 
-		return bounds.getSize();
+		return getBounds().getSize();
 	}
 
 	private Stroke createStripedStroke(int thickness)

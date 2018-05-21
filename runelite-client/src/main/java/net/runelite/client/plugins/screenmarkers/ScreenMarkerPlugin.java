@@ -32,12 +32,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -90,7 +90,7 @@ public class ScreenMarkerPlugin extends Plugin
 	private NavigationButton navigationButton;
 
 	@Getter
-	private List<ScreenMarker> screenMarkers = new ArrayList<>();
+	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private ScreenMarker currentMarker;
@@ -101,22 +101,18 @@ public class ScreenMarkerPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		List<Overlay> overlays = new ArrayList<>();
+		final List<Overlay> overlays = new ArrayList<>();
 		overlays.add(overlay);
-
-		for (ScreenMarker marker : screenMarkers)
-		{
-			ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(marker);
-			overlays.add(screenMarkerOverlay);
-		}
-
+		overlays.addAll(screenMarkers);
 		return overlays;
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		screenMarkers = loadConfig(null);
+		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
+		overlayRenderer.rebuildOverlays();
+
 		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
 		pluginPanel.init();
 
@@ -156,7 +152,8 @@ public class ScreenMarkerPlugin extends Plugin
 	{
 		if (screenMarkers.isEmpty() && event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_KEY))
 		{
-			screenMarkers = loadConfig(event.getNewValue());
+			loadConfig(event.getNewValue()).forEach(screenMarkers::add);
+			overlayRenderer.rebuildOverlays();
 		}
 	}
 
@@ -175,13 +172,16 @@ public class ScreenMarkerPlugin extends Plugin
 	public void startCreation(Point location)
 	{
 		currentMarker = new ScreenMarker(
-			new Rectangle(location, DEFAULT_SIZE),
-			DEFAULT_MARKER_NAME,
+			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
 			pluginPanel.getSelectedFillColor(),
 			true
 		);
+
+		// Set overlay creator bounds to current position and default size
+		overlay.setPreferredLocation(location);
+		overlay.setPreferredSize(DEFAULT_SIZE);
 		creatingScreenMarker = true;
 	}
 
@@ -191,9 +191,15 @@ public class ScreenMarkerPlugin extends Plugin
 		{
 			setMouseListenerEnabled(false);
 			pluginPanel.setCreationEnabled(false);
-			screenMarkers.add(currentMarker);
+
+			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
+			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
+			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
+
+			screenMarkers.add(screenMarkerOverlay);
 			pluginPanel.rebuild();
 			updateConfig();
+			overlayRenderer.saveOverlay(screenMarkerOverlay);
 			overlayRenderer.rebuildOverlays();
 		}
 
@@ -201,19 +207,20 @@ public class ScreenMarkerPlugin extends Plugin
 		currentMarker = null;
 	}
 
-	public void deleteMarker(ScreenMarker marker)
+	public void deleteMarker(final ScreenMarkerOverlay marker)
 	{
+		overlayRenderer.resetOverlay(marker);
 		screenMarkers.remove(marker);
 		pluginPanel.rebuild();
 		updateConfig();
 		overlayRenderer.rebuildOverlays();
 	}
 
-	public void resizeMarker(Point point, int dx, int dy)
+	public void resizeMarker(int dx, int dy)
 	{
-		//TODO: Allow resizing below base point
-		Dimension currentSize = currentMarker.getBounds().getSize();
-		currentMarker.getBounds().setSize(new Dimension(currentSize.width + dx, currentSize.height + dy));
+		// TODO: Allow resizing below base point
+		Dimension currentSize = overlay.getPreferredSize();
+		overlay.setPreferredSize(new Dimension(currentSize.width + dx, currentSize.height + dy));
 	}
 
 	public void updateConfig()
@@ -225,25 +232,23 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		final Gson gson = new Gson();
-		String json = gson.toJson(screenMarkers);
+		final String json = gson
+			.toJson(screenMarkers.stream().map(ScreenMarkerOverlay::getMarker).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
 	}
 
-	private List<ScreenMarker> loadConfig(String json)
+	private Stream<ScreenMarkerOverlay> loadConfig(String json)
 	{
-		if (json == null)
-		{
-			json = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY);
-		}
-
 		if (Strings.isNullOrEmpty(json))
 		{
-			return Collections.emptyList();
+			return Stream.empty();
 		}
 
 		final Gson gson = new Gson();
-		return gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
+		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
 		{
 		}.getType());
+
+		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
 	}
 }
