@@ -139,7 +139,7 @@ public class LootRecorderPlugin extends Plugin
 			}
 			catch (IOException e)
 			{
-				log.info("Error getting panel icon:", e);
+				log.warn("Error getting panel icon:", e);
 			}
 		}
 
@@ -376,8 +376,6 @@ public class LootRecorderPlugin extends Plugin
 				// Convert JSON to LootEntry and add to data ArrayList
 				if (line.length() > 0)
 				{
-					System.out.println(line);
-					System.out.println(line.length());
 					LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
 					data.add(entry);
 				}
