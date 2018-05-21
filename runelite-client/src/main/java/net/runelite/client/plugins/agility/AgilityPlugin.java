@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ import net.runelite.api.Node;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -49,6 +51,7 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -56,6 +59,7 @@ import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -67,6 +71,8 @@ import net.runelite.client.ui.overlay.Overlay;
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
+	private static final int AGILITY_ARENA_REGION_ID = 11157;
+
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
@@ -81,6 +87,9 @@ public class AgilityPlugin extends Plugin
 	private LapCounterOverlay lapOverlay;
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -90,6 +99,7 @@ public class AgilityPlugin extends Plugin
 	private AgilitySession session;
 
 	private int lastAgilityXp;
+	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -119,10 +129,17 @@ public class AgilityPlugin extends Plugin
 			case HOPPING:
 			case LOGIN_SCREEN:
 				session = null;
+				lastArenaTicketPosition = null;
 				break;
 			case LOADING:
 				markOfGrace = null;
 				obstacles.clear();
+				break;
+			case LOGGED_IN:
+				if (!isInAgilityArena())
+				{
+					lastArenaTicketPosition = null;
+				}
 				break;
 		}
 	}
@@ -202,6 +219,30 @@ public class AgilityPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (isInAgilityArena())
+		{
+			WorldPoint newTicketPosition = client.getHintArrowPoint();
+			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
+			{
+				// We don't want to notify when players first enter the course
+				if (lastArenaTicketPosition != null && config.notifyAgilityArena())
+				{
+					notifier.notify("Ticket location changed");
+				}
+
+				lastArenaTicketPosition = newTicketPosition;
+			}
+		}
+	}
+
+	private boolean isInAgilityArena()
+	{
+		return AGILITY_ARENA_REGION_ID == client.getLocalPlayer().getWorldLocation().getRegionID();
 	}
 
 	@Subscribe
