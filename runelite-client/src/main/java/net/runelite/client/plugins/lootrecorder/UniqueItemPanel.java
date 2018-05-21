@@ -77,20 +77,37 @@ class UniqueItemPanel extends JPanel
 			boolean shouldStack = comp.isStackable();
 			Integer quantity = 0;
 			Integer imageID = comp.getId();
+			Float alpha = 0.3f;
 
 			// If we have a loot entry for this item then update the icon accordingly
 			if (it != null)
 			{
 				quantity = it.getAmount();
 				shouldStack = shouldStack || it.getAmount() > 1;
+				if (quantity > 0)
+				{
+					alpha = 1.0f;
+				}
 			}
-			AsyncBufferedImage image = itemManager.getImage(imageID, quantity, shouldStack);
+			Float finalAlpha = alpha;
 			Integer finalQuantity = quantity;
+			AsyncBufferedImage image = itemManager.getImage(imageID, finalQuantity, shouldStack);
+
+			BufferedImage opaque = createOpaqueImage(image, finalAlpha);
+			ImageIcon o = new ImageIcon(opaque);
+			JLabel icon = new JLabel(o);
+			this.add(icon, c);
+			c.gridx++;
+			// Incase the image is blank we will refresh it upon load
+			// Will only trigger if image hasn't been added
 			Runnable task = () ->
 			{
-				attachImage(image, c, finalQuantity);
+				System.out.println("Refreshing image for: " + item.getName());
+				refreshImage(icon, image, finalAlpha);
 			};
 			image.onChanged(() -> SwingUtilities.invokeLater(task));
+			System.out.println("Requested image for: " + item.getName());
+			System.out.println(image);
 		}
 
 	}
@@ -110,6 +127,16 @@ class UniqueItemPanel extends JPanel
 		JLabel icon = new JLabel(o);
 		this.add(icon, c);
 		c.gridx++;
+	}
+
+	void refreshImage(JLabel label, AsyncBufferedImage image, Float finalAlpha)
+	{
+		BufferedImage opaque = createOpaqueImage(image, finalAlpha);
+		ImageIcon o = new ImageIcon(opaque);
+
+		label.setIcon(o);
+		label.revalidate();
+		label.repaint();
 	}
 
 	private BufferedImage createOpaqueImage(AsyncBufferedImage image, Float alpha)
