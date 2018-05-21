@@ -68,6 +68,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyIdle = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean notifyEnergy = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
 
@@ -251,6 +252,11 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+
+		if (checkLowEnergy())
+		{
+			notifier.notify("[" + local.getName() + "] has low run energy!");
+		}
 	}
 
 	private boolean checkLowHitpoints()
@@ -298,6 +304,29 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				notifyPrayer = false;
 			}
+		}
+
+		return false;
+	}
+
+	private boolean checkLowEnergy()
+	{
+		if (config.getEnergyThreshold() == 0)
+		{
+			return false;
+		}
+
+		if (client.getEnergy() <= config.getEnergyThreshold())
+		{
+			if (!notifyEnergy)
+			{
+				notifyEnergy = true;
+				return true;
+			}
+		}
+		else
+		{
+			notifyEnergy = false;
 		}
 
 		return false;
