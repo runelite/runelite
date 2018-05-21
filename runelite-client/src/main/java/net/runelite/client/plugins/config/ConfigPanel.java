@@ -399,8 +399,6 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			jComboBox.setRenderer(new ComboBoxListRenderer());
-			jComboBox.setForeground(Color.WHITE);
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
 		}
 	}
