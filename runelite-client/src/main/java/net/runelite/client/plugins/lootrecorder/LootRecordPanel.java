@@ -49,12 +49,13 @@ class LootRecordPanel extends JPanel
 		this.setLayout(layout);
 		this.setBorder(new MatteBorder( 0, 0, 1, 0, Color.GRAY));
 
+		// Item Image Icon
 		JLabel icon = new JLabel();
 		this.record.getIcon().addTo(icon);
-
+		// Item Name (Colored off Item Price)
 		JLabel item_name = new JLabel(this.record.getItem_name());
 		ColorLabel(item_name, this.record.getValue());
-
+		// Item Values (Colored off Total Value of item)
 		JLabel total = new JLabel(numberToString(this.record.getTotal()), SwingConstants.RIGHT);
 		ColorLabel(total, this.record.getTotal());
 
@@ -65,6 +66,7 @@ class LootRecordPanel extends JPanel
 		c.gridy = 0;
 		c.ipady = 20;
 
+		// Add to Panel
 		this.add(icon, c);
 		c.gridx++;
 		this.add(item_name, c);
@@ -72,6 +74,7 @@ class LootRecordPanel extends JPanel
 		this.add(total, c);
 	}
 
+	// Add K and M Suffix to items
 	private String numberToString(Integer num)
 	{
 		Float v = Float.valueOf(num);
@@ -91,6 +94,7 @@ class LootRecordPanel extends JPanel
 		return (new DecimalFormat("#,###.#").format(v) + suffix);
 	}
 
+	// Color label to match Runescape coloring
 	private void ColorLabel(JLabel label, Integer val)
 	{
 		Color labelColor = Color.yellow;
