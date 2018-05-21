@@ -56,9 +56,7 @@ import net.runelite.client.util.Text;
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";
-
 	private static final int CHARACTER_LIMIT = 128;
-
 	private static final String KEY_PREFIX = "note_";
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
@@ -154,14 +152,14 @@ public class FriendNotesPlugin extends Plugin
 		// Look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
-			// Assume the display name text is untagged
-			setHoveredFriend(event.getTarget());
+			// Friends have color tags
+			setHoveredFriend(Text.removeTags(event.getTarget()));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
 			addNote.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE);
 			addNote.setType(MenuAction.RUNELITE.getId());
-			addNote.setTarget(event.getTarget());
+			addNote.setTarget(event.getTarget()); //Preserve color codes here
 			addNote.setParam0(event.getActionParam0());
 			addNote.setParam1(event.getActionParam1());
 
@@ -185,6 +183,7 @@ public class FriendNotesPlugin extends Plugin
 				return;
 			}
 
+			//Friends have color tags
 			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
 
 			// Handle clicks on "Add Note" or "Edit Note"
