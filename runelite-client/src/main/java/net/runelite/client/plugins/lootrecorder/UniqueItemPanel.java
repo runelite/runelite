@@ -72,7 +72,7 @@ class UniqueItemPanel extends JPanel
 		for (UniqueItem item : items)
 		{
 			Integer id = item.getItemID();
-			ItemComposition comp = itemManager.getItemComposition(id);
+			ItemComposition comp = this.getItemManager().getItemComposition(id);
 			LootRecord it = loots.get(comp.getName());
 			boolean shouldStack = comp.isStackable();
 			Integer quantity = 0;
@@ -93,7 +93,7 @@ class UniqueItemPanel extends JPanel
 			// Create Image
 			Float finalAlpha = alpha;
 			Integer finalQuantity = quantity;
-			AsyncBufferedImage image = itemManager.getImage(imageID, finalQuantity, shouldStack);
+			AsyncBufferedImage image = this.getItemManager().getImage(imageID, finalQuantity, shouldStack);
 			BufferedImage opaque = createOpaqueImage(image, finalAlpha);
 			// Attach Image to Label and append label to Panel
 			ImageIcon o = new ImageIcon(opaque);
