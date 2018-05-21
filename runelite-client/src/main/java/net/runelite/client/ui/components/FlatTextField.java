@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
@@ -28,85 +27,77 @@ package net.runelite.client.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.Document;
+import lombok.Getter;
+import net.runelite.client.ui.ColorScheme;
 
 /**
- * This component is a FlatTextField with an icon on its left side.
+ * This component is a JTextField with a flat design look.
  */
-public class IconTextField extends JPanel
+public class FlatTextField extends JPanel
 {
-	private final FlatTextField textField;
+	@Getter
+	private final JTextField textField;
 
-	//to support gifs, the icon needs to be wrapped in a JLabel
-	private final JLabel iconWrapperLabel;
+	//the default background color, this needs to be stored for hover effects
+	@Getter
+	private Color backgroundColor = ColorScheme.DARKER_GRAY_COLOR;
 
-	public IconTextField()
+	//the default hover background color, this needs to be stored for hover effects
+	@Getter
+	private Color hoverBackgroundColor;
+
+	// the input can be blocked (no clicking, no editing, no hover effects)
+	@Getter
+	private boolean blocked;
+
+	public FlatTextField()
 	{
 		setLayout(new BorderLayout());
+		setBorder(new EmptyBorder(0, 10, 0, 0));
 
-		this.iconWrapperLabel = new JLabel();
-		this.iconWrapperLabel.setPreferredSize(new Dimension(30, 0));
-		this.iconWrapperLabel.setVerticalAlignment(JLabel.CENTER);
-		this.iconWrapperLabel.setHorizontalAlignment(JLabel.CENTER);
+		this.textField = new JTextField();
+		this.textField.setBorder(null);
+		this.textField.setOpaque(false);
+		this.textField.setSelectedTextColor(Color.WHITE);
+		this.textField.setSelectionColor(ColorScheme.BRAND_ORANGE_TRANSPARENT);
 
-		textField = new FlatTextField();
-		textField.setBorder(null);
+		add(textField, BorderLayout.CENTER);
 
-		JTextField innerTxt = textField.getTextField();
-		innerTxt.removeMouseListener(innerTxt.getMouseListeners()[innerTxt.getMouseListeners().length - 1]);
-
-		MouseListener hoverEffect = new MouseAdapter()
+		textField.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				if (textField.isBlocked())
+				if (blocked)
 				{
 					return;
 				}
 
-				Color hoverColor = textField.getHoverBackgroundColor();
-
-				if (hoverColor != null)
+				if (hoverBackgroundColor != null)
 				{
-					IconTextField.super.setBackground(hoverColor);
-					textField.setBackground(hoverColor, false);
+					setBackground(hoverBackgroundColor, false);
 				}
-
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				setBackground(textField.getBackgroundColor());
+				setBackground(backgroundColor);
 			}
-		};
-
-		textField.addMouseListener(hoverEffect);
-		innerTxt.addMouseListener(hoverEffect);
-
-		add(iconWrapperLabel, BorderLayout.WEST);
-		add(textField, BorderLayout.CENTER);
+		});
 	}
 
 	public void addActionListener(ActionListener actionListener)
 	{
 		textField.addActionListener(actionListener);
-	}
-
-	public void setIcon(ImageIcon icon)
-	{
-		iconWrapperLabel.setIcon(icon);
 	}
 
 	public String getText()
@@ -119,32 +110,6 @@ public class IconTextField extends JPanel
 		textField.setText(text);
 	}
 
-	@Override
-	public void setBackground(Color color)
-	{
-		if (color == null)
-		{
-			return;
-		}
-
-		super.setBackground(color);
-
-		if (textField != null)
-		{
-			textField.setBackground(color);
-		}
-	}
-
-	public void setHoverBackgroundColor(Color hoverBackgroundColor)
-	{
-		if (hoverBackgroundColor == null)
-		{
-			return;
-		}
-
-		this.textField.setHoverBackgroundColor(hoverBackgroundColor);
-	}
-
 	public void addInputKeyListener(KeyListener l)
 	{
 		textField.addKeyListener(l);
@@ -155,20 +120,46 @@ public class IconTextField extends JPanel
 		textField.removeKeyListener(l);
 	}
 
-	public void setEditable(boolean editable)
+	@Override
+	public void setBackground(Color color)
 	{
-		textField.setEditable(editable);
-		if (!editable)
+		setBackground(color, true);
+	}
+
+	public void setBackground(Color color, boolean saveColor)
+	{
+		if (color == null)
 		{
-			super.setBackground(textField.getBackgroundColor());
+			return;
+		}
+
+		super.setBackground(color);
+		
+		if (saveColor)
+		{
+			this.backgroundColor = color;
 		}
 	}
 
-	@Override
-	public boolean requestFocusInWindow()
+	public void setHoverBackgroundColor(Color color)
 	{
-		super.requestFocusInWindow();
-		return textField.requestFocusInWindow();
+		if (color == null)
+		{
+			return;
+		}
+
+		this.hoverBackgroundColor = color;
+	}
+
+	public void setEditable(boolean editable)
+	{
+		this.blocked = !editable;
+		textField.setEditable(editable);
+		textField.setFocusable(editable);
+		if (!editable)
+		{
+			super.setBackground(backgroundColor);
+		}
 	}
 
 	public Document getDocument()
