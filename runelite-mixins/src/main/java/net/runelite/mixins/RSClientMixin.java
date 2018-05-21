@@ -881,7 +881,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public boolean hasHintArrow()
 	{
-		return client.getHintArrowTargetType() == HintArrowType.NONE.getValue();
+		return client.getHintArrowTargetType() != HintArrowType.NONE.getValue();
 	}
 
 	@Inject
