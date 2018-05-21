@@ -68,11 +68,11 @@ class UniqueItemPanel extends JPanel
 		c.gridy = 0;
 		c.ipady = 20;
 
-		// Add each Item icon to the panel
+		// Add each Unique Item icon to the panel
 		for (UniqueItem item : items)
 		{
 			Integer id = item.getItemID();
-			ItemComposition comp = this.getItemManager().getItemComposition(id);
+			ItemComposition comp = itemManager.getItemComposition(id);
 			LootRecord it = loots.get(comp.getName());
 			boolean shouldStack = comp.isStackable();
 			Integer quantity = 0;
@@ -89,47 +89,29 @@ class UniqueItemPanel extends JPanel
 					alpha = 1.0f;
 				}
 			}
+
+			// Create Image
 			Float finalAlpha = alpha;
 			Integer finalQuantity = quantity;
 			AsyncBufferedImage image = itemManager.getImage(imageID, finalQuantity, shouldStack);
-
 			BufferedImage opaque = createOpaqueImage(image, finalAlpha);
+			// Attach Image to Label and append label to Panel
 			ImageIcon o = new ImageIcon(opaque);
 			JLabel icon = new JLabel(o);
 			this.add(icon, c);
 			c.gridx++;
-			// Incase the image is blank we will refresh it upon load
-			// Will only trigger if image hasn't been added
+			// in case the image is blank we will refresh it upon load
+			// Should only trigger if image hasn't been added
 			Runnable task = () ->
 			{
-				System.out.println("Refreshing image for: " + item.getName());
 				refreshImage(icon, image, finalAlpha);
 			};
 			image.onChanged(() -> SwingUtilities.invokeLater(task));
-			System.out.println("Requested image for: " + item.getName());
-			System.out.println(image);
 		}
 
 	}
 
-	void attachImage(AsyncBufferedImage image, GridBagConstraints c, Integer quantity)
-	{
-		BufferedImage opaque;
-		if (quantity <= 0)
-		{
-			opaque = createOpaqueImage(image, 0.3f);
-		}
-		else
-		{
-			opaque = createOpaqueImage(image, 1.0f);
-		}
-		ImageIcon o = new ImageIcon(opaque);
-		JLabel icon = new JLabel(o);
-		this.add(icon, c);
-		c.gridx++;
-	}
-
-	void refreshImage(JLabel label, AsyncBufferedImage image, Float finalAlpha)
+	private void refreshImage(JLabel label, AsyncBufferedImage image, Float finalAlpha)
 	{
 		BufferedImage opaque = createOpaqueImage(image, finalAlpha);
 		ImageIcon o = new ImageIcon(opaque);
