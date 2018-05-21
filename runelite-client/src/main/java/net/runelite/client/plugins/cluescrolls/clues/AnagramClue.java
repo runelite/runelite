@@ -72,7 +72,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("This anagram reveals who to speak to next: DO SAY MORE", "Doomsayer", new WorldPoint(3230, 3230, 0), "East of Lumbridge Castle", "95"),
 		new AnagramClue("This anagram reveals who to speak to next: DIM THARN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "28 or Puzzle box"),
 		new AnagramClue("This anagram reveals who to speak to next: DR HITMAN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "28, Light box or Puzzle box"),
-		new AnagramClue("This anagram reveals who to speak to next: DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim"),
+		new AnagramClue("This anagram reveals who to speak to next: DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim", "Puzzle box"),
 		new AnagramClue("This anagram reveals who to speak to next: DRAGONS LAMENT", "Strange old Man", new WorldPoint(3564, 3288, 0), "Barrows", "40"),
 		new AnagramClue("This anagram reveals who to speak to next: DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "4"),
 		new AnagramClue("This anagram reveals who to speak to next: DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),
