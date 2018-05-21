@@ -75,24 +75,6 @@ import static net.runelite.client.RuneLite.LOOTS_DIR;
 @Slf4j
 public class LootRecorderPlugin extends Plugin
 {
-	private Integer barrowsNumber;
-	private Integer raidsNumber;
-
-	private String barrowsFilename = "barrows.log";
-	private String raidsFilename = "raids.log";
-
-	private File playerFolder;
-
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
-
-	@Getter
-	private ArrayList<LootEntry> barrows = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
-
-	@Inject
-	private LootRecorderConfig lootRecorderConfig;
-
 	@Inject
 	private Client client;
 
@@ -100,18 +82,33 @@ public class LootRecorderPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
+	private LootRecorderConfig lootRecorderConfig;
+
+	@Inject
 	private Notifier notifier;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private LootRecorderPanel panel;
-
-	private NavigationButton navButton;
-
 	@Inject
 	private PluginToolbar pluginToolbar;
 
+	@Getter
+	private ArrayList<LootEntry> barrows = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
+
+	private Integer barrowsNumber;
+	private Integer raidsNumber;
+
+	private String barrowsFilename = "barrows.log";
+	private String raidsFilename = "raids.log";
+
+	private File playerFolder;
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+
+	private LootRecorderPanel panel;
+	private NavigationButton navButton;
 
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
@@ -128,11 +125,11 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	// Separated from startUp for the panel toggling
+	// Separated from startUp for toggling panel from settings
 	private void createPanel()
 	{
 		panel = new LootRecorderPanel(itemManager, this);
-
+		// Panel Icon (Looting Bag)
 		BufferedImage icon = null;
 		synchronized (ImageIO.class)
 		{
@@ -145,6 +142,7 @@ public class LootRecorderPlugin extends Plugin
 				log.info("Error getting panel icon:", e);
 			}
 		}
+
 		navButton = NavigationButton.builder()
 			.tooltip("Loot Recorder")
 			.icon(icon)
@@ -165,6 +163,7 @@ public class LootRecorderPlugin extends Plugin
 	{
 		pluginToolbar.removeNavigation(navButton);
 	}
+
 	// Checks for loot that is rewarded via interfaces
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
@@ -176,8 +175,6 @@ public class LootRecorderPlugin extends Plugin
 			LootEntry entry = createLootEntry(barrowsNumber, rewardContainer);
 			barrows.add(entry);
 			addLootEntry(barrowsFilename, entry);
-			log.info("Recorded a barrows chest!");
-			log.info("Entry:", entry);
 			lootRecordedAlert("Barrows Chest added to log.");
 			panel.updateTab("Barrows");
 		}
@@ -189,10 +186,8 @@ public class LootRecorderPlugin extends Plugin
 			LootEntry entry = createLootEntry(raidsNumber, rewardContainer);
 			raids.add(entry);
 			addLootEntry(raidsFilename, entry);
-			log.info("Recorded a raids chest!");
-			log.info("Entry:", entry);
 			lootRecordedAlert("Raid Loot added to log.");
-			panel.updateTab("Barrows");
+			panel.updateTab("Raids");
 		}
 	}
 
@@ -207,6 +202,12 @@ public class LootRecorderPlugin extends Plugin
 
 		switch (event.getKey())
 		{
+			case "recordBarrowsChest":
+				ToggleTab("Barrows", lootRecorderConfig.recordBarrowsChest());
+				return;
+			case "recordRaidsChest":
+				ToggleTab("Raids", lootRecorderConfig.recordRaidsChest());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -217,12 +218,6 @@ public class LootRecorderPlugin extends Plugin
 				{
 					removePanel();
 				}
-				return;
-			case "recordBarrowsChest":
-				ToggleTab("Barrows", lootRecorderConfig.recordBarrowsChest());
-				return;
-			case "recordRaidsChest":
-				ToggleTab("Raids", lootRecorderConfig.recordRaidsChest());
 				return;
 			default:
 				break;
@@ -280,19 +275,10 @@ public class LootRecorderPlugin extends Plugin
 		loadLootEntries(raidsFilename, raids);
 	}
 
-	// Update KC variables on chat message event
+	// Update KC variable on chat message event
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getMessage().equals("Test"))
-		{
-			ArrayList<DropEntry> drops = new ArrayList<>();
-			drops.add(new DropEntry(4755, 20));
-			LootEntry entry = new LootEntry(999, drops);
-			barrows.add(entry);
-			addLootEntry(barrowsFilename, entry);
-			panel.updateTab("Barrows");
-		}
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
 		{
 			return;
@@ -300,6 +286,7 @@ public class LootRecorderPlugin extends Plugin
 
 		String chatMessage = event.getMessage();
 
+		// Barrows KC
 		if (chatMessage.startsWith("Your Barrows chest count is"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
@@ -321,6 +308,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	// Create Loot Entry for ItemContainer
 	private LootEntry createLootEntry(Integer kill_count, ItemContainer container)
 	{
 		ArrayList<DropEntry> drops = new ArrayList<>();
@@ -333,13 +321,12 @@ public class LootRecorderPlugin extends Plugin
 		return new LootEntry(kill_count, drops);
 	}
 
-
 	// Add Loot Entry to the necessary file
 	private void addLootEntry(String fileName, LootEntry entry)
 	{
+		// Convert entry to JSON
 		String dataAsString = RuneLiteAPI.GSON.toJson(entry);
-		log.info(dataAsString);
-
+		// Grab file by username or loots directory if not logged in
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
@@ -348,17 +335,14 @@ public class LootRecorderPlugin extends Plugin
 		{
 			playerFolder = LOOTS_DIR;
 		}
-		log.info(String.valueOf(playerFolder));
-
+		// Open File and append data
 		File lootFile = new File(playerFolder, fileName);
 		try
 		{
-			//final Path path = Paths.get(String.valueOf(lootFile));
 			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), true));
 			file.append(dataAsString);
 			file.newLine();
 			file.close();
-			//Files.write(path, Collections.singletonList(dataAsString), StandardCharsets.UTF_8, Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
 		}
 		catch (IOException ioe)
 		{
@@ -409,6 +393,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	// Returns stored data by tab name
 	ArrayList<LootEntry> getData(String type)
 	{
 		switch (type.toUpperCase())
@@ -422,6 +407,7 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	// Handles if panel should be shown by Tab Name
 	Boolean isBeingRecorded(String tabName)
 	{
 		switch (tabName.toUpperCase())
