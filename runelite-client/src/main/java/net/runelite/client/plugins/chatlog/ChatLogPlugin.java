@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.chatlog;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -38,16 +41,26 @@ import java.util.Calendar;
 
 import static net.runelite.client.RuneLite.CHATLOG_DIR;
 
-@PluginDescriptor(
+@PluginDescriptor
+		(
 		name = "Chat Log",
 		enabledByDefault = false
-)
+		)
 
 @Slf4j
 public class ChatLogPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ChatLogConfig config;
+
+	@Provides
+	ChatLogConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChatLogConfig.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -58,6 +71,11 @@ public class ChatLogPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		if (!saveMessage(event.getType()))
+		{
+			return;
+		}
+
 		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null) //Checking for an available player (name) to store chat logs per account.
 		{
@@ -76,6 +94,7 @@ public class ChatLogPlugin extends Plugin
 			PrintWriter out = new PrintWriter(bw))
 		{
 			if (!file.canRead() || file.length() == 0) //Adding data headers to new or empty files, so that people can more easily interpret the chat logs.
+			//noinspection CheckStyle,CheckStyle
 			{
 				String headersFormat = "yyyy_MM_dd_HH_mm_ss" + "," + "message_Type" + "," + "message_Sender" + "," + "message_Sender_Name" + "," + "message";
 
@@ -112,5 +131,55 @@ public class ChatLogPlugin extends Plugin
 		{
 			log.warn("'Chat Log' plugin file writing error: " + e.getMessage());
 		}
+	}
+
+	private boolean saveMessage(ChatMessageType type)
+	{
+		if (type.equals(ChatMessageType.PUBLIC))
+		{
+			if (!config.savePublicChat())
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_RECEIVED) || type.equals(ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD) || type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			if (!config.savePrivateChat())
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		if (type.equals(ChatMessageType.CLANCHAT))
+		{
+			if (!config.saveClanChat())
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		if (type.equals(ChatMessageType.AUTOCHAT))
+		{
+			if (!config.saveAutoChat())
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		if (!config.saveGameInfo())
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
