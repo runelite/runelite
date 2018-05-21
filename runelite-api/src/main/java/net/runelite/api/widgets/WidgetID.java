@@ -243,21 +243,30 @@ public class WidgetID
 		static final int EQUIPMENT_ICON = 59;
 		static final int PRAYER_ICON = 60;
 		static final int MAGIC_ICON = 61;
+		static final int ROOT_INTERFACE_CONTAINER = 62;
+		static final int BANK_CONTAINER = 64;
+		static final int INTERFACE_CONTAINER = 65;
 	}
 
 	static class ResizableViewport
 	{
+		static final int LOGOUT_ICON = 45;
+		static final int OPTIONS_ICON = 46;
+		static final int EMOTE_ICON = 47;
 		static final int QUESTS_TAB = 53;
 		static final int INVENTORY_TAB = 54;
 		static final int PRAYER_TAB = 56;
 		static final int COMBAT_ICON = 58;
+		static final int QUESTS_ICON = 60;
 		static final int MAGIC_ICON = 64;
 	}
 
 	static class ResizableViewportBottomLine
 	{
+		static final int LOGOUT_BUTTON_OVERLAY = 29;
 		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
+		static final int QUESTS_ICON = 57;
 	}
 
 	static class Chatbox
