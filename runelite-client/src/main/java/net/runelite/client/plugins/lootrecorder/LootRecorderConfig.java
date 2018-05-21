@@ -29,7 +29,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "loot-recorder",
+	keyName = "lootrecorder",
 	name = "Loot Recorder",
 	description = "Configuration for the Loot Recorder plugin"
 )

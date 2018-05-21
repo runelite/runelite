@@ -200,7 +200,7 @@ public class LootRecorderPlugin extends Plugin
 	public void onConfigChanged(ConfigChanged event)
 	{
 		// Only update if our plugin config was changed
-		if (!event.getGroup().equals("loot-recorder"))
+		if (!event.getGroup().equals("lootrecorder"))
 		{
 			return;
 		}
