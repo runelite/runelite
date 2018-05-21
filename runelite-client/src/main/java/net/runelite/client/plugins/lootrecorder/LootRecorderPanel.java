@@ -74,7 +74,7 @@ class LootRecorderPanel extends PluginPanel
 		// Create each Tab of the Panel
 		for (Tab tab : Tab.values())
 		{
-			// Only show tabs for recorded options
+			// Only create tabs for enabled recording options
 			if (lootRecorderPlugin.isBeingRecorded(tab.getName()))
 			{
 				createTab(tab);
@@ -89,7 +89,6 @@ class LootRecorderPanel extends PluginPanel
 		// Add to Panel
 		panel.add(tabsPanel);
 		panel.add(refresh);
-		log.info("Panel Created");
 	}
 
 	private LootPanel createLootPanel(Tab tab)
@@ -97,7 +96,7 @@ class LootRecorderPanel extends PluginPanel
 		// Grab Tab Data
 		ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
 		// Unique Items Info
-		final ArrayList<UniqueItem> list = UniqueItem.getByActivityName(tab.getName());
+		ArrayList<UniqueItem> list = UniqueItem.getByActivityName(tab.getName());
 		Map<Integer, ArrayList<UniqueItem>> sets = UniqueItem.createPositionSetMap(list);
 		// Create & Return Loot Panel
 		return new LootPanel(data, sets, itemManager);
@@ -115,7 +114,6 @@ class LootRecorderPanel extends PluginPanel
 		// Ensure panel updates are applied
 		panel.revalidate();
 		panel.repaint();
-		log.info("Refreshed Panel");
 	}
 
 	private void refreshLootPanel(LootPanel lootPanel, Tab tab)
@@ -175,7 +173,6 @@ class LootRecorderPanel extends PluginPanel
 
 		tabsMap.put(tab.getName().toUpperCase(), tabPanel);
 		lootMap.put(tab.getName().toUpperCase(), lootPanel);
-		log.info("Created " + String.valueOf(tab) + " tab");
 	}
 
 	private void removeTab(Tab tab)
@@ -185,38 +182,19 @@ class LootRecorderPanel extends PluginPanel
 		panel.getParent().remove(panel);
 	}
 
-	void updateLootPanel(LootPanel panel, ArrayList<LootEntry> records)
-	{
-		panel.updateRecords(records);
-		panel.repaint();
-		panel.revalidate();
-	}
-
 	void updateTab(String tabName)
 	{
-		// Update tabs loot panel with new data
-		// final LootPanel panel = lootMap.get(tabName.toUpperCase());
-		// final ArrayList<LootEntry> records = lootRecorderPlugin.getData(tabName);
-		// SwingUtilities.invokeLater(() -> updateLootPanel(panel, records));
-
-		// Recreating tab
-		//JPanel panel = tabsMap.get(tabName.toUpperCase());
-		//panel.getParent().remove(panel);
-		//final Tab tab = Tab.getByName(tabName);
-		//SwingUtilities.invokeLater(() -> createTab(tab));
-
 		// Reload data from file to ensure data and UI match
 		lootRecorderPlugin.loadTabData(tabName);
-
+		// Grab LootPanel that needs to be updated
 		LootPanel p = lootMap.get(tabName.toUpperCase());
+		// Invoke Later to ensure EDT thread
 		SwingUtilities.invokeLater(() -> p.updateRecords(lootRecorderPlugin.getData(tabName)));
 	}
 
 	void toggleTab(String tabName, Boolean status)
 	{
 		Tab tab = Tab.getByName(tabName);
-		log.info("Toggling: ");
-		log.info(tab.getName());
 		if (status)
 		{
 			createTab(tab);
