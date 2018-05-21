@@ -70,8 +70,6 @@ public class IconTextField extends JPanel
 		this.textField = new JTextField();
 		this.textField.setBorder(null);
 		this.textField.setOpaque(false);
-		this.textField.setSelectedTextColor(Color.WHITE);
-		this.textField.setSelectionColor(ColorScheme.BRAND_ORANGE_TRANSPARENT);
 
 		add(iconWrapperLabel, BorderLayout.WEST);
 		add(textField, BorderLayout.CENTER);
