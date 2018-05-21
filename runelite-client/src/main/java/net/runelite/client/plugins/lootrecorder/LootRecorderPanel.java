@@ -54,6 +54,7 @@ class LootRecorderPanel extends PluginPanel
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
 	private Map<String, JPanel> tabsMap = new HashMap<>();
+	private Map<String, LootPanel> lootMap = new HashMap<>();
 
 	@Inject
 	LootRecorderPanel(ItemManager itemManager, LootRecorderPlugin lootRecorderPlugin)
@@ -173,6 +174,7 @@ class LootRecorderPanel extends PluginPanel
 		resize.run();
 
 		tabsMap.put(tab.getName().toUpperCase(), tabPanel);
+		lootMap.put(tab.getName().toUpperCase(), lootPanel);
 		log.info("Created " + String.valueOf(tab) + " tab");
 	}
 
@@ -183,14 +185,25 @@ class LootRecorderPanel extends PluginPanel
 		panel.getParent().remove(panel);
 	}
 
+	void updateLootPanel(LootPanel panel, ArrayList<LootEntry> records)
+	{
+		panel.updateRecords(records);
+		panel.repaint();
+		panel.revalidate();
+	}
+
 	void updateTab(String tabName)
 	{
+		// Update tabs loot panel with new data
+		// final LootPanel panel = lootMap.get(tabName.toUpperCase());
+		// final ArrayList<LootEntry> records = lootRecorderPlugin.getData(tabName);
+		// SwingUtilities.invokeLater(() -> updateLootPanel(panel, records));
+
 		// Recreating tab
 		JPanel panel = tabsMap.get(tabName.toUpperCase());
 		panel.getParent().remove(panel);
 		final Tab tab = Tab.getByName(tabName);
 		SwingUtilities.invokeLater(() -> createTab(tab));
-		//createTab(Tab.getByName(tabName));
 	}
 
 	void toggleTab(String tabName, Boolean status)

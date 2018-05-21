@@ -44,7 +44,7 @@ import net.runelite.http.api.item.ItemPrice;
 @Getter
 class LootPanel extends JPanel
 {
-	private final ArrayList<LootEntry> records;
+	private ArrayList<LootEntry> records;
 	private Map<Integer, ArrayList<UniqueItem>> uniqueMap;
 	private Map<String, LootRecord> uniques;
 	private ItemManager itemManager;
@@ -147,6 +147,12 @@ class LootPanel extends JPanel
 			panel.add(p, c);
 			c.gridy++;
 		});
+	}
+
+	void updateRecords(ArrayList<LootEntry> records)
+	{
+		this.records = records;
+		refreshPanel();
 	}
 
 	void refreshPanel()
