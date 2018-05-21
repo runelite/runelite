@@ -46,29 +46,30 @@ class LootPanel extends JPanel
 {
 	private ArrayList<LootEntry> records;
 	private Map<Integer, ArrayList<UniqueItem>> uniqueMap;
-	private Map<String, LootRecord> uniques;
+	private Map<String, LootRecord> consolidated;
 	private ItemManager itemManager;
 
 	LootPanel(ArrayList<LootEntry> records, Map<Integer, ArrayList<UniqueItem>> uniqueMap, ItemManager itemManager)
 	{
 		this.records = records;
-		this.uniques = new HashMap<>();
+		this.consolidated = new HashMap<>();
 		this.uniqueMap = uniqueMap;
 		this.itemManager = itemManager;
 
 		setLayout(new GridBagLayout());
 		setBorder(new EmptyBorder(0, 2, 0, 2));
 
-		createUniques();
+		createConsolidatedArray();
+		sortUniqueMap();
 		createPanel(this);
 	}
 
-	private void createUniques()
+	private void createConsolidatedArray()
 	{
-		// Clear uniques array
-		this.uniques.clear();
+		// Clear consolidated array
+		this.consolidated.clear();
 
-		// Compile the DropEntries for unique totals
+		// Compile the DropEntries for unique consolidated totals
 		this.records.forEach(rec ->
 		{
 			// Convert DropEntries records into consolidated entries
@@ -76,7 +77,7 @@ class LootPanel extends JPanel
 			drops.forEach(de ->
 			{
 				ItemComposition item = itemManager.getItemComposition(de.getItem_id());
-				LootRecord uniq = this.uniques.get(item.getName());
+				LootRecord uniq = this.consolidated.get(item.getName());
 				if (uniq == null)
 				{
 					// Create new entry
@@ -100,7 +101,7 @@ class LootPanel extends JPanel
 						price = item.getPrice();
 					}
 					LootRecord entry = new LootRecord(item.getName(), item.getId(), de.getItem_amount(), price, icon, item);
-					this.uniques.put(item.getName(), entry);
+					this.consolidated.put(item.getName(), entry);
 				}
 				else
 				{
@@ -111,14 +112,16 @@ class LootPanel extends JPanel
 			});
 		});
 
-		// Sort Uniques
-		this.uniques = this.uniques.entrySet()
+		// Sort consolidated entries by Name
+		this.consolidated = this.consolidated.entrySet()
 				.stream()
 				.sorted(Map.Entry.comparingByKey())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-				//.forEach(System.out::println);
+	}
 
-		// Sort Unique Map
+	// Sort UniqueItems Map by Key
+	private void sortUniqueMap()
+	{
 		this.uniqueMap = this.uniqueMap.entrySet()
 				.stream()
 				.sorted(Map.Entry.comparingByKey())
@@ -136,12 +139,12 @@ class LootPanel extends JPanel
 		// Attach all the Unique Items
 		this.uniqueMap.forEach((setPosition, set) ->
 		{
-			UniqueItemPanel p = new UniqueItemPanel(set, this.uniques, panel.itemManager);
+			UniqueItemPanel p = new UniqueItemPanel(set, this.consolidated, panel.itemManager);
 			panel.add(p, c);
 			c.gridy++;
 		});
 		// Loop over each unique item and create a LootRecordPanel
-		this.uniques.forEach((lr, item) ->
+		this.consolidated.forEach((lr, item) ->
 		{
 			LootRecordPanel p = new LootRecordPanel(item);
 			panel.add(p, c);
@@ -149,6 +152,7 @@ class LootPanel extends JPanel
 		});
 	}
 
+	// Update Loot Panel with Updated Records
 	void updateRecords(ArrayList<LootEntry> records)
 	{
 		this.records = records;
@@ -157,10 +161,11 @@ class LootPanel extends JPanel
 		this.revalidate();
 	}
 
+	// Refresh the Panel without updating any data
 	void refreshPanel()
 	{
 		this.removeAll();
-		createUniques();
+		createConsolidatedArray();
 		createPanel(this);
 	}
 }
