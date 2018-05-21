@@ -36,6 +36,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -64,7 +67,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 
@@ -123,7 +125,8 @@ public class LootRecorderPlugin extends Plugin
 	{
 		if (lootRecorderConfig.showLootTotals())
 		{
-			SwingUtilities.invokeLater(this::createPanel);
+			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 1, TimeUnit.SECONDS);
 		}
 	}
 
