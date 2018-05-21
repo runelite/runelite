@@ -99,7 +99,6 @@ class XpInfoBox extends JPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
-		container.setComponentPopupMenu(popupMenu);
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -152,6 +151,9 @@ class XpInfoBox extends JPanel
 
 		container.add(headerPanel, BorderLayout.NORTH);
 		container.add(progressWrapper, BorderLayout.SOUTH);
+
+		container.setComponentPopupMenu(popupMenu);
+		progressBar.setComponentPopupMenu(popupMenu);
 
 		add(container, BorderLayout.NORTH);
 	}
