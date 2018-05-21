@@ -38,9 +38,11 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -128,6 +130,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		npcTags.clear();
 		highlightedNpcs.clear();
 		keyManager.unregisterKeyListener(inputListener);
+	}
+
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			highlightedNpcs.clear();
+		}
 	}
 
 	@Subscribe

@@ -346,6 +346,8 @@ public interface Client extends GameEngine
 
 	boolean hasHintArrow();
 
+	HintArrowType getHintArrowType();
+
 	void clearHintArrow();
 
 	void setHintArrow(WorldPoint point);
@@ -353,6 +355,12 @@ public interface Client extends GameEngine
 	void setHintArrow(Player player);
 
 	void setHintArrow(NPC npc);
+
+	WorldPoint getHintArrowPoint();
+
+	Player getHintArrowPlayer();
+
+	NPC getHintArrowNpc();
 
 	boolean isInterpolatePlayerAnimations();
 
@@ -409,6 +417,12 @@ public interface Client extends GameEngine
 
 	@VisibleForDevtools
 	void setChangedSkillsCount(int i);
+
+	void setSpriteOverrides(Map<Integer, SpritePixels> overrides);
+
+	void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides);
+
+	void setCompass(SpritePixels spritePixels);
 
 	int getTickCount();
 

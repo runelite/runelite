@@ -216,7 +216,6 @@ public class HiscorePanel extends PluginPanel
 
 		/* The container for all the endpoint selectors */
 		JPanel endpointPanel = new JPanel();
-		endpointPanel.setOpaque(false);
 		endpointPanel.setLayout(new GridLayout(1, 5, 7, 1));
 
 		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
@@ -281,7 +280,6 @@ public class HiscorePanel extends PluginPanel
 		for (HiscoreSkill skill : SKILLS)
 		{
 			JPanel panel = makeSkillPanel(skill);
-			panel.setOpaque(false);
 			statsPanel.add(panel);
 		}
 
@@ -354,7 +352,7 @@ public class HiscorePanel extends PluginPanel
 		label.setIconTextGap(totalLabel ? 10 : 4);
 
 		JPanel skillPanel = new JPanel();
-		skillPanel.setOpaque(false);
+		skillPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		skillPanel.setBorder(new EmptyBorder(2, 0, 2, 0));
 		skillLabels.add(label);
 		skillPanel.add(skillLabels.get(skillLabels.size() - 1));
@@ -440,7 +438,7 @@ public class HiscorePanel extends PluginPanel
 		int index = 0;
 		for (JLabel label : skillLabels)
 		{
-			HiscoreSkill skill = find(index);
+			HiscoreSkill skill = find(index++);
 
 			if (skill == null)
 			{
@@ -458,24 +456,26 @@ public class HiscorePanel extends PluginPanel
 					label.setText(Integer.toString(combatLevel));
 				}
 			}
-			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
+			else if (result.getSkill(skill) == null || result.getSkill(skill).getRank() == -1)
 			{
-				Skill s = result.getSkill(skill);
-				int level;
-				if (config.virtualLevels() && SKILLS.contains(skill))
-				{
-					level = Experience.getLevelForXp((int) s.getExperience());
-				}
-				else
-				{
-					level = s.getLevel();
-				}
-
-				label.setText(Integer.toString(level));
+				label.setToolTipText(null);
+				continue;
 			}
 
+			Skill s = result.getSkill(skill);
+			int level;
+			if (config.virtualLevels() && SKILLS.contains(skill))
+			{
+				level = Experience.getLevelForXp((int) s.getExperience());
+			}
+			else
+			{
+				level = s.getLevel();
+			}
+
+			label.setText(Integer.toString(level));
+
 			label.setToolTipText(detailsHtml(skill));
-			index++;
 		}
 	}
 

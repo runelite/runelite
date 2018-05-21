@@ -54,7 +54,6 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 class XpInfoBox extends JPanel
 {
-	private final Client client;
 	private final JPanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -78,16 +77,13 @@ class XpInfoBox extends JPanel
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
-		this.client = client;
 		this.panel = panel;
 		this.skill = skill;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 0, 0, 0));
-		setOpaque(false);
 
 		container.setLayout(new BorderLayout());
-		container.setOpaque(true);
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		// Create open xp tracker menu
@@ -96,7 +92,7 @@ class XpInfoBox extends JPanel
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
-		reset.addActionListener(e -> reset());
+		reset.addActionListener(e -> xpTrackerPlugin.resetSkillState(skill));
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -110,15 +106,15 @@ class XpInfoBox extends JPanel
 		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
 		skillIcon.setPreferredSize(new Dimension(35, 35));
 
-		headerPanel.setOpaque(false);
+		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
 		statsPanel.setLayout(new BorderLayout());
+		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 5, 9, 10));
-		statsPanel.setOpaque(false);
 
 		JPanel leftPanel = new JPanel();
-		leftPanel.setOpaque(false);
+		leftPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		leftPanel.setLayout(new GridLayout(2, 1));
 
 		expGained.setFont(FontManager.getRunescapeSmallFont());
@@ -128,7 +124,7 @@ class XpInfoBox extends JPanel
 		leftPanel.add(expHour);
 
 		JPanel rightPanel = new JPanel();
-		rightPanel.setOpaque(false);
+		rightPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		rightPanel.setLayout(new GridLayout(2, 1));
 
 		expLeft.setFont(FontManager.getRunescapeSmallFont());
@@ -144,7 +140,7 @@ class XpInfoBox extends JPanel
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
 
 		JPanel progressWrapper = new JPanel();
-		progressWrapper.setOpaque(false);
+		progressWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		progressWrapper.setLayout(new BorderLayout());
 		progressWrapper.setBorder(new EmptyBorder(0, 7, 7, 7));
 

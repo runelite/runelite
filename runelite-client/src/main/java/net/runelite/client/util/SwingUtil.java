@@ -62,6 +62,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -87,6 +88,7 @@ public class SwingUtil
 
 		UIManager.put("Button.foreground", Color.WHITE);
 		UIManager.put("MenuItem.foreground", Color.WHITE);
+		UIManager.put("Panel.background", ColorScheme.DARK_GRAY_COLOR);
 		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
 
 		// Do not render shadows under popups/tooltips.

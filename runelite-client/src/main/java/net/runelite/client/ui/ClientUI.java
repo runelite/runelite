@@ -34,6 +34,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
@@ -580,6 +581,11 @@ public class ClientUI
 		}
 
 		return new Point(0, 0);
+	}
+
+	public GraphicsConfiguration getGraphicsConfiguration()
+	{
+		return frame.getGraphicsConfiguration();
 	}
 
 	void toggleSidebar()

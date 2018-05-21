@@ -158,8 +158,7 @@ public class GroundItemsOverlay extends Overlay
 				else
 				{
 					itemStringBuilder.append(" (")
-							.append(StackFormatter.quantityToRSStackSize(item.getQuantity()))
-//							.append(String.format("%,d", item.getQuantity()))
+							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
 							.append(")");
 				}
 			}

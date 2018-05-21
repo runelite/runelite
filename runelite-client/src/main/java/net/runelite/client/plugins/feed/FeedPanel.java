@@ -135,13 +135,13 @@ class FeedPanel extends PluginPanel
 		setLayout(new BorderLayout());
 
 		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
-		feedContainer.setOpaque(false);
+		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		/**
 		 * This header contains the "News Feed" title and a refresh icon button.
 		 */
 		JPanel header = new JPanel();
-		header.setOpaque(false);
+		header.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		header.setLayout(new BorderLayout());
 		header.setBorder(new EmptyBorder(0, 0, 9, 0));
 
