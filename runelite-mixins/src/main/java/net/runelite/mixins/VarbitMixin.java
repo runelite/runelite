@@ -57,7 +57,7 @@ public abstract class VarbitMixin implements RSClient
 	public int getVar(Varbits varbit)
 	{
 		int varbitId = varbit.getId();
-		return getVarbitValue(varbitId);
+		return getVarbitValue(getVarps(), varbitId);
 	}
 
 	@Inject
@@ -65,12 +65,12 @@ public abstract class VarbitMixin implements RSClient
 	public void setSetting(Varbits varbit, int value)
 	{
 		int varbitId = varbit.getId();
-		setVarbitValue(varbitId, value);
+		setVarbitValue(getVarps(), varbitId, value);
 	}
 
 	@Inject
 	@Override
-	public int getVarbitValue(int varbitId)
+	public int getVarbitValue(int[] varps, int varbitId)
 	{
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
@@ -81,7 +81,11 @@ public abstract class VarbitMixin implements RSClient
 			varbitCache.put(varbitId, v);
 		}
 
-		int[] varps = getVarps();
+		if (v.getIndex() == 0 && v.getLeastSignificantBit() == 0 && v.getMostSignificantBit() == 0)
+		{
+			throw new IndexOutOfBoundsException("Varbit " + varbitId + " does not exist");
+		}
+
 		int value = varps[v.getIndex()];
 		int lsb = v.getLeastSignificantBit();
 		int msb = v.getMostSignificantBit();
@@ -91,7 +95,7 @@ public abstract class VarbitMixin implements RSClient
 
 	@Inject
 	@Override
-	public void setVarbitValue(int varbitId, int value)
+	public void setVarbitValue(int[] varps, int varbitId, int value)
 	{
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
@@ -102,7 +106,6 @@ public abstract class VarbitMixin implements RSClient
 			varbitCache.put(varbitId, v);
 		}
 
-		int[] varps = getVarps();
 		int lsb = v.getLeastSignificantBit();
 		int msb = v.getMostSignificantBit();
 		int mask = (1 << ((msb - lsb) + 1)) - 1;
@@ -113,13 +116,27 @@ public abstract class VarbitMixin implements RSClient
 	@Override
 	public int getVar(VarClientInt varClientInt)
 	{
-		return getVarcs().getIntVarcs()[varClientInt.getIndex()];
+		return getIntVarcs()[varClientInt.getIndex()];
 	}
 
 	@Inject
 	@Override
 	public String getVar(VarClientStr varClientStr)
 	{
-		return getVarcs().getStrVarcs()[varClientStr.getIndex()];
+		return getStrVarcs()[varClientStr.getIndex()];
+	}
+
+	@Inject
+	@Override
+	public int[] getIntVarcs()
+	{
+		return getVarcs().getIntVarcs();
+	}
+
+	@Inject
+	@Override
+	public String[] getStrVarcs()
+	{
+		return getVarcs().getStrVarcs();
 	}
 }
