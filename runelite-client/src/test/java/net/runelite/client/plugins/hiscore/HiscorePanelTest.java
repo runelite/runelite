@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.Skill;
 import org.junit.Test;
 
 public class HiscorePanelTest
@@ -31,7 +33,55 @@ public class HiscorePanelTest
 	@Test
 	public void testConstructor()
 	{
-		new HiscorePanel(new HiscoreConfig() {});
+		new HiscorePanel(new HiscoreConfig()
+		{
+		});
 	}
-	
+
+	@Test
+	public void testApplyResult()
+	{
+		HiscorePanel hiscorePanel = new HiscorePanel(new HiscoreConfig()
+		{
+		});
+
+		HiscoreResult hiscoreResult = new HiscoreResult();
+		Skill unranked = new Skill(-1, -1, -1);
+		hiscoreResult.setOverall(unranked);
+		hiscoreResult.setAttack(new Skill(1, 1, 1));
+		hiscoreResult.setDefence(unranked);
+		hiscoreResult.setStrength(unranked);
+		hiscoreResult.setHitpoints(unranked);
+		hiscoreResult.setRanged(unranked);
+		hiscoreResult.setPrayer(unranked);
+		hiscoreResult.setMagic(unranked);
+		hiscoreResult.setCooking(unranked);
+		hiscoreResult.setWoodcutting(unranked);
+		hiscoreResult.setFletching(unranked);
+		hiscoreResult.setFishing(unranked);
+		hiscoreResult.setFiremaking(unranked);
+		hiscoreResult.setCrafting(unranked);
+		hiscoreResult.setSmithing(unranked);
+		hiscoreResult.setMining(unranked);
+		hiscoreResult.setHerblore(unranked);
+		hiscoreResult.setAgility(unranked);
+		hiscoreResult.setThieving(unranked);
+		hiscoreResult.setSlayer(new Skill(2, 2, 2));
+		hiscoreResult.setFarming(unranked);
+		hiscoreResult.setRunecraft(unranked);
+		hiscoreResult.setHunter(unranked);
+		hiscoreResult.setConstruction(unranked);
+		hiscoreResult.setClueScrollEasy(unranked);
+		hiscoreResult.setClueScrollMedium(unranked);
+		hiscoreResult.setClueScrollAll(unranked);
+		hiscoreResult.setBountyHunterRogue(unranked);
+		hiscoreResult.setBountyHunterHunter(unranked);
+		hiscoreResult.setClueScrollHard(unranked);
+		hiscoreResult.setLastManStanding(unranked);
+		hiscoreResult.setClueScrollElite(unranked);
+		hiscoreResult.setClueScrollMaster(unranked);
+
+		hiscorePanel.applyResult(hiscoreResult);
+	}
+
 }
