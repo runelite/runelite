@@ -397,8 +397,13 @@ public class LootRecorderPlugin extends Plugin
 			while ((line = br.readLine()) != null)
 			{
 				// Convert JSON to LootEntry and add to data ArrayList
-				LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
-				data.add(entry);
+				if (line.length() > 0)
+				{
+					System.out.println(line);
+					System.out.println(line.length());
+					LootEntry entry = RuneLiteAPI.GSON.fromJson(line, LootEntry.class);
+					data.add(entry);
+				}
 			}
 		}
 		catch (FileNotFoundException e)

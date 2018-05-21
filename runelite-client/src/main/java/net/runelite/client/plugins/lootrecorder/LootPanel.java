@@ -153,6 +153,8 @@ class LootPanel extends JPanel
 	{
 		this.records = records;
 		refreshPanel();
+		this.repaint();
+		this.revalidate();
 	}
 
 	void refreshPanel()

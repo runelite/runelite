@@ -200,10 +200,13 @@ class LootRecorderPanel extends PluginPanel
 		// SwingUtilities.invokeLater(() -> updateLootPanel(panel, records));
 
 		// Recreating tab
-		JPanel panel = tabsMap.get(tabName.toUpperCase());
-		panel.getParent().remove(panel);
-		final Tab tab = Tab.getByName(tabName);
-		SwingUtilities.invokeLater(() -> createTab(tab));
+		//JPanel panel = tabsMap.get(tabName.toUpperCase());
+		//panel.getParent().remove(panel);
+		//final Tab tab = Tab.getByName(tabName);
+		//SwingUtilities.invokeLater(() -> createTab(tab));
+
+		LootPanel p = lootMap.get(tabName.toUpperCase());
+		SwingUtilities.invokeLater(() -> p.updateRecords(lootRecorderPlugin.getData(tabName)));
 	}
 
 	void toggleTab(String tabName, Boolean status)
