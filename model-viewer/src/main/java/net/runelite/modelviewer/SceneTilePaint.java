@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.lowmemory;
+package net.runelite.modelviewer;
 
-import com.google.common.eventbus.Subscribe;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import lombok.AllArgsConstructor;
 
-@PluginDescriptor(
-	name = "Low Detail",
-	enabledByDefault = false
-)
-public class LowMemoryPlugin extends Plugin
+@AllArgsConstructor
+public class SceneTilePaint
 {
-	@Inject
-	private Client client;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			client.changeMemoryMode(true);
-		}
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		client.changeMemoryMode(false);
-	}
-
-	@Subscribe
-	private void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			client.changeMemoryMode(true);
-		}
-	}
+	final int color;
+	final int texture;
 }
