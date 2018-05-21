@@ -639,8 +639,8 @@ public class HiscorePanel extends PluginPanel
 			long experience = result.getSkill(skill).getExperience();
 			if (experience >= 0)
 			{
-				int currentLevel = Experience.getLevelForXp((int) experience);
-				int currentXp = (int) result.getSkill(skill).getExperience();
+				int currentXp = (int) experience;
+				int currentLevel = Experience.getLevelForXp(currentXp);
 				int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
 				int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
