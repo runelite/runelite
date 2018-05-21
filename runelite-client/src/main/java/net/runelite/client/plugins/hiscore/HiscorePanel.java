@@ -397,6 +397,7 @@ public class HiscorePanel extends PluginPanel
 		for (JLabel label : skillLabels)
 		{
 			label.setText("--");
+			label.setToolTipText(null);
 		}
 
 		// if for some reason no endpoint was selected, default to normal
