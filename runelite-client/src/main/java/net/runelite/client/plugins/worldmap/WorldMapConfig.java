@@ -57,4 +57,59 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
+		name = "Show standard spellbook destionations",
+		description = "Show icons at the destinations for teleports in the standard spellbook",
+		position = 5
+	)
+	default boolean normalTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
+		name = "Show ancient magicks destionations",
+		description = "Show icons at the destinations for teleports in the ancient spellbook",
+		position = 6
+	)
+	default boolean ancientTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_LUNAR_TELEPORT_ICON,
+		name = "Show lunar spellbook destionations",
+		description = "Show icons at the destinations for teleports in the lunar spellbook",
+		position = 7
+	)
+	default boolean lunarTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_ARCEUUS_TELEPORT_ICON,
+		name = "Show arceuus spellbook destionations",
+		description = "Show icons at the destinations for teleports in the arceuus spellbook",
+		position = 8
+	)
+	default boolean arceuusTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_JEWELLERY_TELEPORT_ICON,
+		name = "Show jewellery teleport locations",
+		description = "Show icons at the destinations for teleports from jewellery",
+		position = 9
+	)
+	default boolean jewelleryTeleportIcon()
+	{
+		return true;
+	}
 }
