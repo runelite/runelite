@@ -47,12 +47,14 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Interface Styles",
-	enabledByDefault = false
+	enabledByDefault = false,
+	category = PluginCategory.CLIENT
 )
 public class InterfaceStylesPlugin extends Plugin
 {
