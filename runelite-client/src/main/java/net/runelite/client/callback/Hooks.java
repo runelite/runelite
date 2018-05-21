@@ -30,12 +30,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -72,6 +75,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -102,9 +106,10 @@ public class Hooks
 	private static final GameTick tick = new GameTick();
 	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
 	private static final Notifier notifier = injector.getInstance(Notifier.class);
+	private static final ClientUI clientUi = injector.getInstance(ClientUI.class);
 
 	private static Dimension lastStretchedDimensions;
-	private static BufferedImage stretchedImage;
+	private static VolatileImage stretchedImage;
 	private static Graphics2D stretchedGraphics;
 
 	private static long lastCheck;
@@ -264,7 +269,7 @@ public class Hooks
 			return;
 		}
 
-		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
+		Image image = mainBufferProvider.getImage();
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
@@ -281,14 +286,16 @@ public class Hooks
 		// Stretch the game image if the user has that enabled
 		if (!client.isResized() && client.isStretchedEnabled())
 		{
+			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
 			Dimension stretchedDimensions = client.getStretchedDimensions();
 
-			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions))
+			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions)
+				|| (stretchedImage != null && stretchedImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE))
 			{
 				/*
 					Reuse the resulting image instance to avoid creating an extreme amount of objects
 				 */
-				stretchedImage = new BufferedImage(stretchedDimensions.width, stretchedDimensions.height, BufferedImage.TYPE_INT_RGB);
+				stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
 
 				if (stretchedGraphics != null)
 				{
