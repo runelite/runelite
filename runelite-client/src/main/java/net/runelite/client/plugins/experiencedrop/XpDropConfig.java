@@ -30,16 +30,17 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "xpdrop",
-	name = "XP Drop",
-	description = "Configuration for XP drop customization"
+		keyName = "xpdrop",
+		name = "XP Drop",
+		description = "Configuration for XP drop customization"
 )
 public interface XpDropConfig extends Config
 {
 	@ConfigItem(
-		keyName = "hideSkillIcons",
-		name = "Hide skill icons",
-		description = "Configure if XP drops will show their respective skill icons"
+			keyName = "hideSkillIcons",
+			name = "Hide skill icons",
+			description = "Configure if XP drops will show their respective skill icons",
+			position = 6
 	)
 	default boolean hideSkillIcons()
 	{
@@ -47,9 +48,10 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "meleePrayerColor",
-		name = "Melee Prayer Color",
-		description = "XP drop color when a melee prayer is active"
+			keyName = "meleePrayerColor",
+			name = "Melee Prayer Color",
+			description = "XP drop color when a melee prayer is active",
+			position = 1
 	)
 	default Color getMeleePrayerColor()
 	{
@@ -57,9 +59,10 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rangePrayerColor",
-		name = "Range Prayer Color",
-		description = "XP drop color when a range prayer is active"
+			keyName = "rangePrayerColor",
+			name = "Range Prayer Color",
+			description = "XP drop color when a range prayer is active",
+			position = 2
 	)
 	default Color getRangePrayerColor()
 	{
@@ -67,12 +70,39 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "magePrayerColor",
-		name = "Mage Prayer Color",
-		description = "XP drop color when a mage prayer is active"
+			keyName = "magePrayerColor",
+			name = "Mage Prayer Color",
+			description = "XP drop color when a mage prayer is active",
+			position = 3
 	)
 	default Color getMagePrayerColor()
 	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
+
+	@ConfigItem(
+			keyName = "defaultXpDrop",
+			name = "Regular XP Drop",
+			description = "More custom default colors",
+			position = 5
+	)
+	default Color getDefaultXpDrop()
+	{
+		return new Color(0x15, 0x80, 0xAD);
+	}
+	@ConfigItem(
+			keyName = "overrideVanillaColor",
+			name = "XP Drop Color",
+			description = "Configure if color is overridden for XP drops",
+			position = 4
+
+	)
+	default boolean overrideVanillaColor()
+	{
+		return false;
+	}
 }
+
+
+
+

@@ -41,7 +41,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "XP Drop"
+		name = "XP Drop"
 )
 public class XpDropPlugin extends Plugin
 {
@@ -89,7 +89,7 @@ public class XpDropPlugin extends Plugin
 
 		String text = widget.getText();
 		final IntStream spriteIDs =
-			Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
+				Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
 
 		if (text != null)
 		{
@@ -100,7 +100,7 @@ public class XpDropPlugin extends Plugin
 				case MELEE:
 					if (spriteIDs.anyMatch(id ->
 							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
-								|| id == SpriteID.SKILL_HITPOINTS))
+									|| id == SpriteID.SKILL_HITPOINTS))
 					{
 						color = config.getMeleePrayerColor().getRGB();
 					}
@@ -122,13 +122,22 @@ public class XpDropPlugin extends Plugin
 
 			widget.setTextColor(color);
 		}
+
 	}
 
 	private void resetTextColor(Widget widget)
 	{
-		int defaultColorIdx = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
-		int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
-		widget.setTextColor(defaultColor);
+		if (config.overrideVanillaColor())
+		{
+			int defaultColor = config.getDefaultXpDrop().getRGB();
+			widget.setTextColor(defaultColor);
+		}
+		else
+		{
+			int defaultColorIdx = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
+			int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
+			widget.setTextColor(defaultColor);
+		}
 	}
 
 	private PrayerType getActivePrayerType()
