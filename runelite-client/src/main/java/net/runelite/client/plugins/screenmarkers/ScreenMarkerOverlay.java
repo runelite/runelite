@@ -28,6 +28,7 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import lombok.Getter;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -35,23 +36,28 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class ScreenMarkerOverlay extends Overlay
 {
+	@Getter
 	private final ScreenMarker marker;
 	private final ScreenMarkerRenderable screenMarkerRenderable;
 
-	public ScreenMarkerOverlay(ScreenMarker marker)
+	ScreenMarkerOverlay(ScreenMarker marker)
 	{
 		this.marker = marker;
 		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
-		setPreferredLocation(marker.getBounds().getLocation());
 
 		screenMarkerRenderable = new ScreenMarkerRenderable();
 		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
 		screenMarkerRenderable.setColor(marker.getColor());
 		screenMarkerRenderable.setFill(marker.getFill());
 		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
-		screenMarkerRenderable.setPreferredSize(marker.getBounds().getSize());
+	}
+
+	@Override
+	public String getName()
+	{
+		return marker.getName();
 	}
 
 	@Override
@@ -62,6 +68,7 @@ public class ScreenMarkerOverlay extends Overlay
 			return null;
 		}
 
+		screenMarkerRenderable.setPreferredSize(getPreferredSize());
 		return screenMarkerRenderable.render(graphics);
 	}
 }

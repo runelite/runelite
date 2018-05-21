@@ -38,7 +38,7 @@ public class ScreenMarkerMouseListener extends MouseListener
 	private final ScreenMarkerPlugin plugin;
 	private Point lastMousePoint = null;
 
-	public ScreenMarkerMouseListener(ScreenMarkerPlugin plugin)
+	ScreenMarkerMouseListener(ScreenMarkerPlugin plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -126,7 +126,7 @@ public class ScreenMarkerMouseListener extends MouseListener
 				}
 			}
 
-			plugin.resizeMarker(currentPoint, dx, dy);
+			plugin.resizeMarker(dx, dy);
 			lastMousePoint = currentPoint;
 		}
 
