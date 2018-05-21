@@ -346,6 +346,8 @@ public interface Client extends GameEngine
 
 	boolean hasHintArrow();
 
+	HintArrowType getHintArrowType();
+
 	void clearHintArrow();
 
 	void setHintArrow(WorldPoint point);
@@ -353,6 +355,12 @@ public interface Client extends GameEngine
 	void setHintArrow(Player player);
 
 	void setHintArrow(NPC npc);
+
+	WorldPoint getHintArrowPoint();
+
+	Player getHintArrowPlayer();
+
+	NPC getHintArrowNpc();
 
 	boolean isInterpolatePlayerAnimations();
 
