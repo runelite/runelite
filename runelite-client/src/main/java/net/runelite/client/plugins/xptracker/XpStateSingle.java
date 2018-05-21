@@ -53,7 +53,7 @@ class XpStateSingle
 		return toHourly(xpGained);
 	}
 
-	int getActionsHr()
+	private int getActionsHr()
 	{
 		return toHourly(actions);
 	}
@@ -82,12 +82,12 @@ class XpStateSingle
 		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
 	}
 
-	int getXpRemaining()
+	private int getXpRemaining()
 	{
 		return nextLevelExp - (startXp + xpGained);
 	}
 
-	int getActionsRemaining()
+	private int getActionsRemaining()
 	{
 		if (actionsHistoryInitialized)
 		{
@@ -112,7 +112,7 @@ class XpStateSingle
 		return Integer.MAX_VALUE;
 	}
 
-	int getSkillProgress()
+	private int getSkillProgress()
 	{
 		int currentXp = startXp + xpGained;
 
@@ -121,7 +121,7 @@ class XpStateSingle
 		return (int) ((xpGained / xpGoal) * 100);
 	}
 
-	String getTimeTillLevel()
+	private String getTimeTillLevel()
 	{
 		long seconds = getTimeElapsedInSeconds();
 
