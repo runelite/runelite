@@ -75,9 +75,8 @@ class LootRecordPanel extends JPanel
 	}
 
 	// Add K and M Suffix to items
-	private String numberToString(Integer num)
+	private String numberToString(long v)
 	{
-		Float v = Float.valueOf(num);
 		String suffix = " gp";
 		if (v >= 10000000)
 		{
@@ -95,7 +94,7 @@ class LootRecordPanel extends JPanel
 	}
 
 	// Color label to match Runescape coloring
-	private void ColorLabel(JLabel label, Integer val)
+	private void ColorLabel(JLabel label, long val)
 	{
 		Color labelColor = Color.yellow;
 		if (val >= 10000000)

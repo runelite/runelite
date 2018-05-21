@@ -47,7 +47,7 @@ class LootRecord
 	@Setter(AccessLevel.PACKAGE)
 	private Integer value;
 	@Setter(AccessLevel.PACKAGE)
-	private Integer total;
+	private long total;
 	@Setter(AccessLevel.PACKAGE)
 	private AsyncBufferedImage icon;
 	@Setter(AccessLevel.PACKAGE)
@@ -62,13 +62,17 @@ class LootRecord
 		this.icon = icon;
 		this.value = value;
 
-		this.total = this.amount * this.value;
+		long val = this.value;
+		long am = this.amount;
+		this.total = val * am;
 	}
 
 	void incrementAmount(LootRecord l, Integer amount)
 	{
 		l.amount = l.amount + amount;
-		l.total = l.amount * l.value;
+		long val = this.value;
+		long am = this.amount;
+		l.total = val * am;
 	}
 
 	void updateIconAmount(LootRecord l, ItemManager itemManager)
