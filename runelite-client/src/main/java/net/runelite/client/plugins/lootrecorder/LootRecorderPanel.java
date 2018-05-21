@@ -82,7 +82,7 @@ class LootRecorderPanel extends PluginPanel
 		}
 
 		// Refresh Panel Button
-		JButton refresh = new JButton("Refresh Panel");
+		JButton refresh = new JButton("Refresh All Panels");
 		refresh.addActionListener(e ->
 				refreshPanel(panel));
 
@@ -204,6 +204,9 @@ class LootRecorderPanel extends PluginPanel
 		//panel.getParent().remove(panel);
 		//final Tab tab = Tab.getByName(tabName);
 		//SwingUtilities.invokeLater(() -> createTab(tab));
+
+		// Reload data from file to ensure data and UI match
+		lootRecorderPlugin.loadTabData(tabName);
 
 		LootPanel p = lootMap.get(tabName.toUpperCase());
 		SwingUtilities.invokeLater(() -> p.updateRecords(lootRecorderPlugin.getData(tabName)));
