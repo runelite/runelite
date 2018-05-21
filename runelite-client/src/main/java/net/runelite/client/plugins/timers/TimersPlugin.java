@@ -42,6 +42,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
@@ -79,7 +80,8 @@ import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers"
+	name = "Timers",
+	category = PluginCategory.UTILITY
 )
 public class TimersPlugin extends Plugin
 {

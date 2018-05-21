@@ -35,11 +35,13 @@ import javax.imageio.ImageIO;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
 @PluginDescriptor(
-	name = "World Map"
+	name = "World Map",
+	category = PluginCategory.CLIENT
 )
 public class WorldMapPlugin extends Plugin
 {

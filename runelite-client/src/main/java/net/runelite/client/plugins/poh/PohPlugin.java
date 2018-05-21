@@ -54,11 +54,13 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Player-owned House"
+	name = "Player-owned House",
+	category = PluginCategory.UTILITY
 )
 public class PohPlugin extends Plugin
 {

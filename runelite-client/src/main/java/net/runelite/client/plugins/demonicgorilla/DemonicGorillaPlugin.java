@@ -56,11 +56,13 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Demonic Gorillas"
+	name = "Demonic Gorillas",
+	category = PluginCategory.COMBAT
 )
 @Slf4j
 public class DemonicGorillaPlugin extends Plugin

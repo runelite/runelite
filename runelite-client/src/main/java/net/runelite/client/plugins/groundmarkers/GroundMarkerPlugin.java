@@ -55,11 +55,13 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Ground Markers"
+	name = "Ground Markers",
+	category = PluginCategory.UTILITY
 )
 public class GroundMarkerPlugin extends Plugin
 {

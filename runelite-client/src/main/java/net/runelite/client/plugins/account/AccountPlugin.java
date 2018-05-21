@@ -37,6 +37,7 @@ import net.runelite.api.events.SessionOpen;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.TitleToolbar;
@@ -44,7 +45,8 @@ import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
 	name = "Account",
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class AccountPlugin extends Plugin

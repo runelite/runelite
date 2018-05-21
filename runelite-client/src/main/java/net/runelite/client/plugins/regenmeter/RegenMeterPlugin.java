@@ -40,10 +40,14 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
-@PluginDescriptor(name = "Regeneration Meter")
+@PluginDescriptor(
+	name = "Regeneration Meter",
+	category = PluginCategory.UTILITY
+)
 public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;

@@ -34,13 +34,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
 import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Xtea",
-	hidden = true
+	hidden = true,
+	category = PluginCategory.CLIENT
 )
 @Slf4j
 public class XteaPlugin extends Plugin

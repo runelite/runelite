@@ -38,11 +38,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -72,11 +75,13 @@ import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
@@ -116,6 +121,8 @@ public class ConfigPanel extends PluginPanel
 	private final RuneLiteConfig runeLiteConfig;
 	private final IconTextField searchBar = new IconTextField();
 	private Map<String, JPanel> children = new TreeMap<>();
+	private Map<PluginCategory, List<JPanel>> pluginMap = new TreeMap<>();
+	private Map<PluginCategory, JLabel> categoryLabels = new TreeMap<>();
 	private int scrollBarPosition = 0;
 
 	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
@@ -164,34 +171,41 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		Map<String, JPanel> newChildren = new TreeMap<>();
 
+		pluginMap = initPluginMap();
+		categoryLabels = initCategoryLabels();
+
 		pluginManager.getPlugins().stream()
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-			.sorted(Comparator.comparing(left -> left.getClass().getAnnotation(PluginDescriptor.class).name()))
-			.forEach(plugin ->
-			{
-				final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
-				final String pluginName = plugin.getClass().getAnnotation(PluginDescriptor.class).name();
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
+				.sorted(Comparator.comparing(left -> left.getClass().getAnnotation(PluginDescriptor.class).name()))
+				.forEach(plugin ->
+				{
+					final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+					final PluginCategory pluginCategory = pluginDescriptor.category();
 
-				final JPanel groupPanel = buildGroupPanel();
+					final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
+					final String pluginName = pluginDescriptor.name();
 
-				JLabel name = new JLabel(pluginName);
-				name.setForeground(Color.WHITE);
+					final JPanel groupPanel = buildGroupPanel();
 
-				groupPanel.add(name, BorderLayout.CENTER);
+					JLabel name = new JLabel(pluginName);
+					name.setForeground(Color.WHITE);
 
-				final JPanel buttonPanel = new JPanel();
-				buttonPanel.setLayout(new GridLayout(1, 2));
-				groupPanel.add(buttonPanel, BorderLayout.LINE_END);
+					groupPanel.add(name, BorderLayout.CENTER);
 
-				final JLabel editConfigButton = buildConfigButton(pluginConfigProxy);
-				buttonPanel.add(editConfigButton);
+					final JPanel buttonPanel = new JPanel();
+					buttonPanel.setLayout(new GridLayout(1, 2));
+					groupPanel.add(buttonPanel, BorderLayout.LINE_END);
 
-				final JLabel toggleButton = buildToggleButton(plugin);
-				toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
-				buttonPanel.add(toggleButton);
+					final JLabel editConfigButton = buildConfigButton(pluginConfigProxy);
+					buttonPanel.add(editConfigButton);
 
-				newChildren.put(pluginName, groupPanel);
-			});
+					final JLabel toggleButton = buildToggleButton(plugin);
+					toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
+					buttonPanel.add(toggleButton);
+
+					newChildren.put(pluginName, groupPanel);
+					pluginMap.get(pluginCategory).add(groupPanel);
+				});
 
 		final JPanel groupPanel = buildGroupPanel();
 
@@ -212,9 +226,40 @@ public class ConfigPanel extends PluginPanel
 		buttonPanel.add(toggleButton);
 
 		newChildren.put("RuneLite", groupPanel);
+		pluginMap.get(PluginCategory.CLIENT).add(groupPanel);
 
 		children = newChildren;
 		openConfigList();
+	}
+
+	private Map<PluginCategory, List<JPanel>> initPluginMap()
+	{
+		final Map<PluginCategory, List<JPanel>> map = new TreeMap<>();
+
+		for (PluginCategory c: PluginCategory.values())
+		{
+			map.put(c, new ArrayList<>());
+		}
+
+		return map;
+	}
+
+	private Map<PluginCategory, JLabel> initCategoryLabels()
+	{
+		final Map<PluginCategory, JLabel> map = new TreeMap<>();
+
+		for (PluginCategory c: PluginCategory.values())
+		{
+			final JLabel categoryLabel = new JLabel(c.toString(), SwingConstants.LEFT);
+			categoryLabel.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createEmptyBorder(c == PluginCategory.COMBAT ? 8 : 18, 0, 6, 0),
+					BorderFactory.createMatteBorder(0, 0, 2, 0, ColorScheme.BRAND_ORANGE_TRANSPARENT)));
+			categoryLabel.setFont(FontManager.getRunescapeBoldFont().deriveFont(32f));
+			categoryLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			map.put(c, categoryLabel);
+		}
+
+		return map;
 	}
 
 	private JPanel buildGroupPanel()
@@ -315,17 +360,48 @@ public class ConfigPanel extends PluginPanel
 	{
 		final String text = searchBar.getText();
 
-		children.values().forEach(this::remove);
+		pluginMap.values().forEach(l -> l.forEach(this::remove));
+		categoryLabels.values().forEach(this::remove);
 
 		if (text.isEmpty())
 		{
-			children.values().forEach(this::add);
+			addPluginsToPanel(pluginMap);
 			revalidate();
 			return;
 		}
 
-		FuzzySearch.findAndProcess(text, children.keySet(), (k) -> add(children.get(k)));
+		Map<PluginCategory, List<JPanel>> plugins = new TreeMap<>();
+
+		FuzzySearch.findAndProcess(text, children.keySet(), (k) ->
+		{
+			final JPanel pluginPanel = children.get(k);
+			final PluginCategory category = getPluginCategory(pluginPanel);
+
+			if (!plugins.keySet().contains(category))
+			{
+				plugins.put(category, new ArrayList<>());
+			}
+
+			plugins.get(category).add(pluginPanel);
+		});
+
+		addPluginsToPanel(plugins);
 		revalidate();
+	}
+
+	private void addPluginsToPanel(Map<PluginCategory, List<JPanel>> plugins)
+	{
+		plugins.keySet().forEach(category ->
+		{
+			add(categoryLabels.get(category));
+			plugins.get(category).forEach(this::add);
+		});
+	}
+
+	private PluginCategory getPluginCategory(JPanel pluginPanel)
+	{
+		return pluginMap.keySet().stream().filter(category ->
+				pluginMap.get(category).contains(pluginPanel)).findFirst().orElse(null);
 	}
 
 	@Override

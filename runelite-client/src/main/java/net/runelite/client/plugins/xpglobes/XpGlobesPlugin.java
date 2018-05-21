@@ -39,6 +39,7 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
@@ -46,7 +47,8 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "XP Globes"
+	name = "XP Globes",
+	category = PluginCategory.UTILITY
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin

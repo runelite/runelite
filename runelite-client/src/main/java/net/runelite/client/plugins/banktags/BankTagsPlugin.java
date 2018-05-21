@@ -45,10 +45,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Bank Tags"
+	name = "Bank Tags",
+	category = PluginCategory.UTILITY
 )
 @Slf4j
 public class BankTagsPlugin extends Plugin

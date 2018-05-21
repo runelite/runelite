@@ -38,10 +38,12 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "XP Drop"
+	name = "XP Drop",
+	category = PluginCategory.UTILITY
 )
 public class XpDropPlugin extends Plugin
 {

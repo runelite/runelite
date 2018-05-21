@@ -47,12 +47,16 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ChatboxInputManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.Text;
 
 @Slf4j
-@PluginDescriptor(name = "Friend Notes")
+@PluginDescriptor(
+	name = "Friend Notes",
+	category = PluginCategory.UTILITY
+)
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";

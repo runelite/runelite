@@ -36,10 +36,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Fairy Ring Helper"
+	name = "Fairy Ring Helper",
+	category = PluginCategory.UTILITY
 )
 public class FairyRingPlugin extends Plugin
 {

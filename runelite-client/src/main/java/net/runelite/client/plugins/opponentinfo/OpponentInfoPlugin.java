@@ -40,12 +40,14 @@ import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
-	name = "Opponent Information"
+	name = "Opponent Information",
+	category = PluginCategory.COMBAT
 )
 public class OpponentInfoPlugin extends Plugin
 {
