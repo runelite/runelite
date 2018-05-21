@@ -101,13 +101,13 @@ public enum UniqueItem
 	private final String setName;
 	private final int position;
 
+	// Get a specific UniqueItem by Name
+	// Unused ATM
 	private static final Map<String, UniqueItem> byName = buildNameMap();
-
 	public static UniqueItem getByName(String name)
 	{
 		return byName.get(name.toUpperCase());
 	}
-
 	private static Map<String, UniqueItem> buildNameMap()
 	{
 		Map<String, UniqueItem> byName = new HashMap<>();
@@ -119,13 +119,12 @@ public enum UniqueItem
 		return byName;
 	}
 
+	// Returns an array of UniqueItems by `activity`
 	private static final Map<String, ArrayList<UniqueItem>> byActivityName = buildActivityMap();
-
 	public static ArrayList<UniqueItem> getByActivityName(String name)
 	{
 		return byActivityName.get(name.toUpperCase());
 	}
-
 	private static Map<String, ArrayList<UniqueItem>> buildActivityMap()
 	{
 		Map<String, ArrayList<UniqueItem>> byName = new HashMap<>();
@@ -137,13 +136,13 @@ public enum UniqueItem
 		return byName;
 	}
 
+	// Return an array of UniqueItems by `setName`
+	// Unused ATM
 	private static final Map<String, ArrayList<UniqueItem>> bySetName = buildSetMap();
-
 	public static ArrayList<UniqueItem> getBySetName(String name)
 	{
 		return bySetName.get(name.toUpperCase());
 	}
-
 	private static Map<String, ArrayList<UniqueItem>> buildSetMap()
 	{
 		Map<String, ArrayList<UniqueItem>> byName = new HashMap<>();
@@ -156,7 +155,8 @@ public enum UniqueItem
 	}
 
 
-	static Map<Integer, ArrayList<UniqueItem>> createSetMap(ArrayList<UniqueItem> items)
+	// Take a list of UniqueItems and maps them by Position
+	static Map<Integer, ArrayList<UniqueItem>> createPositionSetMap(ArrayList<UniqueItem> items)
 	{
 		Map<Integer, ArrayList<UniqueItem>> setNames = new HashMap<Integer, ArrayList<UniqueItem>>();
 		for (UniqueItem item : items)

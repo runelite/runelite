@@ -98,7 +98,7 @@ class LootRecorderPanel extends PluginPanel
 		ArrayList<LootEntry> data = lootRecorderPlugin.getData(tab.getName());
 		// Unique Items Info
 		final ArrayList<UniqueItem> list = UniqueItem.getByActivityName(tab.getName());
-		Map<Integer, ArrayList<UniqueItem>> sets = UniqueItem.createSetMap(list);
+		Map<Integer, ArrayList<UniqueItem>> sets = UniqueItem.createPositionSetMap(list);
 		// Create & Return Loot Panel
 		return new LootPanel(data, sets, itemManager);
 	}
