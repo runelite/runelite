@@ -42,7 +42,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import lombok.Getter;
-import net.runelite.client.plugins.screenmarkers.ScreenMarker;
+import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -64,7 +64,6 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	@Inject
 	private ScreenMarkerPlugin plugin;
 
-	private JPanel markerView;
 	private JButton markerButton;
 
 	@Getter
@@ -99,9 +98,9 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		northPanel.add(markerButton);
 
 		JPanel centerPanel = new JPanel();
-		markerView = new JPanel(new GridLayout(0, 1, 0, 3));
+		JPanel markerView = new JPanel(new GridLayout(0, 1, 0, 3));
 
-		for (ScreenMarker marker : plugin.getScreenMarkers())
+		for (final ScreenMarkerOverlay marker : plugin.getScreenMarkers())
 		{
 			markerView.add(new ScreenMarkerPanel(plugin, marker));
 		}

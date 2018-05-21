@@ -29,22 +29,21 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import net.runelite.client.plugins.screenmarkers.ScreenMarker;
+import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
-public class ScreenMarkerPanel extends JPanel
+class ScreenMarkerPanel extends JPanel
 {
 	private static final String DELETE_TEXT = "Delete";
 	private static final String HIDE_TEXT = "Hide";
 	private static final String SHOW_TEXT = "Show";
 
 	private final ScreenMarkerPlugin plugin;
-	private final ScreenMarker marker;
+	private final ScreenMarkerOverlay marker;
 	private JToggleButton visibleToggle;
 
-
-	public ScreenMarkerPanel(ScreenMarkerPlugin plugin, ScreenMarker marker)
+	ScreenMarkerPanel(ScreenMarkerPlugin plugin, ScreenMarkerOverlay marker)
 	{
 		this.plugin = plugin;
 		this.marker = marker;
@@ -59,13 +58,13 @@ public class ScreenMarkerPanel extends JPanel
 		JButton deleteButton = new JButton(DELETE_TEXT);
 		deleteButton.addActionListener(l -> plugin.deleteMarker(marker));
 
-		boolean selected = !marker.isVisible();
+		boolean selected = !marker.getMarker().isVisible();
 		visibleToggle = new JToggleButton(selected ? SHOW_TEXT : HIDE_TEXT, selected);
 		visibleToggle.setFocusable(false);
 		visibleToggle.addActionListener(l ->
 		{
 			boolean visible = !visibleToggle.isSelected();
-			marker.setVisible(visible);
+			marker.getMarker().setVisible(false);
 			visibleToggle.setText(visible ? HIDE_TEXT : SHOW_TEXT);
 			plugin.updateConfig();
 		});
