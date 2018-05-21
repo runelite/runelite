@@ -474,7 +474,7 @@ public class HiscorePanel extends PluginPanel
 				label.setText(Integer.toString(level));
 			}
 
-			label.setToolTipText(detailsHtml(skill));
+			label.setToolTipText(detailsHtml(result, skill));
 			index++;
 		}
 	}
@@ -521,115 +521,112 @@ public class HiscorePanel extends PluginPanel
 	/*
 		Builds a html string to display on tooltip (when hovering a skill).
 	 */
-	private String detailsHtml(HiscoreSkill skill)
+	private String detailsHtml(HiscoreResult result, HiscoreSkill skill)
 	{
 		String openingTags = "<html><body style = 'padding: 5px;color:#989898'>";
 		String closingTags = "</html><body>";
 
 		String content = "";
 
-		if (result != null)
+		if (skill == null)
 		{
-			if (skill == null)
-			{
-				double combatLevel = Experience.getCombatLevelPrecise(
-					result.getAttack().getLevel(),
-					result.getStrength().getLevel(),
-					result.getDefence().getLevel(),
-					result.getHitpoints().getLevel(),
-					result.getMagic().getLevel(),
-					result.getRanged().getLevel(),
-					result.getPrayer().getLevel()
-				);
+			double combatLevel = Experience.getCombatLevelPrecise(
+				result.getAttack().getLevel(),
+				result.getStrength().getLevel(),
+				result.getDefence().getLevel(),
+				result.getHitpoints().getLevel(),
+				result.getMagic().getLevel(),
+				result.getRanged().getLevel(),
+				result.getPrayer().getLevel()
+			);
 
-				double combatExperience = result.getAttack().getExperience()
-					+ result.getStrength().getExperience() + result.getDefence().getExperience()
-					+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
-					+ result.getRanged().getExperience() + result.getPrayer().getExperience();
+			double combatExperience = result.getAttack().getExperience()
+				+ result.getStrength().getExperience() + result.getDefence().getExperience()
+				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
+				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
-				content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
-				content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
-				content += "<p><span style = 'color:white'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
-			}
-			else
+			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
+			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + StackFormatter.formatNumber(combatLevel) + "</p>";
+			content += "<p><span style = 'color:white'>Experience:</span> " + StackFormatter.formatNumber(combatExperience) + "</p>";
+		}
+		else
+		{
+			switch (skill)
 			{
-				switch (skill)
+				case CLUE_SCROLL_ALL:
 				{
-					case CLUE_SCROLL_ALL:
-					{
-						String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-						String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
-						String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
-						String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
-						String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
-						String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
-						String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
-						String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
-						String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
-						String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
-						String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
-						String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
-						String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
-						content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
-						content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
-						content += "<p><span style = 'color:white'>Medium:</span> " + medium + " <span style = 'color:white'>Rank:</span> " + mediumRank + "</p>";
-						content += "<p><span style = 'color:white'>Hard:</span> " + hard + " <span style = 'color:white'>Rank:</span> " + hardRank + "</p>";
-						content += "<p><span style = 'color:white'>Elite:</span> " + elite + " <span style = 'color:white'>Rank:</span> " + eliteRank + "</p>";
-						content += "<p><span style = 'color:white'>Master:</span> " + master + " <span style = 'color:white'>Rank:</span> " + masterRank + "</p>";
-						break;
-					}
-					case BOUNTY_HUNTER_ROGUE:
-					{
-						String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
-						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						break;
-					}
-					case BOUNTY_HUNTER_HUNTER:
-					{
-						String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
-						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						break;
-					}
-					case LAST_MAN_STANDING:
-					{
-						String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
-						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						break;
-					}
-					case OVERALL:
-					{
-						Skill requestedSkill = result.getSkill(skill);
-						String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-						String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
-						content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
-						break;
-					}
-					default:
-					{
-						Skill requestedSkill = result.getSkill(skill);
+					String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
+					String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
+					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
+					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());
+					String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollHard().getRank());
+					String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollElite().getRank());
+					String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMaster().getRank());
+					String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollAll().getLevel()));
+					String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
+					String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
+					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollHard().getLevel()));
+					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollElite().getLevel()));
+					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : StackFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
+					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
+					content += "<p><span style = 'color:white'>Medium:</span> " + medium + " <span style = 'color:white'>Rank:</span> " + mediumRank + "</p>";
+					content += "<p><span style = 'color:white'>Hard:</span> " + hard + " <span style = 'color:white'>Rank:</span> " + hardRank + "</p>";
+					content += "<p><span style = 'color:white'>Elite:</span> " + elite + " <span style = 'color:white'>Rank:</span> " + eliteRank + "</p>";
+					content += "<p><span style = 'color:white'>Master:</span> " + master + " <span style = 'color:white'>Rank:</span> " + masterRank + "</p>";
+					break;
+				}
+				case BOUNTY_HUNTER_ROGUE:
+				{
+					String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterRogue().getRank());
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					break;
+				}
+				case BOUNTY_HUNTER_HUNTER:
+				{
+					String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getBountyHunterHunter().getRank());
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					break;
+				}
+				case LAST_MAN_STANDING:
+				{
+					String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getLastManStanding().getRank());
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					break;
+				}
+				case OVERALL:
+				{
+					Skill requestedSkill = result.getSkill(skill);
+					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
+					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
+					break;
+				}
+				default:
+				{
+					Skill requestedSkill = result.getSkill(skill);
 
-						String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-						String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
-						String remainingXp;
-						if (requestedSkill.getRank() == -1)
-						{
-							remainingXp = "Unranked";
-						}
-						else
-						{
-							int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-							remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
-						}
-
-						content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
-						content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
-
-						break;
+					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
+					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					String remainingXp;
+					if (requestedSkill.getRank() == -1)
+					{
+						remainingXp = "Unranked";
 					}
+					else
+					{
+						int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
+						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+					}
+
+					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
+					content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
+
+					break;
 				}
 			}
 		}
