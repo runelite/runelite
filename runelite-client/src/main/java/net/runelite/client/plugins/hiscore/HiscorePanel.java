@@ -438,7 +438,7 @@ public class HiscorePanel extends PluginPanel
 		int index = 0;
 		for (JLabel label : skillLabels)
 		{
-			HiscoreSkill skill = find(index);
+			HiscoreSkill skill = find(index++);
 
 			if (skill == null)
 			{
@@ -456,24 +456,26 @@ public class HiscorePanel extends PluginPanel
 					label.setText(Integer.toString(combatLevel));
 				}
 			}
-			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
+			else if (result.getSkill(skill) == null || result.getSkill(skill).getRank() == -1)
 			{
-				Skill s = result.getSkill(skill);
-				int level;
-				if (config.virtualLevels() && SKILLS.contains(skill))
-				{
-					level = Experience.getLevelForXp((int) s.getExperience());
-				}
-				else
-				{
-					level = s.getLevel();
-				}
-
-				label.setText(Integer.toString(level));
+				label.setToolTipText(null);
+				continue;
 			}
 
+			Skill s = result.getSkill(skill);
+			int level;
+			if (config.virtualLevels() && SKILLS.contains(skill))
+			{
+				level = Experience.getLevelForXp((int) s.getExperience());
+			}
+			else
+			{
+				level = s.getLevel();
+			}
+
+			label.setText(Integer.toString(level));
+
 			label.setToolTipText(detailsHtml(skill));
-			index++;
 		}
 	}
 
