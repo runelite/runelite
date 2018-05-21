@@ -123,4 +123,15 @@ public interface AgilityConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "agilityArenaNotifier",
+		name = "Agility Arena notifier",
+		description = "Notify on ticket location change in Agility Arena",
+		position = 9
+	)
+	default boolean notifyAgilityArena()
+	{
+		return true;
+	}
 }
