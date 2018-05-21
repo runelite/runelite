@@ -40,6 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +64,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 
@@ -121,12 +123,12 @@ public class LootRecorderPlugin extends Plugin
 	{
 		if (lootRecorderConfig.showLootTotals())
 		{
-			createPanel();
+			SwingUtilities.invokeLater(this::createPanel);
 		}
 	}
 
 	// Separated from startUp for toggling panel from settings
-	private void createPanel()
+	void createPanel()
 	{
 		panel = new LootRecorderPanel(itemManager, this);
 		// Panel Icon (Looting Bag)
