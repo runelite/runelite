@@ -43,6 +43,7 @@ import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -64,6 +65,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Agility"
@@ -91,6 +93,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private AgilityConfig config;
@@ -130,6 +135,7 @@ public class AgilityPlugin extends Plugin
 			case LOGIN_SCREEN:
 				session = null;
 				lastArenaTicketPosition = null;
+				removeAgilityArenaTimer();
 				break;
 			case LOADING:
 				markOfGrace = null;
@@ -139,8 +145,18 @@ public class AgilityPlugin extends Plugin
 				if (!isInAgilityArena())
 				{
 					lastArenaTicketPosition = null;
+					removeAgilityArenaTimer();
 				}
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!config.showAgilityArenaTimer())
+		{
+			removeAgilityArenaTimer();
 		}
 	}
 
@@ -230,9 +246,17 @@ public class AgilityPlugin extends Plugin
 			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
 			{
 				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null && config.notifyAgilityArena())
+				if (lastArenaTicketPosition != null)
 				{
-					notifier.notify("Ticket location changed");
+					if (config.notifyAgilityArena())
+					{
+						notifier.notify("Ticket location changed");
+					}
+
+					if (config.showAgilityArenaTimer())
+					{
+						showNewAgilityArenaTimer();
+					}
 				}
 
 				lastArenaTicketPosition = newTicketPosition;
@@ -243,6 +267,17 @@ public class AgilityPlugin extends Plugin
 	private boolean isInAgilityArena()
 	{
 		return AGILITY_ARENA_REGION_ID == client.getLocalPlayer().getWorldLocation().getRegionID();
+	}
+
+	private void removeAgilityArenaTimer()
+	{
+		infoBoxManager.removeIf(infoBox -> infoBox instanceof AgilityArenaTimer);
+	}
+
+	private void showNewAgilityArenaTimer()
+	{
+		removeAgilityArenaTimer();
+		infoBoxManager.addInfoBox(new AgilityArenaTimer(this));
 	}
 
 	@Subscribe
