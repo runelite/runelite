@@ -636,22 +636,26 @@ public class HiscorePanel extends PluginPanel
 		 */
 		if (SKILLS.contains(skill))
 		{
-			int currentLevel = Experience.getLevelForXp((int) result.getSkill(skill).getExperience());
-			int currentXp = (int) result.getSkill(skill).getExperience();
-			int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
-			int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+			long experience = result.getSkill(skill).getExperience();
+			if (experience >= 0)
+			{
+				int currentLevel = Experience.getLevelForXp((int) experience);
+				int currentXp = (int) result.getSkill(skill).getExperience();
+				int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
+				int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
-			double xpGained = currentXp - xpForCurrentLevel;
-			double xpGoal = xpForNextLevel != -1 ? xpForNextLevel - xpForCurrentLevel : 100;
-			int progress = (int) ((xpGained / xpGoal) * 100f);
+				double xpGained = currentXp - xpForCurrentLevel;
+				double xpGoal = xpForNextLevel != -1 ? xpForNextLevel - xpForCurrentLevel : 100;
+				int progress = (int) ((xpGained / xpGoal) * 100f);
 
-			// had to wrap the bar with an empty div, if i added the margin directly to the bar, it would mess up
-			content += "<div style = 'margin-top:3px'>"
-				+ "<div style = 'background: #070707; border: 1px solid #070707; height: 6px; width: 100%;'>"
-				+ "<div style = 'height: 6px; width: " + progress + "%; background: #dc8a00;'>"
-				+ "</div>"
-				+ "</div>"
-				+ "</div>";
+				// had to wrap the bar with an empty div, if i added the margin directly to the bar, it would mess up
+				content += "<div style = 'margin-top:3px'>"
+					+ "<div style = 'background: #070707; border: 1px solid #070707; height: 6px; width: 100%;'>"
+					+ "<div style = 'height: 6px; width: " + progress + "%; background: #dc8a00;'>"
+					+ "</div>"
+					+ "</div>"
+					+ "</div>";
+			}
 		}
 
 		return openingTags + content + closingTags;
