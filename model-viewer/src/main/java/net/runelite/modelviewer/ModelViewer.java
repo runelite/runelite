@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,8 @@ package net.runelite.modelviewer;
 
 import com.google.gson.Gson;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -37,28 +35,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.imageio.ImageIO;
+import net.runelite.cache.IndexType;
+import net.runelite.cache.ObjectManager;
+import net.runelite.cache.OverlayManager;
+import net.runelite.cache.SpriteManager;
+import net.runelite.cache.TextureManager;
+import net.runelite.cache.UnderlayManager;
 import net.runelite.cache.definitions.KitDefinition;
 import net.runelite.cache.definitions.LocationsDefinition;
 import net.runelite.cache.definitions.MapDefinition;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
-import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
-import net.runelite.cache.definitions.UnderlayDefinition;
 import net.runelite.cache.definitions.loaders.LocationsLoader;
 import net.runelite.cache.definitions.loaders.MapLoader;
+import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
+import net.runelite.cache.fs.Store;
 import net.runelite.cache.models.Vector3f;
 import net.runelite.cache.models.VertexNormal;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Position;
 import net.runelite.cache.region.Region;
+import net.runelite.cache.util.XteaKeyManager;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
-import org.apache.commons.compress.utils.IOUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -77,26 +83,23 @@ public class ModelViewer
 {
 	private static final Logger logger = LoggerFactory.getLogger(ModelViewer.class);
 
-	private static final int NUM_UNDERLAYS = 150;
-	private static final int NUM_OVERLAYS = 174;
-	private static final int NUM_TEXTURES = 61;
-	private static final int NUM_OBJECTS = 28598;
-
 	/**
 	 * size of a tile in local coordinates
 	 */
 	private static final int TILE_SCALE = 128;
 	private static final int HEIGHT_MOD = 4;
 
-	private static UnderlayDefinition[] underlays = new UnderlayDefinition[NUM_UNDERLAYS];
-	private static OverlayDefinition[] overlays = new OverlayDefinition[NUM_OVERLAYS];
+	private static ObjectManager objectManager;
+	private static TextureManager textureManager;
+	private static SpriteManager spriteManager;
 
 	private static Map<Integer, Texture> textures = new HashMap<>();
-	private static ObjectDefinition[] objects = new ObjectDefinition[NUM_OBJECTS];
 
 	public static void main(String[] args) throws Exception
 	{
 		Options options = new Options();
+
+		options.addOption(null, "store", true, "store directory");
 
 		options.addOption(null, "npcdir", true, "npc directory");
 		options.addOption(null, "mapdir", true, "maps directory");
@@ -117,10 +120,33 @@ public class ModelViewer
 
 		NpcDefinition npcdef = null;
 		ObjectDefinition objdef = null;
+		Store store = null;
+		UnderlayManager underlayManager = null;
+		OverlayManager overlayManager = null;
 
 		List<ModelDefinition> models = new ArrayList<>();
 		Region region = null;
 
+		if (cmd.hasOption("store"))
+		{
+			store = new Store(new File(cmd.getOptionValue("store")));
+			store.load();
+
+			underlayManager = new UnderlayManager(store);
+			underlayManager.load();
+
+			overlayManager = new OverlayManager(store);
+			overlayManager.load();
+
+			objectManager = new ObjectManager(store);
+			objectManager.load();
+
+			textureManager = new TextureManager(store);
+			textureManager.load();
+
+			spriteManager = new SpriteManager(store);
+			spriteManager.load();
+		}
 		if (cmd.hasOption("model"))
 		{
 			// render model
@@ -166,30 +192,31 @@ public class ModelViewer
 
 			int x = Integer.parseInt(s[0]), y = Integer.parseInt(s[1]);
 
+			XteaKeyManager keyManager = new XteaKeyManager();
+			keyManager.loadKeys();
+
+			int[] keys = keyManager.getKeys(x << 8 | y);
+
+			Storage storage = store.getStorage();
+			Index index = store.getIndex(IndexType.MAPS);
+
+			Archive mapArchive = index.findArchiveByName("m" + x + "_" + y);
+			Archive locationsArchive = index.findArchiveByName("l" + x + "_" + y);
+
 			region = new Region(x, y);
+
+			byte[] mapData = mapArchive.decompress(storage.loadArchive(mapArchive));
 			MapLoader mapLoader = new MapLoader();
-			LocationsLoader locationsLoader = new LocationsLoader();
+			MapDefinition mapDef = mapLoader.load(x, y, mapData);
+			region.loadTerrain(mapDef);
 
-			try (FileInputStream fin = new FileInputStream(mapdir + "/m" + x + "_" + y + ".dat"))
+			if (keys != null)
 			{
-				byte[] b = IOUtils.toByteArray(fin);
-				MapDefinition mapDef = mapLoader.load(x, y, b);
-				region.loadTerrain(mapDef);
-			}
-
-			try (FileInputStream fin = new FileInputStream(mapdir + "/l" + x + "_" + y + ".dat"))
-			{
-				byte[] b = IOUtils.toByteArray(fin);
-				LocationsDefinition locDef = locationsLoader.load(x, y, b);
+				byte[] locationData = locationsArchive.decompress(storage.loadArchive(locationsArchive), keys);
+				LocationsLoader locationsLoader = new LocationsLoader();
+				LocationsDefinition locDef = locationsLoader.load(x, y, locationData);
 				region.loadLocations(locDef);
 			}
-			catch (FileNotFoundException ex)
-			{
-				logger.info("No landscape file for {},{}", x, y);
-			}
-
-			loadUnderlays();
-			loadOverlays();
 		}
 		if (cmd.hasOption("kits"))
 		{
@@ -232,6 +259,8 @@ public class ModelViewer
 		long last = 0;
 
 		Camera camera = new Camera();
+		Scene scene = new Scene(underlayManager, overlayManager);
+		scene.loadRegion(region);
 
 		while (!Display.isCloseRequested())
 		{
@@ -255,10 +284,11 @@ public class ModelViewer
 				drawModel(def, recolourToFind, recolourToReplace);
 			}
 
-			drawRegion(region);
+			drawScene(region, scene);
+			//drawRegion(region);
 
 			Display.update();
-			Display.sync(50); // fps
+			Display.sync(20); // fps
 
 			long delta = System.currentTimeMillis() - last;
 			last = System.currentTimeMillis();
@@ -410,139 +440,159 @@ public class ModelViewer
 		}
 	}
 
-	private static void drawRegion(Region region)
+	private static void drawScene(Region region, Scene scene)
 	{
-		if (region == null)
+		for (int z = 0; z < Region.Z; ++z)
+		{
+			SceneTileModel[][] sceneTileModels = scene.getSceneTiles()[z];
+			SceneTilePaint[][] sceneTilePaint = scene.getSceneTilePaint()[z];
+
+			for (int x = 0; x < Region.X; ++x)
+			{
+				for (int y = 0; y < Region.Y; ++y)
+				{
+					drawSceneTileModel(region, x, y, z, sceneTileModels[x][y]);
+					drawSceneTilePaint(region, x, y, z, sceneTilePaint[x][y]);
+				}
+			}
+		}
+		drawLocations(region);
+
+	}
+
+	private static void drawSceneTilePaint(Region region, int regionX, int regionY, int z, SceneTilePaint sceneTilePaint)
+	{
+		if (sceneTilePaint == null)
 		{
 			return;
 		}
 
-		for (int regionX = 0; regionX < Region.X; ++regionX)
+		int glTexture = -1;
+
+		Color color;
+
+		if (sceneTilePaint.texture > -1)
 		{
-			for (int regionY = 0; regionY < Region.Y; ++regionY)
-			{
-				int x = regionX;
-				int y = regionY;
+			color = Color.WHITE;
 
-				x *= TILE_SCALE;
-				y *= TILE_SCALE;
+			Texture texture = getTexture(sceneTilePaint.texture);
+			glTexture = texture.getOpenglId();
+			assert glTexture > -1;
 
-				/*
-				 Split into two triangles with vertices
-				 x,y,z1   x+1,y,z2 x,y+1,z3
-				 x,y+1,z3 x+1,y,z2 x+1,y+1,z4
-				
-				 z1 = height
-				 z2 = height of tile x+1
-				 z3 = height of tile y-1
-				
-				 in rs 0,0 (x,y) is the bottom left with
-				 y increasing going further from you
-				
-				 in opengl, 0,0 (x,z) is the bottom left
-				 with z decreasing going further from you
-				
-				 in rs, height is also negative
-				
-				 so we do rs(x,y,z) -> opengl(x,-z,-y)
-				 */
-				int z1 = -region.getTileHeight(0, regionX, regionY);
-				int z2 = regionX + 1 < Region.X ? -region.getTileHeight(0, regionX + 1, regionY) : z1;
-				int z3 = regionY + 1 < Region.Y ? -region.getTileHeight(0, regionX, regionY + 1) : z1;
-				int z4 = regionX + 1 < Region.X && regionY + 1 < Region.Y ? -region.getTileHeight(0, regionX + 1, regionY + 1) : z1;
-
-				// scale down height
-				z1 /= HEIGHT_MOD;
-				z2 /= HEIGHT_MOD;
-				z3 /= HEIGHT_MOD;
-				z4 /= HEIGHT_MOD;
-
-				int underlayId = region.getUnderlayId(0, regionX, regionY);
-				int overlayId = region.getOverlayId(0, regionX, regionY);
-
-				Color color = null;
-				int glTexture = -1;
-
-				if (underlayId > 0)
-				{
-					UnderlayDefinition ud = underlays[underlayId - 1];
-					color = new Color(ud.getColor());
-				}
-				if (overlayId > 0)
-				{
-					OverlayDefinition od = overlays[overlayId - 1];
-					color = new Color(od.getRgbColor());
-
-					if (od.getSecondaryRgbColor() > -1)
-					{
-						color = new Color(od.getSecondaryRgbColor());
-					}
-
-					if (od.getTexture() > -1)
-					{
-						color = Color.WHITE;
-
-						Texture texture = getTexture(od.getTexture());
-						glTexture = texture.getOpenglId();
-						assert glTexture > -1;
-
-						GL11.glEnable(GL11.GL_TEXTURE_2D);
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
-					}
-				}
-
-				GL11.glBegin(GL11.GL_TRIANGLES);
-
-				if (color != null)
-				{
-					GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
-				}
-
-				// triangle 1
-				if (glTexture > -1)
-				{
-					GL11.glTexCoord2f(0, 0);
-				}
-				GL11.glVertex3i(x, z1, -y);
-				if (glTexture > -1)
-				{
-					GL11.glTexCoord2f(1, 0);
-				}
-				GL11.glVertex3i(x + TILE_SCALE, z2, -y);
-				if (glTexture > -1)
-				{
-					GL11.glTexCoord2f(0, 1);
-				}
-				GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
-
-				// triangle 2
-				if (glTexture > -1)
-				{
-					GL11.glTexCoord2f(0, 1);
-				}
-				GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
-				if (glTexture > -1)
-				{
-					GL11.glTexCoord2f(1, 0);
-				}
-				GL11.glVertex3i(x + TILE_SCALE, z2, -y);
-				if (glTexture > -1)
-				{
-					GL11.glTexCoord2f(1, 1);
-				}
-				GL11.glVertex3i(x + TILE_SCALE, z4, -(y + TILE_SCALE));
-
-				GL11.glEnd();
-
-				if (glTexture > -1)
-				{
-					GL11.glDisable(GL11.GL_TEXTURE_2D);
-				}
-
-			}
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
+		}
+		else
+		{
+			color = new Color(RS2HSB_to_RGB(sceneTilePaint.color));
 		}
 
-		drawLocations(region);
+
+		GL11.glBegin(GL11.GL_TRIANGLES);
+
+		int x = regionX * TILE_SCALE;
+		int y = regionY * TILE_SCALE;
+
+		GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+		int z1 = -region.getTileHeight(z, regionX, regionY);
+		int z2 = regionX + 1 < Region.X ? -region.getTileHeight(z, regionX + 1, regionY) : z1;
+		int z3 = regionY + 1 < Region.Y ? -region.getTileHeight(z, regionX, regionY + 1) : z1;
+		int z4 = regionX + 1 < Region.X && regionY + 1 < Region.Y ? -region.getTileHeight(z, regionX + 1, regionY + 1) : z1;
+
+		// triangle 1
+		if (glTexture > -1)
+		{
+			GL11.glTexCoord2f(0, 0);
+		}
+		GL11.glVertex3i(x, z1, -y);
+		if (glTexture > -1)
+		{
+			GL11.glTexCoord2f(1, 0);
+		}
+		GL11.glVertex3i(x + TILE_SCALE, z2, -y);
+		if (glTexture > -1)
+		{
+			GL11.glTexCoord2f(0, 1);
+		}
+		GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
+
+		// triangle 2
+		if (glTexture > -1)
+		{
+			GL11.glTexCoord2f(0, 1);
+		}
+		GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
+		if (glTexture > -1)
+		{
+			GL11.glTexCoord2f(1, 0);
+		}
+		GL11.glVertex3i(x + TILE_SCALE, z2, -y);
+		if (glTexture > -1)
+		{
+			GL11.glTexCoord2f(1, 1);
+		}
+		GL11.glVertex3i(x + TILE_SCALE, z4, -(y + TILE_SCALE));
+
+		GL11.glEnd();
+
+		if (glTexture > -1)
+		{
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+		}
+	}
+
+	private static void drawSceneTileModel(Region region, int regionX, int regionY, int z, SceneTileModel sceneTileModel)
+	{
+		if (sceneTileModel == null)
+		{
+			return;
+		}
+
+		for (int i = 0; i < sceneTileModel.faceX.length; ++i)
+		{
+			int vertexA = sceneTileModel.faceX[i];
+			int vertexB = sceneTileModel.faceY[i];
+			int vertexC = sceneTileModel.faceZ[i];
+
+			int vertexAx = sceneTileModel.vertexX[vertexA];
+			int vertexAy = sceneTileModel.vertexY[vertexA];
+			int vertexAz = sceneTileModel.vertexZ[vertexA];
+
+			int vertexBx = sceneTileModel.vertexX[vertexB];
+			int vertexBy = sceneTileModel.vertexY[vertexB];
+			int vertexBz = sceneTileModel.vertexZ[vertexB];
+
+			int vertexCx = sceneTileModel.vertexX[vertexC];
+			int vertexCy = sceneTileModel.vertexY[vertexC];
+			int vertexCz = sceneTileModel.vertexZ[vertexC];
+
+			int colorA = sceneTileModel.triangleColorA[i];
+			int colorB = sceneTileModel.triangleColorB[i];
+			int colorC = sceneTileModel.triangleColorC[i];
+
+			Color color = null;
+			int glTexture = -1;
+
+			color = new Color(RS2HSB_to_RGB(colorA));
+
+			GL11.glBegin(GL11.GL_TRIANGLES);
+
+			if (color != null)
+			{
+				GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+			}
+
+			GL11.glVertex3i(vertexAx, -vertexAy, -vertexAz);
+			GL11.glVertex3i(vertexBx, -vertexBy, -vertexBz);
+			GL11.glVertex3i(vertexCx, -vertexCy, -vertexCz);
+
+			GL11.glEnd();
+
+			if (glTexture > -1)
+			{
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+			}
+		}
 	}
 
 	private static void drawLocations(Region region)
@@ -559,18 +609,13 @@ public class ModelViewer
 
 			Position objectPos = location.getPosition();
 
-			if (location.getPosition().getZ() != 0)
-			{
-				continue;
-			}
-
 			int regionX = objectPos.getX() - region.getBaseX();
 			int regionY = objectPos.getY() - region.getBaseY();
-			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY) / HEIGHT_MOD;
+			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY); // / HEIGHT_MOD;
 
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			// TILE_SCALE/2 to draw the object from the center of the tile it is on
-			GL11.glTranslatef(regionX * TILE_SCALE + (TILE_SCALE / 2), height * (location.getPosition().getZ() + 1), -regionY * TILE_SCALE - (TILE_SCALE / 2));
+			GL11.glTranslatef(regionX * TILE_SCALE + (TILE_SCALE / 2), height + (location.getPosition().getZ() * 0), -regionY * TILE_SCALE - (TILE_SCALE / 2));
 
 			for (int i = 0; i < object.getObjectModels().length; ++i)
 			{
@@ -589,60 +634,14 @@ public class ModelViewer
 				drawModel(md, object.getRecolorToFind(), object.getRecolorToReplace());
 			}
 
-			GL11.glTranslatef(-regionX * TILE_SCALE - (TILE_SCALE / 2), -(height * (location.getPosition().getZ() + 1)), regionY * TILE_SCALE + (TILE_SCALE / 2));
+			GL11.glTranslatef(-regionX * TILE_SCALE - (TILE_SCALE / 2), -(height + (location.getPosition().getZ() * 0)), regionY * TILE_SCALE + (TILE_SCALE / 2));
 			GL11.glPopMatrix();
-		}
-	}
-
-	private static void loadUnderlays() throws IOException
-	{
-		for (int i = 0; i < NUM_UNDERLAYS; ++i)
-		{
-			try (FileInputStream fin = new FileInputStream("underlays/" + i + ".json"))
-			{
-				UnderlayDefinition underlay = new Gson().fromJson(new InputStreamReader(fin), UnderlayDefinition.class);
-				underlays[i] = underlay;
-			}
-			catch (FileNotFoundException ex)
-			{
-			}
-		}
-	}
-
-	private static void loadOverlays() throws IOException
-	{
-		for (int i = 0; i < NUM_OVERLAYS; ++i)
-		{
-			try (FileInputStream fin = new FileInputStream("overlays/" + i + ".json"))
-			{
-				OverlayDefinition overlay = new Gson().fromJson(new InputStreamReader(fin), OverlayDefinition.class);
-				overlays[i] = overlay;
-			}
-			catch (FileNotFoundException ex)
-			{
-			}
 		}
 	}
 
 	private static ObjectDefinition getObject(int id)
 	{
-		ObjectDefinition object = objects[id];
-		if (object != null)
-		{
-			return object;
-		}
-
-		try (FileInputStream fin = new FileInputStream("objects/" + id + ".json"))
-		{
-			object = new Gson().fromJson(new InputStreamReader(fin), ObjectDefinition.class);
-			objects[id] = object;
-			return object;
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
+		return objectManager.getObject(id);
 	}
 
 	private static Texture getTexture(int id)
@@ -653,73 +652,54 @@ public class ModelViewer
 			return texture;
 		}
 
-		TextureDefinition td;
-		try (FileInputStream fin = new FileInputStream("textures/" + id + ".json"))
+		TextureDefinition textureDefinition = textureManager.findTexture(id);
+
+		SpriteDefinition spriteDefinition = spriteManager.findSprite(textureDefinition.getFileIds()[0], 0);
+
+		int width = spriteDefinition.getWidth();
+		int height = spriteDefinition.getHeight();
+
+		int[] rgb = spriteDefinition.getPixels();
+
+		ByteBuffer buffer = ByteBuffer.allocateDirect(rgb.length * 4);
+		for (int i = 0; i < rgb.length; ++i)
 		{
-			td = new Gson().fromJson(new InputStreamReader(fin), TextureDefinition.class);
+			int pixel = rgb[i];
+
+			// argb -> rgba
+			int a = pixel >>> 24;
+			int r = (pixel >> 16) & 0xff;
+			int g = (pixel >> 8) & 0xff;
+			int b = pixel & 0xff;
+
+			buffer.put((byte) r);
+			buffer.put((byte) g);
+			buffer.put((byte) b);
+			buffer.put((byte) a);
 		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
+		buffer.position(0);
 
-		try (FileInputStream fin = new FileInputStream("sprite/" + td.getFileIds()[0] + "-0.png"))
-		{
-			BufferedImage image = ImageIO.read(fin);
+		int glTexture = GL11.glGenTextures();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
 
-			int width = image.getWidth();
-			int height = image.getHeight();
-			int[] rgb = new int[width * height];
+		//Setup filtering, i.e. how OpenGL will interpolate the pixels when scaling up or down
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-			int[] out = image.getRGB(0, 0, width, height, rgb, 0, width);
-			assert rgb == out;
+		//Setup wrap mode, i.e. how OpenGL will handle pixels outside of the expected range
+		//Note: GL_CLAMP_TO_EDGE is part of GL12
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-			ByteBuffer buffer = ByteBuffer.allocateDirect(rgb.length * 4);
-			for (int i = 0; i < rgb.length; ++i)
-			{
-				int pixel = rgb[i];
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
 
-				// argb -> rgba
-				int a = pixel >>> 24;
-				int r = (pixel >> 16) & 0xff;
-				int g = (pixel >> 8) & 0xff;
-				int b = pixel & 0xff;
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); // Linear Filtering
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR); // Linear Filtering
 
-				buffer.put((byte) r);
-				buffer.put((byte) g);
-				buffer.put((byte) b);
-				buffer.put((byte) a);
-			}
-			buffer.position(0);
+		texture = new Texture(rgb, width, height, glTexture);
+		textures.put(id, texture);
 
-			int glTexture = GL11.glGenTextures();
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
-
-			//Setup filtering, i.e. how OpenGL will interpolate the pixels when scaling up or down
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-			//Setup wrap mode, i.e. how OpenGL will handle pixels outside of the expected range
-			//Note: GL_CLAMP_TO_EDGE is part of GL12
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
-
-			GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); // Linear Filtering
-			GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR); // Linear Filtering
-
-			texture = new Texture(rgb, width, height, glTexture);
-			textures.put(id, texture);
-
-			return texture;
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
+		return texture;
 	}
 
 	// found these two functions here https://www.rune-server.org/runescape-development/rs2-client/tools/589900-rs2-hsb-color-picker.html
@@ -729,9 +709,9 @@ public class ModelViewer
 		float hue = (HSB[0]);
 		float saturation = (HSB[1]);
 		float brightness = (HSB[2]);
-		int encode_hue = (int) (hue * 63);			//to 6-bits
-		int encode_saturation = (int) (saturation * 7);		//to 3-bits
-		int encode_brightness = (int) (brightness * 127); 	//to 7-bits
+		int encode_hue = (int) (hue * 63);            //to 6-bits
+		int encode_saturation = (int) (saturation * 7);        //to 3-bits
+		int encode_brightness = (int) (brightness * 127);    //to 7-bits
 		return (encode_hue << 10) + (encode_saturation << 7) + (encode_brightness);
 	}
 
