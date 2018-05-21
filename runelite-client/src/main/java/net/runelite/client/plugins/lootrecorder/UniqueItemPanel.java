@@ -47,7 +47,7 @@ import java.util.Map;
 @Getter
 class UniqueItemPanel extends JPanel
 {
-	private final ItemManager itemManager;
+	private ItemManager itemManager;
 	private ArrayList<UniqueItem> items;
 	private Map<String, LootRecord> loots;
 
@@ -72,7 +72,7 @@ class UniqueItemPanel extends JPanel
 		for (UniqueItem item : items)
 		{
 			Integer id = item.getItemID();
-			ItemComposition comp = _itemManager.getItemComposition(id);
+			ItemComposition comp = itemManager.getItemComposition(id);
 			LootRecord it = loots.get(comp.getName());
 			boolean shouldStack = comp.isStackable();
 			Integer quantity = 0;
@@ -93,7 +93,7 @@ class UniqueItemPanel extends JPanel
 			// Create Image
 			Float finalAlpha = alpha;
 			Integer finalQuantity = quantity;
-			AsyncBufferedImage image = _itemManager.getImage(imageID, finalQuantity, shouldStack);
+			AsyncBufferedImage image = itemManager.getImage(imageID, finalQuantity, shouldStack);
 			BufferedImage opaque = createOpaqueImage(image, finalAlpha);
 			// Attach Image to Label and append label to Panel
 			ImageIcon o = new ImageIcon(opaque);
