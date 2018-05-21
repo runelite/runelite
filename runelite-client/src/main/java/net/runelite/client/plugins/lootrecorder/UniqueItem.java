@@ -28,10 +28,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -153,7 +151,6 @@ public enum UniqueItem
 
 		return byName;
 	}
-
 
 	// Take a list of UniqueItems and maps them by Position
 	static Map<Integer, ArrayList<UniqueItem>> createPositionSetMap(ArrayList<UniqueItem> items)
