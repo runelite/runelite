@@ -134,4 +134,15 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "agilityArenaTimer",
+		name = "Agility Arena timer",
+		description = "Configures whether Agility Arena timer is displayed",
+		position = 10
+	)
+	default boolean showAgilityArenaTimer()
+	{
+		return true;
+	}
 }
