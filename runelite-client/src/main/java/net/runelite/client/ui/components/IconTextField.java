@@ -161,6 +161,13 @@ public class IconTextField extends JPanel
 		}
 	}
 
+	@Override
+	public boolean requestFocusInWindow()
+	{
+		super.requestFocusInWindow();
+		return textField.requestFocusInWindow(); 
+	}
+
 	public Document getDocument()
 	{
 		return textField.getDocument();
