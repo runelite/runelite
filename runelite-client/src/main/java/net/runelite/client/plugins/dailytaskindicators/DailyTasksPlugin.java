@@ -61,8 +61,7 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
-	private int updateTick;
+	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, check;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -111,17 +110,19 @@ public class DailyTasksPlugin extends Plugin
 			return;
 		}
 
-		//load the varbits one tick after spawning
-		updateTick = client.getTickCount() + 1;
+		//load the varbits on first available tick
+		check = true;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getTickCount() != updateTick)
+		if (!check)
 		{
 			return;
 		}
+		
+		check = false;
 
 		if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
 		{
