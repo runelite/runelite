@@ -36,6 +36,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -47,11 +49,20 @@ import javax.swing.SwingUtilities;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemLayer;
+import net.runelite.api.Node;
+import net.runelite.api.Region;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -205,6 +216,131 @@ public class LootRecorderPlugin extends Plugin
 			lootRecordedAlert("Raid Loot added to log.");
 			panel.updateTab("Raids");
 		}
+	}
+
+	// Variables for getting items from NPC death
+	private String deathName;
+	private WorldPoint deathSpot;
+	private Boolean watching = false;
+	private Map<Integer, Integer> items;
+
+	@Subscribe
+	public void onActorDeath(ActorDeath death)
+	{
+		Actor actor = death.getActor();
+		if (actor.getInteracting().getName() == client.getLocalPlayer().getName())
+		{
+			deathSpot = actor.getWorldLocation();
+			deathName = actor.getName();
+			Tile tile = getTile(client.getRegion(), actor.getLocalLocation(), client.getPlane());
+			ItemLayer layer = tile.getItemLayer();
+			items = createItemMap(layer);
+			watching = true;
+
+			log.info("Just killed actor: " + deathName);
+		}
+	}
+
+	@Subscribe
+	public void onActorDespawn(ActorDespawned despawned)
+	{
+		Actor npc = despawned.getActor();
+		if (npc.getName().equals(deathName) && npc.getWorldLocation().equals(deathSpot))
+		{
+			ArrayList<DropEntry> drops = createDropEntryArray(npc.getLocalLocation());
+			log.info("Target NPC Despawned: " + deathName);
+			deathName = null;
+			deathSpot = null;
+			items = null;
+			watching = false;
+
+			System.out.println("Loot from Target NPC: " + npc.getName());
+			System.out.println(drops);
+			AddBossLootEntry(npc.getName(), drops);
+		}
+	}
+
+	void AddBossLootEntry(String name, ArrayList<DropEntry> drops)
+	{
+		int KC = 0;
+		String filename = "";
+		switch (name.toUpperCase())
+		{
+			case "ZULRAH":
+				KC = zulrahNumber;
+				filename = zulrahFilename;
+			case "VORKATH":
+				KC = vorkathNumber;
+				filename = vorkathFilename;
+			default:
+				break;
+		}
+
+		if (KC == 0)
+			return;
+
+		//LootEntry newEntry = new LootEntry(KC, drops);
+		//addLootEntry(filename, newEntry);
+	}
+
+	private Tile getTile(Region region, LocalPoint local, int plane)
+	{
+		Tile[][][] tiles = region.getTiles();
+		Tile tile = tiles[plane][local.getRegionX()][local.getRegionY()];
+
+		return tile;
+	}
+
+	Map<Integer, Integer> createItemMap(ItemLayer layer)
+	{
+		Map<Integer, Integer> map = new HashMap<>();
+		if (layer == null)
+			return map;
+
+		Node current = layer.getBottom();
+		while (current instanceof Item)
+		{
+			final Item item = (Item) current;
+
+			current = current.getNext();
+			Integer ex = map.computeIfPresent(item.getId(), (k, v) -> v + item.getQuantity());
+			if (ex == null)
+			{
+				map.computeIfAbsent(item.getId(), e -> item.getQuantity());
+			}
+		}
+
+		return map;
+	}
+
+	ArrayList<DropEntry> createDropEntryArray(LocalPoint local)
+	{
+		Tile tile = getTile(client.getRegion(), local, client.getPlane());
+		ItemLayer layer = tile.getItemLayer();
+
+		// Create a map of the Current items
+		Map<Integer, Integer> newItems = createItemMap(layer);
+
+		// Loop Through the new items and add them to the drops array list
+		ArrayList<DropEntry> drops = new ArrayList<DropEntry>();
+		newItems.forEach((id, amount) ->
+				{
+					// If some of this item already existed remove the existing amount
+					Integer existing = items.get(id);
+					if (existing != null)
+					{
+						amount = amount - existing;
+					}
+					if (amount == 0)
+						return;
+					// Add new entry
+					drops.add(new DropEntry(id, amount));
+					System.out.println("Received drop: ");
+					System.out.println("ID: " + id + ", Amount: " + amount);
+				}
+
+		);
+		return drops;
 	}
 
 	@Subscribe
