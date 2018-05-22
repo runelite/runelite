@@ -162,18 +162,27 @@ class LootRecorderPanel extends PluginPanel
 		tabPanel.add(scroller);
 
 		// Add new tab to panel
-		tabsPanel.addTab(tab.getName(), null, tabPanel, tab.getName());
+		int tabIndex = adjustTabIndex(tabsPanel.getTabCount(), tab.getIndex());
+		tabsPanel.insertTab(null, null, tabPanel, tab.getName(), tabIndex);
 
 		// Add Tab Icon
 		AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
-		int idx = tabsPanel.getTabCount() - 1;
 		Runnable resize = () ->
-				tabsPanel.setIconAt(idx, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
+				tabsPanel.setIconAt(tabIndex, new ImageIcon(icon.getScaledInstance(24, 21, Image.SCALE_SMOOTH)));
 		icon.onChanged(resize);
 		resize.run();
 
 		tabsMap.put(tab.getName().toUpperCase(), tabPanel);
 		lootMap.put(tab.getName().toUpperCase(), lootPanel);
+	}
+
+	private int adjustTabIndex(int total, int tabIndex)
+	{
+		if (total < tabIndex)
+		{
+			return total;
+		}
+		return tabIndex;
 	}
 
 	private void removeTab(Tab tab)

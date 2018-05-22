@@ -35,12 +35,13 @@ import java.util.Map;
 @Getter
 public enum Tab
 {
-	BARROWS("Barrows", ItemID.BARROWS_TELEPORT),
-	RAIDS("Raids", ItemID.OLMLET),
-	ZULRAH("Zulrah", ItemID.PET_SNAKELING);
+	BARROWS("Barrows", ItemID.BARROWS_TELEPORT, 0),
+	RAIDS("Raids", ItemID.OLMLET, 1),
+	ZULRAH("Zulrah", ItemID.PET_SNAKELING, 2);
 	
 	private final String name;
 	private final int itemID;
+	private final int index;
 
 	private static final Map<String, Tab> byName = buildMap();
 
