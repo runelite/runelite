@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,6 +68,9 @@ public class ScreenMarkerPlugin extends Plugin
 	private static final String DEFAULT_MARKER_NAME = "Marker";
 	private static final Dimension DEFAULT_SIZE = new Dimension(2, 2);
 
+	@Getter
+	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
+
 	@Inject
 	private EventBus eventBus;
 
@@ -88,9 +92,6 @@ public class ScreenMarkerPlugin extends Plugin
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
 	private NavigationButton navigationButton;
-
-	@Getter
-	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private ScreenMarker currentMarker;
@@ -125,6 +126,7 @@ public class ScreenMarkerPlugin extends Plugin
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
 			.icon(icon)
+			.priority(5)
 			.panel(pluginPanel)
 			.build();
 
@@ -189,9 +191,6 @@ public class ScreenMarkerPlugin extends Plugin
 	{
 		if (!aborted)
 		{
-			setMouseListenerEnabled(false);
-			pluginPanel.setCreationEnabled(false);
-
 			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
@@ -205,6 +204,16 @@ public class ScreenMarkerPlugin extends Plugin
 
 		creatingScreenMarker = false;
 		currentMarker = null;
+		setMouseListenerEnabled(false);
+
+		pluginPanel.setCreation(false);
+	}
+
+	/* The marker area has been drawn, inform the user and unlock the confirm button */
+	public void completeSelection()
+	{
+		pluginPanel.getCreationPanel().setInstruction("Confirm or cancel to finish.");
+		pluginPanel.getCreationPanel().unlockConfirm();
 	}
 
 	public void deleteMarker(final ScreenMarkerOverlay marker)
