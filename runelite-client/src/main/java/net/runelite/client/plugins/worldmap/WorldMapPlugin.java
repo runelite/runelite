@@ -38,7 +38,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -91,9 +90,6 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Inject
 	private WorldMapConfig config;
@@ -153,7 +149,7 @@ public class WorldMapPlugin extends Plugin
 					if (config.jewelleryTeleportIcon())
 					{
 						Arrays.stream(JewelleryTeleportLocationData.values())
-							.map(data -> new JewelleryTeleportPoint(data, itemManager))
+							.map(data -> new JewelleryTeleportPoint(data))
 							.forEach(worldMapPointManager::add);
 					}
 					else
@@ -194,7 +190,7 @@ public class WorldMapPlugin extends Plugin
 		if (config.jewelleryTeleportIcon())
 		{
 			Arrays.stream(JewelleryTeleportLocationData.values())
-				.map(data -> new JewelleryTeleportPoint(data, itemManager))
+				.map(data -> new JewelleryTeleportPoint(data))
 				.forEach(worldMapPointManager::add);
 		}
 	}
