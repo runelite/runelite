@@ -102,7 +102,15 @@ public enum UniqueItem
 	PET_SNAKELING("Pet snakeling", ItemID.PET_SNAKELING, "Zulrah", "Rares", 1),
 	TANZANITE_MUTAGEN("Tanzanite mutagen", ItemID.TANZANITE_MUTAGEN, "Zulrah", "Rares", 1),
 	MAGMA_MUTAGEN("Magma mutagen", ItemID.MAGMA_MUTAGEN, "Zulrah", "Rares", 1),
-	JAR_OF_SWAMP("Jar of swamp", ItemID.JAR_OF_SWAMP, "Zulrah", "Rares", 1);
+	JAR_OF_SWAMP("Jar of swamp", ItemID.JAR_OF_SWAMP, "Zulrah", "Rares", 1),
+
+	// Vorkath
+	DRAGONBONE_NECKLACE("Dragonbone necklace", ItemID.DRAGONBONE_NECKLACE, "Vorkath", "Uniques", 0),
+	VORKATHS_HEAD("Vorkath's head", ItemID.VORKATHS_HEAD, "Vorkath", "Uniques", 0),
+	JAR_OF_DECAY("Jar of decay", ItemID.JAR_OF_DECAY, "Vorkath", "Uniques", 0),
+	VORKI("Vorki", ItemID.VORKI, "Vorkath", "Uniques", 0),
+	SKELETAL_VISAGE("Skeletal visage", ItemID.SKELETAL_VISAGE, "Vorkath", "Uniques", 0);
+
 
 	private final String name;
 	private final int itemID;

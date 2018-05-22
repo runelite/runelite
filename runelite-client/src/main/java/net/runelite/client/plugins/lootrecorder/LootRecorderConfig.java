@@ -70,6 +70,17 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "recordVorkathKills",
+			name = "Record Vorkath Loot",
+			description = "Configures whether or not loot from Vorkath is recorded",
+			position = 2
+	)
+	default boolean recordVorkathKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 			keyName = "showChatMessages",
 			name = "In-game Chat Message Alerts",
 			description = "In-Game Chat Messages when Loot Recorded",

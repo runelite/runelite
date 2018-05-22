@@ -37,7 +37,8 @@ public enum Tab
 {
 	BARROWS("Barrows", ItemID.BARROWS_TELEPORT, 0),
 	RAIDS("Raids", ItemID.OLMLET, 1),
-	ZULRAH("Zulrah", ItemID.PET_SNAKELING, 2);
+	ZULRAH("Zulrah", ItemID.PET_SNAKELING, 2),
+	VORKATH("Vorkath", ItemID.VORKI, 3);
 	
 	private final String name;
 	private final int itemID;

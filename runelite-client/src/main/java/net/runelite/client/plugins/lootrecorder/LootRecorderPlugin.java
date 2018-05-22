@@ -103,14 +103,18 @@ public class LootRecorderPlugin extends Plugin
 	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
 	@Getter
 	private ArrayList<LootEntry> zulrah = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> vorkath = new ArrayList<LootEntry>();
 
 	private Integer barrowsNumber;
 	private Integer raidsNumber;
 	private Integer zulrahNumber;
+	private Integer vorkathNumber;
 
 	private String barrowsFilename = "barrows.log";
 	private String raidsFilename = "raids.log";
 	private String zulrahFilename = "zulrah.log";
+	private String vorkathFilename = "vorkath.log";
 
 	private File playerFolder;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -223,6 +227,9 @@ public class LootRecorderPlugin extends Plugin
 			case "recordZulrahKills":
 				ToggleTab("Zulrah", lootRecorderConfig.recordZulrahKills());
 				return;
+			case "recordVorkathKills":
+				ToggleTab("Vorkath", lootRecorderConfig.recordVorkathKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -281,6 +288,9 @@ public class LootRecorderPlugin extends Plugin
 			case "ZULRAH":
 				loadLootEntries(zulrahFilename, zulrah);
 				break;
+			case "VORKATH":
+				loadLootEntries(vorkathFilename, vorkath);
+				break;
 			default:
 				break;
 		}
@@ -291,6 +301,7 @@ public class LootRecorderPlugin extends Plugin
 		loadLootEntries(barrowsFilename, barrows);
 		loadLootEntries(raidsFilename, raids);
 		loadLootEntries(zulrahFilename, zulrah);
+		loadLootEntries(vorkathFilename, vorkath);
 	}
 
 	// Update KC variable on chat message event
@@ -339,6 +350,9 @@ public class LootRecorderPlugin extends Plugin
 			{
 				case "Zulrah":
 					zulrahNumber = KC;
+					break;
+				case "Vorkath":
+					vorkathNumber = KC;
 					break;
 				default:
 					log.info("Unhandled boss: " + bossName);
@@ -440,6 +454,8 @@ public class LootRecorderPlugin extends Plugin
 				return raids;
 			case "ZULRAH":
 				return zulrah;
+			case "VORKATH":
+				return vorkath;
 			default:
 				return null;
 		}
@@ -456,6 +472,8 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordRaidsChest();
 			case "ZULRAH":
 				return lootRecorderConfig.recordZulrahKills();
+			case "VORKATH":
+				return lootRecorderConfig.recordVorkathKills();
 			default:
 				return false;
 		}
