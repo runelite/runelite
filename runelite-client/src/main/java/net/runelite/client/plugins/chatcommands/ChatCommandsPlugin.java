@@ -208,6 +208,9 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		SearchResult result;
 
+		if (search.contains("\u00A0"))
+			search = search.replaceAll("\u00A0", " ");
+
 		try
 		{
 			result = itemManager.searchForItem(search);
