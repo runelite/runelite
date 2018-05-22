@@ -89,22 +89,18 @@ class VarInspector extends JFrame
 
 	private int lastTick = 0;
 
-	private final int[] oldVarps;
-	private final int[] oldVarps2;
+	private int[] oldVarps = null;
+	private int[] oldVarps2 = null;
 	private int numVarbits = 10000;
 
-	private final int[] oldIntVarcs;
-	private final String[] oldStrVarcs;
+	private int[] oldIntVarcs = null;
+	private String[] oldStrVarcs = null;
 
 	@Inject
 	VarInspector(Client client, EventBus eventBus)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
-		oldVarps = new int[client.getVarps().length];
-		oldVarps2 = new int[client.getVarps().length];
-		oldIntVarcs = new int[client.getIntVarcs().length];
-		oldStrVarcs = new String[client.getStrVarcs().length];
 
 		setTitle("RuneLite Var Inspector");
 		setIconImage(ClientUI.ICON);
@@ -330,6 +326,14 @@ class VarInspector extends JFrame
 
 	public void open()
 	{
+		if (oldVarps == null)
+		{
+			oldVarps = new int[client.getVarps().length];
+			oldVarps2 = new int[client.getVarps().length];
+			oldIntVarcs = new int[client.getIntVarcs().length];
+			oldStrVarcs = new String[client.getStrVarcs().length];
+		}
+
 		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
 		System.arraycopy(client.getIntVarcs(), 0, oldIntVarcs, 0, oldIntVarcs.length);
