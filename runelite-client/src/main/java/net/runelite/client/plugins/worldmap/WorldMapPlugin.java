@@ -34,6 +34,7 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -49,6 +50,11 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
 	static final String CONFIG_KEY_FAIRY_RING_ICON = "fairyRingIcon";
+	static final String CONFIG_KEY_NORMAL_TELEPORT_ICON = "standardSpellbookIcon";
+	static final String CONFIG_KEY_ANCIENT_TELEPORT_ICON = "ancientSpellbookIcon";
+	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
+	static final String CONFIG_KEY_ARCEUUS_TELEPORT_ICON = "arceuusSpellbookIcon";
+	static final String CONFIG_KEY_JEWELLERY_TELEPORT_ICON = "jewelleryIcon";
 
 	static
 	{
@@ -71,6 +77,9 @@ public class WorldMapPlugin extends Plugin
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	private WorldMapConfig config;
@@ -106,6 +115,25 @@ public class WorldMapPlugin extends Plugin
 				case CONFIG_KEY_FAIRY_RING_ICON:
 					FairyRingLocation.setIcon(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON);
 					break;
+				case CONFIG_KEY_NORMAL_TELEPORT_ICON:
+				case CONFIG_KEY_ANCIENT_TELEPORT_ICON:
+				case CONFIG_KEY_LUNAR_TELEPORT_ICON:
+				case CONFIG_KEY_ARCEUUS_TELEPORT_ICON:
+					worldMapPointManager.removeIf(MagicTeleportPoint.class::isInstance);
+					createMagicTeleportPoints();
+					break;
+				case CONFIG_KEY_JEWELLERY_TELEPORT_ICON:
+					if (config.jewelleryTeleportIcon())
+					{
+						Arrays.stream(JewelleryTeleportLocationData.values())
+							.map(data -> new JewelleryTeleportPoint(data, itemManager))
+							.forEach(worldMapPointManager::add);
+					}
+					else
+					{
+						worldMapPointManager.removeIf(JewelleryTeleportPoint.class::isInstance);
+					}
+					break;
 			}
 		}
 	}
@@ -121,11 +149,50 @@ public class WorldMapPlugin extends Plugin
 				.map(FairyRingLocation::getFairyRingPoint)
 				.forEach(worldMapPointManager::add);
 		}
+
+		if (config.normalTeleportIcon()
+			|| config.ancientTeleportIcon()
+			|| config.lunarTeleportIcon()
+			|| config.arceuusTeleportIcon())
+		{
+			createMagicTeleportPoints();
+		}
+
+		if (config.jewelleryTeleportIcon())
+		{
+			Arrays.stream(JewelleryTeleportLocationData.values())
+				.map(data -> new JewelleryTeleportPoint(data, itemManager))
+				.forEach(worldMapPointManager::add);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
+		worldMapPointManager.removeIf(MagicTeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(JewelleryTeleportPoint.class::isInstance);
+	}
+
+	private void createMagicTeleportPoints()
+	{
+		Arrays.stream(MagicTeleportLocationData.values())
+			.filter(data ->
+			{
+				switch (data.getType())
+				{
+					case NORMAL_MAGIC:
+						return config.normalTeleportIcon();
+					case ANCIENT_MAGICKS:
+						return config.ancientTeleportIcon();
+					case LUNAR_MAGIC:
+						return config.lunarTeleportIcon();
+					case ARCEUUS_MAGIC:
+						return config.arceuusTeleportIcon();
+					default:
+						return false;
+				}
+			}).map(MagicTeleportPoint::new)
+			.forEach(worldMapPointManager::add);
 	}
 }
