@@ -399,8 +399,6 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			jComboBox.setRenderer(new ComboBoxListRenderer());
-			jComboBox.setForeground(Color.WHITE);
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
 		}
 	}
@@ -411,6 +409,7 @@ public class ConfigPanel extends PluginPanel
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
+		title.setForeground(Color.WHITE);
 		title.setToolTipText(cd.getGroup().description());
 		add(title, SwingConstants.CENTER);
 
@@ -425,6 +424,7 @@ public class ConfigPanel extends PluginPanel
 			item.setLayout(new BorderLayout());
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
+			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 
