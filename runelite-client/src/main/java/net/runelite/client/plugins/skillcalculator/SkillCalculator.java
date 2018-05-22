@@ -227,6 +227,8 @@ class SkillCalculator extends JPanel
 			slot.setAvailable(currentLevel >= slot.action.level);
 			slot.value = xp;
 		}
+
+		updateCombinedAction();
 	}
 
 	private String formatXPActionString(double xp, int actionCount)
