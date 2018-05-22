@@ -186,15 +186,15 @@ class XpInfoBox extends JPanel
 			// Update progress bar
 			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
 			progressBar.setCenterLabel(xpSnapshotSingle.getSkillProgressToGoal() + "%");
-			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getCurrentLevel());
-			progressBar.setRightLabel("Lvl. " + (xpSnapshotSingle.getCurrentLevel() + 1));
+			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
+			progressBar.setRightLabel("Lvl. " + (xpSnapshotSingle.getEndLevel()));
 
 			progressBar.setToolTipText("<html>"
 				+ xpSnapshotSingle.getActionsInSession() + " actions done"
 				+ "<br/>"
 				+ xpSnapshotSingle.getActionsPerHour() + " actions/hr"
 				+ "<br/>"
-				+ xpSnapshotSingle.getTimeTillGoal() + " till next lvl"
+				+ xpSnapshotSingle.getTimeTillGoal() + " till goal lvl"
 				+ "</html>");
 
 			progressBar.repaint();
