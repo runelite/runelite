@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import java.util.List;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
@@ -57,4 +58,11 @@ public interface Tile
 	int getPlane();
 
 	boolean hasLineOfSightTo(Tile other);
+
+	/**
+	 * Get all the ground items for this tile
+	 *
+	 * @return
+	 */
+	List<Item> getGroundItems();
 }
