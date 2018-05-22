@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.screenmarkers;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import lombok.Data;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 
-@Data
-public abstract class Overlay implements LayoutableRenderableEntity
+public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 {
-	private Point preferredLocation;
+	@Getter(AccessLevel.PACKAGE)
 	private Dimension preferredSize;
-	private OverlayPosition preferredPosition;
-	private Rectangle bounds = new Rectangle();
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int borderThickness;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Color color;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Color fill;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Stroke stroke;
 
-	/**
-	 * Overlay name, used for saving the overlay, needs to be unique
-	 * @return overlay name
-	 */
-	public String getName()
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return this.getClass().getSimpleName();
+		int thickness = borderThickness;
+		int width = preferredSize.width;
+		int height = preferredSize.height;
+
+		//draw the fill
+		graphics.setColor(fill);
+		graphics.fillRect(thickness, thickness, width - thickness * 2, height - thickness * 2);
+
+		//because the stroke is centered on the rectangle we draw, we need to translate where we draw the rectangle
+		//this is to ensure that the rectangle we draw is our preferred size
+		int offset = thickness / 2;
+		graphics.setColor(color);
+		graphics.setStroke(stroke);
+		graphics.drawRect(offset, offset, width - thickness, height - thickness);
+		return preferredSize;
+	}
+
+	@Override
+	public void setPreferredSize(Dimension preferredSize)
+	{
+		this.preferredSize = preferredSize;
 	}
 }

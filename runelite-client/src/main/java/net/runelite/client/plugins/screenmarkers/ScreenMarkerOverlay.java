@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +23,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.screenmarkers;
 
+import java.awt.BasicStroke;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import lombok.Data;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import java.awt.Graphics2D;
+import lombok.Getter;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 
-@Data
-public abstract class Overlay implements LayoutableRenderableEntity
+public class ScreenMarkerOverlay extends Overlay
 {
-	private Point preferredLocation;
-	private Dimension preferredSize;
-	private OverlayPosition preferredPosition;
-	private Rectangle bounds = new Rectangle();
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	@Getter
+	private final ScreenMarker marker;
+	private final ScreenMarkerRenderable screenMarkerRenderable;
 
-	/**
-	 * Overlay name, used for saving the overlay, needs to be unique
-	 * @return overlay name
-	 */
+	ScreenMarkerOverlay(ScreenMarker marker)
+	{
+		this.marker = marker;
+		setPosition(OverlayPosition.DETACHED);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setPriority(OverlayPriority.HIGH);
+
+		screenMarkerRenderable = new ScreenMarkerRenderable();
+		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
+		screenMarkerRenderable.setColor(marker.getColor());
+		screenMarkerRenderable.setFill(marker.getFill());
+		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
+	}
+
+	@Override
 	public String getName()
 	{
-		return this.getClass().getSimpleName();
+		return marker.getName();
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!marker.isVisible())
+		{
+			return null;
+		}
+
+		screenMarkerRenderable.setPreferredSize(getPreferredSize());
+		return screenMarkerRenderable.render(graphics);
 	}
 }

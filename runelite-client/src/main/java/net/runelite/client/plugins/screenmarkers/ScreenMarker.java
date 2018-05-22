@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +23,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.screenmarkers;
 
-public enum OverlayPosition
+import java.awt.Color;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScreenMarker
 {
-	/**
-	 * Not attached anywhere, but still movable
-	 */
-	DETACHED,
-	/**
-	 * Overlay places itself where it wants
-	 */
-	DYNAMIC,
-	/**
-	 * Place overlay in the top left most area possible
-	 */
-	TOP_LEFT,
-	/**
-	 * Place overlay in the top right most area possible
-	 */
-	TOP_RIGHT,
-	/**
-	 * Place overlay in the bottom left most area possible
-	 */
-	BOTTOM_LEFT,
-	/**
-	 * Place overlay in the bottom right most area possible
-	 */
-	BOTTOM_RIGHT,
-	/**
-	 * Place overlay directly above right most area of chatbox possible
-	 */
-	ABOVE_CHATBOX_RIGHT,
-	/**
-	 * Tooltip overlay
-	 */
-	TOOLTIP;
+	private String name;
+	private int borderThickness;
+	private Color color;
+	private Color fill;
+	private boolean visible;
 }
