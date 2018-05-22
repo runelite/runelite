@@ -101,12 +101,16 @@ public class LootRecorderPlugin extends Plugin
 	private ArrayList<LootEntry> barrows = new ArrayList<LootEntry>();
 	@Getter
 	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> zulrah = new ArrayList<LootEntry>();
 
 	private Integer barrowsNumber;
 	private Integer raidsNumber;
+	private Integer zulrahNumber;
 
 	private String barrowsFilename = "barrows.log";
 	private String raidsFilename = "raids.log";
+	private String zulrahFilename = "zulrah.log";
 
 	private File playerFolder;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -215,6 +219,9 @@ public class LootRecorderPlugin extends Plugin
 			case "recordRaidsChest":
 				ToggleTab("Raids", lootRecorderConfig.recordRaidsChest());
 				return;
+			case "recordZulrahKills":
+				ToggleTab("Zulrah", lootRecorderConfig.recordZulrahKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -270,6 +277,8 @@ public class LootRecorderPlugin extends Plugin
 				break;
 			case "RAIDS":
 				loadLootEntries(raidsFilename, raids);
+			case "ZULRAH":
+				loadLootEntries(zulrahFilename, zulrah);
 				break;
 			default:
 				break;
@@ -280,6 +289,7 @@ public class LootRecorderPlugin extends Plugin
 	{
 		loadLootEntries(barrowsFilename, barrows);
 		loadLootEntries(raidsFilename, raids);
+		loadLootEntries(zulrahFilename, zulrah);
 	}
 
 	// Update KC variable on chat message event
@@ -407,6 +417,8 @@ public class LootRecorderPlugin extends Plugin
 				return barrows;
 			case "RAIDS":
 				return raids;
+			case "ZULRAH":
+				return zulrah;
 			default:
 				return null;
 		}
@@ -421,8 +433,10 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordBarrowsChest();
 			case "RAIDS":
 				return lootRecorderConfig.recordRaidsChest();
+			case "ZULRAH":
+				return lootRecorderConfig.recordZulrahKills();
 			default:
-				return null;
+				return false;
 		}
 	}
 }

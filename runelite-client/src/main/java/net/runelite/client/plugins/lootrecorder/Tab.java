@@ -36,7 +36,8 @@ import java.util.Map;
 public enum Tab
 {
 	BARROWS("Barrows", ItemID.BARROWS_TELEPORT),
-	RAIDS("Raids", ItemID.OLMLET);
+	RAIDS("Raids", ItemID.OLMLET),
+	ZULRAH("Zulrah", ItemID.PET_SNAKELING);
 	
 	private final String name;
 	private final int itemID;

@@ -49,7 +49,7 @@ public interface LootRecorderConfig extends Config
 
 	@ConfigItem(
 		keyName = "recordRaidsChest",
-		name = "Record Chest Loot from Raids",
+		name = "Record Raids Chest Loot",
 		description = "Configures whether or not loot from Raids is recorded",
 		position = 1
 	)
@@ -59,10 +59,21 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showChatMessages",
-			name = "Chat Message Alerts",
-			description = "In-Game Chat Messages when Loot Recorded",
+			keyName = "recordZulrahKills",
+			name = "Record Zulrah Loot",
+			description = "Configures whether or not loot from Zulrah is recorded",
 			position = 2
+	)
+	default boolean recordZulrahKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showChatMessages",
+			name = "In-game Chat Message Alerts",
+			description = "In-Game Chat Messages when Loot Recorded",
+			position = 3
 	)
 	default boolean showChatMessages()
 	{
@@ -73,7 +84,7 @@ public interface LootRecorderConfig extends Config
 			keyName = "showTrayAlerts",
 			name = "Notification Tray Alerts",
 			description = "Create Notification Tray alerts when Loot Recorded?",
-			position = 2
+			position = 4
 	)
 	default boolean showTrayAlerts()
 	{
@@ -84,7 +95,7 @@ public interface LootRecorderConfig extends Config
 		keyName = "showLootTotals",
 		name = "Show Recorded Loots Panel",
 		description = "Configures whether or not the Recorded Loots Panel is shown",
-		position = 3
+		position = 5
 	)
 	default boolean showLootTotals()
 	{

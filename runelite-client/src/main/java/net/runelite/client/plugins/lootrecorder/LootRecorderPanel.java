@@ -67,6 +67,7 @@ class LootRecorderPanel extends PluginPanel
 		this.setLayout(layout);
 
 		createPanel(this);
+		tabsPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
 	private void createPanel(LootRecorderPanel panel)
