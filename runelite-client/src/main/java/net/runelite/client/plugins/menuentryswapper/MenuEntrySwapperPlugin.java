@@ -331,7 +331,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
+			//if (config.swapPickpocket() && target.contains("h.a.m."))
+			if (config.swapPickpocket())
 			{
 				swap("pickpocket", option, target, true);
 			}
@@ -392,6 +393,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
+		else if (option.equals("climb"))
+		{
+			swap("climb-up", option, target, true);
+		}
 		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap("harpoon", option, target, true);
@@ -445,6 +450,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap("use", option, target, true);
+		}
+		else if (target.equals("iron ore"))
+		{
+			swap("drop", option, target, true);
+		}
+		else if (option.equals("attack")) {
+			//if (config.swapPickpocket() && target.contains("h.a.m."))
+			// Ollie 5-13-2018
+			if (config.swapPickpocket() && target.contains("bandit")) {
+				//swap("pickpocket", option, target, true);
+				swap("knock-out", option, target, true);
+			}
+			else if (config.swapPickpocket()) {
+				swap("pickpocket", option, target, true);
+			}
 		}
 	}
 
