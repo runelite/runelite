@@ -22,9 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.rs.api;
 
-public interface Area
+import net.runelite.api.MapIcon;
+import net.runelite.mapping.Import;
+
+public interface RSMapIcon extends RSCacheableNode, MapIcon
 {
-	SpritePixels getMapIcon(boolean var1);
+	@Import("getMapIconSpritePixels")
+	@Override
+	RSSpritePixels getMapIconSpritePixels(boolean var1);
 }

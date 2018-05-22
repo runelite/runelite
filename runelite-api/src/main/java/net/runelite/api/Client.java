@@ -223,7 +223,7 @@ public interface Client extends GameEngine
 
 	NPCComposition getNpcDefinition(int npcId);
 
-	Area[] getMapAreas();
+	MapIcon[] getMapIconTypes();
 
 	IndexedSprite[] getMapScene();
 	
@@ -231,7 +231,7 @@ public interface Client extends GameEngine
 
 	int getGameCycle();
 
-	SpritePixels[] getMapIcons();
+	SpritePixels[] getMapIconsPixels();
 
 	IndexedSprite[] getModIcons();
 

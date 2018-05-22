@@ -379,9 +379,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgetRoot")
 	int getWidgetRoot();
 
-	@Import("mapAreaType")
+	@Import("mapIconType")
 	@Override
-	RSArea[] getMapAreas();
+	RSMapIcon[] getMapIconTypes();
 
 	@Import("mapscene")
 	@Override
@@ -389,7 +389,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("mapIcons")
 	@Override
-	RSSpritePixels[] getMapIcons();
+	RSSpritePixels[] getMapIconsPixels();
 
 	@Import("mapDots")
 	RSSpritePixels[] getMapDots();
