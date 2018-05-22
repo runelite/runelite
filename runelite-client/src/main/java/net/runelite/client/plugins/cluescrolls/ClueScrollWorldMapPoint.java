@@ -26,6 +26,7 @@ package net.runelite.client.plugins.cluescrolls;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
@@ -33,8 +34,8 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 class ClueScrollWorldMapPoint extends WorldMapPoint
 {
 	private static final BufferedImage CLUE_SCROLL_WORLD_IMAGE;
+	private static final BufferedImage CLUE_SCROLL_WORLD_IMAGE_EDGE;
 	private static final Point CLUE_SCROLL_WORLD_IMAGE_POINT;
-
 	static
 	{
 		CLUE_SCROLL_WORLD_IMAGE = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -44,6 +45,11 @@ class ClueScrollWorldMapPoint extends WorldMapPoint
 		CLUE_SCROLL_WORLD_IMAGE_POINT = new Point(
 			CLUE_SCROLL_WORLD_IMAGE.getWidth() / 2,
 			CLUE_SCROLL_WORLD_IMAGE.getHeight());
+
+		CLUE_SCROLL_WORLD_IMAGE_EDGE = new BufferedImage(ClueScrollPlugin.MAP_EDGE_BOX.getWidth(), ClueScrollPlugin.MAP_EDGE_BOX.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics2 = CLUE_SCROLL_WORLD_IMAGE_EDGE.getGraphics();
+		graphics2.drawImage(ClueScrollPlugin.MAP_EDGE_BOX, 0, 0, null);
+		graphics2.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0, 2, null);
 	}
 
 	ClueScrollWorldMapPoint(final WorldPoint worldPoint)
@@ -57,10 +63,14 @@ class ClueScrollWorldMapPoint extends WorldMapPoint
 	}
 
 	@Override
-	public void onEdgeSnap()
+	public void onEdgeSnap(boolean[] directions)
 	{
-		this.setImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE);
-		this.setImagePoint(null);
+		boolean north = directions[0];
+		boolean south = directions[1];
+		boolean east = directions[2];
+		boolean west = directions[3];
+		this.setImage(CLUE_SCROLL_WORLD_IMAGE_EDGE);
+		edgeSnapImageHandler(north, south, east, west, CLUE_SCROLL_WORLD_IMAGE_EDGE);
 	}
 
 	@Override
@@ -68,5 +78,42 @@ class ClueScrollWorldMapPoint extends WorldMapPoint
 	{
 		this.setImage(CLUE_SCROLL_WORLD_IMAGE);
 		this.setImagePoint(CLUE_SCROLL_WORLD_IMAGE_POINT);
+	}
+
+	@Override
+	public void edgeSnapImageHandler(boolean north, boolean south, boolean east, boolean west, BufferedImage image)
+	{
+		if (north && east)
+		{
+			this.setImagePoint(new Point(image.getWidth(), image.getHeight()));
+		}
+		else if (north && west)
+		{
+			this.setImagePoint(new Point(0, image.getHeight()));
+		}
+		else if (south && east)
+		{
+			this.setImagePoint(new Point(image.getWidth(), 0));
+		}
+		else if (south && west)
+		{
+			this.setImagePoint(new Point(0, 0));
+		}
+		else if (north)
+		{
+			this.setImagePoint(new Point(0, image.getHeight()));
+		}
+		else if (south)
+		{
+			this.setImagePoint(new Point(0, 0));
+		}
+		else if (east)
+		{
+			this.setImagePoint(new Point(image.getWidth(), image.getHeight()));
+		}
+		else if (west)
+		{
+			this.setImagePoint(new Point(0, image.getHeight()));
+		}
 	}
 }
