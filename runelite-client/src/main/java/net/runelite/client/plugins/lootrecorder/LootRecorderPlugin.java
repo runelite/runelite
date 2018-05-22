@@ -125,6 +125,8 @@ public class LootRecorderPlugin extends Plugin
 	{
 		if (lootRecorderConfig.showLootTotals())
 		{
+			// Waits 2 seconds, helps ensure itemManager is loaded
+			// Client cache loading is async, plugins can be loaded before it is finished
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 2, TimeUnit.SECONDS);
 		}
