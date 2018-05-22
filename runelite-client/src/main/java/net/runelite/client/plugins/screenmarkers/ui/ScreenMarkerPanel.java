@@ -64,7 +64,7 @@ class ScreenMarkerPanel extends JPanel
 		visibleToggle.addActionListener(l ->
 		{
 			boolean visible = !visibleToggle.isSelected();
-			marker.getMarker().setVisible(false);
+			marker.getMarker().setVisible(visible);
 			visibleToggle.setText(visible ? HIDE_TEXT : SHOW_TEXT);
 			plugin.updateConfig();
 		});
