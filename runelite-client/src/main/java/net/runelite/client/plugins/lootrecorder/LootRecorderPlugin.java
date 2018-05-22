@@ -236,27 +236,24 @@ public class LootRecorderPlugin extends Plugin
 			ItemLayer layer = tile.getItemLayer();
 			items = createItemMap(layer);
 			watching = true;
-
-			log.info("Just killed actor: " + deathName);
 		}
 	}
 
 	@Subscribe
 	public void onActorDespawn(ActorDespawned despawned)
 	{
-		Actor npc = despawned.getActor();
-		if (npc.getName().equals(deathName) && npc.getWorldLocation().equals(deathSpot))
+		if (watching)
 		{
-			ArrayList<DropEntry> drops = createDropEntryArray(npc.getLocalLocation());
-			log.info("Target NPC Despawned: " + deathName);
-			deathName = null;
-			deathSpot = null;
-			items = null;
-			watching = false;
-
-			System.out.println("Loot from Target NPC: " + npc.getName());
-			System.out.println(drops);
-			AddBossLootEntry(npc.getName(), drops);
+			Actor npc = despawned.getActor();
+			if (npc.getName().equals(deathName) && npc.getWorldLocation().equals(deathSpot))
+			{
+				watching = false;
+				ArrayList<DropEntry> drops = createDropEntryArray(npc.getLocalLocation());
+				deathName = null;
+				deathSpot = null;
+				items = null;
+				AddBossLootEntry(npc.getName(), drops);
+			}
 		}
 	}
 
@@ -279,8 +276,8 @@ public class LootRecorderPlugin extends Plugin
 		if (KC == 0)
 			return;
 
-		//LootEntry newEntry = new LootEntry(KC, drops);
-		//addLootEntry(filename, newEntry);
+		LootEntry newEntry = new LootEntry(KC, drops);
+		addLootEntry(filename, newEntry);
 	}
 
 	private Tile getTile(Region region, LocalPoint local, int plane)
@@ -335,8 +332,6 @@ public class LootRecorderPlugin extends Plugin
 						return;
 					// Add new entry
 					drops.add(new DropEntry(id, amount));
-					System.out.println("Received drop: ");
-					System.out.println("ID: " + id + ", Amount: " + amount);
 				}
 
 		);
