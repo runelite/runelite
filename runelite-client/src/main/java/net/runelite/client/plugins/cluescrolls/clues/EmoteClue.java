@@ -624,7 +624,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(requirement.getCollectiveName(plugin.getClient()))
 					.leftColor(TITLED_CONTENT_COLOR)
-					.right(found ? "X" : "-")
+					.right(found ? "\u2713" : "\u2717")
 					.rightColor(found ? Color.GREEN : Color.RED)
 					.build());
 
