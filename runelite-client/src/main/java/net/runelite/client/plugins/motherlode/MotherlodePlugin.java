@@ -120,7 +120,7 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
-	private final MotherlodeSession session = new MotherlodeSession();
+	private MotherlodeSession session;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -139,16 +139,10 @@ public class MotherlodePlugin extends Plugin
 		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
 	}
 
-	private void refreshSackValues()
-	{
-		curSackSize = client.getVar(Varbits.SACK_NUMBER);
-		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
-		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
-	}
-
 	@Override
 	protected void startUp()
 	{
+		session = new MotherlodeSession();
 		inMlm = checkInMlm();
 
 		if (inMlm)
@@ -160,6 +154,7 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		session = null;
 		veins.clear();
 		rocks.clear();
 
@@ -427,6 +422,13 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	private void refreshSackValues()
+	{
+		curSackSize = client.getVar(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 
 	/**
