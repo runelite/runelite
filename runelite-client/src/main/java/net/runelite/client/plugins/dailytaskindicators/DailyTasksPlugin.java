@@ -34,8 +34,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -103,15 +103,16 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerSpawned(PlayerSpawned event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getPlayer() != client.getLocalPlayer())
+		switch (event.getGameState())
 		{
-			return;
+			case HOPPING:
+			case LOGGED_IN:
+				//load the varbits on first available tick
+				check = true;
+				break;
 		}
-
-		//load the varbits on first available tick
-		check = true;
 	}
 
 	@Subscribe
