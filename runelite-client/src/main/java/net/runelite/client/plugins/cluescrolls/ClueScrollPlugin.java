@@ -113,6 +113,9 @@ public class ClueScrollPlugin extends Plugin
 	private Item[] equippedItems;
 
 	@Getter
+	private Item[] inventoryItems;
+
+	@Getter
 	private Instant clueTimeout;
 
 	@Inject
@@ -260,6 +263,7 @@ public class ClueScrollPlugin extends Plugin
 		npcsToMark = null;
 		objectsToMark = null;
 		equippedItems = null;
+		inventoryItems = null;
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -346,11 +350,18 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue instanceof EmoteClue)
 		{
-			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 			
-			if (container != null)
+			if (equipment != null)
 			{
-				equippedItems = container.getItems();
+				equippedItems = equipment.getItems();
+			}
+
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (inventory != null)
+			{
+				inventoryItems = inventory.getItems();
 			}
 		}
 
