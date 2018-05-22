@@ -155,19 +155,19 @@ class SkillCalculator extends JPanel
 
 	private void renderBonusOptions()
 	{
-		if (skillData.bonuses != null)
+		if (skillData.getBonuses() != null)
 		{
-			for (SkillDataBonus bonus : skillData.bonuses)
+			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(bonus.name);
+				JLabel uiLabel = new JLabel(bonus.getName());
 				JCheckBox uiCheckbox = new JCheckBox();
 
 				// Adding an empty 8-pixel border on the left gives us nice padding.
 				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.value));
+				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue(), bonus.isPercentOfXp()));
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
 				uiOption.add(uiCheckbox, BorderLayout.EAST);
@@ -182,7 +182,7 @@ class SkillCalculator extends JPanel
 		uiActionSlots.clear();
 
 		// Create new components for the action slots.
-		for (SkillDataEntry action : skillData.actions)
+		for (SkillDataEntry action : skillData.getActions())
 		{
 			UIActionSlot slot = new UIActionSlot(action);
 			uiActionSlots.add(slot); // Keep our own reference.
@@ -218,13 +218,15 @@ class SkillCalculator extends JPanel
 		{
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
-			double xp = slot.action.xp * xpFactor;
+			double xp;
+
+			xp = (slot.action.isIgnoreBonus()) ? slot.action.getXp() : slot.action.getXp() * xpFactor;
 
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
 			slot.setText(formatXPActionString(xp, actionCount));
-			slot.setAvailable(currentLevel >= slot.action.level);
+			slot.setAvailable(currentLevel >= slot.action.getLevel());
 			slot.value = xp;
 		}
 	}
@@ -249,10 +251,18 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(boolean addBonus, float value)
+	private void adjustXPBonus(boolean addBonus, float value, boolean isPercentOfXp)
 	{
-		xpFactor += addBonus ? value : -value;
-		calculate();
+		if (isPercentOfXp)
+		{
+			xpFactor = addBonus ? value : 1.0f;
+			calculate();
+		}
+		else
+		{
+			xpFactor += addBonus ? value : -value;
+			calculate();
+		}
 	}
 
 	private void onFieldCurrentLevelUpdated()

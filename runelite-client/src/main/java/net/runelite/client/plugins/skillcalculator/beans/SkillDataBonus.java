@@ -24,8 +24,12 @@
  */
 package net.runelite.client.plugins.skillcalculator.beans;
 
+import lombok.Getter;
+
+@Getter
 public class SkillDataBonus
 {
-	public String name;
-	public float value;
+	private String name;
+	private float value;
+	private boolean percentOfXp;
 }
