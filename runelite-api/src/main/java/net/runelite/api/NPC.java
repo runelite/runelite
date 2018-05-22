@@ -37,4 +37,11 @@ public interface NPC extends Actor
 	int getIndex();
 
 	NPCComposition getComposition();
+
+	/**
+	 * Get the composition for this NPC and transform it if required
+	 *
+	 * @return
+	 */
+	NPCComposition getTransformedComposition();
 }
