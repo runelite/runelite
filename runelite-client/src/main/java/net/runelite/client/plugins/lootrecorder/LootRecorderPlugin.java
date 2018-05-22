@@ -126,7 +126,7 @@ public class LootRecorderPlugin extends Plugin
 		if (lootRecorderConfig.showLootTotals())
 		{
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 1, TimeUnit.SECONDS);
+			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 2, TimeUnit.SECONDS);
 		}
 	}
 
