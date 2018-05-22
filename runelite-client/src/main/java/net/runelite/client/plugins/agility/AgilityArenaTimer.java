@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Alex Kolpa <akolpa1990@gmail.com>
+ * Copyright (c) 2018, Alex Kolpa <https://github.com/AlexKolpa>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
