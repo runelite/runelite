@@ -43,7 +43,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataMultiplier;
 
 class SkillCalculator extends JPanel
 {
@@ -168,27 +167,7 @@ class SkillCalculator extends JPanel
 				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
-
-				uiOption.add(uiLabel, BorderLayout.WEST);
-				uiOption.add(uiCheckbox, BorderLayout.EAST);
-				add(uiOption);
-			}
-		}
-
-		if (skillData.getMultipliers() != null)
-		{
-			for (SkillDataMultiplier multiplier : skillData.getMultipliers())
-			{
-				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(multiplier.getName());
-				JCheckBox uiCheckbox = new JCheckBox();
-
-				// Adding an empty 8-pixel border on the left gives us nice padding.
-				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
-
-				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPMultiplier(uiCheckbox.isSelected(), multiplier.getValue()));
+				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue(), bonus.isPercentOfXp()));
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
 				uiOption.add(uiCheckbox, BorderLayout.EAST);
@@ -272,16 +251,18 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(boolean addBonus, float value)
+	private void adjustXPBonus(boolean addBonus, float value, boolean isPercentOfXp)
 	{
-		xpFactor += addBonus ? value : -value;
-		calculate();
-	}
-
-	private void adjustXPMultiplier (boolean addMultiplier, float value)
-	{
-		xpFactor = addMultiplier ? value : 1.0f;
-		calculate();
+		if (isPercentOfXp)
+		{
+			xpFactor = addBonus ? value : 1.0f;
+			calculate();
+		}
+		else
+		{
+			xpFactor += addBonus ? value : -value;
+			calculate();
+		}
 	}
 
 	private void onFieldCurrentLevelUpdated()

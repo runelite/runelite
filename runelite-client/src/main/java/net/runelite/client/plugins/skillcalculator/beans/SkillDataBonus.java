@@ -31,4 +31,5 @@ public class SkillDataBonus
 {
 	private String name;
 	private float value;
+	private boolean percentOfXp;
 }

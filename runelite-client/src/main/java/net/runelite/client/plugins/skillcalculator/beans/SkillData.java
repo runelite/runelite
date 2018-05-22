@@ -31,5 +31,4 @@ public class SkillData
 {
 	private SkillDataEntry[] actions;
 	private SkillDataBonus[] bonuses;
-	private SkillDataMultiplier[] multipliers;
 }

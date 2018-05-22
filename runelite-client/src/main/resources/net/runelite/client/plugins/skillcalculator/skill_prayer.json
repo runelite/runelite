@@ -1,12 +1,14 @@
 {
-  "multipliers": [
+  "bonuses": [
     {
-      "name": "Lit Gilded Altar (+350%)",
-      "value": 3.5
+      "name": "Lit Gilded Altar (350%)",
+      "value": 3.5,
+      "percentOfXp": true
     },
     {
-      "name": "Ectofuntus (+400%)",
-      "value": 4
+      "name": "Ectofuntus (400%)",
+      "value": 4,
+      "percentOfXp": true
     }
   ],
   "actions": [
