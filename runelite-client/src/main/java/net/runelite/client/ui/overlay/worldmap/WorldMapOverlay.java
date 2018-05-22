@@ -176,8 +176,24 @@ public class WorldMapOverlay extends Overlay
 
 				if (worldPoint.getImagePoint() == null)
 				{
-					drawX -= image.getWidth() / 2;
-					drawY -= image.getHeight() / 2;
+					if (worldPoint.isCurrentlyEdgeSnapped())
+					{
+						switch (worldPoint.getSnappedEdge())
+						{
+							case BOTTOM:
+							case BOTTOM_LEFT:
+								drawY -= image.getHeight();
+								break;
+							case RIGHT:
+							case TOP_RIGHT:
+								drawX -= image.getWidth();
+								break;
+							case BOTTOM_RIGHT:
+								drawX -= image.getWidth();
+								drawY -= image.getHeight();
+								break;
+						}
+					}
 				}
 				else
 				{
