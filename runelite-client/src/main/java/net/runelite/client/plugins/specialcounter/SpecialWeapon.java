@@ -36,9 +36,11 @@ enum SpecialWeapon
 	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
 	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
 	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
-	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
+	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true),
+	DORGESHUUN_CROSSBOW("Dorgeshuun crossbow", ItemID.DORGESHUUN_CROSSBOW, true);
+
 
 	private final String name;
 	private final int itemID;
-	private final boolean damage;
+	private final boolean damage; // special attack depends on amount of damage done, > 0
 }

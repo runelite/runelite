@@ -26,6 +26,7 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	name = "Special Attack Counter",
 	enabledByDefault = false
 )
+@Slf4j
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -150,13 +152,16 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			int interactingId = ((NPC) interacting).getId();
 
-			if (interactedNpcId != interactingId && !Boss.isMinion(interactingId)
-				&& Boss.getBoss(interacting.getName().equals("Vet'ion Reborn") ? "Vet'ion" : interacting.getName()) == null)
+			if (interactedNpcId != interactingId)
 			{
-				interactedNpcId = interactingId;
-				removeCounters();
 
 				Boss boss = Boss.getBoss(interacting.getName().equals("Vet'ion Reborn") ? "Vet'ion" : interacting.getName());
+				if (!Boss.isMinion(interactingId) && boss == null)
+				{
+					log.debug("Target changed from {} to {}, not a boss or minion, removing counter", interactedNpcId, interactingId);
+					removeCounters();
+				}
+				interactedNpcId = interactingId;
 				modifier = boss != null ? boss.getModifier() : 1d;
 			}
 		}
@@ -166,16 +171,16 @@ public class SpecialCounterPlugin extends Plugin
 	public void onActorDeath(ActorDeath death)
 	{
 		Actor actor = death.getActor();
-
 		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId)
 		{
 			Boss boss = Boss.getBoss(actor.getName().equals("Vet'ion Reborn") ? "Vet'ion" : actor.getName());
 			if (boss != null && boss.getNpcId() != null && boss.getNpcId().equals(interactedNpcId))
 			{
 				// boss has a second form
+				log.debug("{} has another phase, not removing counter", boss.getName());
 				return;
 			}
-
+			log.debug("{} died, removing counter", death.getActor().getName());
 			removeCounters();
 		}
 	}
