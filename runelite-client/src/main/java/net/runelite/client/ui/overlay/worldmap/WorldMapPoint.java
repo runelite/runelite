@@ -50,6 +50,8 @@ public class WorldMapPoint
 
 	private boolean currentlyEdgeSnapped;
 
+	private WorldMapSnapEdge snappedEdge;
+
 	/**
 	 * Whether or not the map jumps to worldPoint when the overlay is clicked
 	 */
@@ -75,6 +77,10 @@ public class WorldMapPoint
 	}
 
 	public void onEdgeUnsnap()
+	{
+	}
+
+	public void onSnapEdgeChanged(WorldMapSnapEdge newEdge)
 	{
 	}
 }

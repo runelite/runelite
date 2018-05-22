@@ -126,11 +126,44 @@ public class WorldMapOverlay extends Overlay
 					else
 					{
 						drawPoint = clipToRectangle(drawPoint, worldMapRectangle);
-						if (!worldPoint.isCurrentlyEdgeSnapped())
+						WorldMapSnapEdge[] edges = new WorldMapSnapEdge[]{WorldMapSnapEdge.NONE, WorldMapSnapEdge.NONE};
+						if (drawPoint.getX() <= worldMapRectangle.x)
+						{
+							edges[0] = WorldMapSnapEdge.LEFT;
+						}
+						else if (drawPoint.getX() + image.getWidth() / 2 >= worldMapRectangle.width)
+						{
+							edges[0] = WorldMapSnapEdge.RIGHT;
+						}
+
+						if (drawPoint.getY() <= worldMapRectangle.y)
+						{
+							edges[1] = WorldMapSnapEdge.TOP;
+						}
+						else if (drawPoint.getY() + image.getHeight() / 2 >= worldMapRectangle.height)
+						{
+							edges[1] = WorldMapSnapEdge.BOTTOM;
+						}
+
+						WorldMapSnapEdge newEdge = WorldMapSnapEdge.combineEdges(edges[1], edges[0]);
+
+						if (worldPoint.isCurrentlyEdgeSnapped())
+						{
+							WorldMapSnapEdge oldEdge = worldPoint.getSnappedEdge();
+							worldPoint.setSnappedEdge(newEdge);
+
+							if (oldEdge != newEdge)
+							{
+								worldPoint.onSnapEdgeChanged(newEdge);
+							}
+						}
+						else
 						{
 							worldPoint.setCurrentlyEdgeSnapped(true);
+							worldPoint.onSnapEdgeChanged(newEdge);
 							worldPoint.onEdgeSnap();
 						}
+						worldPoint.setSnappedEdge(newEdge);
 					}
 				}
 				else
