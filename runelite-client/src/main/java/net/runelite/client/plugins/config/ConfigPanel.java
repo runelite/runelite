@@ -80,6 +80,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.ui.components.ToggleSwitch;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -88,8 +89,6 @@ public class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private static final ImageIcon CONFIG_ICON;
-	private static final ImageIcon ON_SWITCHER;
-	private static final ImageIcon OFF_SWITCHER;
 	private static final ImageIcon SEARCH;
 
 	static
@@ -99,8 +98,6 @@ public class ConfigPanel extends PluginPanel
 			synchronized (ImageIO.class)
 			{
 				CONFIG_ICON = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png")));
-				ON_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/on.png")));
-				OFF_SWITCHER = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/off.png")));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
 			}
 		}
@@ -260,7 +257,7 @@ public class ConfigPanel extends PluginPanel
 	private JLabel buildToggleButton(Plugin plugin)
 	{
 		// Create enabling/disabling button
-		final JLabel toggleButton = new JLabel(ON_SWITCHER);
+		final ToggleSwitch toggleButton = new ToggleSwitch();
 		toggleButton.setPreferredSize(new Dimension(25, 0));
 
 		if (plugin == null)
@@ -286,18 +283,18 @@ public class ConfigPanel extends PluginPanel
 						if (enabled)
 						{
 							pluginManager.stopPlugin(plugin);
+							toggleButton.toggle(ToggleSwitch.OFF);
 						}
 						else
 						{
 							pluginManager.startPlugin(plugin);
+							toggleButton.toggle(ToggleSwitch.ON);
 						}
 					}
 					catch (PluginInstantiationException ex)
 					{
 						log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), ex);
 					}
-
-					highlightButton(toggleButton, !enabled);
 				});
 			}
 		});
@@ -305,10 +302,9 @@ public class ConfigPanel extends PluginPanel
 		return toggleButton;
 	}
 
-	private void highlightButton(JLabel button, boolean enabled)
+	private void highlightButton(ToggleSwitch button, boolean enabled)
 	{
-		button.setIcon(enabled ? ON_SWITCHER : OFF_SWITCHER);
-		button.setToolTipText(enabled ? "Disable plugin" : "Enable plugin");
+		button.setState(enabled ? ToggleSwitch.ON : ToggleSwitch.OFF);
 	}
 
 	private void onSearchBarChanged()
