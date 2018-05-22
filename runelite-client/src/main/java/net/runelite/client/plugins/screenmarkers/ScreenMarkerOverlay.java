@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.screenmarkers;
 
-public enum OverlayPosition
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+
+public class ScreenMarkerOverlay extends Overlay
 {
-	/**
-	 * Overlay initially places itself but allows modification afterwards
-	 */
-	DETACHED,
-	/**
-	 * Overlay places itself where it wants
-	 */
-	DYNAMIC,
-	/**
-	 * Place overlay in the top left most area possible
-	 */
-	TOP_LEFT,
-	/**
-	 * Place overlay in the top right most area possible
-	 */
-	TOP_RIGHT,
-	/**
-	 * Place overlay in the bottom left most area possible
-	 */
-	BOTTOM_LEFT,
-	/**
-	 * Place overlay in the bottom right most area possible
-	 */
-	BOTTOM_RIGHT,
-	/**
-	 * Place overlay directly above right most area of chatbox possible
-	 */
-	ABOVE_CHATBOX_RIGHT,
-	/**
-	 * Tooltip overlay
-	 */
-	TOOLTIP;
+	private final ScreenMarker marker;
+
+	public ScreenMarkerOverlay(ScreenMarker marker)
+	{
+		this.marker = marker;
+		setPosition(OverlayPosition.DETACHED);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setPriority(OverlayPriority.HIGH);
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!marker.isVisible())
+		{
+			return null;
+		}
+
+		//TODO: possibly find a better way for this?
+		//OverlayRenderer sets the overlay bounds to null when this method returns null
+		if (getBounds() == null)
+		{
+			setBounds(marker.getBounds());
+		}
+
+		return marker.getRenderable().render(graphics);
+	}
+
+	@Override
+	public void setPreferredLocation(Point preferredLocation)
+	{
+		super.setPreferredLocation(preferredLocation);
+		marker.setLocation(preferredLocation);
+	}
 }
