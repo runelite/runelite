@@ -114,6 +114,7 @@ public class LootRecorderPlugin extends Plugin
 
 	private File playerFolder;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern BOSS_NAME_PATTERN = Pattern.compile("Your (.*) kill count is:");
 
 	private LootRecorderPanel panel;
 	private NavigationButton navButton;
@@ -321,6 +322,26 @@ public class LootRecorderPlugin extends Plugin
 			if (m.find())
 			{
 				raidsNumber = Integer.valueOf(m.group());
+			}
+		}
+
+		// Handle all other boss
+		Matcher boss = BOSS_NAME_PATTERN.matcher(Text.removeTags(chatMessage));
+		if (boss.find())
+		{
+			String bossName = boss.group();
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (!m.find())
+				return;
+			int KC = Integer.valueOf(m.group());
+			log.info("Boss " + bossName + ", Kill Count: " + KC);
+			switch (bossName)
+			{
+				case "Zulrah":
+					zulrahNumber = KC;
+					break;
+				default:
+					log.info("Unhandled boss: " + bossName);
 			}
 		}
 	}
