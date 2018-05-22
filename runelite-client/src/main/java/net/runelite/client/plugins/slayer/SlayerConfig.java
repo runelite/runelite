@@ -195,7 +195,7 @@ public interface SlayerConfig extends Config
 	)
 	default int expeditious()
 	{
-		return -1;
+		return 30;
 	}
 
 	@ConfigItem(
@@ -213,7 +213,7 @@ public interface SlayerConfig extends Config
 	)
 	default int slaughter()
 	{
-		return -1;
+		return 30;
 	}
 
 	@ConfigItem(

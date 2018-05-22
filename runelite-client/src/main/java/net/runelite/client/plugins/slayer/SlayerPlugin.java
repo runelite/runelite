@@ -49,6 +49,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -71,8 +73,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
@@ -164,9 +164,6 @@ public class SlayerPlugin extends Plugin
 	private boolean hasExpeditiousEquip = false;
 	private boolean hasSlaughterEquip = false;
 
-	private static final ItemRequirement HAS_EXPEDITIOUS = new SingleItemRequirement(ItemID.EXPEDITIOUS_BRACELET);
-	private static final ItemRequirement HAS_SLAUGHTER = new SingleItemRequirement(ItemID.BRACELET_OF_SLAUGHTER);
-
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -178,6 +175,8 @@ public class SlayerPlugin extends Plugin
 			setStreak(config.streak());
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
+			checkBracelets(client.getItemContainer(InventoryID.EQUIPMENT), true);
+			checkBracelets(client.getItemContainer(InventoryID.INVENTORY), false);
 			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
 		}
 	}
@@ -296,6 +295,8 @@ public class SlayerPlugin extends Plugin
 			if (timeSinceInfobox.compareTo(statTimeout) >= 0)
 			{
 				removeCounter();
+				removeSlaughterCounter();
+				removeExpeditiousCounter();
 			}
 		}
 
@@ -321,27 +322,46 @@ public class SlayerPlugin extends Plugin
 		slayerItems = ImmutableList.copyOf(items);
 	}
 
+	private void checkBracelets(ItemContainer itemContainer, boolean isEquipment)
+	{
+		hasSlaughterEquip = !isEquipment && hasSlaughterEquip;
+		hasExpeditiousEquip = !isEquipment && hasExpeditiousEquip;
+		hasSlaughterInvent = isEquipment && hasSlaughterInvent;
+		hasExpeditiousInvent = isEquipment && hasExpeditiousInvent;
+		for (Item item : itemContainer.getItems())
+		{
+			if (item.getId() == ItemID.BRACELET_OF_SLAUGHTER)
+			{
+				hasSlaughterEquip = isEquipment || hasSlaughterEquip;
+				hasSlaughterInvent = !isEquipment || hasSlaughterInvent;
+			}
+			else if (item.getId() == ItemID.EXPEDITIOUS_BRACELET)
+			{
+				hasExpeditiousEquip = isEquipment || hasExpeditiousEquip;
+				hasExpeditiousInvent = !isEquipment || hasExpeditiousInvent;
+			}
+		}
+
+		hasExpeditious = (hasExpeditiousEquip || hasExpeditiousInvent);
+		hasSlaughter = (hasSlaughterEquip || hasSlaughterInvent);
+	}
+
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
-			hasExpeditiousEquip = HAS_EXPEDITIOUS.fulfilledBy(event.getItemContainer().getItems());
-			hasSlaughterEquip = HAS_SLAUGHTER.fulfilledBy(event.getItemContainer().getItems());
+			checkBracelets(event.getItemContainer(), true);
 		}
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
-			hasExpeditiousInvent = HAS_EXPEDITIOUS.fulfilledBy(event.getItemContainer().getItems());
-			hasSlaughterInvent = HAS_SLAUGHTER.fulfilledBy(event.getItemContainer().getItems());
+			checkBracelets(event.getItemContainer(), false);
 		}
 
-		hasExpeditious = (hasExpeditiousEquip || hasExpeditiousInvent);
-		hasSlaughter = (hasSlaughterEquip || hasSlaughterInvent);
 		removeExpeditiousCounter();
 		removeSlaughterCounter();
 		addSlaughterCounter();
 		addExpeditiousCounter();
-		infoTimer = Instant.now();
 	}
 
 	@Subscribe
