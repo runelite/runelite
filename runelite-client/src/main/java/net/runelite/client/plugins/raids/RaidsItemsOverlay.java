@@ -32,7 +32,6 @@ import java.util.stream.IntStream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
@@ -47,93 +46,96 @@ import net.runelite.api.Item;
 
 public class RaidsItemsOverlay extends Overlay
 {
-    private RaidsPlugin plugin;
-    private RaidsConfig config;
-    private final PanelComponent panelComponent = new PanelComponent();
+	private RaidsPlugin plugin;
+	private RaidsConfig config;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-    @Setter
-    private boolean itemsOverlayShown = false;
+	@Setter
+	private boolean itemsOverlayShown = false;
 
-    @Getter
-    private Item[] inventoryItems;
+	@Getter
+	private Item[] inventoryItems;
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private ItemManager itemManager;
+	@Inject
+	private ItemManager itemManager;
 
-    @Inject
-    public RaidsItemsOverlay(RaidsPlugin plugin, RaidsConfig config)
-    {
-        setPosition(OverlayPosition.TOP_LEFT);
-        setPriority(OverlayPriority.LOW);
-        this.plugin = plugin;
-        this.config = config;
-    }
+	@Inject
+	public RaidsItemsOverlay(RaidsPlugin plugin, RaidsConfig config)
+	{
+		setPosition(OverlayPosition.TOP_LEFT);
+		setPriority(OverlayPriority.LOW);
+		this.plugin = plugin;
+		this.config = config;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (!config.itemsOverlay() || !itemsOverlayShown)
-        {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.itemsOverlay() || !itemsOverlayShown)
+		{
+			return null;
+		}
 
-        panelComponent.getChildren().clear();
-        inventoryItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
+		panelComponent.getChildren().clear();
+		inventoryItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
 
-        if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
-        {
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("No items found for this raid")
-                    .color(Color.RED)
-                    .build());
+		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("No items found for this raid")
+				.color(Color.RED)
+				.build());
 
-            return panelComponent.render(graphics);
-        }
-
-
-        panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Raid items")
-                .build());
+			return panelComponent.render(graphics);
+		}
 
 
-
-        for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
-        {
-            int position = layoutRoom.getPosition();
-            RaidRoom room = plugin.getRaid().getRoom(position);
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text("Raid items")
+			.build());
 
 
-            if (room == null)
-            {
-                continue;
-            }
+		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
+		{
+			int position = layoutRoom.getPosition();
+			RaidRoom room = plugin.getRaid().getRoom(position);
 
-            if (room.getItemType() != null)
-            {
-                Color color = Color.white;
-                String itemName = room.getItemType();
-                String[] roomItemsInInventory = getRaidItems(room);
-                if(roomItemsInInventory.length > 0) {
-                    color = Color.green;
-                    itemName = roomItemsInInventory[0];
-                } else {
-                    color = Color.red;
-                }
-                panelComponent.getChildren().add(LineComponent.builder()
-                        .left(itemName)
-                        .leftColor(color)
-                        .build());
-            }
 
-        }
-        return panelComponent.render(graphics);
-    }
+			if (room == null)
+			{
+				continue;
+			}
 
-    private String[] getRaidItems(RaidRoom room) {
-        int[] inventoryIds = Arrays.stream(inventoryItems).mapToInt(Item::getId).toArray();
-        return IntStream.of(inventoryIds).filter(x -> IntStream.of(room.getItemIds()).anyMatch(y -> y == x)).mapToObj(z -> itemManager.getItemComposition(z).getName()).toArray(String[]::new);
-    }
+			if (room.getItemType() != null)
+			{
+				Color color = Color.white;
+				String itemName = room.getItemType();
+				String[] roomItemsInInventory = getRaidItems(room);
+				if (roomItemsInInventory.length > 0)
+				{
+					color = Color.green;
+					itemName = roomItemsInInventory[0];
+				}
+				else
+				{
+					color = Color.red;
+				}
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(itemName)
+					.leftColor(color)
+					.build());
+			}
+
+		}
+		return panelComponent.render(graphics);
+	}
+
+	private String[] getRaidItems(RaidRoom room)
+	{
+		int[] inventoryIds = Arrays.stream(inventoryItems).mapToInt(Item::getId).toArray();
+		return IntStream.of(inventoryIds).filter(x -> IntStream.of(room.getItemIds()).anyMatch(y -> y == x)).mapToObj(z -> itemManager.getItemComposition(z).getName()).toArray(String[]::new);
+	}
 }

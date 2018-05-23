@@ -73,7 +73,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "Chambers Of Xeric"
+	name = "Chambers Of Xeric"
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -261,7 +261,8 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				if(!config.scoutOverlayAtBank()) {
+				if (!config.scoutOverlayAtBank())
+				{
 					scoutOverlay.setScoutOverlayShown(false);
 				}
 				itemsOverlay.setItemsOverlayShown(false);
@@ -311,26 +312,26 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
+						.append(ChatColorType.NORMAL)
+						.append("Total points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(totalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(", Personal points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(personalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(DECIMAL_FORMAT.format(percentage))
+						.append(ChatColorType.NORMAL)
+						.append("%)")
+						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-							.type(ChatMessageType.CLANCHAT_INFO)
-							.runeLiteFormattedMessage(chatMessage)
-							.build());
+						.type(ChatMessageType.CLANCHAT_INFO)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
 				}
 			}
 		}
@@ -390,10 +391,10 @@ public class RaidsPlugin extends Plugin
 	private void cacheColors()
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
-				.refreshAll();
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
+			.refreshAll();
 	}
 
 	public int getRotationMatches()
@@ -563,7 +564,7 @@ public class RaidsPlugin extends Plugin
 				room.setType(RaidRoom.Type.COMBAT);
 				room.setBoss(RaidRoom.Boss.SHAMANS);
 				room.setItemType("Antipoison");
-				room.setItemIds(new int[] {5943, 4945, 5947, 5949, 5952, 5954, 5956, 5958, 10925, 10927, 10929, 10931, 175, 177, 179, 181, 183, 185, 2446, 2448, 11433, 11435, 11501, 11503});
+				room.setItemIds(new int[]{5943, 4945, 5947, 5949, 5952, 5954, 5956, 5958, 10925, 10927, 10929, 10931, 175, 177, 179, 181, 183, 185, 2446, 2448, 11433, 11435, 11501, 11503});
 				break;
 
 			case RAIDS_VASA:
@@ -615,7 +616,7 @@ public class RaidsPlugin extends Plugin
 				room.setType(RaidRoom.Type.COMBAT);
 				room.setBoss(RaidRoom.Boss.GUARDIANS);
 				room.setItemType("Pickaxe");
-				room.setItemIds(new int[] {1265, 1267, 1269, 1271, 1273, 1275, 11920, 12297, 12797, 13243, 13244, 20014});
+				room.setItemIds(new int[]{1265, 1267, 1269, 1271, 1273, 1275, 11920, 12297, 12797, 13243, 13244, 20014});
 				break;
 
 			case RAIDS_CRABS:
