@@ -32,29 +32,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Point;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import static net.runelite.api.Perspective.SCENE_SIZE;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColor;
@@ -65,6 +54,8 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.raids.bombs.BombOverlay;
+import net.runelite.client.plugins.raids.bombs.CrystalBomb;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
@@ -93,6 +84,9 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
+	@Getter
+	private final Map<WorldPoint, CrystalBomb> bombs = new HashMap<>();
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
@@ -113,6 +107,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private LayoutSolver layoutSolver;
+
+	@Inject
+	private BombOverlay bombOverlay;
 
 	@Getter
 	private Raid raid;
@@ -144,7 +141,7 @@ public class RaidsPlugin extends Plugin
 	@Override
 	public List<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, pointsOverlay);
+		return Arrays.asList(overlay, pointsOverlay, bombOverlay);
 	}
 
 	@Override
@@ -326,6 +323,56 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		final GameObject gameObject = event.getGameObject();
+		final WorldPoint bombLocation = gameObject.getWorldLocation();
+
+		switch (gameObject.getId())
+		{
+			case ObjectID.CRYSTAL_BOMB:
+				bombs.put(bombLocation, new CrystalBomb(gameObject));
+				break;
+		}
+
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		Iterator<Map.Entry<WorldPoint, CrystalBomb>> it = bombs.entrySet().iterator();
+		Tile[][][] tiles = client.getRegion().getTiles();
+
+		while (it.hasNext())
+		{
+			Map.Entry<WorldPoint, CrystalBomb> entry = it.next();
+			CrystalBomb bomb = entry.getValue();
+			WorldPoint world = entry.getKey();
+			LocalPoint local = LocalPoint.fromWorld(client, world);
+			bomb.tickUpBombTime();
+
+			Tile tile = tiles[world.getPlane()][local.getRegionX()][local.getRegionY()];
+			GameObject[] objects = tile.getGameObjects();
+			boolean containsObjects = false;
+
+			for (GameObject object : objects)
+			{
+				if (object != null)
+				{
+					containsObjects = true;
+				}
+			}
+
+			if (!containsObjects)
+			{
+				it.remove();
+			}
+
+		}
+
 	}
 
 	private void updateInfoBoxState()
