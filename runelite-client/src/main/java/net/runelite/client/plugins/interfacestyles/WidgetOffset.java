@@ -39,7 +39,7 @@ enum WidgetOffset
 	RESIZABLE_2010_QUESTS_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_QUESTS_TAB, 69, 1, 33, null),
 	RESIZABLE_2010_QUESTS_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_QUESTS_ICON, 70, 2, 33, null),
 	RESIZABLE_2010_INVENTORY_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB, 103, 1, null, null),
-	RESIZABLE_2010_INVENTORY_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_ICON, 105, null, null, null),
+	RESIZABLE_2010_INVENTORY_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_ICON, null, null, null, null, true, 105, -1),
 	RESIZABLE_2010_EQUIPMENT_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_EQUIPMENT_TAB, null, 1, null, null),
 	RESIZABLE_2010_PRAYER_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB, 171, 1, null, null),
 	RESIZABLE_2010_PRAYER_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_ICON, 172, 1, null, null),
@@ -63,7 +63,7 @@ enum WidgetOffset
 	RESIZABLE_BOTTOM_2010_QUESTS_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_QUESTS_ICON, null, 2, null, null),
 	RESIZABLE_BOTTOM_2010_INVENTORY_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_ICON, null, -1, null, null),
 	RESIZABLE_BOTTOM_2010_PRAYERS_ICON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_ICON, 166, 1, null, null),
-	RESIZABLE_BOTTOM_2010_LOGOUT_BUTTON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON, 185, null, null, null),
+	RESIZABLE_BOTTOM_2010_LOGOUT_BUTTON(Skin.AROUND_2010, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON, 185, null, null, null, true, 183, 2),
 
 	FIXED_2010_COMBAT_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_COMBAT_TAB, 2, 1, null, null),
 	FIXED_2010_COMBAT_ICON(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_COMBAT_ICON, 11, null, null, null),
@@ -72,7 +72,7 @@ enum WidgetOffset
 	FIXED_2010_QUESTS_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_QUESTS_TAB, 75, 1, 33, null),
 	FIXED_2010_QUESTS_ICON(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_QUESTS_ICON, 77, 2, null, null),
 	FIXED_2010_INVENTORY_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB, 109, 1, null, null),
-	FIXED_2010_INVENTORY_ICON(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_INVENTORY_ICON, 111, -1, null, null),
+	FIXED_2010_INVENTORY_ICON(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_INVENTORY_ICON, 111, -1, null, null, true, 105, -1),
 	FIXED_2010_PRAYER_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB, 177, 1, null, null),
 	FIXED_2010_PRAYER_ICON(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_PRAYER_ICON, 178, 1, null, null),
 	FIXED_2010_MAGIC_HIGHLIGHT(Skin.AROUND_2010, WidgetInfo.FIXED_VIEWPORT_MAGIC_TAB, 211, 1, null, null),
@@ -97,6 +97,7 @@ enum WidgetOffset
 	RESIZABLE_2005_OPTIONS_ICON(Skin.AROUND_2005, WidgetInfo.RESIZABLE_VIEWPORT_OPTIONS_ICON, 137, null, null, null),
 	RESIZABLE_2005_EMOTE_ICON(Skin.AROUND_2005, WidgetInfo.RESIZABLE_VIEWPORT_EMOTES_ICON, 173, null, null, null),
 
+	RESIZABLE_BOTTOM_2005_INVENTORY_ICON(Skin.AROUND_2005, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_ICON, null, -2, null, null, true, null, -2),
 	RESIZABLE_BOTTOM_2005_QUESTS_ICON(Skin.AROUND_2005, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_QUESTS_ICON, 67, 0, null, null),
 
 	FIXED_2005_ROOT_INTERFACE_CONTAINER(Skin.AROUND_2005, WidgetInfo.FIXED_VIEWPORT_ROOT_INTERFACE_CONTAINER, null, null, 197, null),
@@ -138,6 +139,8 @@ enum WidgetOffset
 	private Integer width;
 	private Integer height;
 	private boolean originalWidthAndHeight;
+	private Integer originalX;
+	private Integer originalY;
 
 	WidgetOffset(Skin skin, WidgetInfo widgetInfo, Integer offsetX, Integer offsetY, Integer width, Integer height)
 	{
@@ -147,6 +150,12 @@ enum WidgetOffset
 	WidgetOffset(Skin skin, WidgetInfo widgetInfo, Integer offsetX, Integer offsetY, Integer width, Integer height,
 		boolean originalWidthAndHeight)
 	{
+		this(skin, widgetInfo, offsetX, offsetY, width, height, originalWidthAndHeight, null, null);
+	}
+
+	WidgetOffset(Skin skin, WidgetInfo widgetInfo, Integer offsetX, Integer offsetY, Integer width, Integer height,
+		boolean originalWidthAndHeight, Integer originalX, Integer originalY)
+	{
 		this.skin = skin;
 		this.widgetInfo = widgetInfo;
 		this.offsetX = offsetX;
@@ -154,5 +163,7 @@ enum WidgetOffset
 		this.width = width;
 		this.height = height;
 		this.originalWidthAndHeight = originalWidthAndHeight;
+		this.originalX = originalX;
+		this.originalY = originalY;
 	}
 }
