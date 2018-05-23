@@ -35,6 +35,8 @@ import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -75,6 +77,7 @@ public class XpTrackerPlugin extends Plugin
 	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
+	@Getter(AccessLevel.PACKAGE)
 	private XpPanel xpPanel;
 
 	private final XpState xpState = new XpState();
