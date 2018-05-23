@@ -250,14 +250,33 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int CLAN_CHAT_TAB = 35;
+		static final int FRIENDS_TAB = 36;
+		static final int IGNORES_TAB = 37;
+		static final int LOGOUT_TAB = 38;
+		static final int OPTIONS_TAB = 39;
+		static final int EMOTES_TAB = 40;
+		static final int MUSIC_TAB = 41;
+		static final int CLAN_CHAT_ICON = 42;
+		static final int FRIENDS_ICON = 43;
+		static final int IGNORES_ICON = 44;
 		static final int LOGOUT_ICON = 45;
 		static final int OPTIONS_ICON = 46;
-		static final int EMOTE_ICON = 47;
+		static final int EMOTES_ICON = 47;
+		static final int MUSIC_ICON = 48;
+		static final int COMBAT_TAB = 51;
+		static final int STATS_TAB = 52;
 		static final int QUESTS_TAB = 53;
 		static final int INVENTORY_TAB = 54;
+		static final int EQUIPMENT_TAB = 55;
 		static final int PRAYER_TAB = 56;
+		static final int MAGIC_TAB = 57;
 		static final int COMBAT_ICON = 58;
+		static final int STATS_ICON = 59;
 		static final int QUESTS_ICON = 60;
+		static final int INVENTORY_ICON = 61;
+		static final int EQUIPMENT_ICON = 62;
+		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
 	}
 
@@ -267,6 +286,8 @@ public class WidgetID
 		static final int INVENTORY_TAB = 51;
 		static final int PRAYER_TAB = 53;
 		static final int QUESTS_ICON = 57;
+		static final int INVENTORY_ICON = 58;
+		static final int PRAYER_ICON = 60;
 	}
 
 	static class Chatbox
