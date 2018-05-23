@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
@@ -68,6 +69,7 @@ public abstract class PluginPanel extends JPanel
 			northPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 			scrollPane = new JScrollPane(northPanel);
+			scrollPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 			wrappedPanel = new JPanel();
