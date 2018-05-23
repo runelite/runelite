@@ -37,6 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -81,6 +82,8 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.ToggleSwitch;
+import net.runelite.client.util.SwingUtil;
+
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -89,6 +92,7 @@ public class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private static final ImageIcon CONFIG_ICON;
+	private static final ImageIcon CONFIG_ICON_HOVER;
 	private static final ImageIcon SEARCH;
 
 	static
@@ -97,7 +101,9 @@ public class ConfigPanel extends PluginPanel
 		{
 			synchronized (ImageIO.class)
 			{
-				CONFIG_ICON = new ImageIcon(ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png")));
+				BufferedImage configIcon = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_edit_icon.png"));
+				CONFIG_ICON = new ImageIcon(configIcon);
+				CONFIG_ICON_HOVER = new ImageIcon(SwingUtil.grayscaleOffset(configIcon, -100));
 				SEARCH = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
 			}
 		}
@@ -243,7 +249,20 @@ public class ConfigPanel extends PluginPanel
 					@Override
 					public void mousePressed(MouseEvent mouseEvent)
 					{
+						editConfigButton.setIcon(CONFIG_ICON);
 						openGroupConfigPanel(config, configDescriptor, configManager);
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+						editConfigButton.setIcon(CONFIG_ICON_HOVER);
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+						editConfigButton.setIcon(CONFIG_ICON);
 					}
 				});
 				editConfigButton.setVisible(true);
@@ -395,8 +414,6 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			jComboBox.setRenderer(new ComboBoxListRenderer());
-			jComboBox.setForeground(Color.WHITE);
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
 		}
 	}
@@ -407,6 +424,7 @@ public class ConfigPanel extends PluginPanel
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
+		title.setForeground(Color.WHITE);
 		title.setToolTipText(cd.getGroup().description());
 		add(title, SwingConstants.CENTER);
 
@@ -421,6 +439,7 @@ public class ConfigPanel extends PluginPanel
 			item.setLayout(new BorderLayout());
 			name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
+			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 

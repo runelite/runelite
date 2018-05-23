@@ -27,6 +27,8 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -65,13 +67,23 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				setBackground(getBackground().brighter());
+				setBackground(background.brighter());
+				for (Component component : getComponents())
+				{
+					component.setBackground(component.getBackground().brighter());
+				}
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
 				setBackground(background);
+				for (Component component : getComponents())
+				{
+					component.setBackground(background);
+				}
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override

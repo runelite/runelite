@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Alex Kolpa <https://github.com/AlexKolpa>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,82 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.plugins.agility;
 
-import java.awt.event.ActionEvent;
-import java.util.Arrays;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.time.temporal.ChronoUnit;
+import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
 @Slf4j
-public class VarTracker
+public class AgilityArenaTimer extends Timer
 {
-	private final Client client;
-
-	private int[] varPs;
-
-	public VarTracker(Client client)
+	public AgilityArenaTimer(Plugin plugin)
 	{
-		this.client = client;
+		super(1, ChronoUnit.MINUTES, getTicketImage(), plugin);
+		setTooltip("Time left until location changes");
 	}
 
-	public void snapshot(ActionEvent e)
+	private static BufferedImage image;
+	private static BufferedImage getTicketImage()
 	{
-		if (varPs == null)
+		if (image != null)
 		{
-			varPs = copy(client.getVarps());
-
-			log.info("Snapshotted VarPs");
-			return;
+			return image;
 		}
 
-		int[] newVarPs = client.getVarps();
-
-		for (int i = 0; i < Math.min(varPs.length, newVarPs.length); ++i)
+		try
 		{
-			int before = varPs[i];
-			int after = newVarPs[i];
-
-			if (before == after)
+			synchronized (ImageIO.class)
 			{
-				continue;
+				image = ImageIO.read(AgilityArenaTimer.class.getResourceAsStream( "agilityarenaticket.png"));
 			}
-
-			log.info("VarP index {} has changed from {} to {}: {} -> {}",
-				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
 		}
-
-		varPs = copy(newVarPs);
-	}
-
-	public void clear(ActionEvent e)
-	{
-		varPs = null;
-	}
-
-	private static int[] copy(int[] array)
-	{
-		return Arrays.copyOf(array, array.length);
-	}
-
-	private static String prettyPrintInt(int value)
-	{
-		String s = Integer.toBinaryString(value);
-		while (s.length() < 32)
+		catch (IOException ex)
 		{
-			s = "0" + s;
+			log.warn("unable to load image", ex);
 		}
 
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 32; i += 8)
-		{
-			String substr = s.substring(i, i + 8);
-			if (i > 0)
-			{
-				sb.append(' ');
-			}
-			sb.append(substr);
-		}
-		return sb.toString();
+		return image;
 	}
 }

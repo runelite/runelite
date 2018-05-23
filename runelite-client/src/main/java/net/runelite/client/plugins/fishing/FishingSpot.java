@@ -34,6 +34,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1519;
 import static net.runelite.api.NpcID.FISHING_SPOT_1520;
 import static net.runelite.api.NpcID.FISHING_SPOT_1521;
 import static net.runelite.api.NpcID.FISHING_SPOT_1522;
+import static net.runelite.api.NpcID.FISHING_SPOT_1523;
 import static net.runelite.api.NpcID.FISHING_SPOT_1525;
 import static net.runelite.api.NpcID.FISHING_SPOT_1528;
 import static net.runelite.api.NpcID.FISHING_SPOT_1530;
@@ -46,6 +47,8 @@ import static net.runelite.api.NpcID.FISHING_SPOT_4316;
 import static net.runelite.api.NpcID.FISHING_SPOT_4710;
 import static net.runelite.api.NpcID.FISHING_SPOT_4712;
 import static net.runelite.api.NpcID.FISHING_SPOT_4713;
+import static net.runelite.api.NpcID.FISHING_SPOT_5233;
+import static net.runelite.api.NpcID.FISHING_SPOT_5234;
 import static net.runelite.api.NpcID.FISHING_SPOT_6488;
 import static net.runelite.api.NpcID.FISHING_SPOT_7155;
 import static net.runelite.api.NpcID.FISHING_SPOT_7199;
@@ -57,6 +60,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_7730;
 import static net.runelite.api.NpcID.FISHING_SPOT_7731;
 import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
+import static net.runelite.api.NpcID.FISHING_SPOT_7946;
 import static net.runelite.api.NpcID.FISHING_SPOT_7947;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1508;
@@ -74,15 +78,16 @@ public enum FishingSpot
 		FISHING_SPOT_1518, FISHING_SPOT_1521, FISHING_SPOT_1525,
 		FISHING_SPOT_1528, FISHING_SPOT_1530, FISHING_SPOT_1544,
 		FISHING_SPOT_3913, FISHING_SPOT_7155, FISHING_SPOT_7469,
-		FISHING_SPOT_7947
+		FISHING_SPOT_7947, FISHING_SPOT_1523
 	),
 	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER,
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1522,
-		FISHING_SPOT_3914, FISHING_SPOT_7199, FISHING_SPOT_7470
+		FISHING_SPOT_3914, FISHING_SPOT_7199, FISHING_SPOT_7470,
+		FISHING_SPOT_7946
 	),
 	SHARK("Shark, Bass", ItemID.RAW_SHARK,
 		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_3915,
-		FISHING_SPOT_7200
+		FISHING_SPOT_7200, FISHING_SPOT_5233, FISHING_SPOT_5234
 	),
 	MONKFISH("Monkfish", ItemID.RAW_MONKFISH,
 		FISHING_SPOT_4316
