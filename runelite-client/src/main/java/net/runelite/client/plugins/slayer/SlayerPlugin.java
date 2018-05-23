@@ -84,7 +84,7 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("[\\d]+(?:,[\\d]+)?");
-	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
+	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled";
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
 	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
@@ -372,7 +372,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE))
+		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.startsWith(CHAT_CANCEL_MESSAGE))
 		{
 			setTask("", 0);
 			return;
