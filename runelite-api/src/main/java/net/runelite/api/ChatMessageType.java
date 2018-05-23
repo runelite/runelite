@@ -45,7 +45,8 @@ public enum ChatMessageType
 	AUTOCHAT(90),
 	GAME(99),
 	TRADE(101),
-	DUEL(103),
+	DUEL(102),
+	DUEL_RECEIVED(103),
 	FILTERED(105),
 	ACTION(109),
 	UNKNOWN(-1);
