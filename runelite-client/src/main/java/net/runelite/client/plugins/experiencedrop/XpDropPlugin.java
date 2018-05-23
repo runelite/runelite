@@ -122,7 +122,6 @@ public class XpDropPlugin extends Plugin
 
 			widget.setTextColor(color);
 		}
-
 	}
 
 	private void resetTextColor(Widget widget)
