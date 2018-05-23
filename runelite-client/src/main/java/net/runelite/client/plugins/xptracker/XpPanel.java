@@ -38,7 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -55,7 +54,7 @@ import okhttp3.HttpUrl;
 @Slf4j
 class XpPanel extends PluginPanel
 {
-	@Getter(AccessLevel.PACKAGE)
+	@Getter
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
 
 	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("Gained: ", 0));

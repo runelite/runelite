@@ -42,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
@@ -209,6 +210,7 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
 	{
+		List<Skill> combat = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
 		Point mouse = client.getMouseCanvasPosition();
 		int mouseX = mouse.getX();
 		int mouseY = mouse.getY();
@@ -289,8 +291,11 @@ public class XpGlobesOverlay extends Overlay
 
 	private String getActionKillsText(String skillName)
 	{
-		String[] combatSkills = new String[]{"Attack", "Defence", "Hitpoints", "Ranged", "Strength"};
-		return Arrays.asList(combatSkills).contains(skillName) ? "Kills left:" : "Actions left:";
+		List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
+		return COMBAT.stream()
+				.anyMatch(s -> s.getName().equals(skillName))
+				? "Kills left:"
+				: "Actions left:";
 	}
 
 }

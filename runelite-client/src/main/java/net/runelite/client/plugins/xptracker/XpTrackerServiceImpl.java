@@ -28,8 +28,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Skill;
 
-import java.util.Arrays;
-
 @Singleton
 class XpTrackerServiceImpl implements XpTrackerService
 {
@@ -56,16 +54,13 @@ class XpTrackerServiceImpl implements XpTrackerService
 	@Override
 	public int getActionsLeft(Skill skill)
 	{
-		Skill[] COMBAT = XpInfoBox.getCOMBAT();
-		if (Arrays.asList(COMBAT).contains(skill))
-		{
-			XpSnapshotSingle snapShot = plugin.getSkillSnapshot(skill);
-			return plugin.getXpPanel()
-							.getInfoBoxes()
-							.get(skill)
-							.getKillsRemaining(snapShot);
-		}
 		return plugin.getSkillSnapshot(skill).getActionsRemainingToGoal();
+	}
+
+	@Override
+	public int getKillsLeft(Skill skill)
+	{
+		return plugin.getXpPanel().getInfoBoxes().get(skill).getKillsRemaining(plugin.getSkillSnapshot(skill));
 	}
 
 	@Override

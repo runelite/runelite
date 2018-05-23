@@ -84,8 +84,10 @@ class XpInfoBox extends JPanel
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	@Getter(AccessLevel.PACKAGE)
 	private static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
 
+	@Getter
 	private int killsRemaining = Integer.MAX_VALUE;
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
@@ -243,6 +245,7 @@ class XpInfoBox extends JPanel
 
 		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
 		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
+
 		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED)
 				? sharedXPModifier
 				: weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)

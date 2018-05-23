@@ -73,7 +73,7 @@ public class XpTrackerPlugin extends Plugin
 	private SkillIconManager skillIconManager;
 
 	private NavigationButton navButton;
-	@Getter(AccessLevel.PACKAGE)
+	@Getter
 	private XpPanel xpPanel;
 
 	private final XpState xpState = new XpState();
