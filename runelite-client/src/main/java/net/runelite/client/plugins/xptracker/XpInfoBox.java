@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -82,13 +83,10 @@ class XpInfoBox extends JPanel
 	private final JLabel expHour = new JLabel();
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
-	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
-	@Getter(AccessLevel.PACKAGE)
-	private static final Skill[] COMBAT = new Skill[]
-					{
-							Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS
-					};
-	private int killsRemaining;
+	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	private static final List<Skill> COMBAT = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS);
+
+	private int killsRemaining = Integer.MAX_VALUE;
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
@@ -172,8 +170,6 @@ class XpInfoBox extends JPanel
 		progressBar.setComponentPopupMenu(popupMenu);
 
 		add(container, BorderLayout.NORTH);
-
-		killsRemaining = Integer.MAX_VALUE;
 	}
 
 	void reset()
@@ -201,14 +197,10 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			if (Arrays.asList(COMBAT).contains(skill))
-			{
-				actionsLeft.setText(htmlLabel("Kills: ", getKillsRemaining(xpSnapshotSingle)));
-			}
-			else
-			{
-				actionsLeft.setText(htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
-			}
+			actionsLeft.setText(COMBAT.contains(skill)
+					? htmlLabel("Kills: ", getKillsRemaining(xpSnapshotSingle))
+					: htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
+
 
 			// Update progress bar
 			progressBar.setValue(xpSnapshotSingle.getSkillProgressToGoal());
@@ -234,6 +226,7 @@ class XpInfoBox extends JPanel
 	int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
 	{
 		Actor opponent = client.getLocalPlayer().getInteracting();
+		
 		if (opponent != null)
 		{
 			int opponentHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
@@ -241,22 +234,28 @@ class XpInfoBox extends JPanel
 			double actionExp = (opponentHealth * modifier);
 			killsRemaining = (int) Math.ceil(xpSnapshotSingle.getXpRemainingToGoal() / actionExp);
 		}
+
 		return killsRemaining;
 	}
 
 	private double getCombatXPModifier(Skill skill)
 	{
-		final double sharedXPModifier = 4.0 / 3.0;
 		final double longRangedXPModifier = 2.0;
-		final double defaultModifier = 4;
+		final double defaultModifier = 4.0;
+		final double sharedXPModifier = defaultModifier / 3.0;
+
 		if (skill.equals(Skill.HITPOINTS))
 		{
 			return sharedXPModifier;
 		}
+
 		int styleIndex = client.getVar(VarPlayer.ATTACK_STYLE);
 		WeaponType weaponType = WeaponType.getWeaponType(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE));
-		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED) ? sharedXPModifier :
-				weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE) ? longRangedXPModifier : defaultModifier;
+		return weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.CONTROLLED)
+				? sharedXPModifier
+				: weaponType.getAttackStyles()[styleIndex].equals(AttackStyle.LONGRANGE)
+				? longRangedXPModifier
+				: defaultModifier;
 	}
 
 	public static String htmlLabel(String key, int value)
