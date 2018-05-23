@@ -56,6 +56,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemLayer;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Node;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
@@ -65,6 +67,7 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.Notifier;
@@ -220,6 +223,7 @@ public class LootRecorderPlugin extends Plugin
 
 	// Variables for getting items from NPC death
 	private String deathName;
+	private int deathSize;
 	private WorldPoint deathSpot;
 	private Boolean watching = false;
 	private Map<Integer, Integer> items;
@@ -228,14 +232,22 @@ public class LootRecorderPlugin extends Plugin
 	public void onActorDeath(ActorDeath death)
 	{
 		Actor actor = death.getActor();
+		if (actor.getInteracting() == null)
+			return;
 		if (actor.getInteracting().getName() == client.getLocalPlayer().getName())
 		{
+			NPC npc = (NPC) actor;
+			NPCComposition comp = npc.getComposition();
+			deathSize = comp.getSize();
 			deathSpot = actor.getWorldLocation();
 			deathName = actor.getName();
-			Tile tile = getTile(client.getRegion(), actor.getLocalLocation(), client.getPlane());
+			Tile tile = getTile(client.getRegion(), actor.getLocalLocation(), deathSize, client.getPlane());
 			ItemLayer layer = tile.getItemLayer();
 			items = createItemMap(layer);
 			watching = true;
+			//System.out.println(deathSpot);
+			//System.out.println(actor.getLocalLocation());
+
 		}
 	}
 
@@ -257,6 +269,16 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemLayerChanged(ItemLayerChanged e)
+	{
+		if (watching)
+		{
+			//System.out.println(e.getTile().getLocalLocation());
+			//System.out.println(e.getTile().getRegionLocation());
+		}
+	}
+
 	void AddBossLootEntry(String name, ArrayList<DropEntry> drops)
 	{
 		int KC = 0;
@@ -270,7 +292,8 @@ public class LootRecorderPlugin extends Plugin
 				KC = vorkathNumber;
 				filename = vorkathFilename;
 			default:
-				break;
+				KC = 100;
+				filename = vorkathFilename;
 		}
 
 		if (KC == 0)
@@ -280,10 +303,20 @@ public class LootRecorderPlugin extends Plugin
 		addLootEntry(filename, newEntry);
 	}
 
-	private Tile getTile(Region region, LocalPoint local, int plane)
+	private Tile getTile(Region region, LocalPoint local, int npcSize, int plane)
 	{
 		Tile[][][] tiles = region.getTiles();
-		Tile tile = tiles[plane][local.getRegionX()][local.getRegionY()];
+		int x = local.getRegionX();
+		int y = local.getRegionY();
+		if (npcSize > 1)
+		{
+			x = x - (npcSize - 1);
+			y = y - (npcSize - 1);
+		}
+		//System.out.println(x);
+		//System.out.println(y);
+		//System.out.println(npcSize);
+		Tile tile = tiles[plane][x][y];
 
 		return tile;
 	}
@@ -312,7 +345,7 @@ public class LootRecorderPlugin extends Plugin
 
 	ArrayList<DropEntry> createDropEntryArray(LocalPoint local)
 	{
-		Tile tile = getTile(client.getRegion(), local, client.getPlane());
+		Tile tile = getTile(client.getRegion(), local, deathSize, client.getPlane());
 		ItemLayer layer = tile.getItemLayer();
 
 		// Create a map of the Current items
