@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -185,6 +187,20 @@ class FarmingTrackerPanel extends PluginPanel
 			resize.run();
 
 			materialTab.setOnSelectEvent(() -> config.setPatch(tab));
+			materialTab.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					materialTab.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					materialTab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+				}
+			});
 
 			tabGroup.addTab(materialTab);
 			if (config.patch() == tab)
