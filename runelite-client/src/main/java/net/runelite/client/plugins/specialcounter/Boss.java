@@ -40,7 +40,7 @@ enum Boss
 	CORPOREAL_BEAST("Corporeal Beast", 1.55d),
 	GENERAL_GRAARDOR("General Graardor", 1.325d),
 	GIANT_MOLE("Giant Mole", 1.075d),
-	KALPHITE_QUEEM("Kalphite Queem", 1.05d),
+	KALPHITE_QUEEN("Kalphite Queen", 1.05d),
 	KING_BLACK_DRAGON("King Black Dragon", 1.075d),
 	KRIL_TSUROTH("K'ril Tsutsaroth", 1.375d),
 	VENETENATIS("Venenatis", 1.4d),

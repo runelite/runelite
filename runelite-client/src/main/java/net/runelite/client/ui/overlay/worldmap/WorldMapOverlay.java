@@ -182,17 +182,31 @@ public class WorldMapOverlay extends Overlay
 
 		Float pixelsPerTile = ro.getWorldMapZoom();
 
-		Point worldMapPosition = ro.getWorldMapPosition();
-		int xWorldDiff = worldPoint.getX() - worldMapPosition.getX();
-		int yWorldDiff = worldPoint.getY() - worldMapPosition.getY();
-		yWorldDiff = -yWorldDiff;
-
 		Widget map = clientProvider.get().getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (map != null)
 		{
 			Rectangle worldMapRect = map.getBounds();
-			int xGraphDiff = (int) (xWorldDiff * pixelsPerTile + worldMapRect.getWidth() / 2 + worldMapRect.getX());
-			int yGraphDiff = (int) (yWorldDiff * pixelsPerTile + worldMapRect.getHeight() / 2 + worldMapRect.getY());
+
+			int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
+			int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
+
+			Point worldMapPosition = ro.getWorldMapPosition();
+
+			//Offset in tiles from anchor sides
+			int yTileMax = worldMapPosition.getY() - heightInTiles / 2;
+			int yTileOffset = (yTileMax - worldPoint.getY() - 1) * -1;
+			int xTileOffset = worldPoint.getX() + widthInTiles / 2 - worldMapPosition.getX();
+
+			int xGraphDiff = ((int) (xTileOffset * pixelsPerTile));
+			int yGraphDiff = (int) (yTileOffset * pixelsPerTile);
+
+			//Center on tile.
+			yGraphDiff -= pixelsPerTile - Math.ceil(pixelsPerTile / 2);
+			xGraphDiff += pixelsPerTile - Math.ceil(pixelsPerTile / 2);
+
+			yGraphDiff = worldMapRect.height - yGraphDiff;
+			yGraphDiff += (int) worldMapRect.getY();
+			xGraphDiff += (int) worldMapRect.getX();
 
 			return new Point(xGraphDiff, yGraphDiff);
 		}

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.collect.Lists;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -36,6 +37,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
@@ -56,8 +59,11 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @RequiredArgsConstructor
-public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
 {
+	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
+	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
+	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
 	private static final HotColdClue CLUE =
 		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
 			"Jorral",
@@ -70,6 +76,22 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String solution;
 	private WorldPoint location;
 	private WorldPoint lastWorldPoint;
+
+	public static HotColdClue forText(String text)
+	{
+		if (CLUE.text.equalsIgnoreCase(text))
+		{
+			return CLUE;
+		}
+
+		return null;
+	}
+
+	@Override
+	public List<WorldPoint> getLocations()
+	{
+		return Lists.transform(digLocations, HotColdLocation::getWorldPoint);
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -225,17 +247,65 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		}
 	}
 
-	public static HotColdClue forText(String text)
+	@Override
+	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
-		if (CLUE.text.equalsIgnoreCase(text))
+		if (!message.startsWith("The device is"))
 		{
-			return CLUE;
+			return false;
 		}
 
-		return null;
+		Matcher m1 = FINAL_STRANGE_DEVICE_MESSAGE.matcher(message);
+		Matcher m2 = STRANGE_DEVICE_MESSAGE.matcher(message);
+		Matcher m3 = INITIAL_STRANGE_DEVICE_MESSAGE.matcher(message);
+
+		// the order that these pattern matchers are checked is important
+		if (m1.find())
+		{
+			// final location for hot cold clue has been found
+			WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+
+			if (localWorld != null)
+			{
+				markFinalSpot(localWorld);
+				return true;
+			}
+		}
+		else if (m2.find())
+		{
+			String temperature = m2.group(1);
+			String difference = m2.group(2);
+			WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+
+			if (localWorld != null)
+			{
+				updatePossibleArea(localWorld, temperature, difference);
+				return true;
+			}
+		}
+		else if (m3.find())
+		{
+			String temperature = m3.group(1);
+			WorldPoint localWorld = plugin.getClient().getLocalPlayer().getWorldLocation();
+
+			if (localWorld != null)
+			{
+				updatePossibleArea(localWorld, temperature, "");
+				return true;
+			}
+		}
+
+		return false;
 	}
 
-	public void updatePossibleArea(WorldPoint currentWp, String temperature, String difference)
+	@Override
+	public void reset()
+	{
+		this.lastWorldPoint = null;
+		digLocations.clear();
+	}
+
+	private void updatePossibleArea(WorldPoint currentWp, String temperature, String difference)
 	{
 		this.location = null;
 
@@ -347,15 +417,9 @@ public class HotColdClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		return (firstDistance < secondDistance);
 	}
 
-	public void markFinalSpot(WorldPoint wp)
+	private void markFinalSpot(WorldPoint wp)
 	{
 		this.location = wp;
-		resetHotCold();
-	}
-
-	public void resetHotCold()
-	{
-		this.lastWorldPoint = null;
-		digLocations.clear();
+		reset();
 	}
 }

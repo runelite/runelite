@@ -1,0 +1,538 @@
+{
+  "actions": [
+    {
+      "level": 1,
+      "icon": 1759,
+      "name": "Ball Of Wool",
+      "xp": 2.5
+    },
+    {
+      "level": 1,
+      "icon": 1059,
+      "name": "Leather Gloves",
+      "xp": 13.8
+    },
+    {
+      "level": 1,
+      "icon": 1609,
+      "name": "Opal",
+      "xp": 15
+    },
+    {
+      "level": 1,
+      "icon": 1775,
+      "name": "Molten Glass",
+      "xp": 20
+    },
+    {
+      "level": 1,
+      "icon": 1919,
+      "name": "Beer Glass",
+      "xp": 17.5
+    },
+    {
+      "level": 4,
+      "icon": 4527,
+      "name": "Empty Candle Lantern",
+      "xp": 19
+    },
+    {
+      "level": 5,
+      "icon": 1635,
+      "name": "Gold Ring",
+      "xp": 15
+    },
+    {
+      "level": 6,
+      "icon": 1654,
+      "name": "Gold Necklace",
+      "xp": 20
+    },
+    {
+      "level": 7,
+      "icon": 1061,
+      "name": "Leather Boots",
+      "xp": 16.3
+    },
+    {
+      "level": 7,
+      "icon": 11068,
+      "name": "Gold Bracelet",
+      "xp": 25
+    },
+    {
+      "level": 8,
+      "icon": 1673,
+      "name": "Gold Amulet (U)",
+      "xp": 30
+    },
+    {
+      "level": 9,
+      "icon": 1167,
+      "name": "Cowl",
+      "xp": 18.5
+    },
+    {
+      "level": 10,
+      "icon": 9438,
+      "name": "Crossbow String",
+      "xp": 15
+    },
+    {
+      "level": 10,
+      "icon": 1777,
+      "name": "Bow String",
+      "xp": 15
+    },
+    {
+      "level": 11,
+      "icon": 1063,
+      "name": "Leather Vambraces",
+      "xp": 22
+    },
+    {
+      "level": 12,
+      "icon": 4525,
+      "name": "Empty Oil Lamp",
+      "xp": 25
+    },
+    {
+      "level": 13,
+      "icon": 1611,
+      "name": "Jade",
+      "xp": 20
+    },
+    {
+      "level": 14,
+      "icon": 1129,
+      "name": "Leather Body",
+      "xp": 25
+    },
+    {
+      "level": 16,
+      "icon": 1613,
+      "name": "Red Topaz",
+      "xp": 25
+    },
+    {
+      "level": 16,
+      "icon": 1718,
+      "name": "Holy Symbol",
+      "xp": 50
+    },
+    {
+      "level": 17,
+      "icon": 1724,
+      "name": "Unholy Symbol",
+      "xp": 50
+    },
+    {
+      "level": 18,
+      "icon": 1095,
+      "name": "Leather Chaps",
+      "xp": 27
+    },
+    {
+      "level": 19,
+      "icon": 6038,
+      "name": "Magic String",
+      "xp": 30
+    },
+    {
+      "level": 20,
+      "icon": 1637,
+      "name": "Sapphire Ring",
+      "xp": 40
+    },
+    {
+      "level": 20,
+      "icon": 1607,
+      "name": "Sapphire",
+      "xp": 50
+    },
+    {
+      "level": 21,
+      "icon": 5418,
+      "name": "Empty Sack",
+      "xp": 38
+    },
+    {
+      "level": 22,
+      "icon": 1656,
+      "name": "Sapphire Necklace",
+      "xp": 55
+    },
+    {
+      "level": 23,
+      "icon": 11071,
+      "name": "Sapphire Bracelet",
+      "xp": 60
+    },
+    {
+      "level": 23,
+      "icon": 5525,
+      "name": "Tiara",
+      "xp": 52.5
+    },
+    {
+      "level": 24,
+      "icon": 1675,
+      "name": "Sapphire Amulet (U)",
+      "xp": 65
+    },
+    {
+      "level": 27,
+      "icon": 1605,
+      "name": "Emerald",
+      "xp": 67.5
+    },
+    {
+      "level": 27,
+      "icon": 1639,
+      "name": "Emerald Ring",
+      "xp": 55
+    },
+    {
+      "level": 28,
+      "icon": 1131,
+      "name": "Hardleather Body",
+      "xp": 35
+    },
+    {
+      "level": 29,
+      "icon": 1658,
+      "name": "Emerald Necklace",
+      "xp": 60
+    },
+    {
+      "level": 30,
+      "icon": 11076,
+      "name": "Emerald Bracelet",
+      "xp": 65
+    },
+    {
+      "level": 30,
+      "icon": 954,
+      "name": "Rope",
+      "xp": 25
+    },
+    {
+      "level": 31,
+      "icon": 1677,
+      "name": "Emerald Amulet (U)",
+      "xp": 70
+    },
+    {
+      "level": 32,
+      "icon": 10077,
+      "name": "Spiky Vambraces",
+      "xp": 6
+    },
+    {
+      "level": 33,
+      "icon": 229,
+      "name": "Vial",
+      "xp": 35
+    },
+    {
+      "level": 34,
+      "icon": 1603,
+      "name": "Ruby",
+      "xp": 85
+    },
+    {
+      "level": 34,
+      "icon": 1641,
+      "name": "Ruby Ring",
+      "xp": 70
+    },
+    {
+      "level": 36,
+      "icon": 5376,
+      "name": "Basket",
+      "xp": 56
+    },
+    {
+      "level": 38,
+      "icon": 1169,
+      "name": "Coif",
+      "xp": 37
+    },
+    {
+      "level": 40,
+      "icon": 1660,
+      "name": "Ruby Necklace",
+      "xp": 75
+    },
+    {
+      "level": 42,
+      "icon": 11085,
+      "name": "Ruby Bracelet",
+      "xp": 80
+    },
+    {
+      "level": 42,
+      "icon": 6668,
+      "name": "Fishbowl",
+      "xp": 42.5
+    },
+    {
+      "level": 43,
+      "icon": 1601,
+      "name": "Diamond",
+      "xp": 107.5
+    },
+    {
+      "level": 43,
+      "icon": 1643,
+      "name": "Diamond Ring",
+      "xp": 85
+    },
+    {
+      "level": 46,
+      "icon": 567,
+      "name": "Unpowered Orb",
+      "xp": 52.5
+    },
+    {
+      "level": 49,
+      "icon": 4542,
+      "name": "Lantern Lens",
+      "xp": 55
+    },
+    {
+      "level": 50,
+      "icon": 1679,
+      "name": "Ruby Amulet (U)",
+      "xp": 85
+    },
+    {
+      "level": 54,
+      "icon": 1395,
+      "name": "Water Battlestaff",
+      "xp": 100
+    },
+    {
+      "level": 55,
+      "icon": 1645,
+      "name": "Dragonstone Ring",
+      "xp": 100
+    },
+    {
+      "level": 55,
+      "icon": 1615,
+      "name": "Dragonstone",
+      "xp": 137.5
+    },
+    {
+      "level": 56,
+      "icon": 1662,
+      "name": "Diamond Necklace",
+      "xp": 90
+    },
+    {
+      "level": 57,
+      "icon": 1065,
+      "name": "Green D'hide Vamb",
+      "xp": 62
+    },
+    {
+      "level": 58,
+      "icon": 11092,
+      "name": "Diamond Bracelet",
+      "xp": 95
+    },
+    {
+      "level": 58,
+      "icon": 1399,
+      "name": "Earth Battlestaff",
+      "xp": 112.5
+    },
+    {
+      "level": 60,
+      "icon": 1099,
+      "name": "Green D'hide Chaps",
+      "xp": 124
+    },
+    {
+      "level": 62,
+      "icon": 1393,
+      "name": "Fire Battlestaff",
+      "xp": 125
+    },
+    {
+      "level": 63,
+      "icon": 1135,
+      "name": "Green D'hide Body",
+      "xp": 186
+    },
+    {
+      "level": 66,
+      "icon": 1397,
+      "name": "Air Battlestaff",
+      "xp": 137.5
+    },
+    {
+      "level": 66,
+      "icon": 2487,
+      "name": "Blue D'hide Vamb",
+      "xp": 70
+    },
+    {
+      "level": 67,
+      "icon": 6564,
+      "name": "Onyx Ring",
+      "xp": 115
+    },
+    {
+      "level": 67,
+      "icon": 6573,
+      "name": "Onyx",
+      "xp": 167.5
+    },
+    {
+      "level": 68,
+      "icon": 2493,
+      "name": "Blue D'hide Chaps",
+      "xp": 140
+    },
+    {
+      "level": 70,
+      "icon": 1681,
+      "name": "Diamond Amulet (U)",
+      "xp": 100
+    },
+    {
+      "level": 71,
+      "icon": 2499,
+      "name": "Blue D'hide Body",
+      "xp": 210
+    },
+    {
+      "level": 72,
+      "icon": 1664,
+      "name": "Dragon Necklace",
+      "xp": 105
+    },
+    {
+      "level": 73,
+      "icon": 2489,
+      "name": "Red D'hide Vamb",
+      "xp": 78
+    },
+    {
+      "level": 74,
+      "icon": 11115,
+      "name": "Dragonstone Bracelet",
+      "xp": 110
+    },
+    {
+      "level": 75,
+      "icon": 2495,
+      "name": "Red D'hide Chaps",
+      "xp": 156
+    },
+    {
+      "level": 77,
+      "icon": 2501,
+      "name": "Red D'hide Body",
+      "xp": 234
+    },
+    {
+      "level": 79,
+      "icon": 2491,
+      "name": "Black D'hide Vamb",
+      "xp": 86
+    },
+    {
+      "level": 80,
+      "icon": 1683,
+      "name": "Dragonstone Amulet (U)",
+      "xp": 150
+    },
+    {
+      "level": 82,
+      "icon": 2497,
+      "name": "Black D'hide Chaps",
+      "xp": 172
+    },
+    {
+      "level": 82,
+      "icon": 6577,
+      "name": "Onyx Necklace",
+      "xp": 120
+    },
+    {
+      "level": 83,
+      "icon": 21338,
+      "name": "Amethyst Bolt Tips",
+      "xp": 60
+    },
+    {
+      "level": 84,
+      "icon": 2503,
+      "name": "Black D'hide Body",
+      "xp": 258
+    },
+    {
+      "level": 84,
+      "icon": 11130,
+      "name": "Onyx Bracelet",
+      "xp": 125
+    },
+    {
+      "level": 85,
+      "icon": 21350,
+      "name": "Amethyst Arrowtips",
+      "xp": 60
+    },
+    {
+      "level": 87,
+      "icon": 21352,
+      "name": "Amethyst Javelin Heads",
+      "xp": 60
+    },
+    {
+      "level": 87,
+      "icon": 10973,
+      "name": "Light Orb",
+      "xp": 70
+    },
+    {
+      "level": 89,
+      "icon": 19499,
+      "name": "Zenyte Ring",
+      "xp": 150
+    },
+    {
+      "level": 89,
+      "icon": 19493,
+      "name": "Zenyte",
+      "xp": 200
+    },
+    {
+      "level": 90,
+      "icon": 6579,
+      "name": "Onyx Amulet (U)",
+      "xp": 165
+    },
+    {
+      "level": 92,
+      "icon": 19500,
+      "name": "Zenyte Necklace",
+      "xp": 165
+    },
+    {
+      "level": 95,
+      "icon": 19492,
+      "name": "Zenyte Bracelet",
+      "xp": 180
+    },
+    {
+      "level": 98,
+      "icon": 19501,
+      "name": "Zenyte Amulet (U)",
+      "xp": 200
+    }
+  ]
+}

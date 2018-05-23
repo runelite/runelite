@@ -27,44 +27,46 @@ package net.runelite.client.plugins.cluescrolls;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class ClueScrollWorldMapPoint extends WorldMapPoint
 {
-	private final BufferedImage worldMapImage;
-	private final Point imagePoint;
-	private final BufferedImage edgeSnapImage;
+	private static final BufferedImage CLUE_SCROLL_WORLD_IMAGE;
+	private static final Point CLUE_SCROLL_WORLD_IMAGE_POINT;
 
-	ClueScrollWorldMapPoint()
+	static
 	{
-		super(null, null);
+		CLUE_SCROLL_WORLD_IMAGE = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = CLUE_SCROLL_WORLD_IMAGE.getGraphics();
+		graphics.drawImage(ClueScrollPlugin.MAP_ARROW, 0, 0, null);
+		graphics.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0, 2, null);
+		CLUE_SCROLL_WORLD_IMAGE_POINT = new Point(
+			CLUE_SCROLL_WORLD_IMAGE.getWidth() / 2,
+			CLUE_SCROLL_WORLD_IMAGE.getHeight());
+	}
+
+	ClueScrollWorldMapPoint(final WorldPoint worldPoint)
+	{
+		super(worldPoint, null);
 
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
-
-		worldMapImage = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics graphics = worldMapImage.getGraphics();
-		graphics.drawImage(ClueScrollPlugin.MAP_ARROW, 0, 0, null);
-		graphics.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0,  2, null);
-
-		imagePoint = new Point(worldMapImage.getWidth() / 2, worldMapImage.getHeight());
-		this.setImage(worldMapImage);
-		this.setImagePoint(imagePoint);
-
-		edgeSnapImage = ClueScrollPlugin.CLUE_SCROLL_IMAGE;
+		this.setImage(CLUE_SCROLL_WORLD_IMAGE);
+		this.setImagePoint(CLUE_SCROLL_WORLD_IMAGE_POINT);
 	}
 
 	@Override
 	public void onEdgeSnap()
 	{
-		this.setImage(edgeSnapImage);
+		this.setImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE);
 		this.setImagePoint(null);
 	}
 
 	@Override
 	public void onEdgeUnsnap()
 	{
-		this.setImage(worldMapImage);
-		this.setImagePoint(imagePoint);
+		this.setImage(CLUE_SCROLL_WORLD_IMAGE);
+		this.setImagePoint(CLUE_SCROLL_WORLD_IMAGE_POINT);
 	}
 }

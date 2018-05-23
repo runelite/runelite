@@ -26,11 +26,9 @@ package net.runelite.client.plugins.opponentinfo;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -40,45 +38,50 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.BackgroundComponent;
-import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.ProgressBarComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.hiscore.HiscoreResult;
 
 class OpponentInfoOverlay extends Overlay
 {
-	private static final int WIDTH = 129;
-
-	private static final int TOP_BORDER = 2;
-
-	private static final int BAR_WIDTH = WIDTH - 4;
-	private static final int BAR_HEIGHT = 16;
-
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
 	private final Client client;
+	private final OpponentInfoPlugin opponentInfoPlugin;
+	private final HiscoreManager hiscoreManager;
+
 	private final NPC[] clientNpcs;
+	private final PanelComponent panelComponent = new PanelComponent();
+	private final Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	private Integer lastMaxHealth;
-	private DecimalFormat df = new DecimalFormat("0.0");
 	private float lastRatio = 0;
 	private Instant lastTime = Instant.now();
 	private String opponentName;
 	private String opponentsOpponentName;
-	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 	private NPC lastOpponent;
 
 	@Inject
-	OpponentInfoOverlay(Client client)
+	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin, HiscoreManager hiscoreManager)
 	{
+		this.client = client;
+		this.opponentInfoPlugin = opponentInfoPlugin;
+		this.hiscoreManager = hiscoreManager;
+
+		this.clientNpcs = client.getCachedNPCs();
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
-		this.client = client;
-		this.clientNpcs = client.getCachedNPCs();
+
+		panelComponent.setBorder(new Rectangle(2, 2, 2, 2));
+		panelComponent.setGap(new Point(0, 2));
 	}
 
 	private Actor getOpponent()
@@ -121,7 +124,24 @@ class OpponentInfoOverlay extends Overlay
 			lastTime = Instant.now();
 			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
 			opponentName = Text.removeTags(opponent.getName());
-			lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
+
+			lastMaxHealth = null;
+			if (opponent instanceof NPC)
+			{
+				lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
+			}
+			else if (opponent instanceof Player)
+			{
+				HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
+				if (hiscoreResult != null)
+				{
+					int hp = hiscoreResult.getHitpoints().getLevel();
+					if (hp > 0)
+					{
+						lastMaxHealth = hp;
+					}
+				}
+			}
 
 			Actor opponentsOpponent = opponent.getInteracting();
 			if (opponentsOpponent != null
@@ -140,77 +160,42 @@ class OpponentInfoOverlay extends Overlay
 			return null; //don't draw anything.
 		}
 
-		FontMetrics fm = graphics.getFontMetrics();
+		panelComponent.getChildren().clear();
 
-		int height = TOP_BORDER + fm.getHeight(); // opponent name
+		// Opponent name
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(opponentName)
+			.build());
+
+		// Health bar
 		if (lastRatio >= 0)
 		{
-			height += BAR_HEIGHT + 5;
-		}
-		if (opponentsOpponentName != null)
-		{
-			height += fm.getHeight() + 5;
-		}
-
-		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setRectangle(new Rectangle(0, 0, WIDTH, height));
-		backgroundComponent.render(graphics);
-
-		int y = TOP_BORDER + fm.getHeight();
-
-		{
-			int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
-			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(x, y));
-			textComponent.setText(opponentName);
-			textComponent.render(graphics);
-
-			y += 3;
-		}
-
-		if (lastRatio >= 0)
-		{
-			int barWidth = (int) (lastRatio * (float) BAR_WIDTH);
-
-			graphics.setColor(HP_GREEN);
-			graphics.fillRect((WIDTH - BAR_WIDTH) / 2, y, barWidth, BAR_HEIGHT);
-
-			graphics.setColor(HP_RED);
-			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth, y, BAR_WIDTH - barWidth, BAR_HEIGHT);
-
-			String str;
+			final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
+			progressBarComponent.setBackgroundColor(HP_RED);
+			progressBarComponent.setForegroundColor(HP_GREEN);
 
 			if (lastMaxHealth != null)
 			{
-				int currHealth = (int) (lastRatio * lastMaxHealth);
-				str = currHealth + "/" + lastMaxHealth;
+				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+				progressBarComponent.setMaximum(lastMaxHealth);
+				progressBarComponent.setValue(lastRatio * lastMaxHealth);
 			}
 			else
 			{
-				str = df.format(lastRatio * 100) + "%";
+				progressBarComponent.setValue(lastRatio * 100d);
 			}
 
-			y += BAR_HEIGHT;
-
-			final TextComponent textComponent1 = new TextComponent();
-			textComponent1.setText(str);
-			textComponent1.setPosition(new Point((WIDTH - fm.stringWidth(str)) / 2, y));
-			textComponent1.render(graphics);
-
-			y += 3;
+			panelComponent.getChildren().add(progressBarComponent);
 		}
 
+		// Opponents opponent
 		if (opponentsOpponentName != null)
 		{
-			y += fm.getHeight();
-
-			int x = (WIDTH - fm.stringWidth(opponentsOpponentName)) / 2;
-			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(x, y));
-			textComponent.setText(opponentsOpponentName);
-			textComponent.render(graphics);
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text(opponentsOpponentName)
+				.build());
 		}
 
-		return new Dimension(WIDTH, height);
+		return panelComponent.render(graphics);
 	}
 }

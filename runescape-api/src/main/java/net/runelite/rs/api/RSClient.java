@@ -612,4 +612,13 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("isDynamicRegion")
 	@Override
 	boolean isInInstancedRegion();
+
+	@Import("itemPressedDuration")
+	int getItemPressedDuration();
+
+	@Import("itemPressedDuration")
+	void setItemPressedDuration(int duration);
+
+	@Import("flags")
+	int getFlags();
 }

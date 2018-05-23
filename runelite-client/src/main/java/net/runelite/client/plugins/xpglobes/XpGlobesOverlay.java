@@ -275,8 +275,7 @@ public class XpGlobesOverlay extends Overlay
 			ProgressBarComponent progressBar = new ProgressBarComponent();
 			double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
 				mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
-			progressBar.setProgress(progress);
-
+			progressBar.setValue(progress);
 			xpTooltip.getChildren().add(progressBar);
 		}
 

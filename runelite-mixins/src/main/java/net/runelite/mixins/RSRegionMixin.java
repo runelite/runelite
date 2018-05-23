@@ -25,11 +25,13 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Renderable;
+import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.rs.api.RSDecorativeObject;
 import net.runelite.rs.api.RSGroundObject;
 import net.runelite.rs.api.RSItemLayer;
@@ -128,6 +130,22 @@ public abstract class RSRegionMixin implements RSRegion
 			{
 				wallObject.setPlane(plane);
 			}
+		}
+	}
+
+	@Copy("drawTileUnderlay")
+	abstract public void rs$drawTileUnderlay(SceneTilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y);
+
+	@Replace("drawTileUnderlay")
+	public void rl$drawTileUnderlay(SceneTilePaint tile, int z, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y)
+	{
+		try
+		{
+			rs$drawTileUnderlay(tile, z, pitchSin, pitchCos, yawSin, yawCos, x, y);
+		}
+		catch (Exception ex)
+		{
+			log.warn("error during tile underlay rendering", ex);
 		}
 	}
 }
