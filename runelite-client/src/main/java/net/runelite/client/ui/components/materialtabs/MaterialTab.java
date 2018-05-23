@@ -48,7 +48,7 @@ public class MaterialTab extends JLabel
 {
 	private static final Border SELECTED_BORDER = new CompoundBorder(
 		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
-		BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		BorderFactory.createEmptyBorder(5, 10, 4, 10));
 
 	private static final Border UNSELECTED_BORDER = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
