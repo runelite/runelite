@@ -74,6 +74,7 @@ public class ExaminePlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
+	private final ExamineClueItem examineClueItem = new ExamineClueItem();
 	private final ExamineClient examineClient = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
@@ -393,6 +394,29 @@ public class ExaminePlugin extends Plugin
 					.append("ea)");
 			}
 
+			if (config.showClueUse())
+			{
+				if (clueNeed(id))
+				{
+					message
+							.append(ChatColorType.NORMAL)
+							.append("\n")
+							.append(" Clue Item: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append("Yes");
+				}
+
+				if (!clueNeed(id))
+				{
+					message
+							.append(ChatColorType.NORMAL)
+							.append("\n")
+							.append(" Clue Item: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append("No");
+				}
+			}
+
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.EXAMINE_ITEM)
 				.runeLiteFormattedMessage(message.build())
@@ -425,4 +449,8 @@ public class ExaminePlugin extends Plugin
 		}
 	}
 
+	private boolean clueNeed(int id)
+	{
+		return examineClueItem.usesClue(id);
+	}
 }
