@@ -73,7 +73,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric"
+		name = "Chambers Of Xeric"
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -106,10 +106,13 @@ public class RaidsPlugin extends Plugin
 	private RaidsConfig config;
 
 	@Inject
-	private RaidsOverlay overlay;
+	private RaidsOverlay scoutOverlay;
 
 	@Inject
 	private RaidsPointsOverlay pointsOverlay;
+
+	@Inject
+	private RaidsItemsOverlay itemsOverlay;
 
 	@Inject
 	private LayoutSolver layoutSolver;
@@ -144,7 +147,7 @@ public class RaidsPlugin extends Plugin
 	@Override
 	public List<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, pointsOverlay);
+		return Arrays.asList(scoutOverlay, pointsOverlay, itemsOverlay);
 	}
 
 	@Override
@@ -253,18 +256,23 @@ public class RaidsPlugin extends Plugin
 
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
-				overlay.setScoutOverlayShown(true);
+				scoutOverlay.setScoutOverlayShown(true);
+				itemsOverlay.setItemsOverlayShown(true);
 			}
-			else if (!config.scoutOverlayAtBank())
+			else
 			{
-				overlay.setScoutOverlayShown(false);
+				if(!config.scoutOverlayAtBank()) {
+					scoutOverlay.setScoutOverlayShown(false);
+				}
+				itemsOverlay.setItemsOverlayShown(false);
 				raid = null;
 			}
 		}
 
 		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1)
 		{
-			overlay.setScoutOverlayShown(false);
+			scoutOverlay.setScoutOverlayShown(false);
+			itemsOverlay.setItemsOverlayShown(false);
 			raid = null;
 		}
 	}
@@ -320,9 +328,9 @@ public class RaidsPlugin extends Plugin
 							.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
-						.build());
+							.type(ChatMessageType.CLANCHAT_INFO)
+							.runeLiteFormattedMessage(chatMessage)
+							.build());
 				}
 			}
 		}
@@ -554,6 +562,8 @@ public class RaidsPlugin extends Plugin
 			case RAIDS_SHAMANS:
 				room.setType(RaidRoom.Type.COMBAT);
 				room.setBoss(RaidRoom.Boss.SHAMANS);
+				room.setItemType("Antipoison");
+				room.setItemIds(new int[] {5943, 4945, 5947, 5949, 5952, 5954, 5956, 5958, 10925, 10927, 10929, 10931, 175, 177, 179, 181, 183, 185, 2446, 2448, 11433, 11435, 11501, 11503});
 				break;
 
 			case RAIDS_VASA:
@@ -604,6 +614,8 @@ public class RaidsPlugin extends Plugin
 			case RAIDS_GUARDIANS:
 				room.setType(RaidRoom.Type.COMBAT);
 				room.setBoss(RaidRoom.Boss.GUARDIANS);
+				room.setItemType("Pickaxe");
+				room.setItemIds(new int[] {1265, 1267, 1269, 1271, 1273, 1275, 11920, 12297, 12797, 13243, 13244, 20014});
 				break;
 
 			case RAIDS_CRABS:
