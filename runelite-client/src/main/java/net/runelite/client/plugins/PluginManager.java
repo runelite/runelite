@@ -140,7 +140,8 @@ public class PluginManager
 		for (Key<?> key : injector.getAllBindings().keySet())
 		{
 			Class<?> type = key.getTypeLiteral().getRawType();
-			if (Config.class.isAssignableFrom(type))
+			if (Config.class.isAssignableFrom(type) && (!plugin.getClass().getAnnotation(PluginDescriptor.class).moreThenOneConfig() ||
+					(type.getPackage().getName() == plugin.getClass().getPackage().getName())))
 			{
 				return (Config) injector.getInstance(key);
 			}

@@ -125,6 +125,7 @@ public class ScreenMarkerPlugin extends Plugin
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
 			.icon(icon)
+			.priority(5)
 			.panel(pluginPanel)
 			.build();
 
