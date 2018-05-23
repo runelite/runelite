@@ -77,7 +77,7 @@ public class XpTrackerPlugin extends Plugin
 	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
-	@Getter(AccessLevel.PACKAGE)
+	@Getter
 	private XpPanel xpPanel;
 
 	private final XpState xpState = new XpState();
