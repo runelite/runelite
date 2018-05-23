@@ -35,6 +35,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -226,10 +227,8 @@ public class XpGlobesOverlay extends Overlay
 
 		String skillName = mouseOverSkill.getSkillName();
 		String skillLevel = Integer.toString(mouseOverSkill.getCurrentLevel());
-
 		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
-
 		xpTooltip.getChildren().clear();
 		graphics.translate(x, y);
 		xpTooltip.setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
@@ -250,7 +249,7 @@ public class XpGlobesOverlay extends Overlay
 			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
 			String actionsLeftString = decimalFormat.format(actionsLeft);
 			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Actions left:")
+				.left(getActionKillsText(skillName))
 				.leftColor(Color.ORANGE)
 				.right(actionsLeftString)
 				.build());
@@ -282,4 +281,11 @@ public class XpGlobesOverlay extends Overlay
 		xpTooltip.render(graphics);
 		graphics.translate(-x, -y);
 	}
+
+	private String getActionKillsText(String skillName)
+	{
+		String[] combatSkills = new String[]{"Attack", "Defence", "Hitpoints", "Ranged", "Strength"};
+		return Arrays.asList(combatSkills).contains(skillName) ? "Kills left:" : "Actions left:";
+	}
+
 }
