@@ -26,7 +26,7 @@ public interface ChatNotificationsConfig extends Config
 			keyName = "dualNotif",
 			name = "Dual Request",
 			description = "Send a notification when a dual request is received",
-			position = 0
+			position = 1
 	)
 	default boolean dualNotifEnabled() { return false; }
 }
