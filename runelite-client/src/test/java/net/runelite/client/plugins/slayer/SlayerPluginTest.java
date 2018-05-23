@@ -36,6 +36,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -91,6 +92,10 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	SlayerConfig slayerConfig;
+
+	@Mock
+	@Bind
+	OverlayManager overlayManager;
 
 	@Mock
 	@Bind

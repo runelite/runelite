@@ -29,8 +29,6 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +57,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -98,6 +96,9 @@ public class CannonPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private CannonOverlay cannonOverlay;
 
 	@Inject
@@ -119,14 +120,17 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(cannonOverlay, cannonSpotOverlay);
+		overlayManager.add(cannonOverlay);
+		overlayManager.add(cannonSpotOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(cannonOverlay);
+		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
 		cannonPosition = null;
 		cballsLeft = 0;
