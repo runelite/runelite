@@ -146,6 +146,16 @@ public class RuneLite
 			System.exit(0);
 		}
 
+		if (RuneLite.getOptions().has("developer-mode"))
+		{
+			boolean assertions = false;
+			assert assertions = true;
+			if (!assertions)
+			{
+				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+			}
+		}
+
 		PROFILES_DIR.mkdirs();
 
 		// Setup logger
