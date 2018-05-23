@@ -25,12 +25,13 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.collect.Lists;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -217,32 +218,127 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			}
 		}
 
-		// once the number of possible dig locations is below 10, highlight their ground areas
+		// once the number of possible dig locations is below 10, outline their ground areas
 		if (digLocations.size() < 10)
 		{
 			// Mark potential dig locations
 			for (HotColdLocation hotColdLocation : digLocations)
 			{
-				Rectangle2D r = hotColdLocation.getRect();
+				WorldPoint wp = hotColdLocation.getWorldPoint();
 
-				for (int i = (int) r.getMinX(); i <= r.getMaxX(); i++)
+				// outlines a 9x9 area around the central point
+				int startX = (wp.getX() - 4);
+				int startY = (wp.getY() - 4);
+				int endX = (wp.getX() + 5);
+				int endY = (wp.getY() + 5);
+
+				graphics.setStroke(new BasicStroke(3));
+				graphics.setColor(Color.BLUE);
+				GeneralPath path = new GeneralPath();
+
+				LocalPoint lowerLeft = LocalPoint.fromWorld(plugin.getClient(), startX, startY);
+				LocalPoint upperLeft = LocalPoint.fromWorld(plugin.getClient(), startX, endY);
+				LocalPoint upperRight = LocalPoint.fromWorld(plugin.getClient(), endX, endY);
+				LocalPoint lowerRight = LocalPoint.fromWorld(plugin.getClient(), endX, startY);
+
+				if (lowerLeft == null || upperLeft == null || upperRight == null || lowerRight == null)
 				{
-					for (int j = (int) r.getMinY(); j <= r.getMaxY(); j++)
+					continue;
+				}
+
+				boolean first = true;
+
+				for (int y = lowerLeft.getY(); y <= upperLeft.getY(); y += Perspective.LOCAL_TILE_SIZE)
+				{
+					net.runelite.api.Point p = Perspective.worldToCanvas(plugin.getClient(),
+						lowerLeft.getX() - Perspective.LOCAL_TILE_SIZE / 2,
+						y - Perspective.LOCAL_TILE_SIZE / 2,
+						plugin.getClient().getPlane());
+
+					if (p != null)
 					{
-						LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), new WorldPoint(i, j, 0));
-
-						if (localLocation != null)
+						if (first)
 						{
-							Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), localLocation);
-							graphics.setColor(new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 50));
-
-							if (poly != null)
-							{
-								graphics.fillPolygon(poly);
-							}
+							path.moveTo(p.getX(), p.getY());
+							first = false;
+						}
+						else
+						{
+							path.lineTo(p.getX(), p.getY());
 						}
 					}
 				}
+
+				first = true;
+
+				for (int x = upperLeft.getX(); x <= upperRight.getX(); x += Perspective.LOCAL_TILE_SIZE)
+				{
+					net.runelite.api.Point p = Perspective.worldToCanvas(plugin.getClient(),
+						x - Perspective.LOCAL_TILE_SIZE / 2,
+						upperLeft.getY() - Perspective.LOCAL_TILE_SIZE / 2,
+						plugin.getClient().getPlane());
+
+					if (p != null)
+					{
+						if (first)
+						{
+							path.moveTo(p.getX(), p.getY());
+							first = false;
+						}
+						else
+						{
+							path.lineTo(p.getX(), p.getY());
+						}
+					}
+				}
+
+				first = true;
+
+				for (int y = upperRight.getY(); y >= lowerRight.getY(); y -= Perspective.LOCAL_TILE_SIZE)
+				{
+					net.runelite.api.Point p = Perspective.worldToCanvas(plugin.getClient(),
+						lowerRight.getX() - Perspective.LOCAL_TILE_SIZE / 2,
+						y - Perspective.LOCAL_TILE_SIZE / 2,
+						plugin.getClient().getPlane());
+
+					if (p != null)
+					{
+						if (first)
+						{
+							path.moveTo(p.getX(), p.getY());
+							first = false;
+						}
+						else
+						{
+							path.lineTo(p.getX(), p.getY());
+						}
+					}
+				}
+
+				first = true;
+
+				for (int x = lowerRight.getX(); x >= lowerLeft.getX(); x -= Perspective.LOCAL_TILE_SIZE)
+				{
+					net.runelite.api.Point p = Perspective.worldToCanvas(plugin.getClient(),
+						x - Perspective.LOCAL_TILE_SIZE / 2,
+						lowerLeft.getY() - Perspective.LOCAL_TILE_SIZE / 2,
+						plugin.getClient().getPlane());
+
+					if (p != null)
+					{
+						if (first)
+						{
+							path.moveTo(p.getX(), p.getY());
+							first = false;
+						}
+						else
+						{
+							path.lineTo(p.getX(), p.getY());
+						}
+					}
+				}
+
+				graphics.draw(path);
 			}
 		}
 	}
