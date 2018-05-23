@@ -29,4 +29,15 @@ public interface ChatNotificationsConfig extends Config
 			position = 1
 	)
 	default boolean dualNotifEnabled() { return false; }
+
+	@ConfigItem(
+			keyName = "recoilNotif",
+			name = "Ring of Recoil Notification",
+			description = "Configures if the ring of recoil breaking notification is shown",
+			position = 2
+	)
+	default boolean recoilNotifEnabled()
+	{
+		return false;
+	}
 }

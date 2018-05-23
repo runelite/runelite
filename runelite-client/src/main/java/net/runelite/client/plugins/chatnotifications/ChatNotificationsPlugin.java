@@ -53,5 +53,13 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			notifier.notify(characterPrefix + TRADE_REQ_NOTIF);
 		}
+
+		if (message.getType() == ChatMessageType.SERVER)
+		{
+			if (config.recoilNotifEnabled() && message.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
+			{
+				notifier.notify("Your Ring of Recoil has shattered");
+			}
+		}
 	}
 }

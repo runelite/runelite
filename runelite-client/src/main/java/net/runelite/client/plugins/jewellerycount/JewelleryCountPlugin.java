@@ -61,16 +61,4 @@ public class JewelleryCountPlugin extends Plugin
 	{
 		return configManager.getConfig(JewelleryCountConfig.class);
 	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() == ChatMessageType.SERVER)
-		{
-			if (config.recoilNotification() && event.getMessage().contains("<col=7f007f>Your Ring of Recoil has shattered.</col>"))
-			{
-				notifier.notify("Your Ring of Recoil has shattered");
-			}
-		}
-	}
 }
