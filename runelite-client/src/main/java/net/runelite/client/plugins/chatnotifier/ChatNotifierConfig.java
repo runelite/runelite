@@ -78,4 +78,15 @@ public interface ChatNotifierConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "notifyRecoil",
+		name = "Notify recoil",
+		description = "Configures whether or not to send a notification on ring of recoil breaking",
+		position = 5
+	)
+	default boolean notifyRecoil()
+	{
+		return false;
+	}
 }

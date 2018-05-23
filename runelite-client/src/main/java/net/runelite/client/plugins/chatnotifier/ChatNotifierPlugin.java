@@ -61,6 +61,7 @@ public class ChatNotifierPlugin extends Plugin
 
 	private LoadingCache<String, Boolean> notifiedMessages;
 	private List<String> notifiedMessagesList = new ArrayList<>();
+	private String recoilCheck = "Your Ring of Recoil has shattered.";
 
 
 	@Provides
@@ -120,6 +121,10 @@ public class ChatNotifierPlugin extends Plugin
 		else if (event.getType() == ChatMessageType.DUEL && config.notifyDuel())
 		{
 			notifier.notify(client.getLocalPlayer().getName() + " has been challenged");
+		}
+		else if (config.notifyRecoil() && event.getMessage().contains(recoilCheck))
+		{
+			notifier.notify(client.getLocalPlayer().getName() + "'s ring of recoil has shattered");
 		}
 		else if (isNotificationMessage(event.getMessage()))
 		{
