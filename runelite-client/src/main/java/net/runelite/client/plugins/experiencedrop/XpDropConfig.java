@@ -24,29 +24,20 @@
  */
 package net.runelite.client.plugins.experiencedrop;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+
+import java.awt.*;
 
 @ConfigGroup(
 		keyName = "xpdrop",
 		name = "XP Drop",
 		description = "Configuration for XP drop customization"
 )
-public interface XpDropConfig extends Config
-{
-	@ConfigItem(
-			keyName = "hideSkillIcons",
-			name = "Hide skill icons",
-			description = "Configure if XP drops will show their respective skill icons",
-			position = 6
-	)
-	default boolean hideSkillIcons()
-	{
-		return false;
-	}
 
+public interface XpDropConfig extends Config
+	{
 	@ConfigItem(
 			keyName = "meleePrayerColor",
 			name = "Melee Prayer Color",
@@ -81,6 +72,17 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "overrideVanillaColor",
+			name = "XP Drop Color",
+			description = "Configure if color is overridden for XP drops",
+			position = 4
+	)
+	default boolean overrideVanillaColor()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 			keyName = "defaultXpDrop",
 			name = "Regular XP Drop",
 			description = "More custom default colors",
@@ -90,19 +92,15 @@ public interface XpDropConfig extends Config
 	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
-	@ConfigItem(
-			keyName = "overrideVanillaColor",
-			name = "XP Drop Color",
-			description = "Configure if color is overridden for XP drops",
-			position = 4
 
+	@ConfigItem(
+			keyName = "hideSkillIcons",
+			name = "Hide skill icons",
+			description = "Configure if XP drops will show their respective skill icons",
+			position = 6
 	)
-	default boolean overrideVanillaColor()
+	default boolean hideSkillIcons()
 	{
 		return false;
 	}
 }
-
-
-
-
