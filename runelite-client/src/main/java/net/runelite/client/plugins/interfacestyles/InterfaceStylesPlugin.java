@@ -44,6 +44,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -60,6 +61,9 @@ public class InterfaceStylesPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private InterfaceStylesConfig config;
 
 	@Inject
@@ -74,17 +78,23 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overrideSprites();
-		overrideWidgetSprites();
-		restoreWidgetDimensions();
-		adjustWidgetDimensions();
+		clientThread.invokeLater(() ->
+		{
+			overrideSprites();
+			overrideWidgetSprites();
+			restoreWidgetDimensions();
+			adjustWidgetDimensions();
+		});
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		restoreWidgetDimensions();
-		removeGameframe();
+		clientThread.invokeLater(() ->
+		{
+			restoreWidgetDimensions();
+			removeGameframe();
+		});
 	}
 
 	@Subscribe
@@ -92,11 +102,14 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
-			removeGameframe();
-			overrideSprites();
-			overrideWidgetSprites();
-			restoreWidgetDimensions();
-			adjustWidgetDimensions();
+			clientThread.invokeLater(() ->
+			{
+				removeGameframe();
+				overrideSprites();
+				overrideWidgetSprites();
+				restoreWidgetDimensions();
+				adjustWidgetDimensions();
+			});
 		}
 	}
 
