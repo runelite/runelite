@@ -45,15 +45,4 @@ public interface JewelleryCountConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "recoilNotification",
-		name = "Ring of Recoil Notification",
-		description = "Configures if the ring of recoil breaking notification is shown",
-		position = 2
-	)
-	default boolean recoilNotification()
-	{
-		return false;
-	}
 }
