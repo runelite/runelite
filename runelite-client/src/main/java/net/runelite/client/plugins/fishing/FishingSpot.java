@@ -44,6 +44,8 @@ import static net.runelite.api.NpcID.FISHING_SPOT_3913;
 import static net.runelite.api.NpcID.FISHING_SPOT_3914;
 import static net.runelite.api.NpcID.FISHING_SPOT_3915;
 import static net.runelite.api.NpcID.FISHING_SPOT_4316;
+import static net.runelite.api.NpcID.FISHING_SPOT_4476;
+import static net.runelite.api.NpcID.FISHING_SPOT_4477;
 import static net.runelite.api.NpcID.FISHING_SPOT_4710;
 import static net.runelite.api.NpcID.FISHING_SPOT_4712;
 import static net.runelite.api.NpcID.FISHING_SPOT_4713;
@@ -87,7 +89,8 @@ public enum FishingSpot
 	),
 	SHARK("Shark, Bass", ItemID.RAW_SHARK,
 		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_3915,
-		FISHING_SPOT_7200, FISHING_SPOT_5233, FISHING_SPOT_5234
+		FISHING_SPOT_7200, FISHING_SPOT_5233, FISHING_SPOT_5234,
+		FISHING_SPOT_4476, FISHING_SPOT_4477
 	),
 	MONKFISH("Monkfish", ItemID.RAW_MONKFISH,
 		FISHING_SPOT_4316
