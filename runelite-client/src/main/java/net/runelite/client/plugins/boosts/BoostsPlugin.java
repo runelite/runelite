@@ -44,7 +44,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -79,6 +79,9 @@ public class BoostsPlugin extends Plugin
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private BoostsOverlay boostsOverlay;
 
 	@Inject
@@ -101,14 +104,9 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return boostsOverlay;
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(boostsOverlay);
 		updateShownSkills(config.enableSkill());
 		Arrays.fill(lastSkillLevels, -1);
 		overallIcon = skillIconManager.getSkillImage(Skill.OVERALL);
@@ -117,6 +115,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(boostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 	}
 

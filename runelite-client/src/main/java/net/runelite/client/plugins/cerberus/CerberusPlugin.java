@@ -41,7 +41,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(name = "Cerberus")
 @Singleton
@@ -51,18 +51,22 @@ public class CerberusPlugin extends Plugin
 	private final List<NPC> ghosts = new ArrayList<>();
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private CerberusOverlay overlay;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		ghosts.clear();
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Subscribe

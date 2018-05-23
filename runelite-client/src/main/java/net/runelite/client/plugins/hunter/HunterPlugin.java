@@ -48,7 +48,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
@@ -60,10 +60,9 @@ public class HunterPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private QueryRunner queryRunner;
+	private OverlayManager overlayManager;
 
 	@Inject
-	@Getter
 	private TrapOverlay overlay;
 
 	@Inject
@@ -89,12 +88,14 @@ public class HunterPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
 		overlay.updateConfig();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
 	}

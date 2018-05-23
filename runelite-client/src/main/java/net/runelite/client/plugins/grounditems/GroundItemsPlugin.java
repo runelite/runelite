@@ -81,7 +81,7 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(
@@ -141,6 +141,9 @@ public class GroundItemsPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private GroundItemsConfig config;
 
 	@Inject
@@ -172,14 +175,9 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
 		reset();
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
@@ -188,6 +186,7 @@ public class GroundItemsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 		groundItems.clear();

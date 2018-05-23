@@ -39,7 +39,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -54,6 +54,9 @@ public class NightmareZonePlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private NightmareZoneConfig config;
 
 	@Inject
@@ -64,8 +67,16 @@ public class NightmareZonePlugin extends Plugin
 	private boolean absorptionNotificationSend = true;
 
 	@Override
-	protected void shutDown()
+	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlay.removeAbsorptionCounter();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 		overlay.removeAbsorptionCounter();
 	}
 
@@ -79,12 +90,6 @@ public class NightmareZonePlugin extends Plugin
 	NightmareZoneConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(NightmareZoneConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Subscribe
