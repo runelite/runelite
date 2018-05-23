@@ -84,7 +84,7 @@ public interface ExamineConfig extends Config
 			position = 6,
 			keyName = "itemUsedInClue",
 			name = "Show if item is used in clue",
-			description = "Toggle to enable printing if item is used in Clue Scrolls"
+			description = "Enable for printing if item is used in Clue Scrolls"
 	)
 	default boolean showClueUse()
 	{
