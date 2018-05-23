@@ -34,6 +34,8 @@ import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -71,6 +73,7 @@ public class XpTrackerPlugin extends Plugin
 	private SkillIconManager skillIconManager;
 
 	private NavigationButton navButton;
+	@Getter(AccessLevel.PACKAGE)
 	private XpPanel xpPanel;
 
 	private final XpState xpState = new XpState();

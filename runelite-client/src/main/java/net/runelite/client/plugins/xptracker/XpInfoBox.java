@@ -83,10 +83,13 @@ class XpInfoBox extends JPanel
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
+	@Getter(AccessLevel.PACKAGE)
 	private static final Skill[] COMBAT = new Skill[]
 					{
 							Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.HITPOINTS
 					};
+	private int killsRemaining;
+
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
@@ -161,6 +164,8 @@ class XpInfoBox extends JPanel
 		progressBar.setComponentPopupMenu(popupMenu);
 
 		add(container, BorderLayout.NORTH);
+
+		killsRemaining = Integer.MAX_VALUE;
 	}
 
 	void reset()
@@ -218,9 +223,8 @@ class XpInfoBox extends JPanel
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
 	}
 
-	private int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
+	int getKillsRemaining(XpSnapshotSingle xpSnapshotSingle)
 	{
-		int killsRemaining = Integer.MAX_VALUE;
 		Actor opponent = client.getLocalPlayer().getInteracting();
 		if (opponent != null)
 		{
