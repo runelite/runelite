@@ -95,7 +95,7 @@ public interface XpDropConfig extends Config
 	@ConfigItem(
 		keyName = "hideSkillIcons",
 		name = "Hide skill icons",
-		description = "Configure if XP drops will show their respective skill icons",
+		description = "Configure if Xp drops will show their respective skill icons",
 		position = 6
 	)
 	default boolean hideSkillIcons()
