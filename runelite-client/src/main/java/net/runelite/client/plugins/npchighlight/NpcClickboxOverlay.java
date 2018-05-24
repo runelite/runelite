@@ -60,17 +60,7 @@ public class NpcClickboxOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
-		}
-
-		NPC[] npcs = client.getCachedNPCs();
-		for (int npcId : plugin.getNpcTags())
-		{
-			NPC npc = npcs[npcId];
-			if (npc != null && npc.getName() != null)
-			{
-				renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
-			}
+			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
 		}
 
 		return null;
