@@ -369,6 +369,30 @@ public class LootRecorderPlugin extends Plugin
 			case "recordZammyKills":
 				ToggleTab("Zammy", lootRecorderConfig.recordZammyKills());
 				return;
+			case "recordVetionKills":
+				ToggleTab("Vet'ion", lootRecorderConfig.recordVetionKills());
+				return;
+			case "recordVenenatisKills":
+				ToggleTab("Venenatis", lootRecorderConfig.recordVenenatisKills());
+				return;
+			case "recordCallistoKills":
+				ToggleTab("Callisto", lootRecorderConfig.recordCallistoKills());
+				return;
+			case "recordChaosElementalKills":
+				ToggleTab("Chaos Elemental", lootRecorderConfig.recordChaosElementalKills());
+				return;
+			case "recordChaosFanaticKills":
+				ToggleTab("Chaos Fanatic", lootRecorderConfig.recordChaosFanaticKills());
+				return;
+			case "recordCrazedArchaeologistKills":
+				ToggleTab("Crazed Archaeologist", lootRecorderConfig.recordCrazedArchaeologistKills());
+				return;
+			case "recordScorpiaKills":
+				ToggleTab("Scorpia", lootRecorderConfig.recordScorpiaKills());
+				return;
+			case "recordKbdKills":
+				ToggleTab("King Black Dragon", lootRecorderConfig.recordKbdKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -604,6 +628,23 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordSaradominKills();
 			case "ZAMMY":
 				return lootRecorderConfig.recordZammyKills();
+			case "VET'ION":
+				return lootRecorderConfig.recordVetionKills();
+			case "VENENATIS":
+				return lootRecorderConfig.recordVenenatisKills();
+			case "CALLISTO":
+				return lootRecorderConfig.recordCallistoKills();
+			case "CHAOS ELEMENTAL":
+				return lootRecorderConfig.recordChaosElementalKills();
+			case "CHAOS FANATIC":
+				return lootRecorderConfig.recordChaosFanaticKills();
+			case "CRAZED ARCHAEOLOGIST":
+				return lootRecorderConfig.recordCrazedArchaeologistKills();
+			case "SCORPIA":
+				return lootRecorderConfig.recordScorpiaKills();
+			case "KING BLACK DRAGON":
+				return lootRecorderConfig.recordKbdKills();
+
 			default:
 				return false;
 		}

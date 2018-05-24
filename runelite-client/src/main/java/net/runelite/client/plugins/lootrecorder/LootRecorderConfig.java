@@ -125,6 +125,96 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "recordVetionKills",
+		name = "Record Vet'ion Loot",
+		description = "Configures whether or not loot from Vet'ion is recorded",
+		position = 8
+	)
+	default boolean recordVetionKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordVenenatisKills",
+		name = "Record Venenatis Loot",
+		description = "Configures whether or not loot from Venenatis is recorded",
+		position = 9
+	)
+	default boolean recordVenenatisKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordCallistoKills",
+		name = "Record Callisto Loot",
+		description = "Configures whether or not loot from Callisto is recorded",
+		position = 10
+	)
+	default boolean recordCallistoKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordChaosElementalKills",
+		name = "Record Chaos Elemental Loot",
+		description = "Configures whether or not loot from Chaos Elemental is recorded",
+		position = 11
+	)
+	default boolean recordChaosElementalKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordChaosFanaticKills",
+		name = "Record Chaos Fanatic Loot",
+		description = "Configures whether or not loot from Chaos Fanatic is recorded",
+		position = 12
+	)
+	default boolean recordChaosFanaticKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordCrazedArchaeologistKills",
+		name = "Record Crazed Archaeologist Loot",
+		description = "Configures whether or not loot from Crazed Archaeologist is recorded",
+		position = 13
+	)
+	default boolean recordCrazedArchaeologistKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordScorpiaKills",
+		name = "Record Scorpia Loot",
+		description = "Configures whether or not loot from Scorpia is recorded",
+		position = 14
+	)
+	default boolean recordScorpiaKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordKbdKills",
+			name = "Record King Black Dragon Loot",
+			description = "Configures whether or not loot from King Black Dragon is recorded",
+			position = 15
+	)
+	default boolean recordKbdKills()
+	{
+		return true;
+	}
+
+
+
+	@ConfigItem(
 		keyName = "showChatMessages",
 		name = "In-game Chat Message Alerts",
 		description = "In-Game Chat Messages when Loot Recorded",

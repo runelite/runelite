@@ -139,10 +139,51 @@ public enum UniqueItem
 	PET_KRIL_TSUTSAROTH("Pet k'ril tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH, "Zammy", "Pet", -1),
 
 
+	// Wildy Bosses
+	// Vet'ion
+	RING_OF_THE_GODS("Ring of the gods", ItemID.RING_OF_THE_GODS , "Vet'ion", "Uniques", 0),
+	VETION_JR("Vet'ion jr.", ItemID.VETION_JR , "Vet'ion", "Uniques", 0),
+	SKELETON_CHAMPION_SCROLL("Skeleton champion scroll", ItemID.SKELETON_CHAMPION_SCROLL , "Vet'ion", "Uniques", 0),
+	// Venenatis
+	TREASONOUS_RING("Treasonous ring", ItemID.TREASONOUS_RING , "Venenatis", "Uniques", 0),
+	VENENATIS_SPIDERLING("Venenatis spiderling", ItemID.VENENATIS_SPIDERLING , "Venenatis", "Uniques", 0),
+	// Callisto
+	TYRANNICAL_RING("Tyrannical ring", ItemID.TYRANNICAL_RING , "Callisto", "Uniques", 0),
+	CALLISTO_CUB("Callisto cub", ItemID.CALLISTO_CUB , "Callisto", "Uniques", 0),
+	// Chaos Elemental Uniques are all in Shared
+	// Chaos Fanatic
+	ODIUM_SHARD_1("Odium shard 1", ItemID.ODIUM_SHARD_1 , "Chaos Fanatic", "Uniques", 0),
+	MALEDICTION_SHARD_1("Malediction shard 1", ItemID.MALEDICTION_SHARD_1 , "Chaos Fanatic", "Uniques", 0),
+	// Crazy Archaeologist
+	ODIUM_SHARD_2("Odium shard 2", ItemID.ODIUM_SHARD_2 , "Crazed Archaeologist", "Uniques", 0),
+	MALEDICTION_SHARD_2("Malediction shard 2", ItemID.MALEDICTION_SHARD_2 , "Crazed Archaeologist", "Uniques", 0),
+	FEDORA("Fedora", ItemID.FEDORA , "Crazed Archaeologist", "Uniques", 0),
+	// Scorpia
+	ODIUM_SHARD_3("Odium shard 3", ItemID.ODIUM_SHARD_3 , "Scorpia", "Uniques", 0),
+	MALEDICTION_SHARD_3("Malediction shard 3", ItemID.MALEDICTION_SHARD_3 , "Scorpia", "Uniques", 0),
+	SCORPIAS_OFFSPRING("Scorpia's offspring", ItemID.SCORPIAS_OFFSPRING , "Scorpia", "Uniques", 0),
+	// King Black Dragon,
+	KBD_HEADS("Kbd heads", ItemID.KBD_HEADS , "King Black Dragon", "Uniques", 0),
+	DRACONIC_VISAGE("Draconic visage", ItemID.DRACONIC_VISAGE , "King Black Dragon", "Uniques", 0),
+	PRINCE_BLACK_DRAGON("Prince black dragon", ItemID.PRINCE_BLACK_DRAGON , "King Black Dragon", "Uniques", 0),
+
+
+
+
+
+
+
 	// Shared "Uniques" (Dropped by multiple activities)
+	// God Wars
 	GODSWORD_SHARD_1("Godsword shard 1", ItemID.GODSWORD_SHARD_1, "Armadyl", "Bandos", "Saradomin", "Zammy"),
 	GODSWORD_SHARD_2("Godsword shard 2", ItemID.GODSWORD_SHARD_2, "Armadyl", "Bandos", "Saradomin", "Zammy"),
-	GODSWORD_SHARD_3("Godsword shard 3", ItemID.GODSWORD_SHARD_3, "Armadyl", "Bandos", "Saradomin", "Zammy");
+	GODSWORD_SHARD_3("Godsword shard 3", ItemID.GODSWORD_SHARD_3, "Armadyl", "Bandos", "Saradomin", "Zammy"),
+	// Wildy
+	PET_CHAOS_ELEMENTAL("Pet chaos elemental", ItemID.PET_CHAOS_ELEMENTAL, "Chaos Elemental", "Chaos Fanatic"),
+	// MYSTERIOUS_EMBLEM("Mysterious emblem", ItemID.MYSTERIOUS_EMBLEM , ""),
+	CURVED_BONE("Curved bone", ItemID.CURVED_BONE, "Callisto", "Vet'ion", "Venenatis"),
+	DRAGON_PICKAXE("Dragon pickaxe", ItemID.DRAGON_PICKAXE , "Callisto", "Vet'ion", "Venenatis", "King Black Dragon"),
+	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis");
 
 	UniqueItem(String n, int id, String a, String set, int position)
 	{

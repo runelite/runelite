@@ -25,13 +25,11 @@
 package net.runelite.client.plugins.lootrecorder;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Getter
 public enum Tab
 {
@@ -48,23 +46,37 @@ public enum Tab
 	ARMADYL("Armadyl", "Kree'arra", ItemID.PET_KREEARRA , 4),
 	BANDOS("Bandos", "General Graardor", ItemID.PET_GENERAL_GRAARDOR , 5),
 	SARADOMIN("Saradomin", "Commander Zilyana", ItemID.PET_ZILYANA , 6),
-	ZAMMY("Zammy", "K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , 7);
+	ZAMMY("Zammy", "K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , 7),
 
-	/*
+
 	// Wildy Bosses
-	VETION("Vet'ion", ItemID.VETION_JR , 4),
-	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , 5),
-	CALLISTO("Callisto", ItemID.CALLISTO_CUB , 6),
+	VETION("Vet'ion", ItemID.VETION_JR , 8),
+	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , 9),
+	CALLISTO("Callisto", ItemID.CALLISTO_CUB , 10),
 	// Wildy Demi-Bosses
-	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING , 7),
-	CHAOS_FANATIC("Chaos Fanatic", ItemID.PET_CHAOS_ELEMENTAL , 8),
-	CRAZED_ARCHAEOLOGIST("Crazed Archaeologist", ItemID.FEDORA , 11),
+	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING , 12),
+	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF , 13),
+	CRAZED_ARCHAEOLOGIST("Crazed Archaeologist", ItemID.FEDORA , 14),
 	// Wildy Other
-	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , 9),
-	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 10),
-	aa("", ItemID. , 4);
-	*/
+	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , 11),
+	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 15);
 
+	Tab(String name, String bossName, int itemID, int index)
+	{
+		this.name = name;
+		this.bossName = bossName;
+		this.itemID = itemID;
+		this.index = index;
+	}
+
+
+	Tab(String name, int itemID, int index)
+	{
+		this.name = name;
+		this.bossName = name;
+		this.itemID = itemID;
+		this.index = index;
+	}
 	private final String name;
 	private final String bossName;
 	private final int itemID;
