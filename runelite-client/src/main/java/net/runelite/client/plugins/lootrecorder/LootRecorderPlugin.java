@@ -668,7 +668,7 @@ public class LootRecorderPlugin extends Plugin
 			Integer killcount = 0;
 			mapKillcount.put(bossName, killcount);
 			// Filenames
-			String filename = tab.getName().replace("( |'|\\.)", "").toLowerCase() + ".log";
+			String filename = tab.getName().replaceAll("( |'|\\.)", "").toLowerCase() + ".log";
 			mapFilename.put(bossName, filename);
 		}
 		recordingMap = mapRecording;
