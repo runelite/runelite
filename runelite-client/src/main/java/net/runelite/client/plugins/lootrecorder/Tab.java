@@ -36,19 +36,19 @@ import java.util.Map;
 public enum Tab
 {
 	// Chest Rewards
-	BARROWS("Barrows", ItemID.BARROWS_TELEPORT, 0),
-	RAIDS("Raids", ItemID.OLMLET, 1),
+	BARROWS("Barrows", "Barrows", ItemID.BARROWS_TELEPORT, 0),
+	RAIDS("Raids", "Raids", ItemID.OLMLET, 1),
 
 	// Special Drops  (How loot is dropped)
-	ZULRAH("Zulrah", ItemID.PET_SNAKELING, 2),
-	VORKATH("Vorkath", ItemID.VORKI, 3),
+	ZULRAH("Zulrah", "Zulrah", ItemID.PET_SNAKELING, 2),
+	VORKATH("Vorkath", "Vorkath", ItemID.VORKI, 3),
 
 	// Normal Drops (How loot is dropped)
 	// God wars dungeon
-	KREEARRA("Kree'arra", ItemID.PET_KREEARRA , 4),
-	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR , 5),
-	COMMANDER_ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA , 6),
-	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , 7);
+	ARMADYL("Armadyl", "Kree'arra", ItemID.PET_KREEARRA , 4),
+	BANDOS("Bandos", "General Graardor", ItemID.PET_GENERAL_GRAARDOR , 5),
+	SARADOMIN("Saradomin", "Commander Zilyana", ItemID.PET_ZILYANA , 6),
+	ZAMMY("Zammy", "K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , 7);
 
 	/*
 	// Wildy Bosses
@@ -66,6 +66,7 @@ public enum Tab
 	*/
 
 	private final String name;
+	private final String bossName;
 	private final int itemID;
 	private final int index;
 

@@ -414,7 +414,7 @@ public class LootRecorderPlugin extends Plugin
 				ToggleTab("Bandos", lootRecorderConfig.recordBandosKills());
 				return;
 			case "recordSaradominKills":
-				ToggleTab("Saradomoin", lootRecorderConfig.recordSaradominKills());
+				ToggleTab("Saradomin", lootRecorderConfig.recordSaradominKills());
 				return;
 			case "recordZammyKills":
 				ToggleTab("Zammy", lootRecorderConfig.recordZammyKills());
@@ -481,16 +481,16 @@ public class LootRecorderPlugin extends Plugin
 				loadLootEntries(vorkathFilename, vorkath);
 				break;
 			// God Wars Dungeon
-			case "KREE'ARRA":
+			case "ARMADYL":
 				loadLootEntries(armadylFilename, armadyl);
 				break;
-			case "GENERAL GRAARDOR":
+			case "BANDOS":
 				loadLootEntries(bandosFilename, bandos);
 				break;
-			case "COMMANDER ZILYANA":
+			case "SARADOMIN":
 				loadLootEntries(saradominFilename, saradomin);
 				break;
-			case "K'RIL TSUTSAROTH":
+			case "ZAMMY":
 				loadLootEntries(zammyFilename, zammy);
 				break;
 			default:
@@ -504,6 +504,11 @@ public class LootRecorderPlugin extends Plugin
 		loadLootEntries(raidsFilename, raids);
 		loadLootEntries(zulrahFilename, zulrah);
 		loadLootEntries(vorkathFilename, vorkath);
+		// GWD
+		loadLootEntries(armadylFilename, armadyl);
+		loadLootEntries(bandosFilename, bandos);
+		loadLootEntries(saradominFilename, saradomin);
+		loadLootEntries(zammyFilename, zammy);
 	}
 
 	// Update KC variable on chat message event
@@ -677,13 +682,13 @@ public class LootRecorderPlugin extends Plugin
 			case "VORKATH":
 				return vorkath;
 			// God Wars Dungeon
-			case "KREE'ARRA":
+			case "ARMADYL":
 				return armadyl;
-			case "GENERAL GRAARDOR":
+			case "BANDOS":
 				return bandos;
-			case "COMMANDER ZILYANA":
+			case "SARADOMIN":
 				return saradomin;
-			case "K'RIL TSUTSAROTH":
+			case "ZAMMY":
 				return zammy;
 			default:
 				return null;
@@ -704,13 +709,13 @@ public class LootRecorderPlugin extends Plugin
 			case "VORKATH":
 				return lootRecorderConfig.recordVorkathKills();
 			// God Wars Dungeon
-			case "KREE'ARRA":
+			case "ARMADYL":
 				return lootRecorderConfig.recordArmadylKills();
-			case "GENERAL GRAARDOR":
+			case "BANDOS":
 				return lootRecorderConfig.recordBandosKills();
-			case "COMMANDER ZILYANA":
+			case "SARADOMIN":
 				return lootRecorderConfig.recordSaradominKills();
-			case "K'RIL TSUTSAROTH":
+			case "ZAMMY":
 				return lootRecorderConfig.recordZammyKills();
 			default:
 				return false;

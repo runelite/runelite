@@ -163,7 +163,7 @@ class LootRecorderPanel extends PluginPanel
 
 		// Add new tab to panel
 		int tabIndex = adjustTabIndex(tabsPanel.getTabCount(), tab.getIndex());
-		tabsPanel.insertTab(null, null, tabPanel, tab.getName(), tabIndex);
+		tabsPanel.insertTab(null, null, tabPanel, tab.getBossName(), tabIndex);
 
 		// Add Tab Icon
 		AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());
