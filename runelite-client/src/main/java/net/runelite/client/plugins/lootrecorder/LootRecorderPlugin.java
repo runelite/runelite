@@ -47,7 +47,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -109,41 +108,6 @@ public class LootRecorderPlugin extends Plugin
 
 	@Inject
 	private PluginToolbar pluginToolbar;
-
-	@Getter
-	private ArrayList<LootEntry> barrows = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> raids = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> zulrah = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> vorkath = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> armadyl = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> bandos = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> saradomin = new ArrayList<LootEntry>();
-	@Getter
-	private ArrayList<LootEntry> zammy = new ArrayList<LootEntry>();
-
-	private Integer barrowsNumber;
-	private Integer raidsNumber;
-	private Integer zulrahNumber;
-	private Integer vorkathNumber;
-	private Integer armadylNumber;
-	private Integer bandosNumber;
-	private Integer saradominNumber;
-	private Integer zammyNumber;
-
-	private String barrowsFilename = "barrows.log";
-	private String raidsFilename = "raids.log";
-	private String zulrahFilename = "zulrah.log";
-	private String vorkathFilename = "vorkath.log";
-	private String armadylFilename = "aramdyl.log";
-	private String bandosFilename = "bandos.log";
-	private String saradominFilename = "saradomin.log";
-	private String zammyFilename = "zammy.log";
 
 	private File playerFolder;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -455,9 +419,9 @@ public class LootRecorderPlugin extends Plugin
 		recordingMap.put(bossName, status);
 	}
 
-	void loadTabData(String tabName)
+	void loadTabData(Tab tab)
 	{
-		loadLootEntries(Tab.getByName(tabName));
+		loadLootEntries(tab);
 	}
 
 	void loadAllData()
@@ -488,7 +452,7 @@ public class LootRecorderPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				barrowsNumber = Integer.valueOf(m.group());
+				killcountMap.put("BARROWS", Integer.valueOf(m.group()));
 				return;
 			}
 		}
@@ -499,7 +463,8 @@ public class LootRecorderPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				raidsNumber = Integer.valueOf(m.group());
+				killcountMap.put("RAIDS", Integer.valueOf(m.group()));
+				return;
 			}
 		}
 
@@ -613,7 +578,8 @@ public class LootRecorderPlugin extends Plugin
 	ArrayList<LootEntry> getData(String type)
 	{
 		// Loot Entries are stored on lootMap by boss name (upper cased)
-		return lootMap.get(Tab.getByName(type).getBossName().toUpperCase());
+		String name = Tab.getByName(type).getBossName().toUpperCase();
+		return lootMap.get(name);
 	}
 
 	// Handles if panel should be shown by Tab Name

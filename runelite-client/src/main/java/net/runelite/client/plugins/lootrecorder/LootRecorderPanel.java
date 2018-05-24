@@ -121,9 +121,9 @@ class LootRecorderPanel extends PluginPanel
 	private void refreshLootPanel(LootPanel lootPanel, Tab tab)
 	{
 		// Refresh data for necessary tab
-		lootRecorderPlugin.loadTabData(tab.getName());
+		lootRecorderPlugin.loadTabData(tab);
 		// Recreate the loot panel
-		lootPanel.refreshPanel();
+		lootPanel.updateRecords(lootRecorderPlugin.getData(tab.getName()));
 		// Ensure changes are applied
 		this.revalidate();
 		this.repaint();
@@ -231,10 +231,11 @@ class LootRecorderPanel extends PluginPanel
 
 	void updateTab(String tabName)
 	{
+		Tab tab = Tab.getByName(tabName);
 		// Reload data from file to ensure data and UI match
-		lootRecorderPlugin.loadTabData(tabName);
+		lootRecorderPlugin.loadTabData(tab);
 		// Grab LootPanel that needs to be updated
-		LootPanel p = lootMap.get(tabName.toUpperCase());
+		LootPanel p = lootMap.get(tab.getName().toUpperCase());
 		// Invoke Later to ensure EDT thread
 		SwingUtilities.invokeLater(() -> p.updateRecords(lootRecorderPlugin.getData(tabName)));
 	}
