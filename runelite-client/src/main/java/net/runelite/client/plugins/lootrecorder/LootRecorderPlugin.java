@@ -54,6 +54,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -67,7 +68,9 @@ import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -203,6 +206,35 @@ public class LootRecorderPlugin extends Plugin
 			LootEntry entry = createLootEntry(kc, rewardContainer);
 			addLootEntry("Raids", entry);
 			lootRecordedAlert("Raids Chest Loot added to log.");
+		}
+
+
+		if (event.getGroupId() == WidgetID.DIALOG_SPRITE_GROUP_ID)
+		{
+			Widget sprite = client.getWidget(WidgetInfo.DIALOG_SPRITE);
+			int itemID = sprite.getItemId();
+			switch (itemID)
+			{
+				case ItemID.BLUDGEON_CLAW:
+					break;
+				case ItemID.BLUDGEON_SPINE:
+					break;
+				case ItemID.BLUDGEON_AXON:
+					break;
+				case ItemID.ABYSSAL_DAGGER:
+					break;
+				case ItemID.ABYSSAL_WHIP:
+					break;
+				case ItemID.ABYSSAL_ORPHAN:
+					break;
+				case ItemID.JAR_OF_MIASMA:
+					break;
+				case ItemID.ABYSSAL_HEAD:
+					break;
+				default:
+					return;
+			}
+			receivedUnsiredLoot(itemID);
 		}
 	}
 
@@ -762,6 +794,54 @@ public class LootRecorderPlugin extends Plugin
 		else
 		{
 			playerFolder = LOOTS_DIR;
+		}
+	}
+
+	void receivedUnsiredLoot(int itemID)
+	{
+		DropEntry drop = new DropEntry(itemID, 1);
+		// Update the last drop
+		addDropToLastLootEntry("Abyssal Sire", drop);
+	}
+
+	// Add Loot Entry to the necessary file
+	private void addDropToLastLootEntry(String bossName, DropEntry newDrop)
+	{
+		// Update data inside plugin
+		ArrayList<LootEntry> loots = lootMap.get(bossName.toUpperCase());
+		LootEntry entry = loots.get(loots.size() - 1);
+		entry.drops.add(newDrop);
+		// Ensure updates are applied, may not be necessary
+		loots.add(loots.size() - 1, entry);
+		lootMap.put(bossName.toUpperCase(), loots);
+
+		// Grab file by username or loots directory if not logged in
+		updatePlayerFolder();
+		String fileName = filenameMap.get(bossName.toUpperCase());
+
+		// Rewrite the log file (to update the last loot entry)
+		File lootFile = new File(playerFolder, fileName);
+		try
+		{
+			BufferedWriter file = new BufferedWriter(new FileWriter(String.valueOf(lootFile), false));
+			for ( LootEntry lootEntry : loots)
+			{
+				// Convert entry to JSON
+				String dataAsString = RuneLiteAPI.GSON.toJson(lootEntry);
+				file.append(dataAsString);
+				file.newLine();
+			}
+			file.close();
+		}
+		catch (IOException ioe)
+		{
+			log.warn("Error witting loot data in file.", ioe);
+		}
+		// Update tab if being displayed;
+		Tab tab = Tab.getByBossName(bossName);
+		if (isBeingRecorded(tab.getName()))
+		{
+			panel.updateTab(tab.getName());
 		}
 	}
 }

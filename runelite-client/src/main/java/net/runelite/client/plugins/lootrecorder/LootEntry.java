@@ -39,5 +39,5 @@ class LootEntry
 	private final Integer kill_count;
 
 	@Getter
-	private final ArrayList<DropEntry> drops;
+	final ArrayList<DropEntry> drops;
 }
