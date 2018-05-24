@@ -94,14 +94,14 @@ public enum UniqueItem
 
 	// Zulrah
 	// Uniques
-	TANZANITE_FANG("Tanzanite fang", ItemID.TANZANITE_FANG, "Zulrah", "Uniques", 0),
-	MAGIC_FANG("Magic fang", ItemID.MAGIC_FANG, "Zulrah", "Uniques", 0),
-	SERPENTINE_VISAGE("Serpentine visage", ItemID.SERPENTINE_VISAGE, "Zulrah", "Uniques", 0),
+	TANZANITE_FANG("Tanzanite fang", ItemID.TANZANITE_FANG, "Zulrah", "Uniques", -1),
+	MAGIC_FANG("Magic fang", ItemID.MAGIC_FANG, "Zulrah", "Uniques", -1),
+	SERPENTINE_VISAGE("Serpentine visage", ItemID.SERPENTINE_VISAGE, "Zulrah", "Uniques", -1),
 	// Rares
-	PET_SNAKELING("Pet snakeling", ItemID.PET_SNAKELING, "Zulrah", "Rares", 1),
-	TANZANITE_MUTAGEN("Tanzanite mutagen", ItemID.TANZANITE_MUTAGEN, "Zulrah", "Rares", 1),
-	MAGMA_MUTAGEN("Magma mutagen", ItemID.MAGMA_MUTAGEN, "Zulrah", "Rares", 1),
-	JAR_OF_SWAMP("Jar of swamp", ItemID.JAR_OF_SWAMP, "Zulrah", "Rares", 1),
+	PET_SNAKELING("Pet snakeling", ItemID.PET_SNAKELING, "Zulrah", "Rares", 0),
+	TANZANITE_MUTAGEN("Tanzanite mutagen", ItemID.TANZANITE_MUTAGEN, "Zulrah", "Rares", 0),
+	MAGMA_MUTAGEN("Magma mutagen", ItemID.MAGMA_MUTAGEN, "Zulrah", "Rares", 0),
+	JAR_OF_SWAMP("Jar of swamp", ItemID.JAR_OF_SWAMP, "Zulrah", "Rares", 0),
 
 	// Vorkath
 	DRAGONBONE_NECKLACE("Dragonbone necklace", ItemID.DRAGONBONE_NECKLACE, "Vorkath", "Uniques", 0),
@@ -151,8 +151,8 @@ public enum UniqueItem
 	CALLISTO_CUB("Callisto cub", ItemID.CALLISTO_CUB , "Callisto", "Uniques", 0),
 	// Chaos Elemental Uniques are all in Shared
 	// Chaos Fanatic
-	ODIUM_SHARD_1("Odium shard 1", ItemID.ODIUM_SHARD_1 , "Chaos Fanatic", "Uniques", 0),
-	MALEDICTION_SHARD_1("Malediction shard 1", ItemID.MALEDICTION_SHARD_1 , "Chaos Fanatic", "Uniques", 0),
+	ODIUM_SHARD_1("Odium shard 1", ItemID.ODIUM_SHARD_1 , "Chaos Fanatic", "Uniques", -1),
+	MALEDICTION_SHARD_1("Malediction shard 1", ItemID.MALEDICTION_SHARD_1 , "Chaos Fanatic", "Uniques", -1),
 	// Crazy Archaeologist
 	ODIUM_SHARD_2("Odium shard 2", ItemID.ODIUM_SHARD_2 , "Crazed Archaeologist", "Uniques", 0),
 	MALEDICTION_SHARD_2("Malediction shard 2", ItemID.MALEDICTION_SHARD_2 , "Crazed Archaeologist", "Uniques", 0),
