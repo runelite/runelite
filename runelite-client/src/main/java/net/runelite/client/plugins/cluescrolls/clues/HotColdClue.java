@@ -234,7 +234,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		}
 	}
 
-	@Override
 	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
 		if (!message.startsWith("The device is"))

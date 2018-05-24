@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Eadgars Ruse <https://github.com/Eadgars-Ruse>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,8 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import java.util.List;
-import net.runelite.api.coords.WorldPoint;
 
-public interface LocationsClueScroll
+public interface ObjectsClueScroll extends LocationsClueScroll
 {
-	void reset();
-
-	List<WorldPoint> getLocations();
+	List<Integer> getObjectIds();
 }

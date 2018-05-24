@@ -80,8 +80,11 @@ import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.NpcsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.ObjectsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.QueryRunner;
@@ -191,9 +194,9 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		if (clue instanceof LocationsClueScroll)
+		if (clue instanceof HotColdClue)
 		{
-			if (((LocationsClueScroll)clue).update(event.getMessage(), this))
+			if (((HotColdClue)clue).update(event.getMessage(), this))
 			{
 				worldMapPointsSet = false;
 			}
@@ -236,6 +239,12 @@ public class ClueScrollPlugin extends Plugin
 			{
 				resetClue();
 			}
+		}
+
+		// if three step clue check for clue scroll pieces
+		if (clue instanceof ThreeStepCrypticClue)
+		{
+			((ThreeStepCrypticClue) clue).checkForParts(client, event, itemManager);
 		}
 	}
 
@@ -314,6 +323,28 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
+		if (clue instanceof NpcsClueScroll)
+		{
+			List<String> npcs = ((NpcsClueScroll) clue).getNpcs();
+
+			if (!npcs.isEmpty())
+			{
+				Query query = new NPCQuery().nameEquals(npcs.toArray(new String[0]));
+				npcsToMark = queryRunner.runQuery(query);
+
+				// Set hint arrow to first NPC found as there can only be 1 hint arrow
+				if (npcsToMark.length >= 1)
+				{
+					if (config.displayHintArrows())
+					{
+						client.setHintArrow(npcsToMark[0]);
+					}
+
+					addMapPoints(npcsToMark[0].getWorldLocation());
+				}
+			}
+		}
+
 		if (clue instanceof ObjectClueScroll)
 		{
 			final ObjectClueScroll objectClueScroll = (ObjectClueScroll) clue;
@@ -342,6 +373,43 @@ public class ClueScrollPlugin extends Plugin
 						if (config.displayHintArrows() && objectsToMark.length >= 1)
 						{
 							client.setHintArrow(objectsToMark[0].getWorldLocation());
+						}
+					}
+				}
+			}
+		}
+
+		if (clue instanceof ObjectsClueScroll)
+		{
+			final ObjectsClueScroll objectsClueScroll = (ObjectsClueScroll) clue;
+			List<Integer> objectIds = objectsClueScroll.getObjectIds();
+
+			if (!objectIds.isEmpty())
+			{
+				// Match object with location every time
+				final List<WorldPoint> locations = objectsClueScroll.getLocations();
+
+				if (!locations.isEmpty())
+				{
+					for (WorldPoint location : locations)
+					{
+						final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+						if (localLocation != null)
+						{
+							final Region region = client.getRegion();
+							final Tile[][][] tiles = region.getTiles();
+							final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
+
+							objectsToMark = Arrays.stream(tile.getGameObjects())
+								.filter(object -> object != null && objectIds.contains(object.getId()))
+								.toArray(GameObject[]::new);
+
+							// Set hint arrow to first object found as there can only be 1 hint arrow
+							if (config.displayHintArrows() && objectsToMark.length >= 1)
+							{
+								client.setHintArrow(objectsToMark[0].getWorldLocation());
+							}
 						}
 					}
 				}
@@ -486,6 +554,14 @@ public class ClueScrollPlugin extends Plugin
 				if (hotColdClue != null)
 				{
 					return hotColdClue;
+				}
+
+				// three step cryptic clues need unedited text to check which steps are already done
+				final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(clueScrollText.getText());
+
+				if (threeStepCrypticClue != null)
+				{
+					return threeStepCrypticClue;
 				}
 
 				// We have unknown clue, reset
