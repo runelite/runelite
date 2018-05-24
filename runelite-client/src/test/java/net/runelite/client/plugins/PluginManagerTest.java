@@ -136,6 +136,10 @@ public class PluginManagerTest
 		pluginManager.loadCorePlugins();
 		for (Plugin p : pluginManager.getPlugins())
 		{
+			if (p.getClass().getAnnotation(PluginDescriptor.class).skipTest())
+			{
+				continue;
+			}
 			modules.add(p);
 		}
 

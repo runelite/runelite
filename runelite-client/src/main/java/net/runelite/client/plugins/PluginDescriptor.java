@@ -45,6 +45,14 @@ public @interface PluginDescriptor
 	 */
 	boolean hidden() default false;
 
+	/**
+	 * If you have more then 1 config file change it to true to load the one in the same package
+	 * @return
+	 */
+	boolean moreThenOneConfig() default false;
+
+	boolean skipTest() default false;
+
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;
