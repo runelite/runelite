@@ -44,16 +44,13 @@ public class ScreenMarkerCreationPanel extends JPanel
 {
 	private static final ImageIcon CONFIRM_ICON;
 	private static final ImageIcon CONFIRM_HOVER_ICON;
-
 	private static final ImageIcon CONFIRM_LOCKED_ICON;
-
 	private static final ImageIcon CANCEL_ICON;
 	private static final ImageIcon CANCEL_HOVER_ICON;
 
 	private final JShadowedLabel instructionsLabel = new JShadowedLabel();
 	private final JLabel confirmLabel = new JLabel();
-
-	private boolean lockedConfirm;
+	private boolean lockedConfirm = true;
 
 	static
 	{
@@ -74,10 +71,8 @@ public class ScreenMarkerCreationPanel extends JPanel
 		}
 	}
 
-	public ScreenMarkerCreationPanel(ScreenMarkerPlugin plugin)
+	ScreenMarkerCreationPanel(ScreenMarkerPlugin plugin)
 	{
-		this.lockedConfirm = true;
-
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		setBorder(new EmptyBorder(8, 8, 8, 8));
 		setLayout(new BorderLayout());
@@ -145,16 +140,12 @@ public class ScreenMarkerCreationPanel extends JPanel
 		add(actionsContainer, BorderLayout.EAST);
 	}
 
-	public void setInstruction(String text)
-	{
-		instructionsLabel.setText(text);
-	}
-
 	/* Unlocks the confirm button */
 	public void unlockConfirm()
 	{
 		this.confirmLabel.setIcon(CONFIRM_ICON);
 		this.lockedConfirm = false;
+		instructionsLabel.setText("Confirm or cancel to finish.");
 	}
 
 	/* Locks the confirm button */
@@ -162,12 +153,6 @@ public class ScreenMarkerCreationPanel extends JPanel
 	{
 		this.confirmLabel.setIcon(CONFIRM_LOCKED_ICON);
 		this.lockedConfirm = true;
-	}
-
-	/* Resets this panel to it's default state (locked button) and sets a given instruction string */
-	public void reset(String message)
-	{
-		lockConfirm();
-		setInstruction(message);
+		instructionsLabel.setText("Drag in-game to draw");
 	}
 }

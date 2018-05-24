@@ -40,9 +40,4 @@ public class ScreenMarker
 	private Color color;
 	private Color fill;
 	private boolean visible;
-
-	public boolean isFullyTransparent()
-	{
-		return fill != null && fill.getAlpha() == 0;
-	}
 }

@@ -54,7 +54,7 @@ import net.runelite.client.util.SwingUtil;
 
 class ScreenMarkerPanel extends JPanel
 {
-	public static final int DEFAULT_FILL_OPACITY = 75;
+	private static final int DEFAULT_FILL_OPACITY = 75;
 
 	private static final ImageIcon BORDER_COLOR_ICON;
 	private static final ImageIcon BORDER_COLOR_HOVER_ICON;
@@ -91,7 +91,6 @@ class ScreenMarkerPanel extends JPanel
 	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
 
 	private boolean visible;
-	private boolean editingThickness;
 
 	static
 	{
@@ -144,11 +143,7 @@ class ScreenMarkerPanel extends JPanel
 		this.plugin = plugin;
 		this.marker = marker;
 		this.visible = marker.getMarker().isVisible();
-		construct();
-	}
 
-	private void construct()
-	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
@@ -193,22 +188,19 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				fillColorIndicator.setIcon(marker.getMarker().isFullyTransparent() ? NO_FILL_COLOR_HOVER_ICON : FILL_COLOR_HOVER_ICON);
+				fillColorIndicator.setIcon(marker.getMarker().getFill().getAlpha() == 0 ? NO_FILL_COLOR_HOVER_ICON : FILL_COLOR_HOVER_ICON);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				fillColorIndicator.setIcon(marker.getMarker().getBorderThickness() == 0 ? NO_FILL_COLOR_ICON : FILL_COLOR_ICON);
+				fillColorIndicator.setIcon(marker.getMarker().getFill().getAlpha() == 0 ? NO_FILL_COLOR_ICON : FILL_COLOR_ICON);
 			}
 		});
 
 		thicknessSpinner.setValue(marker.getMarker().getBorderThickness());
 		thicknessSpinner.setPreferredSize(new Dimension(50, 20));
-		thicknessSpinner.addChangeListener(ce ->
-		{
-			updateThickness(true);
-		});
+		thicknessSpinner.addChangeListener(ce -> updateThickness(true));
 
 		opacityIndicator.setToolTipText("Toggle background transparency");
 		opacityIndicator.addMouseListener(new MouseAdapter()
@@ -216,9 +208,9 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				Color fill = marker.getMarker().getFill();
+				final Color fill = marker.getMarker().getFill();
 
-				if (marker.getMarker().isFullyTransparent())
+				if (fill.getAlpha() == 0)
 				{
 					marker.getMarker().setFill(new Color(fill.getRed(), fill.getGreen(), fill.getBlue(), DEFAULT_FILL_OPACITY));
 				}
@@ -240,7 +232,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				opacityIndicator.setIcon(marker.getMarker().isFullyTransparent() ? NO_OPACITY_ICON : FULL_OPACITY_ICON);
+				opacityIndicator.setIcon(marker.getMarker().getFill().getAlpha() == 0 ? NO_OPACITY_ICON : FULL_OPACITY_ICON);
 			}
 		});
 
@@ -316,7 +308,6 @@ class ScreenMarkerPanel extends JPanel
 		add(bottomContainer, BorderLayout.CENTER);
 
 		updateVisibility();
-		updateOpacity();
 		updateFill();
 		updateBorder();
 		updateBorder();
@@ -341,7 +332,9 @@ class ScreenMarkerPanel extends JPanel
 
 	private void updateFill()
 	{
-		if (marker.getMarker().isFullyTransparent())
+		final boolean isFullyTransparent = marker.getMarker().getFill().getAlpha() == 0;
+
+		if (isFullyTransparent)
 		{
 			fillColorIndicator.setBorder(null);
 		}
@@ -352,7 +345,8 @@ class ScreenMarkerPanel extends JPanel
 			fillColorIndicator.setBorder(new MatteBorder(0, 0, 3, 0, fullColor));
 		}
 
-		updateOpacity();
+		fillColorIndicator.setIcon(isFullyTransparent ? NO_FILL_COLOR_ICON : FILL_COLOR_ICON);
+		opacityIndicator.setIcon(isFullyTransparent ? NO_OPACITY_ICON : FULL_OPACITY_ICON);
 	}
 
 	private void updateBorder()
@@ -368,12 +362,6 @@ class ScreenMarkerPanel extends JPanel
 		}
 
 		borderColorIndicator.setIcon(marker.getMarker().getBorderThickness() == 0 ? NO_BORDER_COLOR_ICON : BORDER_COLOR_ICON);
-	}
-
-	private void updateOpacity()
-	{
-		fillColorIndicator.setIcon(marker.getMarker().isFullyTransparent() ? NO_FILL_COLOR_ICON : FILL_COLOR_ICON);
-		opacityIndicator.setIcon(marker.getMarker().isFullyTransparent() ? NO_OPACITY_ICON : FULL_OPACITY_ICON);
 	}
 
 	private void openFillColorPicker()

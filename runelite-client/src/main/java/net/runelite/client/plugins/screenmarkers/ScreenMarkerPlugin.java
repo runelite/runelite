@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.screenmarkers;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -70,9 +69,6 @@ public class ScreenMarkerPlugin extends Plugin
 
 	@Getter
 	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
-
-	@Inject
-	private EventBus eventBus;
 
 	@Inject
 	private ConfigManager configManager;
@@ -212,7 +208,6 @@ public class ScreenMarkerPlugin extends Plugin
 	/* The marker area has been drawn, inform the user and unlock the confirm button */
 	public void completeSelection()
 	{
-		pluginPanel.getCreationPanel().setInstruction("Confirm or cancel to finish.");
 		pluginPanel.getCreationPanel().unlockConfirm();
 	}
 

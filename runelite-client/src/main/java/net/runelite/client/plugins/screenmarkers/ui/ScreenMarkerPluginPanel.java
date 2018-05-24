@@ -203,7 +203,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		if (on)
 		{
-			creationPanel.reset("Drag ingame to draw");
+			creationPanel.lockConfirm();
 			plugin.setMouseListenerEnabled(true);
 		}
 	}
