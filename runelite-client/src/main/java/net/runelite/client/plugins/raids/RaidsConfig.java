@@ -58,6 +58,17 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 1,
+			keyName = "rotationMessage",
+			name = "Display rotation in chatbox when entering raids room",
+			description = "Display a message with full rotation when entering the raid start room"
+	)
+	default boolean rotationMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 2,
 		keyName = "scoutOverlay",
 		name = "Show scout overlay",

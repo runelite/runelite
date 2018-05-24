@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import com.google.common.base.Predicate;
 import lombok.Getter;
@@ -124,18 +125,25 @@ public class Raid
 
 	public String getFullRotationString()
 	{
-		Object[] objects = Arrays.stream(rooms).filter(raidRoom ->
-		{
-			if (raidRoom != null && raidRoom.getType() != null) {
-				return raidRoom.getType() == RaidRoom.Type.COMBAT || raidRoom.getType() == RaidRoom.Type.PUZZLE;
-			}
-			return false;
-		}).map(raidRoom ->
-		{
-			return raidRoom.getType() == RaidRoom.Type.COMBAT ? raidRoom.getBoss().getName() : raidRoom.getPuzzle().getName();
-		}).toArray();
+		Object[] roomNames = getLayout().getRooms().stream().map(layoutRoom -> {
+			int position = layoutRoom.getPosition();
+			RaidRoom raidRoom = getRoom(position);
 
-		return Joiner.on(", ").join(objects);
+			if (raidRoom != null && raidRoom.getType() != null) {
+				switch (raidRoom.getType())
+				{
+					case COMBAT:
+						return raidRoom.getBoss().getName();
+					case PUZZLE:
+						return raidRoom.getPuzzle().getName();
+					default:
+						return null;
+				}
+			}
+			return null;
+		}).filter(Objects::nonNull).toArray();
+
+		return Joiner.on(", ").join(roomNames);
 	}
 
 	public String toCode()

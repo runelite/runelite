@@ -156,11 +156,6 @@ public class RaidsPlugin extends Plugin
 			updateInfoBoxState();
 		}
 
-		if (config.pointsMessage())
-		{
-			cacheColors();
-		}
-
 		updateLists();
 	}
 
@@ -176,11 +171,6 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.pointsMessage())
-		{
-			cacheColors();
-		}
-
 		if (event.getKey().equals("raidsTimer"))
 		{
 			updateInfoBoxState();
@@ -254,7 +244,11 @@ public class RaidsPlugin extends Plugin
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
-				postRaidsLayout();
+
+				if (config.rotationMessage())
+				{
+					postRaidsLayout();
+				}
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -272,11 +266,14 @@ public class RaidsPlugin extends Plugin
 
 	private void postRaidsLayout()
 	{
+		cacheRotationColors();
+
 		final ChatMessageBuilder message = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
+			.append(ChatColorType.NORMAL)
 			.append("Rotation: ")
-			.append(raid.getFullRotationString())
-			.append(ChatColorType.NORMAL);
+			.append(ChatColorType.HIGHLIGHT)
+			.append(raid.getFullRotationString());
+
 
 		chatMessageManager.queue(QueuedMessage.builder()
 			.type(ChatMessageType.CLANCHAT_INFO)
@@ -312,6 +309,7 @@ public class RaidsPlugin extends Plugin
 
 				if (config.pointsMessage())
 				{
+					cachePointColors();
 					int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 					int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 
@@ -394,13 +392,19 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void cacheColors()
+	private void cachePointColors()
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
-				.refreshAll();
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
+			.refreshAll();
+	}
+
+	private void cacheRotationColors()
+	{	chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.MAGENTA, false), ChatMessageType.CLANCHAT_INFO)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.MAGENTA, true), ChatMessageType.CLANCHAT_INFO)
+			.refreshAll();
 	}
 
 	public int getRotationMatches()
