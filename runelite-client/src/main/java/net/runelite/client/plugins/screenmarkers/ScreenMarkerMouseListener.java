@@ -88,7 +88,8 @@ public class ScreenMarkerMouseListener extends MouseListener
 
 		if (SwingUtilities.isLeftMouseButton(event) && plugin.isCreatingScreenMarker())
 		{
-			plugin.finishCreation(false);
+			/* Set the creation panel as "ready" (because the marker area as been drawn) */
+			plugin.completeSelection();
 		}
 
 		event.consume();
