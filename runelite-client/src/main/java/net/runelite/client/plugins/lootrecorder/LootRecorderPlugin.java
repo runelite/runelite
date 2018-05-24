@@ -296,8 +296,14 @@ public class LootRecorderPlugin extends Plugin
 			Actor npc = despawned.getActor();
 			if (npc.getName().equals(deathName) && npc.getWorldLocation().equals(deathSpot))
 			{
+				LocalPoint point = npc.getLocalLocation();
+				// Kraken spawns loot under you
+				if (npc.getName().equals("Kraken"))
+				{
+					point = client.getLocalPlayer().getLocalLocation();
+				}
 				watching = false;
-				ArrayList<DropEntry> drops = createDropEntryArray(npc.getLocalLocation());
+				ArrayList<DropEntry> drops = createDropEntryArray(point);
 				deathName = null;
 				deathSpot = null;
 				deathSize = -1;
