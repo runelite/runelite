@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,84 +29,147 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+import net.runelite.client.ui.components.PluginErrorPanel;
 
 @Singleton
 public class ScreenMarkerPluginPanel extends PluginPanel
 {
-	private static final String TITLE = "Screen Markers";
-	private static final Color DEFAULT_COLOR = Color.BLUE;
-	private static final int DEFAULT_BORDER_THICKNESS = 5;
-	private static final int DEFAULT_FILL_OPACITY = 75;
-	private static final String COLOR_PICKER_TITLE = "Choose a color..";
-	private static final String COLOR_TEXT = "Color";
-	private static final String FILL_TEXT = "Fill";
-	private static final String NEW_TEXT = "New";
-	private static final String CANCEL_TEXT = "Cancel";
-	private static final Color CANCEL_BUTTON_COLOR = Color.RED.darker();
+	private static final ImageIcon ADD_ICON;
+	private static final ImageIcon ADD_HOVER_ICON;
+
+	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
+	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
+
+	private static final int DEFAULT_BORDER_THICKNESS = 3;
+
+	private final JLabel addMarker = new JLabel(ADD_ICON);
+	private final JLabel title = new JLabel();
+	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 
 	@Inject
 	private ScreenMarkerPlugin plugin;
 
-	private JButton markerButton;
+	@Getter
+	private Color selectedColor = DEFAULT_BORDER_COLOR;
 
 	@Getter
-	private Color selectedColor = DEFAULT_COLOR;
-
-	@Getter
-	private Color selectedFillColor = new Color(DEFAULT_COLOR.getRed(), DEFAULT_COLOR.getGreen(), DEFAULT_COLOR.getBlue(), DEFAULT_FILL_OPACITY);
+	private Color selectedFillColor = DEFAULT_FILL_COLOR;
 
 	@Getter
 	private int selectedBorderThickness = DEFAULT_BORDER_THICKNESS;
 
-	private boolean creationEnabled = false;
+	@Getter
+	private ScreenMarkerCreationPanel creationPanel;
+
+	static
+	{
+		try
+		{
+			synchronized (ImageIO.class)
+			{
+				ADD_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_icon.png")));
+				ADD_HOVER_ICON = new ImageIcon(ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream("add_hover_icon.png")));
+			}
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	public void init()
 	{
 		setLayout(new BorderLayout());
-		JPanel northPanel = new JPanel(new GridLayout(0, 2, 0, 3));
+		setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		markerButton = new JButton(NEW_TEXT);
-		markerButton.setFocusable(false);
-		markerButton.addActionListener(l -> startOrCancelCreation());
+		JPanel northPanel = new JPanel(new BorderLayout());
+		northPanel.setBorder(new EmptyBorder(1, 0, 10, 0));
 
-		northPanel.add(new JShadowedLabel(TITLE));
-		northPanel.add(new JLabel());
-		northPanel.add(new JShadowedLabel("Border size:"));
-		northPanel.add(createBorderThicknessSpinner());
-		northPanel.add(new JShadowedLabel("Border color:"));
-		northPanel.add(createBorderColorButton());
-		northPanel.add(new JShadowedLabel("Fill color:"));
-		northPanel.add(createFillColorButton());
+		title.setText("Screen Markers");
+		title.setForeground(Color.WHITE);
 
-		northPanel.add(markerButton);
+		northPanel.add(title, BorderLayout.WEST);
+		northPanel.add(addMarker, BorderLayout.EAST);
 
-		JPanel centerPanel = new JPanel();
-		JPanel markerView = new JPanel(new GridLayout(0, 1, 0, 3));
+		JPanel centerPanel = new JPanel(new BorderLayout());
+		centerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		JPanel markerView = new JPanel(new GridBagLayout());
+		markerView.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
 
 		for (final ScreenMarkerOverlay marker : plugin.getScreenMarkers())
 		{
-			markerView.add(new ScreenMarkerPanel(plugin, marker));
+			markerView.add(new ScreenMarkerPanel(plugin, marker), constraints);
+			constraints.gridy++;
+
+			markerView.add(Box.createRigidArea(new Dimension(0, 10)), constraints);
+			constraints.gridy++;
 		}
 
-		centerPanel.add(markerView, BorderLayout.NORTH);
+		noMarkersPanel.setContent("Screen Markers", "Highlight a region on your screen.");
+		noMarkersPanel.setVisible(false);
+
+		if (plugin.getScreenMarkers().isEmpty())
+		{
+			noMarkersPanel.setVisible(true);
+			title.setVisible(false);
+		}
+
+		markerView.add(noMarkersPanel, constraints);
+		constraints.gridy++;
+
+		creationPanel = new ScreenMarkerCreationPanel(plugin);
+		creationPanel.setVisible(false);
+
+		markerView.add(creationPanel, constraints);
+		constraints.gridy++;
+
+		addMarker.setToolTipText("Add new screen marker");
+		addMarker.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				setCreation(true);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				addMarker.setIcon(ADD_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				addMarker.setIcon(ADD_ICON);
+			}
+		});
+
+		centerPanel.add(markerView, BorderLayout.CENTER);
 
 		add(northPanel, BorderLayout.NORTH);
 		add(centerPanel, BorderLayout.CENTER);
@@ -119,93 +183,28 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		init();
 	}
 
-	private void startOrCancelCreation()
+	/* Enables/Disables new marker creation mode */
+	public void setCreation(boolean on)
 	{
-		creationEnabled = !creationEnabled;
-		plugin.setMouseListenerEnabled(creationEnabled);
-		setMarkerButtonState(creationEnabled);
-	}
-
-	public void setCreationEnabled(boolean creationEnabled)
-	{
-		this.creationEnabled = creationEnabled;
-		setMarkerButtonState(creationEnabled);
-	}
-
-	private void setMarkerButtonState(boolean selected)
-	{
-		markerButton.setSelected(selected);
-		markerButton.setText(selected ? CANCEL_TEXT : NEW_TEXT);
-		markerButton.setBackground(selected ? CANCEL_BUTTON_COLOR : null);
-	}
-
-	private JSpinner createBorderThicknessSpinner()
-	{
-		SpinnerModel model = new SpinnerNumberModel(selectedBorderThickness, 0, Integer.MAX_VALUE, 1);
-		JSpinner spinner = new JSpinner(model);
-		Component editor = spinner.getEditor();
-		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
-		spinnerTextField.setColumns(5);
-		spinner.addChangeListener(ce -> selectedBorderThickness = (Integer) spinner.getValue());
-		return spinner;
-	}
-
-	private JButton createBorderColorButton()
-	{
-		JButton colorPicker = new JButton(COLOR_TEXT);
-		colorPicker.setFocusable(false);
-		colorPicker.setBackground(selectedColor);
-		colorPicker.addActionListener(e ->
+		if (on)
 		{
-			final JFrame parent = new JFrame(COLOR_PICKER_TITLE);
-			JColorChooser jColorChooser = new JColorChooser(selectedColor);
-			jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
-
-			parent.addWindowListener(new WindowAdapter()
-			{
-				@Override
-				public void windowClosing(WindowEvent e)
-				{
-					selectedColor = jColorChooser.getColor();
-				}
-			});
-
-			parent.add(jColorChooser);
-			parent.pack();
-			parent.setLocationRelativeTo(null);
-			parent.setVisible(true);
-		});
-
-		return colorPicker;
-	}
-
-	private JButton createFillColorButton()
-	{
-		JButton colorPicker = new JButton(FILL_TEXT);
-		colorPicker.setFocusable(false);
-		colorPicker.setBackground(selectedFillColor);
-		colorPicker.addActionListener(e ->
+			noMarkersPanel.setVisible(false);
+			title.setVisible(true);
+		}
+		else
 		{
-			final JFrame parent = new JFrame(COLOR_PICKER_TITLE);
-			JColorChooser jColorChooser = new JColorChooser(selectedFillColor);
-			jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
+			boolean empty = plugin.getScreenMarkers().isEmpty();
+			noMarkersPanel.setVisible(empty);
+			title.setVisible(!empty);
+		}
 
-			parent.addWindowListener(new WindowAdapter()
-			{
-				@Override
-				public void windowClosing(WindowEvent e)
-				{
-					Color color = jColorChooser.getColor();
-					selectedFillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), DEFAULT_FILL_OPACITY);
-				}
-			});
+		creationPanel.setVisible(on);
+		addMarker.setVisible(!on);
 
-			parent.add(jColorChooser);
-			parent.pack();
-			parent.setLocationRelativeTo(null);
-			parent.setVisible(true);
-		});
-
-		return colorPicker;
+		if (on)
+		{
+			creationPanel.lockConfirm();
+			plugin.setMouseListenerEnabled(true);
+		}
 	}
 }
