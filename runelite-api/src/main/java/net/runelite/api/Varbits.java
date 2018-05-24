@@ -345,6 +345,11 @@ public enum Varbits
 	 * The varbit that stores the players {@code AccountType}.
 	 */
 	ACCOUNT_TYPE(1777);
+	
+	/**
+	 * 1 or 0 whether you are in the Wilderness or not.
+	 */
+	IN_WILDERNESS(5962);
 
 	/**
 	 * varbit id
