@@ -212,6 +212,72 @@ public interface LootRecorderConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+			keyName = "recordSkotizoKills",
+			name = "Record Skotizo Loot",
+			description = "Configures whether or not loot from Skotizo is recorded",
+			position = 16
+	)
+	default boolean recordSkotizoKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordGrotesqueGuardiansKills",
+			name = "Record Grotesque Guardians Loot",
+			description = "Configures whether or not loot from Grotesque Guardians is recorded",
+			position = 17
+	)
+	default boolean recordGrotesqueGuardiansKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordAbyssalSireKills",
+			name = "Record Abyssal Sire Loot",
+			description = "Configures whether or not loot from Abyssal Sire is recorded",
+			position = 18
+	)
+	default boolean recordAbyssalSireKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordKrakenKills",
+			name = "Record Kraken Loot",
+			description = "Configures whether or not loot from Kraken is recorded",
+			position = 19
+	)
+	default boolean recordKrakenKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordCerberusKills",
+			name = "Record Cerberus Loot",
+			description = "Configures whether or not loot from Cerberus is recorded",
+			position = 20
+	)
+	default boolean recordCerberusKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordThermonuclearSmokeDevilKills",
+			name = "Record Thermonuclear Smoke Devil Loot",
+			description = "Configures whether or not loot from Thermonuclear Smoke Devil is recorded",
+			position = 21
+	)
+	default boolean recordThermonuclearSmokeDevilKills()
+	{
+		return true;
+	}
+
 
 
 	@ConfigItem(

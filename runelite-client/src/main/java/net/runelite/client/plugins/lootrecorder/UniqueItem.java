@@ -97,7 +97,6 @@ public enum UniqueItem
 	TANZANITE_FANG("Tanzanite fang", ItemID.TANZANITE_FANG, "Zulrah", "Uniques", 0),
 	MAGIC_FANG("Magic fang", ItemID.MAGIC_FANG, "Zulrah", "Uniques", 0),
 	SERPENTINE_VISAGE("Serpentine visage", ItemID.SERPENTINE_VISAGE, "Zulrah", "Uniques", 0),
-	UNCUT_ONYX("Uncut onyx", ItemID.UNCUT_ONYX, "Zulrah", "Uniques", 0),
 	// Rares
 	PET_SNAKELING("Pet snakeling", ItemID.PET_SNAKELING, "Zulrah", "Rares", 1),
 	TANZANITE_MUTAGEN("Tanzanite mutagen", ItemID.TANZANITE_MUTAGEN, "Zulrah", "Rares", 1),
@@ -163,11 +162,49 @@ public enum UniqueItem
 	MALEDICTION_SHARD_3("Malediction shard 3", ItemID.MALEDICTION_SHARD_3 , "Scorpia", "Uniques", 0),
 	SCORPIAS_OFFSPRING("Scorpia's offspring", ItemID.SCORPIAS_OFFSPRING , "Scorpia", "Uniques", 0),
 	// King Black Dragon,
-	KBD_HEADS("Kbd heads", ItemID.KBD_HEADS , "King Black Dragon", "Uniques", 0),
-	DRACONIC_VISAGE("Draconic visage", ItemID.DRACONIC_VISAGE , "King Black Dragon", "Uniques", 0),
-	PRINCE_BLACK_DRAGON("Prince black dragon", ItemID.PRINCE_BLACK_DRAGON , "King Black Dragon", "Uniques", 0),
+	KBD_HEADS("Kbd heads", ItemID.KBD_HEADS , "King Black Dragon", "Uniques", -1),
+	DRACONIC_VISAGE("Draconic visage", ItemID.DRACONIC_VISAGE , "King Black Dragon", "Uniques", -1),
+	PRINCE_BLACK_DRAGON("Prince black dragon", ItemID.PRINCE_BLACK_DRAGON , "King Black Dragon", "Uniques", -1),
 
-
+	// Slayer Bosses
+	// Skotizo
+	DARK_CLAW("Dark claw", ItemID.DARK_CLAW, "Skotizo", "Uniques", -1),
+	SKOTOS("Skotos", ItemID.SKOTOS, "Skotizo", "Uniques", -1),
+	JAR_OF_DARKNESS("Jar of darkness", ItemID.JAR_OF_DARKNESS, "Skotizo", "Uniques", -1),
+	// Grotesque Guardians
+	GRANITE_GLOVES("Granite gloves", ItemID.GRANITE_GLOVES, "Grotesque Guardians", "Uniques", 0),
+	GRANITE_RING("Granite ring", ItemID.GRANITE_RING, "Grotesque Guardians", "Uniques", 0),
+	GRANITE_HAMMER("Granite hammer", ItemID.GRANITE_HAMMER, "Grotesque Guardians", "Uniques", 0),
+	BLACK_TOURMALINE_CORE("Black touramline core", ItemID.BLACK_TOURMALINE_CORE, "Grotesque Guardians", "Uniques 2", 1),
+	NOON("Noon", ItemID.NOON, "Grotesque Guardians", "Uniques 2", 1),
+	JAR_OF_STONE("Jar of stone", ItemID.JAR_OF_STONE, "Grotesque Guardians", "Uniques 2", 1),
+	// Abyssal Sire
+	UNSIRED("Unsired", ItemID.UNSIRED, "Abyssal Sire", "Uniques", 0),
+	BLUDGEON_CLAW("Bludgeon claw", ItemID.BLUDGEON_CLAW, "Abyssal Sire", "Uniques", 0),
+	BLUDGEON_SPINE("Bludgeon spine", ItemID.BLUDGEON_SPINE, "Abyssal Sire", "Uniques", 0),
+	BLUDGEON_AXON("Bludgeon axon", ItemID.BLUDGEON_AXON, "Abyssal Sire", "Uniques", 0),
+	ABYSSAL_DAGGER("Abyssal dagger", ItemID.ABYSSAL_DAGGER, "Abyssal Sire", "Uniques 2", 1),
+	ABYSSAL_WHIP("Abyssal whip", ItemID.ABYSSAL_WHIP, "Abyssal Sire", "Uniques 2", 1),
+	ABYSSAL_ORPHAN("Abyssal orphan", ItemID.ABYSSAL_ORPHAN, "Abyssal Sire", "Uniques 2", 1),
+	JAR_OF_MIASMA("Jar of miasma", ItemID.JAR_OF_MIASMA, "Abyssal Sire", "Uniques 2", 1),
+	ABYSSAL_HEAD("Abyssal head", ItemID.ABYSSAL_HEAD, "Abyssal Sire", "Uniques 3", 2),
+	// Kraken
+	TRIDENT_OF_THE_SEAS_FULL("Trident of the seas (full)", ItemID.TRIDENT_OF_THE_SEAS_FULL, "Kraken", "Uniques", 0),
+	KRAKEN_TENTACLE("Kraken tentacle", ItemID.KRAKEN_TENTACLE, "Kraken", "Uniques", 0),
+	JAR_OF_DIRT("Jar of dirt", ItemID.JAR_OF_DIRT, "Kraken", "Uniques", 0),
+	PET_KRAKEN("Pet kraken", ItemID.PET_KRAKEN, "Kraken", "Uniques", 0),
+	// Cerberus
+	PRIMORDIAL_CRYSTAL("Primordial crystal", ItemID.PRIMORDIAL_CRYSTAL, "Cerberus", "Uniques", 0),
+	PEGASIAN_CRYSTAL("Pegasian crystal", ItemID.PEGASIAN_CRYSTAL, "Cerberus", "Uniques", 0),
+	ETERNAL_CRYSTAL("Eternal crystal", ItemID.ETERNAL_CRYSTAL, "Cerberus", "Uniques", 0),
+	SMOULDERING_STONE("Smouldering stone", ItemID.SMOULDERING_STONE, "Cerberus", "Uniques", 0),
+	JAR_OF_SOULS("Jar of souls", ItemID.JAR_OF_SOULS, "Cerberus", "Uniques", 0),
+	HELLPUPPY("Hellpuppy", ItemID.HELLPUPPY, "Cerberus", "Uniques", 0),
+	// Thermonuclear Smoke Devil
+	SMOKE_BATTLESTAFF("Smoke battlestaff", ItemID.SMOKE_BATTLESTAFF, "Thermonuclear Smoke Devil", "Uniques", 0),
+	OCCULT_NECKLACE("Occult necklace", ItemID.OCCULT_NECKLACE, "Thermonuclear Smoke Devil", "Uniques", 0),
+	DRAGON_CHAINBODY("Dragon chainbody", ItemID.DRAGON_CHAINBODY, "Thermonuclear Smoke Devil", "Uniques", 0),
+	PET_SMOKE_DEVIL("Pet smoke devil", ItemID.PET_SMOKE_DEVIL, "Thermonuclear Smoke Devil", "Uniques", 0),
 
 
 
@@ -183,7 +220,9 @@ public enum UniqueItem
 	// MYSTERIOUS_EMBLEM("Mysterious emblem", ItemID.MYSTERIOUS_EMBLEM , ""),
 	CURVED_BONE("Curved bone", ItemID.CURVED_BONE, "Callisto", "Vet'ion", "Venenatis"),
 	DRAGON_PICKAXE("Dragon pickaxe", ItemID.DRAGON_PICKAXE , "Callisto", "Vet'ion", "Venenatis", "King Black Dragon"),
-	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis");
+	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis"),
+	// Other
+	UNCUT_ONYX("Uncut onyx", ItemID.UNCUT_ONYX, "Zulrah", "Skotizo");
 
 	UniqueItem(String n, int id, String a, String set, int position)
 	{

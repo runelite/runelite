@@ -393,6 +393,24 @@ public class LootRecorderPlugin extends Plugin
 			case "recordKbdKills":
 				ToggleTab("King Black Dragon", lootRecorderConfig.recordKbdKills());
 				return;
+			case "recordSkotizoKills":
+				ToggleTab("Skotizo", lootRecorderConfig.recordSkotizoKills());
+				return;
+			case "recordGrotesqueGuardiansKills":
+				ToggleTab("Grotesque Guardians", lootRecorderConfig.recordGrotesqueGuardiansKills());
+				return;
+			case "recordAbyssalSireKills":
+				ToggleTab("Abyssal Sire", lootRecorderConfig.recordAbyssalSireKills());
+				return;
+			case "recordKrakenKills":
+				ToggleTab("Kraken", lootRecorderConfig.recordKrakenKills());
+				return;
+			case "recordCerberusKills":
+				ToggleTab("Cerberus", lootRecorderConfig.recordCerberusKills());
+				return;
+			case "recordThermonuclearSmokeDevilKills":
+				ToggleTab("Thermonuclear Smoke Devil", lootRecorderConfig.recordThermonuclearSmokeDevilKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -644,7 +662,18 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordScorpiaKills();
 			case "KING BLACK DRAGON":
 				return lootRecorderConfig.recordKbdKills();
-
+			case "SKOTIZO":
+				return lootRecorderConfig.recordSkotizoKills();
+			case "GROTESQUE GUARDIANS":
+				return lootRecorderConfig.recordGrotesqueGuardiansKills();
+			case "ABYSSAL SIRE":
+				return lootRecorderConfig.recordAbyssalSireKills();
+			case "KRAKEN":
+				return lootRecorderConfig.recordKrakenKills();
+			case "CERBERUS":
+				return lootRecorderConfig.recordCerberusKills();
+			case "THERMONUCLEAR SMOKE DEVIL":
+				return lootRecorderConfig.recordThermonuclearSmokeDevilKills();
 			default:
 				return false;
 		}

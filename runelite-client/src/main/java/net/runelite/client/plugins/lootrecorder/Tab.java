@@ -53,13 +53,22 @@ public enum Tab
 	VETION("Vet'ion", ItemID.VETION_JR , 8),
 	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , 9),
 	CALLISTO("Callisto", ItemID.CALLISTO_CUB , 10),
+	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , 11),
 	// Wildy Demi-Bosses
-	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING , 12),
+	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING, 12),
 	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF , 13),
 	CRAZED_ARCHAEOLOGIST("Crazed Archaeologist", ItemID.FEDORA , 14),
 	// Wildy Other
-	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , 11),
-	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 15);
+	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 15),
+
+
+	// Slayer Bosses
+	SKOTIZO("Skotizo", ItemID.SKOTOS, 16),
+	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.NOON, 17),
+	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, 18),
+	KRAKEN("Kraken", ItemID.PET_KRAKEN, 19),
+	CERBERUS("Cerberus", ItemID.HELLPUPPY, 20),
+	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL, 21);
 
 	Tab(String name, String bossName, int itemID, int index)
 	{
