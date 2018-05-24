@@ -493,12 +493,12 @@ public class HiscorePanel extends PluginPanel
 
 	void addInputKeyListener(KeyListener l)
 	{
-		this.input.addInputKeyListener(l);
+		this.input.addKeyListener(l);
 	}
 
 	void removeInputKeyListener(KeyListener l)
 	{
-		this.input.removeInputKeyListener(l);
+		this.input.removeKeyListener(l);
 	}
 
 	/*
