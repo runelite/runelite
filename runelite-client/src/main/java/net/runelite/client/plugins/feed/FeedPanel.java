@@ -27,6 +27,7 @@ package net.runelite.client.plugins.feed;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -135,13 +136,13 @@ class FeedPanel extends PluginPanel
 		setLayout(new BorderLayout());
 
 		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
-		feedContainer.setOpaque(false);
+		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		/**
 		 * This header contains the "News Feed" title and a refresh icon button.
 		 */
 		JPanel header = new JPanel();
-		header.setOpaque(false);
+		header.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		header.setLayout(new BorderLayout());
 		header.setBorder(new EmptyBorder(0, 0, 9, 0));
 
@@ -328,12 +329,14 @@ class FeedPanel extends PluginPanel
 			public void mouseEntered(MouseEvent e)
 			{
 				avatarAndRight.setBackground(hoverColor);
+				avatarAndRight.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
 				avatarAndRight.setBackground(backgroundColor);
+				avatarAndRight.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override

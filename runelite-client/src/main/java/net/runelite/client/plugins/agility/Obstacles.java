@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.List;
 import java.util.Set;
 import static net.runelite.api.ObjectID.*;
 
@@ -178,11 +180,15 @@ public class Obstacles
 		PILLAR_31561,
 		// Elf Camp Isafdar Tirranwn
 		LOG_BALANCE_3931, LOG_BALANCE_3930, LOG_BALANCE_3929, LOG_BALANCE_3932, DENSE_FOREST_3938, DENSE_FOREST_3939,
-		DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE
+		DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE,
+		// Gu'Tanoth bridge
+		GAP, GAP_2831
 	);
 
 	public static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
 		// Agility pyramid
 		NULL_3550, NULL_10872, NULL_10873
 	);
+
+	public static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
 }

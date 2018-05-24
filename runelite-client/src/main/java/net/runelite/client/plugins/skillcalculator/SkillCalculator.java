@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +26,8 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -32,6 +35,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -43,6 +47,8 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 
 class SkillCalculator extends JPanel
 {
@@ -75,11 +81,20 @@ class SkillCalculator extends JPanel
 		this.uiInput = uiInput;
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setBorder(BorderFactory.createLineBorder(getBackground().brighter()));
 
-		// Register listeners on the input fields..
-		uiInput.uiFieldCurrentLevel.addActionListener(e -> onFieldCurrentLevelUpdated());
-		uiInput.uiFieldCurrentXP.addActionListener(e -> onFieldCurrentXPUpdated());
+		// Register listeners on the input fields and then move on to the next related text field
+		uiInput.uiFieldCurrentLevel.addActionListener(e ->
+		{
+			onFieldCurrentLevelUpdated();
+			uiInput.uiFieldTargetLevel.requestFocusInWindow();
+		});
+
+		uiInput.uiFieldCurrentXP.addActionListener(e ->
+		{
+			onFieldCurrentXPUpdated();
+			uiInput.uiFieldTargetXP.requestFocusInWindow();
+		});
+
 		uiInput.uiFieldTargetLevel.addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.uiFieldTargetXP.addActionListener(e -> onFieldTargetXPUpdated());
 	}
@@ -109,6 +124,8 @@ class SkillCalculator extends JPanel
 
 		// Create action slots for the skill actions.
 		renderActionSlots();
+
+		add(Box.createRigidArea(new Dimension(0, 15)));
 
 		// Update the input fields.
 		updateInputFields();
@@ -142,7 +159,7 @@ class SkillCalculator extends JPanel
 		if (neededXP > 0)
 			actionCount = (int) Math.ceil(neededXP / xp);
 
-		combinedActionSlot.setText(formatXPActionString(xp, actionCount));
+		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
 	}
 
 	private void clearCombinedSlots()
@@ -155,23 +172,29 @@ class SkillCalculator extends JPanel
 
 	private void renderBonusOptions()
 	{
-		if (skillData.bonuses != null)
+		if (skillData.getBonuses() != null)
 		{
-			for (SkillDataBonus bonus : skillData.bonuses)
+			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
-				JLabel uiLabel = new JLabel(bonus.name);
+				JLabel uiLabel = new JLabel(bonus.getName());
 				JCheckBox uiCheckbox = new JCheckBox();
 
-				// Adding an empty 8-pixel border on the left gives us nice padding.
-				uiOption.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
+				uiLabel.setForeground(Color.WHITE);
+				uiLabel.setFont(FontManager.getRunescapeSmallFont());
+
+				uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
+				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.value));
+				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
+				uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
 				uiOption.add(uiCheckbox, BorderLayout.EAST);
+
 				add(uiOption);
+				add(Box.createRigidArea(new Dimension(0, 5)));
 			}
 		}
 	}
@@ -182,10 +205,12 @@ class SkillCalculator extends JPanel
 		uiActionSlots.clear();
 
 		// Create new components for the action slots.
-		for (SkillDataEntry action : skillData.actions)
+		for (SkillDataEntry action : skillData.getActions())
 		{
 			UIActionSlot slot = new UIActionSlot(action);
 			uiActionSlots.add(slot); // Keep our own reference.
+
+			add(Box.createRigidArea(new Dimension(0, 5)));
 			add(slot); // Add component to the panel.
 
 			slot.addMouseListener(new MouseAdapter()
@@ -218,20 +243,20 @@ class SkillCalculator extends JPanel
 		{
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
-			double xp = slot.action.xp * xpFactor;
+			double xp = (slot.action.isIgnoreBonus()) ? slot.action.getXp() : slot.action.getXp() * xpFactor;
 
 			if (neededXP > 0)
 				actionCount = (int) Math.ceil(neededXP / xp);
 
-			slot.setText(formatXPActionString(xp, actionCount));
-			slot.setAvailable(currentLevel >= slot.action.level);
+			slot.setText("Lvl. " + slot.action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			slot.setAvailable(currentLevel >= slot.action.getLevel());
 			slot.value = xp;
 		}
 	}
 
-	private String formatXPActionString(double xp, int actionCount)
+	private String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
-		return XP_FORMAT.format(xp) + "xp - " + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
+		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
 	}
 
 	private void updateInputFields()

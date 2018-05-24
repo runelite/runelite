@@ -137,6 +137,14 @@ public interface Widget
 
 	void setOriginalY(int originalY);
 
+	int getOriginalHeight();
+
+	void setOriginalHeight(int originalHeight);
+
+	int getOriginalWidth();
+
+	void setOriginalWidth(int originalWidth);
+
 	int getPaddingX();
 
 	void setPaddingX(int paddingX);
