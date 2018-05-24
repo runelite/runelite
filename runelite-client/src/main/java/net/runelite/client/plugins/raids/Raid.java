@@ -25,12 +25,18 @@
 package net.runelite.client.plugins.raids;
 
 import com.google.common.base.Joiner;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.base.Predicate;
 import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
+
+import javax.annotation.Nullable;
 
 public class Raid
 {
@@ -49,7 +55,7 @@ public class Raid
 
 		this.layout = layout;
 
-		for (int i = 0; i < rooms.length; i++)
+;		for (int i = 0; i < rooms.length; i++)
 		{
 			if (layout.getRoomAt(i) == null)
 			{
@@ -114,6 +120,22 @@ public class Raid
 	public String getRotationString()
 	{
 		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
+	}
+
+	public String getFullRotationString()
+	{
+		Object[] objects = Arrays.stream(rooms).filter(raidRoom ->
+		{
+			if (raidRoom != null && raidRoom.getType() != null) {
+				return raidRoom.getType() == RaidRoom.Type.COMBAT || raidRoom.getType() == RaidRoom.Type.PUZZLE;
+			}
+			return false;
+		}).map(raidRoom ->
+		{
+			return raidRoom.getType() == RaidRoom.Type.COMBAT ? raidRoom.getBoss().getName() : raidRoom.getPuzzle().getName();
+		}).toArray();
+
+		return Joiner.on(", ").join(objects);
 	}
 
 	public String toCode()
