@@ -30,6 +30,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -37,10 +38,14 @@ import javax.swing.text.Document;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.LinkBrowser;
 
 import java.awt.BorderLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URL;
 
 @Slf4j
 public class NotesPanel extends PluginPanel
@@ -76,6 +81,76 @@ public class NotesPanel extends PluginPanel
 		// load note text
 		String data = config.notesData();
 		notesEditor.setText(data);
+
+		notesEditor.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				try
+				{
+					if (config.clickableLinks() && e.getClickCount() == 2)
+					{
+						String clickedWord = getWordUnderCursor();
+						if (isValidUrl(clickedWord))
+						{
+							openUrlInBrowser(clickedWord);
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+
+			private boolean isValidUrl(String text)
+			{
+				try
+				{
+					URL url = new URL(text);
+					url.toURI();
+					return true;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
+
+			private void openUrlInBrowser(String url)
+			{
+				if (config.promptBeforeOpeningLinks())
+				{
+					if (JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(null,
+							"Open the following link?: " + url, "Open Link?",
+							JOptionPane.YES_NO_OPTION))
+					{
+						return;
+					}
+				}
+				LinkBrowser.browse(url);
+			}
+
+			private String getWordUnderCursor() throws Exception
+			{
+				String text = notesEditor.getText();
+
+				int startIdx = notesEditor.getCaretPosition() - 1;
+				while (startIdx > 0 && !Character.isWhitespace(text.charAt(startIdx)))
+				{
+					startIdx--;
+				}
+
+				int endIdx = notesEditor.getCaretPosition();
+				while (endIdx < text.length() && !Character.isWhitespace(text.charAt(endIdx)))
+				{
+					endIdx++;
+				}
+
+				return text.substring(startIdx, endIdx).trim();
+			}
+		});
 
 		notesEditor.addFocusListener(new FocusListener()
 		{
