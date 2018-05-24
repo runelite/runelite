@@ -26,6 +26,8 @@ package net.runelite.client.plugins.antidrag;
 
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
@@ -38,6 +40,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_DELAY = 5;
+
+	private Map<AntiDragMode, Integer> modes = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -58,6 +62,11 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	protected void startUp() throws Exception
 	{
 		keyManager.registerKeyListener(this);
+
+		/* there's prob a muuuch better way of doing this */
+		modes.put(AntiDragMode.SHIFT, KeyEvent.VK_SHIFT);
+		modes.put(AntiDragMode.CONTROL, KeyEvent.VK_CONTROL);
+		modes.put(AntiDragMode.ALT, KeyEvent.VK_ALT);
 	}
 
 	@Override
@@ -65,6 +74,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		keyManager.unregisterKeyListener(this);
+		modes = null;
 	}
 
 	@Override
@@ -76,18 +86,28 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		AntiDragMode mode = config.whichButton();
+
+		if (modes.containsKey(mode))
 		{
-			client.setInventoryDragDelay(config.dragDelay());
+
+			if (e.getKeyCode() == modes.get(mode))
+			{
+				client.setInventoryDragDelay(config.dragDelay());
+			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		AntiDragMode mode = config.whichButton();
+		if (modes.containsKey(mode))
 		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
+			if (e.getKeyCode() == modes.get(mode))
+			{
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+			}
 		}
 	}
 }
