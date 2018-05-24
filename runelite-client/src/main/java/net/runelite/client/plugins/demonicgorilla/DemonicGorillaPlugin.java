@@ -87,6 +87,7 @@ public class DemonicGorillaPlugin extends Plugin
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
+		this.reset(); // Updates the list of gorillas and players
 	}
 
 	@Override
@@ -104,12 +105,24 @@ public class DemonicGorillaPlugin extends Plugin
 		return overlay;
 	}
 
-	private void clear()
+	private void reset()
 	{
 		recentBoulders.clear();
 		pendingAttacks.clear();
+		resetGorillas();
+		resetPlayers();
+	}
+
+	private void resetGorillas()
+	{
 		gorillas.clear();
-		memorizedPlayers.clear();
+		for (NPC npc : client.getNpcs())
+		{
+			if (isNpcGorilla(npc.getId()))
+			{
+				gorillas.put(npc, new DemonicGorilla(npc));
+			}
+		}
 	}
 
 	private void resetPlayers()
@@ -628,7 +641,7 @@ public class DemonicGorillaPlugin extends Plugin
 			gs == GameState.CONNECTION_LOST ||
 			gs == GameState.HOPPING)
 		{
-			clear();
+			reset();
 		}
 	}
 
@@ -677,7 +690,7 @@ public class DemonicGorillaPlugin extends Plugin
 	{
 		if (gorillas.remove(event.getNpc()) != null && gorillas.isEmpty())
 		{
-			clear();
+			reset();
 		}
 	}
 
