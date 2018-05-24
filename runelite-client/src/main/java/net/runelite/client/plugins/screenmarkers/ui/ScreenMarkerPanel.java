@@ -277,7 +277,7 @@ class ScreenMarkerPanel extends JPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				int confirm = JOptionPane.showConfirmDialog(ScreenMarkerPanel.this,
-					"Are you sure you want to permanenely delete this screen marker?",
+					"Are you sure you want to permanently delete this screen marker?",
 					"Warning", JOptionPane.OK_CANCEL_OPTION);
 
 				if (confirm == 0)
