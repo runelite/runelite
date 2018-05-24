@@ -97,10 +97,10 @@ class UIActionSlot extends JPanel
 
 		JLabel uiIcon = new JLabel();
 
-		if (action.icon != null)
-			SkillCalculator.itemManager.getImage(action.icon).addTo(uiIcon);
-		else if (action.sprite != null)
-			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.sprite, 0);
+		if (action.getIcon() != null)
+			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
+		else if (action.getSprite() != null)
+			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
@@ -111,7 +111,7 @@ class UIActionSlot extends JPanel
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.name);
+		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
 		uiLabelName.setForeground(Color.WHITE);
 
 		uiLabelActions = new JShadowedLabel("Unknown");
