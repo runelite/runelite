@@ -214,6 +214,10 @@ public class LootRecorderPlugin extends Plugin
 	private Boolean watching = false;
 	private Map<Integer, Integer> items;
 
+	// For checking grotesque guardian death
+	private Boolean duskDead = false;
+	private Boolean dawnDead = false;
+
 	@Subscribe
 	public void onActorDeath(ActorDeath death)
 	{
@@ -222,8 +226,15 @@ public class LootRecorderPlugin extends Plugin
 			return;
 		if (actor.getInteracting().getName().equals(client.getLocalPlayer().getName()))
 		{
+			// Grotesqu Guardians Handling
+			if (actor.getName().equals("Dusk"))
+				duskDead = true;
+			if (actor.getName().equals("Dawn"))
+				dawnDead = true;
 			// Are kills for this Boss being recorded?
 			Boolean flag = recordingMap.get(actor.getName().toUpperCase());
+			if (duskDead && dawnDead)
+				flag = true;
 			if (!flag)
 				return;
 
@@ -237,6 +248,9 @@ public class LootRecorderPlugin extends Plugin
 			ItemLayer layer = tile.getItemLayer();
 			items = createItemMap(layer);
 			watching = true;
+			// Reset Grotesque Guardians flags
+			duskDead = false;
+			dawnDead = false;
 			// Used for checking for pets in the future
 			lastBossKilled = actor.getName();
 		}
@@ -256,7 +270,10 @@ public class LootRecorderPlugin extends Plugin
 				deathSpot = null;
 				deathSize = -1;
 				items = null;
-				AddBossLootEntry(npc.getName(), drops);
+				String npcName = npc.getName();
+				if (npcName.equals("Dusk") || npcName.equals("Dawn"))
+					npcName = "Grotesque Guardians";
+				AddBossLootEntry(npcName, drops);
 			}
 		}
 	}
