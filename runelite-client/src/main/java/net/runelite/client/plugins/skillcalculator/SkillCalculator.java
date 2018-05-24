@@ -25,16 +25,6 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
-import net.runelite.client.plugins.skillcalculator.beans.SkillData;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -51,6 +41,15 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
+import net.runelite.client.plugins.skillcalculator.beans.SkillData;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 
 class SkillCalculator extends JPanel
 {
@@ -72,12 +71,11 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private float lastBonus = 0.0f;
 
 	private static int MAX_XP = Experience.getXpForLevel(Experience.MAX_VIRT_LEVEL);
 
 	private static DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
-
-	private float lastBonus = 0.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -158,10 +156,14 @@ class SkillCalculator extends JPanel
 		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			xp += slot.value;
+		}
 
 		if (neededXP > 0)
+		{
 			actionCount = (int) Math.ceil(neededXP / xp);
+		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
 	}
@@ -169,7 +171,9 @@ class SkillCalculator extends JPanel
 	private void clearCombinedSlots()
 	{
 		for (UIActionSlot slot : combinedActionSlots)
+		{
 			slot.setSelected(false);
+		}
 
 		combinedActionSlots.clear();
 	}
@@ -229,12 +233,18 @@ class SkillCalculator extends JPanel
 				public void mousePressed(MouseEvent e)
 				{
 					if (!e.isShiftDown())
+					{
 						clearCombinedSlots();
+					}
 
 					if (slot.isSelected)
+					{
 						combinedActionSlots.remove(slot);
+					}
 					else
+					{
 						combinedActionSlots.add(slot);
+					}
 
 					slot.setSelected(!slot.isSelected);
 					updateCombinedAction();
@@ -256,7 +266,9 @@ class SkillCalculator extends JPanel
 			double xp = (slot.action.isIgnoreBonus()) ? slot.action.getXp() : slot.action.getXp() * xpFactor;
 
 			if (neededXP > 0)
+			{
 				actionCount = (int) Math.ceil(neededXP / xp);
+			}
 
 			slot.setText("Lvl. " + slot.action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
 			slot.setAvailable(currentLevel >= slot.action.getLevel());
