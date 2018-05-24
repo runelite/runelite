@@ -25,19 +25,13 @@
 package net.runelite.client.plugins.raids;
 
 import com.google.common.base.Joiner;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import com.google.common.base.Predicate;
 import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
-
-import javax.annotation.Nullable;
 
 public class Raid
 {
@@ -56,7 +50,7 @@ public class Raid
 
 		this.layout = layout;
 
-;		for (int i = 0; i < rooms.length; i++)
+		for (int i = 0; i < rooms.length; i++)
 		{
 			if (layout.getRoomAt(i) == null)
 			{
@@ -125,11 +119,13 @@ public class Raid
 
 	public String getFullRotationString()
 	{
-		Object[] roomNames = getLayout().getRooms().stream().map(layoutRoom -> {
+		Object[] roomNames = getLayout().getRooms().stream().map(layoutRoom ->
+		{
 			int position = layoutRoom.getPosition();
 			RaidRoom raidRoom = getRoom(position);
 
-			if (raidRoom != null && raidRoom.getType() != null) {
+			if (raidRoom != null && raidRoom.getType() != null)
+			{
 				switch (raidRoom.getType())
 				{
 					case COMBAT:

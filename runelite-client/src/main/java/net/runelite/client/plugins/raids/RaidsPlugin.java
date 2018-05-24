@@ -274,7 +274,6 @@ public class RaidsPlugin extends Plugin
 			.append(ChatColorType.HIGHLIGHT)
 			.append(raid.getFullRotationString());
 
-
 		chatMessageManager.queue(QueuedMessage.builder()
 			.type(ChatMessageType.CLANCHAT_INFO)
 			.runeLiteFormattedMessage(message.build())
