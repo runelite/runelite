@@ -113,6 +113,18 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "fullscreen",
+		name = "Fullscreen mode",
+		description = "Switch window to fullscreen mode.",
+		warning = "Please restart your client after changing this setting",
+		position = 17
+	)
+	default boolean enableFullscreen()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
