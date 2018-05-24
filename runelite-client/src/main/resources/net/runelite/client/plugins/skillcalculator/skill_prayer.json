@@ -172,12 +172,6 @@
     },
     {
       "level": 1,
-      "icon": 2859,
-      "name": "Wolf Bones",
-      "xp": 4.5
-    },
-    {
-      "level": 1,
       "icon": 3396,
       "name": "Loar Remains",
       "xp": 33,
@@ -185,45 +179,9 @@
     },
     {
       "level": 1,
-      "icon": 528,
-      "name": "Burnt Bones",
-      "xp": 4.5
-    },
-    {
-      "level": 1,
-      "icon": 3179,
-      "name": "Monkey Bones",
-      "xp": 5
-    },
-    {
-      "level": 1,
-      "icon": 530,
-      "name": "Bat Bones",
-      "xp": 5.3
-    },
-    {
-      "level": 1,
-      "icon": 3125,
-      "name": "Jogre Bones",
-      "xp": 15
-    },
-    {
-      "level": 1,
       "icon": 532,
       "name": "Big Bones",
       "xp": 15
-    },
-    {
-      "level": 1,
-      "icon": 4812,
-      "name": "Zogre Bones",
-      "xp": 22.5
-    },
-    {
-      "level": 1,
-      "icon": 3123,
-      "name": "Shaikahan Bones",
-      "xp": 25
     },
     {
       "level": 1,
@@ -237,12 +195,6 @@
       "name": "Phrin Remains",
       "xp": 46.5,
       "ignoreBonus": true
-    },
-    {
-      "level": 1,
-      "icon": 4834,
-      "name": "Ourg Bones",
-      "xp": 140
     },
     {
       "level": 1,
@@ -272,12 +224,6 @@
     },
     {
       "level": 1,
-      "icon": 4830,
-      "name": "Fayrg Bones",
-      "xp": 84
-    },
-    {
-      "level": 1,
       "icon": 3404,
       "name": "Fiyr Remains",
       "xp": 84,
@@ -288,12 +234,6 @@
       "icon": 11943,
       "name": "Lava Dragon Bones",
       "xp": 85
-    },
-    {
-      "level": 1,
-      "icon": 4832,
-      "name": "Raurg Bones",
-      "xp": 96
     },
     {
       "level": 1,
