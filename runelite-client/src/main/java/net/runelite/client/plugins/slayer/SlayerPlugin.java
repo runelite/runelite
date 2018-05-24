@@ -95,8 +95,8 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
 
 	//NPC messages
-	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill (\\d*) (.*)\\.");
-	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*), you have (\\d*) to go\\..*");
+	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
+	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
