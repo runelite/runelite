@@ -152,6 +152,9 @@ public class LootRecorderPlugin extends Plugin
 	private LootRecorderPanel panel;
 	private NavigationButton navButton;
 
+	// String = NPC Name (uppercase) Boolean = Config Setting value
+	private Map<String, Boolean> recordingMap = new HashMap<>();
+
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
 	{
@@ -168,6 +171,7 @@ public class LootRecorderPlugin extends Plugin
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 2, TimeUnit.SECONDS);
 		}
+		createRecordingMap();
 	}
 
 	// Separated from startUp for toggling panel from settings
@@ -249,8 +253,14 @@ public class LootRecorderPlugin extends Plugin
 		Actor actor = death.getActor();
 		if (actor.getInteracting() == null)
 			return;
-		if (actor.getInteracting().getName() == client.getLocalPlayer().getName())
+		if (actor.getInteracting().getName().equals(client.getLocalPlayer().getName()))
 		{
+			// Are kills for this Boss being recorded?
+			Boolean flag = recordingMap.get(actor.getName().toUpperCase());
+			if (!flag)
+				return;
+
+			// Yes they are
 			NPC npc = (NPC) actor;
 			NPCComposition comp = npc.getComposition();
 			deathSize = comp.getSize();
@@ -316,6 +326,7 @@ public class LootRecorderPlugin extends Plugin
 			return;
 
 		LootEntry newEntry = new LootEntry(KC, drops);
+		lootRecordedAlert(name + " kill added to log.");
 		addLootEntry(filename, newEntry);
 	}
 
@@ -459,10 +470,14 @@ public class LootRecorderPlugin extends Plugin
 
 	private void ToggleTab(String tabName, Boolean status)
 	{
+		// Remove panel tab if showing panel
 		if (lootRecorderConfig.showLootTotals())
 		{
 			panel.toggleTab(tabName, status);
 		}
+		// Update tab map
+		String bossName = Tab.getByName(tabName).getBossName();
+		recordingMap.put(bossName, status);
 	}
 
 	void loadTabData(String tabName)
@@ -720,5 +735,15 @@ public class LootRecorderPlugin extends Plugin
 			default:
 				return false;
 		}
+	}
+
+	void createRecordingMap()
+	{
+		Map<String, Boolean> map = new HashMap<>();
+		for (Tab tab : Tab.values())
+		{
+			map.put(tab.getBossName(), isBeingRecorded(tab.getName()));
+		}
+		recordingMap = map;
 	}
 }

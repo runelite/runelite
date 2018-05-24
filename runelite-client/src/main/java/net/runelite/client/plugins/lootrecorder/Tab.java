@@ -87,4 +87,22 @@ public enum Tab
 
 		return byName;
 	}
+
+	private static final Map<String, Tab> byBossName = buildBossMap();
+
+	public static Tab getByBossName(String name)
+	{
+		return byBossName.get(name.toUpperCase());
+	}
+
+	private static Map<String, Tab> buildBossMap()
+	{
+		Map<String, Tab> byName = new HashMap<>();
+		for (Tab tab : values())
+		{
+			byName.put(tab.getBossName().toUpperCase(), tab);
+		}
+
+		return byName;
+	}
 }
