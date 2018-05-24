@@ -43,15 +43,10 @@ public class ScreenMarkerOverlay extends Overlay
 	ScreenMarkerOverlay(ScreenMarker marker)
 	{
 		this.marker = marker;
+		this.screenMarkerRenderable = new ScreenMarkerRenderable();
 		setPosition(OverlayPosition.DETACHED);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
-
-		screenMarkerRenderable = new ScreenMarkerRenderable();
-		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
-		screenMarkerRenderable.setColor(marker.getColor());
-		screenMarkerRenderable.setFill(marker.getFill());
-		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
 	}
 
 	@Override
@@ -68,6 +63,10 @@ public class ScreenMarkerOverlay extends Overlay
 			return null;
 		}
 
+		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
+		screenMarkerRenderable.setColor(marker.getColor());
+		screenMarkerRenderable.setFill(marker.getFill());
+		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
 		screenMarkerRenderable.setPreferredSize(getPreferredSize());
 		return screenMarkerRenderable.render(graphics);
 	}
