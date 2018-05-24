@@ -36,6 +36,24 @@ import java.util.Map;
 @Getter
 public enum UniqueItem
 {
+	// Shared "Uniques" (Dropped by multiple activities)
+	// God Wars
+	GODSWORD_SHARD_1("Godsword shard 1", ItemID.GODSWORD_SHARD_1, "Armadyl", "Bandos", "Saradomin", "Zammy"),
+	GODSWORD_SHARD_2("Godsword shard 2", ItemID.GODSWORD_SHARD_2, "Armadyl", "Bandos", "Saradomin", "Zammy"),
+	GODSWORD_SHARD_3("Godsword shard 3", ItemID.GODSWORD_SHARD_3, "Armadyl", "Bandos", "Saradomin", "Zammy"),
+	// Wildy
+	PET_CHAOS_ELEMENTAL("Pet chaos elemental", ItemID.PET_CHAOS_ELEMENTAL, "Chaos Elemental", "Chaos Fanatic"),
+	// MYSTERIOUS_EMBLEM("Mysterious emblem", ItemID.MYSTERIOUS_EMBLEM , ""),
+	CURVED_BONE("Curved bone", ItemID.CURVED_BONE, "Callisto", "Vet'ion", "Venenatis", "Giant Mole"),
+	DRAGON_PICKAXE("Dragon pickaxe", ItemID.DRAGON_PICKAXE , "Callisto", "Vet'ion", "Venenatis", "King Black Dragon"),
+	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis", "Kalphite Queen"),
+	// Other
+	DRAGON_CHAINBODY("Dragon chainbody", ItemID.DRAGON_CHAINBODY, "Thermonuclear Smoke Devil", "Kalphite Queen"),
+	DRAGON_AXE("Dragon axe", ItemID.DRAGON_AXE, "Dagannoth Rex", "Dagannoth Prime", "Dagannoth Supreme"),
+	UNCUT_ONYX("Uncut onyx", ItemID.UNCUT_ONYX, "Zulrah", "Skotizo"),
+
+
+	// Unique Items
 	// Barrows Uniques
 	// Ahrim
 	AHRIMS_HOOD("Ahrim's hood", ItemID.AHRIMS_HOOD, "Barrows", "Ahrims", 0),
@@ -232,24 +250,17 @@ public enum UniqueItem
 	// Dagannoth Supreme
 	SEERCULL("Seercrull", ItemID.SEERCULL, "Dagannoth Supreme", "Uniques", -1),
 	ARCHERS_RING("Archers ring", ItemID.ARCHERS_RING, "Dagannoth Supreme", "Uniques", -1),
-	PET_DAGANNOTH_SUPREME("Pet dagannoth supreme", ItemID.PET_DAGANNOTH_SUPREME, "Dagannoth Supreme", "Uniques", -1),
+	PET_DAGANNOTH_SUPREME("Pet dagannoth supreme", ItemID.PET_DAGANNOTH_SUPREME, "Dagannoth Supreme", "Uniques", -1);
 
 
-	// Shared "Uniques" (Dropped by multiple activities)
-	// God Wars
-	GODSWORD_SHARD_1("Godsword shard 1", ItemID.GODSWORD_SHARD_1, "Armadyl", "Bandos", "Saradomin", "Zammy"),
-	GODSWORD_SHARD_2("Godsword shard 2", ItemID.GODSWORD_SHARD_2, "Armadyl", "Bandos", "Saradomin", "Zammy"),
-	GODSWORD_SHARD_3("Godsword shard 3", ItemID.GODSWORD_SHARD_3, "Armadyl", "Bandos", "Saradomin", "Zammy"),
-	// Wildy
-	PET_CHAOS_ELEMENTAL("Pet chaos elemental", ItemID.PET_CHAOS_ELEMENTAL, "Chaos Elemental", "Chaos Fanatic"),
-	// MYSTERIOUS_EMBLEM("Mysterious emblem", ItemID.MYSTERIOUS_EMBLEM , ""),
-	CURVED_BONE("Curved bone", ItemID.CURVED_BONE, "Callisto", "Vet'ion", "Venenatis", "Giant Mole"),
-	DRAGON_PICKAXE("Dragon pickaxe", ItemID.DRAGON_PICKAXE , "Callisto", "Vet'ion", "Venenatis", "King Black Dragon"),
-	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis", "Kalphite Queen"),
-	// Other
-	DRAGON_CHAINBODY("Dragon chainbody", ItemID.DRAGON_CHAINBODY, "Thermonuclear Smoke Devil", "Kalphite Queen"),
-	DRAGON_AXE("Dragon axe", ItemID.DRAGON_AXE, "Dagannoth Rex", "Dagannoth Prime", "Dagannoth Supreme"),
-	UNCUT_ONYX("Uncut onyx", ItemID.UNCUT_ONYX, "Zulrah", "Skotizo");
+	UniqueItem(String n, int id, String... activities)
+	{
+		this.name = n;
+		this.itemID = id;
+		this.activities = activities;
+		this.setName = "Shared";
+		this.position = -1;
+	}
 
 	UniqueItem(String n, int id, String a, String set, int position)
 	{
@@ -259,15 +270,6 @@ public enum UniqueItem
 		this.setName = set;
 		this.position = position;
 
-	}
-
-	UniqueItem(String n, int id, String... activities)
-	{
-		this.name = n;
-		this.itemID = id;
-		this.activities = activities;
-		this.setName = "Shared";
-		this.position = -1;
 	}
 
 
