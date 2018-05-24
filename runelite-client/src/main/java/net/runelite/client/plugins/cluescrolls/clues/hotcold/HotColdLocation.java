@@ -90,7 +90,7 @@ public enum HotColdLocation
 	FREMENNIK_PROVINCE_PIRATES_COVE(new WorldPoint(2210, 3814, 0), FREMENNIK_PROVINCE, "Pirates' Cove"),
 	FREMENNIK_PROVINCE_ASTRAL_ALTER(new WorldPoint(2147, 3862, 0), FREMENNIK_PROVINCE, "Astral altar"),
 	FREMENNIK_PROVINCE_LUNAR_VILLAGE(new WorldPoint(2087, 3915, 0), FREMENNIK_PROVINCE, "Lunar Isle, inside the village."),
-	FREMENNIK_PROVINCE_LUNAR_NORTH(new WorldPoint(2101, 3949, 0), FREMENNIK_PROVINCE, "Lunar Isle, north of the village."),
+	FREMENNIK_PROVINCE_LUNAR_NORTH(new WorldPoint(2106, 3949, 0), FREMENNIK_PROVINCE, "Lunar Isle, north of the village."),
 	KANDARIN_SINCLAR_MANSION(new WorldPoint(2726, 3588, 0), KANDARIN, "North-west of the Sinclair Mansion, near the log balance shortcut."),
 	KANDARIN_CATHERBY(new WorldPoint(2774, 3433, 0), KANDARIN, "Catherby, between the bank and the beehives, near small rock formation."),
 	KANDARIN_GRAND_TREE(new WorldPoint(2449, 3509, 0), KANDARIN, "Grand Tree, just east of the terrorchick gnome enclosure."),
