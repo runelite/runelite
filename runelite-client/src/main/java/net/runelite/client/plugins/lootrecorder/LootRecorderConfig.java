@@ -278,6 +278,72 @@ public interface LootRecorderConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+			keyName = "recordGiantMoleKills",
+			name = "Record Giant Mole Loot",
+			description = "Configures whether or not loot from Giant Mole is recorded",
+			position = 22
+	)
+	default boolean recordGiantMoleKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordKalphiteQueenKills",
+			name = "Record Kalphite Queen Loot",
+			description = "Configures whether or not loot from Kalphite Queen is recorded",
+			position = 23
+	)
+	default boolean recordKalphiteQueenKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordCorporealBeastKills",
+			name = "Record Corporeal Beast Loot",
+			description = "Configures whether or not loot from Corporeal Beast is recorded",
+			position = 24
+	)
+	default boolean recordCorporealBeastKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordDagannothRexKills",
+			name = "Record Dagannoth Rex Loot",
+			description = "Configures whether or not loot from Dagannoth Rex is recorded",
+			position = 25
+	)
+	default boolean recordDagannothRexKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordDagannothPrimeKills",
+			name = "Record Dagannoth Prime Loot",
+			description = "Configures whether or not loot from Dagannoth Prime is recorded",
+			position = 26
+	)
+	default boolean recordDagannothPrimeKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "recordDagannothSupremeKills",
+			name = "Record Dagannoth Supreme Loot",
+			description = "Configures whether or not loot from Dagannoth Supreme is recorded",
+			position = 27
+	)
+	default boolean recordDagannothSupremeKills()
+	{
+		return true;
+	}
+
 
 
 	@ConfigItem(

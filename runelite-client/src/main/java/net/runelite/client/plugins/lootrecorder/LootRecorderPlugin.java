@@ -411,6 +411,24 @@ public class LootRecorderPlugin extends Plugin
 			case "recordThermonuclearSmokeDevilKills":
 				ToggleTab("Thermonuclear Smoke Devil", lootRecorderConfig.recordThermonuclearSmokeDevilKills());
 				return;
+			case "recordGiantMoleKills":
+				ToggleTab("Giant Mole", lootRecorderConfig.recordGiantMoleKills());
+				return;
+			case "recordKalphiteQueenKills":
+				ToggleTab("Kalphite Queen", lootRecorderConfig.recordKalphiteQueenKills());
+				return;
+			case "recordCorporealBeastKills":
+				ToggleTab("Corporeal Beast", lootRecorderConfig.recordCorporealBeastKills());
+				return;
+			case "recordDagannothRexKills":
+				ToggleTab("Dagannoth Rex", lootRecorderConfig.recordDagannothRexKills());
+				return;
+			case "recordDagannothPrimeKills":
+				ToggleTab("Dagannoth Prime", lootRecorderConfig.recordDagannothPrimeKills());
+				return;
+			case "recordDagannothSupremeKills":
+				ToggleTab("Dagannoth Supreme", lootRecorderConfig.recordDagannothSupremeKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -674,6 +692,18 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordCerberusKills();
 			case "THERMONUCLEAR SMOKE DEVIL":
 				return lootRecorderConfig.recordThermonuclearSmokeDevilKills();
+			case "GIANT MOLE":
+				return lootRecorderConfig.recordGiantMoleKills();
+			case "KALPHITE QUEEN":
+				return lootRecorderConfig.recordKalphiteQueenKills();
+			case "CORPOREAL BEAST":
+				return lootRecorderConfig.recordCorporealBeastKills();
+			case "DAGANNOTH REX":
+				return lootRecorderConfig.recordDagannothRexKills();
+			case "DAGANNOTH PRIME":
+				return lootRecorderConfig.recordDagannothPrimeKills();
+			case "DAGANNOTH SUPREME":
+				return lootRecorderConfig.recordDagannothSupremeKills();
 			default:
 				return false;
 		}

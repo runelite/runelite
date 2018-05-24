@@ -64,11 +64,19 @@ public enum Tab
 
 	// Slayer Bosses
 	SKOTIZO("Skotizo", ItemID.SKOTOS, 16),
-	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.NOON, 17),
-	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, 18),
-	KRAKEN("Kraken", ItemID.PET_KRAKEN, 19),
+	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.NOON, 17),		// Special Drop
+	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, 18),			// Special Drop
+	KRAKEN("Kraken", ItemID.PET_KRAKEN, 19),							// Special Drop
 	CERBERUS("Cerberus", ItemID.HELLPUPPY, 20),
-	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL, 21);
+	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL, 21),
+
+	// Other Bosses
+	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE, 22),
+	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS, 23),
+	CORPOREAL_BEAST("Corporeal Beast", ItemID.PET_CORPOREAL_CRITTER, 24),
+	DAGANNOTH_REX("Dagannoth Rex", ItemID.PET_DAGANNOTH_REX, 25),
+	DAGANNOTH_PRIME("Dagannoth Prime", ItemID.PET_DAGANNOTH_PRIME, 26),
+	DAGANNOTH_SUPREME("Dagannoth Supreme", ItemID.PET_DAGANNOTH_SUPREME, 27);
 
 	Tab(String name, String bossName, int itemID, int index)
 	{

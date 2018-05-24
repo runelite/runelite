@@ -201,13 +201,38 @@ public enum UniqueItem
 	JAR_OF_SOULS("Jar of souls", ItemID.JAR_OF_SOULS, "Cerberus", "Uniques", 0),
 	HELLPUPPY("Hellpuppy", ItemID.HELLPUPPY, "Cerberus", "Uniques", 0),
 	// Thermonuclear Smoke Devil
-	SMOKE_BATTLESTAFF("Smoke battlestaff", ItemID.SMOKE_BATTLESTAFF, "Thermonuclear Smoke Devil", "Uniques", 0),
-	OCCULT_NECKLACE("Occult necklace", ItemID.OCCULT_NECKLACE, "Thermonuclear Smoke Devil", "Uniques", 0),
-	DRAGON_CHAINBODY("Dragon chainbody", ItemID.DRAGON_CHAINBODY, "Thermonuclear Smoke Devil", "Uniques", 0),
-	PET_SMOKE_DEVIL("Pet smoke devil", ItemID.PET_SMOKE_DEVIL, "Thermonuclear Smoke Devil", "Uniques", 0),
+	SMOKE_BATTLESTAFF("Smoke battlestaff", ItemID.SMOKE_BATTLESTAFF, "Thermonuclear Smoke Devil", "Uniques", -1),
+	OCCULT_NECKLACE("Occult necklace", ItemID.OCCULT_NECKLACE, "Thermonuclear Smoke Devil", "Uniques", -1),
+	PET_SMOKE_DEVIL("Pet smoke devil", ItemID.PET_SMOKE_DEVIL, "Thermonuclear Smoke Devil", "Uniques", -1),
 
 
-
+	// Other Bosses
+	// Giant Mole
+	BABY_MOLE("Baby Mole", ItemID.BABY_MOLE, "Giant Mole", "Uniques", -1),
+	// Kalphite Queen
+	KQ_HEAD("Kq head", ItemID.KQ_HEAD, "Kalphite Queen", "Uniques", -1),
+	JAR_OF_SAND("Jar of sand", ItemID.JAR_OF_SAND, "Kalphite Queen", "Uniques", -1),
+	KALPHITE_PRINCESS("Kalphite princess", ItemID.KALPHITE_PRINCESS, "Kalphite Queen", "Uniques", -1),
+	// Corporeal Beast
+	SPIRIT_SHIELD("Spirit shield", ItemID.SPIRIT_SHIELD, "Corporeal Beast", "Uniques", 0),
+	HOLY_ELIXIR("Holy elixir", ItemID.HOLY_ELIXIR, "Corporeal Beast", "Uniques", 0),
+	PET_DARK_CORE("Pet dark core", ItemID.PET_DARK_CORE, "Corporeal Beast", "Uniques", 0),
+	SPECTRAL_SIGIL("Spectral sigil", ItemID.SPECTRAL_SIGIL, "Corporeal Beast", "Sigil", 1),
+	ARCANE_SIGIL("Arcane sigil", ItemID.ARCANE_SIGIL, "Corporeal Beast", "Sigil", 1),
+	ELYSIAN_SIGIL("Elysian sigil", ItemID.ELYSIAN_SIGIL, "Corporeal Beast", "Sigil", 1),
+	// Dagannoth Rex
+	RING_OF_LIFE("Ring of life", ItemID.RING_OF_LIFE, "Dagannoth Rex", "Uniques", -1),
+	WARRIOR_RING("Warrior ring", ItemID.WARRIOR_RING, "Dagannoth Rex", "Uniques", -1),
+	BERSERKER_RING("Berserk ring", ItemID.BERSERKER_RING, "Dagannoth Rex", "Uniques", -1),
+	PET_DAGANNOTH_REX("Pet dagannoth rex", ItemID.PET_DAGANNOTH_REX, "Dagannoth Rex", "Uniques", -1),
+	// Dagannoth Prime
+	MUD_BATTLESTAFF("Mud battlestaff", ItemID.MUD_BATTLESTAFF, "Dagannoth Prime", "Uniques", -1),
+	SEERS_RING("Seers ring", ItemID.SEERS_RING, "Dagannoth Prime", "Uniques", -1),
+	PET_DAGANNOTH_PRIME("Pet dagannoth prime", ItemID.PET_DAGANNOTH_PRIME, "Dagannoth Prime", "Uniques", -1),
+	// Dagannoth Supreme
+	SEERCULL("Seercrull", ItemID.SEERCULL, "Dagannoth Supreme", "Uniques", -1),
+	ARCHERS_RING("Archers ring", ItemID.ARCHERS_RING, "Dagannoth Supreme", "Uniques", -1),
+	PET_DAGANNOTH_SUPREME("Pet dagannoth supreme", ItemID.PET_DAGANNOTH_SUPREME, "Dagannoth Supreme", "Uniques", -1),
 
 
 	// Shared "Uniques" (Dropped by multiple activities)
@@ -218,10 +243,12 @@ public enum UniqueItem
 	// Wildy
 	PET_CHAOS_ELEMENTAL("Pet chaos elemental", ItemID.PET_CHAOS_ELEMENTAL, "Chaos Elemental", "Chaos Fanatic"),
 	// MYSTERIOUS_EMBLEM("Mysterious emblem", ItemID.MYSTERIOUS_EMBLEM , ""),
-	CURVED_BONE("Curved bone", ItemID.CURVED_BONE, "Callisto", "Vet'ion", "Venenatis"),
+	CURVED_BONE("Curved bone", ItemID.CURVED_BONE, "Callisto", "Vet'ion", "Venenatis", "Giant Mole"),
 	DRAGON_PICKAXE("Dragon pickaxe", ItemID.DRAGON_PICKAXE , "Callisto", "Vet'ion", "Venenatis", "King Black Dragon"),
-	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis"),
+	DRAGON_2H_SWORD("Dragon 2h sword", ItemID.DRAGON_2H_SWORD , "Callisto", "Vet'ion", "Venenatis", "Kalphite Queen"),
 	// Other
+	DRAGON_CHAINBODY("Dragon chainbody", ItemID.DRAGON_CHAINBODY, "Thermonuclear Smoke Devil", "Kalphite Queen"),
+	DRAGON_AXE("Dragon axe", ItemID.DRAGON_AXE, "Dagannoth Rex", "Dagannoth Prime", "Dagannoth Supreme"),
 	UNCUT_ONYX("Uncut onyx", ItemID.UNCUT_ONYX, "Zulrah", "Skotizo");
 
 	UniqueItem(String n, int id, String a, String set, int position)
