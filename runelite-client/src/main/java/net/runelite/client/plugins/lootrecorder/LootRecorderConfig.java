@@ -92,10 +92,21 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "recordBandosKills",
+			name = "Record General Graardor Loot",
+			description = "Configures whether or not loot from General Graardor is recorded",
+			position = 5
+	)
+	default boolean recordBandosKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "recordSaradominKills",
 		name = "Record Commander Zilyana Loot",
 		description = "Configures whether or not loot from Commander Zilyana is recorded",
-		position = 4
+		position = 6
 	)
 	default boolean recordSaradominKills()
 	{
@@ -106,20 +117,9 @@ public interface LootRecorderConfig extends Config
 		keyName = "recordZammyKills",
 		name = "Record K'ril Tsutsaroth Loot",
 		description = "Configures whether or not loot from K'ril Tsutsaroth is recorded",
-		position = 4
+		position = 7
 	)
 	default boolean recordZammyKills()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "recordBandosKills",
-		name = "Record General Graardor Loot",
-		description = "Configures whether or not loot from General Graardor is recorded",
-		position = 4
-	)
-	default boolean recordBandosKills()
 	{
 		return true;
 	}

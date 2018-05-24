@@ -54,6 +54,7 @@ class LootRecorderPanel extends PluginPanel
 	private JTabbedPane tabsPanel = new JTabbedPane();
 
 	private Map<String, JPanel> tabsMap = new HashMap<>();
+	private Map<String, Integer> tabPositions = new HashMap<>();
 	private Map<String, LootPanel> lootMap = new HashMap<>();
 
 	@Inject
@@ -162,7 +163,7 @@ class LootRecorderPanel extends PluginPanel
 		tabPanel.add(scroller);
 
 		// Add new tab to panel
-		int tabIndex = adjustTabIndex(tabsPanel.getTabCount(), tab.getIndex());
+		int tabIndex = adjustTabIndex(tab.getIndex());
 		tabsPanel.insertTab(null, null, tabPanel, tab.getBossName(), tabIndex);
 
 		// Add Tab Icon
@@ -173,23 +174,59 @@ class LootRecorderPanel extends PluginPanel
 		resize.run();
 
 		tabsMap.put(tab.getName().toUpperCase(), tabPanel);
+		tabPositions.put(tab.getName().toUpperCase(), tabIndex);
 		lootMap.put(tab.getName().toUpperCase(), lootPanel);
 	}
 
-	private int adjustTabIndex(int total, int tabIndex)
+	private int adjustTabIndex(int wantedIndex)
 	{
-		if (total < tabIndex)
+		int insertTabAt = tabsPanel.getTabCount();
+		for (Map.Entry<String, Integer> entry : tabPositions.entrySet())
 		{
-			return total;
+			Tab thisTab = Tab.getByName(entry.getKey());
+			int currentIndex = entry.getValue();
+			int targetIndex = thisTab.getIndex();
+
+			// This tab is not in final position
+			if ( currentIndex < targetIndex )
+			{
+				// This tab should be behind this one
+				if (targetIndex > wantedIndex)
+				{
+					// Update tab position
+					tabPositions.put(entry.getKey(), currentIndex + 1);
+
+					// Update insert index if current index is lower (add before this tab)
+					if (insertTabAt > currentIndex)
+					{
+						insertTabAt = currentIndex;
+					}
+				}
+			}
 		}
-		return tabIndex;
+		return insertTabAt;
 	}
 
+	private void removeTabPosition(String tabName)
+	{
+		int index = tabPositions.get(tabName);
+		for (Map.Entry<String, Integer> entry : tabPositions.entrySet())
+		{
+			if (entry.getValue() > index)
+			{
+				tabPositions.put(entry.getKey(), entry.getValue() - 1);
+			}
+		}
+		tabPositions.remove(tabName);
+	}
 	private void removeTab(Tab tab)
 	{
-		JPanel panel = tabsMap.get(tab.getName().toUpperCase());
+		String tabName = tab.getName().toUpperCase();
+		JPanel panel = tabsMap.get(tabName);
 
 		panel.getParent().remove(panel);
+		tabsMap.remove(tabName);
+		removeTabPosition(tabName);
 	}
 
 	void updateTab(String tabName)
