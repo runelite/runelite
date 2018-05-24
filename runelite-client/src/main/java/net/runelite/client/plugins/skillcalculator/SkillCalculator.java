@@ -25,6 +25,16 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
+import net.runelite.client.plugins.skillcalculator.beans.SkillData;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,18 +47,10 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
-import net.runelite.client.plugins.skillcalculator.beans.SkillData;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
 
 class SkillCalculator extends JPanel
 {
@@ -74,6 +76,8 @@ class SkillCalculator extends JPanel
 	private static int MAX_XP = Experience.getXpForLevel(Experience.MAX_VIRT_LEVEL);
 
 	private static DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+
+	private float lastBonus = 0.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
@@ -174,11 +178,14 @@ class SkillCalculator extends JPanel
 	{
 		if (skillData.getBonuses() != null)
 		{
+			ButtonGroup uiButtonGroup = new ButtonGroup();
+			lastBonus = 0.0f;
 			for (SkillDataBonus bonus : skillData.getBonuses())
 			{
 				JPanel uiOption = new JPanel(new BorderLayout());
 				JLabel uiLabel = new JLabel(bonus.getName());
-				JCheckBox uiCheckbox = new JCheckBox();
+				JRadioButton uiRadioButton = new JRadioButton();
+				uiButtonGroup.add(uiRadioButton);
 
 				uiLabel.setForeground(Color.WHITE);
 				uiLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -187,11 +194,14 @@ class SkillCalculator extends JPanel
 				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 				// Adjust XP bonus depending on check-state of the boxes.
-				uiCheckbox.addActionListener(e -> adjustXPBonus(uiCheckbox.isSelected(), bonus.getValue()));
-				uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				uiRadioButton.addActionListener(e -> {
+					adjustXPBonus(uiRadioButton.isSelected(), bonus.getValue());
+					lastBonus = bonus.getValue();
+				});
+				uiRadioButton.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 				uiOption.add(uiLabel, BorderLayout.WEST);
-				uiOption.add(uiCheckbox, BorderLayout.EAST);
+				uiOption.add(uiRadioButton, BorderLayout.EAST);
 
 				add(uiOption);
 				add(Box.createRigidArea(new Dimension(0, 5)));
@@ -276,6 +286,7 @@ class SkillCalculator extends JPanel
 
 	private void adjustXPBonus(boolean addBonus, float value)
 	{
+		clearLastBonus();
 		xpFactor += addBonus ? value : -value;
 		calculate();
 	}
@@ -316,5 +327,11 @@ class SkillCalculator extends JPanel
 	private static int enforceXPBounds(int input)
 	{
 		return Math.min(MAX_XP, Math.max(0, input));
+	}
+
+	private void clearLastBonus()
+	{
+		xpFactor -= lastBonus;
+		calculate();
 	}
 }
