@@ -77,7 +77,7 @@ class SkillCalculatorPanel extends PluginPanel
 
 		this.iconManager = iconManager;
 
-		setBorder(new EmptyBorder(10, 10, 0, 10));
+		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints c = new GridBagConstraints();
