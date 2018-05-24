@@ -154,6 +154,10 @@ public class LootRecorderPlugin extends Plugin
 
 	// String = NPC Name (uppercase) Boolean = Config Setting value
 	private Map<String, Boolean> recordingMap = new HashMap<>();
+	// String = Boss Name
+	private Map<String, ArrayList<LootEntry>> lootMap = new HashMap<>();
+	private Map<String, Integer> killcountMap = new HashMap<>();
+	private Map<String, String> filenameMap = new HashMap<>();
 
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
@@ -171,7 +175,7 @@ public class LootRecorderPlugin extends Plugin
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 2, TimeUnit.SECONDS);
 		}
-		createRecordingMap();
+		createMaps();
 	}
 
 	// Separated from startUp for toggling panel from settings
@@ -221,27 +225,26 @@ public class LootRecorderPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && lootRecorderConfig.recordBarrowsChest())
 		{
 			ItemContainer rewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
-			LootEntry entry = createLootEntry(barrowsNumber, rewardContainer);
-			barrows.add(entry);
-			addLootEntry(barrowsFilename, entry);
+			int kc = killcountMap.get("BARROWS");
+			LootEntry entry = createLootEntry(kc, rewardContainer);
+			addLootEntry("Barrows", entry);
 			lootRecordedAlert("Barrows Chest added to log.");
-			panel.updateTab("Barrows");
 		}
 
 		// Raids Chest
 		if (event.getGroupId() == WidgetID.RAIDS_REWARD_GROUP_ID && lootRecorderConfig.recordRaidsChest())
 		{
+			int kc = killcountMap.get("RAIDS");
 			ItemContainer rewardContainer = client.getItemContainer(InventoryID.valueOf("RAIDS_REWARD_GROUP_ID")); // TODO: Update to RAIDS REWARD ONCE implemented
-			LootEntry entry = createLootEntry(raidsNumber, rewardContainer);
-			raids.add(entry);
-			addLootEntry(raidsFilename, entry);
-			lootRecordedAlert("Raid Loot added to log.");
-			panel.updateTab("Raids");
+			LootEntry entry = createLootEntry(kc, rewardContainer);
+			addLootEntry("Raids", entry);
+			lootRecordedAlert("Raids Chest Loot added to log.");
 		}
 	}
 
 	// Variables for getting items from NPC death
 	private String deathName;
+	private String lastBossKilled;
 	private int deathSize;
 	private WorldPoint deathSpot;
 	private Boolean watching = false;
@@ -270,7 +273,8 @@ public class LootRecorderPlugin extends Plugin
 			ItemLayer layer = tile.getItemLayer();
 			items = createItemMap(layer);
 			watching = true;
-
+			// Used for checking for pets in the future
+			lastBossKilled = actor.getName();
 		}
 	}
 
@@ -286,48 +290,19 @@ public class LootRecorderPlugin extends Plugin
 				ArrayList<DropEntry> drops = createDropEntryArray(npc.getLocalLocation());
 				deathName = null;
 				deathSpot = null;
+				deathSize = -1;
 				items = null;
 				AddBossLootEntry(npc.getName(), drops);
 			}
 		}
 	}
 
-	void AddBossLootEntry(String name, ArrayList<DropEntry> drops)
+	void AddBossLootEntry(String bossName, ArrayList<DropEntry> drops)
 	{
-		int KC = 0;
-		String filename = "";
-		switch (name.toUpperCase())
-		{
-			case "ZULRAH":
-				KC = zulrahNumber;
-				filename = zulrahFilename;
-			case "VORKATH":
-				KC = vorkathNumber;
-				filename = vorkathFilename;
-				// God Wars Dungeon
-			case "KREE'ARRA":
-				KC = armadylNumber;
-				filename = armadylFilename;
-			case "GENERAL GRAARDOR":
-				KC = bandosNumber;
-				filename = bandosFilename;
-			case "COMMANDER ZILYANA":
-				KC = saradominNumber;
-				filename = saradominFilename;
-			case "K'RIL TSUTSAROTH":
-				KC = zammyNumber;
-				filename = zammyFilename;
-			default:
-				KC = 100;
-				filename = vorkathFilename;
-		}
-
-		if (KC == 0)
-			return;
-
+		int KC = killcountMap.get(bossName.toUpperCase());
 		LootEntry newEntry = new LootEntry(KC, drops);
-		lootRecordedAlert(name + " kill added to log.");
-		addLootEntry(filename, newEntry);
+		addLootEntry(bossName, newEntry);
+		lootRecordedAlert(bossName + " kill added to log.");
 	}
 
 	private Tile getLootTile(Region region, LocalPoint local, int npcSize, int plane)
@@ -476,54 +451,24 @@ public class LootRecorderPlugin extends Plugin
 			panel.toggleTab(tabName, status);
 		}
 		// Update tab map
-		String bossName = Tab.getByName(tabName).getBossName();
+		String bossName = Tab.getByName(tabName).getBossName().toUpperCase();
 		recordingMap.put(bossName, status);
 	}
 
 	void loadTabData(String tabName)
 	{
-		switch (tabName.toUpperCase())
-		{
-			case "BARROWS":
-				loadLootEntries(barrowsFilename, barrows);
-				break;
-			case "RAIDS":
-				loadLootEntries(raidsFilename, raids);
-			case "ZULRAH":
-				loadLootEntries(zulrahFilename, zulrah);
-				break;
-			case "VORKATH":
-				loadLootEntries(vorkathFilename, vorkath);
-				break;
-			// God Wars Dungeon
-			case "ARMADYL":
-				loadLootEntries(armadylFilename, armadyl);
-				break;
-			case "BANDOS":
-				loadLootEntries(bandosFilename, bandos);
-				break;
-			case "SARADOMIN":
-				loadLootEntries(saradominFilename, saradomin);
-				break;
-			case "ZAMMY":
-				loadLootEntries(zammyFilename, zammy);
-				break;
-			default:
-				break;
-		}
+		loadLootEntries(Tab.getByName(tabName));
 	}
 
 	void loadAllData()
 	{
-		loadLootEntries(barrowsFilename, barrows);
-		loadLootEntries(raidsFilename, raids);
-		loadLootEntries(zulrahFilename, zulrah);
-		loadLootEntries(vorkathFilename, vorkath);
-		// GWD
-		loadLootEntries(armadylFilename, armadyl);
-		loadLootEntries(bandosFilename, bandos);
-		loadLootEntries(saradominFilename, saradomin);
-		loadLootEntries(zammyFilename, zammy);
+		for (Tab tab : Tab.values())
+		{
+			if (isBeingRecorded(tab.getName()))
+			{
+				loadLootEntries(tab);
+			}
+		}
 	}
 
 	// Update KC variable on chat message event
@@ -585,19 +530,17 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	// Add Loot Entry to the necessary file
-	private void addLootEntry(String fileName, LootEntry entry)
+	private void addLootEntry(String bossName, LootEntry entry)
 	{
+		// Update data inside plugin
+		ArrayList<LootEntry> loots = lootMap.get(bossName.toUpperCase());
+		loots.add(entry);
+		lootMap.put(bossName.toUpperCase(), loots);
 		// Convert entry to JSON
 		String dataAsString = RuneLiteAPI.GSON.toJson(entry);
 		// Grab file by username or loots directory if not logged in
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-		{
-			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
-		}
-		else
-		{
-			playerFolder = LOOTS_DIR;
-		}
+		updatePlayerFolder();
+		String fileName = filenameMap.get(bossName.toUpperCase());
 		// Open File and append data
 		File lootFile = new File(playerFolder, fileName);
 		try
@@ -611,23 +554,21 @@ public class LootRecorderPlugin extends Plugin
 		{
 			log.warn("Error witting loot data in file.", ioe);
 		}
+		// Update tab if being displayed;
+		Tab tab = Tab.getByBossName(bossName);
+		if (isBeingRecorded(tab.getName()))
+		{
+			panel.updateTab(tab.getName());
+		}
 	}
 
 	// Receive Loot from the necessary file
-	private synchronized void loadLootEntries(String fileName, ArrayList<LootEntry> data)
+	private synchronized void loadLootEntries(Tab tab)
 	{
-		// Empty Array
-		data.clear();
-
+		ArrayList<LootEntry> data = new ArrayList<>();
 		// Grab file by username or loots directory if not logged in
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-		{
-			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
-		}
-		else
-		{
-			playerFolder = LOOTS_DIR;
-		}
+		updatePlayerFolder();
+		String fileName = filenameMap.get(tab.getBossName().toUpperCase());
 
 		// Open File and read line by line
 		File file = new File(playerFolder, fileName);
@@ -643,6 +584,12 @@ public class LootRecorderPlugin extends Plugin
 					data.add(entry);
 				}
 			}
+
+			// Update Loot Map with new data
+			lootMap.put(tab.getBossName().toUpperCase(), data);
+			// Update Killcount map with latest killcount value for display purposes
+			int killcount = data.get(data.size() - 1).getKill_count();
+			killcountMap.put(tab.getBossName().toUpperCase(), killcount);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -657,57 +604,16 @@ public class LootRecorderPlugin extends Plugin
 	void updateBossKillcount(String bossName, int KC)
 	{
 		log.info("Boss " + bossName + ", Kill Count: " + KC);
-		switch (bossName)
-		{
-			case "Zulrah":
-				zulrahNumber = KC;
-				break;
-			case "Vorkath":
-				vorkathNumber = KC;
-				break;
-			// God Wars Dungeon
-			case "KREE'ARRA":
-				armadylNumber = KC;
-				break;
-			case "GENERAL GRAARDOR":
-				bandosNumber = KC;
-				break;
-			case "COMMANDER ZILYANA":
-				saradominNumber = KC;
-				break;
-			case "K'RIL TSUTSAROTH":
-				zammyNumber = KC;
-				break;
-			default:
-				log.info("Unhandled boss: " + bossName);
-		}
+		//Integer currentKC = killcountMap.get(bossName.toUpperCase());
+		//currentKC++;
+		killcountMap.put(bossName.toUpperCase(), KC);
 	}
 
 	// Returns stored data by tab name
 	ArrayList<LootEntry> getData(String type)
 	{
-		switch (type.toUpperCase())
-		{
-			case "BARROWS":
-				return barrows;
-			case "RAIDS":
-				return raids;
-			case "ZULRAH":
-				return zulrah;
-			case "VORKATH":
-				return vorkath;
-			// God Wars Dungeon
-			case "ARMADYL":
-				return armadyl;
-			case "BANDOS":
-				return bandos;
-			case "SARADOMIN":
-				return saradomin;
-			case "ZAMMY":
-				return zammy;
-			default:
-				return null;
-		}
+		// Loot Entries are stored on lootMap by boss name (upper cased)
+		return lootMap.get(Tab.getByName(type).getBossName().toUpperCase());
 	}
 
 	// Handles if panel should be shown by Tab Name
@@ -737,13 +643,42 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
-	void createRecordingMap()
+	void createMaps()
 	{
-		Map<String, Boolean> map = new HashMap<>();
+		Map<String, Boolean> mapRecording = new HashMap<>();
+		Map<String, ArrayList<LootEntry>> mapLoot = new HashMap<>();
+		Map<String, Integer> mapKillcount = new HashMap<>();
+		Map<String, String> mapFilename = new HashMap<>();
 		for (Tab tab : Tab.values())
 		{
-			map.put(tab.getBossName(), isBeingRecorded(tab.getName()));
+			String bossName = tab.getBossName().toUpperCase();
+			// Is Boss being recorded?
+			mapRecording.put(bossName, isBeingRecorded(tab.getName()));
+			// Loot Entries by Tab Name
+			ArrayList<LootEntry> array = new ArrayList<LootEntry>();
+			mapLoot.put(bossName, array);
+			// Kill Count
+			Integer killcount = 0;
+			mapKillcount.put(bossName, killcount);
+			// Filenames
+			String filename = tab.getName().replace("( |'|\\.)", "").toLowerCase() + ".log";
+			mapFilename.put(bossName, filename);
 		}
-		recordingMap = map;
+		recordingMap = mapRecording;
+		lootMap = mapLoot;
+		killcountMap = mapKillcount;
+		filenameMap = mapFilename;
+	}
+
+	void updatePlayerFolder()
+	{
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
+			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
+		}
+		else
+		{
+			playerFolder = LOOTS_DIR;
+		}
 	}
 }
