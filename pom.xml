@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -89,6 +89,10 @@
 			<id>runelite</id>
 			<name>RuneLite</name>
 			<url>http://repo.runelite.net</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -100,6 +104,10 @@
 			<id>runelite-plugins</id>
 			<name>RuneLite Plugins</name>
 			<url>http://repo.runelite.net</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
