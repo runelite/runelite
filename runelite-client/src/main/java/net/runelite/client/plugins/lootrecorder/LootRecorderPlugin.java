@@ -37,12 +37,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -51,6 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -59,6 +63,7 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Node;
+import net.runelite.api.NpcID;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -67,6 +72,7 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -242,9 +248,14 @@ public class LootRecorderPlugin extends Plugin
 	private String deathName;
 	private String lastBossKilled;
 	private int deathSize;
+	private int deathID;
+	private WorldPoint playerLocation;
 	private WorldPoint deathSpot;
-	private Boolean watching = false;
+	private WorldPoint deathSpot2;
 	private Map<Integer, Integer> items;
+	private Map<Integer, Integer> items2;
+	private Boolean watching = false;
+	private Boolean watchingItemLayers = false;
 
 	// For checking grotesque guardian death
 	private Boolean duskDead = false;
@@ -275,7 +286,10 @@ public class LootRecorderPlugin extends Plugin
 			NPCComposition comp = npc.getComposition();
 			deathSize = comp.getSize();
 			deathSpot = actor.getWorldLocation();
+			playerLocation = client.getLocalPlayer().getWorldLocation();
 			deathName = actor.getName();
+			deathID = npc.getId();
+
 			Tile tile = getLootTile(client.getRegion(), actor.getLocalLocation(), deathSize, client.getPlane());
 			ItemLayer layer = tile.getItemLayer();
 			items = createItemMap(layer);
@@ -285,6 +299,17 @@ public class LootRecorderPlugin extends Plugin
 			dawnDead = false;
 			// Used for checking for pets in the future
 			lastBossKilled = actor.getName();
+			if (lastBossKilled.equals("Zulrah"))
+				watchingItemLayers = true;
+			if (deathSize >= 3)
+			{
+				// Large NPCs (mostly bosses) drop their loot in the middle of them rather than on the southwestern spot
+				// Lets check both spots. Could be updated to maps but meh.
+				deathSpot2 =  new WorldPoint(deathSpot.getX() + ((deathSize - 1) / 2), deathSpot.getY() + ((deathSize - 1) / 2), deathSpot.getPlane());
+				Tile tile2 = client.getRegion().getTiles()[deathSpot2.getPlane()][deathSpot2.getX()][deathSpot2.getY()];
+				ItemLayer layer2 = tile2.getItemLayer();
+				items2 = createItemMap(layer);
+			}
 		}
 	}
 
@@ -296,23 +321,34 @@ public class LootRecorderPlugin extends Plugin
 			Actor npc = despawned.getActor();
 			if (npc.getName().equals(deathName) && npc.getWorldLocation().equals(deathSpot))
 			{
-				LocalPoint point = npc.getLocalLocation();
-				// Kraken spawns loot under you
-				if (npc.getName().equals("Kraken"))
-				{
-					point = client.getLocalPlayer().getLocalLocation();
-				}
 				watching = false;
-				ArrayList<DropEntry> drops = createDropEntryArray(point);
-				deathName = null;
-				deathSpot = null;
-				deathSize = -1;
-				items = null;
+				watchingItemLayers = false;
+				ArrayList<DropEntry> drops = createDropEntryArray((NPC) npc);
 				String npcName = npc.getName();
 				if (npcName.equals("Dusk") || npcName.equals("Dawn"))
 					npcName = "Grotesque Guardians";
 				AddBossLootEntry(npcName, drops);
+				deathName = null;
+				deathSpot = null;
+				deathSpot2 = null;
+				playerLocation = null;
+				deathSize = -1;
+				deathID = -1;
+				items = null;
+				items2 = null;
+				changedItemLayerTiles.clear();
 			}
+		}
+	}
+
+	// Store changed tiles (for zulrah)
+	private Set<Tile> changedItemLayerTiles;
+	@Subscribe
+	public void onItemLayerChanged(ItemLayerChanged event)
+	{
+		if (watchingItemLayers)
+		{
+			changedItemLayerTiles.add(event.getTile());
 		}
 	}
 
@@ -322,6 +358,132 @@ public class LootRecorderPlugin extends Plugin
 		LootEntry newEntry = new LootEntry(KC, drops);
 		addLootEntry(bossName, newEntry);
 		lootRecordedAlert(bossName + " kill added to log.");
+	}
+
+	// Based off Wooxs drop logger
+	private Tile WooxLootTile(NPC npc, WorldPoint location)
+	{
+		WorldPoint location2 = null;
+		// Some bosses drop their loot in specific locations
+		switch (deathID)
+		{
+			// Kraken spawns loot on you
+			case NpcID.KRAKEN:
+			case NpcID.KRAKEN_6640:
+			case NpcID.KRAKEN_6656:
+				// Location is determined at start of death animation
+				location = playerLocation;
+				break;
+			//case NpcID.DAWN:
+			//case NpcID.DAWN_7852:
+			//case NpcID.DAWN_7853:
+			//case NpcID.DAWN_7884:
+			//case NpcID.DAWN_7885:
+			case NpcID.DUSK:
+			case NpcID.DUSK_7851:
+			case NpcID.DUSK_7854:
+			case NpcID.DUSK_7855:
+			case NpcID.DUSK_7882:
+			case NpcID.DUSK_7883:
+			case NpcID.DUSK_7886:
+			case NpcID.DUSK_7887:
+			case NpcID.DUSK_7888:
+			case NpcID.DUSK_7889:
+				location = new WorldPoint(location.getX() + 3, location.getY() + 3, location.getPlane());
+				break;
+			case NpcID.ZULRAH:
+			case NpcID.ZULRAH_2043:
+			case NpcID.ZULRAH_2044:
+				// The drop appears on the tile where zulrah scales appeared
+				WorldPoint loc = changedItemLayerTiles.stream()
+						.filter(x ->
+						{
+							List<DropEntry> groundItems = getGroundItems(x);
+							if (groundItems != null)
+							{
+								return groundItems.stream().anyMatch(y -> y.getItem_id() == ItemID.ZULRAHS_SCALES);
+							}
+							return false;
+						})
+						.map(Tile::getWorldLocation)
+						// If player drops some zulrah scales themselves on the same tick,
+						// the ones that appeared further away will be chosen instead.
+						.sorted((x, y) -> y.distanceTo(playerLocation) - x.distanceTo(playerLocation))
+						.findFirst().orElse(null);
+				// Couldn't find loot
+				if (loc == null)
+				{
+					lootRecordedAlert("Unable to find Zulrah loot title.");
+					break;
+				}
+				// Found tile
+				location = new WorldPoint(loc.getX(), loc.getY(), loc.getPlane());
+				break;
+			case NpcID.CORPOREAL_BEAST:
+				location = new WorldPoint(location.getX() + 1, location.getY() + 1, location.getPlane());
+				break;
+			case NpcID.ABYSSAL_SIRE:
+			case NpcID.ABYSSAL_SIRE_5887:
+			case NpcID.ABYSSAL_SIRE_5888:
+			case NpcID.ABYSSAL_SIRE_5889:
+			case NpcID.ABYSSAL_SIRE_5890:
+			case NpcID.ABYSSAL_SIRE_5891:
+			case NpcID.ABYSSAL_SIRE_5908:
+				location = new WorldPoint(npc.getWorldLocation().getX() + 2, npc.getWorldLocation().getY() + 2, npc.getWorldLocation().getPlane());
+				break;
+			case NpcID.VORKATH:
+			case NpcID.VORKATH_8058:
+			case NpcID.VORKATH_8059:
+			case NpcID.VORKATH_8060:
+			case NpcID.VORKATH_8061:
+				int x = location.getX() + 3;
+				int y = location.getY() + 3;
+				if (playerLocation.getX() < x)
+				{
+					x = x - 4;
+				}
+				else if (playerLocation.getX() > x)
+				{
+					x = x + 4;
+				}
+				if (playerLocation.getY() < y)
+				{
+					y = y - 4;
+				}
+				else if (playerLocation.getY() > y)
+				{
+					y = y + 4;
+				}
+				location = new WorldPoint(x, y, location.getPlane());
+				break;
+			default:
+				if (deathSize >= 3)
+				{
+					// Large NPCs (mostly bosses) drop their loot in the middle of them rather than on the southwestern spot
+					// Set location2 to be checked for loot
+					location2 = new WorldPoint(location.getX() + ((deathSize - 1) / 2), location.getY() + ((deathSize - 1) / 2), location.getPlane());
+				}
+		}
+		log.info(String.valueOf(location));
+		log.info(String.valueOf(location2));
+		return getWooxLootTile(location, location2);
+	}
+
+	private Tile getWooxLootTile(WorldPoint location, WorldPoint location2)
+	{
+		int regionX = location.getX() - client.getBaseX();
+		int regionY = location.getY() - client.getBaseY();
+		if (regionX < 0 || regionX >= Constants.REGION_SIZE || regionY < 0 || regionY >= Constants.REGION_SIZE)
+		{
+			log.warn("Error calculating region x and y coordinates");
+			System.out.println(location);
+			System.out.println(location2);
+			System.out.println(regionX);
+			System.out.println(regionY);
+			return null;
+		}
+		Tile tile = client.getRegion().getTiles()[location.getPlane()][regionX][regionY];
+		return tile;
 	}
 
 	private Tile getLootTile(Region region, LocalPoint local, int npcSize, int plane)
@@ -361,20 +523,45 @@ public class LootRecorderPlugin extends Plugin
 		return map;
 	}
 
-	ArrayList<DropEntry> createDropEntryArray(LocalPoint local)
+	ArrayList<DropEntry> createDropEntryArray(NPC npc)
 	{
-		Tile tile = getLootTile(client.getRegion(), local, deathSize, client.getPlane());
+		//Tile tile = getLootTile(client.getRegion(), local, deathSize, client.getPlane());
+		// Get the correct loot tile
+		Tile tile = WooxLootTile(npc, deathSpot);
 		ItemLayer layer = tile.getItemLayer();
+		Map<Integer, Integer> oldMap = items;
+		// For bigger npcs
+		if (layer == null || layer.equals(items))
+		{
+			if (deathSpot2 == null)
+			{
+				layer = null;
+			}
+			else
+			{
+				tile = WooxLootTile(npc, deathSpot2);
+				layer = tile.getItemLayer();
+				oldMap = items2;
+			}
+		}
 
 		// Create a map of the Current items
 		Map<Integer, Integer> newItems = createItemMap(layer);
 
+		if (layer == null || newItems.equals(oldMap))
+		{
+			lootRecordedAlert("Unabled to create drop entry for: " + npc.getName());
+			return null;
+		}
+
+
 		// Loop Through the new items and add them to the drops array list
 		ArrayList<DropEntry> drops = new ArrayList<DropEntry>();
+		Map<Integer, Integer> finalOldMap = oldMap;
 		newItems.forEach((id, amount) ->
 				{
 					// If some of this item already existed remove the existing amount
-					Integer existing = items.get(id);
+					Integer existing = finalOldMap.get(id);
 					if (existing != null)
 					{
 						amount = amount - existing;
@@ -849,5 +1036,18 @@ public class LootRecorderPlugin extends Plugin
 		{
 			panel.updateTab(tab.getName());
 		}
+	}
+
+	// Taken from Wooxs droplogger plugin
+	private List<DropEntry> getGroundItems(Tile tile)
+	{
+		List<Item> items = tile.getGroundItems();
+		if (items == null)
+		{
+			return null;
+		}
+		return items.stream()
+				.map(x -> new DropEntry(x.getId(), x.getQuantity()))
+				.collect(Collectors.toList());
 	}
 }
