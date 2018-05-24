@@ -243,8 +243,8 @@
     {
       "level": 77,
       "icon": 12627,
-      "name": "Stamina Potion (3)",
-      "xp": 76.5
+      "name": "Stamina Potion (4)",
+      "xp": 102
     },
     {
       "level": 78,
@@ -279,8 +279,8 @@
     {
       "level": 87,
       "icon": 12907,
-      "name": "Anti-venom(3)",
-      "xp": 90
+      "name": "Anti-venom(4)",
+      "xp": 120
     },
     {
       "level": 90,
@@ -293,12 +293,6 @@
       "icon": 12915,
       "name": "Anti-venom+(3)",
       "xp": 125
-    },
-    {
-      "level": 98,
-      "icon": 21981,
-      "name": "Extended Super Antifire (3)",
-      "xp": 120
     },
     {
       "level": 98,
