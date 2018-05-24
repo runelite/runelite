@@ -110,14 +110,16 @@ public class FlatTextField extends JPanel
 		textField.setText(text);
 	}
 
-	public void addInputKeyListener(KeyListener l)
+	@Override
+	public void addKeyListener(KeyListener keyListener)
 	{
-		textField.addKeyListener(l);
+		textField.addKeyListener(keyListener);
 	}
 
-	public void removeInputKeyListener(KeyListener l)
+	@Override
+	public void removeKeyListener(KeyListener keyListener)
 	{
-		textField.removeKeyListener(l);
+		textField.removeKeyListener(keyListener);
 	}
 
 	@Override
@@ -134,7 +136,7 @@ public class FlatTextField extends JPanel
 		}
 
 		super.setBackground(color);
-		
+
 		if (saveColor)
 		{
 			this.backgroundColor = color;
