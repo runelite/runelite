@@ -35,11 +35,36 @@ import java.util.Map;
 @Getter
 public enum Tab
 {
+	// Chest Rewards
 	BARROWS("Barrows", ItemID.BARROWS_TELEPORT, 0),
 	RAIDS("Raids", ItemID.OLMLET, 1),
+
+	// Special Drops  (How loot is dropped)
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING, 2),
-	VORKATH("Vorkath", ItemID.VORKI, 3);
-	
+	VORKATH("Vorkath", ItemID.VORKI, 3),
+
+	// Normal Drops (How loot is dropped)
+	// God wars dungeon
+	KREEARRA("Kree'arra", ItemID.PET_KREEARRA , 4),
+	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR , 5),
+	COMMANDER_ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA , 6),
+	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH , 7);
+
+	/*
+	// Wildy Bosses
+	VETION("Vet'ion", ItemID.VETION_JR , 4),
+	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING , 5),
+	CALLISTO("Callisto", ItemID.CALLISTO_CUB , 6),
+	// Wildy Demi-Bosses
+	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING , 7),
+	CHAOS_FANATIC("Chaos Fanatic", ItemID.PET_CHAOS_ELEMENTAL , 8),
+	CRAZED_ARCHAEOLOGIST("Crazed Archaeologist", ItemID.FEDORA , 11),
+	// Wildy Other
+	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL , 9),
+	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 10),
+	aa("", ItemID. , 4);
+	*/
+
 	private final String name;
 	private final int itemID;
 	private final int index;

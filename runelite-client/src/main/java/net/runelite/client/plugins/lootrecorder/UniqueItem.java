@@ -109,7 +109,35 @@ public enum UniqueItem
 	VORKATHS_HEAD("Vorkath's head", ItemID.VORKATHS_HEAD, "Vorkath", "Uniques", 0),
 	JAR_OF_DECAY("Jar of decay", ItemID.JAR_OF_DECAY, "Vorkath", "Uniques", 0),
 	VORKI("Vorki", ItemID.VORKI, "Vorkath", "Uniques", 0),
-	SKELETAL_VISAGE("Skeletal visage", ItemID.SKELETAL_VISAGE, "Vorkath", "Uniques", 0);
+	SKELETAL_VISAGE("Skeletal visage", ItemID.SKELETAL_VISAGE, "Vorkath", "Uniques", 0),
+
+
+	// God Wars Dungeon
+	// Kree'arra (Armadyl)
+	ARMADYL_HELMET("Armadyl helmet", ItemID.ARMADYL_HELMET, "Kree'arra", "Uniques", 0),
+	ARMADYL_CHESTPLATE("Armadyl chestplate", ItemID.ARMADYL_CHESTPLATE, "Kree'arra", "Uniques", 0),
+	ARMADYL_CHAINSKIRT("Armadyl chainskirt", ItemID.ARMADYL_CHAINSKIRT, "Kree'arra", "Uniques", 0),
+	ARMADYL_HILT("Armadyl hilt", ItemID.ARMADYL_HILT, "Kree'arra", "Uniques", 0),
+	PET_KREEARRA("Pet Kree'arra", ItemID.PET_KREEARRA, "Kree'arra", "Pet", 1),
+	// General Graardor (Bandos)
+	BANDOS_CHESTPLATE("Bandos chestplate", ItemID.BANDOS_CHESTPLATE, "General Graardor", "Uniques", 0),
+	BANDOS_TASSETS("Bandos tassets", ItemID.BANDOS_TASSETS, "General Graardor", "Uniques", 0),
+	BANDOS_BOOTS("Bandos boots", ItemID.BANDOS_BOOTS, "General Graardor", "Uniques", 0),
+	BANDOS_HILT("Bandos hilt", ItemID.BANDOS_HILT, "General Graardor", "Uniques", 0),
+	PET_GENERAL_GRAARDOR("Pet general graardor", ItemID.PET_GENERAL_GRAARDOR, "General Graardor", "Pet", 1),
+	// Command Zilyana (Saradomin)
+	SARADOMIN_SWORD("Saradomin sword", ItemID.SARADOMIN_SWORD, "Commander Zilyana", "Uniques", 0),
+	ARMADYL_CROSSBOW("Armadyl crossbow", ItemID.ARMADYL_CROSSBOW, "Commander Zilyana", "Uniques", 0),
+	SARADOMINS_LIGHT("Saradomins light", ItemID.SARADOMINS_LIGHT, "Commander Zilyana", "Uniques", 0),
+	SARADOMIN_HILT("Saradomin hilt", ItemID.SARADOMIN_HILT, "Commander Zilyana", "Uniques", 0),
+	PET_ZILYANA("Pet zilyana", ItemID.PET_ZILYANA, "Commander Zilyana", "Pet", 1),
+	// K'ril Tsutsaroth (Zamorak)
+	STEAM_BATTLESTAFF("Steam battlestaff", ItemID.STEAM_BATTLESTAFF, "K'ril Tsutsaroth", "Uniques", 0),
+	STAFF_OF_THE_DEAD("Staff of the dead", ItemID.STAFF_OF_THE_DEAD, "K'ril Tsutsaroth", "Uniques", 0),
+	ZAMORAKIAN_SPEAR("Zamorakian spear", ItemID.ZAMORAKIAN_SPEAR, "K'ril Tsutsaroth", "Uniques", 0),
+	ZAMORAK_HILT("Zamorak hilt", ItemID.ZAMORAK_HILT, "K'ril Tsutsaroth", "Uniques", 0),
+	PET_KRIL_TSUTSAROTH("Pet k'ril tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH, "K'ril Tsutsaroth", "Pet", 1);
+
 
 
 	private final String name;

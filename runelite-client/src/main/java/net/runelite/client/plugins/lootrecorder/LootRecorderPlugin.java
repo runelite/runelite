@@ -67,7 +67,6 @@ import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ActorDespawned;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ItemLayerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.Notifier;
@@ -119,16 +118,32 @@ public class LootRecorderPlugin extends Plugin
 	private ArrayList<LootEntry> zulrah = new ArrayList<LootEntry>();
 	@Getter
 	private ArrayList<LootEntry> vorkath = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> armadyl = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> bandos = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> saradomin = new ArrayList<LootEntry>();
+	@Getter
+	private ArrayList<LootEntry> zammy = new ArrayList<LootEntry>();
 
 	private Integer barrowsNumber;
 	private Integer raidsNumber;
 	private Integer zulrahNumber;
 	private Integer vorkathNumber;
+	private Integer armadylNumber;
+	private Integer bandosNumber;
+	private Integer saradominNumber;
+	private Integer zammyNumber;
 
 	private String barrowsFilename = "barrows.log";
 	private String raidsFilename = "raids.log";
 	private String zulrahFilename = "zulrah.log";
 	private String vorkathFilename = "vorkath.log";
+	private String armadylFilename = "aramdyl.log";
+	private String bandosFilename = "bandos.log";
+	private String saradominFilename = "saradomin.log";
+	private String zammyFilename = "zammy.log";
 
 	private File playerFolder;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -279,6 +294,19 @@ public class LootRecorderPlugin extends Plugin
 			case "VORKATH":
 				KC = vorkathNumber;
 				filename = vorkathFilename;
+				// God Wars Dungeon
+			case "KREE'ARRA":
+				KC = armadylNumber;
+				filename = armadylFilename;
+			case "GENERAL GRAARDOR":
+				KC = bandosNumber;
+				filename = bandosFilename;
+			case "COMMANDER ZILYANA":
+				KC = saradominNumber;
+				filename = saradominFilename;
+			case "K'RIL TSUTSAROTH":
+				KC = zammyNumber;
+				filename = zammyFilename;
 			default:
 				KC = 100;
 				filename = vorkathFilename;
@@ -379,6 +407,18 @@ public class LootRecorderPlugin extends Plugin
 			case "recordVorkathKills":
 				ToggleTab("Vorkath", lootRecorderConfig.recordVorkathKills());
 				return;
+			case "recordArmadylKills":
+				ToggleTab("Armadyl", lootRecorderConfig.recordArmadylKills());
+				return;
+			case "recordBandosKills":
+				ToggleTab("Bandos", lootRecorderConfig.recordBandosKills());
+				return;
+			case "recordSaradominKills":
+				ToggleTab("Saradomoin", lootRecorderConfig.recordSaradominKills());
+				return;
+			case "recordZammyKills":
+				ToggleTab("Zammy", lootRecorderConfig.recordZammyKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -440,6 +480,19 @@ public class LootRecorderPlugin extends Plugin
 			case "VORKATH":
 				loadLootEntries(vorkathFilename, vorkath);
 				break;
+			// God Wars Dungeon
+			case "KREE'ARRA":
+				loadLootEntries(armadylFilename, armadyl);
+				break;
+			case "GENERAL GRAARDOR":
+				loadLootEntries(bandosFilename, bandos);
+				break;
+			case "COMMANDER ZILYANA":
+				loadLootEntries(saradominFilename, saradomin);
+				break;
+			case "K'RIL TSUTSAROTH":
+				loadLootEntries(zammyFilename, zammy);
+				break;
 			default:
 				break;
 		}
@@ -494,18 +547,7 @@ public class LootRecorderPlugin extends Plugin
 			if (!m.find())
 				return;
 			int KC = Integer.valueOf(m.group());
-			log.info("Boss " + bossName + ", Kill Count: " + KC);
-			switch (bossName)
-			{
-				case "Zulrah":
-					zulrahNumber = KC;
-					break;
-				case "Vorkath":
-					vorkathNumber = KC;
-					break;
-				default:
-					log.info("Unhandled boss: " + bossName);
-			}
+			updateBossKillcount(bossName, KC);
 		}
 	}
 
@@ -592,6 +634,35 @@ public class LootRecorderPlugin extends Plugin
 		}
 	}
 
+	void updateBossKillcount(String bossName, int KC)
+	{
+		log.info("Boss " + bossName + ", Kill Count: " + KC);
+		switch (bossName)
+		{
+			case "Zulrah":
+				zulrahNumber = KC;
+				break;
+			case "Vorkath":
+				vorkathNumber = KC;
+				break;
+			// God Wars Dungeon
+			case "KREE'ARRA":
+				armadylNumber = KC;
+				break;
+			case "GENERAL GRAARDOR":
+				bandosNumber = KC;
+				break;
+			case "COMMANDER ZILYANA":
+				saradominNumber = KC;
+				break;
+			case "K'RIL TSUTSAROTH":
+				zammyNumber = KC;
+				break;
+			default:
+				log.info("Unhandled boss: " + bossName);
+		}
+	}
+
 	// Returns stored data by tab name
 	ArrayList<LootEntry> getData(String type)
 	{
@@ -605,6 +676,15 @@ public class LootRecorderPlugin extends Plugin
 				return zulrah;
 			case "VORKATH":
 				return vorkath;
+			// God Wars Dungeon
+			case "KREE'ARRA":
+				return armadyl;
+			case "GENERAL GRAARDOR":
+				return bandos;
+			case "COMMANDER ZILYANA":
+				return saradomin;
+			case "K'RIL TSUTSAROTH":
+				return zammy;
 			default:
 				return null;
 		}
@@ -623,6 +703,15 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordZulrahKills();
 			case "VORKATH":
 				return lootRecorderConfig.recordVorkathKills();
+			// God Wars Dungeon
+			case "KREE'ARRA":
+				return lootRecorderConfig.recordArmadylKills();
+			case "GENERAL GRAARDOR":
+				return lootRecorderConfig.recordBandosKills();
+			case "COMMANDER ZILYANA":
+				return lootRecorderConfig.recordSaradominKills();
+			case "K'RIL TSUTSAROTH":
+				return lootRecorderConfig.recordZammyKills();
 			default:
 				return false;
 		}

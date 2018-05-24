@@ -59,10 +59,10 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "recordZulrahKills",
-			name = "Record Zulrah Loot",
-			description = "Configures whether or not loot from Zulrah is recorded",
-			position = 2
+		keyName = "recordZulrahKills",
+		name = "Record Zulrah Loot",
+		description = "Configures whether or not loot from Zulrah is recorded",
+		position = 2
 	)
 	default boolean recordZulrahKills()
 	{
@@ -70,10 +70,10 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "recordVorkathKills",
-			name = "Record Vorkath Loot",
-			description = "Configures whether or not loot from Vorkath is recorded",
-			position = 2
+		keyName = "recordVorkathKills",
+		name = "Record Vorkath Loot",
+		description = "Configures whether or not loot from Vorkath is recorded",
+		position = 3
 	)
 	default boolean recordVorkathKills()
 	{
@@ -81,10 +81,54 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showChatMessages",
-			name = "In-game Chat Message Alerts",
-			description = "In-Game Chat Messages when Loot Recorded",
-			position = 3
+		keyName = "recordArmadylKills",
+		name = "Record Kree'arra Loot",
+		description = "Configures whether or not loot from Kree'arra is recorded",
+		position = 4
+	)
+	default boolean recordArmadylKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordSaradominKills",
+		name = "Record Commander Zilyana Loot",
+		description = "Configures whether or not loot from Commander Zilyana is recorded",
+		position = 4
+	)
+	default boolean recordSaradominKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordZammyKills",
+		name = "Record K'ril Tsutsaroth Loot",
+		description = "Configures whether or not loot from K'ril Tsutsaroth is recorded",
+		position = 4
+	)
+	default boolean recordZammyKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recordBandosKills",
+		name = "Record General Graardor Loot",
+		description = "Configures whether or not loot from General Graardor is recorded",
+		position = 4
+	)
+	default boolean recordBandosKills()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showChatMessages",
+		name = "In-game Chat Message Alerts",
+		description = "In-Game Chat Messages when Loot Recorded",
+		position = 97
 	)
 	default boolean showChatMessages()
 	{
@@ -92,10 +136,10 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showTrayAlerts",
-			name = "Notification Tray Alerts",
-			description = "Create Notification Tray alerts when Loot Recorded?",
-			position = 4
+		keyName = "showTrayAlerts",
+		name = "Notification Tray Alerts",
+		description = "Create Notification Tray alerts when Loot Recorded?",
+		position = 98
 	)
 	default boolean showTrayAlerts()
 	{
@@ -106,7 +150,7 @@ public interface LootRecorderConfig extends Config
 		keyName = "showLootTotals",
 		name = "Show Recorded Loots Panel",
 		description = "Configures whether or not the Recorded Loots Panel is shown",
-		position = 5
+		position = 99
 	)
 	default boolean showLootTotals()
 	{
