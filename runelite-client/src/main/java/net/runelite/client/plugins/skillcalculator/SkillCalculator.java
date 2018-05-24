@@ -131,7 +131,7 @@ class SkillCalculator extends JPanel
 
 	private void updateCombinedAction()
 	{
-		int size = combinedActionSlots.size(); 
+		int size = combinedActionSlots.size();
 		if (size > 1)
 		{
 			combinedActionSlot.setTitle(size + " actions selected");
