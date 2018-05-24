@@ -241,12 +241,10 @@ public class LootRecorderPlugin extends Plugin
 			deathSize = comp.getSize();
 			deathSpot = actor.getWorldLocation();
 			deathName = actor.getName();
-			Tile tile = getTile(client.getRegion(), actor.getLocalLocation(), deathSize, client.getPlane());
+			Tile tile = getLootTile(client.getRegion(), actor.getLocalLocation(), deathSize, client.getPlane());
 			ItemLayer layer = tile.getItemLayer();
 			items = createItemMap(layer);
 			watching = true;
-			//System.out.println(deathSpot);
-			//System.out.println(actor.getLocalLocation());
 
 		}
 	}
@@ -266,16 +264,6 @@ public class LootRecorderPlugin extends Plugin
 				items = null;
 				AddBossLootEntry(npc.getName(), drops);
 			}
-		}
-	}
-
-	@Subscribe
-	public void onItemLayerChanged(ItemLayerChanged e)
-	{
-		if (watching)
-		{
-			//System.out.println(e.getTile().getLocalLocation());
-			//System.out.println(e.getTile().getRegionLocation());
 		}
 	}
 
@@ -303,19 +291,16 @@ public class LootRecorderPlugin extends Plugin
 		addLootEntry(filename, newEntry);
 	}
 
-	private Tile getTile(Region region, LocalPoint local, int npcSize, int plane)
+	private Tile getLootTile(Region region, LocalPoint local, int npcSize, int plane)
 	{
 		Tile[][][] tiles = region.getTiles();
 		int x = local.getRegionX();
 		int y = local.getRegionY();
 		if (npcSize > 1)
 		{
-			x = x - (npcSize - 1);
-			y = y - (npcSize - 1);
+			x = x - (npcSize / 2);
+			y = y - (npcSize / 2);
 		}
-		//System.out.println(x);
-		//System.out.println(y);
-		//System.out.println(npcSize);
 		Tile tile = tiles[plane][x][y];
 
 		return tile;
@@ -345,7 +330,7 @@ public class LootRecorderPlugin extends Plugin
 
 	ArrayList<DropEntry> createDropEntryArray(LocalPoint local)
 	{
-		Tile tile = getTile(client.getRegion(), local, deathSize, client.getPlane());
+		Tile tile = getLootTile(client.getRegion(), local, deathSize, client.getPlane());
 		ItemLayer layer = tile.getItemLayer();
 
 		// Create a map of the Current items
@@ -504,7 +489,7 @@ public class LootRecorderPlugin extends Plugin
 		Matcher boss = BOSS_NAME_PATTERN.matcher(Text.removeTags(chatMessage));
 		if (boss.find())
 		{
-			String bossName = boss.group();
+			String bossName = boss.group(1);
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (!m.find())
 				return;
