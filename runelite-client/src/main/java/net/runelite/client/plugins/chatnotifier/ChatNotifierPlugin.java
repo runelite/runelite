@@ -37,6 +37,8 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
+
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +111,7 @@ public class ChatNotifierPlugin extends Plugin
 	@Subscribe
 	public void onChatMessageReceived(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.FILTERED && config.ignoreFiltered())
+		if ((event.getType() == ChatMessageType.FILTERED && config.ignoreFiltered()) || (Text.removeTags(event.getName()).equals(client.getUsername())))
 		{
 			return;
 		}
