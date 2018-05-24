@@ -48,17 +48,17 @@ class NightmareZoneOverlay extends Overlay
 	private final NightmareZonePlugin plugin;
 	private final InfoBoxManager infoBoxManager;
 	private final ItemManager itemManager;
-
-	private AbsorptionCounter absorptionCounter;
 	private final PanelComponent panelComponent = new PanelComponent();
+	private AbsorptionCounter absorptionCounter;
+
 
 	@Inject
 	NightmareZoneOverlay(
-			Client client,
-			NightmareZoneConfig config,
-			NightmareZonePlugin plugin,
-			InfoBoxManager infoBoxManager,
-			ItemManager itemManager)
+		Client client,
+		NightmareZoneConfig config,
+		NightmareZonePlugin plugin,
+		InfoBoxManager infoBoxManager,
+		ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
@@ -67,6 +67,8 @@ class NightmareZoneOverlay extends Overlay
 		this.plugin = plugin;
 		this.infoBoxManager = infoBoxManager;
 		this.itemManager = itemManager;
+
+		panelComponent.setPreferredSize(new Dimension(150, 0));
 	}
 
 	@Override
@@ -95,11 +97,20 @@ class NightmareZoneOverlay extends Overlay
 		}
 
 		renderAbsorptionCounter();
+		plugin.getNMZInfoModel().update();
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Points: ")
-			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
+			.left("Total Points: ")
+			.right(StackFormatter.formatNumber(plugin.getNMZInfoModel().getPoints()))
+			.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Points/Hour: ")
+			.right(StackFormatter.formatNumber(plugin.getNMZInfoModel().getPointsPerHour()))
+			.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Duration: ")
+			.right(plugin.getNMZInfoModel().getFormattedElapsedTime())
 			.build());
 
 		return panelComponent.render(graphics);
