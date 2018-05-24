@@ -167,15 +167,6 @@
 					<server>runelite-tomcat</server>
 					<path>/runelite-${project.version}</path>
 				</configuration>
-				<executions>
-					<execution>
-						<id>tomcat-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>redeploy</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
