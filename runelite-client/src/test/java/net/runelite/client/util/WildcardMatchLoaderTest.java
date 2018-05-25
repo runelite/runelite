@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tanner <https://github.com/Reasel>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatnotifier;
+package net.runelite.client.util;
 
-import com.google.common.base.Strings;
-import com.google.common.cache.CacheLoader;
-import net.runelite.client.util.WildcardMatcher;
+import java.util.Arrays;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
-class WildcardMatchLoader extends CacheLoader<String, Boolean>
+public class WildcardMatchLoaderTest
 {
-	private final List<String> nameFilters;
-
-	WildcardMatchLoader(List<String> nameFilters)
+	@Test
+	public void testLoad()
 	{
-		this.nameFilters = nameFilters;
-	}
-
-	@Override
-	public Boolean load(@Nonnull final String key)
-	{
-		if (Strings.isNullOrEmpty(key))
-		{
-			return false;
-		}
-
-		final String filteredName = key.trim();
-
-		for (final String filter : nameFilters)
-		{
-			if (WildcardMatcher.matches(filter, filteredName))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
+		assertTrue(loader.load("rune pouch"));
+		assertTrue(loader.load("Rune pouch"));
+		assertFalse(loader.load("Adamant dagger"));
+		assertTrue(loader.load("Runeite Ore"));
+		assertTrue(loader.load("Abyssal whip"));
+		assertFalse(loader.load("Abyssal dagger"));
 	}
 }

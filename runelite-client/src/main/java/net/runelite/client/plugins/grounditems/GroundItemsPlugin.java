@@ -81,6 +81,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.B
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.WildcardMatchLoader;
 import net.runelite.http.api.item.ItemPrice;
 
 @PluginDescriptor(

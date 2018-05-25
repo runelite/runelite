@@ -38,7 +38,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
-
+import net.runelite.client.util.WildcardMatchLoader;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class ChatNotifierPlugin extends Plugin
 
 	private LoadingCache<String, Boolean> notifiedMessages;
 	private List<String> notifiedMessagesList = new ArrayList<>();
-	private String recoilCheck = "Your Ring of Recoil has shattered.";
+	private final String recoilCheck = "Your Ring of Recoil has shattered.";
 
 
 	@Provides
@@ -82,7 +82,7 @@ public class ChatNotifierPlugin extends Plugin
 		notifiedMessages = CacheBuilder.newBuilder()
 			.maximumSize(512L)
 			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new net.runelite.client.plugins.chatnotifier.WildcardMatchLoader(notifiedMessagesList));
+			.build(new WildcardMatchLoader(notifiedMessagesList));
 	}
 
 	@Override
