@@ -327,6 +327,8 @@ public class LootRecorderPlugin extends Plugin
 				watching = false;
 				watchingItemLayers = false;
 				// Find the drops from the correct tile and return them in the correct format
+				//log.info("Actor despawned, creating entry:");
+				//System.out.println(npc);
 				ArrayList<DropEntry> drops = createDropEntryArray((NPC) npc);
 				// Specific use case
 				String npcName = npc.getName();
@@ -380,6 +382,7 @@ public class LootRecorderPlugin extends Plugin
 	private WorldPoint[] getExpectedLootPoints(NPC npc, WorldPoint location)
 	{
 		WorldPoint location2 = null;
+		WorldPoint location3 = null;
 		// Some bosses drop their loot in specific locations
 		switch (deathID)
 		{
@@ -477,12 +480,15 @@ public class LootRecorderPlugin extends Plugin
 				{
 					// Large NPCs (mostly bosses) drop their loot in the middle of them rather than on the southwestern spot
 					// Set location2 to be checked for loot
-					location2 = new WorldPoint(location.getX() + ((deathSize - 1) / 2), location.getY() + ((deathSize - 1) / 2), location.getPlane());
+					location2 = new WorldPoint(location.getX() + (deathSize - 1) / 2, location.getY() + (deathSize - 1) / 2, location.getPlane());
+					// May be completely unnecessary but i think removing 1 from deathSize can mess up certain NPCs
+					location3 = new WorldPoint( location.getX() - (deathSize / 2), location.getY() - (deathSize / 2), location.getPlane());
 				}
 		}
 		WorldPoint[] points = new WorldPoint[]{
 				location,
-				location2
+				location2,
+				location3
 		};
 		return points;
 	}
@@ -490,9 +496,12 @@ public class LootRecorderPlugin extends Plugin
 	// Checks which WorldPoint has had item changes
 	private WorldPoint getCorrectWorldPoint(WorldPoint[] points)
 	{
+		//log.info("Getting correct world point");
 		Tile tile;
 		for (WorldPoint location : points)
 		{
+			//log.info("location: ");
+			//System.out.println(location);
 			if (location == null)
 			{
 				continue;
@@ -503,9 +512,12 @@ public class LootRecorderPlugin extends Plugin
 				// Loops over layer.getBottom() and stores K,V as ItemID,ItemAmount
 				Map<Integer, Integer> itemMap = createItemMap(tile.getItemLayer());
 				// Tile has items and items have changed
-				if (itemMap != null)
+				//System.out.println(tile);
+				//System.out.println(itemMap);
+				if (itemMap != null && itemMap.size() > 0)
 				{
 					Map<Integer, Integer> oldItems = itemArray.get(location);
+					//System.out.println(oldItems);
 					if (oldItems != null )
 					{
 						if (itemMap.equals(oldItems))
@@ -584,7 +596,11 @@ public class LootRecorderPlugin extends Plugin
 		if (layer == null || newItems.equals(oldMap))
 		{
 			lootRecordedAlert("Unable to create drop entry for: " + npc.getName());
-			log.info("No Layer Items or no NEW Layer Items");
+			//log.info("No Layer Items or no NEW Layer Items");
+			//System.out.println(newItems);
+			//System.out.println(oldMap);
+			//System.out.println(layer);
+			//System.out.println(tile);
 			return null;
 		}
 		// Loop Through the new items and add them to the drops array list
@@ -891,8 +907,11 @@ public class LootRecorderPlugin extends Plugin
 			// Update Loot Map with new data
 			lootMap.put(tab.getBossName().toUpperCase(), data);
 			// Update Killcount map with latest killcount value for display purposes
-			int killcount = data.get(data.size() - 1).getKill_count();
-			killcountMap.put(tab.getBossName().toUpperCase(), killcount);
+			if (data.size() > 0)
+			{
+				int killcount = data.get(data.size() - 1).getKill_count();
+				killcountMap.put(tab.getBossName().toUpperCase(), killcount);
+			}
 		}
 		catch (FileNotFoundException e)
 		{
