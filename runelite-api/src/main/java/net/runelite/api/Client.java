@@ -329,6 +329,8 @@ public interface Client extends GameEngine
 
 	void setStretchedFast(boolean state);
 
+	void setStretchedIntegerScaling(boolean state);
+
 	void setStretchedKeepAspectRatio(boolean state);
 
 	Dimension getStretchedDimensions();
