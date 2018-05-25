@@ -94,6 +94,7 @@ public class WidgetID
 	public static final int TITHE_FARM_GROUP_ID = 241;
 	public static final int KINGDOM_GROUP_ID = 392;
 	public static final int BARROWS_GROUP_ID = 24;
+	public static final int WILDERNESS_GROUP_ID = 90;
 
 	static class WorldMap
 	{
@@ -225,6 +226,7 @@ public class WidgetID
 
 	static class FixedViewport
 	{
+		static final int MULTI_INDICATOR = 20;
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 32;
 		static final int IGNORES_TAB = 33;
@@ -492,5 +494,11 @@ public class WidgetID
 		static final int BARROWS_BROTHERS = 8;
 		static final int BARROWS_POTENTIAL = 9;
 		static final int BARROWS_REWARD_INVENTORY = 3;
+	}
+
+	static class Wilderness
+	{
+		static final int WILDERNESS_CONTAINER = 41;
+		static final int WILDERNESS_LEVEL = 46;
 	}
 }

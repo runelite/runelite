@@ -22,43 +22,73 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.combatlevel;
+package net.runelite.client.plugins.combat;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Combat Level"
+	name = "Combat"
 )
-public class CombatLevelPlugin extends Plugin
+public class CombatPlugin extends Plugin
 {
-	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+	private final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
+	private final int DEFAULT_WILDERNESS_COLOR = 16776960;
 
 	@Inject
-	Client client;
+	private CombatOverlay overlay;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private CombatConfig config;
+
+	@Provides
+	CombatConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CombatConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+		restoreCombatLevel();
+		restoreWildernessWidgets();
+	}
 
-		if (combatLevelWidget != null)
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals("combat"))
 		{
-			String widgetText = combatLevelWidget.getText();
-
-			if (widgetText.contains("."))
+			if (!config.showCombatDecimals())
 			{
-				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
+				restoreCombatLevel();
+			}
+			else if (!config.showCombatRange())
+			{
+				restoreWildernessWidgets();
 			}
 		}
 	}
@@ -66,7 +96,8 @@ public class CombatLevelPlugin extends Plugin
 	@Subscribe
 	public void updateCombatLevel(GameTick event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN
+			|| !config.showCombatDecimals())
 		{
 			return;
 		}
@@ -87,6 +118,31 @@ public class CombatLevelPlugin extends Plugin
 				client.getRealSkillLevel(Skill.PRAYER)
 		);
 
-		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
+		combatLevelWidget.setText("Combat Lvl: " + DECIMAL_FORMAT.format(combatLevelPrecise));
+	}
+
+	private void restoreCombatLevel()
+	{
+		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+
+		if (combatLevelWidget != null)
+		{
+			String widgetText = combatLevelWidget.getText();
+
+			if (widgetText.contains("."))
+			{
+				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
+			}
+		}
+	}
+
+	private void restoreWildernessWidgets()
+	{
+		Widget widget = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
+
+		if (widget != null)
+		{
+			widget.setTextColor(DEFAULT_WILDERNESS_COLOR);
+		}
 	}
 }
