@@ -586,8 +586,16 @@ public class LootRecorderPlugin extends Plugin
 		WorldPoint correctWP = getCorrectWorldPoint(deathLocations);
 		if (correctWP == null)
 		{
-			lootRecordedAlert("Unable to find loot tile for: " + npc.getName());
-			return null;
+			// Certain NPCs are checking for tiles with a certain item so this would be null
+			WorldPoint[] points = getExpectedLootPoints(npc, deathSpot);
+			correctWP = getCorrectWorldPoint(points);
+
+			// Still not able to find correct world point
+			if (correctWP == null)
+			{
+				lootRecordedAlert("Unable to find loot tile for: " + npc.getName());
+				return null;
+			}
 		}
 		// Grab the tile from this correct WorldPoint
 		Tile tile = getLootTile(correctWP);
