@@ -57,7 +57,7 @@ public enum Tab
 	// Wildy Demi-Bosses
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING, 12),
 	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF , 13),
-	CRAZED_ARCHAEOLOGIST("Crazed Archaeologist", ItemID.FEDORA , 14),
+	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA , 14),
 	// Wildy Other
 	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON , 15),
 

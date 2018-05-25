@@ -172,9 +172,9 @@ public enum UniqueItem
 	ODIUM_SHARD_1("Odium shard 1", ItemID.ODIUM_SHARD_1 , "Chaos Fanatic", "Uniques", -1),
 	MALEDICTION_SHARD_1("Malediction shard 1", ItemID.MALEDICTION_SHARD_1 , "Chaos Fanatic", "Uniques", -1),
 	// Crazy Archaeologist
-	ODIUM_SHARD_2("Odium shard 2", ItemID.ODIUM_SHARD_2 , "Crazed Archaeologist", "Uniques", 0),
-	MALEDICTION_SHARD_2("Malediction shard 2", ItemID.MALEDICTION_SHARD_2 , "Crazed Archaeologist", "Uniques", 0),
-	FEDORA("Fedora", ItemID.FEDORA , "Crazed Archaeologist", "Uniques", 0),
+	ODIUM_SHARD_2("Odium shard 2", ItemID.ODIUM_SHARD_2 , "Crazy Archaeologist", "Uniques", 0),
+	MALEDICTION_SHARD_2("Malediction shard 2", ItemID.MALEDICTION_SHARD_2 , "Crazy Archaeologist", "Uniques", 0),
+	FEDORA("Fedora", ItemID.FEDORA , "Crazy Archaeologist", "Uniques", 0),
 	// Scorpia
 	ODIUM_SHARD_3("Odium shard 3", ItemID.ODIUM_SHARD_3 , "Scorpia", "Uniques", 0),
 	MALEDICTION_SHARD_3("Malediction shard 3", ItemID.MALEDICTION_SHARD_3 , "Scorpia", "Uniques", 0),

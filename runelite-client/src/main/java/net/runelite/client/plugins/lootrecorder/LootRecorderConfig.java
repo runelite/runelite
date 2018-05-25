@@ -180,12 +180,12 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recordCrazedArchaeologistKills",
-		name = "Record Crazed Archaeologist Loot",
-		description = "Configures whether or not loot from Crazed Archaeologist is recorded",
+		keyName = "recordCrazyArchaeologistKills",
+		name = "Record Crazy Archaeologist Loot",
+		description = "Configures whether or not loot from Crazy Archaeologist is recorded",
 		position = 13
 	)
-	default boolean recordCrazedArchaeologistKills()
+	default boolean recordCrazyArchaeologistKills()
 	{
 		return true;
 	}

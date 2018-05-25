@@ -648,8 +648,8 @@ public class LootRecorderPlugin extends Plugin
 			case "recordChaosFanaticKills":
 				ToggleTab("Chaos Fanatic", lootRecorderConfig.recordChaosFanaticKills());
 				return;
-			case "recordCrazedArchaeologistKills":
-				ToggleTab("Crazed Archaeologist", lootRecorderConfig.recordCrazedArchaeologistKills());
+			case "recordCrazyArchaeologistKills":
+				ToggleTab("Crazy Archaeologist", lootRecorderConfig.recordCrazyArchaeologistKills());
 				return;
 			case "recordScorpiaKills":
 				ToggleTab("Scorpia", lootRecorderConfig.recordScorpiaKills());
@@ -938,8 +938,8 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordChaosElementalKills();
 			case "CHAOS FANATIC":
 				return lootRecorderConfig.recordChaosFanaticKills();
-			case "CRAZED ARCHAEOLOGIST":
-				return lootRecorderConfig.recordCrazedArchaeologistKills();
+			case "CRAZY ARCHAEOLOGIST":
+				return lootRecorderConfig.recordCrazyArchaeologistKills();
 			case "SCORPIA":
 				return lootRecorderConfig.recordScorpiaKills();
 			case "KING BLACK DRAGON":
