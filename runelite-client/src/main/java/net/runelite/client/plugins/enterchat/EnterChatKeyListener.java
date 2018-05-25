@@ -34,7 +34,6 @@ public class EnterChatKeyListener implements KeyListener
 			if (client.getGameState() == GameState.LOGGED_IN && plugin.chatLineEmpty())
 			{
 				plugin.setActive(!plugin.active);
-				e.consume();
 			}
 			return;
 		}
