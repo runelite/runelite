@@ -24,6 +24,16 @@
  */
 package net.runelite.api.widgets;
 
+/**
+ * Utility class mapping widget IDs to global constants.
+ * <p>
+ * The constants defined directly under the {@link WidgetID} class are
+ * Widget group IDs. All child IDs are defined in sub-classes relating
+ * to their group.
+ * <p>
+ * For a more direct group-child widget mapping, use the
+ * {@link WidgetInfo} enum class.
+ */
 public class WidgetID
 {
 	public static final int FAIRY_RING_CODE_GROUP_ID = 381;
