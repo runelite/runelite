@@ -61,11 +61,14 @@ public class SlayerPluginTest
 
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
-	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
-	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
+	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing. It has 9 charges left.";
+	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
 
-	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count decreasing. It has one charge left";
-	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer task faster. It has one charge left.";
+	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count decreasing. It has 1 charge left.";
+	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer task faster. It has 1 charge left.";
+
+	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count decreasing. It then crumbles to dust.";
+	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer task faster. It then crumbles to dust.";
 
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
@@ -199,7 +202,7 @@ public class SlayerPluginTest
 		assertEquals(12, slayerPlugin.getSlaughterChargeCount());
 
 		slayerPlugin.setSlaughterChargeCount(1);
-		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
+		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER_V3, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
@@ -242,7 +245,7 @@ public class SlayerPluginTest
 		assertEquals(12, slayerPlugin.getExpeditiousChargeCount());
 
 		slayerPlugin.setExpeditiousChargeCount(1);
-		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS, null);
+		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS_V3, null);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
