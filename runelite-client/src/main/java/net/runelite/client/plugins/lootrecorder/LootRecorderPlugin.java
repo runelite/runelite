@@ -120,6 +120,8 @@ public class LootRecorderPlugin extends Plugin
 	private File playerFolder;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern BOSS_NAME_PATTERN = Pattern.compile("Your (.*) kill count is:");
+	private static final Pattern PET_RECEIVED_PATTERN = Pattern.compile("You have a funny feeling like ");
+	private static final Pattern PET_RECEIVED_INVENTORY_PATTERN = Pattern.compile("You feel something weird sneaking into your backpack.");
 
 	private LootRecorderPanel panel;
 	private NavigationButton navButton;
@@ -130,6 +132,7 @@ public class LootRecorderPlugin extends Plugin
 	private Map<String, ArrayList<LootEntry>> lootMap = new HashMap<>();
 	private Map<String, Integer> killcountMap = new HashMap<>();
 	private Map<String, String> filenameMap = new HashMap<>();
+	private Boolean gotPet = false;
 
 	@Provides
 	LootRecorderConfig provideConfig(ConfigManager configManager)
@@ -629,7 +632,24 @@ public class LootRecorderPlugin extends Plugin
 				}
 
 		);
+		if (gotPet)
+		{
+			int petID = getPetIdByNpcName(npc.getName());
+			drops.add(new DropEntry(petID, 1));
+			gotPet = false;
+			lootRecordedAlert("Oh lookie a pet!");
+		}
 		return drops;
+	}
+
+	private int getPetIdByNpcName(String name)
+	{
+		Pet pet = Pet.getByBossName(name);
+		if (pet != null)
+		{
+			return pet.getPetID();
+		}
+		return -1;
 	}
 
 	@Subscribe
@@ -837,6 +857,12 @@ public class LootRecorderPlugin extends Plugin
 			}
 		}
 
+		Matcher pet1 = PET_RECEIVED_PATTERN.matcher(Text.removeTags(chatMessage));
+		Matcher pet2 = PET_RECEIVED_INVENTORY_PATTERN.matcher(Text.removeTags(chatMessage));
+		if (pet1.find() || pet2.find())
+		{
+			gotPet = true;
+		}
 		// Handle all other boss
 		Matcher boss = BOSS_NAME_PATTERN.matcher(Text.removeTags(chatMessage));
 		if (boss.find())
