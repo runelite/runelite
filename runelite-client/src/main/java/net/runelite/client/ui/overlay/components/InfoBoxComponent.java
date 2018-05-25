@@ -28,18 +28,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 public class InfoBoxComponent implements LayoutableRenderableEntity
 {
-	private static final int BOX_SIZE = 35;
-	private static final int SEPARATOR = 2;
+	private static final int SEPARATOR = 3;
 
 	@Getter
 	private String tooltip;
@@ -50,42 +48,55 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
-	private BufferedImage image;
+	private Image image;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (image == null)
+		{
+			return new Dimension();
+		}
+
 		graphics.translate(preferredLocation.x, preferredLocation.y);
+
+		// Calculate dimensions
 		final FontMetrics metrics = graphics.getFontMetrics();
-		final int w = BOX_SIZE;
-		final int h = BOX_SIZE;
-		final Rectangle bounds = new Rectangle(w, h);
+		final int w = image.getWidth(null) + SEPARATOR * 2;
+		final int h = image.getHeight(null) + SEPARATOR * 2;
+		final int size = Math.max(w, h);
+		final Rectangle bounds = new Rectangle(size, size);
+
+		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(bounds);
 		backgroundComponent.render(graphics);
 
-		if (Objects.nonNull(image))
-		{
-			graphics.drawImage(
-				image,
-				(w - image.getWidth()) / 2,
-				(h - image.getHeight()) / 2,
-				null);
-		}
+		// Render image
+		graphics.drawImage(
+			image,
+			(size - image.getWidth(null)) / 2,
+			(size - image.getHeight(null)) / 2,
+			null);
 
+		// Render caption
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setColor(color);
 		textComponent.setText(text);
-		textComponent.setPosition(new Point(((w - metrics.stringWidth(text)) / 2), h - SEPARATOR));
+		textComponent.setPosition(new Point(((size - metrics.stringWidth(text)) / 2), size - SEPARATOR));
 		textComponent.render(graphics);
+
 		graphics.translate(-preferredLocation.x, -preferredLocation.y);
 		return bounds.getSize();
 	}
 
 	public Dimension getPreferredSize()
 	{
-		return new Dimension(BOX_SIZE, BOX_SIZE);
+		final int w = image.getWidth(null) + SEPARATOR * 2;
+		final int h = image.getHeight(null) + SEPARATOR * 2;
+		final int size = Math.max(w, h);
+		return new Dimension(size, size);
 	}
 
 	@Override

@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -67,7 +68,7 @@ public class InfoBoxOverlay extends Overlay
 
 		panelComponent.setBackgroundColor(null);
 		panelComponent.setBorder(new Rectangle());
-		panelComponent.setGap(new Point(2, 2));
+		panelComponent.setGap(new Point(1, 1));
 	}
 
 	@Override
@@ -80,6 +81,7 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 		panelComponent.getChildren().clear();
 		panelComponent.setWrapping(config.infoBoxWrap());
 		panelComponent.setOrientation(config.infoBoxVertical()
