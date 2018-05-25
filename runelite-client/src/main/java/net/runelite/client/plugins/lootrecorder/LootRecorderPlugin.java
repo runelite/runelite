@@ -442,7 +442,6 @@ public class LootRecorderPlugin extends Plugin
 				// Couldn't find loot
 				if (loc == null)
 				{
-					lootRecordedAlert("ERROR FINDING ZULRAH LOCATION");
 					break;
 				}
 				// Found tile
