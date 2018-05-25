@@ -74,6 +74,31 @@ class LootRecordPanel extends JPanel
 		this.add(total, c);
 	}
 
+	LootRecordPanel(Long totalValue)
+	{
+		GridBagLayout layout = new GridBagLayout();
+		this.setLayout(layout);
+		this.setBorder(new MatteBorder( 0, 0, 1, 0, Color.GRAY));
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.ipady = 20;
+
+		JLabel totalText = new JLabel("Total Value:", SwingConstants.LEFT);
+		ColorLabel(totalText, totalValue);
+
+		// Item Values (Colored off Total Value of item)
+		JLabel total = new JLabel(numberToString(totalValue), SwingConstants.RIGHT);
+		ColorLabel(total, totalValue);
+
+		this.add(totalText, c);
+		c.gridx++;
+		this.add(total, c);
+	}
+
 	// Add K and M Suffix to items
 	private String numberToString(long v)
 	{

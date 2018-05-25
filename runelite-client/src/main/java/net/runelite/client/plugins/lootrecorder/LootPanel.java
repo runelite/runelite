@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -136,6 +137,7 @@ class LootPanel extends JPanel
 		c.gridx = 0;
 		c.gridy = 0;
 
+
 		// Attach all the Unique Items
 		this.uniqueMap.forEach((setPosition, set) ->
 		{
@@ -143,13 +145,27 @@ class LootPanel extends JPanel
 			panel.add(p, c);
 			c.gridy++;
 		});
+
+
+		long totalValue = 0;
+		int totalValueIndex = c.gridy;
+		c.gridy++;
 		// Loop over each unique item and create a LootRecordPanel
-		this.consolidated.forEach((lr, item) ->
+		for ( Map.Entry<String, LootRecord> entry : this.consolidated.entrySet())
 		{
+			LootRecord item = entry.getValue();
 			LootRecordPanel p = new LootRecordPanel(item);
 			panel.add(p, c);
 			c.gridy++;
-		});
+			totalValue = totalValue + item.getTotal();
+		}
+
+		if (totalValue > 0)
+		{
+			c.gridy = totalValueIndex;
+			LootRecordPanel totalPanel = new LootRecordPanel(totalValue);
+			panel.add(totalPanel, c);
+		}
 	}
 
 	// Update Loot Panel with Updated Records
