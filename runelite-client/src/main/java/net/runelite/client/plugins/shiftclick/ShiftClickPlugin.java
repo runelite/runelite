@@ -36,6 +36,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -355,6 +356,16 @@ public class ShiftClickPlugin extends Plugin
 			// Update our cached item composition too
 			ItemComposition ourItemComposition = itemManager.getItemComposition(itemComposition.getId());
 			ourItemComposition.setShiftClickActionIndex(option);
+		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			shiftModifier = false;
+			resetDragDelay();
 		}
 	}
 
