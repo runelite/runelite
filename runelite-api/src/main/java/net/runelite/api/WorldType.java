@@ -27,7 +27,7 @@ package net.runelite.api;
 import java.util.EnumSet;
 
 /**
- * Enum representing world type.
+ * An enumeration of possible world types.
  */
 public enum WorldType
 {
@@ -96,7 +96,7 @@ public enum WorldType
 	 * Create mask from enum set of world types.
 	 *
 	 * @param types the types
-	 * @return the int
+	 * @return the int containing all mask
 	 */
 	public static int toMask(final EnumSet<WorldType> types)
 	{
