@@ -367,7 +367,7 @@ public interface LootRecorderConfig extends Config
 	)
 	default Color chatMessageColor()
 	{
-		return new Color(0, 100, 255);
+		return new Color(0, 75, 255);
 	}
 
 
