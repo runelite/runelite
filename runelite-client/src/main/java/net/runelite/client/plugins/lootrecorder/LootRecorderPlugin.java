@@ -59,6 +59,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
@@ -427,6 +428,8 @@ public class LootRecorderPlugin extends Plugin
 							List<DropEntry> groundItems = getGroundItems(x);
 							if (groundItems != null)
 							{
+								log.info("Found location with zulrah scales on it!");
+								System.out.println(x);
 								return groundItems.stream().anyMatch(y -> y.getItem_id() == ItemID.ZULRAHS_SCALES);
 							}
 							return false;
@@ -443,7 +446,7 @@ public class LootRecorderPlugin extends Plugin
 					break;
 				}
 				// Found tile
-				location = new WorldPoint(loc.getX(), loc.getY(), loc.getPlane());
+				location = loc;
 				break;
 			case NpcID.CORPOREAL_BEAST:
 				location = new WorldPoint(location.getX() + 1, location.getY() + 1, location.getPlane());
@@ -628,7 +631,8 @@ public class LootRecorderPlugin extends Plugin
 					if (amount <= 0)
 						return;
 					// Add new entry
-					drops.add(new DropEntry(id, amount));
+					int unnotedID = getUnnotedItemId(id);			// Store everything in unnoted form
+					drops.add(new DropEntry(unnotedID, amount));
 				}
 
 		);
@@ -1147,5 +1151,15 @@ public class LootRecorderPlugin extends Plugin
 		return items.stream()
 				.map(x -> new DropEntry(x.getId(), x.getQuantity()))
 				.collect(Collectors.toList());
+	}
+
+	public int getUnnotedItemId(int itemId)
+	{
+		ItemComposition comp = itemManager.getItemComposition(itemId);
+		if (comp.getNote() == -1)
+		{
+			return itemId;
+		}
+		return comp.getLinkedNoteId();
 	}
 }
