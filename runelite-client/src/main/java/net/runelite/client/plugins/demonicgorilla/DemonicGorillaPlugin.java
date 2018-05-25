@@ -55,6 +55,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -70,6 +71,9 @@ public class DemonicGorillaPlugin extends Plugin
 
 	@Inject
 	private DemonicGorillaOverlay overlay;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Getter
 	private Map<NPC, DemonicGorilla> gorillas;
@@ -87,6 +91,7 @@ public class DemonicGorillaPlugin extends Plugin
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
+		clientThread.invokeLater(this::reset); // Updates the list of gorillas and players
 	}
 
 	@Override
@@ -108,8 +113,28 @@ public class DemonicGorillaPlugin extends Plugin
 	{
 		recentBoulders.clear();
 		pendingAttacks.clear();
-		gorillas.clear();
 		memorizedPlayers.clear();
+		gorillas.clear();
+	}
+
+	private void reset()
+	{
+		recentBoulders.clear();
+		pendingAttacks.clear();
+		resetGorillas();
+		resetPlayers();
+	}
+
+	private void resetGorillas()
+	{
+		gorillas.clear();
+		for (NPC npc : client.getNpcs())
+		{
+			if (isNpcGorilla(npc.getId()))
+			{
+				gorillas.put(npc, new DemonicGorilla(npc));
+			}
+		}
 	}
 
 	private void resetPlayers()
@@ -628,7 +653,7 @@ public class DemonicGorillaPlugin extends Plugin
 			gs == GameState.CONNECTION_LOST ||
 			gs == GameState.HOPPING)
 		{
-			clear();
+			reset();
 		}
 	}
 

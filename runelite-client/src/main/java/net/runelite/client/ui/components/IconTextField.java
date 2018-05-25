@@ -145,14 +145,16 @@ public class IconTextField extends JPanel
 		this.textField.setHoverBackgroundColor(hoverBackgroundColor);
 	}
 
-	public void addInputKeyListener(KeyListener l)
+	@Override
+	public void addKeyListener(KeyListener keyListener)
 	{
-		textField.addKeyListener(l);
+		textField.addKeyListener(keyListener);
 	}
 
-	public void removeInputKeyListener(KeyListener l)
+	@Override
+	public void removeKeyListener(KeyListener keyListener)
 	{
-		textField.removeKeyListener(l);
+		textField.removeKeyListener(keyListener);
 	}
 
 	public void setEditable(boolean editable)

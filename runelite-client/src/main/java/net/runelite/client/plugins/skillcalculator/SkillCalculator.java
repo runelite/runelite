@@ -49,6 +49,7 @@ import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
 class SkillCalculator extends JPanel
@@ -82,7 +83,7 @@ class SkillCalculator extends JPanel
 		this.client = client;
 		this.uiInput = uiInput;
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new DynamicGridLayout(0, 1, 0, 5));
 
 		// Register listeners on the input fields and then move on to the next related text field
 		uiInput.uiFieldCurrentLevel.addActionListener(e ->
@@ -118,7 +119,7 @@ class SkillCalculator extends JPanel
 		// Remove all components (action slots) from this panel.
 		removeAll();
 
-		// Add in checkboxes for available skill bonuses.
+		// Add in radiobuttons for available skill bonuses.
 		renderBonusOptions();
 
 		// Add the combined action slot.
@@ -126,8 +127,6 @@ class SkillCalculator extends JPanel
 
 		// Create action slots for the skill actions.
 		renderActionSlots();
-
-		add(Box.createRigidArea(new Dimension(0, 15)));
 
 		// Update the input fields.
 		updateInputFields();
@@ -224,8 +223,6 @@ class SkillCalculator extends JPanel
 		{
 			UIActionSlot slot = new UIActionSlot(action);
 			uiActionSlots.add(slot); // Keep our own reference.
-
-			add(Box.createRigidArea(new Dimension(0, 5)));
 			add(slot); // Add component to the panel.
 
 			slot.addMouseListener(new MouseAdapter()
@@ -347,4 +344,5 @@ class SkillCalculator extends JPanel
 		xpFactor -= lastBonus;
 		calculate();
 	}
+
 }

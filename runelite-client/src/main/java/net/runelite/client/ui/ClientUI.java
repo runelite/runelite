@@ -62,14 +62,15 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.events.PluginToolbarButtonAdded;
 import net.runelite.client.events.PluginToolbarButtonRemoved;
 import net.runelite.client.events.TitleToolbarButtonAdded;
 import net.runelite.client.events.TitleToolbarButtonRemoved;
-import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -161,7 +162,8 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite"))
+		// Ignore all window related settings in fullscreen
+		if (!event.getGroup().equals("runelite") || config.enableFullscreen())
 		{
 			return;
 		}
@@ -349,6 +351,7 @@ public class ClientUI
 			SwingUtil.addGracefulExitCallback(frame,
 				() ->
 				{
+					frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(null);
 					saveClientBoundsConfig();
 					runelite.shutdown();
 				},
@@ -386,13 +389,11 @@ public class ClientUI
 	 */
 	public void show() throws Exception
 	{
-		final boolean withTitleBar = config.enableCustomChrome();
-
 		SwingUtilities.invokeAndWait(() ->
 		{
-			frame.setUndecorated(withTitleBar);
+			frame.setUndecorated(config.enableCustomChrome() || config.enableFullscreen());
 
-			if (withTitleBar)
+			if (config.enableCustomChrome() && !config.enableFullscreen())
 			{
 				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
@@ -508,6 +509,15 @@ public class ClientUI
 
 			titleToolbar.addComponent(sidebarNavigationButton, sidebarNavigationJButton);
 			toggleSidebar();
+
+			// Force fullscreen
+			if (config.enableFullscreen() && !OSXUtil.toggleFullscreen(frame))
+			{
+				frame.setExpandResizeType(ExpandResizeType.KEEP_WINDOW_SIZE);
+				frame.setResizable(false);
+				frame.getGraphicsConfiguration().getDevice().setFullScreenWindow(frame);
+				frame.setIgnoreRepaint(true);
+			}
 		});
 
 		eventBus.post(new ClientUILoaded());
