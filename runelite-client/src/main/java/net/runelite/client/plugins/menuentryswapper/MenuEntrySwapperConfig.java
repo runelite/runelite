@@ -81,17 +81,6 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "shiftClickCustomization",
-		name = "Customizable shift-click",
-		description = "Allows customization of shift-clicks on items"
-	)
-	default boolean shiftClickCustomization()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
 		keyName = "swapExchange",
 		name = "Exchange",
 		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
@@ -102,7 +91,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 5,
 		keyName = "swapHarpoon",
 		name = "Harpoon",
 		description = "Swap Cage, Big Net with Harpoon on Fishing spot"
@@ -113,7 +102,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 6,
 		keyName = "swapHome",
 		name = "Home",
 		description = "Swap Enter with Home on Portal"
@@ -124,7 +113,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 7,
 		keyName = "swapLastDestination",
 		name = "Last-destination (XXX)",
 		description = "Swap Zanaris with Last-destination on Fairy ring"
@@ -135,7 +124,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 8,
 		keyName = "swapPickpocket",
 		name = "Pickpocket on H.A.M.",
 		description = "Swap Talk-to with Pickpocket on H.A.M members"
@@ -146,7 +135,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 9,
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
@@ -157,7 +146,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 10,
 		keyName = "swapBoxTrap",
 		name = "Reset",
 		description = "Swap Check with Reset on box trap"
@@ -168,7 +157,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 11,
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
@@ -179,7 +168,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 12,
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
@@ -190,7 +179,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 13,
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
@@ -201,7 +190,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 14,
 		keyName = "swapTravel",
 		name = "Travel",
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
@@ -212,7 +201,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 15,
 		keyName = "claimSlime",
 		name = "Claim Slime",
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"

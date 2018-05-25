@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+package net.runelite.client.plugins.shiftclick;
 
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
 public class ShiftClickInputListener implements KeyListener
 {
 	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private MenuEntrySwapperPlugin plugin;
+	private ShiftClickPlugin plugin;
 
 	@Override
 	public void keyTyped(KeyEvent event)
