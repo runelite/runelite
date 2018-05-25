@@ -112,7 +112,13 @@ public class FightCavePlugin extends Plugin
 	}
 
 	@Subscribe
+<<<<<<< HEAD
 	public void onNpcDespawned(final NpcDespawned event) {
+=======
+	public void onActorDeath(ActorDeath event)
+	{
+		Actor actor = event.getActor();
+>>>>>>> 73451a40... Changed onNPCDespawn to onActorDeath.
 		if (currentWave == 0)
 		{
 			return;
