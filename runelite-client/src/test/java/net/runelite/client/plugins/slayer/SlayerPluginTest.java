@@ -52,6 +52,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
 {
+	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
+	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
+
+	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
+
 	private static final String TASK_ONE = "You've completed one task; return to a Slayer master.";
 	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed 3 tasks; return to a Slayer master.</col>";
 	private static final String TASK_POINTS = "You've completed 9 tasks and received 0 points, giving you a total of 18,000; return to a Slayer master.";
@@ -107,6 +112,42 @@ public class SlayerPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
+
+	@Test
+	public void testNewTask()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_NEW);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals(231, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testNewNpcContactTask()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_NEW_NPC_CONTACT);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals(211, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testExistingTask()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_EXISTING);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("suqahs", slayerPlugin.getTaskName());
+		assertEquals(222, slayerPlugin.getAmount());
 	}
 
 	@Test
