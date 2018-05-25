@@ -45,6 +45,7 @@ public class ShiftClickInputListener implements KeyListener
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			plugin.setShiftModifier(true);
+			plugin.applyCustomDragDelay();
 		}
 	}
 
@@ -54,6 +55,7 @@ public class ShiftClickInputListener implements KeyListener
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			plugin.setShiftModifier(false);
+			plugin.resetDragDelay();
 		}
 	}
 }

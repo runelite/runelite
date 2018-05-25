@@ -22,72 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.antidrag;
+package net.runelite.client.plugins.shiftclick;
 
-import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(name = "Shift Anti Drag")
-public class AntiDragPlugin extends Plugin implements KeyListener
+@ConfigGroup(
+	keyName = "shiftClick",
+	name = "Shift Click",
+	description = "Configuration for the shift-click plugin"
+)
+public interface ShiftClickConfig extends Config
 {
-	private static final int DEFAULT_DELAY = 5;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private AntiDragConfig config;
-
-	@Inject
-	private KeyManager keyManager;
-
-	@Provides
-	AntiDragConfig getConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "shiftClickCustomizationEnabled",
+		name = "Enable shift click customization",
+		description = "Configures whether or not the shift click customization is enabled",
+		position = 0
+	)
+	default boolean shiftClickCustomizationEnabled()
 	{
-		return configManager.getConfig(AntiDragConfig.class);
+		return true;
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	@ConfigItem(
+		keyName = "dragDelayEnabled",
+		name = "Enable drag delay",
+		description = "Configures whether or not the drag delay should be applied",
+		position = 1
+	)
+	default boolean dragDelayEnabled()
 	{
-		keyManager.registerKeyListener(this);
+		return true;
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@ConfigItem(
+		keyName = "dragDelay",
+		name = "Drag Delay",
+		description = "Configures the inventory drag delay in client ticks (20ms)",
+		position = 2
+	)
+	default int dragDelay()
 	{
-		client.setInventoryDragDelay(DEFAULT_DELAY);
-		keyManager.unregisterKeyListener(this);
+		return 600 / 20; // one game tick
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			client.setInventoryDragDelay(config.dragDelay());
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
-		}
-	}
+	@ConfigItem(
+		keyName = "dragDelay",
+		name = "",
+		description = ""
+	)
+	void dragDelay(int delay);
 }

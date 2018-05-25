@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
  * Copyright (c) 2018, Kamiel, <https://github.com/Kamielvf>
  * All rights reserved.
  *
@@ -25,6 +26,7 @@
 package net.runelite.client.plugins.shiftclick;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +35,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
@@ -50,7 +53,7 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Shift-click Customization"
+	name = "Shift Click"
 )
 public class ShiftClickPlugin extends Plugin
 {
@@ -62,6 +65,8 @@ public class ShiftClickPlugin extends Plugin
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+
+	private static final int DEFAULT_DRAG_DELAY = 5;
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -80,6 +85,9 @@ public class ShiftClickPlugin extends Plugin
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+
+	@Inject
+	private ShiftClickConfig config;
 
 	@Inject
 	private Client client;
@@ -105,16 +113,45 @@ public class ShiftClickPlugin extends Plugin
 	@Setter
 	private boolean shiftModifier = false;
 
+	@Provides
+	ShiftClickConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ShiftClickConfig.class);
+	}
+
 	@Override
 	public void startUp()
 	{
-		enableCustomization();
+		keyManager.registerKeyListener(inputListener);
+
+		if (config.shiftClickCustomizationEnabled())
+		{
+			enableCustomization();
+		}
 	}
 
 	@Override
 	public void shutDown()
 	{
+		keyManager.unregisterKeyListener(inputListener);
 		disableCustomization();
+		resetDragDelay();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("shiftClick") && event.getKey().equals("shiftClickCustomizationEnabled"))
+		{
+			if (config.shiftClickCustomizationEnabled())
+			{
+				enableCustomization();
+			}
+			else
+			{
+				disableCustomization();
+			}
+		}
 	}
 
 	private Integer getSwapConfig(int itemId)
@@ -141,13 +178,11 @@ public class ShiftClickPlugin extends Plugin
 
 	private void enableCustomization()
 	{
-		keyManager.registerKeyListener(inputListener);
 		refreshShiftClickCustomizationMenus();
 	}
 
 	private void disableCustomization()
 	{
-		keyManager.unregisterKeyListener(inputListener);
 		removeShiftClickCustomizationMenus();
 		configuringShiftClick = false;
 	}
@@ -381,5 +416,18 @@ public class ShiftClickPlugin extends Plugin
 		}
 
 		return -1;
+	}
+
+	public void applyCustomDragDelay()
+	{
+		if (config.dragDelayEnabled())
+		{
+			client.setInventoryDragDelay(config.dragDelay());
+		}
+	}
+
+	public void resetDragDelay()
+	{
+		client.setInventoryDragDelay(DEFAULT_DRAG_DELAY);
 	}
 }
