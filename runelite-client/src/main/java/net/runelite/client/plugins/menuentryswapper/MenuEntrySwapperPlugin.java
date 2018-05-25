@@ -27,15 +27,11 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Collection;
-import java.util.Collections;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -221,10 +217,5 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			client.setMenuEntries(entries);
 		}
-	}
-
-	Collection<WidgetItem> getInventoryItems()
-	{
-		return Collections.unmodifiableCollection(client.getWidget(WidgetInfo.INVENTORY).getWidgetItems());
 	}
 }
