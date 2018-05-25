@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,15 +30,30 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UIActionSlot extends JPanel
 {
+	private static final Border GREEN_BORDER = new CompoundBorder(
+		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
+		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+
+	private static final Border RED_BORDER = new CompoundBorder(
+		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
+		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+
 	SkillDataEntry action;
 	private JShadowedLabel uiLabelActions;
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
@@ -52,34 +68,60 @@ class UIActionSlot extends JPanel
 	{
 		this.action = action;
 
-		BorderLayout layout = new BorderLayout();
-		layout.setHgap(8);
-		setLayout(layout);
+		setLayout(new BorderLayout());
+		setBorder(RED_BORDER);
+		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		MouseListener hoverListener = new MouseAdapter()
+		{
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				if (!isSelected)
+				{
+					setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				if (!isSelected)
+				{
+					updateBackground();
+				}
+			}
+		};
+
+		addMouseListener(hoverListener);
 
 		JLabel uiIcon = new JLabel();
 
-		if (action.icon != null)
-			SkillCalculator.itemManager.getImage(action.icon).addTo(uiIcon);
-		else if (action.sprite != null)
-			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.sprite, 0);
+		if (action.getIcon() != null)
+			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
+		else if (action.getSprite() != null)
+			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
-		add(uiIcon, BorderLayout.LINE_START);
 
 		uiInfo = new JPanel(new GridLayout(2, 1));
+		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.name);
-		uiInfo.add(uiLabelName);
+		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
+		uiLabelName.setForeground(Color.WHITE);
 
 		uiLabelActions = new JShadowedLabel("Unknown");
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
+		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
 
+		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
 	}
 
@@ -102,11 +144,17 @@ class UIActionSlot extends JPanel
 
 	private void updateBackground()
 	{
-		if (isSelected)
-			this.setBackground(isAvailable ? Color.GREEN : Color.RED);
-		else
-			this.setBackground(isAvailable ? Color.GREEN.darker() : Color.RED.darker());
+		setBorder(isAvailable ? GREEN_BORDER : RED_BORDER);
+		setBackground(isSelected ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
+	}
 
-		uiInfo.setBackground(getBackground());
+	@Override
+	public void setBackground(Color color)
+	{
+		super.setBackground(color);
+		if (uiInfo != null)
+		{
+			uiInfo.setBackground(color);
+		}
 	}
 }

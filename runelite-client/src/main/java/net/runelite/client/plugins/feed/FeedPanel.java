@@ -27,6 +27,7 @@ package net.runelite.client.plugins.feed;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -328,12 +329,14 @@ class FeedPanel extends PluginPanel
 			public void mouseEntered(MouseEvent e)
 			{
 				avatarAndRight.setBackground(hoverColor);
+				avatarAndRight.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
 				avatarAndRight.setBackground(backgroundColor);
+				avatarAndRight.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override

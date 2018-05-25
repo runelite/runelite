@@ -90,6 +90,12 @@ public class SwingUtil
 		UIManager.put("MenuItem.foreground", Color.WHITE);
 		UIManager.put("Panel.background", ColorScheme.DARK_GRAY_COLOR);
 		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
+		UIManager.put("TextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("TextField.selectionForeground", Color.WHITE);
+		UIManager.put("FormattedTextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
+		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		UIManager.put("TextArea.selectionForeground", Color.WHITE);
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
@@ -282,6 +288,14 @@ public class SwingUtil
 		});
 	}
 
+	/**
+	 * Re-size a BufferedImage to the given dimensions.
+	 *
+	 * @param image the BufferedImage.
+	 * @param newWidth The width to set the BufferedImage to.
+	 * @param newHeight The height to set the BufferedImage to.
+	 * @return The BufferedImage with the specified dimensions
+	 */
 	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
 	{
 		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);

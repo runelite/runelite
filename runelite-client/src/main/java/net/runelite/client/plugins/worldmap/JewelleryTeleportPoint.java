@@ -28,7 +28,6 @@ package net.runelite.client.plugins.worldmap;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import lombok.Getter;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class JewelleryTeleportPoint extends WorldMapPoint
@@ -36,13 +35,12 @@ class JewelleryTeleportPoint extends WorldMapPoint
 	@Getter
 	private final JewelleryTeleportLocationData data;
 
-	JewelleryTeleportPoint(JewelleryTeleportLocationData data, ItemManager itemManager)
+	JewelleryTeleportPoint(JewelleryTeleportLocationData data)
 	{
 		super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
 
 		this.data = data;
-		String itemName = itemManager.getItemComposition(data.getItemID()).getName().replaceAll("\\(.*\\)", "");
-		setTooltip(itemName + " - " + data.getDestionation());
+		setTooltip(data.getTooltip());
 
 		try
 		{
