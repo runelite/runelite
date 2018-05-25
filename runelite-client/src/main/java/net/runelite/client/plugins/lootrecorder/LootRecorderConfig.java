@@ -28,6 +28,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.Color;
+
 @ConfigGroup(
 	keyName = "lootrecorder",
 	name = "Loot Recorder",
@@ -358,6 +360,18 @@ public interface LootRecorderConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "chatMessageColor",
+		name = "Chat Message Color",
+		description = "Color of the Chat Message alerts",
+		position = 97
+	)
+	default Color chatMessageColor()
+	{
+		return new Color(0, 100, 255);
+	}
+
+
+	@ConfigItem(
 		keyName = "showTrayAlerts",
 		name = "Notification Tray Alerts",
 		description = "Create Notification Tray alerts when Loot Recorded?",
@@ -376,7 +390,7 @@ public interface LootRecorderConfig extends Config
 	)
 	default boolean showLootTotals()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(

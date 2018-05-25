@@ -27,6 +27,7 @@ package net.runelite.client.plugins.lootrecorder;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -77,7 +78,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
-import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -148,6 +148,7 @@ public class LootRecorderPlugin extends Plugin
 			scheduler.schedule(() -> SwingUtilities.invokeLater(this::createPanel), 2, TimeUnit.SECONDS);
 		}
 		createMaps();
+		updateMessageColor();
 	}
 
 	// Separated from startUp for toggling panel from settings
@@ -734,9 +735,20 @@ public class LootRecorderPlugin extends Plugin
 					removePanel();
 				}
 				return;
+			case "chatMessageColor":
+				// Updated chat color
+				updateMessageColor();
+				lootRecordedAlert("Example Message");
 			default:
 				break;
 		}
+	}
+
+	private String messageColor = "";
+	public void updateMessageColor()
+	{
+		Color c = lootRecorderConfig.chatMessageColor();
+		messageColor = String.format("%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
 	}
 
 	private void lootRecordedAlert(String message)
@@ -745,9 +757,9 @@ public class LootRecorderPlugin extends Plugin
 		if (lootRecorderConfig.showChatMessages())
 		{
 			final ChatMessageBuilder chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
+					.append("<col=" + messageColor + ">")
 					.append(message)
-					.append(ChatColorType.NORMAL);
+					.append("</col>");
 
 			chatMessageManager.queue(QueuedMessage.builder()
 					.type(ChatMessageType.EXAMINE_ITEM)
