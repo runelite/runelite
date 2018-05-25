@@ -41,6 +41,8 @@ public class Raid
 	@Getter
 	private Layout layout;
 
+	private final Joiner JOINER = Joiner.on(", ");
+
 	public void updateLayout(Layout layout)
 	{
 		if (layout == null)
@@ -114,7 +116,7 @@ public class Raid
 
 	public String getRotationString()
 	{
-		return Joiner.on(",").join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
+		return JOINER.join(Arrays.stream(getCombatRooms()).map(r -> r.getBoss().getName()).toArray());
 	}
 
 	public String getFullRotationString()
@@ -139,7 +141,7 @@ public class Raid
 			return null;
 		}).filter(Objects::nonNull).toArray();
 
-		return Joiner.on(", ").join(roomNames);
+		return JOINER.join(roomNames);
 	}
 
 	public String toCode()
