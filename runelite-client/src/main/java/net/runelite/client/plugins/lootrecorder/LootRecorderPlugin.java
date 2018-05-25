@@ -280,7 +280,7 @@ public class LootRecorderPlugin extends Plugin
 			Boolean flag = recordingMap.get(actor.getName().toUpperCase());
 			if (duskDead && dawnDead)
 				flag = true;
-			if (!flag)
+			if (flag == null || !flag)
 				return;
 
 			// Yes they are
@@ -327,9 +327,8 @@ public class LootRecorderPlugin extends Plugin
 			Actor npc = despawned.getActor();
 			if (npc.getName().equals(deathName) && npc.getWorldLocation().equals(deathSpot))
 			{
-				// Correct Boss Despawned stop watching for changes
+				// Correct Boss Despawned
 				watching = false;
-				watchingItemLayers = false;
 				// Find the drops from the correct tile and return them in the correct format
 				//log.info("Actor despawned, creating entry:");
 				//System.out.println(npc);
@@ -417,6 +416,7 @@ public class LootRecorderPlugin extends Plugin
 			case NpcID.ZULRAH:
 			case NpcID.ZULRAH_2043:
 			case NpcID.ZULRAH_2044:
+				watchingItemLayers = false;
 				// The drop appears on the tile where zulrah scales appeared
 				WorldPoint loc = changedItemLayerTiles.stream()
 						.filter(x ->
@@ -436,7 +436,7 @@ public class LootRecorderPlugin extends Plugin
 				// Couldn't find loot
 				if (loc == null)
 				{
-					lootRecordedAlert("Unable to find Zulrah loot title.");
+					lootRecordedAlert("ERROR FINDING ZULRAH LOCATION");
 					break;
 				}
 				// Found tile
