@@ -24,12 +24,30 @@
  */
 package net.runelite.api;
 
+/**
+ * An enumeration of possible inventory types.
+ */
 public enum InventoryID
 {
+	/**
+	 * Standard player inventory.
+	 */
 	INVENTORY(93),
+	/**
+	 * Equipment inventory.
+	 */
 	EQUIPMENT(94),
+	/**
+	 * Bank inventory.
+	 */
 	BANK(95),
+	/**
+	 * A puzzle box inventory.
+	 */
 	PUZZLE_BOX(140),
+	/**
+	 * Barrows reward chest inventory.
+	 */
 	BARROWS_REWARD(141);
 
 	private final int id;
@@ -39,6 +57,11 @@ public enum InventoryID
 		this.id = id;
 	}
 
+	/**
+	 * Gets the raw inventory type ID.
+	 *
+	 * @return inventory type
+	 */
 	public int getId()
 	{
 		return id;

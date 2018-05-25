@@ -24,8 +24,12 @@
  */
 package net.runelite.api;
 
-// Note: This class is not complete: these animations were manually gathered
-// through getAnimation(). Please add animations as you happen to use them.
+/**
+ * Utility class used for mapping animation IDs.
+ * <p>
+ * Note: This class is not complete and may not contain a specific animation
+ * required.
+ */
 public final class AnimationID
 {
 	public static final int IDLE = -1;
