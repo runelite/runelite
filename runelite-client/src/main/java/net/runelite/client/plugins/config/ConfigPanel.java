@@ -81,6 +81,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.ui.components.ToggleState;
 import net.runelite.client.ui.components.ToggleSwitch;
 import net.runelite.client.util.SwingUtil;
 
@@ -302,12 +303,12 @@ public class ConfigPanel extends PluginPanel
 						if (enabled)
 						{
 							pluginManager.stopPlugin(plugin);
-							toggleButton.toggle(ToggleSwitch.OFF);
+							toggleButton.toggle(ToggleState.OFF);
 						}
 						else
 						{
 							pluginManager.startPlugin(plugin);
-							toggleButton.toggle(ToggleSwitch.ON);
+							toggleButton.toggle(ToggleState.ON);
 						}
 					}
 					catch (PluginInstantiationException ex)
@@ -323,7 +324,7 @@ public class ConfigPanel extends PluginPanel
 
 	private void highlightButton(ToggleSwitch button, boolean enabled)
 	{
-		button.setState(enabled ? ToggleSwitch.ON : ToggleSwitch.OFF);
+		button.setState(enabled ? ToggleState.ON : ToggleState.OFF);
 	}
 
 	private void onSearchBarChanged()

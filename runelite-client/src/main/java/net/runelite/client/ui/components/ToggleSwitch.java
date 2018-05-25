@@ -24,8 +24,6 @@
  */
 package net.runelite.client.ui.components;
 
-import net.runelite.client.plugins.config.ConfigPanel;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -37,16 +35,15 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * A class that acts like a switch that plays an animation when its state changes.
+ */
 public class ToggleSwitch extends JLabel implements ActionListener
 {
-
-	public static final int ON = 1;
-	public static final int OFF = 0;
-
 	private static final ImageIcon[] FRAME_ARRAY;
 	private static final int TOTAL_FRAMES = 5;
 
-	private int state = ON;
+	private ToggleState state = ToggleState.ON;
 
 	private int currentFrame = 4;
 	private Timer animator;
@@ -58,7 +55,7 @@ public class ToggleSwitch extends JLabel implements ActionListener
 		{
 			try
 			{
-				BufferedImage image = ImageIO.read(ConfigPanel.class.getResourceAsStream("switchers/" + i + ".png"));
+				BufferedImage image = ImageIO.read(ToggleSwitch.class.getResourceAsStream("toggleswitch/" + i + ".png"));
 				FRAME_ARRAY[i] = new ImageIcon(image);
 			}
 			catch (IOException e)
@@ -73,7 +70,6 @@ public class ToggleSwitch extends JLabel implements ActionListener
 	 */
 	public ToggleSwitch()
 	{
-		super();
 		//20 is for 20ms between each frame of the animation.
 		animator = new Timer(20, this);
 	}
@@ -83,12 +79,12 @@ public class ToggleSwitch extends JLabel implements ActionListener
 	 *
 	 * @param state The desired state of the switch.
 	 */
-	public void setState(final int state)
+	public void setState(ToggleState state)
 	{
 		animator.stop();
 		this.state = state;
-		setToolTipText(state == OFF ? "Disable plugin" : "Enable plugin");
-		currentFrame = state == OFF ? 0 : 4;
+		setToolTipText(state == ToggleState.OFF ? "Disable plugin" : "Enable plugin");
+		currentFrame = state == ToggleState.OFF ? 0 : 4;
 		repaint();
 	}
 
@@ -97,10 +93,10 @@ public class ToggleSwitch extends JLabel implements ActionListener
 	 *
 	 * @param state The desired state of the switch.
 	 */
-	public void toggle(final int state)
+	public void toggle(ToggleState state)
 	{
 		this.state = state;
-		setToolTipText(state == OFF ? "Disable plugin" : "Enable plugin");
+		setToolTipText(state == ToggleState.OFF ? "Disable plugin" : "Enable plugin");
 		if (!animator.isRunning())
 		{
 			animator.start();
@@ -120,7 +116,7 @@ public class ToggleSwitch extends JLabel implements ActionListener
 		// If the goal state is ON, increment animation frames until we reach the last,
 		// repainting for each frame.
 		// Then stop the animation.
-		if (state == ON)
+		if (state == ToggleState.ON)
 		{
 			if (currentFrame < 4)
 			{
