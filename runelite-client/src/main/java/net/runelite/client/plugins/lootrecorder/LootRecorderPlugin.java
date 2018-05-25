@@ -149,6 +149,9 @@ public class LootRecorderPlugin extends Plugin
 		}
 		createMaps();
 		updateMessageColor();
+
+		// Ensure Loot Directory has been created
+		LOOTS_DIR.mkdir();
 	}
 
 	// Separated from startUp for toggling panel from settings
@@ -1050,6 +1053,8 @@ public class LootRecorderPlugin extends Plugin
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
 			playerFolder = new File(LOOTS_DIR, client.getLocalPlayer().getName());
+			// Ensure player folder is made
+			playerFolder.mkdir();
 		}
 		else
 		{
