@@ -137,7 +137,7 @@ public class EnterChatPlugin extends Plugin
 		{
 			remap = KeyEvent.VK_F8;
 		}
-        /*
+		/*
         else if (code == config.f9().getCode() || code == config.altF9().getCode())
         {
             remap = KeyEvent.VK_F9;

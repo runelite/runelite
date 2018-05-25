@@ -155,7 +155,7 @@ public interface EnterChatConfig extends Config
 		return Keynum.N8;
 	}
 
-    /*
+	/*
     @ConfigItem(
             keyName = "f9",
             name = "F9",
@@ -300,7 +300,7 @@ public interface EnterChatConfig extends Config
 		return Keynum.NONE;
 	}
 
-    /*
+	/*
     @ConfigItem(
             keyName = "altf9",
             name = "Alternate F9",
