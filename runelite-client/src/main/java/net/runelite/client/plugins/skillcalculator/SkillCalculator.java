@@ -196,7 +196,7 @@ class SkillCalculator extends JPanel
 				uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
 				uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-				// Adjust XP bonus depending on check-state of the boxes.
+				// Adjust XP bonus depending on selected modifier.
 				uiRadioButton.addActionListener(e -> 
 				{
 					adjustXPBonus(uiRadioButton.isSelected(), bonus.getValue());
@@ -344,5 +344,4 @@ class SkillCalculator extends JPanel
 		xpFactor -= lastBonus;
 		calculate();
 	}
-
 }
