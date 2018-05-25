@@ -617,6 +617,9 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 			Item[] equipment = plugin.getEquippedItems();
 			Item[] inventory = plugin.getInventoryItems();
+			Item[] combined = new Item[equipment.length + inventory.length];
+			System.arraycopy(equipment, 0, combined, 0, equipment.length);
+			System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
 
 			// If equipment is null, the player is wearing nothing
 			if (equipment == null)
@@ -634,12 +637,13 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			{
 				boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
 				boolean inventoryFulfilled = requirement.fulfilledBy(inventory);
+				boolean combinedFulfilled = requirement.fulfilledBy(combined);
 
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(requirement.getCollectiveName(plugin.getClient()))
 					.leftColor(TITLED_CONTENT_COLOR)
-					.right(equipmentFulfilled || inventoryFulfilled ? "\u2713" : "\u2717")
-					.rightColor(equipmentFulfilled ? Color.GREEN : (inventoryFulfilled ? Color.ORANGE : Color.RED))
+					.right(equipmentFulfilled || inventoryFulfilled || combinedFulfilled ? "\u2713" : "\u2717")
+					.rightColor(equipmentFulfilled ? Color.GREEN : (inventoryFulfilled ? Color.ORANGE : (combinedFulfilled ? Color.YELLOW : Color.RED)))
 					.build());
 			}
 		}
