@@ -52,15 +52,18 @@ import net.runelite.client.ui.FontManager;
 
 class SkillCalculator extends JPanel
 {
+	private static final int MAX_XP = 200_000_000;
+	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
+
+	static SpriteManager spriteManager;
+	static ItemManager itemManager;
+
 	private Client client;
 	private SkillData skillData;
 	private List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private UICalculatorInputArea uiInput;
 
 	private CacheSkillData cacheSkillData = new CacheSkillData();
-
-	static SpriteManager spriteManager;
-	static ItemManager itemManager;
 
 	private UICombinedActionSlot combinedActionSlot = new UICombinedActionSlot();
 	private ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
@@ -70,10 +73,6 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
-
-	private static int MAX_XP = Experience.getXpForLevel(Experience.MAX_VIRT_LEVEL);
-
-	private static DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput)
 	{
