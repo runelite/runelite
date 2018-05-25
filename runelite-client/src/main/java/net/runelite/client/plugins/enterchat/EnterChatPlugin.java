@@ -25,6 +25,11 @@ import java.awt.event.KeyEvent;
 public class EnterChatPlugin extends Plugin
 {
 
+	/**
+	 * If enter chat should be active.
+	 */
+	public boolean active = false;
+
 	@Inject
 	private EnterChatConfig config;
 	@Inject
@@ -32,16 +37,7 @@ public class EnterChatPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	/**
-	 * Tracks state of keys while rebinding is active so that we can rebind a key release after deactivating.
-	 * Without this check, the button would remain down if you toggled enter chat while holding a remapped button.
-	 */
-	private boolean[] keys = new boolean[256];
-
-	/**
-	 * If enter chat should be active.
-	 */
-	private boolean active = true;
+	private KeyListener keyListener;
 
 	@Provides
 	EnterChatConfig getConfig(ConfigManager configManager)
@@ -163,99 +159,41 @@ public class EnterChatPlugin extends Plugin
 		return remap;
 	}
 
+	public boolean chatLineEmpty()
+	{
+		String chatBuffer = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+		return chatBuffer != null && chatBuffer.length() == 0;
+	}
+
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.CHATBOX_GROUP_ID)
+		if (event.getGroupId() == WidgetID.CHATBOX_GROUP_ID && chatLineEmpty())
 		{
-			setActive(active);
+			setActive(true);
+		}
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		super.shutDown();
+		setActive(false);
+		if (keyListener != null)
+		{
+			keyManager.unregisterKeyListener(keyListener);
 		}
 	}
 
 	@Override
 	protected void startUp()
 	{
-		keyManager.registerKeyListener(new KeyListener()
+		keyListener = new EnterChatKeyListener(this, client, config);
+		keyManager.registerKeyListener(keyListener);
+		if (chatLineEmpty())
 		{
-
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				// Toggle the state when the enter key is pressed
-				if (e.getKeyChar() == '\n')
-				{
-					// Make sure the chatline buffer is empty
-					String chatBuffer = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-					if (client.getGameState() == GameState.LOGGED_IN
-						&& chatBuffer != null
-						&& chatBuffer.length() == 0)
-					{
-						setActive(!active);
-						e.consume();
-					}
-					return;
-				}
-				if (isActive() && isPrintableKey(e))
-				{
-					e.consume();
-				}
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (config.invertShiftCtrl())
-				{
-					if (e.getKeyCode() == 17)
-					{
-						e.setKeyCode(16);
-						return;
-					}
-					else if (e.getKeyCode() == 16)
-					{
-						e.setKeyCode(17);
-						return;
-					}
-				}
-				if (isActive())
-				{
-					// Track state of keys
-					keys[e.getKeyCode()] = true;
-					// Rebind if necessary
-					e.setKeyCode(getRebind(e));
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				if (config.invertShiftCtrl())
-				{
-					if (e.getKeyCode() == 17)
-					{
-						e.setKeyCode(16);
-						return;
-					}
-					else if (e.getKeyCode() == 16)
-					{
-						e.setKeyCode(17);
-						return;
-					}
-				}
-				if (isActive())
-				{
-					// Track state of keys
-					keys[e.getKeyCode()] = false;
-					// Rebind if necessary
-					e.setKeyCode(getRebind(e));
-				}
-				else if (keys[e.getKeyCode()])
-				{
-					// Rebind key release of key that was held down when enter chat was toggled
-					e.setKeyCode(getRebind(e));
-				}
-			}
-		});
+			setActive(true);
+		}
 	}
 
 }
