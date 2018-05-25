@@ -135,10 +135,10 @@ public class ClientUI
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
-	private JPanel container;
 	private PluginPanel lastPluginPanel;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
+	public JPanel container;
 
 	@Inject
 	private ConfigManager configManager;
