@@ -338,21 +338,6 @@ public enum WidgetInfo
 		this.childId = childId;
 	}
 
-	public static int TO_GROUP(int id)
-	{
-		return id >>> 16;
-	}
-
-	public static int TO_CHILD(int id)
-	{
-		return id & 0xFFFF;
-	}
-
-	public static int PACK(int groupId, int childId)
-	{
-		return groupId << 16 | childId;
-	}
-
 	public int getId()
 	{
 		return groupId << 16 | childId;
@@ -366,6 +351,21 @@ public enum WidgetInfo
 	public int getChildId()
 	{
 		return childId;
+	}
+
+	public static int TO_GROUP(int id)
+	{
+		return id >>> 16;
+	}
+
+	public static int TO_CHILD(int id)
+	{
+		return id & 0xFFFF;
+	}
+
+	public static int PACK(int groupId, int childId)
+	{
+		return groupId << 16 | childId;
 	}
 
 	public int getPackedId()
