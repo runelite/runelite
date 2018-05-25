@@ -46,8 +46,8 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class CombatPlugin extends Plugin
 {
-	private final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
-	private final int DEFAULT_WILDERNESS_COLOR = 16776960;
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
+	private static final int FIXED_VIEWPORT_MULTI_Y = 300;
 
 	@Inject
 	private CombatOverlay overlay;
@@ -74,28 +74,27 @@ public class CombatPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		restoreCombatLevel();
-		restoreWildernessWidgets();
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (configChanged.getGroup().equals("combat"))
+		if (configChanged.getGroup().equals("combat")
+			|| !config.showCombatDecimals())
 		{
-			if (!config.showCombatDecimals())
-			{
-				restoreCombatLevel();
-			}
-			else if (!config.showCombatRange())
-			{
-				restoreWildernessWidgets();
-			}
+			restoreCombatLevel();
 		}
 	}
 
 	@Subscribe
 	public void updateCombatLevel(GameTick event)
 	{
+		Widget multiWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MULTI_INDICATOR);
+		if (multiWidget != null)
+		{
+			multiWidget.setRelativeY(FIXED_VIEWPORT_MULTI_Y);
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| !config.showCombatDecimals())
 		{
@@ -124,7 +123,6 @@ public class CombatPlugin extends Plugin
 	private void restoreCombatLevel()
 	{
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-
 		if (combatLevelWidget != null)
 		{
 			String widgetText = combatLevelWidget.getText();
@@ -133,16 +131,6 @@ public class CombatPlugin extends Plugin
 			{
 				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
 			}
-		}
-	}
-
-	private void restoreWildernessWidgets()
-	{
-		Widget widget = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
-
-		if (widget != null)
-		{
-			widget.setTextColor(DEFAULT_WILDERNESS_COLOR);
 		}
 	}
 }

@@ -41,14 +41,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 @Slf4j
 public class CombatOverlay extends Overlay
 {
-	private final Color TEXT_COLOR_BACKGROUND = new Color(0, 0, 0);
-	private final Color TEXT_COLOR_FRONT = new Color(255, 173, 57);
-	private final int TEXT_OFFSET = 10;
-	private final int FIXED_VIEWPORT_OFFSET_X = 4;
-	private final int FIXED_VIEWPORT_OFFSET_Y = 3;
-	private final int FIXED_VIEWPORT_MULTI_Y = 300;
+	private static final Color TEXT_COLOR_BACKGROUND = new Color(0, 0, 0);
+	private static final Color TEXT_COLOR_FRONT = new Color(255, 255, 0);
+	private static final int TEXT_OFFSET = 10;
+	private static final int FIXED_VIEWPORT_OFFSET_X = 4;
+	private static final int FIXED_VIEWPORT_OFFSET_Y = 4;
 
-	private ImmutableList<WorldType> EXCLUDE_WORLD_TYPES = ImmutableList.of(
+	private static final ImmutableList<WorldType> EXCLUDE_WORLD_TYPES = ImmutableList.of(
 		WorldType.DEADMAN,
 		WorldType.SEASONAL_DEADMAN,
 		WorldType.PVP,
@@ -85,12 +84,6 @@ public class CombatOverlay extends Overlay
 			{
 				centerX += FIXED_VIEWPORT_OFFSET_X;
 				centerY += FIXED_VIEWPORT_OFFSET_Y;
-
-				if (isWidgetVisible(client.getWidget(WidgetInfo.FIXED_VIEWPORT_MULTI_INDICATOR)))
-				{
-					Widget multiWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MULTI_INDICATOR);
-					multiWidget.setRelativeY(FIXED_VIEWPORT_MULTI_Y);
-				}
 			}
 
 			Widget textWidget = client.getWidget(WidgetInfo.WILDERNESS_LEVEL);
