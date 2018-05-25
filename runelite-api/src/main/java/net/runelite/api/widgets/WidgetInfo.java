@@ -37,6 +37,9 @@ public enum WidgetInfo
 
 	FAIRY_RING_TELEPORT_BUTTON(WidgetID.FAIRY_RING_GROUP_ID, WidgetID.FairyRing.TELEPORT_BUTTON),
 
+	// Known uses: Spirit Tree, Xeric's Talisman
+	GENERAL_TELEPORT_SELECTION_SCREEN(WidgetID.TELEPORT_SELECTION_GROUP_ID, 0),
+
 	LOGOUT_BUTTON(WidgetID.LOGOUT_PANEL_ID, WidgetID.LogoutPanel.LOGOUT_BUTTON),
 
 	INVENTORY(WidgetID.INVENTORY_GROUP_ID, 0),
@@ -255,6 +258,7 @@ public enum WidgetInfo
 	DIALOG_NPC_TEXT(WidgetID.DIALOG_NPC_GROUP_ID, WidgetID.DialogNPC.TEXT),
 	DIALOG_NPC_HEAD_MODEL(WidgetID.DIALOG_NPC_GROUP_ID, WidgetID.DialogNPC.HEAD_MODEL),
 	DIALOG_NPC_CONTINUE(WidgetID.DIALOG_NPC_GROUP_ID, WidgetID.DialogNPC.CONTINUE),
+	DIALOG_PLAYER_CONTINUE(WidgetID.DIALOG_PLAYER_GROUP_ID, WidgetID.DialogNPC.CONTINUE),
 
 	PRIVATE_CHAT_MESSAGE(WidgetID.PRIVATE_CHAT, 0),
 
@@ -264,6 +268,9 @@ public enum WidgetInfo
 	CHATBOX_MESSAGES(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.CHATBOX_MESSAGES),
 	CHATBOX_BUTTONS(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.CHATBOX_BUTTONS),
 	CHATBOX_REPORT_TEXT(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.CHATBOX_REPORT_TEXT),
+	CHATBOX_CHAT_INPUT_LINE(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.CHATBOX_CHAT_INPUT_LINE),
+	CHATBOX_TEXT_PROMPT(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.CHATBOX_TEXT_PROMPT),
+	CHATBOX_SELECT_OPTION(WidgetID.CHATBOX_SELECT_OPTION_GROUP_ID, 0),
 
 	BA_HEAL_WAVE_TEXT(WidgetID.BA_HEALER_GROUP_ID, WidgetID.BarbarianAssault.CURRENT_WAVE),
 	BA_HEAL_CALL_TEXT(WidgetID.BA_HEALER_GROUP_ID, WidgetID.BarbarianAssault.TO_CALL),
@@ -316,7 +323,11 @@ public enum WidgetInfo
 	BARROWS_INFO(WidgetID.BARROWS_GROUP_ID, 0),
 	BARROWS_BROTHERS(WidgetID.BARROWS_GROUP_ID, WidgetID.Barrows.BARROWS_BROTHERS),
 	BARROWS_POTENTIAL(WidgetID.BARROWS_GROUP_ID, WidgetID.Barrows.BARROWS_POTENTIAL),
-	BARROWS_REWARD_INVENTORY(WidgetID.BARROWS_REWARD_GROUP_ID, WidgetID.Barrows.BARROWS_REWARD_INVENTORY);
+	BARROWS_REWARD_INVENTORY(WidgetID.BARROWS_REWARD_GROUP_ID, WidgetID.Barrows.BARROWS_REWARD_INVENTORY),
+
+	POH_JEWELRY_INTERFACE(WidgetID.POH_JEWELRY_BOX_GROUP_ID, 0),
+	FURNITURE_CREATION_MENU(WidgetID.FURNITURE_CREATION_GROUP_ID, 0);
+
 
 	private final int groupId;
 	private final int childId;
@@ -325,6 +336,21 @@ public enum WidgetInfo
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+	}
+
+	public static int TO_GROUP(int id)
+	{
+		return id >>> 16;
+	}
+
+	public static int TO_CHILD(int id)
+	{
+		return id & 0xFFFF;
+	}
+
+	public static int PACK(int groupId, int childId)
+	{
+		return groupId << 16 | childId;
 	}
 
 	public int getId()
@@ -343,21 +369,6 @@ public enum WidgetInfo
 	}
 
 	public int getPackedId()
-	{
-		return groupId << 16 | childId;
-	}
-
-	public static int TO_GROUP(int id)
-	{
-		return id >>> 16;
-	}
-
-	public static int TO_CHILD(int id)
-	{
-		return id & 0xFFFF;
-	}
-
-	public static int PACK(int groupId, int childId)
 	{
 		return groupId << 16 | childId;
 	}
