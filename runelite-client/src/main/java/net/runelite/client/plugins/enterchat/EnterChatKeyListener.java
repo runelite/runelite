@@ -31,7 +31,7 @@ public class EnterChatKeyListener implements KeyListener
 		if (e.getKeyChar() == '\n')
 		{
 			// Make sure the chatline buffer is empty
-			if (client.getGameState() == GameState.LOGGED_IN && plugin.chatLineEmpty())
+			if (client.getGameState() == GameState.LOGGED_IN && plugin.chatLineEmpty() && !plugin.inputNeeded())
 			{
 				plugin.setActive(!plugin.active);
 			}
