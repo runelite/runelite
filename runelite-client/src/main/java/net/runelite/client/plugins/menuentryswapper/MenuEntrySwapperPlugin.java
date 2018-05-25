@@ -329,6 +329,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
+		if (config.shiftWalkHere() && shiftModifier)
+		{
+			// Keep moving 'Walk here' to the end of the entries (left-click option)
+			MenuEntry[] entries = client.getMenuEntries();
+			int walkIdx = searchIndex(entries, "Walk here", "", false);
+
+			if (walkIdx > 0 && walkIdx <= entries.length)
+			{
+				MenuEntry walkHere = entries[walkIdx];
+				MenuEntry currentTop = entries[entries.length - 1];
+
+				entries[walkIdx] = currentTop;
+				entries[entries.length - 1] = walkHere;
+
+				client.setMenuEntries(entries);
+			}
+		}
+
 		if (option.equals("talk-to"))
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
