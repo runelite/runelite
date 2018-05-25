@@ -37,6 +37,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -239,7 +240,7 @@ public class LootRecorderPlugin extends Plugin
 
 	// Variables for getting items from NPC death
 	private WorldPoint[] deathLocations;						// Stores NPC Death Worldpoints
-	private Map<WorldPoint, Map<Integer, Integer>> itemArray;	// Stores item map for a specific WorldPoint
+	private Map<WorldPoint, Map<Integer, Integer>> itemArray = new HashMap<>();	// Stores item map for a specific WorldPoint
 	// Variables for handling NPC death
 	private String deathName;				// NPC Name
 	private String lastBossKilled;			// NPC Name (Saved for pet purposes)
@@ -298,7 +299,8 @@ public class LootRecorderPlugin extends Plugin
 				{
 					Tile tile = getLootTile(point);
 					Map<Integer, Integer> items = createItemMap(tile.getItemLayer());
-					itemArray.put(point, items);
+					if (items.size() > 0)
+						itemArray.put(point, items);
 				}
 			}
 
@@ -356,7 +358,7 @@ public class LootRecorderPlugin extends Plugin
 	}
 
 	// Store changed tiles (for zulrah)
-	private Set<Tile> changedItemLayerTiles;
+	private Set<Tile> changedItemLayerTiles = new HashSet<Tile>();
 	@Subscribe
 	public void onItemLayerChanged(ItemLayerChanged event)
 	{
@@ -501,9 +503,18 @@ public class LootRecorderPlugin extends Plugin
 				// Loops over layer.getBottom() and stores K,V as ItemID,ItemAmount
 				Map<Integer, Integer> itemMap = createItemMap(tile.getItemLayer());
 				// Tile has items and items have changed
-				if (itemMap != null && !itemMap.equals(itemArray.get(location)))
+				if (itemMap != null)
 				{
-					// Return this tile
+					Map<Integer, Integer> oldItems = itemArray.get(location);
+					if (oldItems != null )
+					{
+						if (itemMap.equals(oldItems))
+						{
+							// Didn't Change
+							continue;
+						}
+					}
+					// Returns this location
 					return location;
 				}
 			}
@@ -536,12 +547,12 @@ public class LootRecorderPlugin extends Plugin
 		{
 			final Item item = (Item) current;
 
-			current = current.getNext();
 			Integer ex = map.computeIfPresent(item.getId(), (k, v) -> v + item.getQuantity());
 			if (ex == null)
 			{
 				map.computeIfAbsent(item.getId(), e -> item.getQuantity());
 			}
+			current = current.getNext();
 		}
 
 		return map;
@@ -582,10 +593,13 @@ public class LootRecorderPlugin extends Plugin
 		newItems.forEach((id, amount) ->
 				{
 					// If some of this item already existed remove the existing amount
-					Integer existing = finalOldMap.get(id);
-					if (existing != null)
+					if (oldMap != null)
 					{
-						amount = amount - existing;
+						Integer existing = finalOldMap.get(id);
+						if (existing != null)
+						{
+							amount = amount - existing;
+						}
 					}
 					// If no new item ignore this item ID
 					if (amount <= 0)

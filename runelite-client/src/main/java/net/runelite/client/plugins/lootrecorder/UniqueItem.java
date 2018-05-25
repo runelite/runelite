@@ -341,6 +341,9 @@ public enum UniqueItem
 	static Map<Integer, ArrayList<UniqueItem>> createPositionSetMap(ArrayList<UniqueItem> items)
 	{
 		Map<Integer, ArrayList<UniqueItem>> setNames = new HashMap<Integer, ArrayList<UniqueItem>>();
+		// If no unique items for this tab
+		if (items == null)
+			return setNames;
 		for (UniqueItem item : items)
 		{
 			setNames.computeIfAbsent(item.getPosition(), e -> new ArrayList<UniqueItem>()).add(item);
