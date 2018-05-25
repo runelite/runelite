@@ -221,4 +221,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "swapBirdhouseEmpty",
+		name = "Birdhouse",
+		description = "Swap Interact with Empty for birdhouses on Fossil Island"
+	)
+	default boolean swapBirdhouseEmpty()
+	{
+		return true;
+	}
 }
