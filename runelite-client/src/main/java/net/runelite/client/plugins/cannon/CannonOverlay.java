@@ -30,15 +30,21 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.QueryRunner;
 
 class CannonOverlay extends Overlay
 {
@@ -48,13 +54,16 @@ class CannonOverlay extends Overlay
 	private final CannonConfig config;
 	private final CannonPlugin plugin;
 	private final TextComponent textComponent = new TextComponent();
+	private final QueryRunner queryRunner;
 
 	@Inject
-	CannonOverlay(Client client, CannonConfig config, CannonPlugin plugin)
+	CannonOverlay(Client client, QueryRunner queryRunner, CannonConfig config, CannonPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.queryRunner = queryRunner;
 		this.config = config;
 		this.plugin = plugin;
 	}
@@ -98,9 +107,29 @@ class CannonOverlay extends Overlay
 			}
 		}
 
+		if (config.showCballsLeftInInvent())
+		{
+			WidgetItem[] items = queryRunner.runQuery(new InventoryWidgetItemQuery().idEquals(ItemID.CANNONBALL));
+			if (items.length == 0)
+			{
+				return null;
+			}
+
+			Point location = items[0].getCanvasLocation();
+			if (location == null)
+			{
+				return null;
+			}
+
+			graphics.setFont(FontManager.getRunescapeSmallFont());
+			textComponent.setText("" + plugin.getCballsLeft());
+			textComponent.setPosition(new java.awt.Point(location.getX() + 1, location.getY() + 21));
+			textComponent.setColor(Color.WHITE);
+			textComponent.render(graphics);
+		}
+
 		return null;
 	}
-
 
 	/**
 	 * Draw the double hit spots on a 6 by 6 grid around the cannon
