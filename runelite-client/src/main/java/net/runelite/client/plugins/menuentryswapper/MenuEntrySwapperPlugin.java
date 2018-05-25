@@ -420,9 +420,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
-		else if (config.walkHere() && shiftModifier && option.contains("attack"))
+		else if (config.walkHere() && shiftModifier)
 		{
-			removeAllBut("Walk here", "");
+			setDefaultOption("Walk here", "");
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
@@ -512,13 +512,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void removeAllBut(String leaveOption, String leaveTarget)
+	private void setDefaultOption(String defaultOption, String defaultTarget)
 	{
 		MenuEntry[] entries = client.getMenuEntries();
-		int index = searchIndex(entries, leaveOption, leaveTarget, false);
+		int i = 0;
+		int index = searchIndex(entries, defaultOption, defaultTarget, false);
 		if (index != -1)
 		{
-			client.setMenuEntries(new MenuEntry[]{entries[index]});
+			MenuEntry me = entries[entries.length - 1];
+			entries[entries.length - 1] = entries[index];
+			entries[index] = me;
+			client.setMenuEntries(entries);
 		}
 	}
 
