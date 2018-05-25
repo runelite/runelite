@@ -27,8 +27,14 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Actor;
 
+/**
+ * An event where the {@link Actor} has died.
+ */
 @Data
 public class ActorDeath
 {
+	/**
+	 * The player or NPC who died.
+	 */
 	private Actor actor;
 }

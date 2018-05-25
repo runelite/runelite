@@ -27,8 +27,25 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Skill;
 
+/**
+ * An event where a players skill level has been temporarily modified.
+ * <p>
+ * Examples of when this event may trigger include:
+ * <ul>
+ *     <li>Prayer points draining or being restored at an altar or restoration pool</li>
+ *     <li>Positive and negative effects gained from potions (ie. Saradomin brew)</li>
+ *     <li>Earning skill points towards a skill</li>
+ *     <li>Levelling up a skill</li>
+ * </ul>
+ * <p>
+ * Use {@link net.runelite.api.Client#getBoostedSkillLevel(Skill)} in order to
+ * retrieve the newly boosted skill level.
+ */
 @Data
 public class BoostedLevelChanged
 {
+	/**
+	 * The skill that has had its level modified.
+	 */
 	private Skill skill;
 }

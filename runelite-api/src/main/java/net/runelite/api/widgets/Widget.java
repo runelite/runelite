@@ -28,97 +28,330 @@ import java.awt.Rectangle;
 import java.util.Collection;
 import net.runelite.api.Point;
 
+/**
+ * Represents an on-screen UI element that is drawn on the canvas.
+ * <p>
+ * It should be noted that unique RuneLite elements are note widgets
+ * themselves, and that Widgets are primarily RuneScape elements.
+ * <p>
+ * Examples of Widgets include:
+ * <ul>
+ *     <li>The fairy ring configuration selector</li>
+ *     <li>The mini-map</li>
+ *     <li>The bank inventory</li>
+ * </ul>
+ * <p>
+ * For a more complete idea of what is classified as a widget, see {@link WidgetID}.
+ */
 public interface Widget
 {
+	/**
+	 * Gets the widgets ID.
+	 *
+	 * @return the widget ID
+	 * @see WidgetID
+	 */
 	int getId();
 
+	/**
+	 * Gets the type of the widget.
+	 *
+	 * @return the widget type
+	 */
 	int getType();
 
+	/**
+	 * Sets the type of the widget.
+	 *
+	 * @param type the new widget type
+	 */
 	void setType(int type);
 
+	/**
+	 * Gets the type of content displayed by the widget.
+	 *
+	 * @return the content type
+	 */
 	int getContentType();
 
+	/**
+	 * Sets the type of content displayed by the widget.
+	 *
+	 * @param contentType the new content type
+	 */
 	void setContentType(int contentType);
 
+	/**
+	 * Gets the current click configuration of the widget.
+	 *
+	 * @return the click configuration
+	 */
 	int getClickMask();
 
+	/**
+	 * Sets the click configuration of the widget.
+	 *
+	 * @param mask the new configuration
+	 */
 	void setClickMask(int mask);
 
+	/**
+	 * Gets the parent widget, if this widget is a child.
+	 *
+	 * @return the parent widget, or null
+	 */
 	Widget getParent();
 
+	/**
+	 * Gets the ID of the parent widget.
+	 *
+	 * @return the parent ID, or -1 if this widget is not a child
+	 */
 	int getParentId();
 
+	/**
+	 * Safely gets a child widget at a specific index from {@link #getChildren}.
+	 *
+	 * @param index the raw index into the array
+	 * @return child widget, or null if the index does not exist
+	 */
 	Widget getChild(int index);
 
+	/**
+	 * Gets all children of this widget.
+	 *
+	 * @return the widgets children
+	 */
 	Widget[] getChildren();
 
+	/**
+	 * Gets all dynamic children.
+	 *
+	 * @return the dynamic children
+	 */
 	Widget[] getDynamicChildren();
 
+	/**
+	 * Gets all static children.
+	 *
+	 * @return the static children
+	 */
 	Widget[] getStaticChildren();
 
+	/**
+	 * Gets all nested children.
+	 *
+	 * @return the nested children
+	 */
 	Widget[] getNestedChildren();
 
+	/**
+	 * Gets the relative x-axis coordinate to the widgets parent.
+	 *
+	 * @return the relative x-axis coordinate
+	 */
 	int getRelativeX();
 
+	/**
+	 * Sets the relative x-axis coordinate to the widgets parent.
+	 *
+	 * @param x the new relative coordinate
+	 */
 	void setRelativeX(int x);
 
+	/**
+	 * Gets the relative y-axis coordinate to the widgets parent.
+	 *
+	 * @return the relative coordinate
+	 */
 	int getRelativeY();
 
+	/**
+	 * Sets the relative y-axis coordinate to the widgets parent.
+	 *
+	 * @param y the new relative coordinate
+	 */
 	void setRelativeY(int y);
 
+	/**
+	 * Gets the text displayed on this widget.
+	 *
+	 * @return the displayed text
+	 */
 	String getText();
 
+	/**
+	 * Sets the text displayed on this widget.
+	 *
+	 * @param text the text to display
+	 */
 	void setText(String text);
 
+	/**
+	 * Gets the text color as an RGB value.
+	 *
+	 * @return the text color
+	 * @see java.awt.Color#getRGB()
+	 */
 	int getTextColor();
 
+	/**
+	 * Sets the RGB color of the displayed text.
+	 *
+	 * @param textColor the new text color
+	 * @see java.awt.Color#getRGB()
+	 */
 	void setTextColor(int textColor);
 
+	/**
+	 * Gets the name of the widget.
+	 * <p>
+	 * The name of the widget is used in the tooltip when an action is
+	 * available. For example, the widget that activates quick prayers
+	 * has the name "Quick-prayers" so when hovering there is a tooltip
+	 * that says "Activate Quick-prayers".
+	 *
+	 * @return the name
+	 */
 	String getName();
 
+	/**
+	 * Sets the name of the widget.
+	 *
+	 * @param name the new name
+	 */
 	void setName(String name);
 
+	/**
+	 * Gets the model ID displayed in the widget.
+	 *
+	 * @return the model ID
+	 */
 	int getModelId();
 
+	/**
+	 * Gets the sprite ID displayed in the widget.
+	 *
+	 * @return the sprite ID
+	 * @see net.runelite.api.SpriteID
+	 */
 	int getSpriteId();
 
+	/**
+	 * Sets the sprite ID displayed in the widget.
+	 *
+	 * @param spriteId the sprite ID
+	 * @see net.runelite.api.SpriteID
+	 */
 	void setSpriteId(int spriteId);
 
 	/**
-	 * @return True if this widget or any of it's parents are hidden
+	 * Checks whether this widget or any of its parents are hidden.
+	 *
+	 * @return true if this widget or any parent is hidden, false otherwise
 	 */
 	boolean isHidden();
 
 	/**
-	 * @return True if this widget, regardless of it's parent's state
+	 * Checks whether this widget is hidden, not taking into account
+	 * any parent hidden states.
+	 *
+	 * @return true if this widget is hidden, false otherwise
 	 */
 	boolean isSelfHidden();
 
 	/**
-	 * Sets if this element is hidden as returned by isSelfHidden()
+	 * Sets the hidden state of this widget.
+	 *
+	 * @param hidden new hidden state
 	 */
 	void setHidden(boolean hidden);
 
+	/**
+	 * Gets the location the widget is being drawn on the canvas.
+	 * <p>
+	 * This method accounts for the relative coordinates and bounds
+	 * of any parent widgets.
+	 *
+	 * @return the upper-left coordinate of where this widget is drawn
+	 */
 	Point getCanvasLocation();
 
+	/**
+	 * Gets the width of the widget.
+	 * <p>
+	 * If this widget is storing any {@link WidgetItem}s, this value is
+	 * used to store the number of item slot columns.
+	 *
+	 * @return the width
+	 */
 	int getWidth();
 
+	/**
+	 * Sets the width of the widget.
+	 *
+	 * @param width the new width
+	 */
 	void setWidth(int width);
 
+	/**
+	 * Gets the height of the widget.
+	 *
+	 * @return the height
+	 */
 	int getHeight();
 
+	/**
+	 * Sets the height of the widget.
+	 *
+	 * @param height the new height
+	 */
 	void setHeight(int height);
 
+	/**
+	 * Gets the area where the widget is drawn on the canvas.
+	 *
+	 * @return the occupied area of the widget
+	 */
 	Rectangle getBounds();
 
+	/**
+	 * Gets any items that are being displayed in the widget.
+	 *
+	 * @return any items displayed, or null if there are no items
+	 */
 	Collection<WidgetItem> getWidgetItems();
 
+	/**
+	 * Gets a widget item at a specific index.
+	 *
+	 * @param index index of the item
+	 * @return the widget item at index, or null if an item at index
+	 * 		   does not exist
+	 */
 	WidgetItem getWidgetItem(int index);
 
+	/**
+	 * Gets the item ID displayed by the widget.
+	 *
+	 * @return the item ID
+	 */
 	int getItemId();
 
+	/**
+	 * Gets the quantity of the item displayed by the widget.
+	 *
+	 * @return the item quantity
+	 */
 	int getItemQuantity();
-	
+
+	/**
+	 * Checks whether or not the drawn area of this widget contains
+	 * a point on the canvas.
+	 *
+	 * @param point the canvas point
+	 * @return true if this widget contains the point, false otherwise
+	 */
 	boolean contains(Point point);
 
 	int getScrollX();
@@ -129,29 +362,94 @@ public interface Widget
 
 	void setScrollY(int scrollY);
 
+	/**
+	 * Gets the original x-axis coordinate.
+	 *
+	 * @return the original coordinate
+	 */
 	int getOriginalX();
 
+	/**
+	 * Sets the original x-axis coordinate.
+	 *
+	 * @param originalX the new coordinate
+	 */
 	void setOriginalX(int originalX);
 
+	/**
+	 * Gets the original y-axis coordinate.
+	 *
+	 * @return the original coordinate
+	 */
 	int getOriginalY();
 
+	/**
+	 * Sets the original y-axis coordinate.
+	 *
+	 * @param originalY the new coordinate
+	 */
 	void setOriginalY(int originalY);
 
+	/**
+	 * Gets the original height of the widget.
+	 *
+	 * @return the original height
+	 */
 	int getOriginalHeight();
 
+	/**
+	 * Sets the original height of the widget.
+	 *
+	 * @param originalHeight the original height
+	 */
 	void setOriginalHeight(int originalHeight);
 
+	/**
+	 * Gets the original width of the widget.
+	 *
+	 * @return the original width
+	 */
 	int getOriginalWidth();
 
+	/**
+	 * Sets the original width of the widget.
+	 *
+	 * @param originalWidth the original width
+	 */
 	void setOriginalWidth(int originalWidth);
 
+	/**
+	 * Gets the additional x-axis padding.
+	 *
+	 * @return the x-axis padding
+	 */
 	int getPaddingX();
 
+	/**
+	 * Sets the x-axis padding.
+	 *
+	 * @param paddingX the new padding
+	 */
 	void setPaddingX(int paddingX);
 
+	/**
+	 * Gets the additional y-axis padding.
+	 *
+	 * @return the y-axis padding
+	 */
 	int getPaddingY();
 
+	/**
+	 * Sets the y-axis padding.
+	 *
+	 * @param paddingY the new padding
+	 */
 	void setPaddingY(int paddingY);
 
+	/**
+	 * Gets the actions available on the widget.
+	 *
+	 * @return the actions
+	 */
 	String[] getActions();
 }
