@@ -758,6 +758,9 @@ public class LootRecorderPlugin extends Plugin
 			case "recordDagannothSupremeKills":
 				ToggleTab("Dagannoth Supreme", lootRecorderConfig.recordDagannothSupremeKills());
 				return;
+			case "recordBrutalBlackKills":
+				ToggleTab("Brutal Black Dragon", lootRecorderConfig.recordBrutalBlackKills());
+				return;
 			case "showLootTotals":
 				loadAllData();
 				if (lootRecorderConfig.showLootTotals())
@@ -1053,6 +1056,8 @@ public class LootRecorderPlugin extends Plugin
 				return lootRecorderConfig.recordDagannothPrimeKills();
 			case "DAGANNOTH SUPREME":
 				return lootRecorderConfig.recordDagannothSupremeKills();
+			case "BRUTAL BLACK DRAGON":
+				return lootRecorderConfig.recordBrutalBlackKills();
 			default:
 				return false;
 		}
