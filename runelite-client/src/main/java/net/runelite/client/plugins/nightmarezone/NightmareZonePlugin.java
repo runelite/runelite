@@ -66,7 +66,7 @@ public class NightmareZonePlugin extends Plugin
 	private boolean absorptionNotificationSend = true;
 
 	@Getter
-	private NightmareZoneInfoModel NMZInfoModel;
+	private NightmareZoneInfoModel nightmareZoneInfoModel;
 
 	@Override
 	protected void shutDown()
@@ -102,14 +102,14 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
-			NMZInfoModel = null;
+			nightmareZoneInfoModel = null;
 
 			return;
 		}
 
-		if (NMZInfoModel == null)
+		if (nightmareZoneInfoModel == null)
 		{
-			NMZInfoModel = new NightmareZoneInfoModel(client, config);
+			nightmareZoneInfoModel = new NightmareZoneInfoModel(client, config);
 		}
 
 		if (config.absorptionNotification())

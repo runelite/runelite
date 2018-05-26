@@ -48,33 +48,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "staticPointsPerHourUpdate",
-		name = "Update P/H once per kill",
-		description = "Configures whether to update [Points/Hour] only when total points changes",
-		position = 2
-	)
-	default boolean staticPointsPerHourUpdate()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "hourlyUpdateInterval",
-		name = "P/H update interval (s)",
-		description = "The amount of time in seconds before visually updating [Points/Hour]. " +
-			"Only applies if [Update P/H once per kill] is unchecked",
-		position = 3
-	)
-	default int hourlyUpdateInterval()
-	{
-		return 1;
-	}
-
-	@ConfigItem(
 		keyName = "powersurgenotification",
 		name = "Power surge notification",
 		description = "Toggles notifications when a power surge power-up appears",
-		position = 4
+		position = 2
 	)
 	default boolean powerSurgeNotification()
 	{
@@ -85,7 +62,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "recurrentdamagenotification",
 		name = "Recurrent damage notification",
 		description = "Toggles notifications when a recurrent damage power-up appears",
-		position = 5
+		position = 3
 	)
 	default boolean recurrentDamageNotification()
 	{
@@ -96,7 +73,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "zappernotification",
 		name = "Zapper notification",
 		description = "Toggles notifications when a zapper power-up appears",
-		position = 6
+		position = 4
 	)
 	default boolean zapperNotification()
 	{
@@ -107,7 +84,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "overloadnotification",
 		name = "Overload notification",
 		description = "Toggles notifications when your overload runs out",
-		position = 7
+		position = 5
 	)
 	default boolean overloadNotification()
 	{
@@ -118,7 +95,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 8
+		position = 6
 	)
 	default boolean absorptionNotification()
 	{
@@ -129,7 +106,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 9
+		position = 7
 	)
 	default int absorptionThreshold()
 	{
@@ -140,7 +117,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 10
+		position = 8
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -151,7 +128,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 11
+		position = 9
 	)
 	default Color absorptionColorBelowThreshold()
 	{

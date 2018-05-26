@@ -52,11 +52,6 @@ public class NightmareZoneInfoModel
 	private int elapsedTimeSeconds;
 
 	/**
-	 * A Timestamp signifying the last time Points/Hour was updated after a set interval
-	 */
-	private Timestamp lastIntervalUpdate;
-
-	/**
 	 * Points currently earned in a Nightmare Zone dream
 	 */
 	@Getter
@@ -81,39 +76,18 @@ public class NightmareZoneInfoModel
 	{
 		this.client = client;
 		this.config = config;
-		lastIntervalUpdate = new Timestamp(0);
 		dreamStartTime = new Timestamp(System.currentTimeMillis());
 	}
 
-	/**
-	 * Retrieves the most up to date dream points and sets the model points, point per hour and
-	 * elapsed time/ formatted time accordingly
-	 */
 	public void update()
 	{
 		int points = client.getVar(Varbits.NMZ_POINTS);
 
-		long currentTimeMillis = System.currentTimeMillis();
 		elapsedTimeSeconds = (int) (System.currentTimeMillis() - dreamStartTime.getTime()) / 1000;
-		long intervalTimeDifference = currentTimeMillis - lastIntervalUpdate.getTime();
 
+		setPoints(points);
+		setPointsPerHour(points);
 		setFormattedElapsedTime();
-
-		if (config.staticPointsPerHourUpdate())
-		{
-			if (this.points != points)
-			{
-				setPointsPerHour(points);
-				setPoints(points);
-			}
-		}
-		else if (intervalTimeDifference >= config.hourlyUpdateInterval() * 1000
-			|| lastIntervalUpdate.getTime() == 0)
-		{
-			setPointsPerHour(points);
-			setPoints(points);
-			lastIntervalUpdate.setTime(System.currentTimeMillis());
-		}
 	}
 
 	private void setPointsPerHour(int points)

@@ -67,8 +67,6 @@ class NightmareZoneOverlay extends Overlay
 		this.plugin = plugin;
 		this.infoBoxManager = infoBoxManager;
 		this.itemManager = itemManager;
-
-		panelComponent.setPreferredSize(new Dimension(150, 0));
 	}
 
 	@Override
@@ -97,20 +95,20 @@ class NightmareZoneOverlay extends Overlay
 		}
 
 		renderAbsorptionCounter();
-		plugin.getNMZInfoModel().update();
+		plugin.getNightmareZoneInfoModel().update();
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total Points: ")
-			.right(StackFormatter.formatNumber(plugin.getNMZInfoModel().getPoints()))
+			.left("Total Points:")
+			.right(StackFormatter.formatNumber(plugin.getNightmareZoneInfoModel().getPoints()))
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Points/Hour: ")
-			.right(StackFormatter.formatNumber(plugin.getNMZInfoModel().getPointsPerHour()))
+			.left("Points/Hour:")
+			.right(StackFormatter.formatNumber(plugin.getNightmareZoneInfoModel().getPointsPerHour()))
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Duration: ")
-			.right(plugin.getNMZInfoModel().getFormattedElapsedTime())
+			.left("Duration:")
+			.right(plugin.getNightmareZoneInfoModel().getFormattedElapsedTime())
 			.build());
 
 		return panelComponent.render(graphics);
