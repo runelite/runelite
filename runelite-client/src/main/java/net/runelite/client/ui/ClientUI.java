@@ -27,8 +27,8 @@ package net.runelite.client.ui;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
-import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -127,6 +127,7 @@ public class ClientUI
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
 	private final KeyManager keyManager;
+	private final CardLayout cardLayout = new CardLayout();
 	private Applet client;
 	private ContainableFrame frame;
 	private JPanel navContainer;
@@ -137,7 +138,6 @@ public class ClientUI
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
 	private JPanel container;
-	private PluginPanel lastPluginPanel;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 
@@ -233,7 +233,15 @@ public class ClientUI
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final JButton button = SwingUtil.createSwingButton(event.getButton(), 0, (navButton, jButton) ->
+			final NavigationButton navigationButton = event.getButton();
+			final PluginPanel pluginPanel = navigationButton.getPanel();
+
+			if (pluginPanel != null)
+			{
+				navContainer.add(pluginPanel.getWrappedPanel(), navigationButton.getTooltip());
+			}
+
+			final JButton button = SwingUtil.createSwingButton(navigationButton, 0, (navButton, jButton) ->
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -268,7 +276,7 @@ public class ClientUI
 					currentNavButton = navButton;
 					currentButton.setSelected(true);
 					currentNavButton.setSelected(true);
-					expand(panel);
+					expand(navButton);
 				}
 			});
 
@@ -279,7 +287,16 @@ public class ClientUI
 	@Subscribe
 	public void onPluginToolbarButtonRemoved(final PluginToolbarButtonRemoved event)
 	{
-		SwingUtilities.invokeLater(() -> pluginToolbar.removeComponent(event.getButton()));
+		SwingUtilities.invokeLater(() ->
+		{
+			pluginToolbar.removeComponent(event.getButton());
+			final PluginPanel pluginPanel = event.getButton().getPanel();
+
+			if (pluginPanel != null)
+			{
+				navContainer.remove(pluginPanel.getWrappedPanel());
+			}
+		});
 	}
 
 	@Subscribe
@@ -364,7 +381,7 @@ public class ClientUI
 			container.add(new ClientPanel(client));
 
 			navContainer = new JPanel();
-			navContainer.setLayout(new BorderLayout(0, 0));
+			navContainer.setLayout(cardLayout);
 			navContainer.setMinimumSize(new Dimension(0, 0));
 			navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
 			// To reduce substance's colorization (tinting)
@@ -620,8 +637,6 @@ public class ClientUI
 			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
 			sidebarNavigationJButton.setToolTipText("Open SideBar");
 
-			// Save last panel and close current one
-			lastPluginPanel = pluginPanel;
 			contract();
 
 			// Remove plugin toolbar
@@ -633,7 +648,7 @@ public class ClientUI
 			sidebarNavigationJButton.setToolTipText("Close SideBar");
 
 			// Try to restore last panel
-			expand(lastPluginPanel);
+			expand(currentNavButton);
 
 			// Add plugin toolbar back
 			container.add(pluginToolbar);
@@ -654,8 +669,15 @@ public class ClientUI
 		}
 	}
 
-	private void expand(@Nullable PluginPanel panel)
+	private void expand(@Nullable NavigationButton button)
 	{
+		if (button == null)
+		{
+			return;
+		}
+
+		final PluginPanel panel = button.getPanel();
+
 		if (panel == null)
 		{
 			return;
@@ -671,7 +693,6 @@ public class ClientUI
 		if (pluginPanel != null)
 		{
 			expandBy = pluginPanel.getWrappedPanel().getPreferredSize().width - expandBy;
-			navContainer.remove(0);
 		}
 
 		pluginPanel = panel;
@@ -679,13 +700,11 @@ public class ClientUI
 		navContainer.setMaximumSize(new Dimension(pluginPanel.getWrappedPanel().getPreferredSize().width, Integer.MAX_VALUE));
 
 		final JPanel wrappedPanel = panel.getWrappedPanel();
-		navContainer.add(wrappedPanel);
-		navContainer.revalidate();
+		cardLayout.show(navContainer, button.getTooltip());
 
 		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
 		giveClientFocus();
 		panel.onActivate();
-		wrappedPanel.repaint();
 
 		// Check if frame was really expanded or contracted
 		if (expandBy > 0)
@@ -706,10 +725,8 @@ public class ClientUI
 		}
 
 		pluginPanel.onDeactivate();
-		navContainer.remove(0);
 		navContainer.setMinimumSize(new Dimension(0, 0));
 		navContainer.setMaximumSize(new Dimension(0, 0));
-		navContainer.revalidate();
 		giveClientFocus();
 		frame.contractBy(pluginPanel.getWrappedPanel().getPreferredSize().width);
 		pluginPanel = null;
