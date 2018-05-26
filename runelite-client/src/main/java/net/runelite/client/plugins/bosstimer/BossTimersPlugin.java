@@ -29,7 +29,7 @@ import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
-import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ActorDespawned;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -54,9 +54,9 @@ public class BossTimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onActorDeath(ActorDeath death)
+	public void onActorDespawned(ActorDespawned despawned)
 	{
-		Actor actor = death.getActor();
+		Actor actor = despawned.getActor();
 
 		Boss boss = Boss.find(actor.getName());
 		if (boss == null)
