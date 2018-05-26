@@ -27,8 +27,21 @@ package net.runelite.client.plugins.fps;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
+import static net.runelite.client.callback.Hooks.log;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -53,6 +66,14 @@ public class FpsPlugin extends Plugin
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
 
+	ScheduledExecutorService scheduledExecutorService;
+
+	@Getter
+	private int ping;
+
+	@Inject
+	private Client client;
+
 	@Inject
 	private FpsOverlay overlay;
 
@@ -61,6 +82,9 @@ public class FpsPlugin extends Plugin
 
 	@Inject
 	private DrawManager drawManager;
+
+	@Inject
+	private FpsConfig fpsConfig;
 
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
@@ -93,6 +117,8 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		scheduledExecutorService.scheduleAtFixedRate(this::getPingToCurrentWorld, 5, 5, TimeUnit.SECONDS);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
 	}
@@ -100,6 +126,64 @@ public class FpsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		scheduledExecutorService.shutdown();
 		drawManager.unregisterEveryFrameListener(drawListener);
+	}
+
+	public void getPingToCurrentWorld()
+	{
+		if (client.getGameState().equals(GameState.LOGGED_IN) && fpsConfig.drawPing())
+		{
+			ping = pingWorld(client.getWorld());
+		}
+		else
+		{
+			ping = -1;
+		}
+	}
+
+	int pingWorld(int world)
+	{
+		InetAddress host;
+
+		try
+		{
+			// Will update to the below code once hook for host name has been added
+			// Host hook will fix issues where the world host name sometimes ends in a or b (oldschool[0-9]{1,3}[ab]?.runescape.com)
+			// host = InetAddress.getByName(client.getWorldHostname());
+			final String hostDomain = String.format("oldschool%d.runescape.com",  world - 300);
+			host = InetAddress.getByName(hostDomain);
+		}
+		catch (UnknownHostException he)
+		{
+			log.warn("Cannot ping host", he);
+			return -1;
+		}
+
+		Instant start = Instant.now();
+
+		// Java cannot use ping (via ICMP), use sockets instead
+		try (Socket sock = new Socket(host, 443))
+		{
+			sock.setSoTimeout(5000);
+
+			if (sock.isConnected())
+			{
+				return Math.toIntExact(ChronoUnit.MILLIS.between(start, Instant.now()));
+			}
+
+			log.warn("Host {} is not reachable", host);
+		}
+		catch (SocketTimeoutException e)
+		{
+			log.warn("Host {} timed out", host, e);
+			return 5000;
+		}
+		catch (Exception e)
+		{
+			log.warn("Could not create new socket", e);
+		}
+
+		return -1;
 	}
 }
