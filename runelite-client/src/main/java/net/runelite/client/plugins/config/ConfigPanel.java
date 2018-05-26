@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -51,6 +52,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -59,6 +61,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -609,6 +612,62 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 				item.add(box, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == File.class)
+			{
+				JPanel filePanel = new JPanel();
+				filePanel.setLayout(new BorderLayout());
+				filePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+				filePanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+				// Text field
+				String location = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				JTextField textField = new JTextField(location);
+
+				textField.addFocusListener(new FocusAdapter()
+				{
+					@Override
+					public void focusLost(FocusEvent e)
+					{
+						changeConfiguration(config, textField, cd, cid);
+						textField.setToolTipText(textField.getText());
+					}
+				});
+
+				textField.addActionListener(e ->
+				{
+					changeConfiguration(config, textField, cd, cid);
+					textField.setToolTipText(textField.getText());
+				});
+
+				textField.setToolTipText(textField.getText());
+
+				filePanel.add(textField, BorderLayout.CENTER);
+
+				// Browse button
+				JButton browseButton = new JButton("Browse...");
+
+				browseButton.addActionListener(e ->
+				{
+					String currentLocation = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+					JFileChooser chooser = new JFileChooser(currentLocation);
+					chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+					int option = chooser.showDialog(this, null);
+
+					if (option == JFileChooser.APPROVE_OPTION)
+					{
+						File file = chooser.getSelectedFile();
+						textField.setText(file.getAbsolutePath());
+						changeConfiguration(config, textField, cd, cid);
+						textField.setToolTipText(textField.getText());
+					}
+				});
+
+				filePanel.add(browseButton, BorderLayout.EAST);
+
+				item.add(filePanel, BorderLayout.SOUTH);
 			}
 
 			add(item);

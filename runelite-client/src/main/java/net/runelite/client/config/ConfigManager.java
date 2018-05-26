@@ -479,6 +479,10 @@ public class ConfigManager
 		{
 			return Instant.parse(str);
 		}
+		if (type == File.class)
+		{
+			return new File(str);
+		}
 		return str;
 	}
 
@@ -510,6 +514,11 @@ public class ConfigManager
 		if (object instanceof Instant)
 		{
 			return ((Instant) object).toString();
+		}
+		if (object instanceof File)
+		{
+			File f = (File) object;
+			return f.getAbsolutePath();
 		}
 		return object.toString();
 	}
